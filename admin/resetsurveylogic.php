@@ -34,8 +34,6 @@ if (!isset($surveyid) || !$surveyid)
 
 if (!isset($ok) || !$ok)
 {
-	$tablelist = $connect->MetaTables();
-
 	$resetsurveylogicoutput .= "\t<tr>\n";
 	$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
 	$resetsurveylogicoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n";
@@ -56,7 +54,6 @@ if (!isset($ok) || !$ok)
 
 else //delete conditions in the survey
 {
-	$tablelist = $connect->MetaTables();
 	$dict = NewDataDictionary($connect);
 
 	$resetlogicquery = "DELETE FROM {$dbprefix}conditions WHERE qid in (select qid from {$dbprefix}questions where sid=$surveyid)";

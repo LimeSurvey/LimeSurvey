@@ -3,7 +3,7 @@
 		<title>{SURVEYNAME} :: {GROUPNAME}</title>
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
 <!--[if IE 7]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
 <![endif]-->
@@ -15,7 +15,7 @@
     <style type="text/css" media="aural tty">
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
     </style>
-
+<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 	</head>
 	<body>
 

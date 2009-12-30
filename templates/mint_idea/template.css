@@ -645,10 +645,12 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	padding: 0.3em 1em 0% 0%;
 }
-.numeric-multi div.multinum-slider
-{
-    margin-top: 1.5em;
-	width: 16em;
+
+.numeric-multi div.multinum-slider {
+	width: auto;
+	float: left;
+	margin-top: 1.5em;
+	margin-bottom: 0.2em;
 }
 
  .numeric-multi ul.multiplenumerichelp
@@ -746,7 +748,32 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .ui-wrapper input, .ui-wrapper textarea { 
     border: 0; 
 }
+
+/** Progress bar **/
+
+#progress-pre,
+#progress-post {
+	margin-top: -0.4em !important;
+}
+
+#progress-wrapper .ui-widget-content {
+	background-color: #DDDDDD;
+	background-image: none;
+}
+
+#progress-wrapper .ui-widget-header {
+	background-color: #3F576E;
+}
+
 /** UI Slider **/
+
+.numeric-multi label.slider-label {
+	display: table-cell;
+	padding:0 1em 0.5em 0;
+	margin-top: 1.3em;
+	vertical-align: middle;
+}
+
 .ui-slider-handle { 
     position: absolute; 
     height: 23px; 
@@ -762,7 +789,11 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 }
 
 
-.ui-widget-content { border: 1px solid #a6c9e2; background: #123 url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }
+.ui-widget-content { 
+	border: 1px solid #a6c9e2; 
+	background: #123 url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; 
+	color: #222222; 
+}
 
 .ui-slider-2 { 
     width: 200px; 
@@ -786,6 +817,46 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     font-weight: bold; 
     text-align: left;
 }
+
+.slider_showmin {
+    float: left;
+	width: 50px;
+    margin: 13px 0 0 -27px;
+  	font-family: 'Arial';
+	font-size: 0.7em;
+	font-weight: normal;
+	color:#E8EAEB;
+	text-align: center;
+}
+
+.slider_showmax {
+    float: right;
+	width: 50px;
+    margin: 13px -25px 0 0;
+  	font-family: 'Arial';
+	font-size: 0.7em;
+	font-weight: normal;
+	color:#E8EAEB;
+	text-align: center;
+}
+
+.slider_lefttext {
+    display: table-cell;
+	padding-right: 11px;
+	padding-bottom: 8px;
+    vertical-align: middle;
+	text-align: right;
+	font-size: 0.9em;
+}
+
+.slider_righttext {
+    display: table-cell;
+	padding-left: 11px;
+	padding-bottom: 8px;
+    vertical-align: middle;
+	font-size: 0.9em;
+}
+
 
 
 #tokenform

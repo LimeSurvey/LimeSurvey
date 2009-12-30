@@ -139,7 +139,7 @@ if (isset($postedfieldnames))
                 }
 		}
 	}
-    else
+    elseif (isset($move) && $move!='moveprev')
     {
         // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
         $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
@@ -301,7 +301,7 @@ function savedcontrol()
             $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);     
 			$sdata = array("datestamp"=>$today,
 			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
-			"startlanguage"=>GetBaseLanguageFromSurveyID($surveyid),
+			"startlanguage"=>$_SESSION['s_lang'],
 			"refurl"=>getenv("HTTP_REFERER"));
 			//One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
 			if ($connect->AutoExecute($thissurvey['tablename'], $sdata,'INSERT'))    // Checked    
@@ -356,7 +356,7 @@ function savedcontrol()
 
 				if ($clienttoken){$message.="&token=".$clienttoken;}
 				$from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-				if (MailTextMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
+				if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
 				{
 					$emailsent="Y";
 				}
@@ -407,7 +407,11 @@ function createinsertquery()
                 $colnames[]=$value;
                 // most databases do not allow to insert an empty value into a datefield, 
                 // therefore if no date was chosen in a date question the insert value has to be NULL
-                if (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))      
+		if ($deletenonvalues==1 && !checkconfield($value))
+		{
+                    $values[]='NULL';
+		}
+                elseif (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))      
                 {                        
                     $values[]='NULL';
                 }
@@ -424,12 +428,7 @@ function createinsertquery()
                         $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
                         $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
                     }
-					//These next two functions search for lone < or > symbols, and converts them to &lt;~ or &rt;~
-					//so they get ignored by the strip_tags function
-					$tmpvalue=my_strip_ltags($_SESSION[$value]);
-					$tmpvalue=my_strip_rtags($tmpvalue);
-					$tmpvalue=strip_tags($connect->qstr($tmpvalue,get_magic_quotes_gpc()));
-					$values[]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
+					$values[]=$connect->qstr($_SESSION[$value],get_magic_quotes_gpc());
                 }
 
             }
@@ -502,7 +501,7 @@ function createinsertquery()
 			{
 				$query .= ", '".$_SERVER['REMOTE_ADDR']."'";
 			}
-			$query .= ", '".GetBaseLanguageFromSurveyID($surveyid)."'";
+			$query .= ", '".$_SESSION['s_lang']."'";
 			if ($thissurvey['refurl'] == "Y")
 			{
 				$query .= ", '".$_SESSION['refurl']."'";
@@ -542,14 +541,14 @@ function createinsertquery()
 					foreach ($hiddenfields as $hiddenfield)
 					{
 						$fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
-						if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
-						{
+						//if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
+						//{
 							$query .= db_quote_id($hiddenfield)." = NULL,";
-						}
-						else
-						{
-							$query .= db_quote_id($hiddenfield)." = '',";
-						}
+						//}
+						//else
+						//{
+						//	$query .= db_quote_id($hiddenfield)." = '',";
+						//}
 					}
 				}
 				else
@@ -583,11 +582,7 @@ function createinsertquery()
                                 $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
                                 $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
                             }                            
-							$tmpvalue=my_strip_ltags($_POST[$field]);
-							$tmpvalue=my_strip_rtags($tmpvalue);
-							$tmpvalue=strip_tags($myFilter->process($tmpvalue),true);
-							$tmpvalue=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
-                            $query .= db_quote_id($field)." = ".db_quoteall($tmpvalue).",";
+                            $query .= db_quote_id($field)." = ".db_quoteall($_POST[$field],true).",";
 						}
 					}
 				}
@@ -654,6 +649,15 @@ function submitanswer()
 	$query = "";
 	if (isset($move) && ($move == "movesubmit") && ($thissurvey['active'] == "Y"))
 	{
+		if (!isset($_SESSION['srid']))
+		{ //due to conditions no answer was displayed and yet we must submit
+			$query=createinsertquery();
+			if ($result=$connect->Execute($query))
+			{
+				$tempID=$connect->Insert_ID($thissurvey['tablename'],"id");
+				$_SESSION['srid'] = $tempID;
+			}
+		}
 		$query = "UPDATE {$thissurvey['tablename']} SET ";
 		$query .= " submitdate = ".$connect->DBDate($mysubmitdate);
 		$query .= " WHERE id=" . $_SESSION['srid'];
@@ -675,29 +679,5 @@ function submitanswer()
           return $array_remval;
     }
 
-function my_strip_ltags($str) {
-    $strs=explode('<',$str);
-    $res=$strs[0];
-    for($i=1;$i<count($strs);$i++)
-    {
-        if(!strpos($strs[$i],'>'))
-            $res = $res.'&lt;~'.$strs[$i];
-        else
-            $res = $res.'<'.$strs[$i];
-    }
-    return $res;   
-}
-function my_strip_rtags($str) {
-    $strs=explode('>',$str);
-    $res=$strs[0];
-    for($i=1;$i<count($strs);$i++)
-    {
-        if(!strpos($strs[$i],'<'))
-            $res = $res.'&rt;~'.$strs[$i];
-        else
-            $res = $res.'>'.$strs[$i];
-    }
-    return $res;
-}
 
 ?>

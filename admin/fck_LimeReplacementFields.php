@@ -106,7 +106,7 @@ $limereplacementoutput .= ""
 	. "\t</script>\n"
 	. "</head>\n";
 
-$limereplacementoutput .= "\t<body scroll=\"no\" style=\"OVERFLOW: hidden\">\n"
+$limereplacementoutput .= "\t<body scroll=\"no\" style=\"OVERFLOW: hidden;\">\n"
 			. "<table height=\"100%\" cellSpacing=\"0\" cellPadding=\"0\" width=\"100%\" border=\"0\">\n"
 			. "\t<tr>\n"
 			. "<td>\n";
@@ -345,7 +345,7 @@ if ($isInstertansEnabled===true)
 	
 		foreach($theserows as $rows)
 		{
-		    $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
+		    $shortquestion=$rows['title'].": ".FlattenText($rows['question']);
 	
 	    if ($rows['type'] == "A" ||
 	        $rows['type'] == "B" ||
@@ -508,7 +508,7 @@ if (count($replFields) > 0)
 
 	foreach ($replFields as $stdfield)
 	{
-		$limereplacementoutput .= "\t<option value='".$stdfield[0]."'";
+		$limereplacementoutput .= "\t<option value='".$stdfield[0]."' title='".$stdfield[1]."'";
 		$limereplacementoutput .= ">".$stdfield[1]."</option>\n";
 	}
 	$limereplacementoutput .= "</optgroup>\n";
@@ -529,7 +529,7 @@ if (isset($cquestions))
 			 $isDisabled=" disabled='disabled'";
 		}
 
-		$limereplacementoutput .= "\t<option value='INSERTANS:$cqn[3]'";
+		$limereplacementoutput .= "\t<option value='INSERTANS:$cqn[3]' title='".$cqn[0]."'";
 		$limereplacementoutput .= " $isDisabled >$cqn[0]</option>\n";
 	}
 	$limereplacementoutput .= "</optgroup>\n";

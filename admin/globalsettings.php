@@ -12,7 +12,7 @@
 * 
 * $Id: common.php 7566 2009-09-04 14:04:56Z c_schmitz $
 */
-
+require_once('classes/core/settingsstorage.php');
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}            
@@ -23,15 +23,20 @@ function injectglobalsettings()
 {
     
     global $connect,$emailmethod ;
+    $registry = SettingsStorage::getInstance();
     $emailmethod='smtp';
     $usquery = "SELECT * FROM ".db_table_name("settings_global"); 
     $dbvaluearray=$connect->GetAll($usquery);
-    foreach  ($dbvaluearray as $setting)
+    if ($dbvaluearray!==false)
     {
-        global $$setting['stg_name'];
-        if (isset($$setting['stg_name']))
+        foreach  ($dbvaluearray as $setting)
         {
-            $$setting['stg_name']=$setting['stg_value'];
+            global $$setting['stg_name'];
+	        if (isset($$setting['stg_name']))
+            {
+                $$setting['stg_name']=$setting['stg_value'];
+            }
+            $registry->set($setting['stg_name'],$setting['stg_value']);
         }
     }
 }
@@ -43,17 +48,26 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
     if (isset($action) && $action == "globalsettingssave")
     {
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-        {
+        {                
+                       if (sanitize_int($_POST['maxemails'])<1)                           
+                       {
+                           $_POST['maxemails']=1;
+                       }
                        setGlobalSetting('sitename',strip_tags($_POST['sitename']));
                        setGlobalSetting('updatecheckperiod',(int)($_POST['updatecheckperiod']));   
                        setGlobalSetting('addTitleToLinks',sanitize_paranoid_string($_POST['addTitleToLinks']));
                        setGlobalSetting('defaultlang',sanitize_languagecode($_POST['defaultlang']));
                        setGlobalSetting('defaulthtmleditormode',sanitize_paranoid_string($_POST['defaulthtmleditormode']));
                        setGlobalSetting('defaulttemplate',sanitize_paranoid_string($_POST['defaulttemplate']));
-                       setGlobalSetting('emailsmtphost',strip_tags($_POST['emailsmtphost']));
-                       setGlobalSetting('emailsmtppassword',strip_tags($_POST['emailsmtppassword']));
-                       setGlobalSetting('emailsmtpssl',sanitize_paranoid_string($_POST['emailsmtpssl']));
-                       setGlobalSetting('emailsmtpuser',strip_tags($_POST['emailsmtpuser']));
+                       setGlobalSetting('emailmethod',strip_tags($_POST['emailmethod']));
+                       setGlobalSetting('emailsmtphost',strip_tags(returnglobal('emailsmtphost')));
+                       if (returnglobal('emailsmtppassword')!='somepassword')
+                       {
+                            setGlobalSetting('emailsmtppassword',strip_tags(returnglobal('emailsmtppassword')));
+                       }
+                       setGlobalSetting('emailsmtpssl',sanitize_paranoid_string(returnglobal('emailsmtpssl')));
+                       setGlobalSetting('emailsmtpdebug',sanitize_int(returnglobal('emailsmtpdebug')));
+                       setGlobalSetting('emailsmtpuser',strip_tags(returnglobal('emailsmtpuser')));
                        setGlobalSetting('filterxsshtml',strip_tags($_POST['filterxsshtml']));
                        setGlobalSetting('siteadminbounce',strip_tags($_POST['siteadminbounce']));
                        setGlobalSetting('siteadminemail',strip_tags($_POST['siteadminemail']));
@@ -68,27 +82,32 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                        setGlobalSetting('timeadjust',$savetime);
                        setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
                        setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
-                       $editsurvey .= "<br/>".$clang->gT("Global settings were saved.")."<br/>&nbsp;";
+					   $editsurvey .= "<div class='header'>".$clang->gT("Global settings")."</div>\n"
+					   . "<div class=\"messagebox\">\n"
+                       . "<br /><div class=\"successheader\">".$clang->gT("Global settings were saved.")."</div>\n"
+					   . "<br/><input type=\"submit\" onclick=\"window.open('admin.php', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n"
+					   . "</div>\n";
         }                                                                
     }
 }
 
 function globalsettingsdisplay() 
 {
-    global $action, $subaction, $editsurvey, $connect, $scriptname, $clang, $updateversion, $updatebuild, $updateavailable, $updatelastcheck;
+    global $action, $connect, $js_adminheader_includes, $editsurvey, $subaction, $scriptname, $clang;
+    global $updateversion, $updatebuild, $updateavailable, $updatelastcheck;
     
     if (isset($subaction) && $subaction == "updatecheck")
     {
-        updatecheck();
+        $updateinfo=updatecheck();
     }  
     
     if (isset($action) && $action == "globalsettings")
     {
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         {
+            $js_adminheader_includes[]='scripts/globalsettings.js';                 
             // header
-            $editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='settingcaption'>"
-            . "\t\t".$clang->gT("Global settings")."</td></tr></table>\n";
+            $editsurvey = "<div class='header'>".$clang->gT("Global settings")."</div>\n";
 
 
             // beginning TABs section
@@ -97,7 +116,7 @@ function globalsettingsdisplay()
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Overview & Update")."</h2>\n";
             $editsurvey .= checksettings();
             $thisupdatecheckperiod=getGlobalSetting('updatecheckperiod');
-            $editsurvey .= "<br /></p><div class='settingcaption'>Update settings</div><ul>"
+            $editsurvey .= "<br /></p><div class='settingcaption'>".$clang->gT("Updates")."</div><ul>"
             . "\t<li><label for='updatecheckperiod'>".$clang->gT("Check for updates:")."</label>\n"
             . "\t\t\t<select name='updatecheckperiod' id='updatecheckperiod'>\n"
             . "\t\t\t\t<option value='0'";
@@ -122,11 +141,17 @@ function globalsettingsdisplay()
               $editsurvey .=sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)").'<br />';
               $editsurvey .=sprintf($clang->gT('You can update manually or use the %s'),"<a href='$scriptname?action=update'>".$clang->gT('3-Click ComfortUpdate').'</a>').'.<br />';
             }                         
+            elseif (isset($updateinfo['errorcode']))
+            {
+              $editsurvey .=sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']).'.<br />';
+              $editsurvey .="<textarea readonly='readonly' style='width:35%; height:60px; overflow: auto;'>".strip_tags($updateinfo['errorhtml']).'</textarea>';
+                
+            }
             else
             {
               $editsurvey .=$clang->gT('There is currently no newer LimeSurvey version available.');
             }
-            $editsurvey .= "</div>";
+            $editsurvey .= "</p></div>";
             
 
 
@@ -217,19 +242,33 @@ function globalsettingsdisplay()
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Email settings")."</h2><ul>\n";
 
                 //Format
-
                 $editsurvey.= "\t<li><label for='siteadminemail'>".$clang->gT("Default site admin email:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='siteadminemail' name='siteadminemail' value=\"".htmlspecialchars(getGlobalSetting('siteadminemail'))."\" /></li>\n"
                 . "\t<li><label for='siteadminbounce'>".$clang->gT("Default site bounce email:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
                 . "\t<li><label for='siteadminname'>".$clang->gT("Administrator name:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='siteadminname' name='siteadminname' value=\"".htmlspecialchars(getGlobalSetting('siteadminname'))."\" /><br /><br /></li>\n"
+                . "\t<li><label for='emailmethod'>".$clang->gT("Email method:")."</label>\n"
+                . "\t\t<select id='emailmethod' name='emailmethod'>\n"
+                . "\t\t\t<option value=''";
+                if (getGlobalSetting('emailmethod')=='mail') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("PHP (default)")."</option>\n"
+                . "\t\t\t<option value='smtp'";
+                if (getGlobalSetting('emailmethod')=='smtp') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("SMTP")."</option>\n"
+                . "\t\t\t<option value='sendmail'";
+                if (getGlobalSetting('emailmethod')=='sendmail') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("Sendmail")."</option>\n"
+                . "\t\t\t<option value='qmail'";
+                if (getGlobalSetting('emailmethod')=='qmail') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("Qmail")."</option>\n"
+                . "\t\t</select></li>\n"
                 . "\t<li><label for='emailsmtphost'>".$clang->gT("SMTP host:")."</label>\n"
-                . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size=1>Enter your hostname and port, e.g.: my.smtp.com:25</font></li>\n"
+                . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size=1>".$clang->gT("Enter your hostname and port, e.g.: my.smtp.com:25")."</font></li>\n"
                 . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value=\"".htmlspecialchars(getGlobalSetting('emailsmtpuser'))."\" /></li>\n"
                 . "\t<li><label for='emailsmtppassword'>".$clang->gT("SMTP password:")."</label>\n"
-                . "\t\t<input type='text' size='50' id='emailsmtppassword' name='emailsmtppassword' value=\"".htmlspecialchars(getGlobalSetting('emailsmtppassword'))."\" /></li>\n"
+                . "\t\t<input type='password' size='50' id='emailsmtppassword' name='emailsmtppassword' value='somepassword' /></li>\n"
                 . "\t<li><label for='emailsmtpssl'>".$clang->gT("SMTP SSL/TLS:")."</label>\n"
                 . "\t\t<select id='emailsmtpssl' name='emailsmtpssl'>\n"
                 . "\t\t\t<option value=''";
@@ -242,6 +281,18 @@ function globalsettingsdisplay()
                 if (getGlobalSetting('emailsmtpssl')=='tls') {$editsurvey .= " selected='selected'";}
                 $editsurvey .= ">".$clang->gT("TLS")."</option>\n"
                 . "\t\t</select></li>\n"
+                . "\t<li><label for='emailsmtpdebug'>".$clang->gT("SMTP debug mode:")."</label>\n"
+                . "\t\t<select id='emailsmtpdebug' name='emailsmtpdebug'>\n"
+                . "\t\t\t<option value=''";
+                if (getGlobalSetting('emailsmtpdebug')=='0') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("Off")."</option>\n"
+                . "\t\t\t<option value='1'";
+                if (getGlobalSetting('emailsmtpdebug')=='1' || getGlobalSetting('emailsmtpssl')==1) {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("On errors")."</option>\n"
+                . "\t\t\t<option value='2'";
+                if (getGlobalSetting('emailsmtpdebug')=='2' || getGlobalSetting('emailsmtpssl')==1) {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("Always")."</option>\n"
+                . "\t\t</select><br />&nbsp;</li>\n"
                 . "\t<li><label for='maxemails'>".$clang->gT("Email batch size:")."</label>\n"
                 . "\t\t<input type='text' size='5' id='maxemails' name='maxemails' value=\"".htmlspecialchars(getGlobalSetting('maxemails'))."\" /></li>\n"
                 . "\t</ul>\n";
@@ -328,16 +379,19 @@ function globalsettingsdisplay()
 function getGlobalSetting($settingname)
 {
     global $connect, $$settingname;
-    $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='$settingname'"; 
-    $dbvalue=$connect->GetOne($usquery);
-    if ($dbvalue===false)
-    {
-        if (isset($$settingname))
-        {
-            $dbvalue=$$settingname;
-        }
-    }
-    return $dbvalue;
+    $registry = SettingsStorage::getInstance();
+    if (!$registry->isRegistered($settingname)) {
+    	$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='$settingname'"; 
+	    $dbvalue=$connect->GetOne($usquery);
+	    if ($dbvalue!==false)
+	    {
+	        $registry->set($settingname,$dbvalue);
+	    }
+    } else {
+    	$dbvalue=$registry->get($settingname);
+    }    
+    if (isset($$settingname)) $$settingname=$dbvalue;
+	return $dbvalue;
 }
   
 function setGlobalSetting($settingname,$settingvalue)
@@ -350,8 +404,9 @@ function setGlobalSetting($settingname,$settingvalue)
         $usquery = "insert into  ".db_table_name("settings_global")." (stg_value,stg_name) values('".auto_escape($settingvalue)."','$settingname')"; 
         $connect->Execute($usquery);
     }
-     
-    $$settingname=$settingvalue;
+    $registry = SettingsStorage::getInstance();
+    $registry->set($settingname,$settingvalue); 
+    if (isset($$settingname)) $$settingname=$settingvalue;
 }  
 
 
@@ -361,7 +416,7 @@ function checksettings()
     //GET NUMBER OF SURVEYS
     $query = "SELECT count(sid) FROM ".db_table_name('surveys');
     $surveycount=$connect->GetOne($query);   //Checked  
-    $query = "SELECT count(sid FROM ".db_table_name('surveys')." WHERE active='Y'";
+    $query = "SELECT count(sid) FROM ".db_table_name('surveys')." WHERE active='Y'";
     $activesurveycount=$connect->GetOne($query);  //Checked  
     $query = "SELECT count(users_name) FROM ".db_table_name('users');
     $usercount = $connect->GetOne($query);   //Checked    
@@ -372,16 +427,15 @@ function checksettings()
     $tablelist = $connect->MetaTables();
     foreach ($tablelist as $table)
     {
-        $stlength=strlen($dbprefix).strlen("old");
-        if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
+        if (strpos($table,$dbprefix."old_tokens_")!==false)
         {
             $oldtokenlist[]=$table;
         }
-        elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
+        elseif (strpos($table,$dbprefix."tokens_")!==false)
         {
             $tokenlist[]=$table;
         }
-        elseif (substr($table, 0, $stlength) == $dbprefix."old")
+        elseif (strpos($table,$dbprefix."old_survey_")!==false)
         {
             $oldresultslist[]=$table;
         }
@@ -417,7 +471,7 @@ function checksettings()
     . "</tr>\n"
     . "<tr>\n"
     . "<td align='right'>\n"
-    . "<strong>".$clang->gT("De-activated surveys").":</strong>\n"
+    . "<strong>".$clang->gT("Deactivated result tables").":</strong>\n"
     . "</td><td>$deactivatedsurveys</td>\n"
     . "</tr>\n"
     . "<tr>\n"
@@ -427,7 +481,7 @@ function checksettings()
     . "</tr>\n"
     . "<tr>\n"
     . "<td align='right'>\n"
-    . "<strong>".$clang->gT("De-activated token tables").":</strong>\n"
+    . "<strong>".$clang->gT("Deactivated token tables").":</strong>\n"
     . "</td><td>$deactivatedtokens</td>\n"
     . "</tr>\n"
     . "</table>\n";
@@ -437,7 +491,5 @@ function checksettings()
     $cssummary .= "<p><input type='button' onclick='window.open(\"$scriptname?action=showphpinfo\")'value='".$clang->gT("Show PHPInfo")."' />";
     }
     return $cssummary;
-}
-
-  
+} 
 ?>

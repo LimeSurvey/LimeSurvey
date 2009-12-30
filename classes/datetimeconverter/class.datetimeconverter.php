@@ -341,7 +341,7 @@ class Date_Time_Converter
 		
 		if (strtolower($this->ampm) == "pm") {$this->hours = $this->hours + 12;}			//if its pm, add 12 hours
 		
-		$make_stamp = mktime( (int)ltrim($this->hours, "0"), (int)ltrim($this->minutes, "0"), 
+		$make_stamp = adodb_mktime( (int)ltrim($this->hours, "0"), (int)ltrim($this->minutes, "0"), 
 							  (int)ltrim($this->seconds, "0"), (int)ltrim($this->months, "0"), 
 							  (int)ltrim($this->days, "0"), (int)ltrim($this->years, "0"));
 		
@@ -368,7 +368,7 @@ class Date_Time_Converter
  	* 	Example: $obj->convert("M j Y H:i:s A");
  	*/	
 	public function convert($new_mask, $save=true) {
-		$newdate = date($new_mask, $this->date_time_stamp);
+		$newdate = adodb_date($new_mask, $this->date_time_stamp);
 		//if they want to save and apply this new mask to $this->date_time, save it
 		if ($save == true) {
 			$this->date_time_mask = $new_mask;

@@ -283,7 +283,7 @@ class LsrcHelper {
 						$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 						$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-						if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+						if (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 						{
 							// Put date into sent
 							$timeadjust = 0;
@@ -543,7 +543,7 @@ class LsrcHelper {
 						$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 						$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-						if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+						if (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 						{
 								
 							// Put date into remindersent
@@ -2314,7 +2314,7 @@ class LsrcHelper {
 			//$activateoutput .= ("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.")."\n";
 			//$activateoutput .= ("Once a survey is activated you can no longer:")."<ul><li>".("Add or delete groups")."</li><li>".("Add or remove answers to Multiple Answer questions")."</li><li>".("Add or delete questions")."</li></ul>\n";
 			//$activateoutput .= ("However you can still:")."<ul><li>".("Edit (change) your questions code, text or type")."</li><li>".("Edit (change) your group names")."</li><li>".("Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)")."</li><li>".("Change survey name or description")."</li></ul>\n";
-			//$activateoutput .= ("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.")."\n";
+			//$activateoutput .= ("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table.")."\n";
 			//$activateoutput .= "\t\t</td>\n";
 			//$activateoutput .= "\t</tr>\n";
 			//$activateoutput .= "\t<tr>\n";
@@ -3926,8 +3926,6 @@ class LsrcHelper {
 		global $clang;
 		
 		
-		$subject = $clang->gT("Statistics Survey #");
-		$message = $clang->gT("This is your personal statistic sheet for survey #");
 		if($tempFile==null && isset($html))
 		{
 			$css = "<style type='text/css'>"
@@ -3978,12 +3976,14 @@ class LsrcHelper {
 				}"
 				."</style>";
 				
-				$message = $css."<center>".$message.$surveyid."<br/>".$html."</center>";
-			
-			return MailTextMessage($message, $subject.$surveyid, $to, getBounceEmail($surveyid), $sitename, true);
+			$message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$css."<center>".$message.$surveyid."<br/>".$html."</center>");
+			return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to, getBounceEmail($surveyid), $sitename, true);
 		}
 		else
-			return MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+        {
+            $message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$surveyid);
+            return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+        }
 		
 	}
 	private function getqtypelist($SelectedCode = "T", $ReturnType = "array")

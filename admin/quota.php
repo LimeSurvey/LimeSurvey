@@ -208,6 +208,10 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	}
 }
 
+$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+$js_adminheader_includes[]='scripts/quotas.js';    
+
+
 if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
 	if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
@@ -514,14 +518,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				  AND quotals_language = '".$baselang."'";
 		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-		$quotasoutput .='<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-  						<tr>
-    					<td valign="top">
-						<table width="100%" border="0">
-       					<tbody>
-          				<tr> 
-            			<td colspan="6" class="header">'.$clang->gT("Survey Quotas").'</td>
-          				</tr>
+		$quotasoutput .='<div class="header">'.$clang->gT("Survey quotas").'</div>
+          				<br /><table id="quotalist" class="quotalist"><thead>
           				<tr> 
             				<th width="20%">'.$clang->gT("Quota Name").'</th>
             				<th width="20%">'.$clang->gT("Status").'</th>
@@ -529,7 +527,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<th width="5%">'.$clang->gT("Limit").'</th>
             				<th width="5%">'.$clang->gT("Completed").'</th>
             				<th width="20%">'.$clang->gT("Action").'</th>
-          				</tr>';
+          				</tr></thead><tbody>';
 
 		if ($result->RecordCount() > 0)
 		{
@@ -587,7 +585,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
             		<td style="padding: 3px;" align="center"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add Answer").'">
+            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add Answer").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
@@ -637,29 +635,26 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 		$quotasoutput .='<tr>
             				<td align="center">&nbsp;</td>
-            				<td align="center"><a name="quota_end">&nbsp;</a></td>
+            				<td align="center"><a name="quota_end1">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">&nbsp;</td>
             				<td align="center" style="padding: 3px;"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'">
+            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="subaction" value="new_quota" /></form></td>
-            				</tr>
-            				<tr>
+            				</tr></tbody> 
+            				<tfoot><tr>
             				<td>&nbsp;</td>
-            				<td align="center"><a name="quota_end">&nbsp;</a></td>
+            				<td align="center"><a name="quota_end2">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">'.$totalcompleted.'</td>
-            				<td align="center" style="padding: 3px;"<input type="button" value="'.$clang->gT("Quick CSV Report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')"></td>
+            				<td align="center" style="padding: 3px;"><input type="button" value="'.$clang->gT("Quick CSV report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')" /></td>
           					</tr>
-        					</tbody>
-      						</table>
-    						</td>
-	 						</tr>
-							</table>';
+        					</tfoot>
+      						</table>';
 	}
 
     if(isset($_GET['quickreport']) && $_GET['quickreport'])
@@ -821,48 +816,30 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if ($subaction == "new_quota")
 	{
-		$quotasoutput .='<form action="'.$scriptname.'" method="post" name="addnewquotaform">';
-		$quotasoutput.='					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-  						<tr>
-    						<td valign="top">
-								<table width="100%" border="0">
-        							<tbody>
-          								<tr> 
-            								<td colspan="2" class="header">'.$clang->gT("New Quota").'</td>
-          								</tr>
-          								<tr class="evenrow"> 
-            								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("Quota Name").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255" /></td>
-          								</tr>
-          								<tr class="evenrow"> 
-            								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("Quota Limit").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8" /></td>
-          								</tr>
-          								<tr class="evenrow"> 
-            								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("Quota Action").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <select name="quota_action">
-            									<option value ="1">'.$clang->gT("Terminate Survey") .'</option> 
-            									<option value ="2">'.$clang->gT("Terminate Survey With Warning") .'</option>
-            									</select></td>
-          								</tr>
-          								<tr class="evenrow">
-          								    <td align="right"><blockquote>
-          								        <p><strong>'.$clang->gT("Autoload URL").':</strong></p>
-          								        </blockquote></td>
-          								    <td align="left"><input name="autoload_url" type="checkbox" value="1"></td>
-          								</tr>
-          							</tbody>
-          						</table>
-            								</td>
-          				</tr>
-					</table>
-					';
+        $quotasoutput.="<div class='header'>".$clang->gT("New quota").'</div>';    
+		$quotasoutput.='<form action="'.$scriptname.'" method="post" id="addnewquotaform" name="addnewquotaform">';
+		$quotasoutput.='<ul>
+          					<li> 
+            					<label for="quota_name">'.$clang->gT("Quota name").':</label>
+            					<input id="quota_name" name="quota_name" type="text" size="30" maxlength="255" />
+          					</li>
+          					<li> 
+                                <label for="quota_limit">'.$clang->gT("Quota limit").':</label>
+            					<input id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" />
+          					</li>
+          					<li> 
+                                <label for="quota_action">'.$clang->gT("Quota action").':</label>
+            					<select id="quota_action" name="quota_action">
+            						<option value ="1">'.$clang->gT("Terminate survey") .'</option> 
+            						<option value ="2">'.$clang->gT("Terminate survey with warning") .'</option>
+            					</select>
+          					</li>
+          					<li>
+                                <label for="autoload_url">'.$clang->gT("Autoload URL").':</label>
+          						<input id="autoload_url" name="autoload_url" type="checkbox" value="1" />
+          					</li>
+					</ul>
+        ';
             								
 		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -883,34 +860,20 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         	if ($lang==$baselang) {$quotasoutput .= '('.$clang->gT("Base Language").')';}
         	$quotasoutput .= "</h2>";
 			$quotasoutput.='
-					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-  						<tr>
-    						<td valign="top">
-								<table width="100%" border="0">
-        							<tbody>
-          								<tr class="evenrow">
-          								    <td align="right" valign="top"><blockquote>
-          								        <p><strong>'.$clang->gT("Quota message").':</strong></p>
-          								        </blockquote></td>
-          								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$clang->gT("Sorry your responses have exceeded a quota on this survey.").'</textarea></td>
-          								</tr>
-          								<tr class="evenrow"> 
-            								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("URL").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <input name="quotals_url_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['url'].'" /></td>
-          								</tr>
-          								<tr class="evenrow"> 
-            								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("URL description").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['urldescrip'].'" /></td>
-          								</tr>
-       							</tbody>
-      						</table>
-    					</td>
-  					</tr>
-					</table>
+					<ul>
+          				<li>
+          					<label for="quotals_message_'.$lang.'">'.$clang->gT("Quota message").':</label>
+          					<textarea id="quotals_message_'.$lang.'" name="quotals_message_'.$lang.'" cols="60" rows="6">'.$clang->gT("Sorry your responses have exceeded a quota on this survey.").'</textarea>
+          				</li>
+          				<li> 
+            				<label for="quotals_url_'.$lang.'">'.$clang->gT("URL").':</label>
+            				<input id="quotals_url_'.$lang.'" name="quotals_url_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['url'].'" />
+          				</li>
+                        <li> 
+                            <label for="quotals_urldescrip_'.$lang.'">'.$clang->gT("URL description").':</label>
+                            <input id="quotals_urldescrip_'.$lang.'" name="quotals_urldescrip_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['urldescrip'].'" />
+                        </li>
+					</ul>
 				</div>';
 		};
 	
@@ -919,7 +882,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				<input type="hidden" name="action" value="quotas" />
 				<input type="hidden" name="subaction" value="insertquota" />
 				</div>
-				<input name="submit" type="submit" value="'.$clang->gT("Add New Quota").'" />
+				<p><input name="submit" type="submit" value="'.$clang->gT("Add New Quota").'" />
 			</form>';
 	}
 }

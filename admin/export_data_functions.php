@@ -13,9 +13,6 @@
  * $Id$
  */
 
-$length_vallabel = '120'; // Set the max text length of Value Labels
-$length_data = '255'; // Set the max text length of Text Data
-
 /**
  * Strips html tags and replaces new lines
  *
@@ -25,10 +22,10 @@ $length_data = '255'; // Set the max text length of Text Data
 function strip_tags_full($string) {
 	$string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
 	//combining these into one mb_ereg_replace call ought to speed things up
-	$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
+	//$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
 	//The backslashes must be escaped twice, once for php, and again for the regexp
-	$string = str_replace("'|\\\\'", "&apos;", $string);
-	return strip_tags($string);
+	//$string = str_replace("'|\\\\'", "&apos;", $string);
+	return FlattenText($string);
 }
 
 /**
@@ -54,12 +51,18 @@ function spss_export_data ($na = null) {
 
 	$result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
 	$num_fields = $result->FieldCount();
-
-	while ($row = $result->FetchRow()) {
-		$fieldno = 0;
-		while ($fieldno < $num_fields)
+	
+	//This shouldn't occur, but just to be safe:
+	if (count($fields)<>$num_fields) safe_die("Database inconsistency error");
+	
+	while (!$result->EOF) {
+		$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
+		reset($fields);	//Jump to the first element in the field array
+		$i = 1;
+		foreach ($fields as $field)
 		{
-			if ($fields[$fieldno]['SPSStype']=='DATETIME23.2'){
+			$fieldno = strtoupper($field['sql_name']);
+			if ($field['SPSStype']=='DATETIME23.2'){
 				#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 				if (isset($row[$fieldno]))
 				{
@@ -75,7 +78,7 @@ function spss_export_data ($na = null) {
 				{
 					echo ($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'Y')
+			} else if ($field['LStype'] == 'Y')
 			{
 				if ($row[$fieldno] == 'Y')    // Yes/No Question Type
 				{
@@ -85,7 +88,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'G')    //Gender
+			} else if ($field['LStype'] == 'G')    //Gender
 			{
 				if ($row[$fieldno] == 'F')
 				{
@@ -95,7 +98,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'C')    //Yes/No/Uncertain
+			} else if ($field['LStype'] == 'C')    //Yes/No/Uncertain
 			{
 				if ($row[$fieldno] == 'Y')
 				{
@@ -107,7 +110,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'E')     //Increase / Same / Decrease
+			} else if ($field['LStype'] == 'E')     //Increase / Same / Decrease
 			{
 				if ($row[$fieldno] == 'I')
 				{
@@ -119,7 +122,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other'))
+			} elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
 			{
 				if ($row[$fieldno] == 'Y')
 				{
@@ -128,7 +131,7 @@ function spss_export_data ($na = null) {
 				{
 					echo("'0'");
 				}
-			} elseif (!$fields[$fieldno]['hide']) {
+			} elseif (!$field['hide']) {
 				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 				if (trim($strTmp) != ''){
 					$strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
@@ -145,10 +148,11 @@ function spss_export_data ($na = null) {
 					echo $na;
 				}
 			}
-			$fieldno++;
-			if ($fieldno<$num_fields && !$fields[$fieldno]['hide']) echo ',';
+			if ($i<$num_fields && !$field['hide']) echo ',';
+			$i++;
 		}
 		echo "\n";
+		$result->MoveNext();
 	}
 }
 
@@ -158,7 +162,7 @@ function spss_export_data ($na = null) {
  * @param $field array field from spss_fieldmap
  * @return array or false
  */
-function spss_getvalues ($field = array()) {
+function spss_getvalues ($field = array(), $qidattributes = null ) {
 	global $surveyid, $dbprefix, $connect, $clang, $language, $length_vallabel;
 
 	if (!isset($field['LStype']) || empty($field['LStype'])) return false;
@@ -180,7 +184,7 @@ function spss_getvalues ($field = array()) {
 				for ($i=0; $i < $num_results; $i++)
 				{
 					$row = $result->FetchRow();
-					$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+					$answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["answer"]),0,$length_vallabel));
 				}
 			}
 		}
@@ -196,13 +200,13 @@ function spss_getvalues ($field = array()) {
 			for ($i=0; $i < $num_results; $i++)
 			{
 				$row = $result->FetchRow();
-				$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["title"],0,$length_vallabel)));
+				$answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["title"]),0,$length_vallabel));
 			}
 		}
 	} elseif ($field['LStype'] == ':') {
 		$displayvaluelabel = 0;
 		//Get the labels that could apply!
-		$qidattributes=getQuestionAttributes($field["qid"]);
+		if (is_null($qidattributes)) $qidattributes=getQuestionAttributes($field["qid"], $field['LStype']);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
 		} else {
@@ -285,7 +289,7 @@ function spss_fieldmap($prefix = 'V') {
 	$fieldmap = createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
 	#See if tokens are being used
-	$tokensexist = tokenTableExists($surveyid);
+	$tokensexist = tableExists('tokens_'.$surveyid);
 
 	#Lookup the names of the attributes
 	$query="SELECT sid, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -312,7 +316,7 @@ function spss_fieldmap($prefix = 'V') {
 				$fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
 			    'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
 			    'VariableLabel'=>$attributedescription,'sql_name'=>$attributefield,'size'=>'100',
-			    'title'=>$attributefield,'hide'=>0);
+			    'title'=>$attributefield,'hide'=>0, 'scale'=>'');
 			}
 		}
 	}
@@ -335,6 +339,7 @@ function spss_fieldmap($prefix = 'V') {
 		$hide = 0;
 		$export_scale = '';
 		$code='';
+		$aQuestionAttribs=array();
 			
 		#Determine field type
 		if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
@@ -350,7 +355,7 @@ function spss_fieldmap($prefix = 'V') {
 			$val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
 		} elseif ($fieldname == 'ipaddr') {
 			$fieldtype = 'A';
-			$val_size = '15';
+			$val_size = 15;
 		} elseif ($fieldname == 'refurl') {
 			$fieldtype = 'A';
 			$val_size = 255;
@@ -367,6 +372,11 @@ function spss_fieldmap($prefix = 'V') {
 			if (count($fielddata)==0) {
 				//Field in database but no longer in survey... how is this possible?
 				//@TODO: think of a fix.
+				$qid=0;
+				$varlabel = $fieldname;
+				$ftitle = $fieldname;
+				$fieldtype = "F";
+				$val_size = 1;
 			} else {
 				$qid=$fielddata['qid'];
 				$ftype=$fielddata['type'];
@@ -385,7 +395,7 @@ function spss_fieldmap($prefix = 'V') {
 				//Get default scale for this type
 				if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
 				//But allow override
-				$aQuestionAttribs = getQuestionAttributes($qid);
+				$aQuestionAttribs = getQuestionAttributes($qid,$ftype);
 				if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
 			}
 
@@ -398,7 +408,7 @@ function spss_fieldmap($prefix = 'V') {
 		    'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
 		    'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale);
 		//Now check if we have to retrieve value labels
-		$answers = spss_getvalues($tempArray);
+		$answers = spss_getvalues($tempArray, $aQuestionAttribs);
 		if (is_array($answers)) {
 			//Ok we have answers
 			if (isset($answers['size'])) {

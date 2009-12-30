@@ -21,12 +21,10 @@
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 // Read the session name from the settings table
-$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
-$usresult = db_execute_assoc($usquery,'',true);       // CHecked
+$usresult = getGlobalSetting('SessionName'); 
 if ($usresult)
 {
-	$usrow = $usresult->FetchRow();
-	@session_name($usrow['stg_value']);
+	@session_name($usresult);
 }
  else {session_name("LimeSurveyAdmin");}
  
@@ -36,6 +34,7 @@ if (session_id() == "")
    if ($debug==0) {@session_start();}
     else  {session_start();}
 }
+
 //LANGUAGE ISSUES
 // if changelang is called from the login page, then there is no userId 
 //  ==> thus we just change the login form lang: no user profile update
@@ -76,7 +75,7 @@ $dangerousActionsArray = Array
 		'insertnewsurvey' => Array(),
 		'importsurvey' => Array(),
 		'updatesurvey' => Array(),
-		'importsurvresources' => Array(),
+		'importsurveyresources' => Array(),
 		'updatesurvey2' => Array(),
 		'deletesurvey' => Array(),
 		'renumberquestions' => Array(),
@@ -89,9 +88,6 @@ $dangerousActionsArray = Array
 		'updatequestion' => Array(),
 		'copynewquestion' => Array(),
 		'delquestion' => Array(),
-		'addattribute' => Array(),
-		'editattribute' => Array(),
-		'delattribute' => Array(),
 		'modanswer' => Array(),
 		'resetsurveylogic' => Array(),
 		'activate' => Array(

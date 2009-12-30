@@ -10,14 +10,14 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id:$
+* $Id$
 * 
 */
 class lsrcClient {
 
 	//Configuration...
 	/**change this to the installation path, where you want to try the functions.*/
-	public $limeUrl = 'http://localhost/limesource/limesurvey_dev'; 
+	public $limeUrl = 'http://localhost/limesource/limesurvey'; 
 
 	/** this have to be an admin account for full functionality*/
 	public $user = 'admin'; 
@@ -28,13 +28,13 @@ class lsrcClient {
 	/** 
 	 * normally you do not have to change following. 
 	 * But sometimes you maybe want to change this to an static wsdl file like i.e. '/admin/remotecontrol/lsrc.wsdl'.*/
-	public $wsdl = '/admin/remotecontrol/lsrc.server.php?wsdl'; 
+	public $wsdl = '/admin/remotecontrol/lsrc.wsdl'; 
 	
 	public $path2wsdl = ''; //will get concatinated from $limeUrl and $wsdl on prepare
 
 	private $sid; //just the initial value
 
-	public $soapClient; //the soapClient object
+	private $soapClient; //the soapClient object
 	/**
 	 * use this to initiate the SoapClient Class and prepare the use of it
 	 * you have to set the surveyId here, if you work on a particular survey
@@ -48,9 +48,11 @@ class lsrcClient {
 //		$this->pass = $pass;
 		$this->sid = $sid;
 
+		//print_r(get_declared_classes());
+		
 		ini_set("allow_url_fopen", 1);
 		$file = fopen($this->path2wsdl,"r");
-		if(class_exists(SoapClient) && $file!=FALSE)
+		if(class_exists('SoapClient') && $file!=FALSE)
 		{
 			try
 			{
@@ -60,7 +62,7 @@ class lsrcClient {
 			}
 			catch (SoapFault $fault)
 			{
-				return 0;
+				throw new SoapFault($fault->faultcode, $fault->faultstring);
 			}
 		}
 		else
@@ -75,7 +77,7 @@ class lsrcClient {
 	public function soapCheck ()
 	{
 		$soapCheck ='<div style="color:white;background-color:black;border: 1px solid green;">';
-		if(class_exists(SoapClient))
+		if(class_exists('SoapClient'))
 		{
 			$soapCheck .= "<div style='float:left;background:green;color:white;padding:5px;margin-right:5px;'>
 						SOAP Erweiterung existiert</div> ";

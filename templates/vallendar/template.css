@@ -444,13 +444,20 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	display: table-cell;
 	vertical-align: baseline;
 }
- .multiple-short-txt ul li label
-,.numeric-multi ul li label
+
+.numeric-multi ul li label
 {
 	padding: 0.3em 1em 0% 0%;
 	display: table-cell;
 	vertical-align: baseline;
 }
+
+ .multiple-short-txt ul li label {
+	padding: 0.3em 1em 0% 0%;
+	display: table-cell;
+	vertical-align: middle;
+}
+
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label
 {
@@ -467,10 +474,12 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	font-size: 80%;
 	white-space: nowrap;
 }
-.numeric-multi div.multinum-slider
-{
-    margin-top: 1.5em;
-	width: 20em;
+
+.numeric-multi div.multinum-slider {
+	width: auto;
+	float: left;
+	margin-top: 1.5em;
+	margin-bottom: 0.2em;
 }
 
 .numeric-multi ul.multiplenumerichelp.slider	{	display: table;	}
@@ -547,7 +556,33 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .ui-wrapper input, .ui-wrapper textarea { 
     border: 0; 
 }
+
+/** Progress bar **/
+
+#progress-pre,
+#progress-post {
+	color: #FFFFFF;
+}
+
+#progress-wrapper .ui-widget-content {
+	background-color: #EDEDED;
+	background-image: none;
+	border: 1px solid #999999;
+}
+
+#progress-wrapper .ui-widget-header {
+	background-color: #CCCCCC;
+	border: 1px solid #999999;
+} 
+
 /** UI Slider **/
+
+.numeric-multi label.slider-label {
+	display: table-cell;
+	padding:0 1em 0.2em 0;
+	margin-top: 1.3em;
+	vertical-align: middle;
+}
 .ui-slider-handle { 
     position: absolute; 
     height: 23px; 
@@ -585,6 +620,43 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     color: #284a6e; 
     font-weight: bold; 
     text-align: left;
+}
+
+.slider_showmin {
+    float: left;
+	width: 50px;
+    margin: 15px 0 0 -25px;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_showmax {
+    float: right;
+	width: 50px;
+    margin: 15px -28px 0 0;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_lefttext {
+    display: table-cell;
+	padding-right: 11px;
+	padding-bottom: 3px;
+    vertical-align: middle;
+	text-align: right;
+	font-size: 0.9em;
+}
+
+.slider_righttext {
+    display: table-cell;
+	padding-left: 11px;
+	padding-bottom: 3px;
+    vertical-align: middle;
+	font-size: 0.9em;
 }
 
 #tokenform

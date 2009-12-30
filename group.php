@@ -59,6 +59,7 @@ if ($thissurvey['active'] == "Y")
 }
 
 //SEE IF THIS GROUP SHOULD DISPLAY
+$show_empty_group = false;
 if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 {
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
@@ -73,9 +74,19 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
         }
         if ($_SESSION['step']>$_SESSION['totalsteps']) 
         {
-            $move = "movesubmit";
-		submitanswer(); // complete this answer (submitdate)
-            break;
+			// We are skipping groups, but we moved 'off' the last group.
+			// Now choose to implement an implicit submit (old behaviour),
+			// or create an empty page giving the user the explicit option to submit.
+			if (isset($show_empty_group_if_the_last_group_is_hidden) && $show_empty_group_if_the_last_group_is_hidden == true)
+			{
+				$show_empty_group = true;
+				break;
+			} else
+			{
+            	$move = "movesubmit";
+				submitanswer(); // complete this answer (submitdate)
+            	break;
+			}
         } 
 	}
 }
@@ -193,7 +204,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         if ($thissurvey['printanswers']=='Y')
         {
             $completed .= "<br /><br />"
-            ."<a class='printlink' href='printanswers.php'  target='_blank'>"
+            ."<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
             .$clang->gT("Print your answers.")
             ."</a><br />\n";
          }
@@ -270,7 +281,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	sendcacheheaders();
 	doHeader();
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 	echo "\n\n<!-- START THE SURVEY -->\n";
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
 	if ($thissurvey['private'] == "Y")
@@ -297,10 +308,17 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 //******************************************************************************************************
 
 //GET GROUP DETAILS
-$grouparrayno=$_SESSION['step']-1;
-$gid=$_SESSION['grouplist'][$grouparrayno][0];
-$groupname=$_SESSION['grouplist'][$grouparrayno][1];
-$groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+if ($show_empty_group) {
+	$gid=-1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
+	$groupname=$clang->gT("Submit your answers");
+	$groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
+} else
+{
+	$grouparrayno=$_SESSION['step']-1;
+	$gid=$_SESSION['grouplist'][$grouparrayno][0];
+	$groupname=$_SESSION['grouplist'][$grouparrayno][1];
+	$groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+}
 
 require_once("qanda.php"); //This should be qanda.php when finished
 
@@ -320,6 +338,12 @@ foreach ($_SESSION['fieldarray'] as $ia)
 
 	if ($ia[5] == $gid)
 	{
+		$qidattributes=getQuestionAttributes($ia[0]);
+		if ($qidattributes['hidden']==1) {
+			// Should we really skip the question here, maybe the result won't be stored if we do that
+			continue;
+		}
+
 		//Get the answers/inputnames
 		list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 		if ($plus_qanda)
@@ -370,7 +394,12 @@ foreach ($_SESSION['fieldarray'] as $ia)
 } //end iteration
 
 
-$percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+if ($show_empty_group) {
+	$percentcomplete = makegraph($_SESSION['totalsteps']+1, $_SESSION['totalsteps']);
+} else
+{
+	$percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+}
 $languagechanger = makelanguagechanger();
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
@@ -387,7 +416,7 @@ if (isset($vpopup)) {echo $vpopup;}
 
 $hiddenfieldnames=implode("|", $inputnames);
 
-echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>
+echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 
@@ -403,22 +432,22 @@ echo "<input type='hidden' id='runonce' value='0' />
     <!--\n";
     
 // Find out if there are any array_filter questions in this group
-$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
-// Put in the radio button reset javascript for the array filter unselect
-if (isset($array_filterqs) && is_array($array_filterqs)) 
+if ($show_empty_group) {
+	unset($array_filterqs);
+	unset($array_filterXqs);
+	unset($array_filterXqs_cascades);
+} else
 {
-echo "
-    function radio_unselect(radioObj)
-  	{   
-  		var radioLength = radioObj.length;
-  		for(var i = 0; i < radioLength; i++)
-  		{
-  			radioObj[i].checked = false;
-  		}
-  	}\n";    
+	$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
+	$array_filterXqs = getArrayFilterExcludesForGroup($surveyid,$gid);
+	$array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, $gid);
 }
 
 print <<<END
+	function noop_checkconditions(value, name, type)
+	{
+	}
+
 	function checkconditions(value, name, type)
 	{
     
@@ -426,7 +455,8 @@ END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) ||
-    (isset($array_filterqs) && is_array($array_filterqs)))
+    (isset($array_filterqs) && is_array($array_filterqs)) ||
+	(isset($array_filterXqs) && is_array($array_filterXqs)))
 {
     if (!isset($endzone))
     {
@@ -777,8 +807,8 @@ for ($i=0;$i<count($conditions);$i++)
 			else
 			{ // right operand is a Constant or an Answer Code
 				$newjava .= "$JSsourceElt != null &&";
-			if ($cd[3]) //Well supose that we are comparing a non empty value
-			{
+			if ($cd[3] && $cd[6] != '!=') 
+			{ // if the target value isn't 'No answer' AND if operator isn't !=
 					$newjava .= "$JSsourceVal != '' && ";
 			}
 			if ($cd[6] == 'RX')
@@ -847,44 +877,105 @@ if (isset($sourceQuestionGid[1]) && ((isset($oldq) && $oldq != $cd[0] || !isset(
 {
   $endzone .= "    }\n";
 }
-
 $java .= $endzone;
 }
 
-if (isset($array_filterqs) && is_array($array_filterqs))
+if ((isset($array_filterqs) && is_array($array_filterqs)) ||
+	(isset($array_filterXqs) && is_array($array_filterXqs)))
 {
+	$qattributes=questionAttributes(1);
+	$array_filter_types=$qattributes['array_filter']['types'];
+	$array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
+	unset($qattributes);
 	if (!isset($appendj)) {$appendj="";}
 
 	foreach ($array_filterqs as $attralist)
 	{
-		//die(print_r($attrflist));
 		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
 		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
 			$qresult = db_execute_assoc($qquery); //Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
-				$fquestans = "java".$qfbase.$fansrows['code'];
-				$tbody = "javatbd".$qbase.$fansrows['code'];
-				$dtbody = "tbdisp".$qbase.$fansrows['code'];
-				$tbodyae = $qbase.$fansrows['code'];
-                $appendj .= "\n";
-                $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
-				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                $appendj .= "\t\t$('#$dtbody').val('on');\n";
-				$appendj .= "\t}\n";
-				$appendj .= "\telse\n";
-				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "\t\t$('#$dtbody').val('off');\n";
-                // This line resets the text fields in the hidden row
-                $appendj .= "\t\t$('#$tbody input').val('');\n";
-                // This line resets any radio group in the hidden row
-				$appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
-				$appendj .= "\t}\n";
+				if(strpos($array_filter_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+					// This line resets any radio group in the hidden row
+				    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t}\n";   
+				}
+			}
+		}
+	}
+	$java .= $appendj;
+	foreach ($array_filterXqs as $attralist)
+	{
+		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
+		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
+		if ($attralist['type'] == "M")
+		{
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type 
+					   FROM {$dbprefix}answers, {$dbprefix}questions 
+					   WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid 
+					   AND {$dbprefix}answers.qid='".$attralist['qid']."' 
+					   AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' 
+					   ORDER BY code;";
+			$qresult = db_execute_assoc($qquery); //Checked
+			while ($fansrows = $qresult->FetchRow())
+			{
+				if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif (\n";
+					$appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
+					
+					/* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
+					if(isset($array_filterXqs_cascades[$attralist['qid']])) 
+					{
+						foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
+						{
+							$cascadefqa ="java".$surveyid."X".$gid."X".$cascader.$fansrows['code'];
+							$appendj .= "\t\t||\n";
+							$appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
+						}
+					}
+					/* */
+					$appendj .= "\t)\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
+					// This line resets any radio group in the hidden row
+				    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t}\n";
+				}
 			}
 		}
 	}
@@ -937,16 +1028,38 @@ if (isset($qanda) && is_array($qanda))
 
 		if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
-		echo '
-	<!-- NEW QUESTION -->
-				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
-';
-		$question=$qa[0];
+		$question= $qa[0];
+//===================================================================
+// The following four variables offer the templating system the
+// capacity to fully control the HTML output for questions making the
+// above echo redundant if desired.
+		$question['essentials'] = 'id="question'.$qa[4].'"'.$n_q_display;
+		$question['class'] = $q_class;
+		$question['man_class'] = $man_class;
+//===================================================================
 		$answer=$qa[1];
 		$help=$qa[2];
 		$questioncode=$qa[5];
-		echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-		echo "</div>\n";
+
+		$question_template = file_get_contents($thistpl.'/question.pstpl');
+
+		if( (strpos( $question_template , '{QUESTION_ESSENTIALS}') == false) || (strpos( $question_template , '{QUESTION_CLASS}') == false) )
+		{
+// if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
+			$question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
+			echo '
+	<!-- NEW QUESTION -->
+				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
+';
+			echo templatereplace($question_template);
+			echo '
+				</div>
+';
+		}
+		else
+		{
+			echo templatereplace($question_template);
+		};
 	}
 }
 echo "\n\n<!-- END THE GROUP -->\n";

@@ -44,31 +44,31 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
     function completedump()
     {
         global $connect, $databasename, $dbprefix, $allowexportalldb;
-        $tables = $connect->MetaTables();         
+	$tables = $connect->MetaTables();
         $export ="#------------------------------------------"."\n";
-        $export .="# LimeSurvey Database Dump of `$databasename`"."\n";
-        if ($allowexportalldb==0) {
-            $export .="# Only prefixed tables with: ". $dbprefix ."\n";
-        }
-        $export .="# Date of Dump: ". date("d-M-Y") ."\n";
-        $export .="#------------------------------------------"."\n\n\n";
-        
-        foreach($tables as $table) {
-            if ($allowexportalldb==0) {
-                if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
-                    $export .= defdump($table);
-                    $export .= datadump($table);
-                }
-            }
-            else {
-                $export .= defdump($table);
-                $export .= datadump($table);
-            }
-        }
+	$export .="# LimeSurvey Database Dump of `$databasename`"."\n";
+	if ($allowexportalldb==0) {
+		$export .="# Only prefixed tables with: ". $dbprefix ."\n";
+	}
+	$export .="# Date of Dump: ". date("d-M-Y") ."\n";
+	$export .="#------------------------------------------"."\n\n\n";
+	
+	foreach($tables as $table) {
+		if ($allowexportalldb==0) {
+			if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
+				$export .= defdump($table);
+				$export .= datadump($table);
+			}
+		}
+		else {
+			$export .= defdump($table);
+			$export .= datadump($table);
+		}
+	}
         return $export;
-    }
- 
- 
+}
+
+
  
 	function defdump($tablename)
 	{

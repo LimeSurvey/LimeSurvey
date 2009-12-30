@@ -25,13 +25,7 @@ if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 //Check if results table exists
-$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
-foreach ($tablelist as $tbl)
-{
-	if (db_quote_id($tbl) == db_table_name('survey_'.$surveyid)) $resultsexist = 1;
-}
-
-if (!isset($resultsexist)) die("Your results table is missing!");
+if (tableExists('survey_'.$surveyid)==false) die("Your results table is missing!");
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 $sumresult5 = db_execute_assoc($sumquery5);
@@ -49,6 +43,12 @@ if (isset($browselang) && $browselang!='')
 elseif (isset($_SESSION['browselang']))
 {
    $language=$_SESSION['browselang'];
+   $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
+   $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+   if (!in_array($language,$languagelist))
+   {
+        $language = GetBaseLanguageFromSurveyID($surveyid); 
+   }
 }
 else
 {    
@@ -56,19 +56,17 @@ else
 }
 
 $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
-$browseoutput = "<table style='background-color:#F8F8FF;' width='100%' align='center'>\n";
+$browseoutput = "";
 
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
-	$browseoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
-	. $clang->gT("Browse Responses")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>\n"
-	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+	$browseoutput .= "\t<div class='messagebox'><div class='header'>"
+	. $clang->gT("Browse Responses")."</div><div class='warningheader'>"       
+	.$clang->gT("Error")."\t</div>\n"
 	. $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
 	. $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
 	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-	."</td></tr></table>\n"
-	."</body>\n</html>";
+	."</div>";
 	return;
 }
 if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
@@ -137,7 +135,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 	//SHOW HEADER
-	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= '<tr><td>'.$surveyoptions;} // Don't show options if coming from tokens script
+	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
 	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
@@ -318,8 +316,8 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	if (($sumrows5['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1) && isset($rlangauge))
 	{
 		
-		$browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' >" 
-                        ."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='".$clang->gT("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" /></a>\n";
+		$browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" >" 
+                        ."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='".$clang->gT("Delete this entry")."' /></a>\n";
 	}
     else
     {
@@ -364,7 +362,7 @@ elseif ($subaction == "all")
 {
 
 	if (!isset($_POST['sql']))
-	{$browseoutput .= '<tr><td>'.$surveyoptions;} //don't show options when called from another script with a filter on
+	{$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
 	else
 	{
         $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
@@ -378,7 +376,6 @@ elseif ($subaction == "all")
 		."</table></td></tr>\n";
 
 	}
-	$browseoutput .= "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").",
 	".db_table_name("surveys")." WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND
@@ -661,16 +658,15 @@ elseif ($subaction == "all")
 	if ($next >= $dtcount) {$next=$dtcount-$limit;}
 	if ($end < 0) {$end=0;}
 
-	$browseoutput .= "<table><tr><td></td></tr></table>\n"
-	."<table class='menubar'>\n"
-	."\t<tr ><td colspan='2' height='4'><strong>"
-	. $clang->gT("Data View Control").":</strong></td></tr>\n";
+	$browseoutput .= "<div class='menubar'>\n"
+        . "\t<div class='menubar-title'>\n"
+        . "<strong>".$clang->gT("Data View Control")."</strong></div>\n"
+        . "\t<div class='menubar-main'>\n";            
 	if (!isset($_POST['sql']))
 	{
-		$browseoutput .= "\t<tr><td align='left' width='200'>\n"
-		                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' " 
-                        ."title='".$clang->gTview("Show start..")."' >" 
-						."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start..")."' /></a>\n"
+		$browseoutput .= "<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' " 
+                        ."title='".$clang->gTview("Show start...")."' >" 
+						."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
 		                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
                         ."title='".$clang->gTview("Show previous..")."' >" 
 				        ."<img name='DataBack' align='left'  src='$imagefiles/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
@@ -683,11 +679,8 @@ elseif ($subaction == "all")
 				"title='".$clang->gT("Show last...")."' >" .
 				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
 		."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
-	} else {
-		$browseoutput .= "\t<tr><td align='left'>\n";
 	}
-
-	if(incompleteAnsFilterstate() == "inc")
+    if(incompleteAnsFilterstate() == "inc")
 	{
 	    $selecthide="";
 	    $selectshow="";
@@ -706,9 +699,7 @@ elseif ($subaction == "all")
 		$selectinc="";
 	}
 
-	$browseoutput .=("</td>\n"
-	."<td align='left'>\n"
-	."<form action='$scriptname?action=browse' method='post'><font size='1' face='verdana'>\n"
+	$browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
 	."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
 	."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
 	."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
@@ -721,15 +712,13 @@ elseif ($subaction == "all")
 	."</font>\n"
 	."<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='action' value='browse' />\n"
-	."<input type='hidden' name='subaction' value='all' />\n");
+	."<input type='hidden' name='subaction' value='all' />\n";
 	if (isset($_POST['sql']))
 	{
 		$browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
 	}
-	$browseoutput .= 	 "</form></td>\n"
-	."\t</tr>\n"
-	."</table>\n"
-	."<table><tr><td></td></tr></table>\n";
+	$browseoutput .= 	 "</form></div>\n"
+	."\t</div>\n";
 
 	$browseoutput .= $tableheader;
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
@@ -786,7 +775,7 @@ elseif ($subaction == "all")
 }
 else
 {
-	$browseoutput .= '<tr><td>'.$surveyoptions;
+	$browseoutput .= $surveyoptions;
 	$num_total_answers=0;
 	$num_completed_answers=0;
 	$gnquery = "SELECT count(id) FROM $surveytable";
@@ -796,13 +785,12 @@ else
 
 	while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}
 	while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}
-	$browseoutput .= "<table width='100%' border='0'>\n"
-	."\t<tr><td align='center'>".sprintf($clang->gT("%d responses for this survey"), $num_total_answers)." ("
-	.sprintf($clang->gT("%d full responses"), $num_completed_answers).", "
-	.sprintf($clang->gT("%d responses not completely filled out"), $num_total_answers-$num_completed_answers).")"
-	."\t</td></tr>\n"
-	."</table></table>\n";
+	$browseoutput .= "<div class='header'>".$clang->gT("Response summary")."</div>"
+    ."<p><table class='statisticssummary'>\n"
+    ."<tfoot><tr><th>".$clang->gT("Total responses:")."</th><td>".$num_total_answers."</td></tr></tfoot>"
+	."\t<tbody>"
+    ."<tr><th>".$clang->gT("Full responses:")."</th><td>".$num_completed_answers."</td></tr>"
+    ."<tr><th>".$clang->gT("Incomplete responses:")."</th><td>".($num_total_answers-$num_completed_answers)."</td></tr></tbody>"
+	."</table>";
 
 }
-
-?>

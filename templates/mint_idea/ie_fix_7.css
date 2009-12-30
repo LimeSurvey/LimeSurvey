@@ -94,9 +94,8 @@ td.questionhelp {
 }
 
 .numeric-multi ul li label {
-    float: left;  
-    width: 55%;  
-    text-align: right; 
+    float: left;
+	width: auto; 
 }
 
 .numeric-multi ul li {  
@@ -116,4 +115,28 @@ td.questionhelp {
 input.submit
 {
     padding:0px;
+}
+
+/** UI Slider **/
+
+.numeric-multi label.slider-label {
+	margin-top: 1.1em;
+}
+
+.slider_showmin {
+    margin: 13px 0 0 -28px;
+}
+
+.slider_showmax {
+    margin: 13px -23px 0 0;
+}
+
+.slider_lefttext {
+	float: left;
+	margin-top: 1.2em;
+}
+
+.slider_righttext {
+	float: left;
+	margin-top: 1.2em;
 }

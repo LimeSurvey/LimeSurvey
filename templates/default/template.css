@@ -21,7 +21,7 @@
         text-align:left;
     }
     h1,h2,h3,h4,h5,h6 {
-        font-size:100%;
+        font-size:12px;
         font-weight:normal;
     }
     q:before,q:after {
@@ -33,8 +33,8 @@
 
 body.default {
     background-color:#FFF;
-    font-size:12px;
-    line-height:150%;
+    font-size:13px;
+    line-height:120%;
     font-family:Verdana,Arial,Helvetica,sans-serif;
     color:#1d2d45;
 }
@@ -49,21 +49,21 @@ ol {
 
 
 h1 {
-    font-size:1.5em;
+    font-size:16px;
     font-weight:bold;
     color:#328639;
     padding-top:15px;
 }
 
 h2 {
-    font-size:1em;
+    font-size:12px;
     font-weight:bold;
     color:#328639;
     padding-top:5px;
 }
 
 h3 {
-    font-size:1.3em;
+    font-size:13px;
     font-weight:bold;
     color:#1D2D45;
     padding-bottom:10px;
@@ -116,25 +116,10 @@ a:link,a:visited {
 
 .asterisk {
     color:red;
-    font-size:9pt;
+    font-size:9px;
     font-family:verdana;
 }
 
-td.graph
-{
-    background-color: #d2e0f2;
-    padding: 0.2em 0%;
-}
-#progress-graph
-{
-    line-height: 1.5em;
-    width: 17em;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 0.2em;
-    padding: 0.5em 0.5em 0.4em 1em;
-    text-align: left;
-}
 .hide
 {
     font-weight: normal;
@@ -142,44 +127,23 @@ td.graph
     top: -9999px;
     left: -9999px;
 }
-#progress-graph div.zero
-{
-    width: 2.6em;
-    margin-right: 0%;
-}
-#progress-graph div.graph
-{
-    width: 10em;
-    height: 1.0em;
-    border: 1px solid #000;
-    margin-top: -1.2em;
-    margin-left: 2.6em;
-    margin-right: 0%;
-}
-#progress-graph div.cent
-{
-    width: 3em;
-    margin-top: -1.5em;
-    margin-left: 13.3em;
-    margin-right: 0%;    
-}
-
+ 
 .printouttable {
-width:100%;
+    width:100%;
 }
 
 .printouttable td {
-border-color:#fff #fff #ddf;
-border-style:solid;
-border-width:1px;
+    border-color:#fff #fff #ddf;
+    border-style:solid;
+    border-width:1px;
 }
 
 .printouttable td:first-child {
-background-color:#ddf;
-font-weight:700;
-text-align:right;
-padding-right:5px;
-padding-left:5px;
+    background-color:#ddf;
+    font-weight:700;
+    text-align:right;
+    padding-right:5px;
+    padding-left:5px;
 }
 
 .printouttitle {
@@ -189,8 +153,8 @@ font-size:18px;
 }
 
 .surveytitle {
-font-size:1.2em;
-height:1.5em;
+font-size:12px;
+height:18px;
 }
 
 .surveytitle:hover {
@@ -198,15 +162,9 @@ text-decoration:underline;
 color:#819d26;
 }
 
+/* Format the language changer combobox on the public homepage */  
 .languagechanger {
-font-size:1em;
 }
-
-.question,.answertext {
-    font-family:verdana;
-}
-
-
 
 /* Basic formatting for the three keyparts of an question */
 td.questiontext {
@@ -338,18 +296,17 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 ,.gender ul
 {
     text-align: left;
-	font-size: 80%;
-	margin-top: 0.5em;
-	margin-left: 0%;
-	padding-left: 0%;
+    margin-top: 0.5em;
+    margin-left: 0%;
+    padding-left: 0%;
 }
  .choice-5-pt-radio ul li
 ,.yes-no ul li
 ,.gender ul li
 {
-	display: inline;
-	padding: 0% 2em 0% 0%;
-	margin-left: 0%;
+    display: inline;
+    padding: 0% 2em 0% 0%;
+    margin-left: 0%;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -370,19 +327,16 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 }
 .numeric p.question
 {
-	font-size: 80%;
     margin-left: 1em;
 }
 .numeric-multi ul
 {
-	font-size: 80%;
 }
 
  .numeric-multi span
 ,.multiple-short-txt .question .answer ul li span
 {
-	font-size: 90%;
-/*	font-style: italic;*/
+    font-style: italic;
 }
  .numeric-multi p.tip.problem {
     color: #f30;
@@ -448,7 +402,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 , ul.cols-7 li , ul.cols-7-ul
 , ul.cols-8 li , ul.cols-8-ul {
     float: left;
-    padding: 0% 0.5em;
+    padding: 0;
     white-space: normal
 }
 
@@ -509,9 +463,9 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
  .multiple-opt-comments ul
 ,.multiple-short-txt ul
 ,.numeric-multi ul {
-	display: table;
-	padding: 0%;
-	margin: 1em;
+    display: table;
+    padding: 0%;
+    margin: 1em;
 }
 
 .numeric-multi .answer ul {    
@@ -526,69 +480,71 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .numeric-multi ul.computed
 {
-	float:left;
-	padding-right: 2em;
+    float:left;
+    padding-right: 2em;
 }
 .numeric-multi ul.slider.computed
 {
-	width: 22em;
+    width: 22em;
 }
  .multiple-opt-comments ul li
 ,.multiple-short-txt ul li
 ,.numeric-multi ul li
 {
-	display: table-row;
+    display: table-row;
 }
 .multiple-opt-comments ul li span.option
 {
-	display: table-cell;
-	vertical-align: baseline;
+    display: table-cell;
+    vertical-align: baseline;
 }
 .multiple-short-txt ul li label,
 .numeric-multi ul li label
 {
-	padding: 0.3em 1em 0% 0%;
-	display: table-cell;
-	vertical-align: baseline;
+    padding: 0.3em 1em 0% 0%;
+    display: table-cell;
+    vertical-align: baseline;
 }
 .numeric-multi ul.computed li label,
 .numeric-multi ul.slider.computed li label
 {
-	padding-right: 0%;
+    padding-right: 0%;
 }
 
 .multiple-opt-comments ul li span.comment
 ,.multiple-short-txt ul li span
 ,.numeric-multi ul li span
 {
-	padding: 0.3em 0% 0% 1em;
-	display: table-cell;
-	vertical-align: baseline;
-	white-space: nowrap;
+    padding: 0.3em 0% 0% 1em;
+    display: table-cell;
+    vertical-align: baseline;
+    white-space: nowrap;
 }
 .multiple-opt-comments ul li span
 {
-	padding: 0.3em 1em 0% 0%;
-}
-.numeric-multi div.multinum-slider
-{
-    margin-top: 1.5em;
-	width: 20em;
+    padding: 0.3em 1em 0% 0%;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider	{	display: table;	}
-.numeric-multi ul.multiplenumerichelp.slider li	{	display: table-row;	}
+.numeric-multi div.multinum-slider {
+	width: auto;
+	float: left;
+	margin-top: 1.5em;
+	margin-bottom: 0.2em;
+}
+
+.numeric-multi ul.multiplenumerichelp.slider    {    display: table;    }
+.numeric-multi ul.multiplenumerichelp.slider li    {    display: table-row;    }
 
 .numeric-multi ul.multiplenumerichelp li label
 ,.numeric-multi ul.multiplenumerichelp.slider li label
 {
-	padding: 0.3em 0% 0% 0%;
-	display: table-cell;
+    padding: 0.3em 0% 0% 0%;
+    display: table-cell;
 }
 .numeric-multi ul.multiplenumerichelp li span
 ,.numeric-multi ul.multiplenumerichelp.slider li span {
-	padding: 0% 0% 0% 0.3em;
-	display: table-cell;
+    padding: 0% 0% 0% 0.3em;
+    display: table-cell;
 }
 
 .numeric-multi li.multiplenumerichelp span input {
@@ -608,8 +564,9 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
     text-align: center;
     vertical-align: bottom;
-    font-weight: normal;
+    font-weight:600 !important;   
 }
+
 #limesurvey .answer table.question tbody td
 {
     text-align: center;
@@ -688,7 +645,28 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .ui-wrapper input, .ui-wrapper textarea { 
     border: 0; 
 }
+
+/** Progress bar **/
+
+#progress-wrapper .ui-widget-content {
+	border:1px solid #999999;
+}
+
+#progress-wrapper .ui-widget-header {
+	background-color:#CCCCCC;
+	border: 1px solid #999999;
+}
+
+
 /** UI Slider **/
+
+.numeric-multi label.slider-label {
+	display: table-cell;
+	padding:0 1em 0.2em 0;
+	margin-top: 1.3em;
+	vertical-align: middle;
+}
+
 .ui-slider-handle { 
     position: absolute; 
     height: 23px; 
@@ -703,7 +681,6 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     height: 9px; 
     margin-bottom: 20px; 
 }
-
 
 .ui-slider-2 { 
     width: 200px; 
@@ -721,11 +698,47 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     position: absolute; 
     top: -19px; 
     margin-left:10px; 
-    font-family: 'Arial'; 
-    font-size: 9pt; 
     color: #284a6e; 
+    font-size:90%;
     font-weight: bold; 
     text-align: left;
+}
+
+.slider_showmin {
+    float: left;
+	width: 50px;
+    margin: 15px 0 0 -25px;
+  	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_showmax {
+    float: right;
+	width: 50px;
+    margin: 15px -28px 0 0;
+  	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_lefttext {
+    display: table-cell;
+	padding-right: 11px;
+	padding-bottom: 3px;
+    vertical-align: middle;
+	text-align: right;
+	font-size: 0.9em;
+}
+
+.slider_righttext {
+    display: table-cell;
+	padding-left: 11px;
+	padding-bottom: 3px;
+    vertical-align: middle;
+	font-size: 0.9em;
 }
 
 
@@ -753,7 +766,7 @@ table.privacy {
 td.privacynote{
     text-align:center;
     background-color:#eef6ff;
-    font-size:0.8em;
+    font-size:10px;
     padding:5px;
 }
 
@@ -778,10 +791,6 @@ table.question th {
   border-collapse:separate;
   border-spacing:2px;
   font-size:11px;
-}
-
-table.question thead th {
-   font-weight:600 !important;
 }
 
 table.question td {
@@ -820,7 +829,7 @@ td.answer li input  {
 }
 
 td.rank label, td.rank td strong {
- font-size:0.9em;
+ font-size:10px;
  font-weight:bold;
 }
 
@@ -905,4 +914,62 @@ div#wrapper {
 
 .yes-no td.answer {
     padding-bottom:10px;
+}
+
+/* Public statistics
+ */
+
+#statsContainer {
+	width: 75%;
+	margin: 20px auto;
+	border: 1px solid #BBC6CC;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 13px;
+	line-height: 120%;
+}
+
+#statsHeader{
+	padding: 10px 0px;
+	background-color: #EEF6FF;
+}
+
+.statsSurveyTitle {
+	padding: 0;
+	text-align: center;
+	color: #328639;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.statsNumRecords {
+	padding: 10px 0px 0px 0px;
+	text-align: center;
+	color: #328639;
+}
+
+table.statisticstable{
+	width: 100%; 
+	margin: 0;
+	border-top: 1px solid #BBC6CC;
+}
+
+table.statisticstable td{
+	line-height: 190%;
+	border-bottom: 1px solid #BBC6CC;
+}
+
+table.statisticstable img{
+	margin: 10px auto;
+}
+
+div.fieldSummary{
+	padding: 0;
+	text-align: center;
+	background-color: #D2E0F2;
+}
+
+div.questionTitle{
+	padding: 0;
+	font-weight: bold;
+	background-color: #D2E0F2;
 }

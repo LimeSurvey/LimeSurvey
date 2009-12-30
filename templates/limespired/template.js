@@ -47,9 +47,13 @@ function focusFirst(Event)
 
 
 
+/** Uncomment if you want to use the focusFirst function
+
 $(document).ready(function(){
-   focusFirst();
+  // focusFirst();
 })
+	
+**/
 
 
 

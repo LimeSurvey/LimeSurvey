@@ -2,7 +2,7 @@
 
 
 /*
-V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
+V5.10 10 Nov 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
          Contributed by Ross Smith (adodb@netebb.com). 
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
@@ -484,7 +484,7 @@ class ADODB_Session {
 
 	/*!
 	*/
-	static function _dumprs($rs) {
+	static function _dumprs(&$rs) {
 		$conn	= ADODB_Session::_conn();
 		$debug	= ADODB_Session::debug();
 
@@ -506,9 +506,11 @@ class ADODB_Session {
 		if (!is_object($rs)) {
 			return;
 		}
-
+		$rs = $conn->_rs2rs($rs);
+		
 		require_once ADODB_SESSION.'/../tohtml.inc.php';
 		rs2html($rs);
+		$rs->MoveFirst();
 	}
 
 	/////////////////////
@@ -834,7 +836,6 @@ class ADODB_Session {
 
 		$sql = "DELETE FROM $table WHERE $binary sesskey = $qkey";
 		$rs = $conn->Execute($sql);
-		ADODB_Session::_dumprs($rs);
 		if ($rs) {
 			$rs->Close();
 		}
@@ -858,54 +859,53 @@ class ADODB_Session {
 
 
 		$debug			= ADODB_Session::debug();
-		if ($debug) $conn->debug = 1;
+		if ($debug) {
+			$conn->debug = 1;
+			$COMMITNUM = 2;
+		} else {
+			$COMMITNUM = 20;
+		}
 		
 		//assert('$table');
 
-		$time = $conn->sysTimeStamp;
+		$time = $conn->OffsetDate(-$maxlifetime/24/3600,$conn->sysTimeStamp);
 		$binary = $conn->dataProvider === 'mysql' ? '/*! BINARY */' : '';
 
 		if ($expire_notify) {
 			reset($expire_notify);
 			$fn = next($expire_notify);
-			$savem = $conn->SetFetchMode(ADODB_FETCH_NUM);
-			$sql = "SELECT expireref, sesskey FROM $table WHERE expiry < $time";
-			$rs = $conn->Execute($sql);
-			ADODB_Session::_dumprs($rs);
-			$conn->SetFetchMode($savem);
-			if ($rs) {
-				$conn->StartTrans();
-				$keys = array();
-				while (!$rs->EOF) {
-					$ref = $rs->fields[0];
-					$key = $rs->fields[1];
-					$fn($ref, $key);
-					$del = $conn->Execute("DELETE FROM $table WHERE sesskey=".$conn->Param('0'),array($key));
-					$rs->MoveNext();
-				}
-				$rs->Close();
-				
-				$conn->CompleteTrans();
-			}
 		} else {
-		
-			if (0) {
-				$sql = "SELECT sesskey FROM $table WHERE expiry < $time";
-				$arr = $conn->GetAll($sql);
-				foreach ($arr as $row) {
-					$sql2 = "DELETE FROM $table WHERE sesskey=".$conn->Param('0');
-					$conn->Execute($sql2,array(reset($row)));
-				}
-			} else {
-				$sql = "DELETE FROM $table WHERE expiry < $time";
-				$rs = $conn->Execute($sql);
-				ADODB_Session::_dumprs($rs);
-				if ($rs) $rs->Close();
-			}
-			if ($debug) {
-				ADOConnection::outp("<p><b>Garbage Collection</b>: $sql</p>");
-			}
+			$fn = false;
 		}
+		
+		$savem = $conn->SetFetchMode(ADODB_FETCH_NUM);
+		$sql = "SELECT expireref, sesskey FROM $table WHERE expiry < $time ORDER BY 2"; # add order by to prevent deadlock
+		$rs = $conn->SelectLimit($sql,1000);
+		ADODB_Session::_dumprs($rs);
+		if ($debug) $conn->SetFetchMode($savem);
+		if ($rs) {
+			$tr = $conn->hasTransactions;
+			if ($tr) $conn->BeginTrans();
+			$keys = array();
+			$ccnt = 0;
+			while (!$rs->EOF) {
+				$ref = $rs->fields[0];
+				$key = $rs->fields[1];
+				if ($fn) $fn($ref, $key);
+				$del = $conn->Execute("DELETE FROM $table WHERE sesskey=".$conn->Param('0'),array($key));
+				$rs->MoveNext();
+				$ccnt += 1;
+				if ($tr && $ccnt % $COMMITNUM == 0) {
+					if ($debug) echo "Commit<br>\n";
+					$conn->CommitTrans();
+					$conn->BeginTrans();
+				}
+			}
+			$rs->Close();
+			
+			if ($tr) $conn->CommitTrans();
+		}
+		
 
 		// suggested by Cameron, "GaM3R" <gamr@outworld.cx>
 		if ($optimize) {

@@ -139,21 +139,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			}
 		}
 
-		if (tokenTableExists($thissurvey['sid']) && (!isset($_POST['token']) || !$_POST['token']))
+		if (tableExists('tokens_'.$thissurvey['sid']) && (!isset($_POST['token']) || !$_POST['token']))
 		{// First Check if the survey uses tokens and if a token has been provided
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."</strong>\n";
 		}
-		elseif (tokenTableExists($thissurvey['sid']) && $lastanswfortoken == 'UnknownToken')
+		elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken == 'UnknownToken')
 		{
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The token you have provided is not valid or has already been used.")."</strong>\n";
 		}
-		elseif (tokenTableExists($thissurvey['sid']) && $lastanswfortoken != '')
+		elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken != '')
 		{
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("There is already a recorded answer for this token")."</strong>\n";
 			if ($lastanswfortoken != 'PrivacyProtected')
 			{
 				$errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n"
-				. "<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$lastanswfortoken&amp;sid=$surveyid&amp;language=$rlanguage&amp;surveytable=$surveytable'"
+				. "<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$lastanswfortoken&amp;sid=$surveyid&amp;language=$rlanguage'"
 				. "title='".$clang->gT("Edit this entry")."'>[id:$lastanswfortoken]</a>";
 			}
 			else
@@ -201,14 +201,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					   <td><input type='text' name='save_language' value='".$_POST['save_language']."' />\n";
 					foreach ($_POST as $key=>$val)
 					{
-						if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
+						if (substr($key, 0, 4) != "save" && $key != "action" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
 						{
 							$dataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
 						}
 					}
 					$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("Submit")."' />
 					 <input type='hidden' name='sid' value='$surveyid' />
-					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."' />
 					 <input type='hidden' name='subaction' value='".$_POST['subaction']."' />
 					 <input type='hidden' name='language' value='".$_POST['language']."' />
 					 <input type='hidden' name='save' value='on' /></td>";
@@ -415,7 +414,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 
 			//NOW SHOW SCREEN
-			if (tokenTableExists($thissurvey['sid']) && 
+			if (tableExists('tokens_'.$thissurvey['sid']) && 
 			    isset($_POST['token']) && $_POST['token'] &&
 			    $thissurvey['private'] == 'N') //handle tokens if survey needs them
 			{
@@ -554,7 +553,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							if (isset($tokendata['token'])) {$message.="&token=".$tokendata['token'];}
 							$from = $thissurvey['adminemail'];
 
-							if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
+							if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
 							{
 								$emailsent="Y";
 								$dataentryoutput .= "<font class='successtitle'>".$clang->gT("An email has been sent with details about your saved survey")."</font><br />\n";
@@ -925,8 +924,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 					case "L": //LIST drop-down
 					case "!": //List (Radio)
-					$qidattributes=getQuestionAttributes($fnames[$i][7]);   
-					if (trim($qidattributes['category_separator'])!='')
+					$qidattributes=getQuestionAttributes($fnames[$i][7]);
+					if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
 					{
 						$optCategorySeparator = $qidattributes['category_separator'];
 					}
@@ -1561,7 +1560,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						 <input type='hidden' name='sid' value='$surveyid' />
 						 <input type='hidden' name='subaction' value='update' />
 						 <input type='hidden' name='language' value='".$_GET['language']."' />
-						 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."' />
 						</td>
 					</tr>\n";
 		}
@@ -1618,7 +1616,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					 <input type='hidden' name='sid' value='$surveyid' />
 					 <input type='hidden' name='subaction' value='insert' />
 					 <input type='hidden' name='language' value='".$datalang."' />
-					 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."' />
 					</td>
 				</tr>\n";
 		}
@@ -1884,7 +1881,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		."</td>\n"
 		."\t</tr>\n";
 
-		if (tokenTableExists($thissurvey['sid'])) //Give entry field for token id 
+		if (tableExists('tokens_'.$thissurvey['sid'])) //Give entry field for token id 
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."<td valign='top' width='1%'></td>\n"
@@ -2175,7 +2172,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "W": //Flexible List drop-down/radio-button
 					case "Z":
-						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$language}' ORDER BY sortorder, code";
 						$dearesult = db_execute_assoc($deaquery);
 						$dataentryoutput .= "\t<select name='$fieldname'>\n";
 						$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n";
@@ -2254,12 +2251,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
                          $dataentryoutput .= "</tr></table>"; 
 						break;
+                        
 					case "L": //LIST drop-down/radio-button list
 					case "!":
-						
 						$qidattributes=getQuestionAttributes($deqrow['qid']);
-                        if (trim($qidattributes['category_separator'])!='')
-                        {
+                        if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
+						{
                             $optCategorySeparator = $qidattributes['category_separator'];
 						}
 						else
@@ -2526,11 +2523,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
 					$qidattributes=getQuestionAttributes($deqrow['qid']);
                     if (trim($qidattributes['display_columns'])!='') 
-                    {
+					{
 						$dcols=$qidattributes['display_columns'];
 					}
-					else 
-                    {
+					else
+					{
 						$dcols=0;
 					}
 					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
@@ -2997,7 +2994,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$dataentryoutput .= "<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t<input type='submit' id='submitdata' value='".$clang->gT("Submit")."'";
 
-			if (tokenTableExists($thissurvey['sid']))
+			if (tableExists('tokens_'.$thissurvey['sid']))
 			{
 				$dataentryoutput .= " disabled='disabled'/>\n";
 			}
@@ -3038,7 +3035,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		$dataentryoutput .= "\t<tr>\n";
 		$dataentryoutput .= "\t<td>\n";
 		$dataentryoutput .= "\t<input type='hidden' name='subaction' value='insert' />\n";
-		$dataentryoutput .= "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
 		$dataentryoutput .= "\t<input type='hidden' name='sid' value='$surveyid' />\n";
 		$dataentryoutput .= "\t<input type='hidden' name='language' value='$datalang' />\n";
 		$dataentryoutput .= "\t</td>\n";

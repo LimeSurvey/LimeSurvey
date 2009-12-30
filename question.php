@@ -81,7 +81,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	doHeader();
 
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
 
@@ -118,15 +118,17 @@ $ia=$_SESSION['fieldarray'][$currentquestion];
 
 list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
-// MANAGE CONDITIONAL QUESTIONS
+// MANAGE CONDITIONAL QUESTIONS AND HIDDEN QUESTIONS
+$qidattributes=getQuestionAttributes($ia[0]);
 $conditionforthisquestion=$ia[7];
 $questionsSkipped=0;
-while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
+
+while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
 { // this is a while, not an IF because if we skip the question we loop on the next question, see below
-    if (checkquestionfordisplay($ia[0]) === true)
+    if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
     { // question will be displayed
-	// we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
-	$conditionforthisquestion="N";
+	    // we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
+	    $conditionforthisquestion="N";
     }
     else
     {
@@ -165,7 +167,8 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		// because we skip this question, we need to loop on the same condition 'check-block'
 		//  with the new question (we have overwritten $ia)
 		$conditionforthisquestion=$ia[7];
-    }
+		$qidattributes=getQuestionAttributes($ia[0]);
+	}
 } // End of while conditionforthisquestion=="Y"
 
 //SUBMIT
@@ -258,7 +261,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         if ($thissurvey['printanswers']=='Y')
         {
             $completed .= "<br /><br />"
-            ."<a class='printlink' href='printanswers.php' target='_blank'>"
+            ."<a class='printlink' href='printanswers.php?sid=$surveyid' target='_blank'>"
             .$clang->gT("Click here to print your answers.")
             ."</a><br />\n";
          }
@@ -414,7 +417,7 @@ if (isset($vpopup)) {echo $vpopup;}
 
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
-echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
+echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n";
@@ -441,6 +444,9 @@ if ($bIsGroupDescrPage)
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 	echo "\t<script type='text/javascript'>\n";
 	echo "\t<!--\n";
+	echo "function noop_checkconditions(value, name, type)\n";
+	echo "\t{\n";
+	echo "\t}\n";
 	echo "function checkconditions(value, name, type)\n";
 	echo "\t{\n";
 	echo "\t}\n";
@@ -509,18 +515,38 @@ else
 //			if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 			if ($conditionforthisquestion != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
-			echo '
-	<!-- NEW QUESTION -->
-				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
-';
 			$question= $qa[0];
+//===================================================================
+// The following four variables offer the templating system the
+// capacity to fully control the HTML output for questions making the
+// above echo redundant if desired.
+			$question['essentials'] = 'id="question'.$qa[4].'"'.$n_q_display;
+			$question['class'] = $q_class;
+			$question['man_class'] = $man_class;
+//===================================================================
 			$answer=$qa[1];
 			$help=$qa[2];
 			$questioncode=$qa[5];
-			echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-			echo '
+
+			$question_template = file_get_contents($thistpl.'/question.pstpl');
+
+			if( (strpos( $question_template , '{QUESTION_ESSENTIALS}') == false) || (strpos( $question_template , '{QUESTION_CLASS}') == false) )
+			{
+// if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
+				$question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
+				echo '
+	<!-- NEW QUESTION -->
+				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
+';
+				echo templatereplace($question_template);
+				echo '
 				</div>
 ';
+			}
+			else
+			{
+				echo templatereplace($question_template);
+			};
 		}
 	}
 	echo "\n\n<!-- END THE GROUP -->\n";

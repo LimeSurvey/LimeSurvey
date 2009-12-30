@@ -38,8 +38,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 else
 {
 	//See if there is a tokens table for this survey
-	$tablelist = $connect->MetaTables();
-	if (in_array("{$dbprefix}tokens_{$postsid}", $tablelist))
+    if (tableExists("tokens_{$postsid}"))
 	{
 		$toldtable="tokens_{$postsid}";
 		$tnewtable="old_tokens_{$postsid}_{$date}";
@@ -108,15 +107,11 @@ else
 
 	$deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
 	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$postsid}'>Admin</a>");
-	$deactivateoutput .= "<br />\n<table class='alertbox'>\n";
-	$deactivateoutput .= "<tr ><td height='4'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></td></tr>\n";
-	$deactivateoutput .= "\t<tr>\n";
-	$deactivateoutput .= "<td align='center'>\n";
-	$deactivateoutput .= "\t<strong>".$clang->gT("Survey Has Been Deactivated")."\n";
-	$deactivateoutput .= "</strong></td>\n";
-	$deactivateoutput .= "\t</tr>\n";
-	$deactivateoutput .= "\t<tr>\n";
-	$deactivateoutput .= "<td>\n";
+	$deactivateoutput .= "<br />\n<div class='messagebox'>\n";
+	$deactivateoutput .= "<div class='header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
+	$deactivateoutput .= "\t<div class='successheader'>".$clang->gT("Survey Has Been Deactivated")."\n";
+	$deactivateoutput .= "</div>\n";
+	$deactivateoutput .= "\t<p>\n";
 	$deactivateoutput .= "\t".$clang->gT("The responses table has been renamed to: ")." $newtable.\n";
 	$deactivateoutput .= "\t".$clang->gT("The responses to this survey are no longer available using LimeSurvey.")."\n";
 	$deactivateoutput .= "\t<p>".$clang->gT("You should note the name of this table in case you need to access this information later.")."</p>\n";
@@ -124,9 +119,8 @@ else
 	{
 		$deactivateoutput .= "\t".$clang->gT("The tokens table associated with this survey has been renamed to: ")." $tnewtable.\n";
 	}
-	$deactivateoutput .= "</td>\n";
-	$deactivateoutput .= "\t</tr>\n";
-	$deactivateoutput .= "</table><br/>&nbsp;\n";
+	$deactivateoutput .= "\t<p>".$clang->gT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details")."</p>";
+	$deactivateoutput .= "</div><br/>&nbsp;\n";
 }
 
 ?>

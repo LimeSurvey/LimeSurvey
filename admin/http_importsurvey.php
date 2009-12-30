@@ -19,11 +19,7 @@ include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-$importsurvey = "<br /><table width='100%' align='center'><tr><td>\n";
-$importsurvey .= "<table class='alertbox'>\n";
-$importsurvey .= "\t<tr ><td colspan='2' height='4'><font size='1' ><strong>"
-.$clang->gT("Import Survey")."</strong></font></td></tr>\n";
-$importsurvey .= "\t<tr ><td align='center'>\n";
+$importsurvey = "<div class='header'>".$clang->gT("Import Survey")."</div>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
@@ -31,13 +27,13 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
 	$importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importsurvey .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir)."<br /><br />\n";
-	$importsurvey .= "</font></td></tr></table>\n";
+	$importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br /><br />\n";
 	return;
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importsurvey .= "<strong><font class='successtitle'>".$clang->gT("Success")."!</font></strong><br />\n";
+$importsurvey .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
 $importsurvey .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importsurvey .= $clang->gT("Reading file..")."<br />\n";
 

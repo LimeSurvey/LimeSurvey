@@ -18,12 +18,11 @@ include_once("login_check.php");
 $deleteok = returnglobal('deleteok');
 
 $deletesurveyoutput = "<br />\n";
-$deletesurveyoutput .= "<table class='alertbox' >\n";
-$deletesurveyoutput .= "\t<tr ><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Delete Survey")."</strong></font></td></tr>\n";
+$deletesurveyoutput .= "<div class='messagebox'>\n";
+$deletesurveyoutput .= "<div class='header'>".$clang->gT("Delete survey")."</div>\n";
 
 if (!isset($surveyid) || !$surveyid)
 {
-    $deletesurveyoutput .= "\t<tr ><td align='center'>\n";
 	$deletesurveyoutput .= "<br /><font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 	$deletesurveyoutput .= $clang->gT("You have not selected a survey to delete")."<br /><br />\n";
 	$deletesurveyoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
@@ -34,50 +33,39 @@ if (!isset($surveyid) || !$surveyid)
 
 if (!isset($deleteok) || !$deleteok)
 {
-	$tablelist = $connect->MetaTables();
-
-	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "<td align='center'><br />\n";
-	$deletesurveyoutput .= "\t<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n";
+	$deletesurveyoutput .= "\t<div class='warningheader'>\n".$clang->gT("Warning")."</div><br />\n";
 	$deletesurveyoutput .= "\t<strong>".$clang->gT("You are about to delete this survey")." ($surveyid)</strong><br /><br />\n";
 	$deletesurveyoutput .= "\t".$clang->gT("This process will delete this survey, and all related groups, questions answers and conditions.")."<br /><br />\n";
 	$deletesurveyoutput .= "\t".$clang->gT("We recommend that before you delete this survey you export the entire survey from the main administration screen.")."\n";
 
-	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
+    if (tableExists("survey_$surveyid"))    
 	{
 		$deletesurveyoutput .= "\t<br /><br />\n".$clang->gT("This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey.")."<br /><br />\n";
 	}
 
-	if (in_array("{$dbprefix}tokens_$surveyid", $tablelist))
+    if (tableExists("tokens_$surveyid"))    
 	{
 		$deletesurveyoutput .= "\t".$clang->gT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.")."<br /><br />\n";
 	}
 
-	$deletesurveyoutput .= "</td>\n";
-	$deletesurveyoutput .= "\t</tr>\n";
-	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "<td align='center'><br />\n";
-	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-//	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
-	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;deleteok=Y")."\" />\n";
-	$deletesurveyoutput .= "</td>\n";
-	$deletesurveyoutput .= "\t</tr>\n";
-	$deletesurveyoutput .= "\n";
+	$deletesurveyoutput .= "<p>\n";
+    $deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Delete survey")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;deleteok=Y")."\" />\n";
+	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" />\n";
+
 }
 
 else //delete the survey
 {
-	$tablelist = $connect->MetaTables();
 	$dict = NewDataDictionary($connect);
 
-	if (in_array("{$dbprefix}survey_$surveyid", $tablelist)) //delete the survey_$surveyid table
+    if (tableExists("survey_$surveyid"))  //delete the survey_$surveyid table    
 	{			
 		$dsquery = $dict->DropTableSQL("{$dbprefix}survey_$surveyid");	
 		//$dict->ExecuteSQLArray($sqlarray);		
 		$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 	}
 
-	if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
+    if (tableExists("tokens_$surveyid")) //delete the tokens_$surveyid table    
 	{
 		$dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
 		$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
@@ -125,17 +113,11 @@ else //delete the survey
 	$sdel = "DELETE FROM {$dbprefix}quota_members WHERE sid=$surveyid;";
 	$sres = $connect->Execute($sdel);
 	
-	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "<td align='center'><br />\n";
-	$deletesurveyoutput .= "\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
+	$deletesurveyoutput .= "\t<p>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
 	$deletesurveyoutput .= "\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-	$deletesurveyoutput .= "</strong></td>\n";
-	$deletesurveyoutput .= "\t</tr>\n";
+
     $surveyid=false;
 
 }
-$deletesurveyoutput .= "</table><br />&nbsp;\n";
-	
-
-
+$deletesurveyoutput .= "</div><br />&nbsp;\n";
 ?>

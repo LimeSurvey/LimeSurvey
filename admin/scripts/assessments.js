@@ -24,22 +24,23 @@ function jquery_goodchars(e, goods)
 
 $(document).ready(function(){
     $('#languagetabs').tabs();
+    $(".assessmentlist").tablesorter({sortList: [[0,0]] });
     $('#radiototal,#radiogroup').change(
         function()
         {
               if ($('#radiototal').attr('checked')==true)
               {
-                $('#newgroupselect').attr('disabled','disabled');
+                $('#gid').attr('disabled','disabled');
               }
               else
               {
-                if ($('#newgroupselect>option').length==0){
+                if ($('#gid>option').length==0){
                   $('#radiototal').attr('checked',true);
                   alert (strnogroup);    
                 }
                 else
                 {
-                    $('#newgroupselect').attr('disabled',false);
+                    $('#gid').attr('disabled',false);
                 }
               }
         }

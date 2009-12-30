@@ -58,7 +58,7 @@ $showcombinedresults = 0;
  * this variable is used in the function shortencode() which cuts off a question/answer title
  * after $maxchars and shows the rest as tooltip
  */
-$maxchars = 13;
+$maxchars = 50;
 
 
 
@@ -120,6 +120,10 @@ if ($chartfontfile=='auto')
 	{
 		$chartfontfile='KacstFarsi.ttf';
 	}
+    elseif  ($language=='zh-Hant-HK' || $language=='zh-Hant-TW' || $language=='zh-Hans')
+    {
+        $chartfontfile='fireflysung.ttf';
+    }
 
 }
 //$statisticsoutput .= "
@@ -148,27 +152,12 @@ if ($chartfontfile=='auto')
 $statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
 
 //headline with all icons for available statistic options
-//$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
-//."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
 //Get the menubar
 $statisticsoutput .= browsemenubar($clang->gT("Quick statistics"))
 
 
-//second row below options -> filter settings headline
-."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
-." cellspacing='0'>\n"
-."<tr><td align='center' class='settingcaption' height='22'>"
-."<input type='image' src='$imagefiles/plus.gif' align='right' id='showfilter' /><input type='image' src='$imagefiles/minus.gif' align='right' id='hidefilter' />"
-.$clang->gT("Filter settings")
-."</td></tr>\n"
-."</table>\n"
-
 //we need a form which can pass the selected data later
-."<form method='post' name='formbuilder' action='$scriptname?action=statistics'>\n"
-
-//table which holds all the filter forms
-."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-
+."<form method='post' name='formbuilder' action='$scriptname?action=statistics#start'>\n";
 
 //Select public language file
 $query = "SELECT datestamp FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -236,90 +225,140 @@ foreach ($rows as $row)
 //var_dump($filters);
 // SHOW ID FIELD
 
-//some more output: I = filter by ID
-//{VIEWALL} is a placemarker and is replaced by the html to choose to view all answers. Later there is a str_replace
-// to insert this code into this top section
-$statisticsoutput .= "\t\t<tr><td align='center'><div id='filtersettings'";
+$statisticsoutput .= "<div class='header'>".$clang->gT("General filters")."</div><div id='statistics_general_filter'>";
 
-if (isset($_POST['display']) && $_POST['display'])  
+
+$grapherror='';
+if (!function_exists("gd_info")) {
+    $grapherror.='<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+    $grapherror.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+}
+elseif (!function_exists("imageftbbox")) {
+    $grapherror.='<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+    $grapherror.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+}
+if ($grapherror!='')
 {
-    $statisticsoutput .=' style="display:none;" ';
+    unset($_POST['usegraph']);
 }
 
 
+//pre-selection of filter forms
+if (incompleteAnsFilterstate() == "filter")
+{
+    $selecthide="selected='selected'";
+    $selectshow="";
+    $selectinc="";
+}
+elseif (incompleteAnsFilterstate() == "inc")
+{
+    $selecthide="";
+    $selectshow="";
+    $selectinc="selected='selected'";
+}
+else
+{
+    $selecthide="";
+    $selectshow="selected='selected'";
+    $selectinc="";
+}
+$statisticsoutput .="<fieldset style='clear:both;'><legend>".$clang->gT("Data selection")."</legend><ul>";
+$statisticsoutput .="<li><label for='filterinc'>".$clang->gT("Include:")."</label><select name='filterinc' id='filterinc'>\n"
+."<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
+."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
+."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
+."</select></li>\n"
+
+."<li><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label>
+                <input type='checkbox' id='viewsummaryall' name='viewsummaryall' ";
+if (isset($_POST['viewsummaryall'])) {$statisticsoutput .= "checked='checked'";}
+$statisticsoutput.="/></li>";
+
+$statisticsoutput .="<li id='vertical_slide'";
+if ($selecthide!='')
+{
+    $statisticsoutput .= " style='display:none' ";
+}
+$statisticsoutput.=" ><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label>
+                <input type='checkbox' id='noncompleted' name='noncompleted' ";
+if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
+$statisticsoutput.=" />\n</li></ul></fieldset>\n";
 
 
-$statisticsoutput .= ">
-                       <table cellspacing='0' cellpadding='0' width='100%'>{VIEWALL}</table>
-                       <table cellspacing='0' cellpadding='0' width='100%' id='filterchoices'>
-	                     <tr><td align='center' class='settingcaption'>
-	                       <font size='1' face='verdana'>".$clang->gT("General Filters")."</font>
-		                  </td></tr>
-                         <tr><td>
-                        <table align='center'><tr>\n";
 
-$myfield = "id";
-$myfield2=$myfield."G";	//greater than field
-$myfield3=$myfield."L";	//less than field
-$myfield4=$myfield."=";	//equals field
-$statisticsoutput .= "<td align='center'><strong>".$clang->gT("ID")."</strong><br />";
-$statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":<br />\n"
-."\t\t\t\t\t<input type='text' name='$myfield2' value='";
-if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
-$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br />\n"
-."\t\t\t\t\t".$clang->gT("Number less than").":<br />\n"
-."\t\t\t\t\t<input type='text' name='$myfield3' value='";
-if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br />\n";
-$statisticsoutput .= "\t\t\t\t\t=<br />
-            <input type='text' name='$myfield4' value='";
-if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
-$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br /></font></td>\n";
-$allfields[]=$myfield2;
-$allfields[]=$myfield3;
-$allfields[]=$myfield4;
+
+$statisticsoutput .= "<fieldset id='left'><legend>".$clang->gT("Response ID")."</legend><ul><li>"
+                    ."<label for='idG'>".$clang->gT("Greater than:")."</label>\n"
+                    ."<input type='text' id='idG' name='idG' size='10' value='";
+if (isset($_POST['idG'])){$statisticsoutput .= sanitize_int($_POST['idG']);}
+$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /></li><li><label for='idL'>\n"
+                    .$clang->gT("Less than:")."</label>\n"
+                    ."<input type='text' id='idL' name='idL' size='10' value='";
+if (isset($_POST['idL'])) {$statisticsoutput .= sanitize_int($_POST['idL']);}
+$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /></li></ul></fieldset>\n";
+$statisticsoutput .= "<input type='hidden' name='summary[]' value='idG' />";
+$statisticsoutput .= "<input type='hidden' name='summary[]' value='idL' />";
+
 
 //if the survey contains timestamps you can filter by timestamp, too
 if (isset($datestamp) && $datestamp == "Y") {
-	$myfield = "datestamp";		//timestamp equals
-	$myfield2 = "datestampG";	//timestamp greater than
-	$myfield3 = "datestampL";	//timestamp less than
-	$myfield2="$myfield";
-	$myfield3="$myfield2=";
-	$myfield4="$myfield2<";
-	$myfield5="$myfield2>";
 
-	$statisticsoutput .= "<td width='40'></td>";
-	$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>".$clang->gT("Datestamp")."</strong>"
-	."<br />\n"
-	."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
-	."\t\t\t\t\t<input name='$myfield3' type='text' value='";
-	if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-	$statisticsoutput .= "' /><br />\n"
-	."\t\t\t\t\t&nbsp;&nbsp;".$clang->gT("OR between").":<br />\n"
-	."\t\t\t\t\t<input name='$myfield4' value='";
-	if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
-	$statisticsoutput .= "' type='text' /> <br />".$clang->gT("and")."<br /> <input  name='$myfield5' value='";
-	if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
-	$statisticsoutput .= "' type='text' /></font></td>\n";
-	$allfields[]=$myfield2;
-	$allfields[]=$myfield3;
-	$allfields[]=$myfield4;
-	$allfields[]=$myfield5;
+
+    $statisticsoutput .= "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
+    ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
+    ."<input id='datestampE' name='datestampE' type='text' value='";
+    if (isset($_POST['datestampE'])) {$statisticsoutput .= $_POST['datestampE'];}
+    $statisticsoutput .= "' /></li><li><label for='datestampG'>\n"
+    ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
+    ."<input id='datestampG' name='datestampG' value='";
+    if (isset($_POST['datestampG'])) {$statisticsoutput .= $_POST['datestampG'];}
+    $statisticsoutput .= "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label><input  id='datestampL' name='datestampL' value='";
+    if (isset($_POST['datestampL'])) {$statisticsoutput .= $_POST['datestampL'];}
+    $statisticsoutput .= "' type='text' /></li></ul></fieldset>\n";
+    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampE' />";
+    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampG' />";
+    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampL' />";
+
 }
 
-$statisticsoutput .= "</tr></table></td></tr>";	//close table with filter by ID or timestamp forms
+
+$statisticsoutput .="<fieldset><legend>".$clang->gT("Output options")."</legend><ul>"
+
+                  ."<li><label for='usegraph'>".$clang->gT("Show graphs")."</label><input type='checkbox' id='usegraph' name='usegraph' ";
+if (isset($_POST['usegraph'])) {$statisticsoutput .= "checked='checked'";}
+$statisticsoutput .= "/><br />";
+if ($grapherror!='')
+{
+    $statisticsoutput.="<span id='grapherror' style='display:none'>$grapherror<hr /></span>";
+}
+$statisticsoutput.="</li>\n";
+
+//Output selector
+$statisticsoutput .= "<li>"
+    ."<label>"
+    .$clang->gT("Select output format").":</label>"
+    ."<input type='radio' name='outputtype' value='html' checked='checked' /><label for='outputtype'>HTML</label> <input type='radio' name='outputtype' value='pdf' /><label for='outputtype'>PDF</label> <input type='radio' onclick='nographs();' name='outputtype' value='xls' /><label for='outputtype'>Excel</label>";
 
 
+$statisticsoutput .= "</ul></fieldset></div><p>"
+                ."<input type='submit' value='".$clang->gT("View stats")."' />\n"
+                ."<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n";
 
+//second row below options -> filter settings headline
+$statisticsoutput.="<div class='header header_statistics'>"
+."<img src='$imagefiles/plus.gif' align='right' id='showfilter' /><img src='$imagefiles/minus.gif' align='right' id='hidefilter' />"
+.$clang->gT("Response filters")
+."</div>\n";
 
-// 2: Get answers for each question
+$filterchoice_state=returnglobal('filterchoice_state');
+$statisticsoutput.="<input type='hidden' id='filterchoice_state' name='filterchoice_state' value='{$filterchoice_state}' />\n";
 
-//is there a currentgroup set?
-if (!isset($currentgroup)) {$currentgroup="";}
-
-//is there a previous question type set?
-if (!isset($previousquestiontype)) {$previousquestiontype="";}
+$statisticsoutput .="<table cellspacing='0' cellpadding='0' width='100%' id='filterchoices' ";
+if ($filterchoice_state!='')
+{
+    $statisticsoutput .= " style='display:none' ";
+}
+$statisticsoutput .=">";
 
 
 /*
@@ -333,6 +372,8 @@ if (!isset($previousquestiontype)) {$previousquestiontype="";}
  ['lid'],
  ['lid1']);
  */
+ 
+$currentgroup='';
 foreach ($filters as $flt)
 {
 	//is there a previous question type set?
@@ -343,10 +384,10 @@ foreach ($filters as $flt)
 	if ($flt[1] != $currentgroup)
 	{
 		//If the groupname has changed, start a new row
-		if ($currentgroup)
+		if ($currentgroup!='')
 		{
 			//if we've already drawn a table for a group, and we're changing - close off table
-			$statisticsoutput .= "\n\t\t\t\t<!-- --></tr>\n\t\t\t</table></div></td></tr>\n";
+			$statisticsoutput .= "<!-- Close filter group --></tr>\n</table></div></td></tr>\n";
 		}
 		
 		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
@@ -354,9 +395,9 @@ foreach ($filters as $flt)
 		."<input type=\"checkbox\" id='btn_$flt[1]' onclick=\"selectCheckboxes('grp_$flt[1]', 'summary[]', 'btn_$flt[1]');\" />"
 		
 		//use current groupname and groupid as heading
-		."\t\t<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></td></tr>\n\t\t"
+		."<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
-		."\t\t\t<div id='grp_$flt[1]'><table class='statisticstable'><tr>\n";
+		."<div id='grp_$flt[1]'><table class='filtertable'><tr>\n";
 
 		//counter which is used to adapt layout depending on counter #
 		$counter=0;
@@ -422,11 +463,12 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<td align='center'>";
 
 		//multiple options:
-		if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
+		if ($flt[2] == "M") {$myfield = "M$myfield";}
+        if ($flt[2] == "P") {$myfield = "P$myfield";}
 
 		//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
-		$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
+		$statisticsoutput .= "<input type='checkbox'  id='filter$myfield' name='summary[]' value='$myfield'";
 
 		/*
 		 * one of these conditions has to be true
@@ -443,21 +485,19 @@ foreach ($filters as $flt)
 		{$statisticsoutput .= " checked='checked'";}
 
 		//show speaker symbol which contains full question text
-		$statisticsoutput .= " />".showspeaker(FlattenText($flt[5]))
-		."<br />\n";
+		$statisticsoutput .= " /><label for='filter$myfield'>".showspeaker(FlattenText($flt[5]))
+		."</label><br />\n";
 
 		//numerical question type -> add some HTML to the output
 		//if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
 
 		//multiple options ("M"/"P") -> add "M" to output
-		if ($flt[2] == "M" || $flt[2] == "P") {$statisticsoutput .= "M";}
+		if ($flt[2] == "M" ) {$statisticsoutput .= "M";}
+        if ($flt[2] == "P" ) {$statisticsoutput .= "P";}
 
 		//numerical -> add SGQ to output
 		if ($flt[2] != "N") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
-
-		//Add the field name into the allfields array, which is used later to know which are the available fields for selection
-		$allfields[]=$myfield;
 
 	}	//end if -> filter certain question types
 
@@ -522,10 +562,6 @@ foreach ($filters as $flt)
 				//we added 1 form -> increase counter
 				$counter2++;
 					
-				//add fields to array which contains all fields names
-				$allfields[]=$myfield1;
-				$allfields[]=$myfield2;
-				$allfields[]=$myfield3;
 			}
 			break;
 
@@ -565,7 +601,6 @@ foreach ($filters as $flt)
 					
 				$statisticsoutput .= "' />";
 				$counter2++;
-				$allfields[]=$myfield2;
 			}
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 			$counter=0;
@@ -594,7 +629,6 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 
 			$statisticsoutput .= "</textarea>";
-			$allfields[]=$myfield2;
 			break;
 
 
@@ -618,7 +652,6 @@ foreach ($filters as $flt)
 
 			$statisticsoutput .= "' />";
 			$statisticsoutput .= "\t\t\t\t</td>\n";
-			$allfields[]=$myfield2;
 			break;
 
 
@@ -643,8 +676,6 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
 
 			//put field names into array
-			$allfields[]=$myfield2;
-			$allfields[]=$myfield3;
 
 			break;
 
@@ -699,9 +730,6 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 
 			$statisticsoutput .= "' type='text' /></font>\n";
-			$allfields[]=$myfield3;
-			$allfields[]=$myfield4;
-			$allfields[]=$myfield5;
 			break;
 
 
@@ -828,7 +856,6 @@ foreach ($filters as $flt)
 				$counter2++;
 					
 				//add this to all the other fields
-				$allfields[]=$myfield2;
 			}
 
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -875,7 +902,6 @@ foreach ($filters as $flt)
 					
 				$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
-				$allfields[]=$myfield2;
 			}
 
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -936,7 +962,6 @@ foreach ($filters as $flt)
 				$counter2++;
 					
 				//add to array
-				$allfields[]=$myfield2;
 			}
 
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -990,7 +1015,6 @@ foreach ($filters as $flt)
 				$statisticsoutput .= ">".$clang->gT("Decrease")."</option>\n"
 				."\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
-				$allfields[]=$myfield2;
 			}
 
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -1025,7 +1049,6 @@ foreach ($filters as $flt)
 					if(isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 					$statisticsoutput .= "' />\n\t\t\t\t</td>\n";
 					$counter2++;
-					$allfields[]=$myfield2;
 				}
 			}
 			$statisticsoutput .= "\t\t\t\t<td>\n";
@@ -1087,7 +1110,6 @@ foreach ($filters as $flt)
 					}
 					$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 					$counter2++;
-					$allfields[]=$myfield2;
 				}
 			}
 			$statisticsoutput .= "\t\t\t\t<td>\n";
@@ -1168,7 +1190,6 @@ foreach ($filters as $flt)
 				$counter2++;
 					
 				//add fields to main array
-				$allfields[]=$myfield2;
 			}
 
 			//$statisticsoutput .= "\t\t\t\t<td>\n";
@@ -1237,7 +1258,6 @@ foreach ($filters as $flt)
 				$counter2++;
 					
 				//add averything to main array
-				$allfields[]=$myfield2;
 			}
 
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -1273,7 +1293,6 @@ foreach ($filters as $flt)
 
 			$statisticsoutput .= " />&nbsp;<strong>".showSpeaker($niceqtext)."</strong><br />\n";
 			$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
-			$allfields[]=$myfield;
 
 			//get labels (code and title)
 			$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
@@ -1400,7 +1419,6 @@ foreach ($filters as $flt)
 
 				$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
-				$allfields[]=$myfield2;
 
 
 
@@ -1486,7 +1504,6 @@ foreach ($filters as $flt)
 
 				$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 				$counter2++;
-				$allfields[]=$myfield2;
 
 			}	//end WHILE -> loop through all answers
 
@@ -1544,92 +1561,14 @@ foreach ($filters as $flt)
 //complete output
 $statisticsoutput .= "\n\t\t\t\t</tr>\n";
 
-//array allfields contains question codes
-if (isset($allfields))
-{
-	//connect all array elements using "+"
-	$allfield=implode("+", $allfields);
-}
 
-//pre-selection of filter forms
-if (incompleteAnsFilterstate() == "filter")
-{
-	$selecthide="selected='selected'";
-	$selectshow="";
-	$selectinc="";
-}
-elseif (incompleteAnsFilterstate() == "inc")
-{
-	$selecthide="";
-	$selectshow="";
-	$selectinc="selected='selected'";
-}
-else
-{
-	$selecthide="";
-	$selectshow="selected='selected'";
-	$selectinc="";
-}
+
+
 
 
 //add last lines to filter forms
-$statisticsoutput .= "\t\t\t</table>\n"
+$statisticsoutput .= "\t\t\t</table></div>\n"
 ."\t\t</td></tr>\n";
-
-$grapherror='';
-if (!function_exists("gd_info")) {
-	$grapherror.='<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
-	$grapherror.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
-}
-elseif (!function_exists("imageftbbox")) {
-	$grapherror.='<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
-	$grapherror.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
-}
-if ($grapherror!='')
-{
-	unset($_POST['usegraph']);
-}
-
-$viewalltext = "<tr><td align='center' class='settingcaption'>\n"
-."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
-."<tr><td align='center'><ul class='myul'><li><input type='checkbox' id='viewsummaryall' name='summary' value='$allfield' />"
-."<label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></li>"
-."<li><input type='checkbox' id='usegraph' name='usegraph' ";
-if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
-$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label><br />";
-if ($grapherror!='')
-{
-	$viewalltext.="<span id='grapherror' style='display:none'>$grapherror<hr /></span>";
-}
-$viewalltext.="</li>\n"
-."<li><label for='filterinc'>".$clang->gT("Include:")."</label><select name='filterinc' id='filterinc'>\n"
-."<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
-."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
-."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
-."</select></li></ul></td></tr>\n";
-
-$viewalltext .="\t\t\t\t<tr><td align='center'>    <div id='vertical_slide'";
-if ($selecthide!='')
-{
-    $viewalltext .= " style='display:none' ";
-}
-
-//this fixes bug #2470
-$viewalltext.=" ><input type='checkbox' id='noncompleted' name='noncompleted' ";
-if (isset($_POST['noncompleted'])) {$viewalltext .= "checked='checked'";}
-$viewalltext.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label>\n</div><br /></td></tr>\n";
-
-
-//Output selector
-$viewalltext .= "<tr>"
-	."<td align='center'>"
-	.$clang->gT("Select Output Format").":<br/>"
-	."<input type='radio' name='outputtype' value='html' checked='checked' />HTML <input type='radio' name='outputtype' value='pdf' />PDF <input type='radio' onclick='nographs();' name='outputtype' value='xls' />Excel"
-	."</td>"
-	."</tr>";
-
-$statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
-
 
 
 //add line to separate the the filters from the other options
@@ -1639,43 +1578,19 @@ $statisticsoutput .= "<tr><td align='center' class='settingcaption'>
 
 $statisticsoutput .= "</table>";
 
-$statisticsoutput .= "<div id='vertical_slide'";
-if ($selecthide!='')
-{
-	$statisticsoutput .= " style='display:none' ";
-}
-//this fixes bug #2470
-$statisticsoutput.=" >"; 
-
-$statisticsoutput .= "<table cellpadding='0' cellspacing='0' width='100%'>\n";
-
-$statisticsoutput .="\t\t\t\t<tr><td align='center'> ";
-
-
-
-//$statisticsoutput.="<input type='checkbox' id='noncompleted' name='noncompleted' ";
-//if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
-//$statisticsoutput.=" />";
-//$statisticsoutput.="<label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div><br />"
-$statisticsoutput.="</td></tr>\n";
 
 
 				
 //very last lines of output
-$statisticsoutput .= "\t\t<tr>"
-."<td align='center'>\n\t\t\t<br />\n"
+$statisticsoutput .= "\t\t<p id='vertical_slide2'>\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View stats")."' />\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
-."\t\t<br />&nbsp;\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 ."\t\t<input type='hidden' name='display' value='stats' />\n"
-."\t</td></tr>\n"
-."</table></div>\n"
-."</td></tr></table>\n"
-."\t</form>\n";
+."\t</form><br /><a name='start'></a>\n";
 
 // ----------------------------------- END FILTER FORM ---------------------------------------
-	
+
 
 //Show Summary results
 if (isset($summary) && $summary)
@@ -1684,31 +1599,31 @@ if (isset($summary) && $summary)
 	{
 		$usegraph = 1;
 	}
-	else
-	{
+			else
+			{
 		$usegraph = 0;
-	}
+				}
 	include_once("statistics_function.php");
 	$outputType = $_POST['outputtype'];
 	switch($outputType){
-		
+
 		case 'html':
 			$statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
-		break;
+					break;
 		case 'pdf':
 			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
-		break;
+					break;
 		case 'xls':
 			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
-		break;
+					break;
 		default:
-			
-		break;
-		
-	}
-	
+
+					break;
+
+						}
+
 	//print_r($summary); exit;
-	
+
 }	//end if -> show summary results
 
 function showSpeaker($hinttext)
@@ -1717,7 +1632,7 @@ function showSpeaker($hinttext)
 
 	if(!isset($maxchars))
 	{
-		$maxchars = 15;
+		$maxchars = 100;
 	}
 	$htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
 	$jshinttext=javascript_escape($hinttext,true,true);
@@ -1737,7 +1652,7 @@ function showSpeaker($hinttext)
 	}
 	else
 	{
-		$reshtml= "<span alt='".$hinttext."' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";
+		$reshtml= "<span title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";
 	}
 	return $reshtml;
 }

@@ -60,6 +60,24 @@ function deregister_globals()
     unset($input);
 }
 
+   /**
+   * This function converts a standard # array to a PHP array without having to resort to JSON_decode which is available from 5.2x and up only
+   * 
+   * @param string $json String with JSON data
+   * @return array 
+   */
+    if ( !function_exists('json_decode') ){
+        function json_decode($content, $assoc=false){
+            global $homedir;
+            require_once($homedir."/classes/json/JSON.php");   
+            if ( $assoc ){
+                        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+            } else {
+                        $json = new Services_JSON;
+                    }
+            return $json->decode($content);
+        }
+    }
 
 
 ?>

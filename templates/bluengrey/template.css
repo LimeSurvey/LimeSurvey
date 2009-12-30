@@ -337,15 +337,6 @@ table.question th{
    padding:2px 5px;
 }
 
-#limesurvey table.question tbody th.arraycaptionleft,
-#limesurvey table.question thead th{
-   padding:3px 10px;
-   background-color:#D1D1D1;
-   vertical-align:middle !important;
-   font-size:0.6em;
-   font-weight: bold;
-}
-
 table.question tr:first-child td:first-child{
    background-color:#fff;
 }
@@ -512,7 +503,8 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
     font-weight: bold;
 }
 
-.numeric p.question
+.text-short p.question
+,.numeric p.question
 ,.numeric-multi span
 ,.multiple-short-txt ul li span
 {
@@ -551,26 +543,60 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
     margin: 0% auto 0% auto;
 }
 
-  ul.cols-2 li , ul.cols-2-ul
-, ul.cols-3 li , ul.cols-3-ul
-, ul.cols-4 li , ul.cols-4-ul
-, ul.cols-5 li , ul.cols-5-ul
-, ul.cols-6 li , ul.cols-6-ul
-, ul.cols-7 li , ul.cols-7-ul
-, ul.cols-8 li , ul.cols-8-ul
-{
+ul.cols-2 li,
+ul.cols-3 li,
+ul.cols-4 li,
+ul.cols-5 li,
+ul.cols-6 li,
+ul.cols-7 li,
+ul.cols-8 li {
     float: left;
-    padding: 0% 0.5em;
-    white-space: normal
+    padding: 0 0.5em;
+    white-space: normal;
 }
 
-ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 47%; }
-ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 30%; }
-ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 22%; }
-ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 17%; }
-ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15.5%; }
-ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 12%; }
-ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
+ul.cols-2 li, table.cols-2 td { width: 47% }
+ul.cols-3 li, table.cols-3 td { width: 30%; }
+ul.cols-4 li, table.cols-4 td { width: 22%; }
+ul.cols-5 li, table.cols-5 td { width: 17%; }
+ul.cols-6 li, table.cols-6 td { width: 15.5%; }
+ul.cols-7 li, table.cols-7 td { width: 12%; }
+ul.cols-8 li, table.cols-8 td { width: 10%; }
+
+/* List/radios displayed in columns */
+
+ul.cols-2-ul,
+ul.cols-3-ul,
+ul.cols-4-ul,
+ul.cols-5-ul,
+ul.cols-6-ul,
+ul.cols-7-ul,
+ul.cols-8-ul {
+    float: left;
+	width: auto;
+    padding: 0;
+	margin-bottom: 1em;
+}
+
+ul.cols-2-ul li,
+ul.cols-3-ul li,
+ul.cols-4-ul li,
+ul.cols-5-ul li,
+ul.cols-6-ul li,
+ul.cols-7-ul li,
+ul.cols-8-ul li {
+    padding: 0 1.5em 0 0;
+}
+
+ul.cols-2-ul label,
+ul.cols-3-ul label,
+ul.cols-4-ul label,
+ul.cols-5-ul label,
+ul.cols-6-ul label,
+ul.cols-7-ul label,
+ul.cols-8-ul label {
+	text-indent: 0;
+}
 
 .list-dropdown-flexible p.question
 {
@@ -643,10 +669,14 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 	float:left;
 	padding-right: 2em;
 }
-.numeric-multi div.multinum-slider
-{
+
+.numeric-multi div.multinum-slider {
+	width: auto;
+	float: left;
 	margin-top: 1.5em;
+	margin-bottom: 0.2em;
 }
+
 .numeric-multi ul.slider.computed
 {
 	width: 13em;
@@ -667,14 +697,20 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 	display: table-cell;
 	vertical-align: baseline;
 }
- .multiple-short-txt ul li label
-,.numeric-multi ul li label
-,.numeric-multi ul.slider li label
-{
+
+.numeric-multi ul li label,
+.numeric-multi ul.slider li label {
 	padding: 0.3em 1em 0% 0%;
 	display: table-cell;
 	vertical-align: baseline;
 }
+
+.multiple-short-txt ul li label {
+	padding: 0.3em 1em 0% 0%;
+	display: table-cell;
+	vertical-align: middle;
+}
+
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label
 {
@@ -732,11 +768,17 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 .gender {}
 */
 
- #limesurvey table.question thead th
-,#limesurvey table.question .repeat th
-{
-    text-align: center;
-}
+#limesurvey table.question tbody th.arraycaptionleft,
+#limesurvey table.question thead th,
+#limesurvey table.question .repeat th {
+   text-align: center;
+   padding:3px 10px;
+   background-color:#D1D1D1;
+   vertical-align:middle !important;
+   font-size:0.6em;
+   font-weight: bold;
+}    
+
 #limesurvey table.question .answer tbody td
 {
     text-align: center;
@@ -795,8 +837,14 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
     border: 0; 
 }
 
-/************** Slider ********************/
+/** UI Slider **/
 
+.numeric-multi label.slider-label {
+	display: table-cell;
+	padding:0 1em 0 0;
+	margin-top: 1.3em;
+	vertical-align: middle;
+}
 
 .ui-slider-disabled .ui-slider-handle {
     opacity: 0.5; 
@@ -819,6 +867,42 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
     text-align: left;
 }
 
+.slider_showmin {
+    float: left;
+	width: 50px;
+    margin: 15px 0 0 -25px;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_showmax {
+    float: right;
+	width: 50px;
+    margin: 15px -28px 0 0;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_lefttext {
+    display: table-cell;
+	padding-right: 11px;
+    vertical-align: middle;
+	text-align: right;
+	font-size: 0.9em;
+}
+
+.slider_righttext {
+    display: table-cell;
+	padding-left: 11px;
+    vertical-align: middle;
+	font-size: 0.9em;
+}
+
+
 div.privacynote {
     text-align:center;
     background-color: #fff;
@@ -836,9 +920,12 @@ table.navigator td{
     width:33%;
 }
 
+div.answers  {
+    margin-bottom:10px;
+}
 
 div.answers table {
-    margin:0 auto !important;
+    margin:0 auto;
     border-collapse:separate;
     border-spacing: 1px;
 }
@@ -857,9 +944,6 @@ div.answers table {
   margin-bottom:10px;
 }
 
-div.answers  {
-    margin-bottom:10px;
-}
 div #loadtable, div #savetable
 {
     padding-top:10px;

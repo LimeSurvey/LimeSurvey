@@ -466,10 +466,11 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	padding: 0.3em 1em 0% 0%;
 }
-.numeric-multi td.answer div.multinum-slider
-{
-    margin-top: 1.5em;
-	width: 16em;
+.numeric-multi td.answer div.multinum-slider {
+	width: auto;
+	float: left;
+	margin-top: 1.5em;
+	margin-bottom: 0.2em;
 }
 
  .numeric-multi td.answer ul.multiplenumerichelp
@@ -555,7 +556,27 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .ui-wrapper input, .ui-wrapper textarea { 
     border: 0; 
 }
-/** UI Slider **/
+
+/************** Progress bar ********************/
+
+#progress-wrapper .ui-widget-content {
+	border:1px solid #999999;
+}
+
+#progress-wrapper .ui-widget-header {
+	background-color: #EFE5CA;
+	border:1px solid #999999;
+}
+
+/************** Slider ********************/ 
+
+.numeric-multi label.slider-label {
+	display: table-cell;
+	padding:0 1em 0.2em 0 !important;
+	margin-top: 1.4em;
+	vertical-align: middle;
+}
+
 .ui-slider-handle { 
     position: absolute; 
     height: 21px !important; 
@@ -593,6 +614,44 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     font-weight: bold; 
     text-align: left;
 }
+
+.slider_showmin {
+    float: left;
+	width: 50px;
+    margin: 15px 0 0 -30px;
+  	font-family:Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_showmax {
+    float: right;
+	width: 50px;
+    margin: 15px -23px 0 0;
+  	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+.slider_lefttext {
+    display: table-cell;
+	padding-right: 11px;
+	padding-bottom: 3px;
+    vertical-align: middle;
+	text-align: right;
+	font-size: 0.9em;
+}
+
+.slider_righttext {
+    display: table-cell;
+	padding-left: 8px;
+	padding-bottom: 3px;
+    vertical-align: middle;
+	font-size: 0.9em;
+}
+
 
 #tokenform
 {
@@ -726,3 +785,9 @@ td.statsImageholder {
 .array-flexible-column col.even {
     background-color: #EFE5CA;
 }
+
+.asterisk {
+    color:red;
+    font-size:9pt;
+    font-family:arial, verdana, sans-serif;
+} 

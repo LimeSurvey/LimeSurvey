@@ -153,14 +153,10 @@ if (!$exportstyle)
 
 	$afieldcount = count($excesscols);
 	$exportoutput .= browsemenubar($clang->gT("Export Results"));
-	$exportoutput .= "<br />\n"
-	."<form action='$scriptname?action=exportresults' method='post'>\n"
-	."<table align='center'><tr>"
-	."<td valign='top'>\n"
-	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	."\t<tr><td colspan='2' height='4'>"
-	."<strong>"
-	.$clang->gT("Export responses");
+	$exportoutput .= "<div class='header'>".$clang->gT("Export results").'</div>'
+        ."<div class='wrap2columns'>\n"
+	    ."<form id='resultexport' action='$scriptname?action=exportresults' method='post'><div class='left'>\n";
+
 	if (isset($_POST['sql'])) {$exportoutput .= " - ".$clang->gT("Filtered from statistics script");}
 	if (returnglobal('id')<>'') {$exportoutput .= " - ".$clang->gT("Single response");}
 
@@ -183,136 +179,108 @@ if (!$exportstyle)
 		$selectinc="";
 	}
 
-	$exportoutput .= "</strong> ($afieldcount ".$clang->gT("Columns").")</td></tr>\n"
-	."\t<tr><td height='8'><font size='1'><strong>"
-	.$clang->gT("Questions")."</strong></font></td></tr>\n"
-	."\t<tr>\n"
-	."<td>\n"
-	."\t<input type='radio' class='radiobtn' name='exportstyle' value='abrev' id='headabbrev'>"
-	."<font size='1'><label for='headabbrev'>"
-	.$clang->gT("Abbreviated headings")."</label><br />\n"
-	."\t<input type='radio' class='radiobtn' checked name='exportstyle' value='full' id='headfull'>"
-	."<label for='headfull'>"
-	.$clang->gT("Full headings")."</label><br />\n"
-	."\t<input type='radio' class='radiobtn' checked name='exportstyle' value='headcodes' id='headcodes'>"
-	."<label for='headcodes'>"
-	.$clang->gT("Question codes")."</label><br />\n"
-	
-	."\t<input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous' style='margin-left: 25px'>"
-	."<font size='1'><label for='convertspacetous'>"
-	.$clang->gT("Convert spaces in question text to underscores")."</label><br />"
-	
-	."\t&nbsp ".$clang->gT("Include")." <select name='filterinc'>\n"
-	."<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
-	."<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
-	."<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
-	."\t</select>\n"
-	."</font></font></td>\n"
-	."\t</tr>\n"
-	."\t<tr><td height='8'><font size='1'><strong>"
-	.$clang->gT("Answers")."</strong></font></font></td></tr>\n"
-	."\t<tr>\n"
-	."<td>\n"
-	."\t<input type='radio' class='radiobtn' name='answers' value='short' id='ansabbrev'>"
-	."<font size='1'><label for='ansabbrev'>"
-	.$clang->gT("Answer Codes")."</label>";
+    //get max number of datasets
 
-	$exportoutput .= "<br />\n"
-	."\t<input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px'>"
-	."<font size='1'><label for='convertyto1'>"
-	.$clang->gT("Convert Y to")."</label><input type='text' name='convertyto' size='3' value='1' maxlength='1' style='width:10px'>";
-	$exportoutput .= "<br />\n"
-	."\t<input type='checkbox' value='Y' name='convertnto2' id='convertnto2' style='margin-left: 25px'>"
-	."<font size='1'><label for='convertnto2'>"
-	.$clang->gT("Convert N to")."</label><input type='text' name='convertnto' size='3' value='2' maxlength='1' style='width:10px'>";
+    $max_datasets_query = "SELECT COUNT(id) FROM {$dbprefix}survey_$surveyid";
+    $max_datasets = $connect->GetOne($max_datasets_query);
+    
+    
+    $exportoutput .='<fieldset><legend>'.$clang->gT("General").'</legend>'
+    // form fields to limit export from X to Y
+    ."<ul><li><label>".$clang->gT("Range:")."</label> ".$clang->gT("From")." <input type='text' name='export_from' size='8' value='1' />";
+    $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='$max_datasets' /></li>"
+    
+    ."<li><br /><label for='filterinc'>".$clang->gT("Completion state")."</label> <select id='filterinc' name='filterinc'>\n"
+    ."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
+    ."<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
+    ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
+    ."\t</select>\n"
+    ."</li></ul></fieldset>"
 
-	$exportoutput .= "<br />\n"
-	."\t<input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull'>"
+	.'<fieldset><legend>'
+	.$clang->gT("Questions")."</legend>\n"
+	."<ul>\n"
+	."<li><input type='radio' class='radiobtn' name='exportstyle' value='abrev' id='headabbrev' />"
+	."<label for='headabbrev'>".$clang->gT("Abbreviated headings")."</label></li>\n"
+	."<li><input type='radio' class='radiobtn' checked name='exportstyle' value='full' id='headfull'  />"
+	."<label for='headfull'>".$clang->gT("Full headings")."</label></li>\n"
+	."<li><input type='radio' class='radiobtn' checked name='exportstyle' value='headcodes' id='headcodes' />"
+	."<label for='headcodes'>".$clang->gT("Question codes")."</label></li>\n"
+	."<li><br /><input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous' />"
+	."<label for='convertspacetous'>"
+	.$clang->gT("Convert spaces in question text to underscores")."</label></li>\n"
+    ."</ul>\n"
+	."</fieldset>\n"
+    
+	."<fieldset>\n"
+    ."<legend>".$clang->gT("Answers")."</legend>\n"
+	."<ul>\n"
+	."<li><input type='radio' class='radiobtn' name='answers' value='short' id='ansabbrev' />"
+	."<label for='ansabbrev'>".$clang->gT("Answer Codes")."</label></li>";
+
+	$exportoutput .= "<li><input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px' />"
+	."<label for='convertyto1'>".$clang->gT("Convert Y to")."</label> <input type='text' name='convertyto' size='3' value='1' maxlength='1' style='width:10px'  />";
+	$exportoutput .= "</li>\n"
+	."<li><input type='checkbox' value='Y' name='convertnto2' id='convertnto2' style='margin-left: 25px' />"
+	."<label for='convertnto2'>".$clang->gT("Convert N to")."</label> <input type='text' name='convertnto' size='3' value='2' maxlength='1' style='width:10px' />";
+	$exportoutput .= "</li><li>\n"
+	."<input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull' />"
 	."<label for='ansfull'>"
-	.$clang->gT("Full Answers")."</label>\n"
-	."</font></td>\n"
-	."\t</tr>\n"
-	."\t<tr><td><font size='1'><strong>"
-	.$clang->gT("Format")."</strong></font></td></tr>\n"
-	."\t<tr>\n"
-	."<td>\n"
-	."\t<input type='radio' class='radiobtn' name='type' value='doc' id='worddoc' onclick='dument.getElementById(\"ansfull\").checked=true;document.getElementById(\"ansabbrev\").disabled=true;'>"
-	."<font size='1'><label for='worddoc'>"
-	.$clang->gT("Microsoft Word (Latin charset)")."</label><br />\n"
-	."\t<input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc'";
+	.$clang->gT("Full Answers")."</label></li>\n"
+	."</ul></fieldset>"
+    ."<fieldset><legend>".$clang->gT("Format")."</legend>\n"
+	."<ul>\n"
+	."<li>\n"
+	."\t<input type='radio' class='radiobtn' name='type' value='doc' id='worddoc' onclick='dument.getElementById(\"ansfull\").checked=true;document.getElementById(\"ansabbrev\").disabled=true;' />"
+	."<label for='worddoc'>"
+	.$clang->gT("Microsoft Word (Latin charset)")."</label></li>\n"
+	."\t<li><input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc'";
 	if (!function_exists('iconv'))
 	{
 		$exportoutput.=' disabled="disabled" ';
 	}
-	$exportoutput.="onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
+	$exportoutput.="onclick='document.getElementById(\"ansabbrev\").disabled=false;' />"
 	."<label for='exceldoc'>"
 	.$clang->gT("Microsoft Excel (All charsets)");
 	if (!function_exists('iconv'))
 	{
-		$exportoutput.='<br /><font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
+		$exportoutput.='<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
 	}
-	$exportoutput.="</label><br />\n"
-	."\t<input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc'";
+	$exportoutput.="</label></li>\n"
+	."\t<li><input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc'";
 	if (!function_exists('iconv'))
 	{
 		$exportoutput.=' checked="checked" ';
 	}
-	$exportoutput.=" onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
+	$exportoutput.=" onclick='document.getElementById(\"ansabbrev\").disabled=false;' />"
 	."<label for='csvdoc'>"
-	.$clang->gT("CSV File (All charsets)")."</label><br />\n";
+	.$clang->gT("CSV File (All charsets)")."</label></li>\n";
 	if(isset($usepdfexport) && $usepdfexport == 1)
 	{
-		$exportoutput .= "\t<input type='radio' class='radiobtn' name='type' value='pdf' id='pdfdoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
+		$exportoutput .= "\t<li><input type='radio' class='radiobtn' name='type' value='pdf' id='pdfdoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;' />"
 		."<label for='pdfdoc'>"
 		.$clang->gT("PDF")."<br />"
-		."</label>\n";
+		."</label></li>\n";
 	}
+    $exportoutput.="</ul></fieldset>\n"
+        ."</div>\n"
+        ."<div class='right'>\n"
+        ."<fieldset>\n"
+        ."<legend>".$clang->gT("Column control")."</legend>\n";
 
-
-	//get max number of datasets
-	$max_datasets = 0;
-
-	$max_datasets_query = "SELECT COUNT(id) FROM {$dbprefix}survey_$surveyid";
-	$max_datasets_result = db_execute_num($max_datasets_query);
-
-	while($max = $max_datasets_result -> FetchRow())
-	{
-		$max_datasets = $max[0];
-	}
-
-	// form fields to limit export from X to Y
-	$exportoutput .= "<br /> ".$clang->gT("from")." <input type='text' name='export_from' size='8' value='1'>";
-	$exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='$max_datasets'>";
-
-
-	$exportoutput .="</font></font></td>\n"
-	."\t</tr>\n"
-	."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
-	."\t<tr>\n"
-	."<td align='center'>\n"
-	."\t<input type='submit' value='"
-	.$clang->gT("Export Data")."'>\n"
-	."\t<input type='hidden' name='sid' value='$surveyid'>\n"
-	."</font></td>\n"
-	."\t</tr>\n"
-	."\t<tr>\n"
-	."<td align=\"center\" bgcolor='silver'>\n";
+	$exportoutput.="\t<input type='hidden' name='sid' value='$surveyid' />\n";
 	if (isset($_POST['sql']))
 	{
 		$exportoutput .= "\t<input type='hidden' name='sql' value=\""
 		.stripcslashes($_POST['sql'])
-		."\">\n";
+		."\" />\n";
 	}
 	if (returnglobal('id')<>'')
 	{
 		$exportoutput .= "\t<input type='hidden' name='answerid' value=\""
 		.stripcslashes(returnglobal('id'))
-		."\">\n";
+		."\" />\n";
 	}
-	$exportoutput .= "</td>\n"
-	."\t</tr>\n"
-	."</table>\n"
-	."</td>";
 
     // Find out if survey results are anonymous
 	if ($thissurvey['private'] == "N")
@@ -321,34 +289,21 @@ if (!$exportstyle)
 		$result=$connect->Execute($query) or safe_die("Couldn't get table list<br />$query<br />".$connect->ErrorMsg());
 		$tablecount=$result->RecordCount();
 	}
-	$exportoutput .= "<td valign='top'>\n"
-	."<table align='center' width='150' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
-	."\t<tr>\n"
-	."<td height='8'><strong>"
-	.$clang->gT("Column Control")."</strong>\n"
-	."</td>\n"
-	."\t</tr>\n"
-	."\t<tr>\n"
-	."<td height='8'><strong><font size='1'>\n"
-	."\t".$clang->gT("Choose Columns").":\n"
-	."</font></strong>";
+	$exportoutput .= $clang->gT("Choose Columns").":\n";
+
 	if ($afieldcount > 255)
 	{
-		$exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+		$exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
 		.$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.","js")
-		."\")'>";
+		."\")' />";
 	}
 	else
 	{
-		$exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+		$exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
 		.$clang->gT("Choose the columns you wish to export.","js")
-		."\")'>";
+		."\")' />";
 	}
-	$exportoutput .= "</font></td>\n"
-	."\t</tr>\n"
-	."\t<tr>\n"
-	."<td align='center'><font size='1'>\n"
-	."\t<select name='colselect[]' multiple size='15'>\n";
+	$exportoutput .= "<br /><select name='colselect[]' multiple size='20'>\n";
 	$i=1;
 	foreach($excesscols as $ec)
 	{
@@ -367,57 +322,38 @@ if (!$exportstyle)
 		$exportoutput .= ">$i: $ec</option>\n";
 		$i++;
 	}
-	$exportoutput .= "\t</select><br />\n"
-	."<img src='$imagefiles/blank.gif' height='7' alt=''></font></font></td>\n"
-	."\t</tr>\n"
-	."</table>\n"
-	."</td>\n";
+	$exportoutput .= "\t</select>\n";
+    $exportoutput .= "<br />&nbsp;</fieldset>\n";
 	if (isset($tablecount) && $tablecount > 0) //Do second column
 	{
 		//OPTIONAL EXTRAS (FROM TOKENS TABLE)
 		if ($tablecount > 0)
 		{
-			$exportoutput .= "<td valign='top'>\n"
-			."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
-			."\t<tr>\n"
-			."<td height='8'><font face='verdana' size='1'><strong>"
-			.$clang->gT("Token Control")."</strong>\n"
-			."</font></td>\n"
-			."\t</tr>\n"
-			."\t<tr>\n"
-			."<td height='8'><strong><font size='1'>\n"
+			$exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
 			.$clang->gT("Choose Token Fields").":"
-			."</font></font></strong></td>\n"
-			."\t</tr>\n"
-			."\t<tr>\n"
-			."<td><font size='1'>"
 			."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 			.$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
-			."\")' /><br /><br />\n"
-			."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name'>"
-			."<label for='first_name'>".$clang->gT("First Name")."</label><br />\n"
-			."<input type='checkbox' class='checkboxbtn' name='last_name' id='last_name'>"
-			."<label for='last_name'>".$clang->gT("Last Name")."</label><br />\n"
-			."<input type='checkbox' class='checkboxbtn' name='email_address' id='email_address'>"
-			."<label for='email_address'>".$clang->gT("Email")."</label><br />\n"
-			."<input type='checkbox' class='checkboxbtn' name='token' id='token'>"
-			."<label for='token'>".$clang->gT("Token")."</label><br />\n";
+			."\")' /><ul><li>\n"
+			."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name' />"
+			."<label for='first_name'>".$clang->gT("First Name")."</label></li>\n"
+			."<li><input type='checkbox' class='checkboxbtn' name='last_name' id='last_name' />"
+			."<label for='last_name'>".$clang->gT("Last Name")."</label></li>\n"
+			."<li><input type='checkbox' class='checkboxbtn' name='email_address' id='email_address' />"
+			."<label for='email_address'>".$clang->gT("Email")."</label></li>\n"
+			."<li><input type='checkbox' class='checkboxbtn' name='token' id='token' />"
+			."<label for='token'>".$clang->gT("Token")."</label></li>\n";
 
             $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
             foreach ($attrfieldnames as $attr_name=>$attr_desc)
 			{
-				$exportoutput .= "<input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
-				."<label for='$attr_name'>".$attr_desc."</label><br />\n";
+				$exportoutput .= "<li><input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
+				."<label for='$attr_name'>".$attr_desc."</label></li>\n";
 			}
-			$exportoutput .= "</font></font></td>\n"
-			."\t</tr>\n"
-			."</table>"
-			."</td>";
+			$exportoutput .= "</ul></fieldset>\n";
 		}
 	}
-	$exportoutput .= "</tr>\n"
-	."</table><br />\n"
-	."\t</form>\n";
+	$exportoutput .= "</div>\n"
+	."\t<div style='clear:both;'><p><input type='submit' value='".$clang->gT("Export data")."' /></div></form></div>\n";
 	return;
 }
 
@@ -429,7 +365,7 @@ if (!$exportstyle)
 // Actual export routines start here !
 // ======================================================================
 
-$tokenTableExists=tokenTableExists($surveyid);
+$tokenTableExists=tableExists('tokens_'.$surveyid);
 
 if ($tokenTableExists)
 {
@@ -822,36 +758,32 @@ for ($i=0; $i<$fieldcount; $i++)
 					if (mb_substr($fieldinfo,-1) == '0')
 					{ //TIBO
 						$strlabel = "1";
-						$lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  AND t.lid=$flid group by l.lid";
+						$lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  AND t.lid=$flid";
 					}
 					else
 					{
 						$strlabel = "2";
-						$lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  AND t.lid=$flid1 group by l.lid";
+						$lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  AND t.lid=$flid1";
 					}
 					$lr = db_execute_assoc($lq);
 					$j=0;
 					while ($lrow=$lr->FetchRow())
 					{
 						$strlabel = $strlabel."-".$lrow['labeltitle'];
-						$fquest .= " [".strip_tags_full($lrow['answer'])."][".strip_tags_full($strlabel)."]";
+						$fquest .= " [".FlattenText($lrow['answer'])."][".FlattenText($strlabel)."]";
 						$j++;
 					}
-						
 					break;
 
 			}
-			$fquest=strip_tags_full($fquest);
-
-			$fquest = str_replace("\n", " ", $fquest);
-			$fquest = str_replace("\r", "", $fquest);
+			$fquest=FlattenText($fquest);
 			if ($type == "csv")
 			{
 				$firstline .="\"$fquest\"$separator";
 			}
 			else
 			{
-				$firstline .= "$fquest $separator";
+				$firstline .= $fquest.$separator;
 			}
 		}
 		if($convertspacetous == "Y")

@@ -1,220 +1,89 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id: $
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+* 
+* $Id: $
+*/
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (!isset($action)) {$action=returnglobal('action');}
-
-
-include_once('classes/phpCAS/CAS.php');
-include_once("classes/phpCAS/cas_config.php");
-//phpCAS::setDebug($casDebug);
-//
-//phpCAS::client(CAS_VERSION_2_0, $casAuthServer, $casAuthPort, $casAuthUri, false);
-
-
-//phpCAS::setServerLoginURL("https://localhost:8443/cas-server/login");
-//phpCAS::setServerLogoutURL("https://localhost:8443/cas-server/logout");
-
-
-// no SSL validation for the CAS server
-//phpCAS::setNoCasServerValidation();
-if (isset($_REQUEST['action']) && $_REQUEST['action']=='logout')
-{
-	session_unset();
-	session_destroy();
-	session_write_close();
-  	//phpCAS::logout();
-  	header("Location: $casAuthServer");
-	exit;
-  //phpCAS::forceAuthentication();
-}
-//if ($action=='login')
-if (isset($_REQUEST['action']) && $_REQUEST['action']=='login')
-{
-	//phpCAS::forceAuthentication();
-}
-//phpCAS::setFixedServiceURL($singleSignOnService);
-if(!isset($_SESSION['CASauth']) || isset($_SESSION['CASauth']) && $_SESSION['CASauth']===false)
-{
-	if(isset($_GET['token']))
-	{
-		if(verifyToken($_GET['token'])==$_GET['user'])
-		{
-			$_SESSION['CASauth'] = true;
-			setUserRightsCas($_GET['user'], "admin");
-			//echo "Token validiert => VALIDE <br/>";
-		}
-		else
-		{
-			$_SESSION['CASauth'] = false;
-			//echo "Token validiert => NICHT Valide <br/>";
-		}
-	}
-	else
-	{
-		$_SESSION['CASauth'] = false;
-	}
-}
-
-if(isset($_SESSION['CASauth']) && !$_SESSION['CASauth'] || !isset($_SESSION['CASauth']))
-{
-	header("Location: $casAuthServer$casAuthUri");
-	exit;
-}
-
-
-//// force CAS authentication
-//if(!phpCAS::isAuthenticated())
-//{
-//	
-//
-//	echo "NICHT authentifiziert";
-//	exit;
-//}
-//
-//if(phpCAS::isAuthenticated())
-//{
-//
-//	echo phpCAS::getUser()." Authentifiziert";
-//
-//}
-
-// at this step, the user has been authenticated by the CAS server
-// and the user's login name can be read with phpCAS::getUser().
-
-// for this test, simply print that the authentication was successfull
-//echo '<p>The user\'s login is <b>'.phpCAS::getUser().'</b>.</p>';
-
-//$casAuthStatus = phpCAS::checkAuthentication();
-//
-//if(phpCAS::isAuthenticated())
-//{
-//	echo phpCAS::getUser()." is Authenticated";
-//}
-//else
-//{
-//	echo " is NOT Authenticated";
-//}
-// import phpCAS lib
-
 //
 // phpCAS simple client
 //
-//if (isset($_REQUEST['action']) && $_REQUEST['action']=='logout')
-//{
-//	session_destroy();
-//	session_write_close();
-//  	phpCAS::logout();
-//  	exit;
-//  //phpCAS::forceAuthentication();
-//}
-////if ($action=='login')
-//if (isset($_REQUEST['action']) && $_REQUEST['action']=='login')
-//{
-//	phpCAS::forceAuthentication();
-//}
-//
-//if(!isset($_SESSION['CASauthenticated']) || (isset($_SESSION['CASauthenticated']) && $_SESSION['CASauthenticated']==FALSE))
-//{
-//	//echo "bla";
-//	// import phpCAS lib
-//	include_once('classes/phpCAS/CAS.php');
-//	include_once("classes/phpCAS/cas_config.php");
-//	
-//	phpCAS::setDebug();
-//	
-//	// initialize phpCAS
-//	phpCAS::client(CAS_VERSION_2_0, $casAuthServer, $casAuthPort, $casAuthUri, false);
-//	
-//	// no SSL validation for the CAS server
-//	phpCAS::setNoCasServerValidation();
-//
-//	// check CAS authentication
-//	//$auth = phpCAS::checkAuthentication();
-//	
-//	
-//	if(phpCAS::isAuthenticated())
-//	{
-//		$_SESSION['CASauthenticated'] = phpCAS::isAuthenticated();
-//		if(isset($_GET['user']))
-//		{
-//			$token = $_GET['token'];
-//			$user = $_GET['user'];
-//	
-//			$action = getGet('action');
-//			$siddy = getGet('sid');
-//				
-//			$get = '?';
-//			if($action!=FALSE)
-//			$get .= "action=".$action."&";
-//			if($siddy!=FALSE)
-//			$get .= "sid=".$siddy."&";
-//			
-//			if($user == verifyToken($token) && verifyToken($token) != null)
-//			{
-//				$auth = TRUE;
-//				//setUserRightsCas($user);
-//				$_SESSION['CASauthenticated'] = $auth;
-//				header("Location: admin.php$get");
-//			}
-//			else
-//			{
-//				$auth = FALSE;
-//				$_SESSION['CASauthenticated'] = $auth;
-//				phpCAS::forceAuthentication();
-//			}
-//		}elseif(!isset($_SESSION['CASauthenticated']))
-//		{
-//			phpCAS::forceAuthentication();
-//		}
-//	}
-//	else
-//	{
-//		phpCAS::forceAuthentication();
-//	}
-////	if (isset($_REQUEST['action']) && $_REQUEST['action']=='logout')
-////	{
-////		//session_unset();
-////		session_destroy();
-////		session_write_close();
-////		//phpCAS::logout();
-////		//phpCAS::forceAuthentication();
-////		header("Location: http://$casAuthServer$casAuthUri&category=auth.logout");
-////	}
-//
-//	//if ($action=='login')
-////	if (isset($_REQUEST['action']) && $_REQUEST['action']=='login')
-////	{
-////		//phpCAS::forceAuthentication();
-////		header("Location: http://$casAuthServer$casAuthUri&category=auth.login");
-////	}
-////	if(!isset($_SESSION['CASauthenticated']) || (isset($_SESSION['CASauthenticated']) && $_SESSION['CASauthenticated']===FALSE))
-////	{
-////		header("Location: http://$casAuthServer$casAuthUri&category=auth.login");
-////	}
-//
-//}
-//if(!$_SESSION['CASauthenticated']===true)
-//{
-//	phpCAS::forceAuthentication();
-//}
+
+if(!isset($_SESSION['CASauthenticated']) || (isset($_SESSION['CASauthenticated']) && $_SESSION['CASauthenticated']==FALSE) || isset($_REQUEST['action']))
+{
+	//echo "bla";
+	// import phpCAS lib
+	include_once('classes/phpCAS/CAS.php');
+	include_once("classes/phpCAS/cas_config.php");
+	if(isset($_GET['user']))
+	{
+		$token = $_GET['token'];
+		$user = $_GET['user'];
+	
+		$action = getGet('action');
+		$siddy = getGet('sid');
+	
+		$get = '?';
+		if($action!=FALSE)
+		$get .= "action=".$action."&";
+		if($siddy!=FALSE)
+		$get .= "sid=".$siddy."&";
+	
+		if($user == verifyToken($token) && verifyToken($token) != null)
+		{
+			$auth = TRUE;
+			//setUserRightsCas($user);
+			$_SESSION['CASauthenticated'] = $auth;
+			header("Location: admin.php$get");
+		}
+		else
+		{
+			$auth = FALSE;
+			$_SESSION['CASauthenticated'] = $auth;
+			header("Location: http://$casAuthServer$casAuthUri&category=auth.login");
+		}
+	}elseif(!isset($_SESSION['CASauthenticated']))
+	{
+		header("Location: http://$casAuthServer$casAuthUri&category=auth.login");
+	}
+	
+	if (isset($_REQUEST['action']) && $_REQUEST['action']=='logout')
+	{
+		//session_unset();
+		session_destroy();
+		session_write_close();
+		//phpCAS::logout();
+	  //phpCAS::forceAuthentication();
+		header("Location: http://$casAuthServer$casAuthUri&category=auth.logout");
+	}
+
+	//if ($action=='login')
+	if (isset($_REQUEST['action']) && $_REQUEST['action']=='login')
+	{
+		//phpCAS::forceAuthentication();
+		header("Location: http://$casAuthServer$casAuthUri&category=auth.login");
+	}
+	if($_SESSION['CASauthenticated']===FALSE)
+	{
+		header("Location: http://$casAuthServer$casAuthUri&category=auth.login");
+	}
+
+}
 if(isset($_GET['token']))
 {
-
+	
 	$action = getGet('action');
 	$siddy = getGet('sid');
-		
+	
 	$get = '?';
 	if($action!=FALSE)
 	$get .= "action=".$action."&";
@@ -227,7 +96,7 @@ if(isset($_GET['token']))
 }
 
 function getGet($var)
-{
+	{
 	switch ($var){
 		case "all":
 			foreach($_GET as $get)
@@ -246,7 +115,7 @@ function getGet($var)
 	}
 }
 function verifyToken($token) {
-	global $singleSignOnService, $singleSignOnSharedSecret, $timeadjust;
+	global $singleSignOnService, $singleSignOnSharedSecret;
 
 	// check the configuration options in LocalSettings.php
 	//QISSingleSignOn::checkConfiguration();
@@ -273,13 +142,7 @@ function verifyToken($token) {
 
 	// check time
 	$currentTime = microtime();
-	
-	
 	$currentTime = substr($currentTime, strpos($currentTime, ' '));
-	
-	if(isset($timeadjust))
-		$currentTime += $timeadjust*3600;
-	
 	if (intval($tokens[1]) > intval($currentTime) + 60) {
 		echo ('QISSingleSignOn: Token was created in the future (Check your clocks):'.htmlspecialchars($token));
 		return null;
@@ -325,10 +188,7 @@ function verifyToken($token) {
 	// copy _ridlist to session for WikiRights (if present)
 	if (count($userinfo) > -1) {
 		//session_start();
-		/**
-		 * Achtung! momentan bekommt noch jedern nutzer mit gültigem Token admin rechte!
-		 */
-		setUserRightsCas($user, "admin");
+		setUserRightsCas($user, $user);
 		//$_SESSION['_ridlist'] = $userinfo[1];
 	}
 
@@ -338,11 +198,11 @@ function verifyToken($token) {
 
 function setUserRightsCas($user, $role="")
 {
-	include("../config-defaults.php");
-	include("../config.php");
+	include_once("../config-defaults.php");
+	//include("../config.php"); //Not needed since config-defaults includes config.php
 	
 	$_SESSION['user'] = $user;
-	$_SESSION['loginID'] = 1;
+		$_SESSION['loginID'] = 1;
 	$_SESSION['dateformat'] = 1;
 
 	$_SESSION['adminlang'] = $defaultlang;
@@ -354,13 +214,13 @@ function setUserRightsCas($user, $role="")
 	switch ($role){
 		case "admin":
 			//echo "hallo";
-			$_SESSION['USER_RIGHT_CREATE_SURVEY'] = 1;
-			$_SESSION['USER_RIGHT_CONFIGURATOR'] = 1;
-			$_SESSION['USER_RIGHT_CREATE_USER'] = 1;
-			$_SESSION['USER_RIGHT_DELETE_USER'] = 1;
-			$_SESSION['USER_RIGHT_SUPERADMIN'] = 1;
-			$_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = 1;
-			$_SESSION['USER_RIGHT_MANAGE_LABEL'] = 1;
+		$_SESSION['USER_RIGHT_CREATE_SURVEY'] = 1;
+        $_SESSION['USER_RIGHT_CONFIGURATOR'] = 1;
+        $_SESSION['USER_RIGHT_CREATE_USER'] = 1;
+        $_SESSION['USER_RIGHT_DELETE_USER'] = 1;
+        $_SESSION['USER_RIGHT_SUPERADMIN'] = 1;
+        $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = 1;
+        $_SESSION['USER_RIGHT_MANAGE_LABEL'] = 1;
 			break;
 		default:
 			//echo "default";
@@ -371,10 +231,10 @@ function setUserRightsCas($user, $role="")
 			$_SESSION['USER_RIGHT_SUPERADMIN'] = 0;
 			$_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = 1;
 			$_SESSION['USER_RIGHT_MANAGE_LABEL'] = 1;
-
+        
 			break;
 	}
-	return;
-}
 
+	}
+	
 ?>

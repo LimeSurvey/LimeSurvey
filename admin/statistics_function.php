@@ -109,8 +109,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	//no survey ID? -> come and get one
 	if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 	
-	// Set language for questions and labels to base language of this survey
-	//$language = GetBaseLanguageFromSurveyID($surveyid);
+    //Get an array of codes of all available languages in this survey
+    $surveylanguagecodes = GetAdditionalLanguagesFromSurveyID($surveyid);
+    $surveylanguagecodes[] = GetBaseLanguageFromSurveyID($surveyid);
+
+    // Set language for questions and labels to base language of this survey
 	$language='en';
     //$surveyid=sanitize_int($surveyid);
 	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -154,7 +157,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			$myField = $surveyid."X".$field['gid']."X".$field['qid'];
 			
 			// Multiple Options get special treatment
-			if ($field['type'] == "M" || $field['type'] == "P") {$myField = "M$myField";}
+			if ($field['type'] == "M") {$myField = "M$myField";}
+            if ($field['type'] == "P") {$myField = "P$myField";}
 			//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
 			if ($field['type'] == "N") {$myField = "N$myField";}
 			
@@ -296,7 +300,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			 * N - Numerical Input
 			 * K - Multiple Numerical Input
 			 */
-			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" &&
+			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
 			$firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" &&
 			$pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
 			{
@@ -316,7 +320,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			}
 				
 			//M - Multiple Options
-			elseif ($firstletter == "M")
+            //P - Multiple Options with comments
+			elseif ($firstletter == "M"  || $firstletter == "P")
 			{
 				//create a list out of the $pv array
 				list($lsid, $lgid, $lqid) = explode("X", $pv);
@@ -368,10 +373,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				{
 					$selects[]=db_quote_id(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
 				}
-				if (substr($pv, strlen($pv)-1, 1) == "=" && $_POST[$pv] != "")
-				{
-					$selects[]=db_quote_id(substr($pv, 0, -1))." = '".$_POST[$pv]."'";
-				}
 			}
 				
 			//T - Long Free Text
@@ -409,20 +410,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			elseif (substr($pv, 0, 9) == "datestamp")
 			{
 				//timestamp equals
-				if (substr($pv, -1, 1) == "=" && !empty($_POST[$pv]))
+				if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
 				{
 					$selects[] = db_quote_id('datestamp')." = '".$_POST[$pv]."'";
 				}
 				else
 				{
 					//timestamp less than
-					if (substr($pv, -1, 1) == "<" && !empty($_POST[$pv]))
+					if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
 					{
 						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
 					}
 						
 					//timestamp greater than
-					if (substr($pv, -1, 1) == ">" && !empty($_POST[$pv]))
+					if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
 					{
 						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
 					}
@@ -530,7 +531,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			
 			$statisticsoutput .= "<br />\n<table class='statisticssummary' >\n"
 			."\t<thead><tr><th colspan='2'>".$clang->gT("Results")."</th></tr></thead>\n"
-			."\t<tr><th>".$clang->gT("Number of records in this query:").'</th>'
+			."\t<tr><th >".$clang->gT("Number of records in this query:").'</th>'
 			."<td>$results</td></tr>\n"
 			."\t<tr><th>".$clang->gT("Total records in survey:").'</th>'
 			."<td>$total</td></tr>\n";
@@ -542,7 +543,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				$statisticsoutput .= "\t<tr><th align='right'>".$clang->gT("Percentage of total:").'</th>'
 				."<td>$percent%</td></tr>\n";
 			}
-			
+			$statisticsoutput .="</table>\n";
 			
 		break;
 		default:
@@ -564,94 +565,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		if($outputType=='html')
 		{
 			//add a buttons to browse results
-			$statisticsoutput .= "\t<tr >"
-			."\t\t<td align='right' width='50%'><form action='$scriptname?action=browse' method='post' target='_blank'>\n"
-			."\t\t<input type='submit' value='".$clang->gT("Browse")."'  />\n"
+			$statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
+			."\t\t<p><input type='submit' value='".$clang->gT("Browse")."'  />\n"
 			."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
 			."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
-			."\t\t</form></td>\n"
-			."\t\t</tr>\n";
+			."\t\t</form>";
 		}
-		//Add the fieldnames
-		if (isset($summary) && $summary)
-		{
-			$statisticsoutput .= "\t<tr ><td>";
-			//The summary array contains the fields that have been selected from the filter screen
-			//  to be displayed in the results page. So we're iterating through them one at a time
-			foreach($summary as $viewfields)
-			{
-				//We're checking the first letter of each of the selected-to-be-displayed fields
-				//  in order to deal with the special types (usually those with multiple files per question)
-				switch(substr($viewfields, 0, 1))
-				{
-					/*
-					 * some special treatment for
-					 *
-					 * N - Numerical Input
-					 * T - Long Free Text
-					 * K - Multiple Numerical Input
-					 */
-					case "N":
-					case "T":
-					case "K":
-							
-						// Now we remove the first character from the fieldname, and so are left
-						//   with just the actual SGQ code for this field/answer.
-						$field = substr($viewfields, 1, strlen($viewfields)-1);
-						$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-						break;
-							
-							
-						//M - Multiple Options
-					case "M":
-							
-						//create a SGQ identifier
-						list($lsid, $lgid, $lqid) = explode("X", substr($viewfields, 1, strlen($viewfields)-1));
-							
-						//we need all the answer codes.
-						//there might be more than one because it's a multiple options question
-						$aquery="SELECT code FROM ".db_table_name("answers")." WHERE qid=$lqid AND language='{$language}' ORDER BY sortorder, answer";
-						$aresult=db_execute_num($aquery) or safe_die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
-							
-						// go through every possible answer
-						while ($arow=$aresult->FetchRow())
-						{
-							$field = substr($viewfields, 1, strlen($viewfields)-1).$arow[0];
-							$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-						}
-							
-						//check data of "other" field
-						$aquery = "SELECT other FROM ".db_table_name("questions")." WHERE qid=$lqid AND language='{$language}'";
-						$aresult = db_execute_num($aquery);
-							
-						while($arow = $aresult->FetchRow())
-						{
-							//"other" answer set?
-							if ($arow[0] == "Y") {
-									
-								//some debugging output
-								//$statisticsoutput .= $arow[0];
-									
-								$field = substr($viewfields, 1, strlen($viewfields)-1)."other";
-								$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-							}
-
-						} // while
-							
-						break;
-							
-						//default treatment for all the other question types
-					default:
-						$field = $viewfields;
-						$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-						break;
-				}
-
-			}	//end foreach	
-			$statisticsoutput .= "\t</td></tr>";
-		}	//end if (summary)
-	}	//end if (results available?)
+	}	//end if (results > 0)
 	
 	//Show Summary results
 	if (isset($summary) && $summary)
@@ -680,7 +601,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			// 1. Get answers for question ##############################################################
 	
 			//M - Multiple Options, therefore multiple fields
-			if ($firstletter == "M")
+			if ($firstletter == "M" || $firstletter == "P")
 			{
 				//get SGQ data
 				list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -1173,7 +1094,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);
+								$showem[]=array($clang->gT("1st quartile (Q1)"), $row[$fieldname]);
 							}
 						}
 							
@@ -1208,7 +1129,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array("Median Value", $row[$fieldname]);
+								$showem[]=array($clang->gT("Median value"), $row[$fieldname]);
 							}
 						}
 							
@@ -1250,7 +1171,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);
+								$showem[]=array($clang->gT("3rd quartile (Q3)"), $row[$fieldname]);
 							}
 						}
 							
@@ -1658,8 +1579,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 	
 					case "I": //Language
-						// Using previously defined $survlangs array of language codes
-						foreach ($survlangs as $availlang)
+						// Using previously defined $surveylanguagecodes array of language codes
+						foreach ($surveylanguagecodes as $availlang)
 						{
 							$alist[]=array($availlang, getLanguageNameFromCode($availlang,false));
 						}
@@ -1857,7 +1778,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						
 					break;
 				}
-					
+				echo '';	
 				//loop thorugh the array which contains all answer data
 				foreach ($alist as $al)
 				{
@@ -1916,15 +1837,39 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 					else
 					{
-						//get more data
-	
-						if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+						if ($al[0] != "")
 						{
-							// mssql cannot compare text blobs so we have to cast here
-							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
+							//get more data
+
+							if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+							{
+								// mssql cannot compare text blobs so we have to cast here
+								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
+							}
+							else
+								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 						}
 						else
-						$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+						{ // This is for the 'NoAnswer' case
+						  // We need to take into account several possibilities
+						  // * NoAnswer cause the participant clicked the NoAnswer radio
+						  //  ==> in this case value is '' or ' '
+						  // * NoAnswer in text field
+						  //  ==> value is ''
+						  // * NoAnswer due to conditions, or a page not displayed
+						  //  ==> value is NULL
+                            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+                            {
+                                // mssql cannot compare text blobs so we have to cast here
+                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." IS NULL "
+                                    . "OR cast(".db_quote_id($rt)." as varchar) = '' "
+                                    . "OR cast(".db_quote_id($rt)." as varchar) = ' '";
+                            }
+                            else
+							    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." IS NULL "
+								    . "OR ".db_quote_id($rt)." = '' "
+								    . "OR ".db_quote_id($rt)." = ' '";
+						}
 	
 					}
 	
@@ -1952,8 +1897,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							
 						//"other" handling
 						//"Answers" means that we show an option to list answer to "other" text field
-						elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-						{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
+						elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers" || $qtype == "P")
+						{
+                            if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
+                                else  $ColumnName_RM = $al[2];
+                            $fname="$al[1] <input type='button' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        }
 							
 						/*
 						 * text questions:
@@ -3013,7 +2962,23 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						}
 	
 						$lblout=array();
-						if (getLanguageRTL($language))
+                        if ($language=='ar')
+                        {
+                            $lblout=$lbl; //reset text order to original
+                            include_once($rootdir.'/classes/core/Arabic.php');
+                            $Arabic = new Arabic('ArGlyphs');
+                            foreach($lblout as $kkey => $kval){
+                                if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
+                                //eng
+                                //no reversing
+                                }
+                                else{
+                                    $kval = $Arabic->utf8Glyphs($kval,50,false);
+                                    $lblout[$kkey] = $kval;
+                                }
+                            }                             
+                        }
+						elseif (getLanguageRTL($language))
 						{
 							$lblout=$lblrtl;
 						}
@@ -3081,7 +3046,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 						break;
 						case 'html':
-							$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1'></td></tr>";
+							$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1' /></td></tr>";
 										
 						break;
 						default:

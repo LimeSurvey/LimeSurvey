@@ -18,7 +18,7 @@ $(document).ready(function(){
 
 
     // Loads the tooltips for the toolbars
-    $('img[alt]').each(function() {
+    $('img[alt],input[src]').each(function() {
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
@@ -37,7 +37,7 @@ $(document).ready(function(){
                         },
                show: {effect: { length:50}}
 
-           });
+});
         }
     });    
 
@@ -119,7 +119,7 @@ function isEmpty(elem, helperMsg)
 	return true;
 }
 
-function codeCheck(prefix, elementcount, helperMsg)
+function codeCheck(prefix, elementcount, helperMsg, reservedKeywordMsg)
 {
     var i, j;
     var X = new Array();
@@ -129,6 +129,11 @@ function codeCheck(prefix, elementcount, helperMsg)
         if (j != undefined) 
         {
            j.value=trim(j.value);
+           if (j.value == "other")
+           {
+              alert(reservedKeywordMsg);
+              return false;
+           }
            X.push(j.value);
         }
     }   

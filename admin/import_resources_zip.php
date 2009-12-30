@@ -28,12 +28,12 @@ if (!isset($lid))
 
 
 
-if ($action == "importsurvresources" && $surveyid) {
+if ($action == "importsurveyresources" && $surveyid) {
 	if ($demoModeOnly === true)
 	{
-		$importsurvresourcesoutput = "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-	    $importsurvresourcesoutput .= $clang->gT("Demo Mode Only: Uploading file is disabled in this system.")."<br /><br />\n";
-		$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\" />&nbsp;<br />&nbsp;<br />\n";
+		$importsurveyresourcesoutput = "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	    $importsurveyresourcesoutput .= $clang->gT("Demo Mode Only: Uploading file is disabled in this system.")."<br /><br />\n";
+		$importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\" />&nbsp;<br />&nbsp;<br />\n";
 		return;
 	}
 	require("classes/phpzip/phpzip.inc.php");
@@ -47,17 +47,17 @@ if ($action == "importsurvresources" && $surveyid) {
 	$basedestdir = $publicdir."/upload/surveys";
 	$destdir=$basedestdir."/$surveyid/";
 
-	$importsurvresourcesoutput = "<br />\n";
-	$importsurvresourcesoutput .= "<table class='alertbox'>\n";
-	$importsurvresourcesoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Survey Resources")."</strong></td></tr>\n";
-	$importsurvresourcesoutput .= "\t<tr><td align='center'>\n";
+	$importsurveyresourcesoutput = "<br />\n";
+	$importsurveyresourcesoutput .= "<table class='alertbox'>\n";
+	$importsurveyresourcesoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Survey Resources")."</strong></td></tr>\n";
+	$importsurveyresourcesoutput .= "\t<tr><td align='center'>\n";
 
 	if (!is_writeable($basedestdir))
 	{
-		$importsurvresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-	    $importsurvresourcesoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
-		$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
-		$importsurvresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+		$importsurveyresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	    $importsurveyresourcesoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
+		$importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
+		$importsurveyresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
 		return;
 	}
 
@@ -72,16 +72,16 @@ if ($action == "importsurvresources" && $surveyid) {
 
 	if (is_file($zipfile))
 	{
-		$importsurvresourcesoutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
-		$importsurvresourcesoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
-		$importsurvresourcesoutput .= $clang->gT("Reading file..")."<br />\n";
+		$importsurveyresourcesoutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+		$importsurveyresourcesoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+		$importsurveyresourcesoutput .= $clang->gT("Reading file..")."<br />\n";
 
 		if ($z->extract($extractdir,$zipfile) != 'OK')
 		{
-			$importsurvresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			$importsurvresourcesoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br /><br />\n";
-			$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
-			$importsurvresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+			$importsurveyresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+			$importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br /><br />\n";
+			$importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
+			$importsurveyresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
 			return;
 		}
 
@@ -147,11 +147,11 @@ if ($action == "importsurvresources" && $surveyid) {
 		}
 		elseif (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
 		{
-			$importsurvresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			$importsurvresourcesoutput .= $clang->gT("This ZIP archive contains no valid Resources files. Import failed.")."<br /><br />\n";
-			$importsurvresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP Archive.")."<br /><br />\n";
-			$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
-			$importsurvresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+			$importsurveyresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+			$importsurveyresourcesoutput .= $clang->gT("This ZIP archive contains no valid Resources files. Import failed.")."<br /><br />\n";
+			$importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP Archive.")."<br /><br />\n";
+			$importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
+			$importsurveyresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
 			return;
 			
 		}
@@ -172,34 +172,34 @@ if ($action == "importsurvresources" && $surveyid) {
 		        $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
 		}
 
-        		$importsurvresourcesoutput .= "<strong>".$clang->gT("Imported Resources for")." SID:</strong> $surveyid<br />\n";
-		        $importsurvresourcesoutput .= "<br />\n<strong><font color='$color'>".$status."</font></strong><br />\n";
-		        $importsurvresourcesoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
-		        $importsurvresourcesoutput .= "".$clang->gT("Total Imported files").": $okfiles<br />\n";
-		        $importsurvresourcesoutput .= "".$clang->gT("Total Errors").": $errfiles<br />\n";
-			$importsurvresourcesoutput .= $ImportListHeader;
+        		$importsurveyresourcesoutput .= "<strong>".$clang->gT("Imported Resources for")." SID:</strong> $surveyid<br />\n";
+		        $importsurveyresourcesoutput .= "<br />\n<strong><font color='$color'>".$status."</font></strong><br />\n";
+		        $importsurveyresourcesoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
+		        $importsurveyresourcesoutput .= "".$clang->gT("Total Imported files").": $okfiles<br />\n";
+		        $importsurveyresourcesoutput .= "".$clang->gT("Total Errors").": $errfiles<br />\n";
+			$importsurveyresourcesoutput .= $ImportListHeader;
 			foreach ($aImportedFilesInfo as $entry)
 			{
-		        	$importsurvresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry["filename"]."</li>\n";
+		        	$importsurveyresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry["filename"]."</li>\n";
 			}
-		        $importsurvresourcesoutput .= "\t</ul><br /><br />\n";
-			$importsurvresourcesoutput .= $ErrorListHeader;
+		        $importsurveyresourcesoutput .= "\t</ul><br /><br />\n";
+			$importsurveyresourcesoutput .= $ErrorListHeader;
 			foreach ($aErrorFilesInfo as $entry)
 			{
-		        	$importsurvresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry['filename']." (".$entry['status'].")</li>\n";
+		        	$importsurveyresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry['filename']." (".$entry['status'].")</li>\n";
 			}
 	}
 	else
 	{
-		$importsurvresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-	    $importsurvresourcesoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
-		$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
-		$importsurvresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+		$importsurveyresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	    $importsurveyresourcesoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
+		$importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
+		$importsurveyresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
 		return;
 	}
 		// Final Back not needed if files have been imported
-//		$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
-		$importsurvresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+//		$importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
+		$importsurveyresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
 }
 
 
@@ -405,7 +405,7 @@ if ($action == "templateupload")
 
     $importtemplateoutput = "<br />\n";
     $importtemplateoutput .= "<table class='alertbox'>\n";
-    $importtemplateoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Label Set")."</strong></td></tr>\n";
+    $importtemplateoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Template")."</strong></td></tr>\n";
     $importtemplateoutput .= "\t<tr><td align='center'>\n";
 
     if (!is_writeable($basedestdir))

@@ -3,11 +3,7 @@ body {
 	margin: 0;
 	text-align: left;
 }
-.boxstyle {
-	border-color: #111;
-	border-width: 1;
-	border-style: solid;
-}
+
 .footer {
 	margin: 0;
 	padding: 5px;
@@ -51,16 +47,10 @@ table.menubar {
 	font-size: 8pt;
 }
 
-
-table.table2columns {
-	width: 100%;
-}
-.table2columns td+td {
-	text-align: left;
-}
 .outlinetable {
 	border: 1px solid #111;
 }
+
 .outlinetable td {
 	font-size: 10pt;
 	border: 1px solid #CCC;
@@ -83,15 +73,16 @@ td {
 	font-size: 11px;
 }
 .standardbtn {
-	height: 20;
+	height: 20px;
 	color: #000;
 	font-size: 11px;
 }
 .disabledbtn {
-	height: 20;
+	height: 20px;
 	color: #999;
 	font-size: 11px;
 }
+
 input, select {
 	color: #000080;
 	background: #EEEFFF;
@@ -162,10 +153,7 @@ textarea {
 	font-weight: bold;
 	color: #090;
 }
- {
-	font-weight: bold;
-	color: #F00;
-}
+
 font.settingcaption {
 	vertical-align: top;
 	text-align: right;

@@ -2,23 +2,26 @@
 .choice-5-pt-radio ul {
 	margin-left: 2.5em;
 }
- .yes-no ul
-,.gender ul {
-	margin-left: 1em;
+ .yes-no ul,
+ .gender ul {
+	margin-left: 2em;
 }
 
 .multiple-short-txt ul.numbers-only li span {
 	width: 10em;
 }
 
+.multiple-short-txt ul,
+.multiple-opt-comments ul,
+.numeric-multi ul {
+	margin-left: 1em;
+	padding-left: 0%;
+}
 
- .multiple-short-txt ul
-,.multiple-opt-comments ul
-,.numeric-multi ul
-,.multiple-short-txt ul li
-,.multiple-opt-comments ul li
-,.numeric-multi ul li {
-	margin-left: 0%;
+.multiple-short-txt ul li,
+.multiple-opt-comments ul li,
+.numeric-multi ul li {
+	margin-left: 0;
 	padding-left: 0%;
 }
 
@@ -94,9 +97,8 @@ td.questionhelp {
 }
 
 .numeric-multi ul li label {
-    float: left;  
-    width: 55%;  
-    text-align: right; 
+    float: left;
+	width: auto; 
 }
 
 .numeric-multi ul li {  
@@ -116,4 +118,20 @@ td.questionhelp {
 input.submit
 {
     padding:0px;
+}
+
+/** UI Slider **/
+
+.numeric-multi label.slider-label {
+	margin-top: 1.3em;
+}
+
+.slider_lefttext {
+	float: left;
+	margin-top: 1.5em;
+}
+
+.slider_righttext {
+	float: left;
+	margin-top: 1.5em;
 }

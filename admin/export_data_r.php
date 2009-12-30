@@ -30,7 +30,9 @@
  * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
  */
 
-$length_varlabel = '255'; // Set the max text length of Variable Labels
+$length_vallabel = '120'; // Set the max text length of Value Labels
+$length_data = '25500'; // Set the max text length of Text Data
+$length_varlabel = '25500'; // Set the max text length of Variable Labels
 $headerComment = '';
 $tempFile = '';
 
@@ -73,18 +75,17 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if  (!isset($subaction))
 {
 	$exportroutput = browsemenubar($clang->gT('Export results'));
-	$exportroutput .= "<br />\n";
 	$exportroutput .= "<div class='header'>".$clang->gT("Export result data to R")."</div>\n";
 	$exportroutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export R syntax file")."</a></li><li>"
 	."<a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export .csv data file")."</a></li></ul></p><br />\n"
-	."<h3>".$clang->gT("Instructions for the impatient")."</h3>"
-	."<ol style='width:500px;margin:0 auto; font-size:8pt;'>"
+	."<div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
+	."<br/><ol style='margin:0 auto; font-size:8pt;'>"
 	."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
 	."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
 	."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
 	."</ol><br />"
 	.$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.")
-	."<table><tr><td>";
+	."</div>";
 } else {
 	// Get Base Language:
 
@@ -105,7 +106,7 @@ if  ($subaction=='dldata') {
 
 	sendcacheheaders();
 
-	$na = "\"\"";
+	$na="";	//change to empty string instead of two double quotes to fix warnings on NA
 	spss_export_data($na);
 
 	exit;
@@ -160,7 +161,7 @@ if  ($subaction=='dlstructure') {
 	 * be sent to the client.
 	 */
 	echo $headerComment;
-	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
+	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=c(\"\",\"\\\"\\\"\"), stringsAsFactors=FALSE)\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
 		if($field['LStype'] == 'N' || $field['LStype']=='K') {
@@ -186,7 +187,7 @@ if  ($subaction=='dlstructure') {
 	//Create the variable labels:
 	echo "#Define Variable Properties.\n";
 	foreach ($fields as $field) {
-		if (!$field['hide']) echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . addslashes(strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel))) . '"' . "\n";
+		if (!$field['hide']) echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . '"' . "\n";
 	}
 
 	// Create our Value Labels!
@@ -237,7 +238,7 @@ if  ($subaction=='dlstructure') {
 			}
 		}
 	}
-	echo "NA); names(data)= v.names[-length(v.names)]\nprint(str(data))\n";
+	echo "NA); names(data)= v.names[-length(v.names)]\nrm(v.names)\n";
 	echo $errors;
 	exit;
 }

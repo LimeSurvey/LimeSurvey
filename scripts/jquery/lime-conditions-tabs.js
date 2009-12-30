@@ -92,11 +92,21 @@ $(document).ready(function(){
 		}
 	});
 
+	$('#conditiontarget').bind('tabsselect', function(event, ui) {
+		$('#editTargetTab').val('#' + ui.panel.id);	
+
+	});
+
 	$('#conditionsource').tabs({
 		fx: {
 			opacity: 'toggle',
        		     duration: 100
 		}
+	});
+
+	$('#conditionsource').bind('tabsselect', function(event, ui) {
+		$('#editSourceTab').val('#' + ui.panel.id);	
+
 	});
 
 	// disable RegExp tab onload (new condition)

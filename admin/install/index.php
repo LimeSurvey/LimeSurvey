@@ -70,6 +70,6 @@ else
 echo $adminoutput;
 
 
-               
-    
+
+
 ?>

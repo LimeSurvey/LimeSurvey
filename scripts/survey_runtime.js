@@ -170,3 +170,19 @@ function goodchars(e, goods)
     // else return false
     return false;
 }
+
+function show_hide_group(group_id)
+{
+	var questionCount;
+	
+	// First let's show the group description, otherwise, all its childs would have the hidden status
+	$("#group-" + group_id).show();
+	// If all questions in this group are conditionnal
+	// Count visible questions in this group
+		questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
+
+		if( questionCount == 0 )
+		{
+			$("#group-" + group_id).hide();
+		}
+}

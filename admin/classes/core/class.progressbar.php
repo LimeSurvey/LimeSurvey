@@ -255,7 +255,15 @@ class ProgressBar
 		if ($align!='') {$this->label[$name]['align'] = $align;}
 		
 		if ($this->status!='new') {
-			echo '<script type="text/JavaScript">document.getElementById("plbl'.$name.$this->code.'").style.top="'.$this->label[$name]['top'].'px";document.getElementById("plbl'.$name.$this->code.'").style.left="'.$this->label[$name]['left'].'px";document.getElementById("plbl'.$name.$this->code.'").style.width="'.$this->label[$name]['width'].'px";document.getElementById("plbl'.$name.$this->code.'").style.height="'.$this->label[$name]['height'].'px";document.getElementById("plbl'.$name.$this->code.'").style.align="'.$this->label[$name]['align'].'";</script>'."\n";
+			echo '<script type="text/JavaScript">
+            /* <![CDATA[ */
+            document.getElementById("plbl'.$name.$this->code.'").style.top="'.$this->label[$name]['top'].'px";
+            document.getElementById("plbl'.$name.$this->code.'").style.left="'.$this->label[$name]['left'].'px";
+            document.getElementById("plbl'.$name.$this->code.'").style.width="'.$this->label[$name]['width'].'px";
+            document.getElementById("plbl'.$name.$this->code.'").style.height="'.$this->label[$name]['height'].'px";
+            document.getElementById("plbl'.$name.$this->code.'").style.align="'.$this->label[$name]['align'].'";
+            /* ]]> */
+            </script>'."\n";
 			flush();
 		}
 	}
@@ -264,7 +272,11 @@ class ProgressBar
 	{
 		$this->label[$name]['color'] = $color;
 		if ($this->status!='new') {
-			echo '<script type="text/JavaScript">document.getElementById("plbl'.$name.$this->code.'").style.color="'.$color.'";</script>'."\n";
+			echo '<script type="text/JavaScript">
+            /* <![CDATA[ */
+            document.getElementById("plbl'.$name.$this->code.'").style.color="'.$color.'";
+            /* ]]> */
+            </script>'."\n";
 			flush();
 		}
 	}
@@ -273,7 +285,11 @@ class ProgressBar
 	{
 		$this->label[$name]['bgr_color'] = $color;
 		if ($this->status!='new') {
-			echo '<script type="text/JavaScript">document.getElementById("plbl'.$name.$this->code.'").style.background="'.$color.'";</script>'."\n";
+			echo '<script type="text/JavaScript">
+            /* <![CDATA[ */
+            document.getElementById("plbl'.$name.$this->code.'").style.background="'.$color.'";
+            /* ]]> */
+            </script>'."\n";
 			flush();
 		}
 	}
@@ -285,7 +301,13 @@ class ProgressBar
 		if ($weight!='') {$this->label[$name]['font-weight'] = $weight;}
 		
 		if ($this->status!='new') {
-			echo '<script type="text/JavaScript">document.getElementById("plbl'.$name.$this->code.'").style.font-size="'.$this->label[$name]['font-size'].'px";document.getElementById("plbl'.$name.$this->code.'").style.font-family="'.$this->label[$name]['font-family'].'";document.getElementById("plbl'.$name.$this->code.'").style.font-weight="'.$this->label[$name]['font-weight'].'";</script>'."\n";
+			echo '<script type="text/JavaScript">
+            /* <![CDATA[ */                  
+            document.getElementById("plbl'.$name.$this->code.'").style.font-size="'.$this->label[$name]['font-size'].'px";
+            document.getElementById("plbl'.$name.$this->code.'").style.font-family="'.$this->label[$name]['font-family'].'";
+            document.getElementById("plbl'.$name.$this->code.'").style.font-weight="'.$this->label[$name]['font-weight'].'";
+            /* ]]> */             
+            </script>'."\n";
 			flush();
 		}
 	}
@@ -294,7 +316,11 @@ class ProgressBar
 	{
 		$this->label[$name]['value'] = $value;
 		if ($this->status!='new') {
-			echo '<script type="text/JavaScript">PBlabelText'.$this->code.'("'.$name.'","'.$this->label[$name]['value'].'");</script>'."\n";
+			echo '<script type="text/JavaScript">
+            /* <![CDATA[ */              
+            PBlabelText'.$this->code.'("'.$name.'","'.$this->label[$name]['value'].'");
+            /* ]]> */              
+            </script>'."\n";
 			flush();
 		}
 	}
@@ -303,7 +329,11 @@ class ProgressBar
 	{
 		$this->color = $color;
 		if ($this->status!='new') {
-			echo '<script type="text/JavaScript">document.getElementById("pbar'.$this->code.'").style.background="'.$color.'";</script>'."\n";
+			echo '<script type="text/JavaScript">
+            /* <![CDATA[ */                
+            document.getElementById("pbar'.$this->code.'").style.background="'.$color.'";
+            /* ]]> */            
+            </script>'."\n";
 			flush();
 		}
 	}
@@ -312,7 +342,11 @@ class ProgressBar
 	{
 		$this->bgr_color = $color;
 		if ($this->status!='new') {
-			echo '<script type="text/JavaScript">document.getElementById("pbrd'.$this->code.'").style.background="'.$color.'";</script>'."\n";
+			echo '<script type="text/JavaScript">
+            /* <![CDATA[ */            
+            document.getElementById("pbrd'.$this->code.'").style.background="'.$color.'";
+            /* ]]> */              
+            </script>'."\n";
 			flush();
 		}
 	}
@@ -325,10 +359,12 @@ class ProgressBar
 			$this->position = $this->_calculatePosition($this->step);
 			
 			echo '<script type="text/JavaScript">';
+            echo '/* <![CDATA[ */';            
 			echo 'PBposition'.$this->code.'("left",'.$this->position['left'].');';
 			echo 'PBposition'.$this->code.'("top",'.$this->position['top'].');';
 			echo 'PBposition'.$this->code.'("width",'.$this->position['width'].');';
 			echo 'PBposition'.$this->code.'("height",'.$this->position['height'].');';
+            echo '/* ]]> */';            
 			echo '</script>'."\n";
 			flush();
 		}
@@ -420,7 +456,9 @@ class ProgressBar
 		}
 		
 		$html .= '<script type="text/JavaScript">'."\n";
+        $html .= '/* <![CDATA[ */';         
 		$html .= $js;
+        $html .= '/* ]]> */';          
 		$html .= '</script>'."\n";
 		
 		return $html;
@@ -476,7 +514,11 @@ class ProgressBar
 			}
 		}
 		if ($js!='') {
-			echo '<script type="text/JavaScript">'.$js.'</script>'."\n";
+            echo '<script type="text/JavaScript">'."\n"
+            .'/* <![CDATA[ */'."\n"
+            . $js."\n"
+            . '/* ]]> */'."\n"
+			.'</script>'."\n";       
 			flush ();
 		}
 	}

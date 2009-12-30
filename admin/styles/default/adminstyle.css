@@ -1,21 +1,21 @@
 body {
-    font-family: verdana, arial, sans-serif;
-    text-align: left;
-    background-color: #5670A1;
-    margin: 0;
+	font-family: verdana, arial, sans-serif;
+	text-align: left;
+	background-color: #5670A1;
+	margin: 0;
     font-size: 9pt;
 }
 
 div, form {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 
 }
 
 ul,ol {
-    text-align: left;
-    font-size: 10pt;
-    color: #000;
+	text-align: left;
+	font-size: 10pt;
+	color: #000;
 }
 
 p {
@@ -23,25 +23,20 @@ p {
     text-align:center;
 }
 
-.boxstyle {
-    border-color: #9C0;
-    border-style: solid;
-    border-width: 1px;
-}
-
+/* Administration footer box */
 .footer {
-    text-align: center;
-    color: #9C0;
-    height: 30px;
-    background: #121a28;
-    margin: 0;
-    padding: 5px;
+	text-align: center;
+	color: #9C0;
+	height: 30px;
+	background: #121a28;
+	margin: 0;
+	padding: 5px;
     margin-bottom:400px;
     clear:left;
 }
 
 img {
-    border: 0;
+	border: 0;
 }
 
 a {
@@ -51,62 +46,75 @@ a {
 }
 
 a:hover {
-    color: #819D26;
-    text-decoration: underline;
+	color: #819D26;
+	text-decoration: underline;
 }
 
 th, p, div {
-    font-size: 10pt;
+	font-size: 10pt;
+}
+
+fieldset {
+    padding:0 6px 0px 6px;
+    margin: 3px;
+    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;  
+    border-style: solid;
+    border-width: 1px;
+}
+
+legend {
+    font-weight: bold;
+    color:#2D466B;
 }
 
 .maintitle {
-    font-size: 14pt;
-    font-weight: 700;
-    color: #328639;
-    text-align: center;
-    background: #C4C4C4;
-    border-top: 2px solid #C9EF50;
-    border-bottom: 2px solid #6a8b03;
-    background-image: url(bkgmaintitle.gif);
-    background-repeat: repeat-x;
+	font-size: 14pt;
+	font-weight: 700;
+	color: #328639;
+	text-align: center;
+	background: #C4C4C4;
+	border-top: 2px solid #C9EF50;
+	border-bottom: 2px solid #6a8b03;
+	background-image: url(bkgmaintitle.gif);
+	background-repeat: repeat-x;
     width:100%;
 }
 
 table.statisticstable {
-    margin: 2px auto;
+	margin: 2px auto;
 }
-
 
 table.statisticstable span {   
      font-weight:bold;
 }
     
-.basic {
-    color: #1d2d45;
+span.basic {
+	color: #1d2d45;
 }
 
 .statisticstable td {
-    vertical-align: top;
+	vertical-align: top;
 }
 
+/* Start menubar */  
 div.menubar {
-    background-color: #EEF6FF;
+	background-color: #EEF6FF;
     clear:left;
     padding:0;
     margin:3px auto 3px auto;
     width: 99.5%;
-    height: 60px;    
+    min-height: 60px;    
 }
 
 .menubar-main {
-    background-color: #EEF6FF;
+	background-color: #EEF6FF;
     width: 99.6%;   
-    float: left;
-    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
-    border-style: solid;
-    border-width: 1px; 
+	float: left;
+	border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+	border-style: solid;
+	border-width: 1px;
     padding:0 0.2%;           
-    height: 43px;    
+    min-height: 43px;    
 
 }
 
@@ -114,7 +122,7 @@ div.menubar {
 	vertical-align: middle;
     max-height:40px;
     border:0;
-    margin-left:-2px;
+    margin:0 -2px;
 }
 
 .menubar-title {
@@ -131,9 +139,24 @@ div.menubar {
 
 }
 
-
 .menubar-title img {
     margin-bottom:2px;
+}
+
+.menubar-title-left {
+    float: left;
+	font-size:11px;
+}
+
+.menubar-title-right {
+    float: right;
+}
+
+.menubar-title-right a {
+        font-size:10px;
+        font-weight:bold;
+        color:#ee0000 !important;
+        text-decoration: underline !important; 
 }
 
 .menubar-left {
@@ -150,56 +173,18 @@ div.menubar {
 	background-color: #EEF6FF;
 	float: right;
 	line-height: 1em;
-}
-
-.menubar-title-right {
-    float: right;
-}
-
-.menubar-title-right a {
-        font-size:10px;
-        font-weight:bold;
-        color:#ee0000 !important;
-        text-decoration: underline !important; 
-        
-    }
-
-table.menubar {
-	width: 100%;
-	border-collapse: collapse;
-	background-color: #EEF6FF;
-	border-color: #8195BA;
-	border-style: solid;
-	border-width: 1px;
-	text-align: left;
-}
-
-.menubar td {
-	color: #265522;
-	font-size: 8pt;
-	border-bottom: 2px solid #D2E0F2;
+    white-space: nowrap;    
 }
 
 .menubar select {
 	color: #333;
 	width: 200px;
 }
+/* END menubar CSS */    
 
-table.attributetable {
-	width: 100%;
-	text-align: center;
-	border: 1px solid #d2e0f2;
-	border-collapse: collapse;
-}
-
-.attributetable tr:first-child {
-	background-color: #d2e0f2;
-}
-
-table.table2columns {
+#surveydetails, #groupdetails, #questiondetails {
 	background-color: #FFF;
 	width: 100%;
-	text-align: center;
 	border: 1px solid;
     border-color: #fff #8195BA #8195BA #D2E0F2;
     margin-top:-2px;
@@ -208,50 +193,16 @@ table.table2columns {
     clear:left;
 }
 
-.table2columns td:first-child {
-	width: 250px;
+#surveydetails td:first-child, 
+#groupdetails td:first-child, 
+#questiondetails td:first-child {
+    width:20%;   
 }
 
-table.form2columns {
-	width: 100%;
-	text-align: center;
-	border: none;
-	background-color: #f8f8ff;
-}
-
-table.form2columns td:first-child {
-	width: 30%;
-	text-align: right;
-}
-
-table.form2columns td.centered {
-	text-align: center;
-}
-/* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
-table#user-template-rights
-{
-        width: 50%;
-	border: none;
-	border-collapse: collapse
-}
-table#user-template-rights tr.row_odd
-{
-	background-color: #EBF2FA;
-}
-table#user-template-rights tr:hover
-{
-	background-color: #D1D1DF;
-}
- table#user-template-rights tr td
-,table#user-template-rights tr th
-,table#user-template-rights tfoot tr td
-{
-	border: none;
-	text-align: center;
-}
-table#user-template-rights tbody tr td:first-child
-{
-	text-align: left;
+#surveydetails td+td, 
+#groupdetails td+td, 
+#questiondetails td+td {
+    text-align:left;    
 }
 
 .outlinetable {
@@ -279,16 +230,23 @@ td {
 	font-size: 11px;
 }
 
-.standardbtn {
-	line-height: 20px;
-    height: 20px;
-	font-size: 11px;
+.disabledbtn {
+height:20px;
+color:#999;
+font-size:11px;
 }
 
-.disabledbtn {
-	height: 20px;
+.disabledUpDnBtn {
 	color: #999;
 	font-size: 11px;
+	border: none !important;
+	cursor: default;
+	KHTMLOpacity: 0.5;
+	MozOpacity: 0.5;
+	-khtml-opacity:.50;
+	-ms-filter:"alpha(opacity=50)";
+	-moz-opacity:.50;
+	opacity:.50;
 }
 
 input, select, button {
@@ -403,10 +361,8 @@ span.settingcaption {
 
 .movableList {
 	padding-left: 0;
-	margin-left: 0;
-	margin-top: 0;
-	padding-top: 0;
 	width: 60em;
+    margin:0 auto;    
 }
 
 .movableNode {
@@ -420,27 +376,40 @@ span.settingcaption {
 }
 
 .langpopup2 {
-	position: absolute;
-	width: 100px;
-	height: 110px;
-	top: 151px;
-	left: 80px;
-	z-index: 10000;
-	visibility: hidden;
-	-khtml-opacity: 0.95px;
-	-moz-border-radius: 6px;
-	background: #FDFDF5;
-	font: 11px arial, verdana, sans-serif;
-	border-color: #000;
-	border-style: solid;
-	border-width: 1px;
-	padding: 8px;
+    position: absolute;
+    height: auto !important;
+    top: 151px;
+    left: 80px;
+    z-index: 10000;
+    visibility: hidden;
+    -khtml-opacity: 0.95px;
+    -moz-border-radius: 6px;
+    background: #FDFDF5;
+    font: 11px arial, verdana, sans-serif;
+    border-color: #000;
+    border-style: solid;
+    border-width: 1px;
+    padding: 8px;
+}
+
+.langpopup2 ul {
+    font: 11px arial, verdana, sans-serif;
+     padding-left:1.2em;
+     line-height:1.5em;
+     margin-top:1em; 
+}
+
+li.cancellink
+{
+  list-style-type:none;
+  margin-top:1em;
+  margin-left:-1.2em;
+  text-align:center;
 }
 
 .langpopup1 {
 	position: absolute;
 	width: 100px;
-	height: 110px;
 	top: 100px;
 	left: 80px;
 	z-index: 10000;
@@ -491,13 +460,6 @@ th.admincell {
 	background-color: #F8BDB5;
 }
 
-form.token label {
-	margin-top: 1em;
-	width: 40%;
-	float: left;
-	text-align: right;
-	margin-right: 0.5em;
-}
 
 .submit {
 	float: none !important;
@@ -505,12 +467,28 @@ form.token label {
     margin-bottom: 10px;
 }
 
-.header, .formheader, .headertwo, table.form2columns th, .settingcaption {
+.header, .formheader, .headertwo, .settingcaption {
 	text-align: center;
 	font-size: 13px;
 	font-weight: 700;
 	background-color: #D2E0F2;
 	color: #1D2D45;
+}
+
+.header_statistics {
+    height:21px;
+    padding:1px;
+    padding-left:42px; 
+}
+
+.header_statistics img {
+    cursor:pointer;   
+    
+}
+
+.header_small {
+    margin-top:2px;
+    font-size: 11px; 
 }
 
 div.settingcaption{
@@ -536,10 +514,6 @@ a:link, a:visited {
 	background-color: #EEF6FF;
 }
 
-.table2columns td+td, table.form2columns td+td, action {
-	text-align: left;
-}
-
 .checkboxbtn, .radiobtn {
 	background-color: transparent;
 }
@@ -551,11 +525,6 @@ a:link, a:visited {
 .langpopup2td:first-child, .langpopup1td:first-child {
 	color: #000;
 	font-size: 10pt;
-}
-
-form.token select, form.token input {
-	margin-top: 1.5em;
-	float: left;
 }
 
 table.alertbox {
@@ -591,21 +560,49 @@ a.invalidemail {
     background-color: #C5D0F2;
 }
 
+.quotalist,
+.edituser,
+.users,
+.assessmentlist,   
 .listsurveys {
     text-align:center;
+    margin:0 auto;
+}
+
+.quotalist,
+.assessmentlist {
+    width:90%;
+}
+
+.users
+{
+    width:80%;     
+}
+
+.listsurveys
+{
     width:70%;
 }
 
+.edituser {
+    width:60%;
+}
+
+.quotalist th,
+.assessmentlist th,
+.edituser th,
+.users th,
 .listsurveys th {
     background-color: #D2E0F2;     
-    font-size:10pt;
-    padding:2px 4px;
+    font-size:8pt;
+    padding:2px 14px 2px 10px;
 }
 
 .browsetable th {
     background-color: #D2E0F2;     
     font-size:10pt;
     padding:2px;
+    text-align: center;
 }
 
 .browsetable td {
@@ -613,13 +610,24 @@ a.invalidemail {
     min-width:120px;
     font-size:8pt;
     padding:1px 2px; 
+    text-align: center;          
 }
 
+.users td,
 .listsurveys td {
     font-size:8pt;
     padding:2px 6px; 
 }
 
+.users td input
+{
+    margin-left:2px;
+}
+
+.assessmentlist td form,
+#users td form {
+    display:inline;
+}
 
 .browsetable td:first-child {
     min-width:50px;
@@ -753,6 +761,36 @@ table.templatecontrol select
    width:95%;
 }
 
+/* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
+table#user-template-rights
+{
+        width: 50%;
+	border: none;
+	border-collapse: collapse
+}
+table#user-template-rights thead
+{
+	border-bottom: 0.1em solid #000;
+}
+table#user-template-rights tr.row_odd
+{
+	background-color: #EBF2FA;
+}
+table#user-template-rights tr:hover
+{
+	background-color: #D1D1DF;
+}
+ table#user-template-rights tr td
+,table#user-template-rights tr th
+,table#user-template-rights tfoot tr td
+{
+	border: none;
+	text-align: center;
+}
+table#user-template-rights tbody tr td:first-child
+{
+	text-align: left;
+}
 
 
 table.statisticstable, table.statisticssummary {
@@ -761,6 +799,7 @@ table.statisticstable, table.statisticssummary {
     border-width: 0px;
     border-style: none;
     margin: 0 auto;
+    margin-bottom:20px;
 }
 
 .statisticssummary thead th
@@ -801,24 +840,6 @@ table.statisticstable, table.statisticssummary {
     text-align:center;
 }
                    
-#filtersettings ul {
-    width:300px;
-    list-style-type:none; 
-}
-
-#filtersettings ul {
-    width:300px;
-    list-style-type:none; 
-    line-height:22px;
-}
-
-#filtersettings ul label, 
-#filtersettings ul select, 
-#filtersettings ul input {
-   vertical-align:middle;
-   margin:0 2px;
-}
-
 #personalsettings label {  
     float: left;  
     width: 20em;  
@@ -850,6 +871,14 @@ div.messagebox .header{
     padding:10px;  
 }
 
+div.successheader{
+    font-weight:bold;
+    color:#008000;
+    background-color: #C0FFC0;   
+    margin: 5px 0;
+    padding:2px;  
+}
+
 div.messagebox .warningheader {
     font-weight:bold;
     color:#ee0000;
@@ -867,35 +896,104 @@ div.messagebox .warningheader {
     text-align:right;
 }
 
-#frmeditquestion li label:first-child, 
+/*controls the width of select boxes in group order dialog*/
+.movableNode select {
+    max-width:200px;
+}
+   
+
+#exportspss li label:first-child,            
+#importtemplate li label:first-child,            
+#tokenimport li label:first-child,            
+#statistics_general_filter li label:first-child,            
+#vvexport li label:first-child,            
+#importlabels li label:first-child,
+#addattribute li label:first-child,  
+#exportdialog li label:first-child, 
+#frmeditquestion li label:first-child,
 #frmglobalsettings li label:first-child {
     width: 44%;
     text-align: right;
     margin-right: 0.5em;
     float: left;      
     font-weight: bold;
+    color: #1d2d45;
 }
 
+#loginform li label:first-child{
+    width: 39%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;      
+    font-weight: bold;
+    color: #1d2d45;
+}        
+
+#usergroupform li label:first-child,            
+#frmcopyquestion li label:first-child,        
+#labelsetform li label:first-child,        
+#importlabelresources li label:first-child,            
+#importsurveyresources li label:first-child,    
+#assessmentsform li label:first-child,    
+#addnewquotaform li label:first-child,    
+#sendreminder  li label:first-child,
+#sendinvitation li label:first-child,
+#edittoken li label:first-child,  
+#importsurvey li label:first-child,  
+#importgroup li label:first-child,
+#newquestiongroup li label:first-child,      
 #addnewsurvey li label:first-child{
     width: 30%;
     text-align: right;
     margin-right: 0.5em;
     float: left;      
     font-weight: bold;
+    color: #121A28;
 }
-       
+
+#usergroupform li,
+#importtemplate li,
+#frmcopyquestion li,
+#importlabelresources li,
+#loginform li,
+#statistics_general_filter li,
+#tokenimport li,
+#vvexport li,
+#exportstructure li,
+#importlabels li,
+#sendreminder li,
+#sendinvitation li,
+#edittoken li,
+#addattribute li,
+#exportdialog li,       
 #addnewsurvey li,
-#frmeditquestion li,
-#frmglobalsettings li {  
+#newquestiongroup li,
+#importsurvey li,
+#importgroup li,
+#addnewquotaform li,
+#assessmentsform li,
+#importsurveyresources li,
+#labelsetform li,
+#frmglobalsettings li,
+#exportspss li{  
     list-style-type: none;
+    clear:left;
     padding-bottom:5px;
 }
 
+#frmeditquestion li {
+    list-style-type: none;
+    clear:left;    
+    padding-bottom:7px;   
+}
+
 div.loader {
-	background-image: url(images/ajax-loader.gif);
+    background-image: url(images/ajax-loader.gif);
     background-repeat: no-repeat;
-    width:31px;
-    height:31px;
+    background-position: center;
+    width:80px;
+    margin:0 auto;
+    padding-top:75px;
 }
 
 #wrapper {
@@ -909,10 +1007,11 @@ div.loader {
     padding:1% 10%;
 }
 
-
-
-#addnewsurvey iframe
-{
+#frmcopyquestion iframe,   
+#sendreminder iframe,
+#newquestiongroup iframe,
+#sendinvitation iframe,
+#addnewsurvey iframe {
     width:600px !important;
 }
 
@@ -930,4 +1029,141 @@ div.loader {
 #help
 {
     float:right;
+}
+
+thead tr .header {
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+}
+
+thead tr .headerSortUp {
+    background-image: url(images/asc.gif);
+}
+thead tr .headerSortDown {
+    background-image: url(images/desc.gif);
+}
+
+thead tr .headerSortDown, thead tr .headerSortUp {
+background-color: #8195BA;
+}
+
+#tokensearch, #tokenrange, #browseresults{
+    display:inline;
+    line-height:40px;
+    vertical-align:middle;
+    margin-left: 10px;
+}
+
+#tokensearch input, #tokenrange input, #browseresults input{
+    vertical-align:middle;
+    margin-left: 2px;
+}
+
+.tab-page {
+    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2 !important;
+}
+
+.tab-pane {
+    margin:0 0.25%;
+    width:99.5% !important;
+}
+
+#questionbottom {
+    clear:both;
+}
+
+div.left
+{
+float:left;
+width:300px;
+}
+
+div.right
+{
+ float:right;
+ width:300px;
+}
+
+.wrap2columns
+{ 
+width:600px;
+margin:0 auto;
+}
+
+#resultexport ul
+{
+    list-style-type:none;
+    padding:0;
+}
+
+#resultexport ul li label
+{
+}
+
+
+#resultexport ul li 
+{
+    line-height: 1.4em;
+}
+
+#advancedquestionsettings fieldset{
+    width:600px;
+    margin:0 auto;
+	display: block;
+}
+
+#advancedquestionsettings textarea{
+    width:200px;
+}
+
+#statistics_general_filter
+{
+    width:650px;
+    margin:0 auto;
+}
+#statistics_general_filter #left
+{
+    width:300px;
+    height:105px;
+    float:left;
+}
+#statistics_general_filter #right
+{
+    width:300px;
+    height:105px;
+    float:right;
+}
+
+.filtertable  {
+    background:#EEF6FF;
+    text-align:center; 
+    margin:5px 15px;   
+    border:1px #fff solid;
+    padding:3px 10px;
+}
+
+.filtertable td {
+    padding:3px 10px 7px 10px;
+    border-right:1px #fff solid;  
+    border-bottom:1px #fff solid;  
+    vertical-align: top;
+        border-collapse:collapse !important;     
+}
+
+.filtertable td:last-child {
+    border-left:0px #D2E0F2 solid;  
+}
+
+.filtertable tr:last-child td {
+    border-top:0px #D2E0F2 solid;          
+}
+
+.filtertable span {
+    font-size:10px;
+    font-weight: bold;
+}
+
+.filtertable textarea {
+    width:210px;
 }

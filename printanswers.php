@@ -28,8 +28,39 @@ if(isset($usepdfexport) && $usepdfexport == 1)
 if (!$publicdir) {$publicdir=".";}
 $templaterootdir="$publicdir/templates";
 
+
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+else {
+        //This next line ensures that the $surveyid value is never anything but a number.
+        $surveyid=sanitize_int($surveyid);
+     }
+
+// Compute the Session name
+// Session name is based:
+// * on this specific limesurvey installation (Value SessionName in DB)
+// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked 
+if ($usresult)
+{
+    $usrow = $usresult->FetchRow();
+    $stg_SessionName=$usrow['stg_value'];
+    if ($surveyid)
+    {
+        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+    }
+    else
+    {
+        @session_name($stg_SessionName.'-runtime-publicportal');
+    }
+}
+else
+{
+    session_name("LimeSurveyRuntime-$surveyid");
+}
 @session_start();
-if (isset($_SESSION['sid'])) {$surveyid=$_SESSION['sid'];}  else die(); 
+
+if (isset($_SESSION['sid'])) {$surveyid=$_SESSION['sid'];}  else die('Invalid survey/session'); 
 
 //Debut session time out
 if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))
@@ -135,7 +166,7 @@ if (isset($_SESSION['s_lang']))
     $printoutput = '';
     if(isset($usepdfexport) && $usepdfexport == 1)
     {
-        $printoutput .= "<form action='printanswers.php?printableexport=pdf' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+        $printoutput .= "<form action='printanswers.php?printableexport=pdf&sid=$surveyid' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
     }
     if(isset($_POST['printableexport']))
     {
@@ -276,9 +307,9 @@ if (isset($_SESSION['s_lang']))
 						$header1=$clang->gT($qidattributes['dualscale_headerA']);
 					}
                     if (trim($qidattributes['dualscale_headerB'])!='')      
-                    {
+					{
                         $header2=$clang->gT($qidattributes['dualscale_headerB']);
-                    }
+					}
 					while ($arows = $aresult->FetchRow())
 					{
 						$fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#0", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header1);                
@@ -334,7 +365,7 @@ if (isset($_SESSION['s_lang']))
             
             if(isset($_POST['printableexport']))
             {
-                $pdf->intopdf(strip_tags($fnames[$i][2]).": ".strip_tags(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
+                $pdf->intopdf(FlattenText($fnames[$i][2]).": ".FlattenText(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
                 $pdf->ln(2);
             }
 		}

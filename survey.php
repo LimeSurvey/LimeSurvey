@@ -140,7 +140,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         if ($thissurvey['printanswers']=='Y')
         {
             $completed .= "<br /><br />"
-            ."<a class='printlink' href='printanswers.php' target='_blank'>"
+            ."<a class='printlink' href='printanswers.php?sid=$surveyid' target='_blank'>"
             .$clang->gT("Click here to print your answers.")
             ."</a><br />\n";
         }
@@ -251,13 +251,19 @@ $conmandatorys=array();
 $conmandatoryfns=array();
 $conditions=array();
 $inputnames=array();
+$groupUnconditionnalQuestionsCount=array();
 foreach ($_SESSION['grouplist'] as $gl)
 {
 	$gid=$gl[0];
+        $groupUnconditionnalQuestionsCount[$gid]=0;
 	foreach ($_SESSION['fieldarray'] as $ia)
 	{
 		if ($ia[5] == $gid)
 		{
+			$qidattributes=getQuestionAttributes($ia[0]);
+			if ($qidattributes['hidden']==1) {
+				continue;
+			}
 			$qtypesarray[$ia[1]] = $ia[4];
 			list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 			if ($plus_qanda)
@@ -303,6 +309,10 @@ foreach ($_SESSION['grouplist'] as $gl)
 			{
 				$conditions = addtoarray_single($conditions, $plus_conditions);
 			}
+			else
+			{
+				$groupUnconditionnalQuestionsCount[$gid]++;
+			}
 		}
 	}
 }
@@ -313,7 +323,7 @@ doHeader();
 if(isset($popup)) {echo $popup;}
 if(isset($vpopup)) {echo $vpopup;}
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
+echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n<!-- INPUT NAMES -->\n"
     ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
@@ -338,6 +348,8 @@ print <<<END
 END;
 // Find out if there are any array_filter questions in this group
 $array_filterqs = getArrayFiltersForGroup($surveyid, "");
+$array_filterXqs = getArrayFilterExcludesForGroup($surveyid, "");
+$array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, "");
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) {
 	print <<<END
@@ -356,29 +368,19 @@ END;
 }
 
 print <<<END
+	function noop_checkconditions(value, name, type)
+	{
+	}
+
 	function checkconditions(value, name, type)
 	{
     
 END;
 
-// initialize the variables used to check if we should hide groupdescr
-// for groups having all questions hidden by conditions
-$aUniqGroupIds=array();
-foreach ($conditions as $cd)
-{
-	$aUniqGroupIds[]=$cd[8];
-}
-$aUniqGroupIds=array_unique($aUniqGroupIds);
-foreach ($aUniqGroupIds as $agroupid)
-{
-	// in fact this is the count of questions that are displayed and have conditions set
-	// if there is at least one non conditional question, then hide/show will just do nothing
-	echo "\tcountDisplayedConditionnalQuestionsInGroup_{$agroupid}=0;\n";	
-}
-
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) || 
-    (isset($array_filterqs) && is_array($array_filterqs)))
+    (isset($array_filterqs) && is_array($array_filterqs)) ||
+	(isset($array_filterXqs) && is_array($array_filterXqs)))
 {
 	if (!isset($endzone)) 
 	{
@@ -556,7 +558,14 @@ END;
 		{
 			if ($cd[3] == '' || $cd[3] == ' ')
 			{ // empty == no answer is a specific case and must be evaluated differently
-				$java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
+				if ($cd[6] == '==')
+				{
+					$java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
+				}
+				else
+				{
+					$java .= "$JSsourceElt != null && $JSsourceVal";
+				}
 			}
 	elseif($cd[4] == "M" || $cd[4] == "P")
 			{ // Type M and P questions are processed specifically
@@ -635,7 +644,6 @@ END;
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='';\n"
       . "    document.getElementById('display$cd[0]').value='on';\n"
-      . "    countDisplayedConditionnalQuestionsInGroup_".$cd[8]."++;\n"
       . "    }\n"
       . "   else\n"
       . "    {\n"
@@ -651,40 +659,103 @@ END;
 }
 
 
-if (isset($array_filterqs) && is_array($array_filterqs))
+if ((isset($array_filterqs) && is_array($array_filterqs)) ||
+    (isset($array_filterXqs) && is_array($array_filterXqs)))
 {
+	$qattributes=questionAttributes(1);
+	$array_filter_types=$qattributes['array_filter']['types'];
+	$array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
+	unset($qattributes);
 	if (!isset($appendj)) {$appendj="";}
 
 	foreach ($array_filterqs as $attralist)
 	{
-		//die(print_r($attralist));
 		$qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
 		$qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
 			$qresult = db_execute_assoc($qquery); //Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
-				$fquestans = "java".$qfbase.$fansrows['code'];
-				$tbody = "javatbd".$qbase.$fansrows['code'];
-				$dtbody = "tbdisp".$qbase.$fansrows['code'];
-				$tbodyae = $qbase.$fansrows['code'];
-				$appendj .= "\n";
-                $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
-				$appendj .= "\t{\n";
-				$appendj .= "document.getElementById('$tbody').style.display='';\n";
-				$appendj .= "document.getElementById('$dtbody').value='on';\n";
-				$appendj .= "\t}\n";
-				$appendj .= "\telse\n";
-				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                $appendj .= "\t\t$('#$dtbody').val('off');\n";
-                // This line resets the text fields in the hidden row
-                $appendj .= "\t\t$('#$tbody input').val('');\n";
-                // This line resets any radio group in the hidden row
-                $appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
-				$appendj .= "\t}\n";
+				if(strpos($array_filter_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
+					$appendj .= "\t{\n";
+					$appendj .= "document.getElementById('$tbody').style.display='';\n";
+					$appendj .= "document.getElementById('$dtbody').value='on';\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input').val('');\n";
+					// This line resets any radio group in the hidden row
+					$appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+					$appendj .= "\t}\n";
+				}
+			}
+		}
+	}
+	$java .= $appendj;
+	foreach ($array_filterXqs as $attralist)
+	{
+		$qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
+		$qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
+		if ($attralist['type'] == "M")
+		{
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type 
+					   FROM {$dbprefix}answers, {$dbprefix}questions 
+					   WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid 
+					   AND {$dbprefix}answers.qid='".$attralist['qid']."' 
+					   AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' 
+					   ORDER BY code;";
+			$qresult = db_execute_assoc($qquery); //Checked
+			while ($fansrows = $qresult->FetchRow())
+			{
+				if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif (\n";
+					$appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
+					
+					/* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
+					if(isset($array_filterXqs_cascades[$attralist['qid']])) 
+					{
+						$groups=getGroupsByQuestion($surveyid);
+						foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
+						{
+							$cascadefqa ="java".$surveyid."X".$groups[$cascader]."X".$cascader.$fansrows['code'];
+							$appendj .= "\t\t||\n";
+							$appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
+						}
+					}
+					/* */
+					$appendj .= "\t)\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
+					// This line resets any radio group in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t}\n";
+				}
 			}
 		}
 	}
@@ -692,9 +763,12 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 }
 
 if (isset($java)) {echo $java;}
-foreach ($aUniqGroupIds as $agroupid)
+foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
 {
-	echo "\t\tshow_hide_group_{$agroupid}();\n";	
+	if ($thecount == 0 )
+	{
+		echo "\t\tshow_hide_group({$thegid});\n";	
+	}
 }
 echo "\t}\n"
 ."\t//-->\n"
@@ -729,8 +803,6 @@ foreach ($_SESSION['grouplist'] as $gl)
 	echo "\n";
 
 	// count the number of non-conditionnal and conditionnal questions in this group
-	$count_nocond_questions=0;
-	$count_cond_questions=0;
 	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))
 	{
@@ -752,65 +824,56 @@ foreach ($_SESSION['grouplist'] as $gl)
 				if ($qa[3] != 'Y')
 				{
 					$n_q_display = '';
-					$count_nocond_questions++;
 				} 
 				else 
 				{ 
 					$n_q_display = ' style="display: none;"';
-					$count_cond_questions++;
 				}
 
-				echo '
-	<!-- NEW QUESTION -->
-				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>';
 				$question= $qa[0];
+//===================================================================
+// The following four variables offer the templating system the
+// capacity to fully control the HTML output for questions making the
+// above echo redundant if desired.
+				$question['essentials'] = 'id="question'.$qa[4].'"'.$n_q_display;
+				$question['class'] = $q_class;
+				$question['man_class'] = $man_class;
+//===================================================================
 				$answer=$qa[1];
 				$help=$qa[2];
 				$questioncode=$qa[5];
-				echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-				echo "</div>\n";
+
+				$question_template = file_get_contents($thistpl.'/question.pstpl');
+
+				if( (strpos( $question_template , '{QUESTION_ESSENTIALS}') == false) || (strpos( $question_template , '{QUESTION_CLASS}') == false) )
+				{
+// if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
+					$question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
+
+					echo '
+	<!-- NEW QUESTION -->
+				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
+';
+					echo templatereplace($question_template);
+					echo '
+				</div>
+';
+				}
+				else
+				{
+					echo templatereplace($question_template);
+				};
 			}
 		}
 	}
 
 	echo "\n\n<!-- END THE GROUP -->\n";
 
-	if ($hide_groupdescr_allinone == true && $count_nocond_questions==0)
-	{
-		$show_hide_group_script = "\n\n" 
-			."<script type='text/javascript'>\n"
-//			."\tcountDisplayedConditionnalQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
-			."\tfunction show_hide_group_$gid() {\n"
-			."\t\tif (countDisplayedConditionnalQuestionsInGroup_$gid > 0) {\n"
-			."\t\t\tdocument.getElementById('group-$gid').style.display='';\n"
-			."\t\t} else {\n"
-			."\t\t\tdocument.getElementById('group-$gid').style.display='none';\n"
-			."\t\t}\n"
-			."\t}\n"
-			."</script>\n"
-			."\n";
-	}
-	else
-	{ 
-		// The groupdescr will not be hidden
-		// * either because the option to hide it when all conditional
-		//   questions are hidden is not set
-		// * or if at least one question of the group is not conditionnal
-		$show_hide_group_script = "\n\n" 
-			."<script type='text/javascript'>\n"
-//			."\tcountDisplayedConditionnalQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
-			."\tfunction show_hide_group_$gid() {\n"
-			."\t}\n"
-			."</script>\n"
-			."\n";
-	}
-
-	echo $show_hide_group_script;
-
 	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 	echo "\n\n</div>\n";
 	echo "\n";
 }
+
 //echo "&nbsp;\n";
 $navigator = surveymover();
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";

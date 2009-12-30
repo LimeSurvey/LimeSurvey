@@ -157,7 +157,7 @@ if($action=='exportstructureLsrcCsvGroup')
 }
 else
 {
-	// HTTP/1.0
+// HTTP/1.0
 	header("Content-Type: application/download");
 	header("Content-Disposition: attachment; filename=$fn");
 	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -165,8 +165,8 @@ else
 	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	header("Pragma: cache");
 	
-	echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ls1dump, $ldump, $l1dump, $qadump;
-	exit;
+echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ls1dump, $ldump, $l1dump, $qadump;
+exit;
 }
 
 ?>

@@ -24,7 +24,14 @@
 
 // Basic Setup
 
-$databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
+$databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, mysqli, odbc_mssql, mssql_n, odbtp or postgres
+                                       // mysql: Recommended driver for mysql
+                                       // mysqli: Slightly faster driver for mysql - not on all server systems available 
+                                       // odbc_mssql: MSSQL driver using ODBC with MS SQL Server
+                                       // mssql_n: Experimental driver for MS SQL Server which handles UTF-8 charsets
+                                       // odbtp: ODBTP driver to access MSSQL-Server is needed for this one - we also recommend to activate $databasepersistent for decent speed
+                                       // postgres: Standard postgres driver
+
 $databaselocation   =   'localhost';   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databasename       =   'limesurvey';  // The name of the database that we will create
 $databaseuser       =   'root';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
@@ -33,20 +40,21 @@ $dbprefix           =   'lime_';       // A global prefix that can be added to a
                                        // a database with other applications. Suggested prefix is 'lime_'
 
 // File Locations
-$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation (without a trailing slash). The double quotes (") are important.
+$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; // The root web url for your limesurvey installation (without a trailing slash). 
+                                                                     // The double quotes (") are important.
 
-$rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
-                                           // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir='C:\Inetpub\wwwroot\limesurvey'!
-                                           // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir='C:/Inetpub/wwwroot/limesurvey'!
-                                           // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir='c:/limesurvey';!
-// Site Setup
-$sitename           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
+$rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this 
+                                           // setting. If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir='C:\Inetpub\wwwroot\limesurvey'!
+                                           // Some IIS and OS/2 installations also require to use forward slashes 
+                                           // instead of backslashes, e.g.  $rootDir='C:/Inetpub/wwwroot/limesurvey'!
 
-$defaultuser        =   'admin';          // This is the default username when LimeSurvey is installed
-$defaultpass        =   'password';       // This is the default password for the default user when LimeSurvey is installed
+// Installation Setup
+$defaultuser        =   'admin';           // This is the username when LimeSurvey is installed and the administration user is created on installation
+$defaultpass        =   'password';        // This is the password for the administration user when LimeSurvey is installed
 
-// Email Settings
-
-$siteadminemail     =   'your@email.org'; // The default email address of the site administrator
-$siteadminbounce    =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
-$siteadminname      =   'Your Name';      // The name of the site administrator
+// Debug Settings
+$debug              =   0;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+                                           // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir 
+                                           // on your webspace.
+                                           // LimeSurvey developers: Set this to 2 to circumvent the restriction to remove the installation directory 
+                                           // or to change the password. If you set it to 3 then PHP STRICT warnings will be shown additionally.

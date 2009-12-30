@@ -19,8 +19,7 @@
 // only include if this config is not used to save a survey.csv for the lsrc
 if(!isset($export4lsrc))
 {
-	include("../../config-defaults.php");
-	include("../../config.php");
+	include_once("../../config-defaults.php");
 	require_once(dirname(__FILE__).'/../../common.php');
 }
 ### Error Handling

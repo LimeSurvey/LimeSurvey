@@ -374,6 +374,9 @@ function sanitize_languagecodeS($codestringtosanitize) {
 	return implode(" ",$codearray);
 }
 
+function sanitize_token($codetosanitize) {
+    return preg_replace('/[^_a-z0-9-]/i', '', $codetosanitize); 
+}
 
 function sanitize_signedint($integer, $min='', $max='')
 {
@@ -386,5 +389,3 @@ function sanitize_signedint($integer, $min='', $max='')
 
     return $int;
 };
-
-?>

@@ -21,6 +21,7 @@ if (!isset($action)) {$action=returnglobal('action');}
 $surveyinfo=getSurveyInfo($surveyid);
 
 $js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
 $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 //                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
 
@@ -104,11 +105,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
     $assessmentsoutput.="<script type=\"text/javascript\">
                         <!-- 
                             var strnogroup='".$clang->gT("There are no groups available.", "js")."';
-                        --></script>";
-    $assessmentsoutput.="<table width='100%' border='0' >\n"
-        . "\t<tr>\n"
-        . "<td>\n"
-        . "<div class='menubar'>\n"
+                        --></script>\n";
+    $assessmentsoutput.="<div class='menubar'>\n"
         . "\t<div class='menubar-title'>\n"
         . "<strong>".$clang->gT("Assessments")."</strong>\n";
 	
@@ -122,7 +120,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
     
     if ($surveyinfo['assessments']!='Y')
     {
-        $assessmentsoutput.='<span style="font-size:11px;">'.sprintf($clang->gT("Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="admin.php?action=editsurvey&sid='.$surveyid.'">','</a>').'</span>';   
+        $assessmentsoutput.='<span style="font-size:11px;">'.sprintf($clang->gT("Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="admin.php?action=editsurvey&amp;sid='.$surveyid.'">','</a>').'</span>';   
     }
 	$assessmentsoutput.= "</div>\n"
 	. "\t</div>\n"
@@ -137,16 +135,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	$assessments=getAssessments($surveyid);
 	//$assessmentsoutput.= "<pre>";print_r($assessments);echo "</pre>";
 	$groups=getGroups($surveyid);
-	$groupselect="<select name='gid' id='newgroupselect'>\n";
+	$groupselect="<select name='gid' id='gid'>\n";
 	foreach($groups as $group) {
 		$groupselect.="<option value='".$group['gid']."'>".$group['group_name']."</option>\n";
 	}
 	$groupselect .="</select>\n";
 	$headings=array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
-	$inputs=array("<input type='radio' id='radiototal' name='scope' value='T' checked='checked'>".$clang->gT("Total")."</input><input type='radio' id='radiogroup' name='scope' value='G'>".$clang->gT("Group")."</input>",
-	$groupselect,
-	"<input type='text' name='minimum' class='numbersonly' />",
-	"<input type='text' name='maximum' class='numbersonly' />");
 	$actiontitle=$clang->gT("Add");
 	$actionvalue="assessmentadd";
 	$thisid="";
@@ -157,19 +151,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		while($row=$results->FetchRow()) {
 			$editdata=$row;
 		}
-		$scopeselect = "<input type='radio' id='radiototal' name='scope' ";
-		if ($editdata['scope'] == "T") {$scopeselect .= "checked='checked' ";}
-		$scopeselect .= "value='T'>".$clang->gT("Total")."</input>";
-        $scopeselect .= "<input type='radio' name='scope' id='radiogroup' value='G'";
-		if ($editdata['scope'] == "G") {$scopeselect .= " checked='checked'";}
-		$scopeselect .= ">".$clang->gT("Question group")."</input>";
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
-		$inputs=array($scopeselect,
-		$groupselect,
-		"<input type='text' name='minimum' value='".$editdata['minimum']."' class='numbersonly' />",
-		"<input type='text' name='maximum' value='".$editdata['maximum']."' class='numbersonly' />",
-		"<input type='text' name='name' size='80' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES,'UTF-8')."'/>",
-		"<textarea name='message' id='assessmentmessage' rows='10' cols='80'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES,'UTF-8')."</textarea>");
 		$actiontitle=$clang->gT("Edit");	
 		$actionvalue="assessmentupdate";
 		$thisid=$editdata['id'];
@@ -178,20 +160,32 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	//PRESENT THE PAGE
 
 	
-	$assessmentsoutput.= "<br /><table align='center'  width='90%'>
-		<tr><th colspan='12'>".$clang->gT("Assessment rules")."</th></tr>"
-		."<tr><th>".$clang->gT("ID")."</th><th>".$clang->gT("SID")."</th>\n";
+	$assessmentsoutput.= "<div class='header'>".$clang->gT("Assessment rules")."</div>"
+
+    
+        ."<table class='assessmentlist'><thead>"
+		."<tr><th>".$clang->gT("ID")."</th><th>".$clang->gT("Actions")."</th><th>".$clang->gT("SID")."</th>\n";
 	foreach ($headings as $head) {
 		$assessmentsoutput.= "<th>$head</th>\n";
 	}
-	$assessmentsoutput.= "<th>".$clang->gT("Title")."</th><th>".$clang->gT("Message")."</th><th>".$clang->gT("Actions")."</th>";
-	$assessmentsoutput.= "</tr>\n";
+	$assessmentsoutput.= "<th>".$clang->gT("Title")."</th><th>".$clang->gT("Message")."</th>";
+	$assessmentsoutput.= "</tr></thead>\n<tbody>\n";
     $flipflop=true;
 	foreach($assessments as $assess) {
         $flipflop=!$flipflop;
 		if ($flipflop==true){$assessmentsoutput.= "<tr class='oddrow'>\n";}
           else {$assessmentsoutput.= "<tr class='evenrow'>\n";} 
 		$assessmentsoutput.= "<td>".$assess['id']."</td>\n";
+        $assessmentsoutput.= "<td><form method='post' action='$scriptname?sid=$surveyid'>
+                 <input type='image' src='$imagefiles/token_edit.png' alt='".$clang->gT("Edit")."' />
+                 <input type='hidden' name='action' value='assessmentedit' />
+                 <input type='hidden' name='id' value='".$assess['id']."' />
+                 </form><form method='post' action='$scriptname?sid=$surveyid'>
+                 <input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />
+                 <input type='hidden' name='action' value='assessmentdelete' />
+                 <input type='hidden' name='id' value='".$assess['id']."' />
+                 </form>
+                 </td>\n";
 		$assessmentsoutput.= "<td>".$assess['sid']."</td>\n";
 
 		if ($assess['scope'] == "T") 
@@ -211,37 +205,28 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		$assessmentsoutput.= "<td>".stripslashes($assess['name'])."</td>\n";
 		$assessmentsoutput.= "<td>".strip_tags(strip_javascript($assess['message']))."</td>\n";
 		
-		$assessmentsoutput.= "<td>
-			   <table width='100%'>
-				<tr><td align='center'><form method='post' action='$scriptname?sid=$surveyid'>
-				 <input type='submit' value='".$clang->gT("Edit")."' />
-				 <input type='hidden' name='action' value='assessmentedit' />
-				 <input type='hidden' name='id' value='".$assess['id']."' />
-				 </form></td>
-				 <td align='center'><form method='post' action='$scriptname?sid=$surveyid'>
-				 <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />
-				 <input type='hidden' name='action' value='assessmentdelete' />
-				 <input type='hidden' name='id' value='".$assess['id']."' />
-				 </form>
-				 </td>
-				</tr>
-			   </table>
-			  </td>\n";
-		$assessmentsoutput.= "</tr>\n";
+		$assessmentsoutput.= "</tr></tbody>\n";
 	}
 	$assessmentsoutput.= "</table>";
     
     
     //now present edit/insert form
-	$assessmentsoutput.= "<br /><form method='post' name='assessmentsform' action='$scriptname?sid=$surveyid'><table align='center' cellspacing='0' border='0' class='form2columns'>\n";
-	$assessmentsoutput.= "<tr><th colspan='2'>$actiontitle</th></tr>\n";
-	$i=0;
+	$assessmentsoutput.= "<br /><form method='post' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header'>\n";
+	$assessmentsoutput.= "$actiontitle</div>\n";
 	
-	foreach ($headings as $head) {
-		$assessmentsoutput.= "<tr><td>$head</td><td>".$inputs[$i]."<br /></td></tr>\n";
-		$i++;
-	}
-    
+    $assessmentsoutput.="<ul><li><label>".$clang->gT("Scope")."</label><input type='radio' id='radiototal' name='scope' value='T' ";
+    if (isset($editdata) && $editdata['scope'] == "T") {$assessmentsoutput .= " checked='checked' ";}          
+    $assessmentsoutput.=" /><label for='radiototal'>".$clang->gT("Total")."</label>
+                         <input type='radio' id='radiogroup' name='scope' value='G'";
+    if (isset($editdata) && $editdata['scope'] == "G") {$assessmentsoutput .= " checked='checked' ";}          
+    $assessmentsoutput.="/><label for='radiogroup'>".$clang->gT("Group")."</label></li>";
+    $assessmentsoutput.="<li><label for='gid'>".$clang->gT("Question group")."</label>$groupselect</li>"
+    ."<li><label for='minimum'>".$clang->gT("Minimum")."</label><input type='text' id='minimum' name='minimum' class='numbersonly'";
+    if (isset($editdata)) {$assessmentsoutput .= " value='{$editdata['minimum']}' ";}          
+    $assessmentsoutput.="/></li>"
+    ."<li><label for='maximum'>".$clang->gT("Maximum")."</label><input type='text' id='maximum' name='maximum' class='numbersonly'"; 
+    if (isset($editdata)) {$assessmentsoutput .= " value='{$editdata['maximum']}' ";}          
+    $assessmentsoutput.="/></li>";
     
     // start tabs
     $assessmentsoutput.= "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
@@ -279,12 +264,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
     $assessmentsoutput .='</div>'; 
     
     
-	$assessmentsoutput.= "<div style='width:200px;margin:5px auto;'><input type='submit' value='".$clang->gT("Save")."' />\n";
+	$assessmentsoutput.= "<p><input type='submit' value='".$clang->gT("Save")."' />\n";
 	if ($action == "assessmentedit") $assessmentsoutput.= "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n";
 	$assessmentsoutput.= "<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='action' value='$actionvalue' />\n"
 	."<input type='hidden' name='id' value='$thisid' />\n"
-	."<div>\n"                                            
+	."</div>\n"                                            
 	."</form>\n";
     foreach ($assessmentlangs as $assessmentlang)   
     {

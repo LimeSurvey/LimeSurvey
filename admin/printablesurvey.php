@@ -201,13 +201,13 @@ function populate_template( $template , $input  , $line = '')
 			if(empty($test_empty))
 			{
 				return "<!--\n\t$full_path\n\tThe template was empty so is useless.\n-->";
-			}
+		}
 		}
 		else
 		{
 			define($full_constant , '');
 			return "<!--\n\t$full_path is not a propper file or is missing.\n-->";
-		}
+	}
 	}
 	else
 	{
@@ -792,7 +792,7 @@ while ($degrow = $degresult->FetchRow())
 							}
 							$rowcounter = 0;
 							++$colcounter;
-						}
+					}
 					}
 					if ($deqrow['other'] == "Y")
 					{
@@ -980,7 +980,7 @@ while ($degrow = $degresult->FetchRow())
 						}
 						$rowcounter = 0;
 						++$colcounter;
-					}
+				}
 				}
 				if ($deqrow['other'] == "Y")
 				{
@@ -1013,7 +1013,7 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
                 if (trim($qidattributes['max_answers'])=='') {
-                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
+					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose all that apply and provide a comment:"),"U");}
 				}
 				else
@@ -1332,12 +1332,12 @@ while ($degrow = $degresult->FetchRow())
 				{
 					if ($stepvalue > 1)
 					{
-						$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write a multiple of $stepvalue between $minvalue and $maxvalue for each item:");
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write a multiple of $stepvalue between $minvalue and $maxvalue for each item:"),"U");}
+						$question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please write a multiple of %d between %d and %d for each item:"),$stepvalue,$minvalue,$maxvalue);
+						if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please write a multiple of %d between %d and %d for each item:"),$stepvalue,$minvalue,$maxvalue),"U");}
 					}
 					else {
-						$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write a number between $minvalue and $maxvalue for each item:");
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write a number between $minvalue and $maxvalue for each item:"),"U");}
+						$question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please enter a number between %d and %d for each item:"),$minvalue,$maxvalue);
+						if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please enter a number between %d and %d for each item:"),$minvalue,$maxvalue),"U");}
 					}
 				}
 				else
@@ -1524,8 +1524,8 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "1": //ARRAY (Flexible Labels) multi scale
-				$leftheader= $qidattributes['dualscale_headerA'];
-				$rightheader= $qidattributes['dualscale_headerB'];
+					$leftheader= $qidattributes['dualscale_headerA'];
+					$rightheader= $qidattributes['dualscale_headerB'];
 
 				$headstyle = 'style="padding-left: 20px; padding-right: 7px"';
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
@@ -1679,8 +1679,9 @@ while ($degrow = $degresult->FetchRow())
 $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
 
 // START recursive tag stripping.
-
-$server_is_newer = version_compare(PHP_VERSION , '5.1.0' , '>'); // PHP 5.1.0 introduced the count peramater for preg_replace() and thus allows this procedure to run with only one regular expression. Previous version of PHP need two regular expressions to do the same thing and thus will run a bit slower.
+// PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression. 
+// Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
+$server_is_newer = version_compare(PHP_VERSION , '5.1.0' , '>'); 
 $rounds = 0;
 while($rounds < 1)
 {
@@ -1689,11 +1690,13 @@ while($rounds < 1)
 	{
 		$survey_output['GROUPS'] = preg_replace(
 							 array(
-								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+                                 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+							    ,'/<th[^>]*>(?:&nbsp;|&#160;| )?<\/th>/isU'
 								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
 							 )
 							,array(
 								 '[[EMPTY-TABLE-CELL]]'
+                                ,'[[EMPTY-TABLE-CELL-HEADER]]'
 								,''
 							 )
 							,$survey_output['GROUPS']
@@ -1706,10 +1709,12 @@ while($rounds < 1)
 		$survey_output['GROUPS'] = preg_replace(
 							 array(
 								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+                                ,'/<th[^>]*>(?:&nbsp;|&#160;| )?<\/th>/isU'
 								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
 							 )
 							,array(
 								 '[[EMPTY-TABLE-CELL]]'
+                                ,'[[EMPTY-TABLE-CELL-HEADER]]'
 								,''
 							 )
 							,$survey_output['GROUPS']
@@ -1726,10 +1731,12 @@ while($rounds < 1)
 		$survey_output['GROUPS'] = preg_replace(
 					 array(
 						 '/\[\[EMPTY-TABLE-CELL\]\]/'
+                        ,'/\[\[EMPTY-TABLE-CELL-HEADER\]\]/'
 						,'/\n(?:\t*\n)+/'
 					 )
 					,array(
 						 '<td>&nbsp;</td>'
+                        ,'<th>&nbsp;</th>'
 						,"\n"
 					 )
 					,$survey_output['GROUPS']

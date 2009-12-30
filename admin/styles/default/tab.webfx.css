@@ -65,16 +65,16 @@ dark:	rgb(0,66,174);
 
 
 .dynamic-tab-pane-control .tab-page {
-	clear:		both;
-	border:		1px solid #888888;
-    background: #F8F8FF;
-	z-index:	2;
-	position:	relative;
-	top:		-2px;
-	color:		Black;
-	font-family:Verdana, Helvetica, Arial;
-	font-size:	13px;
-	padding:	10px;
+	clear:			both;
+	border:			1px solid #888888;
+   background:    #F8F8FF;
+	z-index:		   2;
+	position:		relative;
+	top:			   -2px;
+	color:			Black;
+	font-family:	Verdana, Helvetica, Arial;
+	font-size:		13px;
+	padding:		   10px;
 
 }
 
