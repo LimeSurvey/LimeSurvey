@@ -1561,6 +1561,7 @@ function submittokens($quotaexit=false)
 		    $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 		    $fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
 		    $fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
+		    $fieldsarray["{TOKEN}"]=$clienttoken;
             $attrfieldnames=GetAttributeFieldnames($surveyid);
             foreach ($attrfieldnames as $attr_name)
             {
@@ -1571,6 +1572,12 @@ function submittokens($quotaexit=false)
 		    $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
 
 		    $subject=Replacefields($subject, $fieldsarray);
+
+		if ($thissurvey['private'] == "N")
+		{
+			// Survey is not anonymous, we can translate insertAns placeholder
+			$subject=insertansReplace($subject);
+		}
 
 		    $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
 
@@ -1587,6 +1594,12 @@ function submittokens($quotaexit=false)
 		    {
 			    $message=$thissurvey['email_confirm'];
 			    $message=Replacefields($message, $fieldsarray);
+
+		if ($thissurvey['private'] == "N")
+		{
+			// Survey is not anonymous, we can translate insertAns placeholder
+			$message=insertansReplace($message);
+		}
 
 			    if (!$ishtml)
 			    {
