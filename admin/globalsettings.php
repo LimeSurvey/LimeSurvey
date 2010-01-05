@@ -391,18 +391,16 @@ function getGlobalSetting($settingname)
 	    if ($dbvalue!==false)
 	    {
 	        $registry->set($settingname,$dbvalue);
-	    }
+	    } elseif (isset($$settingname)) {
+			// If the setting was not found in the setting table but exists as a variable (from config.php)
+			// get it and save it to the table
+			setGlobalSetting($settingname,$$settingname);
+			$dbvalue=$$settingname;  
+		}
     } else {
     	$dbvalue=$registry->get($settingname);
     }    
-    
-    // If the setting was not found in the setting table but exists as a variable (from config.php)
-    // get it and save it to the table
-    if (isset($$settingname) && $dbvalue==false)
-    {
-      $registry->set($settingname,$$settingname);
-      $dbvalue=$$settingname;  
-    } 
+
 	return $dbvalue;
 }
   
