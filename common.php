@@ -284,7 +284,7 @@ if ($sourcefrom == "admin")
 	}
 }
 
-if ($sourcefrom == "admin" && $buildnumber != "" && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$updatecheckperiod." days")) 
+if ($sourcefrom == "admin" && $buildnumber != "" && $updatecheckperiod>0 && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$updatecheckperiod." days")) 
 {
   updatecheck();
 }
@@ -316,7 +316,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
      */
     function showadminmenu()
         {
-        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion;
+        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck;
     
         $adminmenu  = "<div class='menubar'>\n";
         if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
@@ -331,7 +331,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "</strong>\n";
 			}
         $adminmenu  .="</div>\n";
-        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updateavailable) && $updateavailable==1)   
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updatelastcheck) && $updatelastcheck>0 && isset($updateavailable) && $updateavailable==1)   
         {
             $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
         }

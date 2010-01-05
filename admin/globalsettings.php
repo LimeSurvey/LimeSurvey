@@ -73,11 +73,16 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                        setGlobalSetting('siteadminemail',strip_tags($_POST['siteadminemail']));
                        setGlobalSetting('siteadminname',strip_tags($_POST['siteadminname']));
                        setGlobalSetting('shownoanswer',sanitize_int($_POST['shownoanswer']));
-                       setGlobalSetting('repeatheadings',sanitize_int($_POST['repeatheadings']));
+                       $repeatheadingstemp=(int)($_POST['repeatheadings']);
+                       if ($repeatheadingstemp==0)  $repeatheadingstemp=25;
+                       setGlobalSetting('repeatheadings',$repeatheadingstemp);
+                       
                        setGlobalSetting('maxemails',sanitize_int($_POST['maxemails']));
-                       setGlobalSetting('sessionlifetime',sanitize_int($_POST['sessionlifetime']));
+                       $sessionlifetimetemp=(int)($_POST['sessionlifetime']);
+                       if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
+                       setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
                        setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
-                       $savetime=trim(strip_tags($_POST['timeadjust']).' hours');
+                       $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
                        if ((substr($savetime,0,1)!='-') && (substr($savetime,0,1)!='+')) { $savetime = '+'.$savetime;}
                        setGlobalSetting('timeadjust',$savetime);
                        setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
@@ -138,8 +143,8 @@ function globalsettingsdisplay()
             
             if (isset($updateavailable) && $updateavailable==1)
             {
-              $editsurvey .=sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)").'<br />';
-              $editsurvey .=sprintf($clang->gT('You can update manually or use the %s'),"<a href='$scriptname?action=update'>".$clang->gT('3-Click ComfortUpdate').'</a>').'.<br />';
+              $editsurvey .='<span style="font-weight: bold;">'.sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)").'</span><br />';
+              $editsurvey .=sprintf($clang->gT('You can update %smanually%s or use the %s'),"<a href='http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version'>","</a>","<a href='$scriptname?action=update'>".$clang->gT('3-Click ComfortUpdate').'</a>').'.<br />';
             }                         
             elseif (isset($updateinfo['errorcode']))
             {
