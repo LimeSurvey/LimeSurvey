@@ -1107,8 +1107,8 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				$qrrow['type'] == ":" || $qrrow['type'] == ";")
 			{
 			$questionsummary .=  "<a href='".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y'"
-                                ."title=\"".$clang->gTview("Edit/Add Answers for this Question")."\">"
-			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit/Add Answers for this Question")."' name='ViewAnswers' /></a>\n" ;
+                                ."title=\"".$clang->gTview("Edit/add answer options for this question")."\">"
+			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit/add answer options for this question")."' name='ViewAnswers' /></a>\n" ;
 			}
 		}
 		else
@@ -1170,9 +1170,9 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<tr ><td></td><td align='left'>"
 			. "<font face='verdana' size='1' color='red'>"
-			. $clang->gT("Warning").": ". $clang->gT("You need to add answers to this question")." "
+			. $clang->gT("Warning").": ". $clang->gT("You need to add answer options to this question")." "
 			. "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
-			. $clang->gT("Edit/Add Answers for this Question")."' name='EditThisQuestionAnswers'"
+			. $clang->gT("Edit/add answer options for this question")."' name='EditThisQuestionAnswers'"
 			. "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\" /></font></td></tr>\n";
 		}
 		
@@ -1326,7 +1326,7 @@ if (returnglobal('viewanswer'))
      $vasummary .= "<table width='100%' >\n"
 	."<tr  >\n"
 	."<td colspan='4' class='settingcaption'>\n"
-	.$clang->gT("Edit Answers")
+	.$clang->gT("Edit answer options")
 	."</td>\n"
 	."</tr>\n"
 	."<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
@@ -1372,7 +1372,7 @@ if (returnglobal('viewanswer'))
             $vasummary .="<th style='display:none;'>";
         }
         $vasummary .="</th><th width='50%'>\n"
-        		.$clang->gT("Answer")
+        		.$clang->gT("Answer option")
         		."</th>\n"
         		."<th width='15%'>\n"
         		.$clang->gT("Action")
@@ -1501,7 +1501,7 @@ if (returnglobal('viewanswer'))
 			{
 				$vasummary .= "<tr><td colspan='6'><br /></td></tr>"
                              ."<tr><td>"
-				."<strong>".$clang->gT("New Answer").":</strong> ";
+				."<strong>".$clang->gT("New answer option").":</strong> ";
                 if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
 				$vasummary .= "<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\" id='code_".$maxsortorder."' maxlength='5' size='5' "
 				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
@@ -1529,7 +1529,7 @@ if (returnglobal('viewanswer'))
 				. getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
 				."</td>\n"
 				."<td>\n"
-				."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new Answer")."' />\n"
+				."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new answer option")."' />\n"
 				."<input type='hidden' name='action' value='modanswer' />\n"
 				."</td>\n"
 				."<td>\n"

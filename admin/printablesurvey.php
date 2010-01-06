@@ -947,8 +947,8 @@ while ($degrow = $degresult->FetchRow())
 				else
 				{
                     $maxansw=$qidattributes["max_answers"];
-					$question['QUESTION_TYPE_HELP'] = $clang->gT('Please choose *at most* ').' <span class="num">'.$maxansw.'</span> '.$clang->gT('answers:');
-					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers:"),"U");}
+					$question['QUESTION_TYPE_HELP'] = sprintf($clang->gT('Please choose *at most* %s answers:' ),'<span class="num">'.$maxansw.'</span>');
+					if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT('Please choose *at most* %s answers:' ),$maxansw),"U");}
 				}
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
