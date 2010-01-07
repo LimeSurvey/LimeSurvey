@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-05 08:29+0100\n"
-"PO-Revision-Date: 2010-01-05 08:30+0100\n"
+"POT-Creation-Date: 2010-01-07 11:38+0100\n"
+"PO-Revision-Date: 2010-01-07 11:45+0100\n"
 "Last-Translator: Igor Dobrača <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -3783,8 +3783,8 @@ msgstr "RegExp"
 
 #: D:\LimeSurvey
 #: 1/admin/conditionshandling.php:1866
-msgid "Predefined answers for this question"
-msgstr "Zadan odgovor na trenutno pitanje"
+msgid "Predefined answer options for this question"
+msgstr "Zadani mogući odgovori na trenutno pitanje"
 
 #: D:\LimeSurvey
 #: 1/admin/conditionshandling.php:1871
@@ -3912,8 +3912,8 @@ msgstr "Pitanje nije moguće obrisati"
 
 #: D:\LimeSurvey
 #: 1/admin/database.php:800
-msgid "Add new Answer"
-msgstr "Dodatj novi odgovor"
+msgid "Add new answer option"
+msgstr "Dodaj novi mogući odgovor"
 
 #: D:\LimeSurvey
 #: 1/admin/database.php:816
@@ -5292,42 +5292,42 @@ msgid "Save settings"
 msgstr "Snimi postavke"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:461
+#: 1/admin/globalsettings.php:459
 msgid "System overview"
 msgstr "Pregled sustava"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:465
+#: 1/admin/globalsettings.php:463
 msgid "Database name"
 msgstr "Naziv baze podataka"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:471
+#: 1/admin/globalsettings.php:469
 msgid "Users"
 msgstr "Korisnici"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:481
+#: 1/admin/globalsettings.php:479
 msgid "Active surveys"
 msgstr "Aktivni upitnici"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:486
+#: 1/admin/globalsettings.php:484
 msgid "Deactivated result tables"
 msgstr "Deaktivirane tablice rezultata"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:491
+#: 1/admin/globalsettings.php:489
 msgid "Active token tables"
 msgstr "Aktivne tablice tokena"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:496
+#: 1/admin/globalsettings.php:494
 msgid "Deactivated token tables"
 msgstr "Deaktivirane tablice tokena"
 
 #: D:\LimeSurvey
-#: 1/admin/globalsettings.php:503
+#: 1/admin/globalsettings.php:501
 msgid "Show PHPInfo"
 msgstr "Prikaži PHPInfo"
 
@@ -5956,8 +5956,8 @@ msgstr "Pregled trenutnog pitanja"
 #: D:\LimeSurvey
 #: 1/admin/html.php:1111
 #: 1/admin/html.php:1175
-msgid "Edit/Add Answers for this Question"
-msgstr "Mijenjaj/dodaj odgovore na trenutno pitanje"
+msgid "Edit/add answer options for this question"
+msgstr "Mijenjaj/dodaj moguće odgovore na trenutno pitanje"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1121
@@ -6011,8 +6011,8 @@ msgstr "Tip:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1173
-msgid "You need to add answers to this question"
-msgstr "Morate dodati odgovore na trenutno pitanje"
+msgid "You need to add answer options to this question"
+msgstr "Morate dodati moguće odgovore na trenutno pitanje"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1184
@@ -6056,8 +6056,8 @@ msgstr "Ostala pitanja koja imaju uvjete za trenutno pitanje:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1329
-msgid "Edit Answers"
-msgstr "Uredi odgovore"
+msgid "Edit answer options"
+msgstr "Izmijeni mogući odgovor"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1332
@@ -6078,6 +6078,11 @@ msgstr "Kod"
 #: 1/admin/html.php:1368
 msgid "Assessment value"
 msgstr "Vrijednost zadatka"
+
+#: D:\LimeSurvey
+#: 1/admin/html.php:1375
+msgid "Answer option"
+msgstr "Mogući odgovor"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1378
@@ -6108,8 +6113,8 @@ msgstr "Premijesti opciju odgovora dolje"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1504
-msgid "New Answer"
-msgstr "Novi odgovor"
+msgid "New answer option"
+msgstr "Novi mogući odgovor"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1550
@@ -8050,22 +8055,21 @@ msgstr "Molim izaberite *sve opcije* koje vam odgovaraju."
 #: D:\LimeSurvey
 #: 1/admin/printablesurvey.php:950
 #: 1/admin/printablesurvey.php:951
-#: 1/admin/printablesurvey.php:1022
-#: 1/admin/printablesurvey.php:1023
-msgid "Please choose *at most* "
-msgstr "Molim izaberite *najbolji* "
-
-#: D:\LimeSurvey
-#: 1/admin/printablesurvey.php:950
-#: 1/admin/printablesurvey.php:951
-msgid "answers:"
-msgstr "odgovori:"
+#, php-format
+msgid "Please choose *at most* %s answers:"
+msgstr "Molim izaberite *ne više od* %s odgovora:"
 
 #: D:\LimeSurvey
 #: 1/admin/printablesurvey.php:1016
 #: 1/admin/printablesurvey.php:1017
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Molim izaberite sve opcije koje vam odgovaraju i komentirajte."
+
+#: D:\LimeSurvey
+#: 1/admin/printablesurvey.php:1022
+#: 1/admin/printablesurvey.php:1023
+msgid "Please choose *at most* "
+msgstr "Molim izaberite *najbolji* "
 
 #: D:\LimeSurvey
 #: 1/admin/printablesurvey.php:1022
@@ -11492,6 +11496,10 @@ msgstr "Thai"
 msgid "Vietnamese"
 msgstr "Vijetnamski"
 
+#~ msgid "New Answer"
+#~ msgstr "Novi odgovor"
+#~ msgid "answers:"
+#~ msgstr "odgovori:"
 #~ msgid "Export result to a SPSS/PASW command file"
 #~ msgstr "Izvezi rezultate u SPSS/PASW komandnu datoteku"
 #~ msgid "Deactivated surveys"
