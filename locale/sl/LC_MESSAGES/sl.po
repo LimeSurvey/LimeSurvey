@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-25 11:27-0500\n"
-"PO-Revision-Date: 2010-01-03 01:58+0100\n"
+"PO-Revision-Date: 2010-01-09 03:54+0100\n"
 "Last-Translator: Jure Cuhalev <gandalf@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1003,19 +1003,19 @@ msgstr ""
 
 #: c:\limesurvey/svn/common.php:3424
 msgid "Dropdown separators"
-msgstr ""
+msgstr "Razločevalnik spustega menija"
 
 #: c:\limesurvey/svn/common.php:3428
 msgid "Replaces the 'other' label with text"
-msgstr ""
+msgstr "Zamenja labelo 'drugo' z besedilom"
 
 #: c:\limesurvey/svn/common.php:3429
 msgid "\"Other\" caption"
-msgstr ""
+msgstr "\"Drugo\" napis"
 
 #: c:\limesurvey/svn/common.php:3433
 msgid "Show statistics of a certain question to the user"
-msgstr ""
+msgstr "Pokaži statistiko določenega vprašanja uporabniku"
 
 #: c:\limesurvey/svn/common.php:3434
 msgid "Show in public statistics"
@@ -1023,35 +1023,35 @@ msgstr "Javni prikaz statistik"
 
 #: c:\limesurvey/svn/common.php:3438
 msgid "SGQA identifier to use total of previous question as maximum for this question"
-msgstr ""
+msgstr "ASVO vrednost, ki se uporablja za vsoto prejšnega vprašanja kot maksimum za to vprašanje"
 
 #: c:\limesurvey/svn/common.php:3439
 msgid "Max value from SGQA"
-msgstr ""
+msgstr "Največja vrednost od ASVO"
 
 #: c:\limesurvey/svn/common.php:3443
 msgid "SGQA identifier to use total of previous question as minimum for this question"
-msgstr ""
+msgstr "ASVO vrednost, ki se uporablja za vsoto prejšnega vprašanja kot minimum za to vprašanje"
 
 #: c:\limesurvey/svn/common.php:3444
 msgid "Min value from SGQA"
-msgstr ""
+msgstr "Najmanjša vrednost za ASVO"
 
 #: c:\limesurvey/svn/common.php:3448
 msgid "SGQA identifier to use total of previous question as total for this question"
-msgstr ""
+msgstr "ASVO vrednost, ki se uporablja za vsoto prejšnega vprašanja kot vsota za to vprašanje"
 
 #: c:\limesurvey/svn/common.php:3449
 msgid "Value equals SGQA"
-msgstr ""
+msgstr "Vrednost ustreza ASVO"
 
 #: c:\limesurvey/svn/common.php:3453
 msgid "Insert a page break before this question in printable view by setting this to 1."
-msgstr ""
+msgstr "Vstavitve prelom strani pred tem vprašanjem tako da nastavitve to na 1."
 
 #: c:\limesurvey/svn/common.php:3454
 msgid "Insert page break in printable view"
-msgstr ""
+msgstr "Vstavi prelom strani v pogledu za tiskanje"
 
 #: c:\limesurvey/svn/common.php:3458
 msgid "1=nominal 2=ordinal 3=scale."
@@ -1122,7 +1122,7 @@ msgstr "Opomnik nazadnje poslan na"
 
 #: c:\limesurvey/svn/common.php:6160
 msgid "Total numbers of sent reminders"
-msgstr ""
+msgstr "Skupno število poslanih opomnikov."
 
 #: c:\limesurvey/svn/common.php:6180
 #, php-format
@@ -1188,13 +1188,11 @@ msgstr "Ta anketa trenutno ni aktivna. Vaših odgovorov ne bo mogoče shraniti."
 
 #: c:\limesurvey/svn/group.php:910
 #: c:\limesurvey/svn/question.php:478
-#, fuzzy
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr "Niste odgovorili na eno ali več obveznih vprašanj. Z anketo ne morete nadaljevati, dokler ne odgovorite na vsa obvezna vprašanja."
 
 #: c:\limesurvey/svn/group.php:916
 #: c:\limesurvey/svn/question.php:484
-#, fuzzy
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Na eno ali več vprašanj niste odgovorili z veljavnim odgovorom. Z anketiranjem ne morete nadaljevati dokler niso vsi odgovori veljavni."
 
@@ -1287,9 +1285,8 @@ msgstr "Niste vpisali gesla"
 #: c:\limesurvey/svn/index.php:1901
 #: c:\limesurvey/svn/register.php:56
 #: c:\limesurvey/svn/save.php:247
-#, fuzzy
 msgid "The answer to the security question is incorrect."
-msgstr "Odgovor na varnostno vprašanje ni pravilen"
+msgstr "Odgovor na varnostno vprašanje ni pravilen."
 
 #: c:\limesurvey/svn/index.php:589
 msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
@@ -1303,18 +1300,17 @@ msgstr "Dostopno geslo, ki ste ga vnesli ni veljavno ali pa je bilo že uporablj
 
 #: c:\limesurvey/svn/index.php:591
 #: c:\limesurvey/svn/index.php:617
-#, fuzzy, php-format
+#, php-format
 msgid "For further information please contact %s"
 msgstr "Za dodatne informacije se obrnite na %s"
 
 #: c:\limesurvey/svn/index.php:615
-#, fuzzy
 msgid "We are sorry but you are not allowed to enter this survey."
-msgstr "Nimate dovoljenja za brisanje te ankete!"
+msgstr "Na žalost nimate dostopa do te ankete."
 
 #: c:\limesurvey/svn/index.php:616
 msgid "Your token seems to be valid but can be used only during a certain time period."
-msgstr ""
+msgstr "Vaše geslo deluje veljavno vendar ga lahko uporabite samo v določenem časovnem oknu."
 
 #: c:\limesurvey/svn/index.php:738
 msgid "Survey Saved"
@@ -1389,9 +1385,8 @@ msgid "Please confirm access to survey by answering the security question below 
 msgstr "Prosimo, potrdite dostop do ankete z odgovorom na varnostno vprašanje in kliknite Nadaljuj."
 
 #: c:\limesurvey/svn/index.php:1739
-#, fuzzy
 msgid "Security question:"
-msgstr "Varnostno vprašanje"
+msgstr "Varnostno vprašanje:"
 
 #: c:\limesurvey/svn/index.php:1773
 #: c:\limesurvey/svn/index.php:1833
@@ -1420,9 +1415,8 @@ msgid "Please confirm the token by answering the security question below and cli
 msgstr "Prosimo potrdite geslo z odgovorom na varnostno vprašanje spodaj in kliknite Nadaljuj."
 
 #: c:\limesurvey/svn/index.php:1944
-#, fuzzy
 msgid "Token:"
-msgstr "Dostopno geslo"
+msgstr "Dostopno geslo:"
 
 #: c:\limesurvey/svn/index.php:2041
 msgid "This survey does not yet have any questions and cannot be tested or completed."
@@ -1487,15 +1481,14 @@ msgid "Choose one of the following answers"
 msgstr "Prosimo, izberite enega od naslednjih odgovorov"
 
 #: c:\limesurvey/svn/qanda.php:557
-#, fuzzy
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
-msgstr "najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
+msgstr "Izberite odgovor na seznamu na levi, začenši z najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
 
 #: c:\limesurvey/svn/qanda.php:561
 #: c:\limesurvey/svn/qanda.php:562
-#, fuzzy, php-format
+#, php-format
 msgid "Rank at least %d items"
-msgstr "Prosimo, izberite vsaj eno izmed možnosti"
+msgstr "Uvrstite vsaj %d odgovorov"
 
 #: c:\limesurvey/svn/qanda.php:576
 #: c:\limesurvey/svn/qanda.php:577
@@ -1508,9 +1501,9 @@ msgstr "Možnih je več odgovorov"
 #: c:\limesurvey/svn/qanda.php:585
 #: c:\limesurvey/svn/qanda.php:627
 #: c:\limesurvey/svn/qanda.php:628
-#, fuzzy, php-format
+#, php-format
 msgid "Check between %d and %d answers"
-msgstr "Izberite največ %d odgovorov"
+msgstr "Izberite med %d in %d odgovorov"
 
 #: c:\limesurvey/svn/qanda.php:589
 #: c:\limesurvey/svn/qanda.php:590
@@ -1524,7 +1517,7 @@ msgstr "Izberite največ %d odgovorov"
 #: c:\limesurvey/svn/qanda.php:595
 #: c:\limesurvey/svn/qanda.php:637
 #: c:\limesurvey/svn/qanda.php:638
-#, fuzzy, php-format
+#, php-format
 msgid "Check at least %d answers"
 msgstr "Izberite največ %d odgovorov"
 
@@ -1559,9 +1552,8 @@ msgid "Please rank all items"
 msgstr "Prosimo, razvrstite vse možnosti"
 
 #: c:\limesurvey/svn/qanda.php:830
-#, fuzzy
 msgid "Please check at least one item."
-msgstr "Prosimo, izberite vsaj eno izmed možnosti"
+msgstr "Prosimo, izberite vsaj eno izmed možnosti."
 
 #: c:\limesurvey/svn/qanda.php:843
 #: c:\limesurvey/svn/qanda.php:1196
@@ -1668,7 +1660,7 @@ msgstr "Prosimo, izberite"
 #: c:\limesurvey/svn/qanda.php:2063
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr ""
+msgstr "Izbrali ste odgovor \"drugo\" za vprašanje \"%s\". Izpolnite tudi povezano polje \"drugo komentar\"."
 
 #: c:\limesurvey/svn/qanda.php:1542
 #: c:\limesurvey/svn/qanda.php:1967
@@ -1701,27 +1693,27 @@ msgid "Click on the scissors next to each item on the right to remove the last e
 msgstr "Kliknite na škarje poleg vsakega elementa na desni za odstranitev zadnji element v spisku"
 
 #: c:\limesurvey/svn/qanda.php:2487
-#, fuzzy, php-format
+#, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
-msgstr "Prosimo, izberite največ '%d' odgovor(ov) na vprašanje \"%s\""
+msgstr "Uvrstite %d odgovor(ov) na vprašanje \"%s\"."
 
 #: c:\limesurvey/svn/qanda.php:2805
 #: c:\limesurvey/svn/qanda.php:3085
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
-msgstr "Prosimo, izberite največ '%d' odgovor(ov) na vprašanje \"%s\""
+msgstr "Prosimo, izberite največ %d odgovor(ov) na vprašanje \"%s\""
 
 #: c:\limesurvey/svn/qanda.php:2826
 #: c:\limesurvey/svn/qanda.php:3110
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
-msgstr "Prosimo, izberite največ '%d' odgovor(ov) na vprašanje \"%s\""
+msgstr "Prosimo, izberite vsaj %d odgovor(ov) na vprašanje \"%s\""
 
 #: c:\limesurvey/svn/qanda.php:2861
 #: c:\limesurvey/svn/qanda.php:3140
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr ""
+msgstr "Označili ste odgovor \"drugo\" za vprašanje \"%s\". Izpolnite tudi povezano polje \"drugo komentar\"."
 
 #: c:\limesurvey/svn/qanda.php:3013
 #: c:\limesurvey/svn/qanda.php:3041
@@ -1750,9 +1742,9 @@ msgid "Total of all entries must equal %d"
 msgstr "Skupno število vnosov mora biti enako %d"
 
 #: c:\limesurvey/svn/qanda.php:3554
-#, fuzzy, php-format
+#, php-format
 msgid "Total of all entries must be at least %s"
-msgstr "Skupno število vseh vnosov mora biti vsaj %d"
+msgstr "Vsota vseh vnosov mora biti vsaj %s"
 
 #: c:\limesurvey/svn/qanda.php:3562
 msgid "Remaining: "
@@ -1771,9 +1763,9 @@ msgstr "Odgovor ni veljaven. Skupno število vnosov ne sme biti več kot"
 
 #: c:\limesurvey/svn/qanda.php:3629
 #: c:\limesurvey/svn/qanda.php:3637
-#, fuzzy, php-format
+#, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
-msgstr "Odgovor ni veljaven. Skupno število vnosov mora biti vsaj"
+msgstr "Odgovor ni veljaven. Vsota vseh vnosov mora biti vsaj %s."
 
 #: c:\limesurvey/svn/qanda.php:3732
 msgid "Only numbers may be entered in this field"
@@ -1848,9 +1840,8 @@ msgid "Reload your survey by clicking on the following link (or pasting it into 
 msgstr "Ponovno lahko začnete z anketo s klikom na to povezavo (povezavo lahko tudi skopirate v brskalnik):"
 
 #: c:\limesurvey/svn/save.php:339
-#, fuzzy
 msgid "Your survey was successfully saved."
-msgstr "Uspešno ste se prijavili."
+msgstr "Vaša anketa je bila uspešno shranjena."
 
 #: c:\limesurvey/svn/save.php:591
 msgid "Cannot submit results - there are none to submit."
@@ -2083,9 +2074,8 @@ msgid "You are not allowed to perform this operation!"
 msgstr "Nimate dovoljenja za izvajanje te operacije!"
 
 #: c:\limesurvey/svn/admin/activate.php:69
-#, fuzzy
 msgid "This group does not contain any question(s)."
-msgstr "'Tip' vprašanja še ni določen."
+msgstr "Ta skupina ne vsebuje vprašanj."
 
 #: c:\limesurvey/svn/admin/activate.php:99
 msgid "This question is a multiple answer type question but has no answers."
@@ -2267,7 +2257,7 @@ msgstr "Ocene"
 #: c:\limesurvey/svn/admin/assessments.php:125
 #, php-format
 msgid "Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
-msgstr ""
+msgstr "Opozorilo: ocenjevalni način za to anketo ni vklopljen. Vklopite ga lahko v %s nastavitvah ankete %s (zavihek 'Upravljanje z obvestili in podatki')."
 
 #: c:\limesurvey/svn/admin/assessments.php:133
 msgid "No SID Provided"
@@ -2470,18 +2460,16 @@ msgid "Display:"
 msgstr "Prikaži:"
 
 #: c:\limesurvey/svn/admin/browse.php:716
-#, fuzzy
 msgid "Completed Records Only"
-msgstr "Stran za zaključek ankete"
+msgstr "Samo zaključeni vnosi"
 
 #: c:\limesurvey/svn/admin/browse.php:717
-#, fuzzy
 msgid "All Records"
-msgstr "Nov vnos"
+msgstr "Vsi vnosi"
 
 #: c:\limesurvey/svn/admin/browse.php:718
 msgid "Incomplete Records Only"
-msgstr ""
+msgstr "Samo nepopolni vnosi"
 
 #: c:\limesurvey/svn/admin/browse.php:720
 msgid "Show"
@@ -2522,9 +2510,8 @@ msgstr "Napačno uporabniško ime in/ali geslo!"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:107
 #: c:\limesurvey/svn/admin/conditionshandling.php:121
-#, fuzzy
 msgid "Conditions manager"
-msgstr "Ustvarjanje pogojev"
+msgstr "Upravljanje pogojev"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:109
 msgid "You have not selected a survey"
@@ -2532,41 +2519,34 @@ msgstr "Niste izbrali ankete"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:111
 #: c:\limesurvey/svn/admin/conditionshandling.php:125
-#, fuzzy
 msgid "Main admin screen"
 msgstr "Glavno administratorsko okno"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:123
-#, fuzzy
 msgid "You have not selected a question"
 msgstr "Niste izbrali vprašanja"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:133
-#, fuzzy
 msgid "Conditions designer"
-msgstr "Ustvarjanje pogojev"
+msgstr "Načrtovanje pogojev"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:145
-#, fuzzy
 msgid "Return to survey administration"
 msgstr "Nazaj na upravljanje z anketo"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:149
-#, fuzzy
 msgid "Show conditions for this question"
-msgstr "Nastavi pogoje za to vprašanje"
+msgstr "Pokaži pogoje za to vprašanje"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:153
-#, fuzzy
 msgid "Add and edit conditions"
-msgstr "Dodaj pogoj"
+msgstr "Dodaj in uredi pogoje"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:156
 #: c:\limesurvey/svn/admin/conditionshandling.php:1602
 #: c:\limesurvey/svn/admin/conditionshandling.php:1642
-#, fuzzy
 msgid "Copy conditions"
-msgstr "Pogoji za kopiranje"
+msgstr "Kopiraj pogoje"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:162
 #: c:\limesurvey/svn/admin/conditionshandling.php:1835
@@ -2575,7 +2555,6 @@ msgstr "Vprašanja"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:168
 #: c:\limesurvey/svn/admin/conditionshandling.php:170
-#, fuzzy
 msgid "Show help"
 msgstr "Prikaži pomoč"
 
@@ -2586,15 +2565,15 @@ msgstr "Tega pogoja ni mogoče dodati! Pogoj ne vsebuje vprašanja in/ali odgovo
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:405
 msgid "Conditions successfully copied (some were skipped because they were duplicates)"
-msgstr ""
+msgstr "Pogoji so bili uspešno prekopirani (nekateri so bili preskočeni zaradi podvajanja)"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:409
 msgid "Conditions successfully copied"
-msgstr ""
+msgstr "Pogoji so bili uspešno prekopirani"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:414
 msgid "No conditions could be copied (due to duplicates)"
-msgstr ""
+msgstr "Pogojev ni bilo mogoče kopirati (zaradi duplikatov)"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:419
 msgid "Did not copy questions"
@@ -2610,22 +2589,19 @@ msgstr "Vprašanja, h katerim želite prekopirati pogoje, niso bila izbrana"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:858
 msgid "Group of checkboxes"
-msgstr ""
+msgstr "Skupina potrditvenih polij"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:874
-#, fuzzy
 msgid "Single checkbox"
-msgstr "En odgovor"
+msgstr "Posamezno potrditveno polje"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:998
-#, fuzzy
 msgid "Before"
-msgstr "Obnovi"
+msgstr "Pred tem"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1019
-#, fuzzy
 msgid "Current"
-msgstr "Število"
+msgstr "Trenutno"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1037
 msgid "After"
@@ -2636,23 +2612,20 @@ msgid "Only show question {QID} IF"
 msgstr "Prikaži samo vprašanja {QID} s pogojem"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1162
-#, fuzzy
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
-msgstr "Ali ste prepričani, da želite skopirati te pogoje k vprašanjem, ki ste jih izbrali?"
+msgstr "Ali ste prepričani, da želite izbrisati vse pogoje k vprašanjem, ki ste jih izbrali?"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1163
-#, fuzzy
 msgid "Delete all conditions"
-msgstr "Brisanje pogojev"
+msgstr "Izbriši vse pogoje"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1171
-#, fuzzy
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
-msgstr "Ali ste prepričani, da želite izbrisati vsa edinstvena dostopna gesla?"
+msgstr "Ali ste prepričani, da želite preštevilčiti scenarije z vrstnim redom od 1 dalje?"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1172
 msgid "Renumber scenario automatically"
-msgstr ""
+msgstr "Samodejno preštevilči scenarije"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1202
 #: c:\limesurvey/svn/admin/conditionshandling.php:1352
@@ -2664,7 +2637,7 @@ msgstr "ALI"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1218
 msgid "New scenario number"
-msgstr ""
+msgstr "Novo število scenarija"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1225
 msgid "Update scenario"
@@ -2733,7 +2706,7 @@ msgstr "Neobstoječa tabela gesel"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1439
 msgid "Not found"
-msgstr ""
+msgstr "Ni bilo najdeno"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1496
 msgid "Are you sure you want to delete this condition?"
@@ -2786,7 +2759,7 @@ msgstr "Prejšnje vprašanje"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1805
 msgid "Comparison operator"
-msgstr ""
+msgstr "Primerjalni operater"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1809
 msgid "Equals"
@@ -2794,7 +2767,7 @@ msgstr "je enako"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1833
 msgid "Predefined"
-msgstr ""
+msgstr "Prednastavljeno"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1834
 msgid "Constant"
@@ -2802,7 +2775,7 @@ msgstr "Konstanta"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1837
 msgid "RegExp"
-msgstr ""
+msgstr "Regularni izraz"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1843
 msgid "Predefined answers for this question"
@@ -2818,7 +2791,7 @@ msgstr "Odgovori iz prejšnjih vprašanj"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1877
 msgid "Attributes values from the participant's token"
-msgstr ""
+msgstr "Vrednosti lastnosti iz gesla anketiranca"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1896
 msgid "Update condition"
@@ -3134,7 +3107,7 @@ msgstr "Ankete ni mogoče ustvariti"
 
 #: c:\limesurvey/svn/admin/database.php:1420
 msgid "Your personal settings were successfully saved."
-msgstr ""
+msgstr "Vaše osebne nastavitve so bile uspešno shranjene."
 
 #: c:\limesurvey/svn/admin/dataentry.php:80
 #: c:\limesurvey/svn/admin/dataentry.php:101
@@ -3446,7 +3419,7 @@ msgstr "Pretvori presledke v vprašanjih v podčrtaje"
 
 #: c:\limesurvey/svn/admin/exportresults.php:205
 msgid "Include"
-msgstr ""
+msgstr "Vključi"
 
 #: c:\limesurvey/svn/admin/exportresults.php:218
 msgid "Answer Codes"
@@ -3713,7 +3686,7 @@ msgstr "URL ankete"
 
 #: c:\limesurvey/svn/admin/fck_LimeReplacementFields.php:175
 msgid "Overall assessment score"
-msgstr ""
+msgstr "Splošna ocena"
 
 #: c:\limesurvey/svn/admin/fck_LimeReplacementFields.php:176
 msgid "Assessment group score"
@@ -3914,7 +3887,7 @@ msgstr "Nobena anketa ni na voljo - prosimo ustvarite anketo."
 
 #: c:\limesurvey/svn/admin/html.php:230
 msgid "Your personal settings"
-msgstr ""
+msgstr "Vaše osebne nastavitve"
 
 #: c:\limesurvey/svn/admin/html.php:238
 msgid "Interface language"
@@ -4424,7 +4397,7 @@ msgstr "Uredi/Dodaj sekundarne sezname odgovorov"
 
 #: c:\limesurvey/svn/admin/html.php:1485
 msgid "Option 'Other':"
-msgstr ""
+msgstr "Možnost 'Drugo':"
 
 #: c:\limesurvey/svn/admin/html.php:1494
 msgid "Mandatory:"
@@ -4563,7 +4536,7 @@ msgstr "queXML Survey XML format (*.xml)"
 
 #: c:\limesurvey/svn/admin/html.php:2091
 msgid "Save for Lsrc (*.csv)"
-msgstr ""
+msgstr "Shrani za Lsrc (*.csv)"
 
 #: c:\limesurvey/svn/admin/html.php:2101
 msgid "Export To File"
@@ -4667,7 +4640,7 @@ msgstr "Javne statistike?"
 #: c:\limesurvey/svn/admin/html.php:2471
 #: c:\limesurvey/svn/admin/html.php:3317
 msgid "Show graphs in public statistics?"
-msgstr ""
+msgstr "Pokaži grafe v javnih statistikah?"
 
 #: c:\limesurvey/svn/admin/html.php:2483
 #: c:\limesurvey/svn/admin/html.php:3326
@@ -4687,7 +4660,7 @@ msgstr "Kontrola objavljanja in dostopa"
 #: c:\limesurvey/svn/admin/html.php:2518
 #: c:\limesurvey/svn/admin/html.php:3371
 msgid "Only users with tokens may enter the survey?"
-msgstr ""
+msgstr "Samo uporabniki z geslom lahko odgovarjajo na to anketo?"
 
 #: c:\limesurvey/svn/admin/html.php:2529
 #: c:\limesurvey/svn/admin/html.php:3378
@@ -4697,7 +4670,7 @@ msgstr "Omogoči javno registracijo uporabnikov za sodelovanje v anketi?"
 #: c:\limesurvey/svn/admin/html.php:2563
 #: c:\limesurvey/svn/admin/html.php:3395
 msgid "Set cookie to prevent repeated participation?"
-msgstr ""
+msgstr "Nastavi piškotek, ki preprečuje ponovno sodelovanje?"
 
 #: c:\limesurvey/svn/admin/html.php:2576
 #: c:\limesurvey/svn/admin/html.php:3407
@@ -5146,7 +5119,7 @@ msgstr "Ali ste prepričani?"
 
 #: c:\limesurvey/svn/admin/importoldresponses.php:69
 msgid "Warning: You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
-msgstr ""
+msgstr "Pozor: Stare odgovore lahko uvozite z istim številom stolpcev kot jih je v vaši aktivni anketi. SAMI morate preveriti, da ti odgovori ustrezajo vprašanjem v vaši aktivni anketi."
 
 #: c:\limesurvey/svn/admin/importquestion.php:24
 #: c:\limesurvey/svn/admin/questionhandling.php:587
@@ -5232,7 +5205,7 @@ msgstr "Oprostite vaši odgovori so presegli kvoto za to anketo."
 #: c:\limesurvey/svn/admin/importsurvey.php:1355
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
-msgstr ""
+msgstr "Pogoj za %d je bil preskočen (%d ne obstaja)"
 
 #: c:\limesurvey/svn/admin/importsurvey.php:1373
 #: c:\limesurvey/svn/admin/importsurvey.php:1402
@@ -5619,7 +5592,7 @@ msgstr "Kliknite na gumb, če želite"
 
 #: c:\limesurvey/svn/admin/iterate_survey.php:34
 msgid "Delete all incomplete answers that correspond to a token for which a completed answers is already recorded"
-msgstr ""
+msgstr "Izbriši vse nepopolne odgovore, ki ustrezaja geslu za katera je bil popoln odgovor že zabeležen"
 
 #: c:\limesurvey/svn/admin/iterate_survey.php:35
 msgid "Reset the completed answers to the incomplete state"
@@ -5627,7 +5600,7 @@ msgstr "Nastavi vse odgovore na neodgovorjeno"
 
 #: c:\limesurvey/svn/admin/iterate_survey.php:36
 msgid "Reset all your tokens to the 'not used' state"
-msgstr ""
+msgstr "Ponastavi vsa gesla na stanje 'ni uporabljeno'"
 
 #: c:\limesurvey/svn/admin/iterate_survey.php:38
 msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?"
@@ -5766,17 +5739,17 @@ msgstr "Brisanje odgovora ni uspelo"
 
 #: c:\limesurvey/svn/admin/login_check.php:46
 msgid "Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: "
-msgstr ""
+msgstr "Podatki za uporabniško ime in enkratno geslo so bili sprejeti vendar uporaba enkratnih gesel ni omogočena v nastavitvah. Omogočite jo s tem, da dodate naslednjo vrstico v config.php:"
 
 #: c:\limesurvey/svn/admin/login_check.php:64
 #, php-format
 msgid "No one-time password found for user %s"
-msgstr ""
+msgstr "Za uporabnika %s ni bilo najdeno enkratno geslo"
 
 #: c:\limesurvey/svn/admin/login_check.php:77
 #, php-format
 msgid "Passed one time password doesn't match one time password for user %s"
-msgstr ""
+msgstr "Vnešeno enkratno geslo ne ustreza enkratnemu geslu za uporabnika %s"
 
 #: c:\limesurvey/svn/admin/login_check.php:144
 msgid "You have to enter user name and email."
@@ -5845,7 +5818,7 @@ msgstr "Odgovor je bil večji kot"
 
 #: c:\limesurvey/svn/admin/printablesurvey.php:440
 msgid "Answer matched (regexp)"
-msgstr ""
+msgstr "Ustrezni odgovori (regexp)"
 
 #: c:\limesurvey/svn/admin/printablesurvey.php:590
 #: c:\limesurvey/svn/admin/printablesurvey.php:597
@@ -5854,7 +5827,7 @@ msgstr "Labela"
 
 #: c:\limesurvey/svn/admin/printablesurvey.php:622
 msgid "RANK"
-msgstr ""
+msgstr "RANG"
 
 #: c:\limesurvey/svn/admin/printablesurvey.php:640
 msgid "at question"
@@ -6105,7 +6078,7 @@ msgstr "Zaključi anketo z opozorilom"
 #: c:\limesurvey/svn/admin/quota.php:415
 #: c:\limesurvey/svn/admin/quota.php:856
 msgid "Autoload URL"
-msgstr ""
+msgstr "Samodejno naloži URL"
 
 #: c:\limesurvey/svn/admin/quota.php:455
 #: c:\limesurvey/svn/admin/quota.php:893
@@ -6162,7 +6135,7 @@ msgstr "Dodaj novo kvoto"
 
 #: c:\limesurvey/svn/admin/quota.php:656
 msgid "Quick CSV Report"
-msgstr ""
+msgstr "Hitro CSV poročilo"
 
 #: c:\limesurvey/svn/admin/quota.php:669
 msgid "Remaining"
@@ -6273,16 +6246,16 @@ msgstr "Odgovori, ki vsebujejo"
 
 #: c:\limesurvey/svn/admin/statistics.php:1907
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
-msgstr ""
+msgstr "GD Library ni nameščen. Prikazovanje grafov zahteva GD Library za svoje delovanje."
 
 #: c:\limesurvey/svn/admin/statistics.php:1908
 #: c:\limesurvey/svn/admin/statistics.php:1912
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
-msgstr ""
+msgstr "obiščite http://us2.php.net/manual/en/ref.image.php za več informacij"
 
 #: c:\limesurvey/svn/admin/statistics.php:1911
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
-msgstr ""
+msgstr "Freetype Library ni nameščen. Prikazovanje grafov zahteva Freetype Library za svoje delovanje."
 
 #: c:\limesurvey/svn/admin/statistics.php:1922
 msgid "View summary of all available fields"
@@ -6294,7 +6267,7 @@ msgstr "Prikaži grafikone"
 
 #: c:\limesurvey/svn/admin/statistics.php:1931
 msgid "Include:"
-msgstr ""
+msgstr "Dodaj:"
 
 #: c:\limesurvey/svn/admin/statistics.php:1932
 msgid "All records"
@@ -6306,7 +6279,7 @@ msgstr "Samo dokončane ankete"
 
 #: c:\limesurvey/svn/admin/statistics.php:1934
 msgid "Incomplete records only"
-msgstr ""
+msgstr "Samo nepopolni odgovori"
 
 #: c:\limesurvey/svn/admin/statistics.php:1946
 msgid "Don't consider NON completed responses"
@@ -6454,7 +6427,7 @@ msgstr "Dobrodošli v primeru ankete"
 
 #: c:\limesurvey/svn/admin/templates.php:390
 msgid "You should have a great time doing this"
-msgstr ""
+msgstr "Pri izpolnjevanju boste uživali"
 
 #: c:\limesurvey/svn/admin/templates.php:396
 msgid "Some URL description"
@@ -6466,7 +6439,7 @@ msgstr "Skupina 1: Prvi del vprašanj"
 
 #: c:\limesurvey/svn/admin/templates.php:400
 msgid "This group description is fairly vacuous, but quite important."
-msgstr ""
+msgstr "Ta opis skupine je dokaj prazen, vendar zelo pomemben."
 
 #: c:\limesurvey/svn/admin/templates.php:412
 msgid "Assessment heading"
@@ -6478,7 +6451,7 @@ msgstr "Podrobnosti ocene"
 
 #: c:\limesurvey/svn/admin/templates.php:412
 msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
-msgstr ""
+msgstr "Ta skupina ocen bo bila prikaza samo, če so nastavljena pravila za ocene in način za ocene vklopljen."
 
 #: c:\limesurvey/svn/admin/templates.php:413
 msgid "Survey name (ID)"
@@ -6490,12 +6463,12 @@ msgstr "Vaš odgovor"
 
 #: c:\limesurvey/svn/admin/templates.php:482
 msgid "Please explain something in detail:"
-msgstr ""
+msgstr "Podrobno razložite nekaj:"
 
 #: c:\limesurvey/svn/admin/templates.php:763
 #, php-format
 msgid "Note: This is a standard template. If you want to edit it %s please copy it first%s."
-msgstr ""
+msgstr "Opomba: To je standardna predloga. Če jo želite urejati jo %s najprej kopirajte %s."
 
 #: c:\limesurvey/svn/admin/templates.php:763
 #: c:\limesurvey/svn/admin/templates.php:830
@@ -6575,7 +6548,7 @@ msgstr "Uvozi ZIP arhiv s predlogo"
 #: c:\limesurvey/svn/admin/templates.php:883
 #, php-format
 msgid "Editing template '%s' - File '%s'"
-msgstr ""
+msgstr "Urejanje predloge '%s' - Datoteka '%s'"
 
 #: c:\limesurvey/svn/admin/templates.php:887
 msgid "Standard Files:"
@@ -6587,7 +6560,7 @@ msgstr "Sprememb ni mogoče shraniti v privzeto predlogo."
 
 #: c:\limesurvey/svn/admin/templates.php:908
 msgid "You can't save changes because the template directory is not writable."
-msgstr ""
+msgstr "Sprememb ni mogoče shraniti, ker v direktorij s predlogami ni mogoče pisati."
 
 #: c:\limesurvey/svn/admin/templates.php:912
 msgid "Other Files:"
@@ -6595,7 +6568,7 @@ msgstr "Druge datoteke:"
 
 #: c:\limesurvey/svn/admin/templates.php:917
 msgid "CSS & Javascript files:"
-msgstr ""
+msgstr "CSS in Javascript datoteke:"
 
 #: c:\limesurvey/svn/admin/templates.php:930
 msgid "Are you sure you want to delete this file?"
@@ -6866,7 +6839,7 @@ msgstr "Dodaj nov vnos z dostopnim geslom"
 
 #: c:\limesurvey/svn/admin/tokens.php:452
 msgid "Manage additional attribute fields"
-msgstr ""
+msgstr "Urejanje dodatnih lastnosti polj"
 
 #: c:\limesurvey/svn/admin/tokens.php:456
 msgid "Import tokens from CSV file"
@@ -7084,7 +7057,7 @@ msgstr "Zaključeno?"
 #: c:\limesurvey/svn/admin/tokens.php:862
 #: c:\limesurvey/svn/admin/tokens.php:1908
 msgid "Valid from"
-msgstr ""
+msgstr "Veljavno od"
 
 #: c:\limesurvey/svn/admin/tokens.php:866
 msgid "Valid until"
@@ -7287,11 +7260,11 @@ msgstr "Dodaj lastnosti dostopnih gesel"
 #: c:\limesurvey/svn/admin/tokens.php:1731
 #, php-format
 msgid "There are %s user attribute fields in this token table"
-msgstr ""
+msgstr "Tabela dostopnih gesel vsebuje %s uporabniških lastnosti polj"
 
 #: c:\limesurvey/svn/admin/tokens.php:1733
 msgid "Please enter the number of user attribute fields you want to add:"
-msgstr ""
+msgstr "Vnesite število uporabniških lastnosti polj, ki jih želite dodati:"
 
 #: c:\limesurvey/svn/admin/tokens.php:1735
 msgid "Add fields"
@@ -7299,7 +7272,7 @@ msgstr "Dodaj polja"
 
 #: c:\limesurvey/svn/admin/tokens.php:1764
 msgid "Token descriptions were successfully updated."
-msgstr ""
+msgstr "Opisi dostopnih gesel so bili uspešno posodobljeni."
 
 #: c:\limesurvey/svn/admin/tokens.php:1797
 #, php-format
@@ -7308,7 +7281,7 @@ msgstr "%s polij je bilo uspešno dodanih."
 
 #: c:\limesurvey/svn/admin/tokens.php:1798
 msgid "Back to attribute field management."
-msgstr ""
+msgstr "Nazaj na urejanje lastnosti polij."
 
 #: c:\limesurvey/svn/admin/tokens.php:1831
 #: c:\limesurvey/svn/admin/tokens.php:1968
@@ -7334,7 +7307,7 @@ msgstr "do"
 
 #: c:\limesurvey/svn/admin/tokens.php:1920
 msgid "hh:mm"
-msgstr ""
+msgstr "hh:mm"
 
 #: c:\limesurvey/svn/admin/tokens.php:1944
 msgid "Update token entry"
@@ -7346,7 +7319,7 @@ msgstr "Dodaj nov vnos z dostopnim geslom"
 
 #: c:\limesurvey/svn/admin/tokens.php:2018
 msgid "The token entry was successfully updated."
-msgstr ""
+msgstr "Dostopno geslo je bilo uspešno posodobljeno."
 
 #: c:\limesurvey/svn/admin/tokens.php:2019
 #: c:\limesurvey/svn/admin/tokens.php:2083
@@ -7418,7 +7391,7 @@ msgstr "Ustvarjanje vnosov dostopnih gesel"
 
 #: c:\limesurvey/svn/admin/tokens.php:2205
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
-msgstr ""
+msgstr "Napaka: vaši naloženi datoteki manjka eno ali več obveznih polij: 'firstname', 'lastname' ali 'email'"
 
 #: c:\limesurvey/svn/admin/tokens.php:2289
 #, php-format
@@ -7869,7 +7842,7 @@ msgstr "Izvozi odgovore"
 
 #: c:\limesurvey/svn/admin/vvexport.php:78
 msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
-msgstr ""
+msgstr "Za lažje odpiranje v MS Excel, spremenite pripono datoteke v 'tab' ali 'txt'"
 
 #: c:\limesurvey/svn/admin/vvimport.php:84
 msgid "File:"
@@ -7918,7 +7891,7 @@ msgstr "Nazaj na uvoz odgovorov"
 #: c:\limesurvey/svn/admin/vvimport.php:274
 #, php-format
 msgid "Record ID %d was skipped because of duplicate ID."
-msgstr ""
+msgstr "Odgovor z ID %d je bil preskočen zaradi podvojenega ID-ja."
 
 #: c:\limesurvey/svn/admin/vvimport.php:309
 #, php-format
@@ -8066,7 +8039,7 @@ msgstr "Nizozemsko"
 
 #: c:\limesurvey/svn/classes/core/surveytranslator.php:210
 msgid "Dutch Informal"
-msgstr ""
+msgstr "Nemško (neformalno)"
 
 #: c:\limesurvey/svn/classes/core/surveytranslator.php:216
 msgid "English"
@@ -8126,7 +8099,7 @@ msgstr "Italjansko"
 
 #: c:\limesurvey/svn/classes/core/surveytranslator.php:300
 msgid "Italian-Formal"
-msgstr "Italjansko formalno"
+msgstr "Italjansko (formalno)"
 
 #: c:\limesurvey/svn/classes/core/surveytranslator.php:306
 msgid "Japanese"
@@ -8186,7 +8159,7 @@ msgstr "Slovaško"
 
 #: c:\limesurvey/svn/classes/core/surveytranslator.php:390
 msgid "Sinhala"
-msgstr ""
+msgstr "Sinhalsko"
 
 #: c:\limesurvey/svn/classes/core/surveytranslator.php:396
 msgid "Slovenian"
