@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 1.x stable\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-23 21:43+0100\n"
-"PO-Revision-Date: 2010-01-10 02:51+0100\n"
+"PO-Revision-Date: 2010-01-10 02:53+0100\n"
 "Last-Translator: Calidonia Hibernia <calidonia.hibernia@gmail.com>\n"
 "Language-Team: http://calidonia.eu/ <carlos.neira.cortizas@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -8710,7 +8710,7 @@ msgstr "Reiniciar"
 
 #: C:\Users\carlos\Documents\Linux\LimeSurvey\Localización\Tortoise\1.x_stable/admin/userrighthandling.php:641
 msgid "Deleting User Group"
-msgstr "Estase a borrar o Grupo de Usarios/as"
+msgstr "A borrar o Grupo de Usarios/as"
 
 #: C:\Users\carlos\Documents\Linux\LimeSurvey\Localización\Tortoise\1.x_stable/admin/userrighthandling.php:654
 #: C:\Users\carlos\Documents\Linux\LimeSurvey\Localización\Tortoise\1.x_stable/admin/userrighthandling.php:690
