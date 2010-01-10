@@ -353,6 +353,8 @@ function db_upgrade($oldversion) {
     {
         modify_database("", "ALTER TABLE [prefix_surveys] ALTER COLUMN [startdate] datetime NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ALTER COLUMN [expires] datetime NULL"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE [prefix_question_attributes] SET [value]='0' WHERE [value]='false'"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE [prefix_question_attributes] SET [value]='1' WHERE [value]='true'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';

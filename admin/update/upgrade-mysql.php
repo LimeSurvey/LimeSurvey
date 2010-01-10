@@ -340,6 +340,8 @@ global $modifyoutput, $databasename, $databasetabletype;
     {
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `expires` `expires` datetime"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `startdate` `startdate` datetime"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE `prefix_question_attributes` SET `value`='0' WHERE value='false'"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE `prefix_question_attributes` SET `value`='1' WHERE value='true'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
