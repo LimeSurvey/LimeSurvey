@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 1.x stable\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-23 21:43+0100\n"
-"PO-Revision-Date: 2009-11-23 22:51+0100\n"
+"PO-Revision-Date: 2010-01-10 02:51+0100\n"
 "Last-Translator: Calidonia Hibernia <calidonia.hibernia@gmail.com>\n"
 "Language-Team: http://calidonia.eu/ <carlos.neira.cortizas@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -9265,7 +9265,7 @@ msgstr "Italiano"
 
 #: C:\Users\carlos\Documents\Linux\LimeSurvey\Localización\Tortoise\1.x_stable/classes/core/surveytranslator.php:300
 msgid "Italian-Formal"
-msgstr "Italiano formal"
+msgstr "Italiano (Formal)"
 
 #: C:\Users\carlos\Documents\Linux\LimeSurvey\Localización\Tortoise\1.x_stable/classes/core/surveytranslator.php:306
 msgid "Japanese"
@@ -9293,7 +9293,7 @@ msgstr "Noruegués (Bökmal)"
 
 #: C:\Users\carlos\Documents\Linux\LimeSurvey\Localización\Tortoise\1.x_stable/classes/core/surveytranslator.php:342
 msgid "Norwegian (Nynorsk)"
-msgstr "Noruegués (Bokmäl)"
+msgstr "Noruegués (Nynorsk)"
 
 #: C:\Users\carlos\Documents\Linux\LimeSurvey\Localización\Tortoise\1.x_stable/classes/core/surveytranslator.php:348
 msgid "Persian"
