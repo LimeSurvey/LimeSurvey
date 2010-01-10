@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-25 11:27-0500\n"
-"PO-Revision-Date: 2010-01-09 03:54+0100\n"
+"PO-Revision-Date: 2010-01-10 01:29+0100\n"
 "Last-Translator: Jure Cuhalev <gandalf@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -721,7 +721,7 @@ msgstr "Uredi odgovore po abecedi"
 
 #: c:\limesurvey/svn/common.php:3236
 msgid "The percentage width of the answer column"
-msgstr ""
+msgstr "Širina stolpca za odgovore v procentih"
 
 #: c:\limesurvey/svn/common.php:3237
 msgid "Answer width"
@@ -733,16 +733,16 @@ msgstr "Dodaj ali odstrani odgovore za vprašanje z več možnimi odgovori"
 
 #: c:\limesurvey/svn/common.php:3242
 msgid "Array filter"
-msgstr ""
+msgstr "Filter polij"
 
 #: c:\limesurvey/svn/common.php:3246
 #: c:\limesurvey/svn/common.php:3247
 msgid "Category Separator"
-msgstr ""
+msgstr "Razločevalnik kategorij"
 
 #: c:\limesurvey/svn/common.php:3251
 msgid "Filter the available answers by this value"
-msgstr ""
+msgstr "Filtriraj odgovore, ki so na voljo po tej vrednosti"
 
 #: c:\limesurvey/svn/common.php:3252
 msgid "Code filter"
@@ -758,7 +758,7 @@ msgstr "Prikaži stolpce"
 
 #: c:\limesurvey/svn/common.php:3261
 msgid "How many rows to display"
-msgstr ""
+msgstr "Število vrstic za prikaz"
 
 #: c:\limesurvey/svn/common.php:3262
 msgid "Display rows"
@@ -766,7 +766,7 @@ msgstr "Prikaži vrstice"
 
 #: c:\limesurvey/svn/common.php:3266
 msgid "Hide the tip that is normally shown with a question"
-msgstr ""
+msgstr "Skrij namig, ki je navadno prikazan z geslom"
 
 #: c:\limesurvey/svn/common.php:3267
 msgid "Hide tip"
@@ -774,7 +774,7 @@ msgstr "Skrij namige"
 
 #: c:\limesurvey/svn/common.php:3271
 msgid "Limit the number of possible answers"
-msgstr ""
+msgstr "Omeji število možnih odgovorov"
 
 #: c:\limesurvey/svn/common.php:3272
 msgid "Maximum answers"
@@ -782,23 +782,23 @@ msgstr "Največ odgovorov"
 
 #: c:\limesurvey/svn/common.php:3276
 msgid "Maximum sum value of multiple numeric input"
-msgstr ""
+msgstr "Največja vsota vrednosti večih številskih vnosov"
 
 #: c:\limesurvey/svn/common.php:3277
 msgid "Maximum sum value"
-msgstr ""
+msgstr "Največja vsota vrednosti"
 
 #: c:\limesurvey/svn/common.php:3281
 msgid "Maximum characters allowed"
-msgstr ""
+msgstr "Največje število dovoljenih znakov"
 
 #: c:\limesurvey/svn/common.php:3282
 msgid "Maximum characters"
-msgstr ""
+msgstr "Največ znakov"
 
 #: c:\limesurvey/svn/common.php:3286
 msgid "Ensure a minimum number of possible answers"
-msgstr ""
+msgstr "Zagotovi najmanjše število možnih odgovorov"
 
 #: c:\limesurvey/svn/common.php:3287
 msgid "Minimum answers"
@@ -806,11 +806,11 @@ msgstr "Najmanj odgovorov"
 
 #: c:\limesurvey/svn/common.php:3291
 msgid "Make the \"other comment\" field mandatory when the \"other\" field has been marked"
-msgstr ""
+msgstr "Naredi polje \"drugo komentar\" za obvezno, ko je izbrano polje \"drugo\""
 
 #: c:\limesurvey/svn/common.php:3292
 msgid "Other comment mandatory"
-msgstr ""
+msgstr "Obvezenen komentar za Drugo"
 
 #: c:\limesurvey/svn/common.php:3296
 msgid "Allow only numerical input"
@@ -822,23 +822,23 @@ msgstr "Samo števila"
 
 #: c:\limesurvey/svn/common.php:3302
 msgid "Allow only numerical input for `Other` text"
-msgstr ""
+msgstr "Dovoli samo številski vnos za besedilo za `Drugo`"
 
 #: c:\limesurvey/svn/common.php:3303
 msgid "Numbers only for `Other`"
-msgstr ""
+msgstr "Samo števila za `Drugo`"
 
 #: c:\limesurvey/svn/common.php:3308
 msgid "Present answers in random order"
-msgstr ""
+msgstr "Predstavi odgovore v naključnem vrstnem redu"
 
 #: c:\limesurvey/svn/common.php:3309
 msgid "Random answer order"
-msgstr ""
+msgstr "Naključni vrstni red odgovorov"
 
 #: c:\limesurvey/svn/common.php:3313
 msgid "Width of text input box"
-msgstr ""
+msgstr "Širina besedilnega vnosnega polja"
 
 #: c:\limesurvey/svn/common.php:3314
 msgid "Input box width"
@@ -846,15 +846,15 @@ msgstr "Širina vnosnega polja"
 
 #: c:\limesurvey/svn/common.php:3318
 msgid "Multiple numeric inputs sum must equal this value"
-msgstr ""
+msgstr "Vsota večih številskih vnosov mora biti enaka tej vrednosti"
 
 #: c:\limesurvey/svn/common.php:3319
 msgid "Equals sum value"
-msgstr ""
+msgstr "Enako vrednosti vsote"
 
 #: c:\limesurvey/svn/common.php:3323
 msgid "Multiple numeric inputs must be greater than this value"
-msgstr ""
+msgstr "Več številskih vnosov mora biti večje od te vrednosti"
 
 #: c:\limesurvey/svn/common.php:3324
 msgid "Minimum sum value"
@@ -895,7 +895,7 @@ msgstr "Predpona odgovorov"
 
 #: c:\limesurvey/svn/common.php:3358
 msgid "Add a suffix to the answer field"
-msgstr ""
+msgstr "Dodaj pripono k polju odgovora"
 
 #: c:\limesurvey/svn/common.php:3359
 msgid "Answer suffix"
@@ -903,7 +903,7 @@ msgstr "Pripona odgovorov"
 
 #: c:\limesurvey/svn/common.php:3363
 msgid "Use accessible select boxes instead of calendar popup"
-msgstr ""
+msgstr "Uporabi dostopna izbirna polja namesto koledarskega pojavnega okna"
 
 #: c:\limesurvey/svn/common.php:3364
 msgid "Display select boxes"
@@ -915,27 +915,27 @@ msgstr "Najmanjša vrednost leta v koledarju"
 
 #: c:\limesurvey/svn/common.php:3369
 msgid "Minimum dropdown year"
-msgstr ""
+msgstr "Najmanjše leto v spustnem meniju"
 
 #: c:\limesurvey/svn/common.php:3373
 msgid "Maximum year value for calendar"
-msgstr ""
+msgstr "Največje vrednost leta za koledar"
 
 #: c:\limesurvey/svn/common.php:3374
 msgid "Maximum dropdown year"
-msgstr ""
+msgstr "Največje leto v spustnem meniju"
 
 #: c:\limesurvey/svn/common.php:3378
 msgid "Excludes all other options if this is selected"
-msgstr ""
+msgstr "Izključi vse ostale možnosti, če je izbrano"
 
 #: c:\limesurvey/svn/common.php:3379
 msgid "Exclusive option"
-msgstr ""
+msgstr "Izključujoča možnost"
 
 #: c:\limesurvey/svn/common.php:3383
 msgid "Maximum value for array(mult-flexible) question type"
-msgstr ""
+msgstr "Največja vrednost za polje (več-fleksibilno) tip vprašanja"
 
 #: c:\limesurvey/svn/common.php:3384
 msgid "Maximum value"
@@ -943,7 +943,7 @@ msgstr "Največja vrednost"
 
 #: c:\limesurvey/svn/common.php:3388
 msgid "Minimum value for array(multi-flexible) question type"
-msgstr ""
+msgstr "Najmanjša vrednost za polje (več-fleksibilno) tip vprašanja"
 
 #: c:\limesurvey/svn/common.php:3389
 msgid "Minimum value"
@@ -951,15 +951,15 @@ msgstr "Najmanjša vrednost"
 
 #: c:\limesurvey/svn/common.php:3393
 msgid "Step value for array (multi-flexible) question type"
-msgstr ""
+msgstr "Vrednost koraka za polje (več-fleksibilno) tip vprašanja"
 
 #: c:\limesurvey/svn/common.php:3394
 msgid "Step value"
-msgstr ""
+msgstr "Vrednost koraka"
 
 #: c:\limesurvey/svn/common.php:3398
 msgid "Use Checkbox layout for array (multi-flexible) question type"
-msgstr ""
+msgstr "Uporabi razporeditev s potrditvenimi polji za polje (več-fleksibilno) tip vprašanja"
 
 #: c:\limesurvey/svn/common.php:3399
 msgid "Checkbox layout"
@@ -967,39 +967,39 @@ msgstr "Ureditev polja odkljukat"
 
 #: c:\limesurvey/svn/common.php:3403
 msgid "Use Dual Dropdown instead of Dual Scale"
-msgstr ""
+msgstr "Uporabi dvojni spustni meni namesto dvojne skale"
 
 #: c:\limesurvey/svn/common.php:3404
 msgid "Dual dropdown"
-msgstr ""
+msgstr "Dvojni spustni meni"
 
 #: c:\limesurvey/svn/common.php:3408
 msgid "Prefix|Suffix for dropdown lists"
-msgstr ""
+msgstr "Predpona|Pripona za padajoče menije"
 
 #: c:\limesurvey/svn/common.php:3409
 msgid "Prefix|Suffix"
-msgstr ""
+msgstr "Predpona|Pripona"
 
 #: c:\limesurvey/svn/common.php:3413
 msgid "Header for scale A"
-msgstr ""
+msgstr "Zaglavje za skalo A"
 
 #: c:\limesurvey/svn/common.php:3414
 msgid "Header scale A"
-msgstr ""
+msgstr "Zaglavje skale A"
 
 #: c:\limesurvey/svn/common.php:3418
 msgid "Header for scale B"
-msgstr ""
+msgstr "Zaglavje za skalo B"
 
 #: c:\limesurvey/svn/common.php:3419
 msgid "Header scale B"
-msgstr ""
+msgstr "Zaglavje skale B"
 
 #: c:\limesurvey/svn/common.php:3423
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
-msgstr ""
+msgstr "Sporočilo-Odgovor-Razločevalnik|Vmesni-Padajoči meni-Razločevalnik za padajoče menije"
 
 #: c:\limesurvey/svn/common.php:3424
 msgid "Dropdown separators"
@@ -1055,11 +1055,11 @@ msgstr "Vstavi prelom strani v pogledu za tiskanje"
 
 #: c:\limesurvey/svn/common.php:3458
 msgid "1=nominal 2=ordinal 3=scale."
-msgstr ""
+msgstr "1=nominalna 2=ordinalna 3=lestvica."
 
 #: c:\limesurvey/svn/common.php:3459
 msgid "Export scale type 1=nominal 2=ordinal 3=scale."
-msgstr ""
+msgstr "Izvozni tipi lestvic 1=nominalna 2=ordinalna 3=lestvica."
 
 #: c:\limesurvey/svn/common.php:3602
 msgid "Version"
@@ -3569,15 +3569,15 @@ msgstr "Prenesi podatke in datoteko s sintakso."
 
 #: c:\limesurvey/svn/admin/export_data_r.php:83
 msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
-msgstr ""
+msgstr "Shranite oboje v delovni direktorij R-ja (uporabite getwd() in setwd() v R ukaznem oknu za preverjejanje in nastavljanje)"
 
 #: c:\limesurvey/svn/admin/export_data_r.php:84
 msgid "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window"
-msgstr ""
+msgstr "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")    v R ukaznem oknu"
 
 #: c:\limesurvey/svn/admin/export_data_r.php:86
 msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
-msgstr ""
+msgstr "Vaši podatki so sedaj uvoženi; data.frame se imenuje \"data\", variable.labels so atributi podatkov (\"attributes(data)$variable.labels\"), kot pri foreign:read.spss."
 
 #: c:\limesurvey/svn/admin/export_data_spss.php:77
 msgid "Export result data to SPSS"
