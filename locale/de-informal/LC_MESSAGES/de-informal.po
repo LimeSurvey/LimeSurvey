@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-05 14:06+0100\n"
-"PO-Revision-Date: 2010-01-05 14:07+0100\n"
+"POT-Creation-Date: 2010-01-11 11:02+0100\n"
+"PO-Revision-Date: 2010-01-11 11:03+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -3113,8 +3113,8 @@ msgid "RegExp"
 msgstr "RegAusdruck"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1866
-msgid "Predefined answers for this question"
-msgstr "Vordefinierte Antworten für diese Frage"
+msgid "Predefined answer options for this question"
+msgstr "Vordefinierte Antwortoptionen für diese Frage"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1871
 msgid "Constant value"
@@ -3219,8 +3219,8 @@ msgid "Question could not be deleted"
 msgstr "Frage konnte nicht gelöscht werden."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:800
-msgid "Add new Answer"
-msgstr "Neue Antwort hinzufügen"
+msgid "Add new answer option"
+msgstr "Füge neue Antwortoption hinzu"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:816
 msgid "Error adding answer: You can't use the same answer code more than once."
@@ -4898,8 +4898,8 @@ msgstr "Vorschau dieser Frage"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1111
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1175
-msgid "Edit/Add Answers for this Question"
-msgstr "Antworten hinzufügen/bearbeiten für diese Frage"
+msgid "Edit/add answer options for this question"
+msgstr "Bearbeite/Füge Antwortoptionen für diese Frage hinzu"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1121
 msgid "Hide Details of this Question"
@@ -4942,8 +4942,8 @@ msgid "Type:"
 msgstr "Typ:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1173
-msgid "You need to add answers to this question"
-msgstr "Noch keine Antworten definiert"
+msgid "You need to add answer options to this question"
+msgstr "Du musst Antwortoptionen für diese Frage hinzufügen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1184
 msgid "Label Set"
@@ -4978,8 +4978,8 @@ msgid "Other questions having conditions on this question:"
 msgstr "Bedingungen für diese Frage setzten"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1329
-msgid "Edit Answers"
-msgstr "Antworten bearbeiten"
+msgid "Edit answer options"
+msgstr "Bearbeite Antwortoptionen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1332
 msgid "Error: You are trying to use duplicate answer codes."
@@ -4996,6 +4996,10 @@ msgstr "Code"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1368
 msgid "Assessment value"
 msgstr "Bewertungswert"
+
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:1375
+msgid "Answer option"
+msgstr "Antwortoption"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1378
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1989
@@ -5020,8 +5024,8 @@ msgid "Move answer option down"
 msgstr "Antwortoption nach unten verschieben"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1504
-msgid "New Answer"
-msgstr "Neue Antwort"
+msgid "New answer option"
+msgstr "Neue Antwortoption"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1550
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
@@ -6622,20 +6626,19 @@ msgstr "Bitte wähle alle Punkte aus, die zutreffen:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:950
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:951
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1022
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1023
-msgid "Please choose *at most* "
-msgstr "Bitte wähle *maximal*"
-
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:950
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:951
-msgid "answers:"
-msgstr "Antworten:"
+#, php-format
+msgid "Please choose *at most* %s answers:"
+msgstr "Bitte wähle *maximal* %s Antworten aus:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1016
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1017
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Bitte wähle alle zutreffenden Einträge aus und schreibe einen Kommentar dazu:"
+
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1022
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1023
+msgid "Please choose *at most* "
+msgstr "Bitte wähle *maximal*"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1022
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1023
@@ -9432,6 +9435,10 @@ msgstr "Thailändisch"
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
+#~ msgid "New Answer"
+#~ msgstr "Neue Antwort"
+#~ msgid "answers:"
+#~ msgstr "Antworten:"
 #~ msgid "Export result to a SPSS/PASW command file"
 #~ msgstr "Export in eine SPSS/PASW-Datei"
 #~ msgid "Deactivated surveys"
