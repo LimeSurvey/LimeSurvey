@@ -61,6 +61,9 @@ $dummy_js = '
                 function checkconditions(value, name, type)
                 {
                 }
+		function noop_checkconditions(value, name, type)
+		{
+		}
             /* ]]> */
 		    </script>
 		    <form method="post" action="index.php" id="limesurvey" name="limesurvey">
