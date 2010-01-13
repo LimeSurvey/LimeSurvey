@@ -253,7 +253,7 @@ function upgrade_survey_tables139()
 function upgrade_question_attributes142()
 {
     global $modifyoutput,$dbprefix, $connect;
-    $attributequery="Select qid from {$dbprefix}question_attributes where attribute='exclude_all_other'  group by qid having count(qid)>1 ";
+    $attributequery="Select qid from {$dbprefix}question_attributes where attribute='exclude_all_other' group by qid having count(qid)>1 ";
     $questionids = db_select_column($attributequery);
     foreach ($questionids as $questionid)
     {
