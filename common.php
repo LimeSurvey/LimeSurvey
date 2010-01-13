@@ -3426,7 +3426,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code.'),
+    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon.'),
     "caption"=>$clang->gT('Exclusive option'));
     
 	$qattributes["hide_tip"]=array(
@@ -4247,8 +4247,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->SMTPAuth = true;
         }
 	}
-	$mail->From = $fromemail;
-	$mail->Sender = $senderemail; // Sets Return-Path for error notifications
+    $mail->SetFrom($fromemail, $fromname);
+    $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     $toemails = explode(";", $to);
     foreach ($toemails as $singletoemail)
     {
@@ -4263,8 +4263,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddAddress($singletoemail);
         }
     }	
-	$mail->FromName = $fromname;
-	$mail->AddCustomHeader("X-Surveymailer: $sitename:Emailer (LimeSurvey.sourceforge.net)");
+
+	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
 	$textbody = strip_tags($body);
 	$textbody = str_replace("&quot;", '"', $textbody);
