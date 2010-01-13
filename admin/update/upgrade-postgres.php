@@ -179,6 +179,7 @@ global $modifyoutput, $databasename, $databasetabletype;
 
 	if ($oldversion < 142) //Modify surveys table
 	{
+        upgrade_question_attributes142();
         modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"startdate\" timestamp"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"expires\" timestamp"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_question_attributes SET value='0' WHERE value='false'"); echo $modifyoutput; flush();
@@ -249,4 +250,19 @@ function upgrade_survey_tables139()
         }
 }
 
-?>
+function upgrade_question_attributes142()
+{
+    global $modifyoutput,$dbprefix, $connect;
+    $attributequery="Select qid from {$dbprefix}question_attributes where attribute='exclude_all_other'  group by qid having count(qid)>1 ";
+    $questionids = db_select_column($attributequery);
+    foreach ($questionids as $questionid)
+    {
+        //Select all affected question attributes
+        $attributevalues=db_select_column("SELECT value from {$dbprefix}question_attributes where attribute='exclude_all_other' and qid=".$questionid);
+        modify_database("","delete from {$dbprefix}question_attributes where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();
+        $record['value']=implode(';',$attributevalues);
+        $record['attribute']='exclude_all_other';
+        $record['qid']=$questionid;
+        $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT'); 
+    }
+}

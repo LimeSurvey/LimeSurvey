@@ -453,19 +453,16 @@ $qtypeselect = getqtypelist();
 function &db_execute_num($sql,$inputarr=false)
 {
 	global $connect;
-
-// Todo: Set fetchmode to previous state after changing
-	//$oldfetchmode=
+    
     $connect->SetFetchMode(ADODB_FETCH_NUM);
 	$dataset=$connect->Execute($sql,$inputarr);  //Checked    
-	//$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
 
 function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 {
 	global $connect;
-
+    
 	$connect->SetFetchMode(ADODB_FETCH_NUM);
 	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false) or safe_die($sql);
 	return $dataset;
@@ -474,24 +471,43 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
 	global $connect;
-// Todo: Set fetchmode to previous state after changing 
-//	$oldfetchmode=
+    
     $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->Execute($sql,$inputarr);    //Checked    
 	if (!$silent && !$dataset)  {safe_die($connect->ErrorMsg().':'.$sql);}      
-//	$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
 
 function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$dieonerror=true)
 {
 	global $connect;
-
+    
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false);
     if (!$dataset && $dieonerror) {safe_die($connect->ErrorMsg().':'.$sql);}
 	return $dataset;
 }
+
+
+/**
+* Returns the first row of values of the $sql query result 
+* as a 1-dimensional array
+* 
+* @param mixed $sql
+*/
+function &db_select_column($sql)
+{
+    global $connect;
+    
+    $connect->SetFetchMode(ADODB_FETCH_NUM);
+    $dataset=$connect->Execute($sql);
+    $resultarray=array();
+    while ($row = $dataset->fetchRow()) {
+        $resultarray[]=$row[0];
+    }
+    return $resultarray;
+}
+
 
 /**
 * This functions quotes fieldnames accordingly
