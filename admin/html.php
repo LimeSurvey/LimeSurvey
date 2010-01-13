@@ -546,7 +546,7 @@ if ($surveyid)
 			    . "title=\"".$clang->gTview("Token management")."\" >"
 			    . "<img src='$imagefiles/tokens.png' name='TokensControl' alt='".$clang->gT("Token management")."' /></a>\n" ;
 		}
-        if($activated!="Y" && hasRight($surveyid,'define_questions' && getGroupSum($surveyid,$surveyinfo['language'])>1))
+        if($activated!="Y" && hasRight($surveyid,'define_questions') && getGroupSum($surveyid,$surveyinfo['language'])>1)
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
