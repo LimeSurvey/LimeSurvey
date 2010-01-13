@@ -1079,35 +1079,30 @@ float:left;
 width:300px;
 }
 
-div.right
-{
+div.right {
  float:right;
  width:300px;
 }
 
-.wrap2columns
-{ 
+.wrap2columns { 
 width:600px;
 margin:0 auto;
 }
 
-#resultexport ul
-{
+#resultexport ul {
     list-style-type:none;
     padding:0;
 }
 
-#resultexport ul li label
-{
+#resultexport ul li label {
 }
 
 
-#resultexport ul li 
-{
+#resultexport ul li {
     line-height: 1.4em;
 }
 
-#advancedquestionsettings fieldset{
+#advancedquestionsettings fieldset {
     width:600px;
     margin:0 auto;
 	display: block;
@@ -1117,22 +1112,25 @@ margin:0 auto;
     width:200px;
 }
 
-#statistics_general_filter
-{
+#statistics_general_filter {
     width:650px;
     margin:0 auto;
 }
-#statistics_general_filter #left
-{
+
+#statistics_general_filter #left {
     width:270px;
     height:125px;
     float:left;
 }
-#statistics_general_filter #right
-{
+
+#statistics_general_filter #right {
     width:330px;
     height:125px;
     float:right;
+}
+
+#statistics_general_filter #right li label:first-child {
+    width:33%;
 }
 
 .filtertable  {
