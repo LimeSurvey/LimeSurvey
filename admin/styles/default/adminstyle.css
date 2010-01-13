@@ -1124,14 +1124,14 @@ margin:0 auto;
 }
 #statistics_general_filter #left
 {
-    width:300px;
-    height:105px;
+    width:270px;
+    height:125px;
     float:left;
 }
 #statistics_general_filter #right
 {
-    width:300px;
-    height:105px;
+    width:330px;
+    height:125px;
     float:right;
 }
 

@@ -982,7 +982,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
         . "<div class='menubar-left'>\n"
 		. "<img src='$imagefiles/blank.gif' alt='' width='55' height='20' />\n"
 		. "<img src='$imagefiles/seperator.gif' alt='' />\n"
-		. "<img src='$imagefiles/blank.gif' alt='' width='171' height='20'  />\n"
+		. "<img src='$imagefiles/blank.gif' alt='' width='157' height='20'  />\n"
 		. "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
 		if(hasRight($surveyid,'define_questions'))
@@ -1016,7 +1016,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			}
 		}
 		else {$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";}
-		$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='84' />\n";
+		$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 
 		if(hasRight($surveyid,'export'))
 		{
@@ -2412,8 +2412,8 @@ if ($action == "editsurvey")
                 $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
             
-            $editsurvey .= "<li><label for='startdate_$surveyid'>".$clang->gT("Start date/time:")."</label>\n"
-            . "<input type='text' class='popupdatetime' id='startdate_$surveyid' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
+            $editsurvey .= "<li><label for='startdate'>".$clang->gT("Start date/time:")."</label>\n"
+            . "<input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
 
 			// Expiration date
             $expires='';
@@ -2422,8 +2422,8 @@ if ($action == "editsurvey")
                 $datetimeobj = new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
                 $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
-			$editsurvey .="<li><label for='enddate_$surveyid'>".$clang->gT("Expiry date/time:")."</label>\n"
-			. "<input type='text' class='popupdatetime' id='enddate_$surveyid' size='20' name='expires' value=\"{$expires}\" /></li>\n";
+			$editsurvey .="<li><label for='expires'>".$clang->gT("Expiry date/time:")."</label>\n"
+			. "<input type='text' class='popupdatetime' id='expires' size='20' name='expires' value=\"{$expires}\" /></li>\n";
 			//COOKIES
 			$editsurvey .= "<li><label for=''>".$clang->gT("Set cookie to prevent repeated participation?")."</label>\n"
 			. "<select name='usecookie'>\n"

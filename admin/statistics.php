@@ -306,13 +306,13 @@ if (isset($datestamp) && $datestamp == "Y") {
 
     $statisticsoutput .= "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
     ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
-    ."<input id='datestampE' name='datestampE' type='text' value='";
+    ."<input class='popupdate' id='datestampE' name='datestampE' type='text' value='";
     if (isset($_POST['datestampE'])) {$statisticsoutput .= $_POST['datestampE'];}
     $statisticsoutput .= "' /></li><li><label for='datestampG'>\n"
     ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
-    ."<input id='datestampG' name='datestampG' value='";
+    ."<input class='popupdatetime' id='datestampG' name='datestampG' value='";
     if (isset($_POST['datestampG'])) {$statisticsoutput .= $_POST['datestampG'];}
-    $statisticsoutput .= "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label><input  id='datestampL' name='datestampL' value='";
+    $statisticsoutput .= "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label><input  class='popupdatetime' id='datestampL' name='datestampL' value='";
     if (isset($_POST['datestampL'])) {$statisticsoutput .= $_POST['datestampL'];}
     $statisticsoutput .= "' type='text' /></li></ul></fieldset>\n";
     $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampE' />";
