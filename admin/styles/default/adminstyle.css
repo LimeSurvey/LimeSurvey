@@ -564,7 +564,8 @@ a.invalidemail {
 .edituser,
 .users,
 .assessmentlist,   
-.listsurveys {
+.listsurveys,
+.surveysecurity {
     text-align:center;
     margin:0 auto;
 }
@@ -582,6 +583,11 @@ a.invalidemail {
 .listsurveys
 {
     width:70%;
+}
+
+.surveysecurity
+{
+	width: 90%;
 }
 
 .edituser {
