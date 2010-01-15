@@ -52,7 +52,16 @@ $ia = array(0 => $qid,
             8 => 'N' ); // ia[8] is usedinconditions
 
 $answers = retrieveAnswers($ia);
-$thistpl="$templaterootdir/".$thissurvey['template'];
+
+if (!$thissurvey['template']) 
+{
+    $thistpl=$templaterootdir."/".$defaulttemplate;
+} 
+    else 
+    {
+        $thistpl=$templaterootdir."/".validate_templatedir($thissurvey['template']);
+    }
+    
 doHeader();
 $dummy_js = '
 		    <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
