@@ -4910,7 +4910,7 @@ function getsurveyuserlist()
 {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
     $surveyid=sanitize_int($surveyid);
-	$surveyidquery = "SELECT a.uid, a.users_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+	$surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
     $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
@@ -4932,7 +4932,7 @@ function getsurveyuserlist()
 			in_array($sv['uid'],$authorizedUsersList))
 		{
 			$surveyselecter .= "<option";
-			$surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
+			$surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
 		}
             }
         }
