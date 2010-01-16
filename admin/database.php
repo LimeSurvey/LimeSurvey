@@ -563,7 +563,7 @@ if(isset($surveyid))
                     }
                     if (!$keepsubquestions)
                     {
-                        $query = "DELETE FROM ".db_table_name('subquestions')." WHERE qid=".$postqid;
+                        $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid=".$postqid;
                         $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
                         if (!$result)
                         {
@@ -1045,13 +1045,13 @@ if(isset($surveyid))
             {
                 //$_POST  = array_map('db_quote', $_POST);//Removed: qstr is used in SQL below
                 $_POST['insertcode']=sanitize_paranoid_string($_POST['insertcode']);
-                $query = "select max(sortorder) as maxorder from ".db_table_name('subquestions')." where qid='$qid'";
+                $query = "select max(question_order) as maxorder from ".db_table_name('questions')." where parent_qid='$qid'";
                 $result = $connect->Execute($query); // Checked
                 $newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
                 $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
                 //$query = "select * from ".db_table_name('answers')." where code=".$connect->db_quote($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
-                $query = "select * from ".db_table_name('subquestions')." where code=".db_quoteall($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
+                $query = "select * from ".db_table_name('questions')." where title=".db_quoteall($_POST['insertcode'])." and language='$baselang' and parent_qid={$postqid}";
                 $result = $connect->Execute($query); // Checked
 
                 if (isset($result) && $result->RecordCount()>0)
@@ -1076,48 +1076,33 @@ if(isset($surveyid))
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['insertanswer']=fix_FCKeditor_text($_POST['insertanswer']);
 
-                        // Add new Answer for Base Language Question
-
-                        $query = "INSERT INTO ".db_table_name('subquestions')." (qid, code, subquestion, sortorder, language) VALUES ('{$postqid}', ".db_quoteall($_POST['insertcode']).", ".db_quoteall($_POST['insertanswer']).", '{$newsortorder}', '$baselang')";
-                        if (!$result = $connect->Execute($query)) // Checked
-                        {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                        }
-
-                        // Added by lemeur for AutoSaveAll
+                        // The data is finally saved in AutoSaveAll
                         $_POST['code_'.($newsortorder+0)] = $_POST['insertcode'];
                         $_POST['previouscode_'.($newsortorder+0)] = $_POST['insertcode'];
                         $_POST['codeids'] = $_POST['codeids'] . " ".($newsortorder+0);
                         $_POST['answer_'.$baselang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
                         $_POST['sortorderids'] = $_POST['sortorderids'] . " ".$baselang."_".($newsortorder+0);
-                        // End lemeur AutoSaveAll
 
-                        // Last code was successfully inserted - find out the next incrementing code and remember it
+                        // Find out the next incrementing code and remember it
                         $_SESSION['nextanswercode']=getNextCode($_POST['insertcode']);
                         //Now check if this new code doesn't exist. For now then there is no code inserted.
-                        $query = "select * from ".db_table_name('subquestions')." where code=".db_quoteall($_SESSION['nextanswercode'])." and language='$baselang' and qid={$postqid}";
+                        $query = "select * from ".db_table_name('questions')." where title=".db_quoteall($_SESSION['nextanswercode'])." and language='$baselang' and parent_qid={$postqid}";
                         $result = $connect->Execute($query) or safe_die("Couldn't execute query:<br />$query<br />".$connect->ErrorMsg());;  // Checked
                         if ($result->RecordCount()>0) unset($_SESSION['nextanswercode']);
 
                         foreach ($anslangs as $anslang)
                         {
-                            if(!isset($_POST['default'])) $_POST['default'] = "";
-                            $query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ({$postqid}, ".db_quoteall($_POST['insertcode']).",".db_quoteall($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
-                               if (!$result = $connect->Execute($query))   // Checked
-                            {
-                                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                            }
-                    // Added by lemeur for AutoSaveAll
-                    $_POST['answer_'.$anslang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
-                    $_POST['sortorderids'] = $_POST['sortorderids'] . " ".$anslang."_".($newsortorder+0);
-                    // End lemeur AutoSaveAll
+                            // The data is finally saved in AutoSaveAll 
+                            $_POST['answer_'.$anslang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
+                            $_POST['sortorderids'] = $_POST['sortorderids'] . " ".$anslang."_".($newsortorder+0);
                         }
                 }
-            } else {
+            } 
+            else 
+            {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Invalid or empty answer code supplied","js")."\")\n //-->\n</script>\n";
                 break; // let's break because in this case we do not want an AutoSaveAll
             }
-        //break; // Commented by lemeur for AutoSaveAll
         // Save all answers with one button
         case $clang->gT("Save Changes", "unescaped"):
             //Determine autoids by evaluating the hidden field
@@ -1148,7 +1133,7 @@ if(isset($surveyid))
             $myFilter = new InputFilter('','',1,1,1);
 
             //First delete all answers
-            $query = "delete from ".db_table_name('subquestions')." where qid=".db_quote($qid);
+            $query = "delete from ".db_table_name('questions')." where parent_qid=".db_quote($qid);
             $result = $connect->Execute($query);    // Checked
 
             foreach ($sortorderids as $sortorderid)
@@ -1177,7 +1162,7 @@ if(isset($surveyid))
 
                     $_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
                     // Now we insert the answers
-                    $query = "INSERT INTO ".db_table_name('subquestions')." (code,subquestion,qid,sortorder,language)
+                    $query = "INSERT INTO ".db_table_name('questions')." (title,question,parent_qid,question_order,language)
                               VALUES (".db_quoteall($_POST['code_'.$codeids[$count]]).", ".
                                         db_quoteall($_POST['answer_'.$sortorderid]).", ".
                                         db_quote($qid).", ".
@@ -1212,11 +1197,11 @@ if(isset($surveyid))
         case $clang->gT("Up", "unescaped"):
             $newsortorder=$postsortorder-1;
             $oldsortorder=$postsortorder;
-            $cdquery = "UPDATE ".db_table_name('subquestions')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
+            $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE parent_qid=$qid AND question_order='$newsortorder'";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-            $cdquery = "UPDATE ".db_table_name('subquestions')." SET sortorder=$newsortorder WHERE qid=$qid AND sortorder=$oldsortorder";
+            $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newsortorder WHERE parent_qid=$qid AND question_order=$oldsortorder";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-            $cdquery = "UPDATE ".db_table_name('subquestions')." SET sortorder='$oldsortorder' WHERE qid=$qid AND sortorder=-1";
+            $cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$oldsortorder' WHERE parent_qid=$qid AND question_order=-1";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
         break;
 
@@ -1224,17 +1209,17 @@ if(isset($surveyid))
         case $clang->gT("Dn", "unescaped"):
             $newsortorder=$postsortorder+1;
             $oldsortorder=$postsortorder;
-            $cdquery = "UPDATE ".db_table_name('subquestions')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
+            $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE parent_qid=$qid AND question_order='$newsortorder'";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-            $cdquery = "UPDATE ".db_table_name('subquestions')." SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder=$oldsortorder";
+            $cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$newsortorder' WHERE parent_qid=$qid AND question_order=$oldsortorder";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());   // Checked
-            $cdquery = "UPDATE ".db_table_name('subquestions')." SET sortorder=$oldsortorder WHERE qid=$qid AND sortorder=-1";
+            $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$oldsortorder WHERE parent_qid=$qid AND question_order=-1";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
         break;
 
         // Delete Button
         case $clang->gT("Del", "unescaped"):
-            $query = "DELETE FROM ".db_table_name('subquestions')." WHERE qid={$qid} AND sortorder='{$postsortorder}'";  // Checked
+            $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid={$qid} AND question_order='{$postsortorder}'";  // Checked
             if (!$result = $connect->Execute($query))
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";

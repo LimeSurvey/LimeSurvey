@@ -126,6 +126,7 @@ CREATE TABLE `prefix_quota_members` (
 
 CREATE TABLE `prefix_questions` (
   `qid` int(11) NOT NULL auto_increment,
+  `parent_qid` int(11) NOT NULL default '0',
   `sid` int(11) NOT NULL default '0',
   `gid` int(11) NOT NULL default '0',
   `type` char(1) NOT NULL default 'T',
@@ -142,19 +143,7 @@ CREATE TABLE `prefix_questions` (
   PRIMARY KEY  (`qid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-
-CREATE TABLE `prefix_subquestions` (
-  `sqid` int(11) NOT NULL auto_increment,
-  `sid` int(11) NOT NULL default '0',
-  `qid` int(11) NOT NULL default '0',
-  `code` varchar(5) NOT NULL,
-  `subquestion` text NOT NULL,
-  `question_order` int(11) NOT NULL,
-  `language` varchar(20) default 'en',
-  PRIMARY KEY  (`sqid`,`language`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
+       
 
 CREATE TABLE `prefix_saved_control` (
   `scid` int(11) NOT NULL auto_increment,

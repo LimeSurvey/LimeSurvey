@@ -2452,17 +2452,17 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^" || $arow['type'] == "J")
 		{
 			//MULTI ENTRY
-			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
-			." FROM ".db_table_name('answers').", ".db_table_name('questions')
-			." WHERE sid=$surveyid AND ".db_table_name('answers').".qid=".db_table_name('questions').".qid "
-			. "AND ".db_table_name('questions').".language='".$s_lang."'"
-			." AND ".db_table_name('answers').".language='".$s_lang."'"
-			." AND ".db_table_name('questions').".qid={$arow['qid']} "
-			." ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abquery = "SELECT subquestions.*, questions.other\n"
+			." FROM ".db_table_name('questions')." as subquestions, ".db_table_name('questions')." as questions"
+			." WHERE questions.sid=$surveyid AND subquestions.parent_qid=questions.qid "
+			. "AND subquestions.language='{$s_lang}'"
+			." AND questions.language='{$s_lang}'"
+			." AND questions.qid={$arow['qid']} "
+			." ORDER BY subquestions.question_order";
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
 			while ($abrow=$abresult->FetchRow())
 			{
-				$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+				$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($style == "full")
 				{
