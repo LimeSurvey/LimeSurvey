@@ -264,9 +264,9 @@ else
 }
 $statisticsoutput .="<fieldset style='clear:both;'><legend>".$clang->gT("Data selection")."</legend><ul>";
 $statisticsoutput .="<li><label for='filterinc'>".$clang->gT("Include:")."</label><select name='filterinc' id='filterinc'>\n"
-."<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
-."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
-."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
+."<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
+."<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
+."<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
 ."</select></li>\n"
 
 ."<li><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label>

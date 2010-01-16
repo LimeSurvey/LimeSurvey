@@ -18,6 +18,8 @@
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 $postsid=returnglobal('sid');
 $activateoutput='';
+$qtypes=getqtypelist('','array');
+
 if (!isset($_POST['ok']) || !$_POST['ok'])
 {
 	if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])
@@ -85,19 +87,30 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	//  # ";" -> Array Multi Flexi Text
 	//  # "1" -> MULTI SCALE
 	
-
-
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^', ':', '1')";
+	$chkquery = "SELECT qid, question, gid, type FROM {$dbprefix}questions WHERE sid={$surveyid}";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
 	while ($chkrow = $chkresult->FetchRow())
 	{
-		$chaquery = "SELECT * FROM {$dbprefix}answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
-		$charesult=$connect->Execute($chaquery);
-		$chacount=$charesult->RecordCount();
-		if (!$chacount > 0)
-		{
-			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a multiple answer type question but has no answers."), $chkrow['gid']);
-		}
+        if ($qtypes[$chkrow['type']]['subquestions']>0)
+        {
+            $chaquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order, question";
+            $charesult=$connect->Execute($chaquery);
+            $chacount=$charesult->RecordCount();
+            if ($chacount == 0)
+            {
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a sub-question type question but has no configured sub-questions."), $chkrow['gid']);
+            }
+        }
+        if ($qtypes[$chkrow['type']]['answerscales']>0)
+        {
+            $chaquery = "SELECT * FROM {$dbprefix}answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
+            $charesult=$connect->Execute($chaquery);
+            $chacount=$charesult->RecordCount();
+            if ($chacount == 0)
+            {
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a multiple answer type question but has no answers."), $chkrow['gid']);
+            }
+        }
 	}
 
 	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
@@ -167,7 +180,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 		$qidorder[]=array($c, $qrow['qid']);
 		$c++;
-	}
+	}                 
 	$qordercount="";
 	//1: Get each condition's question id
 	$conquery= "SELECT {$dbprefix}conditions.qid, cqid, {$dbprefix}questions.question, "
@@ -366,24 +379,22 @@ else
 				break;
 			}
 		}
-		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" ||
-		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
-		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
+        elseif ($qtypes[$arow['type']]['subquestions']>0 && $arow['type'] != ":" && $arow['type'] != ";")              
 		{
 			//MULTI ENTRY
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+			$abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                        ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY a.sortorder, a.answer";
+                       ." ORDER BY sq.question_order, sq.question";
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow=$abresult->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}` C(5),\n";
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($arow['type'] == "P")
 				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` X,\n";
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment` X,\n";
 				}
 			}
 			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"  || $arow['type']=="1")) //Sc: check!

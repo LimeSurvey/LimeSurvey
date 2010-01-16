@@ -191,9 +191,9 @@ if (!$exportstyle)
     $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='$max_datasets' /></li>"
     
     ."<li><br /><label for='filterinc'>".$clang->gT("Completion state")."</label> <select id='filterinc' name='filterinc'>\n"
-    ."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
-    ."<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
-    ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
+    ."<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
+    ."<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
+    ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
     ."\t</select>\n"
     ."</li></ul></fieldset>"
 

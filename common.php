@@ -447,9 +447,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 
 
 
-//DATA TYPES
-$qtypeselect = getqtypelist();
-
 function &db_execute_num($sql,$inputarr=false)
 {
 	global $connect;
@@ -873,108 +870,110 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 {
 	global $publicurl;
 	global $sourcefrom, $clang;
-	if ($sourcefrom == "admin")
+
+    if (!isset($clang))
+    {
+        $clang = new limesurvey_lang("en");
+    }
+	$qtypes = array(
+	"1"=>array('description'=>$clang->gT("Array (Flexible Labels) Dual Scale"),
+               'subquestions'=>1,
+               'answerscales'=>2),
+	"5"=>array('description'=>$clang->gT("5 Point Choice"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"A"=>array('description'=>$clang->gT("Array (5 Point Choice)"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"B"=>array('description'=>$clang->gT("Array (10 Point Choice)"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"C"=>array('description'=>$clang->gT("Array (Yes/No/Uncertain)"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"D"=>array('description'=>$clang->gT("Date"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"E"=>array('description'=>$clang->gT("Array (Increase, Same, Decrease)"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"F"=>array('description'=>$clang->gT("Array (Flexible Labels)"),
+               'subquestions'=>1,
+               'answerscales'=>1),
+	"G"=>array('description'=>$clang->gT("Gender"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"H"=>array('description'=>$clang->gT("Array (Flexible Labels) by Column"),
+               'subquestions'=>1,
+               'answerscales'=>1),
+	"I"=>array('description'=>$clang->gT("Language Switch"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"L"=>array('description'=>$clang->gT("List (Radio)"),
+               'subquestions'=>0,
+               'answerscales'=>1),
+	"M"=>array('description'=>$clang->gT("Multiple Options"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"N"=>array('description'=>$clang->gT("Numerical Input"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"O"=>array('description'=>$clang->gT("List With Comment"),
+               'subquestions'=>0,
+               'answerscales'=>1),
+	"P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"Q"=>array('description'=>$clang->gT("Multiple Short Text"),
+               'subquestions'=>1,
+               'answerscales'=>0),
+	"R"=>array('description'=>$clang->gT("Ranking"),
+               'subquestions'=>0,
+               'answerscales'=>1),
+	"S"=>array('description'=>$clang->gT("Short Free Text"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"T"=>array('description'=>$clang->gT("Long Free Text"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"U"=>array('description'=>$clang->gT("Huge Free Text"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"W"=>array('description'=>$clang->gT("List (Flexible Labels) (Dropdown)"),
+               'subquestions'=>0,
+               'answerscales'=>1),
+	"X"=>array('description'=>$clang->gT("Boilerplate Question"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"Y"=>array('description'=>$clang->gT("Yes/No"),
+               'subquestions'=>0,
+               'answerscales'=>0),
+	"Z"=>array('description'=>$clang->gT("List (Flexible Labels) (Radio)"),
+               'subquestions'=>0,
+               'answerscales'=>1),
+	"!"=>array('description'=>$clang->gT("List (Dropdown)"),
+               'subquestions'=>0,
+               'answerscales'=>1),
+	":"=>array('description'=>$clang->gT("Array (Multi Flexible) (Numbers)"),
+               'subquestions'=>1,
+               'answerscales'=>1),
+	";"=>array('description'=>$clang->gT("Array (Multi Flexible) (Text)"),
+               'subquestions'=>1,
+               'answerscales'=>1),
+	);
+    asort($qtypes);
+	if ($ReturnType == "array") {return $qtypes;}
+	$qtypeselecter = "";
+	foreach($qtypes as $TypeCode=>$TypeProperties)
 	{
-		$qtypes = array(
-		"1"=>array('description'=>$clang->gT("Array (Flexible Labels) Dual Scale"),
-                   'subquestions'=>1,
-                   'answerscales'=>2),
-		"5"=>array('description'=>$clang->gT("5 Point Choice"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"A"=>array('description'=>$clang->gT("Array (5 Point Choice)"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"B"=>array('description'=>$clang->gT("Array (10 Point Choice)"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"C"=>array('description'=>$clang->gT("Array (Yes/No/Uncertain)"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"D"=>array('description'=>$clang->gT("Date"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"E"=>array('description'=>$clang->gT("Array (Increase, Same, Decrease)"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"F"=>array('description'=>$clang->gT("Array (Flexible Labels)"),
-                   'subquestions'=>1,
-                   'answerscales'=>1),
-		"G"=>array('description'=>$clang->gT("Gender"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"H"=>array('description'=>$clang->gT("Array (Flexible Labels) by Column"),
-                   'subquestions'=>1,
-                   'answerscales'=>1),
-		"I"=>array('description'=>$clang->gT("Language Switch"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"L"=>array('description'=>$clang->gT("List (Radio)"),
-                   'subquestions'=>0,
-                   'answerscales'=>1),
-		"M"=>array('description'=>$clang->gT("Multiple Options"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"N"=>array('description'=>$clang->gT("Numerical Input"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"O"=>array('description'=>$clang->gT("List With Comment"),
-                   'subquestions'=>0,
-                   'answerscales'=>1),
-		"P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"Q"=>array('description'=>$clang->gT("Multiple Short Text"),
-                   'subquestions'=>1,
-                   'answerscales'=>0),
-		"R"=>array('description'=>$clang->gT("Ranking"),
-                   'subquestions'=>0,
-                   'answerscales'=>1),
-		"S"=>array('description'=>$clang->gT("Short Free Text"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"T"=>array('description'=>$clang->gT("Long Free Text"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"U"=>array('description'=>$clang->gT("Huge Free Text"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"W"=>array('description'=>$clang->gT("List (Flexible Labels) (Dropdown)"),
-                   'subquestions'=>0,
-                   'answerscales'=>1),
-		"X"=>array('description'=>$clang->gT("Boilerplate Question"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"Y"=>array('description'=>$clang->gT("Yes/No"),
-                   'subquestions'=>0,
-                   'answerscales'=>0),
-		"Z"=>array('description'=>$clang->gT("List (Flexible Labels) (Radio)"),
-                   'subquestions'=>0,
-                   'answerscales'=>1),
-		"!"=>array('description'=>$clang->gT("List (Dropdown)"),
-                   'subquestions'=>0,
-                   'answerscales'=>1),
-		":"=>array('description'=>$clang->gT("Array (Multi Flexible) (Numbers)"),
-                   'subquestions'=>1,
-                   'answerscales'=>1),
-		";"=>array('description'=>$clang->gT("Array (Multi Flexible) (Text)"),
-                   'subquestions'=>1,
-                   'answerscales'=>1),
-		);
-        asort($qtypes);
-		if ($ReturnType == "array") {return $qtypes;}
-		$qtypeselecter = "";
-		foreach($qtypes as $TypeCode=>$TypeProperties)
-		{
-			$qtypeselecter .= "<option value='$TypeCode'";
-			if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
-			$qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
-		}
-		return $qtypeselecter;
+		$qtypeselecter .= "<option value='$TypeCode'";
+		if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
+		$qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
 	}
+	return $qtypeselecter;
 }
 
 
@@ -2333,6 +2332,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 	}
 	//Get list of questions
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $qtypes=getqtypelist('','array');
 	$aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')
 	." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND "
 	.db_table_name('questions').".sid=$surveyid AND "
@@ -2447,11 +2447,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			}
 			unset($lset);
 		}
-		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" ||
-		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
-		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^" || $arow['type'] == "J")
-		{
-			//MULTI ENTRY
+        if ($qtypes[$arow['type']]['subquestions'] >0)
+        {
+  			//MULTI ENTRY
 			$abquery = "SELECT subquestions.*, questions.other\n"
 			." FROM ".db_table_name('questions')." as subquestions, ".db_table_name('questions')." as questions"
 			." WHERE questions.sid=$surveyid AND subquestions.parent_qid=questions.qid "
@@ -2467,7 +2465,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				if ($style == "full")
 				{
 					$fieldmap[$counter]['title']=$arow['title'];
-					$fieldmap[$counter]['question']=$arow['question']."[".$abrow['answer']."]";
+					$fieldmap[$counter]['question']=$arow['question']."[".$abrow['question']."]";
 					$fieldmap[$counter]['group_name']=$arow['group_name'];
 				}
 				$counter++;

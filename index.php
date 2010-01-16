@@ -2206,26 +2206,24 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		//Gather survey data for "non anonymous" surveys, for use in presenting questions
 		$_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
 	}
-
+    $qtypes=getqtypelist('','array');
 	foreach ($arows as $arow)
 	{
 		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
 		$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-		if ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" ||
-		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
-		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
+		if ($qtypes[$arow['type']]['subquestions'] >0)
 		{
 
 // Optimized Query
-			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
-			. " FROM ".db_table_name('answers')."\n"
-			. " INNER JOIN ".db_table_name('questions')."\n"
-			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
-			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abquery = "SELECT sq.title as code, q.other\n"
+			. " FROM ".db_table_name('questions')." as sq\n"
+			. " INNER JOIN ".db_table_name('questions')." as q\n"
+			. " ON sq.parent_qid=q.qid\n"
+			. " WHERE q.sid=$surveyid\n"
+			. " AND q.qid={$arow['qid']}\n"
+			. " AND q.language='".$_SESSION['s_lang']."' \n"
+			. " AND sq.language='".$_SESSION['s_lang']."' \n"
+			. " ORDER BY sq.question_order, sq.question";
 
 			$abresult = db_execute_assoc($abquery);       //Checked 
 			while ($abrow = $abresult->FetchRow())
