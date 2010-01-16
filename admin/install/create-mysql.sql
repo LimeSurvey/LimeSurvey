@@ -143,6 +143,18 @@ CREATE TABLE `prefix_questions` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+CREATE TABLE `prefix_subquestions` (
+  `sqid` int(11) NOT NULL auto_increment,
+  `sid` int(11) NOT NULL default '0',
+  `qid` int(11) NOT NULL default '0',
+  `code` varchar(5) NOT NULL,
+  `subquestion` text NOT NULL,
+  `question_order` int(11) NOT NULL,
+  `language` varchar(20) default 'en',
+  PRIMARY KEY  (`sqid`,`language`)
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 
 CREATE TABLE `prefix_saved_control` (
   `scid` int(11) NOT NULL auto_increment,
@@ -323,7 +335,7 @@ create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 
 
 -- data
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '142');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '143');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);

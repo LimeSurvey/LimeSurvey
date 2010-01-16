@@ -308,7 +308,7 @@ if ($action == "editquestion" || $action=="addquestion")
   		else
   		{
   			$qtypelist=getqtypelist('','array');
-            $editquestion .= "{$qtypelist[$eqrow['type']]} - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
+            $editquestion .= "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
   			. "<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n";
   		}
   

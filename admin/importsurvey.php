@@ -863,9 +863,9 @@ if (isset($grouparray) && $grouparray) {
                 		$countquestions--;
                 		continue;
                 	}
-                	else	// the upper case worked well                                                                                                                                                                            $qtypes[$questionrowdata["type"]]
+                	else	// the upper case worked well
                 	{
-                		$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]) . "</li>";
+                		$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]['description']) . "</li>";
                 	}
                 }
                         		

@@ -1094,27 +1094,30 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
-		if(hasRight($surveyid,'define_questions'))
+        $qtypes=getqtypelist('','array');
+		if(hasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['answerscales'] >0)
 		{
-			if ($qrrow['type'] == "O" || $qrrow['type'] == "L" ||
-			    $qrrow['type'] == "!" || $qrrow['type'] == "!" ||
-				$qrrow['type'] == "M" || $qrrow['type'] == "Q" ||
-				$qrrow['type'] == "A" || $qrrow['type'] == "B" ||
-				$qrrow['type'] == "C" || $qrrow['type'] == "E" ||
-				$qrrow['type'] == "F" || $qrrow['type'] == "H" ||
-				$qrrow['type'] == "P" || $qrrow['type'] == "R" ||
-				$qrrow['type'] == "K" || $qrrow['type'] == "1" ||
-				$qrrow['type'] == ":" || $qrrow['type'] == ";")
-			{
-			$questionsummary .=  "<a href='".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y'"
-                                ."title=\"".$clang->gTview("Edit/Add Answers for this Question")."\">"
+			$questionsummary .=  "<a href='".$scriptname."?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
+                                ."title=\"".$clang->gTview("Edit answer options for this question")."\">"
 			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit/Add Answers for this Question")."' name='ViewAnswers' /></a>\n" ;
-			}
 		}
 		else
 		{
 			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
+        if(hasRight($surveyid,'define_questions'))
+        {
+            if ($qtypes[$qrrow['type']]['subquestions'] >0)
+            {
+            $questionsummary .=  "<a href='".$scriptname."?action=editsubquestions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
+                                ."title=\"".$clang->gTview("Edit sub-questions for this question")."\">"
+                                ."<img src='$imagefiles/subquestions.png' alt='".$clang->gT("Edit sub-questions for this question")."' name='ViewAnswers' /></a>\n" ;
+            }
+        }
+        else
+        {
+            $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+        }
 		$questionsummary .= "</div>\n"
         . "<div class='menubar-right'>\n"
         . "<input type='image' src='$imagefiles/minus.gif' title='"
@@ -1131,7 +1134,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
         . "</div>\n";
         $questionsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
         
-		if (returnglobal('viewanswer') || $action =="editquestion" || $action =="copyquestion")	{$qshowstyle = "style='display: none'";}
+		if ($action=='editansweroptions' || $action =="editsubquestions" || $action =="editquestion" || $action =="copyquestion")	{$qshowstyle = "style='display: none'";}
 		else							{$qshowstyle = "";}
 		$questionsummary .= "<table  id='questiondetails' $qshowstyle><tr><td width='20%' align='right'><strong>"
 		. $clang->gT("Code:")."</strong></td>\n"
@@ -1156,24 +1159,16 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "<tr><td align='right' valign='top'><strong>"
-		.$clang->gT("Type:")."</strong></td>\n<td align='left'>{$qtypes[$qrrow['type']]}";
+		.$clang->gT("Type:")."</strong></td>\n<td align='left'>{$qtypes[$qrrow['type']]['description']}";
 		$questionsummary .="</td></tr>\n";
-		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L"
-		               || $qrrow['type'] == "!" || $qrrow['type'] == "M"
-					   || $qrrow['type'] == "Q" || $qrrow['type'] == "K"
-					   || $qrrow['type'] == "A" || $qrrow['type'] == "B"
-					   || $qrrow['type'] == "C" || $qrrow['type'] == "E"
-					   || $qrrow['type'] == "P" || $qrrow['type'] == "R"
-					   || $qrrow['type'] == "F" || $qrrow['type'] == "1"
-					   || $qrrow['type'] == "H" || $qrrow['type'] == ":"
-					   || $qrrow['type'] == ";"))
+		if ($qct == 0 && $qtypes[$qrrow['type']]['answerscales'] >0)
 		{
 			$questionsummary .= "<tr ><td></td><td align='left'>"
 			. "<font face='verdana' size='1' color='red'>"
 			. $clang->gT("Warning").": ". $clang->gT("You need to add answers to this question")." "
 			. "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
 			. $clang->gT("Edit/Add Answers for this Question")."' name='EditThisQuestionAnswers'"
-			. "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\" /></font></td></tr>\n";
+			. "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editansweroptions', '_top')\" /></font></td></tr>\n";
 		}
 		
 		// For Labelset Questions show the label set and warn if there is no label set configured
@@ -1267,7 +1262,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 	}
 }
 
-if (returnglobal('viewanswer'))
+if ($action=='editansweroptions')
 {
 	$_SESSION['FileManagerContext']="edit:answer:$surveyid";
 	// Get languages select on survey.
@@ -1333,9 +1328,8 @@ if (returnglobal('viewanswer'))
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "<input type='hidden' name='gid' value='$gid' />\n"
 	. "<input type='hidden' name='qid' value='$qid' />\n"
-	. "<input type='hidden' name='viewanswer' value='Y' />\n"
-	. "<input type='hidden' name='sortorder' value='' />\n"
-	. "<input type='hidden' name='action' value='modanswer' />\n";
+	. "<input type='hidden' name='action' value='updateansweroptions' />\n"
+	. "<input type='hidden' name='sortorder' value='' />\n";
 	$vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
 	$first=true;
 	$sortorderids='';
@@ -1530,7 +1524,7 @@ if (returnglobal('viewanswer'))
 				."</td>\n"
 				."<td>\n"
 				."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new Answer")."' />\n"
-				."<input type='hidden' name='action' value='modanswer' />\n"
+				."<input type='hidden' name='action' value='updateansweroptions' />\n"
 				."</td>\n"
 				."<td>\n"
 				."<script type='text/javascript'>\n"
@@ -1561,6 +1555,263 @@ if (returnglobal('viewanswer'))
 
 
 }
+
+
+if ($action=='editsubquestions')
+{
+    $_SESSION['FileManagerContext']="edit:answer:$surveyid";
+    // Get languages select on survey.
+    $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+
+    // check that there are subquestions for every language supported by the survey
+    foreach ($anslangs as $language)
+    {
+        $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('subquestions')." WHERE qid=$qid AND language='".$language."'";
+        $qresult = db_execute_assoc($qquery); //Checked
+        $qrow = $qresult->FetchRow();
+        if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
+        {
+            $qquery = "INSERT INTO ".db_table_name('subquestions')." (SELECT `qid`,`code`,`answer`,`default_value`,`sortorder`, '".$language."' FROM ".db_table_name('subquestions')." WHERE qid=$qid AND language='".$baselang."')";
+            $connect->Execute($qquery); //Checked
+        }
+    }
+
+    array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
+    
+    //delete the answers in languages not supported by the survey
+    $qquery = "SELECT DISTINCT language FROM ".db_table_name('subquestions')." WHERE (qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
+    $qresult = db_execute_assoc($qquery); //Checked
+    while ($qrow = $qresult->FetchRow())
+    {
+        $qquery = "DELETE FROM ".db_table_name('subquestions')." WHERE (qid = $qid) AND (language = '".$qrow["language"]."')";
+        $connect->Execute($qquery); //Checked
+    }
+    
+    
+    // Check sort order for answers
+    $qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
+    $qresult = db_execute_assoc($qquery); //Checked
+    while ($qrow=$qresult->FetchRow()) {$qtype=$qrow['type'];}
+    if (!isset($_POST['ansaction']))
+    {
+        //check if any nulls exist. If they do, redo the sortorders
+        $caquery="SELECT * FROM ".db_table_name('subquestions')." WHERE qid=$qid AND sortorder is null AND language='".$baselang."'";
+        $caresult=$connect->Execute($caquery); //Checked
+        $cacount=$caresult->RecordCount();
+        if ($cacount)
+        {
+            fixsortorderAnswers($qid); // !!Adjust this!!
+        }
+    }
+
+    // Print Key Control JavaScript
+    $vasummary = PrepareEditorScript("editanswer");
+
+     $query = "SELECT sortorder FROM ".db_table_name('subquestions')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
+     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
+     $anscount = $result->RecordCount();
+     $row=$result->FetchRow();
+     $maxsortorder=$row['sortorder']+1;
+     $vasummary .= "<div class='header'>\n"
+    .$clang->gT("Edit sub-questions")
+    ."</div>\n"
+    ."<form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
+    . "<input type='hidden' name='sid' value='$surveyid' />\n"
+    . "<input type='hidden' name='gid' value='$gid' />\n"
+    . "<input type='hidden' name='qid' value='$qid' />\n"
+    . "<input type='hidden' name='sortorder' value='' />\n"
+    . "<input type='hidden' name='action' value='modsubquestions' />\n";
+    $vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
+    $first=true;
+    $sortorderids='';
+    $codeids='';
+
+    $vasummary .= "<div id='xToolbar'></div>\n";
+    
+    // the following line decides if the assessment input fields are visible or not
+    // for some question types the assessment values is set in the label set instead of the answers
+    $assessmentvisible=($surveyinfo['assessments']=='Y' && !in_array($qtype,array('A','B','C','E','F','K','R','Z',':')));
+    
+    foreach ($anslangs as $anslang)
+    {
+        $position=0;
+        $query = "SELECT * FROM ".db_table_name('subquestions')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
+        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
+        $anscount = $result->RecordCount();
+        $vasummary .= "<div class='tab-page'>"
+                ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
+        if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
+                
+        $vasummary .= "</h2><table class='answertable' align='center' style='width:880px;'>\n"
+                ."<thead>"
+                ."<tr>\n"
+                ."<th width='15%' align='right'>\n"
+                .$clang->gT("Code")
+                ."</th>\n"
+                ."</th><th width='50%'>\n"
+                .$clang->gT("Sub-question")
+                ."</th>\n"
+                ."<th width='15%'>\n"
+                .$clang->gT("Action")
+                ."</th>\n"
+                ."<th width='10%' align='center'>\n"
+                .$clang->gT("Order");
+     
+        $vasummary .= "</th>\n"
+                ."</tr></thead>"
+                ."<tbody align='center'>";
+        $alternate=false;
+        while ($row=$result->FetchRow())
+        {
+            $row['code'] = htmlspecialchars($row['code']);
+            $row['subquestion']=htmlspecialchars($row['subquestion']);
+            
+            $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
+            if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
+            
+            $vasummary .= "<tr";
+            if ($alternate==true)
+            {
+                $vasummary.=' class="highlight" ';
+                $alternate=false;
+            }
+            else
+                {
+                    $alternate=true;
+                }
+            
+            $vasummary .=" ><td align='right'>\n";
+
+            if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') )))
+            {
+                $vasummary .= "<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
+                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+                ." />";
+                $vasummary .= "<input type='hidden' id='previouscode_{$row['sortorder']}' name='previouscode_{$row['sortorder']}' value=\"{$row['code']}\" />";
+            }
+            elseif (($activated != 'N' && $first) ) // If survey is activated and its not one of the above question types who allows modfying answers on active survey
+            {
+                $vasummary .= "<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
+                ." />{$row['code']}";
+                $vasummary .= "<input type='hidden' id='previouscode_{$row['sortorder']}' name='previouscode_{$row['sortorder']}' value=\"{$row['code']}\" />";
+                
+            }
+            else
+            {
+                $vasummary .= "{$row['code']}";
+            
+            }
+
+            $vasummary .= "</td><td>\n"
+            ."<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['subquestion']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
+            . getEditor("editanswer","answer_".$row['language']."_".$row['sortorder'], "[".$clang->gT("Sub-question:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
+            ."</td>\n"
+            ."<td>\n";
+            
+            // Deactivate delete button for active surveys
+            if ($activated != 'Y' || ($activated == 'Y' && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
+            {
+                $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+            }
+            else
+            {
+                $vasummary .= "<input type='submit' disabled='disabled 'name='method' value='".$clang->gT("Del")."' />\n";
+            }
+
+            // Don't show Default Button for array question types
+            if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1" && $qtype != ":" && $qtype != ";") $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+            $vasummary .= "</td>\n"
+            ."<td width='10%'>\n";
+            if ($position > 0)
+            {
+                $vasummary .= "<input type='image' src='$imagefiles/up.png' name='method' alt='".$clang->gT("Move sub-question up")."' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+            };
+            if ($position < $anscount-1)
+            {
+                // Fill the sortorder hiddenfield so we now what field is moved down
+                $vasummary .= "<input type='image' name='method' src='$imagefiles/down.png' alt='".$clang->gT("Move sub-question down")."' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+            }
+            $vasummary .= "</td></tr>\n";
+            $position++;
+        }
+        ++$anscount;
+        if ($anscount > 0)
+        {
+            $vasummary .= "<tr><td colspan='6'><center>"
+               ."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n"
+            ."</center></td></tr>\n";
+        }
+        $position=sprintf("%05d", $position);
+        if ($activated != 'Y' || (($activated == 'Y') && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
+        {
+            
+            if ($first==true)
+            {
+                $vasummary .= "<tr><td colspan='6'><br /></td></tr>"
+                             ."<tr><td>"
+                ."<strong>".$clang->gT("New sub-question").":</strong> ";
+                if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
+                $vasummary .= "<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\" id='code_".$maxsortorder."' maxlength='5' size='5' "
+                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+                ." />";
+                unset($_SESSION['nextanswercode']);
+
+
+                $first=false;
+                $vasummary .= "</td><td";
+                if ($assessmentvisible)
+                {
+                    $vasummary .= "><input type='text' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
+                    ." />";
+                }
+                else
+                {
+                    $vasummary .= " style='display:none;'><input type='hidden' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
+                    ." />";
+                }
+                $vasummary .="</td>\n"
+                ."<td>\n"
+                ."<input type='text' maxlength='1000' name='insertanswer' size='80' onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;}\" />\n"
+                . getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
+                ."</td>\n"
+                ."<td>\n"
+                ."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new sub-question")."' />\n"
+                ."<input type='hidden' name='action' value='updatesubquestions' />\n"
+                ."</td>\n"
+                ."<td>\n"
+                ."<script type='text/javascript'>\n"
+                ."<!--\n"
+                ."document.getElementById('code_".$maxsortorder."').focus();\n"
+                ."//-->\n"
+                ."</script>\n"
+                ."</td>\n"
+                ."</tr>\n";
+            }
+        }
+        else
+        {
+            $vasummary .= "<tr>\n"
+            ."<td colspan='4' align='center'>\n"
+            ."<font color='red' size='1'><i><strong>"
+            .$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add or edit sub-questions or their codes because the survey is active.")."</i></font>\n"
+            ."</td>\n"
+            ."</tr>\n";
+        }
+        $first=false;
+        $vasummary .= "</tbody></table>\n";
+        $vasummary .=  "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
+        $vasummary .=  "<input type='hidden' name='codeids' value='$codeids' />\n";
+        $vasummary .= "</div>";
+    }
+    $vasummary .= "</div></form></td></tr></table>";
+
+
+}
+
+
 
 // *************************************************
 // Survey Rights Start	****************************

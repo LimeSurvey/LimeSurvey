@@ -343,6 +343,25 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
+    if ($oldversion < 143) //Modify surveys table
+    {
+        modify_database("","CREATE TABLE `prefix_subquestions` (
+                                         `sqid` int(11) NOT NULL auto_increment,
+                                         `sid` int(11) NOT NULL default '0',
+                                         `qid` int(11) NOT NULL default '0',
+                                         `code` varchar(5) NOT NULL,
+                                         `subquestion` text NOT NULL,
+                                         `sortorder` int(11) NOT NULL,
+                                         `language` varchar(20) default 'en',
+                                          PRIMARY KEY  (`sqid`,`language`)
+                                        ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+        //Now move all 'answers' that are subquestions to this table
+        upgrade_answer_tables143();
+
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+    
+    
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;
 }
@@ -508,4 +527,21 @@ function upgrade_survey_tables139()
                 }
             }
         }
+}
+
+function upgrade_answer_tables143()
+{
+    global $modifyoutput,$dbprefix, $connect;
+    $answerquery = "select a.*,q.sid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H',';',':','P','Q')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult) {return "Database Error";}
+    else
+        {
+        while ( $row = $answerresult->FetchRow() )
+            {
+                modify_database("","INSERT INTO {$dbprefix}subquestions (sid,qid,code,subquestion,sortorder,language) VALUES ({$row['sid']},{$row['qid']},".db_quoteall($row['code']).",".db_quoteall($row['answer']).",{$row['sortorder']},".db_quoteall($row['language']).")"); echo $modifyoutput; flush();
+            }
+        }
+    modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
+    
 }

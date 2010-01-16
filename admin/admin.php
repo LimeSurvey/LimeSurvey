@@ -78,11 +78,11 @@ if(isset($_SESSION['loginID']) && $action!='login')
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
   if ($action == 'delsurvey'         || $action == 'delgroup'       || 
-      $action == 'delquestion'       || $action == 'insertnewsurvey'||
+      $action == 'delquestion'       || $action == 'insertnewsurvey'|| $action == 'updatesubquestions' ||
       $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
       $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
       $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||
-      $action == 'updatequestion'    || $action == 'modanswer'      || $action == 'renumberquestions' )
+      $action == 'updatequestion'    || $action == 'updateansweroptions'      || $action == 'renumberquestions' )
   {
       include('database.php');
   }

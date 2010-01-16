@@ -331,18 +331,25 @@ function setman_questionandcode($ia)
 	return array($mandatorys, $mandatoryfns);
 }
 
+
+/**
+* The point of these functions (setman) is to return an array containing two arrays. 
+* The first ($mandatorys) is an array containing question, so they can all be checked
+* The second ($mandatoryfns) is an arry containing the fieldnames of every question
+* What's the difference? The difference arises from multiple option questions, and came
+* about when trying to distinguish between answering just one option (which satisfies
+* the mandatory requirement, and answering them all). The "mandatorys" input contains the
+* actual specific response items that could be filled in.. ie: in a multiple option
+* question, there will be a unique one for every possible answer. The "mandatoryfns" array
+* contains the generic question fieldname for the question as a whole (it will be repeated
+*  for multiple option qeustions, but won't contain unique items.
+* 
+* @param mixed $ia
+* @return array See explanation above
+*/
 function setman_multiflex($ia)
 {
-    //The point of these functions (setman) is to return an array containing two arrays. 
-	// The first ($mandatorys) is an array containing question, so they can all be checked
-	// The second ($mandatoryfns) is an arry containing the fieldnames of every question
-	// What's the difference? The difference arises from multiple option questions, and came
-	// about when trying to distinguish between answering just one option (which satisfies
-	// the mandatory requirement, and answering them all). The "mandatorys" input contains the
-	// actual specific response items that could be filled in.. ie: in a multiple option
-	// question, there will be a unique one for every possible answer. The "mandatoryfns" array
-	// contains the generic question fieldname for the question as a whole (it will be repeated
-	// for multiple option qeustions, but won't contain unique items.
+
 	global $dbprefix, $connect;
 	
 	$qq="SELECT lid FROM {$dbprefix}questions WHERE qid={$ia[0]}";
@@ -717,7 +724,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	}
 
 	$answer .= "\n\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
-	$answer .= 'on'; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
+	$answer .= 'on'; //If this is single format, then it must be showing. Needed for checking conditional mandatories
 	$answer .= "' />\n"; //for conditional mandatory questions
 
 	if ($ia[6] == 'Y')
@@ -4871,7 +4878,7 @@ function do_array_5point($ia)
 	}
 	$cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-	$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+	$ansquery = "SELECT subquestion FROM {$dbprefix}subquestions WHERE qid=".$ia[0]." AND subquestion like '%|%'";
 	$ansresult = db_execute_assoc($ansquery);   //Checked
 	
 	if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
@@ -4879,11 +4886,11 @@ function do_array_5point($ia)
 	
 
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, subquestion";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery);     //Checked
@@ -4927,7 +4934,7 @@ function do_array_5point($ia)
 	{
 		$myfname = $ia[1].$ansrow['code'];
 
-		$answertext=answer_replace($ansrow['answer']);
+		$answertext=answer_replace($ansrow['subquestion']);
 		if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
 
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -4964,7 +4971,7 @@ function do_array_5point($ia)
 			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 		}
 
-		$answertext2=answer_replace($ansrow['answer']);
+		$answertext2=answer_replace($ansrow['subquestion']);
 		if (strpos($answertext2,'|')) 
 		{
 			$answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -5483,10 +5490,10 @@ function do_array_flexible($ia)
 		$checkconditionFunction = "noop_checkconditions";
 	}
 
-	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);     //Checked
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['answer_width'])!='')
@@ -5504,22 +5511,22 @@ function do_array_flexible($ia)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
 			$labelcode[]=$lrow['code'];
 		}
 
 //		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%' ";
+		$ansquery = "SELECT subquestion FROM {$dbprefix}subquestions WHERE qid=".$ia[0]." AND subquestion like '%|%' ";
 		$ansresult = db_execute_assoc($ansquery);  //Checked
 		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, subquestion";
 		}
 		$ansresult = db_execute_assoc($ansquery); //Checked
 		$anscount = $ansresult->RecordCount();
@@ -5576,7 +5583,7 @@ function do_array_flexible($ia)
 			}
 			$myfname = $ia[1].$ansrow['code'];
 			$trbc = alternation($trbc , 'row');
-			$answertext=answer_replace($ansrow['answer']);
+			$answertext=answer_replace($ansrow['subquestion']);
             $answertextsave=$answertext;
 			if (strpos($answertext,'|'))
 			{
