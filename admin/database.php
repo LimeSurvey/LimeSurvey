@@ -1162,12 +1162,14 @@ if(isset($surveyid))
 
                     $_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
                     // Now we insert the answers
-                    $query = "INSERT INTO ".db_table_name('questions')." (title,question,parent_qid,question_order,language)
-                              VALUES (".db_quoteall($_POST['code_'.$codeids[$count]]).", ".
-                                        db_quoteall($_POST['answer_'.$sortorderid]).", ".
-                                        db_quote($qid).", ".
-                                        db_quote($orderid).", ".
-                                        db_quoteall($langid).")";
+                    $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, title,question,parent_qid,question_order,language)
+                              VALUES ( $surveyid, 
+                                       $gid,"
+                                       .db_quoteall($_POST['code_'.$codeids[$count]]).", "
+                                       .db_quoteall($_POST['answer_'.$sortorderid]).", "
+                                       .db_quote($qid).", "
+                                       .db_quote($orderid).", "
+                                       .db_quoteall($langid).")";
                     if (!$result = $connect->Execute($query)) // Checked
                     {
                         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";

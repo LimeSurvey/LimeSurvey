@@ -4113,7 +4113,7 @@ function do_multiplenumeric($ia)
 		$label_width = 0;
 		while ($ansrow = $ansresult->FetchRow())
 		{
-			$myfname = $ia[1].$ansrow['code'];
+			$myfname = $ia[1].$ansrow['title'];
 			if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 			if ($slider_layout === false || $slider_separator == '')
 			{
@@ -5088,7 +5088,7 @@ function do_array_10point($ia)
 	$trbc = '';
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$myfname = $ia[1].$ansrow['code'];
+		$myfname = $ia[1].$ansrow['title'];
 		$answertext=answer_replace($ansrow['question']);
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 		containing a list of unanswered questions, the current question must be in the array,
@@ -5182,11 +5182,11 @@ function do_array_yesnouncertain($ia)
 	$cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}question WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}question WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 	}
 	$ansresult = db_execute_assoc($ansquery);	//Checked
 	$anscount = $ansresult->RecordCount();
@@ -5227,7 +5227,7 @@ function do_array_yesnouncertain($ia)
 		$trbc = '';
 		while ($ansrow = $ansresult->FetchRow())
 		{
-			$myfname = $ia[1].$ansrow['code'];
+			$myfname = $ia[1].$ansrow['title'];
 			$answertext=answer_replace($ansrow['question']);
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
@@ -5384,7 +5384,7 @@ function do_array_increasesamedecrease($ia)
 	$trbc = '';
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$myfname = $ia[1].$ansrow['code'];
+		$myfname = $ia[1].$ansrow['title'];
 		$answertext=answer_replace($ansrow['question']);
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 		containing a list of unanswered questions, the current question must be in the array,
@@ -5581,7 +5581,7 @@ function do_array_flexible($ia)
 					$answer .= "</tr>\n";
 				}
 			}
-			$myfname = $ia[1].$ansrow['code'];
+			$myfname = $ia[1].$ansrow['title'];
 			$trbc = alternation($trbc , 'row');
 			$answertext=answer_replace($ansrow['question']);
             $answertextsave=$answertext;
@@ -5717,7 +5717,7 @@ function do_array_multitext($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order, title";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
 
@@ -5754,8 +5754,8 @@ function do_array_multitext($ia)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
-			$labelcode[]=$lrow['code'];
+			$labelans[]=$lrow['question'];
+			$labelcode[]=$lrow['title'];
 		}
 		$numrows=count($labelans);
 		if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
@@ -5831,8 +5831,8 @@ function do_array_multitext($ia)
 					$answer .= "</tr>\n";
 				}
 			}
-			$myfname = $ia[1].$ansrow['code'];
-			$answertext=answer_replace($ansrow['subquestion']);
+			$myfname = $ia[1].$ansrow['title'];
+			$answertext=answer_replace($ansrow['question']);
 			$answertextsave=$answertext;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
@@ -5934,7 +5934,7 @@ function do_array_multiflexi($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, title";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['multiflexible_max'])!='')
@@ -5986,8 +5986,8 @@ function do_array_multiflexi($ia)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
-			$labelcode[]=$lrow['code'];
+			$labelans[]=$lrow['question'];
+			$labelcode[]=$lrow['title'];
 		}
 		$numrows=count($labelans);
 		if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
@@ -5995,16 +5995,16 @@ function do_array_multiflexi($ia)
 
 		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT subquestion FROM {$dbprefix}subquestions WHERE qid=".$ia[0]." AND subquestion like '%|%'";
+		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
 		$ansresult = db_execute_assoc($ansquery);
 		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, subquestion";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
@@ -6053,8 +6053,8 @@ function do_array_multiflexi($ia)
 					$answer .= "</tr>\n";
 				}
 			}
-			$myfname = $ia[1].$ansrow['code'];
-			$answertext=answer_replace($ansrow['subquestion']);
+			$myfname = $ia[1].$ansrow['title'];
+			$answertext=answer_replace($ansrow['question']);
 			$answertextsave=$answertext;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
@@ -6231,11 +6231,11 @@ function do_array_flexiblecolumns($ia)
 			$labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
 		}
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}subquestions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, subquestion";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);  //Checked
 		$anscount = $ansresult->RecordCount();
@@ -6259,8 +6259,8 @@ function do_array_flexiblecolumns($ia)
 			. "\t<td>&nbsp;</td>\n";
 			while ($ansrow = $ansresult->FetchRow())
 			{
-				$anscode[]=$ansrow['code'];
-				$answers[]=answer_replace($ansrow['subquestion']);
+				$anscode[]=$ansrow['title'];
+				$answers[]=answer_replace($ansrow['question']);
 			}
 			$trbc = '';
 			$odd_even = '';
@@ -6285,7 +6285,7 @@ function do_array_flexiblecolumns($ia)
 			while ($ansrow = $ansresult->FetchRow())
 			{
 				$ansrowcount++;
-				$ansrowtotallength=$ansrowtotallength+strlen($ansrow['subquestion']);
+				$ansrowtotallength=$ansrowtotallength+strlen($ansrow['question']);
 			}
 			$percwidth=100 - ($cellwidth*$anscount);
 			foreach($labels as $ansrow)

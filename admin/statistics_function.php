@@ -1379,7 +1379,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					case "A":
 	
 						//get data
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+						$qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//loop through results
@@ -1405,7 +1405,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//Array of 10 point choices
 						//same as above just with 10 items
 					case "B":
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".$connect->ErrorMsg());
 						while ($qrow=$qresult->FetchRow())
 						{
@@ -1424,7 +1424,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 						//Array of Yes/No/$clang->gT("Uncertain")
 					case "C":
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//loop thorugh results
@@ -1446,7 +1446,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//Array of Yes/No/$clang->gT("Uncertain")
 						//same as above
 					case "E":
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 						while ($qrow=$qresult->FetchRow())
 						{
@@ -1463,7 +1463,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					case ";": //Array (Multi Flexi) (Text)
 						list($qacode, $licode)=explode("_", $qanswer);
 	
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order, question";
 						//echo $qquery."<br />";
 						$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
@@ -1517,7 +1517,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 						list($qacode, $licode)=explode("_", $qanswer);
 	
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order, question";
 						//echo $qquery."<br />";
 						$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
@@ -1545,7 +1545,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 					case "F": //Array of Flexible
 					case "H": //Array of Flexible by Column
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//loop through answers
@@ -1609,8 +1609,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						
 					case "Z":	//List flexible labels (radio)
 							
-						//get labels
-						$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+						//get answers
+						$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qid}' AND language='{$language}' ORDER BY sortorder, code";
 						$fresult = db_execute_assoc($fquery);
 	
 						//put label code and label title into array
@@ -1638,7 +1638,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						if (substr($rt,-1,1) == 0)
 						{
 							//get label 1
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qid}' AND language='{$language}' ORDER BY sortorder, code";
 	
 							//header available?
                             if (trim($qidattributes['dualscale_headerA'])!='') {

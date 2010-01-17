@@ -731,7 +731,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 	global $dbprefix, $scriptname, $connect, $clang;
 
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' order by question_order";
+	$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
 	$qresult = db_execute_assoc($qquery); //checked
 	$qrows = $qresult->GetRows();
 
@@ -2349,11 +2349,12 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 	//Get list of questions
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $qtypes=getqtypelist('','array');
-	$aquery = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')
-	." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid AND "
-	.db_table_name('questions').".sid=$surveyid AND "
-	.db_table_name('questions').".language='{$s_lang}' AND "
-	.db_table_name('groups').".language='{$s_lang}' "
+	$aquery = "SELECT * FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
+	." WHERE questions.gid=groups.gid AND "
+	." questions.sid=$surveyid AND "
+	." questions.language='{$s_lang}' AND "
+    ." questions.parent_qid=0 AND "
+	." groups.language='{$s_lang}' "
 	." ORDER BY group_order, question_order";
 	$aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
@@ -2487,7 +2488,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				$counter++;
 				if ($arow['type'] == "P")
 				{
-					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"comment");
+					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"comment");
 					if ($style == "full")
 					{
 						$fieldmap[$counter]['title']=$arow['title'];

@@ -888,7 +888,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         . "<div class='menubar-right'>\n"
 		. "<span class=\"boxcaption\">".$clang->gT("Questions").":</span><select class=\"listboxquestions\" name='qid' "
 		. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">"
-		. getquestions($surveyid,$gid,$qid)
+		. getQuestions($surveyid,$gid,$qid)
 		. "</select>\n";
         if ($activated == "Y")
         {
@@ -1638,7 +1638,7 @@ if ($action=='editsubquestions')
             elseif (($activated != 'N' && $first) ) // If survey is activated and its not one of the above question types who allows modfying answers on active survey
             {
                 $vasummary .= "<input type='hidden' name='code_{$row['question_order']}' value=\"{$row['title']}\" maxlength='5' size='5'"
-                ." />{$row['code']}";
+                ." />{$row['title']}";
                 $vasummary .= "<input type='hidden' id='previouscode_{$row['question_order']}' name='previouscode_{$row['question_order']}' value=\"{$row['title']}\" />";
                 
             }

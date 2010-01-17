@@ -194,12 +194,13 @@ while ($row=$result->FetchRow()) {$datestamp=$row['datestamp'];}
  *
  * b) "groups" -> group_name + group_order *
  */
-$query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
-."FROM ".db_table_name("questions").", ".db_table_name("groups")."\n"
-."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
-."AND ".db_table_name("groups").".language='".$language."'\n"
-."AND ".db_table_name("questions").".language='".$language."'\n"
-."AND ".db_table_name("questions").".sid=$surveyid";
+$query = "SELECT questions.*, groups.group_name, groups.group_order\n"
+." FROM ".db_table_name("questions") ." as questions, ".db_table_name("groups")." as groups\n"
+." WHERE groups.gid=questions.gid\n"
+." AND groups.language='".$language."'\n"
+." AND questions.language='".$language."'\n"
+." AND questions.parent_qid=0\n"
+." AND questions.sid=$surveyid";
 $result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
 
 //store all the data in $rows
@@ -813,7 +814,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
 			//get answers
-			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+			$query = "SELECT title as code, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
 			$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 			$counter2=0;
 
@@ -867,7 +868,7 @@ foreach ($filters as $flt)
 			//just like above only a different loop
 		case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+			$query = "SELECT title, question FROM ".db_table_name("answers")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
 			$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 			$counter2=0;
 			while ($row=$result->FetchRow())
@@ -914,7 +915,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
 			//get answers
-			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+            $query = "SELECT title, question FROM ".db_table_name("answers")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
 			$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 			$counter2=0;
 
@@ -973,8 +974,7 @@ foreach ($filters as $flt)
 			//similiar to the above one
 		case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-
-			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+            $query = "SELECT title, question FROM ".db_table_name("answers")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
 			$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 			$counter2=0;
 
@@ -1023,7 +1023,7 @@ foreach ($filters as $flt)
 
 		case ";":  //ARRAY (Multi Flex) (Text)
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+            $query = "SELECT title, question FROM ".db_table_name("answers")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
 			$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 			$counter2=0;
 			while ($row=$result->FetchRow())
