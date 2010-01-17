@@ -284,7 +284,7 @@ if ($sourcefrom == "admin")
 	}
 }
 
-if ($sourcefrom == "admin" && $buildnumber != "" && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$updatecheckperiod." days")) 
+if ($sourcefrom == "admin" && $buildnumber != "" && $updatecheckperiod>0 && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$updatecheckperiod." days")) 
 {
   updatecheck();
 }
@@ -316,7 +316,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
      */
     function showadminmenu()
         {
-        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion;
+        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck;
     
         $adminmenu  = "<div class='menubar'>\n";
         if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
@@ -331,7 +331,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "</strong>\n";
 			}
         $adminmenu  .="</div>\n";
-        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updateavailable) && $updateavailable==1)   
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updatelastcheck) && $updatelastcheck>0 && isset($updateavailable) && $updateavailable==1)   
         {
             $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
         }
@@ -450,19 +450,16 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 function &db_execute_num($sql,$inputarr=false)
 {
 	global $connect;
-
-// Todo: Set fetchmode to previous state after changing
-	//$oldfetchmode=
+    
     $connect->SetFetchMode(ADODB_FETCH_NUM);
 	$dataset=$connect->Execute($sql,$inputarr);  //Checked    
-	//$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
 
 function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 {
 	global $connect;
-
+    
 	$connect->SetFetchMode(ADODB_FETCH_NUM);
 	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false) or safe_die($sql);
 	return $dataset;
@@ -471,24 +468,43 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
 	global $connect;
-// Todo: Set fetchmode to previous state after changing 
-//	$oldfetchmode=
+    
     $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->Execute($sql,$inputarr);    //Checked    
 	if (!$silent && !$dataset)  {safe_die($connect->ErrorMsg().':'.$sql);}      
-//	$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
 
 function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$dieonerror=true)
 {
 	global $connect;
-
+    
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false);
     if (!$dataset && $dieonerror) {safe_die($connect->ErrorMsg().':'.$sql);}
 	return $dataset;
 }
+
+
+/**
+* Returns the first row of values of the $sql query result 
+* as a 1-dimensional array
+* 
+* @param mixed $sql
+*/
+function &db_select_column($sql)
+{
+    global $connect;
+    
+    $connect->SetFetchMode(ADODB_FETCH_NUM);
+    $dataset=$connect->Execute($sql);
+    $resultarray=array();
+    while ($row = $dataset->fetchRow()) {
+        $resultarray[]=$row[0];
+    }
+    return $resultarray;
+}
+
 
 /**
 * This functions quotes fieldnames accordingly
@@ -3488,7 +3504,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code.'),
+    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon.'),
     "caption"=>$clang->gT('Exclusive option'));
     
 	$qattributes["hide_tip"]=array(
@@ -4309,7 +4325,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->SMTPAuth = true;
         }
 	}
-	$mail->From = $fromemail;
+    $mail->SetFrom($fromemail, $fromname);
 	$mail->Sender = $senderemail; // Sets Return-Path for error notifications
     $toemails = explode(";", $to);
     foreach ($toemails as $singletoemail)
@@ -4325,8 +4341,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddAddress($singletoemail);
         }
     }	
-	$mail->FromName = $fromname;
-	$mail->AddCustomHeader("X-Surveymailer: $sitename:Emailer (LimeSurvey.sourceforge.net)");
+
+	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
 	$textbody = strip_tags($body);
 	$textbody = str_replace("&quot;", '"', $textbody);
@@ -4956,7 +4972,7 @@ function getsurveyuserlist()
 {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
     $surveyid=sanitize_int($surveyid);
-	$surveyidquery = "SELECT a.uid, a.users_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+	$surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
     $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
@@ -4978,7 +4994,7 @@ function getsurveyuserlist()
 			in_array($sv['uid'],$authorizedUsersList))
 		{
 			$surveyselecter .= "<option";
-			$surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
+			$surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
 		}
             }
         }

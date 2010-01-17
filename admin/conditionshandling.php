@@ -1863,7 +1863,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	// Predefined answers tab
 	$conditionsoutput_main_content .= "\t<div id='CANSWERSTAB'><select  name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; width:600px;' size='7'>\n"
 		."\t</select>\n"
-		."\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answers for this question")."</span>\n"
+		."\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answer options for this question")."</span>\n"
 		."\t</div>\n\t\n";
 	// Constant tab 
 	$conditionsoutput_main_content .= "<div id='CONST' style='display:' >"

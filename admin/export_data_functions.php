@@ -35,9 +35,15 @@ function strip_tags_full($string) {
  * @return bool
  */
 function my_is_numeric($value)  {
-	$american = preg_match ("/^(-){0,1}([0-9]+)(,[0-9][0-9][0-9])*([.][0-9]){0,1}([0-9]*)$/" ,$value) == 1;
-	$world = preg_match ("/^(-){0,1}([0-9]+)(.[0-9][0-9][0-9])*([,][0-9]){0,1}([0-9]*)$/" ,$value) == 1;
-	return ($american or $world);
+	if (empty($value)) return true;
+	$eng_or_world = preg_match 
+  ('/^[+-]?'. // start marker and sign prefix 
+  '(((([0-9]+)|([0-9]{1,4}(,[0-9]{3,4})+)))?(\\.[0-9])?([0-9]*)|'. // american 
+  '((([0-9]+)|([0-9]{1,4}(\\.[0-9]{3,4})+)))?(,[0-9])?([0-9]*))'. // world 
+  '(e[0-9]+)?'. // exponent 
+  '$/', // end marker 
+  $value) == 1; 
+	return ($eng_or_world);
 }
 
 function spss_export_data ($na = null) {
@@ -263,12 +269,13 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
 	if (count($answers)>0) {
 		//check the max width of the answers
 		$size = 0;
-		$answers['SPSStype'] = $field['SPSStype'];
+		$spsstype = $field['SPSStype'];
 		foreach ($answers as $answer) {
 			$len = mb_strlen($answer['code']);
 			if ($len>$size) $size = $len;
-			if ($answers['SPSStype']=='F' && (my_is_numeric($answer['code'])===false || $size>16)) $answers['SPSStype']='A';
+			if ($spsstype=='F' && (my_is_numeric($answer['code'])===false || $size>16)) $spsstype='A';
 		}
+		$answers['SPSStype'] = $spsstype;
 		$answers['size'] = $size;
 		return $answers;
 	} else {

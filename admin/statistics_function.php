@@ -410,22 +410,30 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			elseif (substr($pv, 0, 9) == "datestamp")
 			{
 				//timestamp equals
+                $formatdata=getDateFormatData($_SESSION['dateformat']);
 				if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
 				{
-					$selects[] = db_quote_id('datestamp')." = '".$_POST[$pv]."'";
+                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                    $_POST[$pv]=$datetimeobj->convert("Y-m-d");
+                    
+					$selects[] = db_quote_id('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".db_quote_id('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
 				}
 				else
 				{
 					//timestamp less than
 					if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
 					{
-						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                        $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
+						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
 					}
 						
 					//timestamp greater than
 					if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
 					{
-						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                        $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
+						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
 					}
 				}
 			}

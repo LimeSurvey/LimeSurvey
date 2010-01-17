@@ -789,7 +789,7 @@ if(isset($surveyid))
         switch($_POST['method'])
         {
             // Add a new answer button
-            case $clang->gT("Add new Answer", "unescaped"):
+			case $clang->gT("Add new answer option", "unescaped"):
             if (isset($_POST['insertcode']) && $_POST['insertcode']!='' && $_POST['insertcode'] != "0")
             {
                 //$_POST  = array_map('db_quote', $_POST);//Removed: qstr is used in SQL below

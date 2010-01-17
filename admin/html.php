@@ -546,7 +546,7 @@ if ($surveyid)
 			    . "title=\"".$clang->gTview("Token management")."\" >"
 			    . "<img src='$imagefiles/tokens.png' name='TokensControl' alt='".$clang->gT("Token management")."' /></a>\n" ;
 		}
-        if($activated!="Y" && hasRight($surveyid,'define_questions' && getGroupSum($surveyid,$surveyinfo['language'])>1))
+        if($activated!="Y" && hasRight($surveyid,'define_questions') && getGroupSum($surveyid,$surveyinfo['language'])>1)
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
@@ -982,7 +982,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
         . "<div class='menubar-left'>\n"
 		. "<img src='$imagefiles/blank.gif' alt='' width='55' height='20' />\n"
 		. "<img src='$imagefiles/seperator.gif' alt='' />\n"
-		. "<img src='$imagefiles/blank.gif' alt='' width='171' height='20'  />\n"
+		. "<img src='$imagefiles/blank.gif' alt='' width='157' height='20'  />\n"
 		. "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
 		if(hasRight($surveyid,'define_questions'))
@@ -1016,7 +1016,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			}
 		}
 		else {$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";}
-		$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='84' />\n";
+		$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 
 		if(hasRight($surveyid,'export'))
 		{
@@ -1165,9 +1165,9 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<tr ><td></td><td align='left'>"
 			. "<font face='verdana' size='1' color='red'>"
-			. $clang->gT("Warning").": ". $clang->gT("You need to add answers to this question")." "
+			. $clang->gT("Warning").": ". $clang->gT("You need to add answer options to this question")." "
 			. "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
-			. $clang->gT("Edit/Add Answers for this Question")."' name='EditThisQuestionAnswers'"
+			. $clang->gT("Edit/add answer options for this question")."' name='EditThisQuestionAnswers'"
 			. "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editansweroptions', '_top')\" /></font></td></tr>\n";
 		}
 		
@@ -1266,7 +1266,7 @@ if ($action=='editansweroptions')
      $vasummary .= "<table width='100%' >\n"
 	."<tr  >\n"
 	."<td colspan='4' class='settingcaption'>\n"
-	.$clang->gT("Edit Answers")
+	.$clang->gT("Edit answer options")
 	."</td>\n"
 	."</tr>\n"
 	."<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
@@ -1311,7 +1311,7 @@ if ($action=='editansweroptions')
             $vasummary .="<th style='display:none;'>";
         }
         $vasummary .="</th><th width='50%'>\n"
-        		.$clang->gT("Answer")
+        		.$clang->gT("Answer option")
         		."</th>\n"
         		."<th width='15%'>\n"
         		.$clang->gT("Action")
@@ -1440,7 +1440,7 @@ if ($action=='editansweroptions')
 			{
 				$vasummary .= "<tr><td colspan='6'><br /></td></tr>"
                              ."<tr><td>"
-				."<strong>".$clang->gT("New Answer").":</strong> ";
+				."<strong>".$clang->gT("New answer option").":</strong> ";
                 if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
 				$vasummary .= "<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\" id='code_".$maxsortorder."' maxlength='5' size='5' "
 				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
@@ -1468,7 +1468,7 @@ if ($action=='editansweroptions')
 				. getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
 				."</td>\n"
 				."<td>\n"
-				."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new Answer")."' />\n"
+				."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new answer option")."' />\n"
 				."<input type='hidden' name='action' value='updateansweroptions' />\n"
 				."</td>\n"
 				."<td>\n"
@@ -2164,19 +2164,26 @@ if($action == "exportstructureQuestion")
 
 if($action == "surveysecurity")
 {
-	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
-	$result = db_execute_assoc($query); //Checked
-	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	if(hasRight($surveyid))
 	{
-		$query2 = "SELECT a.uid, b.users_name FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.users_name";
+		$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+        $js_adminheader_includes[]='scripts/surveysecurity.js';
+		$query2 = "SELECT a.*, b.users_name, b.full_name FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.users_name";
 		$result2 = db_execute_assoc($query2); //Checked
         $surveysecurity ="<div class='header'>".$clang->gT("Survey Security")."</div>\n";        
-		$surveysecurity .= "<table width='100%' rules='rows' border='0'>"
+		$surveysecurity .= "<table class='surveysecurity'><thead>"
 		. "<tr>\n"
 		. "<th>".$clang->gT("Username")."</th>\n"
 		. "<th>".$clang->gT("User Group")."</th>\n"
-		. "<th>".$clang->gT("Action")."</th>\n"
-		. "</tr>\n";
+		. "<th>".$clang->gT("Full name")."</th>\n"
+		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Edit Survey Property")."\"></th>\n"
+		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Define Questions")."\"></th>\n"
+		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Browse Response")."\"></th>\n"
+		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Export")."\"></th>\n"
+		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Delete Survey")."\"></th>\n"
+		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Activate Survey")."\"></th>\n"
+		. "<th class=\"header\">".$clang->gT("Action")."</th>\n"
+		. "</tr></thead>\n";
 		
 		if (isset($usercontrolSameGroupPolicy) &&
 			$usercontrolSameGroupPolicy == true)
@@ -2184,6 +2191,7 @@ if($action == "surveysecurity")
 			$authorizedGroupsList=getusergrouplist('simplegidarray');
 		}
 
+		$surveysecurity .= "<tbody>\n";
 		if($result2->RecordCount() > 0)
 		{
 			//	output users
@@ -2219,12 +2227,12 @@ if($action == "surveysecurity")
 				}
 //                  else {break;} //TODO Commented by lemeur
 				if(($row % 2) == 0)
-					$surveysecurity .= "<tr>\n";
+					$surveysecurity .= "<tr class=\"oddrow\">\n";
 				else
-					$surveysecurity .= "<tr>\n";
+					$surveysecurity .= "<tr class=\"evenrow\">\n";
 
-				$surveysecurity .= "<td align='center'>{$resul2row['users_name']}</td>\n"
-								. "<td align='center'>";
+				$surveysecurity .= "<td>{$resul2row['users_name']}</td>\n"
+								 . "<td>";
 					
 				if(isset($group_names) > 0)
 				{
@@ -2237,7 +2245,20 @@ if($action == "surveysecurity")
 				unset($group_names);
 
 				$surveysecurity .= "</td>\n"
-				. "<td align='center' style='padding-top:10px;'>\n";
+				. "<td>\n{$resul2row['full_name']}</td>\n";
+
+				//Now insert the rights
+				$rightsarr = array('edit_survey_property','define_questions','browse_response','export','delete_survey','activate_survey');
+				foreach ($rightsarr as $right) {
+					if ($resul2row[$right]==1) {
+						$insert = "<div class=\"ui-icon ui-icon-check\"></div>";
+					} else {
+						$insert = "<div class=\"ui-icon ui-icon-radio-off\"></div>";
+					}
+					$surveysecurity .= "<td align=\"center\">\n$insert\n</td>\n";
+				}				 
+				
+				$surveysecurity .= "<td style='padding-top:10px;'>\n";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
 				."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
@@ -2257,35 +2278,34 @@ if($action == "surveysecurity")
 				. "</tr>\n";
 				$row++;
 			}
+		} else {
+			$surveysecurity .= "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>"; //fix error on empty table
 		}
-		$surveysecurity .= "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
+		$surveysecurity .= "</tbody>\n";
+		
+		$surveysecurity .= "<tfoot><form action='$scriptname?sid={$surveyid}' method='post'>\n"
 		. "<tr>\n"
-
-		. "<td colspan='2' align='right'>"
+		. "<td colspan='9' align='right'>"
 		. "<strong>".$clang->gT("User").": </strong><select id='uidselect' name='uid'>\n"
-		//. $surveyuserselect
 		. getsurveyuserlist()
 		. "</select>\n"
 		. "</td>\n"
 
-		. "<td align='center'><input type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
+		. "<td><input type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
 		. "<input type='hidden' name='action' value='addsurveysecurity' /></td></form>\n"
 		. "</tr>\n";
-		//. "</table>\n";
 
-		$surveysecurity .= "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
-		. "<tr>\n"
+		$surveysecurity .= "<tr>\n"
 
-		. "<td colspan='2' align='right'>"
+		. "<td colspan='9' align='right'>"
 		. "<strong>".$clang->gT("Groups").": </strong><select id='ugidselect' name='ugid'>\n"
-		//. $surveyuserselect
 		. getsurveyusergrouplist()
 		. "</select>\n"
 		. "</td>\n"
 
-		. "<td align='center'><input type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
-		. "<input type='hidden' name='action' value='addusergroupsurveysecurity' /></td></form>\n"
-		. "</tr>\n"
+		. "<td><input type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
+		. "<input type='hidden' name='action' value='addusergroupsurveysecurity' /></td>\n"
+		. "</tr></form></tfoot>\n"
 		. "</table>\n";
 	}
 	else
@@ -2601,8 +2621,8 @@ if ($action == "editsurvey")
                 $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
             
-            $editsurvey .= "<li><label for='startdate_$surveyid'>".$clang->gT("Start date/time:")."</label>\n"
-            . "<input type='text' class='popupdatetime' id='startdate_$surveyid' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
+            $editsurvey .= "<li><label for='startdate'>".$clang->gT("Start date/time:")."</label>\n"
+            . "<input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
 
 			// Expiration date
             $expires='';
@@ -2611,8 +2631,8 @@ if ($action == "editsurvey")
                 $datetimeobj = new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
                 $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
-			$editsurvey .="<li><label for='enddate_$surveyid'>".$clang->gT("Expiry date/time:")."</label>\n"
-			. "<input type='text' class='popupdatetime' id='enddate_$surveyid' size='20' name='expires' value=\"{$expires}\" /></li>\n";
+			$editsurvey .="<li><label for='expires'>".$clang->gT("Expiry date/time:")."</label>\n"
+			. "<input type='text' class='popupdatetime' id='expires' size='20' name='expires' value=\"{$expires}\" /></li>\n";
 			//COOKIES
 			$editsurvey .= "<li><label for=''>".$clang->gT("Set cookie to prevent repeated participation?")."</label>\n"
 			. "<select name='usecookie'>\n"

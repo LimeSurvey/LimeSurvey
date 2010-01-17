@@ -3045,7 +3045,7 @@ function do_multiplechoice($ia)
 
 	if (trim($qidattributes['exclude_all_others'])!='')
 	{          
-		$excludeallothers[]=$qidattributes['exclude_all_others'];
+        $excludeallothers=explode(';',trim($qidattributes['exclude_all_others']));
 	    $excludeallotherscript = "
 		<script type='text/javascript'>
 		<!--

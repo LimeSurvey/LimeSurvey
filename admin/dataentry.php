@@ -2208,7 +2208,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						while ($dearow = $dearesult->FetchRow())
 						{
 							// first scale
-							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, lid, code";
+							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$language}' ORDER BY sortorder, lid, code";
 							$delresult = db_execute_assoc($delquery);
 							$dataentryoutput .= "<tr><td>{$dearow['answer']}</td><td>";
                             $dataentryoutput .= "<select name='$fieldname{$dearow['code']}#0'>\n";
@@ -2220,7 +2220,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							}
 							// second scale
                             $dataentryoutput .= "</select></td>\n";
-							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid1']} ORDER BY sortorder, lid, code";
+							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid1']} AND language='{$language}' ORDER BY sortorder, lid, code";
 							$delresult = db_execute_assoc($delquery);
 							$dataentryoutput .= "<td>";
                             $dataentryoutput .="<select name='$fieldname{$dearow['code']}#1'>\n";

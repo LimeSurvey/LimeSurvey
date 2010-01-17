@@ -77,6 +77,26 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.87+ (build 8227) to 1.87+ (build 8242) - Legend: # updated feature, - bug fix
+#Updates translation: Croatian language file (idobraca)
+#Updates translation: Slovenian translation (gandalfar)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated Feature: small change to the release notes filename. This shorter filename will will ease the release process. (lemeur)
+-Fixed issue: If question attributes were set to invalid (but working) True/False values they will be converted to 1/0 now on upgrade from a 1.86 or earlier. (c_schmitz)
+
+Changes from 1.87 (build 8214) to 1.87+ (build 8227) - Legend: # updated feature, - bug fix
+#Updated translation:  Croatian (idobraca)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Romanian by Bogdan State (c_schmitz)
+#Updated translation: Thai - sponsored by LimeService (c_schmitz)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue #4026: Date Format Problems (PHP) - settings set in config.php were not properly used as a first default for the global settings dialog (c_schmitz)
+-Fixed issue #4031: When choosing to never check for updates it is always checked. (c_schmitz)
+-Fixed issue #4032: Export of question group structure fails using MSSQL Db server (c_schmitz)
+-Fixed issue (unreported): Values in global settings are sanitized better now. (c_schmitz)
+
 Changes from 1.87RC5 (build 8151) [29-11-2009] to 1.87 (build 8214) - Legend: # updated feature, - bug fix
 #Updated translation: Croatian (idobraca)
 #Updated translation: Chinese Traditional (Hong Kong) by Mark Yeung http://www.pstudy.net 

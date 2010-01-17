@@ -428,7 +428,7 @@ if (!$surveyid)
 		while ($isresult->RecordCount()>0);
 	}
 
-
+$importwarning = "";	// used to save the warnings while processing questions
 $insert=$surveyarray[0];
 if ($importversion>=111)
 {
@@ -447,6 +447,7 @@ $surveyrowdata['owner_id']=$_SESSION['loginID'];
 $surveyrowdata['sid']=$newsid;
 $surveyrowdata['active']='N';
 
+if (validate_templatedir($surveyrowdata['template'])!==$surveyrowdata['template']) $importwarning .= "<li>". sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']) ."</li>";
 
 if ($importversion<=100)
 // find the old language field and replace its contents with the new language shortcuts
@@ -760,7 +761,6 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 	}
 }
 
-$importwarning = "";	// used to save the warnings while processing questions
 $qtypes = getqtypelist("" ,"array");
 
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
@@ -1414,7 +1414,7 @@ else
 	echo $clang->gT("Label Sets").": $countlabelsets\n";
     if ($deniedcountlabelsets>0) echo $clang->gT("Not imported Label Sets").": $deniedcountlabelsets (".$clang->gT("(Label Sets were not imported since you do not have the permission to create new label sets.)");
 	echo $clang->gT("Question Attributes").": $countquestion_attributes\n";
-	echo $clang->gT("Assessments").": $countassessments\n\n";
+	echo $clang->gT("Assessments").": $countassessments\n\n";	
 	
 	echo $clang->gT("Import of Survey is completed.")."\n";
 	if ($importwarning != "") echo "\n".$clang->gT("Warnings").":\n" . $importwarning . "\n";
