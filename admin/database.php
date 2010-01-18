@@ -1401,7 +1401,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
 		// Insert into survey_rights
 
-		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
+        $isrquery = "INSERT INTO {$dbprefix}surveys_rights (sid,uid,edit_survey_property,define_questions,browse_response,export,delete_survey,activate_survey) VALUES($surveyid,{$_SESSION['loginID']},1,1,1,1,1,1)"; //inserts survey rights for owner
 		$isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
 		if ($isresult)
 		{
