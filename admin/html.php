@@ -1221,12 +1221,15 @@ if ($action=='editansweroptions')
     $qtype = $connect->GetOne($qquery);
     $scalecount=$qtypes[$qtype]['answerscales'];
     //Check if there is at least one answer
-    $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=1 AND language='".$baselang."'";
-    $qresult = $connect->GetOne($qquery); //Checked
-    if ($qresult==0)
+    for ($i = 1; $i < $scalecount+1; $i++)
     {
-       $query="INSERT into ".db_table_name('answers')." (qid,code,answer,language,sortorder) VALUES ($qid,'A1','myfirstanwer','$baselang',0)";
-       $connect->execute($query); 
+        $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$baselang."'";
+        $qresult = $connect->GetOne($qquery); //Checked
+        if ($qresult==0)
+        {
+           $query="INSERT into ".db_table_name('answers')." (qid,code,answer,language,sortorder,scale_id) VALUES ($qid,'A1',".db_quoteall($clang->gT("Some example answer")).",'$baselang',0,$i)";
+           $connect->execute($query); 
+        }
     }
     
     
@@ -1286,7 +1289,7 @@ if ($action=='editansweroptions')
     . "<input type='hidden' name='qid' value='$qid' />\n"
     . "<input type='hidden' name='action' value='updateansweroptions' />\n"
     . "<input type='hidden' name='sortorder' value='' />\n";
-    $vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
+    $vasummary .= "<div class='tab-pane' id='tab-pane-answers-$surveyid'>";
     $first=true;
     $sortorderids='';
     $codeids='';
@@ -1296,10 +1299,16 @@ if ($action=='editansweroptions')
     // the following line decides if the assessment input fields are visible or not
     $assessmentvisible=($surveyinfo['assessments']=='Y' && $qtypes[$qtype]['assessable']==1);
     
+    // Insert some Javascript variables 
+    $surveysummary .= "\n<script type='text/javascript'>
+                          var languagecount=".count($anslangs).";\n
+                          var scalecount=".$scalecount."; 
+                          var assessmentvisible=".($assessmentvisible?'true':'false')."; 
+                          var langs='".implode(';',$anslangs)."';</script>\n";
+
 	foreach ($anslangs as $anslang)
 	{
-		$position=0;
-        $vasummary .= "<div class='tab-page'>"
+        $vasummary .= "<div class='tab-page' id='tabpage_$anslang'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
         if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
                 
@@ -1307,13 +1316,14 @@ if ($action=='editansweroptions')
 
         for ($scale_id = 1; $scale_id < $scalecount+1; $scale_id++)
         {
+            $position=0;
             if ($scalecount>1) 
             {
                 $vasummary.="<div class='header'>".sprintf($clang->gT("Answer scale %s"),$scale_id)."</div>";
             }
 
 
-            $vasummary .= "<table class='answertable' align='center' >\n"
+            $vasummary .= "<table class='answertable' id='answers_{$anslang}_$scale_id' align='center' >\n"
                     ."<thead>"
         		    ."<tr>\n"
                     ."<th align='right'>&nbsp;</th>\n"
@@ -1339,36 +1349,28 @@ if ($action=='editansweroptions')
                     ."<tbody align='center'>";
             $alternate=true;
 
-            $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
+            $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
             $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
             $anscount = $result->RecordCount();
             while ($row=$result->FetchRow())
             {
                 $row['code'] = htmlspecialchars($row['code']);
                 $row['answer']=htmlspecialchars($row['answer']);
-                
-                $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'].'_'.$scale_id;
-                if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
-                
-			    $vasummary .= "<tr";
+
+			    $vasummary .= "<tr id='row_$position' ";
                 if ($alternate==true)
                 {
                     $vasummary.=' class="highlight" ';
-                    $alternate=false;
                 }
-                else
-                    {
-                        $alternate=true;
-                    }
+                $alternate=!$alternate;
                 
                 $vasummary .=" ><td align='right'>\n";
 
                 if ($first)
                 {
-                    $vasummary .= "<img src='$imagefiles/handle.png' /></td><td><input type='text' id='code_{$row['sortorder']}_{$scale_id}' name='code_{$row['sortorder']}_{$scale_id}' value=\"{$row['code']}\" maxlength='5' size='5'"
-                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+                    $vasummary .= "<img src='$imagefiles/handle.png' /></td><td><input type='text' class='code' id='code_{$position}_{$scale_id}' name='code_{$position}_{$scale_id}' value=\"{$row['code']}\" maxlength='5' size='5'"
+                    ." onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
                     ." />";
-                    $vasummary .= "<input type='hidden' id='previouscode_{$row['sortorder']}_{$scale_id}' name='previouscode_{$row['sortorder']}_{$scale_id}' value=\"{$row['code']}\" />";
                 }
                 else
                 {
@@ -1381,14 +1383,14 @@ if ($action=='editansweroptions')
                 
                 if ($assessmentvisible && $first)
                 {
-                    $vasummary .= "><input type='text' id='assessment_{$row['sortorder']}_{$scale_id}' name='assessment_{$row['sortorder']}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
+                    $vasummary .= "><input type='text' class='assessment' id='assessment_{$position}_{$scale_id}' name='assessment_{$position}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
+                    ." onkeypress=\"return goodchars(event,'-1234567890')\""
                     ." />";
                 }
                 elseif ( $first)
                 {
-                    $vasummary .= " style='display:none;'><input type='hidden' id='assessment_{$row['sortorder']}_{$scale_id}' name='assessment_{$row['sortorder']}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
+                    $vasummary .= " style='display:none;'><input type='hidden' id='assessment_{$position}_{$scale_id}' name='assessment_{$position}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
+                    ." onkeypress=\"return goodchars(event,'-1234567890')\""
                     ." />";
                 }
                 elseif ($assessmentvisible)
@@ -1401,7 +1403,7 @@ if ($action=='editansweroptions')
                 }
                 
                 $vasummary .= "</td><td>\n"
-                    ."<input type='text' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' maxlength='1000' size='80' value=\"{$row['answer']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
+                    ."<input type='text' class='answer' id='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' ' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' size='80' value=\"{$row['answer']}\" />\n"
                     . getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer');
                     
                 // Deactivate delete button for active surveys
@@ -1411,8 +1413,12 @@ if ($action=='editansweroptions')
 			    $vasummary .= "</td></tr>\n";
                 $position++;
             }
-            ++$anscount;
             $vasummary .='</table><br />';
+            if ($first)
+            {
+                $vasummary .=  "<input type='hidden' id='answercount_{$scale_id}' name='answercount_{$scale_id}' value='$anscount' />\n";
+            }
+            
         }   
         if ($anscount > 0)
         {
@@ -1424,8 +1430,6 @@ if ($action=='editansweroptions')
 	
 		$first=false;
 		$vasummary .= "</tbody></table>\n";
-		$vasummary .=  "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
-		$vasummary .=  "<input type='hidden' name='codeids' value='$codeids' />\n";
 		$vasummary .= "</div>";
 	}
 	$vasummary .= "</div></form></td></tr></table>";

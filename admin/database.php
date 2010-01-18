@@ -140,7 +140,7 @@ if(isset($surveyid))
 
     elseif ($action == "updategroup" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
     {
-        $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
+        $grplangs = GetAdditionalLanguagesFromSurveyID($postsid); 
         $baselang = GetBaseLanguageFromSurveyID($postsid);
         array_push($grplangs,$baselang);
         require_once("../classes/inputfilter/class.inputfilter_clean.php");
@@ -781,110 +781,30 @@ if(isset($surveyid))
     elseif ($action == "updateansweroptions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
     {
 
-        if (isset($_POST['sortorder']))
+        $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                
+        $alllanguages = $anslangs;
+        array_unshift($alllanguages,$baselang);        
+
+
+        $query = "select type from ".db_table_name('questions')." where qid=$qid";
+        $questiontype = $connect->GetOne($query);    // Checked
+        $qtypes=getqtypelist('','array');
+        $scalecount=$qtypes[$questiontype]['answerscales'];
+
+        $count=0;
+        $invalidCode = 0;
+        $duplicateCode = 0;
+
+ /*       for ($scale_id=1;$scale_id<$scalecount+1;$scale_id++)
         {
-            $postsortorder=sanitize_int($_POST['sortorder']);
-        }
-
-        switch($_POST['method'])
-        {
-            // Add a new answer button
-			case $clang->gT("Add new answer option", "unescaped"):
-            if (isset($_POST['insertcode']) && $_POST['insertcode']!='' && $_POST['insertcode'] != "0")
-            {
-                //$_POST  = array_map('db_quote', $_POST);//Removed: qstr is used in SQL below
-                $_POST['insertcode']=sanitize_paranoid_string($_POST['insertcode']);
-                $query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
-                $result = $connect->Execute($query); // Checked
-                $newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
-                $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                $baselang = GetBaseLanguageFromSurveyID($surveyid);
-                //$query = "select * from ".db_table_name('answers')." where code=".$connect->db_quote($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
-                $query = "select * from ".db_table_name('answers')." where code=".db_quoteall($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
-                $result = $connect->Execute($query); // Checked
-
-                if (isset($result) && $result->RecordCount()>0)
-                {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Error adding answer: You can't use the same answer code more than once.","js")."\")\n //-->\n</script>\n";
-                }
-                 else
-                 {
-
-
-                        if ($filterxsshtml)
-                        {
-                            require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                            $myFilter = new InputFilter('','',1,1,1);
-                            $_POST['insertanswer']=$myFilter->process($_POST['insertanswer']);
-                        }
-                        else
-                          {
-                            $_POST['insertanswer'] = html_entity_decode($_POST['insertanswer'], ENT_QUOTES, "UTF-8");
-                          }
-
-                        // Fix bug with FCKEditor saving strange BR types
-                        $_POST['insertanswer']=fix_FCKeditor_text($_POST['insertanswer']);
-
-                        // Add new Answer for Base Language Question
-                        if (!isset($_POST['insertassessment_value'])) $_POST['insertassessment_value']=0;
-                        else {$_POST['insertassessment_value']=(int) $_POST['insertassessment_value'];}
-
-                        $query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language, assessment_value) VALUES ('{$postqid}', ".db_quoteall($_POST['insertcode']).", ".db_quoteall($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang',{$_POST['insertassessment_value']})";
-                        if (!$result = $connect->Execute($query)) // Checked
-                        {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                        }
-
-                        // Added by lemeur for AutoSaveAll
-                        $_POST['code_'.($newsortorder+0)] = $_POST['insertcode'];
-                        $_POST['assessment_'.($newsortorder+0)] = $_POST['insertassessment_value'];
-                        $_POST['previouscode_'.($newsortorder+0)] = $_POST['insertcode'];
-                        $_POST['codeids'] = $_POST['codeids'] . " ".($newsortorder+0);
-                        $_POST['answer_'.$baselang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
-                        $_POST['sortorderids'] = $_POST['sortorderids'] . " ".$baselang."_".($newsortorder+0);
-                        // End lemeur AutoSaveAll
-
-                        // Last code was successfully inserted - find out the next incrementing code and remember it
-                        $_SESSION['nextanswercode']=getNextCode($_POST['insertcode']);
-                        //Now check if this new code doesn't exist. For now then there is no code inserted.
-                        $query = "select * from ".db_table_name('answers')." where code=".db_quoteall($_SESSION['nextanswercode'])." and language='$baselang' and qid={$postqid}";
-                        $result = $connect->Execute($query) or safe_die("Couldn't execute query:<br />$query<br />".$connect->ErrorMsg());;  // Checked
-                        if ($result->RecordCount()>0) unset($_SESSION['nextanswercode']);
-
-                        foreach ($anslangs as $anslang)
-                        {
-                            if(!isset($_POST['default'])) $_POST['default'] = "";
-                            $query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ({$postqid}, ".db_quoteall($_POST['insertcode']).",".db_quoteall($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
-                            if (!$result = $connect->Execute($query))   // Checked
-                            {
-                                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                            }
-                            // Added by lemeur for AutoSaveAll
-                            $_POST['answer_'.$anslang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
-                            $_POST['sortorderids'] = $_POST['sortorderids'] . " ".$anslang."_".($newsortorder+0);
-                            // End lemeur AutoSaveAll
-                        }
-                }
-            } else {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Invalid or empty answer code supplied","js")."\")\n //-->\n</script>\n";
-                break; // let's break because in this case we do not want an AutoSaveAll
-            }
-        //break; // Commented by lemeur for AutoSaveAll
-        // Save all answers with one button
-        case $clang->gT("Save Changes", "unescaped"):
-            //Determine autoids by evaluating the hidden field
-            $sortorderids=explode(' ', trim($_POST['sortorderids']));
-            natsort($sortorderids); // // Added by lemeur for AutoSaveAll
-            $codeids=explode(' ', trim($_POST['codeids']));
-            $count=0;
-            $invalidCode = 0;
-            $duplicateCode = 0;
-
             $testarray = array();
-
-            for ($i=0; $i<count($sortorderids); $i++)
+            $maxcount=(int)$_POST['answercount_'.$scale_id];
+            
+            for ($i=0; $i<$maxcount; $i++)
             {
-                if (isset($codeids[$i])) $testarray[]=$_POST['code_'.$codeids[$i]];
+                $testarray[]=$_POST['code_'.$i.'_'.$scale_id];
             }
 
             $dupanswers = array();
@@ -895,136 +815,55 @@ if(isset($surveyid))
                     $dupanswers[]=$key;
                 }
             }
+        }        */
 
-            require_once("../classes/inputfilter/class.inputfilter_clean.php");
-            $myFilter = new InputFilter('','',1,1,1);
+        require_once("../classes/inputfilter/class.inputfilter_clean.php");
+        $myFilter = new InputFilter('','',1,1,1);
 
-            //First delete all answers
-            $query = "delete from ".db_table_name('answers')." where qid=".db_quote($qid);
-            $result = $connect->Execute($query);    // Checked
-
-            foreach ($sortorderids as $sortorderid)
+        //First delete all answers
+        $query = "delete from ".db_table_name('answers')." where qid=".db_quote($qid);
+        $result = $connect->Execute($query);    // Checked
+        
+        for ($scale_id=1;$scale_id<$scalecount+1;$scale_id++)
+        {
+            $maxcount=(int)$_POST['answercount_'.$scale_id];                 
+            for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
             {
-                $defaultanswerset='N';
-                $langid=substr($sortorderid,0,strrpos($sortorderid,'_'));
-                $orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
-                if (isset($_POST['default_answer_'.$codeids[$count]]) && $_POST['default_answer_'.$codeids[$count]]=="Y")
+                $code=sanitize_paranoid_string($_POST['code_'.$sortorderid.'_'.$scale_id]);
+                $assessmentvalue=(int) $_POST['assessment_'.$sortorderid.'_'.$scale_id];
+                foreach ($alllanguages as $language)
                 {
-                 $defaultanswerset='Y';
-            }
-                if ($_POST['code_'.$codeids[$count]] != "0" && trim($_POST['code_'.$codeids[$count]]) != "" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
-                {
-                    //Sanitize input, strip XSS
+                    $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
                     if ($filterxsshtml)
                     {
-                        $_POST['answer_'.$sortorderid]=$myFilter->process($_POST['answer_'.$sortorderid]);
+                        //Sanitize input, strip XSS
+                        $answer=$myFilter->process($answer);
                     }
-                        else
-                          {
-                            $_POST['answer_'.$sortorderid] = html_entity_decode($_POST['answer_'.$sortorderid], ENT_QUOTES, "UTF-8");
-                          }
-
+                    else
+                    {
+                       $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8"); 
+                    }
                     // Fix bug with FCKEditor saving strange BR types
-                    $_POST['answer_'.$sortorderid]=fix_FCKeditor_text($_POST['answer_'.$sortorderid]);
+                    $answer=fix_FCKeditor_text($answer);
 
-                    $_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
                     // Now we insert the answers
-                    $query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language,default_value,assessment_value)
-                              VALUES (".db_quoteall($_POST['code_'.$codeids[$count]]).", ".
-                                        db_quoteall($_POST['answer_'.$sortorderid]).", ".
+                    $query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language,assessment_value)
+                              VALUES (".db_quoteall($code).", ".
+                                        db_quoteall($answer).", ".
                                         db_quote($qid).", ".
-                                        db_quote($orderid).", ".
-                                        db_quoteall($langid).", ".
-                                        db_quoteall($defaultanswerset).",".
-                                        db_quote((int)$_POST['assessment_'.$codeids[$count]]).")";
+                                        db_quote($sortorderid).", ".
+                                        db_quoteall($language).", ".
+                                        db_quote($assessmentvalue).")";
                     if (!$result = $connect->Execute($query)) // Checked
                     {
                         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                     }
-                    //if ($oldcode != false)
-                if ($_POST['previouscode_'.$codeids[$count]] != $_POST['code_'.$codeids[$count]])
-                    {
-                        // Update the Answer code in conditions (updates if row exists right)
-                        $query = "UPDATE ".db_table_name('conditions')." SET value = ".db_quoteall($_POST['code_'.$codeids[$count]])." where cqid='$qid' and value=".db_quoteall($_POST['previouscode_'.$codeids[$count]]);
-                        $result = $connect->Execute($query);  // Checked
-                    // also update references like @sidXgidXqidAid@
-                        $query = "UPDATE ".db_table_name('conditions')." SET value = '@".$surveyid."X".$gid."X".$qid.($_POST['code_'.$codeids[$count]])."@' where cqid='$qid' and value='@".$surveyid."X".$gid."X".$qid.db_quote($_POST['previouscode_'.$codeids[$count]])."@'";
-                        $result = $connect->Execute($query);  // Checked
-                    }
-                } else {
-                    if ($_POST['code_'.$codeids[$count]] == "0" || trim($_POST['code_'.$codeids[$count]]) == "") $invalidCode = 1;
-                    if (in_array($_POST['code_'.$codeids[$count]],$dupanswers)) $duplicateCode = 1;
-                }
-                $count++;
-                if ($count>count($codeids)-1) {$count=0;}
-            }
-            if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
-            if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
-        break;
+                } // foreach ($alllanguages as $language)   
+            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)  
+        }  //  for ($scale_id=1;
+        if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
+        if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
-        // Pressing the Up button
-        case $clang->gT("Up", "unescaped"):
-            $newsortorder=$postsortorder-1;
-            $oldsortorder=$postsortorder;
-            $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
-            $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-            $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$newsortorder WHERE qid=$qid AND sortorder=$oldsortorder";
-            $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-            $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder='$oldsortorder' WHERE qid=$qid AND sortorder=-1";
-            $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-        break;
-
-        // Pressing the Down button
-        case $clang->gT("Dn", "unescaped"):
-            $newsortorder=$postsortorder+1;
-            $oldsortorder=$postsortorder;
-            $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
-            $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-            $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder=$oldsortorder";
-            $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());   // Checked
-            $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$oldsortorder WHERE qid=$qid AND sortorder=-1";
-            $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
-        break;
-
-        // Delete Button
-        case $clang->gT("Del", "unescaped"):
-            $query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$postsortorder}'";  // Checked
-            if (!$result = $connect->Execute($query))
-            {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-            }
-            fixsortorderAnswers($qid);
-        break;
-
-        // Default Button
-        case $clang->gT("Default", "unescaped"):
-            $query = "SELECT default_value from ".db_table_name('answers')." where qid={$qid} AND sortorder='{$postsortorder}' GROUP BY default_value";
-            $result = db_execute_assoc($query);   // Checked
-            $row = $result->FetchRow();
-            if ($row['default_value'] == "Y")
-            {
-                $query = "UPDATE ".db_table_name('answers')." SET default_value='N' WHERE qid={$qid} AND sortorder='{$postsortorder}'";
-                if (!$result = $connect->Execute($query)) // Checked
-                {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to make answer not default","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                }
-            } else {
-                $query = "SELECT type from ".db_table_name('questions')." where qid={$qid} GROUP BY type";
-                $result = db_execute_assoc($query); // Checked
-                $row = $result->FetchRow();
-                if ($row['type'] == "O" || $row['type'] == "L" || $row['type'] == "!")
-                {   // SINGLE CHOICE QUESTION, SET ALL RECORDS TO N, THEN WE SET ONE TO Y
-                    $query = "UPDATE ".db_table_name('answers')." SET default_value='N' WHERE qid={$qid}";
-                    $result = $connect->Execute($query);  // Checked
-                }
-                $query = "UPDATE ".db_table_name('answers')." SET default_value='Y' WHERE qid={$qid} AND sortorder='{$postsortorder}'";
-                if (!$result = $connect->Execute($query))   // Checked
-                {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to make answer default","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                }
-            }
-        break;
-        }
         $action='editansweroptions'; 
 
     }
@@ -1050,6 +889,7 @@ if(isset($surveyid))
                 $newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
                 $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                
                 //$query = "select * from ".db_table_name('answers')." where code=".$connect->db_quote($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
                 $query = "select * from ".db_table_name('questions')." where title=".db_quoteall($_POST['insertcode'])." and language='$baselang' and parent_qid={$postqid}";
                 $result = $connect->Execute($query); // Checked
@@ -1598,9 +1438,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked
         unset($bplang);
 
-        // Insert into survey_rights
-
-        $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
+        // Update survey_rights
+        $isrquery = "INSERT INTO {$dbprefix}surveys_rights (sid,uid,edit_survey_property,define_questions,browse_response,export,delete_survey,activate_survey) VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
         $isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
         if ($isresult)
         {
