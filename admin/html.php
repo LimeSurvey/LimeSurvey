@@ -1095,16 +1095,6 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
         $qtypes=getqtypelist('','array');
-		if(hasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['answerscales'] >0)
-		{
-			$questionsummary .=  "<a href='".$scriptname."?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                                ."title=\"".$clang->gTview("Edit answer options for this question")."\">"
-			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit/Add Answers for this Question")."' name='ViewAnswers' /></a>\n" ;
-		}
-		else
-		{
-			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
-		}
         if(hasRight($surveyid,'define_questions'))
         {
             if ($qtypes[$qrrow['type']]['subquestions'] >0)
@@ -1118,6 +1108,16 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
+		if(hasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['answerscales'] >0)
+		{
+			$questionsummary .=  "<a href='".$scriptname."?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
+                                ."title=\"".$clang->gTview("Edit answer options for this question")."\">"
+			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit answer options for this question")."' name='ViewAnswers' /></a>\n" ;
+		}
+		else
+		{
+			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+		}
 		$questionsummary .= "</div>\n"
         . "<div class='menubar-right'>\n"
         . "<input type='image' src='$imagefiles/minus.gif' title='"
@@ -1209,40 +1209,54 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 if ($action=='editansweroptions')
 {
+    $js_adminheader_includes[]='scripts/answers.js';
+    $js_adminheader_includes[]='../scripts/jquery/jquery.blockUI.js';
+    
 	$_SESSION['FileManagerContext']="edit:answer:$surveyid";
 	// Get languages select on survey.
 	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-    // check that there are answers for every language supported by the survey
-    foreach ($anslangs as $language)
+    $qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
+    $qtype = $connect->GetOne($qquery);
+    $scalecount=$qtypes[$qtype]['answerscales'];
+    //Check if there is at least one answer
+    $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=1 AND language='".$baselang."'";
+    $qresult = $connect->GetOne($qquery); //Checked
+    if ($qresult==0)
     {
-        $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$language."'";
-        $qresult = db_execute_assoc($qquery); //Checked
-        $qrow = $qresult->FetchRow();
-        if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
+       $query="INSERT into ".db_table_name('answers')." (qid,code,answer,language,sortorder) VALUES ($qid,'A1','myfirstanwer','$baselang',0)";
+       $connect->execute($query); 
+    }
+    
+    
+    // check that there are answers for every language supported by the survey
+    for ($i = 1; $i < $scalecount+1; $i++)
+    {
+        foreach ($anslangs as $language)
         {
-            $qquery = "INSERT INTO ".db_table_name('answers')." (SELECT `qid`,`code`,`answer`,`default_value`,`sortorder`, '".$language."' FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."')";
-            $connect->Execute($qquery); //Checked
+            $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$language."'";
+            $qresult = db_execute_assoc($qquery); //Checked
+            $qrow = $qresult->FetchRow();
+            if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
+            {
+                $qquery = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language,scale_id, assessment_value) (SELECT qid,code,answer,default_value,sortorder, '".$language."','$i', assessment_value FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$baselang."')";
+                $connect->Execute($qquery); //Checked
+            }
         }
     }
 
     array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
     
     //delete the answers in languages not supported by the survey
-    $qquery = "SELECT DISTINCT language FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
-    $qresult = db_execute_assoc($qquery); //Checked
-    while ($qrow = $qresult->FetchRow())
+    $languagequery = "SELECT DISTINCT language FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
+    $languageresult = db_execute_assoc($languagequery); //Checked
+    while ($qrow = $languageresult->FetchRow())
     {
-        $qquery = "DELETE FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language = '".$qrow["language"]."')";
-        $connect->Execute($qquery); //Checked
+        $deleteanswerquery = "DELETE FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language = '".$qrow["language"]."')";
+        $connect->Execute($deleteanswerquery); //Checked
     }
     
-	
-	// Check sort order for answers
-	$qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
-	$qresult = db_execute_assoc($qquery); //Checked
-	while ($qrow=$qresult->FetchRow()) {$qtype=$qrow['type'];}
 	if (!isset($_POST['ansaction']))
 	{
 		//check if any nulls exist. If they do, redo the sortorders
@@ -1251,245 +1265,163 @@ if ($action=='editansweroptions')
 		$cacount=$caresult->RecordCount();
 		if ($cacount)
 		{
-			fixsortorderAnswers($qid); // !!Adjust this!!
+			fixsortorderAnswers($qid); 
 		}
 	}
 
 	// Print Key Control JavaScript
-	$vasummary = PrepareEditorScript("editanswer");
+    $vasummary = PrepareEditorScript("editanswer");
 
-     $query = "SELECT sortorder FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
-     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
-     $anscount = $result->RecordCount();
-     $row=$result->FetchRow();
-     $maxsortorder=$row['sortorder']+1;
-     $vasummary .= "<table width='100%' >\n"
-	."<tr  >\n"
-	."<td colspan='4' class='settingcaption'>\n"
-	.$clang->gT("Edit answer options")
-	."</td>\n"
-	."</tr>\n"
-	."<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
-	. "<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "<input type='hidden' name='gid' value='$gid' />\n"
-	. "<input type='hidden' name='qid' value='$qid' />\n"
-	. "<input type='hidden' name='action' value='updateansweroptions' />\n"
-	. "<input type='hidden' name='sortorder' value='' />\n";
-	$vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
-	$first=true;
-	$sortorderids='';
-	$codeids='';
+    $query = "SELECT sortorder FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
+    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
+    $anscount = $result->RecordCount();
+    $row=$result->FetchRow();
+    $maxsortorder=$row['sortorder']+1;
+    $vasummary .= "<div class='header'>\n"
+    .$clang->gT("Edit answer options")
+    ."</div>\n"
+    ."<form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
+    . "<input type='hidden' name='sid' value='$surveyid' />\n"
+    . "<input type='hidden' name='gid' value='$gid' />\n"
+    . "<input type='hidden' name='qid' value='$qid' />\n"
+    . "<input type='hidden' name='action' value='updateansweroptions' />\n"
+    . "<input type='hidden' name='sortorder' value='' />\n";
+    $vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
+    $first=true;
+    $sortorderids='';
+    $codeids='';
 
 	$vasummary .= "<div id='xToolbar'></div>\n";
     
     // the following line decides if the assessment input fields are visible or not
-    // for some question types the assessment values is set in the label set instead of the answers
-    $assessmentvisible=($surveyinfo['assessments']=='Y' && !in_array($qtype,array('A','B','C','E','F','K','R','Z',':')));
+    $assessmentvisible=($surveyinfo['assessments']=='Y' && $qtypes[$qtype]['assessable']==1);
     
 	foreach ($anslangs as $anslang)
 	{
 		$position=0;
-    	$query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
-		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
-		$anscount = $result->RecordCount();
         $vasummary .= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
         if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
                 
-        $vasummary .= "</h2><table class='answertable' align='center' style='width:880px;'>\n"
-                ."<thead>"
-        		."<tr>\n"
-        		."<th width='15%' align='right'>\n"
-        		.$clang->gT("Code")
-        		."</th>\n";
-        if ($assessmentvisible)
+        $vasummary .= "</h2>";
+
+        for ($scale_id = 1; $scale_id < $scalecount+1; $scale_id++)
         {
-            $vasummary .="<th width='10%'>".$clang->gT("Assessment value");
-        }
-        else
-        {
-            $vasummary .="<th style='display:none;'>";
-        }
-        $vasummary .="</th><th width='50%'>\n"
-        		.$clang->gT("Answer option")
-        		."</th>\n"
-        		."<th width='15%'>\n"
-        		.$clang->gT("Action")
-        		."</th>\n"
-        		."<th width='10%' align='center'>\n"
-        		.$clang->gT("Order");
- 	
-        $vasummary .= "</th>\n"
-        		."</tr></thead>"
-                ."<tbody align='center'>";
-        $alternate=false;
-		while ($row=$result->FetchRow())
-		{
-			$row['code'] = htmlspecialchars($row['code']);
-			$row['answer']=htmlspecialchars($row['answer']);
-			
-			$sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
-			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
-			
-			$vasummary .= "<tr";
-            if ($alternate==true)
+            if ($scalecount>1) 
             {
-                $vasummary.=' class="highlight" ';
-                $alternate=false;
+                $vasummary.="<div class='header'>".sprintf($clang->gT("Answer scale %s"),$scale_id)."</div>";
+            }
+
+
+            $vasummary .= "<table class='answertable' align='center' >\n"
+                    ."<thead>"
+        		    ."<tr>\n"
+                    ."<th align='right'>&nbsp;</th>\n"
+        		    ."<th align='center'>\n"
+        		    .$clang->gT("Code")
+        		    ."</th>\n";
+            if ($assessmentvisible)
+            {
+                $vasummary .="<th align='center'>".$clang->gT("Assessment value");
             }
             else
+            {
+                $vasummary .="<th style='display:none;'>";
+            }
+
+            $vasummary .="</th><th align='center'>\n"
+        		    .$clang->gT("Answer option")
+        		    ."</th>\n"
+        		    ."<th align='center'>\n"
+        		    .$clang->gT("Actions")
+        		    ."</th>\n"
+        		    ."</tr></thead>"
+                    ."<tbody align='center'>";
+            $alternate=true;
+
+            $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
+            $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
+            $anscount = $result->RecordCount();
+            while ($row=$result->FetchRow())
+            {
+                $row['code'] = htmlspecialchars($row['code']);
+                $row['answer']=htmlspecialchars($row['answer']);
+                
+                $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'].'_'.$scale_id;
+                if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
+                
+			    $vasummary .= "<tr";
+                if ($alternate==true)
                 {
-                    $alternate=true;
+                    $vasummary.=' class="highlight" ';
+                    $alternate=false;
                 }
-            
-            $vasummary .=" ><td align='right'>\n";
-			if ($row['default_value'] == 'Y')
-            {
-                $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>"
-  			                       ."<input type='hidden' name='default_answer_{$row['sortorder']}' value=\"Y\" />";
-            }
+                else
+                    {
+                        $alternate=true;
+                    }
+                
+                $vasummary .=" ><td align='right'>\n";
 
-			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') )))
-			{
-				$vasummary .= "<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
-				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
-				." />";
-				$vasummary .= "<input type='hidden' id='previouscode_{$row['sortorder']}' name='previouscode_{$row['sortorder']}' value=\"{$row['code']}\" />";
-			}
-			elseif (($activated != 'N' && $first) ) // If survey is activated and its not one of the above question types who allows modfying answers on active survey
-			{
-				$vasummary .= "<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
-				." />{$row['code']}";
-				$vasummary .= "<input type='hidden' id='previouscode_{$row['sortorder']}' name='previouscode_{$row['sortorder']}' value=\"{$row['code']}\" />";
-				
-			}
-			else
-			{
-				$vasummary .= "{$row['code']}";
-			
-			}
-
-			$vasummary .= "</td>\n"
-                        ."<td\n";
-            
-            if ($assessmentvisible && $first)
-            {
-                $vasummary .= "><input type='text' id='assessment_{$row['sortorder']}' name='assessment_{$row['sortorder']}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
-                ." />";
-            }
-            elseif ( $first)
-            {
-                $vasummary .= " style='display:none;'><input type='hidden' id='assessment_{$row['sortorder']}' name='assessment_{$row['sortorder']}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
-                ." />";
-            }
-            elseif ($assessmentvisible)
-            {
-                $vasummary .= '>'.$row['assessment_value'];
-            }
-            else
-            {
-                $vasummary .= " style='display:none;'>";
-            }
-            
-            $vasummary .= "</td><td>\n"
-			."<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
-			. getEditor("editanswer","answer_".$row['language']."_".$row['sortorder'], "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
-			."</td>\n"
-			."<td>\n";
-			
-			// Deactivate delete button for active surveys
-			if ($activated != 'Y' || ($activated == 'Y' && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
-			{
-				$vasummary .= "<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
-			}
-			else
-			{
-				$vasummary .= "<input type='submit' disabled='disabled 'name='method' value='".$clang->gT("Del")."' />\n";
-			}
-
-			// Don't show Default Button for array question types
-			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1" && $qtype != ":" && $qtype != ";") $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
-			$vasummary .= "</td>\n"
-			."<td width='10%'>\n";
-			if ($position > 0)
-			{
-				$vasummary .= "<input type='image' src='$imagefiles/up.png' name='method' alt='".$clang->gT("Move answer option up")."' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
-			};
-			if ($position < $anscount-1)
-			{
-				// Fill the sortorder hiddenfield so we now what field is moved down
-				$vasummary .= "<input type='image' name='method' src='$imagefiles/down.png' alt='".$clang->gT("Move answer option down")."' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
-			}
-			$vasummary .= "</td></tr>\n";
-			$position++;
-		}
-        ++$anscount;
-		if ($anscount > 0)
-		{
-			$vasummary .= "<tr><td colspan='6'><center>"
-   			."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n"
-			."</center></td></tr>\n";
-		}
-		$position=sprintf("%05d", $position);
-		if ($activated != 'Y' || (($activated == 'Y') && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
-		{
-			
-            if ($first==true)
-			{
-				$vasummary .= "<tr><td colspan='6'><br /></td></tr>"
-                             ."<tr><td>"
-				."<strong>".$clang->gT("New answer option").":</strong> ";
-                if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
-				$vasummary .= "<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\" id='code_".$maxsortorder."' maxlength='5' size='5' "
-				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
-				." />";
-                unset($_SESSION['nextanswercode']);
-
-
-            	$first=false;
-				$vasummary .= "</td><td";
-                if ($assessmentvisible)
+                if ($first)
                 {
-                    $vasummary .= "><input type='text' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
-                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
+                    $vasummary .= "<img src='$imagefiles/handle.png' /></td><td><input type='text' id='code_{$row['sortorder']}_{$scale_id}' name='code_{$row['sortorder']}_{$scale_id}' value=\"{$row['code']}\" maxlength='5' size='5'"
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
                     ." />";
+                    $vasummary .= "<input type='hidden' id='previouscode_{$row['sortorder']}_{$scale_id}' name='previouscode_{$row['sortorder']}_{$scale_id}' value=\"{$row['code']}\" />";
                 }
                 else
                 {
-                    $vasummary .= " style='display:none;'><input type='hidden' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
-                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
+                    $vasummary .= "&nbsp;</td><td>{$row['code']}";
+                
+                }
+
+			$vasummary .= "</td>\n"
+                        ."<td\n";
+                
+                if ($assessmentvisible && $first)
+                {
+                    $vasummary .= "><input type='text' id='assessment_{$row['sortorder']}_{$scale_id}' name='assessment_{$row['sortorder']}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
                     ." />";
                 }
-                $vasummary .="</td>\n"
-				."<td>\n"
-				."<input type='text' maxlength='1000' name='insertanswer' size='80' onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;}\" />\n"
-				. getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
-				."</td>\n"
-				."<td>\n"
-				."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new answer option")."' />\n"
-				."<input type='hidden' name='action' value='updateansweroptions' />\n"
-				."</td>\n"
-				."<td>\n"
-				."<script type='text/javascript'>\n"
-				."<!--\n"
-				."document.getElementById('code_".$maxsortorder."').focus();\n"
-				."//-->\n"
-				."</script>\n"
-				."</td>\n"
-				."</tr>\n";
-			}
-		}
-		else
-		{
-			$vasummary .= "<tr>\n"
-			."<td colspan='4' align='center'>\n"
-			."<font color='red' size='1'><i><strong>"
-			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add answers or edit answer codes for this question type because the survey is active.")."</i></font>\n"
-			."</td>\n"
-			."</tr>\n";
-		}
+                elseif ( $first)
+                {
+                    $vasummary .= " style='display:none;'><input type='hidden' id='assessment_{$row['sortorder']}_{$scale_id}' name='assessment_{$row['sortorder']}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
+                    ." />";
+                }
+                elseif ($assessmentvisible)
+                {
+                    $vasummary .= '>'.$row['assessment_value'];
+                }
+                else
+                {
+                    $vasummary .= " style='display:none;'>";
+                }
+                
+                $vasummary .= "</td><td>\n"
+                    ."<input type='text' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' maxlength='1000' size='80' value=\"{$row['answer']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
+                    . getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer');
+                    
+                // Deactivate delete button for active surveys
+                $vasummary.="</td><td><img src='$imagefiles/addanswer.png' class='btnaddanswer' />";
+                $vasummary.="<img src='$imagefiles/deleteanswer.png' class='btndelanswer' />";
+
+			    $vasummary .= "</td></tr>\n";
+                $position++;
+            }
+            ++$anscount;
+            $vasummary .='</table><br />';
+        }   
+        if ($anscount > 0)
+        {
+            $vasummary .= "<p><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n";
+        }
+        
+        
+		$position=sprintf("%05d", $position);
+	
 		$first=false;
 		$vasummary .= "</tbody></table>\n";
 		$vasummary .=  "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";

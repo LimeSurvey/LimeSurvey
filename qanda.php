@@ -5526,7 +5526,7 @@ function do_array_flexible($ia)
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 		}
 		$ansresult = db_execute_assoc($ansquery); //Checked
 		$anscount = $ansresult->RecordCount();
@@ -5717,7 +5717,6 @@ function do_array_multitext($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order, title";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
 
@@ -5749,13 +5748,14 @@ function do_array_multitext($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['question'];
-			$labelcode[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
+			$labelcode[]=$lrow['code'];
 		}
 		$numrows=count($labelans);
 		if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
@@ -5934,7 +5934,6 @@ function do_array_multiflexi($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, title";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['multiflexible_max'])!='')
@@ -5981,13 +5980,14 @@ function do_array_multiflexi($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['question'];
-			$labelcode[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
+			$labelcode[]=$lrow['code'];
 		}
 		$numrows=count($labelans);
 		if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
@@ -6369,8 +6369,8 @@ function do_array_flexible_dual($ia)
 	$qquery = "SELECT other, lid, lid1 FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);    //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid']; $lid1 = $qrow['lid1'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-	$lquery1 = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid1  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$lquery = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1  AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=2 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$qidattributes=getQuestionAttributes($ia[0]);
 
     if ($qidattributes['use_dropdown']==1)
@@ -6415,7 +6415,7 @@ function do_array_flexible_dual($ia)
 
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
 			$labelcode[]=$lrow['code'];
 		}
 		$lresult1 = db_execute_assoc($lquery1); //Checked
@@ -6423,7 +6423,7 @@ function do_array_flexible_dual($ia)
 		{
 			while ($lrow1=$lresult1->FetchRow())
 			{
-				$labelans1[]=$lrow1['title'];
+				$labelans1[]=$lrow1['answer'];
 				$labelcode1[]=$lrow1['code'];
 			}
 		}
@@ -6433,7 +6433,7 @@ function do_array_flexible_dual($ia)
 
 		$cellwidth=sprintf("%02d", $cellwidth);
 		
-		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+		$ansquery = "SELECT questions FROM {$dbprefix}answers WHERE parent_qid=".$ia[0]." AND question like '%|%'";
 		$ansresult = db_execute_assoc($ansquery);   //Checked
 		if ($ansresult->RecordCount()>0)
 		{
@@ -6445,11 +6445,11 @@ function do_array_flexible_dual($ia)
 		}
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);   //Checked
 		$anscount = $ansresult->RecordCount();
@@ -6746,13 +6746,13 @@ function do_array_flexible_dual($ia)
 		
 		//question atribute random_order set?
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}		
 		
 		//no question attributes -> order by sortorder
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);    //Checked
 		$anscount = $ansresult->RecordCount();
