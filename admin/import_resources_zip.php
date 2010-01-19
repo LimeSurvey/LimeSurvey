@@ -383,11 +383,16 @@ if ($action == "importlabelresources" && $lid)
 
 if ($action == "templateupload")
 {
-    if ($demoModeOnly === true)
+    $importtemplateoutput = "<div class='header'>".$clang->gT("Import Template")."</div>\n";
+    $importtemplateoutput .= "<div class='messagebox'>";
+	
+	if ($demoModeOnly === true)
     {
-        $importtemplateresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-        $importtemplateoutput .= sprintf ($clang->gT("Demo mode: Uploading templates is disabled."),$basedestdir)."<br /><br />\n";
-        $importtemplateoutput .= "</td></tr></table><br />&nbsp;\n";
+		$importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."<br /><br />\n";
+        $importtemplateoutput .= sprintf ($clang->gT("Demo mode: Uploading templates is disabled."),$basedestdir)."\n";
+        $importtemplateoutput .= "</div>\n";
+		$importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=templates', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+        $importtemplateoutput .= "</div>\n";
         return;
     }
 
@@ -403,16 +408,13 @@ if ($action == "templateupload")
     $newdir=str_replace('.','',strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
     $destdir=$basedestdir.'/'.$newdir.'/';
 
-    $importtemplateoutput = "<br />\n";
-    $importtemplateoutput .= "<table class='alertbox'>\n";
-    $importtemplateoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Template")."</strong></td></tr>\n";
-    $importtemplateoutput .= "\t<tr><td align='center'>\n";
-
     if (!is_writeable($basedestdir))
     {
-        $importtemplateoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-        $importtemplateoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
-        $importtemplateoutput .= "</td></tr></table><br />&nbsp;\n";
+        $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."<br /><br />\n";
+        $importtemplateoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."\n";
+        $importtemplateoutput .= "</div>\n";
+		$importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=templates', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+        $importtemplateoutput .= "</div>\n";
         return;
     }
 
@@ -422,9 +424,11 @@ if ($action == "templateupload")
     }
     else
     {
-        $importtemplateoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-        $importtemplateoutput .= sprintf ($clang->gT("Template '%s' does already exist."),$newdir)."<br /><br />\n";
-        $importtemplateoutput .= "</td></tr></table><br />&nbsp;\n";
+        $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."<br /><br />\n";
+        $importtemplateoutput .= sprintf ($clang->gT("Template '%s' does already exist."),$newdir)."\n";
+		$importtemplateoutput .= "</div>\n";
+		$importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=templates', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+        $importtemplateoutput .= "</div>\n";
         return;
     }
 
@@ -434,15 +438,17 @@ if ($action == "templateupload")
 
     if (is_file($zipfile))
     {
-        $importtemplateoutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+        $importtemplateoutput .= "<div class=\"successheader\">".$clang->gT("Success")."</div><br />\n";
         $importtemplateoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
-        $importtemplateoutput .= $clang->gT("Reading file..")."<br />\n";
+        $importtemplateoutput .= $clang->gT("Reading file..")."<br /><br />\n";
 
         if ($z->extract($extractdir,$zipfile) != 'OK')
         {
-            $importtemplateoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-            $importtemplateoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br /><br />\n";
-            $importtemplateoutput .= "</td></tr></table><br />&nbsp;\n";
+            $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."<br /><br />\n";
+            $importtemplateoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."\n";
+			$importtemplateoutput .= "</div>\n";
+			$importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=templates', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+            $importtemplateoutput .= "</div>\n";
             return;
         }
 
@@ -504,23 +510,25 @@ if ($action == "templateupload")
         if (count($aErrorFilesInfo)==0 && count($aImportedFilesInfo)>0)
         {
             $status=$clang->gT("Success");
-            $color='green';
+			$statusClass='successheader';
             $okfiles = count($aImportedFilesInfo);
             $ImportListHeader .= "<br /><strong><u>".$clang->gT("Imported Files List").":</u></strong><br />\n";
         }
         elseif (count($aErrorFilesInfo)==0 && count($aImportedFilesInfo)==0)
         {
-            $importtemplateoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+            $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."<br /><br />\n";
             $importtemplateoutput .= $clang->gT("This ZIP archive contains no valid template files. Import failed.")."<br /><br />\n";
-            $importtemplateoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br /><br />\n";
-            $importtemplateoutput .= "</td></tr></table><br />&nbsp;\n";
+            $importtemplateoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."\n";
+			$importtemplateoutput .= "</div>\n";
+			$importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=templates', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+            $importtemplateoutput .= "</div>\n";
             return;
             
         }
         elseif (count($aErrorFilesInfo)>0 && count($aImportedFilesInfo)>0)
         {
             $status=$clang->gT("Partial");
-            $color='orange';
+			$statusClass='partialheader';
             $okfiles = count($aImportedFilesInfo);
             $errfiles = count($aErrorFilesInfo);
             $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
@@ -529,13 +537,13 @@ if ($action == "templateupload")
         else
         {
             $status=$clang->gT("Error");
-            $color='red';
+			$statusClass='warningheader';
             $errfiles = count($aErrorFilesInfo);
                 $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
         }
 
-        $importtemplateoutput .= "<strong>".$clang->gT("Imported template files for")."</strong> $lid<br />\n";
-        $importtemplateoutput .= "<br />\n<strong><font color='$color'>".$status."</font></strong><br />\n";
+        $importtemplateoutput .= "<strong>".$clang->gT("Imported template files for")."</strong> $lid<br /><br />\n";
+        $importtemplateoutput .= "<div class=\"".$statusClass."\">".$status."</div><br />\n";
         $importtemplateoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
         $importtemplateoutput .= "".$clang->gT("Total Imported files").": $okfiles<br />\n";
         $importtemplateoutput .= "".$clang->gT("Total Errors").": $errfiles<br />\n";
@@ -544,21 +552,28 @@ if ($action == "templateupload")
         {
             $importtemplateoutput .= "\t<li>".$clang->gT("File").": ".$entry["filename"]."</li>\n";
         }
-        $importtemplateoutput .= "\t</ul><br /><br />\n";
+        $importtemplateoutput .= "\t</ul><br />\n";
         $importtemplateoutput .= $ErrorListHeader;
         foreach ($aErrorFilesInfo as $entry)
         {
             $importtemplateoutput .= "\t<li>".$clang->gT("File").": ".$entry['filename']." (".$entry['status'].")</li>\n";
         }
+		if ($statusClass=='partialheader' || $statusClass=='warningheader')
+		{
+		    $importtemplateoutput .= "\t</ul><br />\n";
+		}
     }
     else
     {
-        $importtemplateoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-        $importtemplateoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
-        $importtemplateoutput .= "</td></tr></table><br />&nbsp;\n";
+        $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."<br /><br />\n";
+        $importtemplateoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."\n";
+		$importtemplateoutput .= "</div>\n";
+		$importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=templates', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+        $importtemplateoutput .= "</div>\n";
         return;
     }
-    $importtemplateoutput .= "<input type='submit' value='".$clang->gT("Open imported template")."' onclick=\"window.open('$scriptname?action=templates&templatename=$newdir', '_top')\">\n";
+    $importtemplateoutput .= "<input type='submit' value='".$clang->gT("Open imported template")."' onclick=\"window.open('$scriptname?action=templates&templatename=$newdir', '_top')\"/>\n";
+	$importtemplateoutput .= "</div>\n";
 }
 
 
