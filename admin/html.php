@@ -1283,7 +1283,7 @@ if ($action=='editansweroptions')
     $vasummary .= "<div class='header'>\n"
     .$clang->gT("Edit answer options")
     ."</div>\n"
-    ."<form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
+    ."<form id='editanswersform' name='editanswers' method='post' action='$scriptname'>\n"
     . "<input type='hidden' name='sid' value='$surveyid' />\n"
     . "<input type='hidden' name='gid' value='$gid' />\n"
     . "<input type='hidden' name='qid' value='$qid' />\n"
@@ -1336,7 +1336,7 @@ if ($action=='editansweroptions')
             }
             else
             {
-                $vasummary .="<th style='display:none;'>";
+                $vasummary .="<th style='display:none;'>&nbsp;";
             }
 
             $vasummary .="</th><th align='center'>\n"
@@ -1357,18 +1357,18 @@ if ($action=='editansweroptions')
                 $row['code'] = htmlspecialchars($row['code']);
                 $row['answer']=htmlspecialchars($row['answer']);
 
-			    $vasummary .= "<tr id='row_$position' ";
+			    $vasummary .= "<tr class='row_$position ";
                 if ($alternate==true)
                 {
-                    $vasummary.=' class="highlight" ';
+                    $vasummary.='highlight';
                 }
                 $alternate=!$alternate;
                 
-                $vasummary .=" ><td align='right'>\n";
+                $vasummary .=" '><td align='right'>\n";
 
                 if ($first)
                 {
-                    $vasummary .= "<img src='$imagefiles/handle.png' /></td><td><input type='text' class='code' id='code_{$position}_{$scale_id}' name='code_{$position}_{$scale_id}' value=\"{$row['code']}\" maxlength='5' size='5'"
+                    $vasummary .= "<img class='handle' src='$imagefiles/handle.png' /></td><td><input type='text' class='code' id='code_{$position}_{$scale_id}' name='code_{$position}_{$scale_id}' value=\"{$row['code']}\" maxlength='5' size='5'"
                     ." onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
                     ." />";
                 }
@@ -1389,7 +1389,7 @@ if ($action=='editansweroptions')
                 }
                 elseif ( $first)
                 {
-                    $vasummary .= " style='display:none;'><input type='hidden' id='assessment_{$position}_{$scale_id}' name='assessment_{$position}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
+                    $vasummary .= " style='display:none;'><input type='hidden' class='assessment' id='assessment_{$position}_{$scale_id}' name='assessment_{$position}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
                     ." onkeypress=\"return goodchars(event,'-1234567890')\""
                     ." />";
                 }
