@@ -885,6 +885,14 @@ div.successheader{
     padding:2px;  
 }
 
+div.partialheader{
+    font-weight:bold;
+    color: #CC3300;
+    background-color: #FF9900;   
+    margin: 5px 0;
+    padding:2px;  
+}
+
 div.messagebox .warningheader {
     font-weight:bold;
     color:#ee0000;
