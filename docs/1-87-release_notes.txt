@@ -77,6 +77,29 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.87+ (build 8243) to 1.87+ (build 8279) - Legend: # updated feature, - bug fix 
++New feature: Added radio(list) to array_filter and array_filter_exclude (jcleeland)
+#Updated feature #4020: Show fullname and assigned rights in survey security settings overview (mennodekker)
+#Update translation: Croatian (idobraca)
+#Updated translation: Finnish by Tapio Nurminen 
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Norwegian bokmal by Pal Monstad (
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Slovenian (gandalfar)
+-Fixed issue #4053: Little Layout problem, when template import fails     (tpartner)
+-Fixed issue #3734: Notice "Deprecated: Function set_magic_quotes_runtime() is deprecated" when running statistics (c_schmitz)
+-Fixed issue #3994: When importing a survey with an unknown template, question preview is mixed up (mennodekker)
+-Fixed issue #4036: exclude_all_others question attribute design changed  (c_schmitz)
+-Fixed issue #4036: exclude_all_others question attribute design changed (c_schmitz)
+-Fixed issue #4041: Unable to filter statistics by date range (c_schmitz)
+-Fixed issue #4045: Questions with only numeric answercodes export to string in SPSS (mennodekker)
+-Fixed issue #4050: Problem with Array (flexible labels) dual scale in data entry mode using a multi language labelset (mennodekker)
+-Fixed issue: Error on MSSQL when creating a survey (c_schmitz)
+-Fixed issue: Group ordering icon does not show up with normal users (c_schmitz)
+-Fixed issue: Template for 'Completed'-page not being editable (c_schmitz)
+-Fixed issue: the other-textinput isn't displayed when using Question preview for Dropdown list questions (lemeur)
+
 Changes from 1.87+ (build 8227) to 1.87+ (build 8242) - Legend: # updated feature, - bug fix
 #Updates translation: Croatian language file (idobraca)
 #Updates translation: Slovenian translation (gandalfar)
