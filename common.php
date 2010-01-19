@@ -3320,7 +3320,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MP",
+    "types"=>"1ABCEF:;MPL",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3328,7 +3328,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
     
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MP",
+    "types"=>"1ABCEF:;MPL",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -4569,7 +4569,8 @@ function getArrayFiltersForQuestion($qid)
 				$selected = array();
 				while ($code = $qresult->fetchRow())
 				{
-					if ($_SESSION[$fields[1].$code['code']] == "Y") array_push($selected,$code['code']);
+					if ((isset($_SESSION[$fields[1].$code['code']]) && $_SESSION[$fields[1].$code['code']] == "Y")
+                            || $_SESSION[$fields[1]] == $code['code'])			 array_push($selected,$code['code']);
 				}
 				return $selected;
 			}
@@ -4639,7 +4640,8 @@ function getArrayFilterExcludesForQuestion($qid)
 					$qresult = db_execute_assoc($query);  //Checked
 					while ($code = $qresult->fetchRow())
 					{
-						if ($_SESSION[$fields[1].$code['code']] == "Y") array_push($selected,$code['code']);
+						if ((isset($_SESSION[$fields[1].$code['code']]) && $_SESSION[$fields[1].$code['code']] == "Y")
+                            || $_SESSION[$fields[1]] == $code['code'])						array_push($selected,$code['code']);
 					}
 				}
 			}

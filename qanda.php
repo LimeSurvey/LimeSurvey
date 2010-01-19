@@ -2085,7 +2085,7 @@ function do_list_flexible_dropdown($ia)
 function do_list_radio($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
-	global $shownoanswer;
+	global $shownoanswer, $thissurvey;
 
 
 	if ($ia[8] == 'Y')
@@ -2152,10 +2152,15 @@ function do_list_radio($ia)
 	$wrapper = setup_columns($dcols , $anscount);
 	$answer = $wrapper['whole-start'];
 
+	// Get array_filter stuff
+
 	$rowcounter = 0;
 	$colcounter = 1;
+	$trbc='';
+	
 	while ($ansrow = $ansresult->FetchRow())
 	{
+		$myfname = $ia[1].$ansrow['code'];
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
 			$check_ans = CHECKED;
@@ -2169,9 +2174,19 @@ function do_list_radio($ia)
 		{
 			$check_ans = '';
 		}
-        //		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
-        // TIBO switch to the following line in order to reset the othercomment field when the other option is unselected
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+		
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
+
+		if($wrapper['item-start'] == "\t<li>\n")
+		{
+		  $startitem = "\t$htmltbody2\n";
+		} else {
+		  $startitem = $wrapper['item-start'];
+		}
+		
+		$answer .= $startitem;
+		$answer .= "\t$hiddenfield\n";
+		$answer .='		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
         '.$wrapper['item-end'];
 
@@ -2282,6 +2297,7 @@ function do_list_radio($ia)
 		}
 
 	}
+	//END OF ITEMS
 	$answer .= $wrapper['whole-end'].'
 <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
