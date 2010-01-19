@@ -899,9 +899,6 @@ if ($subaction=='templateupload')
 }
 elseif (isset($importtemplateoutput))
 {
-    $templatesoutput.="<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
-    . "\t<tr>\n"
-    . "<td>\n";
     $templatesoutput.=$importtemplateoutput;
 }
 else
