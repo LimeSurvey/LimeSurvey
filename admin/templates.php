@@ -624,7 +624,7 @@ switch($screenname) {
 	    $myoutput[]= "\n";
 	    break;
 
-	    case $clang->gT("Completed Page", "unescaped"):
+	case 'completed':
 	    unset($files);
 	    $myoutput[]="";
 	    foreach ($CompletedTemplate as $qs) {
