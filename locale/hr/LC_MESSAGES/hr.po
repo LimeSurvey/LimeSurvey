@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-14 17:59+0100\n"
-"PO-Revision-Date: 2010-01-14 18:00+0100\n"
+"POT-Creation-Date: 2010-01-20 23:04+0100\n"
+"PO-Revision-Date: 2010-01-20 23:04+0100\n"
 "Last-Translator: Igor Dobrača <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -181,10 +181,10 @@ msgstr "Neaktivan"
 #: 1/common.php:1287
 #: 1/common.php:1312
 #: 1/common.php:1387
-#: 1/common.php:4905
-#: 1/common.php:4939
-#: 1/common.php:4978
-#: 1/common.php:5014
+#: 1/common.php:4907
+#: 1/common.php:4941
+#: 1/common.php:4980
+#: 1/common.php:5016
 msgid "Please Choose..."
 msgstr "Molim izaberite..."
 
@@ -193,8 +193,8 @@ msgstr "Molim izaberite..."
 #: 1/common.php:1288
 #: 1/common.php:1313
 #: 1/common.php:1388
-#: 1/common.php:4940
-#: 1/common.php:4979
+#: 1/common.php:4942
+#: 1/common.php:4981
 msgid "None"
 msgstr "Nema"
 
@@ -491,10 +491,10 @@ msgstr "URL Preporuke"
 #: 1/common.php:3742
 #: 1/common.php:3753
 #: 1/qanda.php:1918
-#: 1/qanda.php:2230
-#: 1/qanda.php:2459
-#: 1/qanda.php:3261
-#: 1/qanda.php:3591
+#: 1/qanda.php:2245
+#: 1/qanda.php:2475
+#: 1/qanda.php:3277
+#: 1/qanda.php:3607
 #: 1/statistics_user.php:753
 #: 1/statistics_user.php:1413
 #: 1/statistics_user.php:1499
@@ -522,9 +522,9 @@ msgstr "Ostalo"
 #: 1/common.php:3711
 #: 1/common.php:3746
 #: 1/common.php:3806
-#: 1/qanda.php:4734
-#: 1/qanda.php:5204
-#: 1/qanda.php:5243
+#: 1/qanda.php:4750
+#: 1/qanda.php:5220
+#: 1/qanda.php:5259
 #: 1/statistics_user.php:1257
 #: 1/statistics_user.php:1382
 msgid "Yes"
@@ -549,9 +549,9 @@ msgstr "Da"
 #: 1/common.php:3710
 #: 1/common.php:3745
 #: 1/common.php:3805
-#: 1/qanda.php:4743
-#: 1/qanda.php:5206
-#: 1/qanda.php:5261
+#: 1/qanda.php:4759
+#: 1/qanda.php:5222
+#: 1/qanda.php:5277
 #: 1/statistics_user.php:1258
 #: 1/statistics_user.php:1383
 msgid "No"
@@ -560,35 +560,35 @@ msgstr "Ne"
 #: D:\LimeSurvey
 #: 1/common.php:2082
 #: 1/common.php:2090
-#: 1/common.php:5848
-#: 1/common.php:5853
+#: 1/common.php:5850
+#: 1/common.php:5855
 #: 1/qanda.php:1388
 #: 1/qanda.php:1799
 #: 1/qanda.php:1988
-#: 1/qanda.php:2264
-#: 1/qanda.php:2493
-#: 1/qanda.php:2632
-#: 1/qanda.php:2699
-#: 1/qanda.php:4754
-#: 1/qanda.php:4822
-#: 1/qanda.php:4918
-#: 1/qanda.php:4982
-#: 1/qanda.php:5077
-#: 1/qanda.php:5125
-#: 1/qanda.php:5209
-#: 1/qanda.php:5281
-#: 1/qanda.php:5372
-#: 1/qanda.php:5451
-#: 1/qanda.php:5550
-#: 1/qanda.php:5572
-#: 1/qanda.php:5640
-#: 1/qanda.php:6223
-#: 1/qanda.php:6224
-#: 1/qanda.php:6517
-#: 1/qanda.php:6585
-#: 1/qanda.php:6693
-#: 1/qanda.php:6907
-#: 1/qanda.php:6961
+#: 1/qanda.php:2279
+#: 1/qanda.php:2509
+#: 1/qanda.php:2648
+#: 1/qanda.php:2715
+#: 1/qanda.php:4770
+#: 1/qanda.php:4838
+#: 1/qanda.php:4934
+#: 1/qanda.php:4998
+#: 1/qanda.php:5093
+#: 1/qanda.php:5141
+#: 1/qanda.php:5225
+#: 1/qanda.php:5297
+#: 1/qanda.php:5388
+#: 1/qanda.php:5467
+#: 1/qanda.php:5566
+#: 1/qanda.php:5588
+#: 1/qanda.php:5656
+#: 1/qanda.php:6239
+#: 1/qanda.php:6240
+#: 1/qanda.php:6533
+#: 1/qanda.php:6601
+#: 1/qanda.php:6709
+#: 1/qanda.php:6923
+#: 1/qanda.php:6977
 #: 1/statistics_user.php:1506
 #: 1/statistics_user.php:1595
 #: 1/statistics_user.php:1879
@@ -601,46 +601,46 @@ msgstr "Bez odgovora"
 
 #: D:\LimeSurvey
 #: 1/common.php:2088
-#: 1/qanda.php:4798
+#: 1/qanda.php:4814
 #: 1/statistics_user.php:1376
 msgid "Male"
 msgstr "Muški"
 
 #: D:\LimeSurvey
 #: 1/common.php:2089
-#: 1/qanda.php:4790
+#: 1/qanda.php:4806
 #: 1/statistics_user.php:1375
 msgid "Female"
 msgstr "Ženski"
 
 #: D:\LimeSurvey
 #: 1/common.php:2098
-#: 1/qanda.php:5205
-#: 1/qanda.php:5251
+#: 1/qanda.php:5221
+#: 1/qanda.php:5267
 #: 1/statistics_user.php:1259
 msgid "Uncertain"
 msgstr "Neodlučan"
 
 #: D:\LimeSurvey
 #: 1/common.php:2104
-#: 1/qanda.php:5367
-#: 1/qanda.php:5410
+#: 1/qanda.php:5383
+#: 1/qanda.php:5426
 #: 1/statistics_user.php:1276
 msgid "Increase"
 msgstr "Povećaj"
 
 #: D:\LimeSurvey
 #: 1/common.php:2105
-#: 1/qanda.php:5369
-#: 1/qanda.php:5433
+#: 1/qanda.php:5385
+#: 1/qanda.php:5449
 #: 1/statistics_user.php:1278
 msgid "Decrease"
 msgstr "Smanji"
 
 #: D:\LimeSurvey
 #: 1/common.php:2106
-#: 1/qanda.php:5368
-#: 1/qanda.php:5421
+#: 1/qanda.php:5384
+#: 1/qanda.php:5437
 #: 1/statistics_user.php:1277
 msgid "Same"
 msgstr "Isto"
@@ -857,13 +857,13 @@ msgstr "Unesite tražene podatke, te na e-mail koji ste naveli zaprimiti ćete d
 
 #: D:\LimeSurvey
 #: 1/common.php:2964
-#: 1/common.php:6863
+#: 1/common.php:6865
 msgid "First Name"
 msgstr "Ime"
 
 #: D:\LimeSurvey
 #: 1/common.php:2971
-#: 1/common.php:6864
+#: 1/common.php:6866
 msgid "Last Name"
 msgstr "Prezime"
 
@@ -1612,60 +1612,60 @@ msgid "SMTP debug output:"
 msgstr "SMTP debug izlazni podaci:"
 
 #: D:\LimeSurvey
-#: 1/common.php:4788
-#: 1/common.php:4794
+#: 1/common.php:4790
+#: 1/common.php:4796
 msgid "Executing"
 msgstr "Izvršavam"
 
 #: D:\LimeSurvey
-#: 1/common.php:4788
+#: 1/common.php:4790
 msgid "Failed! Reason: "
 msgstr "Neuspješno! Razlog: "
 
 #: D:\LimeSurvey
-#: 1/common.php:4794
+#: 1/common.php:4796
 msgid "Success!"
 msgstr "Uspješno!"
 
 #: D:\LimeSurvey
-#: 1/common.php:5862
+#: 1/common.php:5864
 #: 1/index.php:493
 #: 1/save.php:618
 msgid "Error"
 msgstr "Greška"
 
 #: D:\LimeSurvey
-#: 1/common.php:6865
+#: 1/common.php:6867
 msgid "Email address"
 msgstr "E-mail adresa"
 
 #: D:\LimeSurvey
-#: 1/common.php:6866
+#: 1/common.php:6868
 msgid "Token code"
 msgstr "Šifra tokena"
 
 #: D:\LimeSurvey
-#: 1/common.php:6867
+#: 1/common.php:6869
 msgid "Language code"
 msgstr "Šifra jezika"
 
 #: D:\LimeSurvey
-#: 1/common.php:6868
+#: 1/common.php:6870
 msgid "Invitation sent date"
 msgstr "Datum slanja pozivnice"
 
 #: D:\LimeSurvey
-#: 1/common.php:6869
+#: 1/common.php:6871
 msgid "Last Reminder sent date"
 msgstr "Datum slanja podsjetnika"
 
 #: D:\LimeSurvey
-#: 1/common.php:6870
+#: 1/common.php:6872
 msgid "Total numbers of sent reminders"
 msgstr "Ukupno poslanih podsjetnika"
 
 #: D:\LimeSurvey
-#: 1/common.php:6890
+#: 1/common.php:6892
 #, php-format
 msgid "Attribute %s"
 msgstr "Atribut %s"
@@ -2214,9 +2214,9 @@ msgstr "Molim izaberite barem jednu opciju."
 #: 1/qanda.php:877
 #: 1/qanda.php:1653
 #: 1/qanda.php:2146
-#: 1/qanda.php:2345
-#: 1/qanda.php:3012
-#: 1/qanda.php:3466
+#: 1/qanda.php:2361
+#: 1/qanda.php:3028
+#: 1/qanda.php:3482
 msgid "Other:"
 msgstr "Ostalo:"
 
@@ -2352,9 +2352,9 @@ msgstr "Godina"
 
 #: D:\LimeSurvey
 #: 1/qanda.php:1529
-#: 1/qanda.php:4420
-#: 1/qanda.php:4610
-#: 1/qanda.php:4689
+#: 1/qanda.php:4436
+#: 1/qanda.php:4626
+#: 1/qanda.php:4705
 #: 1/statistics_user.php:1605
 #: 1/statistics_user.php:1619
 #: 1/statistics_user.php:1692
@@ -2376,8 +2376,8 @@ msgstr "Format: %s"
 #: 1/qanda.php:1605
 #: 1/qanda.php:1781
 #: 1/qanda.php:1970
-#: 1/qanda.php:6887
-#: 1/qanda.php:6941
+#: 1/qanda.php:6903
+#: 1/qanda.php:6957
 msgid "Please choose"
 msgstr "Molim izaberite"
 
@@ -2389,15 +2389,15 @@ msgstr "Drugi odgovor"
 #: D:\LimeSurvey
 #: 1/qanda.php:1877
 #: 1/qanda.php:2061
-#: 1/qanda.php:2300
-#: 1/qanda.php:2528
+#: 1/qanda.php:2316
+#: 1/qanda.php:2544
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Ispunili ste polje \"ostalo\" za pitanje \"%s\". Molim ispunite i pripadajuće polje \"drugi komentar\"."
 
 #: D:\LimeSurvey
 #: 1/qanda.php:1994
-#: 1/qanda.php:2432
+#: 1/qanda.php:2448
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Greška: Set oznaka korišten za ovo pitanje nije dostupan za ovaj jezik."
 
@@ -2408,137 +2408,137 @@ msgid "Other text"
 msgstr "Drugi komentar"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:2590
+#: 1/qanda.php:2606
 msgid "Please enter your comment here"
 msgstr "Molimo unesite komentar ovde"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:2875
+#: 1/qanda.php:2891
 msgid "Remove this item"
 msgstr "Ukloni ovaj element"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:2917
+#: 1/qanda.php:2933
 msgid "Your Choices"
 msgstr "Vaši izbori"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:2926
-#: 1/qanda.php:2932
+#: 1/qanda.php:2942
+#: 1/qanda.php:2948
 msgid "Your Ranking"
 msgstr "Vaše rangiranje"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:2940
+#: 1/qanda.php:2956
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Kliknite na ikonu škarica sa desne strane ranga kako bi izbrisali zadnje uneseni odabir"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:2950
 #: 1/qanda.php:2966
+#: 1/qanda.php:2982
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Molim rangirajte najmanje %d odgovor(a) za pitanje \"%s\"."
 
 #: D:\LimeSurvey
-#: 1/qanda.php:3345
-#: 1/qanda.php:3645
+#: 1/qanda.php:3361
+#: 1/qanda.php:3661
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "Molim odaberi najviše %d odgovora za pitanje \"%s\""
 
 #: D:\LimeSurvey
-#: 1/qanda.php:3366
-#: 1/qanda.php:3670
+#: 1/qanda.php:3382
+#: 1/qanda.php:3686
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Molim odaberite najmanje %d odgovor(a) za pitanje \"%s\""
 
 #: D:\LimeSurvey
-#: 1/qanda.php:3401
-#: 1/qanda.php:3700
+#: 1/qanda.php:3417
+#: 1/qanda.php:3716
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Popunili ste polje \"ostalo\" za pitanje \"%s\". Molim ispunite i pripadajuće polje \"drugi komentar\"."
 
 #: D:\LimeSurvey
-#: 1/qanda.php:3573
-#: 1/qanda.php:3601
+#: 1/qanda.php:3589
+#: 1/qanda.php:3617
 msgid "Make a comment on your choice here:"
 msgstr "Unesite komentar na vaš izbor ovde:"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:3799
-#: 1/qanda.php:4102
-#: 1/qanda.php:5216
-#: 1/qanda.php:6756
+#: 1/qanda.php:3815
+#: 1/qanda.php:4118
+#: 1/qanda.php:5232
+#: 1/qanda.php:6772
 msgid "Error: This question has no answers."
 msgstr "Greška: Ovo pitanje nema odgovora."
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4227
+#: 1/qanda.php:4243
 msgid "Only numbers may be entered in these fields"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4231
+#: 1/qanda.php:4247
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Svih ulaza ne može biti više od %d"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4235
+#: 1/qanda.php:4251
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Svih unosa mora biti točno %d"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4239
+#: 1/qanda.php:4255
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Zbroj svih unosa mora biti najmanje %s"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4247
+#: 1/qanda.php:4263
 msgid "Remaining: "
 msgstr "Preostalo:"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4249
+#: 1/qanda.php:4265
 msgid "Total: "
 msgstr "Ukupno:"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4293
-#: 1/qanda.php:4299
-#: 1/qanda.php:4335
-#: 1/qanda.php:4346
+#: 1/qanda.php:4309
+#: 1/qanda.php:4315
+#: 1/qanda.php:4351
+#: 1/qanda.php:4362
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odgovor je neispravan. Ukupnost svih odgovora ne može ići iznad"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4312
-#: 1/qanda.php:4320
+#: 1/qanda.php:4328
+#: 1/qanda.php:4336
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Odgovor je neispravan. Zbroj svih unosa mora biti najmanje %s."
 
 #: D:\LimeSurvey
-#: 1/qanda.php:4424
+#: 1/qanda.php:4440
 msgid "Only numbers may be entered in this field"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
 #: D:\LimeSurvey
-#: 1/qanda.php:5681
-#: 1/qanda.php:5900
-#: 1/qanda.php:6183
-#: 1/qanda.php:6336
-#: 1/qanda.php:6986
+#: 1/qanda.php:5697
+#: 1/qanda.php:5916
+#: 1/qanda.php:6199
+#: 1/qanda.php:6352
+#: 1/qanda.php:7002
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Greška: Set oznaka korišten za ovo pitanje nije dostupan i/ili ne postoji za ovaj jezik."
 
 #: D:\LimeSurvey
-#: 1/qanda.php:6330
+#: 1/qanda.php:6346
 msgid "Error: There are no answers defined for this question."
 msgstr "Greška: Nema definiranih odgovora u ovom pitanju."
 
@@ -4525,8 +4525,8 @@ msgstr "Jedan odgovor"
 #: D:\LimeSurvey
 #: 1/admin/exportresults.php:188
 #: 1/admin/globalsettings.php:164
-#: 1/admin/html.php:2183
-#: 1/admin/html.php:3056
+#: 1/admin/html.php:2203
+#: 1/admin/html.php:3076
 msgid "General"
 msgstr "Općenito"
 
@@ -4722,8 +4722,8 @@ msgid "Tokens problem - token table missing"
 msgstr "Problem s tokenima - nedostaje tablica tokena"
 
 #: D:\LimeSurvey
-#: 1/admin/export_data_functions.php:239
-#: 1/admin/export_data_functions.php:243
+#: 1/admin/export_data_functions.php:245
+#: 1/admin/export_data_functions.php:249
 msgid "Not Selected"
 msgstr "Nije označen"
 
@@ -4965,8 +4965,8 @@ msgstr "Format upitnika je %s:"
 
 #: D:\LimeSurvey
 #: 1/admin/fck_LimeReplacementFields.php:557
-#: 1/admin/html.php:2259
-#: 1/admin/html.php:3119
+#: 1/admin/html.php:2279
+#: 1/admin/html.php:3139
 msgid "All in one"
 msgstr "Prikaži sva pitanja"
 
@@ -4984,8 +4984,8 @@ msgstr "Način upitnika je podešen na %s:"
 
 #: D:\LimeSurvey
 #: 1/admin/fck_LimeReplacementFields.php:568
-#: 1/admin/html.php:2256
-#: 1/admin/html.php:3118
+#: 1/admin/html.php:2276
+#: 1/admin/html.php:3138
 msgid "Group by Group"
 msgstr "Grupa za grupom pitanja"
 
@@ -5355,10 +5355,10 @@ msgstr "Obvezatno"
 #: 1/admin/grouphandling.php:160
 #: 1/admin/html.php:682
 #: 1/admin/html.php:935
-#: 1/admin/html.php:2746
-#: 1/admin/html.php:2748
-#: 1/admin/html.php:3084
-#: 1/admin/html.php:3086
+#: 1/admin/html.php:2766
+#: 1/admin/html.php:2768
+#: 1/admin/html.php:3104
+#: 1/admin/html.php:3106
 msgid "Description:"
 msgstr "Opis:"
 
@@ -5374,9 +5374,9 @@ msgstr "Uvoz grupe pitanja"
 
 #: D:\LimeSurvey
 #: 1/admin/grouphandling.php:67
-#: 1/admin/html.php:2661
-#: 1/admin/html.php:2674
-#: 1/admin/html.php:3370
+#: 1/admin/html.php:2681
+#: 1/admin/html.php:2694
+#: 1/admin/html.php:3390
 msgid "Please select a file to import!"
 msgstr "Molim izaberite datoteku za slanje!"
 
@@ -5660,13 +5660,13 @@ msgstr "Zatvori ovaj upitnik"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:622
-#: 1/admin/html.php:2529
+#: 1/admin/html.php:2549
 msgid "Answers to this survey are anonymized."
 msgstr "Odgovori na ovaj upitnik su anonimni."
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:623
-#: 1/admin/html.php:2528
+#: 1/admin/html.php:2548
 msgid "This survey is NOT anonymous."
 msgstr "Ovaj upitnik NIJE anoniman."
 
@@ -5755,53 +5755,53 @@ msgstr "Zastavica"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:687
-#: 1/admin/html.php:2752
+#: 1/admin/html.php:2772
 msgid "Welcome:"
 msgstr "Tekst dobrodošlice:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:690
-#: 1/admin/html.php:2231
-#: 1/admin/html.php:3096
+#: 1/admin/html.php:2251
+#: 1/admin/html.php:3116
 msgid "Administrator:"
 msgstr "Administrator:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:693
-#: 1/admin/html.php:2237
-#: 1/admin/html.php:3102
+#: 1/admin/html.php:2257
+#: 1/admin/html.php:3122
 msgid "Fax To:"
 msgstr "Faks slati na:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:697
-#: 1/admin/html.php:2415
+#: 1/admin/html.php:2435
 msgid "Start date/time:"
 msgstr "Početni datum/vrijeme:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:710
-#: 1/admin/html.php:2425
+#: 1/admin/html.php:2445
 msgid "Expiry date/time:"
 msgstr "Datum/vrijeme isteka:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:722
-#: 1/admin/html.php:2264
-#: 1/admin/html.php:3122
+#: 1/admin/html.php:2284
+#: 1/admin/html.php:3142
 msgid "Template:"
 msgstr "Predložak:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:726
-#: 1/admin/html.php:2186
-#: 1/admin/html.php:3059
+#: 1/admin/html.php:2206
+#: 1/admin/html.php:3079
 msgid "Base Language:"
 msgstr "Osnovni jezik:"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:735
-#: 1/admin/html.php:2191
+#: 1/admin/html.php:2211
 msgid "Additional Languages"
 msgstr "Dodatni jezici"
 
@@ -6086,7 +6086,7 @@ msgstr "Mogući odgovor"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1378
-#: 1/admin/html.php:1989
+#: 1/admin/html.php:1996
 msgid "Action"
 msgstr "Akcija"
 
@@ -6123,7 +6123,7 @@ msgstr "Ne možete dodati odgovor ili mijenjati kodove odgovora na ovo pitanje z
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1571
-#: 1/admin/html.php:2082
+#: 1/admin/html.php:2105
 msgid "Add User"
 msgstr "Dodaj korisnika"
 
@@ -6137,8 +6137,8 @@ msgstr "Korisnik dodan."
 #: 1/admin/html.php:1647
 #: 1/admin/html.php:1718
 #: 1/admin/html.php:1783
-#: 1/admin/html.php:2061
-#: 1/admin/html.php:2110
+#: 1/admin/html.php:2082
+#: 1/admin/html.php:2130
 msgid "Set Survey Rights"
 msgstr "Podesi privilegije upitnika"
 
@@ -6166,7 +6166,7 @@ msgstr "Nijedan korisnik nije izabran."
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1619
-#: 1/admin/html.php:2097
+#: 1/admin/html.php:2117
 msgid "Add User Group"
 msgstr "Dodaj grupu korisnika"
 
@@ -6204,28 +6204,33 @@ msgstr "Promijeni podešavanja upitnika."
 #: D:\LimeSurvey
 #: 1/admin/html.php:1721
 #: 1/admin/html.php:1786
+#: 1/admin/html.php:1991
 msgid "Define Questions"
 msgstr "Definiraj pitanja"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1723
 #: 1/admin/html.php:1788
+#: 1/admin/html.php:1993
 msgid "Export"
 msgstr "Izvoz"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1724
 #: 1/admin/html.php:1789
+#: 1/admin/html.php:1994
 msgid "Delete Survey"
 msgstr "Obriši upitnik"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1785
+#: 1/admin/html.php:1990
 msgid "Edit Survey Property"
 msgstr "Promena podataka o upitniku"
 
 #: D:\LimeSurvey
 #: 1/admin/html.php:1787
+#: 1/admin/html.php:1992
 msgid "Browse Response"
 msgstr "Pregled odgovora"
 
@@ -6280,494 +6285,499 @@ msgid "User Group"
 msgstr "Grupa korisnika"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2076
+#: 1/admin/html.php:1989
+msgid "Full name"
+msgstr "Puno ime i prezime"
+
+#: D:\LimeSurvey
+#: 1/admin/html.php:2100
 msgid "User"
 msgstr "Korisnik"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2082
+#: 1/admin/html.php:2105
 msgid "Please select a user first"
 msgstr "Molim najprije odaberite korisnika"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2091
+#: 1/admin/html.php:2112
 msgid "Groups"
 msgstr "Grupe pitanja"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2097
+#: 1/admin/html.php:2117
 msgid "Please select a user group first"
 msgstr "Molim najprije odaberite korisničku grupu"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2145
+#: 1/admin/html.php:2165
 msgid "Update survey rights successful."
 msgstr "Uspješno dodavanje privilegija upitnika."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2149
+#: 1/admin/html.php:2169
 msgid "Failed to update survey rights!"
 msgstr "Neuspješno dodavanje privilegija upitnika."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2177
+#: 1/admin/html.php:2197
 msgid "Edit survey settings - Step 1 of 2"
 msgstr "Uređivanje upitnika - Korak 1 od 2"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2210
+#: 1/admin/html.php:2230
 msgid "Remove"
 msgstr "Obriši"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2233
-#: 1/admin/html.php:3098
+#: 1/admin/html.php:2253
+#: 1/admin/html.php:3118
 msgid "Admin Email:"
 msgstr "Email administratora:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2235
-#: 1/admin/html.php:3100
+#: 1/admin/html.php:2255
+#: 1/admin/html.php:3120
 msgid "Bounce Email:"
 msgstr "E-mail za povrat (bounce):"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2246
-#: 1/admin/html.php:3112
+#: 1/admin/html.php:2266
+#: 1/admin/html.php:3132
 msgid "Presentation & Navigation"
 msgstr "Prezentacija i navigacija"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2249
-#: 1/admin/html.php:3115
+#: 1/admin/html.php:2269
+#: 1/admin/html.php:3135
 msgid "Format:"
 msgstr "Format:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2253
-#: 1/admin/html.php:3117
+#: 1/admin/html.php:2273
+#: 1/admin/html.php:3137
 msgid "Question by Question"
 msgstr "Pitanje za pitanjem"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2282
-#: 1/admin/html.php:3138
+#: 1/admin/html.php:2302
+#: 1/admin/html.php:3158
 msgid "Template Preview:"
 msgstr "Pregled predloška:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2287
-#: 1/admin/html.php:3143
+#: 1/admin/html.php:2307
+#: 1/admin/html.php:3163
 msgid "Allow Saves?"
 msgstr "Dozvoli snimanje?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2298
-#: 1/admin/html.php:3154
+#: 1/admin/html.php:2318
+#: 1/admin/html.php:3174
 msgid "Show [<< Prev] button"
 msgstr "Prikaži [<<Pret] gumb"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2309
-#: 1/admin/html.php:3161
+#: 1/admin/html.php:2329
+#: 1/admin/html.php:3181
 msgid "Participants may print answers?"
 msgstr "Sudionici mogu ispisati odgovore na pisaču?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2321
-#: 1/admin/html.php:3168
+#: 1/admin/html.php:2341
+#: 1/admin/html.php:3188
 msgid "Public statistics?"
 msgstr "Javna statistika?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2333
-#: 1/admin/html.php:3175
+#: 1/admin/html.php:2353
+#: 1/admin/html.php:3195
 msgid "Show graphs in public statistics?"
 msgstr "Prikaži grafikone u javno dostupnoj statistici?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2345
-#: 1/admin/html.php:3182
+#: 1/admin/html.php:2365
+#: 1/admin/html.php:3202
 msgid "List survey publicly:"
 msgstr "Javno objavi upitnik:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2358
-#: 1/admin/html.php:3198
+#: 1/admin/html.php:2378
+#: 1/admin/html.php:3218
 msgid "Automatically load URL when survey complete?"
 msgstr "Automatski učitaj završni URL nakon ispunjenog upitnika?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2373
-#: 1/admin/html.php:3221
+#: 1/admin/html.php:2393
+#: 1/admin/html.php:3241
 msgid "Publication & Access control"
 msgstr "Publiciranje i kontrola pristupa"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2389
-#: 1/admin/html.php:3232
+#: 1/admin/html.php:2409
+#: 1/admin/html.php:3252
 msgid "Set token length to:"
 msgstr "Postavi dužinu tokena na:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2394
-#: 1/admin/html.php:3237
+#: 1/admin/html.php:2414
+#: 1/admin/html.php:3257
 msgid "Allow public registration?"
 msgstr "Prihvati javnu registraciju?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2428
-#: 1/admin/html.php:3254
+#: 1/admin/html.php:2448
+#: 1/admin/html.php:3274
 msgid "Set cookie to prevent repeated participation?"
 msgstr "Postavi kolačić kako bi spriječio ponovno učestovanje?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2441
-#: 1/admin/html.php:3265
+#: 1/admin/html.php:2461
+#: 1/admin/html.php:3285
 msgid "Use CAPTCHA for"
 msgstr "Koristi CAPTCHA za "
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2445
-#: 1/admin/html.php:2449
-#: 1/admin/html.php:2453
-#: 1/admin/html.php:2462
-#: 1/admin/html.php:3267
-#: 1/admin/html.php:3268
-#: 1/admin/html.php:3269
-#: 1/admin/html.php:3271
+#: 1/admin/html.php:2465
+#: 1/admin/html.php:2469
+#: 1/admin/html.php:2473
+#: 1/admin/html.php:2482
+#: 1/admin/html.php:3287
+#: 1/admin/html.php:3288
+#: 1/admin/html.php:3289
+#: 1/admin/html.php:3291
 msgid "Survey Access"
 msgstr "Pristup upitniku"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2445
-#: 1/admin/html.php:2449
-#: 1/admin/html.php:2457
 #: 1/admin/html.php:2465
-#: 1/admin/html.php:3267
-#: 1/admin/html.php:3268
-#: 1/admin/html.php:3270
-#: 1/admin/html.php:3272
+#: 1/admin/html.php:2469
+#: 1/admin/html.php:2477
+#: 1/admin/html.php:2485
+#: 1/admin/html.php:3287
+#: 1/admin/html.php:3288
+#: 1/admin/html.php:3290
+#: 1/admin/html.php:3292
 msgid "Registration"
 msgstr "Registracija"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2445
-#: 1/admin/html.php:2453
-#: 1/admin/html.php:2457
-#: 1/admin/html.php:2468
-#: 1/admin/html.php:3267
-#: 1/admin/html.php:3269
-#: 1/admin/html.php:3270
-#: 1/admin/html.php:3273
+#: 1/admin/html.php:2465
+#: 1/admin/html.php:2473
+#: 1/admin/html.php:2477
+#: 1/admin/html.php:2488
+#: 1/admin/html.php:3287
+#: 1/admin/html.php:3289
+#: 1/admin/html.php:3290
+#: 1/admin/html.php:3293
 msgid "Save & Load"
 msgstr "Snimanje i učitavanje"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2476
-#: 1/admin/html.php:3278
+#: 1/admin/html.php:2496
+#: 1/admin/html.php:3298
 msgid "Use HTML format for token emails?"
 msgstr "Koristi HTML format za slanje tokena?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2477
+#: 1/admin/html.php:2497
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
 msgstr "Ukoliko izmijeniš način slanja poruka, trebaš ispraviti i predložak poruke da bude u skladu sa novin načinom slanja"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2491
-#: 1/admin/html.php:3290
+#: 1/admin/html.php:2511
+#: 1/admin/html.php:3310
 msgid "Notification & Data Management"
 msgstr "Izvješćivanje i upravljanje podacima"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2495
-#: 1/admin/html.php:3293
+#: 1/admin/html.php:2515
+#: 1/admin/html.php:3313
 msgid "Admin Notification:"
 msgstr "Obavijesti administratora:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2502
-#: 1/admin/html.php:3299
+#: 1/admin/html.php:2522
+#: 1/admin/html.php:3319
 msgid "Email responses to:"
 msgstr "Pošalji odgovore na:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2507
-#: 1/admin/html.php:3304
+#: 1/admin/html.php:2527
+#: 1/admin/html.php:3324
 msgid "Anonymous answers?"
 msgstr "Anonimni odgovori?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2515
+#: 1/admin/html.php:2535
 msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
 msgstr "Ne možeš koristiti anonimne odgovore kad je uključena opcija za obavezno korištenje tokena."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2520
-#: 1/admin/html.php:3312
+#: 1/admin/html.php:2540
+#: 1/admin/html.php:3332
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Ako postavite ovaj upitnik na anonimno i stvorite tablicu tokena, LimeSurvey će označiti dovršene tokene samo sa 'Y' umjesto sa datumom/vremenom kako bi osigurao anonimnost sudjelovanja ispitanika."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2530
-#: 1/admin/html.php:2554
-#: 1/admin/html.php:2579
-#: 1/admin/html.php:2605
+#: 1/admin/html.php:2550
+#: 1/admin/html.php:2574
+#: 1/admin/html.php:2599
+#: 1/admin/html.php:2625
 msgid "Cannot be changed"
 msgstr "Ne može biti promjenjeno."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2548
-#: 1/admin/html.php:3322
+#: 1/admin/html.php:2568
+#: 1/admin/html.php:3342
 msgid "Date Stamp?"
 msgstr "Datum otiska?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2552
+#: 1/admin/html.php:2572
 msgid "Responses will not be date stamped."
 msgstr "Odgovori neće imati datum otiska."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2553
+#: 1/admin/html.php:2573
 msgid "Responses will be date stamped."
 msgstr "Odgovori će imati datum otiska."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2572
-#: 1/admin/html.php:3329
+#: 1/admin/html.php:2592
+#: 1/admin/html.php:3349
 msgid "Save IP Address?"
 msgstr "Snimi IP adresu?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2577
+#: 1/admin/html.php:2597
 msgid "Responses will not have the IP address logged."
 msgstr "Odgovori neće imati zabilježenu IP adresu."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2578
+#: 1/admin/html.php:2598
 msgid "Responses will have the IP address logged"
 msgstr "Odgovori će imati zabilježenu IP adresu."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2598
-#: 1/admin/html.php:3336
+#: 1/admin/html.php:2618
+#: 1/admin/html.php:3356
 msgid "Save Referring URL?"
 msgstr "Snimi povezani URL?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2603
+#: 1/admin/html.php:2623
 msgid "Responses will not have their referring URL logged."
 msgstr "Odgovori neće imati povezani URL snimljen."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2604
+#: 1/admin/html.php:2624
 msgid "Responses will have their referring URL logged."
 msgstr "Odgovori će imati povezani URL snimljen."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2624
-#: 1/admin/html.php:3343
+#: 1/admin/html.php:2644
+#: 1/admin/html.php:3363
 msgid "Enable token-based response persistence?"
 msgstr "Aktiviraj odgovaranje uz obavezno korištenje tokena?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2625
+#: 1/admin/html.php:2645
 msgid "This option can't be set if Anonymous answers are used"
 msgstr "Ova opcija ne može biti postavljena ukoliko se koriste anonimni odgovori"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2635
-#: 1/admin/html.php:3350
+#: 1/admin/html.php:2655
+#: 1/admin/html.php:3370
 msgid "Enable assessment mode?"
 msgstr "Omogući način procjene?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2664
+#: 1/admin/html.php:2684
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr "zip biblioteka nije podržana kroz PHP, ZIP isključen"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2673
+#: 1/admin/html.php:2693
 msgid "Uploaded Resources Management"
 msgstr "Upravljanje uploadanim resursima"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2679
+#: 1/admin/html.php:2699
 msgid "Browse Uploaded Resources"
 msgstr "Pregledaj učitane resurse"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2681
+#: 1/admin/html.php:2701
 msgid "Export Resources As ZIP Archive"
 msgstr "Eksportiranje resursa u ZIP arhivu"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2682
+#: 1/admin/html.php:2702
 msgid "Select ZIP File:"
 msgstr "Izaberi ZIP datoteku:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2685
+#: 1/admin/html.php:2705
 msgid "Import Resources ZIP Archive"
 msgstr "Importiranje resursa iz ZIP arhive"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2696
+#: 1/admin/html.php:2716
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "Sva pitanja, odgovori i dr za obrisani jezik biti će izgubljeni. Jeste li sigurni?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2696
+#: 1/admin/html.php:2716
 msgid "Save and Continue"
 msgstr "Snimi i nastavi"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2724
+#: 1/admin/html.php:2744
 msgid "This will replace the existing text. Continue?"
 msgstr "Ovo će zamijeniti postojeći tekst. Nastavak?"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2730
+#: 1/admin/html.php:2750
 msgid "Edit survey settings - Step 2 of 2"
 msgstr "Uređivanje upitnika - Korak 2 od 2"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2750
-#: 1/admin/html.php:3088
-#: 1/admin/html.php:3090
+#: 1/admin/html.php:2770
+#: 1/admin/html.php:3108
+#: 1/admin/html.php:3110
 msgid "Welcome message:"
 msgstr "Pozdravna poruka:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2754
-#: 1/admin/html.php:2756
-#: 1/admin/html.php:3092
-#: 1/admin/html.php:3094
+#: 1/admin/html.php:2774
+#: 1/admin/html.php:2776
+#: 1/admin/html.php:3112
+#: 1/admin/html.php:3114
 msgid "End message:"
 msgstr "Kraj poruke:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2758
-#: 1/admin/html.php:3189
+#: 1/admin/html.php:2778
+#: 1/admin/html.php:3209
 msgid "End URL:"
 msgstr "Završni URL:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2761
-#: 1/admin/html.php:3194
+#: 1/admin/html.php:2781
+#: 1/admin/html.php:3214
 msgid "URL description:"
 msgstr "Opis URL-a:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2764
-#: 1/admin/html.php:3205
+#: 1/admin/html.php:2784
+#: 1/admin/html.php:3225
 msgid "Date format:"
 msgstr "Format datuma:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2868
+#: 1/admin/html.php:2888
 msgid "Change Group Order"
 msgstr "Promijeni redoslijed grupa pitanja"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2878
+#: 1/admin/html.php:2898
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Trenutni upitnik sadrži pitanja sa uvjetima izvan njihove grupe pitanja"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2878
+#: 1/admin/html.php:2898
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "Menjanje redoslijeda grupa je ograničeno kako bi se osigurao redoslijed pitanja koja imaju uvjete i njihov redoslijed"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2878
+#: 1/admin/html.php:2898
 msgid "The following groups are concerned"
 msgstr "Sljedeće grupe pitanja su u pitanju"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2883
+#: 1/admin/html.php:2903
 #, php-format
 msgid "Group %s depends on group %s, see the marked conditions on:"
 msgstr "Grupa %s ovisi o grupi %s, pogledajte označene uvjete u:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2888
+#: 1/admin/html.php:2908
 msgid "QID"
 msgstr "QID"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2954
+#: 1/admin/html.php:2974
 msgid "Place after.."
 msgstr "Postavi iza..."
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:2959
+#: 1/admin/html.php:2979
 msgid "At beginning"
 msgstr "Na početak"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3049
+#: 1/admin/html.php:3069
 msgid "Create or Import Survey"
 msgstr "Stvori ili uvezi novi upitnik"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3053
-#: 1/admin/html.php:3107
-#: 1/admin/html.php:3217
-#: 1/admin/html.php:3286
-#: 1/admin/html.php:3362
+#: 1/admin/html.php:3073
+#: 1/admin/html.php:3127
+#: 1/admin/html.php:3237
+#: 1/admin/html.php:3306
+#: 1/admin/html.php:3382
 msgid "Error: You have to enter a title for this survey."
 msgstr "Greška: Morate unjeti naziv ovog upitnika"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3078
+#: 1/admin/html.php:3098
 msgid "This setting cannot be changed later!"
 msgstr "Ova postavka ne može se naknadno promijeniti!"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3083
+#: 1/admin/html.php:3103
 msgid "(This field is mandatory.)"
 msgstr "(Ovo polje je obavezno)"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3107
-#: 1/admin/html.php:3217
-#: 1/admin/html.php:3286
-#: 1/admin/html.php:3362
+#: 1/admin/html.php:3127
+#: 1/admin/html.php:3237
+#: 1/admin/html.php:3306
+#: 1/admin/html.php:3382
 msgid "Create Survey"
 msgstr "Kreirajte upitnik"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3244
+#: 1/admin/html.php:3264
 msgid "Start date:"
 msgstr "Početni datum:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3246
-#: 1/admin/html.php:3251
+#: 1/admin/html.php:3266
+#: 1/admin/html.php:3271
 #, php-format
 msgid "Date format: %s"
 msgstr "Format datuma: %s"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3249
+#: 1/admin/html.php:3269
 msgid "Expiry Date:"
 msgstr "Datum isteka:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3367
-#: 1/admin/html.php:3376
+#: 1/admin/html.php:3387
+#: 1/admin/html.php:3396
 msgid "Import Survey"
 msgstr "Uvezi upitnik"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3372
+#: 1/admin/html.php:3392
 msgid "Select CSV/SQL File:"
 msgstr "Izaberi CSV/SQL tip datoteke:"
 
 #: D:\LimeSurvey
-#: 1/admin/html.php:3374
+#: 1/admin/html.php:3394
 msgid "Convert resources links and INSERTANS fields?"
 msgstr "Konvertirati linkove resursa i polja INSERTANS?"
 
@@ -6808,9 +6818,9 @@ msgstr "Želiš li snimiti promjene?"
 #: 1/admin/importgroup.php:27
 #: 1/admin/importlabel.php:34
 #: 1/admin/importquestion.php:28
-#: 1/admin/import_resources_zip.php:195
-#: 1/admin/import_resources_zip.php:374
-#: 1/admin/import_resources_zip.php:557
+#: 1/admin/import_resources_zip.php:202
+#: 1/admin/import_resources_zip.php:384
+#: 1/admin/import_resources_zip.php:578
 #, php-format
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
 msgstr "Došlo je do greške prilikom uvoza datoteke. Uzrok greške mogu biti neispravno podešena prava u vašem %s direktoriju."
@@ -6821,8 +6831,8 @@ msgstr "Došlo je do greške prilikom uvoza datoteke. Uzrok greške mogu biti ne
 #: 1/admin/importlabel.php:45
 #: 1/admin/importquestion.php:63
 #: 1/admin/import_resources_zip.php:76
-#: 1/admin/import_resources_zip.php:255
-#: 1/admin/import_resources_zip.php:438
+#: 1/admin/import_resources_zip.php:259
+#: 1/admin/import_resources_zip.php:450
 msgid "File upload succeeded."
 msgstr "Datoteka uspješno prenesena."
 
@@ -6831,8 +6841,8 @@ msgstr "Datoteka uspješno prenesena."
 #: 1/admin/importlabel.php:46
 #: 1/admin/importquestion.php:64
 #: 1/admin/import_resources_zip.php:77
-#: 1/admin/import_resources_zip.php:256
-#: 1/admin/import_resources_zip.php:439
+#: 1/admin/import_resources_zip.php:260
+#: 1/admin/import_resources_zip.php:451
 msgid "Reading file.."
 msgstr "Čitam datoteku.."
 
@@ -6918,7 +6928,7 @@ msgstr "Idi na grupu"
 
 #: D:\LimeSurvey
 #: 1/admin/importlabel.php:27
-#: 1/admin/import_resources_zip.php:231
+#: 1/admin/import_resources_zip.php:215
 #: 1/admin/labels.php:178
 #: 1/admin/labels.php:181
 #: 1/admin/labels.php:195
@@ -7061,9 +7071,9 @@ msgstr "Ova datoteka nije u LimeSurvey formatu. Uvoz podataka nije uspio."
 #: D:\LimeSurvey
 #: 1/admin/importsurvey.php:400
 #: 1/admin/importsurvey.php:409
-#: 1/admin/importsurvey.php:577
-#: 1/admin/importsurvey.php:596
-#: 1/admin/importsurvey.php:626
+#: 1/admin/importsurvey.php:578
+#: 1/admin/importsurvey.php:597
+#: 1/admin/importsurvey.php:627
 msgid "Import of this survey file failed"
 msgstr "Uvoz ovog upitnika nije uspio"
 
@@ -7072,6 +7082,12 @@ msgstr "Uvoz ovog upitnika nije uspio"
 #: 1/admin/importsurvey.php:409
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Datoteka ne sadrži LimeSurvey podatke u pravilnom formatu."
+
+#: D:\LimeSurvey
+#: 1/admin/importsurvey.php:450
+#, php-format
+msgid "Template %s not found, please review when activating."
+msgstr "Predložak %s nije pronađen, provjerite prije aktivacije."
 
 #: D:\LimeSurvey
 #: 1/admin/importsurvey.php:797
@@ -7159,171 +7175,172 @@ msgid "Warnings"
 msgstr "Upozorenja"
 
 #: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:35
-#: 1/admin/import_resources_zip.php:212
-msgid "Demo Mode Only: Uploading file is disabled in this system."
-msgstr "Demo način rada: Slanje datoteka nije omogućeno."
-
-#: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:36
-#: 1/admin/import_resources_zip.php:59
-#: 1/admin/import_resources_zip.php:83
-#: 1/admin/import_resources_zip.php:153
-#: 1/admin/import_resources_zip.php:196
-#: 1/admin/import_resources_zip.php:379
-msgid "Back"
-msgstr "Natrag"
-
-#: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:52
+#: 1/admin/import_resources_zip.php:32
 msgid "Import Survey Resources"
 msgstr "Uvezi upitnik"
 
 #: D:\LimeSurvey
+#: 1/admin/import_resources_zip.php:38
+#: 1/admin/import_resources_zip.php:221
+msgid "Demo Mode Only: Uploading file is disabled in this system."
+msgstr "Demo način rada: Slanje datoteka nije omogućeno."
+
+#: D:\LimeSurvey
+#: 1/admin/import_resources_zip.php:39
+#: 1/admin/import_resources_zip.php:59
+#: 1/admin/import_resources_zip.php:83
+#: 1/admin/import_resources_zip.php:153
+#: 1/admin/import_resources_zip.php:203
+#: 1/admin/import_resources_zip.php:207
+#: 1/admin/import_resources_zip.php:389
+msgid "Back"
+msgstr "Natrag"
+
+#: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:58
-#: 1/admin/import_resources_zip.php:237
-#: 1/admin/import_resources_zip.php:414
+#: 1/admin/import_resources_zip.php:241
+#: 1/admin/import_resources_zip.php:424
 #, php-format
 msgid "Incorrect permissions in your %s folder."
 msgstr "Neispravna dozvola u %s mapi."
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:82
-#: 1/admin/import_resources_zip.php:261
-#: 1/admin/import_resources_zip.php:444
+#: 1/admin/import_resources_zip.php:265
+#: 1/admin/import_resources_zip.php:456
 msgid "This file is not a valid ZIP file archive. Import failed."
 msgstr "Ova datoteka nije LimeSurvey datoteka sa oznakama. Uvoz nije uspio."
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:103
-#: 1/admin/import_resources_zip.php:282
-#: 1/admin/import_resources_zip.php:467
+#: 1/admin/import_resources_zip.php:286
+#: 1/admin/import_resources_zip.php:480
 msgid "Copy failed"
 msgstr "Kopiranje neuspješno."
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:112
-#: 1/admin/import_resources_zip.php:291
-#: 1/admin/import_resources_zip.php:476
+#: 1/admin/import_resources_zip.php:295
+#: 1/admin/import_resources_zip.php:489
 msgid "OK"
 msgstr "U redu."
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:122
-#: 1/admin/import_resources_zip.php:301
-#: 1/admin/import_resources_zip.php:486
+#: 1/admin/import_resources_zip.php:305
+#: 1/admin/import_resources_zip.php:499
 msgid "Forbidden Extension"
 msgstr "Zabranjena ekstenzija"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:146
 #: 1/admin/import_resources_zip.php:165
-#: 1/admin/import_resources_zip.php:325
-#: 1/admin/import_resources_zip.php:344
-#: 1/admin/import_resources_zip.php:509
-#: 1/admin/import_resources_zip.php:527
+#: 1/admin/import_resources_zip.php:329
+#: 1/admin/import_resources_zip.php:347
+#: 1/admin/import_resources_zip.php:522
+#: 1/admin/import_resources_zip.php:541
 msgid "Imported Files List"
 msgstr "Popis importiranih datoteka"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:151
-#: 1/admin/import_resources_zip.php:330
+#: 1/admin/import_resources_zip.php:334
 msgid "This ZIP archive contains no valid Resources files. Import failed."
 msgstr "Ova datoteka nije u LimeSurvey formatu. Uvoz podataka nije uspio."
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:152
-#: 1/admin/import_resources_zip.php:331
+#: 1/admin/import_resources_zip.php:335
 msgid "Remember that we do not support subdirectories in ZIP Archive."
 msgstr "Oprez! Ne podržavamo poddirektorije u ZIP arhivi."
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:160
-#: 1/admin/import_resources_zip.php:339
-#: 1/admin/import_resources_zip.php:522
+#: 1/admin/import_resources_zip.php:342
+#: 1/admin/import_resources_zip.php:536
 msgid "Partial"
 msgstr "Djelomično"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:164
 #: 1/admin/import_resources_zip.php:172
-#: 1/admin/import_resources_zip.php:343
-#: 1/admin/import_resources_zip.php:351
-#: 1/admin/import_resources_zip.php:526
-#: 1/admin/import_resources_zip.php:534
+#: 1/admin/import_resources_zip.php:346
+#: 1/admin/import_resources_zip.php:354
+#: 1/admin/import_resources_zip.php:540
+#: 1/admin/import_resources_zip.php:548
 msgid "Error Files List"
 msgstr "Popis datoteka sa greškom"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:175
-#: 1/admin/import_resources_zip.php:354
+#: 1/admin/import_resources_zip.php:357
 msgid "Imported Resources for"
 msgstr "Uvezi odgovore"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:177
-#: 1/admin/import_resources_zip.php:356
-#: 1/admin/import_resources_zip.php:539
+#: 1/admin/import_resources_zip.php:359
+#: 1/admin/import_resources_zip.php:553
 msgid "Resources Import Summary"
 msgstr "Sažeti prikaz uvoza upitnika"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:178
-#: 1/admin/import_resources_zip.php:357
-#: 1/admin/import_resources_zip.php:540
+#: 1/admin/import_resources_zip.php:360
+#: 1/admin/import_resources_zip.php:554
 msgid "Total Imported files"
 msgstr "Uvezeno ukupno zapisa:"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:179
-#: 1/admin/import_resources_zip.php:358
-#: 1/admin/import_resources_zip.php:541
+#: 1/admin/import_resources_zip.php:361
+#: 1/admin/import_resources_zip.php:555
 msgid "Total Errors"
 msgstr "Ukupno grešaka"
 
 #: D:\LimeSurvey
 #: 1/admin/import_resources_zip.php:183
-#: 1/admin/import_resources_zip.php:189
-#: 1/admin/import_resources_zip.php:362
-#: 1/admin/import_resources_zip.php:368
-#: 1/admin/import_resources_zip.php:545
-#: 1/admin/import_resources_zip.php:551
+#: 1/admin/import_resources_zip.php:192
+#: 1/admin/import_resources_zip.php:365
+#: 1/admin/import_resources_zip.php:374
+#: 1/admin/import_resources_zip.php:559
+#: 1/admin/import_resources_zip.php:568
 msgid "File"
 msgstr "Datoteka:"
 
 #: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:389
-msgid "Demo mode: Uploading templates is disabled."
-msgstr "Demo način rada: Slanje predložaka nije moguće."
-
-#: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:408
+#: 1/admin/import_resources_zip.php:397
 msgid "Import Template"
 msgstr "Uvezi predložak"
 
 #: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:426
+#: 1/admin/import_resources_zip.php:403
+msgid "Demo mode: Uploading templates is disabled."
+msgstr "Demo način rada: Slanje predložaka nije moguće."
+
+#: D:\LimeSurvey
+#: 1/admin/import_resources_zip.php:437
 #, php-format
 msgid "Template '%s' does already exist."
 msgstr "Predložak '%s' već postoji."
 
 #: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:514
+#: 1/admin/import_resources_zip.php:527
 msgid "This ZIP archive contains no valid template files. Import failed."
 msgstr "ZIP datoteka ne sadrži ispravan predložak. Uvoz podataka nije uspio."
 
 #: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:515
+#: 1/admin/import_resources_zip.php:528
 msgid "Remember that we do not support subdirectories in ZIP archives."
 msgstr "Oprez, ne podržavamo poddirektorije u ZIP arhivama."
 
 #: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:537
+#: 1/admin/import_resources_zip.php:551
 msgid "Imported template files for"
 msgstr "Uvezen predložak za"
 
 #: D:\LimeSurvey
-#: 1/admin/import_resources_zip.php:561
+#: 1/admin/import_resources_zip.php:583
 msgid "Open imported template"
 msgstr "Otvoi uvezen predložak"
 
@@ -8729,7 +8746,6 @@ msgstr "Stranica sa pitanjima"
 
 #: D:\LimeSurvey
 #: 1/admin/templates.php:72
-#: 1/admin/templates.php:627
 msgid "Completed Page"
 msgstr "Cijela stranica"
 
@@ -8995,59 +9011,59 @@ msgid "Import template ZIP archive"
 msgstr "Importiranje predložaka iz ZIP arhive"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:917
+#: 1/admin/templates.php:914
 #, php-format
 msgid "Editing template '%s' - File '%s'"
 msgstr "Izmjena predloška '%s' - Datoteka '%s'"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:921
+#: 1/admin/templates.php:918
 msgid "Standard Files:"
 msgstr "Standardna datoteka:"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:936
+#: 1/admin/templates.php:933
 msgid "Changes cannot be saved to a standard template."
 msgstr "U osnovnom predlošku nije moguće snimiti promjene."
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:942
+#: 1/admin/templates.php:939
 msgid "You can't save changes because the template directory is not writable."
 msgstr "Ne mogu pohraniti izmjene predloška jer u mapi predložaka nije dozvoljeno pisanje."
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:946
+#: 1/admin/templates.php:943
 msgid "Other Files:"
 msgstr "Ostale datoteke:"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:951
+#: 1/admin/templates.php:948
 msgid "CSS & Javascript files:"
 msgstr "CSS & Javascript datoteke:"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:964
+#: 1/admin/templates.php:961
 msgid "Are you sure you want to delete this file?"
 msgstr "Jeste li ste sigurni da želite obrisati ovu datoteku?"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:966
+#: 1/admin/templates.php:963
 msgid "Files in a standard template cannot be deleted."
 msgstr "Datoteke u osnovnom predlošku se ne mogu obrisati."
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:978
+#: 1/admin/templates.php:975
 msgid "Upload a file:"
 msgstr "Pošalji datoteku:"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:979
+#: 1/admin/templates.php:976
 #: 1/admin/tokens.php:2655
 msgid "Upload"
 msgstr "Pošalji"
 
 #: D:\LimeSurvey
-#: 1/admin/templates.php:1000
+#: 1/admin/templates.php:997
 msgid "Preview:"
 msgstr "Pregled:"
 
@@ -10544,12 +10560,6 @@ msgstr "Dozvoljeno"
 #: 1/admin/userrighthandling.php:174
 msgid "Save Settings"
 msgstr "Snimi postavke"
-
-#: D:\LimeSurvey
-#: 1/admin/userrighthandling.php:210
-#: 1/admin/userrighthandling.php:407
-msgid "Full name"
-msgstr "Puno ime i prezime"
 
 #: D:\LimeSurvey
 #: 1/admin/userrighthandling.php:282
