@@ -19,14 +19,16 @@ include_once("login_check.php");
 // A FILE TO IMPORT A DUMPED question FILE, AND CREATE A NEW SURVEY
 
 $importquestion = "<div class='header'>".$clang->gT("Import Question")."</div>\n";
+$importquestion .= "<div class='messagebox'>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
-	$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	$importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
     $importquestion .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir)."<br /><br />\n";
-	$importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br /><br />\n";
+	$importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
+	$importquestion .= "</div>\n";
 	unlink($the_full_file_path);
 	return;
 }
@@ -34,10 +36,10 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 // validate that we have a SID and GID
 if (!returnglobal('sid'))
 {
-    $importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
-    ."<input type='submit' value='"
-    .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
-    ."</td></tr></table>\n";
+	$importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+    $importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n";
+	$importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
+	$importquestion .= "</div>\n";
     unlink($the_full_file_path);
     return;
 }
@@ -48,8 +50,10 @@ else
 
 if (!returnglobal('gid'))
 {
-    $importquestion .= $clang->gT("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
-    ."</td></tr></table>\n";
+	$importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+    $importquestion .= $clang->gT("No GID (Group) has been provided. Cannot import question")."<br /><br />\n";
+	$importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
+	$importquestion .= "</div>\n";
     unlink($the_full_file_path);
     return;
 }
@@ -59,7 +63,7 @@ else
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-$importquestion .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
+$importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
 $importquestion .= $clang->gT("File upload succeeded.")."<br /><br />\n"
 .$clang->gT("Reading file..")."<br /><br />\n";
 $handle = fopen($the_full_file_path, "r");
@@ -513,7 +517,7 @@ if (isset($countquestion_attributes)) {$importquestion .= $countquestion_attribu
 $importquestion .= "</li></ul>\n";
 
 $importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n";
-$importquestion .= "<a href='$scriptname?sid=$newsid&amp;gid=$newgid&amp;qid=$newqid'>".$clang->gT("Go to question")."</a><br />\n";
+$importquestion .= "<input type='submit' value='".$clang->gT("Go to question")."' onclick=\"window.open('$scriptname?sid=$newsid&amp;gid=$newgid&amp;qid=$newqid', '_top')\" />\n";
 $importquestion .= "</div><br />\n";
 
 
