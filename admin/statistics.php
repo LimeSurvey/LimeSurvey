@@ -457,8 +457,7 @@ foreach ($filters as $flt)
 	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" &&
 	$flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" &&
 	$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" &&
-	$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
-	$flt[2] != ":" && $flt[2] != ";") //Have to make an exception for these types!
+	$flt[2] != "X" && $flt[2] != "K" &&	$flt[2] != ":" && $flt[2] != ";") //Have to make an exception for these types!
 	{
 
 		$statisticsoutput .= "\t\t\t\t<td align='center'>";
@@ -1271,50 +1270,10 @@ foreach ($filters as $flt)
 			unset($answers);
 			break;
 
-
-
 			//Boilerplate questions are only used to put some text between other questions -> no analysis needed
 		case "X": //This is a boilerplate question and it has no business in this script
 			$statisticsoutput .= "\t\t\t\t<td></td>";
 			break;
-
-
-
-			//Dropdown and radio lists
-		case "W":
-		case "Z":
-				
-			$statisticsoutput .= "\t\t\t\t<td align='center'>";
-			$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
-
-			//pre-check
-			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
-			{$statisticsoutput .= " checked='checked'";}
-
-			$statisticsoutput .= " />&nbsp;<strong>".showSpeaker($niceqtext)."</strong><br />\n";
-			$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
-
-			//get labels (code and title)
-			$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
-			$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-
-			//loop through all the labels
-			while($row=$result->FetchRow())
-			{
-				$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
-					
-				//pre-check
-				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
-					
-				$statisticsoutput .= ">({$row[0]}) ".FlattenText($row[1])."</option>\n";
-
-			} // while
-
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
-			break;
-
-
-
 
 		case "1": // MULTI SCALE
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";

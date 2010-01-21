@@ -90,7 +90,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	//  # ";" -> Array Multi Flexi Text
 	//  # "1" -> MULTI SCALE
 	
-	$chkquery = "SELECT qid, question, gid, type FROM {$dbprefix}questions WHERE sid={$surveyid}";
+	$chkquery = "SELECT qid, question, gid, type FROM {$dbprefix}questions WHERE sid={$surveyid} and parent_qid=0";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
 	while ($chkrow = $chkresult->FetchRow())
 	{
@@ -116,7 +116,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
         }
 	}
 
-	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
+	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type = ''";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing types<br />$chkquery<br />".$connect->ErrorMsg());
 	while ($chkrow = $chkresult->FetchRow())
@@ -127,14 +127,14 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	
 	
 
-	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
+	//ChECK THAT certain array question types have answers set
 	$chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1')";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing sub-questions<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires sub-questions, but none are set."), $chkrow['gid']);
 	} // while
 	
-	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID1" SET FOR MULTI SCALE
+	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS has answers set
     $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=2)=0 and sid={$_GET['sid']} AND type='1'";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
@@ -142,25 +142,6 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	} // while
 	
 	
-	//NOW check that all used labelsets have all necessary languages
-	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid > 0) AND (lid is not null)";
-	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
-	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
-	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	array_unshift($slangs,$baselang);
-	while ($chkrow = $chkresult->FetchRow())
-	{
-	    foreach ($slangs as $surveylanguage)
-			{
-			$chkquery2 = "SELECT lid FROM {$dbprefix}labels WHERE language='$surveylanguage' AND (lid = {$chkrow['lid']}) ";
-			$chkresult2 = db_execute_assoc($chkquery2);
-			if ($chkresult2->RecordCount()==0)
-	            {
-				$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("The labelset used in this question does not exists or is missing a translation."), $chkrow['gid']);
-	    		}
-			}  //foreach
-	} //while 
-
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
 	//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
@@ -352,8 +333,6 @@ else
 				break;
 				case "L":  //LIST (RADIO)
 				case "!":  //LIST (DROPDOWN)
-				case "W":
-				case "Z":
 					$createsurvey .= " C(5)";
 					if ($arow['other'] == "Y")
 					{

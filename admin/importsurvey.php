@@ -854,7 +854,7 @@ if (isset($grouparray) && $grouparray) {
                   else 
                     if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}
 
-				if (!array_key_exists($questionrowdata["type"], $qtypes))
+				if (!array_key_exists($questionrowdata["type"], $qtypes) && $questionrowdata["type"]!='W' && $questionrowdata["type"]!='Z')
                 {
                 	$questionrowdata["type"] = strtoupper($questionrowdata["type"]);
                 	if (!array_key_exists($questionrowdata["type"], $qtypes))
@@ -896,8 +896,18 @@ if (isset($grouparray) && $grouparray) {
                         {
                             $oldlid2=$questionrowdata['lid1'];
                         }
-                        unset($questionrowdata['lid']);
-                        unset($questionrowdata['lid1']);
+//                        unset($questionrowdata['lid']);
+//                        unset($questionrowdata['lid1']);
+                        if ($questionrowdata['type']=='W')
+                        {
+                            $questionrowdata['type']='!';
+                        }
+                        elseif ($questionrowdata['type']=='Z')
+                        {
+                            $questionrowdata['type']='L';
+                            
+                        }
+                        
                     }
                     
                     if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;} 

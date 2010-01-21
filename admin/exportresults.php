@@ -134,7 +134,7 @@ if (!$exportstyle)
 		{
 			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'];
 		}
-		if ($rows['other']=="Y" && ($rows['type']=='M' || $rows['type']=='!'|| $rows['type']=='L' || $rows['type']=='P' || $rows['type'] == "Z" || $rows['type'] == "W"))
+		if ($rows['other']=="Y" && ($rows['type']=='M' || $rows['type']=='!'|| $rows['type']=='L' || $rows['type']=='P'))
 		{
 			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."other";
 		}
@@ -646,8 +646,6 @@ for ($i=0; $i<$fieldcount; $i++)
 					break;
 				case "L":
 				case "!":
-				case "W":
-				case "Z":
 					if ($faid == "other") {
 						$fquest .= " [".$elang->gT("Other")."]";
 					}
@@ -1147,32 +1145,6 @@ elseif ($answers == "long")        //chose complete answers
 									if($type == "pdf"){$pdf->intopdf(strip_tags_full($lrow['answer']));}
 								}
 
-							}
-						}
-					}
-					break;
-				case "W":
-				case "Z":
-					if (mb_substr($fieldinfo, -5, 5) == "other")
-					{
-						$exportoutput .= strip_tags_full($drow[$i]);
-						if($type == "pdf"){$pdf->intopdf($drow[$i]);}
-					}
-					else
-					{
-						if ($drow[$i] == "-oth-")
-						{
-							$exportoutput .= $elang->gT("Other");
-							if($type == "pdf"){$pdf->intopdf($elang->gT("Other"));}
-						}
-						else
-						{
-							$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND language='$explang' AND code='$drow[$i]'";
-							$fresult = db_execute_assoc($fquery) or safe_die("ERROR:".$fquery."<br />".$qq."<br />".$connect->ErrorMsg());
-							while ($frow = $fresult->FetchRow())
-							{
-								$exportoutput .= strip_tags_full($frow['title']);
-								if($type == "pdf"){$pdf->intopdf($frow['title']);}
 							}
 						}
 					}

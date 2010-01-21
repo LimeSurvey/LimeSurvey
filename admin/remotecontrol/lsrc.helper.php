@@ -2397,8 +2397,6 @@ class LsrcHelper {
 							break;
 						case "L":  //LIST (RADIO)
 						case "!":  //LIST (DROPDOWN)
-						case "W":
-						case "Z":
 							$createsurvey .= " C(5)";
 							if ($arow['other'] == "Y")
 							{
@@ -3136,7 +3134,7 @@ class LsrcHelper {
 					unset($questionrowdata['qid']);
 
 					// replace the lid for the new one (if there is no new lid in the $newlids array it mean that was not imported -> error, skip this record)
-					if (in_array($questionrowdata["type"], array("F","H","W","Z", "1", ":", ";")))      // only fot the questions that uses a label set.
+					if (in_array($questionrowdata["type"], array("F", "H", "1", ":", ";")))      // only fot the questions that uses a label set.
 					if (isset($newlids[$questionrowdata["lid"]]))
 					{
 						$questionrowdata["lid"] = $newlids[$questionrowdata["lid"]];
@@ -3729,9 +3727,7 @@ class LsrcHelper {
 					$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK ");
 					// Now we will fix up the label id
 					$type = $questionrowdata["type"]; //Get the type
-					if ($type == "F" || $type == "H" || $type == "W" ||
-					$type == "Z" || $type == "1" || $type == ":" ||
-					$type == ";" )
+					if ($type == "F" || $type == "H" || $type == "1" || $type == ":" ||	$type == ";" )
 					{//IF this is a flexible label array, update the lid entry
 						 
 						$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK ");
@@ -4016,10 +4012,8 @@ class LsrcHelper {
 			"S"=>"Short Free Text",
 			"T"=>"Long Free Text",
 			"U"=>"Huge Free Text",
-			"W"=>"List (Flexible Labels) (Dropdown)",
 			"X"=>"Boilerplate Question",
 			"Y"=>"Yes/No",
-			"Z"=>"List (Flexible Labels) (Radio)",
 			"!"=>"List (Dropdown)",
 			":"=>"Array (Multi Flexible) (Numbers)",
 			";"=>"Array (Multi Flexible) (Text)",

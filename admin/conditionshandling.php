@@ -882,31 +882,6 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
 				break;
-				case "W": // List Flexibel Label Dropdown
-				case "Z": // List Flexible Radio Button
-					$fquery = "SELECT * FROM {$dbprefix}labels\n"
-					. "WHERE lid={$rows['lid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-					. "ORDER BY sortorder, code";
-
-				$fresult = db_execute_assoc($fquery);
-
-				if (!isset($arows['code'])) {$arows['code']='';}  // for some questions types there is no code
-				while ($frow=$fresult->FetchRow())
-				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
-				}
-				// For dropdown questions
-				// optinnaly add the 'Other' answer
-				if ($rows['other'] == "Y")
-				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", $clang->gT("Other"));
-				}
-				// Only Show No-Answer if question is not mandatory
-				if ($rows['mandatory'] != 'Y')
-				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
-				}
-				break;
 
 				case "N": // Simple Numerical questions
 

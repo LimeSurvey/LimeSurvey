@@ -262,9 +262,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
 						}
 					}
-					// if "!" "L" "W" "Z", and Other ==> add other fieldname
-					if ($irow['type'] == "!" || $irow['type'] == "L" ||
-						$irow['type'] == "W" || $irow['type'] == "Z")
+					// if "!" "L" and Other ==> add other fieldname
+					if ($irow['type'] == "!" || $irow['type'] == "L")
 					{
 						$fieldname2=$fieldname."other";
 						if (isset($_POST[$fieldname2]) && isset($_POST[$fieldname]) && $_POST[$fieldname] == '-oth-' && $_POST[$fieldname2]!= "")
@@ -361,7 +360,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					while ($i2row = $i2result->FetchRow())
 					{
 						$otherexists = "";
-						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P" or $irow['type'] == "W" or $irow['type'] == "Z")) {$otherexists = "Y";}
+						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P")) {$otherexists = "Y";}
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 						if (isset($_POST[$fieldname]))
 						{
@@ -723,7 +722,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-				if (($fnrow['type'] == "L" || $fnrow['type'] == "!" || $fnrow['type'] == "Z" || $fnrow['type'] == "W") && $fnrow['other'] =="Y")
+				if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] =="Y")
 				{
 					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				}
@@ -884,44 +883,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					    $dataentryoutput .= ">".$clang->gT("Male")."</option>\n"
 					    ."\t</select>\n";
 					break;
-					case "W":
-					case "Z":
-						if (substr($fnames[$i][0], -5) == "other")
-						{
-							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
-						}
-						else
-						{
-							$lquery = "SELECT * FROM ".db_table_name("labels")
-                                     ." WHERE lid={$fnames[$i][8]} AND ".db_table_name("labels").".language = '{$language}' ORDER BY sortorder, code";
-							$lresult = db_execute_assoc($lquery);
-							$dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n"
-							."<option value=''";
-							if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
-							$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
-
-							while ($llrow = $lresult->FetchRow())
-							{
-								$dataentryoutput .= "<option value='{$llrow['code']}'";
-								if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
-								$dataentryoutput .= ">{$llrow['title']}</option>\n";
-							}
-							$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
-							$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
-							while($orow = $oresult->FetchRow())
-							{
-								$fother=$orow['other'];
-							}
-							if ($fother =="Y")
-							{
-								$dataentryoutput .= "<option value='-oth-'";
-								if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected='selected'";}
-								$dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
-							}
-							$dataentryoutput .= "\t</select>\n";
-						}
-						break;
 					case "L": //LIST drop-down
 					case "!": //List (Radio)
 					$qidattributes=getQuestionAttributes($fnames[$i][7]);
@@ -1678,7 +1639,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				}
 				unset($thisvalue);
 				// handle ! other
-				if (($irow['type'] == "!" || $irow['type'] == "W" || $irow['type'] == "Z" || $irow['type'] == "L") && $irow['other'] == "Y")
+				if (($irow['type'] == "!" || $irow['type'] == "L") && $irow['other'] == "Y")
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
@@ -2170,36 +2131,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					}
 					$dataentryoutput .= "\t</table>\n";
 					break;
-					case "W": //Flexible List drop-down/radio-button
-					case "Z":
-						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$language}' ORDER BY sortorder, code";
-						$dearesult = db_execute_assoc($deaquery);
-						$dataentryoutput .= "\t<select name='$fieldname'>\n";
-						$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n";
-						while ($dearow = $dearesult->FetchRow())
-						{
-							$dataentryoutput .= "<option value='{$dearow['code']}'";
-							$dataentryoutput .= ">{$dearow['title']}</option>\n";
-						}
 
-						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$language}'";
-						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
-						while($orow = $oresult->FetchRow())
-						{
-							$fother=$orow['other'];
-						}
-						if ($fother == "Y")
-						{
-							$dataentryoutput .= "<option value='-oth-'>".$blang->gT("Other")."</option>\n";
-						}
-						$dataentryoutput .= "\t</select>\n";
-						if ($fother == "Y")
-						{
-							$dataentryoutput .= "\t"
-							.$blang->gT("Other").":"
-							."<input type='text' name='{$fieldname}other' value='' />\n";
-						}
-						break;
 					case "1": // multi scale^
 						$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 						$dearesult = db_execute_assoc($deaquery);

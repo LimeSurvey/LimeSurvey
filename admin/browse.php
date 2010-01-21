@@ -194,7 +194,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
 				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (".$clang->gT("Comment").")");}
 			}
-			if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P" || $fnrow['type'] == "Z" || $fnrow['type'] == "W"))
+			if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P" ))
 			{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(".$clang->gT("Other").")");
 				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']} (".$clang->gT("Other Comment").")");}
@@ -280,7 +280,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		else
 		{
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
-			if (($fnrow['type'] == "L" || $fnrow['type'] == "!" || $fnrow['type'] == "W" || $fnrow['type'] == "Z") && $fnrow['other'] == "Y")
+			if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y")
 			{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(".$clang->gT("Other").")");
 			}

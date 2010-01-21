@@ -489,7 +489,7 @@ if (isset($grouparray) && $grouparray)
                 unset($questionrowdata['qid']);
             
             // replace the lid for the new one (if there is no new lid in the $newlids array it mean that was not imported -> error, skip this record)
-            if (in_array($questionrowdata["type"], array("F","H","W","Z", "1", ":", ";")))      // only fot the questions that uses a label set.
+            if (in_array($questionrowdata["type"], array("F", "H", "W", "Z", "1", ":", ";")))      // only fot the questions that uses a label set.
                 if (isset($newlids[$questionrowdata["lid"]]))
                 {
                     $questionrowdata["lid"] = $newlids[$questionrowdata["lid"]];

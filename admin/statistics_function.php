@@ -1595,40 +1595,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						break;
 	
 	
-	
 					case "5": //5 Point (just 1 item to rank!)
 						for ($i=1; $i<=5; $i++)
 						{
 							$alist[]=array("$i", "$i");
 						}
 						break;
-	
-	
+
 							
-					case "W":	//List felixble labels (dropdown)
-						
-					case "Z":	//List flexible labels (radio)
-							
-						//get answers
-						$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qid}' AND language='{$language}' ORDER BY sortorder, code";
-						$fresult = db_execute_assoc($fquery);
-	
-						//put label code and label title into array
-						while ($frow=$fresult->FetchRow())
-						{
-							$alist[]=array($frow['code'], FlattenText($frow['title']));
-						}
-	
-						//does "other" field exist?
-						if ($qother == "Y")
-						{
-							$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
-						}
-						break;
-	
-	
-	
-	
 					case "1":	//array flexible labels (dual scale)
 						 
 						//get question attributes

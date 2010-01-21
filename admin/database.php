@@ -429,15 +429,15 @@ if(isset($surveyid))
         $keepsubquestions = ($qtypes[$_POST['type']]['subquestions']>0);
 
         // These are the questions types that have the other option therefore we set everything else to 'No Other'
-        if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M") && ($_POST['type'] != "W") && ($_POST['type'] != "Z"))
+        if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M"))
         {
             $_POST['other']='N';
         }
 
         // These are the questions types that have no validation - so zap it accordingly
 
-        if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" || $_POST['type']== "W" ||
-            $_POST['type']== "Z" || $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
+        if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" || 
+            $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
             $_POST['type']== "X" || $_POST['type']== "")
         {
             $_POST['preg']='';

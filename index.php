@@ -2413,7 +2413,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			$_SESSION['insertarray'][] = $fn2;
 				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); 
 		}
-		elseif ($arow['type'] == "L" || $arow['type'] == "!" || $arow['type'] == "Z" || $arow['type'] == "L" || $arow['type'] == "W")	// List (Radio) - List (Dropdown)
+		elseif ($arow['type'] == "L" || $arow['type'] == "!")	// List (Radio) - List (Dropdown)
 		{
 			$_SESSION['insertarray'][] = $fieldname;
 			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 

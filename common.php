@@ -980,10 +980,6 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'subquestions'=>0,
                'assessable'=>0,
                'answerscales'=>0),
-	"W"=>array('description'=>$clang->gT("List (Flexible Labels) (Dropdown)"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>1),
 	"X"=>array('description'=>$clang->gT("Boilerplate Question"),
                'subquestions'=>0,
                'assessable'=>0,
@@ -992,10 +988,6 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'subquestions'=>0,
                'assessable'=>0,
                'answerscales'=>0),
-	"Z"=>array('description'=>$clang->gT("List (Flexible Labels) (Radio)"),
-               'subquestions'=>0,
-               'assessable'=>1,
-               'answerscales'=>1),
 	"!"=>array('description'=>$clang->gT("List (Dropdown)"),
                'subquestions'=>0,
                'assessable'=>0,
@@ -2200,8 +2192,6 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
 			    break;
 			case "F":
 			case "H":
-			case "W":
-			case "Z":
 			case "1":
 			    $query = "SELECT title FROM ".db_table_name('labels')." WHERE ((lid=$this_lid) OR (lid=$this_lid1)) AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
 			    $result = db_execute_assoc($query) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
@@ -2245,8 +2235,6 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
 					case "5":
 					case "L":
 					case "O":
-					case "W":
-					case "Z":
 						return $value;
 						break;
 					default:
@@ -2407,8 +2395,6 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			{
 				case "L":  //RADIO LIST
 				case "!":  //DROPDOWN LIST
-				case "W":  //FLEXIBLE DROPDOWN LIST
-				case "Z":  //FLEXIBLE RADIO LIST
 				if ($arow['other'] == "Y")
 				{
 					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other",

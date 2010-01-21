@@ -540,7 +540,6 @@ while ($degrow = $degresult->FetchRow())
 							break;
 						case "F":
 						case "H":
-						case "W":
 						default:
 							$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 							$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
@@ -743,68 +742,6 @@ while ($degrow = $degresult->FetchRow())
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
 					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Female")." | o ".$clang->gT("Male"));}
 
-					break;
-
-// ==================================================================
-			case "W": //Flexible List
-
-// ==================================================================
-			case "Z": //LIST Flexible drop-down/radio-button list
-                    if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='') 
-					{
-						$dcols=$qidattributes['display_columns'];
-					}
-					else
-					{
-						$dcols=1;
-					}
-					$question['QUESTION_TYPE_HELP'] = "\n\t<p class=\"help-first\">".$clang->gT("Please choose *only one* of the following:")."</p>\n";
-					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
-					$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder";
-					$dearesult = db_execute_assoc($deaquery) or safe_die("ERROR: $deaquery<br />\n".$connect->ErrorMsg());
-					$deacount=$dearesult->RecordCount();
-					if ($deqrow['other'] == "Y")
-					{
-						$deacount++;
-					}
-					$wrapper = setup_columns($dcols, $deacount);
-
-					$question['ANSWER'] = $wrapper['whole-start'];
-
-					$rowcounter = 0;
-					$colcounter = 1;
-
-					while ($dearow = $dearesult->FetchRow())
-					{
-						$question['ANSWER'] .= $wrapper['item-start'].input_type_image('radio' , $dearow['code']).' '.$dearow['title'].$wrapper['item-end'];
-						if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['title']);}
-
-						++$rowcounter;
-						if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
-						{
-							if($colcounter == $wrapper['cols'] - 1)
-							{
-								$question['ANSWER'] .= $wrapper['col-devide-last'];
-							}
-							else
-							{
-								$question['ANSWER'] .= $wrapper['col-devide'];
-							}
-							$rowcounter = 0;
-							++$colcounter;
-					}
-					}
-					if ($deqrow['other'] == "Y")
-					{
-						$qidattributes = getQuestionAttributes($deqrow['qid']);
-						if(trim($qidattributes["other_replace_text"])=='')
-						{$qidattributes["other_replace_text"]="Other";}
-					
-						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"])."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT($qidattributes["other_replace_text"]).": ________");}
-					}
-					$question['ANSWER'] .= $wrapper['whole-end'];
-					//Let's break the presentation into columns.
 					break;
 
 // ==================================================================
