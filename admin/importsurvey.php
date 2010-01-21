@@ -847,7 +847,7 @@ if (isset($grouparray) && $grouparray) {
 	        				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
 	        				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
                 }
- 	          		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+ 	          	$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
                 $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
 
                 if ($currentqid=='' || ($currentqid!=$questionrowdata['qid'])) {$currentqid=$questionrowdata['qid'];$newquestion=true;}
@@ -887,6 +887,7 @@ if (isset($grouparray) && $grouparray) {
 					$oldqid=$qid;
 
                     if ($importversion<143) {
+                        unset($oldlid1); unset($oldlid2);
                         if ((isset($questionrowdata['lid']) && $questionrowdata['lid']>0))
                         {
                             $oldlid1=$questionrowdata['lid'];
@@ -932,6 +933,17 @@ if (isset($grouparray) && $grouparray) {
                                         VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).")"; 
                             $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                         }
+                        if (isset($oldlid2))
+                        {
+                            $query="select * from ".db_table_name('labels')." where lid={$labelreplacements[$oldlid2]}";
+                            $oldlabelsresult=db_execute_assoc($query);
+                            while($labelrow=$oldlabelsresult->FetchRow())
+                            {
+                                $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id) 
+                                            VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",2)"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                            }
+                        }
                           
 
                     }
@@ -976,11 +988,11 @@ if (isset($grouparray) && $grouparray) {
                                 $newvalues=array_values($answerrowdata);
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                                 
-                                // Now we will fix up old answer where they are really subquestions
+                                // Now we will fix up old answers where they are really subquestions
                                 if ($importversion<143 && $qtypes[$type]['subquestions']>0)
                                 {
-                                    $qinsert = "insert INTO ".db_table_name('questions')." (parent_qid,title,question,question_order,language) 
-                                                VALUES ({$answerrowdata['qid']},".db_quoteall($answerrowdata['code']).",".db_quoteall($answerrowdata['answer']).",".db_quoteall($answerrowdata['sortorder']).",".db_quoteall($answerrowdata['language']).")"; 
+                                    $qinsert = "insert INTO ".db_table_name('questions')." (parent_qid,sid,gid,title,question,question_order,language) 
+                                                VALUES ({$answerrowdata['qid']},$newsid,$newgid,".db_quoteall($answerrowdata['code']).",".db_quoteall($answerrowdata['answer']).",".db_quoteall($answerrowdata['sortorder']).",".db_quoteall($answerrowdata['language']).")"; 
                                     $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                                 }
                                 else {

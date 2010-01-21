@@ -32,10 +32,13 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 		$newqid=$lastqid+1;
 		$query = "UPDATE {$dbprefix}questions SET qid=$newqid WHERE qid=$oldqid";
 		$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
-		//Update conditions.. firstly conditions FOR this question
+        // Update subquestions
+        $query = "UPDATE {$dbprefix}questions SET parent_qid=$newqid WHERE parent_qid=$oldqid";
+        $result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+		// Update conditions.. firstly conditions FOR this question
 		$query = "UPDATE {$dbprefix}conditions SET qid=$newqid WHERE qid=$oldqid";
 		$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
-		//Now conditions based upon this question
+		// Now conditions based upon this question
 		$query = "SELECT cqid, cfieldname FROM {$dbprefix}conditions WHERE cqid=$oldqid";
 		$result = db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());
 		while ($row=$result->FetchRow())
@@ -125,14 +128,14 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	
 
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid = 0 OR lid is null)";
-	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
+	$chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1')";
+	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing sub-questions<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
-		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a Labelset, but none is set."), $chkrow['gid']);
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires sub-questions, but none are set."), $chkrow['gid']);
 	} // while
 	
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID1" SET FOR MULTI SCALE
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND (type ='1') AND (lid1 = 0 OR lid1 is null)";
+    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=2)=0 and sid={$_GET['sid']} AND type='1'";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second Labelset, but none is set."), $chkrow['gid']);
@@ -323,6 +326,7 @@ else
 	." AND ".db_table_name('questions').".sid={$postsid} "
 	." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
 	." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
+    ." AND parent_qid=0 "
 	." ORDER BY group_order, question_order";
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
@@ -409,19 +413,21 @@ else
 		elseif ($arow['type'] == ":" || $arow['type'] == ";")
 		{
 			//MULTI ENTRY
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+            $abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                        ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY a.sortorder, a.answer";
+                       ." ORDER BY sq.question_order, sq.question";
+
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			$ab2query = "SELECT ".db_table_name('labels').".*
-			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
+			$ab2query = "SELECT a.*
+			             FROM ".db_table_name('questions')." q, ".db_table_name('answers')." a
 			             WHERE sid=$surveyid 
-						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
-						 AND ".db_table_name('labels').".language='".GetbaseLanguageFromSurveyid($postsid)."' 
-			             AND ".db_table_name('questions').".qid=".$arow['qid']."
-			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+						 AND a.qid=q.qid
+						 AND a.language='".GetbaseLanguageFromSurveyid($postsid)."' 
+			             AND q.qid=".$arow['qid']."
+                         AND a.scale_id=1
+			             ORDER BY a.sortorder, a.answer";
 			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
 			while($ab2row=$ab2result->FetchRow())
 			{
@@ -431,7 +437,7 @@ else
 			{
 			    foreach($lset as $ls)
 			    {
-				    $createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}` X,\n";
+				    $createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$ls['code']}` X,\n";
 				}
 			}
 			unset($lset);

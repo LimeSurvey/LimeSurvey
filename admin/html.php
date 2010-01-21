@@ -271,7 +271,7 @@ if ($surveyid)
 	if(hasRight($surveyid))
 	{
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of questions for this survey
+		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
 		$sumresult3 = $connect->Execute($sumquery3); //Checked
 		$sumcount3 = $sumresult3->RecordCount();
 		$sumquery6 = "SELECT * FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')."as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
@@ -1304,6 +1304,7 @@ if ($action=='editansweroptions')
                           var languagecount=".count($anslangs).";\n
                           var scalecount=".$scalecount."; 
                           var assessmentvisible=".($assessmentvisible?'true':'false')."; 
+                          var newansweroption_text='".$clang->gT('New answer option','js')."'; 
                           var langs='".implode(';',$anslangs)."';</script>\n";
 
 	foreach ($anslangs as $anslang)

@@ -2384,7 +2384,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 	." questions.language='{$s_lang}' AND "
     ." questions.parent_qid=0 AND "
 	." groups.language='{$s_lang}' "
-	." ORDER BY group_order, question_order";
+	." ORDER BY group_order, question_order"; //converted
 	$aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{
@@ -2448,22 +2448,22 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		elseif ($arow['type'] == ":" || $arow['type'] == ";")
 		{
 		    //MULTI FLEXI
-			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other, ".db_table_name('questions').".lid\n"
-			." FROM ".db_table_name('answers').", ".db_table_name('questions')
-			." WHERE sid=$surveyid AND ".db_table_name('answers').".qid=".db_table_name('questions').".qid "
-			. "AND ".db_table_name('questions').".language='".$s_lang."'"
-			." AND ".db_table_name('answers').".language='".$s_lang."'"
-			." AND ".db_table_name('questions').".qid={$arow['qid']} "
-			." ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abquery = "SELECT sq.*, q.other\n"
+			." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
+			." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
+			. "AND q.language='".$s_lang."'"
+			." AND sq.language='".$s_lang."'"
+			." AND q.qid={$arow['qid']} "
+			." ORDER BY sq.question_order, sq.question"; //converted
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (case :)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
-			$ab2query = "SELECT ".db_table_name('labels').".*
-			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
-			             WHERE sid=$surveyid 
-						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
-			             AND ".db_table_name('questions').".language='".$s_lang."'
-			             AND ".db_table_name('labels').".language='".$s_lang."'
-			             AND ".db_table_name('questions').".qid=".$arow['qid']."
-			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+			$ab2query = "SELECT a.*
+			             FROM ".db_table_name('questions')." q, ".db_table_name('answers')." a 
+			             WHERE q.sid=$surveyid 
+						 AND a.qid=q.qid
+			             AND q.language='".$s_lang."'
+			             AND a.language='".$s_lang."'
+			             AND q.qid=".$arow['qid']."
+			             ORDER BY a.sortorder, a.answer"; //converted
 			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
 			$lset=array();
 			while($ab2row=$ab2result->FetchRow())
@@ -2474,18 +2474,18 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			{
 			    foreach($lset as $ls)
 			    {
-				  $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}", 
+				  $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$ls['code']}", 
 				                    "type"=>$arow['type'], 
 									"sid"=>$surveyid, 
 									"gid"=>$arow['gid'], 
 									"qid"=>$arow['qid'], 
-									"aid"=>$abrow['code']."_".$ls['code'],
+									"aid"=>$abrow['title']."_".$ls['code'],
 									"lid"=>$abrow['lid']);
 				  if ($abrow['other']=="Y") {$alsoother="Y";}
 				  if ($style == "full")
 			  	  {
 					$fieldmap[$counter]['title']=$arow['title'];
-					$fieldmap[$counter]['question']=$arow['question']."[".$ls['title']."] [".$abrow['answer']."]";
+					$fieldmap[$counter]['question']=$arow['question']."[".$ls['answer']."] [".$abrow['question']."]";
 					$fieldmap[$counter]['group_name']=$arow['group_name'];
 				  }
 				  $counter++;
@@ -2502,7 +2502,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			. "AND subquestions.language='{$s_lang}'"
 			." AND questions.language='{$s_lang}'"
 			." AND questions.qid={$arow['qid']} "
-			." ORDER BY subquestions.question_order";
+			." ORDER BY subquestions.question_order"; //converted
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
 			while ($abrow=$abresult->FetchRow())
 			{
@@ -2552,12 +2552,13 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		}
 		elseif ($arow['type'] == "Q" || $arow['type'] == "K")
 		{
-			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM "
-			.db_table_name('answers').", ".db_table_name('questions')." WHERE sid=$surveyid AND "
-			.db_table_name('answers').".qid=".db_table_name('questions').".qid AND "
-			.db_table_name('answers').".language='".$s_lang."' AND "
-			.db_table_name('questions').".language='".$s_lang."' AND "
-			.db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+            $abquery = "SELECT subquestions.*, questions.other\n"
+            ." FROM ".db_table_name('questions')." as subquestions, ".db_table_name('questions')." as questions"
+            ." WHERE questions.sid=$surveyid AND subquestions.parent_qid=questions.qid "
+            . "AND subquestions.language='{$s_lang}'"
+            ." AND questions.language='{$s_lang}'"
+            ." AND questions.qid={$arow['qid']} "
+            ." ORDER BY subquestions.question_order,question"; //converted
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 			while ($abrow=$abresult->FetchRow())
 			{
@@ -2573,21 +2574,21 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		}
 		elseif ($arow['type'] == "1")
 		{
-			$abquery = "SELECT a.*, q.other, q.lid, q.lid1 FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
-                       ." AND a.language='".$s_lang. "' "
+			$abquery = "SELECT sq.*, q.other, q.lid, q.lid1 FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+                       ." WHERE sq.parent_qid=q.qid AND q.sid=$surveyid AND q.qid={$arow['qid']} "
+                       ." AND sq.language='".$s_lang. "' "
                        ." AND q.language='".$s_lang. "' "
-                       ." ORDER BY a.sortorder, a.answer";
+                       ." ORDER BY sq.question_order, sq.question";
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());    //Checked    
 			$abcount=$abresult->RecordCount();
 			while ($abrow=$abresult->FetchRow())
 			{
-				$abmultiscalequery = "SELECT l.* FROM {$dbprefix}questions as q, {$dbprefix}labels as l, {$dbprefix}answers as a"
-					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']}"
-                         ." AND l.language='".$s_lang. "' "
+				$abmultiscalequery = "SELECT a.* FROM {$dbprefix}questions as q, {$dbprefix}answers as a, {$dbprefix}questions as sq"
+					     ." WHERE sq.parent_qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
+	                     ." AND a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']}"
+                         ." AND sq.language='".$s_lang. "' "
                          ." AND a.language='".$s_lang. "' "
-                         ." AND q.language='".$s_lang. "' ";
+                         ." AND q.language='".$s_lang. "' ";  //converted
                         
 				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
@@ -2606,12 +2607,12 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 	
 					} 
 				// multi-scale
-				$abmultiscalequery = "SELECT l.* FROM {$dbprefix}questions as q, {$dbprefix}labels as l, {$dbprefix}answers as a"
-					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid1 AND sid=$surveyid AND q.qid={$arow['qid']}"
-                       ." AND l.language='".$s_lang. "' "
-                       ." AND a.language='".$s_lang. "' "
-                       ." AND q.language='".$s_lang. "' ";
+                $abmultiscalequery = "SELECT a.* FROM {$dbprefix}questions as q, {$dbprefix}answers as a, {$dbprefix}questions as sq"
+                         ." WHERE sq.parent_qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
+                         ." AND a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']}"
+                         ." AND sq.language='".$s_lang. "' "
+                         ." AND a.language='".$s_lang. "' "
+                         ." AND q.language='".$s_lang. "' ";  //converted
                        
 				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();

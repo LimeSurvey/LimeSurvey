@@ -86,7 +86,7 @@ function addinput()
             assessment_type='hidden';
         }
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+getNextCode($(this).parent().parent().find('.code').val())+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="80" class="answer" value="New answer option"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+getNextCode($(this).parent().parent().find('.code').val())+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="80" class="answer" value="'+newansweroption_text+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         else
         {
@@ -96,10 +96,16 @@ function addinput()
         tablerow.next().find('.btnaddanswer').click(addinput);
         tablerow.next().find('.btneditanswer').click(popupeditor);
         tablerow.next().find('.btndelanswer').click(deleteinput);
+        tablerow.next().find('.answer').focus(function(){
+            if ($(this).val()==newansweroption_text)
+            {
+                $(this).val('');
+            }
+        });
         tablerow.next().fadeIn(800);
         tablerow.next().find('.code').blur(updatecodes);
     }
-    
+                                                                 
     if(languagecount>1)
     {
         

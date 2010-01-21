@@ -10,7 +10,7 @@ CREATE TABLE `prefix_answers` (
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   `scale_id` int(11) default '1',
-  PRIMARY KEY  (`qid`,`code`,`language`)
+  PRIMARY KEY  (`qid`,`code`,`language`,`scale_id`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 

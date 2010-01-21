@@ -847,13 +847,14 @@ if(isset($surveyid))
                     $answer=fix_FCKeditor_text($answer);
 
                     // Now we insert the answers
-                    $query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language,assessment_value)
+                    $query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language,assessment_value, scale_id)
                               VALUES (".db_quoteall($code).", ".
                                         db_quoteall($answer).", ".
                                         db_quote($qid).", ".
                                         db_quote($sortorderid).", ".
                                         db_quoteall($language).", ".
-                                        db_quote($assessmentvalue).")";
+                                        db_quote($assessmentvalue).",
+                                        $scale_id)";
                     if (!$result = $connect->Execute($query)) // Checked
                     {
                         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
