@@ -125,19 +125,19 @@ function globalsettingsdisplay()
             . "\t<li><label for='updatecheckperiod'>".$clang->gT("Check for updates:")."</label>\n"
             . "\t\t\t<select name='updatecheckperiod' id='updatecheckperiod'>\n"
             . "\t\t\t\t<option value='0'";
-            if ($thisupdatecheckperiod==0) {$editsurvey .= "selected='selected'";}
+            if ($thisupdatecheckperiod==0) {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Never")."</option>\n"
             . "\t\t\t\t<option value='1'";
-            if ($thisupdatecheckperiod==1) {$editsurvey .= "selected='selected'";}
+            if ($thisupdatecheckperiod==1) {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Every day")."</option>\n"
             . "\t\t\t\t<option value='7'";
-            if ($thisupdatecheckperiod==7) {$editsurvey .= "selected='selected'";}
+            if ($thisupdatecheckperiod==7) {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Every week")."</option>\n"
             . "<option value='14'"; 
-            if ($thisupdatecheckperiod==14) {$editsurvey .= "selected='selected'";}
+            if ($thisupdatecheckperiod==14) {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Every 2 weeks")."</option>\n"
             . "<option value='30'"; 
-            if ($thisupdatecheckperiod==30) {$editsurvey .= "selected='selected'";}
+            if ($thisupdatecheckperiod==30) {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Every month")."</option>\n"
             . "</select>&nbsp;<input type='button' onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" value='".$clang->gT("Check now")."' />&nbsp;<span id='lastupdatecheck'>".sprintf($clang->gT("Last check: %s"),$updatelastcheck)."</span></li></ul><p>\n"; 
             
@@ -186,7 +186,7 @@ function globalsettingsdisplay()
             foreach ($templatenames as $templatename)
             {
                 $editsurvey.= "\t\t\t\t<option value='$templatename'";
-                if ($thisdefaulttemplate==$templatename) {$editsurvey .= "selected='selected'";}
+                if ($thisdefaulttemplate==$templatename) {$editsurvey .= " selected='selected'";}
                 $editsurvey .=">$templatename</option>\n";
             }
             $editsurvey .="\t\t\t</select></li>\n";       
@@ -197,16 +197,16 @@ function globalsettingsdisplay()
             . "\t<li><label for='defaulthtmleditormode'>".$clang->gT("Default HTML editor mode:")."</label>\n"
             . "\t\t\t<select name='defaulthtmleditormode' id='defaulthtmleditormode'>\n"
             . "\t\t\t\t<option value='default'";
-            if ($thisdefaulthtmleditormode=='default') {$editsurvey .= "selected='selected'";}
+            if ($thisdefaulthtmleditormode=='default') {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Default HTML editor mode")."</option>\n"
             . "\t\t\t\t<option value='none'";
-            if ($thisdefaulthtmleditormode=='none') {$editsurvey .= "selected='selected'";}
+            if ($thisdefaulthtmleditormode=='none') {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("No HTML editor")."</option>\n"
             . "<option value='inline'"; 
-            if ($thisdefaulthtmleditormode=='inline') {$editsurvey .= "selected='selected'";}
+            if ($thisdefaulthtmleditormode=='inline') {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Inline HTML editor")."</option>\n"
             . "<option value='popup'"; 
-            if ($thisdefaulthtmleditormode=='popup') {$editsurvey .= "selected='selected'";}
+            if ($thisdefaulthtmleditormode=='popup') {$editsurvey .= " selected='selected'";}
             $editsurvey .=">".$clang->gT("Popup HTML editor")."</option>\n"
             . "</select></li>\n";       
 
@@ -269,7 +269,7 @@ function globalsettingsdisplay()
                 $editsurvey .= ">".$clang->gT("Qmail")."</option>\n"
                 . "\t\t</select></li>\n"
                 . "\t<li><label for='emailsmtphost'>".$clang->gT("SMTP host:")."</label>\n"
-                . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size=1>".$clang->gT("Enter your hostname and port, e.g.: my.smtp.com:25")."</font></li>\n"
+                . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: my.smtp.com:25")."</font></li>\n"
                 . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value=\"".htmlspecialchars(getGlobalSetting('emailsmtpuser'))."\" /></li>\n"
                 . "\t<li><label for='emailsmtppassword'>".$clang->gT("SMTP password:")."</label>\n"
@@ -498,7 +498,7 @@ function checksettings()
     
     if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
     {
-    $cssummary .= "<p><input type='button' onclick='window.open(\"$scriptname?action=showphpinfo\")'value='".$clang->gT("Show PHPInfo")."' />";
+    $cssummary .= "<p><input type='button' onclick='window.open(\"$scriptname?action=showphpinfo\")' value='".$clang->gT("Show PHPInfo")."' />";
     }
     return $cssummary;
 } 
