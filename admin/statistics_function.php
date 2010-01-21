@@ -748,7 +748,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				}
 					
 				//get answers
-				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
+				$qquery = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order, question";
 				$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 	
 				//loop through answer data

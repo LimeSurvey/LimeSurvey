@@ -1769,7 +1769,7 @@ function sendsubmitnotification($sendnotification)
 	}
 }
 
-function submitfailed($errormsg)
+function submitfailed($errormsg='')
 {
 	global $thissurvey, $clang;
 	global $thistpl, $subquery, $surveyid, $connect;
@@ -2212,7 +2212,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 	{
 		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
 		$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-		if ($qtypes[$arow['type']]['subquestions'] >0)
+		if ($qtypes[$arow['type']]['subquestions'] >0 && $arow['type'] != ":" && $arow['type'] != ";")
 		{
 
 // Optimized Query
@@ -2254,24 +2254,24 @@ UpdateSessionGroupList($_SESSION['s_lang']);
         elseif ($arow['type'] == ":" || $arow['type'] == ";")   //Multi Flexi
 		{
 // Optimized Query
-			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
-			. " FROM ".db_table_name('answers')."\n"
-			. " INNER JOIN ".db_table_name('questions')."\n"
-			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
-			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abquery = "SELECT sq.title, q.other\n"
+			. " FROM ".db_table_name('questions')." sq\n"
+			. " INNER JOIN ".db_table_name('questions')." q\n"
+			. " ON sq.parent_qid=q.qid\n"
+			. " WHERE q.sid=$surveyid\n"
+			. " AND q.qid={$arow['qid']}\n"
+			. " AND q.language='".$_SESSION['s_lang']."' \n"
+			. " AND sq.language='".$_SESSION['s_lang']."' \n"
+			. " ORDER BY sq.question_order, sq.question";
 			$abresult = db_execute_assoc($abquery);
-			$ab2query = "SELECT ".db_table_name('labels').".*
-			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
-			             WHERE sid=$surveyid 
-						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
-			             AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'
-			             AND ".db_table_name('labels').".language='".$_SESSION['s_lang']."'
-			             AND ".db_table_name('questions').".qid=".$arow['qid']."
-			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+			$ab2query = "SELECT *
+			             FROM ".db_table_name('questions'). "q, ".db_table_name('answers')." a 
+			             WHERE q.sid=$surveyid 
+						 AND a.qid=q.qid
+			             AND q.language='".$_SESSION['s_lang']."'
+			             AND a.language='".$_SESSION['s_lang']."'
+			             AND q.qid=".$arow['qid']."
+			             ORDER BY a.sortorder, a.answer";
 			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
             $lset=array();   // Initialize array - Important!
 			while($ab2row=$ab2result->FetchRow())
@@ -2282,8 +2282,8 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			{
 			    foreach($lset as $ls)
 			    {
-				    $_SESSION['insertarray'][] = $fieldname.$abrow['code']."_".$ls['code'];
-				    $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."_".$ls['code'] => $fieldname)); 
+				    $_SESSION['insertarray'][] = $fieldname.$abrow['title']."_".$ls['code'];
+				    $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['title']."_".$ls['code'] => $fieldname)); 
 			    }
 			}
 		}
@@ -2352,7 +2352,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 
 			}
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
-			{
+        {
 				$_SESSION['insertarray'][] = $fieldname."other";
 				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); 
 				if ($arow['type'] == "P")
@@ -2374,7 +2374,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
 			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
 			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+            ." AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'\n"
 			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
 			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 
@@ -2458,76 +2458,76 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 //		//Check to see if there are any conditions set for this question
 
 
-		if ($arow['hasconditions']>0)
-		{
-			$conditions = "Y";
-		}
-		else
-		{
-			$conditions = "N";
-		}
-		if ($arow['usedinconditions']>0)
-		{
-			$usedinconditions = "Y";
-		}
-		else
-		{
-			$usedinconditions = "N";
-		}
-
-
-		// if I'm a M or P question, and if another question in this survey has array_filter set to my code, then I'm also used in a kind of condition
-		if ( ($arow['type'] == 'M' || $arow['type'] == 'P') && $usedinconditions == "N")
-		{
-			$qaquery = "SELECT count(qa.qaid) as afcount "
-				. "FROM ".db_table_name('question_attributes')." as qa, ".db_table_name('questions')." as q "
-				. "WHERE qa.qid = q.qid "
-				. "AND ( "
-				. "      (qa.attribute='array_filter' AND qa.value LIKE ".db_quoteall($arow['title']).") "
-				. "   OR (qa.attribute='array_filter_exclude' AND qa.value LIKE ".db_quoteall($arow['title']).") "
-				. "    ) "
-				. "AND q.sid=$surveyid";
-			$qaresult = db_execute_assoc($qaquery);
-			$qarow = $qaresult->FetchRow();
-			if ($qarow['afcount'] >= 1)
-			{
-				$usedinconditions = "Y";
-			}
-		}
-
-		//3(b) See if any of the insertarray values have been passed in the query URL
-
-		if (isset($_SESSION['insertarray']))        
-		{
-            foreach($_SESSION['insertarray'] as $field)
+		    if ($arow['hasconditions']>0)
 		    {
-			    if (isset($_GET[$field]) && $field!='token')
+			    $conditions = "Y";
+		    }
+		    else
+		    {
+			    $conditions = "N";
+		    }
+		    if ($arow['usedinconditions']>0)
+		    {
+			    $usedinconditions = "Y";
+		    }
+		    else
+		    {
+			    $usedinconditions = "N";
+		    }
+
+
+		    // if I'm a M or P question, and if another question in this survey has array_filter set to my code, then I'm also used in a kind of condition
+		    if ( ($arow['type'] == 'M' || $arow['type'] == 'P') && $usedinconditions == "N")
+		    {
+			    $qaquery = "SELECT count(qa.qaid) as afcount "
+				    . "FROM ".db_table_name('question_attributes')." as qa, ".db_table_name('questions')." as q "
+				    . "WHERE qa.qid = q.qid "
+				    . "AND ( "
+				    . "      (qa.attribute='array_filter' AND qa.value LIKE ".db_quoteall($arow['title']).") "
+				    . "   OR (qa.attribute='array_filter_exclude' AND qa.value LIKE ".db_quoteall($arow['title']).") "
+				    . "    ) "
+				    . "AND q.sid=$surveyid";
+			    $qaresult = db_execute_assoc($qaquery);
+			    $qarow = $qaresult->FetchRow();
+			    if ($qarow['afcount'] >= 1)
 			    {
-				    $_SESSION[$field]=$_GET[$field];
+				    $usedinconditions = "Y";
 			    }
 		    }
-		}
 
-		//4. SESSION VARIABLE: fieldarray
-		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
-		//ARRAY CONTENTS - 	[0]=questions.qid,
-		//			[1]=fieldname,
-		//			[2]=questions.title,
-		//			[3]=questions.question
-		//                 	[4]=questions.type,
-		//			[5]=questions.gid,
-		//			[6]=questions.mandatory,
-		//			[7]=conditionsexist,
-		//			[8]=usedinconditions
-		$_SESSION['fieldarray'][] = array($arow['qid'],
-		$fieldname,
-		$arow['title'],
-		$arow['question'],
-		$arow['type'],
-		$arow['gid'],
-		$arow['mandatory'],
-		$conditions,
-		$usedinconditions);
+		    //3(b) See if any of the insertarray values have been passed in the query URL
+
+		    if (isset($_SESSION['insertarray']))        
+		    {
+                foreach($_SESSION['insertarray'] as $field)
+		        {
+			        if (isset($_GET[$field]) && $field!='token')
+			        {
+				        $_SESSION[$field]=$_GET[$field];
+			        }
+		        }
+		    }
+
+		    //4. SESSION VARIABLE: fieldarray
+		    //NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
+		    //ARRAY CONTENTS - 	[0]=questions.qid,
+		    //			[1]=fieldname,
+		    //			[2]=questions.title,
+		    //			[3]=questions.question
+		    //                 	[4]=questions.type,
+		    //			[5]=questions.gid,
+		    //			[6]=questions.mandatory,
+		    //			[7]=conditionsexist,
+		    //			[8]=usedinconditions
+            $_SESSION['fieldarray'][] = array($arow['qid'],
+		        $fieldname,
+                $arow['title'],
+                $arow['question'],
+		        $arow['type'],
+		        $arow['gid'],
+                $arow['mandatory'],
+                $conditions,
+                $usedinconditions);
 	}
 	// Check if the current survey language is set - if not set it
 	// this way it can be changed later (for example by a special question type)
@@ -2787,7 +2787,7 @@ function UpdateSessionGroupList($language)
 {
    global $surveyid;
     unset ($_SESSION['grouplist']);
-	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY ".db_table_name('groups').".group_order";
+	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
 	$result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked 
 	while ($row = $result->FetchRow())
 	{

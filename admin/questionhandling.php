@@ -65,73 +65,35 @@ if ($action == "copyquestion")
 	$editquestion .= "\t<li id='Validation'>\n"
 	. "<label for='preg'>".$clang->gT("Validation:")."</label>\n"
 	. "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
+	. "</li>\n"
+
+	. "<li ><label for='gid'>".$clang->gT("Question group:")."</label>\n"
+	. "<select id='gid' name='gid'>\n"
+	. getgrouplist3($eqrow['gid'])
+	. "\t</select></li>\n";
+
+	$editquestion .= "\t<li id='OtherSelection' style='display: none'>\n"
+	. "\t\t<label>".$clang->gT("Option 'Other':")."</label>\n";
+
+	$editquestion .= "<label>\n"
+	. "\t".$clang->gT("Yes")."</label> <input type='radio' class='radiobtn' name='other' value='Y'";
+	if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
+	$editquestion .= " />&nbsp;&nbsp;\n"
+	. "\t<label>".$clang->gT("No")."</label> <input type='radio' class='radiobtn' name='other' value='N'";
+	if ($eqrow['other'] == "N") {$editquestion .= " checked";}
+	$editquestion .= " />\n"
 	. "</li>\n";
 
-	$editquestion .= "\t<li id='LabelSets' style='display: none'>\n"
-	. "<label for='lid'>".$clang->gT("Label set:")."</label>\n"
-	. "<select name='lid' >\n";
-	$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-		if (count($labelsets)>0)
-		{
-			if (!$eqrow['lid'])
-			{
-				$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-			}
-			foreach ($labelsets as $lb)
-			{
-				$editquestion .= "\t<option value='{$lb[0]}'";
-				if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
-				$editquestion .= ">{$lb[1]}</option>\n";
-			}
-		}
-	$editquestion .= "</select></li>\n";		
-	$editquestion .= "\t<li id='LabelSets1' style='display: none'>\n"
-	. "<label for='lid1'>".$clang->gT("Second Label Set:")."</label>\n"
-	. "<select id='lid1' name='lid1' >\n";
-	$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-		if (count($labelsets1)>0)
-		{
-			if (!$eqrow['lid1'])
-			{
-				$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-			}
-			foreach ($labelsets1 as $lb)
-			{
-				$editquestion .= "\t<option value='{$lb[0]}'";
-				if ($eqrow['lid1'] == $lb[0]) {$editquestion .= " selected";}
-				$editquestion .= ">{$lb[1]}</option>\n";
-			}
-		}
-	
-		$editquestion .= "</select>\n"
-		. "</li>\n"
-		. "<li ><label for='gid'>".$clang->gT("Question group:")."</label>\n"
-		. "<select id='gid' name='gid'>\n"
-		. getgrouplist3($eqrow['gid'])
-		. "\t</select></li>\n";
+	$editquestion .= "\t<li id='MandatorySelection'>\n"
+	. "<label>".$clang->gT("Mandatory:")."</label>\n"
+	. "<label>".$clang->gT("Yes")." </label><input type='radio' class='radiobtn' name='mandatory' value='Y'";
+	if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
+	$editquestion .= " />&nbsp;&nbsp;\n"
+	. "\t<label>".$clang->gT("No")." </label><input type='radio' class='radiobtn' name='mandatory' value='N'";
+	if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
+	$editquestion .= " />\n";
 
-		$editquestion .= "\t<li id='OtherSelection' style='display: none'>\n"
-		. "\t\t<label>".$clang->gT("Option 'Other':")."</label>\n";
-
-		$editquestion .= "<label>\n"
-		. "\t".$clang->gT("Yes")."</label> <input type='radio' class='radiobtn' name='other' value='Y'";
-		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
-		$editquestion .= " />&nbsp;&nbsp;\n"
-		. "\t<label>".$clang->gT("No")."</label> <input type='radio' class='radiobtn' name='other' value='N'";
-		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
-		$editquestion .= " />\n"
-		. "</li>\n";
-
-		$editquestion .= "\t<li id='MandatorySelection'>\n"
-		. "<label>".$clang->gT("Mandatory:")."</label>\n"
-		. "<label>".$clang->gT("Yes")." </label><input type='radio' class='radiobtn' name='mandatory' value='Y'";
-		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
-		$editquestion .= " />&nbsp;&nbsp;\n"
-		. "\t<label>".$clang->gT("No")." </label><input type='radio' class='radiobtn' name='mandatory' value='N'";
-		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
-		$editquestion .= " />\n";
-
-		$editquestion .= questionjavascript($eqrow['type'])."</li>\n";
+	$editquestion .= questionjavascript($eqrow['type'])."</li>\n";
 
 
 		if ($eqrow['type'] == "J" || $eqrow['type'] == "I")
@@ -312,63 +274,14 @@ if ($action == "editquestion" || $action=="addquestion")
   			. "<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n";
   		}
   
-  		$editquestion  .="\t</li><li id='LabelSets' style='display: none'>\n"
-  		. "<label for='lid'>".$clang->gT("Label set:")."</label>\n";
+  		$editquestion  .="\t</li>\n";
 
 		if (!$adding) {$qattributes=questionAttributes();}
         else
         {
             $qattributes=array();
         }
-  		if ($activated != "Y")
-  		{
-  			$editquestion .= "<select id='lid' name='lid' >\n";
-  			$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-  			if (count($labelsets)>0)
-  			{
-  				if (!$eqrow['lid'])
-  				{
-  					$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-  				}
-  				foreach ($labelsets as $lb)
-  				{
-  					$editquestion .= "\t<option value='{$lb[0]}'";
-  					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected='selected'";}
-  					$editquestion .= ">{$lb[1]}</option>\n";
-  				}
-  			}
-  			$editquestion .= "</select>\n";
-
-	  		$editquestion  .="\t</li><li id='LabelSets1' style='display: none'>\n"
-  			. "<label for='lid1'>".$clang->gT("Second Label Set:")."</label>\n";
-
-  			$editquestion .= "<select id='lid1' name='lid1' >\n";
-  			$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-  			if (count($labelsets1)>0)
-  			{
-  				if (!$eqrow['lid1'])
-  				{
-  					$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-  				}
-  				foreach ($labelsets1 as $lb)
-  				{
-  					$editquestion .= "\t<option value='{$lb[0]}'";
-  					if ($eqrow['lid1'] == $lb[0]) {$editquestion .= " selected='selected'";}
-  					$editquestion .= ">{$lb[1]}</option>\n";
-  				}
-  			}
-
-  			$editquestion .= "</select>\n";
-  		}
-  		else
-  		{
-  			$editquestion .= "<span id='li'>[{$eqrow['lid']}] [{$eqrow['lid1']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."</span>\n";
-  			$editquestion .= "</li>\n"  			
- 			. "\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\" />\n"
- 			. "<input type='hidden' name='lid1' value=\"{$eqrow['lid1']}\" />\n";
-  		}
-        $editquestion .= "</li>\n";
-  		
+	
   		if ($activated != "Y")
 		{
 			$editquestion .= "\t<li>\n"
@@ -714,31 +627,23 @@ function questionjavascript($type)
     . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
     . "{\n"
     . "document.getElementById('OtherSelection').style.display = '';\n"
-    . "document.getElementById('LabelSets').style.display = 'none';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == 'W' || QuestionType == 'Z')\n"
     . "{\n"
     . "document.getElementById('OtherSelection').style.display = '';\n"
-    . "document.getElementById('LabelSets').style.display = '';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == ':' || QuestionType == ';')\n"
     . "{\n"
-    . "document.getElementById('LabelSets').style.display = '';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == '1')\n"
     . "{\n"
-    . "document.getElementById('LabelSets').style.display = '';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = '';}\n"    
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
@@ -748,20 +653,16 @@ function questionjavascript($type)
     . "document.getElementById('Validation').style.display = '';\n"
     . "document.getElementById('OtherSelection').style.display ='none';\n"
     . "if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}\n"    
-    . "document.getElementById('LabelSets').style.display='none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == 'X')\n"
     . "{\n"
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('OtherSelection').style.display ='none';\n"
-    . "document.getElementById('LabelSets').style.display='none';\n"
     . "document.getElementById('MandatorySelection').style.display='none';\n"
     . "}\n"
     . "\telse\n"
     . "{\n"
-    . "document.getElementById('LabelSets').style.display = 'none';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
     . "if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}\n"    
     . "document.getElementById('Validation').style.display = 'none';\n"
