@@ -409,7 +409,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
             if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
                 {
             $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-                        ."title=\"".$clang->gTview("Create or Import New Survey")."\" >"
+                        ." title=\"".$clang->gTview("Create or Import New Survey")."\" >"
                         ."<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
                  }
 
@@ -1735,7 +1735,7 @@ function browsemenubar($title='')
     else 
         {
             $browsemenubar .= "<a href=\"#\" accesskey='b' onclick=\"document.getElementById('browsepopup').style.visibility='visible';\""
-            . "title=\"".$clang->gTview("Display Responses")."\" >" 
+            . " title=\"".$clang->gTview("Display Responses")."\" >" 
             ."<img src='$imagefiles/document.png' alt='".$clang->gT("Display Responses")."' name='ViewAll' /></a>";
     
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
