@@ -4234,35 +4234,40 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 		$sendername=trim(substr($sender,0, strpos($sender,'<')-1));
 	}
 
-    if ($emailmethod=="qmail")
-    {
-        $mail->IsQmail();
-    }
-    else
-    {
-        $mail->Mailer = $emailmethod;
-    }
-	if ($emailmethod=="smtp")
-	{ 
-        if ($emailsmtpdebug>0)
-        {
-            $mail->SMTPDebug = true;
-        }
-        if (strpos($emailsmtphost,':')>0)
-        {
-            $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
-            $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
-        }
-        else {
-            $mail->Host = $emailsmtphost;
-        }
-	    $mail->Username =$emailsmtpuser;
-	    $mail->Password =$emailsmtppassword;
-	    if ($emailsmtpuser!="")
-	    {
-            $mail->SMTPAuth = true;
-        }
-	}
+	switch ($emailmethod) {
+    	case "qmail":
+			$mail->IsQmail();
+			break;
+    	case "smtp":
+    		$mail->IsSMTP();
+			if ($emailsmtpdebug>0)
+		        {
+		            $mail->SMTPDebug = true;
+		        }
+	        if (strpos($emailsmtphost,':')>0)
+	        {
+	            $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
+	            $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
+	        }
+	        else {
+	            $mail->Host = $emailsmtphost;
+	        }
+		    $mail->Username =$emailsmtpuser;
+		    $mail->Password =$emailsmtppassword;
+		    if ($emailsmtpuser!="")
+		    {
+	            $mail->SMTPAuth = true;
+	        }
+    		break;
+    	case "sendmail":
+    		$mail->IsSendmail();
+    		break;
+    	default:
+    	   	//Set to the default value to rule out incorrect settings.
+    		$emailmethod="mail";
+    		$mail->IsMail();
+	}    
+    
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     $toemails = explode(";", $to);
