@@ -790,7 +790,7 @@ $templatesoutput.= "<div class='menubar'>\n"
 . "\t<div class='menubar-main'>\n"
 . "\t<div class='menubar-left'>\n"
 . "\t<a href='$scriptname'" 
-. "title=\"".$clang->gTview("Return to survey administration")."\">" 
+. " title=\"".$clang->gTview("Return to survey administration")."\">" 
 . "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
 . "\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10'  />\n"
 . "\t<img src='$imagefiles/seperator.gif' alt=''  />";
@@ -819,7 +819,7 @@ $templatesoutput.= "</div>\n"
 . "<img src='$imagefiles/add.png' alt='".$clang->gT("Create new template")."' /></a>\n"
 . "<img src='$imagefiles/seperator.gif' alt='' />"
 . "<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
-. "title=\"".$clang->gTview("Logout")."\" >"
+. " title=\"".$clang->gTview("Logout")."\" >"
 . "<img src='$imagefiles/logout.png' name='Logout'"
 . " alt='".$clang->gT("Logout")."' /></a>"
 . "<img src='$imagefiles/blank.gif' alt='' width='20'  />"
@@ -922,7 +922,7 @@ if (is_template_editable($templatename)==true)
     ."\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
     ."\t<input type='hidden' name='editfile' value='$editfile' />\n"
     ."\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-    ."<textarea name='changes' id='changes' rows='15' class='codepress html'>";
+    ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html'>";
     if ($editfile) {
         $templatesoutput.= textarea_encode(filetext($editfile));
     }
@@ -953,7 +953,7 @@ if (is_template_editable($templatename)==true)
         ."</td>\n"
         ."<td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
     ."<table width='90' align='left' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr>"
-    . "<tr><td><select size='11' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
+    . "<tr><td><select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>\n"
     .makeoptions($otherfiles, "name", "name", "")
     ."</select>"
     ."</td></tr>"
@@ -986,9 +986,9 @@ if (is_template_editable($templatename)==true)
     ."</td></tr></table></form>\n"
     ."</td>\n"
     ."\t</tr>\n"
-    ."</table>\n"
-    ."\t</td>\n"
-    ."\t</tr>"
+    //."</table>\n"
+    //."\t</td>\n"
+    //."\t</tr>"
     ."</table>";
 }
 
@@ -1020,7 +1020,7 @@ fclose($fnew);
 $langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
 $templatesoutput.= "<p>\n"
 ."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='768' name='previewiframe' style='background-color: white;'>Embedded Frame</iframe>\n"
-."</div>\n";
+."</p></div>\n";
 }
 
 function doreplacement($file) { //Produce sample page from template file

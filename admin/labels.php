@@ -88,13 +88,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	
 	$labelsoutput.= "\t</select>\n"
     ."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
-    ."title=\"".$clang->gTview("Add new label set")."\">"
+    ." title=\"".$clang->gTview("Add new label set")."\">"
     ."<img src='$imagefiles/add.png' name='AddLabel' alt='". $clang->gT("Add new label set")."' /></a>\n"     
     ."\t<img src='$imagefiles/seperator.gif'  alt='' />\n"
     ."\t<img src='$imagefiles/blank.gif' width='5' height='20' alt='' />\n"
     //Logout button
     ."<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
-    ."title=\"".$clang->gTview("Logout")."\" >"
+    ." title=\"".$clang->gTview("Logout")."\" >"
     ."<img src='$imagefiles/logout.png' name='Logout' alt='".$clang->gT("Logout")."' /></a>"
     //Show help
     ."<a href=\"#\" onclick=\"showhelp('show')\" title=\"".$clang->gTview("Show Help")."\">" 

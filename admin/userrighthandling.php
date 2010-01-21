@@ -53,7 +53,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	if($ugid && $grpresultcount > 0)
 	{
 		$usergroupsummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=mailusergroup&amp;ugid=$ugid', '_top')\""
-		."title='".$clang->gTview("Mail to all Members")."'> " 
+		." title='".$clang->gTview("Mail to all Members")."'> " 
 		."<img src='$imagefiles/invite.png' alt='".$clang->gT("Mail to all Members")."' name='MailUserGroup' /></a>\n" ;
 	}
     else
@@ -67,7 +67,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$_SESSION['loginID'] == $grow['owner_id'])
 	{
 		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
-		. "title='".$clang->gTview("Edit Current User Group")."'>" 
+		. " title='".$clang->gTview("Edit Current User Group")."'>" 
 		. "<img src='$imagefiles/edit.png' alt='".$clang->gT("Edit Current User Group")."' name='EditUserGroup' /></a>\n" ;
 	}
 	else
@@ -98,7 +98,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         $usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
-        ."title='".$clang->gTview("Add New User Group")."'>" 
+        ." title='".$clang->gTview("Add New User Group")."'>" 
         ."<img src='$imagefiles/add.png' alt='".$clang->gT("Add New User Group")."' " 
         ."name='AddNewUserGroup' onclick=\"window.open('', '_top')\" /></a>\n";
     }
@@ -397,7 +397,7 @@ if($action == "setasadminchild")
 
 if ($action == "editusers")
 {
-	$usersummary = "<div class=header>".$clang->gT("User Control")."</div><br />"
+	$usersummary = "<div class='header'>".$clang->gT("User Control")."</div><br />"
     . "<table id='users' class='users' width='100%' border='0'>\n"
 	. "<thead>\n"
 	. "<tr>\n"
