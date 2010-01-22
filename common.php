@@ -886,7 +886,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 {
     global $publicurl;
     global $sourcefrom, $clang;
-
+                                                              
     if (!isset($clang))
     {
         $clang = new limesurvey_lang("en");
@@ -2117,13 +2117,11 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
     {
         $fields=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
         //Find out the question type
-        $query = "SELECT type, lid, lid1 FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
+        $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
         $result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getextendedanswer() in common.php<br />".$connect->ErrorMsg()); //Checked   
         while($row=$result->FetchRow())
         {
             $this_type=$row['type'];
-            $this_lid=$row['lid'];
-            $this_lid1=$row['lid1'];
         } // while
         switch($this_type)
         {
@@ -2193,11 +2191,11 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
             case "F":
             case "H":
             case "1":
-                $query = "SELECT answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']}) AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
+                $query = "SELECT answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
                 $result = db_execute_assoc($query) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
                 while($row=$result->FetchRow())
                 {
-                    $this_answer=$row['title'];
+                    $this_answer=$row['answer'];
                 } // while
                 if ($value == "-oth-")
                 {
@@ -2311,7 +2309,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']="token";
+                $fieldmap[$counter]['question']=$clang->gT("Token");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
@@ -2322,7 +2320,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']="datestamp";
+                $fieldmap[$counter]['question']=$clang->gT("Datestamp");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
@@ -2333,7 +2331,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']="startdate";
+                $fieldmap[$counter]['question']=$clang->gT("Start date");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
@@ -2344,7 +2342,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']="ipaddr";
+                $fieldmap[$counter]['question']=$clang->gT("IP address");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
@@ -2356,7 +2354,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']="refurl";
+                $fieldmap[$counter]['question']=$clang->gT("Referrer URL");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
@@ -2376,12 +2374,11 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
-        if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
-        $arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" &&
-        $arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" &&
-        $arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "K" && 
-        $arow['type'] != "^" && $arow['type'] != ":" && $arow['type'] != "1" &&
-        $arow['type'] != ";")
+     /*   if ($arow['type'] == "L" || $arow['type'] == "!" || $arow['type'] == "O" 
+         || $arow['type'] == "D" || $arow['type'] == "G" || $arow['type'] == "N"
+         || $arow['type'] == "X" || $arow['type'] == "Y" || $arow['type'] == "5"
+         || $arow['type'] == "S" || $arow['type'] == "T" || $arow['type'] == "U")*/
+         if ($qtypes[$arow['type']]['subquestions']==0 && $qtypes[$arow['type']]['answerscales']<=1 && $arow['type'] != "R")
         {
             $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
             if ($style == "full")
@@ -2407,7 +2404,8 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                     if ($style == "full")
                     {
                         $fieldmap[$counter]['title']=$arow['title'];
-                        $fieldmap[$counter]['question']=$arow['question']."[".$clang->gT("Other")."]";
+                        $fieldmap[$counter]['question']=$arow['question'];
+                        $fieldmap[$counter]['subquestion']=$clang->gT("Other");
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
                     }
                     $counter++;
@@ -2424,7 +2422,8 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                 if ($style == "full")
                 {
                     $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."[".$clang->gT("Comment")."]";
+                    $fieldmap[$counter]['question']=$arow['question'];
+                    $fieldmap[$counter]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
                 }
                 $counter++;
@@ -2451,90 +2450,35 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                          AND q.qid=".$arow['qid']."
                          ORDER BY a.sortorder, a.answer"; //converted
             $ab2result=db_execute_assoc($ab2query) or safe_die("Couldn't get list of answers in createFieldMap function (type : and ;)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-            $lset=array();
+            $answerset=array();
             while($ab2row=$ab2result->FetchRow())
             {
-                $lset[]=$ab2row;
+                $answerset[]=$ab2row;
             }
             while ($abrow=$abresult->FetchRow())
             {
-                foreach($lset as $ls)
+                foreach($answerset as $answer)
                 {
-                  $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$ls['code']}", 
+                  $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$answer['code']}", 
                                     "type"=>$arow['type'], 
                                     "sid"=>$surveyid, 
                                     "gid"=>$arow['gid'], 
                                     "qid"=>$arow['qid'], 
-                                    "aid"=>$abrow['title']."_".$ls['code'],
-                                    "lid"=>$abrow['lid']);
+                                    "aid"=>$abrow['title']."_".$answer['code'],
+                                    "sqid"=>$abrow['qid']);
                   if ($abrow['other']=="Y") {$alsoother="Y";}
                   if ($style == "full")
                   {
                     $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."[".$ls['answer']."] [".$abrow['question']."]";
+                    $fieldmap[$counter]['question']=$arow['question'];
+                    $fieldmap[$counter]['subquestion']=$abrow['question'];
+                    $fieldmap[$counter]['answer']=$answer['answer'];
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
                   }
                   $counter++;
                 }
             }
             unset($lset);
-        }
-        if ($qtypes[$arow['type']]['subquestions'] >0 && $arow['type'] != ":" && $arow['type'] != ";" && $arow['type'] != "1")
-        {
-            //MULTI ENTRY
-            $abquery = "SELECT subquestions.*, questions.other\n"
-            ." FROM ".db_table_name('questions')." as subquestions, ".db_table_name('questions')." as questions"
-            ." WHERE questions.sid=$surveyid AND subquestions.parent_qid=questions.qid "
-            . "AND subquestions.language='{$s_lang}'"
-            ." AND questions.language='{$s_lang}'"
-            ." AND questions.qid={$arow['qid']} "
-            ." ORDER BY subquestions.question_order"; //converted
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
-            while ($abrow=$abresult->FetchRow())
-            {
-                $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
-                if ($abrow['other']=="Y") {$alsoother="Y";}
-                if ($style == "full")
-                {
-                    $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."[".$abrow['question']."]";
-                    $fieldmap[$counter]['group_name']=$arow['group_name'];
-                }
-                $counter++;
-                if ($arow['type'] == "P")
-                {
-                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"comment");
-                    if ($style == "full")
-                    {
-                        $fieldmap[$counter]['title']=$arow['title'];
-                        $fieldmap[$counter]['question']=$arow['question']."[comment]";
-                        $fieldmap[$counter]['group_name']=$arow['group_name'];
-                    }
-                    $counter++;
-                }
-            }
-            if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
-            {
-                $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
-                if ($style == "full")
-                {
-                    $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."[".$clang->gT("Other")."]";
-                    $fieldmap[$counter]['group_name']=$arow['group_name'];
-                }
-                $counter++;
-                if ($arow['type']=="P")
-                {
-                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
-                    if ($style == "full")
-                    {
-                        $fieldmap[$counter]['title']=$arow['title'];
-                        $fieldmap[$counter]['question']=$arow['question']."[".$clang->gT("Other")."comment]";
-                        $fieldmap[$counter]['group_name']=$arow['group_name'];
-                    }
-                    $counter++;
-                }
-            }
         }
         elseif ($arow['type'] == "Q" || $arow['type'] == "K")
         {
@@ -2548,11 +2492,12 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
             while ($abrow=$abresult->FetchRow())
             {
-                $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+                $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
                 if ($style == "full")
                 {
                     $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."[".$abrow['answer']."]";
+                    $fieldmap[$counter]['question']=$arow['question'];
+                    $fieldmap[$counter]['subquestion']=$abrow['question'];
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
                 }
                 $counter++;
@@ -2582,12 +2527,14 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                 //if ($abmultiscalecount>0)
                 if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
                     {
-                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
+                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
                         if ($style == "full")
                         {
                             $fieldmap[$counter]['title']=$arow['title'];
-                            $fieldmap[$counter]['question']=$arow['question']."[".$abrow['question']."]";
+                            $fieldmap[$counter]['question']=$arow['question'];
+                            $fieldmap[$counter]['subquestion']=$abrow['question'];
                             $fieldmap[$counter]['group_name']=$arow['group_name'];
+                            $fieldmap[$counter]['scale']=$clang->gT('Scale 1');
                         }
                         
                         $counter++; 
@@ -2606,12 +2553,14 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                 $abmultiscalecount=$abmultiscaleresult->RecordCount();
                 if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
                 {
-                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
+                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
                     if ($style == "full")
                     {
                         $fieldmap[$counter]['title']=$arow['title'];
-                        $fieldmap[$counter]['question']=$arow['question']."[".$abrow['question']."]";
+                        $fieldmap[$counter]['question']=$arow['question'];
+                        $fieldmap[$counter]['subquestion']=$abrow['question'];
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
+                        $fieldmap[$counter]['scale']=$clang->gT('Scale 2');
                     }
                     
                 $counter++;             
@@ -2637,17 +2586,79 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                 if ($style == "full")
                 {
                     $fieldmap[$counter]['title']=$arow['title'];
-                    $fieldmap[$counter]['question']=$arow['question']."[$i]";
+                    $fieldmap[$counter]['question']=$arow['question'];
+                    $fieldmap[$counter]['subquestion']=sprintf($clang->gT('Rank %s'),$i);
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
                 }
                 $counter++;
+            }
+        }
+        else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
+        {
+            //MULTI ENTRY
+            $abquery = "SELECT subquestions.*, questions.other\n"
+            ." FROM ".db_table_name('questions')." as subquestions, ".db_table_name('questions')." as questions"
+            ." WHERE questions.sid=$surveyid AND subquestions.parent_qid=questions.qid "
+            . "AND subquestions.language='{$s_lang}'"
+            ." AND questions.language='{$s_lang}'"
+            ." AND questions.qid={$arow['qid']} "
+            ." ORDER BY subquestions.question_order"; //converted
+            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
+            while ($abrow=$abresult->FetchRow())
+            {
+                $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
+                if ($abrow['other']=="Y") {$alsoother="Y";}
+                if ($style == "full")
+                {
+                    $fieldmap[$counter]['title']=$arow['title'];
+                    $fieldmap[$counter]['question']=$arow['question'];
+                    $fieldmap[$counter]['subquestion']=$abrow['question'];
+                    $fieldmap[$counter]['group_name']=$arow['group_name'];
+                }
+                $counter++;
+                if ($arow['type'] == "P")
+                {
+                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"comment");
+                    if ($style == "full")
+                    {
+                        $fieldmap[$counter]['title']=$arow['title'];
+                        $fieldmap[$counter]['question']=$arow['question'];
+                        $fieldmap[$counter]['subquestion']=$clang->gT('Comment');
+                        $fieldmap[$counter]['group_name']=$arow['group_name'];
+                    }
+                    $counter++;
+                }
+            }
+            if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
+            {
+                $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
+                if ($style == "full")
+                {
+                    $fieldmap[$counter]['title']=$arow['title'];
+                    $fieldmap[$counter]['question']=$arow['question'];
+                    $fieldmap[$counter]['subquestion']=$clang->gT('Other');
+                    $fieldmap[$counter]['group_name']=$arow['group_name'];
+                }
+                $counter++;
+                if ($arow['type']=="P")
+                {
+                    $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
+                    if ($style == "full")
+                    {
+                        $fieldmap[$counter]['title']=$arow['title'];
+                        $fieldmap[$counter]['question']=$arow['question'];
+                        $fieldmap[$counter]['subquestion']=$clang->gT('Other comment');
+                        $fieldmap[$counter]['group_name']=$arow['group_name'];
+                    }
+                    $counter++;
+                }
             }
         }
     }
     if (isset($fieldmap)) {
         $globalfieldmap[0] = $surveyid;
         $globalfieldmap[1] = $fieldmap;
-
+        
         return $fieldmap;
     }
 }
