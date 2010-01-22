@@ -128,14 +128,14 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	
 
 	//ChECK THAT certain array question types have answers set
-	$chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1')";
+	$chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1')";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing sub-questions<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires sub-questions, but none are set."), $chkrow['gid']);
 	} // while
 	
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS has answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=2)=0 and sid={$_GET['sid']} AND type='1'";
+    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type='1'";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second Labelset, but none is set."), $chkrow['gid']);
@@ -362,7 +362,7 @@ else
 				break;
 			}
 		}
-        elseif ($qtypes[$arow['type']]['subquestions']>0 && $arow['type'] != ":" && $arow['type'] != ";")              
+        elseif ($qtypes[$arow['type']]['subquestions']>0 && $arow['type'] != ":" && $arow['type'] != ";" && $arow['type'] != "1")              
 		{
 			//MULTI ENTRY
 			$abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
@@ -405,7 +405,7 @@ else
 						 AND a.qid=q.qid
 						 AND a.language='".GetbaseLanguageFromSurveyid($postsid)."' 
 			             AND q.qid=".$arow['qid']."
-                         AND a.scale_id=1
+                         AND a.scale_id=0
 			             ORDER BY a.sortorder, a.answer";
 			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
 			while($ab2row=$ab2result->FetchRow())
@@ -481,26 +481,26 @@ else
 		}
 		elseif ($arow['type'] == "1") 
 		{
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+			$abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                        ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY a.sortorder, a.answer";
+                       ." ORDER BY sq.question_order, sq.question";
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			$abcount=$abresult->RecordCount();
 			while ($abrow = $abresult->FetchRow())
 			{
-				$abmultiscalequery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q, {$dbprefix}labels as l"
-					     ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid AND sid={$postsid} AND q.qid={$arow['qid']} AND l.title = '' "
-                         ." AND l.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+				$abmultiscalequery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q, {$dbprefix}answers as a"
+					     ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+	                     ." AND a.qid={$arow['qid']} AND sq.sid={$postsid} AND q.qid={$arow['qid']} AND a.answer = '' "
+                         ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                          ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' ";
 				$abmultiscaleresult=$connect->Execute($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
 				$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
 				$abmultiscaleresultcount = 1;
 				for ($j=0; $j<=$abmultiscaleresultcount; $j++)
 				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#$j` C(5),\n";
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#$j` C(5),\n";
 				} 
 			}
 		}

@@ -1000,19 +1000,17 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			if (is_null($condarray))
 			{
-//				$questionsummary .= "<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-//				"onclick=\"return confirm('".$clang->gT("Deleting this question will also delete any answers it includes. Are you sure you want to continue?","js")."')\""
 				$questionsummary .= "<a href='#'" .
-				"onclick=\"if (confirm('".$clang->gT("Deleting this question will also delete any answers it includes. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."}\">"
-				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt='".$clang->gT("Delete Current Question")."' "
+				"onclick=\"if (confirm('".$clang->gT("Deleting this question will also delete any answer options and sub-questions it includes. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."}\">"
+				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt='".$clang->gT("Delete current question")."' "
 				. "border='0' hspace='0' /></a>\n";
 			}
 			else
 			{
 				$questionsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
 				"onclick=\"alert('".$clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js")."')\""
-				. "title=\"".$clang->gTview("Disabled - Delete Current Question")."\">"
-				. "<img src='$imagefiles/delete_disabled.png' name='DeleteWholeQuestion' alt='".$clang->gT("Disabled - Delete Current Question")."' /></a>\n";
+				. "title=\"".$clang->gTview("Disabled - Delete current question")."\">"
+				. "<img src='$imagefiles/delete_disabled.png' name='DeleteWholeQuestion' alt='".$clang->gT("Disabled - Delete current question")."' /></a>\n";
 			}
 		}
 		else {$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";}
@@ -1221,7 +1219,7 @@ if ($action=='editansweroptions')
     $qtype = $connect->GetOne($qquery);
     $scalecount=$qtypes[$qtype]['answerscales'];
     //Check if there is at least one answer
-    for ($i = 1; $i < $scalecount+1; $i++)
+    for ($i = 0; $i < $scalecount; $i++)
     {
         $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$baselang."'";
         $qresult = $connect->GetOne($qquery); //Checked
@@ -1234,7 +1232,7 @@ if ($action=='editansweroptions')
     
     
     // check that there are answers for every language supported by the survey
-    for ($i = 1; $i < $scalecount+1; $i++)
+    for ($i = 0; $i < $scalecount; $i++)
     {
         foreach ($anslangs as $language)
         {
@@ -1315,12 +1313,12 @@ if ($action=='editansweroptions')
                 
         $vasummary .= "</h2>";
 
-        for ($scale_id = 1; $scale_id < $scalecount+1; $scale_id++)
+        for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
         {
             $position=0;
             if ($scalecount>1) 
             {
-                $vasummary.="<div class='header'>".sprintf($clang->gT("Answer scale %s"),$scale_id)."</div>";
+                $vasummary.="<div class='header'>".sprintf($clang->gT("Answer scale %s"),$scale_id+1)."</div>";
             }
 
 

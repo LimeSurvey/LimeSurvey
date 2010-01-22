@@ -797,7 +797,7 @@ if(isset($surveyid))
         $invalidCode = 0;
         $duplicateCode = 0;
 
- /*       for ($scale_id=1;$scale_id<$scalecount+1;$scale_id++)
+ /*       for ($scale_id=0;$scale_id<$scalecount+1;$scale_id++)
         {
             $testarray = array();
             $maxcount=(int)$_POST['answercount_'.$scale_id];
@@ -824,7 +824,7 @@ if(isset($surveyid))
         $query = "delete from ".db_table_name('answers')." where qid=".db_quote($qid);
         $result = $connect->Execute($query);    // Checked
         
-        for ($scale_id=1;$scale_id<$scalecount+1;$scale_id++)
+        for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
         {
             $maxcount=(int)$_POST['answercount_'.$scale_id];                 
             for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
@@ -861,7 +861,7 @@ if(isset($surveyid))
                     }
                 } // foreach ($alllanguages as $language)   
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)  
-        }  //  for ($scale_id=1;
+        }  //  for ($scale_id=0;
         if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
         if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 

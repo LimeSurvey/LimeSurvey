@@ -349,7 +349,7 @@ global $modifyoutput, $databasename, $databasetabletype;
     if ($oldversion < 143) //Modify surveys table
     {
         modify_database("", "ALTER TABLE `prefix_questions` ADD `parent_qid` integer NOT NULL default '0'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_answers` ADD `scale_id` tinyint NOT NULL default '1'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_answers` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
 
         //Now move all 'answers' that are subquestions to the questions table
         upgrade_answer_tables143();

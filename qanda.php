@@ -1659,17 +1659,17 @@ function do_list_dropdown($ia)
 	//question attribute random order set?
     if ($qidattributes['random_order']==1)
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	}
     //question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
 	}		
 	//no question attributes -> order by sortorder
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
@@ -1918,19 +1918,19 @@ function do_list_radio($ia)
 	
 	//question attribute random order set?
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	}
 	
 	//question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)     
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
 	}	
 	
 	//no question attributes -> order by sortorder
 	else 
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
@@ -2147,17 +2147,17 @@ function do_listwithcomment($ia)
 
 	//question attribute random order set?
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	}
 	//question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
 	}
 	//no question attributes -> order by sortorder
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery);      //Checked
@@ -2320,9 +2320,9 @@ function do_ranking($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	} else {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
     if (trim($qidattributes["max_answers"])!='')
     { 
@@ -5063,7 +5063,7 @@ function do_array_flexible($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder, code";
+	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['answer_width'])!='')
@@ -5318,7 +5318,7 @@ function do_array_multitext($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder";
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
@@ -5550,7 +5550,7 @@ function do_array_multiflexi($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder";
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
@@ -5784,7 +5784,7 @@ function do_array_flexiblecolumns($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);    //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY sortorder, code";
+	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 	$lresult = db_execute_assoc($lquery);   //Checked
 	if ($lresult->RecordCount() > 0)
 	{
@@ -5938,8 +5938,8 @@ function do_array_flexible_dual($ia)
 	$inputnames=array();
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$other = $connect->GetOne($qquery);    //Checked
-	$lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-	$lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=2 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$qidattributes=getQuestionAttributes($ia[0]);
 
     if ($qidattributes['use_dropdown']==1)

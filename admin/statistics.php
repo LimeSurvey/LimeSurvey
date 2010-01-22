@@ -501,7 +501,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
 
 			//get answers
-			$query = "SELECT title as code, question as answer FROM ".db_table_name("question")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
+			$query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
 			$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
 			//counter is used for layout
@@ -1044,7 +1044,7 @@ foreach ($filters as $flt)
 
 		case ":":  //ARRAY (Multi Flex) (Numbers)
 			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("question")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
 			$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 			$counter2=0;
 			//Get qidattributes for this question
@@ -1085,7 +1085,7 @@ foreach ($filters as $flt)
 					."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					$statisticsoutput .= " />&nbsp;<strong>"
-					.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]")." - ".$row[0]."/".$frow['code'])
+					.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['answer']."]")." - ".$row[0]."/".$frow['code'])
 					."</strong><br />\n";
 					//$statisticsoutput .= $fquery;
 					$statisticsoutput .= "\t\t\t\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5'>\n";
@@ -1107,8 +1107,8 @@ foreach ($filters as $flt)
 			 * The only difference is that the labels are applied to column heading
 			 * or rows respectively
 			 */
-		case "F": // ARRAY OF Flexible QUESTIONS
-		case "H": // ARRAY OF Flexible Questions (By Column)
+		case "F": // ARRAY 
+		case "H": // ARRAY (By Column)
 			//$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
 			//Get answers. We always use the answer code because the label might be too long elsewise
@@ -1287,7 +1287,6 @@ foreach ($filters as $flt)
 				{
 					$statisticsoutput .= $_POST[$myfield2];
 				}
-
 				$statisticsoutput .= " -->\n";
 
 				//some layout adaptions -> new line after 4 entries
@@ -1336,7 +1335,7 @@ foreach ($filters as $flt)
 				 * - language
 				 */
 				 
-				$fquery = "SELECT * FROM answers WHERE qid={$flt[0]} AND language='{$language}' and scale_id=0 ORDER BY sortorder, code";
+				$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' and scale_id=0 ORDER BY sortorder, code";
 				$fresult = db_execute_assoc($fquery);
 
 				//this is for debugging only
@@ -1352,7 +1351,7 @@ foreach ($filters as $flt)
 					//pre-check
 					if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 
-					$statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['title'])."</option>\n";
+					$statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'])."</option>\n";
 
 				}
 
@@ -1415,7 +1414,7 @@ foreach ($filters as $flt)
 				.showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle2)
 				."</strong><br />\n";
 				 
-                $fquery = "SELECT * FROM answers WHERE qid={$flt[0]} AND language='{$language}' and scale_id=1 ORDER BY sortorder, code";
+                $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' and scale_id=1 ORDER BY sortorder, code";
 				$fresult = db_execute_assoc($fquery);
 
 				//this is for debugging only
@@ -1431,7 +1430,7 @@ foreach ($filters as $flt)
 					//pre-check
 					if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 					 
-					$statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['title'])."</option>\n";
+					$statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'])."</option>\n";
 
 				}
 
@@ -1446,12 +1445,31 @@ foreach ($filters as $flt)
 			$counter=0;
 			break;
 
+        case "P":  //P - Multiple options with comments
+        case "M":  //M - Multiple options 
+                
+            //get answers
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
+            //loop through answers
+            while ($row=$result->FetchRow())
+            {
+                $statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
+                    
+                //pre-check
+                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
+                    
+                $statisticsoutput .= '>'.FlattenText($row[1])."</option>\n";
+            }
+
+            $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+            break;
+            
 
 			/*
 			 * This question types use the default settings:
 			 * 	L - List (Radio)
-			 M - Multiple Options
 			 O - List With Comment
 			 P - Multiple Options With Comments
 			 ! - List (Dropdown)
