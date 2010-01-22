@@ -550,6 +550,11 @@ a.invalidemail {
 	color: red;
 }
 
+a.optoutemail {
+    font-weight: 700;
+    color: orange;
+}
+
 .browsetable {
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
