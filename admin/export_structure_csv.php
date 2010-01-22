@@ -23,11 +23,12 @@
 // 4. Questions
 // 5. Answers
 // 6. Conditions 
-// 7. Subquestions
-// 8. Question Attributes
-// 9. Assessments
-// 10. Quota
-// 11. Quota Members
+// 7. Label Sets
+// 8. Labels
+// 9. Question Attributes
+// 10. Assessments
+// 11. Quota
+// 12. Quota Members
 
 include_once("login_check.php");
 
@@ -100,38 +101,48 @@ $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
 		   AND {$dbprefix}questions.sid=$surveyid";
 $cdump = BuildCSVFromQuery($cquery);
 
-//7: Subquestions
-$lquery = "SELECT {$dbprefix}subquestions.*
-           FROM {$dbprefix}subquestions, {$dbprefix}questions 
-		   WHERE {$dbprefix}subquestions.qid={$dbprefix}questions.qid  
-		   AND {$dbprefix}questions.sid=$surveyid;";
+//7: Label Sets
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages 
+            FROM {$dbprefix}labelsets, {$dbprefix}questions 
+			WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1) 
+			AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';') 
+			AND sid=$surveyid";
+$lsdump = BuildCSVFromQuery($lsquery);
+
+//8: Labels
+$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language,{$dbprefix}labels.assessment_value
+           FROM {$dbprefix}labels, {$dbprefix}questions 
+		   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) 
+		   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
+		   AND sid=$surveyid 
+		   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language,{$dbprefix}labels.assessment_value";
 $ldump = BuildCSVFromQuery($lquery);
 
-//8: Question Attributes
+//9: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
           FROM {$dbprefix}question_attributes 
 		  WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where sid=$surveyid group by qid)";
 $qadump = BuildCSVFromQuery($query);
 
-//9: Assessments;
+//10: Assessments;
 $query = "SELECT {$dbprefix}assessments.* 
           FROM {$dbprefix}assessments 
 		  WHERE {$dbprefix}assessments.sid=$surveyid";
 $asdump = BuildCSVFromQuery($query);
 
-//10: Quota;
+//11: Quota;
 $query = "SELECT {$dbprefix}quota.* 
           FROM {$dbprefix}quota 
 		  WHERE {$dbprefix}quota.sid=$surveyid";
 $quotadump = BuildCSVFromQuery($query);
 
-//11: Quota Members;
+//12: Quota Members;
 $query = "SELECT {$dbprefix}quota_members.* 
           FROM {$dbprefix}quota_members 
 		  WHERE {$dbprefix}quota_members.sid=$surveyid";
 $quotamemdump = BuildCSVFromQuery($query);
 
-//12: Quota languagesettings
+//13: Quota languagesettings
 $query = "SELECT {$dbprefix}quota_languagesettings.*
           FROM {$dbprefix}quota_languagesettings, {$dbprefix}quota
 		  WHERE {$dbprefix}quota.id = {$dbprefix}quota_languagesettings.quotals_quota_id

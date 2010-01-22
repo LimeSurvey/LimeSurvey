@@ -3891,7 +3891,7 @@ class LsrcHelper {
 	function FieldMap2CSV($surveyid)
 	{
 		$fields=array("fieldname", "type", "sid", "gid", "qid", "aid",'title','question','group_name','lid','lid1');
-		$fieldmap=createFieldMap($surveyid,'full',true);
+		$fieldmap=createFieldMap($surveyid,'full');
 
 		$result='"'.implode('","',$fields).'"'."\n";
 		foreach ($fieldmap as $entry)

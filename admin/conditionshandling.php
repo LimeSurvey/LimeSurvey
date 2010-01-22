@@ -630,7 +630,7 @@ if ($questionscount > 0)
 					$fresult = db_execute_assoc($fquery);
 					while ($frow=$fresult->FetchRow())
 					{
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['title']);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']);
 					}
 					break;
 				}
@@ -776,14 +776,14 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
 				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
 
 				// Only Show No-Answer if question is not mandatory
 				if ($rows['mandatory'] != 'Y')
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", $clang->gT("No answer"));
 				}
 
 			} //while
@@ -833,15 +833,15 @@ if ($questionscount > 0)
 
 			while ($arows=$aresult->FetchRow())
 			{
-				$theanswer = addcslashes($arows['answer'], "'");
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
+				$theanswer = addcslashes($arows['question'], "'");
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
 
-				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
 				$shortanswer .= "[".$clang->gT("Single checkbox")."]";
 				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);				
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
-				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], 'Y', 'checked');
-				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], '', 'not checked');
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', 'checked');
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', 'not checked');
 			}
 		}
 		elseif($rows['type'] == "X") //Boilerplate question
