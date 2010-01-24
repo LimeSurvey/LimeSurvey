@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-12 21:38+0100\n"
-"PO-Revision-Date: 2010-01-12 21:44+0100\n"
+"PO-Revision-Date: 2010-01-24 01:44+0100\n"
 "Last-Translator: Jure Cuhalev <gandalf@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,11 @@ msgstr ""
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:250
 msgid "Back to main menu"
-msgstr ""
+msgstr "Nazaj v glavni meni"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:322
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
-msgstr "Opozorilo: Še vedno uporabljate privzeto geslo ('password'). Prosimo, spremenite vaše geslo in se ponovno prijavite."
+msgstr "Opozorilo: še vedno uporabljate privzeto geslo ('password'). Prosimo, spremenite vaše geslo in se ponovno prijavite."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:325
 msgid "Administration"
@@ -37,9 +37,9 @@ msgid "Edit your personal preferences"
 msgstr "Uredite vaše osebne nastavitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:336
-#, fuzzy, php-format
+#, php-format
 msgid "Update available: %s"
-msgstr "Na voljo ni nobene ankete"
+msgstr "Na voljo je posodobitev: %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:342
 msgid "Default Administration Page"
@@ -54,9 +54,8 @@ msgid "Create/Edit Groups"
 msgstr "Ustvari/uredi skupine"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:357
-#, fuzzy
 msgid "Global settings"
-msgstr "Shrani nastavitve"
+msgstr "Globalne nastavitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:364
 msgid "Check Data Integrity"
@@ -91,7 +90,6 @@ msgid "Logout"
 msgstr "Odjava"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:426
-#, fuzzy
 msgid "LimeSurvey Online manual"
 msgstr "LimeSurvey Spletni Vodič"
 
@@ -124,7 +122,7 @@ msgstr "Ustvari eno ali več vprašanj v novi skupini."
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:440
 #, php-format
 msgid "Done. Test your survey using the %s icon."
-msgstr "Narejeno. Anketo lahko testirate prek ikone %s."
+msgstr "Dokončano. Anketo lahko testirate s pomočjo ikone %s."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:440
 msgid "Test survey"
@@ -354,7 +352,6 @@ msgid "Export a VV survey file"
 msgstr "Izvozi VV datoteko ankete"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:1801
-#, fuzzy
 msgid "Iterate surevey"
 msgstr "Ponovi anketo"
 
@@ -551,7 +548,7 @@ msgstr "Komentar"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:2621
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
-msgstr "Pozor: v vašem brskalniku je onemogočeno izvajanje JavaScript-a zaradi česar morda ne boste mogli odgovoriti na vsa vprašanja. Prosimo, preverite nastavitve vašega brskalnika."
+msgstr "Pozor: v vašem brskalniku je onemogočeno izvajanje JavaScript-a. Morda ne boste mogli odgovoriti na vsa vprašanja v tej anketi. Preverite nastavitve vašega brskalnika."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:2660
 msgid "There are no questions in this survey"
@@ -579,7 +576,7 @@ msgstr "Ta anketa je anonimna."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:2717
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Vaši odgovori na anketna vprašanja, ki se shranjujejo v bazo odgovorov ne vsebujejo nobenih informacij, prek katerih bi vas bilo mogoče identificirati, razen v primeru ko so le te del odgovora na anketno vprašanje. Če odgovarjate na anketo, ki za dostop uporablja geslo, se podatki o geslu ne hranijo skupaj z odgovori na anketna vprašanja. Identifikacijski podatki se hranijo v posebni bazi in služijo zgolj kot informacija, če ste že (oz. še niste) odgovorili na anketo. Gesel v nobenem primeru ni mogoče povezati z odgovori na anketo."
+msgstr "Vaši odgovori na anketna vprašanja, ki se shranjujejo v bazo odgovorov ne vsebujejo nobenih informacij, prek katerih bi vas bilo mogoče identificirati, razen v primeru ko so le te del odgovora na anketno vprašanje. Če odgovarjate na anketo, ki za dostop uporablja geslo, se podatki o geslu ne hranijo skupaj z odgovori na anketna vprašanja. Identifikacijski podatki se hranijo v posebni bazi in služijo zgolj kot informacija, če ste že (oz. še niste) odgovorili na anketo.  Gesel v nobenem primeru ni mogoče povezati z odgovori na anketo."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:2727
 msgid "Are you sure you want to clear all your responses?"
@@ -750,9 +747,8 @@ msgstr "Vaša ocena"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3626
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3710
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3718
-#, fuzzy
 msgid "Display"
-msgstr "Prikaži:"
+msgstr "Prikaži"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3293
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3294
@@ -760,9 +756,8 @@ msgid "Sort answers alphabetically"
 msgstr "Uredi odgovore po abecedi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3303
-#, fuzzy
 msgid "Set the percentage width of the answer column (1-100)"
-msgstr "Širina stolpca za odgovore v procentih"
+msgstr "Širina stolpca za odgovore v procentih (1-100)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3304
 msgid "Answer width"
@@ -779,13 +774,12 @@ msgstr "Širina odgovor"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3547
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3566
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3577
-#, fuzzy
 msgid "Logic"
-msgstr "Prijava"
+msgstr "Logika"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3311
 msgid "Enter the code of a Multiple options question to only show the matching answer options in this question."
-msgstr ""
+msgstr "Vpišite kodo za "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3312
 msgid "Array filter"
@@ -793,12 +787,11 @@ msgstr "Filter polij"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3319
 msgid "Enter the code of a Multiple options question to exclude the matching answer options in this question."
-msgstr ""
+msgstr "Vnesite kodo za vprašanje z več možnih odgovorov, da izloči možnosti ujemajočih odgovorov v tem vprašanju."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3320
-#, fuzzy
 msgid "Array filter exclusion"
-msgstr "Filter polij"
+msgstr "Izločitveni filter polij"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3327
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3328
@@ -815,7 +808,7 @@ msgstr "Filter kode"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3346
 msgid "The answer options will be distributed across the number of columns set here"
-msgstr ""
+msgstr "Možnosti odgovorov bodo razporejene čez število tu določenih stolpcev"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3347
 msgid "Display columns"
@@ -870,7 +863,6 @@ msgid "Dropdown separators"
 msgstr "Razločevalnik spustega menija"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3405
-#, fuzzy
 msgid "Enter a header text for scale A"
 msgstr "Zaglavje za skalo A"
 
@@ -879,7 +871,6 @@ msgid "Header scale A"
 msgstr "Zaglavje skale A"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3413
-#, fuzzy
 msgid "Enter a header text for scale B"
 msgstr "Zaglavje za skalo B"
 
@@ -892,7 +883,7 @@ msgstr "Zaglavje skale B"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3480
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3496
 msgid "Input"
-msgstr ""
+msgstr "Odgovor"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3421
 msgid "Multiple numeric inputs sum must equal this value"
@@ -903,9 +894,8 @@ msgid "Equals sum value"
 msgstr "Enako vrednosti vsote"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3429
-#, fuzzy
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code."
-msgstr "Izključi vse ostale možnosti, če je izbrano"
+msgstr "Izključi vse ostale možnosti, če je izbrano - vnesite kodo odgovora."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3430
 msgid "Exclusive option"
@@ -921,12 +911,11 @@ msgstr "Skrij namige"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3451
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
-msgstr ""
+msgstr "Kadarkoli skrij to vprašanje. To je uporabno, ko želite vključiti podatke s pomočjo predizpolnjenih odgovorov."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3452
-#, fuzzy
 msgid "Always hide this question"
-msgstr "Zapri to vprašanje"
+msgstr "Vedno skrij to vprašanje"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3459
 msgid "Limit the number of possible answers"
@@ -945,7 +934,6 @@ msgid "Maximum sum value"
 msgstr "Največja vsota vrednosti"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3475
-#, fuzzy
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr "ASVO vrednost, ki se uporablja za vsoto prejšnega vprašanja kot maksimum za to vprašanje"
 
@@ -962,9 +950,8 @@ msgid "Maximum characters"
 msgstr "Največ znakov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3491
-#, fuzzy
 msgid "Ensure a minimum number of possible answers (0=No limit)"
-msgstr "Zagotovi najmanjše število možnih odgovorov"
+msgstr "Zagotovi najmanjše število možnih odgovorov (0=Ni omejitve)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3492
 msgid "Minimum answers"
@@ -979,7 +966,6 @@ msgid "Minimum sum value"
 msgstr "Najmanjša vrednost vsote"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3507
-#, fuzzy
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr "ASVO vrednost, ki se uporablja za vsoto prejšnega vprašanja kot minimum za to vprašanje"
 
@@ -1009,9 +995,8 @@ msgid "Step value"
 msgstr "Vrednost koraka"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3542
-#, fuzzy
 msgid "Use checkbox layout"
-msgstr "Ureditev polja odkljukat"
+msgstr "Uporabi ureditev potrditvenih polij"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3543
 msgid "Checkbox layout"
@@ -1034,38 +1019,32 @@ msgid "Numbers only"
 msgstr "Samo števila"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3572
-#, fuzzy
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
-msgstr "Naredi polje \"drugo komentar\" za obvezno, ko je izbrano polje \"drugo\""
+msgstr "Naredi polje  'Drugo:' s komentarjem za obvezno, ko je možnost 'Drugo' aktivna"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3573
-#, fuzzy
 msgid "'Other:' comment mandatory"
-msgstr "Obvezenen komentar za Drugo"
+msgstr "Obvezen komentar za 'Drugo:'"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3583
-#, fuzzy
 msgid "Allow only numerical input for 'Other' text"
-msgstr "Dovoli samo številski vnos za besedilo za `Drugo`"
+msgstr "Dovoli samo številski vnos za besedilo za 'Drugo'"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3584
-#, fuzzy
 msgid "Numbers only for 'Other'"
-msgstr "Samo števila za `Drugo`"
+msgstr "Samo števila za 'Drugo'"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3591
-#, fuzzy
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "Zamenja labelo 'drugo' z besedilom"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3592
 msgid "Label for 'Other:' option"
-msgstr ""
+msgstr "Labela za 'Drugo:' možnost"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3602
-#, fuzzy
 msgid "Insert a page break before this question in printable view by setting this to Yes."
-msgstr "Vstavitve prelom strani pred tem vprašanjem tako da nastavitve to na 1."
+msgstr "Vstavitve prelom strani pred tem vprašanjem tako da nastavite to na Da."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3603
 msgid "Insert page break in printable view"
@@ -1080,9 +1059,8 @@ msgid "Answer prefix"
 msgstr "Predpona odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3621
-#, fuzzy
 msgid "Show statistics of this question in the public statistics page"
-msgstr "Pokaži statistiko določenega vprašanja uporabniku"
+msgstr "Show statistics of this question in the public statistics page"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3622
 msgid "Show in public statistics"
@@ -1105,7 +1083,7 @@ msgstr "Naključni vrstni red odgovorov"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3691
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3702
 msgid "Slider"
-msgstr ""
+msgstr "Drsnik"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3643
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3644
@@ -1134,28 +1112,27 @@ msgstr "Začetna vrednost drsnika"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3686
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
-msgstr ""
+msgstr "The handle is displayed at the middle of the slider (this will not set the initial value)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3687
 msgid "Slider starts at the middle position"
-msgstr ""
+msgstr "Slider starts at the middle position"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3697
 msgid "Display min and max value under the slider"
-msgstr ""
+msgstr "Display min and max value under the slider"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3698
-#, fuzzy
 msgid "Display slider min and max value"
-msgstr "Najmanjša vrednost drsnika"
+msgstr "Display slider min and max value"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3705
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
-msgstr ""
+msgstr "Answer|Left-slider-text|Right-slider-text separator character"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3706
 msgid "Slider left/right text separator"
-msgstr ""
+msgstr "Slider left/right text separator"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3713
 msgid "Add a suffix to the answer field"
@@ -1174,9 +1151,8 @@ msgid "Input box width"
 msgstr "Širina vnosnega polja"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3732
-#, fuzzy
 msgid "Use dual dropdown boxes instead of dual scales"
-msgstr "Uporabi dvojni spustni meni namesto dvojne skale"
+msgstr "Use dual dropdown boxes instead of dual scales"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3733
 msgid "Dual dropdown"
@@ -1187,27 +1163,24 @@ msgid "Default"
 msgstr "Privzeto"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3741
-#, fuzzy
 msgid "Nominal"
-msgstr "Številsko"
+msgstr "Nominal"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3742
-#, fuzzy
 msgid "Ordinal"
-msgstr "Opcijsko"
+msgstr "Ordinal"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3743
-#, fuzzy
 msgid "Scale"
-msgstr "moški"
+msgstr "Scale"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3745
 msgid "Set a specific SPSS export scale type for this question"
-msgstr ""
+msgstr "Set a specific SPSS export scale type for this question"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3746
 msgid "SPSS export scale type"
-msgstr ""
+msgstr "SPSS export scale type"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3751
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3759
@@ -1220,111 +1193,108 @@ msgstr ""
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3820
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3828
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3836
-#, fuzzy
 msgid "Timing"
-msgstr "Urejanje"
+msgstr "Timing"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3754
 msgid "Limit time to answer question (in seconds)"
-msgstr ""
+msgstr "Limit time to answer question (in seconds)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3755
-#, fuzzy
 msgid "Time limit"
-msgstr "Čas, ko je bila anketa poslana"
+msgstr "Time limit"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3762
 msgid "Warn and move on"
-msgstr ""
+msgstr "Opozori in nadaljuj"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3763
 msgid "Move on without warning"
-msgstr ""
+msgstr "Nadaljuj brez opozorila"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3764
-#, fuzzy
 msgid "Disable only"
-msgstr "Onemogoči"
+msgstr "Disable only"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3765
 msgid "Action to perform when time limit is up"
-msgstr ""
+msgstr "Dejanje, ki se naj zgodi, ko preteče časovna omejitev"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3766
 msgid "Time limit action"
-msgstr ""
+msgstr "Dejanje časovne omejitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3773
 msgid "Message to display when time limit has expired"
-msgstr ""
+msgstr "Sporočilo, ki se naj prikaže ob preteku časovne omejitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3774
 msgid "Time limit expiry message"
-msgstr ""
+msgstr "Sporočilo preteka časovne omejitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3781
 msgid "How long to display the time limit expiry message (in seconds)"
-msgstr ""
+msgstr "Kako dolgo naj se prikaže sporočilo o preteku časovne omejitve (v sekundah)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3782
 msgid "Time limit expiry message delay"
-msgstr ""
+msgstr "Zakasnitev sporočila o preteku časovne omejitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3791
 msgid "Disable the next button until time limit expires"
-msgstr ""
+msgstr "Onemogoči gumb naprej dokler časovna omejitev ne preteče"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3792
 msgid "Time limit disable next"
-msgstr ""
+msgstr "Časovna omejitev onemogoči nadaljevanje"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3799
 msgid "CSS style for the time limit message"
-msgstr ""
+msgstr "CSS stil za sporočilo o časovni omejitvi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3800
 msgid "Time limit message CSS style"
-msgstr ""
+msgstr "CSS stil sporočila o časovni omejitvi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3807
 msgid "CSS Style for the time limit countdown timer"
-msgstr ""
+msgstr "CSS stil za števec, ki odšteva časovno omejitev"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3808
 msgid "Time limit timer CSS style"
-msgstr ""
+msgstr "CSS stil števca časovne omejitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3815
 msgid "Time until time limit expiry when time limit warning message is displayed (in seconds)"
-msgstr ""
+msgstr "Število sekund do preteka časovne omejitve, ko se naj prikaže opozorilo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3816
 msgid "Time limit warning message timer"
-msgstr ""
+msgstr "Števec sporočila o časovni omejitvi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3823
 msgid "How long the time limit warning message will display (in seconds)"
-msgstr ""
+msgstr "Kako dolgo bo sporočilo o časovni omejitvi prikazano (v sekundah)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3824
 msgid "Time limit warning message display time"
-msgstr ""
+msgstr "Čas prikaza sporočila o časovni omejitvi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3831
 msgid "Message to display warning that time limit is about to expire"
-msgstr ""
+msgstr "Sporočilo o opozorilu, da bo časovna omejitev kmalu potekla"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3832
 msgid "Time limit warning message"
-msgstr ""
+msgstr "Opozorilo časovne omejitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3839
 msgid "CSS style for the time limit warning message"
-msgstr ""
+msgstr "CSS stil za opozorilo o časovni omejitvi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:3840
 msgid "Time limit warning CSS style"
-msgstr ""
+msgstr "CSS stil sporočila časovne omejitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4004
 msgid "Version"
@@ -1336,7 +1306,7 @@ msgstr "Online Navodila"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4016
 msgid "Support this project - Donate to "
-msgstr "Podprite ta projekt - donirajte"
+msgstr "Podprite ta projekt - donirajte "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4019
 msgid "Visit our website!"
@@ -1348,7 +1318,7 @@ msgstr "E-mail ni bil poslan ker je vključen demonstracijski način ankete"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4292
 msgid "SMTP debug output:"
-msgstr ""
+msgstr "SMTP debug output:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4772
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4778
@@ -1357,7 +1327,7 @@ msgstr "Izvajam"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4772
 msgid "Failed! Reason: "
-msgstr "Ni uspelo! Razlog:"
+msgstr "Failed! Reason: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/common.php:4778
 msgid "Success!"
@@ -1404,7 +1374,7 @@ msgstr "Odgovor na varnostno vprašanje ni pravilen."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/register.php:78
 msgid "The email you used is not valid. Please try again."
-msgstr "Ta elektronski naslov ni veljaven. Poskusite znova."
+msgstr "The email you used is not valid. Please try again."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/register.php:93
 msgid "The email you used has already been registered."
@@ -1416,7 +1386,7 @@ msgstr "Najlepša hvala za registracijo za sodelovanje v anketi."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/register.php:167
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr "Na e-mail naslov, ki ste ga navedli je bilo poslano sporočilo z navodili za dostop do ankete. Za nadaljevanje ankete sledite povezavi v sporočilu, ki ga boste prejeli v tem sporočilu."
+msgstr "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/register.php:167
 msgid "Survey Administrator"
@@ -1530,20 +1500,19 @@ msgstr "Nadaljevanje ni mogoče preden ne vnesete teksta za eno ali več vpraša
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:910
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Niste odgovorili na eno ali več obveznih vprašanj. Z anketo ne morete nadaljevati, dokler ne odgovorite na vsa obvezna vprašanja."
+msgstr "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:937
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "Na eno ali več vprašanj niste odgovorili z veljavnim odgovorom. Z anketiranjem ne morete nadaljevati dokler niso vsi odgovori veljavni."
+msgstr "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:981
-#, fuzzy
 msgid "Your time to answer this question has expired"
-msgstr "Dodati morate odgovore za to vprašanje"
+msgstr "Your time to answer this question has expired"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:983
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
-msgstr ""
+msgstr "Your time to answer this question has nearly expired. You have {TIME} remaining."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1125
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1149
@@ -1552,9 +1521,8 @@ msgstr "ur"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1126
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1150
-#, fuzzy
 msgid "mins"
-msgstr "Namigi"
+msgstr "mins"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1127
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1151
@@ -1563,9 +1531,8 @@ msgid "seconds"
 msgstr "sekund"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1153
-#, fuzzy
 msgid "Time remaining"
-msgstr "Do konca še"
+msgstr "Time remaining"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1438
 msgid "Day"
@@ -1655,9 +1622,8 @@ msgid "Please choose"
 msgstr "Prosimo, izberite"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1853
-#, fuzzy
 msgid "Other answer"
-msgstr "Vaš odgovor"
+msgstr "Other answer"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1877
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:2061
@@ -1665,7 +1631,7 @@ msgstr "Vaš odgovor"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:2528
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr "Izbrali ste odgovor \"drugo\" za vprašanje \"%s\". Izpolnite tudi povezano polje \"drugo komentar\"."
+msgstr "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1994
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:2432
@@ -1674,9 +1640,8 @@ msgstr "Napaka: Jezikovna različica seznama odgovorov za to vprašanje v tem je
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:1998
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:2033
-#, fuzzy
 msgid "Other text"
-msgstr "Komentar"
+msgstr "Other text"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:2590
 msgid "Please enter your comment here"
@@ -1703,25 +1668,25 @@ msgstr "Kliknite na škarje poleg vsakega elementa na desni za odstranitev zadnj
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:2966
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
-msgstr "Uvrstite %d odgovor(ov) na vprašanje \"%s\"."
+msgstr "Please rank at least %d item(s) for question \"%s\"."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3345
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3645
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
-msgstr "Prosimo, izberite največ %d odgovor(ov) na vprašanje \"%s\""
+msgstr "Please choose at most %d answer(s) for question \"%s\""
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3366
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3670
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
-msgstr "Prosimo, izberite vsaj %d odgovor(ov) na vprašanje \"%s\""
+msgstr "Please choose at least %d answer(s) for question \"%s\""
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3401
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3700
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr "Označili ste odgovor \"drugo\" za vprašanje \"%s\". Izpolnite tudi povezano polje \"drugo komentar\"."
+msgstr "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3573
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:3601
@@ -1756,24 +1721,24 @@ msgstr "Vsota vseh vnosov mora biti vsaj %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4247
 msgid "Remaining: "
-msgstr "Do konca še:"
+msgstr "Do konca še: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4249
 msgid "Total: "
-msgstr "Skupaj:"
+msgstr "Skupaj: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4293
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4299
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4335
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4346
 msgid "Answer is invalid. The total of all entries should not add up to more than "
-msgstr "Odgovor ni veljaven. Skupno število vnosov ne sme biti več kot"
+msgstr "Answer is invalid. The total of all entries should not add up to more than "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4312
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4320
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
-msgstr "Odgovor ni veljaven. Vsota vseh vnosov mora biti vsaj %s."
+msgstr "Answer is invalid. The total of all entries should add up to at least %s."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/qanda.php:4424
 msgid "Only numbers may be entered in this field"
@@ -1860,9 +1825,8 @@ msgid "2nd quartile (Median)"
 msgstr "Drugi kvartil (Mediana)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/statistics_user.php:1069
-#, fuzzy
 msgid "Median value"
-msgstr "Najmanjša vrednost"
+msgstr "Median value"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/statistics_user.php:1101
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/statistics_user.php:1111
@@ -1924,7 +1888,7 @@ msgstr "Ni bilo shranjeno"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/survey.php:86
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/question.php:213
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Vaši odgovori se niso shranili. Anketa še ni aktivna."
+msgstr "Your survey responses have not been recorded. This survey is not yet active."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/survey.php:91
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/question.php:219
@@ -1959,27 +1923,27 @@ msgstr "Prikaz statistik za to anketo."
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/survey.php:219
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/question.php:70
 msgid "Sorry. There is no matching survey."
-msgstr "Oprostite. Takšna anketa ne obstaja."
+msgstr "Sorry. There is no matching survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/survey.php:780
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/question.php:484
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
-msgstr "Niste odgovorili na eno ali več obveznih vprašanj. Z anketo ne morete nadaljevati, dokler ne odgovorite na vsa obvezna vprašanja."
+msgstr "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/survey.php:786
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/question.php:490
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
-msgstr "Na eno ali več vprašanj niste odgovorili z veljavnim odgovorom. Z anketiranjem ne morete nadaljevati dokler niso vsi odgovori veljavni."
+msgstr "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/survey.php:883
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/question.php:97
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/question.php:565
 msgid "This survey is not currently active. You will not be able to save your responses."
-msgstr "Ta anketa trenutno ni aktivna. Vaših odgovorov ne bo mogoče shraniti."
+msgstr "This survey is not currently active. You will not be able to save your responses."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:224
 msgid "Please try again."
-msgstr "Prosimo, poskusite znova."
+msgstr "Please try again."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:266
 msgid "You must supply a name for this saved session."
@@ -1995,7 +1959,7 @@ msgstr "Gesli se ne ujemata."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:293
 msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr "To ime je bilo že uporabljeno za to anketo. Izbrati morate drugo ime."
+msgstr "This name has already been used for this survey. You must use a unique save name."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:349
 msgid "Saved Survey Details"
@@ -2003,7 +1967,7 @@ msgstr "Podatki o shranjeni anketi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:350
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
-msgstr "Hvala ker ste shranili anketo. Spodnje podatke uporabite ko boste želeli nadaljevati z izpolnjevanjem ankete na mestu, kjer ste jo prekinili. Prosimo, shranite to sporočilo - vašega gesla vam ne moremo ponovno posredovati."
+msgstr "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:354
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
@@ -2019,11 +1983,11 @@ msgstr "Odgovorov ni mogoče poslati - ni nobenih odgovorov."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:620
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
-msgstr "Do te napake lahko pride, če ste odgovore na anketo že poslali in nato pritisnili 'refresh/osveži' v vašem brskalniku. V tem primeru so bili vaši odgovori že shranjeni."
+msgstr "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/save.php:620
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Če se to sporočilo pojavi med anketiranjem, pritisnite gumb '<- NAZAJ' ('<- BACK') v vašem brskalniku in nato osveži (refresh). Odgovori, ki ste jih podali na zadnji strani bodo izgubljeni, vsi ostali odgovori pa še vedno obstajajo. Do te težave je lahko prišlo zaradi preobremenjenosti strežnika. Za težave se vam iskreno opravičujemo."
+msgstr "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/printanswers.php:80
 msgid "ERROR"
@@ -2099,7 +2063,7 @@ msgstr "Prejšnja seja je bila zaključena."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:126
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
-msgstr "Ta anketa je bila že odgovorjena s tem brskalnikom. Ponastavljamo sejo da lahko začnete izpolnjevati anketo od začetka."
+msgstr "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:243
 msgid "We are sorry but you don't have permissions to do this."
@@ -2139,7 +2103,7 @@ msgstr "Niste vpisali gesla"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:612
 msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
-msgstr "Ta anketa ni javno dostopna in za dostop potrebujete veljavno geslo. Prosimo, obrnite se administratorja ankete, če potrebujete pomoč."
+msgstr "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:613
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:1960
@@ -2170,9 +2134,9 @@ msgid "There is no matching saved survey"
 msgstr "Podatki se ne ujemajo z nobeno izmed shranjenih anket"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:885
-#, fuzzy, php-format
+#, php-format
 msgid "You have completed %s%% of this survey"
-msgstr "To anketo ste že izpolnili."
+msgstr "You have completed %s%% of this survey"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:1621
 msgid "Answer Submission for Survey"
@@ -2204,12 +2168,11 @@ msgstr "Statistike so vam na voljo tukaj:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:1745
 msgid "This email contains confirmation of the responses you made to the survey"
-msgstr ""
+msgstr "Ta elektronska pošta vsebuje potrditev vaših odgovorov v anketi"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:1747
-#, fuzzy
 msgid "Survey submission confirmation"
-msgstr "Potrditev registracije za anketo"
+msgstr "Survey submission confirmation"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:1766
 msgid "An unexpected error has occurred and your responses cannot be saved."
@@ -2256,7 +2219,7 @@ msgstr "Varnostno vprašanje:"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:1995
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:2030
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Ta anketa ni javno dostopna. Za sodelovanje potrebujete dostopno geslo."
+msgstr "This is a controlled survey. You need a valid token to participate."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/index.php:1900
 msgid "If you have been issued a token, please enter it in the box below and click continue."
@@ -2301,18 +2264,16 @@ msgid "Print your answers."
 msgstr "Natisnite vaše odgovore."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/group.php:313
-#, fuzzy
 msgid "Submit your answers"
-msgstr "Natisnite vaše odgovore."
+msgstr "Submit your answers"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/group.php:314
-#, fuzzy
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
-msgstr "Oprostite, v tej anketi ni nobenih podprtih vprašanj."
+msgstr "There are no more questions. Please press the <Submit> button to finish this survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/login_check.php:46
 msgid "Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: "
-msgstr "Podatki za uporabniško ime in enkratno geslo so bili sprejeti vendar uporaba enkratnih gesel ni omogočena v nastavitvah. Omogočite jo s tem, da dodate naslednjo vrstico v config.php:"
+msgstr "Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/login_check.php:64
 #, php-format
@@ -2378,9 +2339,8 @@ msgid "Give focus to the HTML Editor Popup Window"
 msgstr "Prestavi fokus na novo okno s HTML urejevalnikom"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/vvexport.php:52
-#, fuzzy
 msgid "Export VV file"
-msgstr "Izvoz v datoteko"
+msgstr "Export VV file"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/vvexport.php:57
 msgid "Export Survey"
@@ -2420,7 +2380,7 @@ msgstr "Izvozi seznam odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
-msgstr "Manjka LID številka. Seznama odgovorov ni mogoče izbrisati."
+msgstr "No LID has been provided. Cannot dump label set."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:27
 msgid "Import Label Set"
@@ -2430,7 +2390,7 @@ msgstr "Uvozi seznam odgovorov"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:27
 #, php-format
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
-msgstr "Prišlo je do napake pri nalaganju datoteke. Vzrok za napako so lahko napačne pravice na mapi %s."
+msgstr "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:44
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:208
@@ -2450,7 +2410,7 @@ msgstr "Berem datoteko.."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:57
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr "Ta datoteka ni datoteka s seznamom odgovorov za LimeSurvey. Uvoz ni uspel."
+msgstr "This file is not a LimeSurvey label set file. Import failed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:58
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:221
@@ -2459,7 +2419,7 @@ msgstr "Nazaj na urejanje odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:201
 msgid "The label set was not imported because the same labelset already exists."
-msgstr ""
+msgstr "The label set was not imported because the same labelset already exists."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importlabel.php:209
 msgid "Label Set Import Summary"
@@ -2502,7 +2462,7 @@ msgstr "CFIELDNAME se ne ujema s skupino!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:63
 msgid "No \"CFIELDNAME\" field set!"
-msgstr "Polje \"CFIELDNAME\" ni nastavljeno!"
+msgstr "No \"CFIELDNAME\" field set!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:68
 msgid "The following conditions should be deleted"
@@ -2599,34 +2559,31 @@ msgstr "Vse skupine zadovoljujejo standarde konsistentnosti"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:297
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:364
-#, fuzzy, php-format
+#, php-format
 msgid "Survey ID %d saved at %s"
-msgstr "Način anketiranja je nastavljen na %s:"
+msgstr "Survey ID %d saved at %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:300
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:366
 #, php-format
 msgid "Survey ID %d saved at %s containing %d record(s)"
-msgstr ""
+msgstr "Anketa ID %d shranjena ob %s vsebuje %d zapisov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:308
 msgid "The following old survey tables should be deleted because their parent survey no longer exists"
-msgstr ""
+msgstr "The following old survey tables should be deleted because their parent survey no longer exists"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:314
-#, fuzzy
 msgid "All old survey tables meet consistency standards"
-msgstr "Vsi nastavitve ankete zadoščajo standardom konsistentnosti"
+msgstr "All old survey tables meet consistency standards"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:374
-#, fuzzy
 msgid "The following old token tables should be deleted because their parent survey no longer exists"
-msgstr "Naslednji tabele z gesli lahko obnovite:"
+msgstr "The following old token tables should be deleted because their parent survey no longer exists"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:380
-#, fuzzy
 msgid "All old token tables meet consistency standards"
-msgstr "Vsi pogoji so konsistentni"
+msgstr "All old token tables meet consistency standards"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:394
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:461
@@ -2642,49 +2599,43 @@ msgid "Yes - Delete Them!"
 msgstr "Da - izbriši jih!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:456
-#, fuzzy
 msgid "Data redundancy check"
-msgstr "Preveri konsistentnost podatkov"
+msgstr "Data redundancy check"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:457
 msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
-msgstr ""
+msgstr "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:467
-#, fuzzy
 msgid "The following old survey tables contain no responses and can be deleted:"
-msgstr "Naslednje ankete bi morale biti izbrisane"
+msgstr "The following old survey tables contain no responses and can be deleted:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:475
 msgid "The following old survey response tables exist and may be deleted if no longer required:"
-msgstr ""
+msgstr "The following old survey response tables exist and may be deleted if no longer required:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:483
-#, fuzzy
 msgid "The following old token tables contain no tokens and can be deleted:"
-msgstr "Naslednji tabele z gesli lahko obnovite:"
+msgstr "The following old token tables contain no tokens and can be deleted:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:491
-#, fuzzy
 msgid "The following old token list tables exist and may be deleted if no longer required:"
-msgstr "Naslednji tabele z gesli lahko obnovite:"
+msgstr "The following old token list tables exist and may be deleted if no longer required:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:499
-#, fuzzy
 msgid "Delete checked items!"
-msgstr "Prosimo preverite"
+msgstr "Delete checked items!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:500
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
-msgstr ""
+msgstr "Note that you cannot undo a delete if you proceed. The data will be gone."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:533
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:543
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:643
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:653
-#, fuzzy
 msgid "Deleting old survey result tables"
-msgstr "Brisanje anket"
+msgstr "Deleting old survey result tables"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:535
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:545
@@ -2692,9 +2643,8 @@ msgstr "Brisanje anket"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:655
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:665
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:675
-#, fuzzy
 msgid "Deleting"
-msgstr "Brisanje ID"
+msgstr "Deleting"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:553
 msgid "Deleting Surveys"
@@ -2735,9 +2685,8 @@ msgid "Deleting answer with qid"
 msgstr "Brisanje odgovora s qid"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:612
-#, fuzzy
 msgid "Deleting questions"
-msgstr "Brisanje vprašanj"
+msgstr "Deleting questions"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:614
 msgid "Deleting qid"
@@ -2762,28 +2711,25 @@ msgid "Check Again"
 msgstr "Preveri ponovno"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:635
-#, fuzzy
 msgid "Data redundancy Check"
-msgstr "Preveri konsistentnost podatkov"
+msgstr "Data redundancy Check"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:636
 msgid "Deleting old token and response tables leftover from deactivation"
-msgstr ""
+msgstr "Deleting old token and response tables leftover from deactivation"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:663
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/integritycheck.php:673
-#, fuzzy
 msgid "Deleting old token tables"
-msgstr "Izbriši vse vnose dostopnih gesel"
+msgstr "Deleting old token tables"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:20
-#, fuzzy
 msgid "Import question group"
-msgstr "Uvozi vprašanje"
+msgstr "Import question group"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:36
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr "Manjka SID (številka ankete). Skupine ni mogoče uvoziti"
+msgstr "No SID (Survey) has been provided. Cannot import group."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:53
 msgid "Reading file..."
@@ -2791,7 +2737,7 @@ msgstr "Berem datoteko..."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:65
 msgid "This file is not a LimeSurvey group file. Import failed."
-msgstr "Ta datoteka ni datoteka skupine programa LimeSurvey. Uvoz ni uspel."
+msgstr "This file is not a LimeSurvey group file. Import failed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:250
 msgid "You can't import a group which doesn't support the current survey's base language."
@@ -2811,7 +2757,7 @@ msgstr "Uvoz je delno uspel."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:668
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
-msgstr "Naslednji jeziki v tej skupini niso bili uvoženi, ker anketa ne vsebuje naslednjega jezika:"
+msgstr "Naslednji jeziki v tej skupini niso bili uvoženi, ker anketa ne vsebuje naslednjega jezika: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:679
 msgid "Group Import Summary"
@@ -2835,7 +2781,7 @@ msgstr "Seznam odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:697
 msgid "Question Attributes: "
-msgstr "Lastnosti vprašanja:"
+msgstr "Lastnosti vprašanja: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importgroup.php:700
 msgid "Import of group is completed."
@@ -2942,26 +2888,24 @@ msgid "Change survey name or description"
 msgstr "Spremeni ime ali opis ankete"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/activate.php:266
-#, fuzzy
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Če želite dodajati ali brisati skupine ali vprašanja po aktivaciji ankete jo morate najprej deaktivirati. Ta proces povzroči premik vseh podatkov, ki so bili že zbrani v drugo, arhivsko tabelo."
+msgstr "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/activate.php:526
 msgid "Survey could not be actived."
 msgstr "Ankete ni mogoče aktivirati."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/activate.php:528
-#, fuzzy
 msgid "Database error:"
-msgstr "Ime podatkovne baze"
+msgstr "Database error:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/activate.php:557
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr "Anketa je bila aktivirana. Tabela za rezultate je bila uspešno kreirana."
+msgstr "Survey has been activated. Results table has been successfully created."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/activate.php:571
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Ta anketa dovoljuje javno registracijo. Ustvariti je potrebno tabelo z dostopnimi gesli."
+msgstr "This survey allows public registration. A token table must also be created."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/activate.php:572
 msgid "Initialise Tokens"
@@ -3001,13 +2945,12 @@ msgid "Quick statistics"
 msgstr "Hitre statistike"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:228
-#, fuzzy
 msgid "General filters"
-msgstr "Splošni filter"
+msgstr "General filters"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:233
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
-msgstr "GD Library ni nameščen. Prikazovanje grafov zahteva GD Library za svoje delovanje."
+msgstr "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:234
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:238
@@ -3016,12 +2959,11 @@ msgstr "obiščite http://us2.php.net/manual/en/ref.image.php za več informacij
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:237
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
-msgstr "Freetype Library ni nameščen. Prikazovanje grafov zahteva Freetype Library za svoje delovanje."
+msgstr "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:265
-#, fuzzy
 msgid "Data selection"
-msgstr "Datum zadnje spremembe"
+msgstr "Data selection"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:266
 msgid "Include:"
@@ -3051,9 +2993,8 @@ msgid "Don't consider NON completed responses"
 msgstr "Ne upoštevajo NEPOPOLNIH odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:290
-#, fuzzy
 msgid "Response ID"
-msgstr "Preglej odgovore"
+msgstr "Response ID"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:291
 msgid "Greater than:"
@@ -3072,19 +3013,16 @@ msgid "Equals:"
 msgstr "Je enak:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:312
-#, fuzzy
 msgid "Later than:"
-msgstr "Večje kot"
+msgstr "Later than:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:315
-#, fuzzy
 msgid "Earlier than:"
-msgstr "Večje kot"
+msgstr "Earlier than:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:325
-#, fuzzy
 msgid "Output options"
-msgstr "Več možnih odgovorov"
+msgstr "Output options"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:327
 msgid "Show graphs"
@@ -3106,9 +3044,8 @@ msgid "Clear"
 msgstr "Izbriši"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:350
-#, fuzzy
 msgid "Response filters"
-msgstr "Filter kode"
+msgstr "Response filters"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/statistics.php:398
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:820
@@ -3161,9 +3098,8 @@ msgid "Answered"
 msgstr "Odgovorjeno"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/saved.php:54
-#, fuzzy
 msgid "Saved Responses"
-msgstr "Shranjeni odgovori:"
+msgstr "Saved Responses"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/saved.php:59
 msgid "Saved Responses:"
@@ -3183,14 +3119,12 @@ msgid "Date Saved"
 msgstr "Datum shranjevanja"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/saved.php:92
-#, fuzzy
 msgid "Edit entry"
-msgstr "Uredi ta vnos"
+msgstr "Edit entry"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/saved.php:94
-#, fuzzy
 msgid "Delete entry"
-msgstr "Izbriši ta vnos"
+msgstr "Delete entry"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/saved.php:94
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2044
@@ -3214,11 +3148,11 @@ msgstr "V aktivni anketi se ustvari tabela za shranjevanje odgovorov."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deactivate.php:30
 msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr "Ko boste deaktivirali anketo bodo vsi odgovori, ki so bili že zbrani, premaknjeni drugam, in ko boste anketo ponovno aktivirali, bo tabela z odgovori prazna. Do sedaj zbrani odgovori ne bodo več dostopni preko vmesnika LimeSurvey."
+msgstr "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deactivate.php:31
 msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Do podatkov deaktivirane ankete lahko dostopa le administrator sistema z ročnim posegom v podatkovno bazo MySQL (recimo s pomočjo orodja kot je phpmyadmin). Če so bila uporabljena gesla, je bila tudi tabela z gesli preimenovana in je dostopna na enak način."
+msgstr "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deactivate.php:32
 msgid "Your responses table will be renamed to:"
@@ -3234,7 +3168,7 @@ msgstr "Anketa je bila deaktivirana."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deactivate.php:115
 msgid "The responses table has been renamed to: "
-msgstr "Tabela odgovorov je bila preimenovana v:"
+msgstr "Tabela odgovorov je bila preimenovana v: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deactivate.php:116
 msgid "The responses to this survey are no longer available using LimeSurvey."
@@ -3246,24 +3180,23 @@ msgstr "Zapomnite si ime te tabele, če boste kasneje potrebovali dostop do teh 
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deactivate.php:120
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "Tabela z gesli za to anketo je bila preimenovana v:"
+msgstr "Tabela z gesli za to anketo je bila preimenovana v: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deactivate.php:122
 msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
-msgstr ""
+msgstr "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_structure_csv.php:48
 msgid "No SID has been provided. Cannot dump survey"
-msgstr "Manjka SID številka ankete. Ankete ni mogoče izbrisati"
+msgstr "No SID has been provided. Cannot dump survey"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:44
 msgid "Status"
 msgstr "Status"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:45
-#, fuzzy
 msgid "Survey ID"
-msgstr "ID Ankete:"
+msgstr "Survey ID"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:46
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:298
@@ -3316,24 +3249,20 @@ msgid "This survey is active but expired."
 msgstr "Anketa je aktivna, a je potekla."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:141
-#, fuzzy
 msgid "This survey is active - click here to deactivate this survey."
-msgstr "Nimate dovoljenja za deaktiviranje te ankete!"
+msgstr "This survey is active - click here to deactivate this survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:145
-#, fuzzy
 msgid "This survey is currently active."
-msgstr "Ta anketa je trenutno aktivna"
+msgstr "This survey is currently active."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:153
-#, fuzzy
 msgid "This survey is currently not active - click here to activate this survey."
-msgstr "Ta anketa trenutno ni aktivna. Vaših odgovorov ne bo mogoče shraniti."
+msgstr "This survey is currently not active - click here to activate this survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:157
-#, fuzzy
 msgid "This survey is currently not active."
-msgstr "Ta anketa je trenutno aktivna"
+msgstr "This survey is currently not active."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:188
 msgid "No Surveys available - please create one."
@@ -3389,7 +3318,7 @@ msgstr "Aktiviraj anketo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:315
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
-msgstr "Ankete ni mogoče aktivirati. Nimate pravic ali pa v anketi še ni nobenega vprašanja."
+msgstr "Survey cannot be activated. Either you have no permission or there are no questions."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:328
 msgid "This survey is active but has a start date."
@@ -3400,9 +3329,8 @@ msgid "This survey is currently active"
 msgstr "Ta anketa je trenutno aktivna"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:339
-#, fuzzy
 msgid "Deactivate this Survey"
-msgstr "Deaktiviraj to anketo"
+msgstr "Deactivate this Survey"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:354
 msgid "Survey Security Settings"
@@ -3439,9 +3367,8 @@ msgid "Reset Survey Logic"
 msgstr "Ponastavi anketno logiko"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:484
-#, fuzzy
 msgid "Currently there are no conditions configured for this survey."
-msgstr "Oprostite, v tej anketi ni nobenih podprtih vprašanj."
+msgstr "Currently there are no conditions configured for this survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:499
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1824
@@ -3473,9 +3400,8 @@ msgid "Question groups"
 msgstr "Skupine vprašanj"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:580
-#, fuzzy
 msgid "Add new group to survey"
-msgstr "Dodaj novo skupino vprašanj za anketo"
+msgstr "Add new group to survey"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:584
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:585
@@ -3605,15 +3531,13 @@ msgstr "FAX števika:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:697
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2405
-#, fuzzy
 msgid "Start date/time:"
-msgstr "Datum začetka:"
+msgstr "Start date/time:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:710
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2415
-#, fuzzy
 msgid "Expiry date/time:"
-msgstr "Datum poteka ankete:"
+msgstr "Expiry date/time:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:722
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2254
@@ -3665,13 +3589,12 @@ msgid "You need to add questions"
 msgstr "Dodati morate vprašanja"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:834
-#, fuzzy
 msgid "Edit current question group"
-msgstr "Izbriši trenutno skupino vprašanj"
+msgstr "Edit current question group"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:846
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
-msgstr "Če boste izbrisali to skupino, bodo izbrisana tudi vsa vprašanja, ki pripadajo tej skupini. Ali ste prepričani, da želite nadaljevati?"
+msgstr "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:848
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:855
@@ -3683,9 +3606,8 @@ msgid "Impossible to delete this group because there is at least one question ha
 msgstr "Skupine ni mogoče izbrisati, ker obstaja vsaj eno vprašanje s pogojem na vprašanja iz te skupine."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:869
-#, fuzzy
 msgid "Export current question group"
-msgstr "Izbriši trenutno skupino vprašanj"
+msgstr "Export current question group"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:880
 msgid "Change Question Order"
@@ -3717,7 +3639,7 @@ msgstr "Uredi trenutno vprašanje"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1006
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
-msgstr "Če boste izbrisali to vprašanje, bodo izbrisani tudi vsi odgovori, ki pripadajo vprašanju. Ali ste prepričani, da želite nadaljevati?"
+msgstr "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1007
 msgid "Delete Current Question"
@@ -3741,9 +3663,8 @@ msgid "Copy Current Question"
 msgstr "Kopiraj trenutno vprašanje"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1045
-#, fuzzy
 msgid "You can't copy a question if the survey is active."
-msgstr "Z odgovarjanjem na to anketo ste zaključili."
+msgstr "You can't copy a question if the survey is active."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1058
 msgid "Set Conditions for this Question"
@@ -3841,7 +3762,7 @@ msgstr "Napaka: uporabiti želite podvojene kode odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1332
 msgid "Error: 'other' is a reserved keyword."
-msgstr ""
+msgstr "Napaka: 'other' je rezervirana beseda."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1358
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2731
@@ -3878,7 +3799,7 @@ msgstr "Izbriši"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1479
 msgid "Move answer option up"
-msgstr ""
+msgstr "Move answer option up"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1479
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2801
@@ -3888,7 +3809,7 @@ msgstr "Gor"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1484
 msgid "Move answer option down"
-msgstr ""
+msgstr "Move answer option down"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1484
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2813
@@ -3967,7 +3888,7 @@ msgstr "Brisanje uporabnika"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1683
 msgid "Could not delete user. User was not supplied."
-msgstr "Brisanje uporabnika ni mogoče. Uporabnik ni bil podan."
+msgstr "Could not delete user. User was not supplied."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1710
 msgid "Edit Survey Properties"
@@ -4017,20 +3938,17 @@ msgid "Export To File"
 msgstr "Izvoz v datoteko"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1866
-#, fuzzy
 msgid "Export Group Structure"
-msgstr "Izvozi strukturo anketa"
+msgstr "Export Group Structure"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1872
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1925
-#, fuzzy
 msgid "LimeSurvey group File (*.csv)"
-msgstr "Datoteka LimeSurvey ankete (*.csv)"
+msgstr "LimeSurvey group File (*.csv)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1919
-#, fuzzy
 msgid "Export Question Structure"
-msgstr "Izvozi strukturo anketa"
+msgstr "Export Question Structure"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:1974
 msgid "Survey Security"
@@ -4169,9 +4087,8 @@ msgstr "Kontrola objavljanja in dostopa"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2379
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:3222
-#, fuzzy
 msgid "Set token length to:"
-msgstr "Izbriši dostopno geslo"
+msgstr "Set token length to:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2384
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:3227
@@ -4242,9 +4159,8 @@ msgstr "Obvestilo administratorja:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2492
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:3289
-#, fuzzy
 msgid "Email responses to:"
-msgstr "Delni odgovori"
+msgstr "Email responses to:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2497
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:3294
@@ -4308,9 +4224,8 @@ msgstr "Pri odgovorih bo shranjen tudi URL, iz kategega je anketiranec prišel n
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2614
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:3333
-#, fuzzy
 msgid "Enable token-based response persistence?"
-msgstr "Omogoči persistentnost odogovorov na podlagi gesel?"
+msgstr "Enable token-based response persistence?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2615
 msgid "This option can't be set if Anonymous answers are used"
@@ -4353,7 +4268,7 @@ msgstr "Uvozi ZIP arhiv z viri"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2686
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr "Vsa vprašanja, odgovori, ipd. za odstranjene jezike bodo izgubljeni. Ali ste prepričani?"
+msgstr "All questions, answers, etc for removed languages will be lost. Are you sure?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2686
 msgid "Save and Continue"
@@ -4361,7 +4276,7 @@ msgstr "Shrani in nadaljuj"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2714
 msgid "This will replace the existing text. Continue?"
-msgstr "Obstoječ tekst bo spremenjen. Želite nadaljevati?"
+msgstr "This will replace the existing text. Continue?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/html.php:2720
 msgid "Edit survey settings - Step 2 of 2"
@@ -4508,7 +4423,7 @@ msgstr "Niste izbrali vprašanja"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/conditionshandling.php:143
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/conditionshandling.php:205
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
-msgstr "Tega pogoja ni mogoče dodati! Pogoj ne vsebuje vprašanja in/ali odgovora na katerega se nanaša pogoj. Prosimo, preverite da ste izbrali vprašanje in odgovor na katerega se nanaša pogoj."
+msgstr "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/conditionshandling.php:366
 msgid "Conditions successfully copied (some were skipped because they were duplicates)"
@@ -4573,9 +4488,8 @@ msgid "After"
 msgstr "Za"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/conditionshandling.php:1049
-#, fuzzy
 msgid "LimeSurvey manual"
-msgstr "LimeSurvey Spletni Vodič"
+msgstr "LimeSurvey manual"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/conditionshandling.php:1135
 msgid "Only show question {QID} IF"
@@ -4709,9 +4623,8 @@ msgid "Add condition"
 msgstr "Dodaj pogoj"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/conditionshandling.php:1717
-#, fuzzy
 msgid "Add scenario"
-msgstr "Uredi scenarij"
+msgstr "Add scenario"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/conditionshandling.php:1718
 msgid "Default scenario"
@@ -4772,7 +4685,7 @@ msgstr "Izvoz vprašanja"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dumpquestion.php:37
 msgid "No QID has been provided. Cannot dump question."
-msgstr "Manjka številka vprašanja (QID). Vprašanja ni mogoče izbrisati."
+msgstr "No QID has been provided. Cannot dump question."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/assessments.php:107
 msgid "There are no groups available."
@@ -4785,7 +4698,7 @@ msgstr "Ocene"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/assessments.php:123
 #, php-format
 msgid "Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
-msgstr "Opozorilo: ocenjevalni način za to anketo ni vklopljen. Vklopite ga lahko v %s nastavitvah ankete %s (zavihek 'Upravljanje z obvestili in podatki')."
+msgstr "Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/assessments.php:131
 msgid "No SID Provided"
@@ -4837,15 +4750,15 @@ msgstr "Uvozi vprašanje"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importquestion.php:37
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "Manjka SID (številka ankete). Vprašanja ni mogoče uvoziti."
+msgstr "No SID (Survey) has been provided. Cannot import question."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importquestion.php:51
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr "Manjka GID (številka skupine). Vprašanja ni mogoče uvoziti."
+msgstr "No GID (Group) has been provided. Cannot import question"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importquestion.php:91
 msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr "Ta datoteka ni datoteka z vprašalnikom za LimeSurvey. Uvoz ni uspel."
+msgstr "This file is not a LimeSurvey question file. Import failed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importquestion.php:224
 msgid "You can't import a question which doesn't support the current survey's base language"
@@ -4893,12 +4806,11 @@ msgstr "Uvozi odgovore"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importoldresponses.php:67
 msgid "Are you sure?"
-msgstr "Ali ste prepričani?"
+msgstr "Are you sure?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importoldresponses.php:69
-#, fuzzy
 msgid "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
-msgstr "Pozor: Stare odgovore lahko uvozite z istim številom stolpcev kot jih je v vaši aktivni anketi. SAMI morate preveriti, da ti odgovori ustrezajo vprašanjem v vaši aktivni anketi."
+msgstr "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/vvimport.php:21
 msgid "ARMSCII-8 Armenian"
@@ -5049,9 +4961,8 @@ msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/vvimport.php:79
-#, fuzzy
 msgid "Import VV file"
-msgstr "Uvozi VV datoteko ankete"
+msgstr "Import VV file"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/vvimport.php:83
 msgid "File:"
@@ -5128,14 +5039,12 @@ msgid "Export result data to SPSS"
 msgstr "Izvoz podatkov v SPSS"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:119
-#, fuzzy
 msgid "Data selection:"
-msgstr "Datum zadnje spremembe"
+msgstr "Data selection:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:125
-#, fuzzy
 msgid "SPSS version:"
-msgstr "Različica"
+msgstr "SPSS version:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:127
 msgid "Prior to 16"
@@ -5146,24 +5055,20 @@ msgid "16 or up"
 msgstr "16 ali več"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:133
-#, fuzzy
 msgid "Step 1:"
-msgstr "Sep"
+msgstr "Step 1:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:133
-#, fuzzy
 msgid "Export syntax"
-msgstr "Izvoz podatkov v R syntax datoteko"
+msgstr "Export syntax"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:134
-#, fuzzy
 msgid "Step 2:"
-msgstr "Sep"
+msgstr "Step 2:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:134
-#, fuzzy
 msgid "Export data"
-msgstr "Izvoz podatkov"
+msgstr "Export data"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_spss.php:137
 msgid "Instructions for the impatient"
@@ -5258,7 +5163,7 @@ msgstr "Nepravilne pravice v mapi %s"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:261
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:444
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr "Ta datoteka ni veljavna ZIP datoteka. Uvoz ni uspel."
+msgstr "This file is not a valid ZIP file archive. Import failed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:103
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:282
@@ -5290,7 +5195,7 @@ msgstr "Seznam uvoženih datotek"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:151
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr "Ta ZIP arhiv ne vsebuje veljavne datoteke z viri. Uvoz ni uspel."
+msgstr "This ZIP archive contains no valid Resources files. Import failed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:152
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:331
@@ -5349,9 +5254,8 @@ msgid "Demo mode: Uploading templates is disabled."
 msgstr "Predstavitveni sistem: nalaganje datotek na tem sistemu ni mogoče."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:408
-#, fuzzy
 msgid "Import Template"
-msgstr "Uvozi predlogo"
+msgstr "Import Template"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:426
 #, php-format
@@ -5360,7 +5264,7 @@ msgstr "Predloga '%s' že obstaja."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:514
 msgid "This ZIP archive contains no valid template files. Import failed."
-msgstr "Ta ZIP arhiv ne vsebuje veljavne datoteke z viri. Uvoz ni uspel."
+msgstr "This ZIP archive contains no valid template files. Import failed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/import_resources_zip.php:515
 msgid "Remember that we do not support subdirectories in ZIP archives."
@@ -5423,7 +5327,7 @@ msgstr "Predloga '%s' je bila uspešno zbrisana."
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:220
 #, php-format
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
-msgstr ""
+msgstr "There was a problem deleting the template '%s'. Please check your directory/file permissions."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:265
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:382
@@ -5468,7 +5372,7 @@ msgstr "Primer predloge"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:405
 msgid "This is a sample survey description. It could be quite long."
-msgstr ""
+msgstr "This is a sample survey description. It could be quite long."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:405
 msgid "But this one isn't."
@@ -5543,7 +5447,7 @@ msgstr "Najlepša hvala za sodelovanje v anketi."
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:804
 #, php-format
 msgid "Note: This is a standard template. If you want to edit it %s please copy it first%s."
-msgstr "Opomba: To je standardna predloga. Če jo želite urejati jo %s najprej kopirajte %s."
+msgstr "Note: This is a standard template. If you want to edit it %s please copy it first%s."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:804
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/templates.php:867
@@ -5752,22 +5656,21 @@ msgstr "Nimate dovoljenja za uvoz vprašanja!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/access_denied.php:118
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/access_denied.php:123
-#, fuzzy
 msgid "Security alert"
-msgstr "Varnostno opozorilo"
+msgstr "Security alert"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/access_denied.php:118
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr "Nekdo poskuša uporabiti vašo LimeSurvey sejo (CSRF Napad). Če ste sledili sumljivi povezavi, obvestite vašega sistemskega administratorja."
+msgstr "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/access_denied.php:118
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/access_denied.php:123
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
-msgstr ""
+msgstr "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/access_denied.php:123
 msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr "Nekdo poskuša uporabiti vašo LimeSurvey sejo z uporabo nevarnega GET zahtevka (CSRF Napad). Če ste sledili sumljivi povezavi, obvestite vašega sistemskega administratorja."
+msgstr "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -5796,9 +5699,8 @@ msgid "Add New User Group"
 msgstr "Dodaj skupino uporabnikov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:124
-#, fuzzy
 msgid "Edit template permissions"
-msgstr "Spremeni nastavitve predlog za e-maile"
+msgstr "Edit template permissions"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:126
 msgid "Set templates that this user may access"
@@ -5818,9 +5720,8 @@ msgstr "Shrani nastavitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:205
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:471
-#, fuzzy
 msgid "Editing user"
-msgstr "Uredi uporabnika"
+msgstr "Editing user"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:210
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:407
@@ -5879,42 +5780,36 @@ msgid "Created by"
 msgstr "Ustvaril"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:426
-#, fuzzy
 msgid "Edit user"
-msgstr "Uredi uporabnika"
+msgstr "Edit user"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:478
-#, fuzzy
 msgid "Edit this user"
-msgstr "Uredi ta vnos"
+msgstr "Edit this user"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:490
-#, fuzzy
 msgid "Set global permissions for this user"
-msgstr "Nastavi pogoje za to vprašanje"
+msgstr "Set global permissions for this user"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:499
 msgid "Take Ownership"
 msgstr "Prevzemi lastništvo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:508
-#, fuzzy
 msgid "Set template permissions for this user"
-msgstr "Nastavi predloge za tega uporabnika"
+msgstr "Set template permissions for this user"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:519
-#, fuzzy
 msgid "Delete this user"
-msgstr "Izbriši ta vnos"
+msgstr "Delete this user"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:565
-#, fuzzy
 msgid "Add user:"
-msgstr "Dodaj uporabnika"
+msgstr "Add user:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:568
 msgid "(Sent by email)"
-msgstr ""
+msgstr "(Sent by email)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:583
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:603
@@ -5930,9 +5825,9 @@ msgid "Add Group"
 msgstr "Dodaj skupino"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:600
-#, fuzzy, php-format
+#, php-format
 msgid "Editing user group (Owner: %s)"
-msgstr "Uredi skupino uporabnikov (Lastnik:"
+msgstr "Editing user group (Owner: %s)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:607
 msgid "Update User Group"
@@ -5969,7 +5864,7 @@ msgstr "Brisanje skupine uporabnikov ni mogoče."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:667
 msgid "Could not delete user group. No group selected."
-msgstr "Brisanje skupine uporabnikov ni mogoče. Skupina ni bila izbrana."
+msgstr "Brisanje skupine uporabnikov ni mogoče. No group selected."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:677
 msgid "Adding User Group"
@@ -5979,7 +5874,7 @@ msgstr "Dodajanje skupine uporabnikov"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:804
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:839
 msgid "Description: "
-msgstr "Opis:"
+msgstr "Opis: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:696
 msgid "User group successfully added!"
@@ -6009,7 +5904,7 @@ msgstr "Za:"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:773
 #, php-format
 msgid "Email to %s failed. Error Message:"
-msgstr "E-mail za %s ni bilo uspešno poslan. Sporočilo o napaki:"
+msgstr "Email to %s failed. Error Message:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:802
 msgid "Edit User Group Successfully!"
@@ -6020,9 +5915,8 @@ msgid "Failed to update!"
 msgstr "Posodabljanje ni uspelo!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:887
-#, fuzzy
 msgid "Delete this user group"
-msgstr "Izbriši ta scenarij"
+msgstr "Delete this user group"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/userrighthandling.php:978
 msgid "Adding User to group"
@@ -6035,9 +5929,9 @@ msgid ""
 "\\n"
 "It is missing a quota message for the following languages"
 msgstr ""
-"Kvote ni mogoče dodati.\\n"
+"Quota could not be added.\\n"
 "\\n"
-"Manjka sporočilo kvote za naslednje jezike"
+"It is missing a quota message for the following languages"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:390
 msgid "Modify Quota"
@@ -6093,9 +5987,8 @@ msgid "Update Quota"
 msgstr "Posodobi kvote"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:521
-#, fuzzy
 msgid "Survey quotas"
-msgstr "Kvote za anketo"
+msgstr "Survey quotas"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:527
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:664
@@ -6128,9 +6021,8 @@ msgid "Add New Quota"
 msgstr "Dodaj novo kvoto"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:654
-#, fuzzy
 msgid "Quick CSV report"
-msgstr "Hitro CSV poročilo"
+msgstr "Quick CSV report"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:664
 msgid "Remaining"
@@ -6163,32 +6055,26 @@ msgid "Select Answer"
 msgstr "Izberi odgovor"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:819
-#, fuzzy
 msgid "New quota"
-msgstr "Nova kvota"
+msgstr "New quota"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:823
-#, fuzzy
 msgid "Quota name"
 msgstr "Ime kvote"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:827
-#, fuzzy
 msgid "Quota limit"
 msgstr "Omejitev kvote"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:831
-#, fuzzy
 msgid "Quota action"
 msgstr "Storitev kvote"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:833
-#, fuzzy
 msgid "Terminate survey"
 msgstr "Zaključi anketo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/quota.php:834
-#, fuzzy
 msgid "Terminate survey with warning"
 msgstr "Zaključi anketo z opozorilom"
 
@@ -6262,7 +6148,7 @@ msgstr "Začetni jezik"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:523
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
-msgstr "Vaši odgovori so se shranili. Po e-pošti boste dobili potrditveno sporočilo. Prosimo, shranite si geslo, ker vam ga ne bomo mogli ponovno nastaviti."
+msgstr "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:537
 msgid "A token entry for the saved survey has been created too."
@@ -6274,7 +6160,7 @@ msgstr "Poslano je bilo elektronsko sporočilo s podatki o vaši shranjeni anket
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:573
 msgid "The entry was assigned the following record id: "
-msgstr "Vnos je bil dodan za zapis z identifikacijsko številko:"
+msgstr "Vnos je bil dodan za zapis z identifikacijsko številko: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:577
 msgid "Add Another Record"
@@ -6296,9 +6182,9 @@ msgid "Editing response (ID %s)"
 msgstr "Urejanje zapisa (ID %s)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:802
-#, fuzzy, php-format
+#, php-format
 msgid "Viewing response (ID %s)"
-msgstr "Urejanje zapisa (ID %s)"
+msgstr "Viewing response (ID %s)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:859
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:365
@@ -6373,7 +6259,7 @@ msgstr "Prosimo, izberite..."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:3012
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Ta anketa še ni aktivna. Vaših odgovorov ni mogoče shraniti"
+msgstr "This survey is not yet active. Your response cannot be saved"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dataentry.php:3022
 msgid "The survey you selected does not exist"
@@ -6393,11 +6279,11 @@ msgstr "Niste izbrali ankete, ki jo želite pregledati."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:110
 msgid "This survey has not been activated. There are no results to browse."
-msgstr "Ta anketa še ni bila aktivirana. Rezultati še ne obstajajo."
+msgstr "This survey has not been activated. There are no results to browse."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:125
 msgid "There is no matching survey."
-msgstr "Nobena anketa ne ustreza."
+msgstr "There is no matching survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:167
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:413
@@ -6411,12 +6297,12 @@ msgstr "Komentar"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:264
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:471
 msgid "1. scale"
-msgstr "1. lestvica"
+msgstr "1. scale"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:269
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:476
 msgid "2. scale"
-msgstr "2. lestvica"
+msgstr "2. scale"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:306
 msgid "View Response"
@@ -6456,17 +6342,14 @@ msgid "Data View Control"
 msgstr "Upravljanje pregleda podatkov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:669
-#, fuzzy
 msgid "Show start..."
 msgstr "Prikaži začetek.."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:672
-#, fuzzy
 msgid "Show previous.."
 msgstr "Prikaži prejšnje..."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:677
-#, fuzzy
 msgid "Show next.."
 msgstr "Prikaži naslednje..."
 
@@ -6475,7 +6358,6 @@ msgid "Show last..."
 msgstr "Prikaži zadnje..."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:680
-#, fuzzy
 msgid "Show last.."
 msgstr "Prikaži zadnje..."
 
@@ -6500,24 +6382,20 @@ msgid "Edit this token"
 msgstr "Uredi geslo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:788
-#, fuzzy
 msgid "Response summary"
-msgstr "Popolni odgovori"
+msgstr "Povzetek odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:790
-#, fuzzy
 msgid "Total responses:"
-msgstr "Skupno število odgovorov"
+msgstr "Skupno število odgovorov:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:792
-#, fuzzy
 msgid "Full responses:"
-msgstr "Popolni odgovori"
+msgstr "Popolnih odgovorov:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/browse.php:793
-#, fuzzy
 msgid "Incomplete responses:"
-msgstr "Samo nepopolni odgovori"
+msgstr "Nepopolni odgovori:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dumpdb.php:33
 msgid "Export database"
@@ -6525,7 +6403,7 @@ msgstr "Izvozi bazo podatkov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/dumpdb.php:34
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
-msgstr "Izvoz baze podatkov je na voljo samo za podatkovno bazo MySQL. Za druge podatkovne baze uporabite drugo orodje za izvoz baze podatkov."
+msgstr "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deletesurvey.php:22
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deletesurvey.php:52
@@ -6550,11 +6428,11 @@ msgstr "Preden izbrišete anketo vam priporočamo, da celotno anketo izvozite. T
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deletesurvey.php:43
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr "Ta anketa je aktivna. Tabela za shranjevanje odgovorov že obstaja. Če izbrišete anketo, bo tabela z odgovori prav tako izbrisana. Priporočamo vam, da izvozite odgovore, preden izbrišete anketo."
+msgstr "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deletesurvey.php:48
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr "Ta anketa je povezana s tabelo gesel. Če izbrišete to anketo bo anketa z gesli prav tako izbrisana. Priporočamo vam, da izvozite tabelo z gesli, preden izbrišete anketo."
+msgstr "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/deletesurvey.php:116
 msgid "This survey has been deleted."
@@ -6609,7 +6487,7 @@ msgstr "Uspešno ste se prijavili."
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:158
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:299
 msgid "Reloading Screen. Please wait."
-msgstr "Osvežujem stran. Prosimo, počakajte."
+msgstr "Reloading Screen. Please wait."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:173
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
@@ -6662,12 +6540,12 @@ msgstr "Kliknite tukaj za prijavo."
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:371
 #, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
-msgstr "Če imate kakršnokoli vprašanje v zvezi s tem sporočilom lahko kontaktirate administratorja strani na %s. Najlepša hvala!"
+msgstr "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Najlepša hvala!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:373
 #, php-format
 msgid "User registration at '%s'"
-msgstr ""
+msgstr "User registration at '%s'"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:380
 msgid "An email with a generated password was sent to the user."
@@ -6712,9 +6590,8 @@ msgid "Set Template Rights"
 msgstr "Nastavi pravice za predlogo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:645
-#, fuzzy
 msgid "Template permissions were updated successfully."
-msgstr "Posodobitev uporabniške predloge je uspela."
+msgstr "Posodobitev pravic uporabniške predloge je uspela."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/usercontrol.php:651
 msgid "Error while updating usertemplates."
@@ -6738,11 +6615,11 @@ msgstr "Shranite oboje v delovni direktorij R-ja (uporabite getwd() in setwd() v
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_r.php:85
 msgid "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window"
-msgstr "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")    v R ukaznem oknu"
+msgstr "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/export_data_r.php:87
 msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
-msgstr "Vaši podatki so sedaj uvoženi; data.frame se imenuje \"data\", variable.labels so atributi podatkov (\"attributes(data)$variable.labels\"), kot pri foreign:read.spss."
+msgstr "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:29
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:141
@@ -6760,9 +6637,8 @@ msgstr "Obvestilo: Vpisati morate novo kodo vprašanja!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:71
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:316
-#, fuzzy
 msgid "Label set:"
-msgstr "Seznam odgovorov:"
+msgstr "Label set:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:89
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:343
@@ -6818,14 +6694,12 @@ msgid "At end"
 msgstr "Na koncu"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:454
-#, fuzzy
 msgid "Show advanced settings"
-msgstr "Shrani nastavitve"
+msgstr "Prikaži napredne nastavitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:454
-#, fuzzy
 msgid "Hide advanced settings"
-msgstr "Shrani nastavitve"
+msgstr "Skrij napredne nastavitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/questionhandling.php:456
 msgid "Loading..."
@@ -6868,9 +6742,8 @@ msgid "View Question"
 msgstr "Poglej vprašanje"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/grouphandling.php:28
-#, fuzzy
 msgid "Add question group"
-msgstr "Skupina vprašanj."
+msgstr "Dodaj skupino vprašanj"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/grouphandling.php:40
 msgid "Error: You have to enter a group title for each language."
@@ -6904,9 +6777,9 @@ msgid ""
 "\\n"
 "It is missing the group name for the following languages"
 msgstr ""
-"Skupine ni mogoče dodati.\\n"
+"Group could not be added.\\n"
 "\\n"
-"Manjka ime skupine za naslednje jezike"
+"It is missing the group name for the following languages"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:128
 msgid "Error: The database reported the following error:"
@@ -6924,12 +6797,12 @@ msgstr "Skupine ni mogoče izbrisati"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:254
 msgid "The question could not be added. You must enter at least enter a question code."
-msgstr "Odgovora ni mogoče dodati. Vnesti morate kodo vprašanja v obvezno polje."
+msgstr "The question could not be added. You must enter at least enter a question code."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:316
-#, fuzzy, php-format
+#, php-format
 msgid "Question in language %s could not be created."
-msgstr "Vprašanja ni mogoče ustvariti."
+msgstr "Vprašanja v jeziku %s ni mogoče ustvariti."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:326
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:665
@@ -6939,7 +6812,7 @@ msgstr "Vprašanja ni mogoče ustvariti."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:474
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr "Vprašanja ni mogoče posodobiti. Pogoji pri drugih vprašanjih se nanašajo na to vprašanje, zato bi spreminjanje tipa vprašanja lahko povzročilo težave. Tip vprašanja boste lahko spremenili, če odstranite te pogoje."
+msgstr "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:557
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:615
@@ -6966,15 +6839,15 @@ msgstr "Glej pogoje:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:599
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
-msgstr "Nekatera vprašanja se nanašajo na odgovore tega vprašanja. Tega vprašanja ni mogoče premakniti za skupino številka:"
+msgstr "Some questions rely on this question's answers. You can't move this question below groupId:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:625
 msgid "Question could not be added. You must insert a code in the mandatory field"
-msgstr "Odgovora ni mogoče dodati. Vnesti morate kodo vprašanja v obvezno polje"
+msgstr "Question could not be added. You must insert a code in the mandatory field"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:759
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr "Vprašanja ni mogoče izbrisati. Pogoji pri drugih vprašanjih se nanašajo na to vprašanje. Vprašanje boste lahko izbrisali, če bodo ti pogoji odstranjeni"
+msgstr "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:784
 msgid "Question could not be deleted"
@@ -7049,22 +6922,23 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
-"Spoštovani {FIRSTNAME},\n"
+"Dear {FIRSTNAME},\n"
 "\n"
-"Vabimo vas k sodelovanju v anketi z naslovom: \n"
+"You have been invited to participate in a survey.\n"
 "\n"
+"The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
 "\n"
 "\"{SURVEYDESCRIPTION}\"\n"
 "\n"
-"Za sodelovanje kliknite na spodnjo povezavo.\n"
+"To participate, please click on the link below.\n"
 "\n"
-"Lep pozdrav,\n"
+"Sincerely,\n"
 "\n"
 "{ADMINNAME} ({ADMINEMAIL})\n"
 "\n"
 "----------------------------------------------\n"
-"Kliknite povezavo za sodelovanje v anketi:\n"
+"Click here to do the survey:\n"
 "{SURVEYURL}"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:1158
@@ -7099,24 +6973,25 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
-"Spoštovani {FIRSTNAME},\n"
+"Dear {FIRSTNAME},\n"
 "\n"
-"Pred kratkim ste bili povabljeni k sodelovanju v anketi:\n"
+"Recently we invited you to participate in a survey.\n"
 "\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
+"\n"
+"The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
 "\n"
 "\"{SURVEYDESCRIPTION}\"\n"
 "\n"
-"Če ste že odgovorili na anketo, se vam najlepše zahvaljujemo.\n"
+"To participate, please click on the link below.\n"
 "\n"
-"Če ankete še niste izpolnili vas želimo opomniti, da je anketa še vedno na voljo in vas ponovno vabimo k sodelovanju.\n"
-"\n"
-"Lep pozdrav,\n"
+"Sincerely,\n"
 "\n"
 "{ADMINNAME} ({ADMINEMAIL})\n"
 "\n"
 "----------------------------------------------\n"
-"Kliknie povezavo za sodelovanje v anketi:\n"
+"Click here to do the survey:\n"
 "{SURVEYURL}"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:1160
@@ -7139,13 +7014,13 @@ msgid ""
 "\n"
 "{ADMINNAME}"
 msgstr ""
-"Spoštovani {FIRSTNAME},\n"
+"Dear {FIRSTNAME},\n"
 "\n"
-"S tem sporočilom potrjujemo, da ste zaključili z anketo {SURVEYNAME}. Vaši odgovori so bili shranjeni. Najlepše se vam zahvaljujemo za sodelovanje.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"Za dodatne informacije se lahko obrnete na {ADMINNAME} ({ADMINEMAIL}).\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
-"Lep pozdrav,\n"
+"Sincerely,\n"
 "\n"
 "{ADMINNAME}"
 
@@ -7168,15 +7043,15 @@ msgid ""
 "\n"
 "If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
-"Spoštovani {FIRSTNAME},\n"
+"Dear {FIRSTNAME},\n"
 "\n"
-"vi ali nekdo z uporabo vašega elektronskega naslova ste se registrirali za sodelovanje v spletni anketi {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
-"Za sodelovanje v anketi, kliknite na povezavo:\n"
+"To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Za kakršnakoli dodatna vprašanja ali če se niste registrirali za sodelovanje v anketi in menite, da je to sporočilo napaka, lahko kontaktirate administratorja ankete {ADMINNAME} prek elektronske pošte {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/database.php:1179
 msgid "Survey could not be updated"
@@ -7249,9 +7124,8 @@ msgid "Error: You have to enter a name for this label set."
 msgstr "Napaka: Vpisati morate ime seznama odgovorov."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:130
-#, fuzzy
 msgid "Set name:"
-msgstr "Nastavi ime"
+msgstr "Set name:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:137
 msgid "Languages:"
@@ -7263,16 +7137,15 @@ msgstr "Tega elementa ne morete odstraniti ker potrebujete vsaj en jezik v sezna
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:188
 msgid "Check for duplicates?"
-msgstr ""
+msgstr "Check for duplicates?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:234
 msgid "Edit label set"
 msgstr "Uredi seznam odgovorov"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:235
-#, fuzzy
 msgid "Do you really want to delete this label set?"
-msgstr "Ali ste prepričani, da želite izbrisati to datoteko?"
+msgstr "Do you really want to delete this label set?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:236
 msgid "Delete label set"
@@ -7310,7 +7183,7 @@ msgstr "Pri tem seznamu odgovorov ne morete spreminjati kod odgovorov, dodajati 
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:485
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
-msgstr "Nekatere ankete trenutno uporabljajo ta seznam odgovorov. Spreminjanje kod odgovorov, dodajanje ali spreminjanje vnosov k temu seznamu odgovorov lahko povzročijo nezaželene rezultate v drugih anketah."
+msgstr "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:553
 msgid "Failed to Copy already defined labels to added languages"
@@ -7326,7 +7199,7 @@ msgstr "Urejanje seznama odgovorov ni uspelo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:595
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
-msgstr "Seznama odgovorov ni mogoče izbrisati. Nekatera vprašanja se nanašajo na seznam odgovorov. Če ga res želite izbrisati, morate najprej izbrisati ta vprašanja."
+msgstr "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:631
 msgid "Insert of Label Set failed"
@@ -7338,7 +7211,7 @@ msgstr "Vstavljanje labele ni uspelo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:699
 msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
-msgstr "Ta koda labele je v tem seznamu odgovorov  že uporabljena. Izberite drugo kodo ali preimenujte že obstoječo kodo."
+msgstr "This label code is already used in this labelset. Please choose another code or rename the existing one."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/labels.php:756
 msgid "Failed to update label"
@@ -7379,14 +7252,12 @@ msgid "A token table has been created for this survey."
 msgstr "Tabela z dostopnimi gesli za to anketo je bila ustvarjena."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:367
-#, fuzzy
 msgid "Import old tokens"
-msgstr "Uvozi vprašanje"
+msgstr "Import old tokens"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:368
-#, fuzzy
 msgid "A token table has been created for this survey and the old tokens were imported."
-msgstr "Tabela z dostopnimi gesli za to anketo je bila ustvarjena."
+msgstr "A token table has been created for this survey and the old tokens were imported."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:388
 msgid "Tokens have not been initialised for this survey."
@@ -7477,9 +7348,8 @@ msgid "Show help"
 msgstr "Prikaži pomoč"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:526
-#, fuzzy
 msgid "Token summary"
-msgstr "Pokaži povzetek gesel"
+msgstr "Token summary"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:530
 msgid "Total records in this token table"
@@ -7498,81 +7368,66 @@ msgid "Total surveys completed"
 msgstr "Skupno število zaključenih anket"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:576
-#, fuzzy
 msgid "Token export options"
-msgstr "Ponastavi možnosti"
+msgstr "Token export options"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:578
-#, fuzzy
 msgid "Token status:"
-msgstr "Neujemanje gesla"
+msgstr "Token status:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:579
-#, fuzzy
 msgid "All tokens"
-msgstr "Prikaži dostopna gesla"
+msgstr "All tokens"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:581
-#, fuzzy
 msgid "Not started"
-msgstr "Datum začetka"
+msgstr "Not started"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:584
-#, fuzzy
 msgid "Started but not yet completed"
-msgstr "Ankete ni mogoče ustvariti"
+msgstr "Started but not yet completed"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:587
-#, fuzzy
 msgid "Invitation status:"
-msgstr "Povabilo poslano na:"
+msgstr "Invitation status:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:588
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:593
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:598
-#, fuzzy
 msgid "All"
-msgstr "Dovoljeno"
+msgstr "Vse"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:589
-#, fuzzy
 msgid "Invited"
-msgstr "Povabilo poslano?"
+msgstr "Invited"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:590
-#, fuzzy
 msgid "Not invited"
-msgstr "Ni aktivna"
+msgstr "Not invited"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:592
-#, fuzzy
 msgid "Reminder status:"
-msgstr "Opomnik poslan na:"
+msgstr "Reminder status:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:594
-#, fuzzy
 msgid "Reminder(s) sent"
-msgstr "Obvestilo poslano?"
+msgstr "Reminder(s) sent"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:595
-#, fuzzy
 msgid "No reminder(s) sent"
-msgstr "Obvestilo poslano?"
+msgstr "No reminder(s) sent"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:597
-#, fuzzy
 msgid "Filter by language"
-msgstr "Jezik vmesnika"
+msgstr "Filtriraj po jeziku"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:605
-#, fuzzy
 msgid "Filter by email address"
-msgstr "Filtiraj prazne e-mail naslove"
+msgstr "Filter by email address"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:609
-#, fuzzy
 msgid "Export tokens"
-msgstr "Izvoz vprašanja"
+msgstr "Export tokens"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:627
 msgid "Edit email settings"
@@ -7641,9 +7496,8 @@ msgid "All token entries have been deleted."
 msgstr "Vsi vnosi za dostopna gesla so bili odstranjeni."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:747
-#, fuzzy
 msgid "All token entries have been set to 'Not invited'."
-msgstr "Vsi vnosi povabil so bili nastavljeni na 'Brez povabila'."
+msgstr "All token entries have been set to 'Not invited'."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:759
 msgid "All unique token numbers have been removed."
@@ -7707,7 +7561,7 @@ msgstr "Začni z:"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:903
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:911
 msgid "Sort by: "
-msgstr "Sortiraj po:"
+msgstr "Sortiraj po: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:859
 msgid "First name"
@@ -7785,7 +7639,7 @@ msgstr "Če boste izbrisali tabelo z gesli bo anketa postala dostopna brez gesel
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1033
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Če nadaljujete, bo izdelana varnostna kopija te tabele. Do nje bo lahko dostopal administrator sistema."
+msgstr "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1036
 msgid "Delete Tokens"
@@ -7805,15 +7659,13 @@ msgstr "Pošlji vabila po elektronski pošti"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1090
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1343
-#, fuzzy
 msgid "Warning!"
-msgstr "Opozorilo"
+msgstr "Warning!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1090
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1343
-#, fuzzy
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
-msgstr "Ta anketa trenutno ni aktivna. Vaših odgovorov ne bo mogoče shraniti."
+msgstr "This survey is not yet activated and so your participants won't be able to fill out the survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1136
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1363
@@ -7846,21 +7698,18 @@ msgid "Send Invitations"
 msgstr "Pošlji povabila"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1171
-#, fuzzy
 msgid "Sending invitations..."
-msgstr "Pošiljanje povabil"
+msgstr "Sending invitations..."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1268
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1568
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
-msgstr "E-mail za {FIRSTNAME} {LASTNAME} ({EMAIL}) ni bilo uspešno poslano. Sporočilo o napaki:"
+msgstr "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1272
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1572
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
-msgstr "E-mail za {FIRSTNAME} {LASTNAME} ({EMAIL}) ni bilo uspešno poslano. Sporočilo o napaki:"
+msgstr "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1282
 msgid "Invitation sent to:"
@@ -7869,12 +7718,12 @@ msgstr "Povabilo poslano na:"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1290
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1588
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr "E-mail za {FIRSTNAME} {LASTNAME} ({EMAIL}) ni bilo uspešno poslano. Sporočilo o napaki:"
+msgstr "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1303
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1606
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr "Nekaj elektronskih sporočil še čaka na pošiljanje. Nadaljujte pošiljanje s klikom spodaj."
+msgstr "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1304
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1607
@@ -7883,7 +7732,7 @@ msgstr "Poslanih bo še {EMAILCOUNT} elektronskih sporočil"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1324
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr "Elektronska sporočila niso bila poslana. Anketiranci namreč nimajo vnesenih elektronskih naslovov, so že bili povabljeni ali pa so že izpolnili anketo in imajo geslo."
+msgstr "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1389
 msgid "Reminder Email:"
@@ -7923,16 +7772,15 @@ msgstr "Opomnik poslan na:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1644
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr "Elektronska sporočila niso bila poslana. Vsi anketiranci, ki bi morali dobiti povabilo so že izpolnili anketo ali pa nimajo vnesenih elektronskih naslovov."
+msgstr "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1659
-#, fuzzy
 msgid "Create tokens"
-msgstr "Ustvari dostopna gesla"
+msgstr "Create tokens"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1663
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
-msgstr "S klikom na DA bodo ustvarjena manjkajoča dostopna gesla. V redu?"
+msgstr "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1712
 msgid "{TOKENCOUNT} tokens have been created"
@@ -7947,19 +7795,16 @@ msgid "Manage token attribute fields"
 msgstr "Urejanje lastnosti dostopnih gesel"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1745
-#, fuzzy
 msgid "Attribute field"
-msgstr "Lastnost 2"
+msgstr "Attribute field"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1745
-#, fuzzy
 msgid "Field description"
-msgstr "Opis povezave"
+msgstr "Field description"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1745
-#, fuzzy
 msgid "Example data"
-msgstr "Izvoz podatkov"
+msgstr "Example data"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1762
 msgid "<no data>"
@@ -7979,9 +7824,8 @@ msgid "There are %s user attribute fields in this token table"
 msgstr "Tabela dostopnih gesel vsebuje %s uporabniških lastnosti polj"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1777
-#, fuzzy
 msgid "Number of attribute fields to add:"
-msgstr "Vnesite število uporabniških lastnosti polj, ki jih želite dodati:"
+msgstr "Number of attribute fields to add:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1779
 msgid "Add fields"
@@ -8020,9 +7864,8 @@ msgid "You can leave this blank, and automatically generate tokens using 'Create
 msgstr "Pustite prazno in uporabite avtomatsko ustvarjanje dostopnih gesel z uporabo 'Ustvari dostopna gesla'"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1938
-#, fuzzy
 msgid "Reminder count:"
-msgstr "Število obvestil"
+msgstr "Reminder count:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:1955
 msgid "until"
@@ -8055,7 +7898,7 @@ msgstr "Ni uspelo"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2063
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2129
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
-msgstr "Vnos z enakim geslom že obstaja v tabeli. Enako geslo ne more biti uporabljeno pri več vnosih."
+msgstr "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2064
 msgid "Show this token entry"
@@ -8071,12 +7914,11 @@ msgstr "Naloži datoteko CSV"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2146
 msgid "CSV input format"
-msgstr ""
+msgstr "CSV input format"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2147
-#, fuzzy
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
-msgstr "Datoteka mora biti standardna CSV (ločena z vejicami) datoteka z dvojnimi narekovaji pred in za posamezno vrednostjo (privzeto v programih OpenOffice in Excel). Prva vrstica mora vsebovati glavo z informacijami o stolpcih (ki bo kasneje odstranjena). Vrstni red podatkov ni pomemben."
+msgstr "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2147
 msgid "Mandatory fields:"
@@ -8099,32 +7941,28 @@ msgid "LDAP queries are defined by the administrator in the config-ldap.php file
 msgstr "Poizvedbe LDAP definira administrator v konfiguracijski datoteki config-ldap.php"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2177
-#, fuzzy
 msgid "Token file upload"
-msgstr "Datoteka ni bila naložena"
+msgstr "Token file upload"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2191
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr "Datoteke za nalaganje ni mogoče najti. Preverite dovoljenja in pot do mape za nalaganje"
+msgstr "Upload file not found. Check your permissions and path for the upload directory"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2196
-#, fuzzy
 msgid "Uploaded CSV file successfully"
-msgstr "Uspešno ste se prijavili."
+msgstr "Uploaded CSV file successfully"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2229
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Napaka: vaši naloženi datoteki manjka eno ali več obveznih polij: 'firstname', 'lastname' ali 'email'"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2329
-#, fuzzy
 msgid "Successfully created token entries"
-msgstr "Izbriši vse vnose dostopnih gesel"
+msgstr "Successfully created token entries"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2331
-#, fuzzy
 msgid "Failed to create token entries"
-msgstr "Izbriši vse vnose dostopnih gesel"
+msgstr "Failed to create token entries"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2333
 #, php-format
@@ -8163,13 +8001,13 @@ msgstr "Seznam"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2356
 #, php-format
 msgid "%s lines had a mismatching number of fields."
-msgstr ""
+msgstr "%s lines had a mismatching number of fields."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2366
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2597
-#, fuzzy, php-format
+#, php-format
 msgid "%s records with invalid email address removed"
-msgstr "Zapisi z neveljavnjimi e-mail naslovi so bili odstranjeni"
+msgstr "%s records with invalid email address removed"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2392
 msgid "Uploading LDAP Query"
@@ -8214,9 +8052,8 @@ msgid "Filter duplicate records:"
 msgstr "Filtriraj podvojene zapise:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2640
-#, fuzzy
 msgid "Duplicates are determined by:"
-msgstr "Podvojeni zapisi odstranjeni"
+msgstr "Duplicates are determined by:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/tokens.php:2670
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
@@ -8287,7 +8124,7 @@ msgstr "Prosimo, oštevilčite vsako polje glede na vaše preference od 1 do"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:922
 msgid "Please number each box in order of preference from 1 to "
-msgstr "Prosimo, oštevilčite vsako polje glede na vaše preference od 1 do"
+msgstr "Prosimo, oštevilčite vsako polje glede na vaše preference od 1 do "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:944
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:945
@@ -8299,7 +8136,7 @@ msgstr "Prosimo, izberite *vse* odgovore, ki ustrezajo:"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:1022
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:1023
 msgid "Please choose *at most* "
-msgstr "Prosimo, izberite *največ*"
+msgstr "Prosimo, izberite *največ* "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:950
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:951
@@ -8353,13 +8190,13 @@ msgstr "Izberite primeren odgovor za vsako trditev."
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:1336
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
-msgstr ""
+msgstr "Please write a multiple of %d between %d and %d for each item:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:1339
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:1340
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
-msgstr ""
+msgstr "Please enter a number between %d and %d for each item:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/printablesurvey.php:1679
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
@@ -8371,282 +8208,256 @@ msgid "Please fax your completed survey to: %s"
 msgstr "Prosimo, pošljite vašo izpolnjeno anketo po telefaksu na številko: %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:85
-#, fuzzy
 msgid "Global settings were saved."
-msgstr "Nastavitve za e-maile z dostopnimi gesli so bile shranjene."
+msgstr "Global settings were saved."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:112
 msgid "Overview & Update"
-msgstr ""
+msgstr "Overview & Update"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:115
-#, fuzzy
 msgid "Updates"
-msgstr "Osveži"
+msgstr "Updates"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:116
 msgid "Check for updates:"
-msgstr ""
+msgstr "Preveri za posodobitve:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:120
 msgid "Never"
-msgstr ""
+msgstr "Nikoli"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:123
 msgid "Every day"
-msgstr ""
+msgstr "Vsak dan"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:126
 msgid "Every week"
-msgstr ""
+msgstr "Vsak teden"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:129
 msgid "Every 2 weeks"
-msgstr ""
+msgstr "Vsaka 2 tedna"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:132
 msgid "Every month"
-msgstr ""
+msgstr "Vsak mesec"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:133
-#, fuzzy
 msgid "Check now"
-msgstr "Preveri ponovno"
+msgstr "Check now"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:133
 #, php-format
 msgid "Last check: %s"
-msgstr ""
+msgstr "Zadnjič preverjeno: %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:137
-#, fuzzy, php-format
+#, php-format
 msgid "There is a LimeSurvey update available: Version %s"
-msgstr "Baza podatkov ki ste jo navedli za LimeSurvey ne obstaja"
+msgstr "There is a LimeSurvey update available: Version %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:138
 #, php-format
 msgid "You can update manually or use the %s"
-msgstr ""
+msgstr "Posodobite lahko ročno ali uporabite %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:138
 msgid "3-Click ComfortUpdate"
-msgstr ""
+msgstr "3-Click ComfortUpdate"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:142
 #, php-format
 msgid "There was an error on update check (%s)"
-msgstr ""
+msgstr "Pri preverjanju posodobitve je prišlo do napake (%s)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:148
 msgid "There is currently no newer LimeSurvey version available."
-msgstr ""
+msgstr "Trenutno ni na voljo novejše različice LimeSurveya."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:158
-#, fuzzy
 msgid "Site name:"
-msgstr "Shranjeno ime"
+msgstr "Site name:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:160
-#, fuzzy
 msgid "Default site language:"
-msgstr "Privzet jezik"
+msgstr "Default site language:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:175
-#, fuzzy
 msgid "Default template:"
-msgstr "Izbriši to predlogo"
+msgstr "Default template:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:188
-#, fuzzy
 msgid "Default HTML editor mode:"
-msgstr "Način za urejanje HTML"
+msgstr "Default HTML editor mode:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:192
-#, fuzzy
 msgid "Default HTML editor mode"
-msgstr "Način za urejanje HTML"
+msgstr "Default HTML editor mode"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:204
 msgid "Time difference (in hours):"
-msgstr ""
+msgstr "Časovna razlika (v urah):"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:208
 msgid "PDF export available:"
-msgstr ""
+msgstr "Omogočen PDF izvoz:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:212
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:223
 msgid "On"
-msgstr ""
+msgstr "Vklopljeno"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:215
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:226
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:272
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:284
 msgid "Off"
-msgstr ""
+msgstr "Izklopljeno"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:219
 msgid "Screen reader compatibility mode:"
-msgstr ""
+msgstr "Način prilagojen bralnikom zaslona:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:228
 msgid "Session lifetime (seconds):"
-msgstr ""
+msgstr "Življenjska doba seje (v sekundah):"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:238
-#, fuzzy
 msgid "Email settings"
-msgstr "Spremeni nastavitve za e-maile"
+msgstr "Email settings"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:241
-#, fuzzy
 msgid "Default site admin email:"
-msgstr "Privzet scenarij"
+msgstr "Default site admin email:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:243
-#, fuzzy
 msgid "Default site bounce email:"
-msgstr "Privzet scenarij"
+msgstr "Default site bounce email:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:245
-#, fuzzy
 msgid "Administrator name:"
-msgstr "Administrator:"
+msgstr "Administrator name:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:247
-#, fuzzy
 msgid "Email method:"
-msgstr "minitab metoda"
+msgstr "Email method:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:251
-#, fuzzy
 msgid "PHP (default)"
-msgstr "Uporabi privzeto"
+msgstr "PHP (default)"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:254
 msgid "SMTP"
-msgstr ""
+msgstr "SMTP"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:257
-#, fuzzy
 msgid "Sendmail"
-msgstr "Pošlji"
+msgstr "Sendmail"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:260
-#, fuzzy
 msgid "Qmail"
-msgstr "Elektronski naslov"
+msgstr "Qmail"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:262
 msgid "SMTP host:"
-msgstr ""
+msgstr "SMTP strežnik:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:263
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
-msgstr ""
+msgstr "Vnesite strežnik in vrata: npr.: moj.smtp.si:25"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:264
-#, fuzzy
 msgid "SMTP username:"
-msgstr "Uporabniško ime"
+msgstr "SMTP username:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:266
-#, fuzzy
 msgid "SMTP password:"
-msgstr "Geslo:"
+msgstr "SMTP password:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:268
 msgid "SMTP SSL/TLS:"
-msgstr ""
+msgstr "SMTP SSL/TLS"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:275
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:278
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:280
 msgid "SMTP debug mode:"
-msgstr ""
+msgstr "SMTP debug mode:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:287
 msgid "On errors"
-msgstr ""
+msgstr "Pri napakah"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:290
 msgid "Always"
-msgstr ""
+msgstr "Vedno"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:292
-#, fuzzy
 msgid "Email batch size:"
-msgstr "E-mail ni bil poslan!"
+msgstr "Email batch size:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:300
-#, fuzzy
 msgid "Security"
 msgstr "Varnostno opozorilo"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:305
 msgid "Survey preview only for administration users"
-msgstr ""
+msgstr "Predogled ankete je na voljo samo administratorjem"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:317
 msgid "Filter HTML for XSS:"
-msgstr ""
+msgstr "Filtriraj HTML za XSS:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:328
 msgid "Group member can only see own group:"
-msgstr ""
+msgstr "Člani skupin lahko vidijo samo lastno skupino"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:340
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Razno"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:344
-#, fuzzy
 msgid "Show 'no answer' option for non-mandatory questions:"
-msgstr "Pokaži pogoje za to vprašanje"
+msgstr "Show 'no answer' option for non-mandatory questions:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:354
 msgid "Number of answers to show before repeating the headings in array questions:"
-msgstr ""
+msgstr "Število odgovorov, ki naj bodo prikazani preden se zaglavje ponovi:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:445
 msgid "System overview"
-msgstr ""
+msgstr "Pregled sistema"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:449
-#, fuzzy
 msgid "Database name"
-msgstr "Ime podatkovne baze"
+msgstr "Database name"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:455
 msgid "Users"
 msgstr "Uporabniki"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:465
-#, fuzzy
 msgid "Active surveys"
-msgstr "Aktivne ankete"
+msgstr "Active surveys"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:470
-#, fuzzy
 msgid "Deactivated result tables"
-msgstr "Deaktivirane tabele z dostopnimi gesli"
+msgstr "Deactivated result tables"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:475
-#, fuzzy
 msgid "Active token tables"
-msgstr "Aktiviraj tabelo z dostopnimi gesli"
+msgstr "Active token tables"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:480
-#, fuzzy
 msgid "Deactivated token tables"
-msgstr "Deaktivirane tabele z dostopnimi gesli"
+msgstr "Deactivated token tables"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/globalsettings.php:487
 msgid "Show PHPInfo"
@@ -8665,18 +8476,16 @@ msgid "Single response"
 msgstr "En odgovor"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:190
-#, fuzzy
 msgid "Range:"
-msgstr "Razvrščanje"
+msgstr "Range:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:191
 msgid "to"
 msgstr "za"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:193
-#, fuzzy
 msgid "Completion state"
-msgstr "Datum dokončanja"
+msgstr "Completion state"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:204
 msgid "Abbreviated headings"
@@ -8735,9 +8544,8 @@ msgid "PDF"
 msgstr "PDF"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:269
-#, fuzzy
 msgid "Column control"
-msgstr "Upravljanje stolpcev"
+msgstr "Column control"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:292
 msgid "Choose Columns"
@@ -8751,7 +8559,7 @@ msgstr "Pomoč"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:297
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr "Anketa vsebuje več kot 255 spremenljivk (stolpcev z odgovori). Programi za delo s preglednicami (npr. Excel) so omejeni na največ 255 stolpcev. Izberite stolpce, ki jih želite izvoziti iz spodnjega spiska."
+msgstr "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:303
 msgid "Choose the columns you wish to export."
@@ -8767,11 +8575,11 @@ msgstr "Izberi polja dostopnih gesel"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:335
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr "Skupaj z odgovori lahko izvozite tudi podatke o dostopnih geslih. Izberite dodatna polja, ki jih želite vključiti v izvoz podatkov."
+msgstr "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:417
 msgid "General information in language: "
-msgstr "Splošne informacije v jeziku:"
+msgstr "Splošne informacije v jeziku: "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/exportresults.php:961
 msgid "New Record"
@@ -8944,7 +8752,7 @@ msgstr "Povzetek polja za %s"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:51
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:59
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr "To ni datoteka programa LimeSurvey. Uvoz ni uspel."
+msgstr "This file is not a LimeSurvey survey file. Import failed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:400
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:409
@@ -8961,17 +8769,17 @@ msgstr "Datoteka ne vsebuje podatkov v pravilnem zapisu za program LimeSurvey."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:797
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
-msgstr "Skupina v datoteki CVS/SQL je del iste ankete. Uvoz je bil ustavljen."
+msgstr "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:862
 #, php-format
 msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
-msgstr "Vprašanje \"%s - %s\" NI BILO uvoženo, ker je tip vprašanja neznan."
+msgstr "Question \"%s - %s\" was NOT imported because the question type is unknown."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:868
 #, php-format
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
-msgstr "Vprašanje \"%s - %s\" je bilo uvoženo, a je bil tip nastavljena na '%s' ker mu je najbolj podoben."
+msgstr "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:1356
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/importsurvey.php:1357
@@ -9024,50 +8832,49 @@ msgstr "Pojdi na anketo"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/remotecontrol/lsrc.helper.php:3984
 #, php-format
 msgid "This is your personal statistic sheet for survey #%s"
-msgstr ""
+msgstr "To je vaša osebna statistika za anketo #%s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/remotecontrol/lsrc.helper.php:3980
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/remotecontrol/lsrc.helper.php:3985
-#, fuzzy, php-format
+#, php-format
 msgid "Statistics Survey #%s"
-msgstr "Seznam anket"
+msgstr "Statistics Survey #%s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:31
 msgid "Welcome to the ComfortUpdate"
-msgstr ""
+msgstr "Dobrodošli v ComfortUpdate"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:32
 msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
-msgstr ""
+msgstr "LimeSurvey ComfortUpdate je preprosti proces za hitro posodobitev na zadnjo različico LimeSurveya."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:33
-#, fuzzy
 msgid "The following steps will be done by this update:"
-msgstr "Naslednji odgovori bi morali biti izbrisani"
+msgstr "The following steps will be done by this update:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:34
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
-msgstr ""
+msgstr "Preverjamo, če lahko uspešno posodobimo vašo LimeSurvey namestitev."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:35
 msgid "Your DB and any changed files will be backed up."
-msgstr ""
+msgstr "Vaša baza in spremenjene datoteke bodo shranjene v rezervno kopijo."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:36
 msgid "New files will be downloaded and installed."
-msgstr ""
+msgstr "Nove datoteke bodo prenešene in nameščene."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:37
 msgid "If necessary the database will be updated."
-msgstr ""
+msgstr "Baza bo posodobljena, če bo potrebno."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:38
 msgid "Checking basic requirements..."
-msgstr ""
+msgstr "Preverjanje osnovnih zahtev..."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:40
 msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
-msgstr ""
+msgstr "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:41
 msgid "Please enter a valid update-key:"
@@ -9075,7 +8882,7 @@ msgstr "Prosimo, vpišite veljaven posodobitveni ključ:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:42
 msgid "Save update key"
-msgstr ""
+msgstr "Shrani posodobitveni ključ"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:45
 msgid "Update key: Valid"
@@ -9084,12 +8891,12 @@ msgstr "Posodobitveni ključ: Veljaven"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:49
 #, php-format
 msgid "Tempdir %s is not writable"
-msgstr ""
+msgstr "Tempdir %s is not writable"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:54
 #, php-format
 msgid "Version file is not writable (%s). Please set according file permissions."
-msgstr ""
+msgstr "Version file is not writable (%s). Please set according file permissions."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:57
 msgid "Change log"
@@ -9097,7 +8904,7 @@ msgstr "Seznam sprememb"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:92
 msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
+msgstr "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:94
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:242
@@ -9106,19 +8913,19 @@ msgstr "Preveri ponovno"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:98
 msgid "Everything looks alright. Please proceed to the next step."
-msgstr ""
+msgstr "Everything looks alright. Please proceed to the next step."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:101
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:248
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:335
 #, php-format
 msgid "Proceed to step %s"
-msgstr ""
+msgstr "Proceed to step %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:117
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:148
 msgid "ComfortUpdate Step 2"
-msgstr ""
+msgstr "ComfortUpdate Step 2"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:149
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:157
@@ -9127,14 +8934,13 @@ msgstr ""
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:348
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:356
 msgid "On requesting the update information from limesurvey.org there has been an error:"
-msgstr ""
+msgstr "On requesting the update information from limesurvey.org there has been an error:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:154
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:271
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:353
-#, fuzzy
 msgid "Your update key is invalid and was removed. "
-msgstr "Zapisi z neveljavnjimi e-mail naslovi so bili odstranjeni"
+msgstr "Your update key is invalid and was removed. "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:167
 msgid "Update server busy"
@@ -9142,11 +8948,11 @@ msgstr "Posodobitveni strežnik je zaseden"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:168
 msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
-msgstr ""
+msgstr "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:169
 msgid "Please be patient and try again in about 10 minutes."
-msgstr ""
+msgstr "Please be patient and try again in about 10 minutes."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:170
 msgid "Back to global settings"
@@ -9154,108 +8960,104 @@ msgstr "Nazaj na globalne nastatvitve"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:198
 msgid "Checking existing LimeSurvey files..."
-msgstr ""
+msgstr "Checking existing LimeSurvey files..."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:201
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
-msgstr ""
+msgstr "Warning: The following files/directories need to be updated but their permissions are set to read-only."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:202
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
-msgstr ""
+msgstr "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:214
 msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
-msgstr ""
+msgstr "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:215
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:228
 msgid "We recommend that these files should be replaced by the update procedure."
-msgstr ""
+msgstr "We recommend that these files should be replaced by the update procedure."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:227
 msgid "The following files will be modified or deleted but were already modified by someone else."
-msgstr ""
+msgstr "The following files will be modified or deleted but were already modified by someone else."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:240
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
+msgstr "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:246
 msgid "Please check any problems above and then proceed to the next step."
-msgstr ""
+msgstr "Please check any problems above and then proceed to the next step."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:262
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:345
 msgid "ComfortUpdate Step 3"
-msgstr ""
+msgstr "ComfortUpdate Step 3"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:263
 msgid "Creating DB & file backup"
-msgstr ""
+msgstr "Creating DB & file backup"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:306
-#, fuzzy
 msgid "Creating file backup... "
-msgstr "Berem datoteko..."
+msgstr "Creating file backup... "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:313
 msgid "File backup created:"
-msgstr ""
+msgstr "File backup created:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:321
 msgid "Creating database backup... "
-msgstr "Ustvarjam kopijo podatkovne baze"
+msgstr "Ustvarjam kopijo podatkovne baze "
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:325
-#, fuzzy
 msgid "DB backup created:"
-msgstr "Izdelaj varnostno kopijo celotne baze podatkov"
+msgstr "DB backup created:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:330
 msgid "No DB backup created:"
-msgstr ""
+msgstr "No DB backup created:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:330
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
-msgstr ""
+msgstr "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:333
 msgid "Please check any problems above and then proceed to the final step."
-msgstr ""
+msgstr "Please check any problems above and then proceed to the final step."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:414
-#, fuzzy, php-format
+#, php-format
 msgid "File deleted: %s"
-msgstr "Brisanje odgovora ni uspelo"
+msgstr "File deleted: %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:426
-#, fuzzy
 msgid "New files were successfully installed."
-msgstr "%s polij je bilo uspešno dodanih."
+msgstr "New files were successfully installed."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:432
 msgid "There was a problem downloading the update file. Please try to restart the update process."
-msgstr ""
+msgstr "There was a problem downloading the update file. Please try to restart the update process."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:450
-#, fuzzy, php-format
+#, php-format
 msgid "Buildnumber was successfully updated to %s."
-msgstr "Dostopno geslo je bilo uspešno posodobljeno."
+msgstr "Buildnumber was successfully updated to %s."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:452
-#, fuzzy
 msgid "Please check any problems above - update was done."
-msgstr "Prosimo, izberite vsaj eno izmed možnosti."
+msgstr "Please check any problems above - update was done."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/update/updater.php:477
-#, fuzzy, php-format
+#, php-format
 msgid "Database has been successfully upgraded to version %s"
-msgstr "Podatkovna baza je bila uspešno nadgrajena na različico"
+msgstr "Database has been successfully upgraded to version %s"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/install.disabled/cmd_install.php:114
 msgid "Failed! Reason:"
-msgstr "Ni uspelo! Razlog:"
+msgstr "Failed! Reason:"
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/install.disabled/index.php:34
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/install.disabled/index.php:51
@@ -9293,7 +9095,7 @@ msgstr "Ustvari podatke v podatkovni bazi"
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/install.disabled/index.php:54
 #, php-format
 msgid "A database named \"%s\" already exists."
-msgstr "Baza podatkov z imenom \"%s\" že obstaja."
+msgstr "A database named \"%s\" already exists."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/install.disabled/index.php:55
 msgid "Do you want to populate that database now by creating the necessary tables?"
@@ -9306,7 +9108,7 @@ msgstr "Podatkovna baza z imenom `%s` je bila uspešno ustvarjena."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/install.disabled/createdb.php:58
 msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Informacije o podatkovni bazi niso podane. To skripto je potrebno poganjati znotraj admin.php."
+msgstr "Database Information not provided. This script must be run from admin.php only."
 
 #: /Users/gandalf/fey/gandalf/limesurvey/limesurvey1/admin/install.disabled/createdb.php:84
 msgid "Database has been created."
