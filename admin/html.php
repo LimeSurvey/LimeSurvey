@@ -1283,7 +1283,7 @@ if ($action=='editansweroptions')
     $vasummary .= "<div class='header'>\n"
     .$clang->gT("Edit answer options")
     ."</div>\n"
-    ."<form id='editanswersform' name='editanswers' method='post' action='$scriptname'>\n"
+    ."<form id='editanswersform' name='editanswersform' method='post' action='$scriptname'>\n"
     . "<input type='hidden' name='sid' value='$surveyid' />\n"
     . "<input type='hidden' name='gid' value='$gid' />\n"
     . "<input type='hidden' name='qid' value='$qid' />\n"
@@ -1417,21 +1417,20 @@ if ($action=='editansweroptions')
                 $vasummary .=  "<input type='hidden' id='lid0' name='lid0' value='{$qrow['lid']}' />\n";
                 $vasummary .=  "<input type='hidden' id='lid1' name='lid1' value='{$qrow['lid1']}' />\n";
             }
+            $vasummary .= "<button id='btnlsbrowser_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
             
         }   
         
 		$position=sprintf("%05d", $position);
 	
 		$first=false;
-		$vasummary .= "</tbody></table>\n";
 		$vasummary .= "</div>";
 	}
         // Label set browser
-    $vasummary .= "<button id='btnlsbrowser' type='button'>".$clang->gT('Browse label sets...')."</button>";
     $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;'>
                       <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
                       <br /><select id='labelsets' size='10' style='width:250px;'><option>A label set</option></select>
-                      <br/><input type='checkbox' checked='checked' id='languagefilter'><label for='languagefilter'>".$clang->gT('Match language')."</label>
+                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
                       <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
@@ -1439,7 +1438,7 @@ if ($action=='editansweroptions')
                    <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
     // Save button
     $vasummary .= "<p><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";
-	$vasummary .= "</div></form></td></tr></table>";
+	$vasummary .= "</div></form>";
 
 
 }

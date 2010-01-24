@@ -12,12 +12,15 @@ $(document).ready(function(){
                                         modal: true,
                                         width:800,
                                         title: lsbrowsertitle});         
-       $('#btnlsbrowser').click(lsbrowser);
+       $('.btnlsbrowser').click(lsbrowser);
        $('#btncancel').click(function(){
            $('#labelsetbrowser').dialog('close');
        });
+       $('#btnlsreplace').click(transferlabels);
+       $('#btnlsinsert').click(transferlabels);
        $('#labelsets').click(lspreview);
        $('#languagefilter').click(lsbrowser);
+       updaterowproperties(); 
 });
 
 
@@ -249,7 +252,7 @@ function code_duplicates_check()
 
 function lsbrowser()
 {
-
+    var scale_id=removechars($(this).attr('id'));
     $('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
     match=0;
@@ -343,4 +346,131 @@ function addlabels()
     for (x in languages)
     {
     }
+}
+
+function transferlabels()
+{
+   if ($(this).attr('id')=='btnlsreplace')
+   {
+       var lsreplace=true;
+   } 
+   else
+   {
+       var lsreplace=false;
+   }
+   var lsid=$('#labelsets').selectedValues();
+   $.ajax({
+          url: 'admin.php?action=ajaxlabelsetdetails',
+          dataType: 'json',
+          data: {lid:lsid},
+          cache: true,
+          success: function(json){
+                languages=langs.split(';');   
+                var x;
+                for (x in languages)
+                {
+                    if (assessmentvisible)
+                    {
+                        assessment_style='';
+                        assessment_type='text';
+                    }
+                    else
+                    {
+                        assessment_style='style="display:none;"';
+                        assessment_type='hidden';
+                    }
+                    
+                    var tablerows='';
+                    var y;
+                    for (y in json)
+                    {
+
+                        language=json[y];
+                        defaultdata=language[languages[0]][0];
+                        for (z in language)
+                        {
+                            if (z==languages[y])
+                            {
+                                lsrows=language[z][0];
+                            }
+                            else
+                            {
+                                lsrows=defaultdata;
+                            }
+                            var k;
+                            for (k in lsrows)
+                            {
+                                if (x==0) {
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+lsrows[k].code+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="80" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                }
+                                else
+                                {
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="80" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                }
+                            }
+                        }
+                    }                    
+                    if (lsreplace) {
+                        $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
+                    }
+                    $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+                    // Unbind any previous events
+                    $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+                    $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
+                    $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+                    $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+                    $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+                    $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
+                    $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+                    $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
+                        if ($(this).val()==newansweroption_text)
+                        {
+                            $(this).val('');
+                        }
+                    });
+                }
+                $('#labelsetbrowser').dialog('close');
+                $('.answertable tbody').sortable('refresh');                       
+                updaterowproperties(); 
+
+          }}
+   );
+    
+    
+}
+
+function in_array (needle, haystack, argStrict) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: vlado houba
+    // +   input by: Billy
+    // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
+    // *     example 1: in_array('van', ['Kevin', 'van', 'Zonneveld']);
+    // *     returns 1: true
+    // *     example 2: in_array('vlado', {0: 'Kevin', vlado: 'van', 1: 'Zonneveld'});
+    // *     returns 2: false
+    // *     example 3: in_array(1, ['1', '2', '3']);
+    // *     returns 3: true
+    // *     example 3: in_array(1, ['1', '2', '3'], false);
+    // *     returns 3: true
+    // *     example 4: in_array(1, ['1', '2', '3'], true);
+    // *     returns 4: false
+
+    var key = '', strict = !!argStrict;
+
+    if (strict) {
+        for (key in haystack) {
+            if (haystack[key] === needle) {
+                return true;
+            }
+        }
+    } else {
+        for (key in haystack) {
+            if (haystack[key] == needle) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
