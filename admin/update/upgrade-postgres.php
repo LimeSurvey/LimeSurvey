@@ -179,8 +179,8 @@ global $modifyoutput, $databasename, $databasetabletype;
 
 	if ($oldversion < 142) //Modify surveys table
 	{
-        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"startdate\" timestamp"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"expires\" timestamp"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"startdate\" TYPE timestamp"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"expires\" TYPE timestamp"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
