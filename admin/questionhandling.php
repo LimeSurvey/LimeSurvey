@@ -675,6 +675,39 @@ function questionjavascript($type)
     return $newquestionoutput;
 }
 
+
+if ($action == "ajaxlabelsetdetails")  
+{
+    $lid=returnglobal('lid');     
+    $query='select * from '.db_table_name('labelsets').' where lid='.$lid;
+    $labelsetdata=$connect->GetArray($query);
+    $labelsetlanguages=explode(' ',$labelsetdata[0]['languages']);
+    foreach  ($labelsetlanguages as $language){
+        $query='select * from '.db_table_name('labels').' where lid='.$lid." and language='{$language}'";
+        $labels=$connect->GetArray($query);
+        $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
+    }
+    echo json_encode($resultdata);
+}
+
+
+if ($action == "ajaxlabelsetpicker")  
+{
+    $match=(int)returnglobal('match');
+    $surveyid=returnglobal('sid');
+    if ($match==1)
+    {
+        $language=GetBaseLanguageFromSurveyID($surveyid);    
+    }
+    else
+    {
+        $language=null;
+    }
+    $resultdata=getlabelsets($language);
+    echo json_encode($resultdata);
+}
+
+
 if ($action == "ajaxquestionattributes")  
 {
         $type=returnglobal('question_type');

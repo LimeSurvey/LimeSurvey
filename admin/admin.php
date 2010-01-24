@@ -50,7 +50,7 @@ if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for 
 
 //var_dump(createFieldMap(29846));        die();
 
-if ($action != 'showprintablesurvey' && $action != 'ajaxquestionattributes')
+if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {
     $adminoutput="<div id='wrapper'>";
 } 
@@ -451,7 +451,7 @@ elseif ($action == 'replacementfields')
     
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
          !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
-         !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && ($action!='ajaxquestionattributes') && ($action!='update') && 
+         !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') && 
          (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
           $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
           $action=='newsurvey' || $action=='listsurveys' ||   
@@ -464,12 +464,13 @@ elseif ($action == 'replacementfields')
 	    include('html.php');
     }
 
-    if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' || 
-     $action=='orderquestions' || $action=='ajaxquestionattributes')
+    if ($action=='addquestion' || $action=='copyquestion' || $action=='editquestion' || 
+     $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')
     {
         if(hasRight($surveyid,'define_questions'))    
         {
-            $_SESSION['FileManagerContext']="edit:question:$surveyid";include('questionhandling.php');
+            $_SESSION['FileManagerContext']="edit:question:$surveyid";
+            include('questionhandling.php');
         }
         else 
         { 
@@ -495,7 +496,7 @@ elseif ($action == 'replacementfields')
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
       !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) && 
-      $action!='ajaxquestionattributes' && $action!='update') 
+      (substr($action,0,4)!= 'ajax') && $action!='update') 
     {
         $adminoutput.= showadminmenu();
     }
@@ -559,7 +560,7 @@ elseif ($action == 'replacementfields')
     if (isset($exportroutput)) {$adminoutput.= $exportroutput;}  
                                                                         
   
-    if (!isset($printablesurveyoutput) && $subaction!='export' && $action!='ajaxquestionattributes')
+    if (!isset($printablesurveyoutput) && $subaction!='export' && (substr($action,0,4)!= 'ajax'))
     {  
         if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
 

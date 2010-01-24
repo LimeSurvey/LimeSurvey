@@ -82,7 +82,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		{
 			$labelsoutput.="<option value='admin.php?action=labels&amp;lid={$lb[0]}'";
 			if ($lb[0] == $lid) {$labelsoutput.= " selected='selected'";}
-			$labelsoutput.= ">{$lb[1]}</option>\n";
+			$labelsoutput.= ">{$lb[0]}: {$lb[1]}</option>\n";
 		}
 	}
 	

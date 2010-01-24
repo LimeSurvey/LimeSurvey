@@ -355,3 +355,8 @@ function checklangs(mylangs)
 	}
 	return true;
 }
+
+function isset( variable )
+{
+      return( typeof( variable ) != 'undefined' );
+}

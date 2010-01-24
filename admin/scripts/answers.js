@@ -8,6 +8,16 @@ $(document).ready(function(){
        $('.btndelanswer').click(deleteinput); 
        $('.btneditanswer').click(popupeditor);
        $('#editanswersform').submit(code_duplicates_check)
+       $('#labelsetbrowser').dialog({ autoOpen: false,
+                                        modal: true,
+                                        width:800,
+                                        title: lsbrowsertitle});         
+       $('#btnlsbrowser').click(lsbrowser);
+       $('#btncancel').click(function(){
+           $('#labelsetbrowser').dialog('close');
+       });
+       $('#labelsets').click(lspreview);
+       $('#languagefilter').click(lsbrowser);
 });
 
 
@@ -152,7 +162,7 @@ function aftermove(event,ui)
     updaterowproperties();
 }
 
-// This function adjust the alternating table rows and renames IDs and names
+// This function adjust the alternating table rows and renames/renumbers IDs and names
 // if the list has really changed
 function updaterowproperties()
 {
@@ -235,4 +245,102 @@ function popupeditor()
 function code_duplicates_check()
 {
     //return false;
+}
+
+function lsbrowser()
+{
+
+    $('#labelsetbrowser').dialog( 'open' );
+    surveyid=$('input[name=sid]').val();
+    match=0;
+    if ($('#languagefilter').attr('checked')==true)
+    {
+        match=1;
+    }
+    $.getJSON('admin.php?action=ajaxlabelsetpicker',{sid:surveyid, match:match},function(json){
+        var x=0;    
+        $("#labelsets").removeOption(/.*/); 
+        for (x in json)
+        {
+            $('#labelsets').addOption(json[x][0],json[x][1]); 
+            if (x==0){
+                remind=json[x][0];
+            }
+        }
+        $('#labelsets').selectOptions(remind);  
+        lspreview();           
+    });
+}
+
+
+function lspreview()
+{
+   var lsid=$('#labelsets').selectedValues();
+   $.ajax({
+          url: 'admin.php?action=ajaxlabelsetdetails',
+          dataType: 'json',
+          data: {lid:lsid},
+          cache: true,
+          success: function(json){
+                $("#labelsetpreview").tabs('destroy');
+                $("#labelsetpreview").empty();
+                var tabindex=''; 
+                var tabbody=''; 
+                for ( x in json)
+                {
+
+                    language=json[x];
+                    for (y in language)
+                    {
+                        tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
+                        tabbody=tabbody+"<div id='language_'+y+'><table>";
+                        lsrows=language[y][0];
+                        tablerows='';
+                        for (z in lsrows)
+                        {
+                            tabbody=tabbody+'<tbody><tr><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
+                        }
+                        tabbody=tabbody+'<thead><tr><th>Code</th><th>Label</th></tr></thead><div>';
+                    }
+                }
+                $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
+                $("#labelsetpreview").tabs();
+          }}
+           );
+    
+}
+
+
+function dump(arr,level) {
+    var dumped_text = "";
+    if(!level) level = 0;
+    
+    //The padding given at the beginning of the line.
+    var level_padding = "";
+    for(var j=0;j<level+1;j++) level_padding += "    ";
+    
+    if(typeof(arr) == 'object') { //Array/Hashes/Objects 
+        for(var item in arr) {
+            var value = arr[item];
+            
+            if(typeof(value) == 'object') { //If it is an array,
+                dumped_text += level_padding + "'" + item + "' ...\n";
+                dumped_text += dump(value,level+1);
+            } else {
+                dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+            }
+        }
+    } else { //Stings/Chars/Numbers etc.
+        dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+    }
+    return dumped_text;
+}
+
+function addlabels()
+{
+    languages=langs.split(';');
+
+    for (x in languages)
+    {
+    }
 }

@@ -1209,14 +1209,16 @@ if ($action=='editansweroptions')
 {
     $js_adminheader_includes[]='scripts/answers.js';
     $js_adminheader_includes[]='../scripts/jquery/jquery.blockUI.js';
+    $js_adminheader_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
     
 	$_SESSION['FileManagerContext']="edit:answer:$surveyid";
 	// Get languages select on survey.
 	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-    $qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
-    $qtype = $connect->GetOne($qquery);
+    $qquery = "SELECT type,lid,lid1 FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
+    $qrow = $connect->GetRow($qquery);
+    $qtype = $qrow['type'];
     $scalecount=$qtypes[$qtype]['answerscales'];
     //Check if there is at least one answer
     for ($i = 0; $i < $scalecount; $i++)
@@ -1303,6 +1305,7 @@ if ($action=='editansweroptions')
                           var scalecount=".$scalecount."; 
                           var assessmentvisible=".($assessmentvisible?'true':'false')."; 
                           var newansweroption_text='".$clang->gT('New answer option','js')."'; 
+                          var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
                           var langs='".implode(';',$anslangs)."';</script>\n";
 
 	foreach ($anslangs as $anslang)
@@ -1323,12 +1326,10 @@ if ($action=='editansweroptions')
 
 
             $vasummary .= "<table class='answertable' id='answers_{$anslang}_$scale_id' align='center' >\n"
-                    ."<thead>"
-        		    ."<tr>\n"
-                    ."<th align='right'>&nbsp;</th>\n"
-        		    ."<th align='center'>\n"
-        		    .$clang->gT("Code")
-        		    ."</th>\n";
+                        ."<thead>"
+        		        ."<tr>\n"
+                        ."<th align='right'>&nbsp;</th>\n"
+        		        ."<th align='center'>".$clang->gT("Code")."</th>\n";
             if ($assessmentvisible)
             {
                 $vasummary .="<th align='center'>".$clang->gT("Assessment value");
@@ -1338,14 +1339,11 @@ if ($action=='editansweroptions')
                 $vasummary .="<th style='display:none;'>&nbsp;";
             }
 
-            $vasummary .="</th><th align='center'>\n"
-        		    .$clang->gT("Answer option")
-        		    ."</th>\n"
-        		    ."<th align='center'>\n"
-        		    .$clang->gT("Actions")
-        		    ."</th>\n"
-        		    ."</tr></thead>"
-                    ."<tbody align='center'>";
+            $vasummary .="</th>\n"
+                         ."<th align='center'>".$clang->gT("Answer option")."</th>\n"
+        		         ."<th align='center'>".$clang->gT("Actions")."</th>\n"
+        		         ."</tr></thead>"
+                         ."<tbody align='center'>";
             $alternate=true;
 
             $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
@@ -1402,7 +1400,7 @@ if ($action=='editansweroptions')
                 }
                 
                 $vasummary .= "</td><td>\n"
-                    ."<input type='text' class='answer' id='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' ' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' size='80' value=\"{$row['answer']}\" />\n"
+                    ."<input type='text' class='answer' id='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' size='80' value=\"{$row['answer']}\" />\n"
                     . getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer');
                     
                 // Deactivate delete button for active surveys
@@ -1416,14 +1414,11 @@ if ($action=='editansweroptions')
             if ($first)
             {
                 $vasummary .=  "<input type='hidden' id='answercount_{$scale_id}' name='answercount_{$scale_id}' value='$anscount' />\n";
+                $vasummary .=  "<input type='hidden' id='lid0' name='lid0' value='{$qrow['lid']}' />\n";
+                $vasummary .=  "<input type='hidden' id='lid1' name='lid1' value='{$qrow['lid1']}' />\n";
             }
             
         }   
-        if ($anscount > 0)
-        {
-            $vasummary .= "<p><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n";
-        }
-        
         
 		$position=sprintf("%05d", $position);
 	
@@ -1431,6 +1426,19 @@ if ($action=='editansweroptions')
 		$vasummary .= "</tbody></table>\n";
 		$vasummary .= "</div>";
 	}
+        // Label set browser
+    $vasummary .= "<button id='btnlsbrowser' type='button'>".$clang->gT('Browse label sets...')."</button>";
+    $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;'>
+                      <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
+                      <br /><select id='labelsets' size='10' style='width:250px;'><option>A label set</option></select>
+                      <br/><input type='checkbox' checked='checked' id='languagefilter'><label for='languagefilter'>".$clang->gT('Match language')."</label>
+                      <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
+                      <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
+                      <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
+                      
+                   <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
+    // Save button
+    $vasummary .= "<p><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";
 	$vasummary .= "</div></form></td></tr></table>";
 
 

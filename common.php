@@ -1653,7 +1653,7 @@ function getlabelsets($languages=null)
     $labelsets=array();
     while ($row=$result->FetchRow())
     {
-        $labelsets[] = array($row['lid'], $row['lid'].": ".$row['label_name']);
+        $labelsets[] = array($row['lid'], $row['label_name']);
     }
     return $labelsets;
 }
@@ -2663,6 +2663,14 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
     }
 }
 
+/**
+* put your comment there...
+* 
+* @param mixed $needle
+* @param mixed $haystack
+* @param mixed $keyname
+* @param mixed $maxanswers
+*/
 function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     $output=array();
     foreach($haystack as $hay) {
@@ -2679,6 +2687,15 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     return $output;
 }
 
+/**
+* This function replaces keywords in a text and is mainly intended for templates
+* If you use this functions put your replacement strings into the $replacements variable
+* instead of using global variables
+* 
+* @param mixed $line Text to search in
+* @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+* @return string  Text with replaced strings
+*/
 function templatereplace($line, $replacements=array())
 {
     global $surveylist, $sitename, $clienttoken, $rooturl;
@@ -3220,27 +3237,31 @@ function passthruReplace($line, $thissurvey)
     return $line;
 }
 
+/**
+* This function returns a count of the number of saved responses to a survey   
+* 
+* @param mixed $surveyid Survey ID
+*/
 function getSavedCount($surveyid)
 {
-    //This function returns a count of the number of saved responses to a survey
     global $dbprefix, $connect;
-    $surveyid=sanitize_int($surveyid);
+    $surveyid=(int)$surveyid;
     
     $query = "SELECT COUNT(*) FROM ".db_table_name('saved_control')." WHERE sid=$surveyid";
-    $result=db_execute_num($query) or safe_die ("Couldn't get saved summary<br />$query<br />".$connect->ErrorMsg());    //Checked
-    list($count) = $result->FetchRow();
+    $count=$connect->getOne($query);
     return $count;
 }
 
 function GetBaseLanguageFromSurveyID($surveyid)
 {
     global $connect;
-    //This function loads the local language file applicable to a survey
-    $surveylanguage='en';
-    $surveyid=sanitize_int($surveyid);
+    $surveyid=(int)($surveyid);
     $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $result = db_execute_num($query); //Checked
-    while ($result && ($row=$result->FetchRow())) {$surveylanguage = $row[0];}
+    $surveylanguage = $connect->GetOne($query); //Checked
+    if ($surveylanguage==false)
+    {
+        $surveylanguage='en';
+    }
     return $surveylanguage;
 }
 
@@ -3249,12 +3270,16 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 {
     global $connect;
     $surveyid=sanitize_int($surveyid);
-    //This function loads the local language file applicable to a survey
     $query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $result = db_execute_num($query);
-    while ($result && ($row=$result->FetchRow())) {$surveylanguage = $row[0];}
-    if (isset($surveylanguage) && $surveylanguage !="") $additional_languages = explode(" ", trim($surveylanguage));
-    if (!isset($additional_languages) || $additional_languages==false) { $additional_languages = array();}
+    $additional_languages = $connect->GetOne($query);
+    if ($additional_languages==false) 
+    { 
+        $additional_languages = array();
+    }
+    else
+    {
+        $additional_languages = explode(" ", trim($surveylanguage));    
+    }
     return $additional_languages;
 }
 
