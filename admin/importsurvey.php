@@ -1000,11 +1000,24 @@ if (isset($grouparray) && $grouparray) {
 										"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment");
 									}
 								}
-								elseif ($type == "A" || $type == "B" || $type == "C" || $type == "F" || $type == "H" || $type == "E" || $type == "Q" || $type == "K" || $type == "1") {
+								elseif ($type == "A" || $type == "B" || $type == "C" || $type == "F" || $type == "H" || $type == "E" || $type == "Q" || $type == "K") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
 									"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code,
 									"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
 									"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
+								}
+								elseif ($type == "1") {
+									$fieldnames[]=array(
+									"oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."#0",
+									"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."#0",
+									"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."#0",
+									"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."#0");
+
+									$fieldnames[]=array(
+									"oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."#1",
+									"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."#1",
+									"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."#1",
+									"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."#1");
 								}
 								elseif ($type == ":" || $type == ";" ) {
 									// read all label codes from $questionrowdata["lid"]
