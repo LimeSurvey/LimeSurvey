@@ -2695,6 +2695,10 @@ function do_listwithcomment($ia)
 				$check_ans = SELECTED; 
 				$defexists = "Y";
 			}
+			else
+			{
+				$check_ans = '';
+			}
 			$answer .= '		<option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
 
 			if (strlen($ansrow['answer']) > $maxoptionsize)
