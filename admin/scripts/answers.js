@@ -1,5 +1,5 @@
 // $Id: templates.js 7699 2009-09-30 22:28:50Z c_schmitz $
-
+       var labelcache=[];  
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
                                             update:aftermove,
@@ -247,12 +247,29 @@ function popupeditor()
 
 function code_duplicates_check()
 {
-    //return false;
+    languages=langs.split(';');    
+    var dupefound=false;
+    $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
+        var codearray=[];
+        $(this).find('tr .code').each(function(){
+           codearray.push($(this).val());  
+        })
+        if (arrHasDupes(codearray))
+        {
+            alert(duplicateanswercode);
+            dupefound=true;
+            return;
+        }
+    })
+    if (dupefound)
+    {
+        return false;
+    }
 }
 
 function lsbrowser()
 {
-    var scale_id=removechars($(this).attr('id'));
+    scale_id=removechars($(this).attr('id'));
     $('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
     match=0;
@@ -275,45 +292,67 @@ function lsbrowser()
     });
 }
 
-
+// previews the labels in a label set after selecting it in the select box
 function lspreview()
 {
    var lsid=$('#labelsets').selectedValues();
-   $.ajax({
-          url: 'admin.php?action=ajaxlabelsetdetails',
-          dataType: 'json',
-          data: {lid:lsid},
-          cache: true,
-          success: function(json){
-                $("#labelsetpreview").tabs('destroy');
-                $("#labelsetpreview").empty();
-                var tabindex=''; 
-                var tabbody=''; 
-                for ( x in json)
-                {
-
-                    language=json[x];
-                    for (y in language)
+   // check if this label set is already cached
+   if (!isset(labelcache[lsid]))
+   {
+       $.ajax({
+              url: 'admin.php?action=ajaxlabelsetdetails',
+              dataType: 'json',
+              data: {lid:lsid},
+              cache: true,
+              success: function(json){
+                    $("#labelsetpreview").tabs('destroy');
+                    $("#labelsetpreview").empty();
+                    var tabindex=''; 
+                    var tabbody=''; 
+                    for ( x in json)
                     {
-                        tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
-                        tabbody=tabbody+"<div id='language_'+y+'><table>";
-                        lsrows=language[y][0];
-                        tablerows='';
-                        for (z in lsrows)
+
+                        language=json[x];
+                        for (y in language)
                         {
-                            tabbody=tabbody+'<tbody><tr><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
+                            tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
+                            tabbody=tabbody+"<div id='language_'+y+'><table class='limetable'>";
+                            lsrows=language[y][0];
+                            tablerows='';
+                            var highlight=true;
+                            for (z in lsrows)
+                            {
+                                highlight=!highlight; 
+                                tabbody=tabbody+'<tbody><tr';
+                                if (highlight==true) { 
+                                    tabbody=tabbody+" class='highlight' ";
+                                }
+                                tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
+                            }
+                            tabbody=tabbody+'<thead><tr><th>Code</th><th>Label</th></tr></thead><div>';
                         }
-                        tabbody=tabbody+'<thead><tr><th>Code</th><th>Label</th></tr></thead><div>';
                     }
-                }
-                $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
-                $("#labelsetpreview").tabs();
-          }}
-           );
+                    $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
+                    labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
+                    $("#labelsetpreview").tabs();
+              }}
+       );
+   }
+   else
+   {
+                    $("#labelsetpreview").tabs('destroy');
+                    $("#labelsetpreview").empty();
+                    $("#labelsetpreview").append(labelcache[lsid]);
+                    $("#labelsetpreview").tabs();
+   }
+
     
 }
 
-
+/**
+* This is a debug function
+* similar to var_dump in PHP
+*/
 function dump(arr,level) {
     var dumped_text = "";
     if(!level) level = 0;

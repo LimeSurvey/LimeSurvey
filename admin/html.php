@@ -1001,7 +1001,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			if (is_null($condarray))
 			{
 				$questionsummary .= "<a href='#'" .
-				"onclick=\"if (confirm('".$clang->gT("Deleting this question will also delete any answer options and sub-questions it includes. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."}\">"
+				"onclick=\"if (confirm('".$clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."}\">"
 				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt='".$clang->gT("Delete current question")."' "
 				. "border='0' hspace='0' /></a>\n";
 			}
@@ -1098,8 +1098,8 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
             if ($qtypes[$qrrow['type']]['subquestions'] >0)
             {
             $questionsummary .=  "<a href='".$scriptname."?action=editsubquestions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                                ."title=\"".$clang->gTview("Edit sub-questions for this question")."\">"
-                                ."<img src='$imagefiles/subquestions.png' alt='".$clang->gT("Edit sub-questions for this question")."' name='ViewAnswers' /></a>\n" ;
+                                ."title=\"".$clang->gTview("Edit subquestions for this question")."\">"
+                                ."<img src='$imagefiles/subquestions.png' alt='".$clang->gT("Edit subquestions for this question")."' name='EditSubquestions' /></a>\n" ;
             }
         }
         else
@@ -1110,7 +1110,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .=  "<a href='".$scriptname."?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
                                 ."title=\"".$clang->gTview("Edit answer options for this question")."\">"
-			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit answer options for this question")."' name='ViewAnswers' /></a>\n" ;
+			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit answer options for this question")."' name='EdtAnswerOptions' /></a>\n" ;
 		}
 		else
 		{
@@ -1132,8 +1132,14 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
         . "</div>\n";
         $questionsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
         
-		if ($action=='editansweroptions' || $action =="editsubquestions" || $action =="editquestion" || $action =="copyquestion")	{$qshowstyle = "style='display: none'";}
-		else							{$qshowstyle = "";}
+		if ($action=='editansweroptions' || $action =="editsubquestions" || $action =="editquestion" || $action =="copyquestion")	
+        {
+            $qshowstyle = "style='display: none'";
+        }
+		else							
+        {
+            $qshowstyle = "";
+        }
 		$questionsummary .= "<table  id='questiondetails' $qshowstyle><tr><td width='20%' align='right'><strong>"
 		. $clang->gT("Code:")."</strong></td>\n"
 		. "<td align='left'>{$qrrow['title']}";
@@ -1306,6 +1312,7 @@ if ($action=='editansweroptions')
                           var assessmentvisible=".($assessmentvisible?'true':'false')."; 
                           var newansweroption_text='".$clang->gT('New answer option','js')."'; 
                           var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
+                          var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."'; 
                           var langs='".implode(';',$anslangs)."';</script>\n";
 
 	foreach ($anslangs as $anslang)
@@ -1321,7 +1328,7 @@ if ($action=='editansweroptions')
             $position=0;
             if ($scalecount>1) 
             {
-                $vasummary.="<div class='header'>".sprintf($clang->gT("Answer scale %s"),$scale_id+1)."</div>";
+                $vasummary.="<div class='header' style='margin-top:5px;'>".sprintf($clang->gT("Answer scale %s"),$scale_id+1)."</div>";
             }
 
 
@@ -1501,7 +1508,7 @@ if ($action=='editsubquestions')
      $row=$result->FetchRow();
      $maxsortorder=$row['question_order']+1;
      $vasummary .= "<div class='header'>\n"
-    .$clang->gT("Edit sub-questions")
+    .$clang->gT("Edit subquestions")
     ."</div>\n"
     ."<form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
     . "<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -1537,7 +1544,7 @@ if ($action=='editsubquestions')
                 .$clang->gT("Code")
                 ."</th>\n"
                 ."</th><th width='60%' >\n"
-                .$clang->gT("Sub-question")
+                .$clang->gT("Subquestion")
                 ."</th>\n"
                 ."<th width='15%' align='center'>\n"
                 .$clang->gT("Action")
@@ -1592,18 +1599,18 @@ if ($action=='editsubquestions')
 
             $vasummary .= "</td><td>\n"
             ."<input type='text' name='answer_{$row['language']}_{$row['question_order']}' maxlength='1000' size='80' value=\"{$row['question']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
-            . getEditor("editanswer","answer_".$row['language']."_".$row['question_order'], "[".$clang->gT("Sub-question:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
+            . getEditor("editanswer","answer_".$row['language']."_".$row['question_order'], "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
             ."</td>\n"
             ."<td>\n";
             
             // Deactivate delete button for active surveys
             if ($activated != 'Y' || ($activated == 'Y' && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
             {
-                $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
+                $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Delete")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
             }
             else
             {
-                $vasummary .= "<input type='submit' disabled='disabled 'name='method' value='".$clang->gT("Del")."' />\n";
+                $vasummary .= "<input type='submit' disabled='disabled 'name='method' value='".$clang->gT("Delete")."' />\n";
             }
 
             // Don't show Default Button for array question types
@@ -1612,12 +1619,12 @@ if ($action=='editsubquestions')
             ."<td width='10%'>\n";
             if ($position > 0)
             {
-                $vasummary .= "<input type='image' src='$imagefiles/up.png' name='method' alt='".$clang->gT("Move sub-question up")."' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
+                $vasummary .= "<input type='image' src='$imagefiles/up.png' name='method' alt='".$clang->gT("Move subquestion up")."' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
             };
             if ($position < $anscount-1)
             {
                 // Fill the sortorder hiddenfield so we now what field is moved down
-                $vasummary .= "<input type='image' name='method' src='$imagefiles/down.png' alt='".$clang->gT("Move sub-question down")."' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
+                $vasummary .= "<input type='image' name='method' src='$imagefiles/down.png' alt='".$clang->gT("Move subquestion down")."' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
             }
             $vasummary .= "</td></tr>\n";
             $position++;
@@ -1637,7 +1644,7 @@ if ($action=='editsubquestions')
             {
                 $vasummary .= "<tr><td colspan='6'><br /></td></tr>"
                              ."<tr><td>"
-                ."<strong>".$clang->gT("New sub-question").":</strong> ";
+                ."<strong>".$clang->gT("New subquestion").":</strong> ";
                 if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
                 $vasummary .= "<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\" id='code_".$maxsortorder."' maxlength='5' size='5' "
                 ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
@@ -1658,7 +1665,7 @@ if ($action=='editsubquestions')
                 . getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
                 ."</td>\n"
                 ."<td>\n"
-                ."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new sub-question")."' />\n"
+                ."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new subquestion")."' />\n"
                 ."<input type='hidden' name='action' value='updatesubquestions' />\n"
                 ."</td>\n"
                 ."<td>\n"
@@ -1676,7 +1683,7 @@ if ($action=='editsubquestions')
             $vasummary .= "<tr>\n"
             ."<td colspan='4' align='center'>\n"
             ."<font color='red' size='1'><i><strong>"
-            .$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add or edit sub-questions or their codes because the survey is active.")."</i></font>\n"
+            .$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add or edit subquestions or their codes because the survey is active.")."</i></font>\n"
             ."</td>\n"
             ."</tr>\n";
         }

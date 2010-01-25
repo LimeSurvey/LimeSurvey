@@ -482,7 +482,7 @@ if($action == "orderquestions")
 
     //Get the questions for this group
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
+    $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' and parent_qid=0 order by question_order" ;
     $oqresult = db_execute_assoc($oqquery);
     
     $orderquestions = "<div class='header'>".$clang->gT("Change Question Order")."</div>";

@@ -101,7 +101,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
             $chacount=$charesult->RecordCount();
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a sub-question type question but has no configured sub-questions."), $chkrow['gid']);
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a subquestion type question but has no configured subquestions."), $chkrow['gid']);
             }
         }
         if ($qtypes[$chkrow['type']]['answerscales']>0)

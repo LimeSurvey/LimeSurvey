@@ -16,6 +16,17 @@ $(document).ready(function(){
                             }, $.datepicker.regional[userlanguage]);
     }
 
+    $('.header').addClass("ui-widget-header");   
+    $('button,input[type=submit]').addClass("limebutton ui-state-default ui-corner-all");   
+    $('button,input[type=submit]').hover(
+        function(){ 
+            $(this).addClass("ui-state-hover"); 
+        },
+        function(){ 
+            $(this).removeClass("ui-state-hover"); 
+        }
+    )
+    
 
     // Loads the tooltips for the toolbars
     $('img[alt],input[src]').each(function() {

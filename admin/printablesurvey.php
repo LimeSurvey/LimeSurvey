@@ -329,7 +329,7 @@ while ($degrow = $degresult->FetchRow())
 // ---------------------------------------------------
 // START doing groups
 
-	$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' AND TYPE<>'I' ORDER BY question_order";
+	$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' AND parent_qid=0 AND TYPE<>'I' ORDER BY question_order";
 	$deqresult = db_execute_assoc($deqquery);
 	$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
 	while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} // Get table output into array
@@ -399,7 +399,7 @@ while ($degrow = $degresult->FetchRow())
 			$distinctresult=db_execute_assoc($distinctquery);
 			while ($distinctrow=$distinctresult->FetchRow())
 			{
-                $subquery='select title, question from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND language='{$surveyprintlang}'";
+                $subquery='select title, question from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
                 $subresult=$connect->GetRow($subquery);
                 
 				if($x > 0)
@@ -452,7 +452,7 @@ while ($degrow = $degresult->FetchRow())
 				."AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']}\n"
 				."AND ".db_table_name("conditions").".qid={$deqrow['qid']} \n"
 				."AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} \n"
-				."AND language='{$surveyprintlang}'";
+				."AND language='{$surveyprintlang}'";      // not converted
 				$conresult=db_execute_assoc($conquery) or safe_die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
 				$conditions=array();
 				while ($conrow=$conresult->FetchRow())
@@ -1070,7 +1070,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "A":  //ARRAY (5 POINT CHOICE)
-				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order, question";
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 
@@ -1097,7 +1097,7 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 					$rowclass = alternation($rowclass,'row');
-					$answertext=$mearow['answer'];
+					$answertext=$mearow['question'];
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
 
@@ -1108,7 +1108,7 @@ while ($degrow = $degresult->FetchRow())
 						$pdfoutput[$j][$i]=" o ".$i;
 					}
 
-					$answertext=$mearow['answer'];
+					$answertext=$mearow['question'];
 					if (strpos($answertext,'|'))
 					{
 						$answertext=substr($answertext,strpos($answertext,'|')+1);
@@ -1123,7 +1123,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "B":  //ARRAY (10 POINT CHOICE)
-				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
@@ -1141,10 +1141,10 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 
-					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n\t\t\t<th class=\"answertext\">{$mearow['question']}</th>\n";
 					$rowclass = alternation($rowclass,'row');
 
-					$pdfoutput[$j][0]=$mearow['answer'];
+					$pdfoutput[$j][0]=$mearow['question'];
 					for ($i=1; $i<=10; $i++)
 					{
 						$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$i)."</td>\n";
@@ -1159,7 +1159,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
-				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 
@@ -1184,13 +1184,13 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
-					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
+					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['question']}</th>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Yes"))."</td>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Uncertain"))."</td>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("No"))."</td>\n";
 					$question['ANSWER'] .= "\t\t</tr>\n";
 					
-					$pdfoutput[$j]=array($mearow['answer']," o ".$clang->gT("Yes")," o ".$clang->gT("Uncertain")," o ".$clang->gT("No"));
+					$pdfoutput[$j]=array($mearow['question']," o ".$clang->gT("Yes")," o ".$clang->gT("Uncertain")," o ".$clang->gT("No"));
 					$j++;
 					$rowclass = alternation($rowclass,'row');
 				}
@@ -1199,7 +1199,7 @@ while ($degrow = $degresult->FetchRow())
 				break;
 
 			case "E":  //ARRAY (Increase/Same/Decrease)
-				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order, question";
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 
@@ -1223,12 +1223,12 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
-					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
+					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['question']}</th>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Increase"))."</td>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Same"))."</td>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Decrease"))."</td>\n";
 					$question['ANSWER'] .= "\t\t</tr>\n";
-					$pdfoutput[$j]=array($mearow['answer'].":"," o ".$clang->gT("Increase")," o ".$clang->gT("Same")," o ".$clang->gT("Decrease"));
+					$pdfoutput[$j]=array($mearow['question'].":"," o ".$clang->gT("Increase")," o ".$clang->gT("Same")," o ".$clang->gT("Decrease"));
 					$j++;
 					$rowclass = alternation($rowclass,'row');
 			}
@@ -1263,7 +1263,7 @@ while ($degrow = $degresult->FetchRow())
 				} else {
 					$checkboxlayout=false;
 				}
-				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				$mearesult = db_execute_assoc($meaquery);
 				if ($checkboxlayout === false)
 				{
@@ -1284,7 +1284,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-				$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+				$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 				$fresult = db_execute_assoc($fquery);
 				$fcount = $fresult->RecordCount();
 				$fwidth = "120";
@@ -1293,9 +1293,9 @@ while ($degrow = $degresult->FetchRow())
 				$pdfoutput[0][0]=' ';
 				while ($frow = $fresult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t\t<th>{$frow['title']}</th>\n";
+					$question['ANSWER'] .= "\t\t\t<th>{$frow['answer']}</th>\n";
 					$i++;
-					$pdfoutput[0][$i]=$frow['title'];
+					$pdfoutput[0][$i]=$frow['answer'];
 				}
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 				$a=1; //Counter for pdfoutput
@@ -1306,7 +1306,7 @@ while ($degrow = $degresult->FetchRow())
 					$question['ANSWER'] .= "\t<tr class=\"$rowclass\">\n";
 					$rowclass = alternation($rowclass,'row');
 
-					$answertext=$mearow['answer'];
+					$answertext=$mearow['question'];
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t\t\t<th class=\"answertext\">$answertext</th>\n";
 					//$printablesurveyoutput .="\t\t\t\t\t<td>";
@@ -1327,7 +1327,7 @@ while ($degrow = $degresult->FetchRow())
 						}
 						$question['ANSWER'] .= "\t\t\t</td>\n";
 					}
-					$answertext=$mearow['answer'];
+					$answertext=$mearow['question'];
 					if (strpos($answertext,'|'))
 					{
 						$answertext=substr($answertext,strpos($answertext,'|')+1);
@@ -1397,12 +1397,12 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case "F": //ARRAY (Flexible Labels)
 
-				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				$mearesult = db_execute_assoc($meaquery);
 
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 
-				$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+				$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE scale_id=0 and qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 				$fresult = db_execute_assoc($fquery);
 				$fcount = $fresult->RecordCount();
 				$fwidth = "120";
@@ -1413,7 +1413,7 @@ while ($degrow = $degresult->FetchRow())
 				$column_headings = array();
 				while ($frow = $fresult->FetchRow())
 				{
-					$column_headings[] = $frow['title'];
+					$column_headings[] = $frow['answer'];
 				}
 				$col_width = round(80 / count($column_headings));
 				
@@ -1431,7 +1431,7 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 				    $rowclass = alternation($rowclass,'row');
-					$answertext=$mearow['answer'];
+					$answertext=$mearow['question'];
                     if (trim($answertext)=='') $answertext='&nbsp;';
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
@@ -1446,7 +1446,7 @@ while ($degrow = $degresult->FetchRow())
 					}
 					$counter++;
 
-					$answertext=$mearow['answer'];
+					$answertext=$mearow['question'];
 					if (strpos($answertext,'|'))
 					{
 						$answertext=substr($answertext,strpos($answertext,'|')+1);
