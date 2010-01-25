@@ -683,7 +683,7 @@ if ($action == "ajaxlabelsetdetails")
     $labelsetdata=$connect->GetArray($query);
     $labelsetlanguages=explode(' ',$labelsetdata[0]['languages']);
     foreach  ($labelsetlanguages as $language){
-        $query='select * from '.db_table_name('labels').' where lid='.$lid." and language='{$language}'";
+        $query='select * from '.db_table_name('labels').' where lid='.$lid." and language='{$language}' order by sortorder";
         $labels=$connect->GetArray($query);
         $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
     }

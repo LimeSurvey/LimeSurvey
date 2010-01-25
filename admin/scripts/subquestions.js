@@ -362,17 +362,7 @@ function transferlabels()
                 var x;
                 for (x in languages)
                 {
-                    if (assessmentvisible)
-                    {
-                        assessment_style='';
-                        assessment_type='text';
-                    }
-                    else
-                    {
-                        assessment_style='style="display:none;"';
-                        assessment_type='hidden';
-                    }
-                    
+                   
                     var tablerows='';
                     var y;
                     for (y in json)
@@ -393,29 +383,30 @@ function transferlabels()
                             var k;
                             for (k in lsrows)
                             {
+                                var randomid='new'+Math.floor(Math.random()*111111) 
                                 if (x==0) {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+lsrows[k].code+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="80" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" id="code_'+randomid+'" name="code_'+randomid+'" type="text" maxlength="5" size="5" value="'+lsrows[k].code+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="80" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                             }
                         }
                     }                    
                     if (lsreplace) {
-                        $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
+                        $('#tabpage_'+languages[x]+' tbody').empty();
                     }
-                    $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+                    $('#tabpage_'+languages[x]+' tbody').append(tablerows);
                     // Unbind any previous events
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
-                    $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
-                    $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+                    $('#tabpage_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
                         if ($(this).val()==newansweroption_text)
                         {
                             $(this).val('');

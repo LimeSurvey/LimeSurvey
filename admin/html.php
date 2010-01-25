@@ -1637,6 +1637,7 @@ if ($action=='editsubquestions')
         $vasummary .= "</tbody></table>\n";
         $vasummary .= "</div>";
     }
+    $vasummary .= "<button id='btnlsbrowser' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
     
         // Label set browser
     $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;'>

@@ -1157,7 +1157,7 @@ if ($subaction=='' ||
 	if ($scenariocount > 0)
 	{
         $js_adminheader_includes[]= $homeurl.'/scripts/conditions.js';
-        $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-checkgroup.js';
+        $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery.checkgroup.js';
 		while ($scenarionr=$scenarioresult->FetchRow())
 		{
 			$scenariotext = "";
