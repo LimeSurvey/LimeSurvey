@@ -17,6 +17,7 @@ $(document).ready(function(){
     }
 
     $('.header').addClass("ui-widget-header");   
+    $('.menubar-title').addClass("ui-widget-header");   
     $('button,input[type=submit]').addClass("limebutton ui-state-default ui-corner-all");   
     $('button,input[type=submit]').hover(
         function(){ 

@@ -3278,7 +3278,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
     }
     else
     {
-        $additional_languages = explode(" ", trim($surveylanguage));    
+        $additional_languages = explode(" ", trim($additional_languages));    
     }
     return $additional_languages;
 }

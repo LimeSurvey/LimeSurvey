@@ -349,11 +349,15 @@ global $modifyoutput, $databasename, $databasetabletype;
     if ($oldversion < 143) //Modify surveys table
     {
         modify_database("", "ALTER TABLE `prefix_questions` ADD `parent_qid` integer NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_questions` ADD `default_value` text"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_answers` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
 
-        //Now move all 'answers' that are subquestions to the questions table
+        //-Move all 'answers' that are subquestions to the questions table
+        //-Move all 'labels' that are answers to the answers table
+        //-Transscript the default values where applicable
         upgrade_answer_tables143();
 
+        modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `default_value`"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     

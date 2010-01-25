@@ -2,12 +2,13 @@
        var labelcache=[];  
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
+                                            start:startmove,
                                             update:aftermove,
                                             distance:3});
        $('.btnaddanswer').click(addinput);
        $('.btndelanswer').click(deleteinput); 
        $('.btneditanswer').click(popupeditor);
-       $('#editanswersform').submit(code_duplicates_check)
+       $('#editsubquestionsform').submit(code_duplicates_check)
        $('#labelsetbrowser').dialog({ autoOpen: false,
                                         modal: true,
                                         width:800,
@@ -33,22 +34,14 @@ function deleteinput()
     if (countanswers>1)
     {
        // 2.) Remove the table row
-       var x;
-       classes=$(this).closest('tr').attr('class').split(' ');
-       for (x in classes)
-       {
-           if (classes[x].substr(0,3)=='row'){
-               position=classes[x].substr(4);
-           }
-       }          
-       info=$(this).closest('table').attr('id').split("_"); 
-       language=info[1];
-       scale_id=info[2];
+      
+       index = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;            
        languages=langs.split(';');
+
        var x;
        for (x in languages)
        {
-            tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
+            tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+index+')');
             if (x==0) {
                tablerow.fadeTo(400, 0, function(){
                        $(this).remove();  
@@ -58,6 +51,8 @@ function deleteinput()
             else {
                 tablerow.remove();
             }
+            rowinfo=tablerow.attr('id').split('_');
+            $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
         }       
     }
     else
@@ -71,39 +66,20 @@ function deleteinput()
 
 function addinput()
 {
-    var x;
-    classes=$(this).closest('tr').attr('class').split(' ');
-    for (x in classes)
-    {
-        if (classes[x].substr(0,3)=='row'){
-            position=classes[x].substr(4);
-        }
-    }    
-    info=$(this).closest('table').attr('id').split("_"); 
-    language=info[1];
-    scale_id=info[2];
-    newposition=Number(position)+1;
+    newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;            
     languages=langs.split(';');
 
     for (x in languages)
     {
-        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-        if (assessmentvisible)
-        {
-            assessment_style='';
-            assessment_type='text';
-        }
-        else
-        {
-            assessment_style='style="display:none;"';
-            assessment_type='hidden';
-        }
+        tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newposition+')');  
+        nextcode=getNextCode($(this).parent().parent().find('.code').val());
+        var randomid='new'+Math.floor(Math.random()*111111)        
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+getNextCode($(this).parent().parent().find('.code').val())+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+newansweroption_text+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input id="code_'+randomid+'" name="code_'+randomid+'" class="code" type="text" maxlength="5" size="5" value="'+nextcode+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+newansweroption_text+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         else
         {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="New answer option"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+nextcode+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="New answer option"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td>&nbsp;</td></tr>'
         }
         tablerow.after(inserthtml);
         tablerow.next().find('.btnaddanswer').click(addinput);
@@ -119,81 +95,59 @@ function addinput()
         tablerow.next().find('.code').blur(updatecodes);
     }
                                                                  
-    if(languagecount>1)
-    {
-        
-    }
-    
-    $('.answertable tbody').sortable('refresh');
+    $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
 }
+
+function startmove(event,ui)
+{
+    oldindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;  
+}
+
 
 function aftermove(event,ui)
 {
     // But first we have change the sortorder in translations, too  
-    var x;
-    classes=ui.item.attr('class').split(' ');
-    for (x in classes)
-    {
-        if (classes[x].substr(0,3)=='row'){
-            oldindex=classes[x].substr(4);
-        }
-    } 
- 
+    
+
    var newindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;
   
    info=$(ui.item[0]).closest('table').attr('id').split("_"); 
-   language=info[1];
-   scale_id=info[2];  
-   
    languages=langs.split(';');
    var x;
    for (x in languages)
    {
         if (x>0) {
-            tablebody=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' tbody');
+            tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')');                 
+            tablebody=$('#tabpage_'+languages[x]).find('tbody');
             if (newindex<oldindex)
             {
-                tablebody.find('.row_'+newindex).before(tablebody.find('.row_'+oldindex));
+                $('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')').before($('#tabpage_'+languages[x]+' tbody tr:nth-child('+oldindex+')'));
             }
             else
             {
-                tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
+                $('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')').after($('#tabpage_'+languages[x]+' tbody tr:nth-child('+oldindex+')'));
+                //tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
             }
         }
     }           
     updaterowproperties();
 }
 
-// This function adjust the alternating table rows and renames/renumbers IDs and names
-// if the list has really changed
+// This function adjusts the alternating table rows 
+// if the list changed
 function updaterowproperties()
 {
-  
-    
   $('.answertable tbody').each(function(){
-      info=$(this).closest('table').attr('id').split("_"); 
-      language=info[1];
-      scale_id=info[2];
       var highlight=true;
-      var rownumber=1;
       $(this).children('tr').each(function(){
           
-         $(this).removeClass(); 
+         $(this).removeClass('highlight'); 
          if (highlight){
              $(this).addClass('highlight');
          }
-         $(this).addClass('row_'+rownumber);
-         $(this).find('.code').attr('id','code_'+rownumber+'_'+scale_id);
-         $(this).find('.code').attr('name','code_'+rownumber+'_'+scale_id);
-         $(this).find('.answer').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id);
-         $(this).find('.answer').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id);
-         $(this).find('.assessment').attr('id','assessment_'+rownumber+'_'+scale_id);
-         $(this).find('.assessment').attr('name','assessment_'+rownumber+'_'+scale_id);
          highlight=!highlight;
-         rownumber++;
       })
-      $('#answercount_'+scale_id).val(rownumber);
   })  
 }
 
@@ -440,11 +394,11 @@ function transferlabels()
                             for (k in lsrows)
                             {
                                 if (x==0) {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+lsrows[k].code+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+lsrows[k].code+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="80" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="80" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                             }
                         }

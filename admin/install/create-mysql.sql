@@ -141,6 +141,7 @@ CREATE TABLE `prefix_questions` (
   `lid1` int(11) NOT NULL default '0',
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
+  `default_value` text,
   PRIMARY KEY  (`qid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

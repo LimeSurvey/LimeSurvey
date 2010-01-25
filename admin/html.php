@@ -1216,7 +1216,7 @@ if ($action=='editansweroptions')
     $js_adminheader_includes[]='scripts/answers.js';
     $js_adminheader_includes[]='../scripts/jquery/jquery.blockUI.js';
     $js_adminheader_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
-    
+
 	$_SESSION['FileManagerContext']="edit:answer:$surveyid";
 	// Get languages select on survey.
 	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1297,8 +1297,6 @@ if ($action=='editansweroptions')
     . "<input type='hidden' name='sortorder' value='' />\n";
     $vasummary .= "<div class='tab-pane' id='tab-pane-answers-$surveyid'>";
     $first=true;
-    $sortorderids='';
-    $codeids='';
 
 	$vasummary .= "<div id='xToolbar'></div>\n";
     
@@ -1407,7 +1405,7 @@ if ($action=='editansweroptions')
                 }
                 
                 $vasummary .= "</td><td>\n"
-                    ."<input type='text' class='answer' id='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' size='80' value=\"{$row['answer']}\" />\n"
+                    ."<input type='text' class='answer' id='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' size='100' value=\"{$row['answer']}\" />\n"
                     . getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer');
                     
                 // Deactivate delete button for active surveys
@@ -1451,28 +1449,52 @@ if ($action=='editansweroptions')
 }
 
 
+
+// ============= EDIT SUBQUESTIONS ======================================
+
 if ($action=='editsubquestions')
 {
+    
+    $js_adminheader_includes[]='scripts/subquestions.js';
+    $js_adminheader_includes[]='../scripts/jquery/jquery.blockUI.js';
+    $js_adminheader_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
+    
+
+    
     $_SESSION['FileManagerContext']="edit:answer:$surveyid";
     // Get languages select on survey.
     $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
+    $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
+    $subquestiondata=$connect->GetArray($qquery);
+    
     // check that there are subquestions for every language supported by the survey
     foreach ($anslangs as $language)
     {
-        $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$language."'";
-        $qresult = db_execute_assoc($qquery); //Checked
-        $qrow = $qresult->FetchRow();
-        if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
+        foreach ($subquestiondata as $row)
         {
-            $qquery = "INSERT INTO ".db_table_name('questions')." (SELECT `parent_qid`,`title`,`question`,`sortorder`, '".$language."' FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."')";
-            $connect->Execute($qquery); //Checked
+            $qquery = "SELECT count(*) FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$language."' AND title=".db_quoteall($row['title']);
+            $qrow = $connect->GetOne($qquery); //Checked
+            if ($qrow == 0)   // means that no record for the language exists in the questions table
+            {
+                $qquery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language) 
+                           VALUES($surveyid,{$row['gid']},$qid,".db_quoteall($row['title']).",".db_quoteall($row['question']).",{$row['question_order']},".db_quoteall($language).")";
+                $connect->Execute($qquery); //Checked
+            }
         }
     }
 
     array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
     
+    $vasummary = "\n<script type='text/javascript'>
+                      var languagecount=".count($anslangs).";\n
+                      var newansweroption_text='".$clang->gT('New answer option','js')."'; 
+                      var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
+                      var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate subquestion codes.','js')."'; 
+                      var langs='".implode(';',$anslangs)."';</script>\n";
+
+
     //delete the answers in languages not supported by the survey
     $qquery = "SELECT DISTINCT language FROM ".db_table_name('questions')." WHERE (parent_qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
     $qresult = db_execute_assoc($qquery); //Checked
@@ -1500,7 +1522,7 @@ if ($action=='editsubquestions')
     }
 
     // Print Key Control JavaScript
-    $vasummary = PrepareEditorScript("editanswer");
+    $vasummary .= PrepareEditorScript("editanswer");
 
      $query = "SELECT question_order FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY question_order desc";
      $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
@@ -1510,12 +1532,13 @@ if ($action=='editsubquestions')
      $vasummary .= "<div class='header'>\n"
     .$clang->gT("Edit subquestions")
     ."</div>\n"
-    ."<form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
+    ."<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
     . "<input type='hidden' name='sid' value='$surveyid' />\n"
     . "<input type='hidden' name='gid' value='$gid' />\n"
     . "<input type='hidden' name='qid' value='$qid' />\n"
-    . "<input type='hidden' name='sortorder' value='' />\n"
-    . "<input type='hidden' name='action' value='modsubquestions' />\n";
+    . "<input type='hidden' id='action' name='action' value='updatesubquestions' />\n"
+    . "<input type='hidden' id='sortorder' name='sortorder' value='' />\n"
+    . "<input type='hidden' id='deletedqids' name='deletedqids' value='' />\n";
     $vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
     $first=true;
     $sortorderids='';
@@ -1533,27 +1556,26 @@ if ($action=='editsubquestions')
         $query = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}' AND language='{$anslang}' ORDER BY question_order, title";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
         $anscount = $result->RecordCount();
-        $vasummary .= "<div class='tab-page'>"
+        $vasummary .= "<div class='tab-page' id='tabpage_$anslang'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
         if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
                 
-        $vasummary .= "</h2><table class='answertable' align='center' style='width:880px;'>\n"
+        $vasummary .= "</h2><table class='answertable' align='center'>\n"
                 ."<thead>"
-                ."<tr>\n"
-                ."<th width='15%' align='right'>\n"
+                ."<tr><th>&nbsp;</th>\n"
+                ."<th align='right'>\n"
                 .$clang->gT("Code")
                 ."</th>\n"
-                ."</th><th width='60%' >\n"
+                ."</th><th align='center'>\n"
                 .$clang->gT("Subquestion")
-                ."</th>\n"
-                ."<th width='15%' align='center'>\n"
+                ."</th>\n";
+        if ($activated != 'Y' && $first)
+        {
+                $vasummary .="<th align='center'>\n"
                 .$clang->gT("Action")
-                ."</th>\n"
-                ."<th width='10%' align='center'>\n"
-                .$clang->gT("Order");
-     
-        $vasummary .= "</th>\n"
-                ."</tr></thead>"
+                ."</th>\n";
+        }                  
+        $vasummary .="</tr></thead>"
                 ."<tbody align='center'>";
         $alternate=false;
         while ($row=$result->FetchRow())
@@ -1561,10 +1583,9 @@ if ($action=='editsubquestions')
             $row['title'] = htmlspecialchars($row['title']);
             $row['question']=htmlspecialchars($row['question']);
             
-            $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['question_order'];
             if ($first) {$codeids=$codeids.' '.$row['question_order'];}
             
-            $vasummary .= "<tr";
+            $vasummary .= "<tr id='row_{$row['language']}_{$row['qid']}'";
             if ($alternate==true)
             {
                 $vasummary.=' class="highlight" ';
@@ -1577,122 +1598,67 @@ if ($action=='editsubquestions')
             
             $vasummary .=" ><td align='right'>\n";
 
-            if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') )))
+            if ($activated == 'Y' ) // if activated
+            {                                
+                $vasummary .= "&nbsp;</td><td><input type='hidden' name='code_{$row['qid']}' value=\"{$row['title']}\" maxlength='5' size='5'"
+                ." />{$row['title']}";
+            }
+            elseif ($activated != 'Y' && $first) // If survey is decactivated 
             {
-                $vasummary .= "<input type='text' id='code_{$row['question_order']}' name='code_{$row['question_order']}' value=\"{$row['title']}\" maxlength='5' size='5'"
+                $vasummary .= "<img class='handle' src='$imagefiles/handle.png' /></td><td><input type='text' id='code_{$row['qid']}' class='code' name='code_{$row['qid']}' value=\"{$row['title']}\" maxlength='5' size='5'"
                 ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
                 ." />";
-                $vasummary .= "<input type='hidden' id='previouscode_{$row['question_order']}' name='previouscode_{$row['question_order']}' value=\"{$row['title']}\" />";
-            }
-            elseif (($activated != 'N' && $first) ) // If survey is activated and its not one of the above question types who allows modfying answers on active survey
-            {
-                $vasummary .= "<input type='hidden' name='code_{$row['question_order']}' value=\"{$row['title']}\" maxlength='5' size='5'"
-                ." />{$row['title']}";
-                $vasummary .= "<input type='hidden' id='previouscode_{$row['question_order']}' name='previouscode_{$row['question_order']}' value=\"{$row['title']}\" />";
                 
             }
             else
             {
-                $vasummary .= "{$row['title']}";
+                $vasummary .= "</td><td>{$row['title']}";
             
             }
-
+                            //      <img class='handle' src='$imagefiles/handle.png' /></td><td>                
             $vasummary .= "</td><td>\n"
-            ."<input type='text' name='answer_{$row['language']}_{$row['question_order']}' maxlength='1000' size='80' value=\"{$row['question']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
-            . getEditor("editanswer","answer_".$row['language']."_".$row['question_order'], "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
+            ."<input type='text' size='100' id='answer_{$row['language']}_{$row['qid']}' name='answer_{$row['language']}_{$row['qid']}' value=\"{$row['question']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
+            . getEditor("editanswer","answer_".$row['language']."_".$row['qid'], "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
             ."</td>\n"
             ."<td>\n";
             
             // Deactivate delete button for active surveys
-            if ($activated != 'Y' || ($activated == 'Y' && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
+            if ($activated != 'Y' && $first)
             {
-                $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Delete")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
-            }
-            else
-            {
-                $vasummary .= "<input type='submit' disabled='disabled 'name='method' value='".$clang->gT("Delete")."' />\n";
+                $vasummary.="<img src='$imagefiles/addanswer.png' class='btnaddanswer' />";
+                $vasummary.="<img src='$imagefiles/deleteanswer.png' class='btndelanswer' />";
             }
 
-            // Don't show Default Button for array question types
-            if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1" && $qtype != ":" && $qtype != ";") $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
-            $vasummary .= "</td>\n"
-            ."<td width='10%'>\n";
-            if ($position > 0)
-            {
-                $vasummary .= "<input type='image' src='$imagefiles/up.png' name='method' alt='".$clang->gT("Move subquestion up")."' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
-            };
-            if ($position < $anscount-1)
-            {
-                // Fill the sortorder hiddenfield so we now what field is moved down
-                $vasummary .= "<input type='image' name='method' src='$imagefiles/down.png' alt='".$clang->gT("Move subquestion down")."' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['question_order']}'\" />\n";
-            }
             $vasummary .= "</td></tr>\n";
             $position++;
         }
         ++$anscount;
-        if ($anscount > 0)
-        {
-            $vasummary .= "<tr><td colspan='6'><center>"
-               ."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n"
-            ."</center></td></tr>\n";
-        }
-        $position=sprintf("%05d", $position);
-        if ($activated != 'Y' || (($activated == 'Y') && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
-        {
-            
-            if ($first==true)
-            {
-                $vasummary .= "<tr><td colspan='6'><br /></td></tr>"
-                             ."<tr><td>"
-                ."<strong>".$clang->gT("New subquestion").":</strong> ";
-                if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
-                $vasummary .= "<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\" id='code_".$maxsortorder."' maxlength='5' size='5' "
-                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
-                ." />";
-                unset($_SESSION['nextanswercode']);
-
-
-                $first=false;
-                $vasummary .= "</td><td";
-
-                $vasummary .= " style='display:none;'><input type='hidden' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
-                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
-                ." />";
-
-                $vasummary .="</td>\n"
-                ."<td>\n"
-                ."<input type='text' maxlength='1000' name='insertanswer' size='80' onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;}\" />\n"
-                . getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
-                ."</td>\n"
-                ."<td>\n"
-                ."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new subquestion")."' />\n"
-                ."<input type='hidden' name='action' value='updatesubquestions' />\n"
-                ."</td>\n"
-                ."<td>\n"
-                ."<script type='text/javascript'>\n"
-                ."<!--\n"
-                ."document.getElementById('code_".$maxsortorder."').focus();\n"
-                ."//-->\n"
-                ."</script>\n"
-                ."</td>\n"
-                ."</tr>\n";
-            }
-        }
-        else
-        {
-            $vasummary .= "<tr>\n"
-            ."<td colspan='4' align='center'>\n"
-            ."<font color='red' size='1'><i><strong>"
-            .$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add or edit subquestions or their codes because the survey is active.")."</i></font>\n"
-            ."</td>\n"
-            ."</tr>\n";
-        }
         $first=false;
         $vasummary .= "</tbody></table>\n";
-        $vasummary .=  "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
-        $vasummary .=  "<input type='hidden' name='codeids' value='$codeids' />\n";
         $vasummary .= "</div>";
     }
+    
+        // Label set browser
+    $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;'>
+                      <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
+                      <br /><select id='labelsets' size='10' style='width:250px;'><option>A label set</option></select>
+                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
+                      <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
+                      <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
+                      <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
+                   <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";    
+    $vasummary .= "<p>"
+        ."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";
+    $position=sprintf("%05d", $position);
+    if ($activated == 'Y') 
+    {
+        $vasummary .= "<p>\n"
+        ."<font color='red' size='1'><i><strong>"
+        .$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add/remove subquestions or edit their codes because the survey is active.")."</i></font>\n"
+        ."</td>\n"
+        ."</tr>\n";
+    }
+    
     $vasummary .= "</div></form></td></tr></table>";
 
 
