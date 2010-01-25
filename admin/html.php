@@ -1421,12 +1421,12 @@ if ($action=='editansweroptions')
             if ($first)
             {
                 $vasummary .=  "<input type='hidden' id='answercount_{$scale_id}' name='answercount_{$scale_id}' value='$anscount' />\n";
-                $vasummary .=  "<input type='hidden' id='lid0' name='lid0' value='{$qrow['lid']}' />\n";
-                $vasummary .=  "<input type='hidden' id='lid1' name='lid1' value='{$qrow['lid1']}' />\n";
             }
             $vasummary .= "<button id='btnlsbrowser_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
             
-        }   
+        }
+        $vasummary .=  "<input type='hidden' id='lid0' name='lid0' value='{$qrow['lid']}' />\n";
+        $vasummary .=  "<input type='hidden' id='lid1' name='lid1' value='{$qrow['lid1']}' />\n";
         
 		$position=sprintf("%05d", $position);
 	

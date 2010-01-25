@@ -176,7 +176,7 @@ function updaterowproperties()
       language=info[1];
       scale_id=info[2];
       var highlight=true;
-      var rownumber=0;
+      var rownumber=1;
       $(this).children('tr').each(function(){
           
          $(this).removeClass(); 

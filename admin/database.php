@@ -827,7 +827,7 @@ if(isset($surveyid))
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
         {
             $maxcount=(int)$_POST['answercount_'.$scale_id];                 
-            for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
+            for ($sortorderid=1;$sortorderid<$maxcount;$sortorderid++)
             {
                 $code=sanitize_paranoid_string($_POST['code_'.$sortorderid.'_'.$scale_id]);
                 $assessmentvalue=(int) $_POST['assessment_'.$sortorderid.'_'.$scale_id];
