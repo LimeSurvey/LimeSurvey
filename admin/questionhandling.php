@@ -65,46 +65,8 @@ if ($action == "copyquestion")
 	$editquestion .= "\t<li id='Validation'>\n"
 	. "<label for='preg'>".$clang->gT("Validation:")."</label>\n"
 	. "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
-	. "</li>\n";
-
-	$editquestion .= "\t<li id='LabelSets' style='display: none'>\n"
-	. "<label for='lid'>".$clang->gT("Label set:")."</label>\n"
-	. "<select name='lid' >\n";
-	$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-		if (count($labelsets)>0)
-		{
-			if (!$eqrow['lid'])
-			{
-				$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-			}
-			foreach ($labelsets as $lb)
-			{
-				$editquestion .= "\t<option value='{$lb[0]}'";
-				if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
-				$editquestion .= ">{$lb[1]}</option>\n";
-			}
-		}
-	$editquestion .= "</select></li>\n";		
-	$editquestion .= "\t<li id='LabelSets1' style='display: none'>\n"
-	. "<label for='lid1'>".$clang->gT("Second Label Set:")."</label>\n"
-	. "<select id='lid1' name='lid1' >\n";
-	$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-		if (count($labelsets1)>0)
-		{
-			if (!$eqrow['lid1'])
-			{
-				$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-			}
-			foreach ($labelsets1 as $lb)
-			{
-				$editquestion .= "\t<option value='{$lb[0]}'";
-				if ($eqrow['lid1'] == $lb[0]) {$editquestion .= " selected";}
-				$editquestion .= ">{$lb[1]}</option>\n";
-			}
-		}
-	
-		$editquestion .= "</select>\n"
 		. "</li>\n"
+
 		. "<li ><label for='gid'>".$clang->gT("Question group:")."</label>\n"
 		. "<select id='gid' name='gid'>\n"
 		. getgrouplist3($eqrow['gid'])
@@ -308,67 +270,18 @@ if ($action == "editquestion" || $action=="addquestion")
   		else
   		{
   			$qtypelist=getqtypelist('','array');
-            $editquestion .= "{$qtypelist[$eqrow['type']]} - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
+            $editquestion .= "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
   			. "<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n";
   		}
   
-  		$editquestion  .="\t</li><li id='LabelSets' style='display: none'>\n"
-  		. "<label for='lid'>".$clang->gT("Label set:")."</label>\n";
+  		$editquestion  .="\t</li>\n";
 
 		if (!$adding) {$qattributes=questionAttributes();}
         else
         {
             $qattributes=array();
         }
-  		if ($activated != "Y")
-  		{
-  			$editquestion .= "<select id='lid' name='lid' >\n";
-  			$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-  			if (count($labelsets)>0)
-  			{
-  				if (!$eqrow['lid'])
-  				{
-  					$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-  				}
-  				foreach ($labelsets as $lb)
-  				{
-  					$editquestion .= "\t<option value='{$lb[0]}'";
-  					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected='selected'";}
-  					$editquestion .= ">{$lb[1]}</option>\n";
-  				}
-  			}
-  			$editquestion .= "</select>\n";
 
-	  		$editquestion  .="\t</li><li id='LabelSets1' style='display: none'>\n"
-  			. "<label for='lid1'>".$clang->gT("Second Label Set:")."</label>\n";
-
-  			$editquestion .= "<select id='lid1' name='lid1' >\n";
-  			$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-  			if (count($labelsets1)>0)
-  			{
-  				if (!$eqrow['lid1'])
-  				{
-  					$editquestion .= "\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-  				}
-  				foreach ($labelsets1 as $lb)
-  				{
-  					$editquestion .= "\t<option value='{$lb[0]}'";
-  					if ($eqrow['lid1'] == $lb[0]) {$editquestion .= " selected='selected'";}
-  					$editquestion .= ">{$lb[1]}</option>\n";
-  				}
-  			}
-
-  			$editquestion .= "</select>\n";
-  		}
-  		else
-  		{
-  			$editquestion .= "<span id='li'>[{$eqrow['lid']}] [{$eqrow['lid1']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."</span>\n";
-  			$editquestion .= "</li>\n"  			
- 			. "\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\" />\n"
- 			. "<input type='hidden' name='lid1' value=\"{$eqrow['lid1']}\" />\n";
-  		}
-        $editquestion .= "</li>\n";
-  		
   		if ($activated != "Y")
 		{
 			$editquestion .= "\t<li>\n"
@@ -569,7 +482,7 @@ if($action == "orderquestions")
 
     //Get the questions for this group
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
+    $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' and parent_qid=0 order by question_order" ;
     $oqresult = db_execute_assoc($oqquery);
     
     $orderquestions = "<div class='header'>".$clang->gT("Change Question Order")."</div>";
@@ -714,31 +627,23 @@ function questionjavascript($type)
     . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
     . "{\n"
     . "document.getElementById('OtherSelection').style.display = '';\n"
-    . "document.getElementById('LabelSets').style.display = 'none';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == 'W' || QuestionType == 'Z')\n"
     . "{\n"
     . "document.getElementById('OtherSelection').style.display = '';\n"
-    . "document.getElementById('LabelSets').style.display = '';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == ':' || QuestionType == ';')\n"
     . "{\n"
-    . "document.getElementById('LabelSets').style.display = '';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == '1')\n"
     . "{\n"
-    . "document.getElementById('LabelSets').style.display = '';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = '';}\n"    
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
@@ -748,20 +653,16 @@ function questionjavascript($type)
     . "document.getElementById('Validation').style.display = '';\n"
     . "document.getElementById('OtherSelection').style.display ='none';\n"
     . "if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}\n"    
-    . "document.getElementById('LabelSets').style.display='none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == 'X')\n"
     . "{\n"
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('OtherSelection').style.display ='none';\n"
-    . "document.getElementById('LabelSets').style.display='none';\n"
     . "document.getElementById('MandatorySelection').style.display='none';\n"
     . "}\n"
     . "\telse\n"
     . "{\n"
-    . "document.getElementById('LabelSets').style.display = 'none';\n"
-    . "if (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
     . "if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}\n"    
     . "document.getElementById('Validation').style.display = 'none';\n"
@@ -773,6 +674,39 @@ function questionjavascript($type)
 
     return $newquestionoutput;
 }
+
+
+if ($action == "ajaxlabelsetdetails")  
+{
+    $lid=returnglobal('lid');     
+    $query='select * from '.db_table_name('labelsets').' where lid='.$lid;
+    $labelsetdata=$connect->GetArray($query);
+    $labelsetlanguages=explode(' ',$labelsetdata[0]['languages']);
+    foreach  ($labelsetlanguages as $language){
+        $query='select * from '.db_table_name('labels').' where lid='.$lid." and language='{$language}' order by sortorder";
+        $labels=$connect->GetArray($query);
+        $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
+    }
+    echo json_encode($resultdata);
+}
+
+
+if ($action == "ajaxlabelsetpicker")  
+{
+    $match=(int)returnglobal('match');
+    $surveyid=returnglobal('sid');
+    if ($match==1)
+    {
+        $language=GetBaseLanguageFromSurveyID($surveyid);    
+    }
+    else
+    {
+        $language=null;
+    }
+    $resultdata=getlabelsets($language);
+    echo json_encode($resultdata);
+}
+
 
 if ($action == "ajaxquestionattributes")  
 {

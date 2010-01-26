@@ -646,7 +646,7 @@ if ($subaction == "emailsettings")
 		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation email:")."</span>\n"
 			. "<span class='settingentry'><textarea cols='80' rows='10' name='email_invite_".$esrow['surveyls_language']."' id='email_invite_{$grouplang}'>{$esrow['surveyls_email_invite']}</textarea>\n"
 			. getEditor("email-inv","email_invite_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-			. "<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"),$ishtml)."' />\n"
+            . "<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}"),$ishtml)."' />\n"
 			. "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_{$grouplang}\",\"email_invite_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email reminder subject:")."</span>\n"
@@ -657,7 +657,7 @@ if ($subaction == "emailsettings")
 		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email reminder:")."</span>\n"
 			. "<span class='settingentry'><textarea cols='80' rows='10' name='email_remind_".$esrow['surveyls_language']."' id='email_remind_{$grouplang}'>{$esrow['surveyls_email_remind']}</textarea>\n"
 			. getEditor("email-rem","email_remind_{$grouplang}", "[".$clang->gT("Email reminder:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-			. "<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"),$ishtml)."' />\n"
+            . "<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}"),$ishtml)."' />\n"
 			. "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation email subject:")."</span>\n"
@@ -949,13 +949,25 @@ if ($subaction == "browse" || $subaction == "search")
 
             if ($tokenfieldname =='email' && $brow['emailstatus'] != 'OK')
 			{
+                if ($brow['emailstatus']!='OptOut')
+                {
 				$tokenoutput .= "<td>"
 				."<a href=\"#\" class='invalidemail' title='".$clang->gT('Invalid email address:').htmlspecialchars($brow['emailstatus'])."' >"
 				."$brow[$tokenfieldname]</a></td>\n";
 			}
+                else
+                {
+                    $tokenoutput .= "<td>"
+                    ."<a href=\"#\" class='optoutemail' title='".$clang->gT('This participant opted out of this survey.')."' >"
+                    ."$brow[$tokenfieldname]</a></td>\n";
+                } 
+            }
 			elseif ($tokenfieldname != 'emailstatus')
 			{
-                if  ($tokenfieldname=='tid') {$tokenoutput.="<td><span style='font-weight:bold'>".$brow[$tokenfieldname]."</span></td>";}
+                if  ($tokenfieldname=='tid') 
+                {
+                    $tokenoutput.="<td><span style='font-weight:bold'>".$brow[$tokenfieldname]."</span></td>";
+                }
                 else
                 {
 				    $tokenoutput .= "<td>$brow[$tokenfieldname]</td>\n";
@@ -1103,11 +1115,11 @@ if ($subaction == "email" &&
             {
                 if ($ishtml===true)
                 {
-                    $thissurvey['email_invite']=html_escape(str_replace("\n", "<br />", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')));
+                    $thissurvey['email_invite']=html_escape(str_replace("\n", "<br />", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}",'unescaped')));
                 }
                 else
                 {
-                    $thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));
+                    $thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}"));
                 }
             }
             if (!$thissurvey['email_invite_subj'])
@@ -1178,7 +1190,7 @@ if ($subaction == "email" &&
 		}
 		else
 		{
-			$SQLemailstatuscondition = "";
+            $SQLemailstatuscondition = " AND emailstatus <> 'OptOut'";
 		}
 
 		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
@@ -1207,7 +1219,6 @@ if ($subaction == "email" &&
 			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
             if ($ishtml) $_POST['message_'.$language] = html_entity_decode($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
-
 			}
 
 
@@ -1239,6 +1250,8 @@ if ($subaction == "email" &&
 
 				if ($ishtml === false)
 				{
+                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+
           if ( $modrewrite )
           {
             $fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
@@ -1250,13 +1263,16 @@ if ($subaction == "email" &&
 				}
 				else
         {
+                    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
           if ( $modrewrite )
           {
             $fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+                        $fieldsarray["@@SURVEYURL@@"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
           }
 				else
 				{
 					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+                        $fieldsarray["@@SURVEYURL@@"]="$publicurl/index.php?lang=".trim($emrow['language'])."&amp;sid=$surveyid&amp;token={$emrow['token']}";
           }
                 }
 
@@ -1321,7 +1337,11 @@ if ($subaction == "email" &&
 		}
 		else
 		{
-			$tokenoutput .= "<p>".$clang->gT("Warning")."</strong><br />\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.");
+            $tokenoutput .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Warning")."</div>\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
+            ."<br/>&nbsp;<ul><li>".$clang->gT("having a valid email address")."</li>"
+            ."<li>".$clang->gT("not having been sent an invitation already")."</li>"
+            ."<li>".$clang->gT("having already completed the survey")."</li>"
+            ."<li>".$clang->gT("having a token")."</li></ul></div>";
 		}
 	}
 	$tokenoutput .= "</div>\n";
@@ -1353,7 +1373,7 @@ if ($subaction == "remind" && //XXX
 		{
 			//GET SURVEY DETAILS
 			$thissurvey=getSurveyInfo($surveyid,$language);
-			if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
+            if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}"));}
 			$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
 			if ($language==$baselang)
 			{
@@ -1538,6 +1558,7 @@ if ($subaction == "remind" && //XXX
 
 				if ($ishtml == false)
 				{
+                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
 					if ( $modrewrite )
 					{
 						$fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
@@ -1549,6 +1570,7 @@ if ($subaction == "remind" && //XXX
 				}
 				else
 				{
+                    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
 					if ( $modrewrite )
 					{
 						$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
@@ -1593,7 +1615,6 @@ if ($subaction == "remind" && //XXX
 
 					}
 					$lasttid = $emrow['tid'];
-
             }
 			if ($ctcount > $emcount)
 			{
@@ -1653,8 +1674,7 @@ if ($subaction == "remind" && //XXX
 if ($subaction == "tokenify" &&
 	($sumrows5['edit_survey_property'] ||
 		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
 	$tokenoutput .= "<div class='messagebox'><div class='header'>".$clang->gT("Create tokens")."</div>\n";
 	$tokenoutput .= "<br />\n";
@@ -1718,8 +1738,7 @@ if ($subaction == "tokenify" &&
 if ($subaction == "delete" &&
 	($sumrows5['edit_survey_property'] ||
 		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
 	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
 	$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
@@ -1734,8 +1753,7 @@ if ($subaction == "delete" &&
 if ($subaction == "managetokenattributes" &&
     ($sumrows5['edit_survey_property'] ||
         $sumrows5['activate_survey'] ||
-        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
     $tokenoutput .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
     . "".$clang->gT("Manage token attribute fields")."</td></tr></table>\n";
@@ -1787,8 +1805,7 @@ if ($subaction == "managetokenattributes" &&
 if ($subaction == "updatetokenattributedescriptions" &&
     ($sumrows5['edit_survey_property'] ||
         $sumrows5['activate_survey'] ||
-        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
    // find out the existing token attribute fieldnames
    $tokenattributefieldnames=GetAttributeFieldNames($surveyid);
@@ -1814,8 +1831,7 @@ if ($subaction == "updatetokenattributedescriptions" &&
 if ($subaction == "updatetokenattributes" &&
     ($sumrows5['edit_survey_property'] ||
         $sumrows5['activate_survey'] ||
-        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
    $number2add=sanitize_int($_POST['addnumber'],1,100);
    // find out the existing token attribute fieldnames
@@ -1848,8 +1864,7 @@ if ($subaction == "updatetokenattributes" &&
 if (($subaction == "edit" || $subaction == "addnew") &&
 	($sumrows5['edit_survey_property'] ||
 		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
 	if ($subaction == "edit")
 	{
@@ -1997,8 +2012,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 if ($subaction == "updatetoken" &&
 	($sumrows5['edit_survey_property'] ||
 		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
     $tokenoutput .= "\t<div class='messagebox'><div class='header'>"
 	.$clang->gT("Edit token entry")."</div>\n"

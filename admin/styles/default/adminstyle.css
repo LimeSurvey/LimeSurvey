@@ -550,6 +550,11 @@ a.invalidemail {
 	color: red;
 }
 
+a.optoutemail {
+    font-weight: 700;
+    color: orange;
+}
+
 .browsetable {
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
@@ -564,7 +569,8 @@ a.invalidemail {
 .edituser,
 .users,
 .assessmentlist,   
-.listsurveys {
+.listsurveys,
+.surveysecurity {
     text-align:center;
     margin:0 auto;
 }
@@ -582,6 +588,11 @@ a.invalidemail {
 .listsurveys
 {
     width:70%;
+}
+
+.surveysecurity
+{
+	width: 90%;
 }
 
 .edituser {
@@ -896,6 +907,14 @@ div.messagebox .warningheader {
     text-align:right;
 }
 
+#conditionsource, #conditiontarget{
+    width: 630px;
+}
+
+#editconditions select{
+    font-size:10px;
+}
+
 /*controls the width of select boxes in group order dialog*/
 .movableNode select {
     max-width:200px;
@@ -1079,35 +1098,30 @@ float:left;
 width:300px;
 }
 
-div.right
-{
+div.right {
  float:right;
  width:300px;
 }
 
-.wrap2columns
-{ 
+.wrap2columns { 
 width:600px;
 margin:0 auto;
 }
 
-#resultexport ul
-{
+#resultexport ul {
     list-style-type:none;
     padding:0;
 }
 
-#resultexport ul li label
-{
+#resultexport ul li label {
 }
 
 
-#resultexport ul li 
-{
+#resultexport ul li {
     line-height: 1.4em;
 }
 
-#advancedquestionsettings fieldset{
+#advancedquestionsettings fieldset {
     width:600px;
     margin:0 auto;
 	display: block;
@@ -1117,22 +1131,25 @@ margin:0 auto;
     width:200px;
 }
 
-#statistics_general_filter
-{
+#statistics_general_filter {
     width:650px;
     margin:0 auto;
 }
-#statistics_general_filter #left
-{
-    width:300px;
-    height:105px;
+
+#statistics_general_filter #left {
+    width:270px;
+    height:125px;
     float:left;
 }
-#statistics_general_filter #right
-{
-    width:300px;
-    height:105px;
+
+#statistics_general_filter #right {
+    width:330px;
+    height:125px;
     float:right;
+}
+
+#statistics_general_filter #right li label:first-child {
+    width:33%;
 }
 
 .filtertable  {
@@ -1166,4 +1183,26 @@ margin:0 auto;
 
 .filtertable textarea {
     width:210px;
+}
+
+.limebutton
+{
+   outline: 0; 
+   margin:1px 4px 1px 0; 
+   padding: 1px 1em; 
+   text-decoration:none !important; 
+   cursor:pointer; 
+   position: relative; 
+   text-align: center; 
+   zoom: 1; 
+}
+
+table.limetable thead th{
+    background-color: #D2E0F2;     
+    font-size:8pt;
+    padding:2px 14px 2px 10px;
+}
+
+table.limetable tbody tr.highlight {
+    background-color:#EAF2FF;
 }

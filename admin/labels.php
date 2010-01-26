@@ -82,7 +82,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		{
 			$labelsoutput.="<option value='admin.php?action=labels&amp;lid={$lb[0]}'";
 			if ($lb[0] == $lid) {$labelsoutput.= " selected='selected'";}
-			$labelsoutput.= ">{$lb[1]}</option>\n";
+			$labelsoutput.= ">{$lb[0]}: {$lb[1]}</option>\n";
 		}
 	}
 	
@@ -201,22 +201,6 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	//SET SELECTED
 	if (isset($lid) && ($action != "editlabelset") && $lid)
 	{
-		//CHECK TO SEE IF ANY ACTIVE SURVEYS ARE USING THIS LABELSET (Don't let it be changed if this is the case)
-		$query = "SELECT ".db_table_name('surveys_languagesettings').".surveyls_title FROM ".db_table_name('questions').", ".db_table_name('surveys')." , ".db_table_name('surveys_languagesettings')." WHERE ".db_table_name('questions').".sid=".db_table_name('surveys').".sid AND ".db_table_name('surveys').".sid=".db_table_name('surveys_languagesettings').".surveyls_survey_id AND ".db_table_name('questions').".lid=$lid AND ".db_table_name('surveys').".active='Y'";
-		$result = db_execute_assoc($query);
-		$activeuse=$result->RecordCount();
-		while ($row=$result->FetchRow()) {$activesurveys[]=$row['surveyls_title'];}
-		//NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
-		//$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' GROUP BY qid";
-		//NOTE: OK, we're back to "what the hell is Tom up to?". SQL Server complains if the selected columns aren't either aggregated
-		// part of the GROUP BY clause. This should work for both databases.
-		$query = "SELECT qid, sid, gid FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W','1',':',';') AND lid='$lid' OR lid1='$lid' GROUP BY qid, sid, gid";		
-		$result = db_execute_assoc($query);
-		$totaluse=$result->RecordCount();
-		while($row=$result->FetchRow())
-		{
-			$qidarray[]=array("url"=>"$scriptname?sid=".$row['sid']."&amp;gid=".$row['gid']."&amp;qid=".$row['qid'], "title"=>"QID: ".$row['qid']);
-		}
 		//NOW GET THE ANSWERS AND DISPLAY THEM
 		$query = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
 		$result = db_execute_assoc($query);
@@ -314,13 +298,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
                 }
                 $labelsoutput.="><td align='right'>\n";
 
-    			if ($activeuse > 0)
+    			if (!$first)
     			{
-    				$labelsoutput.= "\t{$row['code']}"
-    				."<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" />\n";
-    			}
-    			elseif (!$first)
-    			{   
                     $labelsoutput.= "\t{$row['code']}";
                 }
     			else
@@ -350,10 +329,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			    . getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
     			."\t</td>\n"
     			."\t<td style='text-align:center;'>\n";
-    			if ($activeuse == 0)
-    			{
     				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
-    			}
+    			
     			$labelsoutput.= "\t</td>\n"
     			."\t<td>\n";
     			if ($position > 0)
@@ -376,7 +353,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
     		$position=sprintf("%05d", $position);
             if (!isset($_SESSION['nextlabelcode'])) $_SESSION['nextlabelcode']='';
-    		if ($activeuse == 0 && $first)
+    		if ($first)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td align='right'>"
   			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='code_$maxsortorder' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
     			."\t</td>\n"
@@ -410,7 +387,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			."</tr>\n";
     	
     		}
-			elseif ($activeuse == 0  && !$first)
+			else
 			{
     			$labelsoutput.= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
@@ -419,17 +396,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			."\t</td>\n"
     			."</tr>\n";
 			}
-    		else
-    		{
-    			$labelsoutput .= "<p>\n"
-    			."<span style='color:#ff0000; font-size:10px'><strong>"
-    			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></font><br />\n";
-    			if ($totaluse > 0)
-    			{
-    				foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
-    			}
-    			$labelsoutput .= "\t</span>\n";
-    		}
+
         unset($_SESSION['nextlabelcode']);
         $first=false;
     	$labelsoutput.="</tbody></table>\n";
@@ -476,19 +443,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	$labelsoutput.= "</div>"; // End Tab pane
 
 	
-	// Here starts the hidden Fix Sort order form
-
-	if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
-	{
-		$labelsoutput.= "<p>\n"
-		."<font color='red' size='1'><i><strong>"
-		.$clang->gT("Warning")."</strong>: ".$clang->gT("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
-		foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
-		$labelsoutput.= "</font>\n";
 	}
-
 	}
-}
 else
 	{
 	$action = "labels";

@@ -16,35 +16,33 @@
 
 /*
  * We need this later:
- *  1 - Array (Flexible Labels) Dual Scale ),
- 5 - 5 Point Choice
- A - Array (5 Point Choice)
- B - Array (10 Point Choice)
- C - Array (Yes/No/Uncertain)
- D - Date
- E - Array (Increase, Same, Decrease)
- F - Array (Flexible Labels)
- G - Gender
- H - Array (Flexible Labels) by Column
- I - Language Switch
- K - Multiple Numerical Input
- L - List (Radio)
- M - Multiple Options
- N - Numerical Input
- O - List With Comment
- P - Multiple Options With Comments
- Q - Multiple Short Text
- R - Ranking
- S - Short Free Text
- T - Long Free Text
- U - Huge Free Text
- W - List (Flexible Labels) (Dropdown)
- X - Boilerplate Question
- Y - Yes/No
- Z - List (Flexible Labels) (Radio)
- ! - List (Dropdown)
- : - Array (Flexible Labels) multiple drop down
- ; - Array (Flexible Labels) multiple texts
+ *  1 - Array Dual Scale
+ *  5 - 5 Point Choice
+ *  A - Array (5 Point Choice)
+ *  B - Array (10 Point Choice)
+ *  C - Array (Yes/No/Uncertain)
+ *  D - Date
+ *  E - Array (Increase, Same, Decrease)
+ *  F - Array
+ *  G - Gender
+ *  H - Array by column
+ *  I - Language Switch
+ *  K - Multiple Numerical Input
+ *  L - List (Radio)
+ *  M - Multiple Options
+ *  N - Numerical Input
+ *  O - List With Comment
+ *  P - Multiple Options With Comments
+ *  Q - Multiple Short Text
+ *  R - Ranking
+ *  S - Short Free Text
+ *  T - Long Free Text
+ *  U - Huge Free Text
+ *  X - Boilerplate Question
+ *  Y - Yes/No
+ *  ! - List (Dropdown)
+ *  : - Array multiple drop down
+ *  ; - Array multiple texts
 
 
  Debugging help:
@@ -113,7 +111,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     $surveylanguagecodes = GetAdditionalLanguagesFromSurveyID($surveyid);
     $surveylanguagecodes[] = GetBaseLanguageFromSurveyID($surveyid);
 
-    // Set language for questions and labels to base language of this survey
+    // Set language for questions and answers to base language of this survey
 	$language='en';
     //$surveyid=sanitize_int($surveyid);
 	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -147,7 +145,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	if($q2show=='all' )
 	{
 		$summarySql=" SELECT gid, lid, qid, type "
-			." FROM {$dbprefix}questions "
+			." FROM {$dbprefix}questions where parent_qid=0"
 			." WHERE sid=$surveyid ";
 		
 		$summaryRs = db_execute_assoc($summarySql);
@@ -170,7 +168,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			if ($field['type'] == "F" || $field['type'] == "H")
 			{
 				//Get answers. We always use the answer code because the label might be too long elsewise
-				$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".$field['qid']."' AND language='{$language}' ORDER BY sortorder, answer";
+				$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
 				$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 				$counter2=0;
 	
@@ -326,8 +324,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				//create a list out of the $pv array
 				list($lsid, $lgid, $lqid) = explode("X", $pv);
 
-				$aquery="SELECT code FROM ".db_table_name("answers")." WHERE qid=$lqid AND language='{$language}' ORDER BY sortorder, answer";
-				$aresult=db_execute_num($aquery) or safe_die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
+				$aquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid=$lqid AND language='{$language}' ORDER BY question_order, question";
+				$aresult=db_execute_num($aquery) or safe_die ("Couldn't get subquestions<br />$aquery<br />".$connect->ErrorMsg());
 
 				// go through every possible answer
 				while ($arow=$aresult->FetchRow())
@@ -410,22 +408,30 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			elseif (substr($pv, 0, 9) == "datestamp")
 			{
 				//timestamp equals
+                $formatdata=getDateFormatData($_SESSION['dateformat']);
 				if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
 				{
-					$selects[] = db_quote_id('datestamp')." = '".$_POST[$pv]."'";
+                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                    $_POST[$pv]=$datetimeobj->convert("Y-m-d");
+                    
+					$selects[] = db_quote_id('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".db_quote_id('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
 				}
 				else
 				{
 					//timestamp less than
 					if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
 					{
-						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                        $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
+						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
 					}
 						
 					//timestamp greater than
 					if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
 					{
-						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                        $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
+						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
 					}
 				}
 			}
@@ -583,7 +589,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		//START Chop up fieldname and find matching questions
 	
 		//GET LIST OF LEGIT QIDs FOR TESTING LATER
-		$lq = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid";
+		$lq = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid and parent_qid=0";
 		$lr = db_execute_assoc($lq);
 	
 		//loop through the IDs
@@ -607,7 +613,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 					
 				//select details for this question
-				$nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' and qid='$qqid'";
+				$nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' parent_qid=0 AND and qid='$qqid'";
 				$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 					
 				//loop through question data
@@ -621,8 +627,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				}
 	
 				//1. Get list of answers
-				$query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
-				$result=db_execute_num($query) or safe_die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
+				$query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order, question";
+				$result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
 					
 				//loop through multiple answers
 				while ($row=$result->FetchRow())
@@ -665,7 +671,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					
 					
 				//get question data
-				$nquery = "SELECT title, type, question, other, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
+				$nquery = "SELECT title, type, question, other, lid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
 				$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 					
 				//loop through question data
@@ -675,24 +681,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					$qtype=$nrow[1];
 					$qquestion=FlattenText($nrow[2]);
 					$nlid=$nrow[4];
-				}
-					
-				if(!empty($qanswer)) {
-					$nquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language = '{$language}' AND code='$qanswer' ORDER BY sortorder, answer";
-					$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get text question answer<br />$nquery<br />".$connect->ErrorMsg());
-					while ($nrow=$nresult->FetchRow())
-					{
-						$qtitle .= " [".FlattenText($nrow['answer'])."]";
-					}
-				}
-	
-				if(!empty($qlid)) {
-					$nquery = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$nlid} AND code='$qlid' AND language='{$language}' ORDER BY sortorder, code";
-					$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get labelset for text question<br />$nquery<br />".$connect->ErrorMsg());
-					while ($nrow = $nresult->FetchRow())
-					{
-						$qtitle .= " [".FlattenText($nrow['title'])."]";
-					}
 				}
 					
 				$mfield=substr($rt, 1, strlen($rt));
@@ -725,7 +713,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				$qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
 					
 				//get some question data
-				$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND language='{$language}'";
+				$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND parent_qid=0 AND language='{$language}'";
 				$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 					
 				//more substrings
@@ -740,7 +728,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				}
 					
 				//get answers
-				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
+				$qquery = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order, question";
 				$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 	
 				//loop through answer data
@@ -773,7 +761,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);
 					
 				//get question data
-				$nquery = "SELECT title, type, question FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
+				$nquery = "SELECT title, type, question FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
 				$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 					
 				//loop through question data
@@ -785,7 +773,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				}
 					
 				//get answers
-				$query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
+				$query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
 				$result=db_execute_num($query) or safe_die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
 					
 				//loop through answers
@@ -835,7 +823,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//get question details from DB
 						$nquery = "SELECT title, type, question, qid, lid
 								   FROM ".db_table_name("questions")." 
-								   WHERE qid='".substr($qqid, 0, $qidlength)."' 
+								   WHERE parent_qid=0 AND qid='".substr($qqid, 0, $qidlength)."' 
 								   AND language='{$language}'";
 						$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 					}
@@ -844,7 +832,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					else
 					{
 						//we can use the qqid without any editing
-						$nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
+						$nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
 						$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 					}
 	
@@ -862,7 +850,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					if(substr($rt, 0, 1) == "K")
 					{
 						//get answer data
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
+						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND scale_id=0 AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//handle answer
@@ -1349,7 +1337,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				$rqid=$qqid;
 					
 				//get question data
-				$nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
+				$nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
 				$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 					
 				//loop though question data
@@ -1371,7 +1359,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					case "A":
 	
 						//get data
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+						$qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//loop through results
@@ -1397,7 +1385,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//Array of 10 point choices
 						//same as above just with 10 items
 					case "B":
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".$connect->ErrorMsg());
 						while ($qrow=$qresult->FetchRow())
 						{
@@ -1416,7 +1404,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 						//Array of Yes/No/$clang->gT("Uncertain")
 					case "C":
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//loop thorugh results
@@ -1438,7 +1426,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//Array of Yes/No/$clang->gT("Uncertain")
 						//same as above
 					case "E":
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 						while ($qrow=$qresult->FetchRow())
 						{
@@ -1455,18 +1443,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					case ";": //Array (Multi Flexi) (Text)
 						list($qacode, $licode)=explode("_", $qanswer);
 	
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order, question";
 						//echo $qquery."<br />";
 						$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
 						while ($qrow=$qresult->FetchRow())
 						{
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
+							$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							while ($frow=$fresult->FetchRow())
 							{
-								$alist[]=array($frow['code'], $frow['title']);
-								$ltext=$frow['title'];
+								$alist[]=array($frow['code'], $frow['answer']);
+								$ltext=$frow['answer'];
 							}
 							$atext=FlattenText($qrow[1]);
 						}
@@ -1509,18 +1497,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 						list($qacode, $licode)=explode("_", $qanswer);
 	
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order, question";
 						//echo $qquery."<br />";
 						$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
 						while ($qrow=$qresult->FetchRow())
 						{
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
+							$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							while ($frow=$fresult->FetchRow())
 							{
 								//$alist[]=array($frow['code'], $frow['title']);
-								$ltext=$frow['title'];
+								$ltext=$frow['answer'];
 							}
 							$atext=FlattenText($qrow[1]);
 						}
@@ -1537,20 +1525,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 					case "F": //Array of Flexible
 					case "H": //Array of Flexible by Column
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
+                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order, question";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//loop through answers
 						while ($qrow=$qresult->FetchRow())
 						{
 							//this question type uses its own labels
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}'ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 								
 							//add code and title to results for outputting them later
 							while ($frow=$fresult->FetchRow())
 							{
-								$alist[]=array($frow['code'], FlattenText($frow['title']));
+								$alist[]=array($frow['code'], FlattenText($frow['answer']));
 							}
 								
 							//counter
@@ -1587,41 +1575,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						break;
 	
 	
-	
 					case "5": //5 Point (just 1 item to rank!)
 						for ($i=1; $i<=5; $i++)
 						{
 							$alist[]=array("$i", "$i");
 						}
 						break;
-	
-	
+
 							
-					case "W":	//List felixble labels (dropdown)
-						
-					case "Z":	//List flexible labels (radio)
-							
-						//get labels
-						$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
-						$fresult = db_execute_assoc($fquery);
-	
-						//put label code and label title into array
-						while ($frow=$fresult->FetchRow())
-						{
-							$alist[]=array($frow['code'], FlattenText($frow['title']));
-						}
-	
-						//does "other" field exist?
-						if ($qother == "Y")
-						{
-							$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
-						}
-						break;
-	
-	
-	
-	
-					case "1":	//array flexible labels (dual scale)
+					case "1":	//array (dual scale)
 						 
 						//get question attributes
 						$qidattributes=getQuestionAttributes($qqid);
@@ -1630,7 +1592,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						if (substr($rt,-1,1) == 0)
 						{
 							//get label 1
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qqid}' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, code";
 	
 							//header available?
                             if (trim($qidattributes['dualscale_headerA'])!='') {
@@ -1652,7 +1614,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						else
 						{
 							//get label 2
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
+							$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qqid}' AND scale_id=1 AND language='{$language}' ORDER BY sortorder, code";
 	
 							//header available?
                             if (trim($qidattributes['dualscale_headerB'])!='') {
@@ -1676,7 +1638,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//put label code and label title into array
 						while ($frow=$fresult->FetchRow())
 						{
-							$alist[]=array($frow['code'], FlattenText($frow['title']));
+							$alist[]=array($frow['code'], FlattenText($frow['answer']));
 						}
 	
 						//adapt title and question
@@ -1690,7 +1652,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					default:	//default handling
 	
 						//get answer code and title
-						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
+						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
 						$qresult = db_execute_num($qquery) or safe_die ("Couldn't get answers list<br />$qquery<br />".$connect->ErrorMsg());
 	
 						//put answer code and title into array

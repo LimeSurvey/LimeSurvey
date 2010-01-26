@@ -223,8 +223,6 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 			$answers=getAnswersSingle($surveyid, $gid, $qid);
 			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
-			case "W":
-			case "Z":
 			case "1":
 			$answers=getLabelSet($thisquestion['lid']);
 			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
@@ -328,11 +326,6 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			case "1":
 			$answers = getAnswersSingle($surveyid, $gid, $qid);
 			break;
-			case "W":
-			case "Z":
-			$thisquestion=getQuestionInfo($qid);
-			$answers=getLabelSet($thisquestion['lid']);
-			break;
 			case "Y":
 			$answers[]=array("code"=>"Y", "answer"=>$clang->gT("Yes"));
 			$answers[]=array("code"=>"N", "answer"=>$clang->gT("No"));
@@ -388,8 +381,6 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			case "N":
 			case "5":
 			case "D":
-			case "W":
-			case "Z":
 			//The first key needs to be expanded
 			$firstkey=array_keys($results[0]);
 			$firstkey=$firstkey[0];

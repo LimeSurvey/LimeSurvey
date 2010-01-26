@@ -362,16 +362,8 @@ while ($Row = $QueryResult->FetchRow())
 			    $response->append_child(create_free("date","8",""));
 			    $question->append_child($response);
 		            break;
-		        case "Z": //LIST Flexible drop-down/radio-button list
-			    $response->append_child(create_fixed($lid));
-			    $question->append_child($response);
-		            break;
 		        case "L": //LIST drop-down/radio-button list
 			    $response->append_child(create_fixed($qid,false,false));
-			    $question->append_child($response);
-		            break;
-		        case "W": //List - dropdown
-			    $response->append_child(create_fixed($lid));
 			    $question->append_child($response);
 		            break;
 		        case "!": //List - dropdown

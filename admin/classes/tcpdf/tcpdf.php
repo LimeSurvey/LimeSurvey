@@ -2086,7 +2086,7 @@ if (!class_exists('TCPDF', false)) {
 						$deltam = $this->pagedim[$this->page]['olm'] - $this->pagedim[$this->page]['orm'];
 						$this->lMargin += $deltam;
 						$this->rMargin -= $deltam;
-					}
+				}
 				}
 			} else {
 				$this->Error('Wrong page number on setPage() function.');
@@ -2781,7 +2781,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->ColorFlag = ($this->FillColor != $this->TextColor);
 			if ($this->page > 0) {
 				$this->_out($this->TextColor);
-			}
+		}
 		}
 
 		/**
@@ -3214,8 +3214,8 @@ if (!class_exists('TCPDF', false)) {
 						$h = ($y - min($y1, $y2, $y3, $y4)) / $this->k;
 						$x = $x / $this->k;
 						$y = $this->h - ($y / $this->k);
-					}
-				}
+			}
+			}
 			}
 			$this->PageAnnots[$this->page][] = array('x' => $x, 'y' => $y, 'w' => $w, 'h' => $h, 'txt' => $text, 'opt' => $opt, 'numspaces' => $spaces);
 			if (($opt['Subtype'] == 'FileAttachment') AND (!$this->empty_string($opt['FS'])) AND file_exists($opt['FS']) AND (!isset($this->embeddedfiles[basename($opt['FS'])]))) {
@@ -3417,7 +3417,7 @@ if (!class_exists('TCPDF', false)) {
 				$min_cell_height = $this->FontSize * $this->cell_height_ratio;
 				if ($h < $min_cell_height) {
 					$h = $min_cell_height;
-				}
+			}
 			}
 			$k = $this->k;
 			if ($this->empty_string($w) OR ($w <= 0)) {
@@ -3709,7 +3709,7 @@ if (!class_exists('TCPDF', false)) {
 				// Add bottom space if needed
 				if (($this->lasth - $this->FontSize) < $this->LineWidth) {
 					$this->y += $this->LineWidth / 2;
-				}
+			}
 			}
 			// Get end-of-text Y position
 			$currentY = $this->y;
@@ -4399,7 +4399,7 @@ if (!class_exists('TCPDF', false)) {
 					$h = $w * $pixh / $pixw;
 				} else {
 					$w = $h * $pixw / $pixh;
-				}
+			}
 			}
 			// calculate new minimum dimensions in pixels
 			$neww = round($w * $this->k * $dpi / $this->dpi);
@@ -4424,7 +4424,7 @@ if (!class_exists('TCPDF', false)) {
 					$type = 'jpeg';
 				}
 				$mqr = get_magic_quotes_runtime();
-				set_magic_quotes_runtime(0);
+				@set_magic_quotes_runtime(0);
 				// Specific image handlers
 				$mtd = '_parse'.$type;
 				// GD image handler function
@@ -4470,7 +4470,7 @@ if (!class_exists('TCPDF', false)) {
 					//If false, we cannot process image
 					return;
 				}
-				set_magic_quotes_runtime($mqr);
+				@set_magic_quotes_runtime($mqr);
 				if ($ismask) {
 					// force grayscale
 					$info['cs'] = 'DeviceGray';
@@ -4895,7 +4895,7 @@ if (!class_exists('TCPDF', false)) {
 			}
 			if ($this->x < 0) {
 				$this->x = 0;
-			}
+		}
 			if ($this->x > $this->w) {
 				$this->x = $this->w;
 			}
@@ -4917,7 +4917,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->x = $this->w - $this->rMargin;
 				} else {
 					$this->x = $this->lMargin;
-				}
+			}
 			}
 			if ($y >= 0) {
 				$this->y = $y;
@@ -4926,7 +4926,7 @@ if (!class_exists('TCPDF', false)) {
 			}
 			if ($this->y < 0) {
 				$this->y = 0;
-			}
+		}
 			if ($this->y > $this->h) {
 				$this->y = $this->h;
 			}
@@ -5155,7 +5155,7 @@ if (!class_exists('TCPDF', false)) {
 					)) {
 					if (!$preserve_objcopy OR ($val != 'objcopy')) {
 						unset($this->$val);
-					}
+			}
 				}
 			}
 		}
@@ -5627,7 +5627,7 @@ if (!class_exists('TCPDF', false)) {
 									$annots .= ' /Name /'.$pl['opt']['name'];
 								} else {
 									$annots .= ' /Name /PushPin';
-								}
+							}
 							}
 							break;
 						}
@@ -5643,7 +5643,7 @@ if (!class_exists('TCPDF', false)) {
 									$annots .= ' /Name /'.$pl['opt']['name'];
 								} else {
 									$annots .= ' /Name /Speaker';
-								}
+							}
 							}
 							break;
 						}
@@ -5653,7 +5653,7 @@ if (!class_exists('TCPDF', false)) {
 						case 'widget': {
 							if (isset($pl['opt']['h'])) {
 								$annots .= ' /H '.intval($pl['opt']['h']);
-							}
+						 	}
 						 	if (isset($pl['opt']['mk']) AND (is_array($pl['opt']['mk']))) {
 						 		$annots .= ' /MK <<';
 						 		// ... TO BE COMPLETED ...
@@ -5701,7 +5701,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->_out('endobj');
 			}
 			$mqr = get_magic_quotes_runtime();
-			set_magic_quotes_runtime(0);
+			@set_magic_quotes_runtime(0);
 			foreach ($this->FontFiles as $file => $info) {
 				// search and get font file to embedd
 				$fontdir = $info['fontdir'];
@@ -5744,7 +5744,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->_out('endobj');
 				}
 			}
-			set_magic_quotes_runtime($mqr);
+			@set_magic_quotes_runtime($mqr);
 			foreach ($this->fontkeys as $k) {
 				//Font objects
 				$this->setFontSubBuffer($k, 'n', $this->n + 1);
@@ -6014,7 +6014,7 @@ if (!class_exists('TCPDF', false)) {
 					} elseif ($uni < 256) {
 						$cw[$uni] = $width;
 					} // else unknown character
-				}
+			}
 				$font = array_merge($font, array('cw' => $cw));
 			}
 			$name = $font['name'];
@@ -6127,7 +6127,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->_out(sprintf('/C1 [%.4F %.4F %.4F %.4F] ', $color['c']/100, $color['m']/100, $color['y']/100, $color['k']/100));
 				$this->_out('/FunctionType 2 /Domain [0 1] /N 1>>]');
 				$this->_out('endobj');
-			}
+		}
 		}
 
 		/**
@@ -6428,11 +6428,11 @@ if (!class_exists('TCPDF', false)) {
 				foreach ($this->imagekeys as $key) {
 					// remove temporary files
 					unlink($this->images[$key]);
-				}
+			}
 				foreach ($this->fontkeys as $key) {
 					// remove temporary files
 					unlink($this->fonts[$key]);
-				}
+		}
 			}
 		}
 
@@ -10927,7 +10927,7 @@ if (!class_exists('TCPDF', false)) {
 					$tagname = strtolower($tag[1]);
 					// check if we are inside a table header
 					if ($tagname == 'thead') {
-						if ($element{0} == '/') {
+					if ($element{0} == '/') {
 							$thead = false;
 						} else {
 							$thead = true;
@@ -11040,11 +11040,11 @@ if (!class_exists('TCPDF', false)) {
 									case 'xx-small': {
 										$dom[$key]['fontsize'] = $dom[0]['fontsize'] - 4;
 										break;
-									}
+								}
 									case 'x-small': {
 										$dom[$key]['fontsize'] = $dom[0]['fontsize'] - 3;
 										break;
-									}
+							}
 									case 'small': {
 										$dom[$key]['fontsize'] = $dom[0]['fontsize'] - 2;
 										break;
@@ -11629,7 +11629,7 @@ if (!class_exists('TCPDF', false)) {
 													break;
 												}
 											}
-										}
+								}
 									} // end of while
 									// remove markers
 									$pmid = str_replace('x*#!#*x', '', $pmid);
@@ -11719,7 +11719,7 @@ if (!class_exists('TCPDF', false)) {
 								$table_width = $this->getHTMLUnitToUnits($dom[$key]['width'], $wtmp, 'px');
 							} else {
 								$table_width = $wtmp;
-							}
+						}
 						}
 						// table content is handled in a special way
 						if (($dom[$key]['value'] == 'td') OR ($dom[$key]['value'] == 'th')) {
@@ -11807,7 +11807,7 @@ if (!class_exists('TCPDF', false)) {
 											$dl = ($this->pagedim[$this->page]['olm'] - $this->pagedim[$trwsp['startpage']]['olm']);
 											$rsstartx += $dl;
 											$rsendx += $dl;
-										}
+									}
 									}
 									if  (($trwsp['rowspan'] > 0)
 										AND ($rsstartx > ($this->x - $cellspacing - $currentcmargin - $this->feps))
@@ -11901,9 +11901,9 @@ if (!class_exists('TCPDF', false)) {
 										$this->footerpos[$this->page] = $this->pagelen[$this->page] - $this->footerlen[$this->page];
 									} else {
 										$this->footerpos[$this->page] = $this->pagelen[$this->page];
-									}
-									$opentagpos = $this->footerpos[$this->page];
 								}
+									$opentagpos = $this->footerpos[$this->page];
+							}
 							}
 							$this->openHTMLTagHandler($dom, $key, $cell);
 						}
@@ -11948,7 +11948,7 @@ if (!class_exists('TCPDF', false)) {
 								$dom[$key]['value'] = rtrim($dom[$key]['value']);
 							} else {
 								$dom[$key]['value'] = ltrim($dom[$key]['value']);
-							}
+						}
 						}
 						$newline = false;
 						$firstblock = true;
@@ -11985,10 +11985,10 @@ if (!class_exists('TCPDF', false)) {
 						$dom[$key]['value'] = ltrim($strrest);
 						if ($loop < 3) {
 							--$key;
-						}
+					}
 					} else {
 						$loop = 0;
-					}
+				}
 				}
 				++$key;
 			} // end for each $key
@@ -12393,9 +12393,9 @@ if (!class_exists('TCPDF', false)) {
 								call_user_func_array(array($this, $tcpdf_method), $params);
 							} else {
 								$this->$tcpdf_method();
-							}
-							$this->newline = true;
 						}
+							$this->newline = true;
+				}
 					}
 				}
 				default: {
@@ -12472,7 +12472,7 @@ if (!class_exists('TCPDF', false)) {
 							$this->x += ($this->pagedim[$this->page]['orm'] - $this->pagedim[$parent['startpage']]['orm']);
 						} elseif ((!$this->rtl) AND ($this->pagedim[$this->page]['olm'] != $this->pagedim[$parent['startpage']]['olm'])) {
 							$this->x += ($this->pagedim[$this->page]['olm'] - $this->pagedim[$parent['startpage']]['olm']);
-						}
+					}
 					}
 					break;
 				}
@@ -12564,7 +12564,7 @@ if (!class_exists('TCPDF', false)) {
 											$this->x -= ($this->pagedim[$page]['orm'] - $this->pagedim[$startpage]['orm']);
 										} elseif ((!$this->rtl) AND ($this->pagedim[$page]['lm'] != $this->pagedim[$startpage]['olm'])) {
 											$this->x += ($this->pagedim[$page]['olm'] - $this->pagedim[$startpage]['olm']);
-										}
+									}
 									}
 									// design a cell around the text
 									$ccode = $this->FillColor."\n".$this->getCellCode($cw, $ch, '', $cborder, 1, '', $fill, '', 0, true);
@@ -12618,14 +12618,14 @@ if (!class_exists('TCPDF', false)) {
 								$this->x += ($this->pagedim[$endpage]['orm'] - $this->pagedim[$startpage]['orm']);
 							} elseif ((!$this->rtl) AND ($this->pagedim[$endpage]['olm'] != $this->pagedim[$startpage]['olm'])) {
 								$this->x += ($this->pagedim[$endpage]['olm'] - $this->pagedim[$startpage]['olm']);
-							}
 						}
+					}
 					}
 					if (!$in_table_head) {
 						// we are not inside a thead section
 						if (isset($parent['cellpadding'])) {
 							$this->cMargin = $this->oldcMargin;
-						}
+					}
 						$this->lasth = $this->FontSize * $this->cell_height_ratio;
 						if (!empty($this->theadMargins)) {
 							// restore top margin
@@ -12796,7 +12796,7 @@ if (!class_exists('TCPDF', false)) {
 				case 'lower-greek': {
 					$this->lisymbol = $symbol;
 					break;
-				}
+			}
 				default : {
 					$this->lisymbol = '';
 				}

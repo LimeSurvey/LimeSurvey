@@ -310,15 +310,15 @@ function setman_ranking($ia)
 function setman_questionandcode($ia)
 {
 	global $dbprefix, $connect;
-	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery); //Checked
+	$subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+	$sqresult = db_execute_assoc($subquestionquery); //Checked
 
-	while ($ansrow = $ansresult->FetchRow())
+	while ($subquestionrow = $sqresult->FetchRow())
 	{
-		$mandatorys[]=$ia[1].$ansrow['code'];
+		$mandatorys[]=$ia[1].$subquestionrow['title'];
 		$mandatoryfns[]=$ia[1];
 	}
 
@@ -331,18 +331,25 @@ function setman_questionandcode($ia)
 	return array($mandatorys, $mandatoryfns);
 }
 
+
+/**
+* The point of these functions (setman) is to return an array containing two arrays. 
+* The first ($mandatorys) is an array containing question, so they can all be checked
+* The second ($mandatoryfns) is an arry containing the fieldnames of every question
+* What's the difference? The difference arises from multiple option questions, and came
+* about when trying to distinguish between answering just one option (which satisfies
+* the mandatory requirement, and answering them all). The "mandatorys" input contains the
+* actual specific response items that could be filled in.. ie: in a multiple option
+* question, there will be a unique one for every possible answer. The "mandatoryfns" array
+* contains the generic question fieldname for the question as a whole (it will be repeated
+*  for multiple option qeustions, but won't contain unique items.
+* 
+* @param mixed $ia
+* @return array See explanation above
+*/
 function setman_multiflex($ia)
 {
-    //The point of these functions (setman) is to return an array containing two arrays. 
-	// The first ($mandatorys) is an array containing question, so they can all be checked
-	// The second ($mandatoryfns) is an arry containing the fieldnames of every question
-	// What's the difference? The difference arises from multiple option questions, and came
-	// about when trying to distinguish between answering just one option (which satisfies
-	// the mandatory requirement, and answering them all). The "mandatorys" input contains the
-	// actual specific response items that could be filled in.. ie: in a multiple option
-	// question, there will be a unique one for every possible answer. The "mandatoryfns" array
-	// contains the generic question fieldname for the question as a whole (it will be repeated
-	// for multiple option qeustions, but won't contain unique items.
+
 	global $dbprefix, $connect;
 	
 	$qq="SELECT lid FROM {$dbprefix}questions WHERE qid={$ia[0]}";
@@ -521,26 +528,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		case 'D': //DATE
 			$values = do_date($ia);
 			break;
-		case 'Z': //LIST Flexible drop-down/radio-button list
-			$values = do_list_flexible_radio($ia);
-            if ($qidattributes['hide_tip']==0)
-			{
-				$qtitle .= "<br />\n<span class=\"questionhelp\">"
-				. $clang->gT('Choose one of the following answers').'</span>';
-				$question_text['help'] = $clang->gT('Choose one of the following answers');
-			}
-			break;
 		case 'L': //LIST drop-down/radio-button list
 			$values = do_list_radio($ia);
-            if ($qidattributes['hide_tip']==0)
-			{
-				$qtitle .= "<br />\n<span class=\"questionhelp\">"
-				. $clang->gT('Choose one of the following answers').'</span>';
-				$question_text['help'] = $clang->gT('Choose one of the following answers');
-			}
-			break;
-		case 'W': //List - dropdown
-			$values=do_list_flexible_dropdown($ia);
             if ($qidattributes['hide_tip']==0)
 			{
 				$qtitle .= "<br />\n<span class=\"questionhelp\">"
@@ -717,7 +706,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	}
 
 	$answer .= "\n\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
-	$answer .= 'on'; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
+	$answer .= 'on'; //If this is single format, then it must be showing. Needed for checking conditional mandatories
 	$answer .= "' />\n"; //for conditional mandatory questions
 
 	if ($ia[6] == 'Y')
@@ -1670,17 +1659,17 @@ function do_list_dropdown($ia)
 	//question attribute random order set?
     if ($qidattributes['random_order']==1)
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	}
     //question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
 	}		
 	//no question attributes -> order by sortorder
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
@@ -1896,187 +1885,6 @@ function do_list_dropdown($ia)
 
 
 
-// ---------------------------------------------------------------
-function do_list_flexible_dropdown($ia)
-{
-	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
-	global $shownoanswer, $clang;
-	if ($ia[8] == 'Y')
-	{
-		$checkconditionFunction = "checkconditions";
-	}
-	else
-	{
-		$checkconditionFunction = "noop_checkconditions";
-	}
-	$qidattributes=getQuestionAttributes($ia[0]);
-
-    if (trim($qidattributes['other_replace_text'])!='')	{
-		$othertext=$clang->gT($qidattributes['other_replace_text']);
-	}
-	else {
-		$othertext=$clang->gT('Other');
-	}
-
-	$answer='';
-
-	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
-	$qresult = db_execute_assoc($qquery);  //Checked
-	while($row = $qresult->FetchRow()) {$other = $row['other']; $lid=$row['lid'];}
-	$filter='';
-    if (trim($qidattributes['code_filter'])!='') {
-		$filter=$qidattributes['code_filter'];
-		if(isset($_SESSION['insertarray']) && in_array($filter, $_SESSION['insertarray']))
-		{
-			$filter=trim($_SESSION[$filter]);
-		}
-	}
-	$filter .= '%';
-	
-	//question attribute random order set?
-    if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	}
-	//question attribute alphasort set?
-    elseif ($qidattributes['alphasort']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY title";
-	}
-	//no question attributes -> order by sortorder
-	else
-	{
-		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-	}
-	
-	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());//Checked
-
-	if (labelset_exists($lid,$_SESSION['s_lang']))
-	{
-	    $opt_select='';
-		while ($ansrow = $ansresult->FetchRow())
-		{
-		    if ($_SESSION[$ia[1]] == $ansrow['code'])
-			{
-				$opt_select = SELECTED;
-			}
-			else
-			{
-				$opt_select = '';
-			}
-			$answer .= '<option value="'.$ansrow['code'].'"'.$opt_select.'>'.$ansrow['title']."</option>\n";
-		}
-
-		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
-		{
-			$answer = '<option value="" '.$opt_select.'>'.$clang->gT('Please choose')."...</option>\n".$answer;
-		}
-
-		if (isset($other) && $other=='Y')
-		{
-			if ($_SESSION[$ia[1]] == '-oth-')
-			{
-				$opt_select = SELECTED;
-			}
-			else
-			{
-				$opt_select = '';
-			}
-			$answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
-		}
-
-		if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && $shownoanswer == 1)
-		{
-			$answer .= '					<option value=" ">'.$clang->gT('No answer')."</option>\n";
-		}
-		$answer .= "</select>\n";
-	}
-	else 
-	{
-		$answer .= '					<option>'.$clang->gT('Error: The labelset used for this question is not available in this language.').$_SESSION['s_lang'].'</option>
-';
-	}
-
-	$answer .= '				<input type="hidden" alt=\"'.$clang->gT('Other text').'\" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
-
-	if (isset($other) && $other=="Y")
-	{
-		$sselect_show_hide = ' showhideother(this.name, this.value)';
-	}
-	else
-	{
-		$sselect_show_hide = '';
-	}
-	$sselect = '
-			<p class="question">
-				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide."\">\n";
-	$answer = $sselect.$answer;
-
-	if (isset($other) && $other=='Y')
-	{
-		$answer = "\n<script type=\"text/javascript\">\n"
-		."<!--\n"
-		."function showhideother(name, value)\n"
-		."\t{\n"
-		."\tvar hiddenothername='othertext'+name;\n"
-		."\tif (value == \"-oth-\")\n"
-		."{\n"
-		."document.getElementById(hiddenothername).style.display='';\n"
-		."document.getElementById(hiddenothername).focus();\n"
-		."}\n"
-		."\telse\n"
-		."{\n"
-		."document.getElementById(hiddenothername).style.display='none';\n"
-		."document.getElementById(hiddenothername).value='';\n" // TIBO enable this to reset the othercomment field when other unlesected
-		."}\n"
-		."\t}\n"
-		."//--></script>\n".$answer;
-
-		$answer .= '				<input type="text" id="othertext'.$ia[1].'" alt="'.$clang->gT('Other text').'" name="'.$ia[1].'other" style="display:';
-		if ($_SESSION[$ia[1]] != '-oth-')
-		{
-			$answer .= ' none';
-		}
-		$answer .= "\" value=\"";
-
-		if (isset($_SESSION[$ia[1].'other']))
-		{
-			$answer .= str_replace ("\"", "'", str_replace("\\", "",($_SESSION[$ia[1].'other'])));
-		}
-
-		$answer .= "\" />\n\t\n";
-
-		$inputnames[]=$ia[1]."other";
-	}
-
-	$checkotherscript = "";
-	if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
-	{
-		$checkotherscript = "<script type='text/javascript'>\n"
-			. "\t<!--\n"
-			. "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
-			. "function ensureOther_{$ia[0]}()\n"
-			. "{\n"
-			. "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
-			. "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
-			. "\tif (otherval == '-oth-' && othercommentval == '') {\n"	
-			. "alert('".sprintf($clang->gT("You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
-			. "return false;\n"
-			. "\t}\n"
-			. "\telse {\n"
-			. "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-			. "\treturn oldonsubmitOther_{$ia[0]}();\n"
-			. "}\n"
-			. "\t}\n"
-			. "}\n"
-			. "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-			. "\t-->\n"
-			. "</script>\n";
-	}
-
-	$answer = $checkotherscript . $answer ."</p>";
-
-	$inputnames[]=$ia[1];
-	return array($answer, $inputnames);
-}
 
 
 
@@ -2110,19 +1918,19 @@ function do_list_radio($ia)
 	
 	//question attribute random order set?
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	}
 	
 	//question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)     
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
 	}	
 	
 	//no question attributes -> order by sortorder
 	else 
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
@@ -2317,237 +2125,6 @@ function do_list_radio($ia)
 	return array($answer, $inputnames);
 }
 
-
-
-
-// ---------------------------------------------------------------
-function do_list_flexible_radio($ia)
-{
-	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
-	global $shownoanswer, $clang;
-
-	if ($ia[8] == 'Y')
-	{
-		$checkconditionFunction = "checkconditions";
-	}
-	else
-	{
-		$checkconditionFunction = "noop_checkconditions";
-	}
-
-	$qidattributes=getQuestionAttributes($ia[0]);
-    if (trim($qidattributes['other_replace_text'])!='')
-	{
-		$othertext=$clang->gT($qidattributes['other_replace_text']);
-	}
-	else
-	{
-		$othertext=$clang->gT('Other:');
-	}
-
-	if (trim($qidattributes['display_columns'])!='')
-	{
-		$dcols=$qidattributes['display_columns'];
-	}
-	else
-	{
-		$dcols = 1;
-	}
-
-	if (isset($defexists)) {unset ($defexists);}
-
-	$query = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
-	$result = db_execute_assoc($query);       //Checked
-	while($row = $result->FetchRow()) {$other = $row['other']; $lid = $row['lid'];}
-	$filter='';
-    if (trim($qidattributes['code_filter'])!='') {
-        $filter=$qidattributes['code_filter'];
-		if(isset($_SESSION['insertarray']) && in_array($filter, $_SESSION['insertarray']))
-		{
-			$filter=trim($_SESSION[$filter]);
-		}
-	}
-	$filter .= '%';
-	
-	//question attribute random order set?
-    if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	}
-	//question attribute alphasort set?
-    elseif ($qidattributes['alphasort']==1)
-	{
-		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY title";
-	}
-	//no question attributes -> order by sortorder
-	else
-	{
-		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-	}
-	
-	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());    //Checked
-	$anscount = $ansresult->RecordCount();
-
-	if ((isset($other) && $other=='Y') || ($ia[6] != 'Y' && $shownoanswer == 1)) {$anscount++;} //Count
-
-	$wrapper = setup_columns($dcols , $anscount);
-	$answer = $wrapper['whole-start'];
-
-	$rowcounter = 0;
-	$colcounter = 1;
-
-	if (labelset_exists($lid,$_SESSION['s_lang']))
-	{
-		while ($ansrow = $ansresult->FetchRow())
-		{
-			if ($_SESSION[$ia[1]] == $ansrow['code'])
-			{
-				$check_ans = CHECKED;
-			}
-			else
-			{
-				$check_ans ='';
-			};
-			$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['title'].'</label>
-'.$wrapper['item-end'];
-
-			++$rowcounter;
-			if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
-			{
-				if($colcounter == $wrapper['cols'] - 1)
-				{
-					$answer .= $wrapper['col-devide-last'];
-				}
-				else
-				{
-					$answer .= $wrapper['col-devide'];
-				}
-				$rowcounter = 0;
-				++$colcounter;
-			}
-		}
-	}
-	else 
-	{
-		$answer .= $clang->gT('Error: The labelset used for this question is not available in this language.').'<br />';
-	}
-
-	if (isset($other) && $other=='Y')
-	{
-		if ($_SESSION[$ia[1]] == '-oth-')
-		{
-			$check_ans = CHECKED;
-		}
-		else
-		{
-			$check_ans = '';
-		}
-
-		$thisfieldname=$ia[1].'other';
-		if (isset($_SESSION[$thisfieldname]))
-		{
-			$answer_other = ' value="'.htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES).'"';
-		}
-		else
-		{
-			$answer_other = ' value=""';
-		}
-
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
-		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
-		</label>
-'.$wrapper['item-end'];
-
-		$inputnames[]=$thisfieldname;
-
-		++$rowcounter;
-		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
-		{
-			if($colcounter == $wrapper['cols'] - 1)
-			{
-				$answer .= $wrapper['col-devide-last'];
-			}
-			else
-			{
-				$answer .= $wrapper['col-devide'];
-			}
-			$rowcounter = 0;
-			++$colcounter;
-		}
-	}
-
-	if ($ia[6] != 'Y' && $shownoanswer == 1)
-	{
-		if ((!isset($defexists) || $defexists != 'Y') && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '' || $_SESSION[$ia[1]] == ' '))
-		{
-			$check_ans = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
-		}
-		else
-		{
-			$check_ans = '';
-		}
-
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
-'.$wrapper['item-end'];
-
-
-		++$rowcounter;
-		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
-		{
-			if($colcounter == $wrapper['cols'] - 1)
-			{
-				$answer .= $wrapper['col-devide-last'];
-			}
-			else
-			{
-				$answer .= $wrapper['col-devide'];
-			}
-			$rowcounter = 0;
-			++$colcounter;
-		}
-
-	}
-
-	$answer .= $wrapper['whole-end'].'
-<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
-
-	$checkotherscript = "";
-	if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)        
-	{
-		$checkotherscript = "<script type='text/javascript'>\n"
-			. "\t<!--\n"
-			. "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
-			. "function ensureOther_{$ia[0]}()\n"
-			. "{\n"
-			. "\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
-			. "\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
-			. "\tif (otherval == true && othercommentval == '') {\n"	
-			. "alert('".sprintf($clang->gT("You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
-			. "return false;\n"
-			. "\t}\n"
-			. "\telse {\n"
-			. "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-			. "\treturn oldonsubmitOther_{$ia[0]}();\n"
-			. "}\n"
-			. "\t}\n"
-			. "}\n"
-			. "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-			. "\t-->\n"
-			. "</script>\n";
-	}
-
-	$answer = $checkotherscript . $answer;
-
-	$inputnames[]=$ia[1];
-	return array($answer, $inputnames);
-}
-
-
-
-
 // ---------------------------------------------------------------
 function do_listwithcomment($ia)
 {
@@ -2570,17 +2147,17 @@ function do_listwithcomment($ia)
 
 	//question attribute random order set?
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	}
 	//question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
 	}
 	//no question attributes -> order by sortorder
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery);      //Checked
@@ -2743,9 +2320,9 @@ function do_ranking($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
 	} else {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
 	}
     if (trim($qidattributes["max_answers"])!='')
     { 
@@ -3038,7 +2615,7 @@ function do_multiplechoice($ia)
 
 	if (trim($qidattributes['exclude_all_others'])!='')
 	{          
-		$excludeallothers[]=$qidattributes['exclude_all_others'];
+        $excludeallothers=explode(';',trim($qidattributes['exclude_all_others']));
 	    $excludeallotherscript = "
 		<script type='text/javascript'>
 		<!--
@@ -3083,16 +2660,16 @@ function do_multiplechoice($ia)
 			;		
 	}
 
-	$qquery = "SELECT other FROM ".db_table_name('questions')." WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM ".db_table_name('questions')." WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 	}
 
 	$ansresult = $connect->GetAll($ansquery);  //Checked
@@ -3105,11 +2682,11 @@ function do_multiplechoice($ia)
         $position=0;
         foreach ($ansresult as $answer)
         {
-            if ($answer['code']==trim($qidattributes['exclude_all_others']))
+            if ($answer['title']==trim($qidattributes['exclude_all_others']))
             {
-               if ($position==$answer['sortorder']-1) break; //already in the right position
+               if ($position==$answer['question_order']-1) break; //already in the right position
                $tmp  = array_splice($ansresult, $position, 1);
-               array_splice($ansresult, $answer['sortorder']-1, 0, $tmp);
+               array_splice($ansresult, $answer['question_order']-1, 0, $tmp);
                break;
             }
             $position++;
@@ -3138,7 +2715,7 @@ function do_multiplechoice($ia)
 	$postrow = '';
 	foreach ($ansresult as $ansrow)
 	{
-		$myfname = $ia[1].$ansrow['code'];
+		$myfname = $ia[1].$ansrow['title'];
 		$trbc='';
 		/* Check for array_filter */
 	    list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
@@ -3153,7 +2730,7 @@ function do_multiplechoice($ia)
 		/* Print out the checkbox */
 		$answer .= $startitem;
 		$answer .= "\t$hiddenfield\n";
-		$answer .= '		<input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['code'].'" id="answer'.$ia[1].$ansrow['code'].'" value="Y"';
+		$answer .= '		<input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['title'].'" id="answer'.$ia[1].$ansrow['title'].'" value="Y"';
 
 		/* If the question has already been ticked, check the checkbox */
 		if (isset($_SESSION[$myfname]))
@@ -3163,25 +2740,25 @@ function do_multiplechoice($ia)
 				$answer .= CHECKED;
 				if(in_array($ansrow['code'], $excludeallothers)) 
 				{
-					$postrow.="\n\n<script type='text/javascript'>\n<!--\nexcludeAllOthers$ia[1]('answer$ia[1]{$ansrow['code']}', 'no');\n-->\n</script>\n";
+					$postrow.="\n\n<script type='text/javascript'>\n<!--\nexcludeAllOthers$ia[1]('answer$ia[1]{$ansrow['title']}', 'no');\n-->\n</script>\n";
 				}
 			}
 		}
-		/* Or if the question is marked as a default selection, check the checkbox */
+		/* Or if the question is marked as a default selection, check the checkbox
 		elseif ($ansrow['default_value'] == 'Y')
 		{
 			$answer .= CHECKED;
-		}
+		}            */
 
 		$answer .= " onclick='cancelBubbleThis(event);";
 		/* Exclude all others coding */
-		if(in_array($ansrow['code'], $excludeallothers))
+		if(in_array($ansrow['title'], $excludeallothers))
 		{
 			$answer .= "excludeAllOthers$ia[1](this.id, \"yes\");"; // was "this.id"
 			$excludeallotherscripton .= "/* SKIPPING QUESTION {$ia[1]} */\n";
 //			$excludeallotherscripton .= "alert(value+'---'+'answer$ia[1]{$ansrow['code']}');\n";
-			$excludeallotherscripton .= "if( value != 'answer$ia[1]{$ansrow['code']}') {\n"
-						 . "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
+			$excludeallotherscripton .= "if( value != 'answer$ia[1]{$ansrow['title']}') {\n"
+						 . "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['title']}');\n"
 						 . "thiselt.checked='';\n"
 						 . "thiselt.disabled='true';\n"
 						 . "if (doconditioncheck == 'yes') {\n"
@@ -3191,20 +2768,20 @@ function do_multiplechoice($ia)
 		}
 		elseif (count($excludeallothers)>0)
 		{
-			$excludeallotherscripton .= "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
+			$excludeallotherscripton .= "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['title']}');\n"
 						 . "thiselt.checked='';\n"
 						 . "thiselt.disabled='true';\n"
 						 . "if (doconditioncheck == 'yes') {\n"
 						 . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
 						 . "}\n";
-			$excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
+			$excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['title']}').disabled='';\n";
 		}
 		/* End of exclude all others coding */
 		
 		$answer .= $callmaxanswscriptcheckbox    	/* Include checkbox for script for maxanswers if that attribute is selected */
 		        .  "$checkconditionFunction(this.value, this.name, this.type)' />\n"
-				.  "<label for=\"answer$ia[1]{$ansrow['code']}\" class=\"answertext\">"
-				.  $ansrow['answer']
+				.  "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"answertext\">"
+				.  $ansrow['question']
 				.  "</label>\n";
 
 		// --> END NEW FEATURE - SAVE
@@ -3501,13 +3078,13 @@ function do_multiplechoice_withcomments($ia)
 			;		
 	}
 
-	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 	}
 	$ansresult = db_execute_assoc($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount()*2;
@@ -3527,14 +3104,14 @@ function do_multiplechoice_withcomments($ia)
 
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$myfname = $ia[1].$ansrow['code'];
+		$myfname = $ia[1].$ansrow['title'];
 		$trbc='';
 		/* Check for array_filter */
 	    list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
 		
-		if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+		if($label_width < strlen(trim(strip_tags($ansrow['question']))))
 		{
-			$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+			$label_width = strlen(trim(strip_tags($ansrow['question'])));
 		}
 
 		$myfname2 = $myfname."comment";
@@ -3554,13 +3131,13 @@ function do_multiplechoice_withcomments($ia)
 				$answer_main .= CHECKED;
 			}
 		}
-		elseif ($ansrow['default_value'] == 'Y')
+		/*elseif ($ansrow['default_value'] == 'Y')
 		{
 			$answer_main .= CHECKED;
-		}
+		} */
 		$answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type)' "
 				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
-				. $ansrow['answer']."</label>\n";
+				. $ansrow['question']."</label>\n";
 
 		if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 		if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
@@ -3777,11 +3354,11 @@ function do_multipleshorttext($ia)
 	}
 
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 	}
 
 	$ansresult = db_execute_assoc($ansquery);    //Checked
@@ -3826,21 +3403,21 @@ function do_multipleshorttext($ia)
 	 	while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
-				if ($ansrow['answer'] == "") 
+				if ($ansrow['question'] == "") 
 				{
-					$ansrow['answer'] = "&nbsp;";
+					$ansrow['question'] = "&nbsp;";
 				}
 				
 				//NEW: textarea instead of input=text field
 				$answer_main .= "\t<li>\n"
-				. "<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
+				. "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
 				. "\t<span>\n".$prefix."\n".'
 				<textarea class="textarea" name="'.$myfname.'" id="answer'.$myfname.'" 
 				rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 		
-				if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+				if($label_width < strlen(trim(strip_tags($ansrow['question']))))
 				{
-					$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+					$label_width = strlen(trim(strip_tags($ansrow['question'])));
 				}
 	
 				if (isset($_SESSION[$myfname]))
@@ -3860,15 +3437,15 @@ function do_multipleshorttext($ia)
 		{
 		 	while ($ansrow = $ansresult->FetchRow())
 			{
-				$myfname = $ia[1].$ansrow['code'];
-			if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
+				$myfname = $ia[1].$ansrow['title'];
+			if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 			$answer_main .= "\t<li>\n"
-				. "<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
+				. "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
 				. "\t<span>\n".$prefix."\n".'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
-			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+			if($label_width < strlen(trim(strip_tags($ansrow['question']))))
 			{
-				$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+				$label_width = strlen(trim(strip_tags($ansrow['question'])));
 			}
 
 			if (isset($_SESSION[$myfname]))
@@ -4082,11 +3659,11 @@ function do_multiplenumeric($ia)
 
 	if ($qidattributes['random_order']==1)
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 	}
 
 	$ansresult = db_execute_assoc($ansquery);	//Checked
@@ -4106,17 +3683,17 @@ function do_multiplenumeric($ia)
 		$label_width = 0;
 		while ($ansrow = $ansresult->FetchRow())
 		{
-			$myfname = $ia[1].$ansrow['code'];
-			if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
+			$myfname = $ia[1].$ansrow['title'];
+			if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 			if ($slider_layout === false || $slider_separator == '')
 			{
-				$theanswer = $ansrow['answer'];
+				$theanswer = $ansrow['question'];
 				$sliderleft='';
 				$sliderright='';
 			}
 			else
 			{
-				list($theanswer,$sliderleft,$sliderright) =explode($slider_separator,$ansrow['answer']);
+                @list($theanswer,$sliderleft,$sliderright) =explode($slider_separator,$ansrow['question']);
 				$sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
 				$sliderright="<div class=\"slider_righttext\">$sliderright</div>";
 			}
@@ -4132,9 +3709,9 @@ function do_multiplenumeric($ia)
 
 			}
 
-			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+			if($label_width < strlen(trim(strip_tags($ansrow['question']))))
 			{
-				$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+				$label_width = strlen(trim(strip_tags($ansrow['question'])));
 			}
 
 			if ($slider_layout === false)
@@ -4871,7 +4448,7 @@ function do_array_5point($ia)
 	}
 	$cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-	$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+	$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
 	$ansresult = db_execute_assoc($ansquery);   //Checked
 	
 	if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
@@ -4879,11 +4456,11 @@ function do_array_5point($ia)
 	
 
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 	}
 	
 	$ansresult = db_execute_assoc($ansquery);     //Checked
@@ -4925,9 +4502,9 @@ function do_array_5point($ia)
 	//return array($answer, $inputnames);
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$myfname = $ia[1].$ansrow['code'];
+		$myfname = $ia[1].$ansrow['title'];
 
-		$answertext=answer_replace($ansrow['answer']);
+		$answertext=answer_replace($ansrow['question']);
 		if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
 
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -4964,7 +4541,7 @@ function do_array_5point($ia)
 			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 		}
 
-		$answertext2=answer_replace($ansrow['answer']);
+		$answertext2=answer_replace($ansrow['question']);
 		if (strpos($answertext2,'|')) 
 		{
 			$answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -5040,11 +4617,11 @@ function do_array_10point($ia)
 	$cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 	}
 	$ansresult = db_execute_assoc($ansquery);   //Checked
 	$anscount = $ansresult->RecordCount();
@@ -5081,8 +4658,8 @@ function do_array_10point($ia)
 	$trbc = '';
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$myfname = $ia[1].$ansrow['code'];
-		$answertext=answer_replace($ansrow['answer']);
+		$myfname = $ia[1].$ansrow['title'];
+		$answertext=answer_replace($ansrow['question']);
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 		containing a list of unanswered questions, the current question must be in the array,
 		and there must be no answer available for the item in this session. */
@@ -5175,11 +4752,11 @@ function do_array_yesnouncertain($ia)
 	$cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 	}
 	$ansresult = db_execute_assoc($ansquery);	//Checked
 	$anscount = $ansresult->RecordCount();
@@ -5220,8 +4797,8 @@ function do_array_yesnouncertain($ia)
 		$trbc = '';
 		while ($ansrow = $ansresult->FetchRow())
 		{
-			$myfname = $ia[1].$ansrow['code'];
-			$answertext=answer_replace($ansrow['answer']);
+			$myfname = $ia[1].$ansrow['title'];
+			$answertext=answer_replace($ansrow['question']);
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
@@ -5334,11 +4911,11 @@ function do_array_increasesamedecrease($ia)
 		$other = $qrow['other'];
 	}
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 	}
 	$ansresult = db_execute_assoc($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount();
@@ -5377,8 +4954,8 @@ function do_array_increasesamedecrease($ia)
 	$trbc = '';
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$myfname = $ia[1].$ansrow['code'];
-		$answertext=answer_replace($ansrow['answer']);
+		$myfname = $ia[1].$ansrow['title'];
+		$answertext=answer_replace($ansrow['question']);
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 		containing a list of unanswered questions, the current question must be in the array,
 		and there must be no answer available for the item in this session. */
@@ -5483,10 +5060,10 @@ function do_array_flexible($ia)
 		$checkconditionFunction = "noop_checkconditions";
 	}
 
-	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);     //Checked
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['answer_width'])!='')
@@ -5504,22 +5081,22 @@ function do_array_flexible($ia)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
 			$labelcode[]=$lrow['code'];
 		}
 
 //		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%' ";
+		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND question like '%|%' ";
 		$ansresult = db_execute_assoc($ansquery);  //Checked
 		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 		}
 		$ansresult = db_execute_assoc($ansquery); //Checked
 		$anscount = $ansresult->RecordCount();
@@ -5574,9 +5151,9 @@ function do_array_flexible($ia)
 					$answer .= "</tr>\n";
 				}
 			}
-			$myfname = $ia[1].$ansrow['code'];
+			$myfname = $ia[1].$ansrow['title'];
 			$trbc = alternation($trbc , 'row');
-			$answertext=answer_replace($ansrow['answer']);
+			$answertext=answer_replace($ansrow['question']);
             $answertextsave=$answertext;
 			if (strpos($answertext,'|'))
 			{
@@ -5678,7 +5255,7 @@ function do_array_flexible($ia)
 	}
 	else
 	{
-		$answer = "\n<p class=\"error\">".$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</p>\n";
+        $answer = "\n<p class=\"error\">".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
 		$inputnames='';
 	}
 	return array($answer, $inputnames);
@@ -5707,10 +5284,9 @@ function do_array_multitext($ia)
 
 	//echo "<pre>"; print_r($_POST); echo "</pre>";
 	$defaultvaluescript = "";
-	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
 	$qidattributes=getQuestionAttributes($ia[0]);
 
@@ -5742,12 +5318,13 @@ function do_array_multitext($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
 			$labelcode[]=$lrow['code'];
 		}
 		$numrows=count($labelans);
@@ -5756,7 +5333,7 @@ function do_array_multitext($ia)
 
 		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND question like '%|%'";
 		$ansresult = db_execute_assoc($ansquery);
 		if ($ansresult->RecordCount()>0)
 		{
@@ -5769,11 +5346,11 @@ function do_array_multitext($ia)
 		} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 		}
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
@@ -5824,8 +5401,8 @@ function do_array_multitext($ia)
 					$answer .= "</tr>\n";
 				}
 			}
-			$myfname = $ia[1].$ansrow['code'];
-			$answertext=answer_replace($ansrow['answer']);
+			$myfname = $ia[1].$ansrow['title'];
+			$answertext=answer_replace($ansrow['question']);
 			$answertextsave=$answertext;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
@@ -5897,7 +5474,7 @@ function do_array_multitext($ia)
 	}
 	else
 	{
-		$answer = "\n<p class=\"error\">".$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</p>";
+        $answer = "\n<p class=\"error\">".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
 		$inputnames='';
 	}
 	return array($answer, $inputnames);
@@ -5924,10 +5501,9 @@ function do_array_multiflexi($ia)
 
 	//echo '<pre>'; print_r($_POST); echo '</pre>';
 	$defaultvaluescript = '';
-	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['multiflexible_max'])!='')
@@ -5974,12 +5550,13 @@ function do_array_multiflexi($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
 			$labelcode[]=$lrow['code'];
 		}
 		$numrows=count($labelans);
@@ -5988,16 +5565,16 @@ function do_array_multiflexi($ia)
 
 		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
 		$ansresult = db_execute_assoc($ansquery);
 		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
@@ -6046,8 +5623,8 @@ function do_array_multiflexi($ia)
 					$answer .= "</tr>\n";
 				}
 			}
-			$myfname = $ia[1].$ansrow['code'];
-			$answertext=answer_replace($ansrow['answer']);
+			$myfname = $ia[1].$ansrow['title'];
+			$answertext=answer_replace($ansrow['question']);
 			$answertextsave=$answertext;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
@@ -6180,7 +5757,7 @@ function do_array_multiflexi($ia)
 	}
 	else
 	{
-		$answer = "\n<p class=\"error\">".$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</p>\n";
+		$answer = "\n<p class=\"error\">".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
 		$inputnames = '';
 	}
 	return array($answer, $inputnames);
@@ -6204,18 +5781,18 @@ function do_array_flexiblecolumns($ia)
 	}
 
 	$qidattributes=getQuestionAttributes($ia[0]);
-	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);    //Checked
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+	$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 	$lresult = db_execute_assoc($lquery);   //Checked
 	if ($lresult->RecordCount() > 0)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
 			$labelcode[]=$lrow['code'];
-			$labels[]=array("answer"=>$lrow['title'], "code"=>$lrow['code']);
+			$labels[]=array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
 		}
 		if ($ia[6] != 'Y' && $shownoanswer == 1)
 		{
@@ -6224,11 +5801,11 @@ function do_array_flexiblecolumns($ia)
 			$labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
 		}
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);  //Checked
 		$anscount = $ansresult->RecordCount();
@@ -6252,8 +5829,8 @@ function do_array_flexiblecolumns($ia)
 			. "\t<td>&nbsp;</td>\n";
 			while ($ansrow = $ansresult->FetchRow())
 			{
-				$anscode[]=$ansrow['code'];
-				$answers[]=answer_replace($ansrow['answer']);
+				$anscode[]=$ansrow['title'];
+				$answers[]=answer_replace($ansrow['question']);
 			}
 			$trbc = '';
 			$odd_even = '';
@@ -6278,7 +5855,7 @@ function do_array_flexiblecolumns($ia)
 			while ($ansrow = $ansresult->FetchRow())
 			{
 				$ansrowcount++;
-				$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
+				$ansrowtotallength=$ansrowtotallength+strlen($ansrow['question']);
 			}
 			$percwidth=100 - ($cellwidth*$anscount);
 			foreach($labels as $ansrow)
@@ -6333,7 +5910,7 @@ function do_array_flexiblecolumns($ia)
 	}
 	else
 	{
-		$answer = '<p class="error">'.$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</p>";
+        $answer = "<p class='error'>".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
 		$inputnames = '';
 	}
 	return array($answer, $inputnames);
@@ -6359,11 +5936,10 @@ function do_array_flexible_dual($ia)
 	}
 
 	$inputnames=array();
-	$qquery = "SELECT other, lid, lid1 FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
-	$qresult = db_execute_assoc($qquery);    //Checked
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid']; $lid1 = $qrow['lid1'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-	$lquery1 = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid1  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$other = $connect->GetOne($qquery);    //Checked
+	$lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+	$lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$qidattributes=getQuestionAttributes($ia[0]);
 
     if ($qidattributes['use_dropdown']==1)
@@ -6408,7 +5984,7 @@ function do_array_flexible_dual($ia)
 
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['title'];
+			$labelans[]=$lrow['answer'];
 			$labelcode[]=$lrow['code'];
 		}
 		$lresult1 = db_execute_assoc($lquery1); //Checked
@@ -6416,7 +5992,7 @@ function do_array_flexible_dual($ia)
 		{
 			while ($lrow1=$lresult1->FetchRow())
 			{
-				$labelans1[]=$lrow1['title'];
+				$labelans1[]=$lrow1['answer'];
 				$labelcode1[]=$lrow1['code'];
 			}
 		}
@@ -6426,7 +6002,7 @@ function do_array_flexible_dual($ia)
 
 		$cellwidth=sprintf("%02d", $cellwidth);
 		
-		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
 		$ansresult = db_execute_assoc($ansquery);   //Checked
 		if ($ansresult->RecordCount()>0)
 		{
@@ -6438,11 +6014,11 @@ function do_array_flexible_dual($ia)
 		}
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);   //Checked
 		$anscount = $ansresult->RecordCount();
@@ -6589,13 +6165,13 @@ function do_array_flexible_dual($ia)
 			}
 
 			$trbc = alternation($trbc , 'row');
-			$answertext=answer_replace($ansrow['answer']);
+			$answertext=answer_replace($ansrow['question']);
 			$answertextsave=$answertext;
 
 			$dualgroup=0;
-			$myfname0= $ia[1].$ansrow['code'];
-			$myfname = $ia[1].$ansrow['code'].'#0';
-			$myfname1 = $ia[1].$ansrow['code'].'#1'; // new multi-scale-answer
+			$myfname0= $ia[1].$ansrow['title'];
+			$myfname = $ia[1].$ansrow['title'].'#0';
+			$myfname1 = $ia[1].$ansrow['title'].'#1'; // new multi-scale-answer
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
@@ -6739,13 +6315,13 @@ function do_array_flexible_dual($ia)
 		
 		//question atribute random_order set?
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}		
 		
 		//no question attributes -> order by sortorder
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);    //Checked
 		$anscount = $ansresult->RecordCount();
@@ -6762,13 +6338,13 @@ function do_array_flexible_dual($ia)
 			while ($lrow=$lresult->FetchRow())
 			{
 				$labels0[]=Array('code' => $lrow['code'],
-						'title' => $lrow['title']);
+						'title' => $lrow['answer']);
 			}
 			$lresult1 = db_execute_assoc($lquery1);   //Checked
 			while ($lrow1=$lresult1->FetchRow())
 			{
 				$labels1[]=Array('code' => $lrow1['code'],
-						'title' => $lrow1['title']);
+						'title' => $lrow1['answer']);
 			}
 
 
@@ -6842,19 +6418,19 @@ function do_array_flexible_dual($ia)
 			$trbc = '';
 			while ($ansrow = $ansresult->FetchRow())
 			{
-				$rowname = $ia[1].$ansrow['code'];
+				$rowname = $ia[1].$ansrow['title'];
 				$dualgroup=0;
-				$myfname = $ia[1].$ansrow['code']."#".$dualgroup;
+				$myfname = $ia[1].$ansrow['title']."#".$dualgroup;
 				$dualgroup1=1;
-				$myfname1 = $ia[1].$ansrow['code']."#".$dualgroup1;
+				$myfname1 = $ia[1].$ansrow['title']."#".$dualgroup1;
 
 				if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "" || $_SESSION[$myfname1] == "") )
 				{
-					$answertext="<span class='errormandatory'>".answer_replace($ansrow['answer'])."</span>";
+					$answertext="<span class='errormandatory'>".answer_replace($ansrow['question'])."</span>";
 				}
 				else
 				{
-					$answertext=answer_replace($ansrow['answer']);
+					$answertext=answer_replace($ansrow['question']);
 				}
 
 				$trbc = alternation($trbc , 'row');
@@ -6983,7 +6559,7 @@ function do_array_flexible_dual($ia)
 	}
 	else
 	{
-		$answer = '<span class="error" style="color:#f00">'.$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</span>";
+        $answer = "<p class='error'>".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
 		$inputnames="";
 	}
 	return array($answer, $inputnames);

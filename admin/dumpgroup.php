@@ -137,7 +137,7 @@ if(count($ld1)>3) {
 
 
 //8: Question Attributes
-$query = "SELECT DISTINCT {$dbprefix}question_attributes.* 
+$query = "SELECT {$dbprefix}question_attributes.* 
 	   	  FROM {$dbprefix}question_attributes, {$dbprefix}questions 
 		  WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) 
 		  AND ({$dbprefix}questions.gid=$gid)";

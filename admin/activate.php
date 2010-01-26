@@ -18,6 +18,8 @@
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 $postsid=returnglobal('sid');
 $activateoutput='';
+$qtypes=getqtypelist('','array');
+
 if (!isset($_POST['ok']) || !$_POST['ok'])
 {
 	if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])
@@ -30,6 +32,9 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 		$newqid=$lastqid+1;
 		$query = "UPDATE {$dbprefix}questions SET qid=$newqid WHERE qid=$oldqid";
 		$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+        // Update subquestions
+        $query = "UPDATE {$dbprefix}questions SET parent_qid=$newqid WHERE parent_qid=$oldqid";
+        $result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
 		//Update conditions.. firstly conditions FOR this question
 		$query = "UPDATE {$dbprefix}conditions SET qid=$newqid WHERE qid=$oldqid";
 		$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
@@ -85,22 +90,33 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	//  # ";" -> Array Multi Flexi Text
 	//  # "1" -> MULTI SCALE
 	
-
-
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^', ':', '1')";
+	$chkquery = "SELECT qid, question, gid, type FROM {$dbprefix}questions WHERE sid={$surveyid} and parent_qid=0";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
 	while ($chkrow = $chkresult->FetchRow())
 	{
+        if ($qtypes[$chkrow['type']]['subquestions']>0)
+        {
+            $chaquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order, question";
+            $charesult=$connect->Execute($chaquery);
+            $chacount=$charesult->RecordCount();
+            if ($chacount == 0)
+            {
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a subquestion type question but has no configured subquestions."), $chkrow['gid']);
+            }
+        }
+        if ($qtypes[$chkrow['type']]['answerscales']>0)
+        {
 		$chaquery = "SELECT * FROM {$dbprefix}answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
 		$charesult=$connect->Execute($chaquery);
 		$chacount=$charesult->RecordCount();
-		if (!$chacount > 0)
+            if ($chacount == 0)
 		{
 			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a multiple answer type question but has no answers."), $chkrow['gid']);
 		}
 	}
+	}
 
-	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
+	//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type = ''";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing types<br />$chkquery<br />".$connect->ErrorMsg());
 	while ($chkrow = $chkresult->FetchRow())
@@ -111,40 +127,21 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	
 	
 
-	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid = 0 OR lid is null)";
-	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
+	//ChECK THAT certain array question types have answers set
+	$chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1')";
+	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing answers<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
-		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a Labelset, but none is set."), $chkrow['gid']);
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires answers, but none are set."), $chkrow['gid']);
 	} // while
 	
-	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID1" SET FOR MULTI SCALE
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND (type ='1') AND (lid1 = 0 OR lid1 is null)";
-	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
+	//CHECK THAT DUAL Array has answers set
+    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type='1'";
+	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing 2nd answer set<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
-		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second Labelset, but none is set."), $chkrow['gid']);
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second answer set but none is set."), $chkrow['gid']);
 	} // while
 	
 	
-	//NOW check that all used labelsets have all necessary languages
-	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid > 0) AND (lid is not null)";
-	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
-	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
-	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	array_unshift($slangs,$baselang);
-	while ($chkrow = $chkresult->FetchRow())
-	{
-	    foreach ($slangs as $surveylanguage)
-			{
-			$chkquery2 = "SELECT lid FROM {$dbprefix}labels WHERE language='$surveylanguage' AND (lid = {$chkrow['lid']}) ";
-			$chkresult2 = db_execute_assoc($chkquery2);
-			if ($chkresult2->RecordCount()==0)
-	            {
-				$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("The labelset used in this question does not exists or is missing a translation."), $chkrow['gid']);
-	    		}
-			}  //foreach
-	} //while 
-
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
 	//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
@@ -310,6 +307,7 @@ else
 	." AND ".db_table_name('questions').".sid={$postsid} "
 	." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
 	." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
+    ." AND parent_qid=0 "
 	." ORDER BY group_order, question_order";
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
@@ -335,8 +333,6 @@ else
 				break;
 				case "L":  //LIST (RADIO)
 				case "!":  //LIST (DROPDOWN)
-				case "W":
-				case "Z":
 					$createsurvey .= " C(5)";
 					if ($arow['other'] == "Y")
 					{
@@ -366,24 +362,22 @@ else
 				break;
 			}
 		}
-		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" ||
-		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
-		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
+        elseif ($qtypes[$arow['type']]['subquestions']>0 && $arow['type'] != ":" && $arow['type'] != ";" && $arow['type'] != "1")              
 		{
 			//MULTI ENTRY
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+			$abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                        ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY a.sortorder, a.answer";
+                       ." ORDER BY sq.question_order, sq.question";
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow=$abresult->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}` C(5),\n";
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($arow['type'] == "P")
 				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` X,\n";
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment` X,\n";
 				}
 			}
 			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"  || $arow['type']=="1")) //Sc: check!
@@ -398,20 +392,22 @@ else
 		elseif ($arow['type'] == ":" || $arow['type'] == ";")
 		{
 			//MULTI ENTRY
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+            $abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                        ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY a.sortorder, a.answer";
+                       ." ORDER BY sq.question_order, sq.question";
+
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			$ab2query = "SELECT ".db_table_name('labels').".*
-			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
+			$ab2query = "SELECT a.*
+			             FROM ".db_table_name('questions')." q, ".db_table_name('answers')." a
 			             WHERE sid=$surveyid 
-						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
-						 AND ".db_table_name('labels').".language='".GetbaseLanguageFromSurveyid($postsid)."' 
-			             AND ".db_table_name('questions').".qid=".$arow['qid']."
-			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
-			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
+						 AND a.qid=q.qid
+						 AND a.language='".GetbaseLanguageFromSurveyid($postsid)."' 
+			             AND q.qid=".$arow['qid']."
+                         AND a.scale_id=0
+			             ORDER BY a.sortorder, a.answer";
+			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of answers in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
 			while($ab2row=$ab2result->FetchRow())
 			{
 			    $lset[]=$ab2row;
@@ -420,7 +416,7 @@ else
 			{
 			    foreach($lset as $ls)
 			    {
-				    $createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}` X,\n";
+				    $createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$ls['code']}` X,\n";
 				}
 			}
 			unset($lset);
@@ -485,26 +481,26 @@ else
 		}
 		elseif ($arow['type'] == "1") 
 		{
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+			$abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                        ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY a.sortorder, a.answer";
+                       ." ORDER BY sq.question_order, sq.question";
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			$abcount=$abresult->RecordCount();
 			while ($abrow = $abresult->FetchRow())
 			{
-				$abmultiscalequery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q, {$dbprefix}labels as l"
-					     ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid AND sid={$postsid} AND q.qid={$arow['qid']} AND l.title = '' "
-                         ." AND l.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+				$abmultiscalequery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q, {$dbprefix}answers as a"
+					     ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
+	                     ." AND a.qid={$arow['qid']} AND sq.sid={$postsid} AND q.qid={$arow['qid']} AND a.answer = '' "
+                         ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                          ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' ";
 				$abmultiscaleresult=$connect->Execute($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
 				$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
 				$abmultiscaleresultcount = 1;
 				for ($j=0; $j<=$abmultiscaleresultcount; $j++)
 				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#$j` C(5),\n";
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#$j` C(5),\n";
 				} 
 			}
 		}

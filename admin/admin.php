@@ -49,11 +49,14 @@ if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subact
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
 
-
-if ($action != 'showprintablesurvey' && $action != 'ajaxquestionattributes')
+if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {
 $adminoutput="<div id='wrapper'>";
-} else {$adminoutput='';}
+} 
+else 
+{
+    $adminoutput='';
+}
 
 if($casEnabled==true)
 {
@@ -74,15 +77,15 @@ if ( $action == 'FakeGET')
 	include('access_denied.php');
 }
 
-if(isset($_SESSION['loginID']) && $action!='login')
+if(isset($_SESSION['loginID']))
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
   if ($action == 'delsurvey'         || $action == 'delgroup'       || 
-      $action == 'delquestion'       || $action == 'insertnewsurvey'||
+        $action == 'delquestion'       || $action == 'insertnewsurvey'|| $action == 'updatesubquestions' ||
       $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
       $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
       $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||
-      $action == 'updatequestion'    || $action == 'modanswer'      || $action == 'renumberquestions' )
+        $action == 'updatequestion'    || $action == 'updateansweroptions'      || $action == 'renumberquestions' )
   {
       include('database.php');
   }
@@ -447,11 +450,11 @@ elseif ($action == 'replacementfields')
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
-     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && ($action!='ajaxquestionattributes') && ($action!='update') && 
+         !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') && 
      (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
-      $action=='newsurvey' || $action=='listsurveys' ||   
-      $action=='surveyrights' || $action=='quotas') )
+          $action=='newsurvey' || $action=='listsurveys' || $action=='globalsettings' || $action=='editusergroups' ||
+          $action=='surveyrights' || $action=='quotas'  || $action=='editusers' || $action=='' || $action=='login') )
 {
 	if ($action=='editsurvey' || $action=='updatesurvey')
 	{
@@ -461,9 +464,17 @@ elseif ($action == 'replacementfields')
 }
 
  if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' || 
-     $action=='orderquestions' || $action=='ajaxquestionattributes')
-    {if(hasRight($surveyid,'define_questions'))    {$_SESSION['FileManagerContext']="edit:question:$surveyid";include('questionhandling.php');}
-        else { include('access_denied.php');}    
+     $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')
+    {
+        if(hasRight($surveyid,'define_questions'))    
+        {
+            $_SESSION['FileManagerContext']="edit:question:$surveyid";
+            include('questionhandling.php');
+    }    
+        else 
+        { 
+            include('access_denied.php');
+        }    
     }    
 
       
@@ -473,7 +484,6 @@ elseif ($action == 'replacementfields')
      $action=='delusergroup' || $action=='usergroupindb' || $action=='mailsendusergroup' || 
      $action=='editusergroupindb' || $action=='editusergroups' || $action=='deleteuserfromgroup' ||
      $action=='addusertogroup' || $action=='setuserrights' || $action=='setasadminchild') 
- 
  {
      include ('userrighthandling.php');
  }
@@ -484,8 +494,8 @@ elseif ($action == 'replacementfields')
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&  !isset($exportroutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
-      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) && $action!='ajaxquestionattributes' 
-      && $action!='update') 
+      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) && 
+      (substr($action,0,4)!= 'ajax') && $action!='update') 
       {
         $adminoutput.= showadminmenu();
       }
@@ -547,9 +557,10 @@ elseif ($action == 'replacementfields')
   if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}  
   if (isset($exportspssoutput)) {$adminoutput.= $exportspssoutput;}  
   if (isset($exportroutput)) {$adminoutput.= $exportroutput;}  
+    if (isset($loginsummary)) {$adminoutput.= $loginsummary;}  
                                                                         
   
-  if (!isset($printablesurveyoutput) && $subaction!='export' && $action!='ajaxquestionattributes')
+    if (!isset($printablesurveyoutput) && $subaction!='export' && (substr($action,0,4)!= 'ajax'))
   {  
   if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
   
@@ -557,7 +568,9 @@ elseif ($action == 'replacementfields')
   unset($_SESSION['metaHeader']);    
     $adminoutput.= "</div>\n";
 	if(!isset($_SESSION['checksessionpost']))
+        {
 		$_SESSION['checksessionpost'] = '';
+        }
 	$adminoutput .= "<script type=\"text/javascript\">\n"
 	. "<!--\n"
 	. "\tfor(i=0; i<document.forms.length; i++)\n"
@@ -604,11 +617,9 @@ elseif ($action == 'replacementfields')
   { //not logged in
     sendcacheheaders();
     if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
+    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput.$loginsummary;  // All future output is written into this and then outputted at the end of file
     unset($_SESSION['metaHeader']);    
-    $adminoutput.= "</div>\n"
-                . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
-  
+    $adminoutput.= "</div>\n".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
   }
 
 if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)) 

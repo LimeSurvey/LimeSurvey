@@ -405,11 +405,12 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 $thissurvey=getSurveyInfo($surveyid);
 
 $query = "SELECT * "
-         ."FROM {$dbprefix}questions, "
-              ."{$dbprefix}groups "
+        ."FROM {$dbprefix}questions, "
+        ."{$dbprefix}groups "
         ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
-          ."AND qid=$qid "
-          ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+        ."AND qid=$qid "
+        ."AND parent_qid=0 "
+        ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 $result = db_execute_assoc($query) or safe_die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
 while ($rows=$result->FetchRow())
 {
@@ -426,11 +427,12 @@ while ($rows=$result->FetchRow())
 // , and find out which number in that order this question is
 $qquery = "SELECT * "
         ."FROM {$dbprefix}questions, "
-             ."{$dbprefix}groups "
+        ."{$dbprefix}groups "
         ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+        ."AND parent_qid=0 "
         ."AND {$dbprefix}questions.sid=$surveyid "
-          ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-          ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
+        ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+        ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 
 $qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
 $qrows = $qresult->GetRows();
@@ -481,14 +483,13 @@ if (isset($questionlist) && is_array($questionlist))
 			."{$dbprefix}questions.gid, "
 			."{$dbprefix}questions.question, "
 			."{$dbprefix}questions.type, "
-			."{$dbprefix}questions.lid, "
-			."{$dbprefix}questions.lid1, "                   
 			."{$dbprefix}questions.title, "
 			."{$dbprefix}questions.other, "
 			."{$dbprefix}questions.mandatory "
 			."FROM {$dbprefix}questions, "
 			."{$dbprefix}groups "
 			."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+            ."AND parent_qid=0 "
 			."AND {$dbprefix}questions.qid=$ql "
 			."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 			."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
@@ -505,8 +506,6 @@ if (isset($questionlist) && is_array($questionlist))
 					"gid"=>$myrows['gid'],
 					"question"=>$myrows['question'],
 					"type"=>$myrows['type'],
-					"lid"=>$myrows['lid'],
-					"lid1"=>$myrows['lid1'],
 					"mandatory"=>$myrows['mandatory'],
 					"other"=>$myrows['other'],
 					"title"=>$myrows['title']);
@@ -518,22 +517,21 @@ if (isset($postquestionlist) && is_array($postquestionlist))
 {
 	foreach ($postquestionlist as $pq)
 	{
-    $query = "SELECT {$dbprefix}questions.qid, "
-                   ."{$dbprefix}questions.sid, "
-                   ."{$dbprefix}questions.gid, "
-                   ."{$dbprefix}questions.question, "
-                   ."{$dbprefix}questions.type, "
-                   ."{$dbprefix}questions.lid, "
-                   ."{$dbprefix}questions.lid1, "                   
-                   ."{$dbprefix}questions.title, "
-                   ."{$dbprefix}questions.other, "
-                   ."{$dbprefix}questions.mandatory "
-              ."FROM {$dbprefix}questions, "
-                   ."{$dbprefix}groups "
-             ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND "
-                   ."{$dbprefix}questions.qid=$pq AND "
-                   ."{$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND " 
-                   ."{$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'"; 
+    $query = "SELECT q.qid, "
+                   ."q.sid, "
+                   ."q.gid, "
+                   ."q.question, "
+                   ."q.type, "
+                   ."q.title, "
+                   ."q.other, "
+                   ."q.mandatory "
+              ."FROM {$dbprefix}questions q, "
+                   ."{$dbprefix}groups g "
+             ."WHERE q.gid=g.gid AND "
+                   ."q.parent_qid=0 AND "
+                   ."q.qid=$pq AND "
+                   ."q.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND " 
+                   ."g.language='".GetBaseLanguageFromSurveyID($surveyid)."'"; 
 		
 
 		$result = db_execute_assoc($query) or safe_die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
@@ -547,8 +545,6 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                         "gid"=>$myrows['gid'],
                         "question"=>$myrows['question'],
                         "type"=>$myrows['type'],
-                        "lid"=>$myrows['lid'],
-                        "lid1"=>$myrows['lid1'],                        
                         "mandatory"=>$myrows['mandatory'],
                         "other"=>$myrows['other'],
                         "title"=>$myrows['title']);
@@ -585,62 +581,63 @@ if ($questionscount > 0)
 				$rows['type'] == "H" )
 		{
 			$aquery="SELECT * "
-				."FROM {$dbprefix}answers "
-				."WHERE qid={$rows['qid']} "
-				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-				."ORDER BY sortorder, "
-				."answer";
+				."FROM {$dbprefix}questions "
+				."WHERE parent_qid={$rows['qid']} "
+				."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY question_order, "
+				."question";
 
 			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = "{$arows['code']}: [" . FlattenText($arows['answer']) . "]";
+				$shortanswer = "{$arows['title']}: [" . FlattenText($arows['question']) . "]";
 				$shortquestion=$rows['title'].":$shortanswer ".FlattenText($rows['question']);
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
 
 				switch ($rows['type'])
 				{
 					case "A": //Array 5 buttons
 						for ($i=1; $i<=5; $i++)
 						{
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $i, $i);
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
 						}
 					break;
 					case "B": //Array 10 buttons
 						for ($i=1; $i<=10; $i++)
 						{
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $i, $i);
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
 						}
 					break;
 					case "C": //Array Y/N/NA
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", $clang->gT("Yes"));
-					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", $clang->gT("Uncertain"));
-					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", $clang->gT("No"));
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", $clang->gT("Yes"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", $clang->gT("Uncertain"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "N", $clang->gT("No"));
 					break;
 					case "E": //Array >/=/<
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", $clang->gT("Increase"));
-					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", $clang->gT("Same"));
-					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", $clang->gT("Decrease"));
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "I", $clang->gT("Increase"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "S", $clang->gT("Same"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "D", $clang->gT("Decrease"));
 					break;
 					case "F": //Array Flexible Row
 					case "H": //Array Flexible Column
 						$fquery = "SELECT * "
-						."FROM {$dbprefix}labels "
-						."WHERE lid={$rows['lid']} "
+						."FROM {$dbprefix}answers "
+						."WHERE qid={$rows['qid']} "
 						."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                        ."AND scale_id=0 "
 						."ORDER BY sortorder, code ";
 					$fresult = db_execute_assoc($fquery);
 					while ($frow=$fresult->FetchRow())
 					{
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']);
 					}
 					break;
 				}
 				// Only Show No-Answer if question is not mandatory
 				if ($rows['mandatory'] != 'Y')
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", $clang->gT("No answer"));
 				}
 
 			} //while
@@ -671,37 +668,39 @@ if ($questionscount > 0)
 			$maxvalue=1;
 			$stepvalue=1;
 		}
-			//Get the LIDs
-		    $fquery = "SELECT * "
-						."FROM {$dbprefix}labels "
-						."WHERE lid={$rows['lid']} "
-						."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-						."ORDER BY sortorder, code ";
+			//Get the AIDs
+            $fquery = "SELECT * "
+            ."FROM {$dbprefix}answers "
+            ."WHERE qid={$rows['qid']} "
+            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+            ."AND scale_id=0 "
+            ."ORDER BY sortorder, code ";
+                        
 			$fresult = db_execute_assoc($fquery);
 			while ($frow=$fresult->FetchRow())
 				{
-					$lids[$frow['code']]=$frow['title'];
+					$lids[$frow['code']]=$frow['answer'];
 				}
 			//Now cycle through the answers
             $aquery="SELECT * "
-				."FROM {$dbprefix}answers "
-				."WHERE qid={$rows['qid']} "
-				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-				."ORDER BY sortorder, "
-				."answer";
+				."FROM {$dbprefix}questions "
+				."WHERE parent_qid={$rows['qid']} "
+				."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY question_order, "
+				."question";
 			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows = $aresult->FetchRow())
 			{
 				foreach($lids as $key=>$val) 
 				{
-					$shortquestion=$rows['title'].":{$arows['code']}:$key: [".strip_tags($arows['answer']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
-				    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
+					$shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
+				    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
 				if ($rows['type'] == ":")
 				{
 					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
 					{
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key, $ii, $ii);
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key, $ii, $ii);
 					}
 				}
 				}
@@ -711,11 +710,11 @@ if ($questionscount > 0)
 		elseif ($rows['type'] == "1") //Multi Scale
 		{
 			$aquery="SELECT * "
-				."FROM {$dbprefix}answers "
-				."WHERE qid={$rows['qid']} "
-				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-				."ORDER BY sortorder, "
-				."answer";
+				."FROM {$dbprefix}questions "
+				."WHERE parent_qid={$rows['qid']} "
+				."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY question_order, "
+				."question";
 			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows = $aresult->FetchRow())
@@ -723,68 +722,68 @@ if ($questionscount > 0)
 				$attr = getQuestionAttributes($rows['qid']);
 				$label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
 				$label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
-				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "][$label1]";
+				$shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
 				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0");
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
 
-				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "][$label2]";
+				$shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label2]";
 				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1");
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
 
 				// first label
 				$lquery="SELECT * "
-					."FROM {$dbprefix}labels "
-					."WHERE lid={$rows['lid']} "
-					."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-					."ORDER BY sortorder, "
-					."lid";
+					."FROM {$dbprefix}answers "
+					."WHERE qid={$rows['qid']} "
+                    ."AND scale_id=0 "
+					."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+					."ORDER BY sortorder, answer";
 				$lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
 				while ($lrows = $lresult->FetchRow())
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0", "{$lrows['code']}", "{$lrows['code']}");
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
 				}
 
 				// second label
-				$lquery="SELECT * "
-					."FROM {$dbprefix}labels "
-					."WHERE lid={$rows['lid1']} "
-					."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-					."ORDER BY sortorder, "
-					."lid";
+                $lquery="SELECT * "
+                    ."FROM {$dbprefix}answers "
+                    ."WHERE qid={$rows['qid']} "
+                    ."AND scale_id=1 "
+                    ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                    ."ORDER BY sortorder, answer";
 				$lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
 				while ($lrows = $lresult->FetchRow())
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1", "{$lrows['code']}", "{$lrows['code']}");
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
 				}
 
 				// Only Show No-Answer if question is not mandatory
 				if ($rows['mandatory'] != 'Y')
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0", "", $clang->gT("No answer"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1", "", $clang->gT("No answer"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "", $clang->gT("No answer"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", $clang->gT("No answer"));
 				}
 			} //while
 		}
 		elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
 		{ 
 			$aquery="SELECT * "
-				."FROM {$dbprefix}answers "
-				."WHERE qid={$rows['qid']} "
-				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-				."ORDER BY sortorder, "
-				."answer";
+				."FROM {$dbprefix}questions "
+				."WHERE parent_qid={$rows['qid']} "
+				."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY question_order, "
+				."question";
 			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
 				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
 
 				// Only Show No-Answer if question is not mandatory
 				if ($rows['mandatory'] != 'Y')
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", $clang->gT("No answer"));
 				}
 
 			} //while
@@ -795,6 +794,7 @@ if ($questionscount > 0)
 				."FROM {$dbprefix}answers "
 				."WHERE qid={$rows['qid']} "
 				."AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."AND scale_id=0 "
 				."ORDER BY sortorder, answer";
 			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
 			$acount=$aresult->RecordCount();
@@ -824,24 +824,24 @@ if ($questionscount > 0)
 			$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
 			$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
 			$aquery="SELECT * "
-				."FROM {$dbprefix}answers "
-				."WHERE qid={$rows['qid']} "
+				."FROM {$dbprefix}questions "
+				."WHERE parent_qid={$rows['qid']} "
 				."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-				."ORDER BY sortorder, "
-				."answer";
+				."ORDER BY question_order, "
+				."question";
 			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows=$aresult->FetchRow())
 			{
-				$theanswer = addcslashes($arows['answer'], "'");
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
+				$theanswer = addcslashes($arows['question'], "'");
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
 
-				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
 				$shortanswer .= "[".$clang->gT("Single checkbox")."]";
 				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);				
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
-				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], 'Y', 'checked');
-				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], '', 'not checked');
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', 'checked');
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', 'not checked');
 			}
 		}
 		elseif($rows['type'] == "X") //Boilerplate question
@@ -882,31 +882,6 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
 				break;
-				case "W": // List Flexibel Label Dropdown
-				case "Z": // List Flexible Radio Button
-					$fquery = "SELECT * FROM {$dbprefix}labels\n"
-					. "WHERE lid={$rows['lid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-					. "ORDER BY sortorder, code";
-
-				$fresult = db_execute_assoc($fquery);
-
-				if (!isset($arows['code'])) {$arows['code']='';}  // for some questions types there is no code
-				while ($frow=$fresult->FetchRow())
-				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
-				}
-				// For dropdown questions
-				// optinnaly add the 'Other' answer
-				if ($rows['other'] == "Y")
-				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", $clang->gT("Other"));
-				}
-				// Only Show No-Answer if question is not mandatory
-				if ($rows['mandatory'] != 'Y')
-				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
-				}
-				break;
 
 				case "N": // Simple Numerical questions
 
@@ -922,6 +897,7 @@ if ($questionscount > 0)
 					."FROM {$dbprefix}answers "
 					."WHERE qid={$rows['qid']} "
 					."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                    ."AND scale_id=0 "
 					."ORDER BY sortorder, "
 					."answer";
 				// Ranking question? Replacing "Ranking" by "this"
@@ -1181,7 +1157,7 @@ if ($subaction=='' ||
 	if ($scenariocount > 0)
 	{
         $js_adminheader_includes[]= $homeurl.'/scripts/conditions.js';
-        $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-checkgroup.js';
+        $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery.checkgroup.js';
 		while ($scenarionr=$scenarioresult->FetchRow())
 		{
 			$scenariotext = "";
@@ -1257,6 +1233,7 @@ if ($subaction=='' ||
 				."{$dbprefix}groups "
 				."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
 				."AND {$dbprefix}questions.gid={$dbprefix}groups.gid "
+                ."AND {$dbprefix}questions.parent_qid=0 "
 				."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
                 ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' "  
 				."AND {$dbprefix}conditions.qid=$qid "
@@ -1700,15 +1677,8 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$mytitle = $clang->gT("Add condition");
 	}
 
-	$conditionsoutput_main_content .= "\t<tr class='settingcaption'>\n"
-		."<td colspan='2' align='center'>\n"
-		."\t<strong>".$mytitle."</strong>\n"
-		."</td>\n"
-		."\t</tr>\n"
-		."\t<tr bgcolor='#EFEFEF'>\n"
-		."<th width='25%'></th>\n"
-		."<th width='75%'></th>\n"
-		."\t</tr>\n";
+	$conditionsoutput_main_content .= "\t<div class='header'>\n".$mytitle."</div>";
+    $conditionsoutput_main_content .= "<table width='100%' align='center' cellspacing='0' cellpadding='5'>\n";
 
 	if  ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||
 		( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
@@ -1863,7 +1833,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	// Predefined answers tab
 	$conditionsoutput_main_content .= "\t<div id='CANSWERSTAB'><select  name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; width:600px;' size='7'>\n"
 		."\t</select>\n"
-		."\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answers for this question")."</span>\n"
+		."\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answer options for this question")."</span>\n"
 		."\t</div>\n\t\n";
 	// Constant tab 
 	$conditionsoutput_main_content .= "<div id='CONST' style='display:' >"
@@ -1912,7 +1882,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
     $js_adminheader_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
     $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
     
-	$css_adminheader_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
+//	$css_adminheader_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
 
 	if ($subaction == "editthiscondition" && isset($p_cid))
 	{
