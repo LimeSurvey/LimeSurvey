@@ -1677,15 +1677,8 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$mytitle = $clang->gT("Add condition");
 	}
 
-	$conditionsoutput_main_content .= "\t<tr class='settingcaption'>\n"
-		."<td colspan='2' align='center'>\n"
-		."\t<strong>".$mytitle."</strong>\n"
-		."</td>\n"
-		."\t</tr>\n"
-		."\t<tr bgcolor='#EFEFEF'>\n"
-		."<th width='25%'></th>\n"
-		."<th width='75%'></th>\n"
-		."\t</tr>\n";
+	$conditionsoutput_main_content .= "\t<div class='header'>\n".$mytitle."</div>";
+    $conditionsoutput_main_content .= "<table width='100%' align='center' cellspacing='0' cellpadding='5'>\n";
 
 	if  ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||
 		( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
@@ -1889,7 +1882,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
     $js_adminheader_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
     $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
     
-	$css_adminheader_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
+//	$css_adminheader_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
 
 	if ($subaction == "editthiscondition" && isset($p_cid))
 	{

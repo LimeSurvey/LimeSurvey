@@ -907,6 +907,14 @@ div.messagebox .warningheader {
     text-align:right;
 }
 
+#conditionsource, #conditiontarget{
+    width: 630px;
+}
+
+#editconditions select{
+    font-size:10px;
+}
+
 /*controls the width of select boxes in group order dialog*/
 .movableNode select {
     max-width:200px;

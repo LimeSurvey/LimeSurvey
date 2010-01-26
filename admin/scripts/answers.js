@@ -316,7 +316,7 @@ function lspreview()
                         for (y in language)
                         {
                             tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
-                            tabbody=tabbody+"<div id='language_'+y+'><table class='limetable'>";
+                            tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
                             lsrows=language[y][0];
                             tablerows='';
                             var highlight=true;
@@ -329,7 +329,7 @@ function lspreview()
                                 }
                                 tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
                             }
-                            tabbody=tabbody+'<thead><tr><th>Code</th><th>Label</th></tr></thead><div>';
+                            tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th>'+strlabel+'</th></tr></thead></table></div>';
                         }
                     }
                     $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);

@@ -12,18 +12,29 @@ $(document).ready(function(){
        $('#labelsetbrowser').dialog({ autoOpen: false,
                                         modal: true,
                                         width:800,
-                                        title: lsbrowsertitle});         
-       $('.btnlsbrowser').click(lsbrowser);
+                                        title: lsbrowsertitle});   
+       $('#quickadd').dialog({ autoOpen: false,
+                                        modal: true,
+                                        width:600,
+                                        title: quickaddtitle});   
+                                        
+       $('#btnlsbrowser').click(lsbrowser);
        $('#btncancel').click(function(){
            $('#labelsetbrowser').dialog('close');
        });
+       $('#btnqacancel').click(function(){
+           $('#quickadd').dialog('close');
+       });       
        $('#btnlsreplace').click(transferlabels);
        $('#btnlsinsert').click(transferlabels);
+       $('#btnqareplace').click(quickaddlabels);
+       $('#btnqainsert').click(quickaddlabels);
        $('#labelsets').click(lspreview);
        $('#languagefilter').click(lsbrowser);
+       $('#btnquickadd').click(quickadddialog);
+       
        updaterowproperties(); 
 });
-
 
 function deleteinput()
 {
@@ -223,7 +234,6 @@ function code_duplicates_check()
 
 function lsbrowser()
 {
-    scale_id=removechars($(this).attr('id'));
     $('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
     match=0;
@@ -270,7 +280,7 @@ function lspreview()
                         for (y in language)
                         {
                             tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
-                            tabbody=tabbody+"<div id='language_'+y+'><table class='limetable'>";
+                            tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
                             lsrows=language[y][0];
                             tablerows='';
                             var highlight=true;
@@ -281,9 +291,13 @@ function lspreview()
                                 if (highlight==true) { 
                                     tabbody=tabbody+" class='highlight' ";
                                 }
+                                if (lsrows[z].title==null)
+                                {
+                                    lsrows[z].title='';
+                                }
                                 tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
                             }
-                            tabbody=tabbody+'<thead><tr><th>Code</th><th>Label</th></tr></thead><div>';
+                            tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th>'+strlabel+'</th></tr></thead></table></div>';
                         }
                     }
                     $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
@@ -399,14 +413,14 @@ function transferlabels()
                     }
                     $('#tabpage_'+languages[x]+' tbody').append(tablerows);
                     // Unbind any previous events
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
-                    $('#tabpage_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
+                    $('#tabpage_'+languages[x]+' .btnaddanswer').unbind('click');
+                    $('#tabpage_'+languages[x]+' .btneditanswer').unbind('click');
+                    $('#tabpage_'+languages[x]+' .btndelanswer').unbind('click');
+                    $('#tabpage_'+languages[x]+' .answer').unbind('focus');
+                    $('#tabpage_'+languages[x]+' .btnaddanswer').click(addinput);
+                    $('#tabpage_'+languages[x]+' .btneditanswer').click(popupeditor);
+                    $('#tabpage_'+languages[x]+' .btndelanswer').click(deleteinput);
+                    $('#tabpage_'+languages[x]+' .answer').focus(function(){
                         if ($(this).val()==newansweroption_text)
                         {
                             $(this).val('');
@@ -423,38 +437,76 @@ function transferlabels()
     
 }
 
-function in_array (needle, haystack, argStrict) {
-    // http://kevin.vanzonneveld.net
-    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: vlado houba
-    // +   input by: Billy
-    // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
-    // *     example 1: in_array('van', ['Kevin', 'van', 'Zonneveld']);
-    // *     returns 1: true
-    // *     example 2: in_array('vlado', {0: 'Kevin', vlado: 'van', 1: 'Zonneveld'});
-    // *     returns 2: false
-    // *     example 3: in_array(1, ['1', '2', '3']);
-    // *     returns 3: true
-    // *     example 3: in_array(1, ['1', '2', '3'], false);
-    // *     returns 3: true
-    // *     example 4: in_array(1, ['1', '2', '3'], true);
-    // *     returns 4: false
-
-    var key = '', strict = !!argStrict;
-
-    if (strict) {
-        for (key in haystack) {
-            if (haystack[key] === needle) {
-                return true;
-            }
-        }
-    } else {
-        for (key in haystack) {
-            if (haystack[key] == needle) {
-                return true;
-            }
-        }
+function quickaddlabels()
+{
+    if ($(this).attr('id')=='btnqareplace')
+    {
+       var lsreplace=true;
+    } 
+    else
+    {
+       var lsreplace=false;
     }
 
-    return false;
+    languages=langs.split(';');   
+    for (x in languages)
+    {
+        lsrows=$('#quickaddarea').val().split("\n");
+
+        if (lsrows[0].indexOf("\t")==-1)
+        {
+            separatorchar=';'
+        }
+        else
+        {
+            separatorchar="\t";
+        }
+        tablerows='';
+        for (k in lsrows)
+        {
+            thisrow=lsrows[k].splitCSV(separatorchar);
+            if (thisrow.length==1)
+            {
+                thisrow[1]=thisrow[0];
+                thisrow[0]=k+1;
+            }
+            var randomid='new'+Math.floor(Math.random()*111111)
+             
+            if (x==0) {
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" id="code_'+randomid+'" name="code_'+randomid+'" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            }
+            else
+            {
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            }
+        }
+        if (lsreplace) {
+            $('#tabpage_'+languages[x]+' tbody').empty();
+        }
+        $('#tabpage_'+languages[x]+' tbody').append(tablerows);
+        // Unbind any previous events
+        $('#tabpage_'+languages[x]+' .btnaddanswer').unbind('click');
+        $('#tabpage_'+languages[x]+' .btneditanswer').unbind('click');
+        $('#tabpage_'+languages[x]+' .btndelanswer').unbind('click');
+        $('#tabpage_'+languages[x]+' .answer').unbind('focus');
+        $('#tabpage_'+languages[x]+' .btnaddanswer').click(addinput);
+        $('#tabpage_'+languages[x]+' .btneditanswer').click(popupeditor);
+        $('#tabpage_'+languages[x]+' .btndelanswer').click(deleteinput);
+        $('#tabpage_'+languages[x]+' .answer').focus(function(){
+            if ($(this).val()==newansweroption_text)
+            {
+                $(this).val('');
+            }
+        });
+    }
+    $('#quickadd').dialog('close');
+    $('#quickaddarea').val('');
+    $('.answertable tbody').sortable('refresh');                       
+    updaterowproperties(); 
+}
+
+
+function quickadddialog()
+{
+        $('#quickadd').dialog('open');    
 }

@@ -1309,6 +1309,8 @@ if ($action=='editansweroptions')
                           var scalecount=".$scalecount."; 
                           var assessmentvisible=".($assessmentvisible?'true':'false')."; 
                           var newansweroption_text='".$clang->gT('New answer option','js')."'; 
+                          var strcode='".$clang->gT('Code','js')."'; 
+                          var strlabel='".$clang->gT('Label','js')."'; 
                           var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
                           var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."'; 
                           var langs='".implode(';',$anslangs)."';</script>\n";
@@ -1432,7 +1434,7 @@ if ($action=='editansweroptions')
 		$vasummary .= "</div>";
 	}
         // Label set browser
-    $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;'>
+    $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;width:260px;'>
                       <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
                       <br /><select id='labelsets' size='10' style='width:250px;'><option>A label set</option></select>
                       <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
@@ -1490,7 +1492,10 @@ if ($action=='editsubquestions')
     $vasummary = "\n<script type='text/javascript'>
                       var languagecount=".count($anslangs).";\n
                       var newansweroption_text='".$clang->gT('New answer option','js')."'; 
+                      var strcode='".$clang->gT('Code','js')."'; 
+                      var strlabel='".$clang->gT('Label','js')."'; 
                       var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
+                      var quickaddtitle='".$clang->gT('Quick-add subquestions','js')."'; 
                       var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate subquestion codes.','js')."'; 
                       var langs='".implode(';',$anslangs)."';</script>\n";
 
@@ -1637,10 +1642,11 @@ if ($action=='editsubquestions')
         $vasummary .= "</tbody></table>\n";
         $vasummary .= "</div>";
     }
-    $vasummary .= "<button id='btnlsbrowser' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
+    $vasummary .= "<button id='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
+    $vasummary .= "<button id='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
     
         // Label set browser
-    $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;'>
+    $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left; width:260px;'>
                       <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
                       <br /><select id='labelsets' size='10' style='width:250px;'><option>A label set</option></select>
                       <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
@@ -1648,6 +1654,13 @@ if ($action=='editsubquestions')
                       <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
                    <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";    
+    $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
+                      <label for='quickadd'>".$clang->gT('Enter your subquestions:')."</label>
+                      <br /><textarea id='quickaddarea' class='tipme' title='Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab.' rows='30' style='width:570px;'></textarea>
+                      <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
+                      <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
+                      <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>
+                   </div> ";    
     $vasummary .= "<p>"
         ."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";
     $position=sprintf("%05d", $position);
