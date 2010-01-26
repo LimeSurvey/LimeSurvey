@@ -305,148 +305,157 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 
 
 /**
- * showadminmenu() function returns html text for the administration button bar
- * 
- * @global string $homedir
- * @global string $scriptname
- * @global string $surveyid
- * @global string $setfont
- * @global string $imagefiles
- * @return string $adminmenu
- */
-function showadminmenu()
+* getqtypelist() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
+*    question type
+* 
+* @global string $publicurl
+* @global string $sourcefrom
+* 
+* @param string $SelectedCode Value of the Question Type (defaults to "T")
+* @param string $ReturnType Type of output from this function (defaults to selector)
+* 
+* @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
+* 
+* Explanation of questiontype array:
+* 
+* description : Question description
+* subquestions : 0= Does not support subquesitons 1=Supports subquestions
+* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
+*/
+function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
+{
+    global $publicurl;
+    global $sourcefrom, $clang;
+                                                              
+    if (!isset($clang))
     {
-    global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck;
-
-    $adminmenu  = "<div class='menubar'>\n";
-    if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
-    $adminmenu  .="<div class='menubar-title'>\n"
-                . "<div class='menubar-title-left'>\n"
-                . "<strong>".$clang->gT("Administration")."</strong>";
-    if(isset($_SESSION['loginID']))
-        {
-        $adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
-                    . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" >"
-                    . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' /></a>"
-                    . "</strong>\n";
-        }
-    $adminmenu  .="</div>\n";
-    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updatelastcheck) && $updatelastcheck>0 && isset($updateavailable) && $updateavailable==1)   
-    {
-        $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
+        $clang = new limesurvey_lang("en");
     }
-    $adminmenu .= "</div>\n"
-                . "<div class='menubar-main'>\n"
-                . "<div class='menubar-left'>\n"
-                . "<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\">" 
-                . "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' /></a>\n";
-
-    $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
-                . "<img src='$imagefiles/seperator.gif' alt='' />\n";
-
-    // Edit users
-    $adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" >" 
-                ."<img src='$imagefiles/security.png' name='AdminSecurity' alt='".$clang->gT("Create/Edit Users")."' /></a>";
-
-    $adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" >"
-                ."<img src='$imagefiles/usergroup.png' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
-
-    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    $qtypes = array(
+    "1"=>array('description'=>$clang->gT("Array Dual Scale"),
+               'subquestions'=>1,
+               'assessable'=>0,
+               'answerscales'=>2),
+    "5"=>array('description'=>$clang->gT("5 Point Choice"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "A"=>array('description'=>$clang->gT("Array (5 Point Choice)"),
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
+    "B"=>array('description'=>$clang->gT("Array (10 Point Choice)"),
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
+    "C"=>array('description'=>$clang->gT("Array (Yes/No/Uncertain)"),
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
+    "D"=>array('description'=>$clang->gT("Date"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "E"=>array('description'=>$clang->gT("Array (Increase/Same/Decrease)"),
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
+    "F"=>array('description'=>$clang->gT("Array"),
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>1),
+    "G"=>array('description'=>$clang->gT("Gender"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "H"=>array('description'=>$clang->gT("Array by column"),
+               'subquestions'=>1,
+               'assessable'=>0,
+               'answerscales'=>1),
+    "I"=>array('description'=>$clang->gT("Language Switch"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
+    "L"=>array('description'=>$clang->gT("List (Radio)"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>1),
+    "M"=>array('description'=>$clang->gT("Multiple Options"),
+               'subquestions'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "N"=>array('description'=>$clang->gT("Numerical Input"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "O"=>array('description'=>$clang->gT("List With Comment"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>1),
+    "P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
+               'subquestions'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "Q"=>array('description'=>$clang->gT("Multiple Short Text"),
+               'subquestions'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "R"=>array('description'=>$clang->gT("Ranking"),
+               'subquestions'=>0,
+               'assessable'=>1,
+               'answerscales'=>1),
+    "S"=>array('description'=>$clang->gT("Short Free Text"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "T"=>array('description'=>$clang->gT("Long Free Text"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "U"=>array('description'=>$clang->gT("Huge Free Text"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "X"=>array('description'=>$clang->gT("Boilerplate Question"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "Y"=>array('description'=>$clang->gT("Yes/No"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "!"=>array('description'=>$clang->gT("List (Dropdown)"),
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>1),
+    ":"=>array('description'=>$clang->gT("Array (Numbers)"),
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>1),
+    ";"=>array('description'=>$clang->gT("Array (Texts)"),
+               'subquestions'=>1,
+               'assessable'=>0,
+               'answerscales'=>1),
+    );
+    asort($qtypes);
+    if ($ReturnType == "array") {return $qtypes;}
+    $qtypeselecter = "";
+    foreach($qtypes as $TypeCode=>$TypeProperties)
     {
-    $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global settings")."\" >"
-                . "<img src='$imagefiles/global.png' name='GlobalSettings' alt='". $clang->gT("Global settings")."' /></a>"
-                . "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n";
-    }                    
-    // Check data integrity
-    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
-        {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\">".
-                      "<img src='$imagefiles/checkdb.png' name='CheckDataIntegrity' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
-        }
-    else
-        {
-        $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
-        }
-
-    // list surveys
-    $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" >\n"
-                ."<img src='$imagefiles/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
-                ."</a>" ;
-
-    // db backup & label editor
-    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
-        {
-        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=dumpdb', '_top')\" title=\"".$clang->gTview("Backup Entire Database")."\">\n"
-                    ."<img src='$imagefiles/backup.png' name='ExportDB' alt='". $clang->gT("Backup Entire Database")."' />"
-                    ."</a>\n"
-                    ."<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
-        }
-    else
-        {
-          $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
-        }
-    if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
-        {
-        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit label sets")."\">\n" 
-                    ."<img src='$imagefiles/labels.png'  name='LabelsEditor' alt='". $clang->gT("Edit label sets")."' /></a>\n"
-                    ."<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
-        }
-    else
-        {
-          $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
-        }
-    if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
-        {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" >"
-                    ."<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' /></a>\n";
-        }
-        // survey select box
-        $adminmenu .= "</div><div class='menubar-right'><span class=\"boxcaption\">".$clang->gT("Surveys").":</span>"
-                    . "<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-                    . getsurveylist()
-                    . "</select>\n";
-        
-        if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
-            {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-                    ."title=\"".$clang->gTview("Create or Import New Survey")."\" >"
-                    ."<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
-             }
-
-
-    if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
-    {
-        // Logout
-        $adminmenu .= "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />"
-                    . "<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\" title=\"".$clang->gTview("Logout")."\" >"
-                    . "<img src='$imagefiles/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
-                    
-        //Show help   
-        $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey Online manual")."\" >"
-                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
-                    
-        $adminmenu .= "</div>"
-                    . "</div>\n"
-                    . "</div>\n";
-      //  $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-        if (!isset($action) && !isset($surveyid) && count(getsurveylist(true))==0) {
-            $adminmenu.= '<div style="width:500px;margin:0 auto;">'
-                         .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
-                         .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
-                         .'<ol>'
-                         .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imagefiles/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
-                         .'<li>'.$clang->gT('Create a new group inside your survey.').'</li>'
-                         .'<li>'.$clang->gT('Create one or more question inside the new group.').'</li>'
-                         .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imagefiles/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
-                         .'</ol></p><br />&nbsp;</div>';
-        }
-                    
-    }                 
-    return $adminmenu;
+        $qtypeselecter .= "<option value='$TypeCode'";
+        if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
+        $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
     }
+    return $qtypeselecter;
+}
 
 
 
+            
 function &db_execute_num($sql,$inputarr=false)
 {
     global $connect;
@@ -862,157 +871,6 @@ function getMaxquestionorder($gid)
     }
     else return $current_max ;
 }
-
-
-/**
-* getqtypelist() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
-*    question type
-* 
-* @global string $publicurl
-* @global string $sourcefrom
-* 
-* @param string $SelectedCode Value of the Question Type (defaults to "T")
-* @param string $ReturnType Type of output from this function (defaults to selector)
-* 
-* @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
-* 
-* Explanation of questiontype array:
-* 
-* description : Question description
-* subquestions : 0= Does not support subquesitons 1=Supports subquestions
-* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-*/
-function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
-{
-    global $publicurl;
-    global $sourcefrom, $clang;
-                                                              
-    if (!isset($clang))
-    {
-        $clang = new limesurvey_lang("en");
-    }
-    $qtypes = array(
-    "1"=>array('description'=>$clang->gT("Array Dual Scale"),
-               'subquestions'=>1,
-               'assessable'=>0,
-               'answerscales'=>2),
-    "5"=>array('description'=>$clang->gT("5 Point Choice"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "A"=>array('description'=>$clang->gT("Array (5 Point Choice)"),
-               'subquestions'=>1,
-               'assessable'=>1,
-               'answerscales'=>0),
-    "B"=>array('description'=>$clang->gT("Array (10 Point Choice)"),
-               'subquestions'=>1,
-               'assessable'=>1,
-               'answerscales'=>0),
-    "C"=>array('description'=>$clang->gT("Array (Yes/No/Uncertain)"),
-               'subquestions'=>1,
-               'assessable'=>1,
-               'answerscales'=>0),
-    "D"=>array('description'=>$clang->gT("Date"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "E"=>array('description'=>$clang->gT("Array (Increase/Same/Decrease)"),
-               'subquestions'=>1,
-               'assessable'=>1,
-               'answerscales'=>0),
-    "F"=>array('description'=>$clang->gT("Array"),
-               'subquestions'=>1,
-               'assessable'=>1,
-               'answerscales'=>1),
-    "G"=>array('description'=>$clang->gT("Gender"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "H"=>array('description'=>$clang->gT("Array by column"),
-               'subquestions'=>1,
-               'assessable'=>0,
-               'answerscales'=>1),
-    "I"=>array('description'=>$clang->gT("Language Switch"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
-               'subquestions'=>1,
-               'assessable'=>1,
-               'answerscales'=>0),
-    "L"=>array('description'=>$clang->gT("List (Radio)"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>1),
-    "M"=>array('description'=>$clang->gT("Multiple Options"),
-               'subquestions'=>1,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "N"=>array('description'=>$clang->gT("Numerical Input"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "O"=>array('description'=>$clang->gT("List With Comment"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>1),
-    "P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
-               'subquestions'=>1,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "Q"=>array('description'=>$clang->gT("Multiple Short Text"),
-               'subquestions'=>1,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "R"=>array('description'=>$clang->gT("Ranking"),
-               'subquestions'=>0,
-               'assessable'=>1,
-               'answerscales'=>1),
-    "S"=>array('description'=>$clang->gT("Short Free Text"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "T"=>array('description'=>$clang->gT("Long Free Text"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "U"=>array('description'=>$clang->gT("Huge Free Text"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "X"=>array('description'=>$clang->gT("Boilerplate Question"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "Y"=>array('description'=>$clang->gT("Yes/No"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>0),
-    "!"=>array('description'=>$clang->gT("List (Dropdown)"),
-               'subquestions'=>0,
-               'assessable'=>0,
-               'answerscales'=>1),
-    ":"=>array('description'=>$clang->gT("Array (Numbers)"),
-               'subquestions'=>1,
-               'assessable'=>1,
-               'answerscales'=>1),
-    ";"=>array('description'=>$clang->gT("Array (Texts)"),
-               'subquestions'=>1,
-               'assessable'=>0,
-               'answerscales'=>1),
-    );
-    asort($qtypes);
-    if ($ReturnType == "array") {return $qtypes;}
-    $qtypeselecter = "";
-    foreach($qtypes as $TypeCode=>$TypeProperties)
-    {
-        $qtypeselecter .= "<option value='$TypeCode'";
-        if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
-        $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
-    }
-    return $qtypeselecter;
-}
-
 
 /**
  * question_class() returns a class name for a given question type to allow custom styling for each question type.

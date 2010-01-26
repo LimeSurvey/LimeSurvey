@@ -78,7 +78,7 @@ if ( $action == 'FakeGET')
 	include('access_denied.php');
 }
 
-if(isset($_SESSION['loginID']) && $action!='login')
+if(isset($_SESSION['loginID']))
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
     if ($action == 'delsurvey'         || $action == 'delgroup'       || 
@@ -454,8 +454,8 @@ elseif ($action == 'replacementfields')
          !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') && 
          (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
           $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
-          $action=='newsurvey' || $action=='listsurveys' ||   
-          $action=='surveyrights' || $action=='quotas') )
+          $action=='newsurvey' || $action=='listsurveys' || $action=='globalsettings' || $action=='editusergroups' ||
+          $action=='surveyrights' || $action=='quotas'  || $action=='editusers' || $action=='' || $action=='login') )
     {
 	    if ($action=='editsurvey' || $action=='updatesurvey')
 	    {
@@ -558,6 +558,7 @@ elseif ($action == 'replacementfields')
     if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}  
     if (isset($exportspssoutput)) {$adminoutput.= $exportspssoutput;}  
     if (isset($exportroutput)) {$adminoutput.= $exportroutput;}  
+    if (isset($loginsummary)) {$adminoutput.= $loginsummary;}  
                                                                         
   
     if (!isset($printablesurveyoutput) && $subaction!='export' && (substr($action,0,4)!= 'ajax'))
@@ -617,7 +618,7 @@ else
 { //not logged in
     sendcacheheaders();
     if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
+    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput.$loginsummary;  // All future output is written into this and then outputted at the end of file
     unset($_SESSION['metaHeader']);    
     $adminoutput.= "</div>\n".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
 }

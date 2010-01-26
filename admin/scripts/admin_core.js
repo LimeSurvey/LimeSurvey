@@ -16,7 +16,7 @@ $(document).ready(function(){
                             }, $.datepicker.regional[userlanguage]);
     }
 
-    $('.header').addClass("ui-widget-header");   
+    $('div.header').addClass("ui-widget-header");   
     $('.menubar-title').addClass("ui-widget-header");   
     $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");   
     $('button,input[type=submit],input[type=button],input[type=reset]').hover(

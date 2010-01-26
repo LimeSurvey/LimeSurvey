@@ -94,7 +94,7 @@ if (!isset($_SESSION['loginID']))
 	}
 	elseif($action == "login" && $useWebserverAuth === false)	// normal login
 	{
-		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
+		$loginsummary = "<p><strong>".$clang->gT("Logging in...")."</strong><br />\n";
 
 		if (isset($postuser) && isset($_POST['password']))
 		{
@@ -182,7 +182,7 @@ if (!isset($_SESSION['loginID']))
 		// a link with all params before first auto-login
 		unset($surveyid);
 
-		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
+		$loginsummary = "<p><strong>".$clang->gT("Logging in...")."</strong><br />\n";
 		// getting user name, optionnally mapped
 		if (isset($userArrayMap) && is_array($userArrayMap) &&
 			isset($userArrayMap[$_SERVER['PHP_AUTH_USER']]))
@@ -306,7 +306,7 @@ if (!isset($_SESSION['loginID']))
 elseif ($action == "logout")
 {
 	killSession();
-	$logoutsummary = $clang->gT("Logout successful.");
+	$logoutsummary = '<p>'.$clang->gT("Logout successful.");
 }
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])

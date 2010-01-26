@@ -180,7 +180,7 @@ if ($action == "listsurveys")
 					    $listsurveys .= "</tr>" ;
 		}
 
-		$listsurveys.="</tbody><tfoot><tr class='header'>
+		$listsurveys.="</tbody><tfoot><tr>
 		<td colspan=\"11\">&nbsp;</td>".
 		"</tr></tfoot>";
 		$listsurveys.="</table><br />" ;
@@ -1906,7 +1906,7 @@ if($action == "setusergroupsurveysecurity")
 	$result = db_execute_assoc($query); //Checked
 	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$usersummary = "<table width='100%' border='0'>\n<tr><td colspan='6' class='header'>\n"
+		$usersummary = "<table width='100%' border='0'>\n<tr><td colspan='6'>\n"
 		. "".$clang->gT("Set Survey Rights")."</td></tr>\n";
 
 		$usersummary .= "<th align='center'>".$clang->gT("Edit Survey Property")."</th>\n"
@@ -2120,7 +2120,7 @@ if($action == "surveysecurity")
 		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Export")."\"></th>\n"
 		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Delete Survey")."\"></th>\n"
 		. "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Activate Survey")."\"></th>\n"
-		. "<th class=\"header\">".$clang->gT("Action")."</th>\n"
+		. "<th>".$clang->gT("Action")."</th>\n"
 		. "</tr></thead>\n";
 		
 		if (isset($usercontrolSameGroupPolicy) &&
@@ -3550,4 +3550,147 @@ function replacenewline ($texttoreplace)
 
 	return $new_str;
 }
-?>
+
+
+/**
+ * showadminmenu() function returns html text for the administration button bar
+ * 
+ * @global string $homedir
+ * @global string $scriptname
+ * @global string $surveyid
+ * @global string $setfont
+ * @global string $imagefiles
+ * @return string $adminmenu
+ */
+function showadminmenu()
+{
+    global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck;
+
+    $adminmenu  = "<div class='menubar'>\n";
+    if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
+    $adminmenu  .="<div class='menubar-title'>\n"
+                . "<div class='menubar-title-left'>\n"
+                . "<strong>".$clang->gT("Administration")."</strong>";
+    if(isset($_SESSION['loginID']))
+    {
+        $adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
+                    . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" >"
+                    . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' /></a>"
+                    . "</strong>\n";
+    }
+    $adminmenu  .="</div>\n";
+    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updatelastcheck) && $updatelastcheck>0 && isset($updateavailable) && $updateavailable==1)   
+    {
+        $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
+    }
+    $adminmenu .= "</div>\n"
+                . "<div class='menubar-main'>\n"
+                . "<div class='menubar-left'>\n"
+                . "<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\">" 
+                . "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' /></a>\n";
+
+    $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
+                . "<img src='$imagefiles/seperator.gif' alt='' />\n";
+
+    // Edit users
+    $adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" >" 
+                ."<img src='$imagefiles/security.png' name='AdminSecurity' alt='".$clang->gT("Create/Edit Users")."' /></a>";
+
+    $adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" >"
+                ."<img src='$imagefiles/usergroup.png' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
+
+    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    {
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global settings")."\" >"
+                    . "<img src='$imagefiles/global.png' name='GlobalSettings' alt='". $clang->gT("Global settings")."' /></a>"
+                    . "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n";
+    }                    
+    // Check data integrity
+    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
+    {
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\">".
+                      "<img src='$imagefiles/checkdb.png' name='CheckDataIntegrity' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
+    }
+    else
+    {
+        $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
+    }
+
+    // list surveys
+    $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" >\n"
+                ."<img src='$imagefiles/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
+                ."</a>" ;
+
+    // db backup & label editor
+    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
+    {
+        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=dumpdb', '_top')\" title=\"".$clang->gTview("Backup Entire Database")."\">\n"
+                    ."<img src='$imagefiles/backup.png' name='ExportDB' alt='". $clang->gT("Backup Entire Database")."' />"
+                    ."</a>\n"
+                    ."<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
+    }
+    else
+    {
+          $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
+    }
+    if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
+    {
+        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit label sets")."\">\n" 
+                    ."<img src='$imagefiles/labels.png'  name='LabelsEditor' alt='". $clang->gT("Edit label sets")."' /></a>\n"
+                    ."<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
+    }
+    else
+    {
+          $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+    }
+    if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
+    {
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" >"
+                    ."<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' /></a>\n";
+    }
+        // survey select box
+    $adminmenu .= "</div><div class='menubar-right'><span class=\"boxcaption\">".$clang->gT("Surveys").":</span>"
+                . "<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+                . getsurveylist()
+                . "</select>\n";
+        
+    if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
+    {
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
+                     ."title=\"".$clang->gTview("Create or Import New Survey")."\" >"
+                     ."<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
+    }
+
+
+    if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
+    {
+        // Logout
+        $adminmenu .= "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />"
+                    . "<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\" title=\"".$clang->gTview("Logout")."\" >"
+                    . "<img src='$imagefiles/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
+                    
+        //Show help   
+        $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey Online manual")."\" >"
+                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
+                    
+        $adminmenu .= "</div>"
+                    . "</div>\n"
+                    . "</div>\n";
+      //  $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+        if (!isset($action) && !isset($surveyid) && count(getsurveylist(true))==0) 
+        {
+            $adminmenu.= '<div style="width:500px;margin:0 auto;">'
+                         .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
+                         .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
+                         .'<ol>'
+                         .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imagefiles/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
+                         .'<li>'.$clang->gT('Create a new group inside your survey.').'</li>'
+                         .'<li>'.$clang->gT('Create one or more question inside the new group.').'</li>'
+                         .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imagefiles/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
+                         .'</ol></p><br />&nbsp;</div>';
+        }
+                    
+    }                 
+    return $adminmenu;
+}
+
