@@ -11,7 +11,11 @@ $(document).ready(function(){
        $('#labelsetbrowser').dialog({ autoOpen: false,
                                         modal: true,
                                         width:800,
-                                        title: lsbrowsertitle});         
+                                        title: lsbrowsertitle});   
+       $('#quickadd').dialog({ autoOpen: false,
+                                        modal: true,
+                                        width:600,
+                                        title: quickaddtitle});                                                 
        $('.btnlsbrowser').click(lsbrowser);
        $('#btncancel').click(function(){
            $('#labelsetbrowser').dialog('close');
@@ -20,6 +24,14 @@ $(document).ready(function(){
        $('#btnlsinsert').click(transferlabels);
        $('#labelsets').click(lspreview);
        $('#languagefilter').click(lsbrowser);
+       
+       $('#btnqacancel').click(function(){
+           $('#quickadd').dialog('close');
+       });  
+       $('#btnqareplace').click(quickaddlabels);
+       $('#btnqainsert').click(quickaddlabels);
+       $('.btnquickadd').click(quickadddialog);               
+       
        updaterowproperties(); 
 });
 
@@ -444,7 +456,7 @@ function transferlabels()
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                             }
                         }
@@ -478,38 +490,97 @@ function transferlabels()
     
 }
 
-function in_array (needle, haystack, argStrict) {
-    // http://kevin.vanzonneveld.net
-    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: vlado houba
-    // +   input by: Billy
-    // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
-    // *     example 1: in_array('van', ['Kevin', 'van', 'Zonneveld']);
-    // *     returns 1: true
-    // *     example 2: in_array('vlado', {0: 'Kevin', vlado: 'van', 1: 'Zonneveld'});
-    // *     returns 2: false
-    // *     example 3: in_array(1, ['1', '2', '3']);
-    // *     returns 3: true
-    // *     example 3: in_array(1, ['1', '2', '3'], false);
-    // *     returns 3: true
-    // *     example 4: in_array(1, ['1', '2', '3'], true);
-    // *     returns 4: false
 
-    var key = '', strict = !!argStrict;
 
-    if (strict) {
-        for (key in haystack) {
-            if (haystack[key] === needle) {
-                return true;
-            }
-        }
-    } else {
-        for (key in haystack) {
-            if (haystack[key] == needle) {
-                return true;
-            }
-        }
+function quickaddlabels()
+{
+    if ($(this).attr('id')=='btnqareplace')
+    {
+       var lsreplace=true;
+    } 
+    else
+    {
+       var lsreplace=false;
     }
 
-    return false;
+    languages=langs.split(';');   
+    for (x in languages)
+    {
+        
+        if (assessmentvisible)
+        {
+            assessment_style='';
+            assessment_type='text';
+        }
+        else
+        {
+            assessment_style='style="display:none;"';
+            assessment_type='hidden';
+        }        
+        
+        lsrows=$('#quickaddarea').val().split("\n");
+
+        if (lsrows[0].indexOf("\t")==-1)
+        {
+            separatorchar=';'
+        }
+        else
+        {
+            separatorchar="\t";
+        }
+        tablerows='';
+        for (k in lsrows)
+        {
+            thisrow=lsrows[k].splitCSV(separatorchar);
+            if (thisrow.length==1)
+            {
+                thisrow[1]=thisrow[0];
+                thisrow[0]=k+1;
+            }
+             
+            if (x==0) {
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            }
+            else
+            {
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+
+            }
+        }
+        if (lsreplace) {
+            $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
+        }
+        $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+        // Unbind any previous events
+        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+        $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
+        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+        $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+        $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
+        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+        $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
+            if ($(this).val()==newansweroption_text)
+            {
+                $(this).val('');
+            }
+        });
+    }
+    $('#quickadd').dialog('close');
+    $('#quickaddarea').val('');
+    $('.answertable tbody').sortable('refresh');                       
+    updaterowproperties(); 
+}
+
+
+
+
+
+
+
+
+function quickadddialog()
+{
+    scale_id=removechars($(this).attr('id'));
+    $('#quickadd').dialog('open');    
 }

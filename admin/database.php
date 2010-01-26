@@ -900,6 +900,7 @@ if(isset($surveyid))
             $myFilter = new InputFilter('','',1,1,1);
 
 
+            $insertqids=array();
             foreach ($anslangs as $language)
             {
                 $position=0;
@@ -907,13 +908,24 @@ if(isset($surveyid))
                 {
                     if (substr($subquestionkey,0,3)!='new')
                     {
-                        $query='Update '.db_table_name('questions').' set question_order='.($position+1).', title='.db_quoteall($codes[$position]).', question='.db_quoteall($subquestionvalue).' where qid='.db_quoteall($subquestionkey);
+                        $query='Update '.db_table_name('questions').' set question_order='.($position+1).', title='.db_quoteall($codes[$position]).', question='.db_quoteall($subquestionvalue).' where qid='.db_quoteall($subquestionkey).' AND language='.db_quoteall($language);
+                        $connect->execute($query);
                     }
                     else
                     {
-                        $query='insert into '.db_table_name('questions').' (question_order, title, question, parent_qid, language) values ('.($position+1).','.db_quoteall($codes[$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).')';
+                        if (!isset($insertqid[$position]))
+                        {
+                            $query='INSERT into '.db_table_name('questions').' (sid, gid, question_order, title, question, parent_qid, language) values ('.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).')';
+                            $connect->execute($query);
+                            $insertqid[$position]=$connect->Insert_Id(db_table_name_nq('questions'),"qid");                                
+                        }
+                        else
+                        {
+                            $query='INSERT into '.db_table_name('questions').' (qid, sid, gid, question_order, title, question, parent_qid, language) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).')';
+                            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
+                            $connect->execute($query);
+                        }
                     }
-                    $connect->execute($query);
                     $position++;
                 }
 

@@ -22,11 +22,12 @@ $(document).ready(function(){
        $('#btncancel').click(function(){
            $('#labelsetbrowser').dialog('close');
        });
-       $('#btnqacancel').click(function(){
-           $('#quickadd').dialog('close');
-       });       
+     
        $('#btnlsreplace').click(transferlabels);
        $('#btnlsinsert').click(transferlabels);
+       $('#btnqacancel').click(function(){
+           $('#quickadd').dialog('close');
+       });  
        $('#btnqareplace').click(quickaddlabels);
        $('#btnqainsert').click(quickaddlabels);
        $('#labelsets').click(lspreview);
@@ -508,5 +509,5 @@ function quickaddlabels()
 
 function quickadddialog()
 {
-        $('#quickadd').dialog('open');    
+    $('#quickadd').dialog('open');    
 }

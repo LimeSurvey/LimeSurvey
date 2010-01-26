@@ -1312,6 +1312,7 @@ if ($action=='editansweroptions')
                           var strcode='".$clang->gT('Code','js')."'; 
                           var strlabel='".$clang->gT('Label','js')."'; 
                           var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
+                          var quickaddtitle='".$clang->gT('Quick-add subquestions','js')."'; 
                           var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."'; 
                           var langs='".implode(';',$anslangs)."';</script>\n";
 
@@ -1423,6 +1424,7 @@ if ($action=='editansweroptions')
                 $vasummary .=  "<input type='hidden' id='answercount_{$scale_id}' name='answercount_{$scale_id}' value='$anscount' />\n";
             }
             $vasummary .= "<button id='btnlsbrowser_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
+            $vasummary .= "<button id='btnquickadd_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
             
         }
         $vasummary .=  "<input type='hidden' id='lid0' name='lid0' value='{$qrow['lid']}' />\n";
@@ -1443,6 +1445,13 @@ if ($action=='editansweroptions')
                       <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
                       
                    <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
+    $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
+                      <label for='quickadd'>".$clang->gT('Enter your subquestions:')."</label>
+                      <br /><textarea id='quickaddarea' class='tipme' title='Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab.' rows='30' style='width:570px;'></textarea>
+                      <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
+                      <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
+                      <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>
+                   </div> ";    
     // Save button
     $vasummary .= "<p><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";
 	$vasummary .= "</div></form>";
