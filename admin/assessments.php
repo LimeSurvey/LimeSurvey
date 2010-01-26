@@ -86,7 +86,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
               $_POST['assessmentmessage_'.$assessmentlang]=$myFilter->process($_POST['assessmentmessage_'.$assessmentlang]);  
             }
 	        $query = "UPDATE {$dbprefix}assessments
-			          SET scope='".db_quote($_POST['scope'])."',
+			          SET scope='".db_quote($_POST['scope'],true)."',
 			          gid=".sanitize_int($_POST['gid']).",
 			          minimum='".sanitize_signedint($_POST['minimum'])."',
 			          maximum='".sanitize_signedint($_POST['maximum'])."',
@@ -215,7 +215,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	$assessmentsoutput.= "$actiontitle</div>\n";
 	
     $assessmentsoutput.="<ul><li><label>".$clang->gT("Scope")."</label><input type='radio' id='radiototal' name='scope' value='T' ";
-    if (isset($editdata) && $editdata['scope'] == "T") {$assessmentsoutput .= " checked='checked' ";}          
+    if (!isset($editdata) || $editdata['scope'] == "T") {$assessmentsoutput .= " checked='checked' ";}          
     $assessmentsoutput.=" /><label for='radiototal'>".$clang->gT("Total")."</label>
                          <input type='radio' id='radiogroup' name='scope' value='G'";
     if (isset($editdata) && $editdata['scope'] == "G") {$assessmentsoutput .= " checked='checked' ";}          
@@ -250,8 +250,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
             while($row=$results->FetchRow()) {
                 $editdata=$row;
             }
-            $heading=$editdata['name'];
-            $message=$editdata['message'];
+            $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
+            $message=htmlspecialchars($editdata['message']);
         }
         $assessmentsoutput .= '<div id="tablang'.$assessmentlang.'">';
         $assessmentsoutput .= $clang->gT("Heading")."<br/>"

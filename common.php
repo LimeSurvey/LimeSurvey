@@ -553,7 +553,8 @@ function db_quote($str,$ispostvar=false)
 // This functions escapes the string only inside 
 {
     global $connect;
-    return $connect->escape($str, $ispostvar);
+    if ($ispostvar) { return $connect->escape($str, get_magic_quotes_gpc());}
+      else {return $connect->escape($str);}    
 }
 
 function db_quoteall($str,$ispostvar=false)  
