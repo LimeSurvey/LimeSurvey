@@ -149,7 +149,7 @@ if (isset($postedfieldnames))
             //Work out if the field actually exists in this survey
             $fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
             //Iterate through possible responses
-            if (isset($_SESSION[$value]) && !empty($fieldexists))
+            if (isset($_SESSION[$value]) && !empty($fieldexists) && $_SESSION[$value]!='')
             {
 
                     if ($fieldexists['type']=='D')  // convert the date to the right DB Format
