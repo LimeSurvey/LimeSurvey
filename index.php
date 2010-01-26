@@ -780,7 +780,7 @@ function loadanswers()
         
         if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n')
         {
-            $query .="AND CAST(".db_table_name('saved_control').".access_code as varchar)= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+            $query .="AND CAST(".db_table_name('saved_control').".access_code as varchar(32))= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
         }
         else
         {
