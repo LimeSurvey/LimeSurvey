@@ -63,6 +63,11 @@ $cssfiles[]=array('name'=>'ie_fix_8.css');
 $cssfiles[]=array('name'=>'print_template.css');
 $cssfiles[]=array('name'=>'template.js');
 
+//Standard Support Files
+//These files may be edited or saved
+$supportfiles[]=array('name'=>'print_img_radio.png');
+$supportfiles[]=array('name'=>'print_img_checkbox.png');
+
 //Standard screens
 //Only these may be viewed
 
@@ -394,7 +399,17 @@ foreach ($cssfiles as $file) {
 		}
 	}
 }
-
+//CHECK IF REQUIRED SUPPORT FILE EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
+foreach($supportfiles as $file) {
+	$thisfile="$templaterootdir/$templatename/".$file['name'];
+	if (!is_file($thisfile)) {
+		$copyfile="$templaterootdir/default/".$file['name'];
+		$newfile=$thisfile;
+		if (!@copy($copyfile, $newfile)) {
+            echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
+		}
+	}
+}
 
 if (!$screenname) {$screenname='welcome';}
 if ($screenname != 'welcome') {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
