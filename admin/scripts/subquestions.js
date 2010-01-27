@@ -18,7 +18,7 @@ $(document).ready(function(){
                                         width:600,
                                         title: quickaddtitle});   
                                         
-       $('#btnlsbrowser').click(lsbrowser);
+       $('.btnlsbrowser').click(lsbrowser);
        $('#btncancel').click(function(){
            $('#labelsetbrowser').dialog('close');
        });
@@ -32,7 +32,7 @@ $(document).ready(function(){
        $('#btnqainsert').click(quickaddlabels);
        $('#labelsets').click(lspreview);
        $('#languagefilter').click(lsbrowser);
-       $('#btnquickadd').click(quickadddialog);
+       $('.btnquickadd').click(quickadddialog);
        
        updaterowproperties(); 
 });
@@ -47,13 +47,14 @@ function deleteinput()
     {
        // 2.) Remove the table row
       
+       scale_id=removechars($(this).closest('table').attr('id'));     
        index = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;            
        languages=langs.split(';');
 
        var x;
        for (x in languages)
        {
-            tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+index+')');
+            tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+index+')');
             if (x==0) {
                tablerow.fadeTo(400, 0, function(){
                        $(this).remove();  
@@ -78,12 +79,13 @@ function deleteinput()
 
 function addinput()
 {
+    scale_id=removechars($(this).closest('table').attr('id'));     
     newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;            
     languages=langs.split(';');
 
     for (x in languages)
     {
-        tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newposition+')');  
+        tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+newposition+')');  
         nextcode=getNextCode($(this).parent().parent().find('.code').val());
         var randomid='new'+Math.floor(Math.random()*111111)        
         if (x==0) {
@@ -235,6 +237,7 @@ function code_duplicates_check()
 
 function lsbrowser()
 {
+    scale_id=removechars($(this).attr('id'));      
     $('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
     match=0;
@@ -347,15 +350,6 @@ function dump(arr,level) {
     return dumped_text;
 }
 
-function addlabels()
-{
-    languages=langs.split(';');
-
-    for (x in languages)
-    {
-    }
-}
-
 function transferlabels()
 {
    if ($(this).attr('id')=='btnlsreplace')
@@ -400,28 +394,28 @@ function transferlabels()
                             {
                                 var randomid='new'+Math.floor(Math.random()*111111) 
                                 if (x==0) {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" id="code_'+randomid+'" name="code_'+randomid+'" type="text" maxlength="5" size="5" value="'+lsrows[k].code+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" type="text" maxlength="5" size="5" value="'+lsrows[k].code+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                             }
                         }
                     }                    
                     if (lsreplace) {
-                        $('#tabpage_'+languages[x]+' tbody').empty();
+                        $('#answertable_'+languages[x]+'_'+scale_id+' tbody').empty();
                     }
-                    $('#tabpage_'+languages[x]+' tbody').append(tablerows);
+                    $('#answertable_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
                     // Unbind any previous events
-                    $('#tabpage_'+languages[x]+' .btnaddanswer').unbind('click');
-                    $('#tabpage_'+languages[x]+' .btneditanswer').unbind('click');
-                    $('#tabpage_'+languages[x]+' .btndelanswer').unbind('click');
-                    $('#tabpage_'+languages[x]+' .answer').unbind('focus');
-                    $('#tabpage_'+languages[x]+' .btnaddanswer').click(addinput);
-                    $('#tabpage_'+languages[x]+' .btneditanswer').click(popupeditor);
-                    $('#tabpage_'+languages[x]+' .btndelanswer').click(deleteinput);
-                    $('#tabpage_'+languages[x]+' .answer').focus(function(){
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+                    $('#answertable_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
                         if ($(this).val()==newansweroption_text)
                         {
                             $(this).val('');
@@ -429,7 +423,7 @@ function transferlabels()
                     });
                 }
                 $('#labelsetbrowser').dialog('close');
-                $('.answertable tbody').sortable('refresh');                       
+                $('.tab-page:first .answertable tbody').sortable('refresh');                       
                 updaterowproperties(); 
 
           }}
@@ -474,26 +468,26 @@ function quickaddlabels()
             var randomid='new'+Math.floor(Math.random()*111111)
              
             if (x==0) {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" id="code_'+randomid+'" name="code_'+randomid+'" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
             }
             else
             {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
             }
         }
         if (lsreplace) {
-            $('#tabpage_'+languages[x]+' tbody').empty();
+            $('#answertable_'+languages[x]+'_'+scale_id+' tbody').empty();
         }
-        $('#tabpage_'+languages[x]+' tbody').append(tablerows);
+        $('#answertable_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
         // Unbind any previous events
-        $('#tabpage_'+languages[x]+' .btnaddanswer').unbind('click');
-        $('#tabpage_'+languages[x]+' .btneditanswer').unbind('click');
-        $('#tabpage_'+languages[x]+' .btndelanswer').unbind('click');
-        $('#tabpage_'+languages[x]+' .answer').unbind('focus');
-        $('#tabpage_'+languages[x]+' .btnaddanswer').click(addinput);
-        $('#tabpage_'+languages[x]+' .btneditanswer').click(popupeditor);
-        $('#tabpage_'+languages[x]+' .btndelanswer').click(deleteinput);
-        $('#tabpage_'+languages[x]+' .answer').focus(function(){
+        $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+        $('#answertable_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
+        $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+        $('#answertable_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+        $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+        $('#answertable_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
+        $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+        $('#answertable_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
             if ($(this).val()==newansweroption_text)
             {
                 $(this).val('');
@@ -509,5 +503,6 @@ function quickaddlabels()
 
 function quickadddialog()
 {
+    scale_id=removechars($(this).attr('id'));      
     $('#quickadd').dialog('open');    
 }

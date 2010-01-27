@@ -136,7 +136,7 @@ function addinput()
         
     }
     
-    $('.answertable tbody').sortable('refresh');
+    $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
 }
 
@@ -390,15 +390,6 @@ function dump(arr,level) {
     return dumped_text;
 }
 
-function addlabels()
-{
-    languages=langs.split(';');
-
-    for (x in languages)
-    {
-    }
-}
-
 function transferlabels()
 {
    if ($(this).attr('id')=='btnlsreplace')
@@ -481,7 +472,7 @@ function transferlabels()
                     });
                 }
                 $('#labelsetbrowser').dialog('close');
-                $('.answertable tbody').sortable('refresh');                       
+                $('.tab-page:first .answertable tbody').sortable('refresh');                       
                 updaterowproperties(); 
 
           }}
@@ -568,7 +559,7 @@ function quickaddlabels()
     }
     $('#quickadd').dialog('close');
     $('#quickaddarea').val('');
-    $('.answertable tbody').sortable('refresh');                       
+    $('.tab-page:first .answertable tbody').sortable('refresh');                       
     updaterowproperties(); 
 }
 

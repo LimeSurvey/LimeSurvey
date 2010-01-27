@@ -450,11 +450,11 @@ elseif ($action == 'replacementfields')
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
-         !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') && 
+     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') && 
      (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
-      $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
-          $action=='newsurvey' || $action=='listsurveys' || $action=='globalsettings' || $action=='editusergroups' ||
-          $action=='surveyrights' || $action=='quotas'  || $action=='editusers' || $action=='' || $action=='login') )
+      $action=='importsurvey' || $action=='editsurvey'  || $action=='updatesurvey' || $action=='ordergroups'  ||
+      $action=='newsurvey'    || $action=='listsurveys' || $action=='globalsettings' || $action=='editusergroups' ||
+      $action=='surveyrights' || $action=='quotas'      || $action=='editusers' || $action=='' || $action=='login') )
 {
 	if ($action=='editsurvey' || $action=='updatesurvey')
 	{

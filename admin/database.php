@@ -805,7 +805,7 @@ if(isset($surveyid))
                 $result = $connect->Execute($query); // Checked
 
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
-				{
+		{
             $maxcount=(int)$_POST['answercount_'.$scale_id];                 
             for ($sortorderid=1;$sortorderid<$maxcount;$sortorderid++)
 				 {
@@ -850,44 +850,53 @@ if(isset($surveyid))
     }
 
     elseif ($action == "updatesubquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
+    {
+
+        $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);        
+        array_unshift($anslangs,$baselang);
+        
+        $query = "select type from ".db_table_name('questions')." where qid=$qid";
+        $questiontype = $connect->GetOne($query);    // Checked
+        $qtypes=getqtypelist('','array');
+        $scalecount=$qtypes[$questiontype]['subquestions'];        
+        
+        // First delete any deleted ids
+        $deletedqids=explode(' ', trim($_POST['deletedqids']));                 
+        
+        foreach ($deletedqids as $deletedqid)
         				{
-
-            $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);        
-            array_unshift($anslangs,$baselang);
-            // First delete any deleted ids
-            $deletedqids=explode(' ', trim($_POST['deletedqids']));                 
-            
-            foreach ($deletedqids as $deletedqid)
-        					{
-                $deletedqid=(int)$deletedqid;
-                $query = "DELETE FROM ".db_table_name('questions')." WHERE qid='{$deletedqid}'";  // Checked
-                if (!$result = $connect->Execute($query))
-                {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-        					}
-        				}
-
-            //Determine ids by evaluating the hidden field
-            $rows=array();
-            $codes=array();
-            foreach ($_POST as $postkey=>$postvalue)
+            $deletedqid=(int)$deletedqid;
+            $query = "DELETE FROM ".db_table_name('questions')." WHERE qid='{$deletedqid}'";  // Checked
+            if (!$result = $connect->Execute($query))
             {
-                $postkey=explode('_',$postkey);
-                if ($postkey[0]=='answer')
-                {
-                    $rows[$postkey[1]][$postkey[2]]=$postvalue;
-        		}
-                if ($postkey[0]=='code')
-                {
-                    $codes[]=$postvalue;
-			}
-            }
-            $count=0;
-            $invalidCode = 0;
-            $duplicateCode = 0;
+                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        				}
+        			}
 
- 			$dupanswers = array();
+        //Determine ids by evaluating the hidden field
+        $rows=array();
+        $codes=array();
+        foreach ($_POST as $postkey=>$postvalue)
+        {
+            $postkey=explode('_',$postkey);
+            if ($postkey[0]=='answer')
+            {
+                $rows[$postkey[3]][$postkey[1]][$postkey[2]]=$postvalue;
+        	}
+            if ($postkey[0]=='code')
+            {
+                $codes[$postkey[2]][]=$postvalue;
+		    }
+        }
+        $count=0;
+        $invalidCode = 0;
+        $duplicateCode = 0;
+        $dupanswers = array();
+        /*
+        for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
+        {   
+ 		    
             // Find duplicate codes and add these to dupanswers array
             $foundCat=array_count_values($codes);
             foreach($foundCat as $key=>$value){
@@ -895,44 +904,47 @@ if(isset($surveyid))
                     $dupanswers[]=$key;
                 }
             }
+        }
+        */
+		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+		$myFilter = new InputFilter('','',1,1,1);
 
-			require_once("../classes/inputfilter/class.inputfilter_clean.php");
-		    $myFilter = new InputFilter('','',1,1,1);
 
-
-            $insertqids=array();
+        $insertqids=array();
+        for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
+        {        
             foreach ($anslangs as $language)
-        	{
+            {
                 $position=0;
-                foreach ($rows[$language] as $subquestionkey=>$subquestionvalue)
-        		{
+                foreach ($rows[$scale_id][$language] as $subquestionkey=>$subquestionvalue)
+        	    {
                     if (substr($subquestionkey,0,3)!='new')
-        		{
-                        $query='Update '.db_table_name('questions').' set question_order='.($position+1).', title='.db_quoteall($codes[$position]).', question='.db_quoteall($subquestionvalue).' where qid='.db_quoteall($subquestionkey).' AND language='.db_quoteall($language);
+        		    {
+                        $query='Update '.db_table_name('questions').' set question_order='.($position+1).', title='.db_quoteall($codes[$scale_id][$position]).', question='.db_quoteall($subquestionvalue).', scale_id='.$scale_id.' where qid='.db_quoteall($subquestionkey).' AND language='.db_quoteall($language);
                         $connect->execute($query);
-					}
-                        else
-                          {
+				    }
+                    else
+                    {
                         if (!isset($insertqid[$position]))
-        			{
-                            $query='INSERT into '.db_table_name('questions').' (sid, gid, question_order, title, question, parent_qid, language) values ('.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).')';
+        			    {
+                            $query='INSERT into '.db_table_name('questions').' (sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
                             $connect->execute($query);
                             $insertqid[$position]=$connect->Insert_Id(db_table_name_nq('questions'),"qid");                                
-    				}
+    				    }
                         else
-    				{
-                            $query='INSERT into '.db_table_name('questions').' (qid, sid, gid, question_order, title, question, parent_qid, language) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).')';
+    				    {
+                            $query='INSERT into '.db_table_name('questions').' (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
                             if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
                             $connect->execute($query);
-    				}
-        		}
+    				        }
+        		    }
                     $position++;
-		    }
+		        }       
 
-			}
-
-            $action='editsubquestions'; 
-				}
+            }
+        }
+        $action='editsubquestions'; 
+	}
 
     
 	elseif ($action == "updatesurvey" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))

@@ -933,17 +933,27 @@ if (isset($grouparray) && $grouparray) {
 					
                     
                     // Now we will fix up old label sets where they are used as answers
-                    if ($importversion<143 && (isset($oldlid1) || isset($oldlid2)) && $qtypes[$type]['answerscales']>0)
-                    {
+                    if ($importversion<143 && (isset($oldlid1) || isset($oldlid2)) && ($qtypes[$type]['answerscales']>0 || $qtypes[$type]['subquestions']>1))
+                    {             
                         $query="select * from ".db_table_name('labels')." where lid={$labelreplacements[$oldlid1]}";
                         $oldlabelsresult=db_execute_assoc($query);
                         while($labelrow=$oldlabelsresult->FetchRow())
                         {
-                            $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value) 
-                                        VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).")"; 
-                            $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                            
+                            if ($qtypes[$type]['subquestions']<2)
+                            {
+                                $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value) 
+                                            VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).")"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                            }
+                            else
+                            {
+                                $qinsert = "insert INTO ".db_table_name('questions')." (parent_qid,title,question,question_order,language,scale_id) 
+                                            VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",1)"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                            }
                         }
-                        if (isset($oldlid2))
+                        if (isset($oldlid2) && $qtypes[$type]['answerscales']>1)
                         {
                             $query="select * from ".db_table_name('labels')." where lid={$labelreplacements[$oldlid2]}";
                             $oldlabelsresult=db_execute_assoc($query);
@@ -1005,9 +1015,10 @@ if (isset($grouparray) && $grouparray) {
                                                 VALUES ({$answerrowdata['qid']},$newsid,$newgid,".db_quoteall($answerrowdata['code']).",".db_quoteall($answerrowdata['answer']).",".db_quoteall($answerrowdata['sortorder']).",".db_quoteall($answerrowdata['language']).")"; 
                                     $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                                 }
-                                else {
-                                $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-								$ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+                                else 
+                                {
+                                    $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+								    $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
                                 }                                
 								
 								if ($type == "M" || $type == "P") {

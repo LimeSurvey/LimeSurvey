@@ -266,7 +266,7 @@ if ($action == "personalsettings")
 
 
 
-if ($surveyid)
+if (isset($surveyid) && $surveyid)
 {
 	if(hasRight($surveyid))
 	{
@@ -796,7 +796,7 @@ if ($surveyid)
 }
 
 
-if ($surveyid && $gid )   // Show the group toolbar
+if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
 {
 	// TODO: check that surveyid and thus baselang are always set here
 	$sumquery4 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND
@@ -956,7 +956,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 	$groupsummary .= "\n</table>\n";
 }
 
-if ($surveyid && $gid && $qid)  // Show the question toolbar
+if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 {
 	// TODO: check that surveyid is set and that so is $baselang
 	//Show Question Details
@@ -1464,7 +1464,7 @@ if ($action=='editansweroptions')
 // ============= EDIT SUBQUESTIONS ======================================
 
 if ($action=='editsubquestions')
-			{
+{
     
     $js_adminheader_includes[]='scripts/subquestions.js';
     $js_adminheader_includes[]='../scripts/jquery/jquery.blockUI.js';
@@ -1509,7 +1509,7 @@ if ($action=='editsubquestions')
                       var langs='".implode(';',$anslangs)."';</script>\n";
 
 
-    //delete the answers in languages not supported by the survey
+    //delete the subquestions in languages not supported by the survey
     $qquery = "SELECT DISTINCT language FROM ".db_table_name('questions')." WHERE (parent_qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
     $qresult = db_execute_assoc($qquery); //Checked
     while ($qrow = $qresult->FetchRow())
@@ -1519,7 +1519,7 @@ if ($action=='editsubquestions')
     }
     
     
-    // Check sort order for answers
+    // Check sort order for subquestions
     $qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
     $qresult = db_execute_assoc($qquery); //Checked
     while ($qrow=$qresult->FetchRow()) {$qtype=$qrow['type'];}
@@ -1562,97 +1562,114 @@ if ($action=='editsubquestions')
     
     // the following line decides if the assessment input fields are visible or not
     // for some question types the assessment values is set in the label set instead of the answers
-    $assessmentvisible=($surveyinfo['assessments']=='Y' && !in_array($qtype,array('A','B','C','E','F','K','R','Z',':')));
+    $qtypes=getqtypelist('','array');
     
+    $scalecount=$qtypes[$qtype]['subquestions'];
     foreach ($anslangs as $anslang)
-		{
-        $position=0;
-        $query = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}' AND language='{$anslang}' ORDER BY question_order, title";
-        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
-        $anscount = $result->RecordCount();
+	{
         $vasummary .= "<div class='tab-page' id='tabpage_$anslang'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
         if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
-                
-        $vasummary .= "</h2><table class='answertable' align='center'>\n"
-                ."<thead>"
-                ."<tr><th>&nbsp;</th>\n"
-                ."<th align='right'>\n"
-                .$clang->gT("Code")
-                ."</th>\n"
-                ."</th><th align='center'>\n"
-                .$clang->gT("Subquestion")
-                ."</th>\n";
-        if ($activated != 'Y' && $first)
-        {
-                $vasummary .="<th align='center'>\n"
-                .$clang->gT("Action")
-                ."</th>\n";
-		}
-        $vasummary .="</tr></thead>"
-                ."<tbody align='center'>";
-        $alternate=false;
-        while ($row=$result->FetchRow())
-		{
-            $row['title'] = htmlspecialchars($row['title']);
-            $row['question']=htmlspecialchars($row['question']);
-			
-            if ($first) {$codeids=$codeids.' '.$row['question_order'];}
-            
-            $vasummary .= "<tr id='row_{$row['language']}_{$row['qid']}'";
-            if ($alternate==true)
-			{
-                $vasummary.=' class="highlight" ';
-                $alternate=false;
-            }
-            else
-                {
-                    $alternate=true;
-                }
+        $vasummary .= "</h2>";
 
-            $vasummary .=" ><td align='right'>\n";
-
-            if ($activated == 'Y' ) // if activated
-                {
-                $vasummary .= "&nbsp;</td><td><input type='hidden' name='code_{$row['qid']}' value=\"{$row['title']}\" maxlength='5' size='5'"
-                ." />{$row['title']}";
-            }
-            elseif ($activated != 'Y' && $first) // If survey is decactivated 
+        for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
+        {        
+            $position=0;
+            if ($scalecount>1)
             {
-                $vasummary .= "<img class='handle' src='$imagefiles/handle.png' /></td><td><input type='text' id='code_{$row['qid']}' class='code' name='code_{$row['qid']}' value=\"{$row['title']}\" maxlength='5' size='5'"
-                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
-                    ." />";
-                
+                if ($scale_id==0) 
+                {
+                    $vasummary .="<div class='header'>\n".$clang->gT("Y-Scale")."</div>";
                 }
                 else
                 {
-                $vasummary .= "</td><td>{$row['title']}";
-            
+                    $vasummary .="<div class='header'>\n".$clang->gT("X-Scale")."</div>";
                 }
-                            //      <img class='handle' src='$imagefiles/handle.png' /></td><td>                
-            $vasummary .= "</td><td>\n"
-            ."<input type='text' size='100' id='answer_{$row['language']}_{$row['qid']}' name='answer_{$row['language']}_{$row['qid']}' value=\"{$row['question']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
-            . getEditor("editanswer","answer_".$row['language']."_".$row['qid'], "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
-				."</td>\n"
-            ."<td>\n";
-            
-            // Deactivate delete button for active surveys
+            }
+            $query = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}' AND language='{$anslang}' AND scale_id={$scale_id} ORDER BY question_order, title";
+            $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
+            $anscount = $result->RecordCount();
+            $vasummary .="<table class='answertable' id='answertable_{$anslang}_{$scale_id}' align='center'>\n"
+                    ."<thead>"
+                    ."<tr><th>&nbsp;</th>\n"
+                    ."<th align='right'>\n"
+                    .$clang->gT("Code")
+                    ."</th>\n"
+                    ."</th><th align='center'>\n"
+                    .$clang->gT("Subquestion")
+                    ."</th>\n";
             if ($activated != 'Y' && $first)
             {
-                $vasummary.="<img src='$imagefiles/addanswer.png' class='btnaddanswer' />";
-                $vasummary.="<img src='$imagefiles/deleteanswer.png' class='btndelanswer' />";
-			}
+                    $vasummary .="<th align='center'>\n"
+                    .$clang->gT("Action")
+                    ."</th>\n";
+		    }
+            $vasummary .="</tr></thead>"
+                    ."<tbody align='center'>";
+            $alternate=false;
+            while ($row=$result->FetchRow())
+		    {
+                $row['title'] = htmlspecialchars($row['title']);
+                $row['question']=htmlspecialchars($row['question']);
+			    
+                if ($first) {$codeids=$codeids.' '.$row['question_order'];}
+                
+                $vasummary .= "<tr id='row_{$row['language']}_{$row['qid']}_{$row['scale_id']}'";
+                if ($alternate==true)
+			    {
+                    $vasummary.=' class="highlight" ';
+                    $alternate=false;
+                }
+                else
+                    {
+                        $alternate=true;
+                    }
 
-            $vasummary .= "</td></tr>\n";
-            $position++;
-		}
-        ++$anscount;
+                $vasummary .=" ><td align='right'>\n";
+
+                if ($activated == 'Y' ) // if activated
+                    {
+                    $vasummary .= "&nbsp;</td><td><input type='hidden' name='code_{$row['qid']}' value=\"{$row['title']}\" maxlength='5' size='5'"
+                    ." />{$row['title']}";
+                }
+                elseif ($activated != 'Y' && $first) // If survey is decactivated 
+                {
+                    $vasummary .= "<img class='handle' src='$imagefiles/handle.png' /></td><td><input type='text' id='code_{$row['qid']}_{$row['scale_id']}' class='code' name='code_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" maxlength='5' size='5'"
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+                        ." />";
+                    
+                    }
+                    else
+                    {
+                    $vasummary .= "</td><td>{$row['title']}";
+                
+                    }
+                                //      <img class='handle' src='$imagefiles/handle.png' /></td><td>                
+                $vasummary .= "</td><td>\n"
+                ."<input type='text' size='100' id='answer_{$row['language']}_{$row['qid']}_{$row['scale_id']}' name='answer_{$row['language']}_{$row['qid']}_{$row['scale_id']}' value=\"{$row['question']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
+                . getEditor("editanswer","answer_".$row['language']."_".$row['qid']."_{$row['scale_id']}", "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
+				    ."</td>\n"
+                ."<td>\n";
+                
+                // Deactivate delete button for active surveys
+                if ($activated != 'Y' && $first)
+                {
+                    $vasummary.="<img src='$imagefiles/addanswer.png' class='btnaddanswer' />";
+                    $vasummary.="<img src='$imagefiles/deleteanswer.png' class='btndelanswer' />";
+			    }
+
+                $vasummary .= "</td></tr>\n";
+                $position++;
+		    }
+            ++$anscount;
+            $vasummary .= "</tbody></table>\n";
+            $vasummary .= "<button class='btnlsbrowser' id='btnlsbrowser_{$scale_id}' type='button'>".$clang->gT('Predefined label sets...')."</button>";
+            $vasummary .= "<button class='btnquickadd' id='btnquickadd_{$scale_id}' type='button'>".$clang->gT('Quick add...')."</button>";
+        }
+        
         $first=false;
-        $vasummary .= "</tbody></table>\n";
         $vasummary .= "</div>";
     }
-    $vasummary .= "<button id='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
-    $vasummary .= "<button id='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
     
         // Label set browser
     $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left; width:260px;'>
@@ -3694,3 +3711,121 @@ function showadminmenu()
     return $adminmenu;
 }
 
+
+function browsemenubar($title='')
+{
+    global $surveyid, $scriptname, $imagefiles, $homeurl, $clang, $sumrows5, $surrows;
+
+    $thissurvey=getSurveyInfo($surveyid);
+    //BROWSE MENU BAR
+    $browsemenubar = "<div class='menubar'>\n"
+    . "<div class='menubar-title'>\n"
+    . "<strong>$title</strong>: ({$thissurvey['name']})"
+    . "</div>"
+    . "<div class='menubar-main'>\n"
+    . "<div class='menubar-left'>\n"
+    //Return to survey administration
+    . "<a href='$scriptname?sid=$surveyid' title=\"".$clang->gTview("Return to survey administration")."\" >"
+    . "<img name='Administration' src='$imagefiles/home.png' title='' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+    . "<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
+    . "<img src='$imagefiles/seperator.gif' alt='' />\n"
+    //Show summary information
+    . "<a href='$scriptname?action=browse&amp;sid=$surveyid' title=\"".$clang->gTview("Show summary information")."\" >"
+    . "<img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='".$clang->gT("Show summary information")."' /></a>\n";
+    
+    //Display responses
+    if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+    {
+        $browsemenubar .="<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' title=\"".$clang->gTview("Display Responses")."\" >" .
+        "<img name='ViewAll' src='$imagefiles/document.png' title='' alt='".$clang->gT("Display Responses")."' /></a>\n";
+    } 
+    else 
+        {
+            $browsemenubar .= "<a href=\"#\" accesskey='b' onclick=\"document.getElementById('browsepopup').style.visibility='visible';\""
+            . "title=\"".$clang->gTview("Display Responses")."\" >" 
+            ."<img src='$imagefiles/document.png' alt='".$clang->gT("Display Responses")."' name='ViewAll' /></a>";
+    
+            $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $tmp_survlangs[] = $baselang;
+            rsort($tmp_survlangs);
+            
+            $browsemenubar .="<div class=\"langpopup1\" id=\"browsepopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+            foreach ($tmp_survlangs as $tmp_lang)
+            {
+                $browsemenubar .= "<tr><td><a href=\"$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;browselang=".$tmp_lang."\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+            }
+            $browsemenubar .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
+                    }            
+            
+    // Display last 50 responses        
+    $browsemenubar .= "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
+                    " title=\"".$clang->gTview("Display Last 50 Responses")."\" >" .
+                    "<img name='ViewLast' src='$imagefiles/viewlast.png' alt='".$clang->gT("Display Last 50 Responses")."' /></a>\n";
+    // Data entry
+    $browsemenubar .= "<a href='$scriptname?action=dataentry&amp;sid=$surveyid'".
+                    " title=\"".$clang->gTview("Dataentry Screen for Survey")."\" >" .
+                    "<img name='DataEntry' src='$imagefiles/dataentry.png' alt='".$clang->gT("Dataentry Screen for Survey")."' /></a>\n";
+    // Statistics                
+    $browsemenubar .= "<a href='$scriptname?action=statistics&amp;sid=$surveyid' "
+                    ."title=\"".$clang->gTview("Get statistics from these responses")."\" >"
+                    ."<img name='Statistics' src='$imagefiles/statistics.png' alt='".$clang->gT("Get statistics from these responses")."' /></a>\n";
+            
+    $browsemenubar .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
+    
+    if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    {
+        // Export to application
+        $browsemenubar .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export Results to Application")."\" >"
+        . "<img name='Export' src='$imagefiles/export.png' "
+        . "alt='".$clang->gT("Export Results to Application")."' /></a>\n"
+        
+        // Export to SPSS
+        . "<a href='$scriptname?action=exportspss&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a SPSS/PASW command file")."\" >"
+        . "<img src='$imagefiles/exportspss.png' "
+        . "alt='". $clang->gT("Export results to a SPSS/PASW command file")."' /></a>\n" 
+        
+        // Export to R   
+        . "<a href='$scriptname?action=exportr&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a R data file")."\" >"
+        . "<img src='$imagefiles/exportr.png' "
+        . "alt='". $clang->gT("Export results to a R data file")."' /></a>\n";
+    }
+    //Import old response table
+    $browsemenubar .= "<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' title=\"".$clang->gTview("Import answers from a deactivated survey table")."\" >"
+    . "<img name='ImportOldResponses' src='$imagefiles/importold.png' alt='".$clang->gT("Import answers from a deactivated survey table")."' /></a>\n";
+    
+    $browsemenubar .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
+    
+    //browse saved responses
+    $browsemenubar .= "<a href='$scriptname?action=saved&amp;sid=$surveyid' title=\"".$clang->gTview("View Saved but not submitted Responses")."\" >"
+    . "<img src='$imagefiles/saved.png' title='' alt='".$clang->gT("View Saved but not submitted Responses")."' name='BrowseSaved' /></a>\n"
+
+    //Import VV
+    . "<a href='$scriptname?action=vvimport&amp;sid=$surveyid' title=\"".$clang->gTview("Import a VV survey file")."\" >"
+    . "<img src='$imagefiles/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
+    
+    //Export VV
+    if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    {
+        $browsemenubar .= "<a href='$scriptname?action=vvexport&amp;sid=$surveyid' title=\"".$clang->gTview("Export a VV survey file")."\" >"
+        ."<img src='$imagefiles/exportvv.png' title='' alt='".$clang->gT("Export a VV survey file")."' /></a>\n";
+    }
+    
+    //Iterate survey
+    if (( ($surrows['browse_response'] && $surrows['activate_survey']) || 
+            $_SESSION['USER_RIGHT_SUPERADMIN'] == 1
+        ) &&
+        (
+            $thissurvey['private'] == 'N' &&
+            $thissurvey['tokenanswerspersistence'] == 'Y'
+        ))
+    { 
+        $browsemenubar .= "<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' title=\"".$clang->gTview("Iterate surevey")."\" >" 
+                         ."<img src='$imagefiles/iterate.png' title='' alt='".$clang->gT("Iterate surevey")."' /></a>\n";
+    }
+    $browsemenubar .= "</div>\n"
+    . "\t</div>\n"
+                    . "</div>\n";
+    
+    return $browsemenubar;
+}

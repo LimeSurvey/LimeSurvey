@@ -9,7 +9,7 @@ CREATE TABLE `prefix_answers` (
   `assessment_value` int(11) NOT NULL default '0',
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
-  `scale_id` int(11) NOT NULL default '0',
+  `scale_id` tinyint NOT NULL default '0',
   PRIMARY KEY  (`qid`,`code`,`language`,`scale_id`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -142,6 +142,7 @@ CREATE TABLE `prefix_questions` (
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   `default_value` text,
+  `scale_id` tinyint NOT NULL default '0',
   PRIMARY KEY  (`qid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
