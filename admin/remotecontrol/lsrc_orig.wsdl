@@ -376,8 +376,8 @@
             <fault name="sGetFieldmapFault" message="tns:sGetFieldmapFault"></fault>
         </operation>
     <operation name="fSendStatistic">
-    	<input message="tns:fSendStatisticRequest" name="fSendStatistic"></input>
-    	<output message="tns:fSendStatisticResponse" name="fSendStatistic"></output>
+    	<input message="tns:fSendStatisticRequest" name="fSendStatisticRequest"></input>
+    	<output message="tns:fSendStatisticResponse" name="fSendStatisticResponse"></output>
             <fault name="fSendStatisticsFault" message="tns:fSendStatisticFault"></fault>
         </operation>
   </portType>
@@ -687,12 +687,12 @@
   	<operation name="fSendStatistic">
 
   		<soap:operation soapAction="urn:lsrcNamespace/fSendStatistic" />
-  		<input name="fSendStatistic">
+  		<input name="fSendStatisticRequest">
 
   			<soap:body use="encoded" namespace="urn:lsrcNamespace"
   				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
   		</input>
-  		<output name="fSendStatistic">
+  		<output name="fSendStatisticResponse">
 
   			<soap:body use="encoded" namespace="urn:lsrcNamespace"
   				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />

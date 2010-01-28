@@ -51,9 +51,9 @@ class LsrcHelper {
 		{
 			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=".sanitize_int($iVid)."";
 			$rs = db_execute_assoc($query2num);
-			$field=$rs->FetchRow(); 
-  			return $field['owner_id']; 
-				
+			$field=$rs->FetchRow();
+			return $field['owner_id'];
+
 		}else{return false;}
 	}
 
@@ -78,13 +78,13 @@ class LsrcHelper {
 			$where = str_replace("\\","",$where);
 			$query2num = "SELECT {$key} FROM {$dbprefix}{$table} WHERE {$where}";
 			$rs = db_execute_assoc($query2num);
-				
+
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ($query2num)");
 
 			$query2update = "update ".$dbprefix.$table." set ".$key."='".$value."' where ".$where."";
-				
+
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ($query2update)");
-				
+
 			if($connect->Execute($query2update)){
 				return $rs->RecordCount()." Rows changed";
 			}
@@ -490,7 +490,7 @@ class LsrcHelper {
 							$fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
 							++$c;
 						}
-						
+
 						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
 						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 						$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
@@ -498,7 +498,7 @@ class LsrcHelper {
 						$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 						$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
 						$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
-						
+
 						$emrow['language']=trim($emrow['language']);
 						if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
 						if(!in_array($emrow['language'], $surveylangs)) {$emrow['language']=$baselanguage;} // if given language is not available use default
@@ -545,7 +545,7 @@ class LsrcHelper {
 
 						if (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 						{
-								
+
 							// Put date into remindersent
 							$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 							$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
@@ -682,7 +682,7 @@ class LsrcHelper {
 			return true;
 		}
 	}
-	 
+
 	/**
 	 * function to import surveys, based on new importsurvey.php 6979 2009-05-30 11:59:03Z c_schmitz $
 	 *
@@ -719,8 +719,8 @@ class LsrcHelper {
 			$bigarray[] = $buffer;
 		}
 		fclose($handle);
-//		foreach($bigarray as $ba)
-//			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$ba);
+		//		foreach($bigarray as $ba)
+		//			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$ba);
 			
 		if (isset($bigarray[0])) $bigarray[0]=$this->removeBOM($bigarray[0]);
 		// Now we try to determine the dataformat of the survey file.
@@ -1455,9 +1455,9 @@ class LsrcHelper {
 		$qtypes = $this->getqtypelist("" ,"array");
 
 		foreach ($qtypes as $type) //XXX FIXME
-			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$type);
-		
-			// DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$type);
+
+		// DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 		if (isset($grouparray) && $grouparray) {
 			$count=0;
 			$currentgid='';
@@ -1524,17 +1524,17 @@ class LsrcHelper {
 				if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
 				//GET NEW GID
 				if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
-				
+
 				//NOW DO NESTED QUESTIONS FOR THIS GID
 				//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".var_dump($questionarray));
-									
+					
 				if (isset($questionarray) && $questionarray && $newgroup) {
 					$count=0;
 					$currentqid='';
 					foreach ($questionarray as $qa) {
-						
+
 						//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qa);
-						
+
 						if ($importversion>=111)
 						{
 							$qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
@@ -1572,7 +1572,7 @@ class LsrcHelper {
 						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 
 						$thisgid=$questionrowdata['gid'];
-						
+
 						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$thisgid." == ".$gid);
 						if ($thisgid == $gid) {
 							$qid = $questionrowdata['qid'];
@@ -1634,15 +1634,15 @@ class LsrcHelper {
 
 							$newvalues=array_values($questionrowdata);
 							if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
-							
+
 							//foreach($questionrowdata as $qrd)
-								//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
-							
-								$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+							//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
+
+							$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 							$qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
-							
+
 							$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK | ".$qinsert);
-							
+
 							$qres = $connect->Execute($qinsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 							if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
 							if ($newquestion)
@@ -2051,7 +2051,7 @@ class LsrcHelper {
 
 		return true;
 	}
-	 
+
 	/**
 	 * function to activate surveys based on new activate.php 5771 2008-10-13 02:28:40Z jcleeland $
 	 *
@@ -2128,10 +2128,10 @@ class LsrcHelper {
 			//  # ":" -> Array Multi Flexi Numbers
 			//  # ";" -> Array Multi Flexi Text
 			//  # "1" -> MULTI SCALE
-				
+
 
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
-				
+
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^', ':', '1')";
 			$chkresult = db_execute_assoc($chkquery) or $this->debugLsrc ("Couldn't get list of questions$chkquery".$connect->ErrorMsg());
 			while ($chkrow = $chkresult->FetchRow())
@@ -2154,7 +2154,7 @@ class LsrcHelper {
 			}
 
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
-				
+
 
 			//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid = 0 OR lid is null)";
@@ -2162,7 +2162,7 @@ class LsrcHelper {
 			while($chkrow = $chkresult->FetchRow()){
 				//	$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".("This question requires a Labelset, but none is set."), $chkrow['gid']);
 			} // while
-				
+
 			//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID1" SET FOR MULTI SCALE
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND (type ='1') AND (lid1 = 0 OR lid1 is null)";
 			$chkresult = db_execute_assoc($chkquery) or $this->debugLsrc ("Couldn't check questions for missing LIDs$chkquery".$connect->ErrorMsg());
@@ -2170,7 +2170,7 @@ class LsrcHelper {
 				//	$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".("This question requires a second Labelset, but none is set."), $chkrow['gid']);
 			} // while
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
-				
+
 			// XXX rakete Changed: This was making errors, for we dont have additional languages and this script throws an error when there are none.
 
 			//NOW check that all used labelsets have all necessary languages
@@ -2192,7 +2192,7 @@ class LsrcHelper {
 					}
 				}  //foreach
 			} //while
-				
+
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 			//A: Make an array of all the qids in order of appearance
@@ -2324,7 +2324,7 @@ class LsrcHelper {
 			//$activateoutput .= "\t\t&nbsp;</td>\n";
 			//$activateoutput .= "\t</tr>\n";
 			//$activateoutput .= "</table>&nbsp;\n";
-				
+
 			//XXX Changed rakete, set Post var for lsrc, no else
 			$_POST['ok'] = "Y";
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
@@ -2571,7 +2571,7 @@ class LsrcHelper {
 					}
 				}
 			}
-				
+
 			// If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
 			$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 			$tabname = "{$dbprefix}survey_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
@@ -3224,8 +3224,8 @@ class LsrcHelper {
 				$cd2result = $connect->Execute($cd2query) or $this->debugLsrc ("Couldn't update group_order$cd2query".$connect->ErrorMsg());  //Checked
 				$position++;
 			}
-			 
-			 
+
+
 			//... and for the questions inside the groups
 			// get all group ids and fix questions inside each group
 			$gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)
@@ -3703,9 +3703,9 @@ class LsrcHelper {
 			$qres = db_execute_assoc($qmaxqo) or $this->debugLsrc ("Error: ".": Failed to find out maximum question order value\n$qmaxqo\n".$connect->ErrorMsg());
 			$qrow=$qres->FetchRow();
 			$newquestionorder=$qrow['maxqo']+1;
-				
+
 			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK ");
-				
+
 			foreach ($questionarray as $qa) {
 				$qacfieldcontents=convertCSVRowToArray($qa,',','"');
 				$newfieldcontents=$qacfieldcontents;
@@ -3733,9 +3733,9 @@ class LsrcHelper {
 					$type == "Z" || $type == "1" || $type == ":" ||
 					$type == ";" )
 					{//IF this is a flexible label array, update the lid entry
-						 
+							
 						$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK ");
-						 
+							
 						if (isset($labelreplacements)) {
 							foreach ($labelreplacements as $lrp) {
 								if ($lrp[0] == $questionrowdata["lid"]) {
@@ -3918,18 +3918,18 @@ class LsrcHelper {
 		}
 		return $result;
 	}
-	
+
 	function sendStatistic($surveyid, $to, $tempFile, $html=null)
 	{
 		include("lsrc.config.php");
 		global $sitename;
 		global $clang;
-		
-		
+
+
 		if($tempFile==null && isset($html))
 		{
 			$css = "<style type='text/css'>"
-				."table.statisticstable, table.statisticssummary {
+			."table.statisticstable, table.statisticssummary {
 				    background-color:#EEF6FF;
 				    border-collapse:collapse;
 				    border-width: 0px;
@@ -3975,25 +3975,25 @@ class LsrcHelper {
 				    text-align:center;
 				}"
 				."</style>";
-				
-			$message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$css."<center>".$message.$surveyid."<br/>".$html."</center>");
-			return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to, getBounceEmail($surveyid), $sitename, true);
+
+				$message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$css."<center>".$message.$surveyid."<br/>".$html."</center>");
+				return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to, getBounceEmail($surveyid), $sitename, true);
 		}
 		else
-        {
-            $message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$surveyid);
-            return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
-        }
-		
+		{
+			$message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$surveyid);
+			return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+		}
+
 	}
 	private function getqtypelist($SelectedCode = "T", $ReturnType = "array")
 	{
 		include("lsrc.config.php");
 		global $publicurl;
 		//global $sourcefrom, $clang;
-		
-	
-			$qtypes = array(
+
+
+		$qtypes = array(
 			"1"=>"Array (Flexible Labels) Dual Scale",
 			"5"=>"5 Point Choice",
 			"A"=>"Array (5 Point Choice)",
@@ -4023,70 +4023,309 @@ class LsrcHelper {
 			"!"=>"List (Dropdown)",
 			":"=>"Array (Multi Flexible) (Numbers)",
 			";"=>"Array (Multi Flexible) (Text)",
-			);
-	        asort($qtypes);
-			if ($ReturnType == "array") 
-				{return $qtypes;}
-	
-	
+		);
+		asort($qtypes);
+		if ($ReturnType == "array")
+		{return $qtypes;}
+
+
 	}
-	 /**
-	* This function removes the UTF-8 Byte Order Mark from a string
-	* 
-	* @param string $str
-	* @return string
-	*/
+	/**
+	 * This function removes the UTF-8 Byte Order Mark from a string
+	 *
+	 * @param string $str
+	 * @return string
+	 */
 	private function removeBOM($str=""){
-        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
-                $str=substr($str, 3);
-        }
-        return $str;
-	} 
-	function createTokenTable($iVid)
+		if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+			$str=substr($str, 3);
+		}
+		return $str;
+	}
+	/**
+	 * create a token table for the given survey id
+	 * @param $iVid
+	 * @return unknown_type
+	 */
+	function createTokenTable($iVid, $att=0)
 	{
 		global $connect;
+		global $dbprefix;
+		
+		global $databasetabletype;
+		global $databasetype;
+		
+		global $rootdir;
+		
+		global $defaultlang;
+		
 		include("lsrc.config.php");
+		
+		require_once($rootdir.'/classes/core/language.php');
+		$clang = new limesurvey_lang($defaultlang);
 		// check if the Token table already exists, if not, create it...
 		if(!db_tables_exist("{$dbprefix}tokens_".$iVid))
 		{
+			/**
+			 *
+			 * CREATE TABLE `lime_tokens_4711` (
+			 `tid` int(11) NOT NULL AUTO_INCREMENT,
+			 `firstname` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
+			 `lastname` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
+			 `email` text COLLATE utf8_unicode_ci,
+			 `emailstatus` text COLLATE utf8_unicode_ci,
+			 `token` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
+			 `language` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+			 `sent` varchar(17) COLLATE utf8_unicode_ci DEFAULT 'N',
+			 `remindersent` varchar(17) COLLATE utf8_unicode_ci DEFAULT 'N',
+			 `remindercount` int(11) DEFAULT '0',
+			 `completed` varchar(17) COLLATE utf8_unicode_ci DEFAULT 'N',
+			 `validfrom` datetime DEFAULT NULL,
+			 `validuntil` datetime DEFAULT NULL,
+			 `mpid` int(11) DEFAULT NULL,
+			 PRIMARY KEY (`tid`),
+			 KEY `lime_tokens_4711_idx` (`token`),
+			 KEY `idx_lime_tokens_4711_efl` (`email`(120),`firstname`,`lastname`)
+			 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+			 */
+
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token Table existiert nicht ");
-			$createtokentable=
-			"tid int I NOTNULL AUTO PRIMARY,\n "
+			$createtokentable =
+			"tid int I NOT NULL AUTO PRIMARY,\n "
 			. "firstname C(40) ,\n "
 			. "lastname C(40) ,\n ";
-	        //MSSQL needs special treatment because of some strangeness in ADODB
-	        if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
+			//MSSQL needs special treatment because of some strangeness in ADODB
+			if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
 			{
 				$createtokentable.= "email text ,\n "
-				."emailstatus text DEFAULT 'OK',\n ";
+				."emailstatus text ,\n ";
 			}
-	        else
+			else
 			{
 				$createtokentable.= "email text ,\n "
-				."emailstatus text DEFAULT 'OK',\n ";
+				."emailstatus text ,\n ";
 			}
-	        
+
 			$createtokentable.= "token C(36) ,\n "
 			. "language C(25) ,\n "
 			. "sent C(17) DEFAULT 'N',\n "
 			. "remindersent C(17) DEFAULT 'N',\n "
 			. "remindercount int I DEFAULT 0,\n "
 			. "completed C(17) DEFAULT 'N',\n "
-			. "validfrom date ,\n"
-			. "validuntil date ,\n"
+			. "validfrom date ,\n "
+			. "validuntil date ,\n "
 			. "mpid I ";
-			
+
 			$tabname = "{$dbprefix}tokens_{$iVid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-	        $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+			$taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
 	                             'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 			$dict = NewDataDictionary($connect);
 			$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
-			$execresult=$dict->ExecuteSQLArray($sqlarray, false);
-			
+			$execresult = $dict->ExecuteSQLArray($sqlarray, false);
+
 			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
 			$dict->ExecuteSQLArray($createtokentableindex, false);
+			if($execresult!=0)
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", token table created ");
+			else
+			{
+				$this->debugLsrc("WARNING: ".__FUNCTION__." Line ".__LINE__.", token table NOT created ");
+				$this->debugLsrc($createtokentable);
+				while(list($key, $value)= each($sqlarray) )
+				{
+					$this->debugLsrc("$key - $value");
+				}
+			}
+			$n=1;
+			while($att>=$n)
+			{
+				$sql = "ALTER TABLE {$dbprefix}tokens_$iVid ADD COLUMN attribute_$n VARCHAR(255); ";
+
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Attribute_$n anlegen ,sql: $sql");
+				//modify_database("","$sql");
+				$connect->Execute($sql);
+				++$n;
+			}
 		}
 		return;
 	}
+	/**
+	 * The new one...
+	 * * Function to insert Participant data while auto creating token if non is supported...
+	 * @param $sUser
+	 * @param $sPass
+	 * @param $iVid
+	 * @param $sParticipantData (FIRSTNAME;LASTNAME;EMAIL;LANG;TOKEN;VALIDFROM;VALIDTO;attrib1,attrib2,attrib3,attrib4,attrib5::)
+	 * @return unknown_type
+	 */
+	function insertParticipants($iVid, $sParticipantData)
+	{
+		global $connect ;
+		global $dbprefix ;
+		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+		include("lsrc.config.php");
+		//$lsrcHelper = new lsrcHelper();
+		// check for appropriate rights
+		//		if(!$this->checkUser($sUser, $sPass))
+		//		{
+		//			throw new SoapFault("Authentication: ", "User or password wrong");
+		//			exit;
+		//		}
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $iVid, $sParticipantData ");
+			
+		// check if there is a $iVid, else abort
+		if(!isset($iVid) || $iVid=='' || $iVid==0 )
+		{
+			return 0;
+		}
+
+		// check if the Survey we want to populate with data and tokens already exists, else -> Fault
+		if(!$this->surveyExists($iVid))
+		{
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", survey does not exist ");
+			return 0;
+		}
+
+		$this->createTokenTable($iVid);
+
+		//set the Seperators to default if nothing is set in the lsrc.config.php
+		if(!isset($sDatasetSeperator) || $sDatasetSeperator=='')
+		{$sDatasetSeperator = "::";}
+		if(!isset($sDatafieldSeperator) || $sDatafieldSeperator=='')
+		{$sDatafieldSeperator = ";";}
+
+		// prepare to fill the table lime_tokens_*
+		// this is sensitiv, if the Seperator is not the defined one, almost everything could happen, BE AWARE OF YOUR SEPERATOR!...
+		$asDataset = explode($sDatasetSeperator, $sParticipantData);
+		// write the tokens to the token_table
+		$iCountParticipants =  count($asDataset);
+		$iInsertedParticipants=0;
+
+		foreach($asDataset as $sData)
+		{
+			//some extra sql statement comes in here later
+			$attributes='';
+			$attributesData='';
+			$validity='';
+			$validityData='';
+			if($sData!='')
+			{
+				$asDatafield = explode($sDatafieldSeperator, $sData);
+				$checkCnt=1;
+
+				$iDataLength = count($asDatafield);
+				for($n=0;$n>=$iDataLength;++$n)
+				{
+					if($asDatafield[$n]=='')
+					{
+						$asDatafield[$n]=null;
+					}
+				}
+
+				// token generieren
+
+
+				while($checkCnt>0)
+				{
+					$value = randomkey(10); //change randomkey value for different tokenlength (up to 36 chars max.)
+					$cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
+					$result = db_execute_assoc($cQuery);
+					$checkCnt = $result->RecordCount();
+				}
+				if(!isset($asDatafield[4]) || $asDatafield[4]=='')
+				{
+					$asDatafield[4]= $value;
+				}
+				//set session language if no language is set
+				if(!isset($asDatafield[3]) || $asDatafield[3]=='')
+				{
+					$asDatafield[3] = $_SESSION['lang'];
+				}
+
+				if(isset($asDatafield[5]) && $asDatafield[5]!=null)
+				{
+					$validity .= ',validfrom';
+					$validityData .=",'$asDatafield[5]'";
+				}
+				if(isset($asDatafield[6]) && $asDatafield[5]!=null)
+				{
+					$validity .= ',validuntil';
+					$validityData .=",'$asDatafield[6]'";
+				}
+
+				if(isset($asDatafield[7]) && $asDatafield[7]!='')
+				{
+					$asAttributes = explode(",", $asDatafield[7]);
+					$n=0;
+					foreach($asAttributes as $attribute)
+					{
+
+						++$n;
+						//$check = "SELECT attribute_$n FROM {$dbprefix}_tokens_$iVid ";
+
+						$sql = "ALTER TABLE {$dbprefix}tokens_$iVid ADD COLUMN attribute_$n VARCHAR(255); ";
+						$attributes.=",attribute_$n";
+						$attributesData.= ",'$attribute'";
+
+						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Attribute_$n mit $attribute anlegen ,sql: $sql");
+						//modify_database("","$sql");
+						$connect->Execute($sql);
+
+					}
+				}
+
+
+				$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid
+				."(firstname,lastname,email,token,"
+				."language $validity $attributes) "
+				."VALUES ('{$asDatafield[0]}', '{$asDatafield[1]}' , '{$asDatafield[2]}', '{$asDatafield[4]}' , "
+				."'{$asDatafield[3]}' $validityData $attributesData) ";
+
+				$this->debugLsrc("$sInsertParti");
+
+
+				//			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid
+				//					."(firstname,lastname,email,emailstatus,token,"
+				//					."language,sent,completed,attribute_1,attribute_2,mpid)"
+				//					."VALUES ('".$asDatafield[0]."' ,
+				//					'".$asDatafield[1]."' , '".$asDatafield[2]."' , 'OK' , '".$asDatafield[5]."',
+				//					'".$_SESSION['lang']."', 'N', 'N', '".$asDatafield[3]."' , '".$asDatafield[4]."' , NULL); ";
+				//
+				if($connect->Execute($sInsertParti))
+				{
+					++$iInsertedParticipants;
+
+					//					if(isset($asDatafield[7]) && $asDatafield[7]!='')
+					//					{
+					//						$asAttributes = explode(",", $asDatafield[7]);
+					//						$n=0;
+					//						foreach($asAttributes as $attribute)
+					//						{
+					//
+					//							++$n;
+					//							//$check = "SELECT attribute_$n FROM {$dbprefix}_tokens_$iVid ";
+					//
+					//							$sql = "ALTER TABLE {$dbprefix}tokens_$iVid ADD COLUMN attribute_$n VARCHAR(255); ";
+					//							$attributes.=",attribute_$n";
+					//							$attributesData.= ",'$attribute'";
+					//
+					//							$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Attribute_$n mit $attribute anlegen ,sql: $sql");
+					//							//modify_database("","$sql");
+					//							$connect->Execute($sql);
+					//
+					//
+					//							$insert = "UPDATE {$dbprefix}tokens_$iVid "
+					//							. " SET attribute_$n='$attribute' WHERE token='$asDatafield[4]' ";
+					//
+					//							$this->debugLsrc("$insert");
+					//							$connect->Execute($insert);
+					//						}
+					//					}
+				}
+
+			}
+
+		}
+		return "".$iCountParticipants."Datasets given, ".$iInsertedParticipants." rows inserted. ";
+	}
 }
-?>
