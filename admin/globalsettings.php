@@ -115,7 +115,7 @@ function globalsettingsdisplay()
 
 
             // beginning TABs section
-            $editsurvey .= "\t<div class='tab-pane' id='tab-pane-1'>\n";
+            $editsurvey .= "\t<div class='tab-pane' id='tab-pane-globalsettings'>\n";
             $editsurvey .= "<form id='frmglobalsettings' name='frmglobalsettings' action='$scriptname' method='post'>\n";
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Overview & Update")."</h2>\n";
             $editsurvey .= checksettings();
