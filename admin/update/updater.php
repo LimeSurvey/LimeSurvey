@@ -370,6 +370,9 @@ function UpdateStep4()
     require_once($homedir."/classes/http/http.php");     
 
     $http=new http_class;    
+    
+    // Allow redirects
+    $http->follow_redirect=1;
     /* Connection timeout */
     $http->timeout=0;
     /* Data transfer timeout */
