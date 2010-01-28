@@ -21,10 +21,9 @@ injectglobalsettings();
 
 function injectglobalsettings()
 {
+    global $connect;
     
-    global $connect,$emailmethod ;
     $registry = SettingsStorage::getInstance();
-    $emailmethod='smtp';
     $usquery = "SELECT * FROM ".db_table_name("settings_global"); 
     $dbvaluearray=$connect->GetAll($usquery);
     if ($dbvaluearray!==false)
@@ -255,7 +254,7 @@ function globalsettingsdisplay()
                 . "\t\t<input type='text' size='50' id='siteadminname' name='siteadminname' value=\"".htmlspecialchars(getGlobalSetting('siteadminname'))."\" /><br /><br /></li>\n"
                 . "\t<li><label for='emailmethod'>".$clang->gT("Email method:")."</label>\n"
                 . "\t\t<select id='emailmethod' name='emailmethod'>\n"
-                . "\t\t\t<option value=''";
+                . "\t\t\t<option value='mail'";
                 if (getGlobalSetting('emailmethod')=='mail') {$editsurvey .= " selected='selected'";}
                 $editsurvey .= ">".$clang->gT("PHP (default)")."</option>\n"
                 . "\t\t\t<option value='smtp'";
