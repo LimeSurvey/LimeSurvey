@@ -1021,11 +1021,11 @@ div.loader {
     padding:1% 10%;
 }
 
-#frmcopyquestion iframe,   
-#sendreminder iframe,
-#newquestiongroup iframe,
-#sendinvitation iframe,
-#addnewsurvey iframe {
+#frmcopyquestion .tab-page iframe,   
+#sendreminder .tab-page iframe,
+#newquestiongroup .tab-page iframe,
+#sendinvitation .tab-page iframe,
+#addnewsurvey .tab-page iframe {
     width:600px !important;
 }
 
