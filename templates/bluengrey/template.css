@@ -1106,3 +1106,59 @@ div.questionTitle{
 td.statsImageholder {
 	background-color:#fff;
 }
+
+/* Survey listing styles */
+
+#listingHeader{
+	margin-top: 5px;
+    padding: 10px 0px;
+	background-color:#2F5376;
+	font-size: 14px;
+	font-weight: bold;
+    color:#FFFFFF;
+    text-align:center;
+}
+
+#listingContent p{
+	margin: 15px 0;
+    text-align:center;
+	line-height: 150%;
+}
+
+#listingContent .surveyListHeading{
+	font-weight: bold;
+}
+
+#listingList{
+	width: 80%;
+	margin: 0 auto;
+	padding: 5px 0 10px 0;
+	background-color:#FFFFFF;
+	border: 1px solid #CCCCCC;
+}
+
+#listingList ul {
+	list-style-type: none;
+	text-align: center;
+}
+
+#listingList .surveytitle {
+	font-size: 12px;
+	line-height: 160%;
+}
+
+#listingList a {
+	margin-left: 5px;
+	color:#444444;
+	text-decoration: underline;
+}
+
+#listingList a:hover {
+	text-decoration: none;
+	background-color: transparent;
+}
+
+#listingList a.surveytitle {
+	margin-left: 0px;
+}
+
