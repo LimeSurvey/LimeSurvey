@@ -794,10 +794,10 @@ if(isset($surveyid))
             $postsortorder=sanitize_int($_POST['sortorder']);
         }
 
-        switch($_POST['method'])
+        switch($_POST['emethod'])
 		{
 			// Add a new answer button
-			case $clang->gT("Add new answer option", "unescaped"):
+			case 'add':
 			if (isset($_POST['insertcode']) && $_POST['insertcode']!='' && $_POST['insertcode'] != "0")
 			{
 				//$_POST  = array_map('db_quote', $_POST);//Removed: qstr is used in SQL below
@@ -879,7 +879,7 @@ if(isset($surveyid))
 			}
 		//break; // Commented by lemeur for AutoSaveAll
 		// Save all answers with one button
-		case $clang->gT("Save Changes", "unescaped"):
+		case 'saveall':
 			//Determine autoids by evaluating the hidden field
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
             natsort($sortorderids); // // Added by lemeur for AutoSaveAll
@@ -971,7 +971,7 @@ if(isset($surveyid))
 		break;
 
 		// Pressing the Up button
-		case $clang->gT("Up", "unescaped"):
+		case 'up':
 		    $newsortorder=$postsortorder-1;
 		    $oldsortorder=$postsortorder;
 		    $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
@@ -983,7 +983,7 @@ if(isset($surveyid))
 		break;
 
         // Pressing the Down button
-		case $clang->gT("Dn", "unescaped"):
+		case 'down':
 		    $newsortorder=$postsortorder+1;
 		    $oldsortorder=$postsortorder;
 		    $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
@@ -995,7 +995,7 @@ if(isset($surveyid))
 		break;
 
 		// Delete Button
-		case $clang->gT("Del", "unescaped"):
+		case 'delete':
 			$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$postsortorder}'";  // Checked
 			if (!$result = $connect->Execute($query))
 			{
@@ -1005,7 +1005,7 @@ if(isset($surveyid))
 		break;
 
 		// Default Button
-		case $clang->gT("Default", "unescaped"):
+		case 'default':
 			$query = "SELECT default_value from ".db_table_name('answers')." where qid={$qid} AND sortorder='{$postsortorder}' GROUP BY default_value";
 			$result = db_execute_assoc($query);   // Checked
 			$row = $result->FetchRow();

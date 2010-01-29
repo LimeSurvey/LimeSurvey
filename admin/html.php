@@ -1463,25 +1463,25 @@ if (returnglobal('viewanswer'))
 			// Deactivate delete button for active surveys
 			if ($activated != 'Y' || ($activated == 'Y' && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
 			{
-				$vasummary .= "<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "<input type='submit' name='delete_{$row['language']}_{$row['sortorder']}' value='".$clang->gT("Del")."' onclick=\"$('#emethod').val('delete');this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
 			else
 			{
-				$vasummary .= "<input type='submit' disabled='disabled 'name='method' value='".$clang->gT("Del")."' />\n";
+				$vasummary .= "<input type='submit' disabled='disabled value='".$clang->gT("Del")."' />\n";
 			}
 
 			// Don't show Default Button for array question types
-			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1" && $qtype != ":" && $qtype != ";") $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1" && $qtype != ":" && $qtype != ";") $vasummary .= "<input type='submit' name='default{$row['language']}_{$row['sortorder']}' value='".$clang->gT("Default")."' onclick=\"$('#emethod').val('default');this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			$vasummary .= "</td>\n"
 			."<td width='10%'>\n";
 			if ($position > 0)
 			{
-				$vasummary .= "<input type='image' src='$imagefiles/up.png' name='method' alt='".$clang->gT("Move answer option up")."' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "<input type='image' src='$imagefiles/up.png' alt='".$clang->gT("Move answer option up")."' value='".$clang->gT("Up")."' onclick=\"$('#emethod').val('up');this.form.sortorder.value='{$row['sortorder']}'\" name='up_{$row['language']}_{$row['sortorder']}' />\n";
 			};
 			if ($position < $anscount-1)
 			{
 				// Fill the sortorder hiddenfield so we now what field is moved down
-				$vasummary .= "<input type='image' name='method' src='$imagefiles/down.png' alt='".$clang->gT("Move answer option down")."' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "<input type='image' src='$imagefiles/down.png' alt='".$clang->gT("Move answer option down")."' name='down_{$row['language']}_{$row['sortorder']}' value='".$clang->gT("Dn")."' onclick=\"$('#emethod').val('down');this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
 			$vasummary .= "</td></tr>\n";
 			$position++;
@@ -1490,7 +1490,7 @@ if (returnglobal('viewanswer'))
 		if ($anscount > 0)
 		{
 			$vasummary .= "<tr><td colspan='6'><center>"
-   			."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n"
+   			."<input type='submit' name='saveall_{$row['language']}' onclick=\"$('#emethod').val('saveall');\" id='saveallbtn_$anslang' value='".$clang->gT("Save Changes")."' />\n"
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
@@ -1529,7 +1529,8 @@ if (returnglobal('viewanswer'))
 				. getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
 				."</td>\n"
 				."<td>\n"
-				."<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new answer option")."' />\n"
+				."<input type='submit' id='newanswerbtn' onclick=\"$('#emethod').val('saveall');\" value='".$clang->gT("Add new answer option")."' />\n"
+                ."<input type='hidden' id='emethod' name='emethod' value='' />\n"
 				."<input type='hidden' name='action' value='modanswer' />\n"
 				."</td>\n"
 				."<td>\n"
