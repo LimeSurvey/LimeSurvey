@@ -1529,7 +1529,7 @@ if (returnglobal('viewanswer'))
 				. getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
 				."</td>\n"
 				."<td>\n"
-				."<input type='submit' id='newanswerbtn' onclick=\"$('#emethod').val('saveall');\" value='".$clang->gT("Add new answer option")."' />\n"
+				."<input type='submit' id='newanswerbtn' onclick=\"$('#emethod').val('add');\" value='".$clang->gT("Add new answer option")."' />\n"
                 ."<input type='hidden' id='emethod' name='emethod' value='' />\n"
 				."<input type='hidden' name='action' value='modanswer' />\n"
 				."</td>\n"
