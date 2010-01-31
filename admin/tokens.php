@@ -2295,7 +2295,7 @@ if ($subaction == "upload" &&
 						$invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
 					}
 
-                    if (!$dupfound)
+                    if (!$dupfound && !$invalidemail)
 					{
 					    if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
 					    if (!isset($writearray['token'])) {
@@ -2313,11 +2313,9 @@ if ($subaction == "upload" &&
 					    if (!$ir)
                         {
                             $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
-                        }
-			else
-			{
-				$xz++;
-			}
+                        } else {
+							$xz++;
+						}
 					}
 					$xv++;
 				}
