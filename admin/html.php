@@ -266,7 +266,7 @@ if ($action == "personalsettings")
 
 
 
-if (isset($surveyid) && $surveyid)
+if (isset($surveyid) && $surveyid && $action!='dataentry')
 {
 	if(hasRight($surveyid))
 	{
@@ -904,12 +904,10 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         
         $groupsummary .= "<img src='$imagefiles/seperator.gif' alt=''  />";
         $groupsummary.= "<img src='$imagefiles/blank.gif' width='18' alt='' />"
-        . "<input type='image' src='$imagefiles/minus.gif' title='"
-        . $clang->gT("Hide Details of this Group")."' alt='". $clang->gT("Hide Details of this Group")."' name='MinimiseGroupWindow' "
-        . " onclick='document.getElementById(\"groupdetails\").style.display=\"none\";' />\n";
-        $groupsummary .= "<input type='image' src='$imagefiles/plus.gif' title='"
-        . $clang->gT("Show Details of this Group")."' alt='". $clang->gT("Show Details of this Group")."' name='MaximiseGroupWindow' "
-        . " onclick='document.getElementById(\"groupdetails\").style.display=\"\";' />\n";
+        . "<input id='MinimizeGroupWindow' type='image' src='$imagefiles/minus.gif' title='"
+        . $clang->gT("Hide Details of this Group")."' alt='". $clang->gT("Hide Details of this Group")."' name='MinimizeGroupWindow' />\n";
+        $groupsummary .= "<input type='image' id='MaximizeGroupWindow' src='$imagefiles/plus.gif' title='"
+        . $clang->gT("Show Details of this Group")."' alt='". $clang->gT("Show Details of this Group")."' name='MaximizeGroupWindow' />\n";
         if (!$qid)
         {
             $groupsummary .= "<input type='image' src='$imagefiles/close.gif' title='"

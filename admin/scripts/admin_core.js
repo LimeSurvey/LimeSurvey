@@ -99,6 +99,13 @@ $(document).ready(function(){
 
     }) 
     $('#question_type').change(updatequestionattributes);
+    $('#MinimizeGroupWindow').click(function(){
+        $('#groupdetails').hide();
+    });     
+    $('#MaximizeGroupWindow').click(function(){
+        $('#groupdetails').show();
+    });     
+  
 });
 
 

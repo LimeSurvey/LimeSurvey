@@ -5318,14 +5318,14 @@ function do_array_multitext($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder";
+    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['answer'];
-			$labelcode[]=$lrow['code'];
+			$labelans[]=$lrow['question'];
+			$labelcode[]=$lrow['title'];
 		}
 		$numrows=count($labelans);
 		if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
@@ -5333,9 +5333,9 @@ function do_array_multitext($ia)
 
 		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND question like '%|%'";
-		$ansresult = db_execute_assoc($ansquery);
-		if ($ansresult->RecordCount()>0)
+		$ansquery = "SELECT count(question) FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
+		$ansresult = $connect->GetOne($ansquery);
+		if ($ansresult>0)
 		{
 			$right_exists=true;
 			$answerwidth=$answerwidth/2;
@@ -5346,11 +5346,11 @@ function do_array_multitext($ia)
 		} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
 		}
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
@@ -5501,7 +5501,7 @@ function do_array_multiflexi($ia)
 
 	//echo '<pre>'; print_r($_POST); echo '</pre>';
 	$defaultvaluescript = '';
-	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
@@ -5550,14 +5550,14 @@ function do_array_multiflexi($ia)
 	}
 	$columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder";
+    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
 		while ($lrow=$lresult->FetchRow())
 		{
-			$labelans[]=$lrow['answer'];
-			$labelcode[]=$lrow['code'];
+			$labelans[]=$lrow['question'];
+			$labelcode[]=$lrow['title'];
 		}
 		$numrows=count($labelans);
 		if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
@@ -5565,16 +5565,16 @@ function do_array_multiflexi($ia)
 
 		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
+		$ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
 		$ansresult = db_execute_assoc($ansquery);
 		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
 		else
 		{
-			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+			$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
 		}
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();

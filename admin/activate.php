@@ -128,7 +128,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	
 
 	//ChECK THAT certain array question types have answers set
-	$chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', ':', '1')";
+	$chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1')";
 	$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing answers<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires answers, but none are set."), $chkrow['gid']);
@@ -258,8 +258,8 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	$activateoutput .= $clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";
 	$activateoutput .= "\t</div>\n";
 	$activateoutput .= $clang->gT("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.")."<br /><br />\n";
-	$activateoutput .= $clang->gT("Once a survey is activated you can no longer:")."<ul><li>".$clang->gT("Add or delete groups")."</li><li>".$clang->gT("Add or remove answers to Multiple Answer questions")."</li><li>".$clang->gT("Add or delete questions")."</li></ul>\n";
-	$activateoutput .= $clang->gT("However you can still:")."<ul><li>".$clang->gT("Edit (change) your questions code, text or type")."</li><li>".$clang->gT("Edit (change) your group names")."</li><li>".$clang->gT("Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)")."</li><li>".$clang->gT("Change survey name or description")."</li></ul>\n";
+	$activateoutput .= $clang->gT("Once a survey is activated you can no longer:")."<ul><li>".$clang->gT("Add or delete groups")."</li><li>".$clang->gT("Add or delete questions")."</li><li>".$clang->gT("Add or delete subquestions or change their codes")."</li></ul>\n";
+	$activateoutput .= $clang->gT("However you can still:")."<ul><li>".$clang->gT("Edit your questions code/title/text and advanced options")."</li><li>".$clang->gT("Edit your group names or descriptions")."</li><li>".$clang->gT("Add, remove or edit answer options")."</li><li>".$clang->gT("Change survey name or description")."</li></ul>\n";
 	$activateoutput .= $clang->gT("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table.")."<br /><br />\n";
 	$activateoutput .= "\t<input type='submit' value=\"".$clang->gT("Activate Survey")."\" onclick=\"".get2post("$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}")."\" />\n";
 	$activateoutput .= "</div><br />&nbsp;\n";
@@ -267,11 +267,6 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 }
 else
 {
-	//Create the survey responses table
-	$createsurvey = "id I NOTNULL AUTO PRIMARY,\n";
-	$createsurvey .= " submitdate T,\n";
-    $createsurvey .= " lastpage I,\n";
-	$createsurvey .= " startlanguage C(20) NOTNULL ,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";
 	$presult=db_execute_assoc($pquery);
@@ -286,11 +281,6 @@ else
 		{
 			$surveyallowsregistration="TRUE";
 		}
-		if ($prow['datestamp'] == "Y")
-		{
-			$createsurvey .= " datestamp T NOTNULL,\n";
-			$createsurvey .= " startdate T NOTNULL,\n";
-		}
 		if ($prow['ipaddr'] == "Y")
 		{
 			$createsurvey .= " ipaddr X,\n";
@@ -302,210 +292,76 @@ else
 		}
 	}
 	//Get list of questions for the base language
-	$aquery = " SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')
-	." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid "
-	." AND ".db_table_name('questions').".sid={$postsid} "
-	." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
-	." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
-    ." AND parent_qid=0 "
-	." ORDER BY group_order, question_order";
-	$aresult = db_execute_assoc($aquery);
-	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
+    $createsurvey='';
+    $fieldmap=createFieldMap($surveyid);
+	foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
 	{
-		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}
+		if ($createsurvey!='') {$createsurvey .= ",\n";}
 
-		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
-		$arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
-		$arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
-		$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J" &&
-		$arow['type'] != "K" && $arow['type'] != ":" && $arow['type'] != ";" &&
-		$arow['type'] != "1")
+		$createsurvey .= " `{$arow['fieldname']}`";
+		switch($arow['type'])
 		{
-			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
-			switch($arow['type'])
-			{
-				case "N":  //NUMERICAL
-				$createsurvey .= " F";
-				break;
-				case "S":  //SHORT TEXT
-				if ($databasetype=='mysql' || $databasetype=='mysqli')	{$createsurvey .= " X";}
-				   else  {$createsurvey .= " C(255)";}
-				break;
-				case "L":  //LIST (RADIO)
-				case "!":  //LIST (DROPDOWN)
-					$createsurvey .= " C(5)";
-					if ($arow['other'] == "Y")
-					{
-						$createsurvey .= ",\n`{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` X";
-					}
-					break;
-				case "I":  // CSV ONE
-				$createsurvey .= " C(5)";
-				break;
-				case "O": //DROPDOWN LIST WITH COMMENT
-				$createsurvey .= " C(5),\n `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment` X";
-				break;
-				case "T":  //LONG TEXT
-				$createsurvey .= " X";
-				break;
-				case "U":  //HUGE TEXT
-				$createsurvey .= " X";
-				break;
-				case "D":  //DATE
-				$createsurvey .= " D";
-				break;
-				case "5":  //5 Point Choice
-				case "G":  //Gender
-				case "Y":  //YesNo
-				case "X":  //Boilerplate
-				$createsurvey .= " C(1)";
-				break;
-			}
-		}
-        elseif ($qtypes[$arow['type']]['subquestions']>0 && $arow['type'] != ":" && $arow['type'] != ";" && $arow['type'] != "1")              
-		{
-			//MULTI ENTRY
-			$abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
-                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY sq.question_order, sq.question";
-			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			while ($abrow=$abresult->FetchRow())
-			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}` C(5),\n";
-				if ($abrow['other']=="Y") {$alsoother="Y";}
-				if ($arow['type'] == "P")
+            case 'startlanguage':
+                $createsurvey .= " C(20) NOTNULL";
+                break;            
+            case 'id':
+                $createsurvey .= " I NOTNULL AUTO PRIMARY";
+                break;            
+            case "startdate":
+            case "datestamp":
+                $createsurvey .= " T NOTNULL";
+                break;            
+            case "submitdate":
+                $createsurvey .= " T";
+                break;            
+            case "lastpage":
+                $createsurvey .= " I";
+                break;            
+			case "N":  //NUMERICAL
+			    $createsurvey .= " F";
+			    break;
+			case "S":  //SHORT TEXT
+			if ($databasetype=='mysql' || $databasetype=='mysqli')	{$createsurvey .= " X";}
+			   else  {$createsurvey .= " C(255)";}
+			break;
+			case "L":  //LIST (RADIO)
+			case "!":  //LIST (DROPDOWN)
+            case "M":  //Multiple options
+            case "P":  //Multiple options with comment
+            case "O":  //DROPDOWN LIST WITH COMMENT
+				if ($arow['aid'] != 'other' && $arow['aid'] != 'comment' && $arow['aid'] != 'othercomment')
 				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment` X,\n";
-				}
-			}
-			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"  || $arow['type']=="1")) //Sc: check!
-			{
-				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` X,\n";
-				if ($arow['type']=="P")
-				{
-					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` X,\n";
-				}
-			}
-		}
-		elseif ($arow['type'] == ":" || $arow['type'] == ";")
-		{
-			//MULTI ENTRY
-            $abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
-                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY sq.question_order, sq.question";
-
-			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			$ab2query = "SELECT a.*
-			             FROM ".db_table_name('questions')." q, ".db_table_name('answers')." a
-			             WHERE sid=$surveyid 
-						 AND a.qid=q.qid
-						 AND a.language='".GetbaseLanguageFromSurveyid($postsid)."' 
-			             AND q.qid=".$arow['qid']."
-                         AND a.scale_id=0
-			             ORDER BY a.sortorder, a.answer";
-			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of answers in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-			while($ab2row=$ab2result->FetchRow())
-			{
-			    $lset[]=$ab2row;
-			}
-			while ($abrow=$abresult->FetchRow())
-			{
-			    foreach($lset as $ls)
-			    {
-				    $createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$ls['code']}` X,\n";
-				}
-			}
-			unset($lset);
-		}
-		elseif ($arow['type'] == "Q")
-		{
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                                   ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                                   ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                                   ." ORDER BY a.sortorder, a.answer";
-			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			while ($abrow = $abresult->FetchRow())
-			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}`";
-                if ($databasetype=='mysql' || $databasetype=='mysqli')    
+                    $createsurvey .= " C(5)";
+ 				}   
+                else
                 {
                     $createsurvey .= " X";
                 }
-                else
-                {
-                    $createsurvey .= " C(255)";
-                }
-                $createsurvey .= ",\n";
-			}
-		}
-		
-		elseif ($arow['type'] == "K") //Multiple Numeric - replica of multiple short text, except numbers only
-		{
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                                   ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                                   ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                                   ." ORDER BY a.sortorder, a.answer";
-			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			while ($abrow = $abresult->FetchRow())
-			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` F,\n";
-			}
-		} //End if ($arow['type'] == "K")
-/*		elseif ($arow['type'] == "J")
-		{
-			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			while ($abrow = $abresultt->FetchRow())
-			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
-			}
-		}*/
-		elseif ($arow['type'] == "R")
-		{
-			//MULTI ENTRY
-    		$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY a.sortorder, a.answer";
-			$abresult=$connect->Execute($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			$abcount=$abresult->RecordCount();
-			for ($i=1; $i<=$abcount; $i++)
-			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i` C(5),\n";
-			}
-		}
-		elseif ($arow['type'] == "1") 
-		{
-			$abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
-                       ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND sq.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                       ." ORDER BY sq.question_order, sq.question";
-			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
-			$abcount=$abresult->RecordCount();
-			while ($abrow = $abresult->FetchRow())
-			{
-				$abmultiscalequery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q, {$dbprefix}answers as a"
-					     ." WHERE sq.parent_qid=q.qid AND q.sid={$postsid} AND q.qid={$arow['qid']} "
-	                     ." AND a.qid={$arow['qid']} AND sq.sid={$postsid} AND q.qid={$arow['qid']} AND a.answer = '' "
-                         ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
-                         ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' ";
-				$abmultiscaleresult=$connect->Execute($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
-				$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
-				$abmultiscaleresultcount = 1;
-				for ($j=0; $j<=$abmultiscaleresultcount; $j++)
-				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#$j` C(5),\n";
-				} 
-			}
+				break;
+            case "K":  // Multiple Numerical
+                $createsurvey .= " F";
+                break;
+            case "U":  //Huge text
+            case "Q":  //Multiple short text
+			case "T":  //LONG TEXT
+            case ";":  //Multi Flexi
+            case ":":  //Multi Flexi
+				$createsurvey .= " X";
+				break;
+			case "D":  //DATE
+				$createsurvey .= " D";
+				break;
+			case "5":  //5 Point Choice
+			case "G":  //Gender
+			case "Y":  //YesNo
+			case "X":  //Boilerplate
+				$createsurvey .= " C(1)";
+				break;
+            default:     
+                $createsurvey .= " C(5)";
 		}
 	}
-			
+
 	// If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
 	$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 	$tabname = "{$dbprefix}survey_{$postsid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)

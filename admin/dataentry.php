@@ -1999,39 +1999,38 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				switch($deqrow['type'])
 				{
 					case "5": //5 POINT CHOICE radio-buttons
-					$dataentryoutput .= "\t<select name='$fieldname'>\n"
-					."<option value=''>".$blang->gT("No answer")."</option>\n";
-					for ($x=1; $x<=5; $x++)
-					{
-						$dataentryoutput .= "<option value='$x'>$x</option>\n";
-					}
-					$dataentryoutput .= "\t</select>\n";
-					break;
+					    $dataentryoutput .= "\t<select name='$fieldname'>\n"
+					    ."<option value=''>".$blang->gT("No answer")."</option>\n";
+					    for ($x=1; $x<=5; $x++)
+					    {
+						    $dataentryoutput .= "<option value='$x'>$x</option>\n";
+					    }
+					    $dataentryoutput .= "\t</select>\n";
+					    break;
 					case "D": //DATE
-					$dataentryoutput .= "\t<input type='text' name='$fieldname' size='10' />\n";
-					break;
+					    $dataentryoutput .= "\t<input type='text' name='$fieldname' size='10' />\n";
+					    break;
 					case "G": //GENDER drop-down list
-					$dataentryoutput .= "\t<select name='$fieldname'>\n"
-					."<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n"
-					."<option value='F'>".$blang->gT("Female")."</option>\n"
-					."<option value='M'>".$blang->gT("Male")."</option>\n"
-					."\t</select>\n";
-					break;
+					    $dataentryoutput .= "\t<select name='$fieldname'>\n"
+					    ."<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n"
+					    ."<option value='F'>".$blang->gT("Female")."</option>\n"
+					    ."<option value='M'>".$blang->gT("Male")."</option>\n"
+					    ."\t</select>\n";
+					    break;
 					case "Q": //MULTIPLE SHORT TEXT
-//					case "^": //Slider
 					case "K":
-					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
-					$dearesult = db_execute_assoc($deaquery);
-					$dataentryoutput .= "\t<table>\n";
-					while ($dearow = $dearesult->FetchRow())
-					{
-						$dataentryoutput .= "<tr><td align='right'>"
-						.$dearow['answer']
-						."</td>\n"
-						."\t<td><input type='text' name='$fieldname{$dearow['code']}' /></td>\n"
-						."</tr>\n";
-					}
-					$dataentryoutput .= "\t</table>\n";
+					    $deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+					    $dearesult = db_execute_assoc($deaquery);
+					    $dataentryoutput .= "\t<table>\n";
+					    while ($dearow = $dearesult->FetchRow())
+					    {
+						    $dataentryoutput .= "<tr><td align='right'>"
+						    .$dearow['answer']
+						    ."</td>\n"
+						    ."\t<td><input type='text' name='$fieldname{$dearow['code']}' /></td>\n"
+						    ."</tr>\n";
+					    }
+					    $dataentryoutput .= "\t</table>\n";
 					break;
 
 					case "1": // multi scale^
@@ -2168,192 +2167,182 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
 						break;
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-					$defexists="";
-					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
-					$dearesult = db_execute_assoc($deaquery);
-					$dataentryoutput .= "\t<select name='$fieldname'>\n";
-					$datatemp='';
-					while ($dearow = $dearesult->FetchRow())
-					{
-						$datatemp .= "<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
-						$datatemp .= ">{$dearow['answer']}</option>\n";
-					}
-					if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
-					else  {$dataentryoutput .= $datatemp;}
-					$dataentryoutput .= "\t</select>\n"
-					."\t<br />".$blang->gT("Comment").":<br />\n"
-					."\t<textarea cols='40' rows='5' name='$fieldname"
-					."comment'></textarea>\n";
+					    $defexists="";
+					    $deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+					    $dearesult = db_execute_assoc($deaquery);
+					    $dataentryoutput .= "\t<select name='$fieldname'>\n";
+					    $datatemp='';
+					    while ($dearow = $dearesult->FetchRow())
+					    {
+						    $datatemp .= "<option value='{$dearow['code']}'";
+						    if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
+						    $datatemp .= ">{$dearow['answer']}</option>\n";
+					    }
+					    if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
+					    else  {$dataentryoutput .= $datatemp;}
+					    $dataentryoutput .= "\t</select>\n"
+					    ."\t<br />".$blang->gT("Comment").":<br />\n"
+					    ."\t<textarea cols='40' rows='5' name='$fieldname"
+					    ."comment'></textarea>\n";
 					break;
 					case "R": //RANKING TYPE QUESTION
-					$thisqid=$deqrow['qid'];
-					$ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid=$thisqid AND language='{$language}' ORDER BY sortorder, answer";
-					$ansresult = db_execute_assoc($ansquery);
-					$anscount = $ansresult->RecordCount();
-					$dataentryoutput .= "\t<script type='text/javascript'>\n"
-					."\t<!--\n"
-					."function rankthis_$thisqid(\$code, \$value)\n"
-					."\t{\n"
-					."\t\$index=document.addsurvey.CHOICES_$thisqid.selectedIndex;\n"
-					."\tfor (i=1; i<=$anscount; i++)\n"
-					."{\n"
-					."\$b=i;\n"
-					."\$b += '';\n"
-					."\$inputname=\"RANK_$thisqid\"+\$b;\n"
-					."\$hiddenname=\"d$fieldname\"+\$b;\n"
-					."\$cutname=\"cut_$thisqid\"+i;\n"
-					."document.getElementById(\$cutname).style.display='none';\n"
-					."if (!document.getElementById(\$inputname).value)\n"
-					."\t{\n"
-					."\tdocument.getElementById(\$inputname).value=\$value;\n"
-					."\tdocument.getElementById(\$hiddenname).value=\$code;\n"
-					."\tdocument.getElementById(\$cutname).style.display='';\n"
-					."\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n"
-					."{\n"
-					."if (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n"
-					."\t{\n"
-					."\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n"
-					."\t}\n"
-					."}\n"
-					."\ti=$anscount;\n"
-					."\t}\n"
-					."}\n"
-					."\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n"
-					."{\n"
-					."document.getElementById('CHOICES_$thisqid').disabled=true;\n"
-					."}\n"
-                    ."\tdocument.addsurvey.CHOICES_$thisqid.selectedIndex=-1;\n"
-					."\t}\n"
-					."function deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n"
-					."\t{\n"
-					."\tvar qid='$thisqid';\n"
-					."\tvar lngth=qid.length+4;\n"
-					."\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n"
-					."\tcutindex=parseFloat(cutindex);\n"
-					."\tdocument.getElementById(\$name).value='';\n"
-					."\tdocument.getElementById(\$thisname).style.display='none';\n"
-					."\tif (cutindex > 1)\n"
-					."{\n"
-					."\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n"
-					."\$cut2name=\"d$fieldname\"+(cutindex);\n"
-					."document.getElementById(\$cut1name).style.display='';\n"
-					."document.getElementById(\$cut2name).value='';\n"
-					."}\n"
-					."\telse\n"
-					."{\n"
-					."\$cut2name=\"d$fieldname\"+(cutindex);\n"
-					."document.getElementById(\$cut2name).value='';\n"
-					."}\n"
-					."\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n"
-					."\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n"
-					."\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n"
-					."{\n"
-					."document.getElementById('CHOICES_$thisqid').disabled=false;\n"
-					."}\n"
-					."\t}\n"
-					."\t//-->\n"
-					."\t</script>\n";
-					while ($ansrow = $ansresult->FetchRow())
-					{
-						$answers[] = array($ansrow['code'], $ansrow['answer']);
-					}
-					for ($i=1; $i<=$anscount; $i++)
-					{
-						if (isset($fname))
-						{
-							$myfname=$fname.$i;
-						}
-						if (isset($myfname) && $_SESSION[$myfname])
-						{
-							$existing++;
-						}
-					}
-					for ($i=1; $i<=$anscount; $i++)
-					{
-						if (isset($fname))
-						{
-							$myfname = $fname.$i;
-						}
-						if (isset($myfname) && $_SESSION[$myfname])
-						{
-							foreach ($answers as $ans)
-							{
-								if ($ans[0] == $_SESSION[$myfname])
-								{
-									$thiscode=$ans[0];
-									$thistext=$ans[1];
-								}
-							}
-						}
-						if (!isset($ranklist)) {$ranklist="";}
-						$ranklist .= "&nbsp;<font color='#000080'>$i:&nbsp;<input class='ranklist' type='text' name='RANK$i' id='RANK_$thisqid$i'";
-						if (isset($myfname) && $_SESSION[$myfname])
-						{
-							$ranklist .= " value='";
-							$ranklist .= $thistext;
-							$ranklist .= "'";
-						}
-						$ranklist .= " onFocus=\"this.blur()\"  />\n";
-						$ranklist .= "<input type='hidden' id='d$fieldname$i' name='d$fieldname$i' value='";
-						$chosen[]=""; //create array
-						if (isset($myfname) && $_SESSION[$myfname])
-						{
-							$ranklist .= $thiscode;
-							$chosen[]=array($thiscode, $thistext);
-						}
-						$ranklist .= "' /></font>\n";
-						$ranklist .= "<img src='$imagefiles/cut.gif' alt='".$blang->gT("Remove this item")."' title='".$blang->gT("Remove this item")."' ";
-						if (!isset($existing) || $i != $existing)
-						{
-							$ranklist .= "style='display:none'";
-						}
-						$mfn=$fieldname.$i;
-						$ranklist .= " id='cut_$thisqid$i' onclick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
-					}
-					if (!isset($choicelist)) {$choicelist="";}
-					$choicelist .= "<select size='$anscount' class='choicelist' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
-					foreach ($answers as $ans)
-					{
-						if (_PHPVERSION < "4.2.0")
-						{
-							if (!array_in_array($ans, $chosen))
-							{
-								$choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-							}
-						}
-						else
-						{
+					    $thisqid=$deqrow['qid'];
+					    $ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid=$thisqid AND language='{$language}' ORDER BY sortorder, answer";
+					    $ansresult = db_execute_assoc($ansquery);
+					    $anscount = $ansresult->RecordCount();
+					    $dataentryoutput .= "\t<script type='text/javascript'>\n"
+					    ."\t<!--\n"
+					    ."function rankthis_$thisqid(\$code, \$value)\n"
+					    ."\t{\n"
+					    ."\t\$index=document.addsurvey.CHOICES_$thisqid.selectedIndex;\n"
+					    ."\tfor (i=1; i<=$anscount; i++)\n"
+					    ."{\n"
+					    ."\$b=i;\n"
+					    ."\$b += '';\n"
+					    ."\$inputname=\"RANK_$thisqid\"+\$b;\n"
+					    ."\$hiddenname=\"d$fieldname\"+\$b;\n"
+					    ."\$cutname=\"cut_$thisqid\"+i;\n"
+					    ."document.getElementById(\$cutname).style.display='none';\n"
+					    ."if (!document.getElementById(\$inputname).value)\n"
+					    ."\t{\n"
+					    ."\tdocument.getElementById(\$inputname).value=\$value;\n"
+					    ."\tdocument.getElementById(\$hiddenname).value=\$code;\n"
+					    ."\tdocument.getElementById(\$cutname).style.display='';\n"
+					    ."\tfor (var b=document.getElementById('CHOICES_$thisqid').options.length-1; b>=0; b--)\n"
+					    ."{\n"
+					    ."if (document.getElementById('CHOICES_$thisqid').options[b].value == \$code)\n"
+					    ."\t{\n"
+					    ."\tdocument.getElementById('CHOICES_$thisqid').options[b] = null;\n"
+					    ."\t}\n"
+					    ."}\n"
+					    ."\ti=$anscount;\n"
+					    ."\t}\n"
+					    ."}\n"
+					    ."\tif (document.getElementById('CHOICES_$thisqid').options.length == 0)\n"
+					    ."{\n"
+					    ."document.getElementById('CHOICES_$thisqid').disabled=true;\n"
+					    ."}\n"
+                        ."\tdocument.addsurvey.CHOICES_$thisqid.selectedIndex=-1;\n"
+					    ."\t}\n"
+					    ."function deletethis_$thisqid(\$text, \$value, \$name, \$thisname)\n"
+					    ."\t{\n"
+					    ."\tvar qid='$thisqid';\n"
+					    ."\tvar lngth=qid.length+4;\n"
+					    ."\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n"
+					    ."\tcutindex=parseFloat(cutindex);\n"
+					    ."\tdocument.getElementById(\$name).value='';\n"
+					    ."\tdocument.getElementById(\$thisname).style.display='none';\n"
+					    ."\tif (cutindex > 1)\n"
+					    ."{\n"
+					    ."\$cut1name=\"cut_$thisqid\"+(cutindex-1);\n"
+					    ."\$cut2name=\"d$fieldname\"+(cutindex);\n"
+					    ."document.getElementById(\$cut1name).style.display='';\n"
+					    ."document.getElementById(\$cut2name).value='';\n"
+					    ."}\n"
+					    ."\telse\n"
+					    ."{\n"
+					    ."\$cut2name=\"d$fieldname\"+(cutindex);\n"
+					    ."document.getElementById(\$cut2name).value='';\n"
+					    ."}\n"
+					    ."\tvar i=document.getElementById('CHOICES_$thisqid').options.length;\n"
+					    ."\tdocument.getElementById('CHOICES_$thisqid').options[i] = new Option(\$text, \$value);\n"
+					    ."\tif (document.getElementById('CHOICES_$thisqid').options.length > 0)\n"
+					    ."{\n"
+					    ."document.getElementById('CHOICES_$thisqid').disabled=false;\n"
+					    ."}\n"
+					    ."\t}\n"
+					    ."\t//-->\n"
+					    ."\t</script>\n";
+					    while ($ansrow = $ansresult->FetchRow())
+					    {
+						    $answers[] = array($ansrow['code'], $ansrow['answer']);
+					    }
+					    for ($i=1; $i<=$anscount; $i++)
+					    {
+						    if (isset($fname))
+						    {
+							    $myfname=$fname.$i;
+						    }
+						    if (isset($myfname) && $_SESSION[$myfname])
+						    {
+							    $existing++;
+						    }
+					    }
+					    for ($i=1; $i<=$anscount; $i++)
+					    {
+						    if (isset($fname))
+						    {
+							    $myfname = $fname.$i;
+						    }
+						    if (isset($myfname) && $_SESSION[$myfname])
+						    {
+							    foreach ($answers as $ans)
+							    {
+								    if ($ans[0] == $_SESSION[$myfname])
+								    {
+									    $thiscode=$ans[0];
+									    $thistext=$ans[1];
+								    }
+							    }
+						    }
+						    if (!isset($ranklist)) {$ranklist="";}
+						    $ranklist .= "&nbsp;<font color='#000080'>$i:&nbsp;<input class='ranklist' type='text' name='RANK$i' id='RANK_$thisqid$i'";
+						    if (isset($myfname) && $_SESSION[$myfname])
+						    {
+							    $ranklist .= " value='";
+							    $ranklist .= $thistext;
+							    $ranklist .= "'";
+						    }
+						    $ranklist .= " onFocus=\"this.blur()\"  />\n";
+						    $ranklist .= "<input type='hidden' id='d$fieldname$i' name='d$fieldname$i' value='";
+						    $chosen[]=""; //create array
+						    if (isset($myfname) && $_SESSION[$myfname])
+						    {
+							    $ranklist .= $thiscode;
+							    $chosen[]=array($thiscode, $thistext);
+						    }
+						    $ranklist .= "' /></font>\n";
+						    $ranklist .= "<img src='$imagefiles/cut.gif' alt='".$blang->gT("Remove this item")."' title='".$blang->gT("Remove this item")."' ";
+						    if (!isset($existing) || $i != $existing)
+						    {
+							    $ranklist .= "style='display:none'";
+						    }
+						    $mfn=$fieldname.$i;
+						    $ranklist .= " id='cut_$thisqid$i' onclick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
+					    }
+					    if (!isset($choicelist)) {$choicelist="";}
+					    $choicelist .= "<select size='$anscount' class='choicelist' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
+					    foreach ($answers as $ans)
+					    {
 							if (!in_array($ans, $chosen))
 							{
 								$choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
 							}
-						}
-					}
-					$choicelist .= "</select>\n";
+					    }
+					    $choicelist .= "</select>\n";
 
-					$dataentryoutput .= "\t<table align='left' border='0' cellspacing='5'>\n"
-					."<tr>\n"
-					."\t<td align='left' valign='top' width='200'>\n"
-					."<strong>"
-					.$blang->gT("Your Choices").":</strong><br />\n"
-					.$choicelist
-					."\t</td>\n"
-					."\t<td align='left'>\n"
-					."<strong>"
-					.$blang->gT("Your Ranking").":</strong><br />\n"
-					.$ranklist
-					."\t</td>\n"
-					."</tr>\n"
-					."\t</table>\n"
-					."\t<input type='hidden' name='multi' value='$anscount' />\n"
-					."\t<input type='hidden' name='lastfield' value='";
-					if (isset($multifields)) {$dataentryoutput .= $multifields;}
-					$dataentryoutput .= "' />\n";
-					$choicelist="";
-					$ranklist="";
-					unset($answers);
-					break;
+					    $dataentryoutput .= "\t<table align='left' border='0' cellspacing='5'>\n"
+					    ."<tr>\n"
+					    ."\t<td align='left' valign='top' width='200'>\n"
+					    ."<strong>"
+					    .$blang->gT("Your Choices").":</strong><br />\n"
+					    .$choicelist
+					    ."\t</td>\n"
+					    ."\t<td align='left'>\n"
+					    ."<strong>"
+					    .$blang->gT("Your Ranking").":</strong><br />\n"
+					    .$ranklist
+					    ."\t</td>\n"
+					    ."</tr>\n"
+					    ."\t</table>\n"
+					    ."\t<input type='hidden' name='multi' value='$anscount' />\n"
+					    ."\t<input type='hidden' name='lastfield' value='";
+					    if (isset($multifields)) {$dataentryoutput .= $multifields;}
+					    $dataentryoutput .= "' />\n";
+					    $choicelist="";
+					    $ranklist="";
+					    unset($answers);
+					    break;
 					case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
 					$qidattributes=getQuestionAttributes($deqrow['qid']);
                     if (trim($qidattributes['display_columns'])!='') 
