@@ -664,6 +664,7 @@ a.optoutemail {
     margin:0 auto;
 }
 
+#responsedetail tr.highlight,
 .answertable tr.highlight {
     background-color:#EAF2FF;
 }

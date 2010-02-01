@@ -310,11 +310,6 @@ if(isset($_SESSION['loginID']))
         if(hasRight($surveyid,'browse_response'))    {include('statistics.php');}
             else { include('access_denied.php');}    
         }    
-    elseif ($action == 'browse')
-        {
-        if(hasRight($surveyid,'browse_response'))    {include('browse.php');}               
-            else { include('access_denied.php');}    
-        }    
     elseif ($action == 'tokens')
         {
         if(hasRight($surveyid,'activate_survey'))    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php');}               
@@ -448,7 +443,7 @@ if(isset($_SESSION['loginID']))
      (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
       $action=='importsurvey' || $action=='editsurvey'  || $action=='updatesurvey' || $action=='ordergroups'  || $action=='dataentry' ||
       $action=='newsurvey'    || $action=='listsurveys' || $action=='globalsettings' || $action=='editusergroups' ||
-      $action=='surveyrights' || $action=='quotas'      || $action=='editusers' || $action=='' || $action=='login') )
+      $action=='surveyrights' || $action=='quotas'      || $action=='editusers' || $action=='' || $action=='login' || $action=='browse') )
 {
 	if ($action=='editsurvey' || $action=='updatesurvey')
 	{
@@ -468,7 +463,17 @@ if(isset($_SESSION['loginID']))
             include('access_denied.php');
         }    
     }    
-
+    elseif ($action == 'browse')
+    {
+        if(hasRight($surveyid,'browse_response'))    
+        {
+            include('browse.php');
+        }               
+        else 
+        { 
+            include('access_denied.php');
+        }    
+    }  
 
     if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' || 
         $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')

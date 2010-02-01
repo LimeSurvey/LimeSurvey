@@ -135,69 +135,42 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+    
 	//SHOW HEADER
 	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
-	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
-	AND ".db_table_name("questions").".sid='$surveyid' AND
-	".db_table_name("questions").".language='{$language}' AND ".db_table_name("groups").".language='{$language}' ORDER BY ".db_table_name("groups").".group_order, ".db_table_name("questions").".title";
-	$fnresult = db_execute_assoc($fnquery);
+
 	$fncount = 0;
 
-	$fnrows = array(); //Create an empty array in case fetch_array does not return any rows
-	while ($fnrow = $fnresult->FetchRow()) {++$fncount; $fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr']; $refurl=$fnrow['refurl'];} // Get table output into array
-
-	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
-	usort($fnrows, 'CompareGroupThenTitle');
-
-
-	$fnames[] = array("id", "id");
-	if ($private == "N") //add token to top ofl ist is survey is not private
-	{
-		$fnames[] = array("token", $clang->gT("Token ID"));
-	}
-
-	$fnames[] = array("completed", $clang->gT("Completed"), "0");
-
-	if ($datestamp == "Y") //add datetime to list if survey is datestamped
-	{
-		// submitdate for not-datestamped surveys is always 1980/01/01
-		// so only display it when datestamped
-		$fnames[] = array("startdate", $clang->gT("Date Started"));
-		$fnames[] = array("datestamp", $clang->gT("Date Last Action"));
-		$fnames[] = array("submitdate", $clang->gT("Date Submitted"));
-	}
-	if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
-	{
-		$fnames[] = array("ipaddr", $clang->gT("IP Address"));
-	}
-	if ($refurl == "Y") //add refer_URL  to list if survey should save referring URL
-	{
-		$fnames[] = array("refurl", $clang->gT("Referring URL"));
-	}
-	
+       
     $fieldmap=createFieldMap($surveyid,'full');
-    unset($fieldmap[0]);
-    unset($fieldmap[1]);
+    $position=0;
     foreach ($fieldmap as $field)
 	{
-       $question=$field['question'];
-       if (isset($field['subquestion']) && $field['subquestion']!='')
+        $question=$field['question'];
+        if (isset($field['subquestion']) && $field['subquestion']!='')
 		{
-          $question .=' ('.$field['subquestion'];
-			}
-       if (isset($field['answer']) && $field['answer']!='')
-			{
-          $question .=' : '.$field['answer'];
-			}
-       $question .=')'; 
-       if (isset($field['scale_id']))
+            $question .=' ('.$field['subquestion'].')';
+		}
+        if (isset($field['subquestion1']) && isset($field['subquestion1']))
 		{
-          $question .='['.$field['scale'].']';
-			}
-       $fnames[]=array($field['fieldname'],$question); 
-                }
+            $question .=' ('.$field['subquestion1'].':'.$field['subquestion2'].')';
+		}
+        if (isset($field['scale_id']))
+		{
+            $question .='['.$field['scale'].']';
+		}
+        $fnames[]=array($field['fieldname'],$question); 
+        if ($position==1)
+        {
+            $fnames[] = array("completed", $clang->gT("Completed"), "0");
+            if ($surveyinfo['private'] == "N") //add token to top ofl ist is survey is not private
+            {
+                $fnames[] = array("token", $clang->gT("Token ID"));
+            }            
+        }
+        $position++;
+    }
 		
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
