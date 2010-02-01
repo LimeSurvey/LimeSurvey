@@ -788,7 +788,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		}
 		//	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
 
-		$dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editsurvey' id='editsurvey'>\n"
+		$dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
