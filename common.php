@@ -2095,7 +2095,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']=$clang->gT("Datestamp");
+                $fieldmap[$counter]['question']=$clang->gT("Date last action");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
@@ -2108,7 +2108,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']=$clang->gT("Start date");
+                $fieldmap[$counter]['question']=$clang->gT("Date started");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
@@ -2121,7 +2121,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             if ($style == "full")
             {
                 $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']=$clang->gT("Submit date");
+                $fieldmap[$counter]['question']=$clang->gT("Date submitted");
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
