@@ -734,7 +734,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	$question_text['valid_message'] = validation_message($ia);
 	if(!empty($question_text['man_message']) || !empty($question_text['valid_message']))
 	{
-		$question_text['input_error_class'] = 'input-error';// provides a class to style question wrapper differently if there is some kind of user input error;
+		$question_text['input_error_class'] = ' input-error';// provides a class to style question wrapper differently if there is some kind of user input error;
 	};
 
 // =====================================================
