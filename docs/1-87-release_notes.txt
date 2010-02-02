@@ -77,6 +77,26 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.87+ (build 8310) to 1.87+ (build 8338) - Legend: # updated feature, - bug fix 
+#Updated translation: French (b00z00)
+#Updated translation: Greek by Penny Labropoulou (c_schmitz)
+-Fix issue 04051: Full screen HTML editor is not full screen      (tpartner)
+-Fix issue 04064: bluengrey-Template: Line breaks are missing at public survey page    (tpartner)
+-Fix issue 04084: Multiple numerical display error   (tpartner)
+-Fixed #4077: smtp is default method for email, regardless of setting in config.php or config-defaults.php (mennodekker)
+-Fixed unreported issue: print_img_radio.png and print_img_checkbox.png are required support files for templates, but were not being copied if they didn't exist (jcleeland)
+-Fixed issue #4048: corrected token import with invalid email addresses (harsha_mora)
+-Fixed issue #4059: Changing order of answer options does not work in IE (c_schmitz)
+-Fixed issue (unreported) - preview of questions using 'array filter' or 'array filter exclusion' were displaying error messages (jcleeland)
+-Fixed unreported issue: Dataentry misformatted (c_schmitz)
+-Fixed unreported issue: Deprecated notice in dataentry (c_schmitz)
+-Fixed unreported issue: Response detail view not looking right (c_schmitz)
+-Fixed unreported issue: Syntax error in postgres update script (wahrendorff)
+-Fixed unreported issue: a bug prevented creation of token tables under certain circumstances, when using sInsertParticipants (wahrendorff)
+-Fixed unreported issue: minor wsdl "validity" errors. (wahrendorff)
+-Fixed unreported issue: subject of password remainder email wasn't translated (idobraca)
+
+
 Changes from 1.87+ (build 8279) to 1.87+ (build 8310) - Legend: # updated feature, - bug fix 
 #Updated translation: Croatian language (idobraca)
 #Updated translation: Slovenian translation (gandalfar)
