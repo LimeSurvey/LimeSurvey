@@ -1249,7 +1249,7 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
 		)
 	{
 		$selected = getArrayFiltersForQuestion($ia[0]);
-		if (!in_array($ansrow['code'],$selected))
+		if (!empty($selected) && !in_array($ansrow['code'],$selected))
 		{
 			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'>\n";
 			$hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
@@ -1305,7 +1305,7 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
 		)
 	{
 		$selected = getArrayFilterExcludesForQuestion($ia[0]);
-		if (!in_array($ansrow['code'],$selected))
+		if (!empty($selected) && !in_array($ansrow['code'],$selected))
 		{
 			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
 			$hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
