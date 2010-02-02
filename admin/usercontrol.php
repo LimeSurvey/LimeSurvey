@@ -70,7 +70,7 @@ if (!isset($_SESSION['loginID']))
 				$body .= $clang->gT("Username") . ": " . $fields['users_name'] . "<br />\n";
 				$body .= $clang->gT("New Password") . ": " . $new_pass . "<br />\n";
 
-				$subject = 'User Data';
+				$subject = $clang->gT("User Data");
 				$to = $emailaddr;
 				$from = $siteadminemail;
 				$sitename = $siteadminname;
