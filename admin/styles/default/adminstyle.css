@@ -659,6 +659,7 @@ a.invalidemail {
     margin:0 auto;
 }
 
+.detailbrowsetable tr.highlight,
 .answertable tr.highlight {
     background-color:#EAF2FF;
 }
