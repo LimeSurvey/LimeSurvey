@@ -105,7 +105,6 @@ $(document).ready(function(){
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });     
-  
 });
 
 

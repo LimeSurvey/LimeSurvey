@@ -2738,7 +2738,7 @@ function do_multiplechoice($ia)
 			if ($_SESSION[$myfname] == 'Y')
 			{
 				$answer .= CHECKED;
-				if(in_array($ansrow['code'], $excludeallothers)) 
+				if(in_array($ansrow['title'], $excludeallothers)) 
 				{
 					$postrow.="\n\n<script type='text/javascript'>\n<!--\nexcludeAllOthers$ia[1]('answer$ia[1]{$ansrow['title']}', 'no');\n-->\n</script>\n";
 				}
@@ -3165,7 +3165,7 @@ function do_multiplechoice_withcomments($ia)
 		$myfname2 = $myfname.'comment';
 		$anscount = $anscount + 2;
 		$answer_main .= "\t<li class=\"other\">\n<span class=\"option\">\n"
-		. "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext.":\n<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+		. "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
 			$answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';

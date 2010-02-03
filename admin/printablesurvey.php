@@ -1262,7 +1262,7 @@ while ($degrow = $degresult->FetchRow())
 				} else {
 					$checkboxlayout=false;
 				}
-				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				$mearesult = db_execute_assoc($meaquery);
 				if ($checkboxlayout === false)
 				{
@@ -1283,7 +1283,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-				$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$deqrow['qid']}' AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+                $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				$fresult = db_execute_assoc($fquery);
 				$fcount = $fresult->RecordCount();
 				$fwidth = "120";
@@ -1292,9 +1292,9 @@ while ($degrow = $degresult->FetchRow())
 				$pdfoutput[0][0]=' ';
 				while ($frow = $fresult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t\t<th>{$frow['answer']}</th>\n";
+					$question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
 					$i++;
-					$pdfoutput[0][$i]=$frow['answer'];
+					$pdfoutput[0][$i]=$frow['question'];
 				}
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 				$a=1; //Counter for pdfoutput
@@ -1343,11 +1343,11 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ";": //ARRAY (Multi Flexible) (text)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+				$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				$mearesult = db_execute_assoc($meaquery);
 
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-				$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+                $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order, question";
 				$fresult = db_execute_assoc($fquery);
 				$fcount = $fresult->RecordCount();
 				$fwidth = "120";
@@ -1356,9 +1356,9 @@ while ($degrow = $degresult->FetchRow())
 				$pdfoutput[0][0]='';
 				while ($frow = $fresult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t\t<th>{$frow['answer']}</th>\n";
+					$question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
 					$i++;
-					$pdfoutput[0][$i]=$frow['answer'];
+					$pdfoutput[0][$i]=$frow['question'];
 				}
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n<tbody>\n";
 				$a=1;

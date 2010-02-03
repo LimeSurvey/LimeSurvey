@@ -1207,3 +1207,11 @@ table.limetable thead th{
 table.limetable tbody tr.highlight {
     background-color:#EAF2FF;
 }
+
+#surveyhandleright{
+    margin-right:7px;
+}
+
+#surveyhandleleft{
+    margin-left:7px;
+}
