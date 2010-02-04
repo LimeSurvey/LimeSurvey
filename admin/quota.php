@@ -539,7 +539,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 			while ($quotalisting = $result->FetchRow())
 			{
 				$quotasoutput .='<tr>
-            		<td align="center"><a name="quota_'.$quotalisting['id'].'">'.$quotalisting['name'].'</a></td>
+            		<td align="center">'.$quotalisting['name'].'</td>
             		<td align="center">';
 				if ($quotalisting['active'] == 1)
 				{
@@ -639,7 +639,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 		$quotasoutput .='<tr>
             				<td align="center">&nbsp;</td>
-            				<td align="center"><a name="quota_end1">&nbsp;</a></td>
+            				<td align="center">&nbsp;</td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">&nbsp;</td>
@@ -651,7 +651,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				</tr></tbody>
             				<tfoot><tr>
             				<td>&nbsp;</td>
-            				<td align="center"><a name="quota_end2">&nbsp;</a></td>
+            				<td align="center">&nbsp;</td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">'.$totalcompleted.'</td>
