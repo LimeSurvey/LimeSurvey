@@ -498,7 +498,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             								<input type="hidden" name="quota_id" value="'.$quotainfo['id'].'" />
             								</form></td><td>
             								<form action="'.$scriptname.'" method="post">
-            								<input name="submit" type="submit" id="submit" value="'.$clang->gT("Cancel").'">
+            								<input name="submit" type="submit" class="submit" value="'.$clang->gT("Cancel").'">
             								<input type="hidden" name="sid" value="'.$surveyid.'" />
             								<input type="hidden" name="action" value="quotas" />
             								</form></td></tr></table></td>
@@ -531,7 +531,17 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<th width="5%">'.$clang->gT("Limit").'</th>
             				<th width="5%">'.$clang->gT("Completed").'</th>
             				<th width="20%">'.$clang->gT("Action").'</th>
-          				</tr></thead><tbody>';
+          				</tr></thead>
+          				<tfoot><tr>
+            				<td>&nbsp;</td>
+            				<td align="center">&nbsp;</td>
+            				<td align="center">&nbsp;</td>
+            				<td align="center">'.$totalquotas.'</td>
+            				<td align="center">'.$totalcompleted.'</td>
+            				<td align="center" style="padding: 3px;"><input type="button" value="'.$clang->gT("Quick CSV report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')" /></td>
+          					</tr>
+        					</tfoot>
+        					<tbody>';
 
 		if ($result->RecordCount() > 0)
 		{
@@ -565,21 +575,21 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             		<td align="center">'.$quotalisting['qlimit'].'</td>
             		<td align="center" '.$highlight.'>'.$completed.'</td>
             		<td align="center" style="padding: 3px;">
-            		<table width="100%"><tr><td align="center">
+            		<!--<table width="100%"><tr><td align="center">-->
             		<form action="'.$scriptname.'" method="post">
-            			<input name="submit" type="submit" id="submit" value="'.$clang->gT("Modify").'">
+            			<input name="submit" type="submit" class="submit" value="'.$clang->gT("Modify").'" />
             			<input type="hidden" name="sid" value="'.$surveyid.'" />
             			<input type="hidden" name="action" value="quotas" />
             			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             			<input type="hidden" name="subaction" value="quota_editquota" />
-            		</form></td><td>
+            		</form><!--</td><td>-->
             		<form action="'.$scriptname.'" method="post">
-            			<input name="submit" type="submit" id="submit" value="'.$clang->gT("Remove").'">
+            			<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
             			<input type="hidden" name="sid" value="'.$surveyid.'" />
             			<input type="hidden" name="action" value="quotas" />
             			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             			<input type="hidden" name="subaction" value="quota_delquota" />
-            		</form></td></tr></table>
+            		</form><!--</td></tr></table>-->
             		</td>
           		</tr>
           		<tr class="evenrow">
@@ -589,7 +599,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
             		<td style="padding: 3px;" align="center"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add Answer").'" />
+            				<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add Answer").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
@@ -612,7 +622,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             			<td align="center">&nbsp;</td>
             			<td style="padding: 3px;" align="center">
             			<form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="submit" value="'.$clang->gT("Remove").'">
+            				<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="quota_member_id" value="'.$quota_questions['id'].'" />
@@ -644,20 +654,11 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">&nbsp;</td>
             				<td align="center" style="padding: 3px;"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'" />
+            				<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add New Quota").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="subaction" value="new_quota" /></form></td>
             				</tr></tbody>
-            				<tfoot><tr>
-            				<td>&nbsp;</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">'.$totalquotas.'</td>
-            				<td align="center">'.$totalcompleted.'</td>
-            				<td align="center" style="padding: 3px;"><input type="button" value="'.$clang->gT("Quick CSV report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')" /></td>
-          					</tr>
-        					</tfoot>
       						</table>';
 	}
 
@@ -726,7 +727,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								<tr align="left" class="evenrow">
             								<td>&nbsp;</td>
             								<td>
-            									<input name="submit" type="submit" id="submit" value="'.$clang->gT("Next").'">
+            									<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
             									<input type="hidden" name="sid" value="'.$surveyid.'" />
             									<input type="hidden" name="action" value="quotas" />
             									<input type="hidden" name="subaction" value="new_answer_two" />
@@ -802,7 +803,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								<tr align="left" class="evenrow">
             								<td>&nbsp;</td>
             								<td>
-            									<input name="submit" type="submit" id="submit" value="'.$clang->gT("Next").'">
+            									<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
             									<input type="hidden" name="sid" value="'.$surveyid.'" />
             									<input type="hidden" name="action" value="quotas" />
             									<input type="hidden" name="subaction" value="insertquotaanswer" />
