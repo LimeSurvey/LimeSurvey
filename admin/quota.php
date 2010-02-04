@@ -229,7 +229,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	    {
 		    $_POST['quota_limit'] = 1;
 		}
-		$_POST  = array_map('db_quote', $_POST);
+        array_walk( $_POST, 'db_quote', true);
+        
 		$query = "INSERT INTO ".db_table_name('quota')." (sid,name,qlimit,action,autoload_url)
 		          VALUES ('$surveyid','{$_POST['quota_name']}','{$_POST['quota_limit']}','{$_POST['quota_action']}', '{$_POST['autoload_url']}')";
 		$connect->Execute($query) or safe_die("Error inserting limit".$connect->ErrorMsg());
@@ -272,7 +273,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 				//Now save the language to the database:
                 $query = "INSERT INTO ".db_table_name('quota_languagesettings')." (quotals_quota_id, quotals_language, quotals_name, quotals_message, quotals_url, quotals_urldescrip)
-		        	      VALUES ('$quotaid', '$lang', '".db_quote($_POST['quota_name'])."', '".db_quote($_POST['quotals_message_'.$lang])."', '".db_quote($_POST['quotals_url_'.$lang])."', '".db_quote($_POST['quotals_urldescrip_'.$lang])."')";
+		        	      VALUES ('$quotaid', '$lang', '".db_quote($_POST['quota_name'],true)."', '".db_quote($_POST['quotals_message_'.$lang],true)."', '".db_quote($_POST['quotals_url_'.$lang],true)."', '".db_quote($_POST['quotals_urldescrip_'.$lang],true)."')";
 		        $connect->Execute($query) or safe_die($connect->ErrorMsg());
 			}
 		} //End insert language based components
@@ -282,13 +283,12 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if($subaction == "modifyquota")
 	{
-		$_POST  = array_map('db_quote', $_POST);
 		$query = "UPDATE ".db_table_name('quota')."
-			      SET name='{$_POST['quota_name']}',
-				  qlimit='{$_POST['quota_limit']}',
-				  action='{$_POST['quota_action']}',
-				  autoload_url='{$_POST['autoload_url']}'
-				  WHERE id='{$_POST['quota_id']}' ";
+			      SET name=".db_quoteall($_POST['quota_name'],true).",
+				  qlimit=".db_quoteall($_POST['quota_limit'],true).",
+				  action=".db_quoteall($_POST['quota_action'],true).",
+				  autoload_url=".db_quoteall($_POST['autoload_url'],true)."
+				  WHERE id=".db_quoteall($_POST['quota_id'],true);
 		$connect->Execute($query) or safe_die("Error modifying quota".$connect->ErrorMsg());
 
 		//Get the languages used in this survey
@@ -328,11 +328,11 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 				//Now save the language to the database:
                 $query = "UPDATE ".db_table_name('quota_languagesettings')."
-				          SET quotals_name='".db_quote($_POST['quota_name'])."',
-						  quotals_message='".db_quote($_POST['quotals_message_'.$lang])."',
-						  quotals_url='".db_quote($_POST['quotals_url_'.$lang])."',
-						  quotals_urldescrip='".db_quote($_POST['quotals_urldescrip_'.$lang])."'
-				          WHERE quotals_quota_id = '{$_POST['quota_id']}'
+				          SET quotals_name='".db_quote($_POST['quota_name'],true)."',
+						  quotals_message='".db_quote($_POST['quotals_message_'.$lang],true)."',
+						  quotals_url='".db_quote($_POST['quotals_url_'.$lang],true)."',
+						  quotals_urldescrip='".db_quote($_POST['quotals_urldescrip_'.$lang],true)."'
+				          WHERE quotals_quota_id =".db_quote($_POST['quota_id'],true)."
 						  AND quotals_language = '$lang'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 			}
@@ -344,7 +344,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if($subaction == "insertquotaanswer")
 	{
-		$_POST  = array_map('db_quote', $_POST);
+		array_walk( $_POST, 'db_quote', true);
 		$query = "INSERT INTO ".db_table_name('quota_members')." (sid,qid,quota_id,code) VALUES ('$surveyid','{$_POST['quota_qid']}','{$_POST['quota_id']}','{$_POST['quota_anscode']}')";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
@@ -353,7 +353,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if($subaction == "quota_delans")
 	{
-		$_POST  = array_map('db_quote', $_POST);
+        array_walk( $_POST, 'db_quote', true);
 		$query = "DELETE FROM ".db_table_name('quota_members')."
 			      WHERE id = '{$_POST['quota_member_id']}'
 				  AND qid='{$_POST['quota_qid']}' and code='{$_POST['quota_anscode']}'";
@@ -364,7 +364,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if($subaction == "quota_delquota")
 	{
-		$_POST  = array_map('db_quote', $_POST);
+        array_walk( $_POST, 'db_quote', true);
 		$query = "DELETE FROM ".db_table_name('quota')." WHERE id='{$_POST['quota_id']}'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 
@@ -378,7 +378,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if ($subaction == "quota_editquota")
 	{
-		$_POST  = array_map('db_quote', $_POST);
+        array_walk( $_POST, 'db_quote', true);
 		$query = "SELECT * FROM ".db_table_name('quota')."
 		          WHERE id='{$_POST['quota_id']}'";
 		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
@@ -397,13 +397,13 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             								<td align="right"><blockquote>
                 								<p><strong>'.$clang->gT("Quota Name").':</strong></p>
               									</blockquote></td>
-            								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255" value="'.$quotainfo['name'].'"></td>
+            								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255" value="'.$quotainfo['name'].'" /></td>
           								</tr>
           								<tr class="evenrow">
             								<td align="right"><blockquote>
                 								<p><strong>'.$clang->gT("Quota Limit").':</strong></p>
               									</blockquote></td>
-            								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8" value="'.$quotainfo['qlimit'].'"></td>
+            								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8" value="'.$quotainfo['qlimit'].'" /></td>
           								</tr>
           								<tr class="evenrow">
             								<td align="right"><blockquote>
@@ -423,8 +423,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								        <p><strong>'.$clang->gT("Autoload URL").':</strong></p>
           								        </blockquote></td>
           								    <td align="left"><input name="autoload_url" type="checkbox" value="1"';
-		if($quotainfo['autoload_url'] == "1") {$quotasoutput .= " checked";}
-		$quotasoutput .= '></td>
+		                                        if($quotainfo['autoload_url'] == "1") {$quotasoutput .= " checked";}
+		                                        $quotasoutput .= ' /></td>
           								</tr>
           							</tbody>
           						</table>
@@ -484,31 +484,14 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				</div>';
 		};
 		$quotasoutput .= '
-					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-		 			    <tr>
-		 			  	    <td valign="top">
-		 			  	        <table width="100%" border="0">
-		 			  	            <tbody>
-          								<tr align="left" class="evenrow">
-            								<td>&nbsp;</td>
-            								<td><table width="30%"><tr><td align="left"><input name="submit" type="submit" value="'.$clang->gT("Update Quota").'" />
-            								<input type="hidden" name="sid" value="'.$surveyid.'" />
-            								<input type="hidden" name="action" value="quotas" />
-            								<input type="hidden" name="subaction" value="modifyquota" />
-            								<input type="hidden" name="quota_id" value="'.$quotainfo['id'].'" />
-            								</form></td><td>
-            								<form action="'.$scriptname.'" method="post">
-            								<input name="submit" type="submit" class="submit" value="'.$clang->gT("Cancel").'">
-            								<input type="hidden" name="sid" value="'.$surveyid.'" />
-            								<input type="hidden" name="action" value="quotas" />
-            								</form></td></tr></table></td>
-          								</tr>
-       							</tbody>
-      						</table>
-    					</td>
-  					</tr>
-				</table>';
-	}
+					<p><input name="submit" type="submit" value="'.$clang->gT("Update Quota").'" />
+            		<input type="hidden" name="sid" value="'.$surveyid.'" />
+            		<input type="hidden" name="action" value="quotas" />
+            		<input type="hidden" name="subaction" value="modifyquota" />
+            		<input type="hidden" name="quota_id" value="'.$quotainfo['id'].'" />
+            		<button type="button" onclick="window.open(\''.$scriptname.'?action=quotas&sid='.$surveyid.'\', \'_top\')">'.$clang->gT("Cancel").'</button>
+            		</form>';
+    }
 
 	$totalquotas=0;
 	$totalcompleted=0;
@@ -587,7 +570,6 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             			<input type="hidden" name="subaction" value="quota_editquota" />
             		</form>
-
             		<form action="'.$scriptname.'" method="post">
             			<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
             			<input type="hidden" name="sid" value="'.$surveyid.'" />
@@ -595,7 +577,6 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             			<input type="hidden" name="subaction" value="quota_delquota" />
             		</form>
-
             		</td>
           		</tr>';
 
@@ -752,7 +733,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if($subaction == "new_answer_two" && isset($_POST['quota_qid']))
 	{
-		$_POST  = array_map('db_quote', $_POST);
+        array_walk( $_POST, 'db_quote', true);
 
 		$question_answers = getQuotaAnswers($_POST['quota_qid'],$surveyid,$_POST['quota_id']);
 		$x=0;
