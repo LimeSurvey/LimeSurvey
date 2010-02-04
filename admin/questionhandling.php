@@ -512,7 +512,7 @@ if($action == "orderquestions")
        switch($_POST['questionordermethod'])
        {
         // Pressing the Up button
-    	case $clang->gT("Up", "unescaped"):
+    	case 'up':
     	$newsortorder=$postsortorder-1;
     	$oldsortorder=$postsortorder;
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
@@ -524,7 +524,7 @@ if($action == "orderquestions")
     	break;
 
         // Pressing the Down button
-    	case $clang->gT("Dn", "unescaped"):
+    	case 'down':
     	$newsortorder=$postsortorder+1;
     	$oldsortorder=$postsortorder;
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
@@ -677,20 +677,21 @@ if($action == "orderquestions")
 	
 	    $orderquestions.= "\t<input style='float:right;";
 	    if ($i == 0) {$orderquestions.="visibility:hidden;";}
-	    $orderquestions.="' type='image' src='$imagefiles/up.png' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
+	    $orderquestions.="' type='image' src='$imagefiles/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$oqarray[$i]['question_order']}');$('#questionordermethod').val('up');\" ".$updisabled."/>\n";
 	    if ($i < $questioncount-1)
 	    {
 		    // Fill the sortorder hiddenfield so we know what field is moved down
-		    $orderquestions.= "\t<input type='image' src='$imagefiles/down.png' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
+		    $orderquestions.= "\t<input type='image' src='$imagefiles/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$oqarray[$i]['question_order']}');$('#questionordermethod').val('down')\" ".$downdisabled."/>\n";
 	    }
 	    $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".$oqarray[$i]['question'];
 	    $orderquestions.= "</li>\n" ;
 	}
 
-  	$orderquestions.="</ul>\n"
+  	$orderquestions.="</ul>\n"                                      
 	. "<input type='hidden' name='questionmovefrom' />\n"
+    . "<input type='hidden' name='questionordermethod' id='questionordermethod' />\n"
 	. "<input type='hidden' name='questionmoveto' />\n"
-  	. "\t<input type='hidden' name='sortorder' />"
+  	. "\t<input type='hidden' id='sortorder' name='sortorder' />"
   	. "\t<input type='hidden' name='action' value='orderquestions' />" 
     . "</form>" ;
   	$orderquestions .="<br />" ;

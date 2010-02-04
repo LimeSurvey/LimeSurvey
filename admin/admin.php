@@ -263,7 +263,7 @@ elseif ($action == 'previewquestion')
     if(hasRight($surveyid,'define_questions'))    {include('preview.php');}
         else { include('access_denied.php');}    
     }
-elseif ($action=='addgroup' || $action=='editgroup')        
+elseif ($action=='addgroup' || $action=='ordergroups' || $action=='editgroup')        
     {
     if(hasRight($surveyid,'define_questions'))    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include('grouphandling.php');}
         else { include('access_denied.php');}    
@@ -449,7 +449,7 @@ elseif ($action == 'replacementfields')
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && ($action!='ajaxquestionattributes') && ($action!='update') && 
      (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
-      $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
+      $action=='editsurvey' || $action=='updatesurvey' ||
       $action=='newsurvey' || $action=='listsurveys' ||   
       $action=='surveyrights' || $action=='quotas') )
 {
