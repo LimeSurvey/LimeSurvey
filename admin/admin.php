@@ -295,11 +295,6 @@ if(isset($_SESSION['loginID']))
         if(hasRight($surveyid,'export'))    {include('exportresults.php');}
             else { include('access_denied.php');}    
         }    
-    elseif ($action == 'exportspss')
-        {
-        if(hasRight($surveyid,'export'))    {include('export_data_spss.php');}
-            else { include('access_denied.php');}    
-        }    
     elseif ($action == 'exportr')
         {
         if(hasRight($surveyid,'export'))    {include('export_data_r.php');}
@@ -438,11 +433,11 @@ if(isset($_SESSION['loginID']))
     }    
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
-     !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
+     !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportroutput) &&
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') && 
      (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
       $action=='importsurvey' || $action=='editsurvey'  || $action=='updatesurvey' || $action=='ordergroups'  || $action=='dataentry' ||
-      $action=='newsurvey'    || $action=='listsurveys' || $action=='globalsettings' || $action=='editusergroups' ||
+      $action=='newsurvey'    || $action=='listsurveys' || $action=='globalsettings' || $action=='editusergroups' || $action=='exportspss' ||      
       $action=='surveyrights' || $action=='quotas'      || $action=='editusers' || $action=='' || $action=='login' || $action=='browse') )
 {
 	if ($action=='editsurvey' || $action=='updatesurvey')
@@ -457,6 +452,17 @@ if(isset($_SESSION['loginID']))
         if(hasRight($surveyid,'browse_response')) 
         {
             include('dataentry.php');
+        }
+        else 
+        { 
+            include('access_denied.php');
+        }    
+    }    
+    elseif ($action == 'exportspss')
+    {
+        if(hasRight($surveyid,'export'))    
+        {
+            include('export_data_spss.php');
         }
         else 
         { 

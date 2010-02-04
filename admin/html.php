@@ -266,7 +266,7 @@ if ($action == "personalsettings")
 
 
 
-if (isset($surveyid) && $surveyid && $action!='dataentry' && $action!='browse')
+if (isset($surveyid) && $surveyid && $action!='dataentry' && $action!='browse' && $action!='exportspss')
 {
 	if(hasRight($surveyid))
 	{

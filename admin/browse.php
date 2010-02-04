@@ -83,6 +83,9 @@ if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 	return;
 }
 
+$js_adminheader_includes[]='scripts/browse.js';                 
+
+
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS
 $actquery = "SELECT * FROM ".db_table_name('surveys')." as a inner join ".db_table_name('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=$surveyid";
 
@@ -252,6 +255,10 @@ elseif ($subaction == "all")
     * it containts
     *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);   
     */
+    
+    $browseoutput .= "\n<script type='text/javascript'>
+                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
+                        </script>\n";    
 	if (!isset($_POST['sql']))
 	{$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
 	else
@@ -268,52 +275,44 @@ elseif ($subaction == "all")
 
 	}
 
+    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
+    {
+        $_POST['deleteanswer']=(int) $_POST['deleteanswer'];
+        $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
+        $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());      
+    }
+    
     $fields=createFieldMap($surveyid,'full');
+    $counter=0;
     foreach ($fields as $fielddetails)
 	{
-        if ($fielddetails['fieldname']=='startdate'){
-            $fielddetails['question']=$clang->gT("Date started");
-	}
-        elseif ($fielddetails['fieldname']=='datestamp'){
-            $fielddetails['question']=$clang->gT("Date last action");
+  
+        if ($counter==1){
+                $fnames[] = array("completed", "Completed", $clang->gT("Completed"), "0", 'D');
         }
-        elseif ($fielddetails['fieldname']=='token'){
-            $fielddetails['question']=$clang->gT("Token ID");
-        }        
-        elseif ($fielddetails['fieldname']=='ipaddr'){
-            $fielddetails['question']=$clang->gT("IP address");
-        }        
-
+        if ($fielddetails['fieldname']=='lastpage'){
+                   $counter++;  continue; 
+        } 
         $fnames[]=array($fielddetails['fieldname'],
                         $fielddetails['fieldname'],
                         $fielddetails['question'],
                         $fielddetails['gid'],
                         $fielddetails['type']
                        );
+        $counter++;
     }
 
-	$fnames[] = array("completed", "Completed", $clang->gT("Completed"), "0", 'D');
 
-	if ($surveyinfo['datestamp'] == "Y") //Add datestamp
-	{
-		// submitdate for not-datestamped surveys is always 1980/01/01
-		// so only display it when datestamped
-		$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"), "0", 'D');
-	}
-
-    if ($surveyinfo['refurl'] == "Y") //refurl
-	{
-		$fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"), "0",'');
-	}
 	$fncount = count($fnames);
 
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
-	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
+
 	$tableheader = "<!-- DATA TABLE -->";
-	if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%' cellpadding='0' cellspacing='1'>\n";}
-	else {$tableheader .= "<table class='browsetable' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
+	else {$tableheader .= "<table class='browsetable'>\n";}
 	$tableheader .= "\t<thead><tr valign='top'>\n"
-	. "<th  class='evenrow' width='$cellwidth'><strong>id</strong></th>\n";
+    . "<th>&nbsp;</th>\n"
+    . "<th>Actions</th>\n";
 	foreach ($fnames as $fn)
 	{
 		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
@@ -323,7 +322,7 @@ elseif ($subaction == "all")
 			if ($gbc == "oddrow") {$gbc = "evenrow";}
 			else {$gbc = "oddrow";}
 		}
-		$tableheader .= "<th class='$gbc' width='$cellwidth'><strong>"
+		$tableheader .= "<th class='$gbc'><strong>"
 		. strip_javascript("$fn[2]")
 		. "</strong></th>\n";
 	}
@@ -401,7 +400,7 @@ elseif ($subaction == "all")
 
 	$browseoutput .= "<div class='menubar'>\n"
         . "\t<div class='menubar-title'>\n"
-        . "<strong>".$clang->gT("Data View Control")."</strong></div>\n"
+        . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
         . "\t<div class='menubar-main'>\n";            
 	if (!isset($_POST['sql']))
 	{
@@ -421,23 +420,20 @@ elseif ($subaction == "all")
 				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
 		."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
 	}
+    $selectshow='';
+    $selectinc='';
+    $selecthide='';
     if(incompleteAnsFilterstate() == "inc")
 	{
-	    $selecthide="";
-	    $selectshow="";
 	    $selectinc="selected='selected'";
 	}
 	elseif (incompleteAnsFilterstate() == "filter")
 	{
 		$selecthide="selected='selected'";
-		$selectshow="";
-		$selectinc="";
 	}
 	else
 	{
-		$selecthide="";
 		$selectshow="selected='selected'";
-		$selectinc="";
 	}
 
 	$browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
@@ -445,8 +441,8 @@ elseif ($subaction == "all")
 	."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
 	."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
 	."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
+    ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
 	."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
-	."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
 	."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
 	."</select>\n"
 	."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
@@ -459,7 +455,7 @@ elseif ($subaction == "all")
 		$browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
 	}
 	$browseoutput .= 	 "</form></div>\n"
-	."\t</div>\n";
+	."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
 
 	$browseoutput .= $tableheader;
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
@@ -473,9 +469,11 @@ elseif ($subaction == "all")
 			else {$bgcc = "evenrow";}
 		}
 		$browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
-		."<td align='center'>\n"
-		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='".$clang->gT("View This Record")."'>"
-		."{$dtrow['id']}</a></td>\n";
+        ."<td align='center'><input type='checkbox' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
+        ."<td align='center'>
+        <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
+        <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
+        <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
 
 		$i = 0;
 		if ($surveyinfo['private'] == "N" && $dtrow['token'])
@@ -512,7 +510,11 @@ elseif ($subaction == "all")
 		}
 		$browseoutput .= "\t</tr>\n";
 	}
-	$browseoutput .= "</table>\n<br />\n";
+	$browseoutput .= "</table>
+    <input type='hidden' name='sid' value='$surveyid' />
+    <input type='hidden' name='subaction' value='all' />
+    <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
+    <form>\n<br />\n";
 }
 else
 {

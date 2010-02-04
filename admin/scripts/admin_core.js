@@ -416,3 +416,8 @@ String.prototype.splitCSV = function(sep) {
     } else foo[x].replace(/""/g, '"');
   } return foo;
 };
+
+// This is a helper function to extract the question ID from a DOM ID element 
+function removechars(strtoconvert){
+  return strtoconvert.replace(/[a-zA-Z_]/g,"");
+}
