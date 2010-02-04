@@ -522,6 +522,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				  AND quotals_language = '".$baselang."'";
 		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
+		//create main quota <DIV> and headlines
 		$quotasoutput .='<div class="header">'.$clang->gT("Survey quotas").'</div>
           				<br /><table id="quotalist" class="quotalist"><thead>
           				<tr>
@@ -531,8 +532,10 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<th width="5%">'.$clang->gT("Limit").'</th>
             				<th width="5%">'.$clang->gT("Completed").'</th>
             				<th width="20%">'.$clang->gT("Action").'</th>
-          				</tr></thead>
-          				<tfoot><tr>
+          				</tr></thead>';
+
+						//NOTE: the footer always has to be put BEFORE the tbody tag!
+						$quotasoutput .='<tfoot><tr>
             				<td>&nbsp;</td>
             				<td align="center">&nbsp;</td>
             				<td align="center">&nbsp;</td>
@@ -543,9 +546,10 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         					</tfoot>
         					<tbody>';
 
+		//if there are quotas let's proceed
 		if ($result->RecordCount() > 0)
 		{
-
+			//loop through all quotas
 			while ($quotalisting = $result->FetchRow())
 			{
 				$quotasoutput .='<tr>
@@ -575,24 +579,28 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             		<td align="center">'.$quotalisting['qlimit'].'</td>
             		<td align="center" '.$highlight.'>'.$completed.'</td>
             		<td align="center" style="padding: 3px;">
-            		<!--<table width="100%"><tr><td align="center">-->
+
             		<form action="'.$scriptname.'" method="post">
             			<input name="submit" type="submit" class="submit" value="'.$clang->gT("Modify").'" />
             			<input type="hidden" name="sid" value="'.$surveyid.'" />
             			<input type="hidden" name="action" value="quotas" />
             			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             			<input type="hidden" name="subaction" value="quota_editquota" />
-            		</form><!--</td><td>-->
+            		</form>
+
             		<form action="'.$scriptname.'" method="post">
             			<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
             			<input type="hidden" name="sid" value="'.$surveyid.'" />
             			<input type="hidden" name="action" value="quotas" />
             			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             			<input type="hidden" name="subaction" value="quota_delquota" />
-            		</form><!--</td></tr></table>-->
+            		</form>
+
             		</td>
-          		</tr>
-          		<tr class="evenrow">
+          		</tr>';
+
+          		//headline for quota sub-parts
+          		$quotasoutput .='<tr class="evenrow">
            			<td align="center">&nbsp;</td>
             		<td align="center"><strong>'.$clang->gT("Questions").'</strong></td>
             		<td align="center"><strong>'.$clang->gT("Answers").'</strong></td>
@@ -606,11 +614,13 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<input type="hidden" name="subaction" value="new_answer" /></form></td>
           		</tr>';
 
+          		//check how many sub-elements exist for a certain quota
 				$query = "SELECT id,code,qid FROM ".db_table_name('quota_members')." where quota_id='".$quotalisting['id']."'";
 				$result2 = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 				if ($result2->RecordCount() > 0)
 				{
+					//loop through all sub-parts
 					while ($quota_questions = $result2->FetchRow())
 					{
 						$question_answers = getQuotaAnswers($quota_questions['qid'],$surveyid,$quotalisting['id']);
@@ -637,10 +647,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 			}
 
-
-
-
-		} else
+		}
+		else
 		{
 			$quotasoutput .='<tr>
            	<td colspan="6" align="center">'.$clang->gT("No quotas have been set for this survey").'.</td>
