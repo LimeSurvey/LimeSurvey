@@ -1053,7 +1053,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		if(hasRight($surveyid,'define_questions'))
 		{
-			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid', '_top')\""
+			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;subaction=editconditionsform', '_top')\""
 			. " title=\"".$clang->gTview("Set Conditions for this Question")."\">"
 			. "<img src='$imagefiles/conditions.png' alt='".$clang->gT("Set Conditions for this Question")."'  name='SetQuestionConditions' /></a>\n"
 			. "<img src='$imagefiles/seperator.gif' alt='' />\n";
