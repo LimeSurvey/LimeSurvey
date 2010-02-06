@@ -561,6 +561,7 @@ a.invalidemail {
 }
 
 .quotalist,
+.addquotaanswer,
 .edituser,
 .users,
 .assessmentlist,   
@@ -571,6 +572,7 @@ a.invalidemail {
 }
 
 .quotalist,
+.addquotaanswer,
 .assessmentlist {
     width:90%;
 }
