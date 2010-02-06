@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.87!
+Welcome to LimeSurvey v1.87+!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -56,7 +56,7 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 --------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
