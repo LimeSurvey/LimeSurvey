@@ -2222,7 +2222,7 @@ function validate_email($email){
 
 
 	$atext        = "(?:$alpha|$digit|[\\x21\\x23-\\x27\\x2a\\x2b\\x2d\\x2f\\x3d\\x3f\\x5e\\x5f\\x60\\x7b-\\x7e])";
-	$atext_domain     = "(?:$alpha|$digit)";
+    $atext_domain     = "(?:$alpha|$digit|[\\x2b\\x2d\\x5f])";
 
 	$atom        = "(?:$cfws?(?:$atext)+$cfws?)";
 	$atom_domain       = "(?:$cfws?(?:$atext_domain)+$cfws?)";
