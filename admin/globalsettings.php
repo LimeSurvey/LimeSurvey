@@ -98,7 +98,7 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
 function globalsettingsdisplay() 
 {
     global $action, $connect, $js_adminheader_includes, $editsurvey, $subaction, $scriptname, $clang;
-    global $updateversion, $updatebuild, $updateavailable, $updatelastcheck;
+    global $updateversion, $updatebuild, $updateavailable, $updatelastcheck, $demoModeOnly;
     
     if (isset($subaction) && $subaction == "updatecheck")
     {
@@ -158,14 +158,14 @@ function globalsettingsdisplay()
             $editsurvey .= "</p></div>";
             
 
-
+                                                                            
             // General TAB
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
             // Administrator...
             $editsurvey .= "<ul>"
-            . "\t<li><label for='sitename'>".$clang->gT("Site name:")."</label>\n"
+            . "\t<li><label for='sitename'>".$clang->gT("Site name:").(($demoModeOnly==true)?'*':'')."</label>\n"
             . "\t\t<input type='text' size='50' id='sitename' name='sitename' value=\"".htmlspecialchars(getGlobalSetting('sitename'))."\" /></li>\n"
-            . "\t<li><label for='defaultlang'>".$clang->gT("Default site language:")."</label>\n"
+            . "\t<li><label for='defaultlang'>".$clang->gT("Default site language:").(($demoModeOnly==true)?'*':'')."</label>\n"
             . "\t\t<select name='defaultlang' id='defaultlang'>\n";
             $actuallang=getGlobalSetting('defaultlang');
             foreach (getLanguageData() as  $langkey2=>$langname)
@@ -193,7 +193,7 @@ function globalsettingsdisplay()
 
             $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
             $editsurvey .= ""
-            . "\t<li><label for='defaulthtmleditormode'>".$clang->gT("Default HTML editor mode:")."</label>\n"
+            . "\t<li><label for='defaulthtmleditormode'>".$clang->gT("Default HTML editor mode:").(($demoModeOnly==true)?'*':'')."</label>\n"
             . "\t\t\t<select name='defaulthtmleditormode' id='defaulthtmleditormode'>\n"
             . "\t\t\t\t<option value='default'";
             if ($thisdefaulthtmleditormode=='default') {$editsurvey .= " selected='selected'";}
@@ -322,7 +322,7 @@ function globalsettingsdisplay()
 
                 // Auto registration
                 $thisfilterxsshtml=getGlobalSetting('filterxsshtml');
-                $editsurvey .= "\t<li><label for='filterxsshtml'>".$clang->gT("Filter HTML for XSS:")."</label>\n"
+                $editsurvey .= "\t<li><label for='filterxsshtml'>".$clang->gT("Filter HTML for XSS:").(($demoModeOnly==true)?'*':'')."</label>\n"
                 . "\t\t<select id='filterxsshtml' name='filterxsshtml'>\n"
                 . "\t\t\t<option value='1'";
                 if ( $thisfilterxsshtml == true) {$editsurvey .= " selected='selected'";}
@@ -369,7 +369,11 @@ function globalsettingsdisplay()
             $editsurvey .= "</div>\n";
 
             // The external button to sumbit Survey edit changes
-            $editsurvey .= "\t<p><input type='button' onclick='$(\"#frmglobalsettings\").submit();' class='standardbtn' value='".$clang->gT("Save settings")."' /></p>\n";
+            $editsurvey .= "\t<p><input type='button' onclick='$(\"#frmglobalsettings\").submit();' class='standardbtn' value='".$clang->gT("Save settings")."' /><br />\n";
+            if ($demoModeOnly==true)
+            {
+                $editsurvey .= '<p>'.$clang->gT("Note: Demo mode is activated. Marked (*) settings won't be saved.");
+            }
 
 
         }
@@ -405,7 +409,11 @@ function getGlobalSetting($settingname)
   
 function setGlobalSetting($settingname,$settingvalue)
 {
-    global $connect, $$settingname;
+    global $connect, $$settingname, $demoModeOnly;                                                                              
+    if ($demoModeOnly==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
+    {
+        return; //don't save
+    }
     $usquery = "update ".db_table_name("settings_global")." set stg_value='".auto_escape($settingvalue)."' where stg_name='$settingname'"; 
     $connect->Execute($usquery);
     if ($connect->Affected_Rows()==0)

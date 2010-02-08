@@ -297,6 +297,8 @@ $addTitleToLinks = false;
 // * Disables uploading files on the Template Editor
 // * Disables sending email invitations and reminders
 // * Disables doing a database dump
+// * Disables the ability to save the following global settings: Site name, Default language, Default Htmleditor Mode, XSS filter
+
 $demoModeOnly = false;
 
 /** -----------------------------------------------------
