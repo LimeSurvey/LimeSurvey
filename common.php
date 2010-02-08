@@ -4618,6 +4618,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $gid=sanitize_int($gid);
 	
 	$cascaded=array();
+	$cascade2=array();
 	$sources=array();
 	$qidtotitle=array();
 	$qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
