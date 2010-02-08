@@ -1050,7 +1050,7 @@ function checkgroupfordisplay($gid)
 
 function checkconfield($value)
 {
-	global $dbprefix, $connect,$surveyid,$thissurvey;
+	global $dbprefix, $connect,$surveyid,$thissurvey,$qattributes;
 	$fieldisdisplayed=true;
 	if (!is_array($thissurvey))
 	{
@@ -1060,11 +1060,6 @@ function checkconfield($value)
 	{
 		$local_thissurvey=$thissurvey;
 	}
-
-	//$value is the fieldname for the field we are checking for conditions
-	foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
-	{
-//		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
 
 		// we know the true fieldname $value (for instance SGQA for each checkboxes)
 		// and we want to compare it to the values stored in $_SESSION['fieldarray'] which are simple fieldnames
@@ -1078,10 +1073,27 @@ function checkconfield($value)
 		{ // for token refurl, ipaddr...
 			$masterFieldName = 'token';
 		}
+		// record the qid and question type for future use
+		foreach ($_SESSION['fieldarray'] as $sfa)
+		{
+			if ($sfa[1]  == $masterFieldName)
+			{
+				$value_qid=$sfa[0];
+				$value_type=$sfa[4];
+			}
+		}
+		
 
-//		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
+	//$value is the fieldname for the field we are checking for conditions
+	foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
+	{
+		// this fieldname '$value' is inside a question identified by the SGQ code '$masterFieldName'
+		// we are looping on fieldnames $sfa
+		// if $sfa[1] == $masterFieldName, we are processing a fieldname inside the same question as $value
+		// check if this question is conditionnal ($sfa[7]): if yes eval conditions
 		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
 		{
+
 			$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
 				." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
 			$scenarioresult=db_execute_assoc($scenarioquery);
@@ -1269,6 +1281,31 @@ function checkconfield($value)
 				    $_SESSION[$value]="";
 				$fieldisdisplayed=false;
 				//}
+			}
+		}
+	}
+
+	$value_qa=getQuestionAttributes($value_qid,$value_type);
+	if ($fieldisdisplayed === true && (
+			(isset($value_qa['array_filter'])  && trim($value_qa['array_filter']) != '') || 
+			(isset($value_qa['array_filter_exclude']) && trim($value_qa['array_filter_exclude']) != '') ))
+	{ // check if array_filter//array_filter_exclude have hidden the field
+		$value_code = preg_replace("/$masterFieldName(.*)/","$1",$value);	
+
+		$arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_qid);
+		if ( $arrayfilterXcludes_selected_codes !== false && 
+			in_array($value_code,$arrayfilterXcludes_selected_codes))
+		{
+			$fieldisdisplayed=false;
+		}
+		elseif (!isset($value_qa['array_filter_exclude']) ||
+				trim($value_qa['array_filter_exclude']) == '')
+		{
+			$arrayfilter_selected_codes = getArrayFiltersForQuestion($value_qid);
+			if ( $arrayfilter_selected_codes !== false &&
+				!in_array($value_code,$arrayfilter_selected_codes))
+			{
+				$fieldisdisplayed=false;
 			}
 		}
 	}
