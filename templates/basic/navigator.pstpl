@@ -1,7 +1,7 @@
 <table width="100%" align="center" bgcolor="#cccccc" border="0" cellspacing="0" cellpadding="8">
 	<tr>
-		<td align="left" nowrap width="33%">{CLEARALL}</td>
-                <td align="center" nowrap width="33%">{SAVE}</td>
-		<td align="right" nowrap width="33%">{NAVIGATOR}</td>
+		<td align="left" nowrap="nowrap" width="33%">{CLEARALL}</td>
+        <td align="center" nowrap="nowrap" width="33%">{SAVE}</td>
+		<td align="right" nowrap="nowrap" width="33%">{NAVIGATOR}</td>
 	</tr>
 </table>

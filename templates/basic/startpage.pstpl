@@ -18,4 +18,7 @@
 <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 	</head>
 	<body>
+		<table width="80%" align="center" class="bf" cellpadding="0" cellspacing="11">
+		<tr>
+			<td>
 

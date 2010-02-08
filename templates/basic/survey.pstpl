@@ -1,16 +1,19 @@
-<table width="80%" align="center" class="bf" cellpadding="0" cellspacing="0">
-<tr>
-	<td rowspan="2"><table width="100%" cellspacing="10">
+	<table width="100%" cellpadding="2">
 		<tr>
-			<td>
-<table width="100%" cellpadding="2">
-	<tr>
-		<td valign="center" align="left"><img src="{TEMPLATEURL}Logo-LimeSurvey.png" alt="Logo Image" /></td>
-                <td valign="bottom" align="center" width="100%"><table width="100%">
-                <tr><td align="center"><strong>{SURVEYNAME}</strong></td></tr>
-               <tr><td class="graph">{PERCENTCOMPLETE}</td></tr>
-               <tr><td align="center">{LANGUAGECHANGER}</td></tr>
-               </table></td>
-    <td valign="bottom" align="right" height="100%" width="100%"></td>
-	</tr>
-</table>
+			<td valign="middle" align="left"><img src="{TEMPLATEURL}Logo-LimeSurvey.png" alt="Logo Image" /></td>
+			<td valign="bottom" align="center" width="100%">
+				<table width="100%">
+					<tr>
+						<td align="center"><strong>{SURVEYNAME}</strong></td>
+					</tr>
+					<tr>
+						<td class="graph">{PERCENTCOMPLETE}</td>
+					</tr>
+					<tr>
+						<td align="center">{LANGUAGECHANGER}</td>
+					</tr>
+				</table>
+			</td>
+			<td valign="bottom" align="right" height="100%" width="100%"></td>
+		</tr>
+	</table>
