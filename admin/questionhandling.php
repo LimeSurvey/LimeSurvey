@@ -719,6 +719,7 @@ if ($action == "ajaxlabelsetpicker")
 
 if ($action == "ajaxquestionattributes")  
 {
+        $thissurvey=getSurveyInfo($surveyid);
         $type=returnglobal('question_type');
         if (isset($qid))
         {
@@ -753,26 +754,34 @@ if ($action == "ajaxquestionattributes")
                 }
                 
                 $ajaxoutput .= "<li>"
-                                ."<label for='{$qa['name']}' title='".$qa['help']."'>".$qa['caption']."</label>";
-                switch ($qa['inputtype']){
-                    case 'singleselect':    $ajaxoutput .="<select id='{$qa['name']}' name='{$qa['name']}'>";
-                                            foreach($qa['options'] as $optionvalue=>$optiontext)
-                                            {
-                                               $ajaxoutput .="<option value='$optionvalue' ";
-                                               if ($value==$optionvalue)
-                                               {
-                                                $ajaxoutput .=" selected='selected' ";
-                                               }
-                                               $ajaxoutput .=">$optiontext</option>";
-                                            }
-                                            $ajaxoutput .="</select>";
-                                            break;
-                    case 'text':    $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
-                                    break;
-                    case 'integer': $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
-                                    break;
-					case 'textarea':$ajaxoutput .= "<textarea id='{$qa['name']}' name='{$qa['name']}'>$value</textarea>";
-									break;
+                              ."<label for='{$qa['name']}' title='".$qa['help']."'>".$qa['caption']."</label>";
+                                
+                if (isset($qa['readonly']) && $qa['readonly']==true && $thissurvey['active']==true)
+                {
+                    $ajaxoutput .= "$value";
+                }
+                else
+                {
+                    switch ($qa['inputtype']){
+                        case 'singleselect':    $ajaxoutput .="<select id='{$qa['name']}' name='{$qa['name']}'>";
+                                                foreach($qa['options'] as $optionvalue=>$optiontext)
+                                                {
+                                                   $ajaxoutput .="<option value='$optionvalue' ";
+                                                   if ($value==$optionvalue)
+                                                   {
+                                                    $ajaxoutput .=" selected='selected' ";
+                                                   }
+                                                   $ajaxoutput .=">$optiontext</option>";
+                                                }
+                                                $ajaxoutput .="</select>";
+                                                break;
+                        case 'text':    $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
+                                        break;
+                        case 'integer': $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
+                                        break;
+                        case 'textarea':$ajaxoutput .= "<textarea id='{$qa['name']}' name='{$qa['name']}'>$value</textarea>";
+                                        break;
+                    }
                 }
                 $ajaxoutput .="</li>\n";
             }

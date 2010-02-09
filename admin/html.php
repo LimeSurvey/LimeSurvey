@@ -1329,7 +1329,7 @@ if ($action=='editansweroptions')
 	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-    $qquery = "SELECT type,lid,lid1 FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
+    $qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
     $qrow = $connect->GetRow($qquery);
     $qtype = $qrow['type'];
     $scalecount=$qtypes[$qtype]['answerscales'];
@@ -1534,8 +1534,6 @@ if ($action=='editansweroptions')
             $vasummary .= "<button id='btnquickadd_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
             
         }
-        $vasummary .=  "<input type='hidden' id='lid0' name='lid0' value='{$qrow['lid']}' />\n";
-        $vasummary .=  "<input type='hidden' id='lid1' name='lid1' value='{$qrow['lid1']}' />\n";
         
 		$position=sprintf("%05d", $position);
 	

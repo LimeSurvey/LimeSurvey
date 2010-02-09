@@ -618,7 +618,22 @@ function upgrade_tables143()
         }
     }
 
-
+    // convert Ranking question type
+    
+    $query="SELECT a.qid, count(a.qid) as answercount FROM {$dbprefix}answers a, {$dbprefix}questions q where a.qid=q.qid and q.type='R' group by a.qid";
+    $queryresult = db_execute_assoc($query);
+    if (!$queryresult) 
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $queryresult->FetchRow() )
+        {
+           modify_database("","INSERT INTO {$dbprefix}question_attributes (qid, attribute, value) VALUES ({$row['qid']},'ranking_slots',".db_quoteall($row['answercount']).")"); echo $modifyoutput; flush();
+        }
+    }
+    
 
 
     $updatequery = "update {$dbprefix}questions set type='!' where type='W'";
