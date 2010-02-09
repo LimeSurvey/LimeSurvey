@@ -2033,8 +2033,8 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
     global $dbprefix, $connect, $globalfieldmap, $clang;
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap) && $globalfieldmap[0] == $surveyid  && $force_refresh==false) {
-        return $globalfieldmap[1];
+    if (isset($globalfieldmap['fieldmap'][$surveyid][$style]) && $force_refresh==false) {
+        return $globalfieldmap['fieldmap'][$surveyid][$style];
     }
 
     $counter=0;
@@ -2096,7 +2096,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             {
                 $fieldmap[$counter]['title']="";
                 $fieldmap[$counter]['question']=$clang->gT("Date last action");
-                $fieldmap[$counter]['group_name']="";
+                $fieldmap[$counter]['group_name']="";         
             }
             $counter++;
             $fieldmap[$counter]=array("fieldname"=>"startdate",
@@ -2159,7 +2159,12 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
     //Get list of questions
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $qtypes=getqtypelist('','array');
-    $aquery = "SELECT * FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
+    $aquery = "SELECT *, " 
+    ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
+    ." WHERE questions.qid = c.qid) AS hasconditions,\n"
+    ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
+    ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
+    ." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
     ." WHERE questions.gid=groups.gid AND "
     ." questions.sid=$surveyid AND "
     ." questions.language='{$s_lang}' AND "
@@ -2169,6 +2174,23 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
+        
+        if ($arow['hasconditions']>0)
+        {
+            $conditions = "Y";
+        }
+        else
+        {
+            $conditions = "N";
+        }
+        if ($arow['usedinconditions']>0)
+        {
+            $usedinconditions = "Y";
+        }
+        else
+        {
+            $usedinconditions = "N";
+        }        
          
         // Field identifier
         // GXQXSXA
@@ -2186,6 +2208,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                 $fieldmap[$counter]['title']=$arow['title'];
                 $fieldmap[$counter]['question']=$arow['question'];
                 $fieldmap[$counter]['group_name']=$arow['group_name'];
+                $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                $fieldmap[$counter]['hasconditions']=$conditions;
+                $fieldmap[$counter]['usedinconditions']=$usedinconditions;
             }
             $counter++;
             switch($arow['type'])
@@ -2207,6 +2232,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                         $fieldmap[$counter]['question']=$arow['question'];
                         $fieldmap[$counter]['subquestion']=$clang->gT("Other");
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
+                        $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                        $fieldmap[$counter]['hasconditions']=$conditions;
+                        $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                     }
                     $counter++;
                 }
@@ -2225,6 +2253,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                     $fieldmap[$counter]['question']=$arow['question'];
                     $fieldmap[$counter]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
+                    $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$counter]['hasconditions']=$conditions;
+                    $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                 }
                 $counter++;
                 break;
@@ -2277,6 +2308,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                     $fieldmap[$counter]['subquestion1']=$abrow['question'];
                     $fieldmap[$counter]['subquestion2']=$answer['question'];
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
+                    $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$counter]['hasconditions']=$conditions;
+                    $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                   }
                   $counter++;
                 }
@@ -2315,6 +2349,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                             $fieldmap[$counter]['subquestion']=$abrow['question'];
                             $fieldmap[$counter]['group_name']=$arow['group_name'];
                             $fieldmap[$counter]['scale']=$clang->gT('Scale 1');
+                            $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                            $fieldmap[$counter]['hasconditions']=$conditions;
+                            $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                         }
                         
                         $counter++; 
@@ -2341,6 +2378,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                         $fieldmap[$counter]['subquestion']=$abrow['question'];
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
                         $fieldmap[$counter]['scale']=$clang->gT('Scale 2');
+                        $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                        $fieldmap[$counter]['hasconditions']=$conditions;
+                        $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                     }
                     
                 $counter++;             
@@ -2359,8 +2399,8 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
             .db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers')
             .".sortorder, ".db_table_name('answers').".answer";
             $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
-            $abcount=$abresult->RecordCount();
-            for ($i=1; $i<=$abcount; $i++)
+            $slots=$connect->GetOne("select value from ".db_table_name('question_attributes')." where qid={$arow['qid']} and attribute='ranking_slots'");
+            for ($i=1; $i<=$slots; $i++)
             {
                 $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
                 if ($style == "full")
@@ -2369,6 +2409,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                     $fieldmap[$counter]['question']=$arow['question'];
                     $fieldmap[$counter]['subquestion']=sprintf($clang->gT('Rank %s'),$i);
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
+                    $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$counter]['hasconditions']=$conditions;
+                    $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                 }
                 $counter++;
             }
@@ -2394,6 +2437,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                     $fieldmap[$counter]['question']=$arow['question'];
                     $fieldmap[$counter]['subquestion']=$abrow['question'];
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
+                    $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$counter]['hasconditions']=$conditions;
+                    $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                 }
                 $counter++;
                 if ($arow['type'] == "P")
@@ -2405,6 +2451,9 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                         $fieldmap[$counter]['question']=$arow['question'];
                         $fieldmap[$counter]['subquestion']=$clang->gT('Comment');
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
+                        $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                        $fieldmap[$counter]['hasconditions']=$conditions;
+                        $fieldmap[$counter]['usedinconditions']=$usedinconditions;
                     }
                     $counter++;
                 }
@@ -2418,7 +2467,10 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                     $fieldmap[$counter]['question']=$arow['question'];
                     $fieldmap[$counter]['subquestion']=$clang->gT('Other');
                     $fieldmap[$counter]['group_name']=$arow['group_name'];
-                }
+                    $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$counter]['hasconditions']=$conditions;
+                    $fieldmap[$counter]['usedinconditions']=$usedinconditions;
+            }
                 $counter++;
                 if ($arow['type']=="P")
                 {
@@ -2429,16 +2481,17 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                         $fieldmap[$counter]['question']=$arow['question'];
                         $fieldmap[$counter]['subquestion']=$clang->gT('Other comment');
                         $fieldmap[$counter]['group_name']=$arow['group_name'];
-                    }
+                        $fieldmap[$counter]['mandatory']=$arow['mandatory'];
+                        $fieldmap[$counter]['hasconditions']=$conditions;
+                        $fieldmap[$counter]['usedinconditions']=$usedinconditions;
+                  }
                     $counter++;
                 }
             }
         }
     }
     if (isset($fieldmap)) {
-        $globalfieldmap[0] = $surveyid;
-        $globalfieldmap[1] = $fieldmap;
-        
+        $globalfieldmap['fieldmap'][$surveyid][$style] = $fieldmap;
         return $fieldmap;
     }
 }
@@ -3544,6 +3597,16 @@ function questionAttributes($returnByName=false)
     'default'=>0,                 
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
+
+    $qattributes["ranking_slots"]=array(
+    "types"=>"R",
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>10,
+    'inputtype'=>'integer',
+    'default'=>0,
+    'readonly_when_active'=>true,
+    "help"=>$clang->gT("Set the number of slots available to rank the available answers. Note: This settings can't be changed after survey activation."),
+    "caption"=>$clang->gT('Ranking slots'));
     
     $qattributes["slider_layout"]=array(
     "types"=>"K",
@@ -3764,6 +3827,7 @@ function questionAttributes($returnByName=false)
                                                             "inputtype"=>$qvalue['inputtype'],
                                                             "category"=>$qvalue['category'],
                                                             "sortorder"=>$qvalue['sortorder'],
+                                                            "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
                                                             "options"=>isset($qvalue['options'])?$qvalue['options']:'',
                                                             "default"=>isset($qvalue['default'])?$qvalue['default']:'',
                                                             "help"=>$qvalue['help'],

@@ -2208,330 +2208,41 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		$_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
 	}
     $qtypes=getqtypelist('','array');
-	foreach ($arows as $arow)
-	{
-		//WE ARE CREATING A SESSION VARIABLE FOR EVERY FIELD IN THE SURVEY
-		$fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-		if ($qtypes[$arow['type']]['subquestions'] >0 && $arow['type'] != ":" && $arow['type'] != ";")
-		{
-
-// Optimized Query
-			$abquery = "SELECT sq.title as code, q.other\n"
-			. " FROM ".db_table_name('questions')." as sq\n"
-			. " INNER JOIN ".db_table_name('questions')." as q\n"
-			. " ON sq.parent_qid=q.qid\n"
-			. " WHERE q.sid=$surveyid\n"
-			. " AND q.qid={$arow['qid']}\n"
-			. " AND q.language='".$_SESSION['s_lang']."' \n"
-			. " AND sq.language='".$_SESSION['s_lang']."' \n"
-			. " ORDER BY sq.question_order, sq.question";
-
-			$abresult = db_execute_assoc($abquery);       //Checked 
-			while ($abrow = $abresult->FetchRow())
-			{
-				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); 
-
-				$alsoother = "";
-				if ($abrow['other'] == "Y") {$alsoother = "Y";}
-				if ($arow['type'] == "P")
-				{
-					$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); 
-				}
-			}
-			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
-			{
-				$_SESSION['insertarray'][] = $fieldname."other";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); 
-				if ($arow['type'] == "P")
-				{
-					$_SESSION['insertarray'][] = $fieldname."othercomment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); 
-				}
-			}
-		}
-        elseif ($arow['type'] == ":" || $arow['type'] == ";")   //Multi Flexi
-		{
-// Optimized Query
-			$abquery = "SELECT sq.title, q.other\n"
-			. " FROM ".db_table_name('questions')." sq\n"
-			. " INNER JOIN ".db_table_name('questions')." q\n"
-			. " ON sq.parent_qid=q.qid\n"
-			. " WHERE q.sid=$surveyid\n"
-			. " AND q.qid={$arow['qid']}\n"
-			. " AND q.language='".$_SESSION['s_lang']."' \n"
-			. " AND sq.language='".$_SESSION['s_lang']."' \n"
-			. " ORDER BY sq.question_order, sq.question";
-			$abresult = db_execute_assoc($abquery);
-			$ab2query = "SELECT *
-			             FROM ".db_table_name('questions'). "q, ".db_table_name('answers')." a 
-			             WHERE q.sid=$surveyid 
-						 AND a.qid=q.qid
-			             AND q.language='".$_SESSION['s_lang']."'
-			             AND a.language='".$_SESSION['s_lang']."'
-			             AND q.qid=".$arow['qid']."
-			             ORDER BY a.sortorder, a.answer";
-			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-            $lset=array();   // Initialize array - Important!
-			while($ab2row=$ab2result->FetchRow())
-			{
-			    $lset[]=$ab2row;
-			}
-			while ($abrow = $abresult->FetchRow())
-			{
-			    foreach($lset as $ls)
-			    {
-				    $_SESSION['insertarray'][] = $fieldname.$abrow['title']."_".$ls['code'];
-				    $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['title']."_".$ls['code'] => $fieldname)); 
-			    }
-			}
-		}
-		elseif ($arow['type'] == "1")	// Multi Scale
-		{
-
-// Optimized Query
-			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
-			. " FROM ".db_table_name('answers')."\n"
-			. " INNER JOIN ".db_table_name('questions')."\n"
-			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
-			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
-			$abresult = db_execute_assoc($abquery);       //Checked 
-			while ($abrow = $abresult->FetchRow())
-			{
-				$abmultiscalequery = "SELECT l.* FROM ".db_table_name('questions')." as q, ".db_table_name('labels')." as l, ".db_table_name('answers')." as a"
-					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']}"
-                         ." AND l.language='".$_SESSION['s_lang']. "' "
-                         ." AND a.language='".$_SESSION['s_lang']. "' "
-                         ." AND q.language='".$_SESSION['s_lang']. "' ";
-                        
-				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());  //Checked 
-				$abmultiscalecount=$abmultiscaleresult->RecordCount();
-				if ($abmultiscalecount>0)
-				{
-						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#0";
-				        $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#0" => $fieldname)); 
-						$alsoother = "";
-
-						if ($abrow['other'] == "Y") {$alsoother = "Y";}
-						if ($arow['type'] == "P")
-						{
-							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-				            $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); 
-						}
-
-				}
-				// multi scale
-				$abmultiscalequery = "SELECT l.* FROM ".db_table_name('questions')." as q, ".db_table_name('labels')." as l, ".db_table_name('answers')." as a"
-					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid1 AND sid=$surveyid AND q.qid={$arow['qid']}"
-                         ." AND l.language='".$_SESSION['s_lang']. "' "
-                         ." AND a.language='".$_SESSION['s_lang']. "' "
-                         ." AND q.language='".$_SESSION['s_lang']. "' ";
-                       
-				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());  //Checked 
-				$abmultiscalecount=$abmultiscaleresult->RecordCount();
-				if ($abmultiscalecount>0)
-				{
-						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#1";
-				        $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#1" => $fieldname)); 
-						$alsoother = "";
-
-						if ($abrow['other'] == "Y") {$alsoother = "Y";}
-						if ($arow['type'] == "P")
-						{
-							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-				            $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); 
-						}
-				}
-
-			}
-			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
+    $fieldmap=createFieldMap($surveyid,'full');
+    foreach ($fieldmap as $field) {
+        if ($field['qid']!='')
         {
-				$_SESSION['insertarray'][] = $fieldname."other";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); 
-				if ($arow['type'] == "P")
-				{
-					$_SESSION['insertarray'][] = $fieldname."othercomment";
-				    $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); 
-				}
-			}
-		}
+            $_SESSION['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+            $_SESSION['insertarray'][]=$field['fieldname'];
+            //fieldarray ARRAY CONTENTS -     
+            //            [0]=questions.qid,
+            //            [1]=fieldname,
+            //            [2]=questions.title,
+            //            [3]=questions.question
+            //            [4]=questions.type,
+            //            [5]=questions.gid,
+            //            [6]=questions.mandatory,
+            //            [7]=conditionsexist,
+            //            [8]=usedinconditions
+            if (!isset($_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
+            {
+                $_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
+                                                $field['sid'].'X'.$field['gid'].'X'.$field['qid'], 
+                                                $field['title'],
+                                                $field['question'],
+                                                $field['type'],
+                                                $field['gid'], 
+                                                $field['mandatory'], 
+                                                $field['hasconditions'], 
+                                                $field['usedinconditions']);
+            }
+        }
+    
+    }
+    $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
 
-		elseif ($arow['type'] == "R")	// Ranking
-		{
-
-
-// Optimized Query
-			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
-			. " FROM ".db_table_name('answers')."\n"
-			. " INNER JOIN ".db_table_name('questions')."\n"
-			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
-			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-            ." AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'\n"
-			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
-
-			$abresult = $connect->Execute($abquery) or safe_die("ERROR:<br />".$abquery."<br />".$connect->ErrorMsg());  //Checked 
-			$abcount = $abresult->RecordCount();
-			for ($i=1; $i<=$abcount; $i++)
-			{
-				$_SESSION['insertarray'][] = "$fieldname".$i;
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."$i" => $fieldname)); 
-			}
-		}
-
-
-		elseif ($arow['type'] == "Q" || $arow['type'] == "J" || $arow['type'] == "K")	// Multiple Short Text - ???
-		{
-
-// Optimized Query
-            $abquery = "SELECT ".db_table_name('answers').".code\n"
-            . " FROM ".db_table_name('answers')." \n"
-            . " WHERE qid={$arow['qid']}\n"
-            . " AND language='".$_SESSION['s_lang']."' \n"
-            . " ORDER BY sortorder, answer";
-
-			$abresult = db_execute_assoc($abquery);  //Checked 
-			while ($abrow = $abresult->FetchRow())
-			{
-				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); 
-			}
-		}
-		elseif ($arow['type'] == "O")	// List With Comment
-		{
-			$_SESSION['insertarray'][] = $fieldname;
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
-			$fn2 = $fieldname."comment";
-			$_SESSION['insertarray'][] = $fn2;
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); 
-		}
-		elseif ($arow['type'] == "L" || $arow['type'] == "!")	// List (Radio) - List (Dropdown)
-		{
-			$_SESSION['insertarray'][] = $fieldname;
-			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
-			if ($arow['other'] == "Y") 
-			{
-				$_SESSION['insertarray'][] = $fieldname."other";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); 
-			}
-
-		//go through answers, and if there is a default, register it now so that conditions work properly the first time
-
-			$abquery = "SELECT a.code, a.default_value\n"
-			. " FROM ".db_table_name('answers')." as a \n"
-			. " WHERE a.qid={$arow['qid']}\n"
-			. " ORDER BY a.sortorder, a.answer";
-
-			$abresult = db_execute_assoc($abquery);       //Checked 
-			while($abrow = $abresult->FetchRow())
-			{
-				if ($abrow['default_value'] == "Y")
-				{
-					$_SESSION[$fieldname] = $abrow['code'];
-				}
-			}
-		}
-		elseif  ($arow['type'] == "X")	// Boilerplate Question
-		{
-			$totalBoilerplatequestions++;
-			$_SESSION['insertarray'][] = $fieldname;
-			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
-		}
-		else
-		{
-			$_SESSION['insertarray'][] = $fieldname;
-			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
-		}
-
-
-
-//		Separate query for each row no necessary because query above includes a sub-select now.
-//		Increases performance by at least 17% and reduces number of queries executed
-//		//Check to see if there are any conditions set for this question
-
-
-		    if ($arow['hasconditions']>0)
-		    {
-			    $conditions = "Y";
-		    }
-		    else
-		    {
-			    $conditions = "N";
-		    }
-		    if ($arow['usedinconditions']>0)
-		    {
-			    $usedinconditions = "Y";
-		    }
-		    else
-		    {
-			    $usedinconditions = "N";
-		    }
-
-
-		    // if I'm a M or P question, and if another question in this survey has array_filter set to my code, then I'm also used in a kind of condition
-		    if ( ($arow['type'] == 'M' || $arow['type'] == 'P') && $usedinconditions == "N")
-		    {
-			    $qaquery = "SELECT count(qa.qaid) as afcount "
-				    . "FROM ".db_table_name('question_attributes')." as qa, ".db_table_name('questions')." as q "
-				    . "WHERE qa.qid = q.qid "
-				    . "AND ( "
-				    . "      (qa.attribute='array_filter' AND qa.value LIKE ".db_quoteall($arow['title']).") "
-				    . "   OR (qa.attribute='array_filter_exclude' AND qa.value LIKE ".db_quoteall($arow['title']).") "
-				    . "    ) "
-				    . "AND q.sid=$surveyid";
-			    $qaresult = db_execute_assoc($qaquery);
-			    $qarow = $qaresult->FetchRow();
-			    if ($qarow['afcount'] >= 1)
-			    {
-				    $usedinconditions = "Y";
-			    }
-		    }
-
-		    //3(b) See if any of the insertarray values have been passed in the query URL
-
-		    if (isset($_SESSION['insertarray']))        
-		    {
-                foreach($_SESSION['insertarray'] as $field)
-		        {
-			        if (isset($_GET[$field]) && $field!='token')
-			        {
-				        $_SESSION[$field]=$_GET[$field];
-			        }
-		        }
-		    }
-
-		    //4. SESSION VARIABLE: fieldarray
-		    //NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
-		    //ARRAY CONTENTS - 	[0]=questions.qid,
-		    //			[1]=fieldname,
-		    //			[2]=questions.title,
-		    //			[3]=questions.question
-		    //                 	[4]=questions.type,
-		    //			[5]=questions.gid,
-		    //			[6]=questions.mandatory,
-		    //			[7]=conditionsexist,
-		    //			[8]=usedinconditions
-            $_SESSION['fieldarray'][] = array($arow['qid'],
-		        $fieldname,
-                $arow['title'],
-                $arow['question'],
-		        $arow['type'],
-		        $arow['gid'],
-                $arow['mandatory'],
-                $conditions,
-                $usedinconditions);
-	}
 	// Check if the current survey language is set - if not set it
 	// this way it can be changed later (for example by a special question type)
-	
 	//Check if a passthru label and value have been included in the query url
 	if(isset($_GET['passthru']) && $_GET['passthru'] != "")
 	{
@@ -2564,7 +2275,7 @@ function surveymover()
 	else
 	{
 		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
-	}
+	}                                 
 
 
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
