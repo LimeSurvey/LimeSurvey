@@ -886,29 +886,29 @@ if (isset($grouparray) && $grouparray) {
                     } 
 					$oldqid=$qid;
 
-                    if ($importversion<143) {
+                    if ($importversion<143) 
+                    {
                         unset($oldlid1); unset($oldlid2);
                         if ((isset($questionrowdata['lid']) && $questionrowdata['lid']>0))
-                    {
+                        {
                             $oldlid1=$questionrowdata['lid'];
-					}
+					    }
                         if ((isset($questionrowdata['lid1']) && $questionrowdata['lid1']>0))
-								{
+						{
                             $oldlid2=$questionrowdata['lid1'];
                         }
-//                        unset($questionrowdata['lid']);
-//                        unset($questionrowdata['lid1']);
+                        unset($questionrowdata['lid']);
+                        unset($questionrowdata['lid1']);
                         if ($questionrowdata['type']=='W')
-									{
+						{
                             $questionrowdata['type']='!';
-									}
+						}
                         elseif ($questionrowdata['type']=='Z')
-								{
+						{
                             $questionrowdata['type']='L';
-                            
-									}
+						}
                         
-								}
+                    }
                     
                     if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;} 
 		            $other = $questionrowdata["other"]; //Get 'other' field value

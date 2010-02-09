@@ -554,8 +554,9 @@ function upgrade_tables143()
 {
     global $modifyoutput,$dbprefix, $connect;
     
+    
     // Convert answers to subquestions
-    $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H',';',':','M','P','Q')";
+    $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}
     else
@@ -568,7 +569,7 @@ function upgrade_tables143()
     modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
 
     // Convert labels to answers
-    $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P',';',':','W','Z')";
+    $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) 
     {
@@ -583,6 +584,7 @@ function upgrade_tables143()
             while ( $lrow = $labelresult->FetchRow() )
             {
                 modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).")"); echo $modifyoutput; flush();
+                //$labelids[]
             }
             if ($row['type']=='1')
             {
@@ -595,5 +597,33 @@ function upgrade_tables143()
             }
         }
     }
+
+    // Convert labels to subquestions
+    $answerquery = "select * from {$dbprefix}questions where parent_qid=0 and type in (';',':')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult) 
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
+            $labelresult = db_execute_assoc($labelquery); 
+            while ( $lrow = $labelresult->FetchRow() )
+            {
+                modify_database("","INSERT INTO {$dbprefix}questions (sid, gid, parent_qid, title, question, question_order, language, scale_id) VALUES ({$row['sid']},{$row['gid']},{$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
+            }
+        }
+    }
+
+
+
+
+    $updatequery = "update {$dbprefix}questions set type='!' where type='W'";
+    modify_database("",$updatequery); echo $modifyoutput; flush();
+    $updatequery = "update {$dbprefix}questions set type='L' where type='Z'";
+    modify_database("",$updatequery); echo $modifyoutput; flush();
     
 }
