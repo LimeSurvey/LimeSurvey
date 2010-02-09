@@ -77,6 +77,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.87+ (build 8338) to 1.87+ (build 8366) - Legend: # updated feature, - bug fix 
+#Update of Croatian language file (idobraca)
+#Updated Feature #04097: small UI update, when clicking the conditions icon on the question toolbar, the condition editor is now open in edit mode, and not in view mode (lemeur)
+#Updated translation: German (c_schmitz)
+-Fixed issue #04103: Layout problem at Quotas Screen with small browser windows   (tpartner)
+-Fixed issue #04107: html and W3C errors on survey page (with solutions) (tpartner)
+-Fixed issue #04100: mandatory alert popup for Other-comment not filled-in displays the word 'Other' even if a customized othertext was choosen for the question (lemeur)
+-Fixed issue #4087: Unable to reorder questions/groups with arrows in IE (c_schmitz)
+-Fixed issue #4091: Quota messages aren't escaped properly (c_schmitz)
+-Fixed issue #4096: Allow - + _ in domain part of email addresses. (harsha_mora)
+-Fixed issue #4038: Empty fields were counted as 'No answer' in statistics even if set that only completed records should be counted (c_schmitz)
+-Fixed unreported issue: deletenonvalue isn't working for array questions using array_filter/array_filter_exclude options. (lemeur)
+-Fixed (partly) issue #4093: quota overview messed up. (maziminke)
+-Fixed bug #4092: Quota name is shown as link but not clickable  (maziminke)
+-Fixed bug #4090: notice when setting quotas (maziminke)
+
 Changes from 1.87+ (build 8310) to 1.87+ (build 8338) - Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
 #Updated translation: Greek by Penny Labropoulou (c_schmitz)
