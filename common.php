@@ -1849,7 +1849,8 @@ function returnglobal($stringname)
 		{
 			return sanitize_int($urlParam);
 		}
-		elseif ($stringname =="lang" || $stringname =="adminlang")
+		elseif ($stringname =="lang" || $stringname =="adminlang" ||
+			$stringname =="statlang")
 		{
 			return sanitize_languagecode($urlParam);
 		}

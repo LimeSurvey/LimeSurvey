@@ -87,6 +87,7 @@ $cr_statisticsoutput = '';
 
 // This gets all the 'to be shown questions' from the POST and puts these into an array
 $summary=returnglobal('summary');
+$statlang=returnglobal('statlang');
 
 //if $summary isn't an array we create one
 if (isset($summary) && !is_array($summary)) {
@@ -275,17 +276,32 @@ if (isset($_POST['viewsummaryall'])) {$statisticsoutput .= "checked='checked'";}
 $statisticsoutput.="/></li>";
 
 $statisticsoutput .="<li id='vertical_slide'";
-if ($selecthide!='')
-{
-    $statisticsoutput .= " style='display:none' ";
-}
-$statisticsoutput.=" ><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label>
+//if ($selecthide!='')
+//{
+//    $statisticsoutput .= " style='display:none' ";
+//}
+$statisticsoutput.=" ><label id='noncompletedlbl' for='noncompleted' title='".$clang->gT("Count stats for each question based only on the total number of responses for which the question was displayed")."'>".$clang->gT("Subtotals based on displayed questions")."</label>
                 <input type='checkbox' id='noncompleted' name='noncompleted' ";
 if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
-$statisticsoutput.=" />\n</li></ul></fieldset>\n";
+$statisticsoutput.=" />\n</li>\n";
 
+$survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+$survlangs [] = GetBaseLanguageFromSurveyID($surveyid);
+$language_options="";
+foreach ($survlangs as $survlang)
+{
+	$language_options .= "\t<option value=\"{$survlang}\"";
+	if ($_SESSION['adminlang'] == $survlang)
+	{
+		$language_options .= "selected=\"selected\" " ;
+	}
+	$language_options .= ">".getLanguageNameFromCode($survlang,true)."</option>\n";
+}
 
+$statisticsoutput .="<li><label for='statlang'>".$clang->gT("Statistics report language")."</label>"
+		. " <select name=\"statlang\" id=\"statlang\">".$language_options."</select>\n";
 
+$statisticsoutput.="\n</ul></fieldset>\n";
 
 $statisticsoutput .= "<fieldset id='left'><legend>".$clang->gT("Response ID")."</legend><ul><li>"
                     ."<label for='idG'>".$clang->gT("Greater than:")."</label>\n"
@@ -1608,13 +1624,13 @@ if (isset($summary) && $summary)
 	switch($outputType){
 
 		case 'html':
-			$statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
+			$statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 					break;
 		case 'pdf':
-			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
+			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 					break;
 		case 'xls':
-			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
+			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 					break;
 		default:
 

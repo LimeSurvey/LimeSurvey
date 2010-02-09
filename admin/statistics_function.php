@@ -85,12 +85,21 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 	
 //generate_statistics('999','all',0,'pdf','F');
 
-function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='DD')
+function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='DD',$statlangcode=null)
 {
 	//$allfields ="";
 	global $connect, $dbprefix, $clang,
 	$rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname, 
 	$chartfontfile, $chartfontsize, $admintheme;
+
+	if (is_null($statlangcode))
+	{
+		$statlang=$clang;
+	}
+	else
+	{
+		$statlang = new limesurvey_lang($statlangcode);
+	}
 	
 	/*
 	 * this variable is used in the function shortencode() which cuts off a question/answer title
@@ -221,7 +230,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		$pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
 		$pdf->SetDisplayMode('fullpage', 'two');
 		// set default header data
-		$pdf->SetHeaderData("statistics.png", 10, "LimeSurvey ".$clang->gT("Quick statistics") , $clang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
+		$pdf->SetHeaderData("statistics.png", 10, "LimeSurvey ".$statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
 		
 		// set header and footer fonts
 		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -501,16 +510,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	{
 		case "xls":
 			$xlsRow = 0;
-			$sheet->write($xlsRow,0,$clang->gT("Number of records in this query:"));
+			$sheet->write($xlsRow,0,$statlang->gT("Number of records in this query:"));
 			$sheet->write($xlsRow,1,$results);
 			++$xlsRow;
-			$sheet->write($xlsRow,0,$clang->gT("Total records in survey:"));
+			$sheet->write($xlsRow,0,$statlang->gT("Total records in survey:"));
 			$sheet->write($xlsRow,1,$total);
 			
 			if($total)
 			{
 				++$xlsRow;
-				$sheet->write($xlsRow,0,$clang->gT("Percentage of total:"));
+				$sheet->write($xlsRow,0,$statlang->gT("Percentage of total:"));
 				$sheet->write($xlsRow,1,$percent."%");
 			}
 						
@@ -519,17 +528,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			
 			// add summary to pdf 
 			$array = array();
-			//$array[] = array($clang->gT("Results"),"");
-			$array[] = array($clang->gT("Number of records in this query:"), $results);
-			$array[] = array($clang->gT("Total records in survey:"), $total);
+			//$array[] = array($statlang->gT("Results"),"");
+			$array[] = array($statlang->gT("Number of records in this query:"), $results);
+			$array[] = array($statlang->gT("Total records in survey:"), $total);
 			
 			if($total)
-			$array[] = array($clang->gT("Percentage of total:"), $percent."%");
+			$array[] = array($statlang->gT("Percentage of total:"), $percent."%");
 			
 			$pdf->addPage('P','A4');
 			
-			$pdf->Bookmark($pdf->delete_html($clang->gT("Results")), 0, 0);
-			$pdf->titleintopdf($clang->gT("Results"),$clang->gT("Survey")." ".$surveyid);
+			$pdf->Bookmark($pdf->delete_html($statlang->gT("Results")), 0, 0);
+			$pdf->titleintopdf($statlang->gT("Results"),$statlang->gT("Survey")." ".$surveyid);
 			$pdf->tableintopdf($array);
 			
 			$pdf->addPage('P','A4');
@@ -538,17 +547,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		case 'html':
 			
 			$statisticsoutput .= "<br />\n<table class='statisticssummary' >\n"
-			."\t<thead><tr><th colspan='2'>".$clang->gT("Results")."</th></tr></thead>\n"
-			."\t<tr><th >".$clang->gT("Number of records in this query:").'</th>'
+			."\t<thead><tr><th colspan='2'>".$statlang->gT("Results")."</th></tr></thead>\n"
+			."\t<tr><th >".$statlang->gT("Number of records in this query:").'</th>'
 			."<td>$results</td></tr>\n"
-			."\t<tr><th>".$clang->gT("Total records in survey:").'</th>'
+			."\t<tr><th>".$statlang->gT("Total records in survey:").'</th>'
 			."<td>$total</td></tr>\n";
 		
 			//only calculate percentage if $total is set
 			if ($total)
 			{
 				$percent=sprintf("%01.2f", ($results/$total)*100);
-				$statisticsoutput .= "\t<tr><th align='right'>".$clang->gT("Percentage of total:").'</th>'
+				$statisticsoutput .= "\t<tr><th align='right'>".$statlang->gT("Percentage of total:").'</th>'
 				."<td>$percent%</td></tr>\n";
 			}
 			$statisticsoutput .="</table>\n";
@@ -574,7 +583,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		{
 			//add a buttons to browse results
 			$statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
-			."\t\t<p><input type='submit' value='".$clang->gT("Browse")."'  />\n"
+			."\t\t<p><input type='submit' value='".$statlang->gT("Browse")."'  />\n"
 			."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
 			."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
@@ -647,7 +656,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					$mfield=substr($rt, 1, strlen($rt))."other";
 	
 					//create an array containing answer code, answer and fieldname(??)
-					$alist[]=array($clang->gT("Other"), $clang->gT("Other"), $mfield);
+					$alist[]=array($statlang->gT("Other"), $statlang->gT("Other"), $mfield);
 				}
 			}
 	
@@ -709,8 +718,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				// So, instead of building an array of predefined answers like we do with lists & other types,
 				// we instead create two "types" of possible answer - either there is a response.. or there isn't.
 				// This question type then can provide a % of the question answered in the summary.
-				$alist[]=array("Answers", $clang->gT("Answer"), $mfield);
-				$alist[]=array("NoAnswer", $clang->gT("No answer"), $mfield);
+				$alist[]=array("Answers", $statlang->gT("Answer"), $mfield);
+				$alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
 			}
 	
 	
@@ -768,8 +777,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				// So, instead of building an array of predefined answers like we do with lists & other types,
 				// we instead create two "types" of possible answer - either there is a response.. or there isn't.
 				// This question type then can provide a % of the question answered in the summary.
-				$alist[]=array("Answers", $clang->gT("Answer"), $mfield);
-				$alist[]=array("NoAnswer", $clang->gT("No answer"), $mfield);
+				$alist[]=array("Answers", $statlang->gT("Answer"), $mfield);
+				$alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
 			}
 	
 	
@@ -789,7 +798,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				{
 					$qtitle=FlattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 					$qtype=$nrow[1];
-					$qquestion=FlattenText($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+					$qquestion=FlattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 				}
 					
 				//get answers
@@ -891,7 +900,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							$tableXLS = array();
 							$footXLS = array();
 							
-							$xlsTitle = sprintf($clang->gT("Field summary for %s"),$qtitle);
+							$xlsTitle = sprintf($statlang->gT("Field summary for %s"),$qtitle);
 							$xlsDesc = $qquestion;
 							++$xlsRow;
 							++$xlsRow;
@@ -901,10 +910,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							++$xlsRow;
 							$sheet->write($xlsRow, 0,$xlsDesc);
 							
-							$headXLS[] = array($clang->gT("Calculation"),$clang->gT("Result"));
+							$headXLS[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
 							++$xlsRow;
-							$sheet->write($xlsRow, 0,$clang->gT("Calculation"));
-							$sheet->write($xlsRow, 1,$clang->gT("Result"));
+							$sheet->write($xlsRow, 0,$statlang->gT("Calculation"));
+							$sheet->write($xlsRow, 1,$statlang->gT("Result"));
 							
 						break;
 						case 'pdf':
@@ -913,22 +922,22 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							$tablePDF = array();
 							$footPDF = array();
 							
-							$pdfTitle = sprintf($clang->gT("Field summary for %s"),$qtitle);
+							$pdfTitle = sprintf($statlang->gT("Field summary for %s"),$qtitle);
 							$titleDesc = $qquestion;
 		
-							$headPDF[] = array($clang->gT("Calculation"),$clang->gT("Result"));
+							$headPDF[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
 							
 						break;
 						case 'html':
 							
 							$statisticsoutput .= "\n<table class='statisticstable' >\n"
-							."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($clang->gT("Field summary for %s"),$qtitle).":</strong>"
+							."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($statlang->gT("Field summary for %s"),$qtitle).":</strong>"
 							."</th></tr>\n"
 							."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
 							."\t<tr>\n\t\t<th width='50%' align='center' ><strong>"
-							.$clang->gT("Calculation")."</strong></th>\n"
+							.$statlang->gT("Calculation")."</strong></th>\n"
 							."\t\t<th width='50%' align='center' ><strong>"
-							.$clang->gT("Result")."</strong></th>\n"
+							.$statlang->gT("Result")."</strong></th>\n"
 							."\t</tr></thead>\n";
 							
 						break;
@@ -1006,10 +1015,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					while ($row=$result->FetchRow())
 					{
 						//put translation of mean and calculated data into $showem array
-						$showem[]=array($clang->gT("Sum"), $row['sum']);
-						$showem[]=array($clang->gT("Standard deviation"), round($row['stdev'],2));
-						$showem[]=array($clang->gT("Average"), round($row['average'],2));
-						$showem[]=array($clang->gT("Minimum"), $row['minimum']);
+						$showem[]=array($statlang->gT("Sum"), $row['sum']);
+						$showem[]=array($statlang->gT("Standard deviation"), round($row['stdev'],2));
+						$showem[]=array($statlang->gT("Average"), round($row['average'],2));
+						$showem[]=array($statlang->gT("Minimum"), $row['minimum']);
 							
 						//Display the maximum and minimum figures after the quartiles for neatness
 						$maximum=$row['maximum'];
@@ -1055,7 +1064,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					$medcount=$result->RecordCount();
 	
 					//put the total number of records at the beginning of this array
-					array_unshift($showem, array($clang->gT("Count"), $medcount));
+					array_unshift($showem, array($statlang->gT("Count"), $medcount));
 	
 	
 					//no more comment from Mazi regarding the calculation
@@ -1092,7 +1101,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							if ($q1total < $minimum) {$q1total=$minimum;}
 	
-							$showem[]=array($clang->gT("1st quartile (Q1)"), $q1total);
+							$showem[]=array($statlang->gT("1st quartile (Q1)"), $q1total);
 						}
 						else
 						{
@@ -1102,7 +1111,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array($clang->gT("1st quartile (Q1)"), $row[$fieldname]);
+								$showem[]=array($statlang->gT("1st quartile (Q1)"), $row[$fieldname]);
 							}
 						}
 							
@@ -1126,7 +1135,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							$row=$result->FetchRow()) {$total=$total+$row[$fieldname];
 							}
 	
-							$showem[]=array($clang->gT("2nd quartile (Median)"), $total/2);
+							$showem[]=array($statlang->gT("2nd quartile (Median)"), $total/2);
 						}
 							
 						else
@@ -1137,7 +1146,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array($clang->gT("Median value"), $row[$fieldname]);
+								$showem[]=array($statlang->gT("Median value"), $row[$fieldname]);
 							}
 						}
 							
@@ -1169,7 +1178,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							if ($q3total < $maximum) {$q1total=$maximum;}
 	
-							$showem[]=array($clang->gT("3rd quartile (Q3)"), $q3total);
+							$showem[]=array($statlang->gT("3rd quartile (Q3)"), $q3total);
 						}
 							
 						else
@@ -1179,13 +1188,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array($clang->gT("3rd quartile (Q3)"), $row[$fieldname]);
+								$showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);
 							}
 						}
 							
 						$total=0;
 							
-						$showem[]=array($clang->gT("Maximum"), $maximum);
+						$showem[]=array($statlang->gT("Maximum"), $maximum);
 							
 						//output results
 						foreach ($showem as $shw)
@@ -1226,18 +1235,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							case 'xls':
 								
 								++$xlsRow;
-								$sheet->write($xlsRow, 0,$clang->gT("Null values are ignored in calculations"));
+								$sheet->write($xlsRow, 0,$statlang->gT("Null values are ignored in calculations"));
 								++$xlsRow;
-								$sheet->write($xlsRow, 0,sprintf($clang->gT("Q1 and Q3 calculated using %s"), $clang->gT("minitab method")));
+								$sheet->write($xlsRow, 0,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
 								
-								$footXLS[] = array($clang->gT("Null values are ignored in calculations"));
-								$footXLS[] = array(sprintf($clang->gT("Q1 and Q3 calculated using %s"), $clang->gT("minitab method")));
+								$footXLS[] = array($statlang->gT("Null values are ignored in calculations"));
+								$footXLS[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
 																
 							break;
 							case 'pdf':
 								
-								$footPDF[] = array($clang->gT("Null values are ignored in calculations"));
-								$footPDF[] = array(sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>"));
+								$footPDF[] = array($statlang->gT("Null values are ignored in calculations"));
+								$footPDF[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$statlang->gT("minitab method")."</a>"));
 								$pdf->addPage('P','A4');
 								$pdf->Bookmark($pdf->delete_html($qquestion), 1, 0); 
 								$pdf->titleintopdf($pdfTitle,$titleDesc);
@@ -1252,8 +1261,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								//footer of question type "N"
 								$statisticsoutput .= "\t<tr>\n"
 								."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
-								."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
-								."\t\t\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
+								."\t\t\t<font size='1'>".$statlang->gT("Null values are ignored in calculations")."<br />\n"
+								."\t\t\t".sprintf($statlang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$statlang->gT("minitab method")."</a>")
 								."</font>\n"
 								."\t\t</td>\n"
 								."\t</tr>\n</table>\n";
@@ -1278,10 +1287,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							case 'xls':
 								
 								$tableXLS = array();
-								$tableXLS[] = array($clang->gT("Not enough values for calculation"));
+								$tableXLS[] = array($statlang->gT("Not enough values for calculation"));
 								
 								++$xlsRow;
-								$sheet->write($xlsRow, 0, $clang->gT("Not enough values for calculation"));
+								$sheet->write($xlsRow, 0, $statlang->gT("Not enough values for calculation"));
 								
 								
 								
@@ -1289,7 +1298,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							case 'pdf':
 								
 								$tablePDF = array();
-								$tablePDF[] = array($clang->gT("Not enough values for calculation"));
+								$tablePDF[] = array($statlang->gT("Not enough values for calculation"));
 								$pdf->addPage('P','A4');
 								$pdf->Bookmark($pdf->delete_html($qquestion), 1, 0); 
 								$pdf->titleintopdf($pdfTitle,$titleDesc);
@@ -1301,7 +1310,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								
 								//output
 								$statisticsoutput .= "\t<tr>\n"
-								."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
+								."\t\t<td align='center'  colspan='4'>".$statlang->gT("Not enough values for calculation")."</td>\n"
 								."\t</tr>\n</table><br />\n";
 								
 							break;
@@ -1422,7 +1431,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 	
 	
-						//Array of Yes/No/$clang->gT("Uncertain")
+						//Array of Yes/No/$statlang->gT("Uncertain")
 					case "C":
 						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
@@ -1431,9 +1440,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						while ($qrow=$qresult->FetchRow())
 						{
 							//add results
-							$alist[]=array("Y", $clang->gT("Yes"));
-							$alist[]=array("N", $clang->gT("No"));
-							$alist[]=array("U", $clang->gT("Uncertain"));
+							$alist[]=array("Y", $statlang->gT("Yes"));
+							$alist[]=array("N", $statlang->gT("No"));
+							$alist[]=array("U", $statlang->gT("Uncertain"));
 							$atext=FlattenText($qrow[1]);
 						}
 						//output
@@ -1443,16 +1452,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 	
 	
-						//Array of Yes/No/$clang->gT("Uncertain")
+						//Array of Yes/No/$statlang->gT("Uncertain")
 						//same as above
 					case "E":
 						$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
 						$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 						while ($qrow=$qresult->FetchRow())
 						{
-							$alist[]=array("I", $clang->gT("Increase"));
-							$alist[]=array("S", $clang->gT("Same"));
-							$alist[]=array("D", $clang->gT("Decrease"));
+							$alist[]=array("I", $statlang->gT("Increase"));
+							$alist[]=array("S", $statlang->gT("Same"));
+							$alist[]=array("D", $statlang->gT("Decrease"));
 							$atext=FlattenText($qrow[1]);
 						}
 						$qquestion .= "<br />\n[".$atext."]";
@@ -1573,15 +1582,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 	
 					case "G": //Gender
-						$alist[]=array("F", $clang->gT("Female"));
-						$alist[]=array("M", $clang->gT("Male"));
+						$alist[]=array("F", $statlang->gT("Female"));
+						$alist[]=array("M", $statlang->gT("Male"));
 						break;
 	
 	
 	
 					case "Y": //Yes\No
-						$alist[]=array("Y", $clang->gT("Yes"));
-						$alist[]=array("N", $clang->gT("No"));
+						$alist[]=array("Y", $statlang->gT("Yes"));
+						$alist[]=array("N", $statlang->gT("No"));
 						break;
 	
 	
@@ -1622,7 +1631,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//does "other" field exist?
 						if ($qother == "Y")
 						{
-							$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
+							$alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$fielddata['fieldname'].'other');
 						}
 						break;
 	
@@ -1711,14 +1720,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						if (($qtype == "L" || $qtype == "!") && $qother == "Y")
 						{
 							//add "other"
-							$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
+							$alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$fielddata['fieldname'].'other');
 						}
 	
 				}	//end switch question type
 					
 				//moved because it's better to have "no answer" at the end of the list instead of the beginning
 				//put data into array
-				$alist[]=array("", $clang->gT("No answer"));
+				$alist[]=array("", $statlang->gT("No answer"));
 					
 			}	//end else -> single option answers
 	
@@ -1740,7 +1749,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				{
 					case 'xls':
 									
-						$xlsTitle = sprintf($clang->gT("Field summary for %s"),strip_tags($qtitle));
+						$xlsTitle = sprintf($statlang->gT("Field summary for %s"),strip_tags($qtitle));
 						$xlsDesc = strip_tags($qquestion);
 						
 						++$xlsRow;
@@ -1757,7 +1766,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					break;
 					case 'pdf':
 						
-						$pdfTitle = $pdf->delete_html(sprintf($clang->gT("Field summary for %s"),$qtitle));
+						$pdfTitle = $pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),$qtitle));
 						$titleDesc = $pdf->delete_html($qquestion);
 						
 						$pdf->addPage('P','A4');
@@ -1773,7 +1782,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						."\t<thead><tr><th colspan='4' align='center'><strong>"
 						
 						//headline
-						.sprintf($clang->gT("Field summary for %s"),$qtitle)."</strong>"
+						.sprintf($statlang->gT("Field summary for %s"),$qtitle)."</strong>"
 						."</th></tr>\n"
 						."\t<tr><th colspan='4' align='center'><strong>"
 						
@@ -1794,7 +1803,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					if (isset($al[2]) && $al[2])
 					{
 						//handling for "other" option
-						if ($al[1] == $clang->gT("Other"))
+						if ($al[1] == $statlang->gT("Other"))
 						{
 							//get data
 							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
@@ -1821,7 +1830,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							//"no answer" handling
 							elseif($al[0]=="NoAnswer")
 							{
-								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($al[2])." IS NULL OR ";
+//								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($al[2])." IS NULL OR ";
+								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ( ";
 								$query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." = '')" : " (".db_quote_id($al[2])." LIKE ''))";
 							}
 						}
@@ -1869,13 +1879,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
-                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "
-                                    . "OR cast(".db_quote_id($rt)." as varchar) = '' "
+                                //$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "
+                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ( "
+//                                    . "OR cast(".db_quote_id($rt)." as varchar) = '' "
+                                    . "cast(".db_quote_id($rt)." as varchar) = '' "
                                     . "OR cast(".db_quote_id($rt)." as varchar) = ' ' )";
                             }
                             else
-							    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "
-								    . "OR ".db_quote_id($rt)." = '' "
+				//			    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "
+							    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ( "
+//								    . "OR ".db_quote_id($rt)." = '' "
+								    . " ".db_quote_id($rt)." = '' "
 								    . "OR ".db_quote_id($rt)." = ' ') ";
 						}
 	
@@ -1901,15 +1915,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 						//"no answer" handling
 						if ($al[0] == "")
-						{$fname=$clang->gT("No answer");}
+						{$fname=$statlang->gT("No answer");}
 							
 						//"other" handling
 						//"Answers" means that we show an option to list answer to "other" text field
-						elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers" || $qtype == "P")
+						elseif ($al[0] == $statlang->gT("Other") || $al[0] == "Answers" || $qtype == "P")
 						{
                             if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
                                 else  $ColumnName_RM = $al[2];
-                            $fname="$al[1] <input type='button' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                            $fname="$al[1] <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                         }
 							
 						/*
@@ -1926,7 +1940,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							if ($al[0] == "Answers")
 							{
 								$fname= "$al[1] <input type='submit' value='"
-								. $clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
+								. $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
 								. urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
 							}
 							elseif ($al[0] == "NoAnswer")
@@ -1948,30 +1962,30 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 										case 'xls':
 											
 											$headXLS = array();
-											$headXLS[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"),$clang->gT("Sum"));
+											$headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
 											
 											++$xlsRow;
-											$sheet->write($xlsRow,0,$clang->gT("Answer"));
-											$sheet->write($xlsRow,1,$clang->gT("Count"));
-											$sheet->write($xlsRow,2,$clang->gT("Percentage"));
-											$sheet->write($xlsRow,3,$clang->gT("Sum"));
+											$sheet->write($xlsRow,0,$statlang->gT("Answer"));
+											$sheet->write($xlsRow,1,$statlang->gT("Count"));
+											$sheet->write($xlsRow,2,$statlang->gT("Percentage"));
+											$sheet->write($xlsRow,3,$statlang->gT("Sum"));
 											
 										break;
 										case 'pdf':
 											
 											$headPDF = array();
-											$headPDF[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"),$clang->gT("Sum"));
+											$headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
 
 										break;
 										case 'html':
 											//four columns
-											$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></th>\n"
+											$statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
 											."\t\t<th width='15%' align='center' >"
-											."<strong>".$clang->gT("Count")."</strong></th>\n"
+											."<strong>".$statlang->gT("Count")."</strong></th>\n"
 											."\t\t<th width='20%' align='center' >"
-											."<strong>".$clang->gT("Percentage")."</strong></th>\n"
+											."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
 											."\t\t<th width='15%' align='center' >"
-											."<strong>".$clang->gT("Sum")."</strong></th>\n"
+											."<strong>".$statlang->gT("Sum")."</strong></th>\n"
 											."\t</tr></thead>\n";						
 										break;
 										default:
@@ -1990,28 +2004,28 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 										case 'xls':
 											
 											$headXLS = array();
-											$headXLS[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
+											$headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 											
 											++$xlsRow;
-											$sheet->write($xlsRow,0,$clang->gT("Answer"));
-											$sheet->write($xlsRow,1,$clang->gT("Count"));
-											$sheet->write($xlsRow,2,$clang->gT("Percentage"));
+											$sheet->write($xlsRow,0,$statlang->gT("Answer"));
+											$sheet->write($xlsRow,1,$statlang->gT("Count"));
+											$sheet->write($xlsRow,2,$statlang->gT("Percentage"));
 										
 										break;
 										
 										case 'pdf':
 											
 											$headPDF = array();
-											$headPDF[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
+											$headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 										
 											break;
 										case 'html':
 											//three columns
-											$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
+											$statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></td>\n"
 											."\t\t<th width='25%' align='center' >"
-											."<strong>".$clang->gT("Count")."</strong></th>\n"
+											."<strong>".$statlang->gT("Count")."</strong></th>\n"
 											."\t\t<th width='25%' align='center' >"
-											."<strong>".$clang->gT("Percentage")."</strong></th>\n"
+											."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
 											."\t</tr></thead>\n";						
 										break;
 										default:
@@ -2033,6 +2047,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							{
 								//put non-edited data in here because $row will be edited later
 								$grawdata[]=$row[0];
+								$showaggregated_indice=count($grawdata) - 1;
+								$showaggregated_indice_table[$showaggregated_indice]="aggregated";
+								$showaggregated_indice=-1;
 									
 								//keep in mind that we already added data (will be checked later)
 								$justadded = true;
@@ -2088,27 +2105,27 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									case 'xls':
 											
 											$headXLS = array();
-											$headXLS[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
+											$headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 											
 											++$xlsRow;
-											$sheet->write($xlsRow,0,$clang->gT("Answer"));
-											$sheet->write($xlsRow,1,$clang->gT("Count"));
-											$sheet->write($xlsRow,2,$clang->gT("Percentage"));
+											$sheet->write($xlsRow,0,$statlang->gT("Answer"));
+											$sheet->write($xlsRow,1,$statlang->gT("Count"));
+											$sheet->write($xlsRow,2,$statlang->gT("Percentage"));
 										
 									break;
 									case 'pdf':
 										
 										$headPDF = array();
-										$headPDF[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
+										$headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 									
 									break;
 									case 'html':
 										//three columns
-										$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></th>\n"
+										$statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
 										."\t\t<th width='25%' align='center' >"
-										."<strong>".$clang->gT("Count")."</strong></th>\n"
+										."<strong>".$statlang->gT("Count")."</strong></th>\n"
 										."\t\t<th width='25%' align='center' >"
-										."<strong>".$clang->gT("Percentage")."</strong></th>\n"
+										."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
 										."\t</tr></thead>\n";						
 									break;
 									default:
@@ -2164,21 +2181,33 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				}	//end foreach -> loop through answer data
 	
 				//no filtering of incomplete answers and NO multiple option questions
-				if ((incompleteAnsFilterstate() != "filter") and ($qtype != "M") and ($qtype != "P"))
+				//if ((incompleteAnsFilterstate() != "filter") and ($qtype != "M") and ($qtype != "P"))
+				//error_log("TIBO ".print_r($showaggregated_indice_table,true));
+				if (($qtype != "M") and ($qtype != "P"))
 				{
 					//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-					if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))
+					//if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))
+					// TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
+					// showaggreagated data is set and set to 1
+					if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") )
 					{
 						//counter
 						$i=0;
 	
 						while (isset($gdata[$i]))
 						{
-							//we want to have some "real" data here
-							if ($gdata[$i] != "N/A")
+							if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i]=="aggregated")
+							{ // do nothing, we don't rewrite aggregated results
+							  // or at least I don't know how !!! (lemeur)
+							}
+							else
 							{
-								//calculate percentage
-								$gdata[$i] = ($grawdata[$i]/$TotalCompleted)*100;
+								//we want to have some "real" data here
+								if ($gdata[$i] != "N/A")
+								{
+									//calculate percentage
+									$gdata[$i] = ($grawdata[$i]/$TotalCompleted)*100;
+								}
 							}
 	
 							//increase counter
@@ -2195,7 +2224,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						$TotalIncomplete = $results - $TotalCompleted;
 						 
 						//output
-						$fname=$clang->gT("Non completed");
+						if ((incompleteAnsFilterstate() != "filter"))
+						{
+							$fname=$statlang->gT("Non completed or Not displayed");
+						}
+						else
+						{
+							$fname=$statlang->gT("Not displayed");
+						}
 						 
 						//we need some data
 						if ($results > 0)
@@ -2220,7 +2256,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						$justcode[]=$fname;
 						 
 						//edit labels and put them into antoher array
-						$lbl[] = wordwrap(FlattenText($clang->gT("Non completed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+						if ((incompleteAnsFilterstate() != "filter"))
+						{
+							$lbl[] = wordwrap(FlattenText($statlang->gT("Non completed nor Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+						}
+						else
+						{
+							$lbl[] = wordwrap(FlattenText($statlang->gT("Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+						}
 					}	//end else -> noncompleted NOT checked
 					 
 				}	//end if -> no filtering of incomplete answers and no multiple option questions
@@ -2322,7 +2365,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							//"no answer" & items 2 / 4 - nothing special to do here, just adjust output
 							if($gdata[$i] <= 100)
 							{
-								if($itemcounter == 2 && $label[$i+4] == $clang->gT("No answer"))
+								if($itemcounter == 2 && $label[$i+4] == $statlang->gT("No answer"))
 								{
 									//prevent division by zero
 									if(($results - $grawdata[$i+4]) > 0)
@@ -2336,7 +2379,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									}
 	
 								}
-								elseif($itemcounter == 4 && $label[$i+2] == $clang->gT("No answer"))
+								elseif($itemcounter == 4 && $label[$i+2] == $statlang->gT("No answer"))
 								{
 									//prevent division by zero
 									if(($results - $grawdata[$i+2]) > 0)
@@ -2397,7 +2440,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								//remove "400" which was added before
 								$gdata[$i] -= 400;
 								 
-								if($itemcounter == 3 && $label[$i+3] == $clang->gT("No answer"))
+								if($itemcounter == 3 && $label[$i+3] == $statlang->gT("No answer"))
 								{
 									//prevent division by zero
 									if(($results - $grawdata[$i+3]) > 0)
@@ -2460,7 +2503,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								//remove "300" which was added before
 								$gdata[$i] -= 300;
 								 
-								if($itemcounter == 1 && $label[$i+5] == $clang->gT("No answer"))
+								if($itemcounter == 1 && $label[$i+5] == $statlang->gT("No answer"))
 								{
 									//prevent division by zero
 									if(($results - $grawdata[$i+5]) > 0)
@@ -2527,7 +2570,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								//remove "200" which was added before
 								$gdata[$i] -= 200;
 								 
-								if($itemcounter == 5 && $label[$i+1] == $clang->gT("No answer"))
+								if($itemcounter == 5 && $label[$i+1] == $statlang->gT("No answer"))
 								{
 									//prevent division by zero
 									if(($results - $grawdata[$i+1]) > 0)
@@ -2616,16 +2659,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									case 'xls':
 											
 										
-										$footXLS[] = array($clang->gT("Sum")." (".$clang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
-										$footXLS[] = array($clang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
+										$footXLS[] = array($statlang->gT("Sum")." (".$statlang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
+										$footXLS[] = array($statlang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
 										
 										++$xlsRow;
-										$sheet->write($xlsRow,0,$clang->gT("Sum")." (".$clang->gT("Answers").")");
+										$sheet->write($xlsRow,0,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
 										$sheet->write($xlsRow,1,$sumitems);
 										$sheet->write($xlsRow,2,$sumpercentage."%");
 										$sheet->write($xlsRow,3,$sumpercentage."%");
 										++$xlsRow;
-										$sheet->write($xlsRow,0,$clang->gT("Number of cases"));
+										$sheet->write($xlsRow,0,$statlang->gT("Number of cases"));
 										$sheet->write($xlsRow,1,$TotalCompleted);
 										$sheet->write($xlsRow,2,$casepercentage."%");
 										//$sheet->write($xlsRow,3,$sumpercentage."%");
@@ -2633,19 +2676,19 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									break;
 									case 'pdf':
 										
-										$footPDF[] = array($clang->gT("Sum")." (".$clang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
-										$footPDF[] = array($clang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
+										$footPDF[] = array($statlang->gT("Sum")." (".$statlang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
+										$footPDF[] = array($statlang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
 								
 									break;
 									case 'html':
 										$statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
-										$statisticsoutput .= "<tr><td align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
+										$statisticsoutput .= "<tr><td align='center'><strong>".$statlang->gT("Sum")." (".$statlang->gT("Answers").")</strong></td>";
 										$statisticsoutput .= "<td align='center' ><strong>".$sumitems."</strong></td>";
 										$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
 										$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>"; 
 										$statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
 										
-										$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
+										$statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Number of cases")."</td>";	//German: "Fallzahl"
 										$statisticsoutput .= "<td align='center' >".$TotalCompleted."</td>";
 										$statisticsoutput .= "<td align='center' >$casepercentage%</td>";
 										//there has to be a whitespace within the table cell to display correctly
@@ -2794,29 +2837,29 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						{
 							case 'xls':
 											
-								$tableXLS[] = array($clang->gT("Arithmetic mean"),$am,'','');
-								$tableXLS[] = array($clang->gT("Standard deviation"),$stddev,'','');
+								$tableXLS[] = array($statlang->gT("Arithmetic mean"),$am,'','');
+								$tableXLS[] = array($statlang->gT("Standard deviation"),$stddev,'','');
 								
 								++$xlsRow;
-								$sheet->write($xlsRow,0,$clang->gT("Arithmetic mean"));
+								$sheet->write($xlsRow,0,$statlang->gT("Arithmetic mean"));
 								$sheet->write($xlsRow,1,$am);
 								
 								++$xlsRow;
-								$sheet->write($xlsRow,0,$clang->gT("Standard deviation"));
+								$sheet->write($xlsRow,0,$statlang->gT("Standard deviation"));
 								$sheet->write($xlsRow,1,$stddev);
 
 							break;
 							case 'pdf':
 								
-								$tablePDF[] = array($clang->gT("Arithmetic mean"),$am,'','');
-								$tablePDF[] = array($clang->gT("Standard deviation"),$stddev,'','');
+								$tablePDF[] = array($statlang->gT("Arithmetic mean"),$am,'','');
+								$tablePDF[] = array($statlang->gT("Standard deviation"),$stddev,'','');
 								
 							break;
 							case 'html':
 								//calculate standard deviation
-								$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Arithmetic mean")."</td>";	//German: "Fallzahl"
+								$statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Arithmetic mean")."</td>";	//German: "Fallzahl"
 								$statisticsoutput .= "<td>&nbsp;</td><td align='center'> $am</td><td>&nbsp;</td></tr>";
-								$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
+								$statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
 								$statisticsoutput .= "<td>&nbsp;</td><td align='center'>$stddev</td><td>&nbsp;</td></tr>";
 						
 							break;
@@ -3105,11 +3148,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			$pdf->lastPage(); 
 			if($pdfOutput=='F')
 			{ // This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
-				$pdf->Output($tempdir."/".$clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
-				return $tempdir."/".$clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf';
+				$pdf->Output($tempdir."/".$statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+				return $tempdir."/".$statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf';
 			}
 			else
-			return $pdf->Output($clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+			return $pdf->Output($statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
 			
 		break;
 		case 'html':

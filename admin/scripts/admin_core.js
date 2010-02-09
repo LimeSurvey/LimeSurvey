@@ -41,6 +41,29 @@ $(document).ready(function(){
         }
     });    
 
+    $('#noncompletedlbl[title]').each(function() {
+        if($(this).attr('title') != '')
+        {
+             $(this).qtip({
+               style: { name: 'cream',
+                        tip:true, 
+                        color:'#111111', 
+                        border: {
+                             width: 1,
+                             radius: 5,
+                             color: '#EADF95'}
+                       },  
+               position: { adjust: { 
+                        screen: true, scroll:true },
+                        corner: {
+                                target: 'bottomRight'}
+                        },
+               show: {effect: { length:50}}
+
+});
+        }
+    });    
+
 
     if ($('#showadvancedattributes').length>0) updatequestionattributes();
     

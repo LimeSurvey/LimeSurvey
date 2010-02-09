@@ -1,14 +1,4 @@
 $(document).ready(function(){
-     $('#filterinc').change(function(){
-         if ($('#filterinc').val()=="filter") {
-            $('#noncompleted').attr("checked", "");
-             $('#vertical_slide').slideUp('normal'); 
-         }
-         else
-         {
-             $('#vertical_slide').slideDown('normal'); 
-         }
-     })
      $('#usegraph').click( function(){
         if ($('#grapherror').length>0)
         { 
