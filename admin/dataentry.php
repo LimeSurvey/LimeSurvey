@@ -74,15 +74,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 	if (!$surveyid && !$subaction)
 	{
 		//$dataentryoutput .= "</table>\n";
-		$dataentryoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' height='4' class='settingcaption'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n"
-		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-		.$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
+		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n"
+		."\t<div class='messagebox'><div class='warningheader'>".$clang->gT("Error")."</div><p>\n"
+		.$clang->gT("You have not selected a survey for data-entry.")."<p>\n"
 		."<input type='submit' value='"
 		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-		."</font></td></tr></table>\n";
+		."</div>\n";
 		return;
 	}
 

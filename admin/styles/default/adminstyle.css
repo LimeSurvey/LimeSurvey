@@ -921,7 +921,7 @@ div.messagebox .warningheader {
 }
    
 
-#exportspss li label:first-child,            
+#exportspss li label:first-child,
 #importtemplate li label:first-child,            
 #tokenimport li label:first-child,            
 #statistics_general_filter li label:first-child,            
@@ -948,6 +948,7 @@ div.messagebox .warningheader {
     color: #1d2d45;
 }        
 
+#frmeditgroup li label:first-child,                   
 #usergroupform li label:first-child,            
 #frmcopyquestion li label:first-child,        
 #labelsetform li label:first-child,        
@@ -970,6 +971,9 @@ div.messagebox .warningheader {
     color: #121A28;
 }
 
+#exportstructureQuestion li,
+#exportstructureGroup li,
+#frmeditgroup li,
 #usergroupform li,
 #importtemplate li,
 #frmcopyquestion li,
@@ -1026,6 +1030,7 @@ div.loader {
     padding:1% 10%;
 }
 
+#frmeditgroup iframe,   
 #frmcopyquestion iframe,   
 #sendreminder iframe,
 #newquestiongroup iframe,
@@ -1213,4 +1218,11 @@ table.limetable tbody tr.highlight {
 
 #surveyhandleleft{
     margin-left:7px;
+}
+
+#exportstructureQuestion ul,
+#exportstructureGroup ul{
+    margin-left:auto;
+    margin-right:auto;
+    width:400px;
 }

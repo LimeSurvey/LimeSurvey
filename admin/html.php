@@ -583,13 +583,13 @@ if (isset($surveyid) && $surveyid && $action!='dataentry' && $action!='browse' &
         {
             $surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('"
             . $publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang', '_blank')\" title=\"".$icontext2."\" >"
-            . "<img src='$imagefiles/do.png' name='DoSurvey' alt='$icontext' />"
+            . "<img src='$imagefiles/do.png' name='DoSurvey2' alt='$icontext' />"
             . "</a>\n";
         
         } else {
             $surveysummary .= "<a href=\"#\" onclick=\"$('#printpopup').css('visibility','hidden'); $('#langpopup2').css('visibility','visible');\" "
             . "title=\"".$icontext2."\" accesskey='d'>"
-            . "<img  src='$imagefiles/do.png' name='DoSurvey' alt='$icontext' />"
+            . "<img  src='$imagefiles/do.png' name='DoSurvey2' alt='$icontext' />"
             . "</a>\n";
             
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -2125,15 +2125,14 @@ if($action == "exportstructureGroup")
 {
     if($export4lsrc === true && hasRight($surveyid,'export'))
     {
-	    $exportstructure = "<form name='exportstructureGroup' action='$scriptname' method='post'>\n"
-	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
-	    .$clang->gT("Export Group Structure")."\n</td></tr>\n"
-	    ."<tr>\n"
-	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv'
+	    $exportstructure = "<form id='exportstructureGroup' name='exportstructureGroup' action='$scriptname' method='post'>\n"
+	    ."<div class='header'>".$clang->gT("Export group structure")."\n</div>\n"
+	    ."<ul>\n"
+	    ."<li>\n";
+	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv'
 	    onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>"
 	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
+	    .$clang->gT("LimeSurvey group file (*.csv)")."</label></li>\n";
 
 //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
 //	    ."<label for='queXML'>"
@@ -2146,26 +2145,21 @@ if($action == "exportstructureGroup")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv'
+		    $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv'
 		    onclick=\"this.form.action.value='exportstructureLsrcCsvGroup'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label>\n";
+		    ."</label></li>\n";
 	     }
 	    
-	    $exportstructure.="<br />&nbsp;</td>\n"
-	    ."</tr>\n"
-	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
-	    ."<tr>\n"
-	    ."<td align='center'>\n"
+	    $exportstructure.="</ul>\n"
+	    ."<p>\n"
 	    ."<input type='submit' value='"
-	    .$clang->gT("Export To File")."' />\n"
+	    .$clang->gT("Export to file")."' />\n"
 	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
 	    ."<input type='hidden' name='gid' value='$gid' />\n"
-	    ."<input type='hidden' name='action' value='exportstructurecsvGroup' />\n"
-	    ."</td>\n"
-	    ."</tr>\n";
-	    $exportstructure.="</table><br /></form>\n";
+	    ."<input type='hidden' name='action' value='exportstructurecsvGroup' />\n";
+	    $exportstructure.="</form>\n";
     }
     else
     {
@@ -2178,15 +2172,14 @@ if($action == "exportstructureQuestion")
 {
     if($export4lsrc === true && hasRight($surveyid,'export'))
     {
-	    $exportstructure = "<form name='exportstructureQuestion' action='$scriptname' method='post'>\n"
-	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
-	    .$clang->gT("Export Question Structure")."\n</td></tr>\n"
-	    ."<tr>\n"
-	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv'
+	    $exportstructure = "<form id='exportstructureQuestion' name='exportstructureQuestion' action='$scriptname' method='post'>\n"
+	    ."<div class='header'>".$clang->gT("Export question structure")."\n</div>\n"
+	    ."<ul>\n"
+	    ."<li>\n";
+	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv'
 	    onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
 	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
+	    .$clang->gT("LimeSurvey group file (*.csv)")."</label></li>\n";
 	    
 //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
 //	    ."<label for='queXML'>"
@@ -2199,27 +2192,22 @@ if($action == "exportstructureQuestion")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv'
+		    $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv'
 		    onclick=\"this.form.action.value='exportstructureLsrcCsvQuestion'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label>\n";
+		    ."</label></li>\n";
 	     }
 	    
-	    $exportstructure.="<br />&nbsp;</td>\n"
-	    ."</tr>\n"
-	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
-	    ."<tr>\n"
-	    ."<td align='center'>\n"
+	    $exportstructure.="</ul>\n"
+	    ."<p>\n"
 	    ."<input type='submit' value='"
-	    .$clang->gT("Export To File")."' />\n"
+	    .$clang->gT("Export to file")."' />\n"
 	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
 	    ."<input type='hidden' name='gid' value='$gid' />\n"
 	    ."<input type='hidden' name='qid' value='$qid' />\n"
-	    ."<input type='hidden' name='action' value='exportstructurecsvQuestion' />\n"
-	    ."</td>\n"
-	    ."</tr>\n";
-	    $exportstructure.="</table><br /></form>\n";
+	    ."<input type='hidden' name='action' value='exportstructurecsvQuestion' />\n";
+	    $exportstructure.="</form>\n";
     }
     else
     {
@@ -2448,7 +2436,7 @@ if ($action == "editsurvey")
 			$esrow = array_map('htmlspecialchars', $esrow);
 
 			// header
-            $editsurvey = "<div class='settingcaption'>".$clang->gT("Edit survey settings - Step 1 of 2")."</div>\n";
+            $editsurvey = "<div class='header'>".$clang->gT("Edit survey settings - Step 1 of 2")."</div>\n";
 
 			// beginning TABs section - create tab pane
 			$editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
@@ -3000,8 +2988,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		. "}\n"
 		. "}\n"
 		. "--></script>\n"
-        . "<table width='100%' border='0'>\n<tr><td class='settingcaption'>"
-		. "".$clang->gT("Edit survey settings - Step 2 of 2")."</td></tr></table>\n";
+        . "<div class='header'>".$clang->gT("Edit survey settings - Step 2 of 2")."</div>\n";
 		$editsurvey .= "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n"
 		. '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
 		foreach ($grplangs as $grouplang)

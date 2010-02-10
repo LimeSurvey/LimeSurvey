@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: register.php 8090 2009-12-06 22:33:09Z c_schmitz $
+* $Id$
 */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB 
