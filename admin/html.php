@@ -21,7 +21,7 @@ if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
 if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
 if ($action == "listsurveys")
-{
+{                                                      
     $js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
     $js_adminheader_includes[]='scripts/listsurvey.js';
 	$query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "
@@ -2194,6 +2194,7 @@ if ($action == "editsurvey")
 {
 	if(hasRight($surveyid,'edit_survey_property'))
 	{
+        $js_adminheader_includes[]='scripts/surveysettings.js';        
 		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 		$esresult = db_execute_assoc($esquery); //Checked
 		while ($esrow = $esresult->FetchRow())
@@ -2218,7 +2219,9 @@ if ($action == "editsurvey")
 			. "<li><label for='additional_languages'>".$clang->gT("Additional Languages").":</label>\n"
 			. "<table><tr><td align='left'><select multiple='multiple' style='min-width:250px;'  size='5' id='additional_languages' name='additional_languages'>";
 			$jsX=0;
-			$jsRemLang ="<script type=\"text/javascript\">\nvar mylangs = new Array() \n";
+			$jsRemLang ="<script type=\"text/javascript\">
+                            var mylangs = new Array();
+                            templaterooturl='$templaterooturl'; \n";
 
 			foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 			{
@@ -2289,8 +2292,7 @@ if ($action == "editsurvey")
 
 			//TEMPLATES
 			$editsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
-			. "<select id='template' name='template'  "
-            . " onkeyup='this.onchange();' onchange='document.getElementById(\"preview\").src=\"".$publicurl."/templates/\"+this.value+\"/preview.png\";'>\n";
+			. "<select id='template' name='template'>\n";
 			foreach (gettemplatelist() as $tname)
 			{
 				
@@ -2828,6 +2830,7 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
+        $js_adminheader_includes[]='scripts/surveysettings.js';
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
         
 		$newsurvey = PrepareEditorScript();
@@ -2837,6 +2840,10 @@ if ($action == "newsurvey")
 		. "".$clang->gT("Create or Import Survey")."</div>\n";
 
 		// begin Tabs section
+        $newsurvey .= "<script type=\"text/javascript\">
+                           templaterooturl='$templaterooturl'; \n
+                       </script>";
+        
 		$newsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
         $newsurvey  .= "<form name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
 
@@ -2908,8 +2915,7 @@ if ($action == "newsurvey")
 		. "</select>\n"
 		. "</li>\n";
         $newsurvey .= "<li><label for='settingcaption'>".$clang->gT("Template:")."</label>\n"
-        . "<select id='template' name='template'  "
-        . " onkeyup='this.onchange();' onchange='document.getElementById(\"preview\").src=\"".$publicurl."/templates/\"+this.value+\"/preview.png\";'>\n";
+        . "<select id='template' name='template'>\n";
 		foreach (gettemplatelist() as $tname)
 		{
 			
