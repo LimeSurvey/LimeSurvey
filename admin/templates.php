@@ -41,7 +41,6 @@ $files[]=array('name'=>'navigator.pstpl');
 $files[]=array('name'=>'printanswers.pstpl');
 $files[]=array('name'=>'privacy.pstpl');
 $files[]=array('name'=>'question.pstpl');
-//$files[]=array('name'=>'question_start.pstpl');
 $files[]=array('name'=>'register.pstpl');
 $files[]=array('name'=>'save.pstpl');
 $files[]=array('name'=>'surveylist.pstpl');
@@ -97,7 +96,6 @@ $Question=array('startpage.pstpl',
                 'survey.pstpl', 
                 'startgroup.pstpl', 
                 'groupdescription.pstpl',  
-                'question_start.pstpl', 
                 'question.pstpl', 
                 'endgroup.pstpl', 
                 'navigator.pstpl', 
@@ -157,6 +155,12 @@ if (!isset($subaction)) {$subaction=sanitize_paranoid_string(returnglobal('subac
 if (!isset($otherfile)) {$otherfile = sanitize_filename(returnglobal('otherfile'));}
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
+
+if(is_file($templaterootdir.'/'.$templatename.'/question_start.pstpl')) 
+{
+  $files[]=array('name'=>'question_start.pstpl');
+  $Question[]='question_start.pstpl';
+}  
 
 
 $js_adminheader_includes[]= $homeurl."/scripts/edit_area/edit_area_loader.js";
@@ -918,7 +922,7 @@ elseif (isset($importtemplateoutput))
 }
 else
 {
-        
+
 
 //FILE CONTROL DETAILS
 if (is_template_editable($templatename)==true)

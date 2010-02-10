@@ -2819,6 +2819,21 @@ function templatereplace($line, $replacements=array())
 	global $totalBoilerplatequestions, $relativeurl;
 	global $languagechanger;
 	global $printoutput, $captchapath, $loadname;
+                 
+    // lets sanitize the survey template
+    if(isset($thissurvey['templatedir']))
+    {
+       $templatename=$thissurvey['templatedir'];
+    }
+    else
+    {
+        $templatename=$defaulttemplate;
+    }
+    $templatename=validate_templatedir($templatename);
+    
+    // create absoulte template URL and template dir vars
+    $templateurl="{$templaterooturl}/".$templatename.'/';
+    $templatedir=$templaterootdir.DIRECTORY_SEPARATOR.$templatename.DIRECTORY_SEPARATOR;
                      
 	if (stripos ($line,"</head>"))
 	{
@@ -3003,34 +3018,14 @@ function templatereplace($line, $replacements=array())
 		$line=str_replace("{SAVE}", $saveall, $line);
 	}
 	if (strpos($line, "{TEMPLATEURL}") !== false) {
-        
-    
-		if ($thissurvey['templatedir']) 
-		{
-			$templateurl="$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/";
-		}
-        else  {
-            $templateurl="$publicurl/templates/{$defaulttemplate}/";
-        }
 		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	}
 
     if (strpos($line, "{TEMPLATECSS}") !== false) {
-        if ($thissurvey['templatedir']) 
+        $templatecss="<link rel='stylesheet' type='text/css' href='{$templateurl}/template.css' />\n";
+        if (getLanguageRTL($clang->langcode))
         {
-            $templatecss="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/".validate_templatedir($thissurvey['templatedir'])."/template.css' />\n";
-            if (getLanguageRTL($clang->langcode))
-            {
-                $templatecss.="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/".validate_templatedir($thissurvey['templatedir'])."/template-rtl.css' />\n";
-            }
-            
-        }
-        else  {
-            $templatecss="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/{$defaulttemplate}/template.css' />\n";
-            if (getLanguageRTL($clang->langcode))
-            {
-                $templatecss.="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/{$defaulttemplate}/template-rtl.css' />\n";
-            }
+            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}/template-rtl.css' />\n";
         }
         $line=str_replace("{TEMPLATECSS}", $templatecss, $line);
     }    
@@ -3040,14 +3035,6 @@ function templatereplace($line, $replacements=array())
         {
            If (!isset($helpicon))
            {
-              $templatedir="$templaterootdir/".$thissurvey['templatedir']."/";
-               if ($thissurvey['templatedir']) 
-               {
-                   $templateurl="$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/";
-               }
-               else  {
-                   $templateurl="$publicurl/templates/{$defaulttemplate}/";
-               }                        
                if (file_exists($templatedir.'/help.gif'))
               {
                 
