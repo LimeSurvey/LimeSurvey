@@ -82,6 +82,7 @@ Changes from 1.87+ (build 8366) to 1.87+ (build 8372) - Legend: # updated featur
 +New Feature: New option to generate statistics in any language supported by the survey. (lemeur)
 -Fixed a serious issue in save answer introduced in patch 8361 (lemeur)
 -Fixed issue: Obsolete question_start.pstpl still editable in template editor even if it does not exist (c_schmitz)
+-Fixed unreported issue: Javascript error on some pages while typing in a other field for single choice question (lemeur)
 
 Changes from 1.87+ (build 8338) to 1.87+ (build 8366) - Legend: # updated feature, - bug fix 
 #Update of Croatian language file (idobraca)
