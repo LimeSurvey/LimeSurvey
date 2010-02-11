@@ -1073,6 +1073,8 @@ function checkconfield($value)
 		{ // for token refurl, ipaddr...
 			$masterFieldName = 'token';
 		}
+		$value_qid=0;
+		$value_type='';
 		// record the qid and question type for future use
 		foreach ($_SESSION['fieldarray'] as $sfa)
 		{
@@ -1285,8 +1287,11 @@ function checkconfield($value)
 		}
 	}
 
-	$value_qa=getQuestionAttributes($value_qid,$value_type);
-	if ($fieldisdisplayed === true && (
+	if ($value_qid != 0)
+	{ // not token masterFieldname
+		$value_qa=getQuestionAttributes($value_qid,$value_type);
+	}
+	if ($fieldisdisplayed === true && isset($value_qa) && (
 			(isset($value_qa['array_filter'])  && trim($value_qa['array_filter']) != '') || 
 			(isset($value_qa['array_filter_exclude']) && trim($value_qa['array_filter_exclude']) != '') ))
 	{ // check if array_filter//array_filter_exclude have hidden the field
