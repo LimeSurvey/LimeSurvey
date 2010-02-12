@@ -649,10 +649,15 @@ if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid
 
 
 
-//CLEAR SESSION IF REQUESTED
+//Clear session and remove the incomplete response if requested.
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
 {
 	$s_lang = $_SESSION['s_lang'];
+    if (isset($_SESSION['srid']))
+    {
+        // delete the response but only if not already completed
+        $connect->query('delete from '.db_table_name('survey_'.$surveyid).' where srid='.$_SESSION['srid']."and completed='N'");
+    }
 	session_unset();
 	session_destroy();
 	setcookie(session_name(),"EXPIRED",time()-120);
