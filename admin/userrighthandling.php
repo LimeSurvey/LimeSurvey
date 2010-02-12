@@ -799,7 +799,7 @@ if ($action == "mailsendusergroup")
 	{
 		include("access_denied.php");
 	}
-	$addsummary .= "</div>\n";
+	$usersummary .= "</div>\n";
 }
 
 if ($action == "editusergroupindb")

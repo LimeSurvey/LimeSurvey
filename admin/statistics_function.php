@@ -2258,7 +2258,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//edit labels and put them into antoher array
 						if ((incompleteAnsFilterstate() != "filter"))
 						{
-							$lbl[] = wordwrap(FlattenText($statlang->gT("Non completed nor Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+							$lbl[] = wordwrap(FlattenText($statlang->gT("Non completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
 						}
 						else
 						{
