@@ -55,6 +55,7 @@ while ($desrow = $desresult->FetchRow())
 {
 	$template = $desrow['template'];
 	$welcome = $desrow['surveyls_welcometext'];
+    $end = $desrow['surveyls_endtext'];
 	$surveyname = $desrow['surveyls_title'];
 	$surveydesc = $desrow['surveyls_description'];
 	$surveyactive = $desrow['active'];
@@ -109,6 +110,7 @@ $survey_output = array(
 			,'SURVEYNAME' => $surveyname
 			,'SURVEYDESCRIPTION' => $surveydesc
 			,'WELCOME' => $welcome
+            ,'END' => $end
 			,'THEREAREXQUESTIONS' => 0
 			,'SUBMIT_TEXT' => $clang->gT("Submit Your Survey.")
 			,'SUBMIT_BY' => $surveyexpirydate
