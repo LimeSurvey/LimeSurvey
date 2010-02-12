@@ -239,7 +239,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		//Get the languages used in this survey
   		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
   		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-  		$langs[] = $baselang;
+  		array_push($langs, $baselang);
         //Iterate through each language, and make sure there is a quota message for it
 		$errorstring = '';
         foreach ($langs as $lang)
@@ -294,7 +294,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		//Get the languages used in this survey
   		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
   		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-  		$langs[] = $baselang;
+  		array_push($langs, $baselang);
         //Iterate through each language, and make sure there is a quota message for it
 		$errorstring = '';
         foreach ($langs as $lang)
