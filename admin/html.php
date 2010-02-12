@@ -851,7 +851,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 			else
 			{
 				$groupsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js")."')\""
-				. " title=\"".$clang->gTview("Delete current question group")."\">>"
+				. " title=\"".$clang->gTview("Delete current question group")."\">"
 				. "<img src='$imagefiles/delete_disabled.png' alt='".$clang->gT("Delete current question group")."' name='DeleteWholeGroup' /></a>\n";
 			}
 		}
