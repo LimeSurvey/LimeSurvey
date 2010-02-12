@@ -4522,14 +4522,19 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 * 
 * @param string $texttoflatten  Text you want to clean
+* @param boolan $decodeUTF8Entities If set to true then all HTML entities will be decoded to UTF-8. Default: false
 * @return string  Cleaned text
 */
-function FlattenText($texttoflatten)
+function FlattenText($texttoflatten, $decodeUTF8Entities=false)
 {
     $nicetext = strip_javascript($texttoflatten);
 	$nicetext = strip_tags($nicetext);
     $nicetext = str_replace(array("\n","\r"),array('',''), $nicetext);
 	$nicetext = trim($nicetext);
+    if ($decodeUTF8Entities==true)
+    {
+        $nicetext=html_entity_decode($nicetext,ENT_QUOTES,'UTF-8');
+    }
 	return  $nicetext;
 }
 

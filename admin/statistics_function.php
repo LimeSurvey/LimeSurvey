@@ -900,8 +900,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							$tableXLS = array();
 							$footXLS = array();
 							
-							$xlsTitle = sprintf($statlang->gT("Field summary for %s"),$qtitle);
-							$xlsDesc = $qquestion;
+							$xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+							$xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
 							++$xlsRow;
 							++$xlsRow;
 							
@@ -921,9 +921,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							$headPDF = array();
 							$tablePDF = array();
 							$footPDF = array();
-							
-							$pdfTitle = sprintf($statlang->gT("Field summary for %s"),$qtitle);
-							$titleDesc = $qquestion;
+							                                                               
+							$pdfTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+							$titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
 		
 							$headPDF[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
 							
@@ -1204,8 +1204,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								case 'xls':
 									
 									++$xlsRow;
-									$sheet->write($xlsRow, 0,$shw[0]);
-									$sheet->write($xlsRow, 1,$shw[1]);
+									$sheet->write($xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
+									$sheet->write($xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 									
 									
 									$tableXLS[] = array($shw[0],$shw[1]);
@@ -1213,7 +1213,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								break;
 								case 'pdf':
 									
-									$tablePDF[] = array($shw[0],$shw[1]);
+									$tablePDF[] = array(html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'),html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 									
 								break;
 								case 'html':
@@ -1749,8 +1749,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				{
 					case 'xls':
 									
-						$xlsTitle = sprintf($statlang->gT("Field summary for %s"),strip_tags($qtitle));
-						$xlsDesc = strip_tags($qquestion);
+						$xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+						$xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
 						
 						++$xlsRow;
 						++$xlsRow;
@@ -1766,8 +1766,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					break;
 					case 'pdf':
 						
-						$pdfTitle = $pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),$qtitle));
-						$titleDesc = $pdf->delete_html($qquestion);
+						$pdfTitle = $pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8')));
+						$titleDesc = $pdf->delete_html(html_entity_decode($qquestion,ENT_QUOTES,'UTF-8'));
 						
 						$pdf->addPage('P','A4');
 						$pdf->Bookmark($pdf->delete_html($qquestion), 1, 0); 
@@ -2306,7 +2306,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						{
 							case 'xls':
 											
-								
+								$label[$i]=FlattenText($label[$i]);
 								$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
 								
 								++$xlsRow;
@@ -2317,7 +2317,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							break;
 							case 'pdf':
 								
-								$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
+								$tablePDF[] = array(FlattenText($label[$i]),$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
 							
 							break;
 							case 'html':
@@ -2400,7 +2400,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								{
 									case 'xls':
 											
-										
+                                        $label[$i]=FlattenText($label[$i]);     										
 										$tableXLS[]= array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%");
 										
 										++$xlsRow;
@@ -2410,7 +2410,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 										
 									break;
 									case 'pdf':
-										
+									    $label[$i]=FlattenText($label[$i]);     
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
 									
 									break;
@@ -2462,7 +2462,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								{
 									case 'xls':
 											
-										
+									    $label[$i]=FlattenText($label[$i]);     
 										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
 										
 										++$xlsRow;
@@ -2473,7 +2473,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 										
 									break;
 									case 'pdf':
-										
+                                        $label[$i]=FlattenText($label[$i]);     										
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
 									
 									break;
@@ -2532,7 +2532,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								{
 									case 'xls':
 											
-										
+									    $label[$i]=FlattenText($label[$i]);     
 										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 										
 										++$xlsRow;
@@ -2543,7 +2543,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 										
 									break;
 									case 'pdf':
-										
+								        $label[$i]=FlattenText($label[$i]);     
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 										
 									break;
@@ -2597,7 +2597,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								{
 									case 'xls':
 											
-										
+									    $label[$i]=FlattenText($label[$i]);     
 										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 										
 										++$xlsRow;
@@ -2608,7 +2608,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 										
 									break;
 									case 'pdf':
-										
+								        $label[$i]=FlattenText($label[$i]);     
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 								
 									break;
@@ -2710,7 +2710,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							switch($outputType)
 							{
 								case 'xls':
-											
+								        $label[$i]=FlattenText($label[$i]);     	
 										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
 										
 										++$xlsRow;
@@ -2721,7 +2721,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 								break;
 								case 'pdf':
-									
+								    $label[$i]=FlattenText($label[$i]);     
 									$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
 									
 								break;

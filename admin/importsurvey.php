@@ -1402,11 +1402,11 @@ if ($importingfrom == "http")
     }
 	$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n";
-	$importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota ($countquotamembers ".$clang->gT("quota members")." ".$clang->gT("and")." $countquotals ".$clang->gT("quota language settings").")</li>\n</ul>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota ($countquotamembers ".$clang->gT("quota members")." ".$clang->gT("and")." $countquotals ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
+    if ($importwarning != "") $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">" . $importwarning . "</ul><br />\n";
 	
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
 			. "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
-	if ($importwarning != "") $importsurvey .= "<br /><strong>".$clang->gT("Warnings").":</strong><br /><ul style=\"text-align:left;\">" . $importwarning . "</ul><br />\n";
 	$importsurvey .= "</div><br />\n";
 	unlink($the_full_file_path);
 	unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
