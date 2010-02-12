@@ -901,7 +901,7 @@ if ($action == "editusergroups" )
                     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                     {
                         $usergroupentries .= "<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
-                        ." <input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete this user group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                        ." <input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete this user from group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                         ." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
                         ." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
                         ." <input name='ugid' type='hidden' value='{$ugid}' />";
