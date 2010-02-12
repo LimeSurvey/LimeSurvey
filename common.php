@@ -1570,7 +1570,7 @@ function getlabelsets($languages=null)
 	$labelsets=array();
 	while ($row=$result->FetchRow())
 	{
-		$labelsets[] = array($row['lid'], $row['lid'].": ".$row['label_name']);
+		$labelsets[] = array($row['lid'], $row['label_name']);
 	}
 	return $labelsets;
 }
