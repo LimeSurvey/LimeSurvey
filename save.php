@@ -171,12 +171,11 @@ if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' 
 {
 	if ($thissurvey['active'] == "Y") 	// Only save if active
 	{
-		$saveresult=savedcontrol();
+		$flashmessage=savedcontrol();
 		if (isset($errormsg) && $errormsg != "")
 		{
 			showsaveform();
 		}
-        echo  $saveresult;
 	}
 	else
 	{
