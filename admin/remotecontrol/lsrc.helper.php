@@ -4294,7 +4294,12 @@ class LsrcHelper {
 				if($connect->Execute($sInsertParti))
 				{
 					++$iInsertedParticipants;
-
+					// check participants eMail status and set it
+					// see http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+					$maxrootdomainlength = 32;
+					if(1==preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,".$maxrootdomainlength."}))$/ix", $asDatafield[2]))
+					$this->changeTable("tokens_".$iVid,"emailstatus","OK","email='{$asDatafield[2]}'");
+					
 					//					if(isset($asDatafield[7]) && $asDatafield[7]!='')
 					//					{
 					//						$asAttributes = explode(",", $asDatafield[7]);

@@ -550,7 +550,16 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 		exit;
 	}
 	
+	// check if the Survey we want to populate with data and tokens already exists, else -> Fault
+	if(!$lsrcHelper->surveyExists($iVid))
+	{
+		throw new SoapFault("Database: ", "Survey does not exists");
+		exit;
+	}
+
 	return $lsrcHelper->insertParticipants($iVid, $sParticipantData);
+
+	//return "".$iCountParticipants."Datasets given, ".$iInsertedParticipants." rows inserted. ";
 
 }
 
