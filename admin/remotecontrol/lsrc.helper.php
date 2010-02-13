@@ -121,6 +121,7 @@ class LsrcHelper {
 	 */
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
+		global $publicurl;
 		global $connect,$sitename ;
 		global $dbprefix ;
 		$surveyid = sanitize_int($surveyid);
