@@ -1842,7 +1842,7 @@ if($action == "exportstructure")
 	    onclick=\"this.form.action.value='exportstructurequexml'\" />"
 	    ."<label for='queXML'>"
 	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
-	    ."</label></li></ul>\n";
+	    ."</label></li>\n";
 	    
 	    // XXX
 	    //include("../config.php");
@@ -1850,12 +1850,13 @@ if($action == "exportstructure")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv'
+		    $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv'
 		    onclick=\"this.form.action.value='exportstructureLsrcCsv'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label>\n";
+		    ."</label></li>";
 	     }
+	    $exportstructure.="</ul>\n";
 	    
 	    $exportstructure.="<p>\n"
 	    ."<input type='submit' value='"
