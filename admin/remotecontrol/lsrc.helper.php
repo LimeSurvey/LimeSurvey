@@ -46,8 +46,8 @@ class LsrcHelper {
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
-		$lsrcHelper= new LsrcHelper();
-		if($lsrcHelper->surveyExists($iVid))
+		//$this= new LsrcHelper();
+		if($this->surveyExists($iVid))
 		{
 			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=".sanitize_int($iVid)."";
 			$rs = db_execute_assoc($query2num);
@@ -121,12 +121,12 @@ class LsrcHelper {
 	 */
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
-		global $publicurl;
+		global $publicurl,$maxemails;
 		global $connect,$sitename ;
 		global $dbprefix ;
 		$surveyid = sanitize_int($surveyid);
 		include("lsrc.config.php");
-		$lsrcHelper= new LsrcHelper();
+		
 
 
 		// wenn maxmails ber den lsrc gegeben wird das nutzen, ansonsten die default werte aus der config.php
@@ -138,7 +138,7 @@ class LsrcHelper {
 
 				break;
 			case "invite":
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START invite ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START invite ");
 
 
 
@@ -154,7 +154,7 @@ class LsrcHelper {
 				//$tokenoutput .= ("Sending Invitations");
 				//if (isset($tokenid)) {$tokenoutput .= " (".("Sending to Token ID").":&nbsp;{$tokenid})";}
 				//$tokenoutput .= "\n";
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type");
 				// Texte für Mails aus der Datenbank holen und in die POST Dinger schreiben. Nicht schön aber praktikabel
 
 				$sql = 	"SELECT surveyls_language, surveyls_email_invite_subj, surveyls_email_invite  ".
@@ -168,7 +168,7 @@ class LsrcHelper {
 				//				$sqlResult=$connect->Execute($sql);
 				$sqlResult = db_execute_assoc($sql);
 
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 
 				while($languageRow = $sqlResult->FetchRow())
 				{
@@ -184,8 +184,8 @@ class LsrcHelper {
 				//				{
 				//					$SQLemailstatuscondition = "";
 				//				}
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
-				$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' ";
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+				$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND emailstatus = 'OK' ";
 
 				if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
 				//$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
@@ -196,9 +196,9 @@ class LsrcHelper {
 				$emquery = "SELECT * ";
 				//if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 
-				$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' ";
+				$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent=''))  AND emailstatus = 'OK' ";
 
 				if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
 				//$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
@@ -213,7 +213,7 @@ class LsrcHelper {
 				$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 				array_unshift($surveylangs,$baselanguage);
 
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 
 				foreach ($surveylangs as $language)
 				{
@@ -223,7 +223,7 @@ class LsrcHelper {
 
 				}
 
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 				if ($emcount > 0)
 				{
 					$mailsSend = 0;
@@ -280,16 +280,16 @@ class LsrcHelper {
 								$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
 							}
 						}
-						$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 						$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 						$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
 						if (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 						{
 							// Put date into sent
-							$timeadjust = 0;
+							//$timeadjust = 0;
 							$today = date("Y-m-d H:i");
-							$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite Today:".$today);
+							$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite Today:".$today);
 							$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
 							."SET sent='$today' WHERE tid={$emrow['tid']}";
 							//
@@ -309,7 +309,7 @@ class LsrcHelper {
 							}
 						}
 					}
-					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+					$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 					if ($ctcount > $emcount)
 					{
 						$lefttosend = $ctcount-$maxemails;
@@ -361,7 +361,7 @@ class LsrcHelper {
 				$remResult = db_execute_assoc($remSQL);
 				$remRow = $remResult->FetchRow();
 					
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$remRow['tid']."; ".$remRow['remindercount']." ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$remRow['tid']."; ".$remRow['remindercount']." ");
 					
 				$sendOnlySQL = "SELECT tid, remindercount "
 				. "FROM ".db_table_name("tokens_{$surveyid}")." "
@@ -375,7 +375,7 @@ class LsrcHelper {
 				{
 					$sendOnlyRow = $sendOnlyResult->FetchRow();
 					$starttokenid = $sendOnlyRow['tid'];
-					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$sendOnlyRow['tid']."; ".$sendOnlyRow['remindercount']." ");
+					$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$sendOnlyRow['tid']."; ".$sendOnlyRow['remindercount']." ");
 				}
 					
 				if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
@@ -390,14 +390,14 @@ class LsrcHelper {
 				//GET SURVEY DETAILS
 				$thissurvey=getSurveyInfo($surveyid);
 					
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type");
 				// Texte für Mails aus der Datenbank holen.
 					
 				$sql = 	"SELECT surveyls_language, surveyls_email_remind_subj, surveyls_email_remind  ".
 							"FROM {$dbprefix}surveys_languagesettings ".
 							"WHERE surveyls_survey_id = ".$surveyid." ";
 
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 					
 				$sqlResult = db_execute_assoc($sql);
 					
@@ -438,10 +438,8 @@ class LsrcHelper {
 				intval($_POST['minreminderdelay']) != 0)
 				{
 					// $_POST['minreminderdelay'] in days (86400 seconds per day)
-					$compareddate = date_shift(
-					date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])),
-								"Y-m-d H:i",
-					$timeadjust);
+					$compareddate = date_shift(date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])),
+									"Y-m-d H:i",$timeadjust);
 					$SQLreminderdelaycondition = " AND ( "
 					. " (remindersent = 'N' AND sent < '".$compareddate."') "
 					. " OR "
@@ -548,7 +546,7 @@ class LsrcHelper {
 						{
 
 							// Put date into remindersent
-							$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+							$today = date("Y-m-d H:i");
 							$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
 							."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
 							//
@@ -4165,7 +4163,7 @@ class LsrcHelper {
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
-		//$lsrcHelper = new lsrcHelper();
+		//$this = new lsrcHelper();
 		// check for appropriate rights
 		//		if(!$this->checkUser($sUser, $sPass))
 		//		{
