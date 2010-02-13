@@ -32,7 +32,8 @@
       String expected. Put together from TYP, DOZENTEN- TITLE, -NAME,
       </documentation>
     </part>
-    <part name="sVwel" type="xsd:string"></part>
+    <part name="sVwel" type="xsd:string"></part>
+
         <part name="sVend" type="xsd:string"></part>
         <part name="sMail" type="xsd:string"><documentation>The E-Mail Adress of the Person who to contact in matters of evaluation. Limesurvey uses this to send notifications of Surveyparticipation, if wante</documentation></part>
     <part name="sName" type="xsd:string"><documentation>The Name of the Administrator, resp. the Person whos email Adress was given
@@ -95,7 +96,8 @@
     <part name="sParticipantData" type="xsd:string">
       <documentation>Data for Participant expected in this format:  [Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de] and so on... seperate the Datasets with :: and the Datafields in the Sets with ;
        </documentation>
-    </part>
+    </part>
+
    </message> 
   <message name="sInsertParticipantsResponse">
      <part name="return" type="xsd:string" >
@@ -120,7 +122,8 @@
 
 
   </message> 
-  <message name="sTokenReturnResponse">
+  <message name="sTokenReturnResponse">
+
      <part name="return" type="xsd:string" >
        <documentation>String of unused Tokens seperated by comma 
        </documentation>
@@ -196,7 +199,9 @@
   	<part name="sPass" type="xsd:string"></part>
   	<part name="iVid" type="xsd:int"></part>
     <part name="sMod" type="xsd:string"></part>
-    <part name="sMandatory" type="xsd:string"></part>
+    <part name="sMandatory" type="xsd:string"></part>
+
+
     </message>
   <message name="sImportQuestionResponse">
   	<part name="return" type="xsd:string"></part>
@@ -219,9 +224,12 @@
   <message name="sImportFreetextRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
-  	<part name="iVid" type="xsd:int"></part><part name="sTitle" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
+
+<part name="sTitle" type="xsd:string"></part>
   	<part name="sQuestion" type="xsd:string"></part>
-  	<part name="sHelp" type="xsd:string"></part>
+  	<part name="sHelp" type="xsd:string"></part>
+
         <part name="sMod" type="xsd:string"></part>
         <part name="sMandatory" type="xsd:string"></part>
     </message>
@@ -234,13 +242,15 @@
   <message name="sImportMatrixRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
-  	<part name="iVid" type="xsd:int"></part>
+  	<part name="iVid" type="xsd:int"></part>
+
   	<part name="sTitle" type="xsd:string"></part>
   	<part name="sQuestion" type="xsd:string"></part>
         <part name="qHelp" type="xsd:string"></part>
         <part name="sItems" type="xsd:string"></part>
         <part name="sMod" type="xsd:string"></part>
-        <part name="sMandatory" type="xsd:string"></part>
+        <part name="sMandatory" type="xsd:string"></part>
+
   </message>
   <message name="sImportMatrixResponse">
   	<part name="return" type="xsd:string"></part>
