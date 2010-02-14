@@ -356,7 +356,7 @@ if (!$surveyid)
              if (isset($_GET['lang'])) {$link .= "&lang=".sanitize_languagecode($_GET['lang']);}
             if (isset($_GET['lang'])) {$link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);}
             $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-            if ($rows['publicstatistics'] == 'Y') $link .= "<a href='{$relativeurl}/statistics_user.php?sid={$rows['sid']}'>({$clang->gT('View statistics')})</a>";            
+            if ($rows['publicstatistics'] == 'Y') $link .= "<a href='{$relativeurl}/statistics_user.php?sid={$rows['sid']}'>(".$clang->gT('View statistics').")</a>";            
             $link .= "</li>\n";
             $list[]=$link;
 	    }

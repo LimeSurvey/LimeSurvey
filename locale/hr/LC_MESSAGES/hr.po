@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-14 15:15+0100\n"
-"PO-Revision-Date: 2010-02-14 15:15+0100\n"
+"POT-Creation-Date: 2010-02-14 22:48+0100\n"
+"PO-Revision-Date: 2010-02-14 22:48+0100\n"
 "Last-Translator: Igor Dobrača <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -1821,6 +1821,11 @@ msgstr "Ispričavamo se, Vaša sesija je istekla."
 #: 1/printanswers.php:81
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Ili ste bili dugo neaktivni ili je nastao problem sa Vašom vezom na Internet. "
+
+#: D:\LimeSurvey
+#: 1/index.php:359
+msgid "View statistics"
+msgstr "Prikaži statistiku"
 
 #: D:\LimeSurvey
 #: 1/index.php:366
