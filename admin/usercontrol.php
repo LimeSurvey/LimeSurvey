@@ -66,11 +66,11 @@ if (!isset($_SESSION['loginID']))
 
 				// send Mail
 				$new_pass = createPassword();
-				$body = $clang->gT("Your data:") . "<br />\n";;
+				$body = sprintf($clang->gT("Your user data for accessing %s"),$sitename). "<br />\n";;
 				$body .= $clang->gT("Username") . ": " . $fields['users_name'] . "<br />\n";
 				$body .= $clang->gT("New Password") . ": " . $new_pass . "<br />\n";
 
-				$subject = $clang->gT("User Data");
+				$subject = $clang->gT("User data");
 				$to = $emailaddr;
 				$from = $siteadminemail;
 				$sitename = $siteadminname;

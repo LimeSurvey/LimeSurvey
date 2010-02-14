@@ -1198,6 +1198,8 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	$output .= "<div id='LS_question".$ia[0]."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
 	//Call the countdown script
 	$output .= "<script type='text/javascript'>
+    var timersessionname='timer_question_'+".$ia[0].";
+    eraseCookie(timersessionname);
     countdown(".$ia[0].", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_display_time.", '".$disable."');
 </script>\n\n";
 	return $output;
