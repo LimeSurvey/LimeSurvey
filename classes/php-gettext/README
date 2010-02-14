@@ -1,9 +1,9 @@
-PHP-gettext 1.0
+PHP-gettext 1.0 (https://launchpad.net/php-gettext)
 
-Copyright 2003, 2006 -- Danilo "angry with PHP[1]" Segan
+Copyright 2003, 2006, 2009 -- Danilo "angry with PHP[1]" Segan
 Licensed under GPLv2 (or any later version, see COPYING)
 
-[1] PHP is actually cyrillic, and translates roughly to 
+[1] PHP is actually cyrillic, and translates roughly to
     "works-doesn't-work" (UTF-8: Ради-Не-Ради)
 
 
@@ -50,36 +50,16 @@ Features
     file data, I used imaginary abstract class StreamReader to do all
     the input (check streams.php). For your convenience, I've already
     provided two classes for reading files: FileReader and
-    StringReader (CachedFileReader is a combination of the two: it 
-    loads entire file contents into a string, and then works on that). 
-    See example below for usage. You can for instance use StringReader 
-    when you read in data from a database, or you can create your own 
-    derivative of StreamReader for anything you like. 
-    
+    StringReader (CachedFileReader is a combination of the two: it
+    loads entire file contents into a string, and then works on that).
+    See example below for usage. You can for instance use StringReader
+    when you read in data from a database, or you can create your own
+    derivative of StreamReader for anything you like.
+
 
 Bugs
 
-    Plural-forms field in MO header (translation for empty string,
-    i.e. "") is treated according to PHP syntactic rules (it's
-    eval()ed). Since these should actually follow C syntax, there are
-    some problems.
-
-    For instance, I'm used to using this:
-      Plural-Forms: nplurals=3;    plural=n%10==1 && n%100!=11 ? 0 : \
-         n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;
-    but it fails with PHP (it sets $plural=2 instead of 0 for $n==1).
-
-    The fix is usually simple, but I'm lazy to go into the details of
-    PHP operator precedence, and maybe try to fix it. In here, I had
-    to put everything after the first ':' in parenthesis:
-      Plural-Forms: nplurals=3;    plural=n%10==1 && n%100!=11 ? 0 : \
-         (n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
-    That works, and I'm satisfied.
-
-    Besides this one, there are probably a bunch of other bugs, since
-    I hate PHP (did I mention it already? no? strange), and don't
-    know it very well. So, feel free to fix any of those and report
-    them back to me at <danilo@kvota.net>.
+    Report them on https://bugs.launchpad.net/php-gettext
 
 Usage
 
@@ -94,19 +74,19 @@ Usage
     Then, use that as a parameter to gettext_reader constructor:
       $wohoo = new gettext_reader($streamer);
 
-    If you want to disable pre-loading of entire message catalog in 
-    memory (if, for example, you have a multi-thousand message catalog 
-    which you'll use only occasionally), use "false" for second 
+    If you want to disable pre-loading of entire message catalog in
+    memory (if, for example, you have a multi-thousand message catalog
+    which you'll use only occasionally), use "false" for second
     parameter to gettext_reader constructor:
       $wohoo = new gettext_reader($streamer, false);
 
     From now on, you have all the benefits of gettext data at your
-    disposal, so may run: 
+    disposal, so may run:
       print $wohoo->translate("This is a test");
       print $wohoo->ngettext("%d bird", "%d birds", $birds);
 
     You might need to pass parameter "-k" to xgettext to make it
-    extract all the strings. In above example, try with 
+    extract all the strings. In above example, try with
       xgettext -ktranslate -kngettext:1,2 file.php
     what should create messages.po which contains two messages for
     translation.
@@ -118,8 +98,8 @@ Usage
 
 Usage with gettext.inc (standard gettext interfaces emulation)
 
-    Check example in examples/pig_dropin.php, basically you include 
-    gettext.inc and use all the standard gettext interfaces as 
+    Check example in examples/pig_dropin.php, basically you include
+    gettext.inc and use all the standard gettext interfaces as
     documented on:
 
        http://www.php.net/gettext
@@ -137,20 +117,12 @@ Example
     There is also simple "update" script that can be used to generate
     POT file and to update the translation using msgmerge.
 
-Interesting TODO:
+TODO:
 
-  o Try to parse "plural-forms" header field, and to follow C syntax
-    rules. This won't be easy.
+  o Improve speed to be even more comparable to the native gettext
+    implementation.
 
-Boring TODO:
-
-  o Learn PHP and fix bugs, slowness and other stuff resulting from
-    my lack of knowledge (but *maybe*, it's not my knowledge that is
-    bad, but PHP itself ;-).  
-
-    (This is mostly done thanks to Nico Kaiser.)
-
-  o Try to use hash tables in MO files: with pre-loading, would it 
+  o Try to use hash tables in MO files: with pre-loading, would it
     be useful at all?
 
 Never-asked-questions:
@@ -160,7 +132,7 @@ Never-asked-questions:
 
     Well, it's quite simple. I consider that the first released thing
     should be labeled "version 1" (first, right?). Zero is there to
-    indicate that there's zero improvement and/or change compared to 
+    indicate that there's zero improvement and/or change compared to
     "version 1".
 
     I plan to use version numbers 1.0.* for small bugfixes, and to
@@ -173,7 +145,7 @@ Never-asked-questions:
     Mozart's 40th Symphony (there is one like that, right?).
 
   o Can I...?
-    
+
     Yes, you can. This is free software (as in freedom, free speech),
     and you might do whatever you wish with it, provided you do not
     limit freedom of others (GPL).

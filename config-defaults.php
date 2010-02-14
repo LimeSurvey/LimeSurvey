@@ -69,9 +69,6 @@ $repeatheadings     =   '25';             // The number of answers to show befor
 $minrepeatheadings  =   3;                // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $defaultlang        =   'en';             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
-$translationmode    =   0;                // If interface translations are not working this might be because of a bug in your PHP version. 
-                                          // Set this to '1' to activate a workaround for this bug
-
 $timeadjust         =   0;                // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 $allowexportalldb   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
 $allowmandbackwards =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question

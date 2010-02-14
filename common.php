@@ -66,7 +66,7 @@ define('ADODB_ASSOC_CASE', 2); // needed to set proper upper/lower casing for ms
 require_once ($rootdir.'/classes/adodb/adodb.inc.php');
 require_once ($rootdir.'/classes/datetimeconverter/class.datetimeconverter.php');
 require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
-require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
+require_once ($rootdir.'/classes/php-gettext/gettext.inc');
 require_once ($rootdir.'/classes/core/surveytranslator.php');
 require_once ($rootdir.'/classes/core/sanitize.php');
 

@@ -1,8 +1,8 @@
 <?php
 /*
-   Copyright (c) 2003 Danilo Segan <danilo@kvota.net>.
+   Copyright (c) 2003, 2009 Danilo Segan <danilo@kvota.net>.
    Copyright (c) 2005 Nico Kaiser <nico@siriux.net>
-   
+
    This file is part of PHP-gettext.
 
    PHP-gettext is free software; you can redistribute it and/or modify
@@ -20,13 +20,13 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
- 
+
 /**
  * Provides a simple gettext replacement that works independently from
  * the system's gettext abilities.
  * It can read MO files and use them for translating strings.
  * The files are passed to gettext_reader as a Stream (see streams.php)
- * 
+ *
  * This version has the ability to cache all strings and translations to
  * speed up the string lookup.
  * While the cache is enabled by default, it can be switched off with the
@@ -36,7 +36,7 @@
 class gettext_reader {
   //public:
    var $error = 0; // public variable that holds error code (0 if no error)
-   
+
    //private:
   var $BYTEORDER = 0;        // 0: low endian, 1: big endian
   var $STREAM = NULL;
@@ -52,39 +52,33 @@ class gettext_reader {
 
 
   /* Methods */
-  
-    
+
+
   /**
    * Reads a 32bit Integer from the Stream
-   * 
+   *
    * @access private
    * @return Integer from the Stream
    */
-  /*function readint() {
+  function readint() {
       if ($this->BYTEORDER == 0) {
         // low endian
-        return array_shift(unpack('V', $this->STREAM->read(4)));
+        $input=unpack('V', $this->STREAM->read(4));
+        return array_shift($input);
       } else {
         // big endian
-        return array_shift(unpack('N', $this->STREAM->read(4)));
+        $input=unpack('N', $this->STREAM->read(4));
+        return array_shift($input);
       }
-    }*/
-  // Fix for array_shift bug affecting some php versions
-  function readint() {
-  	if ($this->BYTEORDER == 0) {
-    	// low endian
-    	$low_end = unpack('V', $this->STREAM->read(4));
-    	return array_shift($low_end);
-  	} else {
-   		// big endian
-    	$big_end = unpack('N', $this->STREAM->read(4));
-    	return array_shift($big_end);
-  	}
+    }
+
+  function read($bytes) {
+    return $this->STREAM->read($bytes);
   }
 
   /**
    * Reads an array of Integers from the Stream
-   * 
+   *
    * @param int count How many elements should be read
    * @return Array of Integers
    */
@@ -97,56 +91,45 @@ class gettext_reader {
         return unpack('N'.$count, $this->STREAM->read(4 * $count));
       }
   }
-  
+
   /**
    * Constructor
-   * 
+   *
    * @param object Reader the StreamReader object
    * @param boolean enable_cache Enable or disable caching of strings (default on)
    */
   function gettext_reader($Reader, $enable_cache = true) {
     // If there isn't a StreamReader, turn on short circuit mode.
-  global $translationmode;  
     if (! $Reader || isset($Reader->error) ) {
       $this->short_circuit = true;
       return;
     }
-    
+
     // Caching can be turned off
     $this->enable_cache = $enable_cache;
 
-
-if ($translationmode==1)
-  { $MAGIC1 = (int) 0x950412de;
-    $MAGIC2 = (int) 0xde120495;
-  }
-  else 
-  {
-    $MAGIC1 = (int) - 1794895138;
-    $MAGIC2 = (int) - 569244523;
-  }  
-    
- 
+    $MAGIC1 = "\x95\x04\x12\xde";
+    $MAGIC2 = "\xde\x12\x04\x95";
 
     $this->STREAM = $Reader;
-    $magic = $this->readint();
+    $magic = $this->read(4);
     if ($magic == $MAGIC1) {
-      $this->BYTEORDER = 0;
-    } elseif ($magic == $MAGIC2) {
       $this->BYTEORDER = 1;
+    } elseif ($magic == $MAGIC2) {
+      $this->BYTEORDER = 0;
     } else {
       $this->error = 1; // not MO file
       return false;
     }
-    
+
     // FIXME: Do we care about revision? We should.
     $revision = $this->readint();
-    
+
     $this->total = $this->readint();
     $this->originals = $this->readint();
     $this->translations = $this->readint();
   }
-  
+
   /**
    * Loads the translation tables from the MO file into the cache
    * If caching is enabled, also loads all strings into a cache
@@ -159,13 +142,13 @@ if ($translationmode==1)
       is_array($this->table_originals) &&
       is_array($this->table_translations))
       return;
-    
+
     /* get original and translations tables */
     $this->STREAM->seekto($this->originals);
     $this->table_originals = $this->readintarray($this->total * 2);
     $this->STREAM->seekto($this->translations);
     $this->table_translations = $this->readintarray($this->total * 2);
-    
+
     if ($this->enable_cache) {
       $this->cache_translations = array ();
       /* read all strings in the cache */
@@ -178,10 +161,10 @@ if ($translationmode==1)
       }
     }
   }
-  
+
   /**
    * Returns a string from the "originals" table
-   * 
+   *
    * @access private
    * @param int num Offset number of original string
    * @return string Requested string if found, otherwise ''
@@ -195,10 +178,10 @@ if ($translationmode==1)
     $data = $this->STREAM->read($length);
     return (string)$data;
   }
-  
+
   /**
    * Returns a string from the "translations" table
-   * 
+   *
    * @access private
    * @param int num Offset number of original string
    * @return string Requested string if found, otherwise ''
@@ -212,10 +195,10 @@ if ($translationmode==1)
     $data = $this->STREAM->read($length);
     return (string)$data;
   }
-  
+
   /**
    * Binary search for string
-   * 
+   *
    * @access private
    * @param string string
    * @param int start (internally used in recursive function)
@@ -253,10 +236,10 @@ if ($translationmode==1)
         return $this->find_string($string, $half, $end);
     }
   }
-  
+
   /**
    * Translates a string
-   * 
+   *
    * @access public
    * @param string string to be translated
    * @return string translated string (or original, if not found)
@@ -264,8 +247,8 @@ if ($translationmode==1)
   function translate($string) {
     if ($this->short_circuit)
       return $string;
-    $this->load_tables();     
-    
+    $this->load_tables();
+
     if ($this->enable_cache) {
       // Caching enabled, get translated string from cache
       if (array_key_exists($string, $this->cache_translations))
@@ -283,16 +266,51 @@ if ($translationmode==1)
   }
 
   /**
+   * Sanitize plural form expression for use in PHP eval call.
+   *
+   * @access private
+   * @return string sanitized plural form expression
+   */
+  function sanitize_plural_expression($expr) {
+    // Get rid of disallowed characters.
+    $expr = preg_replace('@[^a-zA-Z0-9_:;\(\)\?\|\&=!<>+*/\%-]@', '', $expr);
+
+    // Add parenthesis for tertiary '?' operator.
+    $expr .= ';';
+    $res = '';
+    $p = 0;
+    for ($i = 0; $i < strlen($expr); $i++) {
+      $ch = $expr[$i];
+      switch ($ch) {
+      case '?':
+        $res .= ' ? (';
+        $p++;
+        break;
+      case ':':
+        $res .= ') : (';
+        break;
+      case ';':
+        $res .= str_repeat( ')', $p) . ';';
+        $p = 0;
+        break;
+      default:
+        $res .= $ch;
+      }
+    }
+    return $res;
+  }
+
+  /**
    * Get possible plural forms from MO header
-   * 
+   *
    * @access private
    * @return string plural form header
    */
   function get_plural_forms() {
-    // lets assume message number 0 is header  
+    // lets assume message number 0 is header
     // this is true, right?
     $this->load_tables();
-    
+
     // cache header field for plural forms
     if (! is_string($this->pluralheader)) {
       if ($this->enable_cache) {
@@ -300,18 +318,19 @@ if ($translationmode==1)
       } else {
         $header = $this->get_translation_string(0);
       }
-      if (preg_match("/plural-forms: ([^\n]*)\n/i", $header, $regs))
+      if (eregi("plural-forms: ([^\n]*)\n", $header, $regs))
         $expr = $regs[1];
       else
         $expr = "nplurals=2; plural=n == 1 ? 0 : 1;";
-      $this->pluralheader = $expr;
+
+      $this->pluralheader = $this->sanitize_plural_expression($expr);
     }
     return $this->pluralheader;
   }
 
   /**
    * Detects which plural form to take
-   * 
+   *
    * @access private
    * @param n count
    * @return int array index of the right plural form
@@ -321,7 +340,7 @@ if ($translationmode==1)
     $string = str_replace('nplurals',"\$total",$string);
     $string = str_replace("n",$n,$string);
     $string = str_replace('plural',"\$plural",$string);
-    
+
     $total = 0;
     $plural = 0;
 
@@ -332,7 +351,7 @@ if ($translationmode==1)
 
   /**
    * Plural version of gettext
-   * 
+   *
    * @access public
    * @param string single
    * @param string plural
@@ -348,12 +367,12 @@ if ($translationmode==1)
     }
 
     // find out the appropriate form
-    $select = $this->select_string($number); 
-    
+    $select = $this->select_string($number);
+
     // this should contains all strings separated by NULLs
     $key = $single.chr(0).$plural;
-    
-    
+
+
     if ($this->enable_cache) {
       if (! array_key_exists($key, $this->cache_translations)) {
         return ($number != 1) ? $plural : $single;
