@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-14 12:21+0100\n"
-"PO-Revision-Date: 2010-02-14 12:21+0100\n"
+"POT-Creation-Date: 2010-02-14 15:15+0100\n"
+"PO-Revision-Date: 2010-02-14 15:15+0100\n"
 "Last-Translator: Igor Dobrača <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -3051,7 +3051,7 @@ msgstr "Greška na bazi podataka:"
 #: 1/admin/browse.php:112
 #: 1/admin/browse.php:126
 #: 1/admin/dataentry.php:86
-#: 1/admin/dataentry.php:3023
+#: 1/admin/dataentry.php:3024
 #: 1/admin/deactivate.php:46
 #: 1/admin/deactivate.php:52
 #: 1/admin/deactivate.php:54
@@ -3596,8 +3596,8 @@ msgstr "Automatski renumeriraj scenarij"
 #: 1/admin/conditionshandling.php:1194
 #: 1/admin/conditionshandling.php:1344
 #: 1/admin/dataentry.php:1963
-#: 1/admin/dataentry.php:2051
-#: 1/admin/dataentry.php:2083
+#: 1/admin/dataentry.php:2052
+#: 1/admin/dataentry.php:2084
 msgid "OR"
 msgstr "ILI"
 
@@ -4171,31 +4171,31 @@ msgstr "Pokušajte ponovo"
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:192
 #: 1/admin/dataentry.php:1597
-#: 1/admin/dataentry.php:2967
+#: 1/admin/dataentry.php:2968
 msgid "Identifier:"
 msgstr "Identifikator:"
 
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:194
-#: 1/admin/dataentry.php:2969
+#: 1/admin/dataentry.php:2970
 msgid "Password:"
 msgstr "Lozinka:"
 
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:196
-#: 1/admin/dataentry.php:2971
+#: 1/admin/dataentry.php:2972
 msgid "Confirm Password:"
 msgstr "Potvrdite lozinku:"
 
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:198
-#: 1/admin/dataentry.php:2973
+#: 1/admin/dataentry.php:2974
 msgid "Email:"
 msgstr "Email:"
 
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:200
-#: 1/admin/dataentry.php:2975
+#: 1/admin/dataentry.php:2976
 msgid "Start Language:"
 msgstr "Početni jezik:"
 
@@ -4259,13 +4259,13 @@ msgstr "Izmjeni zapis"
 
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:1591
-#: 1/admin/dataentry.php:2957
+#: 1/admin/dataentry.php:2958
 msgid "Finalize response submission"
 msgstr "Završi slanje odgovora"
 
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:1593
-#: 1/admin/dataentry.php:2963
+#: 1/admin/dataentry.php:2964
 msgid "Save for further completion by survey user"
 msgstr "Snimi za daljnje popunjavanje korisnika."
 
@@ -4291,54 +4291,54 @@ msgstr "IP-adresa"
 
 #: D:\LimeSurvey
 #: 1/admin/dataentry.php:1971
-#: 1/admin/dataentry.php:2074
+#: 1/admin/dataentry.php:2075
 msgid "AND"
 msgstr "I"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:2091
-#: 1/admin/dataentry.php:2096
-msgid "to question {QUESTION}, you answered {ANSWER}"
-msgstr "na pitanje {QUESTION}, odgovorili ste {ANSWER}"
+#: 1/admin/dataentry.php:2092
+#: 1/admin/dataentry.php:2097
+msgid "to question {QUESTION}, answer {ANSWER}"
+msgstr "na pitanje {QUESTION}, odgovor {ANSWER}"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:2095
+#: 1/admin/dataentry.php:2096
 msgid "No Answer"
 msgstr "Bez odgovora"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:2107
+#: 1/admin/dataentry.php:2108
 msgid "Only answer this if the following conditions are met:"
 msgstr "Odgovori samo ako su sljedeći uvjeti ispunjeni:"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:2134
+#: 1/admin/dataentry.php:2135
 msgid "Help about this question"
 msgstr "Pomoć za ovo pitanje"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:2206
+#: 1/admin/dataentry.php:2207
 msgid "Label 1"
 msgstr "Marker 1"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:2206
+#: 1/admin/dataentry.php:2207
 msgid "Label 2"
 msgstr "Marker 2"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:2215
-#: 1/admin/dataentry.php:2227
+#: 1/admin/dataentry.php:2216
+#: 1/admin/dataentry.php:2228
 msgid "Please choose..."
 msgstr "Molim izaberite..."
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:3012
+#: 1/admin/dataentry.php:3013
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Ovaj upitnik još uvijek nije aktivan. Vaš odgovor ne može biti snimljen"
 
 #: D:\LimeSurvey
-#: 1/admin/dataentry.php:3022
+#: 1/admin/dataentry.php:3023
 msgid "The survey you selected does not exist"
 msgstr "Upitnik koji ste izabrali ne postoji"
 

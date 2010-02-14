@@ -1969,36 +1969,37 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					while ($distinctrow=$distinctresult->FetchRow())
 					{
 						if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
-						$conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".lid, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}";
+						$conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".lid, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type, method FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}";
 						$conresult=db_execute_assoc($conquery);
 						while ($conrow=$conresult->FetchRow())
 						{
-							switch($conrow['type'])
+							if ($conrow['method']=="==") {$conrow['method']="= ";} else {$conrow['method']=$conrow['method']." ";}
+                            switch($conrow['type'])
 							{
 								case "Y":
 									switch ($conrow['value'])
 									{
-										case "Y": $conditions[]=$blang->gT("Yes"); break;
-										case "N": $conditions[]=$blang->gT("No"); break;
+										case "Y": $conditions[]=$conrow['method']."'".$blang->gT("Yes")."'"; break;
+										case "N": $conditions[]=$conrow['method']."'".$blang->gT("No")."'"; break;
 									}
 								break;
 								case "G":
 									switch($conrow['value'])
 									{
-										case "M": $conditions[]=$blang->gT("Male"); break;
-										case "F": $conditions[]=$blang->gT("Female"); break;
+										case "M": $conditions[]=$conrow['method']."'".$blang->gT("Male")."'"; break;
+										case "F": $conditions[]=$conrow['method']."'".$blang->gT("Female")."'"; break;
 									} // switch
 								break;
 								case "A":
 									case "B":
-									$conditions[]=$conrow['value'];
+									$conditions[]=$conrow['method']."'".$conrow['value']."'";
 								break;
 								case "C":
 									switch($conrow['value'])
 									{
-										case "Y": $conditions[]=$blang->gT("Yes"); break;
-										case "U": $conditions[]=$blang->gT("Uncertain"); break;
-										case "N": $conditions[]=$blang->gT("No"); break;
+										case "Y": $conditions[]=$conrow['method']."'".$blang->gT("Yes")."'"; break;
+										case "U": $conditions[]=$conrow['method']."'".$blang->gT("Uncertain")."'"; break;
+										case "N": $conditions[]=$conrow['method']."'".$blang->gT("No")."'"; break;
 									} // switch
 								break;
 								case "1":								
@@ -2010,16 +2011,16 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								while($frow=$fresult->FetchRow())
 								{
 									$postans=$frow['title'];
-									$conditions[]=$frow['title'];
+									$conditions[]=$conrow['method']."'".$frow['title']."'";
 								} // while
 								break;
 
 								case "E":
 									switch($conrow['value'])
 									{
-										case "I": $conditions[]=$blang->gT("Increase"); break;
-										case "D": $conditions[]=$blang->gT("Decrease"); break;
-										case "S": $conditions[]=$blang->gT("Same"); break;
+										case "I": $conditions[]=$conrow['method']."'".$blang->gT("Increase")."'"; break;
+										case "D": $conditions[]=$conrow['method']."'".$blang->gT("Decrease")."'"; break;
+										case "S": $conditions[]=$conrow['method']."'".$blang->gT("Same")."'"; break;
 									}
 								break;
 								case "F":
@@ -2033,7 +2034,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 									while($frow=$fresult->FetchRow())
 									{
 										$postans=$frow['title'];
-										$conditions[]=$frow['title'];
+										$conditions[]=$conrow['method']."'".$frow['title']."'";
 									} // while
 									break;
 							} // switch
@@ -2046,7 +2047,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								    $ansresult=db_execute_assoc($ansquery);
 								    while ($ansrow=$ansresult->FetchRow())
 								    {
-									    $conditions[]=$ansrow['answer'];
+									    $conditions[]=$conrow['method']."'".$ansrow['answer']."'";
 								    }
 								    $operator=$clang->gT("OR");
 								    if (isset($conditions)) $conditions = array_unique($conditions);
@@ -2078,7 +2079,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								$ansresult=db_execute_assoc($ansquery);
 								while ($ansrow=$ansresult->FetchRow())
 								{
-									$conditions[]=$ansrow['answer'];
+									$conditions[]=$conrow['method']."'".$ansrow['answer']."'";
 								}
 								$operator=$blang->gT("OR");
 								if (isset($conditions)) $conditions = array_unique($conditions);
@@ -2087,13 +2088,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
 						if (isset($conditions) && count($conditions) > 1)
 						{
-							$conanswers = "'".implode("' ".$operator." '", $conditions)."'";
-							$explanation .= " -" . str_replace("{ANSWER}", $conanswers, $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
+							$conanswers = implode(" ".$operator." ", $conditions);
+							$explanation .= " -" . str_replace("{ANSWER}", $conanswers, $blang->gT("to question {QUESTION}, answer {ANSWER}"));
 						}
 						else
 						{
-							if(empty($conditions[0])) $conditions[0] = $blang->gT("No Answer");
-							$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
+							if(empty($conditions[0])) $conditions[0] = "'".$blang->gT("No Answer")."'";
+							$explanation .= " -" . str_replace("{ANSWER}", $conditions[0], $blang->gT("to question {QUESTION}, answer {ANSWER}"));
 						}
 						unset($conditions);
 						$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}$answer_section'", $explanation);
