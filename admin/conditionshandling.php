@@ -78,30 +78,24 @@ include_once("database.php");
 //MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 {
-	$conditionsoutput = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr><td>\n";
-	$conditionsoutput .= "\t<tr><td colspan='2' height='4'><font size='1'><strong>"
-	.$clang->gT("Conditions manager").":</strong></font></td></tr>\n"
-	."\t<tr><td align='center'><br /><font color='red'><strong>"
-	.$clang->gT("Error")."</strong></font><br />".$clang->gT("You have not selected a survey")."<br /><br />"
-	."<input type='submit' value='"
-	.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br /></td></tr>\n"
-	."</table>\n"
-	."</body>\n</html>";
+	$conditionsoutput = "<div class='header'>".$clang->gT("Conditions manager")."</div>\n"
+		."<div class='messagebox'>\n"
+		."\t<div class='warningheader'>".$clang->gT("Error")."</div><br />"
+		.$clang->gT("You have not selected a survey")."<br /><br />"
+		."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+		."</div>\n";
 	return;
 }
 
 //MAKE SURE THAT THERE IS A QID
 if (!isset($qid) || !$qid)
 {
-	$conditionsoutput = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr><td>\n";
-	$conditionsoutput .= "\t<tr><td colspan='2' height='4'><font size='1'><strong>"
-	.$clang->gT("Conditions manager").":</strong></font></td></tr>\n"
-	."\t<tr><td align='center'><br /><font color='red'><strong>"
-	.$clang->gT("Error")."</strong></font><br />".$clang->gT("You have not selected a question")."<br /><br />"
-	."<input type='submit' value='"
-	.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br /></td></tr>\n"
-	."</table>\n"
-	."</body>\n</html>";
+	$conditionsoutput = "<div class='header'>".$clang->gT("Conditions manager")."</div>\n"
+		."<div class='messagebox'>\n"
+		."\t<div class='warningheader'>".$clang->gT("Error")."</div><br />"
+		.$clang->gT("You have not selected a question")."<br /><br />"
+		."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+		."</div>\n";
 	return;
 }
 
@@ -363,16 +357,16 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
 		{
 			if (isset($conditionDuplicated) && $conditionDuplicated ==true)
 			{
-				$CopyConditionsMessage = "<font class='warningtitle'>(".$clang->gT("Conditions successfully copied (some were skipped because they were duplicates)").")</font>";
+				$CopyConditionsMessage = "<div class='partialheader'>(".$clang->gT("Conditions successfully copied (some were skipped because they were duplicates)").")</div>";
 			}
 			else
 			{
-				$CopyConditionsMessage = "<font class='successtitle'>(".$clang->gT("Conditions successfully copied").")</font>";
+				$CopyConditionsMessage = "<div class='successheader'>(".$clang->gT("Conditions successfully copied").")</div>";
 			}
 		}
 		else
 		{
-				$CopyConditionsMessage = "<font class='errortitle'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</font>";
+			$CopyConditionsMessage = "<div class='warningheader'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</div>";
 		}
 	}
 	else
@@ -1544,7 +1538,9 @@ if ($subaction=='' ||
 
 					$conditionsoutput_main_content .= ""
 						."\t</td>\n"
+						."\t</tr>\n"
 						."\t</table></form>\n"
+						."\t</td>\n"
 						."\t</tr>\n";
 					$currentfield=$rows['cfieldname'];
 				}
@@ -1583,41 +1579,37 @@ $conditionsoutput_main_content .= "\t<tr bgcolor='#555555'><td colspan='3'></td>
 // BEGIN: DISPLAY THE COPY CONDITIONS FORM
 if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 {
-	$conditionsoutput_main_content .= "<tr class=''><td colspan='3'><form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
+	$conditionsoutput_main_content .= "<tr class=''><td colspan='3'>\n"
+		."<form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
+		
+	$conditionsoutput_main_content .= "<div class='header'>".$clang->gT("Copy conditions")."</div>\n";
+	
 
-	$conditionsoutput_main_content .= "\t<table width='100%' cellpadding='5' cellspacing='0'><tr>\n"
-		."<td colspan='3' align='center' class='settingcaption'>\n"
-		."<strong>"
-		.$clang->gT("Copy conditions")."</strong>";
-
+	//CopyConditionsMessage
 	if (isset ($CopyConditionsMessage))
 	{
-		$conditionsoutput_main_content .= " $CopyConditionsMessage";
+		$conditionsoutput_main_content .= "<div class='messagebox'>\n"
+		    ."$CopyConditionsMessage\n"
+		    ."</div>\n";
 	}
-	//CopyConditionsMessage
-	$conditionsoutput_main_content .=  "\n"
-		."</td>\n"
-		."\t</tr>\n";
 
 	if (isset($conditionsList) && is_array($conditionsList))
 	{
 
-		$conditionsoutput_main_content .= "\t<tr bgcolor='#EFEFEF'>\n"
-			."<td align='center' style='text-align: center' width='250'>\n"
-			."".$clang->gT("Copy the selected conditions to").":\n"
-			."</td>\n"
-			."<td align='left'>\n"
-			."<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:600px' size='10'>\n";
+		$conditionsoutput_main_content .= "\t<div class='condition-tbl-row'>\n"
+			."\t<div class='condition-tbl-left'>".$clang->gT("Copy the selected conditions to").":</div>\n"
+			."\t<div class='condition-tbl-right'>\n"
+			."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:600px' size='10'>\n";
 		if (isset($pquestions) && count($pquestions) != 0)
 		{
 			foreach ($pquestions as $pq)
 			{
-				$conditionsoutput_main_content .= "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
+				$conditionsoutput_main_content .= "\t\t<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
 			}
 		}
-		$conditionsoutput_main_content .= "</select>\n";
-		$conditionsoutput_main_content .= "</td>\n"
-			."\t</tr>\n";
+		$conditionsoutput_main_content .= "\t\t</select>\n"
+		    ."\t</div>\n"
+		    ."\t</div>\n";
 
 		if ( !isset($pquestions) || count($pquestions) == 0)
 		{
@@ -1627,14 +1619,14 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 		{
 			$disableCopyCondition=" ";
 		}
-		$conditionsoutput_main_content .= "\t<tr><td colspan='3' align='center'>\n"
-			."<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" $disableCopyCondition/>"
-			."\n";
-
-		$conditionsoutput_main_content .= "<input type='hidden' name='subaction' value='copyconditions' />\n"
+		
+		$conditionsoutput_main_content .= "\t<div class='condition-tbl-full'>\n"
+			."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" $disableCopyCondition/>\n"
+		    ."<input type='hidden' name='subaction' value='copyconditions' />\n"
 			."<input type='hidden' name='sid' value='$surveyid' />\n"
 			."<input type='hidden' name='gid' value='$gid' />\n"
-			."<input type='hidden' name='qid' value='$qid' />\n";
+			."<input type='hidden' name='qid' value='$qid' />\n"
+			."</div>\n";
 
 		$conditionsoutput_main_content .= "<script type=\"text/javascript\">\n"
 			."function prepareCopyconditions()\n"
@@ -1647,20 +1639,18 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 			."return true;\n"
 			."\t});\n"
 			."}\n"
-			."</script>\n"
-			."</td></tr>";
+			."</script>\n";
 
 	}
 	else
 	{
-		$conditionsoutput_main_content .= "\t<tr bgcolor='#EFEFEF'>\n"
-			."<th width='40%'>".$clang->gT("Condition")."</th><th width='200'></th><th width='40%'>".$clang->gT("Question")."</th>\n"
-			."\t</tr>\n";
+		$conditionsoutput_main_content .= "<div class='messagebox'>\n"
+		    ."<div class='partialheader'>".$clang->gT("This survey's questions don't use conditions")."</div><br />\n"
+		    ."</div>\n";
 	}
-			$conditionsoutput_main_content .= "</table></form></td></tr>\n";
+	
+	$conditionsoutput_main_content .= "</form></td></tr>\n";
 
-		$conditionsoutput_main_content .= "\t<tr ><td colspan='3'></td></tr>\n"
-			."\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 }
 // END: DISPLAY THE COPY CONDITIONS FORM
 
@@ -1690,7 +1680,6 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 {
 	$conditionsoutput_main_content .= "<tr><td colspan='3'>\n";
 	$conditionsoutput_main_content .= "<form action='$scriptname?action=conditions' name='editconditions' id='editconditions' method='post'>\n";
-	$conditionsoutput_main_content .= "<table width='100%' align='center' cellspacing='0' cellpadding='5'>\n";
 	if ($subaction == "editthiscondition" &&  isset($p_cid))
 	{
 		$mytitle = $clang->gT("Edit condition");
@@ -1699,17 +1688,11 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	{
 		$mytitle = $clang->gT("Add condition");
 	}
+    $conditionsoutput_main_content .= "<div class='header'>".$mytitle."</div>\n";
 
-	$conditionsoutput_main_content .= "\t<tr class='settingcaption'>\n"
-		."<td colspan='2' align='center'>\n"
-		."\t<strong>".$mytitle."</strong>\n"
-		."</td>\n"
-		."\t</tr>\n"
-		."\t<tr bgcolor='#EFEFEF'>\n"
-		."<th width='25%'></th>\n"
-		."<th width='75%'></th>\n"
-		."\t</tr>\n";
-
+///////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Begin "Scenario" row
 	if  ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||
 		( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
 	{
@@ -1724,18 +1707,18 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$scenarioTxt = "";
 		$scenarioInputStyle = "style = ''";
 	}
+		
+	$conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+	    ."<div class='condition-tbl-left'>$scenarioAddBtn&nbsp;".$clang->gT("Scenario")."</div>\n"
+		."<div class='condition-tbl-right'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
+		."$scenarioTxt\n"
+		."</div>\n"
+		."</div>\n";
 
-	$conditionsoutput_main_content .= "\t<tr class='conditiontbl'>\n"
-		. "<td align='right' valign='bottom'>$scenarioAddBtn&nbsp;".$clang->gT("Scenario")."</td>\n"
-		. "<td valign='bottom'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
-		. "$scenarioTxt</td>\n"
-		. "\t</tr>\n"
-		. "\t<tr class='conditiontbl'>\n";
-
-	// Source condition selection
-	$conditionsoutput_main_content .= ""
-		. "<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
-		."<td valign='top' align='left'>\n"
+	// Begin "Question" row
+	$conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+	    ."<div class='condition-tbl-left'>".$clang->gT("Question")."</div>\n"
+		."<div class='condition-tbl-right'>\n"
 		."\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
 		."\t<ul>\n"
 		."\t<li><a href=\"#SRCPREVQUEST\"><span>".$clang->gT("Previous questions")."</span></a></li>\n"
@@ -1743,7 +1726,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t</ul>\n";
 		
 	// Previous question tab
-	$conditionsoutput_main_content .= "<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' >\n";
+	$conditionsoutput_main_content .= "<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' size='".($qcount+1)."' >\n";
 	if (isset($cquestions))
 	{
 		$js_getAnswers_onload = "";
@@ -1771,7 +1754,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."</div>\n";
 
 	// Source token Tab
-	$conditionsoutput_main_content .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' >\n";
+	$conditionsoutput_main_content .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
 	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 	{
 		// Check to select
@@ -1789,23 +1772,30 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	$conditionsoutput_main_content .= "</select>\n"
 		."</div>\n\n";
 
-	 $conditionsoutput_main_content .= "\t</div>\n" // End Source tabs
-		. "\t</td>\n"
-		. "\t</tr>\n"
-		. "\t<tr class='conditiontbl'>\n"
-		. "<td align='right' valign='middle'>".$clang->gT("Comparison operator")."</td>\n"
-		. "<td><select name='method' id='method' style='font-family:verdana; font-size:10' >\n"
-		. "\t<option value='<'>".$clang->gT("Less than")."</option>\n"
-		. "\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
-		. "\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
-		. "\t<option value='!='>".$clang->gT("Not equal to")."</option>\n"	
-		. "\t<option value='>='>".$clang->gT("Greater than or equal to")."</option>\n"
-		. "\t<option value='>'>".$clang->gT("Greater than")."</option>\n"
-		. "\t<option value='RX'>".$clang->gT("Regular expression")."</option>\n"
-		. "</select></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr class='conditiontbl'>\n"
-		. "<td align='right' valign='middle'>".$clang->gT("Answer")."</td>\n";
+	$conditionsoutput_main_content .= "\t</div>\n"; // end conditionsource div
+
+	$conditionsoutput_main_content .= "</div>\n" 
+		."</div>\n"; 
+
+	// Begin "Comparison operator" row
+	$conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+	    ."<div class='condition-tbl-left'>".$clang->gT("Comparison operator")."</div>\n"
+		."<div class='condition-tbl-right'>\n"
+		."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n"
+		."\t<option value='<'>".$clang->gT("Less than")."</option>\n"
+		."\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
+		."\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
+		."\t<option value='!='>".$clang->gT("Not equal to")."</option>\n"	
+		."\t<option value='>='>".$clang->gT("Greater than or equal to")."</option>\n"
+		."\t<option value='>'>".$clang->gT("Greater than")."</option>\n"
+		."\t<option value='RX'>".$clang->gT("Regular expression")."</option>\n"
+		."</select>\n"
+		."</div>\n"
+		."</div>\n";
+	
+	// Begin "Answer" row
+	$conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+	    ."<div class='condition-tbl-left'>".$clang->gT("Answer")."</div>\n";
 
 	if ($subaction == "editthiscondition")
 	{
@@ -1850,33 +1840,36 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 
 	$conditionsoutput_main_content .= ""
-		."<td valign='top' align='left'>\n"
+		."<div class='condition-tbl-right'>\n"
 		."<div id=\"conditiontarget\" class=\"tabs-nav\">\n"
-		."<ul>\n"
-		."\t<li><a href=\"#CANSWERSTAB\"><span>".$clang->gT("Predefined")."</span></a></li>\n"
-		."\t<li><a href=\"#CONST\"><span>".$clang->gT("Constant")."</span></a></li>\n"
-		."\t<li><a href=\"#PREVQUESTIONS\"><span>".$clang->gT("Questions")."</span></a></li>\n"
-		."\t<li><a href=\"#TOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
-		."\t<li><a href=\"#REGEXP\"><span>".$clang->gT("RegExp")."</span></a></li>\n"
-		."</ul>\n";
+		."\t<ul>\n"
+		."\t\t<li><a href=\"#CANSWERSTAB\"><span>".$clang->gT("Predefined")."</span></a></li>\n"
+		."\t\t<li><a href=\"#CONST\"><span>".$clang->gT("Constant")."</span></a></li>\n"
+		."\t\t<li><a href=\"#PREVQUESTIONS\"><span>".$clang->gT("Questions")."</span></a></li>\n"
+		."\t\t<li><a href=\"#TOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
+		."\t\t<li><a href=\"#REGEXP\"><span>".$clang->gT("RegExp")."</span></a></li>\n"
+		."\t</ul>\n";
 
 	// Predefined answers tab
-	$conditionsoutput_main_content .= "\t<div id='CANSWERSTAB'><select  name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; width:600px;' size='7'>\n"
-		."\t</select>\n"
-		."\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answer options for this question")."</span>\n"
-		."\t</div>\n\t\n";
+	$conditionsoutput_main_content .= "\t<div id='CANSWERSTAB'>\n"
+		."\t\t<select  name='canswers[]' $multipletext id='canswers' size='7'>\n"
+		."\t\t</select>\n"
+		."\t\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answer options for this question")."</span>\n"
+		."\t</div>\n";
+		
 	// Constant tab 
-	$conditionsoutput_main_content .= "<div id='CONST' style='display:' >"
-		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5' style='width:600px;font-family:verdana; font-size:10' >$EDITConditionConst</textarea>\n"
+	$conditionsoutput_main_content .= "\t<div id='CONST' style='display:' >\n"
+		."\t\t<textarea name='ConditionConst' id='ConditionConst' rows='5' cols='113'>$EDITConditionConst</textarea>\n"
 		."\t\t<br /><div id='ConditionConstLabel'>".$clang->gT("Constant value")."</div>\n"
-		."\t\t</div>\n";
+		."\t</div>\n";
 	// Previous answers tab @SGQA@ placeholders
-	$conditionsoutput_main_content .= "\t<div id='PREVQUESTIONS'><select name='prevQuestionSGQA' id='prevQuestionSGQA' style='font-family:verdana; font-size:10; width:600px;' size='7' >\n";
+	$conditionsoutput_main_content .= "\t<div id='PREVQUESTIONS'>\n"
+		."\t\t<select name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
 	foreach ($cquestions as $cqn) 
 	{ // building the @SGQA@ placeholders options
 		if ($cqn[2] != 'M' && $cqn[2] != 'P')
 		{ // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
-			$conditionsoutput_main_content .= "<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
+			$conditionsoutput_main_content .= "\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
 			if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")
 			{
 				$conditionsoutput_main_content .= " selected='selected'";
@@ -1884,27 +1877,28 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 			$conditionsoutput_main_content .= ">$cqn[0]</option>\n";
 		}
 	}
-	$conditionsoutput_main_content .= "\t</select>\n"
-		."\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
-		."\t</div>\n\t\n";
+	$conditionsoutput_main_content .= "\t\t</select>\n"
+		."\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
+		."\t</div>\n";
 
-	// tokenAttr Tab
-
-	$conditionsoutput_main_content .= "\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' >\n";
+	// Token tab
+	$conditionsoutput_main_content .= "\t<div id='TOKENATTRS'>\n"
+		."\t\t<select name='tokenAttr' id='tokenAttr' size='7'>\n";
 	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 	{
-		$conditionsoutput_main_content .= "<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
+		$conditionsoutput_main_content .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
 	}
 
-	$conditionsoutput_main_content .= "\t</select>\n"
-		."\t<br /><span id='tokenAttrLabel'>".$clang->gT("Attributes values from the participant's token")."</span>\n"
-		."\t</div>\n\t\n";
+	$conditionsoutput_main_content .= "\t\t</select>\n"
+		."\t\t<br /><span id='tokenAttrLabel'>".$clang->gT("Attributes values from the participant's token")."</span>\n"
+		."\t</div>\n";
 
 	// Regexp Tab
-	$conditionsoutput_main_content .= "<div id='REGEXP' style='display:'>"
-		."<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' ></textarea>\n"
-		."<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
-		."</div>\n";
+	$conditionsoutput_main_content .= "\t<div id='REGEXP' style='display:'>\n"
+		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'></textarea>\n"
+		."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
+		."\t</div>\n";
+		
 	$conditionsoutput_main_content .= "</div>\n"; // end conditiontarget div
 
 
@@ -1927,11 +1921,11 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$submitcid = "";
 	}
 	
-	$conditionsoutput_main_content .= ""
-		."</td>"
-		."\t</tr>\n"
-		."\t<tr>\n"
-		."<td colspan='2' align='center'>\n"
+	$conditionsoutput_main_content .= "</div>\n"
+		."</div>\n";
+	
+	// Begin buttons row
+	$conditionsoutput_main_content .= "<div class='condition-tbl-full'>\n"
 		."\t<input type='reset' id='resetForm' value='".$clang->gT("Clear")."' />\n"
 		."\t<input type='submit' value='".$submitLabel."' />\n"
 		."<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -1943,9 +1937,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."<input type='hidden' name='editTargetTab' id='editTargetTab' value='' />\n" // auto-select tab by jQuery when editing a condition
 		."<input type='hidden' name='editSourceTab' id='editSourceTab' value='' />\n" // auto-select tab by jQuery when editing a condition
 		."<input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />\n" // auto-select target answers by jQuery when editing a condition
-		."</td>\n"
-		."\t</tr>\n"
-		."</table>\n"
+		."</div>\n"
 		."</form>\n";
 
 	if (!isset($js_getAnswers_onload))
@@ -2064,7 +2056,6 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 $conditionsoutput_main_content .= "</table>\n";
 
-
 $conditionsoutput = $conditionsoutput_header
 		. $conditionsoutput_menubar
 		. $conditionsoutput_action_error
@@ -2099,7 +2090,9 @@ function showSpeaker($hinttext)
 	}
 	else
 	{
-        $reshtml= "<span title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";                
+        $shortstring = FlattenText($hinttext);
+		  
+        $reshtml= "<span title='".$shortstring."'> \"$shortstring\"</span>";                
 	}
 
   return $reshtml; 
