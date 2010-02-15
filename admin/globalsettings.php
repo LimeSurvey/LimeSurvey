@@ -209,8 +209,11 @@ function globalsettingsdisplay()
             $editsurvey .=">".$clang->gT("Popup HTML editor")."</option>\n"
             . "</select></li>\n";       
 
+            $dateformatdata=getDateFormatData($_SESSION['dateformat']);
             $editsurvey.= "\t<li><label for='timeadjust'>".$clang->gT("Time difference (in hours):")."</label>\n"
-            . "\t\t<input type='text' size='10' id='timeadjust' name='timeadjust' value=\"".htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust')))."\" /></li>\n";
+            . "\t\t<input type='text' size='10' id='timeadjust' name='timeadjust' value=\"".htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust')))."\" /> "
+            . $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ".$clang->gT("Corrected time :").' '.convertDateTimeFormat(date_shift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')."
+            </li>\n";
             
             $thisusepdfexport=getGlobalSetting('usepdfexport');
             $editsurvey .= "\t<li><label for='usepdfexport'>".$clang->gT("PDF export available:")."</label>\n"

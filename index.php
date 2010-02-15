@@ -621,13 +621,12 @@ if ($tokensexist == 1 && isset($token) && $token &&
 	}
 }    
 if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
-{
+{   
     $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
     $tkresult = db_execute_assoc($tkquery); //Checked 
     $tokendata = $tkresult->FetchRow();
-    if ((trim($tokendata['validfrom'])!='' && convertDateTimeFormat($tokendata['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1) || 
-        (trim($tokendata['validuntil'])!='' && convertDateTimeFormat($tokendata['validuntil'],'Y-m-d H:i:s','U')*1<date('U')*1) 
-        )
+    if ((trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) || 
+        (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
     {
         sendcacheheaders();
         doHeader();
