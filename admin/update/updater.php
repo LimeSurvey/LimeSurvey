@@ -369,6 +369,7 @@ function UpdateStep4()
  // PclTraceOn(2);    
     require_once($homedir."/classes/http/http.php");     
 
+    $downloaderror=false;
     $http=new http_class;    
     
     // Allow redirects
@@ -386,7 +387,7 @@ function UpdateStep4()
     $http->ReadReplyHeaders($headers);
     if ($headers['content-type']=='text/html')
     {
-        unlink($tempdir.'/update.zip');
+        @unlink($tempdir.'/update.zip'); 
     }
     elseif($error=='') {
         $body=''; $full_body=''; 
@@ -432,27 +433,31 @@ function UpdateStep4()
   }
   else
   {
-    $output.=$clang->gT('There was a problem downloading the update file. Please try to restart the update process.').'<br />'; 
+    $output.=$clang->gT('There was a problem downloading the update file. Please try to restart the update process.').'<br />';
+    $downloaderror=true; 
   }
   //  PclTraceDisplay();                                                              
   
   // Now we have to update version.php
-  
-  @ini_set('auto_detect_line_endings', true);      
-  $versionlines=file($rootdir.'/version.php');
-  $handle = fopen($rootdir.'/version.php', "w");
-  foreach ($versionlines as $line)
+  if (!$downloaderror)
   {
-      if(strpos($line,'$buildnumber')!==false)
+      @ini_set('auto_detect_line_endings', true);      
+      $versionlines=file($rootdir.'/version.php');
+      $handle = fopen($rootdir.'/version.php', "w");
+      foreach ($versionlines as $line)
       {
-          $line='$buildnumber'." = '{$_SESSION['updateinfo']['toversion']}';\r\n";   
+          if(strpos($line,'$buildnumber')!==false)
+          {
+              $line='$buildnumber'." = '{$_SESSION['updateinfo']['toversion']}';\r\n";   
+          }
+          fwrite($handle,$line);
       }
-      fwrite($handle,$line);
+      fclose($handle);      
+      $output.=sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />'; 
+      $output.=$clang->gT('Please check any problems above - update was done.').'<br />'; 
   }
-  fclose($handle);
-  $output.=sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />'; 
 
-  $output.=$clang->gT('Please check any problems above - update was done.').'<br />'; 
+
   $output.="<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >".$clang->gT('Back to main menu')."</button>";
   $output.='</div>';
   setGlobalSetting('updatelastcheck','1980-01-01 00:00');   

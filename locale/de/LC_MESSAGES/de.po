@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-15 22:51+0100\n"
-"PO-Revision-Date: 2010-02-15 22:53+0100\n"
+"PO-Revision-Date: 2010-02-15 23:15+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -9201,7 +9201,7 @@ msgstr "Die folgenden Daten würden durch das Update hinzugefügt werden, aber e
 #: D:\web\xampp\htdocs\limesurvey/admin/update/updater.php:215
 #: D:\web\xampp\htdocs\limesurvey/admin/update/updater.php:228
 msgid "We recommend that these files should be replaced by the update procedure."
-msgstr "Wir empfehen, dass die Aktulisierungsprozedure diese Dateien ersetzt."
+msgstr "Wir empfehlen, dass die Aktualisierungsprozedur diese Dateien ersetzt."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/update/updater.php:227
 msgid "The following files will be modified or deleted but were already modified by someone else."
