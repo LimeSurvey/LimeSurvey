@@ -1664,10 +1664,10 @@ function sendsubmitnotification($sendnotification)
 	global $dbprefix, $clang, $emailcharset;
 	global $sitename, $homeurl, $surveyid, $publicurl, $maildebug, $tokensexist;
 
-	$subject = $clang->gT("Answer Submission for Survey","unescaped")." ".$thissurvey['name'];
+	$subject = sprintf($clang->gT("Response submission for survey %s","unescaped"), $thissurvey['name']);
 
-	$message = $clang->gT("Survey Submitted","unescaped")." - {$thissurvey['name']}\n"
-	. $clang->gT("A new response was entered for your survey","unescaped")."\n\n";
+	$message = $clang->gT("Hello!","unescaped")."\n"
+	. $clang->gT("A new response was submitted for your survey.","unescaped")."\n\n";
 	if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
 	{
 		$message .= $clang->gT("Click the following link to reload the survey:","unescaped")."\n";
@@ -1691,6 +1691,11 @@ function sendsubmitnotification($sendnotification)
 			//Gather token data for tokenised surveys
 			$_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
 		}
+        // there was no token used so lets remove the token field from insertarray
+        elseif ($_SESSION['insertarray'][0]=='token')
+        {
+            unset($_SESSION['insertarray'][0]);
+        }
 		//Make an array of email addresses to send to
 	    if($erts=explode(";", $thissurvey['emailresponseto']))
 		{
