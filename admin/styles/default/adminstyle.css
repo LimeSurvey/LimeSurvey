@@ -903,11 +903,58 @@ div.messagebox .warningheader {
     margin: 5px 0;
     padding:2px;  
 }
+
+/* Conditions designer interface */
+      
+.condition-tbl-row {
+	width: 100%;
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+      
+.condition-tbl-left {
+	width: 24%;
+	float: left;
+	padding: 10px 1% 0 0;
+    text-align: right;
+	font-weight: bold;
+}
+      
+.condition-tbl-right {
+	width: 74%;
+	float: left;
+	padding: 10px 0 0 0;
+    text-align: left;
+}
+      
+.condition-tbl-full {
+	width: 100%;
+	clear: both;
+	padding: 10px 0 5px 0;
+    text-align: center;
+}
+
+#defaultscenariotxt {
+	display: block;
+	margin-top: 3px;
+}
+
+.tabs-nav {
+	width: 80%;
+}
+
+.tabs-nav select,
+.tabs-nav textarea{
+	font-family: verdana; 
+	font-size: 10px; 
+	width: 100%; 
+	/* min-width:300px; */
+}
       
 .conditiontbl td {
     text-align:left;
 }
-
 
 .conditiontbl td:first-child {
     text-align:right;
