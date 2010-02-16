@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-15 19:10+0100\n"
-"PO-Revision-Date: 2010-02-15 20:21+0100\n"
+"PO-Revision-Date: 2010-02-16 14:58+0100\n"
 "Last-Translator: Jure Cuhalev <gandalf@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -317,7 +317,7 @@ msgstr "Prikaži zadnjih 50 odgovorov"
 
 #: /Users/gandalf/hacking/limesurvey/common.php:1762
 msgid "Dataentry Screen for Survey"
-msgstr "Stran za vnos podatkov za anketo"
+msgstr "Stran za vnos podatkov ankete"
 
 #: /Users/gandalf/hacking/limesurvey/common.php:1766
 msgid "Get statistics from these responses"
@@ -906,9 +906,8 @@ msgid "Equals sum value"
 msgstr "Enako vrednosti vsote"
 
 #: /Users/gandalf/hacking/limesurvey/common.php:3646
-#, fuzzy
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
-msgstr "Izključi vse ostale možnosti, če je izbrano - vnesite kodo odgovora."
+msgstr "Izključi vse ostale možnosti, če je izbran določen odgovor - vnesite kode odgovora ločene s podpičjem."
 
 #: /Users/gandalf/hacking/limesurvey/common.php:3647
 msgid "Exclusive option"
@@ -1577,9 +1576,8 @@ msgid "Your token seems to be valid but can be used only during a certain time p
 msgstr "Vaše geslo deluje veljavno vendar ga lahko uporabite samo v določenem časovnem oknu."
 
 #: /Users/gandalf/hacking/limesurvey/index.php:766
-#, fuzzy
 msgid "Your responses were successfully saved."
-msgstr "Vaše osebne nastavitve so bile uspešno shranjene."
+msgstr "Vaši odgovori so bili uspešno shranjeni."
 
 #: /Users/gandalf/hacking/limesurvey/index.php:807
 msgid "There is no matching saved survey"
@@ -1982,9 +1980,9 @@ msgstr "Drug odgovor"
 #: /Users/gandalf/hacking/limesurvey/qanda.php:2063
 #: /Users/gandalf/hacking/limesurvey/qanda.php:2318
 #: /Users/gandalf/hacking/limesurvey/qanda.php:2546
-#, fuzzy, php-format
+#, php-format
 msgid "You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
+msgstr "Izbrali ste \"drugo'\" za odgovor na vprašanje \"%s\". Izpolnite tudi pripadajoče \"drugo komentar\" polje."
 
 #: /Users/gandalf/hacking/limesurvey/qanda.php:1996
 #: /Users/gandalf/hacking/limesurvey/qanda.php:2450
@@ -3118,9 +3116,8 @@ msgid "RegExp"
 msgstr "Regularni izraz"
 
 #: /Users/gandalf/hacking/limesurvey/admin/conditionshandling.php:1866
-#, fuzzy
 msgid "Predefined answer options for this question"
-msgstr "Prednastavljeni odgovori za to vprašanje"
+msgstr "Prednastavljeni možni odgovori za to vprašanje"
 
 #: /Users/gandalf/hacking/limesurvey/admin/conditionshandling.php:1871
 msgid "Constant value"
@@ -3572,7 +3569,6 @@ msgstr "IN"
 
 #: /Users/gandalf/hacking/limesurvey/admin/dataentry.php:2092
 #: /Users/gandalf/hacking/limesurvey/admin/dataentry.php:2097
-#, fuzzy
 msgid "to question {QUESTION}, answer {ANSWER}"
 msgstr "na vprašanje {QUESTION}, ste odgovorili z {ANSWER}"
 
@@ -4167,9 +4163,9 @@ msgid "There is a LimeSurvey update available: Version %s"
 msgstr "There is a LimeSurvey update available: Version %s"
 
 #: /Users/gandalf/hacking/limesurvey/admin/globalsettings.php:146
-#, fuzzy, php-format
+#, php-format
 msgid "You can update %smanually%s or use the %s"
-msgstr "Posodobite lahko ročno ali uporabite %s"
+msgstr "Posodobite lahko %sročno%s ali uporabite %s"
 
 #: /Users/gandalf/hacking/limesurvey/admin/globalsettings.php:146
 msgid "3-Click ComfortUpdate"
@@ -4787,7 +4783,7 @@ msgstr "Administrator:"
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:2268
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:2898
 msgid "Fax To:"
-msgstr "FAX števika:"
+msgstr "Fax številka:"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:697
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:2445
@@ -4937,9 +4933,8 @@ msgstr "Predogled tega vprašanja"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1111
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1175
-#, fuzzy
 msgid "Edit/add answer options for this question"
-msgstr "Uredi/Dodaj odgovor za to vprašanje"
+msgstr "Uredi/Dodaj možni odgovor za to vprašanje"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1121
 msgid "Hide Details of this Question"
@@ -4982,9 +4977,8 @@ msgid "Type:"
 msgstr "Tip:"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1173
-#, fuzzy
 msgid "You need to add answer options to this question"
-msgstr "Dodati morate odgovore za to vprašanje"
+msgstr "Dodati morate možni odgovorov za to vprašanje"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1184
 msgid "Label Set"
@@ -5019,9 +5013,8 @@ msgid "Other questions having conditions on this question:"
 msgstr "Druga vprašanja, ki imajo nastavljene pogoje na to vprašanje:"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1329
-#, fuzzy
 msgid "Edit answer options"
-msgstr "Uredi odgovore"
+msgstr "Uredi možnosti odgovora"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1332
 msgid "Error: You are trying to use duplicate answer codes."
@@ -5040,9 +5033,8 @@ msgid "Assessment value"
 msgstr "Vrednost ocene"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1375
-#, fuzzy
 msgid "Answer option"
-msgstr "Premakni možnost odgovora navzgor"
+msgstr "Možnost odgovora"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1378
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1997
@@ -5084,14 +5076,12 @@ msgid "Save Changes"
 msgstr "Shrani spremembe"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1504
-#, fuzzy
 msgid "New answer option"
-msgstr "Premakni možnost odgovora navzgor"
+msgstr "Nova možnost odgovora"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1532
-#, fuzzy
 msgid "Add new answer option"
-msgstr "Dodaj nov odgovor"
+msgstr "Dodaj novo možnost odgovora"
 
 #: /Users/gandalf/hacking/limesurvey/admin/html.php:1551
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
@@ -6667,9 +6657,9 @@ msgstr "Prosimo, izberite *vse* odgovore, ki ustrezajo:"
 
 #: /Users/gandalf/hacking/limesurvey/admin/printablesurvey.php:952
 #: /Users/gandalf/hacking/limesurvey/admin/printablesurvey.php:953
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose *at most* %s answers:"
-msgstr "Prosimo, izberite *največ* "
+msgstr "Prosimo, izberite *največ* %s odgovorov:"
 
 #: /Users/gandalf/hacking/limesurvey/admin/printablesurvey.php:1018
 #: /Users/gandalf/hacking/limesurvey/admin/printablesurvey.php:1019
@@ -7095,17 +7085,15 @@ msgstr "Povzetek vseh možnih polj"
 
 #: /Users/gandalf/hacking/limesurvey/admin/statistics.php:283
 msgid "Count stats for each question based only on the total number of responses for which the question was displayed"
-msgstr ""
+msgstr "Štej statistike za vsako vprašanje samo na podlagi skupnega števila odgovorov za katerega je bilo vprašanje prikazano"
 
 #: /Users/gandalf/hacking/limesurvey/admin/statistics.php:283
-#, fuzzy
 msgid "Subtotals based on displayed questions"
-msgstr "Dodati morate vprašanja"
+msgstr "Vsote se naj izračunajo iz prikazanih vprašanj"
 
 #: /Users/gandalf/hacking/limesurvey/admin/statistics.php:301
-#, fuzzy
 msgid "Statistics report language"
-msgstr "Začetni jezik"
+msgstr "Jezik statističnega poročila"
 
 #: /Users/gandalf/hacking/limesurvey/admin/statistics.php:306
 msgid "Response ID"
@@ -7223,15 +7211,13 @@ msgstr "Povzetek polja za %s"
 
 #: /Users/gandalf/hacking/limesurvey/admin/statistics_function.php:2229
 #: /Users/gandalf/hacking/limesurvey/admin/statistics_function.php:2261
-#, fuzzy
 msgid "Non completed or Not displayed"
-msgstr "Nezaključeno"
+msgstr "Nedokončanih ali Neprikazanih"
 
 #: /Users/gandalf/hacking/limesurvey/admin/statistics_function.php:2233
 #: /Users/gandalf/hacking/limesurvey/admin/statistics_function.php:2265
-#, fuzzy
 msgid "Not displayed"
-msgstr "Prikazani zapisi:"
+msgstr "Niso prikazani"
 
 #: /Users/gandalf/hacking/limesurvey/admin/templates.php:73
 msgid "Survey List Page"
@@ -8533,16 +8519,15 @@ msgstr "Uporabniško ime in/ali elektronski naslov ne obstaja!"
 #: /Users/gandalf/hacking/limesurvey/admin/usercontrol.php:69
 #, php-format
 msgid "Your user data for accessing %s"
-msgstr ""
+msgstr "Vaši podatki za dostop do %s"
 
 #: /Users/gandalf/hacking/limesurvey/admin/usercontrol.php:71
 msgid "New Password"
 msgstr "Novo geslo"
 
 #: /Users/gandalf/hacking/limesurvey/admin/usercontrol.php:73
-#, fuzzy
 msgid "User data"
-msgstr "Uporabi privzeto"
+msgstr "Uporabniški podatki"
 
 #: /Users/gandalf/hacking/limesurvey/admin/usercontrol.php:83
 msgid "An email with your login data was sent to you."
@@ -8904,9 +8889,8 @@ msgid "Failed to update!"
 msgstr "Posodabljanje ni uspelo!"
 
 #: /Users/gandalf/hacking/limesurvey/admin/userrighthandling.php:904
-#, fuzzy
 msgid "Delete this user from group"
-msgstr "Delete this user group"
+msgstr "Izbriši uporabnika iz skupine"
 
 #: /Users/gandalf/hacking/limesurvey/admin/userrighthandling.php:999
 msgid "Adding User to group"
