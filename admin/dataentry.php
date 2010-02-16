@@ -75,16 +75,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 	$surveyoptions = browsemenubar($clang->gT("Browse Responses"));
 	if (!$surveyid && !$subaction)
 	{
-		//$dataentryoutput .= "</table>\n";
-		$dataentryoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' height='4' class='settingcaption'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n"
-		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+		$dataentryoutput .= "<div class='messagebox'>\n"		
+		."<div class='warningheader'>".$clang->gT("Error")."</div><br />\n"
 		.$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
-		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-		."</font></td></tr></table>\n";
+		."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+		."</div>\n";
 		return;
 	}
 
@@ -97,10 +93,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 	{
 		$thissurvey=getSurveyInfo($surveyid); 
 		$errormsg="";
-		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' height='4'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n";
+		
+		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+		$dataentryoutput .= "<div class='messagebox'>\n";
 
 		$lastanswfortoken=''; // check if a previous answer has been submitted or saved
 		$rlanguage='';
@@ -568,26 +563,24 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				}
 
 			}
-			$dataentryoutput .= "\t<font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n";
+			$dataentryoutput .= "\t<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
 			$thisid=$connect->Insert_ID();
-			$dataentryoutput .= "\t".$clang->gT("The entry was assigned the following record id: ")." {$thisid}<br />\n";
+			$dataentryoutput .= "\t".$clang->gT("The entry was assigned the following record id: ")." {$thisid}<br /><br />\n";
 		}
 
 		$dataentryoutput .= $errormsg;
-		$dataentryoutput .= "\t</font><br />[<a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;language=".$_POST['language']."'>".$clang->gT("Add Another Record")."</a>]<br />\n";
-		$dataentryoutput .= "[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to survey administration")."</a>]<br />\n";
+		$dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Add Another Record")."' onclick=\"window.open('$scriptname?action=dataentry&amp;sid=$surveyid&amp;language=".$_POST['language']."', '_top')\" /><br /><br />\n";
+		$dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Return to survey administration")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br /><br />\n";
 		if (isset($thisid))
 		{
-			$dataentryoutput .= "\t[<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$thisid'>".$clang->gT("View This Record")."</a>]<br />\n";
+			$dataentryoutput .= "\t<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$thisid', '_top')\" /><br /><br />\n";
 		}
 		if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
-			$dataentryoutput .= "\t[<a href='$scriptname?action=saved&amp;sid=$surveyid&subaction=all'>".$clang->gT("Browse Saved Responses")."</a>]<br />\n";
+			$dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Browse Saved Responses")."' onclick=\"window.open('$scriptname?action=saved&amp;sid=$surveyid&subaction=all', '_top')\" /><br /><br />\n";
 		}
-		$dataentryoutput .= "\t[<a href='$scriptname?action=browse&amp;sid=$surveyid&subaction=all&limit=50'>".$clang->gT("Browse Responses")."</a>]<br />\n"
-		."\t</td></tr>\n"
-		."</table>\n"
-		."</body>\n";
+		$dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&subaction=all&limit=50', '_top')\" /><br /><br />\n"
+		."</div>\n";
 
 	}
 
@@ -787,12 +780,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$results[]=$results1;
 		}
 		//	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
+		
+		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
 
 		$dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
-		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' height='4'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' align='center'><strong>";
+		."<table class='data-entry-tbl' cellspacing='0'>\n"
+		."\t<tr><td colspan='2' align='center'><strong>";
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $surveyinfo['owner_id'] == $_SESSION['loginID']) 
         {
             $dataentryoutput .= sprintf($clang->gT("Editing response (ID %s)"),$id);
@@ -801,8 +794,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
         {
             $dataentryoutput .= sprintf($clang->gT("Viewing response (ID %s)"),$id);
         }
-		$dataentryoutput .="</strong></td></tr>\n"
-		."\t<tr><td colspan='2' height='1'></td></tr>\n";
+		$dataentryoutput .="</strong></td></tr>\n";
 
 		foreach ($results as $idrow)
 		{
@@ -816,7 +808,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				."<td valign='top' align='right' width='25%'>"
 				."\n";
 				$dataentryoutput .= "\t<strong>".strip_javascript($question)."</strong>\n";
-				$dataentryoutput .= "</font></td>\n"
+				$dataentryoutput .= "</td>\n"
 				."<td valign='top' align='left'>\n";
 				//$dataentryoutput .= "\t-={$fnames[$i][3]}=-"; //Debugging info
 				switch ($fnames[$i][3])
@@ -1154,7 +1146,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						{
 							$ranklist .= "style='display:none'";
 						}
-						$ranklist .= " id='cut_$thisqid$j' onclick=\"deletethis_$thisqid(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$j' onclick=\"deletethis_$thisqid(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\" /><br />\n\n";
 					}
 
 					if (!isset($choicelist)) {$choicelist="";}
@@ -1542,7 +1534,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			}
 		}
 		$dataentryoutput .= "</table>\n"
-		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		."<table class='data-entry-tbl' cellspacing='0'>\n";
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID']) 
         { // if you are not survey owner or super admin you cannot modify responses
             $dataentryoutput .= "    <tr>
@@ -1633,10 +1625,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
          }
 
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' height='4'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n";
+		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+		$dataentryoutput .= "<div class='messagebox'>\n";
+
 		$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE
 		".db_table_name("questions").".gid=".db_table_name("groups").".gid  AND
 		".db_table_name("questions").".language = '{$baselang}' AND  ".db_table_name("groups").".language = '{$baselang}' AND
@@ -1816,34 +1807,28 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		while (ob_get_level() > 0) {
 			ob_end_flush();
 		}
-		$dataentryoutput .= "<font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+		
+		$dataentryoutput .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n"
 		.$clang->gT("Record has been updated.")."<br /><br />\n"
-		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id'>".$clang->gT("View This Record")."</a>\n<br />\n"
-		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a><br />\n"
-		."</td></tr></table>\n"
-		."</body>\n";
+		."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" /><br /><br />\n"
+		."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all', '_top')\" />\n"
+		."</div>\n";
 	}
 
 	elseif ($subaction == "delete")
 	{
+		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+		$dataentryoutput .= "<div class='messagebox'>\n";
+		
 		$thissurvey=getSurveyInfo($surveyid);
-		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' height='4'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n"
-		."\t<strong>".$thissurvey['name']."</strong><br />\n"
-		."\t".$thissurvey['description']."\n"
-		."</td>\n"
-		."\t</tr>\n";
+		
 		$delquery = "DELETE FROM $surveytable WHERE id=$id";
-		$dataentryoutput .= "\t<tr>\n";
+		
 		$delresult = $connect->Execute($delquery) or safe_die ("Couldn't delete record $id<br />\n".$connect->ErrorMsg());
-		$dataentryoutput .= "<td align='center'><br /><strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
-		."\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a>\n"
-		."</td>\n"
-		."\t</tr>\n"
-		."</table>\n"
-		."</body>\n";
+		
+		$dataentryoutput .= "<div class='successheader'>".$clang->gT("Record Deleted")." (ID: $id)</div><br /><br />\n"
+		."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all', '_top')\" /><br /><br />\n"
+		."</div>\n";
 	}
 	else
 	{
@@ -1865,71 +1850,90 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		//This is the default, presenting a blank dataentry form
 		$fieldmap=createFieldMap($surveyid);
 		// PRESENT SURVEY DATAENTRY SCREEN
-		$dataentryoutput .= $surveyoptions
-		."<table><tr><td></td></tr></table>";
+		$dataentryoutput .= $surveyoptions;
+
+		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
 
 		$dataentryoutput .= "<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
-		."<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='3' height='4' class='header'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr>\n"
-		."<td align='left'>";
-		if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0) {$dataentryoutput.=$langlistbox;}
-		$dataentryoutput .= "</td><td colspan='2' align='center'>\n"
-		."\t<strong>".$thissurvey['name']."</strong>\n"
-		."\t<br />".FlattenText($thissurvey['description'])."\n"
-		."</td>\n"
-		."\t</tr>\n";
+			."<table class='data-entry-tbl' cellspacing='0'>\n"
+			."\t<tr>\n"
+			."\t<td colspan='3' align='center'>\n"
+			."\t<strong>".$thissurvey['name']."</strong>\n"
+			."\t<br />".FlattenText($thissurvey['description'])."\n"
+			."\t</td>\n"
+			."\t</tr>\n";
+		
+		$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
+		
+		if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0) 
+		{
+			$dataentryoutput .= "\t<tr>\n"
+				."\t<td colspan='3' align='center'>\n"
+				."\t".$langlistbox."\n"
+				."\t</td>\n"
+				."\t</tr>\n";
+			
+			$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
+		}
 
 		if (tableExists('tokens_'.$thissurvey['sid'])) //Give entry field for token id 
 		{
 			$dataentryoutput .= "\t<tr>\n"
-			."<td valign='top' width='1%'></td>\n"
-			."<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$blang->gT("Token").":</strong></td>\n"
-			."<td valign='top'  align='left' style='padding-left: 20px'>\n"
-			."\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);'/>\n"
-			."</td>\n"
-			."\t</tr>\n";
+				."<td valign='top' width='1%'></td>\n"
+				."<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$blang->gT("Token").":</strong></td>\n"
+				."<td valign='top'  align='left' style='padding-left: 20px'>\n"
+				."\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);'/>\n"
+				."</td>\n"
+				."\t</tr>\n";
+			
+			$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 
 			$dataentryoutput .= "\n"
-			. "\t<script type=\"text/javascript\"><!-- \n"
-			. "\tfunction activateSubmit(me)\n"
-			. "\t{"
-			. "if (me.value != '')"
-			. "{\n"
-			. "\tdocument.getElementById('submitdata').disabled = false;\n"
-			. "}\n"
-			. "else\n"
-			. "{\n"
-			. "\tdocument.getElementById('submitdata').disabled = true;\n"
-			. "}\n"
-			. "\t}"
-			. "\t//--></script>\n";
+				. "\t<script type=\"text/javascript\"><!-- \n"
+				. "\tfunction activateSubmit(me)\n"
+				. "\t{"
+				. "if (me.value != '')"
+				. "{\n"
+				. "\tdocument.getElementById('submitdata').disabled = false;\n"
+				. "}\n"
+				. "else\n"
+				. "{\n"
+				. "\tdocument.getElementById('submitdata').disabled = true;\n"
+				. "}\n"
+				. "\t}"
+				. "\t//--></script>\n";
 			
 		}
+		
 		if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
 		{
             $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);        
 			$dataentryoutput .= "\t<tr>\n"
-			."<td valign='top' width='1%'></td>\n"
-			."<td valign='top' align='right' width='30%'><strong>"
-			.$blang->gT("Datestamp").":</strong></td>\n"
-			."<td valign='top'  align='left' style='padding-left: 20px'>\n"
-			."\t<input type='text' name='datestamp' value='$localtimedate' />\n"
-			."</td>\n"
-			."\t</tr>\n";
+				."<td valign='top' width='1%'></td>\n"
+				."<td valign='top' align='right' width='30%'><strong>"
+				.$blang->gT("Datestamp").":</strong></td>\n"
+				."<td valign='top'  align='left' style='padding-left: 20px'>\n"
+				."\t<input type='text' name='datestamp' value='$localtimedate' />\n"
+				."</td>\n"
+				."\t</tr>\n";
+			
+			$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 		}
+		
 		if ($thissurvey['ipaddr'] == "Y") //Give ipaddress field
 		{
 			$dataentryoutput .= "\t<tr>\n"
-			."<td valign='top' width='1%'></td>\n"
-			."<td valign='top' align='right' width='30%'><strong>"
-			.$blang->gT("IP-Address").":</strong></td>\n"
-			."<td valign='top'  align='left' style='padding-left: 20px'>\n"
-			."\t<input type='text' name='ipaddr' value='NULL' />\n"
-			."</td>\n"
-			."\t</tr>\n";
+				."<td valign='top' width='1%'></td>\n"
+				."<td valign='top' align='right' width='30%'><strong>"
+				.$blang->gT("IP-Address").":</strong></td>\n"
+				."<td valign='top'  align='left' style='padding-left: 20px'>\n"
+				."\t<input type='text' name='ipaddr' value='NULL' />\n"
+				."</td>\n"
+				."\t</tr>\n";
+			
+			$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 		}
+		
 		// SURVEY NAME AND DESCRIPTION TO GO HERE
 		$degquery = "SELECT * FROM ".db_table_name("groups")." WHERE sid=$surveyid AND language='{$language}' ORDER BY ".db_table_name("groups").".group_order";
 		$degresult = db_execute_assoc($degquery);
@@ -1942,7 +1946,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'])."</strong></td>\n"
 			."\t</tr>\n";
 			$gid = $degrow['gid'];
-
+			
+			$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 
 			$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
 			while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} //Get table output into array
@@ -2105,8 +2110,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				if ($explanation)
 				{
                     if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";} //Do no alternate on explanation row
-					$explanation = "<font size='1'>[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
-					$dataentryoutput .= "<tr bgcolor='#FFEEEE'><td colspan='3' align='left'>$explanation</td></tr>\n";
+					$explanation = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+					$dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
 				}
 
 				//END OF GETTING CONDITIONS
@@ -2118,8 +2123,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                 
 				$qid = $deqrow['qid'];
 				$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
+				
 				$dataentryoutput .= "\t<tr class='$bgc'>\n"
-				."<td valign='top' width='1%'><font size='1'>{$deqrow['title']}</font></td>\n"
+				."<td class='data-entry-small-text' valign='top' width='1%'>{$deqrow['title']}</td>\n"
 				."<td valign='top' align='right' width='30%'>";
 				if ($deqrow['mandatory']=="Y") //question is mandatory
 				{
@@ -2476,7 +2482,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							$ranklist .= "style='display:none'";
 						}
 						$mfn=$fieldname.$i;
-						$ranklist .= " id='cut_$thisqid$i' onclick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$i' onclick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\" /><br />\n\n";
 					}
 					if (!isset($choicelist)) {$choicelist="";}
 					$choicelist .= "<select size='$anscount' class='choicelist' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
@@ -2928,7 +2934,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				//$dataentryoutput .= " [$surveyid"."X"."$gid"."X"."$qid]";
 				$dataentryoutput .= "</td>\n";
 				$dataentryoutput .= "\t</tr>\n";
-				$dataentryoutput .= "\t<tr><td colspan='3' height='1' bgcolor='silver'></td></tr>\n";
+				$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 			}
 		}
 		if ($thissurvey['active'] == "Y")
@@ -2987,7 +2993,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                 $dataentryoutput .= "</select>";
                       
 
-				$dataentryoutput .= "</table>\n";
+				$dataentryoutput .= "</td></tr></table></div>\n";
 				$dataentryoutput .= "</td>\n";
 				$dataentryoutput .= "\t</tr>\n";
 			}
