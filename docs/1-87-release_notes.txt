@@ -77,6 +77,36 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 
 Thank you to everyone who helped with this new release!
 
+Changes from  1.87+ (build 8374) to 1.87+ (build 8406) - Legend: # updated feature, - bug fix 
+#Update translation: Croatian language file (idobraca)
+#Updated translation Croatian (idobraca)
+#Updated translation: Croatian (idobraca)
+#Updated translation: Slovenian (gandalfar)
+#Updated translation: Danish by Robin Sharp (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated feature: Better message for password reset request (idobraca)
+-Fixed issue 04117: Check for old table layouts (tpartner)
+-Fixed unreported issue: Removed showing of label set ID (idobraca)
+-Fixed issue #2828: Missing feedback in UI after save when using the 'Resume later' option (c_schmitz)
+-Fixed issue #3844: Timer-not resetting after survey completion (idobraca)
+-Fixed issue #4039: "Exit and clear survey" not really removing the incomplete response (c_schmitz)
+-Fixed issue #4070: With non-latin character languages the statistics & result export shows HTML entities for questions/answers (c_schmitz)
+-Fixed issue #4113: Unwanted lines in confirmation emails (c_schmitz)
+-Fixed issue #4118: End message is not printed (idobraca)
+-Fixed issue #4123: data entry >= constant value conditions not showing correctly  (idobraca)
+-Fixed issue #4127: Upgrade to 1.87+ shows error on MSSQL DB (c_schmitz)
+-Fixed issue #4131: If download of the update package in the ComfortUpdate failed the version number is still updated (c_schmitz)
+-Fixed issue #4135: Time for token "Valid From/To" setting is not adjusted according to time difference set in global settings (c_schmitz)
+-Fixed issue 04125: Text when quota reached in wrong language (idobraca)
+-Fixed issue 04129: Undefined variable: addsummary  (idobraca)
+-Fixed unreported issue: 'View statistic' translation on index.php (idobraca)
+-Fixed unreported issue: Resolved typo in statistics_function.php (idobraca)
+-Fixed unreported issue: Update of typo in group management (idobraca)
+-Fixed issue #04110: Email Status can't be set via RemoteControl (wahrendorff)
+-Fixed issue #04116: emailSender does not include full survey URL (wahrendorff)
+
+
 Changes from 1.87+ (build 8366) to 1.87+ (build 8374) - Legend: # updated feature, - bug fix 
 +New Feature: New option to compute stats for each question based only on the total number of responses for which the question was displayed. (lemeur)
 +New Feature: New option to generate statistics in any language supported by the survey. (lemeur)
