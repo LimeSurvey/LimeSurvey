@@ -949,7 +949,6 @@ div.messagebox .warningheader {
 	font-family: verdana; 
 	font-size: 10px; 
 	width: 100%; 
-	/* min-width:300px; */
 }
       
 .conditiontbl td {
@@ -958,6 +957,31 @@ div.messagebox .warningheader {
 
 .conditiontbl td:first-child {
     text-align:right;
+}
+
+/* Data entry interface */
+
+.data-entry-small-text {
+	font-size: 8pt;
+}
+
+.data-entry-tbl {
+	margin: 5px 0 0 0;
+	width: 100%;
+}
+
+.data-entry-tbl td {
+	padding: 3px 5px;
+}
+
+.data-entry-tbl .data-entry-separator td {
+	padding: 0;
+	height: 2px;
+	background-color: #D2E0F2;
+}
+
+.data-entry-explanation {
+	background-color: #FFEEEE;
 }
 
 /*controls the width of select boxes in group order dialog*/
