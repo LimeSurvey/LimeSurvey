@@ -93,6 +93,10 @@ div.survey-group
 	page-break-before: auto;
 }
 
+.breakbefore {
+	page-break-before:always !important;
+} 
+
 .other
 {
 }
