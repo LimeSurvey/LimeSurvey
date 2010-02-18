@@ -4138,7 +4138,20 @@ function do_multiplenumeric($ia)
 			}
 			else
 			{
-				list($theanswer,$sliderleft,$sliderright) =explode($slider_separator,$ansrow['answer']);
+				$answer_and_slider_array=explode($slider_separator,$ansrow['answer']);
+				if (isset($answer_and_slider_array[0]))
+					$theanswer=$answer_and_slider_array[0];
+				else
+					$theanswer="";
+				if (isset($answer_and_slider_array[1]))
+					$sliderleft=$answer_and_slider_array[1];
+				else
+					$sliderleft="";
+				if (isset($answer_and_slider_array[2]))
+					$sliderright=$answer_and_slider_array[2];
+				else
+					$sliderright="";
+
 				$sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
 				$sliderright="<div class=\"slider_righttext\">$sliderright</div>";
 			}
