@@ -126,8 +126,7 @@ if ($action == "editgroup")
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language='$baselang'";
     $egresult = db_execute_assoc($egquery);
     $editgroup = PrepareEditorScript();
-    $editgroup .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
-    . "".$clang->gT("Edit Group")."</td></tr></table>\n"
+    $editgroup .= "<div class='header'>".$clang->gT("Edit Group")."</div>\n"
     . "<form name='editgroup' action='$scriptname' method='post'>\n"
     . '<div class="tab-pane" id="tab-pane-group-'.$gid.'">';
 
@@ -238,9 +237,7 @@ if ($action == "ordergroups")
        }
     }
 
-        $ordergroups = "<table width='100%' border='0'>\n<tr ><td colspan='2' class='settingcaption'>"
-        . "".$clang->gT("Change Group Order")."</td></tr>"
-        . "</table>\n";
+        $ordergroups = "<div class='header'>".$clang->gT("Change Group Order")."</div><br />\n";
 
     // Get groups dependencies regarding conditions
     // => Get an array of groups containing questions with conditions outside the group

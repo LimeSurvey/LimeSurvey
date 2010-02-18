@@ -120,7 +120,7 @@ function globalsettingsdisplay()
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Overview & Update")."</h2>\n";
             $editsurvey .= checksettings();
             $thisupdatecheckperiod=getGlobalSetting('updatecheckperiod');
-            $editsurvey .= "<br /></p><div class='settingcaption'>".$clang->gT("Updates")."</div><ul>"
+            $editsurvey .= "<br /></p><div class='header'>".$clang->gT("Updates")."</div><ul>"
             . "\t<li><label for='updatecheckperiod'>".$clang->gT("Check for updates:")."</label>\n"
             . "\t\t\t<select name='updatecheckperiod' id='updatecheckperiod'>\n"
             . "\t\t\t\t<option value='0'";
@@ -372,10 +372,10 @@ function globalsettingsdisplay()
             $editsurvey .= "</div>\n";
 
             // The external button to sumbit Survey edit changes
-            $editsurvey .= "\t<p><input type='button' onclick='$(\"#frmglobalsettings\").submit();' class='standardbtn' value='".$clang->gT("Save settings")."' /><br />\n";
+            $editsurvey .= "\t<p><input type='button' onclick='$(\"#frmglobalsettings\").submit();' class='standardbtn' value='".$clang->gT("Save settings")."' /><br /></p>\n";
             if ($demoModeOnly==true)
             {
-                $editsurvey .= '<p>'.$clang->gT("Note: Demo mode is activated. Marked (*) settings won't be saved.");
+                $editsurvey .= '<p>'.$clang->gT("Note: Demo mode is activated. Marked (*) settings won't be saved.").'</p>\n';
             }
 
 
@@ -466,7 +466,7 @@ function checksettings()
     {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
     if(isset($tokenlist) && is_array($tokenlist))
     {$activetokens=count($tokenlist);} else {$activetokens=0;}
-    $cssummary = "<div class='settingcaption'>".$clang->gT("System overview")."</div>\n";
+    $cssummary = "<div class='header'>".$clang->gT("System overview")."</div>\n";
     // Database name & default language
     $cssummary .= "<br /><table class='statisticssummary'><tr>\n"
     . "<td width='50%' align='right'>\n"

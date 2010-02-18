@@ -984,6 +984,21 @@ div.messagebox .warningheader {
 	background-color: #FFEEEE;
 }
 
+/* ComfortUpdate interface */
+
+.updater-background {
+    background-color:#f8f8ff;
+    padding:1% 10%;
+}
+
+textarea.updater-changelog {
+	width:800px; 
+	height:300px; 
+	background-color:#fff; 
+	font-family:Monospace; 
+	font-size:11px;
+}
+
 /*controls the width of select boxes in group order dialog*/
 .movableNode select {
     max-width:200px;
@@ -1198,6 +1213,12 @@ margin:0 auto;
 
 #advancedquestionsettings textarea{
     width:200px;
+}
+
+.statistics-tbl-separator td {
+	background-color:#D2E0F2;
+	height:2px;
+	padding:0;
 }
 
 #statistics_general_filter {

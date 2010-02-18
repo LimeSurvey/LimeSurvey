@@ -28,7 +28,7 @@ function UpdateStep1()
       setGlobalSetting('updatekey',sanitize_paranoid_string($_POST['updatekey']));
   }  
   $error=false;
-  $output='<div class="background"><div class="header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><br />'; 
+  $output='<div class="header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />'; 
   $output.=$clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />'; 
   $output.=$clang->gT('The following steps will be done by this update:').'<br /><ul>'; 
   $output.='<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>'; 
@@ -46,7 +46,7 @@ function UpdateStep1()
      
     if (!is_writable($tempdir))
 	{
-		$output.= "<li>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
+		$output.= "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
         $error=true;
 	}
     if (!is_writable($rootdir.DIRECTORY_SEPARATOR.'version.php'))
@@ -78,7 +78,7 @@ function UpdateStep1()
             $full_body .= $body;
         }        
         $changelog=json_decode($full_body,true);
-        $output.='<textarea style="width:800px; height:300px; background-color:#fff; font-family:Monospace; font-size:11px;" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
+        $output.='<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
     }
     else
     {
@@ -89,18 +89,18 @@ function UpdateStep1()
 
   if ($error)
   {
-        $output.='<br />'.$clang->gT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); 
+        $output.='<br /><br />'.$clang->gT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); 
         $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step1', '_top')\"";
-        $output.=">".$clang->gT('Check again')."</button>";
+        $output.=">".$clang->gT('Check again')."</button></p>";
   }
   else
   {
-        $output.='<br />'.$clang->gT('Everything looks alright. Please proceed to the next step.'); 
+        $output.='<br /><br />'.$clang->gT('Everything looks alright. Please proceed to the next step.'); 
         $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
         if ($updatekey==''){    $output.="disabled='disabled'"; }
-        $output.=">".sprintf($clang->gT('Proceed to step %s'),'2')."</button>";
+        $output.=">".sprintf($clang->gT('Proceed to step %s'),'2')."</button></p>";
   }
-  $output.='</div><table><tr>';
+  $output.='</div>';
   return $output;
 }
 
@@ -114,7 +114,7 @@ function UpdateStep2()
     require_once($homedir."/classes/http/http.php");     
     $updatekey=getGlobalSetting('updatekey');
 
-    $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><br />'; 
+    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="updater-background"><br />'; 
     
     $http=new http_class;    
     /* Connection timeout */
@@ -145,7 +145,6 @@ function UpdateStep2()
     
     if (isset($updateinfo['error']))
     {
-        $output='<div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="background"><br />'; 
         $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />'; 
         
         if ($updateinfo['error']==1)
@@ -166,8 +165,8 @@ function UpdateStep2()
         $output.="<div class='messagebox'>
             <div class='warningheader'>".$clang->gT('Update server busy')."</div>
             <p>".$clang->gT('The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared.')."<br />
-               ".$clang->gT('Please be patient and try again in about 10 minutes.')."</div>
-            <p><button onclick=\"window.open('$scriptname?action=globalsettings', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button>";
+               ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
+            <p><button onclick=\"window.open('$scriptname?action=globalsettings', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button></p>";
                
     }
     else
@@ -239,13 +238,13 @@ function UpdateStep2()
       {
             $output.='<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); 
             $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
-            $output.=">".$clang->gT('Check again')."</button>";
+            $output.=">".$clang->gT('Check again')."</button></p>";
       }
       else
       {
             $output.=$clang->gT('Please check any problems above and then proceed to the next step.').'<br />'; 
             $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" ";
-            $output.=">".sprintf($clang->gT('Proceed to step %s'),'3')."</button>";
+            $output.=">".sprintf($clang->gT('Proceed to step %s'),'3')."</button></p>";
           
       }
   }
@@ -259,7 +258,7 @@ function UpdateStep3()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
   
-    $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 3').'</div>'; 
+    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 3').'</div><div class="updater-background">'; 
     $output.='<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
     if (!isset( $_SESSION['updateinfo']))
     {
@@ -332,8 +331,8 @@ function UpdateStep3()
   
   $output.=$clang->gT('Please check any problems above and then proceed to the final step.'); 
   $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" ";
-  $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button>";
-  $output.='</div><table><tr>';
+  $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button></p>";
+  $output.='</div>';
   return $output;
 }
 
@@ -342,7 +341,7 @@ function UpdateStep4()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
   
-    $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 3').'</div><br />'; 
+    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 4').'</div><div class="updater-background"><br />'; 
     if (!isset( $_SESSION['updateinfo']))
     {
         $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />'; 
@@ -458,7 +457,7 @@ function UpdateStep4()
   }
 
 
-  $output.="<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >".$clang->gT('Back to main menu')."</button>";
+  $output.="<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
   $output.='</div>';
   setGlobalSetting('updatelastcheck','1980-01-01 00:00');   
   setGlobalSetting('updateavailable','0');   

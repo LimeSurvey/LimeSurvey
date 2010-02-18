@@ -252,12 +252,11 @@ if (!isset($surveyid) || !$surveyid)
 {
 	$tokenoutput .= "\t<div class='messagebox'><div class='header'>"
 	.$clang->gT("Token control")."</div>\n"
-	."\t<strong>"
-	.$clang->gT("Error")."</strong></font><br />".$clang->gT("You have not selected a survey")."<br /><br />"
+	."\t<br /><div class='warningheader'>".$clang->gT("Error")."</div>"
+	."<br />".$clang->gT("You have not selected a survey")."<br /><br />"
 	."<input type='submit' value='"
-	.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br /></td></tr>\n"
-	."</div></div>\n"
-	."</body>\n</html>";
+	.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+	."</div>\n";
 	return;
 }
 
@@ -267,12 +266,11 @@ if ($thissurvey===false)
 {
 	$tokenoutput .= "\t<div class='messagebox'>\n<div class='header'>\n"
 	.$clang->gT("Token control")."</div>\n"
-	."\t<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
+	."\t<br /><div class='warningheader'>".$clang->gT("Error")."</div>"
     ."<br />".$clang->gT("The survey you selected does not exist")
 	."<br /><br />\n\t<input type='submit' value='"
 	.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />"
-    ."</div></div>\n"
-	."</body>\n</html>";
+    ."</div>\n";
 	return;
 }
 else        // A survey DOES exist
@@ -1737,8 +1735,7 @@ if ($subaction == "managetokenattributes" &&
         $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
-    $tokenoutput .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
-    . "".$clang->gT("Manage token attribute fields")."</td></tr></table>\n";
+    $tokenoutput .= "<div class='header'>".$clang->gT("Manage token attribute fields")."</div>\n";
     $tokenfields=GetTokenFieldsAndNames($surveyid,true);
     $nrofattributes=0;
     $tokenoutput.='<form action="'.$scriptname.'" method="post">'

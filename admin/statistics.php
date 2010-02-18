@@ -406,12 +406,12 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "<!-- Close filter group --></tr>\n</table></div></td></tr>\n";
 		}
 		
-		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
+		$statisticsoutput .= "\t\t<tr><td><div class='header'>\n"
 		
 		."<input type=\"checkbox\" id='btn_$flt[1]' onclick=\"selectCheckboxes('grp_$flt[1]', 'summary[]', 'btn_$flt[1]');\" />"
 		
 		//use current groupname and groupid as heading
-		."<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></td></tr>\n\t\t"
+		."<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></div></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
 		."<div id='grp_$flt[1]'><table class='filtertable'><tr>\n";
 
@@ -1588,9 +1588,7 @@ $statisticsoutput .= "\t\t\t</table></div>\n"
 
 
 //add line to separate the the filters from the other options
-$statisticsoutput .= "<tr><td align='center' class='settingcaption'>
-	       <font size='1' face='verdana'>&nbsp;</font>
-		  </td></tr>";
+$statisticsoutput .= "<tr class='statistics-tbl-separator'><td></td></tr>";
 
 $statisticsoutput .= "</table>";
 
