@@ -148,7 +148,7 @@ else
 	$fieldnames=explode("\t", trim($bigarray[1]));
 	
 	$fieldcount=count($fieldnames)-1;
-	while (trim($fieldnames[$fieldcount]) == "") // get rid of blank entries
+	while (trim($fieldnames[$fieldcount]) == "" && $fieldcount > -1) // get rid of blank entries
 	{
 		unset($fieldnames[$fieldcount]);
 		$fieldcount--;
