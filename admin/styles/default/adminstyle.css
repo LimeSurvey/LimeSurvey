@@ -1226,16 +1226,23 @@ margin:0 auto;
     margin:0 auto;
 }
 
+#statistics_general_filter fieldset{
+clear:both;
+}
+
+
 #statistics_general_filter #left {
     width:270px;
     height:125px;
     float:left;
+    clear:left;
 }
 
 #statistics_general_filter #right {
     width:330px;
     height:125px;
     float:right;
+    clear:none;
 }
 
 #statistics_general_filter #right li label:first-child {

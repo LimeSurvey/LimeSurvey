@@ -1936,6 +1936,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						 */
 						elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
 						{
+                                        $headPDF = array();
+                                        $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+                            
 							//show free text answers
 							if ($al[0] == "Answers")
 							{
