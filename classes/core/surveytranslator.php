@@ -331,6 +331,12 @@
 	    $supportedLanguages['mk']['nativedescription'] = '&#1052;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;';
 	    $supportedLanguages['mk']['rtl'] = false;
         $supportedLanguages['mk']['dateformat'] = 1;
+
+	    // Malay
+	    $supportedLanguages['ms']['description'] = $clang->gT('Malay');
+	    $supportedLanguages['ms']['nativedescription'] = 'Bahasa Melayu';
+	    $supportedLanguages['ms']['rtl'] = false;
+        $supportedLanguages['ms']['dateformat'] = 1;
    
 	    // Norwegian Bokmal
 	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
