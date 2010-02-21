@@ -119,7 +119,7 @@
             }
     }
     
-    function getLanguageData() {
+    function getLanguageData($orderbynative=false) {
         global $clang;
 
 	    // Albanian
@@ -447,7 +447,14 @@
 	    $supportedLanguages['vi']['rtl'] = false;
         $supportedLanguages['vi']['dateformat'] = 5;
 
-        uasort($supportedLanguages,"user_sort");
+        if ($orderbynative)
+        {
+            uasort($supportedLanguages,"user_sort_native");
+        }
+        else
+        {
+            uasort($supportedLanguages,"user_sort");
+        }
         
         Return $supportedLanguages;
     }
@@ -462,6 +469,17 @@
             return -1;
             }
    }
+    
+   function user_sort_native($a, $b) {
+       // smarts is all-important, so sort it first
+       
+       if($a['nativedescription'] >$b['nativedescription']) {
+         return 1;
+       }
+       else {
+            return -1;
+            }
+   }    
     
     
 /*    // future languages

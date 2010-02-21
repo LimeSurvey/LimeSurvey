@@ -168,11 +168,11 @@ function globalsettingsdisplay()
             . "\t<li><label for='defaultlang'>".$clang->gT("Default site language:").(($demoModeOnly==true)?'*':'')."</label>\n"
             . "\t\t<select name='defaultlang' id='defaultlang'>\n";
             $actuallang=getGlobalSetting('defaultlang');
-            foreach (getLanguageData() as  $langkey2=>$langname)
+            foreach (getLanguageData(true) as  $langkey2=>$langname)
             {
                 $editsurvey .= "\t\t\t<option value='".$langkey2."'";
                 if ($actuallang == $langkey2) {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+                $editsurvey .= ">".$langname['nativedescription']." - ".$langname['description']."</option>\n";
             }
 
             $editsurvey .= "\t\t</select></li>";

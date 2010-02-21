@@ -223,11 +223,11 @@ if ($action == "personalsettings")
 	$cssummary .=  "<li>\n"
 	. "<label for='lang'>".$clang->gT("Interface language").":</label>\n"
 	. "<select id='lang' name='lang'>\n";
-	foreach (getlanguagedata() as $langkey=>$languagekind)
+	foreach (getlanguagedata(true) as $langkey=>$languagekind)
 	{
 		$cssummary .= "<option value='$langkey'";
 		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected='selected'";}
-		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
+		$cssummary .= ">".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
 	}
 	$cssummary .= "</select>\n"
 	. "</li>\n";
@@ -724,7 +724,7 @@ if ($surveyid)
 		
 		. "<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Base Language:")."</strong></td>\n";
-		if (!$surveyinfo['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($surveyinfo['language']);}
+		if (!$surveyinfo['language']) {$language=getLanguageNameFromCode($currentadminlang,false);} else {$language=getLanguageNameFromCode($surveyinfo['language'],false);}
 		$surveysummary .= "<td align='left'>$language</td></tr>\n";
 
 		// get the rowspan of the Additionnal languages row
@@ -741,7 +741,7 @@ if ($surveyid)
 			{
 				if (!$first) {$surveysummary .= "<tr><td>&nbsp;</td>";}
 				$first=false;
-				$surveysummary .= "<td align='left'>".getLanguageNameFromCode($langname)."</td></tr>\n";
+				$surveysummary .= "<td align='left'>".getLanguageNameFromCode($langname,false)."</td></tr>\n";
 			}
 		}
 		if ($first) $surveysummary .= "</tr>";
@@ -779,7 +779,7 @@ if ($surveyid)
 			$surveysummary .= $clang->gT("Survey cannot be activated yet.")."<br />\n";
 			if ($sumcount2 == 0 && hasRight($surveyid,'define_questions'))
 			{
-				$surveysummary .= "<font class='statusentryhighlight'>[".$clang->gT("You need to add groups")."]</font><br />";
+				$surveysummary .= "<font class='statusentryhighlight'>[".$clang->gT("You need to add question groups")."]</font><br />";
 			}
 			if ($sumcount3 == 0 && hasRight($surveyid,'define_questions'))
 			{
@@ -1871,7 +1871,7 @@ if($action == "exportstructureGroup")
 	    $exportstructure .= "<form name='exportstructureGroup' action='$scriptname' method='post'>\n"
 	    ."<p>\n"
 	    ."<input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>\n"
-	    ."<label for='surveycsv'>".$clang->gT("LimeSurvey group file (*.csv)")."</label>\n"
+	    ."<label for='surveycsv'>".$clang->gT("LimeSurvey question group file (*.csv)")."</label>\n"
 		."</p>";
 
 //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
@@ -2193,7 +2193,7 @@ if ($action == "editsurvey")
 
 			// Additional languages listbox
 			. "<li><label for='additional_languages'>".$clang->gT("Additional Languages").":</label>\n"
-			. "<table><tr><td align='left'><select multiple='multiple' style='min-width:250px;'  size='5' id='additional_languages' name='additional_languages'>";
+			. "<table><tr><td align='left'><select style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>";
 			$jsX=0;
 			$jsRemLang ="<script type=\"text/javascript\">
                             var mylangs = new Array();
@@ -2205,7 +2205,7 @@ if ($action == "editsurvey")
 				{
 					$jsRemLang .="mylangs[$jsX] = \"$langname\"\n";
 					$editsurvey .= "<option id='".$langname."' value='".$langname."'";
-					$editsurvey .= ">".getLanguageNameFromCode($langname)."</option>\n";
+					$editsurvey .= ">".getLanguageNameFromCode($langname,false)."</option>\n";
 					$jsX++;
 				}
 			}
@@ -2216,14 +2216,14 @@ if ($action == "editsurvey")
 			. "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(0,'')\" id=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
-			. "<td align='left'><select size='5' id='available_languages' name='available_languages'>";
+			. "<td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>";
 			$tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
 			foreach (getLanguageData() as  $langkey2=>$langname)
 			{
 				if ($langkey2!=$esrow['language'] && in_array($langkey2,$tempLang)==false)  // base languag must not be shown here
 				{
 					$editsurvey .= "<option id='".$langkey2."' value='".$langkey2."'";
-					$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+					$editsurvey .= ">".$langname['description']."</option>\n";
 				}
 			}
 			$editsurvey .= "</select></td>"
@@ -2245,7 +2245,6 @@ if ($action == "editsurvey")
 
 		// End General TAB
 		// Create Survey Button
-//		$editsurvey .= "<li><label for=''></label><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></li>\n";
 		$editsurvey .= "</ul></div>\n";
 
 		// Presentation and navigation TAB
@@ -2874,7 +2873,7 @@ if ($action == "newsurvey")
 
 		// End General TAB
 		// Create Survey Button
-		$newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
+		$newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
         
 		$newsurvey .= "</div>\n";
 
@@ -2983,7 +2982,7 @@ if ($action == "newsurvey")
 
 		// End Presention and navigation TAB
 		// Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
+        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
 		$newsurvey .= "</div>\n";
 
 		// Publication and access control TAB
@@ -3052,7 +3051,7 @@ if ($action == "newsurvey")
 
 		// End Publication and access control TAB
 		// Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
+        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
 		$newsurvey .= "</div>\n";
 
 		// Notification and Data management TAB
@@ -3128,7 +3127,7 @@ if ($action == "newsurvey")
 
 		// End Notification and Data management TAB
 		// Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
+        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
 		$newsurvey .= "</div>\n";
         $newsurvey .= "</form>\n";
 

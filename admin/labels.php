@@ -135,11 +135,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		."</li>\n"
 		// Additional languages listbox
     	. "\t<li><label>".$clang->gT("Languages:")."</label>\n"
-		. "<table><tr><td align='left'><select multiple='multiple' style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
+		. "<table><tr><td align='left'><select multiple='multiple' style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>";
 		foreach ($langidsarray as $langid) 
 		{
 			$labelsoutput.=  "\t<option id='".$langid."' value='".$langid."'";
-			$labelsoutput.= ">".getLanguageNameFromCode($langid)."</option>\n";
+			$labelsoutput.= ">".getLanguageNameFromCode($langid,false)."</option>\n";
 		}
 
 		//  Add/Remove Buttons
@@ -147,20 +147,20 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             . "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this item since you need at least one language in a labelset.", "js")."')\" id=\"RemoveBtn\"  /></td>\n"
 
 		// Available languages listbox
-		. "<td align='left'><select size='5' id='available_languages' name='available_languages'>";
+		. "<td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>";
 		foreach (getLanguageData() as  $langkey=>$langname)
 		{
 			if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
 			{
 				$labelsoutput.= "\t<option id='".$langkey."' value='".$langkey."'";
-				$labelsoutput.= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+				$labelsoutput.= ">".$langname['description']."</option>\n";
 			}
 		}
 
 		$labelsoutput.= "\t</select></td>"
         ." </tr></table></li></ul>\n"
     	."<p><input type='submit' value='";
-		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Add");}
+		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Save label set");}
 		    else {$labelsoutput.= $clang->gT("Update");}
 		$labelsoutput.= "' />\n"
 		."<input type='hidden' name='action' value='";

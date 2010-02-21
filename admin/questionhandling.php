@@ -459,7 +459,7 @@ if ($action == "editquestion" || $action=="addquestion")
                
     if ($adding)
     {        
-        $editquestion .="<p><input type='submit' value='".$clang->gT("Add question")."' />\n"
+        $editquestion .="<p><input type='submit' value='".$clang->gT("Save question")."' />\n"
             . "\t<input type='hidden' name='action' value='insertnewquestion' />\n";   
     }
     else

@@ -52,7 +52,7 @@ if ($action == "addgroup")
 	    . getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 	    . "</li>\n"
         . "</ul>"
-    	. "\t<p><input type='submit' value='".$clang->gT("Add Group")."' />\n"
+    	. "\t<p><input type='submit' value='".$clang->gT("Save question group")."' />\n"
 	    . "</div>\n";
     }
 
@@ -71,7 +71,7 @@ if ($action == "addgroup")
     . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"35\" /></li>\n"
     . "<li><label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
     . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></li></ul>\n"
-    . "\t<p><input type='submit' value='".$clang->gT("Import Group")."' />\n"
+    . "\t<p><input type='submit' value='".$clang->gT("Import question group")."' />\n"
     . "\t<input type='hidden' name='action' value='importgroup' />\n"
     . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
     . "\t</form>\n";
