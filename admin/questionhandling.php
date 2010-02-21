@@ -203,9 +203,9 @@ if ($action == "editquestion" || $action=="addquestion")
 	        $eqresult = db_execute_assoc($eqquery);
         }
 	$editquestion = PrepareEditorScript();
-	$editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>";
+	$editquestion .= "<div class='header'>";
 	if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
-    $editquestion .= "</td></tr></table>\n"
+    $editquestion .= "</div>\n"
 	. "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n"
 	. '<div class="tab-pane" id="tab-pane-editquestion-'.$surveyid.'">';
 	
@@ -460,7 +460,7 @@ if ($action == "editquestion" || $action=="addquestion")
     if ($adding)
     {        
         $editquestion .="<p><input type='submit' value='".$clang->gT("Add question")."' />\n"
-            . "\t<input type='hidden' name='action' value='insertnewquestion' /><br/><br/>&nbsp;\n";   
+            . "\t<input type='hidden' name='action' value='insertnewquestion' />\n";   
     }
     else
     {
@@ -469,7 +469,7 @@ if ($action == "editquestion" || $action=="addquestion")
         . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
     }
 	$editquestion .= "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
-    . "</div></div></form><p>\n";
+    . "</div></div></form>\n";
 	
 
 	    
@@ -477,11 +477,34 @@ if ($action == "editquestion" || $action=="addquestion")
     {
         // Import dialogue
 
-        $editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>";
+        $editquestion .= "<br /><div class='header'>";
         $editquestion .=$clang->gT("...or import a question");
-        $editquestion .= "</td></tr></table>\n"
+        $editquestion .= "</div>\n"
         . "\t<form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-        . "<table width='100%' border='0' >\n\t"
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+        . "<ul>\n"
+        . "\t<li>\n"
+        . "\t<label for='the_file'>".$clang->gT("Select CSV File").":</label>\n"
+        . "\t<input name='the_file' id='the_file' type=\"file\" size=\"50\" />\n"
+        . "\t</li>\n"
+        . "\t<li>\n"
+        . "\t<label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
+        . "\t<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked'/>\n"
+        . "\t</li>\n"
+        . "</ul>\n"
+        . "\t<p>\n"
+        . "\t<input type='submit' value='".$clang->gT("Import Question")."' />\n"
+        . "\t<input type='hidden' name='action' value='importquestion' />\n"
+        . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+        . "\t<input type='hidden' name='gid' value='$gid' />\n"
+        . "\t</p>\n"
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+        /*
+		. "<table width='100%' border='0' >\n\t"
         . "\t<tr>"
         . "<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
         . "<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
@@ -492,7 +515,10 @@ if ($action == "editquestion" || $action=="addquestion")
         . "\t<input type='hidden' name='action' value='importquestion' />\n"
         . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
         . "\t<input type='hidden' name='gid' value='$gid' />\n"
-        . "\t</td></tr></table></form>\n\n"
+        . "\t</td></tr></table>\n"
+		*/
+		
+		."</form>\n\n"
         ."<script type='text/javascript'>\n"
         ."<!--\n"
         ."document.getElementById('title').focus();\n"

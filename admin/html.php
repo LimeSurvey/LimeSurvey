@@ -261,7 +261,7 @@ if ($action == "personalsettings")
     . "</li>\n"
     . "</ul>\n"
     . "<p><input type='hidden' name='action' value='savepersonalsettings' /><input class='submit' type='submit' value='".$clang->gT("Save settings")
-    ."' /></form></div>";
+    ."' /></p></form></div>";
 }
 
 
@@ -1323,13 +1323,8 @@ if (returnglobal('viewanswer'))
      $anscount = $result->RecordCount();
      $row=$result->FetchRow();
      $maxsortorder=$row['sortorder']+1;
-     $vasummary .= "<table width='100%' >\n"
-	."<tr  >\n"
-	."<td colspan='4' class='settingcaption'>\n"
-	.$clang->gT("Edit answer options")
-	."</td>\n"
-	."</tr>\n"
-	."<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
+     $vasummary .= "<div class='header'>".$clang->gT("Edit answer options")."</div>\n"
+	."<form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "<input type='hidden' name='gid' value='$gid' />\n"
 	. "<input type='hidden' name='qid' value='$qid' />\n"
@@ -1467,7 +1462,7 @@ if (returnglobal('viewanswer'))
 			}
 			else
 			{
-				$vasummary .= "<input type='submit' disabled='disabled value='".$clang->gT("Del")."' />\n";
+				$vasummary .= "<input type='submit' disabled='disabled' value='".$clang->gT("Del")."' />\n";
 			}
 
 			// Don't show Default Button for array question types
@@ -1558,7 +1553,7 @@ if (returnglobal('viewanswer'))
 		$vasummary .=  "<input type='hidden' name='codeids' value='$codeids' />\n";
 		$vasummary .= "</div>";
 	}
-	$vasummary .= "</div></form></td></tr></table>";
+	$vasummary .= "</div></form>";
 
 
 }
@@ -1872,15 +1867,12 @@ if($action == "exportstructureGroup")
 {
     if($export4lsrc === true && hasRight($surveyid,'export'))
     {
-	    $exportstructure = "<form name='exportstructureGroup' action='$scriptname' method='post'>\n"
-	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
-	    .$clang->gT("Export Group Structure")."\n</td></tr>\n"
-	    ."<tr>\n"
-	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv'
-	    onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>"
-	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
+	    $exportstructure = "<div class='header'>".$clang->gT("Export Group Structure")."</div>\n";
+	    $exportstructure .= "<form name='exportstructureGroup' action='$scriptname' method='post'>\n"
+	    ."<p>\n"
+	    ."<input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>\n"
+	    ."<label for='surveycsv'>".$clang->gT("LimeSurvey group file (*.csv)")."</label>\n"
+		."</p>";
 
 //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
 //	    ."<label for='queXML'>"
@@ -1893,27 +1885,21 @@ if($action == "exportstructureGroup")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv'
-		    onclick=\"this.form.action.value='exportstructureLsrcCsvGroup'\" />"
+		    $exportstructure.="<p><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv' onclick=\"this.form.action.value='exportstructureLsrcCsvGroup'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label>\n";
-	     }
+		    ."</label></p>\n";
+	    }
 	    
-	    $exportstructure.="<br />&nbsp;</td>\n"
-	    ."</tr>\n"
-	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
-	    ."<tr>\n"
-	    ."<td align='center'>\n"
+	    $exportstructure.="<p>\n"
 	    ."<input type='submit' value='"
 	    .$clang->gT("Export To File")."' />\n"
 	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
 	    ."<input type='hidden' name='gid' value='$gid' />\n"
 	    ."<input type='hidden' name='action' value='exportstructurecsvGroup' />\n"
-	    ."</td>\n"
-	    ."</tr>\n";
-	    $exportstructure.="</table><br /></form>\n";
-    }
+	    ."</p>\n";
+	    $exportstructure.="</form>\n";
+	}
     else
     {
     	include('dumpgroup.php');
@@ -1925,15 +1911,11 @@ if($action == "exportstructureQuestion")
 {
     if($export4lsrc === true && hasRight($surveyid,'export'))
     {
-	    $exportstructure = "<form name='exportstructureQuestion' action='$scriptname' method='post'>\n"
-	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
-	    .$clang->gT("Export Question Structure")."\n</td></tr>\n"
-	    ."<tr>\n"
-	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv'
-	    onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
-	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
+	    $exportstructure = "<div class='header'>".$clang->gT("Export Question Structure")."</div>\n";
+	    $exportstructure .= "<form name='exportstructureQuestion' action='$scriptname' method='post'>\n"
+	    ."<p><input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
+	    ."<label for='surveycsv'>".$clang->gT("LimeSurvey question file (*.csv)")."</label>\n"
+		."</p>";
 	    
 //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
 //	    ."<label for='queXML'>"
@@ -1946,28 +1928,21 @@ if($action == "exportstructureQuestion")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv'
-		    onclick=\"this.form.action.value='exportstructureLsrcCsvQuestion'\" />"
-		    ."<label for='LsrcCsv'>"
-		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label>\n";
+		    $exportstructure.="<p><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv' onclick=\"this.form.action.value='exportstructureLsrcCsvQuestion'\" />"
+		    ."<label for='LsrcCsv'>".$clang->gT("Save for Lsrc (*.csv)")." "
+		    ."</label>\n"
+			."</p>";
 	     }
 	    
-	    $exportstructure.="<br />&nbsp;</td>\n"
-	    ."</tr>\n"
-	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
-	    ."<tr>\n"
-	    ."<td align='center'>\n"
-	    ."<input type='submit' value='"
-	    .$clang->gT("Export To File")."' />\n"
+	    $exportstructure.="<p>\n"
+	    ."<input type='submit' value='".$clang->gT("Export To File")."' />\n"
 	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
 	    ."<input type='hidden' name='gid' value='$gid' />\n"
 	    ."<input type='hidden' name='qid' value='$qid' />\n"
 	    ."<input type='hidden' name='action' value='exportstructurecsvQuestion' />\n"
-	    ."</td>\n"
-	    ."</tr>\n";
-	    $exportstructure.="</table><br /></form>\n";
-    }
+	    ."</p>\n";
+	    $exportstructure.="</form>\n";
+	}
     else
     {
     	include('dumpquestion.php');
@@ -2203,7 +2178,7 @@ if ($action == "editsurvey")
 			$esrow = array_map('htmlspecialchars', $esrow);
 
 			// header
-            $editsurvey = "<div class='settingcaption'>".$clang->gT("Edit survey settings - Step 1 of 2")."</div>\n";
+            $editsurvey = "<div class='header'>".$clang->gT("Edit survey settings - Step 1 of 2")."</div>\n";
 
 			// beginning TABs section - create tab pane
 			$editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
@@ -2310,7 +2285,7 @@ if ($action == "editsurvey")
             . "</li>\n";
             
             $editsurvey .= "<li><label for='preview'>".$clang->gT("Template Preview:")."</label>\n"
-            . "<img id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
+            . "<img alt='".$clang->gT("Template Preview:")."' id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
             . "</li>\n" ;
 
 			//ALLOW SAVES
@@ -2756,8 +2731,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		. "}\n"
 		. "}\n"
 		. "--></script>\n"
-        . "<table width='100%' border='0'>\n<tr><td class='settingcaption'>"
-		. "".$clang->gT("Edit survey settings - Step 2 of 2")."</td></tr></table>\n";
+        . "<div class='header'>".$clang->gT("Edit survey settings - Step 2 of 2")."</div>\n";
 		$editsurvey .= "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n"
 		. '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
 		foreach ($grplangs as $grouplang)
@@ -2876,7 +2850,7 @@ if ($action == "newsurvey")
 
 		$newsurvey .= ""
 		. "<li><label for='surveyls_title'>".$clang->gT("Title").":</label>\n"
-		. "<input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /><font size='1'> ".$clang->gT("(This field is mandatory.)")."</font></label></li>\n"
+		. "<input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /><font size='1'> ".$clang->gT("(This field is mandatory.)")."</font></li>\n"
 		. "<li><label for='description'>".$clang->gT("Description:")."</label>\n"
 		. "<textarea cols='80' rows='10' id='description' name='description'></textarea>"
 		. getEditor("survey-desc","description", "[".$clang->gT("Description:", "js")."]",'','','',$action)
@@ -2900,7 +2874,7 @@ if ($action == "newsurvey")
 
 		// End General TAB
 		// Create Survey Button
-		$newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' />\n";
+		$newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
         
 		$newsurvey .= "</div>\n";
 
@@ -2915,7 +2889,7 @@ if ($action == "newsurvey")
 		. "<option value='A'>".$clang->gT("All in one")."</option>\n"
 		. "</select>\n"
 		. "</li>\n";
-        $newsurvey .= "<li><label for='settingcaption'>".$clang->gT("Template:")."</label>\n"
+        $newsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
         . "<select id='template' name='template'>\n";
 		foreach (gettemplatelist() as $tname)
 		{
@@ -2931,7 +2905,7 @@ if ($action == "newsurvey")
 		$newsurvey .= "</select>\n"
                     . "</li>\n"
                     . "<li><label for='preview'>".$clang->gT("Template Preview:")."</label>\n"
-                    . "<img id='preview' src='$publicurl/templates/{$defaulttemplate}/preview.png' />\n"
+                    . "<img alt='".$clang->gT("Template Preview:")."' id='preview' src='$publicurl/templates/{$defaulttemplate}/preview.png' />\n"
                     . "</li>\n";
 
 		//ALLOW SAVES
@@ -2989,7 +2963,7 @@ if ($action == "newsurvey")
 		$newsurvey.= "<li><label for='urldescrip'>".$clang->gT("URL description:")."</label>\n"
 		. "<input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value='";
 		if (isset($esrow)) {$newsurvey .= $esrow['surveyls_urldescription'];}
-		$newsurvey .= "' /></label></li>\n";
+		$newsurvey .= "' /></li>\n";
         $newsurvey .= "<li><label for='autoredirect'>".$clang->gT("Automatically load URL when survey complete?")."</label>\n"
 		. "<select name='autoredirect' id='autoredirect'>\n"
 		. "<option value='Y'>".$clang->gT("Yes")."</option>\n"
@@ -3009,7 +2983,7 @@ if ($action == "newsurvey")
 
 		// End Presention and navigation TAB
 		// Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' />\n";
+        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
 		$newsurvey .= "</div>\n";
 
 		// Publication and access control TAB
@@ -3074,11 +3048,11 @@ if ($action == "newsurvey")
         . "<select id='htmlemail' name='htmlemail'>\n"
         . "<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
         . "<option value='N'>".$clang->gT("No")."</option>\n"
-        . "</select></li></l>\n";
+        . "</select></li></ul>\n";
 
 		// End Publication and access control TAB
 		// Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' />\n";
+        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
 		$newsurvey .= "</div>\n";
 
 		// Notification and Data management TAB
@@ -3092,7 +3066,7 @@ if ($action == "newsurvey")
 
 		//EMAIL SURVEY RESPONSES TO
 		$newsurvey .= "<li><label for='emailresponseto'>".$clang->gT("Email responses to:")."</label>\n"
-		. "<input type='text' id='emailresponseto' name='emailresponseto'>\n"
+		. "<input type='text' id='emailresponseto' name='emailresponseto' />\n"
 		. "</li>\n";
 
 		// ANONYMOUS
@@ -3154,7 +3128,7 @@ if ($action == "newsurvey")
 
 		// End Notification and Data management TAB
 		// Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' />\n";
+        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></p>\n";
 		$newsurvey .= "</div>\n";
         $newsurvey .= "</form>\n";
 
@@ -3169,7 +3143,7 @@ if ($action == "newsurvey")
 		. "<li><label for='translinksfields'>".$clang->gT("Convert resources links and INSERTANS fields?")."</label>\n"
 		. "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked='checked'/></li></ul>\n"
 		. "<p><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
-		. "<input type='hidden' name='action' value='importsurvey' /></form>\n";
+		. "<input type='hidden' name='action' value='importsurvey' /></p></form>\n";
 //		. "</form>\n";
 
 		// End Import TAB

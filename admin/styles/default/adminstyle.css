@@ -1013,7 +1013,8 @@ textarea.updater-changelog {
 #importlabels li label:first-child,
 #addattribute li label:first-child,  
 #exportdialog li label:first-child, 
-#frmeditquestion li label:first-child,
+#frmeditquestion li label:first-child, 
+#importquestion li label:first-child,
 #frmglobalsettings li label:first-child {
     width: 44%;
     text-align: right;
@@ -1084,7 +1085,8 @@ textarea.updater-changelog {
     padding-bottom:5px;
 }
 
-#frmeditquestion li {
+#frmeditquestion li,
+#importquestion li {
     list-style-type: none;
     clear:left;    
     padding-bottom:7px;   
