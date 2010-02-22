@@ -37,6 +37,7 @@ if (!function_exists('mb_convert_encoding'))
 }
 if ($dieoutput!='') die($dieoutput);
 
+if (!isset($debug)) {$debug=0;}  // for some older config.php's
 
 if ($debug>0) {//For debug purposes - switch on in config.php
         @ini_set("display_errors", 1);
