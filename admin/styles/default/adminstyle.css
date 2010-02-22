@@ -307,6 +307,16 @@ textarea {
 	color: #E00;
 }
 
+.annotationasterisk
+{
+        color: #E00;
+}
+
+.annotation {
+    font-size: 10px;
+    color: #E00;
+}
+
 .errortitle {
 	font-weight: 700;
 	color: #FF0F0F;

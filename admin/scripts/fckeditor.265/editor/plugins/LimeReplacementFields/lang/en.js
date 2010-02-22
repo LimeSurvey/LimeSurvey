@@ -20,5 +20,5 @@
  *
  * Placholder English language file.
  */
-FCKLang.LimeReplacementFieldsBtn	= 'Insert/Edit LimeReplacementField' ;
-FCKLang.LimeReplacementFieldsDlgTitle	= 'LimeReplacementField Properties' ;
+FCKLang.LimeReplacementFieldsBtn	= 'Insert/edit LimeSurvey replacement field' ;
+FCKLang.LimeReplacementFieldsDlgTitle	= 'LimeSurvey replacement field properties' ;

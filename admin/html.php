@@ -779,11 +779,11 @@ if ($surveyid)
 			$surveysummary .= $clang->gT("Survey cannot be activated yet.")."<br />\n";
 			if ($sumcount2 == 0 && hasRight($surveyid,'define_questions'))
 			{
-				$surveysummary .= "<font class='statusentryhighlight'>[".$clang->gT("You need to add question groups")."]</font><br />";
+				$surveysummary .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add question groups")."]</span><br />";
 			}
 			if ($sumcount3 == 0 && hasRight($surveyid,'define_questions'))
 			{
-				$surveysummary .= "<font class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</font><br />";
+				$surveysummary .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</span><br />";
 			}
 		}
 		$surveysummary .=  $surveysummary2
@@ -2825,7 +2825,7 @@ if ($action == "newsurvey")
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
 
 		// * Survey Language
-		$newsurvey .= "<ul><li><label for='language'>".$clang->gT("Base Language:")."</label>\n"
+		$newsurvey .= "<ul><li><label for='language'><span class='annotationasterisk'>*</span>".$clang->gT("Base Language:")."</label>\n"
 		. "<select id='language' name='language'>\n";
 
 
@@ -2833,7 +2833,7 @@ if ($action == "newsurvey")
 		{
 			$newsurvey .= "<option value='".$langkey2."'";
 			if ($defaultlang == $langkey2) {$newsurvey .= " selected='selected'";}
-			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+			$newsurvey .= ">".$langname['description']."</option>\n";
 		}
         
         //Use the current user details for the default administrator name and email for this survey
@@ -2844,12 +2844,12 @@ if ($action == "newsurvey")
 		if(empty($owner['full_name'])) $owner['full_name']=$siteadminname;
 		if(empty($owner['email'])) $owner['email'] = $siteadminemail;
         
-		$newsurvey .= "</select><font size='1'> ".$clang->gT("This setting cannot be changed later!")."</font>\n"
+		$newsurvey .= "</select><span class='annotation'> ".$clang->gT("*This setting cannot be changed later!")."</span>\n"
 		. "</li>\n";
 
 		$newsurvey .= ""
-		. "<li><label for='surveyls_title'>".$clang->gT("Title").":</label>\n"
-		. "<input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /><font size='1'> ".$clang->gT("(This field is mandatory.)")."</font></li>\n"
+		. "<li><label for='surveyls_title'><span class='annotationasterisk'>*</span>".$clang->gT("Title").":</label>\n"
+		. "<input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /> <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
 		. "<li><label for='description'>".$clang->gT("Description:")."</label>\n"
 		. "<textarea cols='80' rows='10' id='description' name='description'></textarea>"
 		. getEditor("survey-desc","description", "[".$clang->gT("Description:", "js")."]",'','','',$action)

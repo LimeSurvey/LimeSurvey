@@ -41,7 +41,7 @@ $(document).ready(function(){
         }
     });    
 
-    $('#noncompletedlbl[title]').each(function() {
+    $('label[title]').each(function() {
         if($(this).attr('title') != '')
         {
              $(this).qtip({

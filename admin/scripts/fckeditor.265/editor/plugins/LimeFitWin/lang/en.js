@@ -25,3 +25,4 @@
  *         Anton Suprun (kpobococ at gmail dot com)
  */
 FCKLang.SwitchtoolbarBtn = 'Switch Toolbar';
+FCKLang.LimeFitWinBtn = 'Toggle fullscreen & advanced options';
