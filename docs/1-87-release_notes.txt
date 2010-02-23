@@ -77,6 +77,25 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated feature, - bug fix 
++New language: Malay (thanks to Kardina Kamaruddin) (gandalfar)
+#Updated feature: Usability: In login and user language selection the select box is ordered now by the native language. In other language list boxes the native language won't be shown anymore. (c_schmitz)
+#Updated language: Croatian (idobraca)
+#Updated language: French (b00z00)
+#Updated language: Italian (thanks to Cristina Fiorentini ) (gandalfar)
+#Updated language: Portuguese, thanks to Rui Gouveia and Marco Mendonça (gandalfar)
+#Updated language: Spanish (es) (kadejo)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+-Fix issue 04117: Check for old table layouts (tpartner)
+-Fix issue 04141: Class breakbefore not defined in default-css  (tpartner)
+-Fix issue 04150: Basic template is missing IE8 css branching (tpartner)
+-Fixed issue #4108: Notice at Question Preview at a Slider Question (lemeur)
+-Fixed issue #4140: Unable to export Stats in PDF when using a free text answer (c_schmitz)
+-Fixed issue #4144: vvimport.php producing infinite loop (c_schmitz)
+-Fixed issue #4125: Text when quota reached in wrong language (idobraca)
+
 Changes from  1.87+ (build 8374) to 1.87+ (build 8406) - Legend: # updated feature, - bug fix 
 #Updated translation: Croatian (idobraca)
 #Updated translation: Slovenian (gandalfar)
