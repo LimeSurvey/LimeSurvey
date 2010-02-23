@@ -430,14 +430,14 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "</div>\n"
                         . "</div>\n";
           //  $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-            if (!isset($action) && !isset($surveyid) && count(getsurveylist(true))==0) {
+            if (!isset($action) && !isset($surveyid)) {
                 $adminmenu.= '<div style="width:500px;margin:0 auto;">'
                              .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
-                             .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
+                             .'<p>'.$clang->gT("There are four easy steps to create your own survey:").'<br/>'
                              .'<ol>'
                              .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imagefiles/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
-                             .'<li>'.$clang->gT('Create a new group inside your survey.').'</li>'
-                             .'<li>'.$clang->gT('Create one or more question inside the new group.').'</li>'
+                             .'<li>'.$clang->gT('Create a new question group inside your survey.').'</li>'
+                             .'<li>'.$clang->gT('Create one or more question inside the new question group.').'</li>'
                              .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imagefiles/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
                              .'</ol></p><br />&nbsp;</div>';
             }

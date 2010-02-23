@@ -94,12 +94,12 @@ if (!isset($_SESSION['loginID']))
 	}
 	elseif($action == "login" && $useWebserverAuth === false)	// normal login
 	{
-		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
+		$loginsummary = '';
 
 		if (isset($postuser) && isset($_POST['password']))
 		{
 			include("database.php");
-			$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode,dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
+			$query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
 			$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
@@ -127,6 +127,7 @@ if (!isset($_SESSION['loginID']))
 				    session_regenerate_id();
                     $_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
+                    $_SESSION['full_name'] = $fields['full_name'];
 					$_SESSION['htmleditormode'] = $fields['htmleditormode'];
                     $_SESSION['dateformat'] = $fields['dateformat'];
 					// Compute a checksession random number to test POSTs
@@ -147,7 +148,7 @@ if (!isset($_SESSION['loginID']))
 					}
 					$login = true;
 
-					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";
+                    $loginsummary .= "<br /><span style='font-weight:bold;'>" .sprintf($clang->gT("Welcome %s!"),$_SESSION['user']) . "</span><br />";
 					$loginsummary .= $clang->gT("You logged in successfully.");
 
 					if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
@@ -182,7 +183,7 @@ if (!isset($_SESSION['loginID']))
 		// a link with all params before first auto-login
 		unset($surveyid);
 
-		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
+		$loginsummary = '';
 		// getting user name, optionnally mapped
 		if (isset($userArrayMap) && is_array($userArrayMap) &&
 			isset($userArrayMap[$_SERVER['PHP_AUTH_USER']]))
@@ -288,8 +289,8 @@ if (!isset($_SESSION['loginID']))
 			$clang = new limesurvey_lang($_SESSION['adminlang']);
 			$login = true;
 
-			$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";
-			$loginsummary .= $clang->gT("You logged in successfully.");
+            $loginsummary .= "<br /><span style='font-weight:bold;'>" .sprintf($clang->gT("Welcome %s!"),$_SESSION['user']) . "</span><br />";
+ 			$loginsummary .= $clang->gT("You logged in successfully.");
 
 			if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] &&
 				strpos($_SERVER['QUERY_STRING'], "action=logout") === FALSE)

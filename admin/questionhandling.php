@@ -184,6 +184,10 @@ if ($action == "editquestion" || $action=="addquestion")
 			    if ($esrow['language'] == $baselang) $basesettings = array('lid' => $esrow['lid'], 'lid1' => $esrow['lid1'],'question_order' => $esrow['question_order'],'other' => $esrow['other'],'mandatory' => $esrow['mandatory'],'type' => $esrow['type'],'title' => $esrow['title'],'preg' => $esrow['preg'],'question' => $esrow['question'],'help' => $esrow['help']);
 
 		    }
+            if ($egresult==false or $egresult->RecordCount()==0)
+            {
+                safe_die('Invalid question id');
+            }
         
 	
 		    while (list($key,$value) = each($questlangs))

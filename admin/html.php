@@ -2825,7 +2825,7 @@ if ($action == "newsurvey")
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
 
 		// * Survey Language
-		$newsurvey .= "<ul><li><label for='language'><span class='annotationasterisk'>*</span>".$clang->gT("Base Language:")."</label>\n"
+		$newsurvey .= "<ul><li><label for='language' title='".$clang->gT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey.")."'><span class='annotationasterisk'>*</span>".$clang->gT("Base Language:")."</label>\n"
 		. "<select id='language' name='language'>\n";
 
 
@@ -2844,8 +2844,7 @@ if ($action == "newsurvey")
 		if(empty($owner['full_name'])) $owner['full_name']=$siteadminname;
 		if(empty($owner['email'])) $owner['email'] = $siteadminemail;
         
-		$newsurvey .= "</select><span class='annotation'> ".$clang->gT("*This setting cannot be changed later!")."</span>\n"
-		. "</li>\n";
+		$newsurvey .= "</select><span class='annotation'> ".$clang->gT("*This setting cannot be changed later!")."</span></li>\n";
 
 		$newsurvey .= ""
 		. "<li><label for='surveyls_title'><span class='annotationasterisk'>*</span>".$clang->gT("Title").":</label>\n"
