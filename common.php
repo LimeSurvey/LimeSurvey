@@ -6515,7 +6515,7 @@ function getQuotaInformation($surveyid,$quotaid='all')
 	$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
 		   	  WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
 			  AND sid='{$surveyid}'
-			  AND quotals_language='$baselang'";
+              AND quotals_language='".$_SESSION['s_lang']."'";  
 	if ($quotaid != 'all')
 	{
 		$query .= " AND id=$quotaid";
