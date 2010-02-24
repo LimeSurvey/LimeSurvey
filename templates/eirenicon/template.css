@@ -646,8 +646,8 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     width: 100px; 
     overflow: hidden; 
     position: absolute; 
-    top: -19px; 
-    margin-left:10px; 
+    top: -17px; 
+    margin-left:-3px; 
     font-family: 'Arial'; 
     font-size: 9pt; 
     color: #284a6e; 
@@ -658,37 +658,39 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .slider_showmin {
     float: left;
 	width: 50px;
-    margin: 15px 0 0 -25px;
+    margin: 15px 0 0 0;
   	font-family: Verdana;
 	font-size: 0.7em;
 	font-weight: normal;
-	text-align: center;
+	text-align: left;
 }
 
 .slider_showmax {
     float: right;
 	width: 50px;
-    margin: 15px -28px 0 0;
+    margin: 15px 0 0 0;
   	font-family: Verdana;
 	font-size: 0.7em;
 	font-weight: normal;
-	text-align: center;
+	text-align: right;
 }
 
 .slider_lefttext {
     display: table-cell;
+	padding-top: 1.5em;
 	padding-right: 11px;
 	padding-bottom: 3px;
-    vertical-align: middle;
+    vertical-align: top;
 	text-align: right;
 	font-size: 0.9em;
 }
 
 .slider_righttext {
     display: table-cell;
+	padding-top: 1.5em;
 	padding-left: 11px;
 	padding-bottom: 3px;
-    vertical-align: middle;
+    vertical-align: top;
 	font-size: 0.9em;
 }
 

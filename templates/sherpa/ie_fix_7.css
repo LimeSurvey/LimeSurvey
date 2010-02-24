@@ -121,22 +121,16 @@ input.submit
 
 .numeric-multi label.slider-label {
 	margin-top: 1.3em;
-}
-
-.slider_showmin {
-    margin: 18px 0 0 -25px;
-}
-
-.slider_showmax {
-    margin: 18px -26px 0 0;
+	display: inline;
+	width: 40%;
 }
 
 .slider_lefttext {
 	float: left;
-	margin-top: 1.45em;
+	padding-top: 1.45em;
 }
 
 .slider_righttext {
 	float: left;
-	margin-top: 1.45em;
+	padding-top: 1.45em;
 }

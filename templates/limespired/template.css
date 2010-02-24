@@ -640,7 +640,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     overflow: hidden; 
     position: absolute; 
     top: -19px; 
-    margin-left:10px; 
+    margin-left:-3px; 
     font-family: 'Arial'; 
     font-size: 9pt; 
     color: #284a6e; 
@@ -651,35 +651,37 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .slider_showmin {
     float: left;
 	width: 50px;
-    margin: 18px 0 0 -23px;
+    margin: 18px 0 0 0;
   	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 	font-size: 0.7em;
 	font-weight: normal;
-	text-align: center;
+	text-align: left;
 }
 
 .slider_showmax {
     float: right;
 	width: 50px;
-    margin: 18px -28px 0 0;
+    margin: 18px 0 0 0;
   	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 	font-size: 0.7em;
 	font-weight: normal;
-	text-align: center;
+	text-align: right;
 }
 
 .slider_lefttext {
     display: table-cell;
+	padding-top: 1.5em;
 	padding-right: 5px;
-    vertical-align: middle;
+    vertical-align: top;
 	text-align: right;
 	font-size: 0.9em;
 }
 
 .slider_righttext {
     display: table-cell;
-	padding-left: 8px;
-    vertical-align: middle;
+	padding-top: 1.5em;
+	padding-left: 9px;
+    vertical-align: top;
 	font-size: 0.9em;
 }
 

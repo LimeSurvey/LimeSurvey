@@ -124,16 +124,18 @@ input.submit
 
 .numeric-multi label.slider-label {
 	margin-top: 1.3em;
+	display: inline;
+	width: 40%;
 }
 
 .slider_lefttext {
 	float: left;
-	margin-top: 1.45em;
+	padding-top: 1.4em;
 }
 
 .slider_righttext {
 	float: left;
-	margin-top: 1.45em;
+	padding-top: 1.4em;
 }
 
 .ui-slider-1 {
@@ -144,12 +146,11 @@ input.submit
 	margin: 0;
 	position: absolute;
 	top: 15px;
-	left: -25px;
 }
 
 .slider_showmax {
 	margin: 0;
 	position: absolute;
 	top: 15px;
-	left: 175px;
+	left: 150px;
 }
