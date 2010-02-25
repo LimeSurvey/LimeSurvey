@@ -20,7 +20,7 @@
 			<p class="submit-by">
 				{END}<br />
                 {SUBMIT_BY}<br />
-				{FAX_TO}
+				{FAX_TO}<br />
 				{SUBMIT_TEXT}<br />
 				{THANKS}<br />
 			</p>

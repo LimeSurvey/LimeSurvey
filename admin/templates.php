@@ -697,10 +697,11 @@ switch($screenname) {
         {
             $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
                                                    'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
-                                                   'SUBMIT_TEXT'=>'',
+                                                   'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
                                                    'HEADELEMENTS'=>getPrintableHeader(),
                                                    'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
-                                                   'THANKS'=>$clang->gT('Thank you for completing this survey.')
+                                                   'THANKS'=>$clang->gT('Thank you for completing this survey.'),
+                                                   'END'=>$clang->gT('Survey end message.')
             ));
         }    
         break;   
