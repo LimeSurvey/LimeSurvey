@@ -1089,8 +1089,7 @@ function checkconfield($value)
 			}
 		}
 		
-
-	//$value is the fieldname for the field we are checking for conditions
+    //$value is the fieldname for the field we are checking for conditions
 	foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
 	{
 		// this fieldname '$value' is inside a question identified by the SGQ code '$masterFieldName'
@@ -1099,7 +1098,6 @@ function checkconfield($value)
 		// check if this question is conditionnal ($sfa[7]): if yes eval conditions
 		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
 		{
-
 			$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
 				." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
 			$scenarioresult=db_execute_assoc($scenarioquery);
@@ -1299,8 +1297,15 @@ function checkconfield($value)
 			(isset($value_qa['array_filter'])  && trim($value_qa['array_filter']) != '') || 
 			(isset($value_qa['array_filter_exclude']) && trim($value_qa['array_filter_exclude']) != '') ))
 	{ // check if array_filter//array_filter_exclude have hidden the field
-		$value_code = preg_replace("/$masterFieldName(.*)/","$1",$value);	
-
+		$value_code = preg_replace("/$masterFieldName(.*)/","$1",$value);
+		//If this question is a multi-flexible, the value_code will be both the array_filter value 
+		// (at the beginning) and then a labelset value after an underscore
+		// ie: 2_1 for answer code=2 and labelset code=1 then 2_2 for answer_code=2 and 
+		// labelset code=2. So for these question types we need to split it again at the underscore!
+	    // 1. Find out if this is question type ":" or ";"
+		if($value_type==";" || $value_type==":") {
+		    list($value_code, $value_label)=explode("_", $value_code);
+		}
 		$arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_qid);
 		if ( $arrayfilterXcludes_selected_codes !== false && 
 			in_array($value_code,$arrayfilterXcludes_selected_codes))
