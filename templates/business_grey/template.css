@@ -16,7 +16,8 @@ body {
 }
 
 
-.saveall {
+.saveall,
+.clearall {
     background-color:#CCF;
     font-size:8pt;
     font-family:arial;
@@ -43,35 +44,6 @@ textarea {
     font-family:arial;
     width:450px;
 }
-
-.clearall {
-    font-size:7pt;
-}
-
-.clearall a:link {
-    text-decoration:none;
-    font-family:arial;
-    color:#555;
-}
-
-.clearall a:visited {
-    text-decoration:none;
-    font-family:arial;
-    color:#666;
-}
-
-.clearall a:active {
-    text-decoration:none;
-    font-family:arial;
-    color:#EEE;
-}
-
-.clearall a:hover {
-    text-decoration:underline;
-    font-family:arial;
-    color:#222;
-}
-
 
 .innergraph {
     background-color:EFEFEF;

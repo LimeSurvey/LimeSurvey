@@ -101,9 +101,15 @@ div#footer .rk-2 {background: url(footer-l.png) 0 0 no-repeat;height: 105px;over
 .submit	{background-color: #e0fcff;border:1px solid #86b8bc;cursor:pointer;}
 .submit:hover{background:#c2f9ff;border:1px solid #00677d;}
 input.submit:hover{background:#c2f9ff;border:1px solid #00677d;}
-.clearall {font-family: arial;margin: 0 0 10px 0;margin-top:20px;}
-.clearall A:link, .clearall A:visited, .clearall A:active {text-decoration:none;color:#00677d;border-bottom:1px dashed #00677d;}
-.clearall A:hover {text-decoration:none;color:#004554;;border-bottom:1px solid #004554;}
+
+.clearall,
+.saveall {
+	margin: 0 0 10px 0;
+	background-color: #E0FCFF;
+	border: 1px solid #86B8BC;
+	cursor: pointer;
+}
+
 .survey-survey-description {margin: 5px 0 10px 0;}
 .survey-survey-percent
 {

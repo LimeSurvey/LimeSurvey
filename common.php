@@ -2675,18 +2675,17 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{PRIVACYMESSAGE}", "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
     }
     if (strpos($line, "{CLEARALL}") !== false)  {
-        $clearall = "<div class='clearall'>"
-        . "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
+
+		$clearall = "<input type='button' name='clearallbtn' value='".$clang->gT("Exit and Clear Survey")."' class='clearall' "
+		."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?")."')) {window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
         if (returnglobal('token'))
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
-        $clearall .="' onclick='return confirm(\""
-        . $clang->gT("Are you sure you want to clear all your responses?")."\")'>["
-        . $clang->gT("Exit and Clear Survey")."]</a></div>\n";
-
+		 $clearall .= "', '_top')}\" />";
 
         $line=str_replace("{CLEARALL}", $clearall, $line);
+		
     }
     // --> START NEW FEATURE - SAVE
     if (strpos($line, "{DATESTAMP}") !== false) {

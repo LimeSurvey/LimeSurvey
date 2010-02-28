@@ -8,17 +8,6 @@ background-color:#c0c0c0;
 text-align:left;
 }
 
-.clearall {
-font-size:10pt;
-}
-
-.clearall
-A:hover {
-text-decoration:underline;
-font-family:verdana;
-color:#17479E;
-}
-
 .graph {
 border:solid;
 background-color:#DDD;
@@ -143,7 +132,11 @@ height:1.5em;
 font-size:1em;
 }
 
-.submit,.text,.textarea, .saveall {
+.submit,
+.text,
+.textarea, 
+.saveall,
+.clearall {
     background-color:#EDEDED;
     color:#17479E;
     font-size:10pt;
@@ -153,15 +146,6 @@ font-size:1em;
 .saveall {
     font-size:9pt;
     
-}
-
-.clearall
-A:link,.clearall
-A:visited,.clearall
-A:active {
-text-decoration:none;
-font-family:verdana;
-color:#17479E;
 }
 
 table.question {
