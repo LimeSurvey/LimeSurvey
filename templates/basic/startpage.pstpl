@@ -18,7 +18,9 @@
     <style type="text/css" media="aural tty">
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
     </style>
-<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+		
+	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
+	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 	</head>
 	<body>
 		<table width="80%" align="center" class="bf" cellpadding="0" cellspacing="11">
