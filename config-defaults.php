@@ -442,7 +442,7 @@ require_once(dirname(__FILE__).'/config.php');
     $tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical location where LimeSurvey can store temporary files
                                                                     // Note: For OS/2 the $tempdir may need to be defined as an actual directory
                                                                     // example: "x:/limesurvey/tmp". We don't know why.
-    $fckeditordir   =   "$homeurl/scripts/fckeditor.265";
+    $fckeditordir   =   "$homeurl/scripts/fckeditor.266";
     $fckeditexpandtoolbar   =   true; // defines if the FCKeditor toolbar should be opened by default
     $pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
     $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts
