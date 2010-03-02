@@ -78,6 +78,23 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 Thank you to everyone who helped with this new release!
 
 
+Changes from  1.87+ (build 8429) to 1.87+ (build 8453) - Legend: # updated feature, - bug fix 
+#Updated feature: the html editor was updated from FCKeditor 2.6.5 to FCKeditor 2.6.6 (lemeur)
+#Updated translation: Chinese (Simpified), thanks to yooyooh from shanghai (gandalfar)
+#Updated translation: Croatian (idobraca)
+#Updated translation: French (b00z00)
+#Updated translation: Japanase (thanks to Hisashi Nomoto) (gandalfar)
+#Updated translation: Catalan - sponsored by LimeService (c_schmitz)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue 04109: Slider description has incorrectly position, when moving slider from right to left  (tpartner)
+-Fixed issue 04151: {END}-Tag isn't available at Template Preview for Printable Survey Page (tpartner)
+-Fixed issue #04154: Array filter not working on Array Flexible (Text) (jcleeland)
+-Fixed issue #4126: in Chrome, fckeditor adds a nbsp; element to empty text inputs (lemeur)
+-Fixed issue #4136: Multilingual question/group import fails on MSSQL server (c_schmitz)
+-Fixed issue #4156: ComfortUpgrade not working because the directories /locale/ms and /locale/ms/LC_MESSAGES are not found - for solutions with earlier versions please visit http://bugs.limesurvey.org/view.php?id=4156 (c_schmitz)
+-Fixed issue #4164: When using keyboard navigation the checkboxes are checked in Multiple options Question and Multiple options with comments question types (c_schmitz)
+-Fixed issue: Entering invalid float in multiple numeric question is causing the survey to exit (c_schmitz)
+
 Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated feature, - bug fix 
 +New language: Malay (thanks to Kardina Kamaruddin) (gandalfar)
 #Updated feature: Usability: In login and user language selection the select box is ordered now by the native language. In other language list boxes the native language won't be shown anymore. (c_schmitz)
