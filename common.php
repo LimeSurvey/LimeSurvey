@@ -6657,6 +6657,16 @@ function fix_FCKeditor_text($str)
 	{
 		$str='';
 	}
+	if ($str == "\n")
+	{
+		$str = "";
+	}
+	if ( (strpos($_SERVER["HTTP_USER_AGENT"], 'Chrome') !== false) &&
+		$str == "&nbsp;")
+	{ // chrome adds a single &nbsp; element to empty fckeditor fields
+		$str = "";
+	}
+
 	return $str;
 }
 
