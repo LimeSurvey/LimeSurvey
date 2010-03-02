@@ -4211,7 +4211,7 @@ function getAdminFooter($url, $explanation)
 
 	if ($buildnumber != "")
 	{
-		$buildtext="($buildnumber)";
+		$buildtext="Build $buildnumber";
 	}
 	else
 	{

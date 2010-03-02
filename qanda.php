@@ -3293,7 +3293,7 @@ function do_multiplechoice($ia)
 		{
 			$answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
 		}
-		$answer .= " onkeypress='document.getElementById(\"answer{$myfname}cbox\").checked=true;$numbersonly' ".$callmaxanswscriptother.' />
+		$answer .= " onkeypress='if ($.trim($(\"#answer{$myfname}\").val())!=\"\") {document.getElementById(\"answer{$myfname}cbox\").checked=true;}$numbersonly' ".$callmaxanswscriptother.' />
 		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
 		if ($maxansw > 0)
@@ -3595,7 +3595,7 @@ function do_multiplechoice_withcomments($ia)
 		."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
 		if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
+		$answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
 
 		. "\t</li>\n";
 		// --> END NEW FEATURE - SAVE
@@ -3610,7 +3610,7 @@ function do_multiplechoice_withcomments($ia)
 		$myfname2 = $myfname.'comment';
 		$anscount = $anscount + 2;
 		$answer_main .= "\t<li class=\"other\">\n<span class=\"option\">\n"
-		. "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext.":\n<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+		. "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
 			$answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
