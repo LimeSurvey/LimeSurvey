@@ -587,6 +587,7 @@ unset($surveyrowdata['attribute2']);
 unset($surveyrowdata['usestartdate']);
 unset($surveyrowdata['useexpiry']);
 unset($surveyrowdata['url']);           
+unset($surveyrowdata['lastpage']);           
 if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
 $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
 if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));}
@@ -619,6 +620,7 @@ if ($importversion>=111)
     $surveylsrowdata['surveyls_email_remind']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_remind']);
     $surveylsrowdata['surveyls_email_register']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_register']);
     $surveylsrowdata['surveyls_email_confirm']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
+    unset($surveylsrowdata['lastpage']);           
 
         $surveylsrowdata['surveyls_survey_id']=$newsid;     
         $newvalues=array_values($surveylsrowdata);

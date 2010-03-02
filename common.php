@@ -6512,6 +6512,10 @@ function getQuotaInformation($surveyid,$quotaid='all')
 {
 	global $clang, $clienttoken;
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+    if (!isset($_SESSION['s_lang']))
+    {
+        return array();
+    } 
 	$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
 		   	  WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
 			  AND sid='{$surveyid}'

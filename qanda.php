@@ -3933,14 +3933,14 @@ function do_multiplenumeric($ia)
 	$qidattributes=getQuestionAttributes($ia[0],'K');
     $answer='';
 	//Must turn on the "numbers only javascript"
-	$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+	$numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\'.\')>0 && String.fromCharCode(getkey(event))==\'.\') return false; return goodchars(event,\'0123456789.\')"';
     if (trim($qidattributes['maximum_chars'])!='')
 	{
 		$maxsize=$qidattributes['maximum_chars'];
 	}
 	else
 	{
-		$maxsize = 255;
+		$maxsize = 25;
 	}
 
 	//EQUALS VALUE
