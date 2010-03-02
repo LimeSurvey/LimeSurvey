@@ -174,10 +174,25 @@ function UpdateStep2()
         
         foreach ($updateinfo['files'] as $afile)
         {
-            if (($afile['type']=='A' || !file_exists($rootdir.$afile['file'])) && !is_writable(dirname($rootdir.$afile['file'])))
-		    {
-			    $readonlyfiles[]=dirname($rootdir.$afile['file']);
-		    }
+            if ($afile['type']=='A' && !file_exists($rootdir.$afile['file']))
+            { 
+                $searchpath=$rootdir.$afile['file'];
+                $is_writable=is_writable(dirname($searchpath));
+                while (!$is_writable && strlen($searchpath)>strlen($rootdir))
+		        {
+                    $searchpath=dirname($searchpath);
+                    if (file_exists($searchpath))
+                    {
+                        $is_writable=is_writable($searchpath);
+                        break;
+                        
+                    }
+	            }
+                if (!$is_writable)
+                {
+                    $readonlyfiles[]=$searchpath;
+                }
+            }
 		    elseif (file_exists($rootdir.$afile['file']) && !is_writable($rootdir.$afile['file'])) {
 			    $readonlyfiles[]=$rootdir.$afile['file'];
 		    }  
