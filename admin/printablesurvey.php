@@ -28,6 +28,7 @@ function try_debug($line)
 }
 $surveyid = $_GET['sid'];
 
+//echo '<pre>'.print_r($_SESSION,true).'</pre>';
 // PRESENT SURVEY DATAENTRY SCREEN
 if(isset($_POST['printableexport']))
 {
@@ -53,6 +54,8 @@ $desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_na
 $desresult = db_execute_assoc($desquery);
 while ($desrow = $desresult->FetchRow())
 {
+
+//echo '<pre>'.print_r($desrow,true).'</pre>';
 	$template = $desrow['template'];
 	$welcome = $desrow['surveyls_welcometext'];
     $end = $desrow['surveyls_endtext'];
@@ -63,9 +66,42 @@ while ($desrow = $desresult->FetchRow())
 	$surveyexpirydate = $desrow['expires'];
 	$surveystartdate = $desrow['startdate'];
 	$surveyfaxto = $desrow['faxto'];
+	$dateformattype = $desrow['surveyls_dateformat'];
 }
 if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
+switch($dateformattype)
+{
+	case 1: $dformat = 'd.m.Y'; // dd.mm.yyyy
+		break;
+	case 2: $dformat = 'd-m-Y'; // dd-mm-yyyy
+		break;
+	case 5: $dformat = 'd/m/Y'; // dd/mm/yyyy
+		break;
+	case 3: $dformat = 'Y.m.d'; // yyyy.mm.dd
+		break;
+	case 7: $dformat = 'Y/m/d'; // yyyy/mm/dd
+		break;
+	case 4: $dformat = 'j.n.Y'; // d.m.yyyy
+		break;
+	case 8: $dformat = 'j/n/y'; // d/m/yyyy
+		break;
+	case 9: $dformat = 'm-d-Y'; // mm-dd-yyyy
+		break;
+	case 6:
+	default:$dformat = 'Y-m-d'; // yyyy-mm-dd
+		break;
+};
+$expirytimestamp = strtotime($surveyexpirydate);
+$expirytimeofday_h = date('H',$expirytimestamp);
+$expirytimeofday_m = date('i',$expirytimestamp);
+
+$surveyexpirydate = date($dformat,$expirytimestamp);
+
+if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m))
+{
+	$surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
+};
 
 //define('PRINT_TEMPLATE' , '/templates/print/' , true);
 if(is_file($templaterootdir.'/'.$template.'/print_survey.pstpl'))
