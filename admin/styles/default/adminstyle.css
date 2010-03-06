@@ -742,6 +742,12 @@ a.invalidemail {
 padding: 2px 5px;
 }
 
+#addattribute label,
+#sendinvitation label {
+	font-weight: bold;
+	margin-right: 0.5em;
+}
+
 .annotation
 {
     font-size:10px;
@@ -1021,7 +1027,6 @@ textarea.updater-changelog {
 #statistics_general_filter li label:first-child,            
 #vvexport li label:first-child,            
 #importlabels li label:first-child,
-#addattribute li label:first-child,  
 #exportdialog li label:first-child, 
 #frmeditquestion li label:first-child, 
 #importquestion li label:first-child,
@@ -1078,7 +1083,6 @@ textarea.updater-changelog {
 #sendreminder li,
 #sendinvitation li,
 #edittoken li,
-#addattribute li,
 #exportdialog li,       
 #addnewsurvey li,
 #newquestiongroup li,
