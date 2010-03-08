@@ -206,9 +206,7 @@ foreach ($rows as $row)
 	$row['type'],
 	$row['title'],
 	$row['group_name'],
-	FlattenText($row['question']),
-	$row['lid'],
-	$row['lid1']);
+	FlattenText($row['question']));
 }
 
 //var_dump($filters);

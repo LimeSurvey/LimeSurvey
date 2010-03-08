@@ -354,14 +354,15 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("", "ALTER TABLE `prefix_questions` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_answers` DROP PRIMARY KEY, ADD PRIMARY KEY  USING BTREE(`qid`,`code`,`language`,`scale_id`)"); echo $modifyoutput; flush();
 
-        //-Move all 'answers' that are subquestions to the questions table
-        //-Move all 'labels' that are answers to the answers table
-        //-Transscript the default values where applicable
+        // -Move all 'answers' that are subquestions to the questions table
+        // -Move all 'labels' that are answers to the answers table
+        // -Transscript the default values where applicable
+        // -Move default values from answers to questions
         upgrade_tables143();
 
+        modify_database("", "ALTER TABLE `prefix_answers` DROP COLUMN `default_value`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid1`"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `default_value`"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     

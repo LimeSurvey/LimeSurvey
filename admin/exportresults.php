@@ -57,7 +57,7 @@ if (!$exportstyle)
 	if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}
 
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query=" SELECT other, q.type, q.gid, q.qid, q.lid, q.lid1 FROM {$dbprefix}questions as q, {$dbprefix}groups as g "
+	$query=" SELECT other, q.type, q.gid, q.qid FROM {$dbprefix}questions as q, {$dbprefix}groups as g "
 	." where q.gid=g.gid and g.sid=$surveyid and g.language='$surveybaselang' and q.language='$surveybaselang'"
 	." order by group_order, question_order";
 

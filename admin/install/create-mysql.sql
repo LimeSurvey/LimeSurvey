@@ -5,7 +5,6 @@ CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
-  `default_value` char(1) NOT NULL default 'N',
   `assessment_value` int(11) NOT NULL default '0',
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
