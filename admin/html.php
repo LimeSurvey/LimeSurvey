@@ -288,8 +288,8 @@ if ($surveyid)
 
 		$surveyinfo = $sumresult1->FetchRow();
         
-        $surveyinfo = array_map('strip_tags', $surveyinfo);
-		//$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
+        $surveyinfo = array_map('FlattenText', $surveyinfo);
+        //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
 		$activated = $surveyinfo['active'];
 		//BUTTON BAR
 		$surveysummary .= ""  //"<tr><td colspan=2>\n"
@@ -815,7 +815,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 
 	while ($grow = $grpresult->FetchRow())
 	{
-        $grow = array_map('strip_tags', $grow);
+        $grow = array_map('FlattenText', $grow);          
 		//$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= '<strong>'.$clang->gT("Question group").'</strong>&nbsp;'
 		. "<span class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</span>\n"
@@ -972,8 +972,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 	while ($qrrow = $qrresult->FetchRow())
 	{
-        $qrrow = array_map('strip_javascript', $qrrow);
-        $qrrow = array_map('strip_tags', $qrrow);
+        $qrrow = array_map('FlattenText', $qrrow);
 		//$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "<div class='menubar-title'>\n"
 		. "<strong>". $clang->gT("Question")."</strong> <span class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</span>\n"
@@ -1143,10 +1142,10 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		$questionsummary .= "</td></tr>\n"
 		. "<tr><td align='right' valign='top'><strong>"
-		. $clang->gT("Question:")."</strong></td>\n<td align='left'>".strip_tags($qrrow['question'])."</td></tr>\n"
+		. $clang->gT("Question:")."</strong></td>\n<td align='left'>".$qrrow['question']."</td></tr>\n"
 		. "<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Help:")."</strong></td>\n<td align='left'>";
-		if (trim($qrrow['help'])!=''){$questionsummary .= strip_tags($qrrow['help']);}
+		if (trim($qrrow['help'])!=''){$questionsummary .= $qrrow['help'];}
 		$questionsummary .= "</td></tr>\n";
 		if ($qrrow['preg'])
 		{
