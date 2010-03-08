@@ -1,6 +1,10 @@
 // $Id: templates.js 7699 2009-09-30 22:28:50Z c_schmitz $
-// based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-    $(".listsurveys").tablesorter({sortList: [[2,0]] });
+    $(".listsurveys").tablesorter({sortList: [[2,0]],
+                                    headers: {7:{sorter:'digit'}, // Full responses
+                                              8:{sorter:'digit'}, // Partial Responses
+                                              9:{sorter:'digit'} // Total Responses
+                                             }
+                                   });
 });

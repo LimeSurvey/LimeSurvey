@@ -1523,7 +1523,7 @@ while ($degrow = $degresult->FetchRow())
                 }
                 else
                 {
-                    $heading='This question shas';
+                    $heading='';
                 }
 				
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n";
