@@ -701,7 +701,7 @@ switch($screenname) {
                                                    'HEADELEMENTS'=>getPrintableHeader(),
                                                    'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
                                                    'THANKS'=>$clang->gT('Thank you for completing this survey.'),
-                                                   'END'=>$clang->gT('Survey end message.')
+                                                   'END'=>$clang->gT('This is the survey end message.')
             ));
         }    
         break;   

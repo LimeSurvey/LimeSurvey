@@ -623,8 +623,8 @@ function createinsertquery()
 }
 
 // submitanswer sets the submitdate
-// only used by question.php and group.php if next pages
-// should not display due to conditions
+// Only used by question.php and group.php if next pages
+// should not display due to conditions and generally used by survey.php
 // In this case all answers have already been updated by save.php
 // but movesubmit status was only set after calling save.php
 // ==> thus we need to update submitdate here.

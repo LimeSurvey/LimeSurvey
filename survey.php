@@ -120,8 +120,9 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         // only update submitdate if the user did not already visit the submit page
         if (!isset($_SESSION['finished']))
         {
-            $subquery = createinsertquery();
-            $connect->Execute($subquery);   // Checked
+//            $subquery = createinsertquery();
+//            $connect->Execute($subquery);   // Checked
+            submitanswer();
         }
         
         
