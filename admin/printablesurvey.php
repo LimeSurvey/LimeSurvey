@@ -1516,14 +1516,24 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$column_headings[] = $frow['title'];
 				}
-				$col_width = round(80 / count($column_headings));
+                if (count($column_headings)>0)
+                {
+                    $col_width = round(80 / count($column_headings));
+                    
+                }
+                else
+                {
+                    $heading='This question shas';
+                }
 				
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n";
 				$question['ANSWER'] .= "\t\t\t<td>&nbsp;</td>\n";
 				foreach($column_headings as $heading)
-					$question['ANSWER'] .= "\t\t\t<th style=\"width:$col_width%;\">$heading</th>\n";
-					$pdfoutput[0][$i] = $heading;
-					$i++;
+                {
+                    $question['ANSWER'] .= "\t\t\t<th style=\"width:$col_width%;\">$heading</th>\n";
+                }
+				$pdfoutput[0][$i] = $heading;
+				$i++;
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 				$counter = 1;
 				$rowclass = 'array1';
