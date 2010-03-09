@@ -78,7 +78,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 Thank you to everyone who helped with this new release!
 
 
-Changes from  1.87+ (build 8429) to 1.87+ (build 8453) - Legend: # updated feature, - bug fix 
+Changes from  1.87+ (build 8453) to 1.87+ (build 8472)- Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
 -Fixed unreported bug: Added help text relating to array_filter attributes, also added help text relating to multi-numerical sum value attributes (jcleeland)
 -Fixed issue #4165: Javascript is shown in group description (c_schmitz)
