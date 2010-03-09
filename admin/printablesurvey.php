@@ -846,10 +846,10 @@ while ($degrow = $degresult->FetchRow())
 					break;
 
 // ==================================================================
-			case 'L': //LIST drop-down/radio-button list
+			case "L": //LIST drop-down/radio-button list
 
 // ==================================================================
-			case '!': //List - dropdown
+			case "!": //List - dropdown
                     if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='') 
 					{
 						$dcols=$qidattributes['display_columns'];
@@ -867,6 +867,7 @@ while ($degrow = $degresult->FetchRow())
 					}
 
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
+				    $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
 					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
@@ -988,6 +989,9 @@ while ($degrow = $degresult->FetchRow())
 					$question['QUESTION_TYPE_HELP'] = sprintf($clang->gT('Please choose *at most* %s answers:' ),'<span class="num">'.$maxansw.'</span>');
 					if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT('Please choose *at most* %s answers:' ),$maxansw),"U");}
 				}
+				
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
+				
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 				$meacount = $mearesult->RecordCount();
@@ -1060,6 +1064,9 @@ while ($degrow = $degresult->FetchRow())
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw.'</span> '.$clang->gT("answers and provide a comment:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers and provide a comment:"),"U");}
 				}
+				
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
+
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 //				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
@@ -1094,10 +1101,27 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "K":  //MULTIPLE NUMERICAL
+				$question['QUESTION_TYPE_HELP'] = "";
 				$width=(isset($width))?$width:16;
 				if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer(s) here:"),"U");}
 
-				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer(s) here:");
+				if (!empty($qidattributes['equals_num_value']))
+				{
+					$question['QUESTION_TYPE_HELP'] .= "* ".sprintf($clang->gT('Total of all entries must equal %d'),$qidattributes['equals_num_value'])."<br />\n";
+				}
+				if (!empty($qidattributes['max_num_value']))
+				{
+					$question['QUESTION_TYPE_HELP'] .= sprintf($clang->gT('Total of all entries must not exceed %d'), $qidattributes['max_num_value'])."<br />\n";
+				}
+				if (!empty($qidattributes['min_num_value']))
+				{
+					$question['QUESTION_TYPE_HELP'] .= sprintf($clang->gT('Total of all entries must be at least %s'),$qidattributes['min_num_value'])."<br />\n";
+				}
+				
+				if($question['QUESTION_TYPE_HELP'] != "") {
+				    $question['QUESTION_TYPE_HELP'] .= "<br />\n";
+				}
+				$question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer(s) here:");
 
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
@@ -1174,6 +1198,7 @@ while ($degrow = $degresult->FetchRow())
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 				$question['ANSWER'] = '
 <table>
@@ -1228,6 +1253,7 @@ while ($degrow = $degresult->FetchRow())
 				
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 				for ($i=1; $i<=10; $i++)
@@ -1263,6 +1289,7 @@ while ($degrow = $degresult->FetchRow())
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 				$question['ANSWER'] = '
 <table>
@@ -1303,6 +1330,7 @@ while ($degrow = $degresult->FetchRow())
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 				$question['ANSWER'] = '
 <table>
@@ -1383,6 +1411,7 @@ while ($degrow = $degresult->FetchRow())
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Check any that apply").":";
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Check any that apply"),"U");}
 				}
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 				$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
@@ -1448,6 +1477,8 @@ while ($degrow = $degresult->FetchRow())
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 
+				$question['QUESTION_TYPE_HELP'] = array_filter_help($qidattributes, $surveyprintlang, $surveyid);
+
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 				$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 				$fresult = db_execute_assoc($fquery);
@@ -1502,6 +1533,7 @@ while ($degrow = $degresult->FetchRow())
 				$mearesult = db_execute_assoc($meaquery);
 
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 				$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 				$fresult = db_execute_assoc($fquery);
@@ -1572,13 +1604,16 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "1": //ARRAY (Flexible Labels) multi scale
-					$leftheader= $qidattributes['dualscale_headerA'];
-					$rightheader= $qidattributes['dualscale_headerB'];
+				
+				$leftheader= $qidattributes['dualscale_headerA'];
+				$rightheader= $qidattributes['dualscale_headerB'];
 
 				$headstyle = 'style="padding-left: 20px; padding-right: 7px"';
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
+								
 				$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
+				$question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 				if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 				$question['ANSWER'] .= "\n<table>\n\t<thead>\n";
@@ -1814,4 +1849,28 @@ if(isset($_POST['printableexport']))
 echo populate_template( 'survey' , $survey_output ); 
 
 exit;
+
+function array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
+	global $clang;
+	$output = "";
+	if(!empty($qidattributes['array_filter'])) 
+	{
+		$newquery="SELECT question FROM ".db_table_name("questions")." WHERE title='{$qidattributes['array_filter']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
+		$newresult=db_execute_assoc($newquery);
+		$newquestiontext=$newresult->fetchRow();
+		$output .= "\n<p class='extrahelp'>
+		    ".sprintf($clang->gT("Only answer this question for the items you selected in question %d ('%s')"),$qidattributes['array_filter'], br2nl($newquestiontext['question']))."
+		</p>\n";
+	}
+	if(!empty($qidattributes['array_filter_exclude'])) 
+	{
+		$newquery="SELECT question FROM ".db_table_name("questions")." WHERE title='{$qidattributes['array_filter_exclude']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
+		$newresult=db_execute_assoc($newquery);
+		$newquestiontext=$newresult->fetchRow();
+		$output .= "\n    <p class='extrahelp'>
+		    ".sprintf($clang->gT("Only answer this question for the items you did not select in question %d ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question']))."
+		</p>\n";
+	}
+	return $output; 
+}
 ?>
