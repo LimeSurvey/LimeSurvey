@@ -715,6 +715,7 @@ if(isset($surveyid))
                     . "'{$qr1['answer']}', '{$qr1['default_value']}', "
                     . "'{$qr1['sortorder']}', '{$qr1['language']}')";
                     $ir1 = $connect->Execute($i1);   // Checked
+					
                 }
             }
             if (returnglobal('copyattributes') == "Y")
@@ -735,6 +736,8 @@ if(isset($surveyid))
                 } // while
             }
             fixsortorderQuestions($postgid, $surveyid);
+			$gid=$postgid; //Sets the gid so that admin.php displays whatever group was chosen for this copied question
+			$qid=$newqid; //Sets the qid so that admin.php displays the newly created question
         }
     }
     elseif ($action == "delquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
