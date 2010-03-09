@@ -965,13 +965,19 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	$time_limit=$qidattributes['time_limit'];
 
 	$disable_next=trim($qidattributes['time_limit_disable_next']) != '' ? $qidattributes['time_limit_disable_next'] : 0;
+	$disable_prev=trim($qidattributes['time_limit_disable_prev']) != '' ? $qidattributes['time_limit_disable_prev'] : 0;
 	$time_limit_action=trim($qidattributes['time_limit_action']) != '' ? $qidattributes['time_limit_action'] : 1;
 	$time_limit_message_delay=trim($qidattributes['time_limit_message_delay']) != '' ? $qidattributes['time_limit_message_delay']*1000 : 1000;
-	$time_limit_message=trim($qidattributes['time_limit_message']) != '' ? $qidattributes['time_limit_message'] : $clang->gT("Your time to answer this question has expired");
+	$time_limit_message=trim($qidattributes['time_limit_message']) != '' ? htmlspecialchars($qidattributes['time_limit_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
 	$time_limit_warning=trim($qidattributes['time_limit_warning']) != '' ? $qidattributes['time_limit_warning'] : 0;
-	$time_limit_warning_message=trim($qidattributes['time_limit_warning_message']) != '' ? $qidattributes['time_limit_warning_message'] : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+	$time_limit_warning_2=trim($qidattributes['time_limit_warning_2']) != '' ? $qidattributes['time_limit_warning_2'] : 0;
+	$time_limit_countdown_message=trim($qidattributes['time_limit_countdown_message']) != '' ? htmlspecialchars($qidattributes['time_limit_countdown_message'], ENT_QUOTES) : $clang->gT("Time remaining");
+	$time_limit_warning_message=trim($qidattributes['time_limit_warning_message']) != '' ? htmlspecialchars($qidattributes['time_limit_warning_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 	$time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
 	$time_limit_warning_display_time=trim($qidattributes['time_limit_warning_display_time']) != '' ? $qidattributes['time_limit_warning_display_time']+1 : 0;
+	$time_limit_warning_2_message=trim($qidattributes['time_limit_warning_2_message']) != '' ? htmlspecialchars($qidattributes['time_limit_warning_2_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+	$time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning_2'> </div>", $time_limit_warning_2_message);
+	$time_limit_warning_2_display_time=trim($qidattributes['time_limit_warning_2_display_time']) != '' ? $qidattributes['time_limit_warning_2_display_time']+1 : 0;
 	$time_limit_message_style=trim($qidattributes['time_limit_message_style']) != '' ? $qidattributes['time_limit_message_style'] : "position: absolute;
         top: 10px;
         left: 35%;
@@ -996,6 +1002,18 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 		text-align: center;
         overflow: auto;";
 	$time_limit_warning_style.="\n		display: none;"; //Important to hide time limit warning at the start
+	$time_limit_warning_2_style=trim($qidattributes['time_limit_warning_2_style']) != '' ? $qidattributes['time_limit_warning_2_style'] : "position: absolute;
+        top: 10px;
+        left: 35%;
+        width: 30%;
+        height: 60px;
+        padding: 16px;
+        border: 8px solid #555;
+        background-color: white;
+        z-index:1001;
+		text-align: center;
+        overflow: auto;";
+	$time_limit_warning_2_style.="\n		display: none;"; //Important to hide time limit warning at the start
 	$time_limit_timer_style=trim($qidattributes['time_limit_timer_style']) != '' ? $qidattributes['time_limit_timer_style'] : "position: relative;
 		width: 150px;
 		margin-left: auto;
@@ -1057,11 +1075,13 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	</script>";
 		$output .= "
     <script type='text/javascript'>
-	<!--
-		function countdown(questionid,timer,action,warning,warninghide,disable){
+	<!--\n
+		function countdown(questionid,timer,action,warning,warning2,warninghide,warning2hide,disable){
 		    if(!timeleft) {var timeleft=timer;}
 			if(!warning) {var warning=0;}
-			if(!warninghide) {var warninghide=0;}";
+			if(!warning2) {var warning2=0;}
+			if(!warninghide) {var warninghide=0;}
+			if(!warning2hide) {var warning2hide=0;}";
 	
 		if($thissurvey['format'] == "G")
 		{
@@ -1084,6 +1104,8 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			var timerdisplay='LS_question'+questionid+'_Timer';
 			var warningtimedisplay='LS_question'+questionid+'_Warning';
 			var warningdisplay='LS_question'+questionid+'_warning';
+			var warning2timedisplay='LS_question'+questionid+'_Warning_2';
+			var warning2display='LS_question'+questionid+'_warning_2';
 			var expireddisplay='question'+questionid+'_timer';
 			var timersessionname='timer_question_'+questionid;
 			document.getElementById(timersessionname).value=timeleft;
@@ -1094,10 +1116,26 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			}
 			eraseCookie(timersessionname);
 			createCookie(timersessionname, timeleft, 7);";
-		if($disable_next == 1) {
+		if($disable_next > 0) {
 			$output .= "
-		if(document.getElementById('movenextbtn') !== null) { 
+		if(document.getElementById('movenextbtn') !== null && timeleft > $disable_next) { 
 			document.getElementById('movenextbtn').disabled=true;
+		} else if (document.getElementById('movenextbtn') !== null && $disable_next > 1 && timeleft <= $disable_next) {
+		    document.getElementById('movenextbtn').disabled=false;
+		}\n";
+		}
+		if($disable_prev > 0) {
+			$output .= "
+		if(document.getElementById('moveprevbtn') !== null && timeleft > $disable_prev) { 
+			document.getElementById('moveprevbtn').disabled=true;
+		} else if (document.getElementById('moveprevbtn') !== null && $disable_prev > 1 && timeleft <= $disable_prev) {
+		    document.getElementById('moveprevbtn').disabled=false;
+		}\n";
+		}
+		if(!is_numeric($disable_prev)) {
+		    $output .= "
+		if(document.getElementById('moveprevbtn') !== null) {
+			document.getElementById('moveprevbtn').disabled=true;
 		}\n";
 		}
 		$output .="
@@ -1119,12 +1157,37 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			  }
 			  document.getElementById(warningdisplay).style.display='';
 			}
+			if(warning2 > 0 && timeleft<=warning2) {
+			  var w2secs=warning2%60;
+			  if(wsecs<10) w2secs='0' + wsecs;
+			  var W2T1 = (warning2 - w2secs) / 60;
+			  var w2mins = W2T1 % 60; if (w2mins < 10) w2mins = '0' + w2mins;
+			  var w2hours = (W2T1 - w2mins) / 60;
+			  var d2mins=''
+			  var d2hours=''
+			  var d2secs=''
+			  if (w2hours < 10) w2hours = '0' + w2hours;
+			  if (w2hours > 0) d2hours = w2hours + ' ".$clang->gT('hours').", ';
+			  if (w2mins > 0) d2mins = w2mins + ' ".$clang->gT('mins').", ';
+			  if (w2secs > 0) d2secs = w2secs + ' ".$clang->gT('seconds')."';
+			  if(document.getElementById(warning2timedisplay) !== null) {
+			      document.getElementById(warning2timedisplay).innerHTML = dhours+dmins+dsecs;
+			  }
+			  document.getElementById(warning2display).style.display='';
+			}
 			if(warning > 0 && warninghide > 0 && document.getElementById(warningdisplay).style.display != 'none') {
 			  if(warninghide == 1) {
 			    document.getElementById(warningdisplay).style.display='none';
 			    warning=0;
 			  }
 			  warninghide--;
+			}
+			if(warning2 > 0 && warning2hide > 0 && document.getElementById(warning2display).style.display != 'none') {
+			  if(warning2hide == 1) {
+			    document.getElementById(warning2display).style.display='none';
+			    warning2=0;
+			  }
+			  warning2hide--;
 			}
 			var secs = timeleft % 60; 
 			if (secs < 10) secs = '0'+secs;
@@ -1139,9 +1202,9 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			if (mins > 0) d2mins = mins+' ".$clang->gT('mins').": ';
 			if (secs > 0) d2secs = secs+' ".$clang->gT('seconds')."';
 			if (secs < 1) d2secs = '0 ".$clang->gT('seconds')."';
-			document.getElementById(timerdisplay).innerHTML = '".$clang->gT('Time remaining').":<br />'+d2hours + d2mins + d2secs;
+			document.getElementById(timerdisplay).innerHTML = '".$time_limit_countdown_message."<br />'+d2hours + d2mins + d2secs;
 			if (timeleft>0){
-				var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warninghide+', \"'+disable+'\")';
+				var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warning2+', '+warninghide+', '+warning2hide+', \"'+disable+'\")';
 				setTimeout(text,1000);
 			} else {
 			    //Countdown is finished, now do action
@@ -1149,6 +1212,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 					case 2: //Just move on, no warning
 						if(document.getElementById('movenextbtn') !== null) {
 						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
 						eraseCookie(timersessionname);
@@ -1162,6 +1226,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						document.getElementById(expireddisplay).style.display='';
 						if(document.getElementById('movenextbtn') !== null) {
 						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
 						this.onsubmit=function() {eraseCookie(timersessionname);};
@@ -1170,6 +1235,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						document.getElementById(expireddisplay).style.display='';
 						if(document.getElementById('movenextbtn') !== null) {
 						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
 						eraseCookie(timersessionname);
@@ -1184,10 +1250,13 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	$output .= "<div id='question".$ia[0]."_timer' style='".$time_limit_message_style."'>".$time_limit_message."</div>\n\n";
 
 	$output .= "<div id='LS_question".$ia[0]."_warning' style='".$time_limit_warning_style."'>".$time_limit_warning_message."</div>\n\n";
+	$output .= "<div id='LS_question".$ia[0]."_warning_2' style='".$time_limit_warning_2_style."'>".$time_limit_warning_2_message."</div>\n\n";
 	$output .= "<div id='LS_question".$ia[0]."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
 	//Call the countdown script
 	$output .= "<script type='text/javascript'>
-    countdown(".$ia[0].", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_display_time.", '".$disable."');
+	$(document).ready(function() {
+		countdown(".$ia[0].", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_2.", ".$time_limit_warning_display_time.", ".$time_limit_warning_2_display_time.", '".$disable."');
+	});
 </script>\n\n";
 	return $output;
 }

@@ -3724,7 +3724,7 @@ function questionAttributes($returnByName=false)
     $qattributes["time_limit"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>90,
     "inputtype"=>"integer",
     "help"=>$clang->gT("Limit time to answer question (in seconds)"),
     "caption"=>$clang->gT("Time limit"));
@@ -3732,7 +3732,7 @@ function questionAttributes($returnByName=false)
     $qattributes["time_limit_action"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>92,
     'inputtype'=>'singleselect',
     'options'=>array(1=>$clang->gT('Warn and move on'),
                      2=>$clang->gT('Move on without warning'),
@@ -3740,80 +3740,131 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Action to perform when time limit is up"),
     "caption"=>$clang->gT("Time limit action"));
     
-    $qattributes["time_limit_message"]=array(
-    "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
-    "inputtype"=>"textarea",
-    "help"=>$clang->gT("Message to display when time limit has expired"),
-    "caption"=>$clang->gT("Time limit expiry message"));
-    
-    $qattributes["time_limit_message_delay"]=array(
-    "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
-    "inputtype"=>"integer",
-    "help"=>$clang->gT("How long to display the time limit expiry message (in seconds)"),
-    "caption"=>$clang->gT("Time limit expiry message delay"));
-    
     $qattributes["time_limit_disable_next"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>94,
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
                      1=>$clang->gT('Yes')),
     "help"=>$clang->gT("Disable the next button until time limit expires"),
     "caption"=>$clang->gT("Time limit disable next"));
 
-    $qattributes["time_limit_message_style"]=array(
-    "types"=>"STUX",
+	$qattributes["time_limit_disable_prev"]=array(
+	"types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>96,
+    "inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+	"help"=>$clang->gT("Disable the prev button until the time limit expires"),
+	"caption"=>$clang->gT("Time limit disable prev"));
+
+	$qattributes["time_limit_countdown_message"]=array(
+	"types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>98,
     "inputtype"=>"textarea",
-    "help"=>$clang->gT("CSS style for the time limit message"),
-    "caption"=>$clang->gT("Time limit message CSS style"));
+	"help"=>$clang->gT("The text message that displays in the countdown timer during the countdown"),
+	"caption"=>$clang->gT("Time limit countdown message"));
 
     $qattributes["time_limit_timer_style"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
     'sortorder'=>100,
     "inputtype"=>"textarea",
-    "help"=>$clang->gT("CSS Style for the time limit countdown timer"),
+    "help"=>$clang->gT("CSS Style for the message that displays in the countdown timer during the countdown"),
     "caption"=>$clang->gT("Time limit timer CSS style"));
+
+    $qattributes["time_limit_message_delay"]=array(
+    "types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>102,
+    "inputtype"=>"integer",
+    "help"=>$clang->gT("Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"),
+    "caption"=>$clang->gT("Time limit expiry message display time"));
+    
+    $qattributes["time_limit_message"]=array(
+    "types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>104,
+    "inputtype"=>"textarea",
+    "help"=>$clang->gT("The message to display when the time limit has expired (a default message will display if this setting is left blank)"),
+    "caption"=>$clang->gT("Time limit expiry message"));
+    
+   $qattributes["time_limit_message_style"]=array(
+    "types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>106,
+    "inputtype"=>"textarea",
+    "help"=>$clang->gT("CSS style for the 'time limit expiry message'"),
+    "caption"=>$clang->gT("Time limit message CSS style"));
 
     $qattributes["time_limit_warning"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>108,
     "inputtype"=>"integer",
-    "help"=>$clang->gT("Time until time limit expiry when time limit warning message is displayed (in seconds)"),
-    "caption"=>$clang->gT("Time limit warning message timer"));
+    "help"=>$clang->gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
+    "caption"=>$clang->gT("1st Time limit warning message timer"));
     
     $qattributes["time_limit_warning_display_time"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>110,
     "inputtype"=>"integer",
-    "help"=>$clang->gT("How long the time limit warning message will display (in seconds)"),
-    "caption"=>$clang->gT("Time limit warning message display time"));
+    "help"=>$clang->gT("The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
+    "caption"=>$clang->gT("1st Time limit warning message display time"));
     
     $qattributes["time_limit_warning_message"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>112,
     "inputtype"=>"textarea",
-    "help"=>$clang->gT("Message to display warning that time limit is about to expire"),
-    "caption"=>$clang->gT("Time limit warning message"));
+    "help"=>$clang->gT("The message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
+    "caption"=>$clang->gT("1st Time limit warning message"));
     
     $qattributes["time_limit_warning_style"]=array(
     "types"=>"STUX",
     'category'=>$clang->gT('Timing'),
-    'sortorder'=>100,
+    'sortorder'=>114,
     "inputtype"=>"textarea",
-    "help"=>$clang->gT("CSS style for the time limit warning message"),
-    "caption"=>$clang->gT("Time limit warning CSS style"));
+    "help"=>$clang->gT("CSS style used when the 'time limit warning' message is displayed"),
+    "caption"=>$clang->gT("1st Time limit warning CSS style"));
     
+	$qattributes["time_limit_warning_2"]=array(
+	"types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>116,
+    "inputtype"=>"integer",
+	"help"=>$clang->gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
+	"caption"=>$clang->gT("2nd Time limit warning message timer"));
+	
+	$qattributes["time_limit_warning_2_display_time"]=array(
+	"types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>118,
+    "inputtype"=>"integer",
+	"help"=>$clang->gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
+	"caption"=>$clang->gT("2nd Time limit display time"));
+
+	$qattributes["time_limit_warning_2_message"]=array(
+	"types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>120,
+    "inputtype"=>"textarea",
+	"help"=>$clang->gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
+	"caption"=>$clang->gT("2nd Time limit warning message"));
+	
+	$qattributes["time_limit_warning_2_style"]=array(
+	"types"=>"STUX",
+    'category'=>$clang->gT('Timing'),
+    'sortorder'=>122,
+    "inputtype"=>"textarea",
+	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
+	"caption"=>$clang->gT("2nd Time Limit Warning CSS Style"));
+	
+	
     
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
