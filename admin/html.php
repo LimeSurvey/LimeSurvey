@@ -926,8 +926,8 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         . "<div class='menubar-title'>\n";
 
 	while ($grow = $grpresult->FetchRow())
-	{
-        $grow = array_map('strip_tags', $grow);
+	{                                 
+        $grow = array_map('FlattenText', $grow);
 		//$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= '<strong>'.$clang->gT("Question group").'</strong>&nbsp;'
 		. "<span class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</span>\n"
@@ -1587,7 +1587,15 @@ if ($action=='editsubquestions')
 
     $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
     $subquestiondata=$connect->GetArray($qquery);
-    
+    if (count($subquestiondata)==0)
+    {
+        $qquery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language) 
+                   VALUES($surveyid,$gid,$qid,'SQ001',".db_quoteall($clang->gT('Some example subquestion')).",1,".db_quoteall($baselang).")";
+        $connect->Execute($qquery); //Checked
+        
+        $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
+        $subquestiondata=$connect->GetArray($qquery);
+    }
     // check that there are subquestions for every language supported by the survey
     foreach ($anslangs as $language)
     {
