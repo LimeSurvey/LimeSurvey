@@ -192,7 +192,7 @@ if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SES
 }
 elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
 {
-    $connect->Execute("update ".db_table_name("saved_control")." set saved_thisstep={$thisstep} where scid=".$_SESSION['scid']);  // Checked    
+    $connect->Execute("update ".db_table_name("saved_control")." set saved_thisstep=".db_quoteall($thisstep)." where scid=".$_SESSION['scid']);  // Checked    
 }
 
 
