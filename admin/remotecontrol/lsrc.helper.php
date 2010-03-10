@@ -504,7 +504,7 @@ class LsrcHelper {
 						$found = array_search($emrow['language'], $surveylangs);
 						if ($found==false) {$emrow['language']=$baselanguage;}
 							
-						$from = $_POST['from_'.$emrow['language']];
+						$from = $thissurvey['adminemail'];	
 							
 						if (getEmailFormat($surveyid) == 'html')
 						{
