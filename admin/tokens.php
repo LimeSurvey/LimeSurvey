@@ -29,7 +29,10 @@ if ($limit==0) $limit=50;
 if (!isset($start)) {$start=(int)returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
+if (!isset($tokenids)) {$tokenids=returnglobal('tids');}
 if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
+
+if(isset($tokenids)) {$tokenids=explode("|", substr($tokenids, 1));} //Make the tokenids string into an array, and exclude the first character
 
 include_once("login_check.php");
 include_once("database.php");
@@ -844,15 +847,17 @@ if ($subaction == "browse" || $subaction == "search")
 	$bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());
 	$bgc="";
 
-	$tokenoutput .= "</div></div></div>\n"
-	."<table class='browsetokens' cellpadding='1' cellspacing='1'>\n";
+	$tokenoutput .= "</div></div></div>\n";
+	
+	$tokenoutput .= "<table class='browsetokens' id='browsetokens' cellpadding='1' cellspacing='1'>\n";
 	//COLUMN HEADINGS
 	$tokenoutput .= "\t<tr>\n"
-	."<th align='left' >"
+	."<th><input type='checkbox' id='tokencheckboxtoggle'></th>\n"   //Checkbox
+    ."<th align='left' >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ")."ID' border='0' align='left' hspace='0' /></a>"."ID</th>\n" // ID
-    ."<th align='left'  >".$clang->gT("Actions")."</th>\n"  //Actions
+	."<th align='left'  >".$clang->gT("Actions")."</th>\n"  //Actions
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
@@ -929,7 +934,7 @@ if ($subaction == "browse" || $subaction == "search")
     {
         $tokenfieldorder[]=$attr_name;
     }
-
+	
 	while ($brow = $bresult->FetchRow())
 	{
 		$brow['token'] = trim($brow['token']);
@@ -944,6 +949,9 @@ if ($subaction == "browse" || $subaction == "search")
 
 		if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 		$tokenoutput .= "\t<tr class='$bgc'>\n";
+		
+		$tokenoutput .= "<td><input type='checkbox' name='".$brow['tid']."'></td>\n";
+				
 		foreach ($tokenfieldorder as $tokenfieldname)
 		{
 
@@ -954,7 +962,7 @@ if ($subaction == "browse" || $subaction == "search")
 				$tokenoutput .= "<td>"
 				."<a href=\"#\" class='invalidemail' title='".$clang->gT('Invalid email address:').htmlspecialchars($brow['emailstatus'])."' >"
 				."$brow[$tokenfieldname]</a></td>\n";
-			}
+				}
                 else
                 {
                     $tokenoutput .= "<td>"
@@ -971,61 +979,70 @@ if ($subaction == "browse" || $subaction == "search")
                 else
                 {
 				    $tokenoutput .= "<td>$brow[$tokenfieldname]</td>\n";
+				}
 			}
-		}
             if ($tokenfieldname=='tid')
             {
                 $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
-		if ($sumrows5['edit_survey_property'] ||
-			$sumrows5['activate_survey'] ||
-			$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-		{
-			if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
-			{
-				$toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
+				if ($sumrows5['edit_survey_property'] ||
+					$sumrows5['activate_survey'] ||
+					$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+				{
+					if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
+					{
+						$toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
                         $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_do.png' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$toklang."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";
-			}
+					}
                     else
                     {
                         $tokenoutput .= "<img src='$imagefiles/blank.gif' height='16' width='16'/>";
-		}
+					}
                     $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
                     .$clang->gT("Edit token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
                     ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
                     .$clang->gT("Delete token entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
                 }
-		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
-		{
-			// Get response Id
-			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."' ORDER BY id desc";
-			$result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
-			list($id) = $result->FetchRow();
+				if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
+				{
+					// Get response Id
+					$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."' ORDER BY id desc";
+					$result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
+					list($id) = $result->FetchRow();
 
-
-			// UPDATE button to the tokens display in the MPID Actions column
-			if  ($id)
-			{
+					// UPDATE button to the tokens display in the MPID Actions column
+					if  ($id)
+					{
                         $tokenoutput .= "<input type='image' src='$imagefiles/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
                         .$clang->gT("View/Update response")."' />\n";
-			}
-		}
-
-		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='')
-		{
+					}
+				}
+				elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='')
+				{
                     $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
                     .$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
-		}
-
+				}
                 elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
-		{
+				{
                     $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
                     .$clang->gT("Send reminder email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />";
-		}
+				}
                 $tokenoutput .= "\n</td>\n";
-		}
+			}
 		}
 		$tokenoutput .= "\t</tr>\n";
 	}
+	
+	$tokenoutput .= "<tr class='$bgc'>\n"
+	. "<td colspan='2'>-></td>\n"
+	. "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)-1)."'>"
+	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
+        .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+    . "&nbsp;"
+	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
+        .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+	. "</td>\n"
+	. "</tr>\n";
+	$tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
 	$tokenoutput .= "</table>\n<br />\n";
 }
 
@@ -1161,11 +1178,17 @@ if ($subaction == "email" &&
 		}
 		$tokenoutput .= "</div><ul>";
 		if (isset($tokenid))
-			{
-				$tokenoutput .= "<li><label>"
-				.$clang->gT("Sending to Token ID").":</label>".$tokenid
-				."</li>";
-			}
+		{
+			$tokenoutput .= "<li><label>"
+			.$clang->gT("Sending to Token ID").":</label>".$tokenid
+			."</li>";
+		}
+		if (isset($tokenids))
+		{
+			$tokenoutput .= "<li><label>"
+			.$clang->gT("Sending to Token IDs").":</label>".implode(", ", $tokenids)
+			."</li>";
+		}
 		$tokenoutput .="\t<li>\n"
 		."\t<label for='bypassbademails'>".$clang->gT("Bypass token with failing email addresses").":</label><select id='bypassbademails' name='bypassbademails'>\n"
 		."<option value='Y'>".$clang->gT("Yes")."</option>"
@@ -1176,12 +1199,14 @@ if ($subaction == "email" &&
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
 		."\t<input type='hidden' name='subaction' value='email' />\n";
 		if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='$tokenid' />\n";}
+		if (isset($tokenids)) {$tokenoutput .= "\n<input type='hidden' name='tids' value='|".implode("|", $tokenids)."' />\n";}
 		$tokenoutput .= "</form>\n";
 	}
 	else
 	{
 		$tokenoutput .= $clang->gT("Sending invitations...");
 		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
+		if (isset($tokenids)) {$tokenoutput .= " (".$clang->gT("Sending to Token IDs").":&nbsp;".implode(", ", $tokenids).")";}
 		$tokenoutput .= "<br />\n";
 
 		if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
@@ -1196,6 +1221,7 @@ if ($subaction == "email" &&
 		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
 
 		if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
+		if (isset($tokenids)) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
 		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 		$ctresult = $connect->Execute($ctquery) or safe_die("Database error!<br />\n" . $connect->ErrorMsg());
 		$ctcount = $ctresult->RecordCount();
@@ -1412,17 +1438,22 @@ if ($subaction == "remind" && //XXX
 		}
 
 		$tokenoutput .= "</div><ul>\n";
-		if (!isset($tokenid)) {
+		if (!isset($tokenid) && !isset($tokenids)) {
 			$tokenoutput .= "\t<li>\n"
 				."<label for='last_tid'>".$clang->gT("Start at Token ID:")."</label>\n"
 				."<input type='text' size='5' id='last_tid' name='last_tid' />\n"
 				."\t</li>\n";
 		}
+		elseif (isset($tokenids)) {
+			$tokenoutput .= "\t<li>\n"
+			    . "<label>".$clang->gT("Send reminder to token IDs:")."</label>\n"
+				. implode(", ", $tokenids)."</li>\n";
+		}
 		else {
 			$tokenoutput .= "\t<li>\n"
                 ."<label>".$clang->gT("Stop at Token ID:")."</label>\n"
 				."{$tokenid}</li>\n";
-		}
+		} 
 		$tokenoutput .="<li><label for='bypassbademails'>\n"
 			.$clang->gT("Bypass token with failing email addresses").":</label>\n"
 			."<select id='bypassbademails' name='bypassbademails'>\n"
@@ -1442,6 +1473,7 @@ if ($subaction == "remind" && //XXX
 			."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
 			."\t<input type='hidden' name='subaction' value='remind' />\n";
 		if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$tokenid}' />\n";}
+		if (isset($tokenids)) {$tokenoutput .= "\n<input type='hidden' name='tids' value='|".implode("|", $tokenids)."' />\n";}
 		$tokenoutput .= "</form>\n";
 	}
 	else
@@ -1462,6 +1494,7 @@ if ($subaction == "remind" && //XXX
 
 		if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From Token ID").":&nbsp;{$starttokenid})";}
 		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
+		if (isset($tokenids)) {$tokenoutput .= " (".$clang->gT("Sending to Token IDs").":&nbsp;".implode("|", $tokenids).")";}
 
 		if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
 		{
@@ -1506,6 +1539,7 @@ if ($subaction == "remind" && //XXX
 
 		if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
+		if (isset($tokenids)) {$ctquery .= " AND tid IN (".implode(", ", $tokenids).")";}
 		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 		$ctresult = $connect->Execute($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
 		$ctcount = $ctresult->RecordCount();
@@ -1514,6 +1548,7 @@ if ($subaction == "remind" && //XXX
 
 		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
+		if (isset($tokenids)) {$emquery .= " AND tid IN (".implode(", ", $tokenids).")";}
 		$emquery .= " ORDER BY tid ";
 		$emresult = db_select_limit_assoc($emquery, $maxemails) or safe_die ("Couldn't do query.<br />$emquery<br />".$connect->ErrorMsg());
 		$emcount = $emresult->RecordCount();
