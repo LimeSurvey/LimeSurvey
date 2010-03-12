@@ -1102,11 +1102,13 @@ elseif ($answers == "long")        //chose complete answers
 				case "1":
 					if (mb_substr($fieldinfo,-1) == 0)
 					{
-						$lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
+						//$lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
+						$lq = "select l.title as ltitle from {$dbprefix}labels as l where  l.lid =$flid AND l.language='$explang'  AND l.code = ?";
 					}
 					else
 					{
-						$lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid1 AND a.language='$explang' AND l.code = ? group by l.lid";
+						//$lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid1 AND a.language='$explang' AND l.code = ? group by l.lid";
+						$lq = "select l.title as ltitle from {$dbprefix}labels as l where  l.lid =$flid1 AND l.language='$explang'  AND l.code = ?";
 					}
 					$lr = db_execute_assoc($lq, array($drow[$i])) or safe_die($lq."<br />ERROR:<br />".$connect->ErrorMsg());
 					while ($lrow = $lr->FetchRow())
