@@ -1107,7 +1107,7 @@ if(isset($surveyid))
 							'tokenlength'=>$_POST['tokenlength']
                             );
 
-        $usquery=$connect->GetUpdateSQL($rs, $updatearray);
+        $usquery=$connect->GetUpdateSQL($rs, $updatearray, false, get_magic_quotes_gpc());
         if ($usquery) {
             $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());  // Checked
         }
