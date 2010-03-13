@@ -406,17 +406,6 @@ else
 	$surveyexists=0;
 }
 
-// If token was submitted from token form
-// Disabled for the moment (1.50) with function captcha_enabled
-//if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
-//{
-//	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
-//	{
-//		$secerror = $clang->gT("The answer to the security question is incorrect.")."<br />\n";
-//		$_GET['token'] = "";
-//	}
-//}
-
 if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
 
 
@@ -1961,7 +1950,6 @@ function buildsurveysession()
                 <li>
                     <label for='token'>".$clang->gT("Token")."</label><input class='text' id='token' type='text' name='token' />
                 <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-                <input type='hidden' name='tokenSEC' value='1' id='tokenSEC' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
 
 			// If this is a direct Reload previous answers URL, then add hidden fields
@@ -2093,7 +2081,6 @@ function buildsurveysession()
                         <ul>
                         <li>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-					        <input type='hidden' name='tokenSEC' value='1' id='tokenSEC' />
 						    <input type='hidden' name='lang' value='".$templang."' id='lang' />";
 			        if (isset($_GET['loadall']) && isset($_GET['scid']) 
 				        && isset($_GET['loadname']) && isset($_GET['loadpass']))
@@ -2113,7 +2100,6 @@ function buildsurveysession()
                         <ul>
 			            <li>
 					            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-					            <input type='hidden' name='tokenSEC' value='1' id='tokenSEC' />
 						        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
 			        if (isset($_GET['loadall']) && isset($_GET['scid']) 
 				        && isset($_GET['loadname']) && isset($_GET['loadpass']))

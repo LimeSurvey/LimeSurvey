@@ -67,7 +67,20 @@ td.questiontext {
     text-align: right;
 }
 
+/*line 414 */
 
+.choice-5-pt-radio li, 
+.list-radio-flexible li, 
+.list-radio li, 
+.list-with-comment li, 
+.multiple-opt li, 
+.multiple-opt-comments li, 
+.multiple-short-txt li, 
+.numeric-multi li, 
+.yes-no li, 
+.gender li{
+    text-align: right;
+}
 /* line 479 */
 
 .list-with-comment div.list {
