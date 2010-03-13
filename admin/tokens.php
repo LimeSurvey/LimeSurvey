@@ -855,57 +855,115 @@ if ($subaction == "browse" || $subaction == "search")
 	."<th><input type='checkbox' id='tokencheckboxtoggle'></th>\n"   //Checkbox
     ."<th align='left' >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ")."ID' border='0' align='left' hspace='0' /></a>"."ID</th>\n" // ID
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	."ID' alt='"
+	.$clang->gT("Sort by: ")
+	."ID' border='0' align='left' hspace='0' /></a>"."ID</th>\n" // ID
 	."<th align='left'  >".$clang->gT("Actions")."</th>\n"  //Actions
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("First name")."' border='0' align='left' /></a>".$clang->gT("First name")."</th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("First name")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("First name")
+	."' border='0' align='left' /></a>".$clang->gT("First name")."</th>\n"
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Last name")."' border='0' align='left' /></a>".$clang->gT("Last name")."</th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Last name")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Last name")
+	."' border='0' align='left' /></a>".$clang->gT("Last name")."</th>\n"
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=email&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Email address")."' border='0' align='left' /></a>".$clang->gT("Email address")."</th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Email address")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Email address")
+	."' border='0' align='left' /></a>".$clang->gT("Email address")."</th>\n"
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Token")."' border='0' align='left' /></a>".$clang->gT("Token")."</th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Token")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Token")
+	."' border='0' align='left' /></a>".$clang->gT("Token")."</th>\n"
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=language&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Language")."' border='0' align='left' /></a>".$clang->gT("Language")."</th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Language")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Language")
+	."' border='0' align='left' /></a>".$clang->gT("Language")."</th>\n"
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Invite sent?")."' border='0' align='left' /></a>".$clang->gT("Invite sent?")."</th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Invite sent?")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Invite sent?")
+	."' border='0' align='left' /></a>".$clang->gT("Invite sent?")."</th>\n"
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindersent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Reminder sent?")."' border='0' align='left' /></a><span>".$clang->gT("Reminder sent?")."</span></th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Reminder sent?")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Reminder sent?")
+	."' border='0' align='left' /></a><span>".$clang->gT("Reminder sent?")."</span></th>\n"
 	."<th align='left'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindercount%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Reminder count")."' border='0' align='left' /></a><span>".$clang->gT("Reminder count")."</span></th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Reminder count")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Reminder count")
+	."' border='0' align='left' /></a><span>".$clang->gT("Reminder count")."</span></th>\n"
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Completed?")."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
+	."<img src='$imagefiles/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Completed?")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Completed?")
+	."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
     ."<th align='left'  >"
     ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-    ."<img src='$imagefiles/downarrow.png' alt='' title='"
-    .$clang->gT("Sort by: ").$clang->gT("Valid from")."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
+    ."<img src='$imagefiles/downarrow.png' title='"
+    .$clang->gT("Sort by: ")
+	.$clang->gT("Valid from")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Valid from")
+	."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
     ."<th align='left'  >"
     ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-    ."<img src='$imagefiles/downarrow.png' alt='' title='"
-    .$clang->gT("Sort by: ").$clang->gT("Valid until")."' border='0' align='left' /></a>".$clang->gT("Valid until")."</th>\n";
+    ."<img src='$imagefiles/downarrow.png' title='"
+    .$clang->gT("Sort by: ")
+	.$clang->gT("Valid until")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Valid until")
+	."' border='0' align='left' /></a>".$clang->gT("Valid until")."</th>\n";
 
     $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
     foreach ($attrfieldnames as $attr_name=>$attr_translation)
@@ -991,16 +1049,26 @@ if ($subaction == "browse" || $subaction == "search")
 					if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
 					{
 						$toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
-                        $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_do.png' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$toklang."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";
+                        $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_do.png' title='"
+						.$clang->gT("Do Survey")
+						."' alt='"
+						.$clang->gT("Do Survey")
+						."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$toklang."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";
 					}
                     else
                     {
                         $tokenoutput .= "<img src='$imagefiles/blank.gif' height='16' width='16'/>";
 					}
                     $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
-                    .$clang->gT("Edit token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
+                    .$clang->gT("Edit token entry")
+					."' alt='"
+					.$clang->gT("Edit token entry")
+					."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
                     ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
-                    .$clang->gT("Delete token entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
+                    .$clang->gT("Delete token entry")
+					."' alt='"
+					.$clang->gT("Delete token entry")
+					."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")." (".$brow['tid'].")')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
                 }
 				if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
 				{
@@ -1013,18 +1081,27 @@ if ($subaction == "browse" || $subaction == "search")
 					if  ($id)
 					{
                         $tokenoutput .= "<input type='image' src='$imagefiles/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
-                        .$clang->gT("View/Update response")."' />\n";
+                        .$clang->gT("View/Update response")
+						."' alt='"
+						.$clang->gT("View/Update response")
+						."' />\n";
 					}
 				}
 				elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='')
 				{
                     $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
-                    .$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
+                    .$clang->gT("Send invitation email to this entry")
+					."' alt='"
+					.$clang->gT("Send invitation email to this entry")
+					."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
 				}
                 elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 				{
                     $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
-                    .$clang->gT("Send reminder email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />";
+                    .$clang->gT("Send reminder email to this entry")
+					."' alt='"
+					.$clang->gT("Send reminder email to this entry")
+					."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />";
 				}
                 $tokenoutput .= "\n</td>\n";
 			}
@@ -1033,13 +1110,27 @@ if ($subaction == "browse" || $subaction == "search")
 	}
 	
 	$tokenoutput .= "<tr class='$bgc'>\n"
-	. "<td colspan='2'>-></td>\n"
-	. "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)-1)."'>"
+	. "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)+1)."'>"
+	. "<img src='$imagefiles/blank.gif' height='16' width='16'/>"
+	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
+	    .$clang->gT("Delete the selected entries")
+		."' alt='"
+		.$clang->gT("Delete the selected entries")
+		."' onclick=\"if (confirm('"
+		.$clang->gT("Are you sure you want to delete the selected entries?","js")
+		."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />"
+	. "&nbsp;"
 	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
-        .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+        .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+		."' alt='"
+		.$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+		."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
     . "&nbsp;"
 	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
-        .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+        .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+		."' alt='"
+		.$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+		."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
 	. "</td>\n"
 	. "</tr>\n";
 	$tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
@@ -1775,14 +1866,23 @@ if ($subaction == "delete" &&
 		$sumrows5['activate_survey'] ||
         $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
-	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
-	$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
-	$tokenoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
-	.$clang->gT("Delete")."</strong></td></tr>\n"
-	."\t<tr><td align='center'><br />\n"
-	."<br /><strong>".$clang->gT("Token has been deleted.")."</strong><br />\n"
-	."<font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
-	."\t</td></tr></table>\n";
+	$tokenoutput .= "<div class='messagebox'>\n"
+	."\t<div class='header'>"
+	.$clang->gT("Delete")
+	."\t</div>\n"
+	."\t<p>";
+	if(isset($tokenids)) {
+		$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid IN (".implode(", ", $tokenids).")";
+		$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
+
+		$tokenoutput .= "<br /><strong>".$clang->gT("Tokens have been deleted.")."</strong><br />\n";
+	} elseif (isset($tokenid)) {
+		$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
+		$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
+		$tokenoutput .= "<br /><strong>".$clang->gT("Token has been deleted.")."</strong><br />\n";
+	}
+	$tokenoutput .= "<font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
+	."</p>\n</div>\n";
 }
 
 if ($subaction == "managetokenattributes" &&

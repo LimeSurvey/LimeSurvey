@@ -675,7 +675,7 @@ function get2post($url)
 	{
 		list($paramname, $value) = explode ('=', $queryitem);
 		$arrayParam[] = "'".$paramname."'";
-		$arrayVal[] = "'".$value."'";
+		$arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
 	}
 //	$Paramlist = "[" . implode(",",$arrayParam) . "]";
 //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
