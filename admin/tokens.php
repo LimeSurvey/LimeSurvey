@@ -992,7 +992,7 @@ if ($subaction == "browse" || $subaction == "search")
     {
         $tokenfieldorder[]=$attr_name;
     }
-	
+
 	while ($brow = $bresult->FetchRow())
 	{
 		$brow['token'] = trim($brow['token']);
@@ -1109,31 +1109,36 @@ if ($subaction == "browse" || $subaction == "search")
 		$tokenoutput .= "\t</tr>\n";
 	}
 	
-	$tokenoutput .= "<tr class='$bgc'>\n"
-	. "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)+1)."'>"
-	. "<img src='$imagefiles/blank.gif' height='16' width='16'/>"
-	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
-	    .$clang->gT("Delete the selected entries")
-		."' alt='"
-		.$clang->gT("Delete the selected entries")
-		."' onclick=\"if (confirm('"
-		.$clang->gT("Are you sure you want to delete the selected entries?","js")
-		."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />"
-	. "&nbsp;"
-	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
-        .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-		."' alt='"
-		.$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-		."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
-    . "&nbsp;"
-	. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
-        .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-		."' alt='"
-		.$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-		."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
-	. "</td>\n"
-	. "</tr>\n";
-	$tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
+	// Multiple item actions
+	if ($bresult->rowCount() > 0) {
+		$tokenoutput .= "<tr class='$bgc'>\n"
+		. "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)+1)."'>"
+		. "<img src='$imagefiles/blank.gif' height='16' width='16'/>"
+		. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
+			.$clang->gT("Delete the selected entries")
+			."' alt='"
+			.$clang->gT("Delete the selected entries")
+			."' onclick=\"if (confirm('"
+			.$clang->gT("Are you sure you want to delete the selected entries?","js")
+			."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />"
+		. "&nbsp;"
+		. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
+			.$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+			."' alt='"
+			.$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+			."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+		. "&nbsp;"
+		. "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
+			.$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+			."' alt='"
+			.$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+			."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+		. "</td>\n"
+		. "</tr>\n";
+		$tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
+	}
+	//End multiple item actions
+	
 	$tokenoutput .= "</table>\n<br />\n";
 }
 
@@ -1870,18 +1875,21 @@ if ($subaction == "delete" &&
 	."\t<div class='header'>"
 	.$clang->gT("Delete")
 	."\t</div>\n"
-	."\t<p>";
-	if(isset($tokenids)) {
-		$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid IN (".implode(", ", $tokenids).")";
-		$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
-
-		$tokenoutput .= "<br /><strong>".$clang->gT("Tokens have been deleted.")."</strong><br />\n";
+	."\t<p><br /><strong>";
+	if(isset($tokenids) && count($tokenids)>0) {
+		if(implode(", ", $tokenids) != "") {
+			$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid IN (".implode(", ", $tokenids).")";
+			$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg()."\n\n$dlquery");
+			$tokenoutput .= $clang->gT("Tokens have been deleted.");
+		} else {
+			$tokenoutput .= $clang->gT("No tokens were selected for deletion");
+		}
 	} elseif (isset($tokenid)) {
 		$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
 		$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
-		$tokenoutput .= "<br /><strong>".$clang->gT("Token has been deleted.")."</strong><br />\n";
+		$tokenoutput .= $clang->gT("Token has been deleted.");
 	}
-	$tokenoutput .= "<font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
+	$tokenoutput .= "</strong><br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
 	."</p>\n</div>\n";
 }
 
