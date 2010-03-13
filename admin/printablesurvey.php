@@ -659,6 +659,7 @@ while ($degrow = $degresult->FetchRow())
 					,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , $deqrow['question'])	// content of the question field
 					,'QUESTION_SCENARIO' => $explanation	// if there are conditions on a question, list the conditions.
 					,'QUESTION_MANDATORY' => ''		// translated 'mandatory' identifier
+                    ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
 					,'QUESTION_CLASS' => question_class( $deqrow['type'])	// classes to be added to wrapping question div
 					,'QUESTION_TYPE_HELP' => ''		// instructions on how to complete the question
 					,'QUESTION_MAN_MESSAGE' => ''		// (not sure if this is used) mandatory error
@@ -700,6 +701,10 @@ while ($degrow = $degresult->FetchRow())
         if ($qidattributes['page_break']!=0)
         {
             $question['QUESTION_CLASS'] .=' breakbefore ';
+        }
+        
+        if (isset($qidattributes['maximum_chars']) && $qidattributes['maximum_chars']!='') {
+            $question['QUESTION_CLASS'] ="max-chars-{$qidattributes['maximum_chars']} ".$question['QUESTION_CLASS'];
         }
 
 		switch($deqrow['type'])

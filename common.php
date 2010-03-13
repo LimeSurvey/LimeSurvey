@@ -4126,11 +4126,18 @@ function getAdminHeader($meta=false)
 }
 
 
+/**
+* This function returns the header for the printable survey
+* @return String 
+* 
+*/
 function getPrintableHeader()
 {
-    global $rooturl;
+    global $rooturl,$homeurl;
     $headelements = '
             <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+            <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
+            <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
 
     <!--[if lt IE 7]>
             <script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
@@ -4138,7 +4145,6 @@ function getPrintableHeader()
     '; 
     return $headelements;   
 }
-
 
 
 

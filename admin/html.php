@@ -1343,7 +1343,7 @@ if ($action=='editansweroptions')
         $qresult = $connect->GetOne($qquery); //Checked
         if ($qresult==0)
         {
-           $query="INSERT into ".db_table_name('answers')." (qid,code,answer,language,sortorder,scale_id) VALUES ($qid,'A1',".db_quoteall($clang->gT("Some example answer")).",'$baselang',0,$i)";
+           $query="INSERT into ".db_table_name('answers')." (qid,code,answer,language,sortorder,scale_id) VALUES ($qid,'A1',".db_quoteall($clang->gT("Some example answer option")).",'$baselang',0,$i)";
            $connect->execute($query); 
         }
     }
