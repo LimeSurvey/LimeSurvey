@@ -32,10 +32,17 @@ if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
 if (!isset($tokenids)) {$tokenids=returnglobal('tids');}
 if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
 
-if(isset($tokenids)) {$tokenids=explode("|", substr($tokenids, 1));} //Make the tokenids string into an array, and exclude the first character
+if(isset($tokenids)) {
+	$tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
+	unset($tokenids);
+	foreach($tokenidsarray as $tokenitem) {
+		if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
+	}
+}
 
 include_once("login_check.php");
 include_once("database.php");
+$js_adminheader_includes[]='scripts/tokens.js'; 
 $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 $thissurvey=getSurveyInfo($surveyid);
 
@@ -1279,10 +1286,15 @@ if ($subaction == "email" &&
 			.$clang->gT("Sending to Token ID").":</label>".$tokenid
 			."</li>";
 		}
-		if (isset($tokenids))
+		if (isset($tokenids) && count($tokenids) > 0)
 		{
 			$tokenoutput .= "<li><label>"
 			.$clang->gT("Sending to Token IDs").":</label>".implode(", ", $tokenids)
+			."</li>";
+		} else {
+		    $tokenoutput .= "<li><label>"
+			.$clang->gT("Sending to:")."</label>"
+			.$clang->gT("All tokens who have not yet been sent an invitation")
 			."</li>";
 		}
 		$tokenoutput .="\t<li>\n"
@@ -1300,7 +1312,10 @@ if ($subaction == "email" &&
 	}
 	else
 	{
+		$tokenoutput .= "<div class='messagebox'>\n"
+			."\t<div class='header'>\n";
 		$tokenoutput .= $clang->gT("Sending invitations...");
+		$tokenoutput .= "\n\t</div>\n";
 		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
 		if (isset($tokenids)) {$tokenoutput .= " (".$clang->gT("Sending to Token IDs").":&nbsp;".implode(", ", $tokenids).")";}
 		$tokenoutput .= "<br />\n";
@@ -1466,7 +1481,7 @@ if ($subaction == "email" &&
             ."<li>".$clang->gT("having a token")."</li></ul></div>";
 		}
 	}
-	$tokenoutput .= "</div>\n";
+	$tokenoutput .= "</div>\n</div>\n";
 }
 
 
@@ -1534,20 +1549,23 @@ if ($subaction == "remind" && //XXX
 		}
 
 		$tokenoutput .= "</div><ul>\n";
-		if (!isset($tokenid) && !isset($tokenids)) {
+
+		if (isset($tokenids)) {
+			$tokenoutput .= "\t<li>\n"
+			    . "<label>".$clang->gT("Send reminder to token IDs:")."</label>\n"
+				. implode(", ", $tokenids)."</li>\n";
+		} elseif (!isset($tokenid)) {
+			$tokenoutput .= "<li><label>"
+				.$clang->gT("Sending to:")."</label>"
+				.$clang->gT("All token entries to whom a reminder email would apply")
+				."</li>";
 			$tokenoutput .= "\t<li>\n"
 				."<label for='last_tid'>".$clang->gT("Start at Token ID:")."</label>\n"
 				."<input type='text' size='5' id='last_tid' name='last_tid' />\n"
 				."\t</li>\n";
-		}
-		elseif (isset($tokenids)) {
+		} elseif (isset($tokenid)) {
 			$tokenoutput .= "\t<li>\n"
-			    . "<label>".$clang->gT("Send reminder to token IDs:")."</label>\n"
-				. implode(", ", $tokenids)."</li>\n";
-		}
-		else {
-			$tokenoutput .= "\t<li>\n"
-                ."<label>".$clang->gT("Stop at Token ID:")."</label>\n"
+                ."<label>".$clang->gT("Send reminder to Token ID:")."</label>\n"
 				."{$tokenid}</li>\n";
 		} 
 		$tokenoutput .="<li><label for='bypassbademails'>\n"
@@ -1575,7 +1593,10 @@ if ($subaction == "remind" && //XXX
 	else
 	{
 
-		$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
+		$tokenoutput .= "<div class='messagebox'>\n"
+			. "<div class='header'>";
+		$tokenoutput .= $clang->gT("Sending Reminders")
+			."</div><br />\n";
 
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
@@ -1799,6 +1820,7 @@ if ($subaction == "remind" && //XXX
 		}
 		$tokenoutput .= "\t</tr>\n"
 			."</table>\n";
+		$tokenoutput .= "</div>\n";
 	}
 }
 
