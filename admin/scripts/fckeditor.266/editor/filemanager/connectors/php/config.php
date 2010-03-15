@@ -41,6 +41,7 @@ else
 	session_name("LimeSurveyAdmin");
 }
 
+session_set_cookie_params(0,$relativeurl);
 if (session_id() == "") @session_start();
 
 

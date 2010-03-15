@@ -58,6 +58,7 @@ else
 {
     session_name("LimeSurveyRuntime-$surveyid");
 }
+session_set_cookie_params(0,$relativeurl);
 @session_start();
 
 if (isset($_SESSION['sid'])) {$surveyid=$_SESSION['sid'];}  else die('Invalid survey/session'); 
