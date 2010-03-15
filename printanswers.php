@@ -117,11 +117,6 @@ $clang = $_SESSION['s_lang'];
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run this script directly");}
 
-//Select public language file
-$query = "SELECT language FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or safe_die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());  //Checked
-
-
 // Set language for questions and labels to base language of this survey
 $language = GetBaseLanguageFromSurveyID($surveyid);
 $thissurvey = getSurveyInfo($surveyid);

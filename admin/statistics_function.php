@@ -377,8 +377,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			//Q - Multiple Short Text
 			elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
 			{
-				$selects[]=db_quote_id(substr($pv, 1, strlen($pv)))." like '".$_POST[$pv]."'"; // Deleted the percentage. Makes no sense to me and causes trouble with T and Q questions.
-			}
+                $selectSubs = array();
+                //We intepret and * and % as wildcard matches, and use ' OR ' and , as the seperators
+                $pvParts = explode(",",str_replace('*','%', str_replace(' OR ',',',$_POST[$pv])));
+                if(is_array($pvParts) AND count($pvParts)){
+                        foreach($pvParts AS $pvPart){
+                                $selectSubs[]=db_quote_id(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
+                        }
+                        if(count($selectSubs)){
+                                $selects[] = ' ('.implode(' OR ',$selectSubs).') ';
+                        }
+                }    
+            }
 				
 			//D - Date
 			elseif ($firstletter == "D" && $_POST[$pv] != "")
