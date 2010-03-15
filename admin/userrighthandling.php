@@ -397,17 +397,22 @@ if($action == "setasadminchild")
 
 if ($action == "editusers")
 {
-	$usersummary = "<div class=header>".$clang->gT("User Control")."</div><br />"
+    $usersummary = "<div class='header'>".$clang->gT("User control")."</div><br />"
     . "<table id='users' class='users' width='100%' border='0'>\n"
-	. "<thead>\n"
-	. "<tr>\n"
-    . "<th>".$clang->gT("Action")."</th>\n"
-	. "<th width='20%'>".$clang->gT("Username")."</th>\n"
-	. "<th width='20%'>".$clang->gT("Email")."</th>\n"
-	. "<th width='20%'>".$clang->gT("Full name")."</th>\n"
-	. "<th width='15%'>".$clang->gT("Password")."</th>\n"
-	. "<th width='15%'>".$clang->gT("Created by")."</th>\n"
-	. "</tr></thead><tbody>\n";
+    . "<thead>\n"
+    . "<tr>\n"
+    . "<th>".$clang->gT("Action")."</th>\n";
+
+
+    $usersummary .= "<th width='20%'>".$clang->gT("Username")."</th>\n"
+    . "<th width='20%'>".$clang->gT("Email")."</th>\n"
+    . "<th width='20%'>".$clang->gT("Full name")."</th>\n";
+    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    {
+        $usersummary .= "<th width='5%'>".$clang->gT("No of surveys")."</th>\n";
+    }
+    $usersummary .= "<th width='15%'>".$clang->gT("Created by")."</th>\n"
+    . "</tr></thead><tbody>\n";
 
 	$userlist = getuserlist();
 	$ui = count($userlist);
@@ -427,39 +432,51 @@ if ($action == "editusers")
     ."<input type='hidden' name='action' value='modifyuser' />"
     ."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
     ."</form>";
-        if ($usrhimself['parent_id'] != 0 && $_SESSION['USER_RIGHT_DELETE_USER'] == 1 )
-        {
-            $usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
-            ."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
-            ."<input type='hidden' name='action' value='deluser' />"
-            ."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
-            ."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-            ."</form>";
-        }
-    
-        $usersummary .= "</td>\n"
+    if ($usrhimself['parent_id'] != 0 && $_SESSION['USER_RIGHT_DELETE_USER'] == 1 )
+    {
+        $usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
+        ."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+        ."<input type='hidden' name='action' value='deluser' />"
+        ."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
+        ."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+        ."</form>";
+    }
 
-		. "<td class='oddrow' align='center'><strong>{$usrhimself['user']}</strong></td>\n"
-		. "<td class='oddrow' align='center'><strong>{$usrhimself['email']}</strong></td>\n"
-		. "<td class='oddrow' align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
-		. "<td class='oddrow' align='center'><strong>********</strong></td>\n";
-		
-		if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { 
-		$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usrhimself['parent_id'];
-		$uresult = db_execute_assoc($uquery); //Checked
-		$srow = $uresult->FetchRow();
-			$usersummary .= "<td class='oddrow' align='center'><strong>{$srow['users_name']}</strong></td>\n";
-		}
-		else
-		{
-			$usersummary .= "<td class='oddrow' align='center'><strong>---</strong></td>\n";
-		}
+    $usersummary .= "</td>\n";
 
-		$usersummary.="</tr>\n";
+    $usersummary .= "<td class='oddrow' align='center'><strong>{$usrhimself['user']}</strong></td>\n"
+    . "<td class='oddrow' align='center'><strong>{$usrhimself['email']}</strong></td>\n"
+    . "<td class='oddrow' align='center'><strong>{$usrhimself['full_name']}</strong></td>\n";
+    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    {
+        $noofsurveys=$connect->GetOne('Select count(*) from '.db_table_name('surveys').' where owner_id='.$usrhimself['uid']);
+        $usersummary .= "<td class='oddrow' align='center'><strong>{$noofsurveys}</strong></td>\n";
+    }
+
+	if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { 
+	    $uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usrhimself['parent_id'];
+	    $uresult = db_execute_assoc($uquery); //Checked
+	    $srow = $uresult->FetchRow();
+	    $usersummary .= "<td class='oddrow' align='center'><strong>{$srow['users_name']}</strong></td>\n";
+	}
+	else
+	{
+		$usersummary .= "<td class='oddrow' align='center'><strong>---</strong></td>\n";
+	}
+
+	$usersummary.="</tr>\n";
 	
 	// other users
 	$row = 0;
 	$usr_arr = $userlist;
+    $noofsurveyslist = array(  );
+
+    //This loops through for each user and checks the amount of surveys against them.
+    for($i=1;$i<=count($usr_arr);$i++)
+    {
+        $noofsurveyslist[$i]=$connect->GetOne('Select count(*) from '.db_table_name('surveys').' where owner_id='.$usr_arr[$i]['uid']);
+    }
+    
 	for($i=1; $i<=count($usr_arr); $i++)
 	{
 		if (!isset($bgcc)) {$bgcc="evenrow";}
@@ -525,15 +542,11 @@ if ($action == "editusers")
         
 
         $usersummary .= "</td>\n";
-
-
-        
 		$usersummary .= "<td class='$bgcc' align='center'>{$usr['user']}</td>\n"
 		. "<td class='$bgcc' align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
 		. "<td class='$bgcc' align='center'>{$usr['full_name']}</td>\n";
 
-		// passwords of other users will not be displayed
-		$usersummary .=  "<td class='$bgcc' align='center'>******</td>\n";
+        $usersummary .= "<td class='$bgcc' align='center'>{$noofsurveyslist[$i]}</td>\n";
 
 		// Get Parent's User Name
 		$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usr['parent_id'];
@@ -565,7 +578,7 @@ if ($action == "editusers")
         . "<th>".$clang->gT("Add user:")."</th>\n"
 		. "<td align='center' width='20%'><input type='text' name='new_user' /></td>\n"
 		. "<td align='center' width='20%'><input type='text' name='new_email' /></td>\n"
-		. "<td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='15%'>".$clang->gT("(Sent by email)")."</td>\n"
+        . "<td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='8%'>&nbsp;</td>\n"
 		. "<td align='center' width='15%'><input type='submit' value='".$clang->gT("Add User")."' />"
 		. "<input type='hidden' name='action' value='adduser' /></td>\n"
 		. "</tr></table></form><br />\n";

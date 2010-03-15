@@ -1226,3 +1226,8 @@ table.limetable tbody tr.highlight {
     margin-right:auto;
     width:400px;
 }
+
+.users td:first-child,.users th:first-child
+{
+    width:10%;
+}
