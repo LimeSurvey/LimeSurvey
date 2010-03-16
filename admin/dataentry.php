@@ -254,7 +254,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						else
 						{
 							$col_name .= db_quote_id($fieldname).", \n";
-							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+							$fieldValue = $_POST[$fieldname];
+							//$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+							if($irow['type'] == 'D'){
+								$datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
+								$fieldValue  = $datetimeobj->convert("Y-m-d H:i:s");
+							}
+							$insertqr .= "'" . auto_escape($fieldValue) . "', \n";
 						}
 					}
 					// if "!" "L" "W" "Z", and Other ==> add other fieldname
@@ -2152,7 +2158,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$dataentryoutput .= "\t</select>\n";
 					break;
 					case "D": //DATE
-					$dataentryoutput .= "\t<input type='text' name='$fieldname' size='10' />\n";
+						$datetimeobj = new Date_Time_Converter('', "Y-m-d H:i:s");
+                   	 	                $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);                 
+						$dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='$fieldname'/>\n";
 					break;
 					case "G": //GENDER drop-down list
 					$dataentryoutput .= "\t<select name='$fieldname'>\n"
