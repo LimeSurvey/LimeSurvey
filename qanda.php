@@ -5608,7 +5608,13 @@ function do_array_multiflexi($ia)
 		$maxvalue=1;
 		$checkboxlayout=true;
 	} 
-
+	
+	$inputboxlayout=false;
+	if ($qidattributes['input_boxes']!=0)
+	{
+	    $inputboxlayout=true;
+	}
+	
     if (trim($qidattributes['answer_width'])!='')
 	{
 		$answerwidth=$qidattributes['answer_width'];
@@ -5753,24 +5759,37 @@ function do_array_multiflexi($ia)
 					}
 					$answer .= "\t<td class=\"answer_cell_00$ld\">\n"
 					. "<label for=\"answer{$myfname2}\">\n"
-					. "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n"
-					. "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
-					. html_escape($labelans[$thiskey]).'"'
-					. " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
-					. "<option value=\"\">...</option>\n";
+					. "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
+					
+					if($inputboxlayout == false) {
+						$answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
+						. html_escape($labelans[$thiskey]).'"'
+						. " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
+						. "<option value=\"\">...</option>\n";
 
-					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
-						$answer .= "<option value=\"$ii\"";
-						if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == $ii) {
-							$answer .= SELECTED;
+						for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
+							$answer .= "<option value=\"$ii\"";
+							if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == $ii) {
+								$answer .= SELECTED;
+							}
+							$answer .= ">$ii</option>\n";
 						}
-						$answer .= ">$ii</option>\n";
+						$answer .= "\t</select>\n";
+					} elseif ($inputboxlayout == true)
+					{
+					    $answer .= "\t<input type='text' class=\"multiflexitext\" name=\"$myfname2\" id=\"answer{$myfname2}\" size=5 title=\""
+						. html_escape($labelans[$thiskey]).'"'
+						. " onchange=\"$checkconditionFunction(this.value, this.name, this.type\" onkeypress=\"return goodchars(event,'0123456789.')\""
+						. " value=\"";
+						if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
+						  $answer .= $_SESSION[$myfname2];
+						}
+						$answer .= "\" />\n";
 					}
-					$inputnames[]=$myfname2;
-					$answer .= "\t</select>\n"
-					. "</label>\n"
+					$answer .= "</label>\n"
 					. "\t</td>\n";
-
+					
+					$inputnames[]=$myfname2;
 					$thiskey++;
 				}
 				else

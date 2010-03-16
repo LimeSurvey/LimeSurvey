@@ -3525,6 +3525,17 @@ function questionAttributes($returnByName=false)
     'default'=>0,                 
     "help"=>$clang->gT('Allow only numerical input'),
     "caption"=>$clang->gT('Numbers only'));
+	
+	$qattributes["input_boxes"]=array(
+	"types"=>":",
+	'category'=>$clang->gT('Display'),
+	'sortorder'=>100,
+	'inputtype'=>'singleselect',
+	'options'=>array(0=>$clang->gT('No'),
+					 1=>$clang->gT('Yes')),
+	'default'=>0,
+	"help"=>$clang->gT("Present as text input boxes instead of dropdown lists"),
+	"caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
     "types"=>"PLW!Z",
