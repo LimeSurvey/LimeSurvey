@@ -1494,6 +1494,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						                     . "<td align='right' valign='top'>{$fnames[$i][6]}</td>\n";
 							$dataentryoutput .= "<td>\n";
 							$dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n";
+							$dataentryoutput .= "<option value=''>...</option>\n";
 							for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
 							{
 							   $dataentryoutput .= "<option value='$ii'";
