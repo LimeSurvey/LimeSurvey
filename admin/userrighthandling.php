@@ -140,8 +140,9 @@ if ($action == "setusertemplates")
 
 			$usersummary .= "\t<tr>\n<th>"
 				.$clang->gT('Template Name')
-				."</th>\n<th>"
+				."<br />&nbsp;</th>\n<th>"
 				.$clang->gT('Allowed')
+				."<br /><input type='checkbox' alt='".$clang->gT("Check or Uncheck all items")."' class='tipme' id='checkall' />"
 				."</th>\n\t</tr>\n"
 				."\t</thead>\n\n<tbody>\n";
 
@@ -301,8 +302,7 @@ if ($action == "setuserrights")
 				}
 
 				$usersummary .="<th></th>\n</tr>\n"
-				."<tr><form method='post' action='$scriptname'></tr>"
-				."<form action='$scriptname' method='post'>\n";
+				."<tr><form method='post' action='$scriptname'></tr>";
 				//content
 
 				// Only Initial SuperAdmmin can give SuperAdmin right
@@ -357,8 +357,7 @@ if ($action == "setuserrights")
 					$usersummary .=" /></td>\n";
 				}
 
-				$usersummary .= "<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
-				."\n<tr><td colspan='8' align='center'>"
+				$usersummary .= "\n<tr><td colspan='8' align='center'>"
 				."<input type='submit' value='".$clang->gT("Save Now")."' />"
 				."<input type='hidden' name='action' value='userrights' />"
 				."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
