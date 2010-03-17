@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-25 07:00+0100\n"
-"PO-Revision-Date: 2010-02-25 12:56+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"POT-Creation-Date: 2010-03-03 12:00+0100\n"
+"PO-Revision-Date: 2010-03-16 11:55+0100\n"
+"Last-Translator: Jordi Martín <jordimartin87@gmail.com>\n"
 "Language-Team: Català <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +41,7 @@ msgstr "Aquesta enquesta no està activa. No podrà guardar les seves respostes.
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:212
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:85
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1816
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1821
 #: /var/lib/limesurvey-svn/subversion1x/group.php:130
 msgid "Did Not Save"
 msgstr "No s'ha Guardat"
@@ -74,15 +74,14 @@ msgstr "Les seves respostes han estat guardades."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:265
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:144
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "Si us plau, escrigui la/es seva/es resposta/es aquí:"
+msgstr "Cliqui aquí per imprimir les seves respostes."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:270
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:149
 #: /var/lib/limesurvey-svn/subversion1x/group.php:213
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:391
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:633
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:427
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:669
 msgid "or"
 msgstr "o"
 
@@ -95,14 +94,12 @@ msgstr "Mostra les estadístiques d'aquesta Enquesta"
 #: /var/lib/limesurvey-svn/subversion1x/question.php:487
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:780
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1004
-#, fuzzy
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
-msgstr "Una o més preguntes obligatòries no han estat contestades. No podrà continuar fins que no les respongui"
+msgstr "Una o més preguntes obligatòries no han estat contestades. No podrà continuar fins que no les respongui."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:493
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:786
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1010
-#, fuzzy
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Una o més preguntes no han estat contestades correctament. No podrà continuar fins que les respostes siguin vàlides."
 
@@ -144,7 +141,6 @@ msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Xinès (Tradicional - Hong Kong)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:180
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
 msgstr "Xinès (Tradicional - Hong Kong)"
 
@@ -215,7 +211,7 @@ msgstr "Hongarès "
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:282
 msgid "Icelandic"
-msgstr ""
+msgstr "Islandès"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:288
 #, fuzzy
@@ -236,9 +232,8 @@ msgid "Japanese"
 msgstr "Japonès"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:312
-#, fuzzy
 msgid "Korean"
-msgstr "Norueg"
+msgstr "Coreà"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:318
 msgid "Lithuanian"
@@ -269,9 +264,8 @@ msgid "Norwegian (Nynorsk)"
 msgstr "Norueg"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:354
-#, fuzzy
 msgid "Persian"
-msgstr "Versió"
+msgstr "Persa"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:360
 msgid "Polish"
@@ -294,13 +288,12 @@ msgid "Romanian"
 msgstr "Romanès"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:390
-#, fuzzy
 msgid "Slovak"
 msgstr "Eslovè"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:396
 msgid "Sinhala"
-msgstr ""
+msgstr "Singalès"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:402
 msgid "Slovenian"
@@ -335,7 +328,7 @@ msgid "Vietnamese"
 msgstr "Vietnamita "
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:251
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:460
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:475
 msgid "Back to main menu"
 msgstr "Torna al menú principal"
 
@@ -348,18 +341,17 @@ msgid "Administration"
 msgstr "Administració"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:329
-#, fuzzy
 msgid "Logged in as:"
-msgstr "Iniciada la Sessió com"
+msgstr "Sessió iniciada com:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:331
 msgid "Edit your personal preferences"
 msgstr "Modifica les preferències personals"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:337
-#, fuzzy, php-format
+#, php-format
 msgid "Update available: %s"
-msgstr "No s'ha trobat l'enquesta"
+msgstr "Actualització disponible: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:343
 msgid "Default Administration Page"
@@ -376,9 +368,8 @@ msgstr "Crear/Editar Grups"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:358
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:89
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:114
-#, fuzzy
 msgid "Global settings"
-msgstr "Opcions del Filtre"
+msgstr "Opcions globals"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:365
 msgid "Check Data Integrity"
@@ -395,10 +386,10 @@ msgstr "Realitzar còpia de seguretat de tota la Base de Dades"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:392
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1201
 msgid "Edit/Add Label Sets"
-msgstr "Modificar/Afegir Conjunt d'Etiquetes"
+msgstr "Modificar/afegir conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:402
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:807
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:808
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:404
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:425
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:438
@@ -406,12 +397,12 @@ msgstr "Modificar/Afegir Conjunt d'Etiquetes"
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:529
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:579
 msgid "Template Editor"
-msgstr "Editor de Plantilles"
+msgstr "Editor de plantilles"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:405
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:484
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1389
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1418
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1391
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1420
 msgid "Surveys"
 msgstr "Enquestes"
 
@@ -421,14 +412,13 @@ msgstr "Crear o Importar una Nova Enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:423
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:98
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:843
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:844
 msgid "Logout"
-msgstr "Tancar Sessió"
+msgstr "Tancar la sessió"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:427
-#, fuzzy
 msgid "LimeSurvey Online manual"
-msgstr "Manual Online de LimeSurvey"
+msgstr "Manual online de LimeSurvey"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:435
 #, php-format
@@ -437,30 +427,29 @@ msgstr "Benvingut/da a %s!"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:436
 msgid "There are four easy steps to create your own survey:"
-msgstr ""
+msgstr "Amb els quatre passos següents pots crear una enquesta facilment:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:438
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
-msgstr ""
+msgstr "Crea una enquesta nova clicant a l'icona %s que està a dalt a la dreta."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:438
 msgid "Add survey"
 msgstr "Afegir qüestionari"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:439
-#, fuzzy
 msgid "Create a new question group inside your survey."
-msgstr "Modificar l'Ordre de les Preguntes"
+msgstr "Crear un nou grup de preguntes dins de l'enquesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:440
 msgid "Create one or more question inside the new question group."
-msgstr ""
+msgstr "Crea una o més questions dins del nou grup de preguntes."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:441
 #, php-format
 msgid "Done. Test your survey using the %s icon."
-msgstr ""
+msgstr "Fet. Prova l'enquesta clicant a l'icona %s."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:441
 msgid "Test survey"
@@ -510,9 +499,8 @@ msgid "None"
 msgstr "Cap"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:891
-#, fuzzy
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "Matriu (Etiquetes Flexibles)"
+msgstr "Matriu (Etiquetes Flexibles) Escala doble"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:892
 msgid "5 Point Choice"
@@ -555,9 +543,8 @@ msgid "Language Switch"
 msgstr "Selecció d'Idioma"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:902
-#, fuzzy
 msgid "Multiple Numerical Input"
-msgstr "Entrada Numèrica"
+msgstr "Entrada numèrica múltiple"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:903
 msgid "List (Radio)"
@@ -591,12 +578,10 @@ msgid "Ranking"
 msgstr "Ranking"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:910
-#, fuzzy
 msgid "Short Free Text"
 msgstr "Text lliure curt"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:911
-#, fuzzy
 msgid "Long Free Text"
 msgstr "Text lliure llarg"
 
@@ -625,14 +610,12 @@ msgid "List (Dropdown)"
 msgstr "Llista (Desplegable)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:918
-#, fuzzy
 msgid "Array (Multi Flexible) (Numbers)"
-msgstr "Matriu (Etiquetes Flexibles)"
+msgstr "Matriu (Etiquetes Flexibles) (Números)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:919
-#, fuzzy
 msgid "Array (Multi Flexible) (Text)"
-msgstr "Matriu (Etiquetes Flexibles)"
+msgstr "Matriu (Etiquetes Flexibles) (Text)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1245
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:636
@@ -655,7 +638,7 @@ msgstr "Notificació detallada per correu amb els codis de resultats"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:108
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:449
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:573
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:813
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:814
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:117
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:975
 msgid "Return to survey administration"
@@ -709,14 +692,12 @@ msgid "Export Results to Application"
 msgstr "Exportar els Resultats"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1781
-#, fuzzy
 msgid "Export results to a SPSS/PASW command file"
-msgstr "Exportar els resultats a un arxiu de comandes SPSS"
+msgstr "Exportar els resultats a un arxiu de comandes SPSS/PASW"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1786
-#, fuzzy
 msgid "Export results to a R data file"
-msgstr "Exportar els resultats a un arxiu de comandes SPSS"
+msgstr "Exportar els resultats a un arxiu R"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1790
 msgid "Import answers from a deactivated survey table"
@@ -751,8 +732,8 @@ msgid "Preset"
 msgstr "Preconfigurat"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1902
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1957
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2102
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1962
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2107
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:871
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1907
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:622
@@ -941,13 +922,13 @@ msgstr "Altre"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3105
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3112
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3119
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:470
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:490
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1127
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1131
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1236
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1253
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1258
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:506
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:526
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1163
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1272
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1289
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1294
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:233
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:245
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:249
@@ -1049,13 +1030,13 @@ msgstr "Sí"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3106
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3113
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3120
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:471
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:492
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1128
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1132
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1238
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1255
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1258
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:507
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:528
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1164
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1168
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1274
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1291
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1294
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:235
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:250
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:338
@@ -1162,9 +1143,9 @@ msgstr "NS/NC"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:876
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1994
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2161
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:477
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:742
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:746
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:513
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:778
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:782
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:254
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:341
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:861
@@ -1183,9 +1164,9 @@ msgstr "Masculí"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:873
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1995
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2160
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:478
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:741
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:746
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:514
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:777
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:782
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:342
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:860
@@ -1205,10 +1186,10 @@ msgstr "Femení"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1393
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2006
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2708
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:491
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1237
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1254
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1258
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:527
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1273
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1290
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1294
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:234
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:368
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:612
@@ -1226,10 +1207,10 @@ msgstr "Incert"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:265
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2026
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2727
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:498
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1276
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1292
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1296
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:534
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1312
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1328
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1332
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:238
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:360
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:616
@@ -1247,10 +1228,10 @@ msgstr "Augment"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:267
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2027
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2729
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:499
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1278
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1294
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1296
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:535
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1314
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1330
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1332
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:240
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:362
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:618
@@ -1268,10 +1249,10 @@ msgstr "Disminució"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:266
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2028
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2728
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:500
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1277
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1293
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1296
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:536
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1313
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1329
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1332
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:239
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:361
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:617
@@ -1304,7 +1285,7 @@ msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Hi ha {NUMBEROFQUESTIONS} preguntes en aquesta enquesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2937
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2633
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2638
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:204
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1607
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:3002
@@ -1336,12 +1317,12 @@ msgstr "Sortir i Reiniciar Enquesta"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:580
 #: /var/lib/limesurvey-svn/subversion1x/index.php:584
 msgid "Load Unfinished Survey"
-msgstr "Recuperar una Enquesta no Acabada"
+msgstr "Recuperar una enquesta no acabada"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2999
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3012
 msgid "Resume Later"
-msgstr "Continua més tard"
+msgstr "Continuar més tard"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3067
 msgid "Thank You!"
@@ -1425,8 +1406,8 @@ msgstr "La seva Adreça Electrònica"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3128
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3148
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3199
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1977
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2129
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1982
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2134
 msgid "Security Question"
 msgstr "Pregunta de Seguretat"
 
@@ -1470,7 +1451,7 @@ msgid "Enter your details below, and an email containing the link to participate
 msgstr "Introdueixi les seves dades a continuació i se li enviarà immediatament un missatge de correu electrònic."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3166
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7078
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7092
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1886
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:338
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:554
@@ -1480,7 +1461,7 @@ msgid "First Name"
 msgstr "Nom"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3173
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7079
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7093
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1890
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:340
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:549
@@ -1497,9 +1478,9 @@ msgid "Email Address"
 msgstr "Adreça de correu electrònic"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3224
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1920
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1981
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2132
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1925
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1986
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2137
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:355
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:368
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1304
@@ -1600,11 +1581,11 @@ msgstr "Mostrar"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3511
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3512
 msgid "Sort answers alphabetically"
-msgstr ""
+msgstr "Ordenar respostes alfabèticament"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3521
 msgid "Set the percentage width of the answer column (1-100)"
-msgstr ""
+msgstr "Establir el percentatge de l'amplada de la columna de la resposta (1-100)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3522
 msgid "Answer width"
@@ -1631,7 +1612,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3530
 msgid "Array filter"
-msgstr ""
+msgstr "Filtre de matriu"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3537
 msgid "Enter the code of a Multiple options question to exclude the matching answer options in this question."
@@ -1644,7 +1625,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3545
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3546
 msgid "Category Separator"
-msgstr ""
+msgstr "Separador de catagories"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3553
 msgid "Filter the available answers by this value"
@@ -1664,7 +1645,7 @@ msgstr "Mostrar columnes"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3572
 msgid "How many rows to display"
-msgstr ""
+msgstr "Quantitat de files a mostrar"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3573
 msgid "Display rows"
@@ -1679,29 +1660,28 @@ msgid "Display select boxes"
 msgstr "Mostrar respostes"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3591
-#, fuzzy
 msgid "Minimum year value in calendar"
-msgstr "Mínim"
+msgstr "Valor mínim de l'any al calendari"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3592
 msgid "Minimum dropdown year"
-msgstr ""
+msgstr "Valor mínim de l'any del menú desplegable"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3599
 msgid "Maximum year value for calendar"
-msgstr ""
+msgstr "Valor màxim de l'any del calendari"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3600
 msgid "Maximum dropdown year"
-msgstr ""
+msgstr "Valor màxim de l'any del menú desplegable"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3607
 msgid "Prefix|Suffix for dropdown lists"
-msgstr ""
+msgstr "Prefix|Sufix per les llistes desplegables"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3608
 msgid "Prefix|Suffix"
-msgstr ""
+msgstr "Prefix|Sufix"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3615
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
@@ -1709,23 +1689,23 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3616
 msgid "Dropdown separators"
-msgstr ""
+msgstr "Separadors desplagables"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3623
 msgid "Enter a header text for scale A"
-msgstr ""
+msgstr "Introduïr un text d'encapçalament per l'escala A"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3624
 msgid "Header scale A"
-msgstr ""
+msgstr "Encaçalament de l'escala A"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3631
 msgid "Enter a header text for scale B"
-msgstr ""
+msgstr "Introduïr un text d'encapçalament per l'escala B"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3632
 msgid "Header scale B"
-msgstr ""
+msgstr "Encaçalament de l'escala B"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3636
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3682
@@ -1736,11 +1716,11 @@ msgstr "Entrada"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3639
 msgid "Multiple numeric inputs sum must equal this value"
-msgstr ""
+msgstr "La suma de les múltiples entrades numèriques ha de ser igual a aquest valor"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3640
 msgid "Equals sum value"
-msgstr ""
+msgstr "Valor exacte de la suma"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3647
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
@@ -1763,18 +1743,16 @@ msgid "Hide this question at any time. This is useful for including data using a
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3670
-#, fuzzy
 msgid "Always hide this question"
-msgstr "Tancar aquesta Pregunta"
+msgstr "Amagar aquesta pregunta sempre"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3677
 msgid "Limit the number of possible answers"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3678
-#, fuzzy
 msgid "Maximum answers"
-msgstr "Màxim"
+msgstr "Respostes màximes"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3685
 msgid "Maximum sum value of multiple numeric input"
@@ -1782,7 +1760,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3686
 msgid "Maximum sum value"
-msgstr ""
+msgstr "Valor màxim de la suma"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3693
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
@@ -1805,9 +1783,8 @@ msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3710
-#, fuzzy
 msgid "Minimum answers"
-msgstr "Respostes anònimes?"
+msgstr "Nombre mínim de respostes"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3717
 msgid "Multiple numeric inputs must be greater than this value"
@@ -1823,25 +1800,23 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3726
 msgid "Min value from SGQA"
-msgstr ""
+msgstr "Valor mínim des de SGQA"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3733
 msgid "Maximum value for array(mult-flexible) question type"
-msgstr ""
+msgstr "Valor màxim pel tipus de pregunta matriu (etiquetes flexibles)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3734
-#, fuzzy
 msgid "Maximum value"
-msgstr "Màxim"
+msgstr "Valor màxim"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3741
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3742
-#, fuzzy
 msgid "Minimum value"
-msgstr "Mínim"
+msgstr "Valor mínim"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3749
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3750
@@ -1849,14 +1824,12 @@ msgid "Step value"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3760
-#, fuzzy
 msgid "Use checkbox layout"
-msgstr "Verificar Dades"
+msgstr "Utilitzar el disseny de les caixes de selecció"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3761
-#, fuzzy
 msgid "Checkbox layout"
-msgstr "Verificar Dades"
+msgstr "Disseny de les caixes de selecció"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3768
 msgid "SGQA identifier to use total of previous question as total for this question"
@@ -1864,17 +1837,15 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3769
 msgid "Value equals SGQA"
-msgstr ""
+msgstr "Valor igual al contingut de SGQA"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3779
-#, fuzzy
 msgid "Allow only numerical input"
-msgstr "Entrada Numèrica"
+msgstr "Només permetre entrada numèrica"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3780
-#, fuzzy
 msgid "Numbers only"
-msgstr "Número més petit que"
+msgstr "Només números"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3790
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
@@ -1885,14 +1856,12 @@ msgid "'Other:' comment mandatory"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3801
-#, fuzzy
 msgid "Allow only numerical input for 'Other' text"
-msgstr "Entrada Numèrica"
+msgstr "Només permetre entrada numèrica per 'Altres'"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3802
-#, fuzzy
 msgid "Numbers only for 'Other'"
-msgstr "Número més petit que"
+msgstr "Només números per 'Altres'"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3809
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
@@ -1904,37 +1873,35 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3820
 msgid "Insert a page break before this question in printable view by setting this to Yes."
-msgstr ""
+msgstr "Introdueix un salt de pàgina abans de la pregunta a la versió imprimible establint el valor a Sí."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3821
 msgid "Insert page break in printable view"
-msgstr ""
+msgstr "Introduir un salt de pàgina a la versió imprimible"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3828
 msgid "Add a prefix to the answer field"
-msgstr ""
+msgstr "Afegir un prefix al camp de la resposta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3829
-#, fuzzy
 msgid "Answer prefix"
-msgstr "Privacitat"
+msgstr "Prefix de la resposta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3839
 msgid "Show statistics of this question in the public statistics page"
-msgstr ""
+msgstr "Mostrar estadístiques d'aquesta pregunta a la pàgina d'estadístiques públiques"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3840
-#, fuzzy
 msgid "Show in public statistics"
-msgstr "Estadístiques Ràpides"
+msgstr "Mostrar a les estadístiques públiques"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3850
 msgid "Present answers in random order"
-msgstr ""
+msgstr "Presentar les respostes amb ordre aleatori"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3851
 msgid "Random answer order"
-msgstr ""
+msgstr "Ordre aleatori de les respostes"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3855
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3866
@@ -1945,7 +1912,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3909
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3920
 msgid "Slider"
-msgstr ""
+msgstr "Selector lliscant"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3861
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3862
@@ -1956,22 +1923,22 @@ msgstr "Utilitzar els valors per defecte"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3869
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3870
 msgid "Slider minimum value"
-msgstr ""
+msgstr "Valor mínim del selector lliscant"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3877
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3878
 msgid "Slider maximum value"
-msgstr ""
+msgstr "Valor màxim del selector lliscant"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3885
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3886
 msgid "Slider accuracy"
-msgstr ""
+msgstr "Precisió del selector lliscant"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3893
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3894
 msgid "Slider initial value"
-msgstr ""
+msgstr "Valor inicial del selector lliscant"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3904
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
@@ -1979,7 +1946,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3905
 msgid "Slider starts at the middle position"
-msgstr ""
+msgstr "El selector lliscant comença a la posició del mig"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3915
 msgid "Display min and max value under the slider"
@@ -2002,9 +1969,8 @@ msgid "Add a suffix to the answer field"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3932
-#, fuzzy
 msgid "Answer suffix"
-msgstr "Respostes"
+msgstr "Sufix de la resposta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3939
 msgid "Width of text input box"
@@ -2031,19 +1997,16 @@ msgid "Default"
 msgstr "Per defecte"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3959
-#, fuzzy
 msgid "Nominal"
-msgstr "Resposta Numèrica"
+msgstr "Nominal"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3960
-#, fuzzy
 msgid "Ordinal"
-msgstr "Opcional"
+msgstr "Ordinal"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3961
-#, fuzzy
 msgid "Scale"
-msgstr "Masculí"
+msgstr "Escala"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3963
 msgid "Set a specific SPSS export scale type for this question"
@@ -2073,9 +2036,8 @@ msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3973
-#, fuzzy
 msgid "Time limit"
-msgstr "Hora d'Enviament"
+msgstr "Temps límit"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3980
 msgid "Warn and move on"
@@ -2086,9 +2048,8 @@ msgid "Move on without warning"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3982
-#, fuzzy
 msgid "Disable only"
-msgstr "Deshabilitar"
+msgstr "Només deshabilitar"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3983
 msgid "Action to perform when time limit is up"
@@ -2224,9 +2185,9 @@ msgstr "Exit!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:266
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:284
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:433
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:453
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:520
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:565
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:455
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:524
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:570
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:124
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:269
@@ -2254,8 +2215,8 @@ msgstr "Exit!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:227
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:269
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:391
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:445
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:477
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:447
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:481
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:57
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:81
@@ -2290,11 +2251,11 @@ msgstr "Exit!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:231
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:50
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:399
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:796
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:801
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:828
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:938
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:985
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:798
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:803
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:830
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:940
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:987
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpgroup.php:40
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumplabel.php:32
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:664
@@ -2308,39 +2269,35 @@ msgstr "Exit!"
 msgid "Error"
 msgstr "Error"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7080
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7094
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:866
 msgid "Email address"
 msgstr "Adreça de correu electrònic"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7081
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7095
 msgid "Token code"
-msgstr "Clau d'Accés"
+msgstr "Codi del token"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7082
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7096
 msgid "Language code"
-msgstr "Idioma"
+msgstr "Codi del idioma"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7083
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7097
 msgid "Invitation sent date"
-msgstr "Invitació enviada a:"
+msgstr "Data d'enviament de la invitació"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7084
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7098
 msgid "Last Reminder sent date"
-msgstr "Recordatori enviat a:"
+msgstr "Data d'enviament del darrer recordatori"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7085
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7099
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:7105
-#, fuzzy, php-format
+#: /var/lib/limesurvey-svn/subversion1x/common.php:7119
+#, php-format
 msgid "Attribute %s"
-msgstr "Atribut 1"
+msgstr "Atribut %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:223
 msgid "Please try again."
@@ -2363,12 +2320,11 @@ msgstr "Les seves contrasenyes no coincideixen"
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:276
 #: /var/lib/limesurvey-svn/subversion1x/index.php:562
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1890
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2078
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1895
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2083
 #: /var/lib/limesurvey-svn/subversion1x/register.php:71
-#, fuzzy
 msgid "The answer to the security question is incorrect."
-msgstr "La resposta a la pregunta de seguretat és incorrecta"
+msgstr "La resposta a la pregunta de seguretat és incorrecta."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:292
 msgid "This name has already been used for this survey. You must use a unique save name."
@@ -2390,9 +2346,8 @@ msgid "Reload your survey by clicking on the following link (or pasting it into 
 msgstr "Carrega la seva enquesta fent clic en el següent enllaç (o enganxant-lo en el seu navegador):"
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:368
-#, fuzzy
 msgid "Your survey was successfully saved."
-msgstr "Ha accedit al sistema correctament."
+msgstr "L'enquesta s'ha guardat satisfactòriament."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:618
 msgid "Cannot submit results - there are none to submit."
@@ -2435,9 +2390,8 @@ msgid "ERROR"
 msgstr "ERROR"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:243
-#, fuzzy
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "Potser no té permisos."
+msgstr "No té permisos per fer això."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:244
 #: /var/lib/limesurvey-svn/subversion1x/index.php:273
@@ -2447,9 +2401,9 @@ msgstr "Potser no té permisos."
 #: /var/lib/limesurvey-svn/subversion1x/index.php:495
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:82
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:483
-#, fuzzy, php-format
+#, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "si desitja més ajuda"
+msgstr "Si us plau, contacti amb %s (%s) si desitja més ajuda."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:272
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:81
@@ -2458,19 +2412,16 @@ msgstr "Ho sentim, però la seva sessió ha caducat."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:272
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:81
-#, fuzzy
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
-msgstr "O bé ha estat inactiu durant molt temps o hi ha algun problema amb la seva connexió."
+msgstr "O bé ha estat inactiu durant molt temps, té desactivades les galetes en el seu navegador o hi ha algun problema amb la seva connexió."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:359
-#, fuzzy
 msgid "View statistics"
-msgstr "Veure Estadístiques"
+msgstr "Veure estadístiques"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:366
-#, fuzzy
 msgid "No available surveys"
-msgstr "No s'ha trobat l'enquesta"
+msgstr "No hi ha enquestes disponibles"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:369
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:482
@@ -2479,18 +2430,16 @@ msgstr "No ha proporcionat el número d'identificació de l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:371
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:484
-#, fuzzy
 msgid "The following surveys are available:"
-msgstr "Les següents enquestes haurien de ser eliminades"
+msgstr "Les enquestes següents estan disponibles:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:457
 msgid "This survey is no longer available."
 msgstr "Aquesta enquesta ja no està disponible."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:474
-#, fuzzy
 msgid "This survey is not yet started."
-msgstr "Aquesta enquesta actualment NO està activa"
+msgstr "Aquesta enquesta encara no s'ha començat."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:494
 msgid "You have already completed this survey."
@@ -2506,169 +2455,165 @@ msgstr "No ha introduït una contrasenya"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:612
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:139
-#, fuzzy
 msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
-msgstr "Aquesta enquesta és privada, ha d'introduir una contrasenya vàlida"
+msgstr "Aquesta enquesta és privada, ha d'introduir una contrasenya vàlida. Si us plau, contacti amb l'administrador per més ajuda."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:613
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2011
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2047
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2016
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2052
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "La contrasenya proporcionada no és vàlida o ja ha estat utilitzada."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:614
 #: /var/lib/limesurvey-svn/subversion1x/index.php:639
-#, fuzzy, php-format
+#, php-format
 msgid "For further information please contact %s"
-msgstr "Per més informació contacti amb"
+msgstr "Per més informació contacti amb %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:637
-#, fuzzy
 msgid "We are sorry but you are not allowed to enter this survey."
-msgstr "No pot eliminar aquesta enquesta!"
+msgstr "No està autoritzat per accedir a aquesta enquesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:638
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:765
-#, fuzzy
 msgid "Your responses were successfully saved."
-msgstr "Ha accedit al sistema correctament."
+msgstr "Les seves respostes s'han guardat satisfactòriament."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:806
 msgid "There is no matching saved survey"
 msgstr "No existeix cap enquesta amb aquest nom"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:889
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1114
-#, fuzzy, php-format
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1115
+#, php-format
 msgid "You have completed %s%% of this survey"
-msgstr "Ja ha completat aquesta enquesta."
+msgstr "Ja ha completat el %s%% d'aquesta enquesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1667
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1672
 #, php-format
 msgid "Response submission for survey %s"
 msgstr "Respostes enviades a l'enquesta %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1669
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1674
 msgid "Hello!"
 msgstr "Hola!"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1670
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1675
 msgid "A new response was submitted for your survey."
 msgstr "S'ha afegit una nova resposta la seva enquesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1673
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1678
 msgid "Click the following link to reload the survey:"
 msgstr "Premi en el següent enllaç per recuperar l'enquesta:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1677
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1682
 msgid "Click the following link to see the individual response:"
 msgstr "Premi en el següent enllaç per veure la resposta individual:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1680
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1685
 msgid "Click the following link to edit the individual response:"
 msgstr "Premi en el següent enllaç per editar la resposta individual:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1683
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1688
 msgid "View statistics by clicking here:"
 msgstr "Vegi les estadístiques prement aquí:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1796
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1801
 msgid "This email contains confirmation of the responses you made to the survey"
 msgstr "Aquest correu electrònic conté les respostes de l'enquesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1798
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1803
 msgid "Survey submission confirmation"
 msgstr "Confirmació de l'enviament a l'enquesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1817
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1822
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Ha ocorregut un error inesperat i les seves respostes no s'han pogut guardar."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1820
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1825
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Les seves respostes no s'han perdut, han estat enviades per correu electrònic a l'administrador de l'enquesta per a la seva posterior incorporació a la base de dades."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1821
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1826
 msgid "An error occurred saving a response to survey id"
 msgstr "Ha ocorregut un error salvant la seva resposta de l'enquesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1822
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1827
 msgid "DATA TO BE ENTERED"
 msgstr "DADES QUE SERAN GUARDADES"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1827
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1832
 msgid "SQL CODE THAT FAILED"
 msgstr "CODI SQL QUE HA FALLAT"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1829
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1834
 msgid "ERROR MESSAGE"
 msgstr "MISSATGE D'ERROR"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1831
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1836
 msgid "Error saving results"
 msgstr "Error al guardar les respostes"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1839
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1844
 msgid "Try to submit again"
 msgstr "Intenti enviar-ho un altre cop"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1893
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1898
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Si us plau, respongui la pregunta de seguretat i polsi continuar."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1916
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1921
 msgid "Security question:"
-msgstr "Pregunta de Seguretat"
+msgstr "Pregunta de seguretat:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1950
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2010
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2046
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2081
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1955
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2015
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2051
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2086
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Aquesta enquesta té control d'accés. Necessita una contrasenya vàlida per participar."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1951
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1956
 #, fuzzy
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Si se li ha proporcionat una contrasenya, si us plau, introdueixi-la en el quadre de text i premi a continuar."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2012
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2048
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2221
-#, fuzzy, php-format
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2017
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2053
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2226
+#, php-format
 msgid "For further information contact %s"
-msgstr "Per més informació contacti amb"
+msgstr "Per més informació contacti amb %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2086
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2091
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Si se li ha proporcionat una contrasenya, si us plau, introdueixi-la en el quadre de text i premi a continuar."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2106
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2111
 #, fuzzy
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Si se li ha proporcionat una contrasenya, si us plau, introdueixi-la en el quadre de text i premi a continuar."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2121
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2126
 msgid "Token:"
 msgstr "Token:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2220
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2225
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Aquesta enquesta encara no conté preguntes i no pot ser provada ni completada."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2612
-#: /var/lib/limesurvey-svn/subversion1x/index.php:3028
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2617
+#: /var/lib/limesurvey-svn/subversion1x/index.php:3033
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:437
 msgid "Previous"
 msgstr "Anterior"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2617
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2623
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2622
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2628
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2633
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:436
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:708
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:772
@@ -2723,8 +2668,8 @@ msgstr "Si us plau, seleccioni un com a mínim"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:593
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:635
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:636
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1347
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1348
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1383
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1384
 msgid "Check any that apply"
 msgstr "Seleccioni les que corresponguin"
 
@@ -2761,8 +2706,8 @@ msgstr "Triï el seu idioma"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:726
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:536
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:666
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:682
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:684
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:718
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:720
 msgid "*"
 msgstr "*"
 
@@ -2798,7 +2743,7 @@ msgstr "Si us plau, seleccioni un com a mínim"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2363
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3034
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3488
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1042
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1078
 msgid "Other:"
 msgstr "Altre:"
 
@@ -2846,18 +2791,16 @@ msgid "seconds"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1153
-#, fuzzy
 msgid "Time remaining"
-msgstr "Ranking"
+msgstr "Temps restant"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1440
 msgid "Day"
 msgstr "Dia"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1457
-#, fuzzy
 msgid "Month"
-msgstr "Comptar"
+msgstr "Mes"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1459
 msgid "Jan"
@@ -2973,9 +2916,8 @@ msgid "Please choose"
 msgstr "Triï, si us plau"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1855
-#, fuzzy
 msgid "Other answer"
-msgstr "NS/NC"
+msgstr "L'altre resposta"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1879
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2063
@@ -2992,9 +2934,8 @@ msgstr "Error: El conjunt d'etiquetes utilitzat per aquesta pregunta no està di
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2000
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2035
-#, fuzzy
 msgid "Other text"
-msgstr "Altre"
+msgstr "L'altre text"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2608
 msgid "Please enter your comment here"
@@ -3050,8 +2991,8 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3595
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3623
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:908
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:910
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:944
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:946
 msgid "Make a comment on your choice here:"
 msgstr "Comenti la seva opció aquí:"
 
@@ -3082,14 +3023,12 @@ msgid "Total of all entries must be at least %s"
 msgstr "El total de totes les entrades ha de ser com a mínim %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4282
-#, fuzzy
 msgid "Remaining: "
-msgstr "Ranking"
+msgstr "Restant:"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4284
-#, fuzzy
 msgid "Total: "
-msgstr "Total"
+msgstr "Total:"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4328
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4334
@@ -3122,15 +3061,13 @@ msgid "Error: There are no answers defined for this question."
 msgstr "Ha d'afegir respostes a aquesta pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:169
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:99
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:135
 msgid "PDF Export"
-msgstr "Exportar"
+msgstr "Exportar en un arxiu PDF"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:178
-#, fuzzy
 msgid "Survey Name (ID)"
-msgstr "ID de l'Enquesta:"
+msgstr "ID de l'Enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:198
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:622
@@ -3146,14 +3083,12 @@ msgid "Date Stamp"
 msgstr "Data i Hora"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:303
-#, fuzzy
 msgid "First Scale"
-msgstr "Nom"
+msgstr "Primera escala"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:304
-#, fuzzy
 msgid "Second Scale"
-msgstr "Modificar Conjunt d'Etiquetes"
+msgstr "Segona escala"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:350
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:352
@@ -3194,24 +3129,21 @@ msgid "Go back"
 msgstr "Tornar enrere"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:652
-#, fuzzy
 msgid "Getting questions and answers ..."
-msgstr "Recuperant Respostes i Preguntes..."
+msgstr "Recuperant respostes i preguntes..."
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:668
 msgid "Total records in survey"
 msgstr "Total d'elements en l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:685
-#, fuzzy
 msgid "Generating summaries ..."
-msgstr "Generant Totals..."
+msgstr "Generant resums..."
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:867
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1522
-#, fuzzy
 msgid "Field summary for"
-msgstr "Resum del Camp per"
+msgstr "Resum del camp per"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:872
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:913
@@ -3291,15 +3223,13 @@ msgstr "Comptar"
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1034
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1104
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1114
-#, fuzzy
 msgid "1st quartile (Q1)"
-msgstr "1r Quart (Q1)"
+msgstr "1er quartil (Q1)"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1058
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1138
-#, fuzzy
 msgid "2nd quartile (Median)"
-msgstr "2n Quart (Mig)"
+msgstr "2on quartil (mediana)"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1069
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1149
@@ -3310,9 +3240,8 @@ msgstr "Mediana"
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1111
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1181
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1191
-#, fuzzy
 msgid "3rd quartile (Q3)"
-msgstr "3r Quart (Q3)"
+msgstr "3er quartil (Q3)"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1117
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:143
@@ -3334,9 +3263,9 @@ msgstr "Els valors nuls són ignorats en els càlculs"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1243
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1249
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1265
-#, fuzzy, php-format
+#, php-format
 msgid "Q1 and Q3 calculated using %s"
-msgstr "Q1 i Q3 calculats utilitzant"
+msgstr "Q1 i Q3 calculats utilitzant %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1132
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1240
@@ -3379,10 +3308,10 @@ msgid "Non completed"
 msgstr "No completat"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2063
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:687
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:507
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1396
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1425
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:692
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:511
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1398
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1427
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2665
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2669
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2682
@@ -3422,9 +3351,8 @@ msgid "Completed"
 msgstr "Completat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:54
-#, fuzzy
 msgid "Saved Responses"
-msgstr "Respostes Guardades:"
+msgstr "Respostes guardades"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:59
 msgid "Saved Responses:"
@@ -3658,9 +3586,8 @@ msgid "The following old token list tables exist and may be deleted if no longer
 msgstr "Les següents taules de tokens antigues podrien ser restaurades:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:499
-#, fuzzy
 msgid "Delete checked items!"
-msgstr "Si us plau, seleccioni un com a mínim"
+msgstr "Eliminar els elements seleccionats!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:500
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
@@ -3680,9 +3607,8 @@ msgstr "Eliminant Enquestes"
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:655
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:665
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:675
-#, fuzzy
 msgid "Deleting"
-msgstr "Eliminant ID"
+msgstr "Eliminant"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:553
 msgid "Deleting Surveys"
@@ -3723,9 +3649,8 @@ msgid "Deleting answer with qid"
 msgstr "Eliminant resposta amb gid"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:612
-#, fuzzy
 msgid "Deleting questions"
-msgstr "Eliminant Preguntes"
+msgstr "Eliminant preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:614
 msgid "Deleting qid"
@@ -3760,17 +3685,16 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:663
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:673
-#, fuzzy
 msgid "Deleting old token tables"
-msgstr "Eliminar tots els tokens"
+msgstr "Eliminant totes les taules de tokens antigues"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:62
 msgid "Label Sets Administration"
-msgstr "Administració d'Etiquetes"
+msgstr "Administració dels conjunts d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:73
 msgid "Labelsets"
-msgstr "Conjunt d'Etiquetes"
+msgstr "Conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:92
 msgid "Add new label set"
@@ -3781,13 +3705,12 @@ msgid "Show Help"
 msgstr "Mostra Ajuda"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:119
-#, fuzzy
 msgid "Create or Import New Label Set"
-msgstr "Crear o Importar una Nova Enquesta"
+msgstr "Crear o importar un conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:119
 msgid "Create New Label Set"
-msgstr "Crear un Nou Conjunt d'Etiquetes"
+msgstr "Crear un nou conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:120
 msgid "Edit Label Set"
@@ -3798,14 +3721,12 @@ msgid "Error: You have to enter a name for this label set."
 msgstr "Error: Ha d'introduir un nom per aquest conjunt d'etiquetes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:130
-#, fuzzy
 msgid "Set name:"
-msgstr "Nom del Conjunt"
+msgstr "Nom del conjunt:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:137
-#, fuzzy
 msgid "Languages:"
-msgstr "Idiomes"
+msgstr "Idiomes:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:147
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2216
@@ -3821,14 +3742,12 @@ msgid "Remove"
 msgstr "Treure"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:147
-#, fuzzy
 msgid "You cannot remove this item since you need at least one language in a labelset."
-msgstr "No pot eliminar aquests ítems ja que almenys necessita un idioma en un conjunt d'etiquetes."
+msgstr "No pot eliminar aquest element ja que necessita almenys un idioma en un conjunt d'etiquetes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:163
-#, fuzzy
 msgid "Save label set"
-msgstr "Eliminar conjunt d'etiquetes"
+msgstr "Guardar el conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:229
@@ -3859,7 +3778,7 @@ msgid "Convert resources links?"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:227
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:693
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:698
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1184
 msgid "Label Set"
 msgstr "Conjunt d'Etiquetes"
@@ -3869,9 +3788,8 @@ msgid "Edit label set"
 msgstr "Modificar conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:235
-#, fuzzy
 msgid "Do you really want to delete this label set?"
-msgstr "Està segur que vol eliminar aquest arxiu?"
+msgstr "Està segur que vol eliminar aquest conjunt d'etiquetes?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:236
 msgid "Delete label set"
@@ -3887,7 +3805,7 @@ msgid "Close Window"
 msgstr "Tancar Finestra"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:266
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:695
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:700
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:211
 msgid "Labels"
 msgstr "Etiquetes"
@@ -3965,7 +3883,7 @@ msgstr "Avall"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:373
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:705
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:950
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:951
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1488
 msgid "Save Changes"
 msgstr "Guardar Canvis"
@@ -4015,8 +3933,8 @@ msgstr "No pot canviar codis, afegir o eliminar entrades en aquest conjunt d'eti
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:446
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:459
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:67
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:903
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:910
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:904
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:911
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2665
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2678
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3137
@@ -4025,7 +3943,7 @@ msgid "Please select a file to import!"
 msgstr "Si us plau, seleccioni un arxiu a importar!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:449
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:906
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:907
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2668
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr ""
@@ -4112,9 +4030,8 @@ msgstr "No s'ha pogut eliminar l'etiqueta"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:20
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:74
-#, fuzzy
 msgid "Import question group"
-msgstr "Importar Pregunta"
+msgstr "Importar grup de preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:28
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:125
@@ -4192,7 +4109,7 @@ msgid "No SID (Survey) has been provided. Cannot import group."
 msgstr "No s'indica SID (Enquesta). No es pot importar la pregunta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:52
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:678
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:683
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:132
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2052
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2117
@@ -4201,15 +4118,15 @@ msgstr "No s'indica SID (Enquesta). No es pot importar la pregunta."
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1811
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:61
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:66
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:502
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:506
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:75
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:143
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:258
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:326
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:449
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:519
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1387
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1416
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1389
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1418
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:36
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:44
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:208
@@ -4248,51 +4165,51 @@ msgstr "No pot importar una pregunta que no suporta l'idioma base de l'enquesta 
 msgid "You can't import label sets which don't support the current survey's base language"
 msgstr "No es pot importar un conjunt d'etiquetes que no suporta l'idioma base de l'enquesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:668
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:673
 msgid "Import partially successful."
 msgstr "Importació parcialment exitosa."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:669
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:674
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "Els següents idiomes d'aquest grup no s'han importat ja que l'enquesta no els conté com a idiomes:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:680
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:685
 msgid "Group Import Summary"
 msgstr "Resum de l'Importació del Grup"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:681
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:686
 #, fuzzy
 msgid "Groups:"
 msgstr "Grups"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:684
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:504
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:689
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:508
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:889
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1038
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1848
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1395
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1424
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1397
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1426
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:586
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:201
 msgid "Questions"
 msgstr "Preguntes"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:690
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1397
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1426
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:695
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1399
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1428
 msgid "Conditions"
 msgstr "Condicions"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:698
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:703
 #, fuzzy
 msgid "Question Attributes: "
 msgstr "Atributs de la Pregunta:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:701
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:706
 msgid "Import of group is completed."
 msgstr "S'ha completat la importació del grup."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:702
+#: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:707
 #, fuzzy
 msgid "Go to group"
 msgstr "No s'ha trobat el grup"
@@ -4703,9 +4620,8 @@ msgid "Clear"
 msgstr "Eliminar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:366
-#, fuzzy
 msgid "Response filters"
-msgstr "Respostes"
+msgstr "Filtres de la resposta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:414
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:820
@@ -4730,9 +4646,8 @@ msgstr "Número més petit que"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:642
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:664
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1063
-#, fuzzy
 msgid "Responses containing"
-msgstr "Respostes que Contenen"
+msgstr "Respostes que contenen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:732
 msgid "Date (YYYY-MM-DD) equals"
@@ -4743,24 +4658,23 @@ msgid "OR between"
 msgstr "o entre"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:744
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:409
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:445
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1331
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1405
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1407
 msgid "and"
 msgstr "i"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1404
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1498
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:592
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:599
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:628
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:635
 #, fuzzy
 msgid "Label"
 msgstr "Etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:28
-#, fuzzy
 msgid "Add question group"
-msgstr "Afegir Pregunta"
+msgstr "Afegir grup de preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:40
 #, fuzzy
@@ -4803,9 +4717,8 @@ msgid "Description:"
 msgstr "Descripció:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:55
-#, fuzzy
 msgid "Save question group"
-msgstr "Afegir Pregunta"
+msgstr "Guardar grup de preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:129
 msgid "Edit Group"
@@ -4955,7 +4868,7 @@ msgstr "Afegir un nou token"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:469
 msgid "Manage additional attribute fields"
-msgstr ""
+msgstr "Administrar camps d'atributs adicionals"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:473
 msgid "Import tokens from CSV file"
@@ -5028,82 +4941,67 @@ msgid "All tokens"
 msgstr "Tots els tokens"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:579
-#, fuzzy
 msgid "Not started"
-msgstr "Data Guardada"
+msgstr "No començat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:582
-#, fuzzy
 msgid "Started but not yet completed"
-msgstr "No s'ha pogut crear l'enquesta"
+msgstr "Començat però no completat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:585
-#, fuzzy
 msgid "Invitation status:"
-msgstr "Invitació enviada a:"
+msgstr "Estat de la invitació:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:586
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:591
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:596
-#, fuzzy
 msgid "All"
-msgstr "Permetre Guardar?"
+msgstr "Tot"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:587
-#, fuzzy
 msgid "Invited"
-msgstr "Invitació enviada?"
+msgstr "Convidat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:588
-#, fuzzy
 msgid "Not invited"
-msgstr "Actiu"
+msgstr "No convidat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:590
-#, fuzzy
 msgid "Reminder status:"
-msgstr "Recordatori enviat a:"
+msgstr "Estat del recordatori:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:592
-#, fuzzy
 msgid "Reminder(s) sent"
-msgstr "Recordatori enviat a:"
+msgstr "Recordatoris enviats"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:593
-#, fuzzy
 msgid "No reminder(s) sent"
-msgstr "Recordatori enviat a:"
+msgstr "No s'han enviat recordatoris"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:595
-#, fuzzy
 msgid "Filter by language"
-msgstr "Idioma per Defecte"
+msgstr "Filtrar per idioma"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:603
-#, fuzzy
 msgid "Filter by email address"
-msgstr "Adreça de Correu Electrònic"
+msgstr "Filtrar per adreça de correu electrònic"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:607
-#, fuzzy
 msgid "Export tokens"
-msgstr "Exportar Pregunta"
+msgstr "Exportar tokens"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:625
-#, fuzzy
 msgid "Edit email settings"
-msgstr "Modificar Conjunt d'Etiquetes"
+msgstr "Editar les opcions dels correus electrònics"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:637
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:41
-#, fuzzy
 msgid "Base language"
-msgstr "Idioma per Defecte"
+msgstr "Idioma base"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:639
-#, fuzzy
 msgid "Invitation email subject:"
-msgstr "Assumpte del Correu d'Invitació:"
+msgstr "Assumpte de la invitació:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:641
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1113
@@ -5125,9 +5023,8 @@ msgstr "Utilitzar els valors per defecte"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:644
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:646
-#, fuzzy
 msgid "Invitation email:"
-msgstr "Missatge del correu d'invitació:"
+msgstr "Missatge del correu electrònic d'invitació:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:647
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1104
@@ -5172,9 +5069,8 @@ msgstr ""
 "{ADMINNAME} ({ADMINEMAIL})\""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:650
-#, fuzzy
 msgid "Email reminder subject:"
-msgstr "Assumpte del Correu Recordatori:"
+msgstr "Assumpte del recordatori:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:652
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1158
@@ -5184,9 +5080,8 @@ msgstr "Recordatori per participar a l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:655
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:657
-#, fuzzy
 msgid "Email reminder:"
-msgstr "Missatge Recordatori:"
+msgstr "Missatge del correu electrònic de recordatori:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:658
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1354
@@ -5233,9 +5128,8 @@ msgstr ""
 "{ADMINNAME} ({ADMINEMAIL})\""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:661
-#, fuzzy
 msgid "Confirmation email subject:"
-msgstr "Assumpte del Correu de Confirmació"
+msgstr "Assumpte del correu electrònic de confirmació:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:663
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1160
@@ -5244,14 +5138,12 @@ msgid "Confirmation of completed survey"
 msgstr "Confirmació d'enquesta finalitzada"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:666
-#, fuzzy
 msgid "Confirmation email:"
-msgstr "Missatge del Correu de Confirmació"
+msgstr "Missatge del correu electrònic de confirmació:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:668
-#, fuzzy
 msgid "Confirmation email"
-msgstr "Missatge del Correu de Confirmació"
+msgstr "Missatge del correu electrònic de confirmació"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:669
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1161
@@ -5278,20 +5170,17 @@ msgstr ""
 "{ADMINNAME}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:672
-#, fuzzy
 msgid "Public registration email subject:"
-msgstr "Assumpte del Correu de registre públic:"
+msgstr "Assumpte del correu electrònic de registre públic:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:674
-#, fuzzy
 msgid "Survey registration confirmation"
-msgstr "Confirmació del Registre a l'Enquesta"
+msgstr "Confirmació del registre a l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:677
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:679
-#, fuzzy
 msgid "Public registration email:"
-msgstr "Missatge d'inscripció Pública:"
+msgstr "Missatge del correu electrònic d'inscripció pública:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:680
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1163
@@ -5318,27 +5207,24 @@ msgstr ""
 "Si té dubtes respecte a l'enquesta, o si no s'ha registrat per realitzar aquesta enquesta i creu que aquest correu és un error, si us plau, posi's en contacte amb {ADMINNAME} a {ADMINEMAIL}."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:718
-#, fuzzy
 msgid "Token email settings have been saved."
-msgstr "S'han eliminat tots els tokens."
+msgstr "S'han guardat les opcions del correu electrònic del token"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:733
 msgid "All token entries have been deleted."
 msgstr "S'han eliminat tots els tokens."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:745
-#, fuzzy
 msgid "All token entries have been set to 'Not invited'."
-msgstr "Totes les entrades amb invitació enviada han passat a \"No Enviada\""
+msgstr "Tots els tokens s'han marcat com a 'No convidat'."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:757
 msgid "All unique token numbers have been removed."
 msgstr "Totes les contrasenyes úniques han estat eliminades."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:764
-#, fuzzy
 msgid "Token database administration options"
-msgstr "Opcions d'Administració de la Base de Dades de Tokens"
+msgstr "Opcions d'administració de la base de dades de tokens"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:766
 msgid "Are you really sure you want to reset all invitation records to NO?"
@@ -5394,14 +5280,12 @@ msgid "Search"
 msgstr "Cerca"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:820
-#, fuzzy
 msgid "Records displayed:"
-msgstr "Registres Desplegats:"
+msgstr "Registres mostrats:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:821
-#, fuzzy
 msgid "Starting from:"
-msgstr "Començant Desde:"
+msgstr "Començant des de:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:822
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:718
@@ -5461,7 +5345,7 @@ msgstr "Completada?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:897
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1946
 msgid "Valid from"
-msgstr ""
+msgstr "Vàlid des de"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:901
 msgid "Valid until"
@@ -5674,7 +5558,7 @@ msgid "{TOKENCOUNT} tokens have been created"
 msgstr "S'han creat {TOKENCOUNT} contrasenyes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1725
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:980
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:981
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:433
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2081
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:49
@@ -5693,24 +5577,20 @@ msgid "Reloading Screen. Please wait."
 msgstr "Recarregant la Pantalla. Si us plau, esperi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1738
-#, fuzzy
 msgid "Manage token attribute fields"
-msgstr "Nom dels Atributs dels Tokens"
+msgstr "Administrar els atributs dels tokens"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1742
-#, fuzzy
 msgid "Attribute field"
-msgstr "Atribut 1"
+msgstr "Camp d'atribut"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1742
-#, fuzzy
 msgid "Field description"
-msgstr "Descripció de la URL:"
+msgstr "Descripció del camp"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1742
-#, fuzzy
 msgid "Example data"
-msgstr "Exportar les Dades"
+msgstr "Exemple"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1759
 #, fuzzy
@@ -5806,9 +5686,8 @@ msgid "Update token entry"
 msgstr "Actualitzar token"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2053
-#, fuzzy
 msgid "The token entry was successfully updated."
-msgstr "Ha accedit al sistema correctament."
+msgstr "El token s'ha actualitzat correctament."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2054
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2119
@@ -5915,8 +5794,8 @@ msgid "%s records imported"
 msgstr "Registres importats"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2336
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1406
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1433
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1408
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1435
 msgid "Warnings"
 msgstr "Avisos"
 
@@ -5994,7 +5873,7 @@ msgid "Duplicates are determined by:"
 msgstr "Registres duplicats eliminats"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2650
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:995
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:996
 msgid "Upload"
 msgstr "Enviar"
 
@@ -6107,14 +5986,14 @@ msgid "Browse Saved Responses"
 msgstr "Examinar les Respostes Guardades"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:791
-#, fuzzy, php-format
+#, php-format
 msgid "Editing response (ID %s)"
-msgstr "Modificant Resposta"
+msgstr "Editant la resposta (ID %s)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:795
-#, fuzzy, php-format
+#, php-format
 msgid "Viewing response (ID %s)"
-msgstr "Veure Resposta"
+msgstr "Mirant la resposta (ID %s)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:851
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:369
@@ -6365,19 +6244,17 @@ msgid "Save Page"
 msgstr "Pàgina de Guardar Enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:81
-#, fuzzy
 msgid "Print answers page"
-msgstr "Editar Respostes"
+msgstr "Imprimir pàgina de respostes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:82
-#, fuzzy
 msgid "Printable survey page"
-msgstr "Versió Imprimible de l'Enquesta"
+msgstr "Versió imprimible de l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:224
-#, fuzzy, php-format
+#, php-format
 msgid "Template '%s' was successfully deleted."
-msgstr "La Base de Dades '%s' ha estat poblada amb èxit"
+msgstr "La plantilla '%s' s'ha eliminat satisfactòriament."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:229
 #, php-format
@@ -6388,9 +6265,9 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:391
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:402
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:413
-#, fuzzy, php-format
+#, php-format
 msgid "Failed to copy %s to new template directory."
-msgstr "al nou directori de plantilles."
+msgstr "Error a l'hora de copiar %s a la nova carpeta de la plantilla."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:280
 #, fuzzy, php-format
@@ -6418,15 +6295,14 @@ msgstr "Potser no té permisos."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:326
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:338
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:786
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:795
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:787
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:796
 msgid "This file type is not allowed to be uploaded."
 msgstr "No està permès pujar aquest tipus de fitxers."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:423
-#, fuzzy
 msgid "Template Sample"
-msgstr "Plantilla:"
+msgstr "Mostra de la plantilla"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:424
 msgid "This is a sample survey description. It could be quite long."
@@ -6437,9 +6313,8 @@ msgid "But this one isn't."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:425
-#, fuzzy
 msgid "Welcome to this sample survey"
-msgstr "Benvingut a la Configuració de LimeSurvey!"
+msgstr "Benvingut a aquesta enquesta de mostra"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:425
 msgid "You should have a great time doing this"
@@ -6493,176 +6368,181 @@ msgid "Please explain something in detail:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:669
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:713
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:714
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:738
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:745
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:763
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:764
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:833
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:835
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:896
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:897
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1126
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1130
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:749
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:750
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:774
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:781
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:799
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:800
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:869
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:871
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:932
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:933
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1162
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1166
 msgid "Please choose *only one* of the following:"
 msgstr "Si us plau, seleccioni *només una* de les següents:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:699
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:131
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:167
 msgid "Please fax your completed survey to:"
 msgstr "Si us plau, enviï un fax amb l'enquesta completada a:"
 
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:700
+#, fuzzy
+msgid "Submit your survey."
+msgstr "Enviar Enquesta."
+
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:702
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:137
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1758
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:173
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1794
 #, fuzzy, php-format
 msgid "Please submit by %s"
 msgstr "Si us plau, enviar per"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:703
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:117
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1764
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:153
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1800
 msgid "Thank you for completing this survey."
 msgstr "Moltes gràcies per completar aquesta enquesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:823
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:704
+#, fuzzy
+msgid "Survey end message."
+msgstr "Missatge:"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:824
 #, php-format
 msgid "Note: This is a standard template. If you want to edit it %s please copy it first%s."
-msgstr ""
+msgstr "Nota: Aquesta plantilla és estàndard. Si vol editar-la còpiï-la prèviament."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:823
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:886
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:824
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:887
 msgid "Copy Template"
 msgstr "Copiar Plantilla"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:824
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:885
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:825
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:886
 #, fuzzy
 msgid "Please enter the name for the copied template:"
 msgstr "Si us plau, introdueixi una data:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:824
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:885
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:825
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:886
 msgid "copy_of_"
 msgstr "còpia_de_"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:832
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:852
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:833
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:853
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:722
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2269
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2890
 msgid "Template:"
 msgstr "Plantilla:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:836
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:837
 msgid "Create new template called:"
 msgstr "Crear una nova plantilla anomenada:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:836
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:837
 msgid "NewTemplate"
 msgstr "Nova Plantilla"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:838
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:839
 msgid "Create new template"
 msgstr "Crear nova plantilla"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:861
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:862
 msgid "You can't rename a standard template."
-msgstr "No pot modificar la plantilla predeterminada."
+msgstr "No es pot canviar el nom a una plantilla estàndard."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:863
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:864
 msgid "You can't delete a standard template."
-msgstr "No pot modificar la plantilla predeterminada."
+msgstr "No es pot eliminar una plantilla estàndard."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:868
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:869
 msgid "Rename this template to:"
 msgstr "Renombrar aquesta plantilla a:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:869
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:870
 msgid "Rename this template"
 msgstr "Renombrar aquesta plantilla"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:872
-#, fuzzy
-msgid "Are you sure you want to delete this template?"
-msgstr "Està segur que vol eliminar aquest arxiu?"
-
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:873
-#, fuzzy
-msgid "Delete this template"
-msgstr "Renombrar aquesta plantilla"
+msgid "Are you sure you want to delete this template?"
+msgstr "Està segur que vol eliminar aquesta plantilla?"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:879
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:874
+msgid "Delete this template"
+msgstr "Eliminar aquesta plantilla"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:880
 msgid "Export Template"
 msgstr "Exportar Plantilla"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:882
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:883
 msgid "Import template"
-msgstr "Exportar Plantilla"
+msgstr "Importar plantilla"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:889
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:890
 msgid "Screen:"
 msgstr "Pantalla:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:908
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:909
 #, fuzzy
 msgid "Uploaded template file"
 msgstr "Pujar un arxiu"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:914
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:915
 #, fuzzy
 msgid "Select template ZIP file:"
 msgstr "Seleccioni un Fitxer CSV:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:916
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:917
 msgid "Import template ZIP archive"
-msgstr ""
+msgstr "Importar plantilla en arxiu ZIP"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:933
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:934
 #, php-format
 msgid "Editing template '%s' - File '%s'"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:937
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:938
 msgid "Standard Files:"
 msgstr "Arxius Stàndars:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:952
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:953
 #, fuzzy
 msgid "Changes cannot be saved to a standard template."
 msgstr "No poden guardarse els canvis a la plantilla predeterminada."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:958
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:959
 msgid "You can't save changes because the template directory is not writable."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:962
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:963
 msgid "Other Files:"
 msgstr "Altres Arxius:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:967
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:968
 msgid "CSS & Javascript files:"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:980
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:981
 msgid "Are you sure you want to delete this file?"
 msgstr "Està segur que vol eliminar aquest arxiu?"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:982
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:983
 #, fuzzy
 msgid "Files in a standard template cannot be deleted."
 msgstr "La plantilla predeterminada no pot ser eliminada."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:994
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:995
 #, fuzzy
 msgid "Upload a file:"
 msgstr "Pujar un arxiu"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1016
+#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1017
 msgid "Preview:"
 msgstr "Vista Prèvia:"
 
@@ -7235,7 +7115,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:219
 msgid "PDF export available:"
-msgstr ""
+msgstr "Exportació PDF disponible:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:223
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:234
@@ -7447,31 +7327,31 @@ msgstr "Aquest arxiu no és un fitxer de preguntes de LimeSurvey. Ha fallat la i
 msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr "No es pot importar una pregunta que no suporta l'idioma base de l'enquesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:460
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:464
 msgid "Faulty line in import - fields and data don't match"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:503
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:507
 msgid "Question Import Summary"
 msgstr "Resum de l'Importació de la Pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:510
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1398
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1427
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:514
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1400
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1429
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:210
 msgid "Label Sets"
 msgstr "Conjunt d'Etiquetes"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:515
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:519
 msgid "Question Attributes:"
 msgstr "Atributs de la Pregunta:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:519
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:523
 #, fuzzy
 msgid "Question import is complete."
 msgstr "S'ha completat la importació del grup."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:520
+#: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:524
 #, fuzzy
 msgid "Go to question"
 msgstr "a la pregunta"
@@ -7625,14 +7505,12 @@ msgid "Remember that we do not support subdirectories in ZIP archives."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:551
-#, fuzzy
 msgid "Imported template files for"
-msgstr "Importar Respostes"
+msgstr "Arxius importats de la plantilla per"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:583
-#, fuzzy
 msgid "Open imported template"
-msgstr "Exportar Plantilla"
+msgstr "Plantilla importada oberta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:44
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:513
@@ -7640,9 +7518,8 @@ msgid "Status"
 msgstr "Estat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:45
-#, fuzzy
 msgid "Survey ID"
-msgstr "ID de l'Enquesta:"
+msgstr "ID de l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:46
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:298
@@ -7659,9 +7536,8 @@ msgid "Date Created"
 msgstr "Dades Creades"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:48
-#, fuzzy
 msgid "Owner"
-msgstr "Altre"
+msgstr "Propietari"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:49
 msgid "Access"
@@ -7672,19 +7548,16 @@ msgid "Anonymous answers"
 msgstr "Respostes anònimes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:51
-#, fuzzy
 msgid "Full Responses"
-msgstr "respostes complertes"
+msgstr "Enquestes contestades i enviades"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:52
-#, fuzzy
 msgid "Partial Responses"
-msgstr "Borrar Respostes"
+msgstr "Enquestes contestades parcialment"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:53
-#, fuzzy
 msgid "Total Responses"
-msgstr "Exportar Respostes"
+msgstr "Total d'enquestes contestades"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:69
 msgid "Closed-access"
@@ -7695,9 +7568,8 @@ msgid "Open-access"
 msgstr "Accés lliure"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:84
-#, fuzzy
 msgid "Not yet active"
-msgstr "Actiu"
+msgstr "Encara no activa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:133
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:323
@@ -7705,46 +7577,38 @@ msgid "This survey is active but expired."
 msgstr "Aquesta enquesta està actualment activa però ha expirat."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:141
-#, fuzzy
 msgid "This survey is active - click here to deactivate this survey."
-msgstr "No pot desactivar aquesta enquesta!"
+msgstr "Aquesta enquesta està activa - clica aquí per desactivar-la."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:145
-#, fuzzy
 msgid "This survey is currently active."
-msgstr "Aquesta enquesta està actualment activa"
+msgstr "Aquesta enquesta està activa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:153
-#, fuzzy
 msgid "This survey is currently not active - click here to activate this survey."
-msgstr "Aquesta enquesta no està activa. No podrà guardar les seves respostes."
+msgstr "Aquesta enquesta no està activa - clica aquí per activar-la."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:157
-#, fuzzy
 msgid "This survey is currently not active."
-msgstr "Aquesta enquesta està actualment activa"
+msgstr "Aquesta enquesta no està activa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:188
 msgid "No Surveys available - please create one."
 msgstr "No existeixen enquestes - Si us plau, creï una."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:216
-#, fuzzy
 msgid "Your personal settings"
-msgstr "Modificar Conjunt d'Etiquetes"
+msgstr "Les teves opcions personals"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:224
-#, fuzzy
 msgid "Interface language"
-msgstr "Idioma per Defecte"
+msgstr "Idioma de l'interfície"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:237
-#, fuzzy
 msgid "HTML editor mode"
-msgstr "Editor de Plantilles"
+msgstr "Mode editor HTML"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:248
-#, fuzzy
 msgid "Date format"
 msgstr "Format de la data"
 
@@ -7770,18 +7634,16 @@ msgid "Survey cannot be activated. Either you have no permission or there are no
 msgstr "L'enquesta no pot ser activada. O no té suficients privilegis per activar-la o no hi ha preguntes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:328
-#, fuzzy
 msgid "This survey is active but has a start date."
-msgstr "Aquesta enquesta està actualment activa però ha expirat."
+msgstr "Aquesta enquesta està activa però té una data d'inici."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:333
 msgid "This survey is currently active"
 msgstr "Aquesta enquesta està actualment activa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:339
-#, fuzzy
 msgid "Deactivate this Survey"
-msgstr "Desactivar aquesta Enquesta"
+msgstr "Desactivar aquesta enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:354
 msgid "Survey Security Settings"
@@ -7833,9 +7695,8 @@ msgid "Set Assessment Rules"
 msgstr "Fixar Regles d'Avaluació"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:523
-#, fuzzy
 msgid "Set Survey Quotas"
-msgstr "Establir Permisos per a l'Enquesta"
+msgstr "Establir quotes de  l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:534
 msgid "Browse Responses For This Survey"
@@ -7846,26 +7707,22 @@ msgid "Token management"
 msgstr "Administració de tokens"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:554
-#, fuzzy
 msgid "Change question group order"
-msgstr "Modificar l'Ordre de les Preguntes"
+msgstr "Modificar l'ordre dels grups de preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:560
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1394
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1396
 msgid "Question groups"
-msgstr "Còdis de Pregunta"
+msgstr "Grups de preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:580
-#, fuzzy
 msgid "Add new group to survey"
-msgstr "Afegeix Nou Grup a l'Enquesta"
+msgstr "Afegeix un grup nou a l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:584
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:585
-#, fuzzy
 msgid "Hide details of this Survey"
-msgstr "Oculta els Detalls d'aquesta Enquesta"
+msgstr "Oculta els detalls d'aquesta enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:587
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:588
@@ -7881,9 +7738,8 @@ msgstr "Tanca aquesta Enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:622
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2533
-#, fuzzy
 msgid "Answers to this survey are anonymized."
-msgstr "Ha fallat la importació del fitxer de l'enquesta"
+msgstr "Les respostes d'aquesta enquesta són anònimes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:623
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2532
@@ -8020,18 +7876,16 @@ msgid "Survey cannot be activated yet."
 msgstr "L'enquesta no pot ser activada encara"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:782
-#, fuzzy
 msgid "You need to add question groups"
-msgstr "Ha d'afegir preguntes"
+msgstr "Ha d'afegir grups de preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:786
 msgid "You need to add questions"
 msgstr "Ha d'afegir preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:834
-#, fuzzy
 msgid "Edit current question group"
-msgstr "Modificar Pregunta Seleccionada"
+msgstr "Modificar el grup de preguntes seleccionat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:846
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
@@ -8039,18 +7893,16 @@ msgstr "Eliminant aquest grup també eliminará qualsevol pregunta i resposta qu
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:848
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:855
-#, fuzzy
 msgid "Delete current question group"
-msgstr "Eliminar Pregunta Seleccionada"
+msgstr "Eliminar el grup de preguntes seleccionat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:853
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "No s'ha pogut eliminar aquest grup perquè hi ha, almenys, una pregunta associada a una condició del seu contingut"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:869
-#, fuzzy
 msgid "Export current question group"
-msgstr "Exportar Grup Seleccionat"
+msgstr "Exportar el grup de preguntes seleccionat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:880
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:605
@@ -8124,9 +7976,8 @@ msgstr "Visualitzar Aquesta Pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1111
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1175
-#, fuzzy
 msgid "Edit/add answer options for this question"
-msgstr "Modificar/Afegir Respostes per aquesta Pregunta"
+msgstr "Modificar/afegir opcions per aquesta pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1121
 msgid "Hide Details of this Question"
@@ -8195,24 +8046,20 @@ msgid "You need to add answer options to this question"
 msgstr "Ha d'afegir respostes a aquesta pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1188
-#, fuzzy
 msgid "You need to choose a label set for this question!"
-msgstr "Ha de seleccionar un Conjunt d'Etiquetes per aquesta pregunta"
+msgstr "Ha de seleccionar un conjunt d'etiquetes per aquesta pregunta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1208
-#, fuzzy
 msgid "Second Label Set"
-msgstr "Modificar Conjunt d'Etiquetes"
+msgstr "Segon conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1212
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
-msgstr "Ha de seleccionar un Conjunt d'Etiquetes per aquesta pregunta"
+msgstr "Ha de seleccionar el segon conjunt d'etiquetes per aquesta pregunta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1226
-#, fuzzy
 msgid "Edit/Add second Label Sets"
-msgstr "Modificar/Afegir Conjunt d'Etiquetes"
+msgstr "Modificar/afegir conjunt d'etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1238
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:114
@@ -8371,7 +8218,7 @@ msgstr "Exportar Enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1874
 msgid "LimeSurvey question group file (*.csv)"
-msgstr ""
+msgstr "Arxiu de grup de preguntes del LimeSurvey (*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1914
 #, fuzzy
@@ -8380,7 +8227,7 @@ msgstr "Exportar Enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1917
 msgid "LimeSurvey question file (*.csv)"
-msgstr ""
+msgstr "Arxiu de pregunta del LimeSurvey (*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1960
 msgid "Survey Security"
@@ -8396,7 +8243,7 @@ msgid "Please select a user first"
 msgstr "Si us plau, seleccioni un arxiu a importar!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1994
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1423
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1425
 msgid "Groups"
 msgstr "Grups"
 
@@ -8414,9 +8261,8 @@ msgid "Failed to update survey rights!"
 msgstr "No s'han pogut actualitzar els permisos de l'enquesta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2181
-#, fuzzy
 msgid "Edit survey settings - Step 1 of 2"
-msgstr "Modificar Enquesta - Pas 1 de 2"
+msgstr "Modificar opcions de l'enquesta - Pas 1 de 2"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2239
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2866
@@ -8425,14 +8271,13 @@ msgstr "Correu Electrònic de l'Administrador:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2241
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2868
-#, fuzzy
 msgid "Bounce Email:"
-msgstr "La seva Adreça Electrònica"
+msgstr "Correu electrònic de rebot:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2251
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2880
 msgid "Presentation & Navigation"
-msgstr ""
+msgstr "Presentació i navegació"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2254
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2883
@@ -8448,9 +8293,8 @@ msgstr "Pregunta a Pregunta"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2287
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2905
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2906
-#, fuzzy
 msgid "Template Preview:"
-msgstr "Plantilla:"
+msgstr "Vista prèvia de la plantilla:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2291
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2910
@@ -8464,26 +8308,23 @@ msgstr "Mostrar el botó [<< Anterior]"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2313
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2928
-#, fuzzy
 msgid "Participants may print answers?"
-msgstr "Els participants poden guardar enquestes completades parcialment"
+msgstr "Els participants poden imprimir les enquestes?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2325
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2935
-#, fuzzy
 msgid "Public statistics?"
-msgstr "Estadístiques Ràpides"
+msgstr "Estadístiques públiques"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2337
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2942
 msgid "Show graphs in public statistics?"
-msgstr ""
+msgstr "Mostrar gràfics a les estadístiques públiques?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2349
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2949
-#, fuzzy
 msgid "List survey publicly:"
-msgstr "Llistar Enquestes"
+msgstr "Llistar l'enquesta públicament:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2362
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2965
@@ -8493,13 +8334,12 @@ msgstr "Carregar automàticament la URL quan s'hagi completat l'enquesta?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2377
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2988
 msgid "Publication & Access control"
-msgstr ""
+msgstr "Publicació i control d'accés"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2393
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2999
-#, fuzzy
 msgid "Set token length to:"
-msgstr "Eliminar Token"
+msgstr "Establir la llargada del token a:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2398
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3004
@@ -8509,12 +8349,12 @@ msgstr "Permetre inscripció pública?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2432
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3021
 msgid "Set cookie to prevent repeated participation?"
-msgstr ""
+msgstr "Establir galeta per prevenir la repetició de participació?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2445
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3032
 msgid "Use CAPTCHA for"
-msgstr ""
+msgstr "Utilitzar CAPTCHA per"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2449
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2453
@@ -8524,9 +8364,8 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3035
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3036
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3038
-#, fuzzy
 msgid "Survey Access"
-msgstr "Èxit"
+msgstr "Accés a l'enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2449
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2453
@@ -8555,7 +8394,7 @@ msgstr "Guardar Ara"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2480
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3045
 msgid "Use HTML format for token emails?"
-msgstr ""
+msgstr "Utilitzar el format HTML pels correus eletrònics dels tokens?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2481
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
@@ -8661,9 +8500,8 @@ msgid "Save and Continue"
 msgstr "Guardar i Continuar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2733
-#, fuzzy
 msgid "Edit survey settings - Step 2 of 2"
-msgstr "Modificar Enquesta - Pas 2 de 2"
+msgstr "Modificar opcions de l'enquesta - Pas 2 de 2"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2753
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2856
@@ -8698,9 +8536,8 @@ msgid "Date format:"
 msgstr "Format de la data"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2814
-#, fuzzy
 msgid "Create or Import Survey"
-msgstr "Crear o Importar una Nova Enquesta"
+msgstr "Crear o importar una enquesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2822
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2875
@@ -8818,144 +8655,144 @@ msgstr "Abans d'eliminar aquesta enquesta, li recomanem que l'exporti completame
 msgid "All conditions in this survey have been deleted."
 msgstr "S'han eliminat tots els tokens."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:115
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1764
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:151
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1800
 msgid "Submit Your Survey."
 msgstr "Enviar Enquesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:418
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:446
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:454
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:482
 msgid "Answer was"
 msgstr "La resposta era"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:422
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:458
 msgid "Answer was NOT"
 msgstr "La resposta no era"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:426
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:462
 msgid "Answer was less than"
 msgstr "La resposta era menor que"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:430
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:466
 msgid "Answer was less than or equal to"
 msgstr "La resposta era menor o igual que"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:434
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:470
 msgid "Answer was greater than or equal to"
 msgstr "La resposta era mmajor o igual que"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:438
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:474
 msgid "Answer was greater than"
 msgstr "La resposta era major que"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:442
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:478
 msgid "Answer matched (regexp)"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:624
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:660
 msgid "RANK"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:642
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:678
 msgid "at question"
 msgstr "a la pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:650
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:686
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Contestar aquesta pregunta només si es compleixen les següents condicions:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:730
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:732
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:766
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:768
 msgid "Please enter a date:"
 msgstr "Si us plau, introdueixi una data:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:923
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:959
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Si us plau, enumeri cada casella en ordre de preferència de 1 a"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:924
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:960
 #, fuzzy
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Si us plau, enumeri cada casella en ordre de preferència de 1 a"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:946
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:947
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:982
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:983
 msgid "Please choose *all* that apply:"
 msgstr "Si us plau, seleccioni *totes* les que corresponguin:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:952
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:953
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:988
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:989
 #, fuzzy, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "Si us plau, seleccioni *a molt estirar*"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1018
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1019
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1054
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1055
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Si us plau, seleccioni totes les que corresponguin i afegeixi un comentari:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1024
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1025
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1060
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1061
 msgid "Please choose *at most* "
 msgstr "Si us plau, seleccioni *a molt estirar*"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1024
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1025
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1060
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1061
 #, fuzzy
 msgid "answers and provide a comment:"
 msgstr "Si us plau, seleccioni totes les que corresponguin i afegeixi un comentari:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1062
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1064
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1098
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1100
 msgid "Please write your answer(s) here:"
 msgstr "Si us plau, escrigui la/es seva/es resposta/es aquí:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1081
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1083
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1090
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1093
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1103
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1106
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1116
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1117
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1119
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1126
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1129
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1139
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1142
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1152
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1155
 msgid "Please write your answer here:"
 msgstr "Si us plau, escrigui la seva resposta aquí:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1140
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1157
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1194
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1202
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1229
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1243
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1269
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1283
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1468
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1477
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1535
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1537
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1629
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1630
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1176
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1193
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1230
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1238
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1265
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1279
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1305
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1319
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1504
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1513
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1571
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1573
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1665
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1666
 msgid "Please choose the appropriate response for each item:"
 msgstr "Si us plau, triï la resposta apropiada per cada entrada:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1337
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1338
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1373
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1374
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1341
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1342
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1377
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1378
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1681
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1717
 #, fuzzy
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Hi ha {NUMBEROFQUESTIONS} preguntes en aquesta enquesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1762
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1798
 #, fuzzy, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Si us plau, enviï un fax amb l'enquesta completada a:"
@@ -8973,8 +8810,8 @@ msgid "There are no groups available."
 msgstr "Aquesta enquesta ja no està disponible."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:111
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1404
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1430
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1406
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1432
 msgid "Assessments"
 msgstr "Valoracions"
 
@@ -9416,9 +9253,8 @@ msgid "RegExp"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1857
-#, fuzzy
 msgid "Predefined answer options for this question"
-msgstr "Modificar/Afegir Respostes per aquesta Pregunta"
+msgstr "Opcions de la resposta predefinida de la pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1863
 #, fuzzy
@@ -9570,7 +9406,7 @@ msgid "When checking your installation we found one or more problems. Please che
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:241
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:256
 #, fuzzy
 msgid "Check again"
 msgstr "Revisar un altre cop"
@@ -9580,8 +9416,8 @@ msgid "Everything looks alright. Please proceed to the next step."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:101
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:247
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:334
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:262
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:349
 #, php-format
 msgid "Proceed to step %s"
 msgstr ""
@@ -9592,16 +9428,16 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:148
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:156
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:265
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:273
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:347
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:355
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:280
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:288
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:362
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:370
 msgid "On requesting the update information from limesurvey.org there has been an error:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:153
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:270
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:352
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:285
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:367
 #, fuzzy
 msgid "Your update key is invalid and was removed. "
 msgstr "Els registres amb l'adreça electrònica invàlida han estat eliminats"
@@ -9624,107 +9460,107 @@ msgstr ""
 msgid "Back to global settings"
 msgstr "Modificar Conjunt d'Etiquetes"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:197
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:212
 msgid "Checking existing LimeSurvey files..."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:200
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:215
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:201
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:216
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:213
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:228
 msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:214
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:227
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:229
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:242
 msgid "We recommend that these files should be replaced by the update procedure."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:226
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:241
 msgid "The following files will be modified or deleted but were already modified by someone else."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:239
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:254
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:245
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:260
 msgid "Please check any problems above and then proceed to the next step."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:261
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:276
 msgid "ComfortUpdate Step 3"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:262
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:277
 msgid "Creating DB & file backup"
-msgstr ""
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:305
-#, fuzzy
-msgid "Creating file backup... "
-msgstr "Llegint arxiu..."
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:312
-msgid "File backup created:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:320
 #, fuzzy
+msgid "Creating file backup... "
+msgstr "Llegint arxiu..."
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:327
+msgid "File backup created:"
+msgstr ""
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:335
+#, fuzzy
 msgid "Creating database backup... "
 msgstr "Crear Base de Dades"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:324
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:339
 #, fuzzy
 msgid "DB backup created:"
 msgstr "Realitzar còpia de seguretat de tota la Base de Dades"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:329
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:344
 msgid "No DB backup created:"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:329
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:344
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:332
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:347
 msgid "Please check any problems above and then proceed to the final step."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:344
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:359
 msgid "ComfortUpdate Step 4"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:417
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:432
 #, fuzzy, php-format
 msgid "File deleted: %s"
 msgstr "No s'ha pogut eliminar la resposta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:429
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:444
 #, fuzzy
 msgid "New files were successfully installed."
 msgstr "Ha accedit al sistema correctament."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:435
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:450
 msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:455
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:470
 #, fuzzy, php-format
 msgid "Buildnumber was successfully updated to %s."
 msgstr "Ha accedit al sistema correctament."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:456
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:471
 #, fuzzy
 msgid "Please check any problems above - update was done."
 msgstr "Si us plau, seleccioni un com a mínim"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:484
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:499
 #, fuzzy, php-format
 msgid "Database has been successfully upgraded to version %s"
 msgstr "La base de dades s'ha actualitzat amb èxit a la versió"
@@ -9782,7 +9618,7 @@ msgstr "La taula de tokens associada a aquesta enquesta ha estat renombrada a:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:122
 msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
-msgstr ""
+msgstr "Nota: Si ha desactivat aquesta enquesta per error, és possible restaurar les dades fàcilment si no es fa cap canvi a l'estructura de l'enquesta. Mirar a la documentació de LimeSurvey per més detalls"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:69
 #, fuzzy
@@ -9921,8 +9757,8 @@ msgstr "Aquest fitxer no és un fitxer d'una enquesta de LimeSurvey. La importac
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:400
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:409
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:578
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:597
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:627
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:598
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:629
 msgid "Import of this survey file failed"
 msgstr "Ha fallat la importació del fitxer de l'enquesta"
 
@@ -9936,78 +9772,77 @@ msgstr "El fitxer no conté un format LimeSurvey vàlid."
 msgid "Template %s not found, please review when activating."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:797
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:799
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:862
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:864
 #, fuzzy, php-format
 msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "NO ha estat importada perquè el tipus de la pregunta no es conegut"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:868
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:870
 #, php-format
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1282
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1284
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:835
 #, fuzzy
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Error: Ha d'introduir un títol per aquesta enquesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1369
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1370
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1371
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1372
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1388
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1417
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1390
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1419
 msgid "Survey Import Summary"
 msgstr "Resum de l'Importació de l'Enquesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1392
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1421
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1394
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1423
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:212
 msgid "Languages"
 msgstr "Idiomes"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1401
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1428
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1403
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1430
 msgid "Not imported Label Sets"
-msgstr "Importar Conjunt d'Etiquetes"
+msgstr "Conjunt d'etiquetes no importat"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1401
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1428
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1403
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1430
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1403
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1429
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1405
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1431
 msgid "Question Attributes"
 msgstr "Atributs de la Pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1405
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1407
 msgid "Quotas"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1405
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1407
 #, fuzzy
 msgid "quota members"
 msgstr "Nom del Conjunt"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1405
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1407
 msgid "quota language settings"
 msgstr ""
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1408
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1432
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1410
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1434
 msgid "Import of Survey is completed."
 msgstr "Importació de l'Enquesta finalitzada."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1409
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1411
 #, fuzzy
 msgid "Go to survey"
 msgstr "No s'ha trobat l'enquesta"
@@ -10171,22 +10006,19 @@ msgstr "Nota: Ha d'introduir un nou codi de pregunta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:71
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:320
-#, fuzzy
 msgid "Label set:"
-msgstr "Etiquetes:"
+msgstr "Conjunt d'etiquetes:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:89
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:347
-#, fuzzy
 msgid "Second Label Set:"
-msgstr "Etiquetes:"
+msgstr "Segon conjunt d'etiquetes:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:108
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:379
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:387
-#, fuzzy
 msgid "Question group:"
-msgstr "Pregunta:"
+msgstr "Grup de preguntes:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:150
 msgid "Copy Answers?"
@@ -10197,14 +10029,12 @@ msgid "Copy Attributes?"
 msgstr "Copiar els Atributs?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:211
-#, fuzzy
 msgid "Edit question"
-msgstr "Modificar Pregunta"
+msgstr "Modificar la pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:211
-#, fuzzy
 msgid "Add a new question"
-msgstr "Afegir Pregunta"
+msgstr "Afegir una pregunta nova"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:213
 #, fuzzy
@@ -10212,9 +10042,8 @@ msgid "Error: You have to enter a question code."
 msgstr "Error: Ha d'introduir un nom per aquest conjunt d'etiquetes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:304
-#, fuzzy
 msgid "Question Type:"
-msgstr "Pregunta:"
+msgstr "Tipus de pregunta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:315
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:388
@@ -10238,33 +10067,28 @@ msgid "At end"
 msgstr "Enviar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:458
-#, fuzzy
 msgid "Show advanced settings"
-msgstr "Opcions"
+msgstr "Mostrar les opcions avançades"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:458
-#, fuzzy
 msgid "Hide advanced settings"
-msgstr "Opcions"
+msgstr "Amagar les opcions avançades"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:460
-#, fuzzy
 msgid "Loading..."
-msgstr "Entrant..."
+msgstr "Carregant..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:466
-#, fuzzy
 msgid "Save question"
-msgstr "a la pregunta"
+msgstr "Guardar la pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:471
 msgid "Update Question"
 msgstr "Actualitzar Pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:485
-#, fuzzy
 msgid "...or import a question"
-msgstr "Importar Pregunta"
+msgstr "... o importar una pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:493
 msgid "Select CSV File"
@@ -10283,30 +10107,26 @@ msgid "See the conditions marked on the following questions"
 msgstr "Observi les condicions marcades en les següents preguntes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:716
-#, fuzzy
 msgid "View Question"
-msgstr "Modificar Pregunta"
+msgstr "Veure la pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:513
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:532
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:551
-#, fuzzy
 msgid "Number of records in this query:"
-msgstr "Número d'elements en aquesta consulta"
+msgstr "Número d'elements en aquesta consulta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:516
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:533
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:553
-#, fuzzy
 msgid "Total records in survey:"
-msgstr "Total d'elements en l'enquesta"
+msgstr "Total d'entrades a l'enquesta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:522
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:536
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:560
-#, fuzzy
 msgid "Percentage of total:"
-msgstr "Percentatge del total"
+msgstr "Percentatge del total:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:540
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:541
@@ -10326,9 +10146,9 @@ msgstr "Navegar"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1752
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1769
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1785
-#, fuzzy, php-format
+#, php-format
 msgid "Field summary for %s"
-msgstr "Resum del Camp per"
+msgstr "Resum del camp per %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2232
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2264
@@ -10425,9 +10245,8 @@ msgstr "No pot importar una pregunta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:118
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:123
-#, fuzzy
 msgid "Security alert"
-msgstr "Pregunta de Seguretat"
+msgstr "Alerta de seguretat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:118
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
@@ -10485,9 +10304,9 @@ msgstr "Nom d'usuari i/o contrasenya incorrectes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:151
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:292
-#, fuzzy, php-format
+#, php-format
 msgid "Welcome %s!"
-msgstr "Benvinguda:"
+msgstr "Benvingut/da %s!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:152
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:293
@@ -10513,17 +10332,14 @@ msgstr "Ha sortit del sistema correctament."
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:328
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:332
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:398
-#, fuzzy
 msgid "Failed to add user"
-msgstr "No s'ha pogut afegir l'Usuari."
+msgstr "No s'ha pogut afegir l'usuari."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:328
-#, fuzzy
 msgid "The email address is not valid."
 msgstr "L'adreça de correu electrònic no és vàlida."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:333
-#, fuzzy
 msgid "A username was not supplied."
 msgstr "No s'ha indicat el nom d'usuari."
 
@@ -10542,9 +10358,8 @@ msgid "You can use now the following credentials to log into the site:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:371
-#, fuzzy
 msgid "Click here to log in."
-msgstr "Si us plau, escrigui la/es seva/es resposta/es aquí:"
+msgstr "Cliqui aquí per entrar."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:372
 #, php-format
@@ -10598,14 +10413,12 @@ msgid "You are not allowed to change your own rights!"
 msgstr "No pot modificar els seus propis permisos!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:633
-#, fuzzy
 msgid "Set Template Rights"
-msgstr "Establir Permisos d'Usuari"
+msgstr "Establir permisos de la plantilla"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:659
-#, fuzzy
 msgid "Template permissions were updated successfully."
-msgstr "S'han actualitzat amb èxit els permisos d'usuari."
+msgstr "S'han actualitzat amb èxit els permisos de la plantilla."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:665
 msgid "Error while updating usertemplates."
@@ -10613,20 +10426,17 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:45
-#, fuzzy
 msgid "HTML Editor"
-msgstr "Editor de Plantilles"
+msgstr "Editor HTML"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:53
-#, fuzzy
 msgid "Close Editor"
-msgstr "Editor de Plantilles"
+msgstr "Tancar editor"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:86
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:136
-#, fuzzy
 msgid "Editing"
-msgstr "Modificar"
+msgstr "Editant"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:167
 msgid "Do you want to save your changes ?"
@@ -10694,7 +10504,6 @@ msgstr "URL"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:475
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:842
-#, fuzzy
 msgid "URL description"
 msgstr "Descripció de la URL:"
 
@@ -10718,23 +10527,20 @@ msgid "Quick CSV report"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:545
-#, fuzzy
 msgid "Not Active"
-msgstr "Actiu"
+msgstr "Inactiu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:567
-#, fuzzy
 msgid "Modify"
-msgstr "Modificant Usuari"
+msgstr "Modificar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:591
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:674
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:681
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:737
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:744
-#, fuzzy
 msgid "Add Answer"
-msgstr "Afegir Nova Resposta"
+msgstr "Afegir resposta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:635
 #, fuzzy
@@ -10932,9 +10738,8 @@ msgid "PDF"
 msgstr "PDF"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:269
-#, fuzzy
 msgid "Column control"
-msgstr "Control de Columnes"
+msgstr "Control de columnes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:292
 msgid "Choose Columns"
@@ -10976,9 +10781,8 @@ msgid "General information in language: "
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:961
-#, fuzzy
 msgid "New Record"
-msgstr "Veure Aquest Registre"
+msgstr "Entrada nova"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:994
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:999
@@ -11020,7 +10824,7 @@ msgstr "Ha finalitzat la Importació del Conjunt d'Etiquetes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-functions.php:222
 msgid "Start HTML Editor in a Popup Window"
-msgstr ""
+msgstr "Iniciar l'editor HTML en una finestra nova"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-functions.php:222
 msgid "Give focus to the HTML Editor Popup Window"
@@ -11100,9 +10904,8 @@ msgid "Export result data to SPSS"
 msgstr "Exportar els resultats a un arxiu de comandes SPSS"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:119
-#, fuzzy
 msgid "Data selection:"
-msgstr "Pregunta a Pregunta"
+msgstr "Selecció d'informació:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:125
 #, fuzzy
@@ -11111,16 +10914,15 @@ msgstr "Versió"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:127
 msgid "Prior to 16"
-msgstr ""
+msgstr "Anterior a 16"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:129
 msgid "16 or up"
-msgstr ""
+msgstr "16 o més"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:133
-#, fuzzy
 msgid "Step 1:"
-msgstr "Set"
+msgstr "Pas 1:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:133
 #, fuzzy
@@ -11128,9 +10930,8 @@ msgid "Export syntax"
 msgstr "Exportar un arxiu d'enquesta VV"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:134
-#, fuzzy
 msgid "Step 2:"
-msgstr "Set"
+msgstr "Pas 2:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:140
 msgid "Open the syntax file in SPSS in Unicode mode"
@@ -11156,26 +10957,32 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:3979
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:3984
-#, fuzzy, php-format
+#, php-format
 msgid "Statistics Survey #%s"
-msgstr "Llistar Enquestes"
+msgstr "Estadístiques de l'enquesta #%s"
 
 #~ msgid "Survey Submitted"
 #~ msgstr "Enquesta Enviada"
+
 #~ msgid "Import Group"
 #~ msgstr "Importar Grup"
+
 #~ msgid "You need to add groups"
 #~ msgstr "Ha d'afegir grups"
+
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(El camp és obligatori)."
+
 #~ msgid "Condition"
 #~ msgstr "Condició"
 
 #, fuzzy
 #~ msgid "Add question"
 #~ msgstr "Afegir Pregunta"
+
 #~ msgid "Logging in..."
 #~ msgstr "Entrant..."
+
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Benvingut {NAME}"
 
@@ -11186,13 +10993,17 @@ msgstr "Llistar Enquestes"
 #, fuzzy
 #~ msgid "Show System Summary"
 #~ msgstr "Sumari del Sistema LimeSurvey"
+
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr "Sembla com si faltessin taules o camps a la base de dades."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Revisar Camps de la Base de Dades"
+
 #~ msgid "Return to Survey Administration"
 #~ msgstr "Tornar a l'Administració d'Enquestes"
+
 #~ msgid "Export result to a SPSS command file"
 #~ msgstr "Exportar els resultats a un arxiu de comandes SPSS"
 
@@ -11203,52 +11014,70 @@ msgstr "Llistar Enquestes"
 #, fuzzy
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Si us plau, completi totes les parts"
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Format: AAAA-MM-DD"
+
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(p.ex.: 2003-12-25 per Nadal)"
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "Si us plau, triï una de les següents"
+
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Premi en un element de la llista de l'esquerra, començant pel"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Afegir nou Conjunt d'Etiquetes"
+
 #~ msgid "Save All"
 #~ msgstr "Guardar-ho tot"
 
 #, fuzzy
 #~ msgid "Fix Order"
 #~ msgstr "Ordre"
+
 #~ msgid "Fix Sort"
 #~ msgstr "Modificar Ordre"
+
 #~ msgid "Ignore the new record."
 #~ msgstr "Ignorar el nou element."
+
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Filtrar respostes incomplertes:"
+
 #~ msgid "Enable"
 #~ msgstr "Habilitar"
 
 #, fuzzy
 #~ msgid "Getting result count ..."
 #~ msgstr "Recuperant Resultats..."
+
 #~ msgid "Attribute 2"
 #~ msgstr "Atribut 2"
+
 #~ msgid "Email Invitation"
 #~ msgstr "Enviar Invitació"
+
 #~ msgid "Email Reminder"
 #~ msgstr "Enviar Recordatori"
 
 #, fuzzy
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Afegir o Modificar Token"
+
 #~ msgid "Update Token"
 #~ msgstr "Actualitzar Token"
+
 #~ msgid "Add Token"
 #~ msgstr "Afegir Token"
+
 #~ msgid "Updated Token"
 #~ msgstr "Token Actualitzat"
+
 #~ msgid "Importing CSV File"
 #~ msgstr "Important Arxiu CSV"
+
 #~ msgid "Creating Token Entries"
 #~ msgstr "Creant Tokens"
 
@@ -11259,71 +11088,98 @@ msgstr "Llistar Enquestes"
 #, fuzzy
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Atribut 1"
+
 #~ msgid "This template can be modified"
 #~ msgstr "Aquesta plantilla pot ser modificada"
+
 #~ msgid "This template cannot be modified"
 #~ msgstr "Aquesta plantilla no pot ser modificada"
+
 #~ msgid "Make a copy of this template"
 #~ msgstr "Realitzar una còpia d'aquesta plantilla"
+
 #~ msgid "File Control:"
 #~ msgstr "Control d'Arxiu:"
+
 #~ msgid "Now editing:"
 #~ msgstr "Editant Ara:"
 
 #, fuzzy
 #~ msgid "%s %% complete"
 #~ msgstr "complet"
+
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
 #~ msgstr ""
 #~ "Importar respostes d'una enquesta antiga (desactivada) a una enquesta "
 #~ "activa"
+
 #~ msgid "Modifying User"
 #~ msgstr "Modificant Usuari"
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr "Ho sentim, no es poden importar preguntes de versions diferents."
+
 #~ msgid "Answer Privacy"
 #~ msgstr "Privacitat"
+
 #~ msgid "Anonymous"
 #~ msgstr "Anònim"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "No Anònim"
+
 #~ msgid "This survey is active but expired"
 #~ msgstr "Aquesta enquesta està actualment activa però ha expirat"
+
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "Sumari del Sistema LimeSurvey"
+
 #~ msgid "Current Language"
 #~ msgstr "Llenguatge Actual"
+
 #~ msgid "De-activated Surveys"
 #~ msgstr "Enquestes Desactivades"
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Modificar l'Enquesta Actual"
 
 #, fuzzy
 #~ msgid "disabled"
 #~ msgstr "Desactivat"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Activar/Modificar Enquestats d'aquesta Enquesta"
+
 #~ msgid "Edit Current Group"
 #~ msgstr "Modificar Grup Seleccionat"
+
 #~ msgid "Delete Current Group"
 #~ msgstr "Eliminar Grup Seleccionat"
+
 #~ msgid "Disabled"
 #~ msgstr "Desactivat"
+
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "No es possible copiar preguntes en una enquesta Activa"
+
 #~ msgid "Expires?"
 #~ msgstr "Expira?"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "Utilitzar Cookies?"
+
 #~ msgid "URL Description:"
 #~ msgstr "Descripció de la URL:"
+
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Filtrar Respostes Incomplertes"
+
 #~ msgid "Export Responses"
 #~ msgstr "Exportar Respostes"
+
 #~ msgid "if you answered"
 #~ msgstr "si vostè ha respost"
 
@@ -11334,8 +11190,10 @@ msgstr "Llistar Enquestes"
 #, fuzzy
 #~ msgid "Only answer this question %s"
 #~ msgstr "Respongui només aquesta pregunta"
+
 #~ msgid "answers:"
 #~ msgstr "respostes:"
+
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -11360,6 +11218,7 @@ msgstr "Llistar Enquestes"
 #, fuzzy
 #~ msgid "Predefined answers"
 #~ msgstr "Eliminant Respostes"
+
 #~ msgid "Record ID"
 #~ msgstr "Identificador de Registre"
 
@@ -11374,22 +11233,27 @@ msgstr "Llistar Enquestes"
 #~ msgstr ""
 #~ "No s'ha pogut afegir la resposta. Ha d'afegir un codi en el camp "
 #~ "obligatori"
+
 #~ msgid "Group:"
 #~ msgstr "Grup:"
+
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Nom d'usuari i/o adreça de correu electrònic ja existents."
+
 #~ msgid "Update user rights successful."
 #~ msgstr "S'han actualitzat amb èxit els permisos d'usuari."
 
 #, fuzzy
 #~ msgid "Export responses"
 #~ msgstr "Exportar Respostes"
+
 #~ msgid "Columns"
 #~ msgstr "Columnes"
 
 #, fuzzy
 #~ msgid "from"
 #~ msgstr "De"
+
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
@@ -11420,42 +11284,59 @@ msgstr "Llistar Enquestes"
 #, fuzzy
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Ha iniciat la sessió"
+
 #~ msgid "Login here"
 #~ msgstr "Iniciar Sessió"
+
 #~ msgid "You have not selected a Survey."
 #~ msgstr "No hi ha cap Enquesta seleccionada."
+
 #~ msgid "You cannot run this script directly."
 #~ msgstr "No pot executar aquesta comanda directament."
+
 #~ msgid "copy to"
 #~ msgstr "copiar a"
+
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Està segur que vol eliminar aquesta entrada?"
+
 #~ msgid "Failed to copy"
 #~ msgstr "Ha fallat la còpia"
+
 #~ msgid "Directory with the name"
 #~ msgstr "Directori amb el nom"
+
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr "Arxiu CSV (UTF-8 - utilitzar per a idiomes no llatines)"
+
 #~ msgid "Export Current Survey"
 #~ msgstr "Exportar l'Enquesta Actual"
+
 #~ msgid "depends on group"
 #~ msgstr "depèn del grup"
+
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "L'arxiu enviat es més gran que la directiva upload_max_filesize de php.ini"
+
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "L'arxiu només s'ha enviat parcialment"
+
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr ""
 #~ "Error en la transferència del fitxer. Hauria de seleccionar un arxiu CSV"
+
 #~ msgid "You need to upload the file"
 #~ msgstr "Ha d'enviar l'arxiu"
+
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Ha d'enviar un arxiu CSV"
+
 #~ msgid "Upload CSV file"
 #~ msgstr "Enviar arxiu CSV"
+
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr ""
 #~ "Estimat/da {FIRSTNAME},\n"
@@ -11477,61 +11358,84 @@ msgstr "Llistar Enquestes"
 #~ "Atentament,\n"
 #~ "\n"
 #~ "{ADMINNAME} ({ADMINEMAIL})\""
+
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "És impossible enviar un arxiu buit"
+
 #~ msgid "Uploading CSV file"
 #~ msgstr "Enviant arxiu CSV"
+
 #~ msgid "Visualization:"
 #~ msgstr "Visualització:"
+
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr ""
 #~ "Seleccioni el número del camp que desitja utilitzar per a les seves "
 #~ "respostes:"
+
 #~ msgid "Move User"
 #~ msgstr "Moure Usuari"
+
 #~ msgid "was imported, but the type was set to \""
 #~ msgstr ""
 #~ "ha estat importada, però el tipus de la pregunta s'ha introduït com "
+
 #~ msgid "type"
 #~ msgstr "tipus"
+
 #~ msgid "\", because is the closest one"
 #~ msgstr "\", perquè és el més aproximat"
+
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "No pot importar conjunts d'etiquetes que no suporten l'idioma base de "
 #~ "l'enquesta actual."
+
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr ""
 #~ "No s'ha pogut afegir la resposta. Ja hi ha una resposta amb aquest codi"
+
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr ""
 #~ "No s'ha pogut actualitzar la resposta. Ja hi ha una resposta amb aquest "
 #~ "codi."
+
 #~ msgid "Select all"
 #~ msgstr "Seleccionar tot"
+
 #~ msgid "Proceed"
 #~ msgstr "Procedir"
+
 #~ msgid "Question List"
 #~ msgstr "Llista de Preguntes"
+
 #~ msgid "Like"
 #~ msgstr "Com"
+
 #~ msgid "Filter Conditions"
 #~ msgstr "Filtrar Condicions"
+
 #~ msgid "Huge free text"
 #~ msgstr "Text lliure molt llarg"
+
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "Actualitzar la taula de tokens amb nous camps"
+
 #~ msgid "to TokenID No"
 #~ msgstr "pel TokenID Nº"
+
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "{TOKENCOUNT} Registres Creats"
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "La contrasenya proporcionada no és vàlida."
+
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Les seves respostes de l'enquesta han estat guardades amb èxit"
+
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -11540,25 +11444,33 @@ msgstr "Llistar Enquestes"
 #~ "Vostè, o algú utilitzant la seva adreça electrònica, ha guardat una "
 #~ "enquesta en procés. Els següents detalls poden ser utilitzats per tornar "
 #~ "a l'enquesta i continuar en el punt on la va deixar."
+
 #~ msgid "Email address ist not valid."
 #~ msgstr "L'adreça de correu electrònic no és vàlida."
+
 #~ msgid "Please contact"
 #~ msgstr "Si us plau, contacti amb"
+
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Aquesta enquesta té control d'accés. Necessita una contrasenya vàlida per "
 #~ "participar."
+
 #~ msgid "prev"
 #~ msgstr "anterior"
+
 #~ msgid "answers"
 #~ msgstr "respostes"
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "per eliminar l'última entrada de la seva llista ordenada"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Triï a tot estirar"
+
 #~ msgid "Check Settings"
 #~ msgstr "Revisar Opcions del Sistema"
+
 #~ msgid "Save Survey and Return"
 #~ msgstr "Guardar Enquesta i Tornar"
-
