@@ -79,12 +79,14 @@ if ( $action == 'FakeGET')
 if(isset($_SESSION['loginID']))
 {
     //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
-    if ($action == 'delsurvey'         || $action == 'delgroup'       || 
-        $action == 'delquestion'       || $action == 'insertnewsurvey'|| $action == 'updatesubquestions' ||
-      $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
-      $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
-      $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||
-        $action == 'updatequestion'    || $action == 'updateansweroptions'      || $action == 'renumberquestions' )
+	if (
+		preg_match
+		  (
+			'/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertnewgroup|insertCSV|insertnewquestion|updatesurvey|updatesurvey2|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions)$/', 
+			$action
+		  )
+	
+		)
     {
       include('database.php');
     }
@@ -412,7 +414,7 @@ if(isset($_SESSION['loginID']))
 	 !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  
 	 !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') && 
         (  
-	    isset($surveyid) || 
+	    isset($surveyid) || $action == "" ||
 		preg_match
 		  (
 			'/^(listsurveys|personalsettings|statistics|importsurvey|editsurvey|updatesurvey|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser)$/', 
