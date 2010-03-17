@@ -1100,7 +1100,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 					case ":": //ARRAY (Multi Flexi) (Numbers)
                     	$qidattributes=getQuestionAttributes($fnames[$i]['qid']);
-                        if (trim($qidattributes['multiflexible_max'])!='') {
+						if (trim($qidattributes['multiflexible_max'])!='') {
                     		$maxvalue=$qidattributes['multiflexible_max'];
                     	} else {
                     		$maxvalue=10;
@@ -1128,13 +1128,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						   $dataentryoutput .= "\t<tr>\n"
 						                     . "<td align='right' valign='top'>{$fnames[$i]['subquestion1']}:{$fnames[$i]['subquestion2']}</td>\n";
 							$dataentryoutput .= "<td>\n";
-							$dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n";
-							for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
-							{
-							   $dataentryoutput .= "<option value='$ii'";
-							   if($idrow[$fnames[$i]['fieldname']] == $ii) {$dataentryoutput .= " selected";}
-							   $dataentryoutput .= ">$ii</option>\n";
+							if ($qidattributes['input_boxes']!=0) {
+						        $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='";
+								if (!empty($idrow[$fnames[$i]['fieldname']])) {$datentryoutput .= $idrow[$fnames[$i]['fieldname']];}
+								$dataentryoutput .= "' size=4 />";
+							} else {
+								$dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n";
+								$dataentryoutput .= "<option value=''>...</option>\n";
+								for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
+								{
+									$dataentryoutput .= "<option value='$ii'";
+									if($idrow[$fnames[$i]['fieldname']] == $ii) {$dataentryoutput .= " selected";}
+									$dataentryoutput .= ">$ii</option>\n";
+								}
 							}
+							
 							$dataentryoutput .= "</td>\n"
 							."\t</tr>\n";
 						   $i++;
@@ -2245,14 +2253,19 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							foreach($labelcodes as $ld)
 							{
     							$dataentryoutput .= "<td>\n";
-    							$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}_$ld'>\n";
-    							$dataentryoutput .= "<option value=''>...</option>\n";
-								for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
-    							{
-    							   $dataentryoutput .= "<option value='$ii'";
-    							   $dataentryoutput .= ">$ii</option>\n";
-    							}
-    							$dataentryoutput .= "</select></td>\n";
+								if ($qidattributes['input_boxes']!=0) {
+									$dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}_$ld' size=4 />";
+								} else {
+									$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}_$ld'>\n";
+									$dataentryoutput .= "<option value=''>...</option>\n";
+									for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
+									{
+									   $dataentryoutput .= "<option value='$ii'";
+									   $dataentryoutput .= ">$ii</option>\n";
+									}
+									$dataentryoutput .= "</select>";
+								}
+								$dataentryoutput .= "</td>\n";
     						}
 							$dataentryoutput .= "\t</tr>\n";
 						   $i++;
