@@ -417,7 +417,7 @@ if(isset($_SESSION['loginID']))
 	    isset($surveyid) || $action == "" ||
 		preg_match
 		  (
-			'/^(listsurveys|personalsettings|statistics|importsurvey|editsurvey|updatesurvey|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser)$/', 
+			'/^(listsurveys|personalsettings|statistics|importsurvey|editsurvey|updatesurvey|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup)$/', 
 			$action
 		  )
 		) 

@@ -2359,7 +2359,7 @@ if($action == "surveysecurity")
 		. "<input type='hidden' name='action' value='addsurveysecurity' /></td></form>\n"
 		. "</tr>\n";
 
-		$surveysecurity .= "<tr>\n"
+		$surveysecurity .= "<form action='$scriptname?sid={$surveyid}' method='post'>\n<tr>\n"
 
 		. "<td colspan='9' align='right'>"
 		. "<strong>".$clang->gT("Groups").": </strong><select id='ugidselect' name='ugid'>\n"
