@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-03 12:00+0100\n"
-"PO-Revision-Date: 2010-03-16 11:55+0100\n"
-"Last-Translator: Jordi Martín <jordimartin87@gmail.com>\n"
+"PO-Revision-Date: 2010-03-17 23:04+0100\n"
+"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: Català <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -6414,7 +6414,7 @@ msgstr "Missatge:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:824
 #, php-format
 msgid "Note: This is a standard template. If you want to edit it %s please copy it first%s."
-msgstr "Nota: Aquesta plantilla és estàndard. Si vol editar-la còpiï-la prèviament."
+msgstr "Nota: Aquesta plantilla és estàndard. Si vol editar %s-la còpiï-la prèviament.%s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:824
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:887
@@ -10963,26 +10963,20 @@ msgstr "Estadístiques de l'enquesta #%s"
 
 #~ msgid "Survey Submitted"
 #~ msgstr "Enquesta Enviada"
-
 #~ msgid "Import Group"
 #~ msgstr "Importar Grup"
-
 #~ msgid "You need to add groups"
 #~ msgstr "Ha d'afegir grups"
-
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(El camp és obligatori)."
-
 #~ msgid "Condition"
 #~ msgstr "Condició"
 
 #, fuzzy
 #~ msgid "Add question"
 #~ msgstr "Afegir Pregunta"
-
 #~ msgid "Logging in..."
 #~ msgstr "Entrant..."
-
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Benvingut {NAME}"
 
@@ -10993,17 +10987,13 @@ msgstr "Estadístiques de l'enquesta #%s"
 #, fuzzy
 #~ msgid "Show System Summary"
 #~ msgstr "Sumari del Sistema LimeSurvey"
-
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr "Sembla com si faltessin taules o camps a la base de dades."
-
 #~ msgid "Check Database Fields"
 #~ msgstr "Revisar Camps de la Base de Dades"
-
 #~ msgid "Return to Survey Administration"
 #~ msgstr "Tornar a l'Administració d'Enquestes"
-
 #~ msgid "Export result to a SPSS command file"
 #~ msgstr "Exportar els resultats a un arxiu de comandes SPSS"
 
@@ -11014,70 +11004,52 @@ msgstr "Estadístiques de l'enquesta #%s"
 #, fuzzy
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Si us plau, completi totes les parts"
-
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Format: AAAA-MM-DD"
-
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(p.ex.: 2003-12-25 per Nadal)"
-
 #~ msgid "Please choose one of the following"
 #~ msgstr "Si us plau, triï una de les següents"
-
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Premi en un element de la llista de l'esquerra, començant pel"
-
 #~ msgid "Add New Label Set"
 #~ msgstr "Afegir nou Conjunt d'Etiquetes"
-
 #~ msgid "Save All"
 #~ msgstr "Guardar-ho tot"
 
 #, fuzzy
 #~ msgid "Fix Order"
 #~ msgstr "Ordre"
-
 #~ msgid "Fix Sort"
 #~ msgstr "Modificar Ordre"
-
 #~ msgid "Ignore the new record."
 #~ msgstr "Ignorar el nou element."
-
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Filtrar respostes incomplertes:"
-
 #~ msgid "Enable"
 #~ msgstr "Habilitar"
 
 #, fuzzy
 #~ msgid "Getting result count ..."
 #~ msgstr "Recuperant Resultats..."
-
 #~ msgid "Attribute 2"
 #~ msgstr "Atribut 2"
-
 #~ msgid "Email Invitation"
 #~ msgstr "Enviar Invitació"
-
 #~ msgid "Email Reminder"
 #~ msgstr "Enviar Recordatori"
 
 #, fuzzy
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Afegir o Modificar Token"
-
 #~ msgid "Update Token"
 #~ msgstr "Actualitzar Token"
-
 #~ msgid "Add Token"
 #~ msgstr "Afegir Token"
-
 #~ msgid "Updated Token"
 #~ msgstr "Token Actualitzat"
-
 #~ msgid "Importing CSV File"
 #~ msgstr "Important Arxiu CSV"
-
 #~ msgid "Creating Token Entries"
 #~ msgstr "Creant Tokens"
 
@@ -11088,98 +11060,71 @@ msgstr "Estadístiques de l'enquesta #%s"
 #, fuzzy
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Atribut 1"
-
 #~ msgid "This template can be modified"
 #~ msgstr "Aquesta plantilla pot ser modificada"
-
 #~ msgid "This template cannot be modified"
 #~ msgstr "Aquesta plantilla no pot ser modificada"
-
 #~ msgid "Make a copy of this template"
 #~ msgstr "Realitzar una còpia d'aquesta plantilla"
-
 #~ msgid "File Control:"
 #~ msgstr "Control d'Arxiu:"
-
 #~ msgid "Now editing:"
 #~ msgstr "Editant Ara:"
 
 #, fuzzy
 #~ msgid "%s %% complete"
 #~ msgstr "complet"
-
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
 #~ msgstr ""
 #~ "Importar respostes d'una enquesta antiga (desactivada) a una enquesta "
 #~ "activa"
-
 #~ msgid "Modifying User"
 #~ msgstr "Modificant Usuari"
-
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr "Ho sentim, no es poden importar preguntes de versions diferents."
-
 #~ msgid "Answer Privacy"
 #~ msgstr "Privacitat"
-
 #~ msgid "Anonymous"
 #~ msgstr "Anònim"
-
 #~ msgid "Not Anonymous"
 #~ msgstr "No Anònim"
-
 #~ msgid "This survey is active but expired"
 #~ msgstr "Aquesta enquesta està actualment activa però ha expirat"
-
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "Sumari del Sistema LimeSurvey"
-
 #~ msgid "Current Language"
 #~ msgstr "Llenguatge Actual"
-
 #~ msgid "De-activated Surveys"
 #~ msgstr "Enquestes Desactivades"
-
 #~ msgid "Edit Current Survey"
 #~ msgstr "Modificar l'Enquesta Actual"
 
 #, fuzzy
 #~ msgid "disabled"
 #~ msgstr "Desactivat"
-
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Activar/Modificar Enquestats d'aquesta Enquesta"
-
 #~ msgid "Edit Current Group"
 #~ msgstr "Modificar Grup Seleccionat"
-
 #~ msgid "Delete Current Group"
 #~ msgstr "Eliminar Grup Seleccionat"
-
 #~ msgid "Disabled"
 #~ msgstr "Desactivat"
-
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "No es possible copiar preguntes en una enquesta Activa"
-
 #~ msgid "Expires?"
 #~ msgstr "Expira?"
-
 #~ msgid "Use Cookies?"
 #~ msgstr "Utilitzar Cookies?"
-
 #~ msgid "URL Description:"
 #~ msgstr "Descripció de la URL:"
-
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Filtrar Respostes Incomplertes"
-
 #~ msgid "Export Responses"
 #~ msgstr "Exportar Respostes"
-
 #~ msgid "if you answered"
 #~ msgstr "si vostè ha respost"
 
@@ -11190,10 +11135,8 @@ msgstr "Estadístiques de l'enquesta #%s"
 #, fuzzy
 #~ msgid "Only answer this question %s"
 #~ msgstr "Respongui només aquesta pregunta"
-
 #~ msgid "answers:"
 #~ msgstr "respostes:"
-
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -11218,7 +11161,6 @@ msgstr "Estadístiques de l'enquesta #%s"
 #, fuzzy
 #~ msgid "Predefined answers"
 #~ msgstr "Eliminant Respostes"
-
 #~ msgid "Record ID"
 #~ msgstr "Identificador de Registre"
 
@@ -11233,27 +11175,22 @@ msgstr "Estadístiques de l'enquesta #%s"
 #~ msgstr ""
 #~ "No s'ha pogut afegir la resposta. Ha d'afegir un codi en el camp "
 #~ "obligatori"
-
 #~ msgid "Group:"
 #~ msgstr "Grup:"
-
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Nom d'usuari i/o adreça de correu electrònic ja existents."
-
 #~ msgid "Update user rights successful."
 #~ msgstr "S'han actualitzat amb èxit els permisos d'usuari."
 
 #, fuzzy
 #~ msgid "Export responses"
 #~ msgstr "Exportar Respostes"
-
 #~ msgid "Columns"
 #~ msgstr "Columnes"
 
 #, fuzzy
 #~ msgid "from"
 #~ msgstr "De"
-
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
@@ -11284,59 +11221,42 @@ msgstr "Estadístiques de l'enquesta #%s"
 #, fuzzy
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Ha iniciat la sessió"
-
 #~ msgid "Login here"
 #~ msgstr "Iniciar Sessió"
-
 #~ msgid "You have not selected a Survey."
 #~ msgstr "No hi ha cap Enquesta seleccionada."
-
 #~ msgid "You cannot run this script directly."
 #~ msgstr "No pot executar aquesta comanda directament."
-
 #~ msgid "copy to"
 #~ msgstr "copiar a"
-
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Està segur que vol eliminar aquesta entrada?"
-
 #~ msgid "Failed to copy"
 #~ msgstr "Ha fallat la còpia"
-
 #~ msgid "Directory with the name"
 #~ msgstr "Directori amb el nom"
-
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr "Arxiu CSV (UTF-8 - utilitzar per a idiomes no llatines)"
-
 #~ msgid "Export Current Survey"
 #~ msgstr "Exportar l'Enquesta Actual"
-
 #~ msgid "depends on group"
 #~ msgstr "depèn del grup"
-
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "L'arxiu enviat es més gran que la directiva upload_max_filesize de php.ini"
-
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "L'arxiu només s'ha enviat parcialment"
-
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr ""
 #~ "Error en la transferència del fitxer. Hauria de seleccionar un arxiu CSV"
-
 #~ msgid "You need to upload the file"
 #~ msgstr "Ha d'enviar l'arxiu"
-
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Ha d'enviar un arxiu CSV"
-
 #~ msgid "Upload CSV file"
 #~ msgstr "Enviar arxiu CSV"
-
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr ""
 #~ "Estimat/da {FIRSTNAME},\n"
@@ -11358,84 +11278,61 @@ msgstr "Estadístiques de l'enquesta #%s"
 #~ "Atentament,\n"
 #~ "\n"
 #~ "{ADMINNAME} ({ADMINEMAIL})\""
-
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "És impossible enviar un arxiu buit"
-
 #~ msgid "Uploading CSV file"
 #~ msgstr "Enviant arxiu CSV"
-
 #~ msgid "Visualization:"
 #~ msgstr "Visualització:"
-
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr ""
 #~ "Seleccioni el número del camp que desitja utilitzar per a les seves "
 #~ "respostes:"
-
 #~ msgid "Move User"
 #~ msgstr "Moure Usuari"
-
 #~ msgid "was imported, but the type was set to \""
 #~ msgstr ""
 #~ "ha estat importada, però el tipus de la pregunta s'ha introduït com "
-
 #~ msgid "type"
 #~ msgstr "tipus"
-
 #~ msgid "\", because is the closest one"
 #~ msgstr "\", perquè és el més aproximat"
-
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "No pot importar conjunts d'etiquetes que no suporten l'idioma base de "
 #~ "l'enquesta actual."
-
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr ""
 #~ "No s'ha pogut afegir la resposta. Ja hi ha una resposta amb aquest codi"
-
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr ""
 #~ "No s'ha pogut actualitzar la resposta. Ja hi ha una resposta amb aquest "
 #~ "codi."
-
 #~ msgid "Select all"
 #~ msgstr "Seleccionar tot"
-
 #~ msgid "Proceed"
 #~ msgstr "Procedir"
-
 #~ msgid "Question List"
 #~ msgstr "Llista de Preguntes"
-
 #~ msgid "Like"
 #~ msgstr "Com"
-
 #~ msgid "Filter Conditions"
 #~ msgstr "Filtrar Condicions"
-
 #~ msgid "Huge free text"
 #~ msgstr "Text lliure molt llarg"
-
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "Actualitzar la taula de tokens amb nous camps"
-
 #~ msgid "to TokenID No"
 #~ msgstr "pel TokenID Nº"
-
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "{TOKENCOUNT} Registres Creats"
-
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "La contrasenya proporcionada no és vàlida."
-
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Les seves respostes de l'enquesta han estat guardades amb èxit"
-
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -11444,33 +11341,25 @@ msgstr "Estadístiques de l'enquesta #%s"
 #~ "Vostè, o algú utilitzant la seva adreça electrònica, ha guardat una "
 #~ "enquesta en procés. Els següents detalls poden ser utilitzats per tornar "
 #~ "a l'enquesta i continuar en el punt on la va deixar."
-
 #~ msgid "Email address ist not valid."
 #~ msgstr "L'adreça de correu electrònic no és vàlida."
-
 #~ msgid "Please contact"
 #~ msgstr "Si us plau, contacti amb"
-
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Aquesta enquesta té control d'accés. Necessita una contrasenya vàlida per "
 #~ "participar."
-
 #~ msgid "prev"
 #~ msgstr "anterior"
-
 #~ msgid "answers"
 #~ msgstr "respostes"
-
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "per eliminar l'última entrada de la seva llista ordenada"
-
 #~ msgid "Please choose at most"
 #~ msgstr "Triï a tot estirar"
-
 #~ msgid "Check Settings"
 #~ msgstr "Revisar Opcions del Sistema"
-
 #~ msgid "Save Survey and Return"
 #~ msgstr "Guardar Enquesta i Tornar"
+
