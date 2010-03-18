@@ -78,6 +78,19 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 Thank you to everyone who helped with this new release!
 
 
+Changes from  1.87+ (build 8472) to 1.87+ (build 8498)- Legend: # updated feature, - bug fix 
+#Updated translation: Catalan - sponsored by LimeService (c_schmitz)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue #3303: "Error updating - Query was empty" when editing survey settings - again (c_schmitz)
+-Fixed issue #4142: RemoteControl: Reminder email "from" field isn't set properly - thank you to Dave Wolff (c_schmitz)
+-Fixed issue #4157: Exporting results fails at dual scale question when using MS SQL Server (lemeur)
+-Fixed issue #4160: Certain answers/subquestions are doubled in dataentry when using more than one language (c_schmitz)
+-Fixed issue #4192: Problem saving partially finished survey for the second time in MSSQL server (c_schmitz)
+-Fixed issue #4195: RTL language aligment problem in bluengrey template (c_schmitz)
+-Fixed issue #4199: Cookie path not set (c_schmitz)
+-Fixed issue 04188: Edit Response - Data Entry - Not working Dev corrected filling values automatically for Array (MultiFlexible)(Numbers) type questions (harsha_mora)
+-Fixed the issue for Date type questions 04188 (harsha_mora)
+
 Changes from  1.87+ (build 8453) to 1.87+ (build 8472)- Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
 -Fixed unreported bug: Added help text relating to array_filter attributes, also added help text relating to multi-numerical sum value attributes (jcleeland)
