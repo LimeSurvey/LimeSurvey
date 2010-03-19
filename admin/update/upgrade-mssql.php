@@ -38,13 +38,13 @@ function db_upgrade($oldversion) {
 
         foreach  ($oldnewlanguages as $oldlang=>$newlang)
         {
-            modify_database("","update [prefix_answers] set [language`='$newlang' where language='$oldlang'");  echo $modifyoutput; flush();
-            modify_database("","update [prefix_questions] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
-            modify_database("","update [prefix_groups] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
-            modify_database("","update [prefix_labels] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
-            modify_database("","update [prefix_surveys] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
-            modify_database("","update [prefix_surveys_languagesettings] set [surveyls_language`='$newlang' where surveyls_language='$oldlang'");echo $modifyoutput; flush();
-            modify_database("","update [prefix_users] set [lang`='$newlang' where lang='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_answers] set [language]='$newlang' where language='$oldlang'");  echo $modifyoutput; flush();
+            modify_database("","update [prefix_questions] set [language]='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_groups] set [language]='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_labels] set [language]='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_surveys] set [language]='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_surveys_languagesettings] set [surveyls_language]='$newlang' where surveyls_language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_users] set [lang]='$newlang where lang='$oldlang'");echo $modifyoutput; flush();
         }
 
 

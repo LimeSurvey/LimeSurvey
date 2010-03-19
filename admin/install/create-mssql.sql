@@ -19,7 +19,7 @@ CREATE TABLE [prefix_quota_languagesettings] (
   [quotals_quota_id] int,
   [quotals_language] varchar(45) NOT NULL default 'en',
   [quotals_name] varchar(255),
-  [quotals_message] text,
+  [quotals_message] text NULL,
   [quotals_url] varchar(255),
   [quotals_urldescrip] varchar(255),
   PRIMARY KEY ([quotals_id])
@@ -101,7 +101,7 @@ CREATE TABLE [prefix_groups] (
   [sid] INT NOT NULL default '0',
   [group_name] VARCHAR(100) NOT NULL default '',
   [group_order] INT NOT NULL default '0',
-  [description] text,
+  [description] text NULL,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([gid],[language])
 ) 
@@ -151,8 +151,8 @@ CREATE TABLE [prefix_labelsets] (
 CREATE TABLE [prefix_question_attributes] (
   [qaid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
-  [attribute] VARCHAR(50) default NULL,
-  [value] TEXT default NULL,
+  [attribute] VARCHAR(50) NULL,
+  [value] TEXT NULL,
   PRIMARY KEY  ([qaid])
 ) 
 ;
@@ -170,10 +170,10 @@ CREATE TABLE [prefix_questions] (
   [type] char(1) NOT NULL default 'T',
   [title] VARCHAR(20) NOT NULL default '',
   [question] text NOT NULL,
-  [preg] text,
-  [help] text,
+  [preg] text NULL,
+  [help] text NULL,
   [other] char(1) NOT NULL default 'N',
-  [mandatory] char(1) default NULL,
+  [mandatory] char(1) NULL,
   [lid] INT NOT NULL default '0',
   [lid1] INT NOT NULL default '0',
   [question_order] INT NOT NULL,
@@ -195,12 +195,12 @@ CREATE TABLE [prefix_saved_control] (
   [srid] INT NOT NULL default '0',
   [identifier] varchar(255) NOT NULL,
   [access_code] text NOT NULL,
-  [email] VARCHAR(320) default NULL,
+  [email] VARCHAR(320) NULL,
   [ip] text NOT NULL,
   [saved_thisstep] text NOT NULL,
   [status] char(1) NOT NULL default '',
   [saved_date] datetime, 
-  [refurl] text,
+  [refurl] text NULL,
   PRIMARY KEY  ([scid])
 ) 
 ;
@@ -214,17 +214,17 @@ CREATE TABLE [prefix_saved_control] (
 CREATE TABLE [prefix_surveys] (
   [sid] INT NOT NULL,
   [owner_id] INT NOT NULL,
-  [admin] VARCHAR(50) default NULL,
+  [admin] VARCHAR(50) NULL,
   [active] char(1) NOT NULL default 'N',
-  [startdate] DATETIME default NULL,
-  [expires] DATETIME default NULL,
-  [adminemail] VARCHAR(320) default NULL,
-  [private] char(1) default NULL,
-  [faxto] VARCHAR(20) default NULL,
-  [format] char(1) default NULL,
+  [startdate] DATETIME NULL,
+  [expires] DATETIME NULL,
+  [adminemail] VARCHAR(320) NULL,
+  [private] char(1) NULL,
+  [faxto] VARCHAR(20) NULL,
+  [format] char(1) NULL,
   [template] VARCHAR(100) default 'default',
-  [language] VARCHAR(50) default NULL,
-  [additional_languages] VARCHAR(255) default NULL,
+  [language] VARCHAR(50) NULL,
+  [additional_languages] VARCHAR(255) NULL,
   [datestamp] char(1) default 'N',
   [usecookie] char(1) default 'N',
   [notification] char(1) default '0',
@@ -236,7 +236,7 @@ CREATE TABLE [prefix_surveys] (
   [printanswers] char(1) default 'N',
   [ipaddr] char(1) default 'N',
   [refurl] char(1) default 'N',
-  [datecreated] DATETIME default NULL,
+  [datecreated] DATETIME NULL,
   [listpublic] char(1) default 'N',
   [publicstatistics] char(1) default 'N',
   [publicgraphs] char(1) default 'N',
@@ -245,9 +245,9 @@ CREATE TABLE [prefix_surveys] (
   [assessments] char(1) default 'N',
   [usecaptcha] char(1) default 'N',
   [usetokens] char(1) default 'N',
-  [bounce_email] VARCHAR(320) default NULL,
-  [attributedescriptions] text,
-  [emailresponseto] text,
+  [bounce_email] VARCHAR(320) NULL,
+  [attributedescriptions] text NULL,
+  [emailresponseto] text NULL,
   [tokenlength] tinyint default '15',
   
   PRIMARY KEY  ([sid])
@@ -303,7 +303,7 @@ CREATE TABLE [prefix_users] (
   [manage_template] TINYINT NOT NULL default '0',
   [manage_label] TINYINT NOT NULL default '0',
   [htmleditormode] char(7) default 'default',
-  [one_time_pw] TEXT,
+  [one_time_pw] TEXT NULL,
   [dateformat] INT NOT NULL DEFAULT 1
 );
 
