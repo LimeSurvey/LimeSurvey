@@ -162,8 +162,6 @@ if  ($subaction=='dldata') {
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 	header('Pragma: no-cache');
 
-	sendcacheheaders();
-
 	$na = "";
 	spss_export_data($na);
 
@@ -178,8 +176,6 @@ if  ($subaction=='dlstructure') {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 	header('Pragma: no-cache');
-
-	sendcacheheaders();
 
 	// Build array that has to be returned
 	$fields = spss_fieldmap();
