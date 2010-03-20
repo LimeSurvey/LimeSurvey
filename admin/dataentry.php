@@ -1465,19 +1465,19 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 					case ":": //ARRAY (Multi Flexi) (Numbers)
                     	$qidattributes=getQuestionAttributes($fnames[$i][7]);
-                        if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min'] =='')) {
+                        if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                     		$maxvalue=$qidattributes['multiflexible_max'];
                     		$minvalue=1;
                         }
-                        if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max'] =='' )) {
+                        if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) ==''){
                     		$minvalue=$qidattributes['multiflexible_min'];
-                    		$maxvalue=10 ;         		
+                    		$maxvalue=$qidattributes['multiflexible_min'] + 10;         		
                         }	
-					    if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max'] =='' )) {
+					    if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) ==''){
                     		$minvalue=1;
                     		$maxvalue=10;         		
                         }
-						if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max'] !='' )) {
+						if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !=''){
                     		if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
                     			$minvalue=$qidattributes['multiflexible_min'];
                     			$maxvalue=$qidattributes['multiflexible_max'];     
@@ -2754,19 +2754,19 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case ":": //ARRAY (Multi Flexi)
                     	$qidattributes=getQuestionAttributes($deqrow['qid']);
-				        if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min'] =='')) {
+				        if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {
                     		$maxvalue=$qidattributes['multiflexible_max'];
                     		$minvalue=1;
                         }
-                        if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max'] =='' )) {
+                        if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) =='') {
                     		$minvalue=$qidattributes['multiflexible_min'];
-                    		$maxvalue=10;       		
+                    		$maxvalue=$qidattributes['multiflexible_min'] + 10;       		
                         }
-				        if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max'] =='' )) {
+				        if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) =='') {
                     		$minvalue=1;
                     		$maxvalue=10;         		
                         }
-						if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max'] !='' )) {
+						if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !='') {
                     		if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
                     			$minvalue=$qidattributes['multiflexible_min'];
                     			$maxvalue=$qidattributes['multiflexible_max'];     

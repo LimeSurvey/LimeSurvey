@@ -5965,22 +5965,24 @@ function do_array_multiflexi($ia)
 	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
-    if (trim($qidattributes['multiflexible_max'])!='')
-	{
-		$maxvalue=$qidattributes['multiflexible_max'];
-	}
-	else
-	{
-		$maxvalue=10;
-	}
-    if (trim($qidattributes['multiflexible_min'])!='')
-	{
-		$minvalue=$qidattributes['multiflexible_min'];
-	}
-	else
-	{
-		if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
-	}
+	if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
+         $maxvalue=$qidattributes['multiflexible_max'];
+	     if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
+    }
+    if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) ==''){
+         $minvalue=$qidattributes['multiflexible_min'];
+         $maxvalue=$qidattributes['multiflexible_min'] + 10;         		
+    }	
+	if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) ==''){
+		 if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
+         $maxvalue=10;         		
+    }
+	if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !=''){
+         if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
+             $minvalue=$qidattributes['multiflexible_min'];
+             $maxvalue=$qidattributes['multiflexible_max'];     
+         }
+    }
 
     if (trim($qidattributes['multiflexible_step'])!='')
 	{

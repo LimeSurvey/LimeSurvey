@@ -1368,18 +1368,25 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ":": //ARRAY (Multi Flexible) (Numbers)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-                if (trim($qidattributes['multiflexible_max'])!='') {
-					$maxvalue=$qidattributes['multiflexible_max'];
-				}
-				else
-				{
-					$maxvalue=10;
-				}
-                if (trim($qidattributes['multiflexible_min'])!='') {
-					$minvalue=$qidattributes['multiflexible_min'];
-				} else {
-					$minvalue=1;
-				}
+				if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {
+                    $maxvalue=$qidattributes['multiflexible_max'];
+                    $minvalue=1;
+                }
+                if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) =='') {
+                    $minvalue=$qidattributes['multiflexible_min'];
+                    $maxvalue=$qidattributes['multiflexible_min'] + 10;       		
+                }
+				if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) =='') {
+                    $minvalue=1;
+                    $maxvalue=10;         		
+                }
+				if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !='') {
+                    if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
+                    	$minvalue=$qidattributes['multiflexible_min'];
+                    	$maxvalue=$qidattributes['multiflexible_max'];     
+                     }
+                }
+				
                 if (trim($qidattributes['multiflexible_step'])!='') {
 					$stepvalue=$qidattributes['multiflexible_step'];
 				}
