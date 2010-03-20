@@ -1072,7 +1072,7 @@ if(isset($surveyid))
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 
-        $sql = "SELECT * FROM ".db_table_name('surveys')." WHERE sid={$postsid}";
+        $sql = "SELECT * FROM {$dbprefix}surveys WHERE sid={$postsid}";  // We are using $dbrepfix here instead of db_table_name on purpose because GetUpdateSQL doesn't work correclty on Postfres with a quoted table name
         $rs = db_execute_assoc($sql); // Checked
 		$updatearray= array('admin'=>$_POST['admin'],
                             'expires'=>$_POST['expires'],
