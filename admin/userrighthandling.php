@@ -121,8 +121,8 @@ if ($action == "setusertemplates")
 {
 	refreshtemplates();
 	$usersummary = "\n<form action='$scriptname' method='post'>\n\t
-    <div class='header'>".$clang->gT('Edit template permissions')."</div><p>
-    <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
+    <div class='header'>".$clang->gT('Edit template permissions')."</div><br />
+    <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" class=\"header\">\n"
 	. $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t</tr>\n";
 
 	$userlist = getuserlist();
@@ -171,7 +171,7 @@ if ($action == "setusertemplates")
 				$usersummary .=" /></td>\n\t</tr>\n";
 			}
 			$usersummary .= "\n</tbody>\n\n<tfoot>\n\t<tr><td colspan=\"3\">\n"
-				."\t<input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" />\n"
+				."\t<br /><input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" /><br /><br />\n"
 				."\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
 				."\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n</td>\n\t</tr>\n</tfoot>\n"
 				."\t</table>\n"

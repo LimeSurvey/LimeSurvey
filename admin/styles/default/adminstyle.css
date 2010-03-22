@@ -789,14 +789,14 @@ table.templatecontrol select
 /* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
 table#user-template-rights
 {
-        width: 50%;
+    width: 50%;
 	border: none;
 	border-collapse: collapse
 }
-table#user-template-rights thead
-{
-	border-bottom: 0.1em solid #000;
+
+table#user-template-rights thead{
 }
+
 table#user-template-rights tr.row_odd
 {
 	background-color: #EBF2FA;
