@@ -35,7 +35,7 @@ $databaselocation   =   'localhost';   // Network location of your Database - fo
 $databaseport       =   'default';     // The port of your Database - if you use a standard port leave on default
 $databasename       =   'limesurvey';  // The name of the database that we will create
 $databaseuser       =   'root';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
-$databasepass       =   '';            // Password of db user
+$databasepass       =   'root123';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is 'lime_'
 $databasetabletype  =   'myISAM';	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
@@ -43,7 +43,7 @@ $databasepersistent =   false;	       // If you want to enable persistent databa
 
 // FILE LOCATIONS
 
-$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation.
+$rooturl            =   "http://127.0.0.1/lime-fresh"; //The root web url for your limesurvey installation.
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!

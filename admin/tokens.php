@@ -2232,9 +2232,7 @@ if ($subaction == "upload" &&
 			{
 
 				$line = convertCSVRowToArray($buffer,',','"');
-				// sanitize it before writing into table
-				$line = array_map('db_quote',$line);
-
+				
                 if (count($firstline)!=count($line))
                 {
                     $invalidformatlist[]=$recordcount;
@@ -2279,7 +2277,7 @@ if ($subaction == "upload" &&
 
 				$writearray['email'] = trim($writearray['email']);
 
-					//treat blank emails
+				//treat blank emails
 				if ($filterblankemail && $writearray['email']=='')
 					{
 						$invalidemail=true;
@@ -2302,10 +2300,15 @@ if ($subaction == "upload" &&
 					    if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
                         if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
                         if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
-						    $iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+                        
+                        // sanitize it before writing into table
+                        $sanitizedArray = array_map('db_quote',array_values($writearray));
+                        
+                        $iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 					    . "(".implode(',',array_keys($writearray)).") \n"
-					    . "VALUES ('".implode("','",array_values($writearray))."')";
+					    . "VALUES ('".implode("','",$sanitizedArray)."')";
 						    $ir = $connect->Execute($iq);
+						    
 					    if (!$ir)
                         {
                             $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";

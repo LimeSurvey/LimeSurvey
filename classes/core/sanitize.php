@@ -163,7 +163,7 @@ function sanitize_email($email) {
     $emailarray=explode(';',$email);
     for ($i = 0; $i <= count($emailarray)-1; $i++)
     {
-      $emailarray[$i]=preg_replace('/[^a-zA-Z0-9;+_=|.$%&#!{*~`?}^@-]/i', '', $emailarray[$i]);
+      $emailarray[$i]=preg_replace("/[^`'a-zA-Z0-9;+_=|.$%&#!{*~?}^@-]/i", "", $emailarray[$i]);
     }
     return implode(';',$emailarray);
 }
