@@ -1626,16 +1626,14 @@ if($action == "addusergroupsurveysecurity")
 			{
 				while ($row2 = $result2->FetchRow())
 				{
-					$uid_arr[] = $row2['uid'];
-					$values[] = "($surveyid, {$row2['uid']},0,0,0,0,0,0)";
-				}
-				$values_implode = implode(",", $values);
+                    $uid_arr[] = $row2['uid'];
+                    $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ($surveyid, {$row2['uid']},0,0,0,0,0,0) ";
+                    $isrresult = $connect->Execute($isrquery); //Checked
+                    if (!$isrresult) break;
+                }
 
-				$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ".$values_implode;
-				$isrresult = $connect->Execute($isrquery); //Checked
-
-				if($isrresult)
-				{
+                if($isrresult)
+                {
 					$addsummary .= "<div class=\"successheader\">".$clang->gT("User Group added.")."</div>\n";
 					$_SESSION['uids'] = $uid_arr;
 					$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
@@ -1643,7 +1641,13 @@ if($action == "addusergroupsurveysecurity")
 					."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
 					."<input type='hidden' name='ugid' value='{$postusergroupid}' />"
 					."</form>\n";
-				}
+                }
+                else
+                {
+                // Error while adding user to the database
+                $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User Group.")."</div>\n";
+                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=surveysecurity&amp;sid={$surveyid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                }
 			}
 			else
 			{
