@@ -78,6 +78,20 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
 Thank you to everyone who helped with this new release!
 
 
+Changes from  1.87+ (build 8498) to 1.87+ (build 8518)- Legend: # updated feature, - bug fix 
+#Updated feature: performance gain in both the participant and administrator interface by caching question attributes (saving loads of db queries) (mennodekker)
+#Updated translation: Croatian (idobraca)
+#Updated translation: French (b00z00)
+-Fixed issue #04220: Header at Template Permissions for User is not in normal LimeSurvey style (tpartner)
+-Fixed Issue #04180: Add group to a survey. (texens)
+-Fixed Issue #04180: Add group to a survey. (texens)
+-Fixed issue #4209: Install failed populating database when using the mssql or mssql_n driver (c_schmitz)
+-Fixed issue #4214:Adding/importing email addresses with apostrophes to Token lists (harsha_mora)
+-Fixed issue #4217: SQL Error when adding a language to a multilingual survey in Postgres on Linux (c_schmitz)
+-Fixed issue #4206: Array (Multi Flexible) Numbers not working correctly (harsha_mora)
+-Fixed issue #4206:Array (Multi Flexible) (Numbers) - Not working correctly (harsha_mora)
+-Fixed unreported issue: When downloading R/SPSS export files in Opera they would be saved as *.html files (c_schmitz)
+
 Changes from  1.87+ (build 8472) to 1.87+ (build 8498)- Legend: # updated feature, - bug fix 
 #Updated translation: Catalan - sponsored by LimeService (c_schmitz)
 #Updated translation: Polish (elisa-ls)
