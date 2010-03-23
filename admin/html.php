@@ -1628,10 +1628,18 @@ if($action == "addusergroupsurveysecurity")
 				{
 					$uid_arr[] = $row2['uid'];
 					$values[] = "($surveyid, {$row2['uid']},0,0,0,0,0,0)";
-				}
-				$values_implode = implode(",", $values);
+                    $values_mssql[] = " $surveyid, {$row2['uid']},0,0,0,0,0,0 ";
+                }
+                if ($databasetype == 'odbc_mssql' && count($values_mssql) > 1) {
+                    $isrquery = "INSERT INTO {$dbprefix}surveys_rights SELECT ";
+                    $values_implode = implode(" UNION ALL SELECT ", $values_mssql);
+                    $isrquery .= $values_implode;
+                }
+                else {
+                    $values_implode = implode(",", $values);
+                    $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ".$values_implode;
+                }
 
-				$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ".$values_implode;
 				$isrresult = $connect->Execute($isrquery); //Checked
 
 				if($isrresult)
