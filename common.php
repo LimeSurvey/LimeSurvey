@@ -1961,7 +1961,7 @@ function getsidgidqidaidtype($fieldcode)
 {
 	// use simple parsing to get {sid}, {gid}
 	// and what may be {qid} or {qid}{aid} combination
-	list($fsid, $fgid, $fqid) = split("X", $fieldcode);
+	list($fsid, $fgid, $fqid) = explode("X", $fieldcode);
 	$fsid=sanitize_int($fsid);
 	$fgid=sanitize_int($fgid);
 	if (!$fqid) {$fqid=0;}
@@ -3448,7 +3448,10 @@ function buildLabelSetCheckSumArray()
 */
 function getQuestionAttributes($qid, $type='')
 {
-     
+    static $cache = array();
+    if (isset($cache[$qid])) {
+    	return $cache[$qid];
+    }  
     if ($type=='')  // If type is not given find it out
     {          
         $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid group by type";
@@ -3464,6 +3467,7 @@ function getQuestionAttributes($qid, $type='')
     }
     else
     {
+    	$cache[$qid]=array();
         return array();
     }
     
@@ -3481,6 +3485,7 @@ function getQuestionAttributes($qid, $type='')
 	}
 	//echo "<pre>";print_r($qid_attributes);echo "</pre>";
     $qid_attributes=array_merge($defaultattributes,$setattributes);
+    $cache[$qid]=$qid_attributes;
 	return $qid_attributes;
 }
 
@@ -5970,7 +5975,7 @@ function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,
 		{
 			$rowid .= $rowcontents[$idfieldnum]."-";
 		}
-		$rowlangarray = split (" ", $rowcontents[$langfieldnum]);
+		$rowlangarray = explode (" ", $rowcontents[$langfieldnum]);
 		if (!isset($objlangsupportarray[$rowid]))
 		{
 			if (array_search($langcode,$rowlangarray)!== false)
