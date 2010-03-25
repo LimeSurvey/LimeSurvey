@@ -52,7 +52,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 
 	if($ugid && $grpresultcount > 0)
 	{
-		$usergroupsummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=mailusergroup&amp;ugid=$ugid', '_top')\""
+		$usergroupsummary .= "<a href=\"#\" onclick=\"window.location='$scriptname?action=mailusergroup&amp;ugid=$ugid'\""
 		." title='".$clang->gTview("Mail to all Members")."'> " 
 		."<img src='$imagefiles/invite.png' alt='".$clang->gT("Mail to all Members")."' name='MailUserGroup' /></a>\n" ;
 	}
@@ -66,7 +66,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	if($ugid && $grpresultcount > 0 &&
 		$_SESSION['loginID'] == $grow['owner_id'])
 	{
-		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
+		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.location='$scriptname?action=editusergroup&amp;ugid=$ugid'\""
 		. " title='".$clang->gTview("Edit Current User Group")."'>" 
 		. "<img src='$imagefiles/edit.png' alt='".$clang->gT("Edit Current User Group")."' name='EditUserGroup' /></a>\n" ;
 	}
@@ -92,7 +92,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "</div>\n"
 	. "<div class='menubar-right'>\n"
 	. "<font class=\"boxcaption\">".$clang->gT("User Groups").":</font>&nbsp;<select name='ugid' "
-	. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
+	. "onchange=\"window.location=this.options[this.selectedIndex].value\">\n"
 	. getusergrouplist()
 	. "</select>\n";
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
@@ -100,7 +100,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
         $usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
         ." title='".$clang->gTview("Add New User Group")."'>" 
         ."<img src='$imagefiles/add.png' alt='".$clang->gT("Add New User Group")."' " 
-        ."name='AddNewUserGroup' onclick=\"window.open('', '_top')\" /></a>\n";
+        ."name='AddNewUserGroup' onclick=\"window.location=''\" /></a>\n";
     }
     $usergroupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
     . "<img src='$imagefiles/blank.gif' alt='' width='82' height='20' />\n"
@@ -121,8 +121,8 @@ if ($action == "setusertemplates")
 {
 	refreshtemplates();
 	$usersummary = "\n<form action='$scriptname' method='post'>\n\t
-    <div class='header'>".$clang->gT('Edit template permissions')."</div><br />
-    <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" class=\"header\">\n"
+    <div class='header'>".$clang->gT('Edit template permissions')."</div><p>
+    <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
 	. $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t</tr>\n";
 
 	$userlist = getuserlist();
@@ -171,7 +171,7 @@ if ($action == "setusertemplates")
 				$usersummary .=" /></td>\n\t</tr>\n";
 			}
 			$usersummary .= "\n</tbody>\n\n<tfoot>\n\t<tr><td colspan=\"3\">\n"
-				."\t<br /><input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" /><br /><br />\n"
+				."\t<input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" />\n"
 				."\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
 				."\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n</td>\n\t</tr>\n</tfoot>\n"
 				."\t</table>\n"
@@ -659,7 +659,7 @@ if ($action == "delusergroup")
 				{
 					$usersummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user group.")."</div>\n";
 				}
-				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups'\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
 			else
 			{
@@ -669,7 +669,7 @@ if ($action == "delusergroup")
 		else
 		{
 			$usersummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user group. No group selected.")."</div>\n";
-			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups'\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	$usersummary .= "</div>\n";
@@ -701,20 +701,20 @@ if ($action == "usergroupindb")
 				}
 	
 	         	$usersummary .= "<div class=\"successheader\">".$clang->gT("User group successfully added!")."</div>\n";
-				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups&amp;ugid={$ugid}'\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
 			else
 			{
 				$usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
 				. "<br />" . $clang->gT("Group already exists!")."<br />\n";
-				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=addusergroup', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=addusergroup'\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
 		}
 		else
 		{
 			$usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
 			. "<br />" . $clang->gT("Group name was not supplied!")."<br />\n";
-			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=addusergroup', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=addusergroup'\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
@@ -781,7 +781,7 @@ if ($action == "mailsendusergroup")
 			$usersummary = "<div class=\"messagebox\">\n";
 			$usersummary .= "<div class=\"successheader\">".$clang->gT("Message(s) sent successfully!")."</div>\n"
 			. "<br />".$clang->gT("To:")."". $addressee."<br />\n"
-			. "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+			. "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups&amp;ugid={$ugid}'\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
@@ -792,7 +792,7 @@ if ($action == "mailsendusergroup")
                 $usersummary .= "<br /><pre>Subject : $subject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
             }
 
-			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=mailusergroup&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=mailusergroup&amp;ugid={$ugid}'\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
@@ -975,11 +975,11 @@ if($action == "deleteuserfromgroup")
 		}
 		if($_SESSION['loginID'] != $postuserid)
 		{
-			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid=$ugid', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups&amp;ugid=$ugid'\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
-			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups'\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
@@ -1027,7 +1027,7 @@ if($action == "addusertogroup")
 				$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n" 
 				. "<br />" . $clang->gT("No Username selected.")."<br />\n";
 			}
-			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups&amp;ugid={$ugid}'\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
