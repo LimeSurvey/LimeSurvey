@@ -1205,17 +1205,17 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	return $output;
 }
 
-function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody") {
+function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
 	/* We're just going to work out whether to do the include or exclude version of the function at this point */
 	if(isset($qidattributes['array_filter_exclude']) && trim($qidattributes['array_filter_exclude']) != '') {
-		list($html2body, $hiddenfield) = return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method);
+		list($html2body, $hiddenfield) = return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method, $class);
 	} else {
-		list($html2body, $hiddenfield) = return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method);
+		list($html2body, $hiddenfield) = return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method, $class);
 	}
 	return array($html2body, $hiddenfield);
 }
 
-function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody") {
+function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
 	/* DO ARRAY_FILTER ATTRIBUTE
 	We set the $hiddenfield for each answer, and the value of this is available to java to let javascripts
 	know whether each answer is currently being displayed. $htmltbody2 determines whether the answer row 
@@ -1230,42 +1230,50 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
 	if  (
 			(trim($qidattributes['array_filter'])!='' && 	// the array_filter attribute is set
 			 $thissurvey['format'] == 'G' && 				// and the survey is being presented group by group
-			 getArrayFiltersOutGroup($ia[0]) == false		// and this question _is_not_ in the current group for the array filter
+			 getArrayFiltersOutGroup($ia[0]) == false		// and the source question is in the same group (ie displayed on same page)
 			) ||											// OR
 			(trim($qidattributes['array_filter'])!='' &&	// the array_filter attribute is set
 			 $thissurvey['format'] == 'A'					// and the survey is being presented all on one page
 			)
 		)
 	{
-		$htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'>\n";
+		$htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'";
+		$htmltbody2 .= ($class !== null) ? " class='$class'": "";
+		$htmltbody2 .= ">\n";
 		$hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />\n";
 	} else if 
 		(
-		 (trim($qidattributes['array_filter'])!='' && 
-		  $thissurvey['format'] == 'S'
-		 ) || 
-		 (trim($qidattributes['array_filter'])!='' && 
-		  $thissurvey['format'] == 'G' && 
-		  getArrayFiltersOutGroup($ia[0]) == true
+		 (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+		  $thissurvey['format'] == 'S'						// and the survey is being presented in question-by-question mode
+		 ) || 												// OR
+		 (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+		  $thissurvey['format'] == 'G' && 					// and the survey is being presented in group-by-group mode
+		  getArrayFiltersOutGroup($ia[0]) == true			// and the source question for the array filter is in a different group than this question
 		 )
 		)
 	{
 		$selected = getArrayFiltersForQuestion($ia[0]);
 		if (!empty($selected) && !in_array($ansrow['code'],$selected))
 		{
-			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'>\n";
+			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'";
+			$htmltbody2 .= ($class !== null) ? " class='$class'": "";
+			$htmltbody2 .= ">\n";
 			$hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
 			$_SESSION[$valuename] = ''; //Remove any saved results for this since it is no longer being displayed
 		}
 		else
 		{
-			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>";
+			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
+			$htmltbody2 .= ($class !== null) ? " class='$class'": "";
+			$htmltbody2 .= ">";
 			$hiddenfield="\n<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
 		}
 	}
 	else
 	{
-	$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
+	$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
+	$htmltbody2 .= ($class !== null) ? " class='$class'": "";
+	$htmltbody2 .= ">\n";
 	$hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
 	}
 
@@ -1274,7 +1282,7 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
 	return array($htmltbody2, $hiddenfield);
 }
 
-function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody") {
+function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
 	/* DO ARRAY_FILTER_EXCLUDE ATTRIBUTE
 	We set the $hiddenfield for each answer, and the value of this is available to java to let javascripts
 	know whether each answer is currently being displayed. $htmltbody2 determines whether the answer row 
@@ -1285,11 +1293,11 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
 	$hiddenfield= '';
 	if  (
 			(trim($qidattributes['array_filter_exclude'])!='' && 	// the array_filter attribute is set
-			 $thissurvey['format'] == 'G' && 				// and the survey is being presented group by group
-			 getArrayFiltersExcludesOutGroup($ia[0]) == false		// and this question _is_not_ in the current group for the array filter
-			) ||											// OR
+			 $thissurvey['format'] == 'G' && 						// and the survey is being presented group by group
+			 getArrayFiltersExcludesOutGroup($ia[0]) == false		// and this question _is_ in the current group for the array filter (ie it's on the same page)
+			) ||													// OR
 			(trim($qidattributes['array_filter_exclude'])!='' &&	// the array_filter attribute is set
-			 $thissurvey['format'] == 'A'					// and the survey is being presented all on one page
+			 $thissurvey['format'] == 'A'							// and the survey is being presented all on one page
 			)
 		)
 	{
@@ -1307,6 +1315,9 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
 		)
 	{
 		$selected = getArrayFilterExcludesForQuestion($ia[0]);
+		//echo "<pre>"; print_r($selected); echo "<hr />-->"; print_r($ansrow['code']); echo "</pre>";
+		//if(in_array($ansrow['code'], $selected)) echo "Hi there".$ansrow['code'];
+		//if(!empty($selected)) echo "notempty ".$ansrow['code'];
 		if (!empty($selected) && !in_array($ansrow['code'],$selected))
 		{
 			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
@@ -2109,24 +2120,24 @@ function do_list_radio($ia)
 	{
 		$other = $row['other'];
 	}
-	
+
 	//question attribute random order set?
     if ($qidattributes['random_order']==1) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
-	
+
 	//question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)     
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
-	}	
-	
+	}
+
 	//no question attributes -> order by sortorder
 	else 
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
-	
+
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
 	$anscount = $ansresult->RecordCount();
 
@@ -2240,8 +2251,18 @@ function do_list_radio($ia)
 		{
 			$answer_other = ' value=""';
 		}
-
-		$answer .= $wrapper['item-start-other'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+		
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "other");
+		
+		if($wrapper['item-start-other'] == "\t<li class=\"other\">\n")
+		{
+		    $startitem = "\t$htmltbody2\n";
+		} else {
+		    $startitem = $wrapper['item-start-other'];
+		}
+		$answer .= $startitem;
+		$answer .= "\t$hiddenfield\n";
+		$answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
 			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
@@ -3263,7 +3284,7 @@ function do_multiplechoice($ia)
 	if ($other == 'Y')
 	{
 		$myfname = $ia[1].'other';
-	    list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "div");
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
 		if(count($excludeallothers) > 0) 
 		{
 			$excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
@@ -3278,21 +3299,30 @@ function do_multiplechoice($ia)
 			$excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
 			$excludeallotherscriptoff .="document.getElementById('answer{$ia[1]}othercbox').disabled='';\n";
 		}
-
-		$answer .= $wrapper['item-start'].'
+		if($wrapper['item-start'] == "\t<li>\n")
+		{
+			$startitem = "\t$htmltbody2\n";
+		} else {
+			$startitem = $wrapper['item-start'];
+		}
+		$answer .= $startitem.'
 		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
 
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='')
 		{
 			$answer .= CHECKED;
 		}
-		$answer .= " onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />
+		$answer .= " onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."if(this.checked===false) document.getElementById(\"answer$myfname\").value=\"\";";
+		$answer .= " if(this.checked===true) document.getElementById(\"answer$myfname\").focus();";
+		$answer .= " $checkconditionFunction(document.getElementById(\"answer$myfname\").value, document.getElementById(\"answer$myfname\").name, document.getElementById(\"answer$myfname\").type);";
+		$answer .= "' />
 		<label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
 		<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
 		if (isset($_SESSION[$myfname]))
 		{
 			$answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
 		}
+		$answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);'";
 		$answer .= " onkeypress='if ($.trim($(\"#answer{$myfname}\").val())!=\"\") {document.getElementById(\"answer{$myfname}cbox\").checked=true;}$numbersonly' ".$callmaxanswscriptother.' />
 		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 

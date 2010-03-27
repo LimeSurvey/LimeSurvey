@@ -4773,6 +4773,7 @@ function getArrayFiltersForQuestion($qid)
     $qid=sanitize_int($qid);
 	$query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter' AND qid='".$qid."'";
 	$result = db_execute_assoc($query);  //Checked
+	
 	if ($result->RecordCount() == 1) // We Found a array_filter attribute
 	{
 		$val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4789,6 +4790,14 @@ function getArrayFiltersForQuestion($qid)
 				{
 					if ((isset($_SESSION[$fields[1].$code['code']]) && $_SESSION[$fields[1].$code['code']] == "Y")
                             || $_SESSION[$fields[1]] == $code['code'])			 array_push($selected,$code['code']);
+				}
+				//Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
+				$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
+				$qresult = db_execute_assoc($query);
+				while ($row=$qresult->fetchRow()) {$other=$row['other'];}
+				if($other == "Y")
+				{
+				    if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
 				}
 				return $selected;
 			}
@@ -4831,7 +4840,7 @@ function getArrayFilterExcludesForQuestion($qid)
 	$query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qid."'";
 	$result = db_execute_assoc($query);  //Checked
 	$excludevals=array();
-	if ($result->RecordCount() == 1) // We Found a array_filter attribute
+	if ($result->RecordCount() == 1) // We Found a array_filter_exclude attribute
 	{
 		$selected=array();
 		$excludevals[] = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4848,11 +4857,11 @@ function getArrayFilterExcludesForQuestion($qid)
 		/* For each $val (question title) that applies to this, check what values exist and add them to the $selected array */
 		foreach ($excludevals as $val)
 		{
-			foreach ($_SESSION['fieldarray'] as $fields)
+			foreach ($_SESSION['fieldarray'] as $fields) //iterate through every question in the survey
 			{
 				if ($fields[2] == $val['value'])
-				{	
-					// we found the target question, now we need to know what the answers where, we know its a multi!
+				{
+					// we found the target question, now we need to know what the answers were!
 					$fields[0]=sanitize_int($fields[0]);
 					$query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
 					$qresult = db_execute_assoc($query);  //Checked
@@ -4860,6 +4869,14 @@ function getArrayFilterExcludesForQuestion($qid)
 					{
 						if ((isset($_SESSION[$fields[1].$code['code']]) && $_SESSION[$fields[1].$code['code']] == "Y")
                             || $_SESSION[$fields[1]] == $code['code'])						array_push($selected,$code['code']);
+					}
+					//Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
+					$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
+					$qresult = db_execute_assoc($query);
+					while ($row=$qresult->fetchRow()) {$other=$row['other'];}
+					if($other == "Y")
+					{
+						if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
 					}
 				}
 			}

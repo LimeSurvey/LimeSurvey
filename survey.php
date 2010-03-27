@@ -675,10 +675,12 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 		$qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
 			$qresult = db_execute_assoc($qquery); //Checked
+			$other=null;
 			while ($fansrows = $qresult->FetchRow())
 			{
+				if($fansrows['other']=="Y") $other="Y";
 				if(strpos($array_filter_types, $fansrows['type']) === false) {} else
 				{
 					$fquestans = "java".$qfbase.$fansrows['code'];
@@ -702,6 +704,28 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 					$appendj .= "\t}\n";
 				}
 			}
+			
+			if($other=="Y") {
+					$fquestans = "answer".$qfbase."other";
+					$tbody = "javatbd".$qbase."other";
+					$dtbody = "tbdisp".$qbase."other";
+					$tbodyae = $qbase."other";
+					$appendj .= "\n";
+					$appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+					// This line resets any radio group in the hidden row
+				    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t}\n";   			  
+			}
 		}
 	}
 	$java .= $appendj;
@@ -711,15 +735,17 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 		$qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type 
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type, {$dbprefix}questions.other 
 					   FROM {$dbprefix}answers, {$dbprefix}questions 
 					   WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid 
 					   AND {$dbprefix}answers.qid='".$attralist['qid']."' 
 					   AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' 
 					   ORDER BY code;";
 			$qresult = db_execute_assoc($qquery); //Checked
+			$other=null;
 			while ($fansrows = $qresult->FetchRow())
 			{
+				if($fansrows['other']== "Y") $other="Y";
 				if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
 				{
 					$fquestans = "java".$qfbase.$fansrows['code'];
@@ -757,6 +783,27 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 					$appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
 					$appendj .= "\t}\n";
 				}
+			}
+			if($other=="Y") {
+					$fquestans = "answer".$qfbase."other";
+					$tbody = "javatbd".$qbase."other";
+					$dtbody = "tbdisp".$qbase."other";
+					$tbodyae = $qbase."other";
+					$appendj .= "\n";
+					$appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+					// This line resets any radio group in the hidden row
+				    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t}\n";   			  
 			}
 		}
 	}
