@@ -96,6 +96,7 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
 			$kname=$row["Key_name"];
 			if(($kname != "PRIMARY") && ($row["Non_unique"] == 0)) $kname="UNIQUE|$kname";
 			if(!isset($index[$kname])) $index[$kname] = array();
+			if ($row["Sub_part"]!='')  $row["Column_name"].=" ({$row["Sub_part"]})";    
 			$index[$kname][] = $row["Column_name"];
 		}
 	
