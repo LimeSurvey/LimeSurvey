@@ -40,7 +40,7 @@ $dbprefix           =   'lime_';       // A global prefix that can be added to a
                                        // a database with other applications. Suggested prefix is 'lime_'
 
 // File Locations
-$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; // The root web url for your limesurvey installation (without a trailing slash). 
+$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey_dev"; // The root web url for your limesurvey installation (without a trailing slash). 
                                                                      // The double quotes (") are important.
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this 
@@ -53,7 +53,7 @@ $defaultuser        =   'admin';           // This is the username when LimeSurv
 $defaultpass        =   'password';        // This is the password for the administration user when LimeSurvey is installed
 
 // Debug Settings
-$debug              =   0;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+$debug              =   3;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                            // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir 
                                            // on your webspace.
                                            // LimeSurvey developers: Set this to 2 to circumvent the restriction to remove the installation directory 

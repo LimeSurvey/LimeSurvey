@@ -149,7 +149,9 @@ div.questiontext {
 }
 
 
-.submit, input.saveall {
+.submit, 
+input.saveall,
+input.clearall {
     background-color:#FFF;
     color:#2F5376;
     padding:0 10px;
@@ -159,7 +161,8 @@ input.submit {
     min-width:100px;
 }
 
-input.saveall {
+input.saveall,
+input.clearall {
     font-size:0.8em;
     padding:0 5px;
 }

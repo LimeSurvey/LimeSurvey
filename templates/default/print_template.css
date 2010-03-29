@@ -280,3 +280,32 @@ div.array-multi-flexi .q-answer table tbody td div.input-text
 }
 
 
+
+/* Create spikes for single-row inputs */
+div.input-other
+,div.input-othercomment
+,div.input-rank
+,div.input-text {
+    background: transparent url(print_img_textspike.gif) repeat-x scroll 0% 50%
+}
+
+/*fix styling for some questions that cannot be controlled individually */
+.array-multi-flexi div.input-text, div.input-rank {
+    width: 51px !important; 
+}
+
+.array-multi-flexi-text div.input-text {
+    width: 155px !important; 
+}
+
+.date div.input-text {
+    width: 207px !important;
+}
+
+.multiple-opt-comments div.input-text {
+    width: 389px !important;
+}
+
+div.input-other {
+width: 155px !important;
+}

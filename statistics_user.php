@@ -1393,29 +1393,6 @@ if (isset($summary) && $summary)
 				break;
 
 
-			
-				case "W":	//List felixble labels (dropdown)					
-				case "Z":	//List flexible labels (radio)
-					
-				//get labels
-				$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
-				$fresult = db_execute_assoc($fquery);
-				
-				//put label code and label title into array
-				while ($frow=$fresult->FetchRow())
-				{
-					$alist[]=array($frow['code'], FlattenText($frow['title']));
-				}
-				
-				//does "other" field exist?
-				if ($qother == "Y")
-				{
-					$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
-				}
-				break;				
-				
-				
-				
                 case "1":	//array flexible labels (dual scale)
                 	
                 //get question attributes

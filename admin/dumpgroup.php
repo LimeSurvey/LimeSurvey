@@ -55,26 +55,26 @@ $dumphead = "# LimeSurvey Group Dump\n"
 
 
 
-//0: Groups Table
+//1: Groups Table
 $gquery = "SELECT * 
            FROM {$dbprefix}groups 
 		   WHERE gid=$gid";
 $gdump = BuildCSVFromQuery($gquery);
 
-//1: Questions Table
+//2: Questions Table
 $qquery = "SELECT * 
            FROM {$dbprefix}questions 
 		   WHERE gid=$gid";
 $qdump = BuildCSVFromQuery($qquery);
 
-//2: Answers table
+//3: Answers table
 $aquery = "SELECT DISTINCT {$dbprefix}answers.* 
            FROM {$dbprefix}answers, {$dbprefix}questions 
 		   WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid) 
 		   AND ({$dbprefix}questions.gid=$gid)";
 $adump = BuildCSVFromQuery($aquery);
 
-//3: Conditions table - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
+//4: Conditions table - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
 $cquery = "SELECT DISTINCT {$dbprefix}conditions.* 
            FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b 
 		   WHERE ({$dbprefix}conditions.cqid={$dbprefix}questions.qid) 
@@ -83,60 +83,7 @@ $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
 		   AND (b.gid=$gid)";
 $cdump = BuildCSVFromQuery($cquery);
 
-//4: Labelsets Table
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* 
-            FROM {$dbprefix}labelsets, {$dbprefix}questions 
-			WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid) 
-			AND (type in ('F', 'W', 'H', 'Z', '1', ':', ';'))
-			AND (gid=$gid)";
-$lsdump = BuildCSVFromQuery($lsquery);
-
-//5: Labelsets1 Table
-//This exists specifically to deal with dual-scale questions (or any future question that may have 2 labelsets)
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid1) AND (type in ('1')) AND (gid=$gid)";
-$ls1dump = BuildCSVFromQuery($lsquery);
-$ls1=explode("\n", trim($ls1dump));
-
-if(count($ls1)>3) {
-  //If there is actually some data here, then add just the data (not the headers) into 
-  // $ls1dump - which will be outputted directly after $lsdump
-  $ls1dump=$ls1[4];
-  $ls1dump .= "\n";
-} else {
-  //If there is no data then make it an empty string.
-  $ls1dump = "";
-}
-
-//4a: Labels Table
-$lquery = "SELECT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W', '1', ':', ';')) AND (gid=$gid)";
-$ldump = BuildCSVFromQuery($lquery);
-
-//5a: Labels1 Table
-// See explanation for Labelsets1 Table!! These are the actual labels
-$lquery = "SELECT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid1) AND (type in ('1')) AND (gid=$gid)";
-$l1dump = BuildCSVFromQuery($lquery);
-$ld1=explode("\n", trim($l1dump));
-
-if(count($ld1)>3) {
-  //If there is actually some data here, then add just the data (not the headers) into 
-  // $l1dump - which will be outputted directly after $ldump
-  $l1dump=array();
-  foreach($ld1 as $key=>$ld) {
-    //Put every line, other than the first three into this string
-    if($key > 3) {
-      $l1dump[]=$ld;
-    }
-  }
-  $l1dump = implode("\n", $l1dump);
-  $l1dump .= "\n";
-} else {
-  //If there is no data then make it an empty string.
-  $l1dump = "";
-}
-
-
-
-//8: Question Attributes
+//5: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.* 
 	   	  FROM {$dbprefix}question_attributes, {$dbprefix}questions 
 		  WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) 
@@ -146,7 +93,7 @@ $qadump = BuildCSVFromQuery($query);
 if($action=='exportstructureLsrcCsvGroup')
 {
 	include_once($homedir.'/remotecontrol/lsrc.config.php');
-	$lsrcString = $dumphead. $gdump. $qdump. $adump. $cdump. $lsdump. $ls1dump. $ldump. $l1dump. $qadump;
+	$lsrcString = $dumphead. $gdump. $qdump. $adump. $cdump. $qadump;
 	//Select title as Filename and save
 	$groupTitleSql = "SELECT group_name 
 		             FROM {$dbprefix}groups 
@@ -165,7 +112,7 @@ else
 	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	header("Pragma: cache");
 	
-echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ls1dump, $ldump, $l1dump, $qadump;
+echo $dumphead, $gdump, $qdump, $adump, $cdump, $qadump;
 exit;
 }
 

@@ -179,7 +179,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
         
 		if (!isset($logoutsummary))
 		{
-			$loginsummary = "<form name='loginform' id='loginform' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
+			$loginsummary = "<form name='loginform' id='loginform' method='post' action='$rooturl/admin/admin.php' ><p><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
 		}
 		else
 		{
@@ -212,22 +212,3 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 					$loginsummary .= "                                                </script>\n";
 	}
 }
-
-if (isset($loginsummary)) 
-{	
-	$adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
-	."\t<tr>\n"
-    ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
-	
-	if(isset($_SESSION['loginID']))
-	{
-		$adminoutput.= showadminmenu();
-	}
-	$adminoutput.= $loginsummary;
-	
-	$adminoutput.= "\t\t</td>\n";
-	$adminoutput.= "\t</tr>\n";
-	$adminoutput.= "</table>\n";
-}
-
-?>

@@ -759,7 +759,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			$csarray[$newlid]=$newcs;
 		}
 		//END CHECK FOR DUPLICATES
-		$labelreplacements[]=array($oldlid, $newlid);
+		$labelreplacements[$oldlid]=$newlid;
 	}
 }
 
@@ -856,7 +856,7 @@ if (isset($grouparray) && $grouparray) {
                   else 
                     if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}
 
-								if (!array_key_exists($questionrowdata["type"], $qtypes))
+				if (!array_key_exists($questionrowdata["type"], $qtypes) && $questionrowdata["type"]!='W' && $questionrowdata["type"]!='Z')
                 {
                 	$questionrowdata["type"] = strtoupper($questionrowdata["type"]);
                 	if (!array_key_exists($questionrowdata["type"], $qtypes))
@@ -865,9 +865,9 @@ if (isset($grouparray) && $grouparray) {
                 		$countquestions--;
                 		continue;
                 	}
-                	else	// the upper case worked well                                                                                                                                                                            $qtypes[$questionrowdata["type"]]
+                	else	// the upper case worked well
                 	{
-                		$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]) . "</li>";
+                		$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]['description']) . "</li>";
                 	}
                 }
                         		
@@ -887,45 +887,34 @@ if (isset($grouparray) && $grouparray) {
                         $questionrowdata['language']=$newlanguage;
                     } 
 					$oldqid=$qid;
-                    if (!isset($questionrowdata["lid1"]))
+
+                    if ($importversion<143) 
                     {
-                        $questionrowdata["lid1"]=0; 
+                        unset($oldlid1); unset($oldlid2);
+                        if ((isset($questionrowdata['lid']) && $questionrowdata['lid']>0))
+                        {
+                            $oldlid1=$questionrowdata['lid'];
 					}
-                    // Now we will fix up the label id 
-					$type = $questionrowdata["type"]; //Get the type
-					if ($type == "F" || $type == "H" || $type == "W" || 
-					    $type == "Z" || $type == "1" || $type == ":" ||
-						$type == ";" ) 
-					{//IF this is a flexible label array, update the lid entry
-						if (isset($labelreplacements)) {
-							// We only replace once in each question label
-							// otherwise could lead to double substitution
-							// if a new lid collides with an older one
-							$already_replaced_label = false;
-							$already_replaced_label1 = false;
-							foreach ($labelreplacements as $lrp) {
-								if ($lrp[0] == $questionrowdata["lid"]) 
+                        if ((isset($questionrowdata['lid1']) && $questionrowdata['lid1']>0))
 								{
-									if (!$already_replaced_label)
+                            $oldlid2=$questionrowdata['lid1'];
+                        }
+                        unset($questionrowdata['lid']);
+                        unset($questionrowdata['lid1']);
+                        if ($questionrowdata['type']=='W')
 									{
-										$questionrowdata["lid"]=$lrp[1];
-										$already_replaced_label = true;
+                            $questionrowdata['type']='!';
 									}
-								}
-								if ($lrp[0] == $questionrowdata["lid1"]) 
+                        elseif ($questionrowdata['type']=='Z')
 								{
-									if (!$already_replaced_label1)
-									{
-										$questionrowdata["lid1"]=$lrp[1];
-										$already_replaced_label1 = true;
+                            $questionrowdata['type']='L';
 									}
+                        
 								}
-							}
-						}
-					}
+                    
                     if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;} 
 		            $other = $questionrowdata["other"]; //Get 'other' field value
-
+                    $type = $questionrowdata['type'];
     		        // translate internal links
 		            $questionrowdata['title']=translink('survey', $surveyid, $newsid, $questionrowdata['title']);
 		            $questionrowdata['question']=translink('survey', $surveyid, $newsid, $questionrowdata['question']);
@@ -944,6 +933,43 @@ if (isset($grouparray) && $grouparray) {
 				        $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
 			        }
 					
+                    
+                    // Now we will fix up old label sets where they are used as answers
+                    if ($importversion<143 && (isset($oldlid1) || isset($oldlid2)) && ($qtypes[$type]['answerscales']>0 || $qtypes[$type]['subquestions']>1))
+                    {             
+                        $query="select * from ".db_table_name('labels')." where lid={$labelreplacements[$oldlid1]}";
+                        $oldlabelsresult=db_execute_assoc($query);
+                        while($labelrow=$oldlabelsresult->FetchRow())
+                        {
+                            
+                            if ($qtypes[$type]['subquestions']<2)
+                            {
+                                $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value) 
+                                            VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).")"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                            }
+                            else
+                            {
+                                $qinsert = "insert INTO ".db_table_name('questions')." (parent_qid,title,question,question_order,language,scale_id) 
+                                            VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",1)"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                            }
+                        }
+                        if (isset($oldlid2) && $qtypes[$type]['answerscales']>1)
+                        {
+                            $query="select * from ".db_table_name('labels')." where lid={$labelreplacements[$oldlid2]}";
+                            $oldlabelsresult=db_execute_assoc($query);
+                            while($labelrow=$oldlabelsresult->FetchRow())
+                            {
+                                $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id) 
+                                            VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",1)"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                            }
+                        }
+                          
+
+                    }
+                    
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					
@@ -983,8 +1009,19 @@ if (isset($grouparray) && $grouparray) {
 
                                 $newvalues=array_values($answerrowdata);
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                                
+                                // Now we will fix up old answers where they are really subquestions
+                                if ($importversion<143 && $qtypes[$type]['subquestions']>0)
+                                {
+                                    $qinsert = "insert INTO ".db_table_name('questions')." (parent_qid,sid,gid,title,question,question_order,language) 
+                                                VALUES ({$answerrowdata['qid']},$newsid,$newgid,".db_quoteall($answerrowdata['code']).",".db_quoteall($answerrowdata['answer']).",".db_quoteall($answerrowdata['sortorder']).",".db_quoteall($answerrowdata['language']).")"; 
+                                    $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                                }
+                                else 
+                                {
                                 $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 								$ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+                                }                                
 								
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
@@ -1024,7 +1061,7 @@ if (isset($grouparray) && $grouparray) {
 								elseif ($type == ":" || $type == ";" ) {
 									// read all label codes from $questionrowdata["lid"]
 									// for each one (as L) set SGQA_L
-									$labelq="SELECT DISTINCT code FROM {$dbprefix}labels WHERE lid=".$questionrowdata["lid"];
+	/*								$labelq="SELECT DISTINCT code FROM {$dbprefix}labels WHERE lid=".$questionrowdata["lid"];
 									$labelqresult=db_execute_num($labelq) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 									while ($labelqrow=$labelqresult->FetchRow())
 									{
@@ -1032,8 +1069,8 @@ if (isset($grouparray) && $grouparray) {
 												"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0],
 												"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."_".$labelqrow[0],
 												"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0]);
+									}  */
 									}
-								}
 								elseif ($type == "R") {
 									$newrank++;
 								}

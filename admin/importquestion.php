@@ -415,9 +415,7 @@ if (isset($questionarray) && $questionarray) {
             
             // Now we will fix up the label id 
 		    $type = $questionrowdata["type"]; //Get the type
-			if ($type == "F" || $type == "H" || $type == "W" || 
-			    $type == "Z" || $type == "1" || $type == ":" ||
-				$type == ";" ) 
+			if ($type == "F" || $type == "H" || $type == "1" || $type == ":" || $type == ";" ) 
                 {//IF this is a flexible label array, update the lid entry
 			    if (isset($labelreplacements)) {
 				    foreach ($labelreplacements as $lrp) {

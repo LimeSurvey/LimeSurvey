@@ -37,10 +37,8 @@
     S - Short Free Text 
     T - Long Free Text 
     U - Huge Free Text 
-    W - List (Flexible Labels) (Dropdown) 
     X - Boilerplate Question 
     Y - Yes/No 
-    Z - List (Flexible Labels) (Radio) 
     ! - List (Dropdown)
     : - Array (Flexible Labels) multiple drop down
     ; - Array (Flexible Labels) multiple texts
@@ -93,9 +91,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 	{
 		$thissurvey=getSurveyInfo($surveyid); 
 		$errormsg="";
-		
-		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
-		$dataentryoutput .= "<div class='messagebox'>\n";
+		$dataentryoutput .= $surveyoptions."<div class='header'>".$clang->gT("Data Entry")."</div>\n"
+		."\t<div class='messagebox'>\n";
 
 		$lastanswfortoken=''; // check if a previous answer has been submitted or saved
 		$rlanguage='';
@@ -215,277 +212,38 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$dataentryoutput .= "<input type='hidden' name='ipaddr' value='".$_POST['ipaddr']."' />\n";
 					}
 					$dataentryoutput .= "</table></form>\n";
-				} elseif (returnglobal('redo')=="yes")
-				{
-					//Delete all the existing entries TODO WTF IS REDO?
-					//$delete="DELETE FROM ".db_table_name("saved")." WHERE scid=".$saver['scid'];
-					//$result=$connect->Execute($delete) or safe_die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
-					//$delete="DELETE FROM ".db_table_name("saved_control")." WHERE scid=".$surveytable['scid'];
-					//$result=$connect->Execute($delete) or safe_die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
-				}
+				} 
 			}
 			//BUILD THE SQL TO INSERT RESPONSES
 			$baselang = GetBaseLanguageFromSurveyID($surveyid);
-			$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE
-			".db_table_name("questions").".gid=".db_table_name("groups").".gid AND 
-			".db_table_name("questions").".language = '{$baselang}' AND ".db_table_name("groups").".language = '{$baselang}' AND
-			".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("groups").".group_order, title";
-			$iresult = db_execute_assoc($iquery);
-			$col_name="";
-			$insertqr="";
-			while ($irow = $iresult->FetchRow())
+            $fieldmap= createFieldMap($surveyid);
+			$columns=array();
+			$values=array();
+            $_POST['startlanguage']=$baselang;
+            $_POST['startdate']=$_POST['datestamp'];
+			foreach ($fieldmap as $irow)
 			{
-				if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && 
-						$irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && 
-						$irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J" &&
-						$irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" && $irow['type'] != ";")
+               $fieldname = $irow['fieldname'];
+				if (isset($_POST[$fieldname]))
 				{
-					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-					if (isset($_POST[$fieldname]))
-					{
-						if ($irow['type'] == 'D' && $_POST[$fieldname] == "")
-						{ // can't add '' in Date column
-							// Do nothing
-						}
-						elseif ($irow['type'] == 'N' && $_POST[$fieldname] == "")
-						{ // can't add '' to numerical column
-							// Do nothing
-						}
-						else
-						{
-							$col_name .= db_quote_id($fieldname).", \n";
-							$fieldValue = $_POST[$fieldname];
-							//$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
-							if($irow['type'] == 'D'){
-								$datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
-								$fieldValue  = $datetimeobj->convert("Y-m-d H:i:s");
-							}
-							$insertqr .= "'" . auto_escape($fieldValue) . "', \n";
-						}
+					if ($_POST[$fieldname] == "" && ($irow['type'] == 'D' || $irow['type'] == 'N' || $irow['type'] == 'K'))
+					{ // can't add '' in Date column
+						// Do nothing
 					}
-					// if "!" "L" "W" "Z", and Other ==> add other fieldname
-					if ($irow['type'] == "!" || $irow['type'] == "L" ||
-						$irow['type'] == "W" || $irow['type'] == "Z")
+					else
 					{
-						$fieldname2=$fieldname."other";
-						if (isset($_POST[$fieldname2]) && isset($_POST[$fieldname]) && $_POST[$fieldname] == '-oth-' && $_POST[$fieldname2]!= "")
-						{
-							$col_name .= db_quote_id($fieldname2).", \n";
-							$insertqr .= "'" . auto_escape($_POST[$fieldname2]) . "', \n";
-						}
+						$columns[] .= db_quote_id($fieldname);
+						$values[] .= db_quoteall($_POST[$fieldname],true);
 					}
 				}
-				elseif ($irow['type'] == "O")
-				{
-					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-					$fieldname2 = $fieldname . "comment";
-					$col_name .= db_quote_id($fieldname).", \n".db_quote_id($fieldname2).", \n";
-					$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n'" . auto_escape($_POST[$fieldname2]) . "', \n";
-				}
-				elseif ($irow['type'] == "1")
-				{
-					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." WHERE
-						".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
-						".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
-						".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+            }
 
-					$i2result = $connect->Execute($i2query);
-					$i2count = $i2result->RecordCount();
-					while ($i2answ = $i2result->FetchRow())
-					{
-						// first scale
-						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2answ['code']}#0";
-						$col_name .= db_quote_id($fieldname).", \n";
-						$insertqr .= "'" . auto_escape($_POST["$fieldname"]) . "', \n";
-						// second scale
-						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2answ['code']}#1";
-						$col_name .= db_quote_id($fieldname).", \n";
-						$insertqr .= "'" . auto_escape($_POST["$fieldname"]) . "', \n";
-					}
-
-				}
-				elseif ($irow['type'] == "R")
-				{
-					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." WHERE
-						".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
-						".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
-						".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-					$i2result = $connect->Execute($i2query);
-					$i2count = $i2result->RecordCount();
-					for ($i=1; $i<=$i2count; $i++)
-					{
-						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
-						$col_name .= db_quote_id($fieldname).", \n";
-						$insertqr .= "'" . auto_escape($_POST["d$fieldname"]) . "', \n";
-					}
-				}
-				elseif ($irow['type'] == ":" || $irow['type'] == ";")
-				{
-					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
-						WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
-						".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
-						".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid
-						ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-					$i2result = db_execute_assoc($i2query);
-					$ab2query = "SELECT ".db_table_name('labels').".*
-						FROM ".db_table_name('questions').", ".db_table_name('labels')."
-						WHERE sid=$surveyid 
-						AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
-						AND ".db_table_name('questions').".language='".$language."'
-						AND ".db_table_name('labels').".language='".$language."'
-						AND ".db_table_name('questions').".qid=".$irow['qid']."
-						ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
-					$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-					while($ab2row=$ab2result->FetchRow())
-					{
-						$lset[]=$ab2row;
-					}
-					while ($i2row = $i2result->FetchRow())
-					{
-						foreach($lset as $ls)
-						{
-							$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}_{$ls['code']}";
-							$col_name .= db_quote_id($fieldname).", \n";
-							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
-						}
-					}
-					unset($lset);
-				}
-				else
-				{
-					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
-						WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
-						".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
-						".db_table_name("questions").".qid={$irow['qid']} 
-					AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-					$i2result = db_execute_assoc($i2query);
-					while ($i2row = $i2result->FetchRow())
-					{
-						$otherexists = "";
-						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P" or $irow['type'] == "W" or $irow['type'] == "Z")) {$otherexists = "Y";}
-						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-						if (isset($_POST[$fieldname]))
-						{
-							if ($irow['type'] == 'K' && $_POST[$fieldname] == "")
-							{ // can't add '' in a numerical column
-								// Do nothing
-							} 
-							else
-							{	
-								$col_name .= db_quote_id($fieldname).", \n";
-								$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
-							}
-
-							if ($irow['type'] == "P")
-							{
-								$fieldname2 = $fieldname."comment";
-								$col_name .= db_quote_id($fieldname2).", \n";
-								$insertqr .= "'" . auto_escape($_POST[$fieldname2]) . "', \n";
-							}
-						}
-					}
-					if (isset($otherexists) && $otherexists == "Y")
-					{
-						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-						$col_name .= db_quote_id($fieldname).", \n";
-						$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
-
-						if ($irow['type']=="P")
-						{
-							$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}othercomment";
-							$col_name .= db_quote_id($fieldname).", \n";
-							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
-						}
-					}
-				}
-			}
-
-			$stripCommaColName = false;
-			if ($col_name == "")
-			{ // if cold_name is empty, set a flag so that we delete the beginning ","
-				$stripCommaColName = true;
-			}
-			$stripCommaInsertqr = false;
-			if ($insertqr =="")
-			{ // if insertqr is empty, set a flag so that we delete the beginning ","
-				$stripCommaInsertqr = true;
-			}
-			
-			$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
-			$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
-
-			//NOW SHOW SCREEN
-			if (tableExists('tokens_'.$thissurvey['sid']) && 
-			    isset($_POST['token']) && $_POST['token'] &&
-			    $thissurvey['private'] == 'N') //handle tokens if survey needs them
-			{
-				$col_name .= ", token\n";
-				$insertqr .= ", '{$_POST['token']}'";
-			}
-			if (isset($_POST['datestamp']) && $_POST['datestamp']) //handle datestamp if needed
-			{
-				$col_name .= ", datestamp\n";
-				$insertqr .= ", '{$_POST['datestamp']}'";
-				$col_name .= ", startdate\n";
-				$insertqr .= ", '{$_POST['datestamp']}'";
-			}
-			if (isset($_POST['ipaddr']) && $_POST['ipaddr']) //handle datestamp if needed
-			{
-				$col_name .= ", ipaddr\n";
-				$insertqr .= ", '{$_POST['ipaddr']}'";
-			}
-			if (isset($_POST['language']) && $_POST['language']) // handle language
-			{
-				$col_name .= ", startlanguage\n";
-				$insertqr .= ", '{$_POST['language']}'";
-			}
-			if (isset($_POST['closerecord'])) // handle Submidate if required
-			{
-				if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
-				{
-					$col_name .= ", submitdate\n";
-					$insertqr .= ", '".date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980))."'";
-				}
-				elseif (isset($_POST['closedate']) && $_POST['closedate'] != '')
-				{
-					$col_name .= ", submitdate\n";
-					$insertqr .= ", '{$_POST['closedate']}'";
-				}
-			}
-
-			if ($stripCommaColName === true)
-			{
-				$col_name=substr($col_name, 1);
-			}
-			if ($stripCommaInsertqr === true)
-			{
-				$insertqr=substr($insertqr, 1);
-			}
-
-			//		$dataentryoutput .= "\t<strong>Inserting data</strong><br />\n"
-			//			."SID: $surveyid, ($surveytable)<br /><br />\n";
 			$SQL = "INSERT INTO $surveytable
-					($col_name)
+					(".implode(',',$columns).")
 					VALUES 
-					($insertqr)";
-			//$dataentryoutput .= $SQL; //Debugging line
+					(".implode(',',$values).")";
 		
 			$iinsert = $connect->Execute($SQL) or safe_die ("Could not insert your data:<br />$SQL<br />\n" .$connect->ErrorMsg());
-			/*if (returnglobal('redo')=="yes")
-			{
-			//This submission of data came from a saved session. Must delete the
-			//saved session now that it has been recorded in the responses table
-			$dquery = "DELETE FROM ".db_table_name("saved_control")." WHERE scid=".$saver['scid'];
-			if ($dresult=$connect->Execute($dquery))
-			{
-			$dquery = "DELETE FROM ".db_table_name("saved")." WHERE scid=".$saver['scid'];
-			$dresult=$connect->Execute($dquery) or safe_die("Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
-			}
-			else
-			{
-			$dataentryoutput .= "Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg());
-			}
-			}*/
 	
 			if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
 			{
@@ -569,7 +327,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				}
 
 			}
-			$dataentryoutput .= "\t<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+			$dataentryoutput .= "\t<div class='successheader'>".$clang->gT("Success")."</div>\n";
 			$thisid=$connect->Insert_ID();
 			$dataentryoutput .= "\t".$clang->gT("The entry was assigned the following record id: ")." {$thisid}<br /><br />\n";
 		}
@@ -585,8 +343,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Browse Saved Responses")."' onclick=\"window.open('$scriptname?action=saved&amp;sid=$surveyid&subaction=all', '_top')\" /><br /><br />\n";
 		}
-		$dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&subaction=all&limit=50', '_top')\" /><br /><br />\n"
-		."</div>\n";
+		$dataentryoutput .= "</div>\n";
 
 	}
 
@@ -595,11 +352,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		$dataentryoutput .= $surveyoptions;
 
 		if (!isset($_GET['language'])) $_GET['language'] = GetBaseLanguageFromSurveyID($surveyid);
-
-
-
-
-
 
 		//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 		$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")." WHERE
@@ -620,114 +372,23 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		// Perform a case insensitive natural sort on group name then question title of a multidimensional array
 		usort($fnrows, 'CompareGroupThenTitle');
 		// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
-		$fnames[] = array("id", "id", "id", "id", "id", "id", "id", "");
-        $fnames[] = array ("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "completed", "completed", "", "");
-		
+		$fnames[] = array('fieldname'=>"id", 'question'=>$clang->gT("ID"), 'type'=>'id');
+        $fnames[] = array('fieldname'=>"submitdate", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
+/*		
 		if ($private == "N") //show token info if survey not private
 		{
-			$fnames[] = array ("token", $clang->gT("Token ID"), $clang->gT("Token"), "token", "TID", "", "");
+			$fnames[] = array ("token", $clang->gT("Token"), "token", "TID", "", "");
 		}
 		if ($datestamp == "Y")
 		{
-			$fnames[] = array ("datestamp", $clang->gT("Date Stamp"), $clang->gT("Date Stamp"), "datestamp", "datestamp", "", "");
+			$fnames[] = array ("datestamp", $clang->gT("Date Stamp"), "datestamp", "datestamp", "", "");
 		}
 		if ($ipaddr == "Y")
 		{
-			$fnames[] = array ("ipaddr", $clang->gT("IP Address"), $clang->gT("IP Address"), "ipaddr", "ipaddr", "", "");
-		}
-		$fcount=0;
-		foreach ($fnrows as $fnrow)
-		{
-			$fcount++;
-			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
-			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
-			$fquestion = $fnrow['question'];
-			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || 
-			    $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || 
-				$fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J" || $fnrow['type'] == "K")
-			{
-				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
-				$fnrresult = db_execute_assoc($fnrquery);
-				while ($fnrrow = $fnrresult->FetchRow())
-				{
-					$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-					if ($fnrow['type'] == "P")
-					{
-						$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']}(comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-					}
-				}
-				if ($fnrow['other'] == "Y")
-				{
-					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-					if ($fnrow['type'] == "P")
-					{
-						$fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-					}
-				}
+			$fnames[] = array ("ipaddr", $clang->gT("IP address"), "ipaddr", "ipaddr", "", "");
+		}*/
 
-			}
-			elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";")
-			{
-				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
-				$fnrresult = db_execute_assoc($fnrquery);
-    			$fnr2query = "SELECT *
-    			              FROM ".db_table_name('labels')."
-    			              WHERE lid={$fnrow['lid']}
-    			              AND language = '{$language}'
-    			              ORDER BY sortorder, title";
-    			$fnr2result = db_execute_assoc($fnr2query);
-    			while( $fnr2row = $fnr2result->FetchRow())
-    			{
-    			  $lset[]=$fnr2row;
-    			}
-				while ($fnrrow = $fnrresult->FetchRow())
-				{
-				    foreach($lset as $ls)
-				    {
-					    $fnames[] = array("$field{$fnrrow['code']}_{$ls['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}<br /><i>{$ls['title']}</i>", "{$fnrow['qid']}", "{$fnrow['lid']}");
-				    }
-				}
-				unset($lset);
-			}
-			elseif ($fnrow['type'] == "R")
-			{
-				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
-				$fnrresult = $connect->Execute($fnrquery);
-				$fnrcount = $fnrresult->RecordCount();
-				for ($j=1; $j<=$fnrcount; $j++)
-				{
-					$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "$j", "$j", "{$fnrow['qid']}", "{$fnrow['lid']}");
-				}
-			}
-			elseif ($fnrow['type'] == "1")
-			{
-				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
-				$fnrresult = $connect->Execute($fnrquery);
-                while ($fnrrow = $fnrresult->FetchRow())
-				{
-					$fnames[] = array("$field{$fnrrow['code']}#0", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']} (1)", "{$fnrow['qid']}", "{$fnrow['lid']}");
-					$fnames[] = array("$field{$fnrrow['code']}#1", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']} (2)", "{$fnrow['qid']}", "{$fnrow['lid1']}");
-				}
-			}
-			elseif ($fnrow['type'] == "O")
-			{
-                if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
-				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-				$field2 = $field."comment";
-				$ftitle2 = $ftitle."[Comment]";
-				$longtitle = "{$fnrow['question']}<br />(Comment)";
-				$fnames[] = array("$field2", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-			}
-			else
-			{
-				if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
-				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-				if (($fnrow['type'] == "L" || $fnrow['type'] == "!" || $fnrow['type'] == "Z" || $fnrow['type'] == "W") && $fnrow['other'] =="Y")
-				{
-					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-				}
-			}
-		}
+        $fnames=array_merge($fnames,createFieldMap($surveyid,'full'));
 		$nfncount = count($fnames)-1;
 
 		//SHOW INDIVIDUAL RECORD
@@ -789,9 +450,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		
 		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
 
-		$dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
-		."<table class='data-entry-tbl' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' align='center'><strong>";
+        $dataentryoutput.="<div class='header'>".$clang->gT("Data Entry")."</div>\n"
+        ."\t<div class='header'>";
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $surveyinfo['owner_id'] == $_SESSION['loginID']) 
         {
             $dataentryoutput .= sprintf($clang->gT("Editing response (ID %s)"),$id);
@@ -800,24 +460,31 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
         {
             $dataentryoutput .= sprintf($clang->gT("Viewing response (ID %s)"),$id);
         }
-		$dataentryoutput .="</strong></td></tr>\n";
-
+        $dataentryoutput .="</div>\n";
+        
+        
+		$dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
+		."<table id='responsedetail' width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+        $highlight=false;
 		foreach ($results as $idrow)
 		{
 			//$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
 			for ($i=0; $i<$nfncount+1; $i++)
 			{
 				//$dataentryoutput .= "<pre>"; print_r($fnames[$i]);$dataentryoutput .= "</pre>";
-				$answer = $idrow[$fnames[$i][0]];
-				$question=$fnames[$i][2];
-				$dataentryoutput .= "\t<tr>\n"
+				$answer = $idrow[$fnames[$i]['fieldname']];
+				$question=$fnames[$i]['question'];
+				$dataentryoutput .= "\t<tr";
+                if ($highlight) $dataentryoutput .=" class='highlight'";
+                $highlight=!$highlight;
+                $dataentryoutput .=">\n"
 				."<td valign='top' align='right' width='25%'>"
 				."\n";
 				$dataentryoutput .= "\t<strong>".strip_javascript($question)."</strong>\n";
 				$dataentryoutput .= "</td>\n"
 				."<td valign='top' align='left'>\n";
 				//$dataentryoutput .= "\t-={$fnames[$i][3]}=-"; //Debugging info
-				switch ($fnames[$i][3])
+				switch ($fnames[$i]['type'])
 				{
 				    case "completed":
                 		// First compute the submitdate
@@ -832,15 +499,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                 		{
                 			$mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
                 		}
-				        $completedate= empty($idrow[$fnames[$i][0]]) ? $mysubmitdate : $idrow[$fnames[$i][0]];
+				        $completedate= empty($idrow[$fnames[$i]['fieldname']]) ? $mysubmitdate : $idrow[$fnames[$i]['fieldname']];
 
 				        $dataentryoutput .= "                <select name='submitdate'>\n";
 				        $dataentryoutput .= "                    <option value=";
-				        if(empty($idrow[$fnames[$i][0]])) { $dataentryoutput .= "'' selected"; }
+				        if(empty($idrow[$fnames[$i]['fieldname']])) { $dataentryoutput .= "'' selected"; }
 				                                  else    { $dataentryoutput .= "'N'"; }
 				        $dataentryoutput .= ">".$clang->gT("No")."</option>\n";
 				        $dataentryoutput .= "                    <option value=";
-				        if(!empty($idrow[$fnames[$i][0]])) { $dataentryoutput .= "'' selected"; }
+				        if(!empty($idrow[$fnames[$i]['fieldname']])) { $dataentryoutput .= "'' selected"; }
 				                                  else     { $dataentryoutput .= "'$completedate'"; }
 				        $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n";
 				        $dataentryoutput .= "                </select>\n";
@@ -850,79 +517,41 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					    break;
 					case "Q":
 					case "K":
-						$dataentryoutput .= "\t{$fnames[$i][6]}&nbsp;<input type='text' name='{$fnames[$i][0]}' value='"
-						.$idrow[$fnames[$i][0]] . "' />\n";
+						$dataentryoutput .= "\t{$fnames[$i]['subquestion']}&nbsp;<input type='text' name='{$fnames[$i]['fieldname']}' value='"
+						.$idrow[$fnames[$i]['fieldname']] . "' />\n";
 						break;
 					case "id":
-						$dataentryoutput .= "\t&nbsp;{$idrow[$fnames[$i][0]]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
+						$dataentryoutput .= "\t&nbsp;{$idrow[$fnames[$i]['fieldname']]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
 						break;
 					case "5": //5 POINT CHOICE radio-buttons
 					for ($x=1; $x<=5; $x++)
 					{
-						$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$x'";
-						if ($idrow[$fnames[$i][0]] == $x) {$dataentryoutput .= " checked";}
+						$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='$x'";
+						if ($idrow[$fnames[$i]['fieldname']] == $x) {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />$x \n";
 					}
 					break;
 					case "D": //DATE
-                        $datetimeobj = new Date_Time_Converter($idrow[$fnames[$i][0]] , "Y-m-d H:i:s");
+                        $datetimeobj = new Date_Time_Converter($idrow[$fnames[$i]['fieldname']] , "Y-m-d H:i:s");
                         $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);                 
-					    $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fnames[$i][0]}' value='{$thisdate}' />\n";
+					    $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fnames[$i]['fieldname']}' value='{$thisdate}' />\n";
 					break;
 					case "G": //GENDER drop-down list
-					    $dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n"
+					    $dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
 					    ."<option value=''";
-					    if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
+					    if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
 					    $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
 					    ."<option value='F'";
-					    if ($idrow[$fnames[$i][0]] == "F") {$dataentryoutput .= " selected='selected'";}
+					    if ($idrow[$fnames[$i]['fieldname']] == "F") {$dataentryoutput .= " selected='selected'";}
 					    $dataentryoutput .= ">".$clang->gT("Female")."</option>\n"
 					    ."<option value='M'";
-					    if ($idrow[$fnames[$i][0]] == "M") {$dataentryoutput .= " selected='selected'";}
+					    if ($idrow[$fnames[$i]['fieldname']] == "M") {$dataentryoutput .= " selected='selected'";}
 					    $dataentryoutput .= ">".$clang->gT("Male")."</option>\n"
 					    ."\t</select>\n";
 					break;
-					case "W":
-					case "Z":
-						if (substr($fnames[$i][0], -5) == "other")
-						{
-							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
-						}
-						else
-						{
-							$lquery = "SELECT * FROM ".db_table_name("labels")
-                                     ." WHERE lid={$fnames[$i][8]} AND ".db_table_name("labels").".language = '{$language}' ORDER BY sortorder, code";
-							$lresult = db_execute_assoc($lquery);
-							$dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n"
-							."<option value=''";
-							if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
-							$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
-
-							while ($llrow = $lresult->FetchRow())
-							{
-								$dataentryoutput .= "<option value='{$llrow['code']}'";
-								if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
-								$dataentryoutput .= ">{$llrow['title']}</option>\n";
-							}
-							$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
-							$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
-							while($orow = $oresult->FetchRow())
-							{
-								$fother=$orow['other'];
-							}
-							if ($fother =="Y")
-							{
-								$dataentryoutput .= "<option value='-oth-'";
-								if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected='selected'";}
-								$dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
-							}
-							$dataentryoutput .= "\t</select>\n";
-						}
-						break;
 					case "L": //LIST drop-down
 					case "!": //List (Radio)
-					$qidattributes=getQuestionAttributes($fnames[$i][7]);
+					$qidattributes=getQuestionAttributes($fnames[$i]['qid']);
 					if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
 					{
 						$optCategorySeparator = $qidattributes['category_separator'];
@@ -932,18 +561,18 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						unset($optCategorySeparator);
 					}
 
-					if (substr($fnames[$i][0], -5) == "other")
+					if (substr($fnames[$i]['fieldname'], -5) == "other")
 					{
-						$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='"
-						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+						$dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
+						.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n";
 					}
 					else
 					{
 						$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} AND language = '{$language}' ORDER BY sortorder, answer";
 						$lresult = db_execute_assoc($lquery);
-						$dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n"
+						$dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
 						."<option value=''";
-						if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
+						if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
 						$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
 						if (!isset($optCategorySeparator))
@@ -951,7 +580,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							while ($llrow = $lresult->FetchRow())
 							{
 								$dataentryoutput .= "<option value='{$llrow['code']}'";
-								if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
+								if ($idrow[$fnames[$i]['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
 								$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 							}
 						}
@@ -978,7 +607,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								foreach ($optionlistarray as $optionarray)
 								{
 									$dataentryoutput .= "\t<option value='{$optionarray['code']}'";
-									if ($idrow[$fnames[$i][0]] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
+									if ($idrow[$fnames[$i]['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
 									$dataentryoutput .= ">{$optionarray['answer']}</option>\n";
 								}
 								$dataentryoutput .= "</optgroup>\n";
@@ -986,13 +615,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							foreach ($defaultopts as $optionarray)
 							{
 								$dataentryoutput .= "<option value='{$optionarray['code']}'";
-								if ($idrow[$fnames[$i][0]] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
+								if ($idrow[$fnames[$i]['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
 								$dataentryoutput .= ">{$optionarray['answer']}</option>\n";
 							}
 
 						}
 
-						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
+						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i]['qid']} AND ".db_table_name("questions").".language = '{$language}'";
 						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
 						while($orow = $oresult->FetchRow())
 						{
@@ -1001,7 +630,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if ($fother =="Y")
 						{
 							$dataentryoutput .= "<option value='-oth-'";
-							if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected='selected'";}
+							if ($idrow[$fnames[$i]['fieldname']] == "-oth-"){$dataentryoutput .= " selected='selected'";}
 							$dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
 						}
 						$dataentryoutput .= "\t</select>\n";
@@ -1010,33 +639,33 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} AND language = '{$language}' ORDER BY sortorder, answer";
 					$lresult = db_execute_assoc($lquery);
-					$dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n"
+					$dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
 					."<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
+					if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
 					while ($llrow = $lresult->FetchRow())
 					{
 						$dataentryoutput .= "<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
+						if ($idrow[$fnames[$i]['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
 						$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 					}
 					$i++;
 					$dataentryoutput .= "\t</select>\n"
 					."\t<br />\n"
-					."\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>"
-					.htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
+					."\t<textarea cols='45' rows='5' name='{$fnames[$i]['fieldname']}'>"
+					.htmlspecialchars($idrow[$fnames[$i]['fieldname']]) . "</textarea>\n";
 					break;
 					case "R": //RANKING TYPE QUESTION
 					$l=$i;
-					$thisqid=$fnames[$l][7];
-					$myfname=substr($fnames[$i][0], 0, -1);
-					while (isset($fnames[$i][3]) && $fnames[$i][3] == "R")
+					$thisqid=$fnames[$l]['qid'];
+					$myfname=substr($fnames[$i]['fieldname'], 0, -1);
+					while (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "R")
 					{
 						//Let's get all the existing values into an array
-						if ($idrow[$fnames[$i][0]])
+						if ($idrow[$fnames[$i]['fieldname']])
 						{
-							$currentvalues[] = $idrow[$fnames[$i][0]];
+							$currentvalues[] = $idrow[$fnames[$i]['fieldname']];
 						}
 						$i++;
 					}
@@ -1190,7 +819,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 
 					case "M": //MULTIPLE OPTIONS checkbox
-					$qidattributes=getQuestionAttributes($fnames[$i][7]);
+					$qidattributes=getQuestionAttributes($fnames[$i]['qid']);
                     if (trim($qidattributes['display_columns'])!='')    
 					{
 						$dcols=$qidattributes['display_columns'];
@@ -1200,21 +829,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$dcols=0;
 					}
 
-//					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i][2])
-					while ($fnames[$i][3] == "M" && $question == $fnames[$i][2])
+//					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i]['type'])
+					while ($fnames[$i]['type'] == "M" && $question == $fnames[$i]['question'])
 					{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						//$dataentryoutput .= substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
-						if (substr($fnames[$i][0], -5) == "other")
+						$fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+						//$dataentryoutput .= substr($fnames[$i]['fieldname'], strlen($fnames[$i]['fieldname'])-5, 5)."<br />\n";
+						if (substr($fnames[$i]['fieldname'], -5) == "other")
 						{
-							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
+							.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n";
 						}
 						else
 						{
-							$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
-							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " />{$fnames[$i][6]}<br />\n";
+							$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i]['fieldname']}' value='Y'";
+							if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " />{$fnames[$i]['subquestion']}<br />\n";
 						}
 						if ($i<$nfncount)
 						{
@@ -1230,12 +859,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 
 					case "J": //FILE CSV MORE
-					while ($fnames[$i][3] == "U" && $question != "" && $question == $fnames[$i][2])
+					while ($fnames[$i]['type'] == "U" && $question != "" && $question == $fnames[$i]['question'])
 					{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
-						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
-						$dataentryoutput .= " />{$fnames[$i][6]}<br />\n";
+						$fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+						$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i]['fieldname']}' value='Y'";
+						if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />{$fnames[$i]['subquestion']}<br />\n";
 						if ($i<$nfncount)
 						{
 							$i++;
@@ -1258,15 +887,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     $baselang = GetBaseLanguageFromSurveyID($surveyid);
                     array_unshift($slangs,$baselang);
 
-                    $dataentryoutput.= "<select name='{$fnames[$i][0]}'>\n";
+                    $dataentryoutput.= "<select name='{$fnames[$i]['fieldname']}'>\n";
 					$dataentryoutput .= "<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
+					if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                     foreach ($slangs as $lang)
                        	{
                             $dataentryoutput.="<option value='{$lang}'";
-                       		if ($lang == $idrow[$fnames[$i][0]]) {$dataentryoutput .= " selected='selected'";}
+                       		if ($lang == $idrow[$fnames[$i]['fieldname']]) {$dataentryoutput .= " selected='selected'";}
                             $dataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
                        	}
                     $dataentryoutput .= "</select>";
@@ -1274,35 +903,35 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					$dataentryoutput .= "<table>\n";
-					while (isset($fnames[$i]) && $fnames[$i][3] == "P")
+					while (isset($fnames[$i]) && $fnames[$i]['type'] == "P")
 					{
-						$thefieldname=$fnames[$i][0];
+						$thefieldname=$fnames[$i]['fieldname'];
 						if (substr($thefieldname, -7) == "comment")
 						{
-							$dataentryoutput .= "<td><input type='text' name='{$fnames[$i][0]}' size='50' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></td>\n"
+							$dataentryoutput .= "<td><input type='text' name='{$fnames[$i]['fieldname']}' size='50' value='"
+							.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' /></td>\n"
 							."\t</tr>\n";
 						}
-						elseif (substr($fnames[$i][0], -5) == "other")
+						elseif (substr($fnames[$i]['fieldname'], -5) == "other")
 						{
 							$dataentryoutput .= "\t<tr>\n"
 							."<td>\n"
-							."\t<input type='text' name='{$fnames[$i][0]}' size='30' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n"
+							."\t<input type='text' name='{$fnames[$i]['fieldname']}' size='30' value='"
+							.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n"
 							."</td>\n"
 							."<td>\n";
 							$i++;
-							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' size='50' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n"
+							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' size='50' value='"
+							.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n"
 							."</td>\n"
 							."\t</tr>\n";
 						}
 						else
 						{
 							$dataentryoutput .= "\t<tr>\n"
-							."<td><input type='checkbox' class='checkboxbtn' name=\"{$fnames[$i][0]}\" value='Y'";
-							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " />{$fnames[$i][6]}</td>\n";
+							."<td><input type='checkbox' class='checkboxbtn' name=\"{$fnames[$i]['fieldname']}\" value='Y'";
+							if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " />{$fnames[$i]['subquestion']}</td>\n";
 						}
 						$i++;
 					}
@@ -1310,47 +939,47 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$i--;
 					break;
 					case "N": //NUMERICAL TEXT
-					$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' "
+					$dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='{$idrow[$fnames[$i]['fieldname']]}' "
 					."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
 					break;
 					case "S": //SHORT FREE TEXT
-					$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='"
-					.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
+					$dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
+					.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n";
 					break;
 					case "T": //LONG FREE TEXT
-					$dataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>"
-					.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
+					$dataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fnames[$i]['fieldname']}'>"
+					.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "</textarea>\n";
 					break;
 					case "U": //HUGE FREE TEXT
-					$dataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fnames[$i][0]}'>"
-					.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
+					$dataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fnames[$i]['fieldname']}'>"
+					.htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "</textarea>\n";
 					break;
 					case "Y": //YES/NO radio-buttons
-					$dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n"
+					$dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
 					."<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
+					if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
 					."<option value='Y'";
-					if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " selected='selected'";}
+					if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Yes")."</option>\n"
 					."<option value='N'";
-					if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " selected='selected'";}
+					if ($idrow[$fnames[$i]['fieldname']] == "N") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("No")."</option>\n"
 					."\t</select>\n";
 					break;
 					case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 					$dataentryoutput .= "<table>\n";
-					$thisqid=$fnames[$i][7];
-					while ($fnames[$i][7] == $thisqid)
+					$thisqid=$fnames[$i]['qid'];
+					while ($fnames[$i]['qid'] == $thisqid)
 					{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						$fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
 						$dataentryoutput .= "\t<tr>\n"
-						."<td align='right'>{$fnames[$i][6]}</td>\n"
+						."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
 						."<td>\n";
 						for ($j=1; $j<=5; $j++)
 						{
-							$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$j'";
-							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
+							$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='$j'";
+							if ($idrow[$fnames[$i]['fieldname']] == $j) {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />$j&nbsp;\n";
 						}
 						$dataentryoutput .= "</td>\n"
@@ -1362,17 +991,17 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 					$dataentryoutput .= "<table>\n";
-					$thisqid=$fnames[$i][7];
-					while ($fnames[$i][7] == $thisqid)
+					$thisqid=$fnames[$i]['qid'];
+					while ($fnames[$i]['qid'] == $thisqid)
 					{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						$fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
 						$dataentryoutput .= "\t<tr>\n"
-						."<td align='right'>{$fnames[$i][6]}</td>\n"
+						."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
 						."<td>\n";
 						for ($j=1; $j<=10; $j++)
 						{
-							$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$j'";
-							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
+							$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='$j'";
+							if ($idrow[$fnames[$i]['fieldname']] == $j) {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />$j&nbsp;\n";
 						}
 						$dataentryoutput .= "</td>\n"
@@ -1384,21 +1013,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					$dataentryoutput .= "<table>\n";
-					$thisqid=$fnames[$i][7];
-					while ($fnames[$i][7] == $thisqid)
+					$thisqid=$fnames[$i]['qid'];
+					while ($fnames[$i]['qid'] == $thisqid)
 					{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						$fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
 						$dataentryoutput .= "\t<tr>\n"
-						."<td align='right'>{$fnames[$i][6]}</td>\n"
+						."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
 						."<td>\n"
-						."\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='Y'";
-						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
+						."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='Y'";
+						if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
-						."\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='U'";
-						if ($idrow[$fnames[$i][0]] == "U") {$dataentryoutput .= " checked";}
+						."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='U'";
+						if ($idrow[$fnames[$i]['fieldname']] == "U") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
-						."\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='N'";
-						if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " checked";}
+						."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='N'";
+						if ($idrow[$fnames[$i]['fieldname']] == "N") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
 						."</td>\n"
 						."\t</tr>\n";
@@ -1409,21 +1038,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
 					$dataentryoutput .= "<table>\n";
-					$thisqid=$fnames[$i][7];
-					while ($fnames[$i][7] == $thisqid)
+					$thisqid=$fnames[$i]['qid'];
+					while ($fnames[$i]['qid'] == $thisqid)
 					{
-						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						$fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
 						$dataentryoutput .= "\t<tr>\n"
-						."<td align='right'>{$fnames[$i][6]}</td>\n"
+						."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
 						."<td>\n"
-						."\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='I'";
-						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
+						."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='I'";
+						if ($idrow[$fnames[$i]['fieldname']] == "I") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Increase&nbsp;\n"
-						."\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='S'";
-						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
+						."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='S'";
+						if ($idrow[$fnames[$i]['fieldname']] == "I") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Same&nbsp;\n"
-						."\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='D'";
-						if ($idrow[$fnames[$i][0]] == "D") {$dataentryoutput .= " checked";}
+						."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='D'";
+						if ($idrow[$fnames[$i]['fieldname']] == "D") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Decrease&nbsp;\n"
 						."</td>\n"
 						."\t</tr>\n";
@@ -1436,24 +1065,31 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     case "H":
 					case "1":
 						$dataentryoutput .= "<table>\n";
-						$thisqid=$fnames[$i][7];
-						while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
+						$thisqid=$fnames[$i]['qid'];
+						while (isset($fnames[$i]['qid']) && $fnames[$i]['qid'] == $thisqid)
 						{
-							$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+							$fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
 							$dataentryoutput .= "\t<tr>\n"
-							."<td align='right' valign='top'>{$fnames[$i][6]}</td>\n";
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$fnames[$i][8]}' and language='$language' order by sortorder, code";
+							."<td align='right' valign='top'>{$fnames[$i]['subquestion']}";
+                            if (isset($fnames[$i]['scale']))
+                            {
+                                $dataentryoutput .= " (".$fnames[$i]['scale'].')';
+                            }
+                            $dataentryoutput .="</td>\n";
+                            $scale_id=0;
+                            if (isset($fnames[$i]['scale_id'])) $scale_id=$fnames[$i]['scale_id'];
+							$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$fnames[$i]['qid']}' and scale_id={$scale_id} and language='$language' order by sortorder, answer";
 							$fresult = db_execute_assoc($fquery);
 							$dataentryoutput .= "<td>\n";
 							while ($frow=$fresult->FetchRow())
 							{
-								$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='{$frow['code']}'";
-								if ($idrow[$fnames[$i][0]] == $frow['code']) {$dataentryoutput .= " checked";}
-								$dataentryoutput .= " />".$frow['title']."&nbsp;\n";
+								$dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='{$frow['code']}'";
+								if ($idrow[$fnames[$i]['fieldname']] == $frow['code']) {$dataentryoutput .= " checked";}
+								$dataentryoutput .= " />".$frow['answer']."&nbsp;\n";
 							}
                             //Add 'No Answer'
-                            $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value=''";
-                            if ($idrow[$fnames[$i][0]] == '') {$dataentryoutput .= " checked";}
+                            $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value=''";
+                            if ($idrow[$fnames[$i]['fieldname']] == '') {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
                             
 							$dataentryoutput .= "</td>\n"
@@ -1496,21 +1132,28 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             				$stepvalue=1;
             			}
 					    $dataentryoutput .= "<table>\n";
-					    $thisqid=$fnames[$i][7];
-					    while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
+					    $thisqid=$fnames[$i]['qid'];
+					    while (isset($fnames[$i]['qid']) && $fnames[$i]['qid'] == $thisqid)
 					    {
-						   $fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						   $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
 						   $dataentryoutput .= "\t<tr>\n"
-						                     . "<td align='right' valign='top'>{$fnames[$i][6]}</td>\n";
+						                     . "<td align='right' valign='top'>{$fnames[$i]['subquestion1']}:{$fnames[$i]['subquestion2']}</td>\n";
 							$dataentryoutput .= "<td>\n";
-							$dataentryoutput .= "\t<select name='{$fnames[$i][0]}'>\n";
-							$dataentryoutput .= "<option value=''>...</option>\n";
-							for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
-							{
-							   $dataentryoutput .= "<option value='$ii'";
-							   if($idrow[$fnames[$i][0]] == $ii) {$dataentryoutput .= " selected";}
-							   $dataentryoutput .= ">$ii</option>\n";
+							if ($qidattributes['input_boxes']!=0) {
+						        $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='";
+								if (!empty($idrow[$fnames[$i]['fieldname']])) {$datentryoutput .= $idrow[$fnames[$i]['fieldname']];}
+								$dataentryoutput .= "' size=4 />";
+							} else {
+								$dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n";
+								$dataentryoutput .= "<option value=''>...</option>\n";
+								for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
+								{
+									$dataentryoutput .= "<option value='$ii'";
+									if($idrow[$fnames[$i]['fieldname']] == $ii) {$dataentryoutput .= " selected";}
+									$dataentryoutput .= ">$ii</option>\n";
+								}
 							}
+							
 							$dataentryoutput .= "</td>\n"
 							."\t</tr>\n";
 						   $i++;
@@ -1520,15 +1163,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case ";": //ARRAY (Multi Flexi)
 					    $dataentryoutput .= "<table>\n";
-					    $thisqid=$fnames[$i][7];
-					    while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
+					    $thisqid=$fnames[$i]['qid'];
+					    while (isset($fnames[$i]['qid']) && $fnames[$i]['qid'] == $thisqid)
 					    {
-						   $fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						   $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
 						   $dataentryoutput .= "\t<tr>\n"
-						                     . "<td align='right' valign='top'>{$fnames[$i][6]}</td>\n";
+						                     . "<td align='right' valign='top'>{$fnames[$i]['subquestion1']}:{$fnames[$i]['subquestion2']}</td>\n";
 							$dataentryoutput .= "<td>\n";
-							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='";
-							if(!empty($idrow[$fnames[$i][0]])) {$dataentryoutput .= $idrow[$fnames[$i][0]];}
+							$dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='";
+							if(!empty($idrow[$fnames[$i]['fieldname']])) {$dataentryoutput .= $idrow[$fnames[$i]['fieldname']];}
 							$dataentryoutput .= "' /></td>\n"
 							."\t</tr>\n";
 						   $i++;
@@ -1537,8 +1180,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$dataentryoutput .= "</table>\n";
 					break;
 					default: //This really only applies to tokens for non-private surveys
-					$dataentryoutput .= "\t<input type='text' name='{$fnames[$i][0]}' value='"
-					.$idrow[$fnames[$i][0]] . "' />\n";
+					$dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
+					.$idrow[$fnames[$i]['fieldname']] . "' />\n";
 					break;
 				}
 		
@@ -1642,181 +1285,53 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
          }
 
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		$dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
-		$dataentryoutput .= "<div class='messagebox'>\n";
-
-		$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE
-		".db_table_name("questions").".gid=".db_table_name("groups").".gid  AND
-		".db_table_name("questions").".language = '{$baselang}' AND  ".db_table_name("groups").".language = '{$baselang}' AND
-		".db_table_name("questions").".sid=$surveyid 
-		ORDER BY ".db_table_name("groups").".group_order, title";
-		$iresult = db_execute_assoc($iquery);
+		$dataentryoutput .= $surveyoptions."<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+        
+        $fieldmap= createFieldMap($surveyid);    
 
 		$updateqr = "UPDATE $surveytable SET \n";
 
-		while ($irow = $iresult->FetchRow())
+		foreach ($fieldmap as $irow)
 		{
-			if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && 
-			    $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && 
-				$irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^" && 
-				$irow['type'] != "J" && $irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" &&
-				$irow['type'] != ";")
-			{
-				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-				if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
-				if ($irow['type'] == 'D')
-				{
-                    if ($thisvalue == "")
-                    {
-                        $updateqr .= db_quote_id($fieldname)." = NULL, \n";
-                    }
-                    else
-                    {
-                        $datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                        $updateqr .= db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";  
-                    }
-				}
-				elseif ( $irow['type'] == 'N' && $thisvalue == "")
-				{
-					$updateqr .= db_quote_id($fieldname)." = NULL, \n";
-				}
-				else
-				{
-					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
-				}
-				unset($thisvalue);
-				// handle ! other
-				if (($irow['type'] == "!" || $irow['type'] == "W" || $irow['type'] == "Z" || $irow['type'] == "L") && $irow['other'] == "Y")
-				{
-					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
-					unset($thisvalue);
-				}
-			}
-			elseif ($irow['type'] == "O")
-			{
-				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-				$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";
-				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
-				$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";
-			}
-            elseif ($irow['type'] == "1")
+            $fieldname=$irow['fieldname'];
+			if (isset($_POST[$fieldname])) 
+            { 
+                $thisvalue=$_POST[$fieldname]; 
+            } 
+            else 
             {
-                $i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." WHERE
-                ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
-                ".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
-                ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-            
-                $i2result = $connect->Execute($i2query);
-                $i2count = $i2result->RecordCount();
-                while ($i2answ = $i2result->FetchRow())
-                {
-                    // first scale
-                    $fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2answ['code']}#0";
-                    $updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";                                          // second scale
-                    // second  scale                        
-                    $fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2answ['code']}#1";
-                    $updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";                  
-                }
+                $thisvalue="";
             }
-			elseif ($irow['type'] == "R")
+            if ($irow['type'] == 'lastpage')
+            {
+                $thisvalue=0; 
+            }   
+			elseif ($irow['type'] == 'D')
 			{
-				$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
-				WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
-				 ".db_table_name("questions").".language = '{$language}' AND  ".db_table_name("answers").".language = '{$language}' AND
-				".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-				$i2result = $connect->Execute($i2query);
-				$i2count = $i2result->RecordCount();
-				for ($x=1; $x<=$i2count; $x++)
-				{
-					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$x";
-					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST["d$fieldname"]) . "', \n";
-				}
+                if ($thisvalue == "")
+                {
+                    $updateqr .= db_quote_id($fieldname)." = NULL, \n";
+                }
+                else
+                {
+                    $datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
+                    $updateqr .= db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";  
+                }
 			}
-			elseif ($irow['type'] == ":" || $irow['type'] == ";")
+			elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
 			{
-				$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
-				WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
-				".db_table_name("questions").".language = '{$language}' AND  ".db_table_name("answers").".language = '{$language}' AND
-				".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-				$i2result = db_execute_assoc($i2query);
-    			$ab2query = "SELECT ".db_table_name('labels').".*
-    			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
-    			             WHERE sid=$surveyid 
-    						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
-    			             AND ".db_table_name('questions').".language='".$language."'
-    			             AND ".db_table_name('labels').".language='".$language."'
-    			             AND ".db_table_name('questions').".qid=".$irow['qid']."
-    			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
-    			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-                $lset=array();
-    			while($ab2row=$ab2result->FetchRow())
-    			{
-    			    $lset[]=$ab2row;
-    			}
-				while ($i2row = $i2result->FetchRow())
-				{
-				    foreach($lset as $ls)
-				    {
-    					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}_{$ls['code']}";
-    					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-    					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
-    					unset($thisvalue);
-    				}
-				}
-			    unset($lset);
+				$updateqr .= db_quote_id($fieldname)." = NULL, \n";
 			}
+            elseif (($irow['type'] == 'submitdate') && ($thisvalue == 'N' || $thisvalue == ''))
+            {
+                $updateqr .= db_quote_id($fieldname)." = NULL, \n";
+            }
 			else
 			{
-				$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
-				WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
-				".db_table_name("questions").".language = '{$language}' AND  ".db_table_name("answers").".language = '{$language}' AND
-				".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-				$i2result = db_execute_assoc($i2query);
-				$otherexists = "";
-				while ($i2row = $i2result->FetchRow())
-				{
-					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
-					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-					if ($irow['type'] == 'K' && $thisvalue  == "")
-					{
-						$updateqr .= db_quote_id($fieldname)." = NULL, \n";
-					}
-					else
-					{
-						$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
-					}
-					if ($i2row['other'] == "Y") {$otherexists = "Y";}
-					if ($irow['type'] == "P")
-					{
-						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
-						$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";
-					}
-					unset($thisvalue);
-				}
-				if ($otherexists == "Y")
-				{
-					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
-					if ($irow['type'] == "P")
-					{
-						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}othercomment";
-						if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-						$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
-					}
-					unset($thisvalue);
-				}
+				$updateqr .= db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
 			}
 		}
 		$updateqr = substr($updateqr, 0, -3);
-		if (isset($_POST['datestamp']) && $_POST['datestamp']) {$updateqr .= ", datestamp='".auto_escape($_POST['datestamp'])."'";}
-		if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr='".auto_escape($_POST['ipaddr'])."'";}
-		if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='".auto_escape($_POST['token'])."'";}
-		if (isset($_POST['language']) && $_POST['language']) {$updateqr .= ", startlanguage='".auto_escape($_POST['language'])."'";}
-		if (isset($_POST['submitdate']) && $_POST['submitdate'] && $_POST['submitdate'] != "N") {$updateqr .= ", submitdate='".auto_escape($_POST['submitdate'])."'";}
-		if (isset($_POST['submitdate']) && $_POST['submitdate'] == "N") {$updateqr .= ", submitdate=NULL";}
 		$updateqr .= " WHERE id=$id";
 
 		$updateres = $connect->Execute($updateqr) or safe_die("Update failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
@@ -1824,8 +1339,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		while (ob_get_level() > 0) {
 			ob_end_flush();
 		}
-		
-		$dataentryoutput .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n"
+		$dataentryoutput .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div>\n"
 		.$clang->gT("Record has been updated.")."<br /><br />\n"
 		."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" /><br /><br />\n"
 		."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all', '_top')\" />\n"
@@ -1957,7 +1471,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		// GROUP NAME
 		while ($degrow = $degresult->FetchRow())
 		{
-			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$language}'";
+			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$language}'";
 			$deqresult = db_execute_assoc($deqquery);
 			$dataentryoutput .= "\t<tr>\n"
 			."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'])."</strong></td>\n"
@@ -2046,12 +1560,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 									}
 								break;
 								case "F":
-									case "H":
+								case "H":
 								default:
 									$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-									$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
-										. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
-										. "AND code='{$conrow['value']}'";
+									$fquery = "SELECT * FROM ".db_table_name("answers")."\n"
+										. "WHERE qid='{$conrow['cqid']}'\n and language='$language' "
+										. "AND title='{$conrow['code']}' and scale_id=0";
 									$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
 									while($frow=$fresult->FetchRow())
 									{
@@ -2160,101 +1674,71 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				switch($deqrow['type'])
 				{
 					case "5": //5 POINT CHOICE radio-buttons
-					$dataentryoutput .= "\t<select name='$fieldname'>\n"
-					."<option value=''>".$blang->gT("No answer")."</option>\n";
-					for ($x=1; $x<=5; $x++)
-					{
-						$dataentryoutput .= "<option value='$x'>$x</option>\n";
-					}
-					$dataentryoutput .= "\t</select>\n";
-					break;
+					    $dataentryoutput .= "\t<select name='$fieldname'>\n"
+					    ."<option value=''>".$blang->gT("No answer")."</option>\n";
+					    for ($x=1; $x<=5; $x++)
+					    {
+						    $dataentryoutput .= "<option value='$x'>$x</option>\n";
+					    }
+					    $dataentryoutput .= "\t</select>\n";
+					    break;
 					case "D": //DATE
 						$datetimeobj = new Date_Time_Converter('', "Y-m-d H:i:s");
                    	 	                $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);                 
 						$dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='$fieldname'/>\n";
 					break;
 					case "G": //GENDER drop-down list
-					$dataentryoutput .= "\t<select name='$fieldname'>\n"
-					."<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n"
-					."<option value='F'>".$blang->gT("Female")."</option>\n"
-					."<option value='M'>".$blang->gT("Male")."</option>\n"
-					."\t</select>\n";
-					break;
+					    $dataentryoutput .= "\t<select name='$fieldname'>\n"
+					    ."<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n"
+					    ."<option value='F'>".$blang->gT("Female")."</option>\n"
+					    ."<option value='M'>".$blang->gT("Male")."</option>\n"
+					    ."\t</select>\n";
+					    break;
 					case "Q": //MULTIPLE SHORT TEXT
-//					case "^": //Slider
 					case "K":
-					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
-					$dearesult = db_execute_assoc($deaquery);
-					$dataentryoutput .= "\t<table>\n";
-					while ($dearow = $dearesult->FetchRow())
-					{
-						$dataentryoutput .= "<tr><td align='right'>"
-						.$dearow['answer']
-						."</td>\n"
-						."\t<td><input type='text' name='$fieldname{$dearow['code']}' /></td>\n"
-						."</tr>\n";
-					}
-					$dataentryoutput .= "\t</table>\n";
+					    $deaquery = "SELECT question,title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+					    $dearesult = db_execute_assoc($deaquery);
+					    $dataentryoutput .= "\t<table>\n";
+					    while ($dearow = $dearesult->FetchRow())
+					    {
+						    $dataentryoutput .= "<tr><td align='right'>"
+						    .$dearow['question']
+						    ."</td>\n"
+						    ."\t<td><input type='text' name='$fieldname{$dearow['title']}' /></td>\n"
+						    ."</tr>\n";
+					    }
+					    $dataentryoutput .= "\t</table>\n";
 					break;
-					case "W": //Flexible List drop-down/radio-button
-					case "Z":
-						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$language}' ORDER BY sortorder, code";
-						$dearesult = db_execute_assoc($deaquery);
-						$dataentryoutput .= "\t<select name='$fieldname'>\n";
-						$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n";
-						while ($dearow = $dearesult->FetchRow())
-						{
-							$dataentryoutput .= "<option value='{$dearow['code']}'";
-							$dataentryoutput .= ">{$dearow['title']}</option>\n";
-						}
 
-						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$language}'";
-						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
-						while($orow = $oresult->FetchRow())
-						{
-							$fother=$orow['other'];
-						}
-						if ($fother == "Y")
-						{
-							$dataentryoutput .= "<option value='-oth-'>".$blang->gT("Other")."</option>\n";
-						}
-						$dataentryoutput .= "\t</select>\n";
-						if ($fother == "Y")
-						{
-							$dataentryoutput .= "\t"
-							.$blang->gT("Other").":"
-							."<input type='text' name='{$fieldname}other' value='' />\n";
-						}
-						break;
 					case "1": // multi scale^
-						$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
+						$deaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order, question";
 						$dearesult = db_execute_assoc($deaquery);
                         $dataentryoutput .='<table><tr><td></td><th>'.$clang->gT('Label 1').'</th><th>'.$clang->gT('Label 2').'</th></tr>';
 
 						while ($dearow = $dearesult->FetchRow())
 						{
 							// first scale
-							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$language}' ORDER BY sortorder, lid, code";
+							$delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' and scale_id=0 ORDER BY sortorder, code";
 							$delresult = db_execute_assoc($delquery);
-							$dataentryoutput .= "<tr><td>{$dearow['answer']}</td><td>";
-                            $dataentryoutput .= "<select name='$fieldname{$dearow['code']}#0'>\n";
+							$dataentryoutput .= "<tr><td>{$dearow['question']}</td><td>";
+                            $dataentryoutput .= "<select name='$fieldname{$dearow['title']}#0'>\n";
 							$dataentryoutput .= "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n";
 							while ($delrow = $delresult->FetchRow())
 							{
 								$dataentryoutput .= "<option value='{$delrow['code']}'";
-								$dataentryoutput .= ">{$delrow['title']}</option>\n";
+								$dataentryoutput .= ">{$delrow['answer']}</option>\n";
 							}
 							// second scale
                             $dataentryoutput .= "</select></td>\n";
-							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid1']} AND language='{$language}' ORDER BY sortorder, lid, code";
+                            $delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' and scale_id=1 ORDER BY sortorder, code";
 							$delresult = db_execute_assoc($delquery);
 							$dataentryoutput .= "<td>";
-                            $dataentryoutput .="<select name='$fieldname{$dearow['code']}#1'>\n";
+                            $dataentryoutput .="<select name='$fieldname{$dearow['title']}#1'>\n";
 							$dataentryoutput .= "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n";
 							while ($delrow = $delresult->FetchRow())
 							{
 								$dataentryoutput .= "<option value='{$delrow['code']}'";
-								$dataentryoutput .= ">{$delrow['title']}</option>\n";
+								$dataentryoutput .= ">{$delrow['answer']}</option>\n";
 							}
                             $dataentryoutput .= "</select></td></tr>\n"; 
 						}
@@ -2360,23 +1844,23 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
 						break;
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-					$defexists="";
-					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
-					$dearesult = db_execute_assoc($deaquery);
-					$dataentryoutput .= "\t<select name='$fieldname'>\n";
-					$datatemp='';
-					while ($dearow = $dearesult->FetchRow())
-					{
-						$datatemp .= "<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
-						$datatemp .= ">{$dearow['answer']}</option>\n";
-					}
-					if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
-					else  {$dataentryoutput .= $datatemp;}
-					$dataentryoutput .= "\t</select>\n"
-					."\t<br />".$blang->gT("Comment").":<br />\n"
-					."\t<textarea cols='40' rows='5' name='$fieldname"
-					."comment'></textarea>\n";
+					    $defexists="";
+					    $deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+					    $dearesult = db_execute_assoc($deaquery);
+					    $dataentryoutput .= "\t<select name='$fieldname'>\n";
+					    $datatemp='';
+					    while ($dearow = $dearesult->FetchRow())
+					    {
+						    $datatemp .= "<option value='{$dearow['code']}'";
+						    if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
+						    $datatemp .= ">{$dearow['answer']}</option>\n";
+					    }
+					    if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
+					    else  {$dataentryoutput .= $datatemp;}
+					    $dataentryoutput .= "\t</select>\n"
+					    ."\t<br />".$blang->gT("Comment").":<br />\n"
+					    ."\t<textarea cols='40' rows='5' name='$fieldname"
+					    ."comment'></textarea>\n";
 					break;
 					case "R": //RANKING TYPE QUESTION
 					$thisqid=$deqrow['qid'];
@@ -2520,105 +2004,104 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							{
 								$choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
 							}
-						}
-					}
-					$choicelist .= "</select>\n";
+					    }
+					    $choicelist .= "</select>\n";
 
-					$dataentryoutput .= "\t<table align='left' border='0' cellspacing='5'>\n"
-					."<tr>\n"
-					."\t<td align='left' valign='top' width='200'>\n"
-					."<strong>"
-					.$blang->gT("Your Choices").":</strong><br />\n"
-					.$choicelist
-					."\t</td>\n"
-					."\t<td align='left'>\n"
-					."<strong>"
-					.$blang->gT("Your Ranking").":</strong><br />\n"
-					.$ranklist
-					."\t</td>\n"
-					."</tr>\n"
-					."\t</table>\n"
-					."\t<input type='hidden' name='multi' value='$anscount' />\n"
-					."\t<input type='hidden' name='lastfield' value='";
-					if (isset($multifields)) {$dataentryoutput .= $multifields;}
-					$dataentryoutput .= "' />\n";
-					$choicelist="";
-					$ranklist="";
-					unset($answers);
-					break;
+					    $dataentryoutput .= "\t<table align='left' border='0' cellspacing='5'>\n"
+					    ."<tr>\n"
+					    ."\t<td align='left' valign='top' width='200'>\n"
+					    ."<strong>"
+					    .$blang->gT("Your Choices").":</strong><br />\n"
+					    .$choicelist
+					    ."\t</td>\n"
+					    ."\t<td align='left'>\n"
+					    ."<strong>"
+					    .$blang->gT("Your Ranking").":</strong><br />\n"
+					    .$ranklist
+					    ."\t</td>\n"
+					    ."</tr>\n"
+					    ."\t</table>\n"
+					    ."\t<input type='hidden' name='multi' value='$anscount' />\n"
+					    ."\t<input type='hidden' name='lastfield' value='";
+					    if (isset($multifields)) {$dataentryoutput .= $multifields;}
+					    $dataentryoutput .= "' />\n";
+					    $choicelist="";
+					    $ranklist="";
+					    unset($answers);
+					    break;
 					case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
-					$qidattributes=getQuestionAttributes($deqrow['qid']);
-                    if (trim($qidattributes['display_columns'])!='') 
-					{
-						$dcols=$qidattributes['display_columns'];
-					}
-					else
-					{
-						$dcols=0;
-					}
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
-					$mearesult = db_execute_assoc($meaquery);
-					$meacount = $mearesult->RecordCount();
-					if ($deqrow['other'] == "Y") {$meacount++;}
-					if ($dcols > 0 && $meacount >= $dcols)
-					{
-						$width=sprintf("%0d", 100/$dcols);
-						$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
-						$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
-						$upto=0;
-						$dataentryoutput .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
-						while ($mearow = $mearesult->FetchRow())
-						{
-							if ($upto == $maxrows)
-							{
-								$dataentryoutput .= $divider;
-								$upto=0;
-							}
-							$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
-							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
-							$upto++;
-						}
-						if ($deqrow['other'] == "Y")
-						{
-							$dataentryoutput .= "\t".$blang->gT("Other")." <input type='text' name='$fieldname";
-							$dataentryoutput .= "other' />\n";
-						}
-						$dataentryoutput .= "</td></tr></table>\n";
-						//Let's break the presentation into columns.
-					}
-					else
-					{
-						while ($mearow = $mearesult->FetchRow())
-						{
-							$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
-							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
-						}
-						if ($deqrow['other'] == "Y")
-						{
-							$dataentryoutput .= "\t".$blang->gT("Other")." <input type='text' name='$fieldname";
-							$dataentryoutput .= "other' />\n";
-						}
-					}
-					break;
+					    $qidattributes=getQuestionAttributes($deqrow['qid']);
+                        if (trim($qidattributes['display_columns'])!='') 
+					    {
+						    $dcols=$qidattributes['display_columns'];
+					    }
+					    else
+					    {
+						    $dcols=0;
+					    }
+					    $meaquery = "SELECT title, question, default_value FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+					    $mearesult = db_execute_assoc($meaquery);
+					    $meacount = $mearesult->RecordCount();
+					    if ($deqrow['other'] == "Y") {$meacount++;}
+					    if ($dcols > 0 && $meacount >= $dcols)
+					    {
+						    $width=sprintf("%0d", 100/$dcols);
+						    $maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+						    $divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
+						    $upto=0;
+						    $dataentryoutput .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
+						    while ($mearow = $mearesult->FetchRow())
+						    {
+							    if ($upto == $maxrows)
+							    {
+								    $dataentryoutput .= $divider;
+								    $upto=0;
+							    }
+							    $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['title']}' id='answer$fieldname{$mearow['title']}' value='Y'";
+							    if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+							    $dataentryoutput .= " /><label for='$fieldname{$mearow['title']}'>{$mearow['question']}</label><br />\n";
+							    $upto++;
+						    }
+						    if ($deqrow['other'] == "Y")
+						    {
+							    $dataentryoutput .= "\t".$blang->gT("Other")." <input type='text' name='$fieldname";
+							    $dataentryoutput .= "other' />\n";
+						    }
+						    $dataentryoutput .= "</td></tr></table>\n";
+						    //Let's break the presentation into columns.
+					    }
+					    else
+					    {
+						    while ($mearow = $mearesult->FetchRow())
+						    {
+							    $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
+							    if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+							    $dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
+						    }
+						    if ($deqrow['other'] == "Y")
+						    {
+							    $dataentryoutput .= "\t".$blang->gT("Other")." <input type='text' name='$fieldname";
+							    $dataentryoutput .= "other' />\n";
+						    }
+					    }
+					    break;
 					case "I": //Language Switch
-                    $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                    $sbaselang = GetBaseLanguageFromSurveyID($surveyid);
-                    array_unshift($slangs,$sbaselang);
+                        $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                        $sbaselang = GetBaseLanguageFromSurveyID($surveyid);
+                        array_unshift($slangs,$sbaselang);
 
-                    $dataentryoutput.= "<select name='{$fieldname}'>\n";
-					$dataentryoutput .= "<option value=''";
-					$dataentryoutput .= " selected='selected'";
-					$dataentryoutput .= ">".$blang->gT("Please choose")."..</option>\n";
+                        $dataentryoutput.= "<select name='{$fieldname}'>\n";
+					    $dataentryoutput .= "<option value=''";
+					    $dataentryoutput .= " selected='selected'";
+					    $dataentryoutput .= ">".$blang->gT("Please choose")."..</option>\n";
 
-                    foreach ($slangs as $lang)
-                       	{
-                            $dataentryoutput.="<option value='{$lang}'";
-                       		//if ($lang == $idrow[$fnames[$i][0]]) {$dataentryoutput .= " selected='selected'";}
-                            $dataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
-                       	}
-                    $dataentryoutput .= "</select>";
+                        foreach ($slangs as $lang)
+                       	    {
+                                $dataentryoutput.="<option value='{$lang}'";
+                       		    //if ($lang == $idrow[$fnames[$i]['fieldname']]) {$dataentryoutput .= " selected='selected'";}
+                                $dataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
+                       	    }
+                        $dataentryoutput .= "</select>";
 					break;
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					$dataentryoutput .= "<table border='0'>\n";
@@ -2628,13 +2111,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					{
 						$dataentryoutput .= "\t<tr>\n";
 						$dataentryoutput .= "<td>\n";
-						$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
+						$dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['title']}' value='Y'";
 						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-						$dataentryoutput .= " />{$mearow['answer']}\n";
+						$dataentryoutput .= " />{$mearow['question']}\n";
 						$dataentryoutput .= "</td>\n";
 						//This is the commments field:
 						$dataentryoutput .= "<td>\n";
-						$dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
+						$dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}comment' size='50' />\n";
 						$dataentryoutput .= "</td>\n";
 						$dataentryoutput .= "\t</tr>\n";
 					}
@@ -2671,15 +2154,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$dataentryoutput .= "\t</select>\n";
 					break;
 					case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+					$meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
 					$mearesult = db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "<td align='right'>{$mearow['answer']}</td>\n";
+						$dataentryoutput .= "<td align='right'>{$mearow['question']}</td>\n";
 						$dataentryoutput .= "<td>\n";
-						$dataentryoutput .= "\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}'>\n";
 						$dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
 						for ($i=1; $i<=5; $i++)
 						{
@@ -2692,15 +2175,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+					$meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
 					$mearesult = db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "<td align='right'>{$mearow['answer']}</td>\n";
+						$dataentryoutput .= "<td align='right'>{$mearow['question']}</td>\n";
 						$dataentryoutput .= "<td>\n";
-						$dataentryoutput .= "\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}'>\n";
 						$dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
 						for ($i=1; $i<=10; $i++)
 						{
@@ -2713,15 +2196,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+					$meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
 					$mearesult=db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "<td align='right'>{$mearow['answer']}</td>\n";
+						$dataentryoutput .= "<td align='right'>{$mearow['question']}</td>\n";
 						$dataentryoutput .= "<td>\n";
-						$dataentryoutput .= "\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}'>\n";
 						$dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
 						$dataentryoutput .= "<option value='Y'>".$blang->gT("Yes")."</option>\n";
 						$dataentryoutput .= "<option value='U'>".$blang->gT("Uncertain")."</option>\n";
@@ -2733,15 +2216,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+					$meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
 					$mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "<td align='right'>{$mearow['answer']}</td>\n";
+						$dataentryoutput .= "<td align='right'>{$mearow['question']}</td>\n";
 						$dataentryoutput .= "<td>\n";
-						$dataentryoutput .= "\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}'>\n";
 						$dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
 						$dataentryoutput .= "<option value='I'>".$blang->gT("Increase")."</option>\n";
 						$dataentryoutput .= "<option value='S'>".$blang->gT("Same")."</option>\n";
@@ -2787,36 +2270,30 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					    
 						$dataentryoutput .= "<table>\n";
 					    $dataentryoutput .= "  <tr><td></td>\n";
-					    $lidquery = "SELECT lid FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']}";
-					    $lidresult = db_execute_assoc($lidquery);
-					    while ($data=$lidresult->FetchRow())
-					    {
-						  $lid=$data['lid'];
-						}
                         $labelcodes=array();
-						$lquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid=$lid and language='$language' ORDER BY sortorder, title";
+						$lquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='$language' ORDER BY question_order, question";
 						$lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					    while ($data=$lresult->FetchRow())
 					    {
-					      $dataentryoutput .= "    <th>{$data['title']}</th>\n";
-					      $labelcodes[]=$data['code'];
+					      $dataentryoutput .= "    <th>{$data['question']}</th>\n";
+					      $labelcodes[]=$data['title'];
 					    }
 					    
 					    $dataentryoutput .= "  </tr>\n";
 					    
-						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
+						$meaquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='$language' ORDER BY question_order, question";
 						$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					    $i=0;
 						while ($mearow=$mearesult->FetchRow())
 					    {
-						    if (strpos($mearow['answer'],'|'))
+						    if (strpos($mearow['question'],'|'))
                             {
-                              $answerleft=substr($mearow['answer'],0,strpos($mearow['answer'],'|'));
-                              $answerright=substr($mearow['answer'],strpos($mearow['answer'],'|')+1);
+                              $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+                              $answerright=substr($mearow['question'],strpos($mearow['question'],'|')+1);
                             } 
                               else 
                               {
-                                $answerleft=$mearow['answer'];
+                                $answerleft=$mearow['question'];
                                 $answerright='';
                               }
                         	$dataentryoutput .= "\t<tr>\n";
@@ -2824,14 +2301,19 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							foreach($labelcodes as $ld)
 							{
     							$dataentryoutput .= "<td>\n";
-    							$dataentryoutput .= "\t<select name='$fieldname{$mearow['code']}_$ld'>\n";
-    							$dataentryoutput .= "<option value=''>...</option>\n";
-								for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
-    							{
-    							   $dataentryoutput .= "<option value='$ii'";
-    							   $dataentryoutput .= ">$ii</option>\n";
-    							}
-    							$dataentryoutput .= "</select></td>\n";
+								if ($qidattributes['input_boxes']!=0) {
+									$dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}_$ld' size=4 />";
+								} else {
+									$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}_$ld'>\n";
+									$dataentryoutput .= "<option value=''>...</option>\n";
+									for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
+									{
+									   $dataentryoutput .= "<option value='$ii'";
+									   $dataentryoutput .= ">$ii</option>\n";
+									}
+									$dataentryoutput .= "</select>";
+								}
+								$dataentryoutput .= "</td>\n";
     						}
 							$dataentryoutput .= "\t</tr>\n";
 						   $i++;
@@ -2842,36 +2324,30 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					case ";": //ARRAY (Multi Flexi)
 						$dataentryoutput .= "<table>\n";
 					    $dataentryoutput .= "  <tr><td></td>\n";
-					    $lidquery = "SELECT lid FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']}";
-					    $lidresult = db_execute_assoc($lidquery);
-					    while ($data=$lidresult->FetchRow())
-					    {
-						  $lid=$data['lid'];
-						}
-						$lquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid=$lid and language='$language' ORDER BY sortorder, title";
+						$lquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order, question";
 						$lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					    $labelcodes=array();
                         while ($data=$lresult->FetchRow())
 					    {
-					      $dataentryoutput .= "    <th>{$data['title']}</th>\n";
-					      $labelcodes[]=$data['code'];
+					      $dataentryoutput .= "    <th>{$data['question']}</th>\n";
+					      $labelcodes[]=$data['title'];
 					    }
 					    
 					    $dataentryoutput .= "  </tr>\n";
 					    
-						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order, question";
 						$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					    $i=0;
 						while ($mearow=$mearesult->FetchRow())
 					    {
-						    if (strpos($mearow['answer'],'|'))
+						    if (strpos($mearow['question'],'|'))
                             {
-                              $answerleft=substr($mearow['answer'],0,strpos($mearow['answer'],'|'));
-                              $answerright=substr($mearow['answer'],strpos($mearow['answer'],'|')+1);
+                              $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+                              $answerright=substr($mearow['question'],strpos($mearow['question'],'|')+1);
                             } 
                               else 
                               {
-                                $answerleft=$mearow['answer'];
+                                $answerleft=$mearow['question'];
                                 $answerright='';
                               }
                         	$dataentryoutput .= "\t<tr>\n";
@@ -2879,7 +2355,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							foreach($labelcodes as $ld)
 							{
     							$dataentryoutput .= "<td>\n";
-    							$dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['code']}_$ld' />";
+    							$dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}_$ld' />";
     							$dataentryoutput .= "</td>\n";
     						}
 							$dataentryoutput .= "\t</tr>\n";
@@ -2890,31 +2366,31 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "F": //ARRAY (Flexible Labels)
 					case "H":
-						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
+						$meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order, question";
 						$mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
 						$dataentryoutput .= "<table>\n";
 						while ($mearow = $mearesult->FetchRow())
 						{
-						    if (strpos($mearow['answer'],'|'))
+						    if (strpos($mearow['question'],'|'))
                             {
-                              $answerleft=substr($mearow['answer'],0,strpos($mearow['answer'],'|'));
-                              $answerright=substr($mearow['answer'],strpos($mearow['answer'],'|')+1);
+                              $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+                              $answerright=substr($mearow['question'],strpos($mearow['question'],'|')+1);
                             } 
                               else 
                               {
-                                $answerleft=$mearow['answer'];
+                                $answerleft=$mearow['question'];
                                 $answerright='';
                               }
                         	$dataentryoutput .= "\t<tr>\n";
 							$dataentryoutput .= "<td align='right'>{$answerleft}</td>\n";
 							$dataentryoutput .= "<td>\n";
-							$dataentryoutput .= "\t<select name='$fieldname{$mearow['code']}'>\n";
+							$dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}'>\n";
 							$dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} and language='$language' ORDER BY sortorder, code";
+							$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							while ($frow = $fresult->FetchRow())
 							{
-								$dataentryoutput .= "<option value='{$frow['code']}'>".$frow['title']."</option>\n";
+								$dataentryoutput .= "<option value='{$frow['code']}'>".$frow['answer']."</option>\n";
 							}
 							$dataentryoutput .= "\t</select>\n";
 							$dataentryoutput .= "</td>\n";
@@ -2923,41 +2399,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
 						$dataentryoutput .= "</table>\n";
 						break;
-/* 					case "1":
-						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
-						$mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
-						$dataentryoutput .= "<table>\n";
-						while ($mearow = $mearesult->FetchRow())
-						{
-						    if (strpos($mearow['answer'],'|'))
-                            {
-                              $answerleft=substr($mearow['answer'],0,strpos($mearow['answer'],'|'));
-                              $answerright=substr($mearow['answer'],strpos($mearow['answer'],'|')+1);
-                            } 
-                              else 
-                              {
-                                $answerleft=$mearow['answer'];
-                                $answerright='';
-                              }
-                        	$dataentryoutput .= "\t<tr>\n";
-							$dataentryoutput .= "<td align='right'>{$answerleft}</td>\n";
-							$dataentryoutput .= "<td>\n";
-							$dataentryoutput .= "\t<select name='$fieldname{$mearow['code']}'>\n";
-							$dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} and language='$language' ORDER BY sortorder, code";
-							$fresult = db_execute_assoc($fquery);
-							while ($frow = $fresult->FetchRow())
-							{
-								$dataentryoutput .= "<option value='{$frow['code']}'>".$frow['title']."</option>\n";
-							}
-							$dataentryoutput .= "\t</select>\n";
-							$dataentryoutput .= "</td>\n";
-							$dataentryoutput .= "<td align='left'>{$answerright}</td>\n";
-							$dataentryoutput .= "</tr>\n";
-						}
-						$dataentryoutput .= "</table>\n";
-						break;
-*/						
 				}
 				//$dataentryoutput .= " [$surveyid"."X"."$gid"."X"."$qid]";
 				$dataentryoutput .= "</td>\n";

@@ -307,7 +307,7 @@ if (!isset($_SESSION['loginID']))
 elseif ($action == "logout")
 {
 	killSession();
-	$logoutsummary = $clang->gT("Logout successful.");
+	$logoutsummary = '<p>'.$clang->gT("Logout successful.");
 }
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])

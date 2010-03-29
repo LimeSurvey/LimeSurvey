@@ -16,6 +16,19 @@ $(document).ready(function(){
                             }, $.datepicker.regional[userlanguage]);
     }
 
+    $('div.messagebox').addClass("ui-corner-all");   
+    $('div.header').addClass("ui-widget-header");   
+    $('.menubar-title').addClass("ui-widget-header");   
+    $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");   
+    $('button,input[type=submit],input[type=button],input[type=reset]').hover(
+        function(){ 
+            $(this).addClass("ui-state-hover"); 
+        },
+        function(){ 
+            $(this).removeClass("ui-state-hover"); 
+        }
+    )
+    
 
     // Loads the tooltips for the toolbars
     $('img[alt],input[src]').each(function() {
@@ -37,7 +50,7 @@ $(document).ready(function(){
                         },
                show: {effect: { length:50}}
 
-});
+               });
         }
     });    
 
@@ -59,11 +72,36 @@ $(document).ready(function(){
                                 target: 'bottomRight'}
                         },
                show: {effect: { length:50}}
-
-});
+               });
         }
     });    
+    
 
+    $('.tipme').each(function() {
+        if($(this).attr('alt') != '')
+        {
+             $(this).qtip({
+               style: { name: 'cream',
+                        tip:true, 
+                        color:'#111111', 
+                        border: {
+                             width: 1,
+                             radius: 5,
+                             color: '#EADF95'}
+                       },  
+               position: { adjust: { 
+                        screen: true, scroll:true },
+                        corner: {
+                                target: 'topRight',
+                                tooltip: 'bottomLeft'
+                        }
+                        },
+               show: {effect: { length:100}}
+
+               });
+        }
+    });    
+    
 
     if ($('#showadvancedattributes').length>0) updatequestionattributes();
     
@@ -84,6 +122,12 @@ $(document).ready(function(){
 
     }) 
     $('#question_type').change(updatequestionattributes);
+    $('#MinimizeGroupWindow').click(function(){
+        $('#groupdetails').hide();
+    });     
+    $('#MaximizeGroupWindow').click(function(){
+        $('#groupdetails').show();
+    });
 });
 
 
@@ -377,4 +421,26 @@ function checklangs(mylangs)
 		if (found == 0) { return false; }
 	}
 	return true;
+}
+
+function isset( variable )
+{
+      return( typeof( variable ) != 'undefined' );
+}
+
+String.prototype.splitCSV = function(sep) {
+  for (var foo = this.split(sep = sep || ","), x = foo.length - 1, tl; x >= 0; x--) {
+    if (foo[x].replace(/"\s+$/, '"').charAt(foo[x].length - 1) == '"') {
+      if ((tl = foo[x].replace(/^\s+"/, '"')).length > 1 && tl.charAt(0) == '"') {
+        foo[x] = foo[x].replace(/^\s*"|"\s*$/g, '').replace(/""/g, '"');
+      } else if (x) {
+        foo.splice(x - 1, 2, [foo[x - 1], foo[x]].join(sep));
+      } else foo = foo.shift().split(sep).concat(foo);
+    } else foo[x].replace(/""/g, '"');
+  } return foo;
+};
+
+// This is a helper function to extract the question ID from a DOM ID element 
+function removechars(strtoconvert){
+  return strtoconvert.replace(/[a-zA-Z_]/g,"");
 }

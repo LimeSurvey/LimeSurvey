@@ -8,17 +8,6 @@ background-color:#c0c0c0;
 text-align:left;
 }
 
-.clearall {
-font-size:10pt;
-}
-
-.clearall
-A:hover {
-text-decoration:underline;
-font-family:verdana;
-
-}
-
 .questionhelp {
 font-size:10px;
 font-style:italic;
@@ -141,20 +130,15 @@ background-color:#F0F0F0;
 font-size:1em;
 }
 
-.submit,.text,.textarea {
+.submit,
+.text,
+.textarea,
+.clearall,
+.saveall {
 background-color:#EDEDED;
 color:#042455;
 font-size:10pt;
 font-family:verdana;
-}
-
-.clearall
-A:link,.clearall
-A:visited,.clearall
-A:active {
-text-decoration:none;
-font-family:verdana;
-color:#FFF;
 }
 
 table.question {

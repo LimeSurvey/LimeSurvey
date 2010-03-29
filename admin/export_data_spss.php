@@ -117,9 +117,9 @@ if  (!isset($subaction))
 	
 	$exportspssoutput .= "<form action='$scriptname' id='exportspss' method='get'><ul>\n"
 	."<li><label for='filterinc'>".$clang->gT("Data selection:")."</label><select id='filterinc' name='filterinc' onchange='this.form.submit();'>\n"
-	."\t<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
-	."\t<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
-	."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
+	."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
+	."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
+	."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
 	."</select></li>\n";
 		
 	$exportspssoutput .= "<li><label for='spssver'>".$clang->gT("SPSS version:")."</label><select id='spssver' name='spssver' onchange='this.form.submit();'>\n";

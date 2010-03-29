@@ -132,10 +132,9 @@ switch ($fieldtype)
 	case 'email-inv':
 	case 'email-rem':
 		// these 2 fields are supported by email-inv and email-rem
-		// but not email-conf and email-reg for the moment
+		// but not email-reg for the moment
 		$replFields[]=array('EMAIL',$clang->gT("Email from the token"));
 		$replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
-	case 'email-conf':
 	case 'email-reg':
 		$replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
 		$replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
@@ -152,6 +151,35 @@ switch ($fieldtype)
 		$replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
 		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
 		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+	break;
+
+	case 'email-conf':
+		$replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+		$replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
+		$replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
+		$replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
+		$replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
+        $attributes=GetTokenFieldsAndNames($surveyid,true);
+        foreach ($attributes as $attributefield=>$attributedescription)
+        {
+            $replFields[]=array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+        }
+		$replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
+		$replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
+		$replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
+		$replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
+		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
+		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+
+		// email-conf can accept insertans fields for non anonymous surveys
+		if (isset($surveyid))
+		{
+			$surveyInfo = getSurveyInfo($surveyid);
+			if ($surveyInfo['private'] == "N")
+			{
+				$isInstertansEnabled=true;
+			}
+		}
 	break;
 
 	case 'group-desc':
@@ -249,6 +277,10 @@ if ($isInstertansEnabled===true)
 					$AddQuestion=False;
 				}
 			break;
+			case 'tokens':
+				// this is the case for email-conf
+				$AddQuestion=True;
+			break;
 			default:
 				die("No Action provided.");
 			break;
@@ -273,6 +305,10 @@ if ($isInstertansEnabled===true)
 			elseif ($surveyformat == "A")
 			{
 				$previouspagequestion = false;
+			}
+			elseif ($action == 'tokens' && $fieldtype == 'email-conf')
+			{
+				$previouspagequestion = true;
 			}
 
 			$questionlist[]=Array( "qid" => $qrow["qid"], "previouspage" => $previouspagequestion);

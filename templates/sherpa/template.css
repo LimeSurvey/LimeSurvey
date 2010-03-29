@@ -18,30 +18,6 @@ font-size:9pt;
 font-family:verdana;
 }
 
-.clearall {
-font-family:arial;
-margin:0 0 10px;
-}
-
-.clearall A:link {
-color:#222;
-}
-
-.clearall A:visited {
-text-decoration:none;
-color:#666;
-}
-
-.clearall A:active {
-text-decoration:none;
-color:#EEE;
-}
-
-.clearall A:hover {
-text-decoration:none;
-color:#222;
-}
-
 .graph {
 border:solid;
 background-color:#fff;
@@ -57,12 +33,18 @@ font-size:8pt;
 direction: ltr;
 }
 
-.submit {
+.submit,
+.clearall,
+.saveall {
 background-color:#ace;
 font-size:9pt;
 font-family:arial;
 border:3px double#ddd;
 cursor:pointer;
+}
+
+.saveall {
+	margin-bottom: 10px;
 }
 
 .rank,.rank td {

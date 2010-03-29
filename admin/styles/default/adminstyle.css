@@ -560,6 +560,11 @@ a.invalidemail {
 	color: red;
 }
 
+a.optoutemail {
+    font-weight: 700;
+    color: orange;
+}
+
 .browsetable {
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
@@ -618,14 +623,13 @@ a.invalidemail {
 
 .browsetable th {
     background-color: #D2E0F2;     
-    font-size:10pt;
+    font-size:9pt;
     padding:2px;
     text-align: center;
+    min-width:80px;
 }
 
 .browsetable td {
-    width:140px;     
-    min-width:120px;
     font-size:8pt;
     padding:1px 2px; 
     text-align: center;          
@@ -647,9 +651,9 @@ a.invalidemail {
     display:inline;
 }
 
-.browsetable td:first-child {
-    min-width:50px;
-    font-weight:bold;
+.browsetable th:first-child {
+    width:20px;
+    min-width: 0px;
 }
 
 .answertable th {
@@ -671,7 +675,7 @@ a.invalidemail {
     margin:0 auto;
 }
 
-.detailbrowsetable tr.highlight,
+#responsedetail tr.highlight,
 .answertable tr.highlight {
     background-color:#EAF2FF;
 }
@@ -983,6 +987,16 @@ div.messagebox .warningheader {
 
 .data-entry-tbl {
 	margin: 5px 0 0 0;
+}
+
+#conditionsource, #conditiontarget{
+    width: 630px;
+}
+
+#editconditions select{
+    font-size:10px;
+}
+
 	width: 100%;
 }
 
@@ -1021,7 +1035,7 @@ textarea.updater-changelog {
 }
    
 
-#exportspss li label:first-child,            
+#exportspss li label:first-child,
 #importtemplate li label:first-child,            
 #tokenimport li label:first-child,            
 #statistics_general_filter li label:first-child,            
@@ -1048,6 +1062,7 @@ textarea.updater-changelog {
     color: #1d2d45;
 }        
 
+#frmeditgroup li label:first-child,                   
 #usergroupform li label:first-child,            
 #frmcopyquestion li label:first-child,        
 #labelsetform li label:first-child,        
@@ -1070,6 +1085,9 @@ textarea.updater-changelog {
     color: #121A28;
 }
 
+#exportstructureQuestion li,
+#exportstructureGroup li,
+#frmeditgroup li,
 #usergroupform li,
 #importtemplate li,
 #frmcopyquestion li,
@@ -1296,4 +1314,46 @@ clear:both;
 
 .filtertable textarea {
     width:210px;
+}
+
+.limebutton
+{
+   outline: 0; 
+   margin:1px 4px 1px 0; 
+   padding: 1px 1em; 
+   text-decoration:none !important; 
+   cursor:pointer; 
+   position: relative; 
+   text-align: center; 
+   zoom: 1; 
+}
+
+table.limetable thead th{
+    background-color: #D2E0F2;     
+    font-size:8pt;
+    padding:2px 14px 2px 10px;
+}
+
+table.limetable tbody tr.highlight {
+    background-color:#EAF2FF;
+}
+
+#surveyhandleright{
+    margin-right:7px;
+}
+
+#surveyhandleleft{
+    margin-left:7px;
+}
+
+#exportstructureQuestion ul,
+#exportstructureGroup ul{
+    margin-left:auto;
+    margin-right:auto;
+    width:400px;
+}
+
+.users td:first-child,.users th:first-child
+{
+    width:10%;
 }
