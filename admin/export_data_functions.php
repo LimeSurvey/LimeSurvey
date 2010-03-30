@@ -72,7 +72,7 @@ function spss_export_data ($na = null) {
 				#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 				if (isset($row[$fieldno]))
 				{
-					list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
+					list( $year, $month, $day, $hour, $minute, $second ) = preg_split( '([^0-9])', $row[$fieldno] );
 					if ($year != '' && (int)$year >= 1970)
 					{
 						echo "'".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."'";
@@ -173,7 +173,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
 
 	if (!isset($field['LStype']) || empty($field['LStype'])) return false;
 	$answers=array();
-	if (strpos("!LOR",$field['LStype']) !== false) {
+	if (strpos("!LORFWZWH1",$field['LStype']) !== false) {
 		if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
 			//We have a comment field, so free text
 		} else {
@@ -192,21 +192,6 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
 					$row = $result->FetchRow();
 					$answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["answer"]),0,$length_vallabel));
 				}
-			}
-		}
-	} elseif (strpos("FWZWH1",$field['LStype']) !== false) {
-		$query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from
-		{$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
-		{$dbprefix}questions.language='".$language."' and
-		{$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid ORDER BY sortorder ASC";
-		$result=db_execute_assoc($query) or safe_die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
-		$num_results = $result->RecordCount();
-		if ($num_results > 0)
-		{
-			for ($i=0; $i < $num_results; $i++)
-			{
-				$row = $result->FetchRow();
-				$answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["title"]),0,$length_vallabel));
 			}
 		}
 	} elseif ($field['LStype'] == ':') {
@@ -333,7 +318,7 @@ function spss_fieldmap($prefix = 'V') {
 	$num_results = count($fieldnames);
 	$num_fields = $num_results;
 	$diff = 0;
-	$noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl');
+	$noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
 	# Build array that has to be returned
 	for ($i=0; $i < $num_results; $i++) {
 		#Conditions for SPSS fields:
@@ -391,6 +376,7 @@ function spss_fieldmap($prefix = 'V') {
 				$fgid=$fielddata['gid'];
 				$code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
 				$varlabel=$fielddata['question'];
+				if (isset($fielddata['subquestion'])) $varlabel = "[{$fielddata['subquestion']}] ". $varlabel;
 				$ftitle=$fielddata['title'];
 				if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
 				if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
