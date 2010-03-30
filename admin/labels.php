@@ -305,7 +305,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			else
     			{
     				$labelsoutput.= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n"; 
-    				$labelsoutput.= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
+    				$labelsoutput.= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['code']}\" onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
     			}
     			
             
@@ -355,7 +355,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             if (!isset($_SESSION['nextlabelcode'])) $_SESSION['nextlabelcode']='';
     		if ($first)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td align='right'>"
-  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='code_$maxsortorder' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
+  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='code_$maxsortorder' onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'addnewlabelbtn');\" />\n"
     			."\t</td>\n"
                 ."<td style='text-align:center;'>"
                 ."<input style='text-align:right;' type='text' maxlength='5' name='insertassessmentvalue' size='6' id='insertassessmentvalue' value='0' "
