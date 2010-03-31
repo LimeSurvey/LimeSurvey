@@ -1,17 +1,17 @@
 <?php
 /*
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id$
+ */
 //Last security audit on 2009-10-11
 
 //Ensure script is not run directly, avoid path disclosure
@@ -24,8 +24,8 @@ $postqid=returnglobal('qid');
 $postqaid=returnglobal('qaid');
 
 if (get_magic_quotes_gpc())
-    {$_POST  = array_map('recursive_stripslashes', $_POST);}
-    
+{$_POST  = array_map('recursive_stripslashes', $_POST);}
+
 
 /*
  * Return a sql statement for renaming a table
@@ -41,16 +41,16 @@ function db_rename_table($oldtable, $newtable)
 
 
 /*
-* Gets the maximum question_order field value for a group
-* @gid: The id of the group
-*/
+ * Gets the maximum question_order field value for a group
+ * @gid: The id of the group
+ */
 
 /**
-* Gets the maximum question_order field value for a group
-*
-* @param mixed $gid
-* @return mixed
-*/
+ * Gets the maximum question_order field value for a group
+ *
+ * @param mixed $gid
+ * @return mixed
+ */
 function get_max_question_order($gid)
 {
     global $connect ;
@@ -79,7 +79,7 @@ if(isset($surveyid))
         $errorstring = '';
         foreach ($grplangs as $grouplang)
         {
-          if (!$_POST['group_name_'.$grouplang]) { $errorstring.= GetLanguageNameFromCode($grouplang,false)."\\n";}
+            if (!$_POST['group_name_'.$grouplang]) { $errorstring.= GetLanguageNameFromCode($grouplang,false)."\\n";}
         }
         if ($errorstring!='')
         {
@@ -88,7 +88,7 @@ if(isset($surveyid))
 
         else
         {
-        $first=true;
+            $first=true;
             require_once("../classes/inputfilter/class.inputfilter_clean.php");
             $myFilter = new InputFilter('','',1,1,1);
 
@@ -97,14 +97,14 @@ if(isset($surveyid))
                 //Clean XSS
                 if ($filterxsshtml)
                 {
-                $_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
-                $_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
+                    $_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
+                    $_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
                 }
-                   else
-                          {
-                            $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
-                            $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
-                          }
+                else
+                {
+                    $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
+                    $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
+                }
 
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grouplang]=fix_FCKeditor_text($_POST['group_name_'.$grouplang]);
@@ -112,17 +112,17 @@ if(isset($surveyid))
 
 
                 if ($first)
-                  {
+                {
                     $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                     $result = $connect->Execute($query); // Checked
                     $groupid=$connect->Insert_Id(db_table_name_nq('groups'),"gid");
                     $first=false;
-                  }
-                  else{
-                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
-                        if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') $query = 'SET IDENTITY_INSERT '.db_table_name('groups')." ON; " . $query . 'SET IDENTITY_INSERT '.db_table_name('groups')." OFF;";
-                        $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());   // Checked
-                     }
+                }
+                else{
+                    $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') $query = 'SET IDENTITY_INSERT '.db_table_name('groups')." ON; " . $query . 'SET IDENTITY_INSERT '.db_table_name('groups')." OFF;";
+                    $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());   // Checked
+                }
                 if (!$result)
                 {
                     $databaseoutput .= $clang->gT("Error: The database reported the following error:")."<br />\n";
@@ -251,8 +251,8 @@ if(isset($surveyid))
         if (strlen($_POST['title']) < 1)
         {
             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n "
-                              ."alert(\"".$clang->gT("The question could not be added. You must enter at least enter a question code.","js")."\")\n "
-                              ."//-->\n</script>\n";
+            ."alert(\"".$clang->gT("The question could not be added. You must enter at least enter a question code.","js")."\")\n "
+            ."//-->\n</script>\n";
         }
         else
         {
@@ -260,11 +260,11 @@ if(isset($surveyid))
             if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
             if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
             {
-               //Bug Fix: remove +1 ->  $question_order=(sanitize_int($_POST['questionposition'])+1);
-               $question_order=(sanitize_int($_POST['questionposition']));
+                //Bug Fix: remove +1 ->  $question_order=(sanitize_int($_POST['questionposition'])+1);
+                $question_order=(sanitize_int($_POST['questionposition']));
                 //Need to renumber all questions on or after this
-               $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$postgid." AND question_order >= ".$question_order;
-               $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
+                $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$postgid." AND question_order >= ".$question_order;
+                $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
             } else {
                 $question_order=(getMaxquestionorder($postgid));
                 $question_order++;
@@ -278,12 +278,12 @@ if(isset($surveyid))
                 $_POST['question_'.$baselang]=$myFilter->process($_POST['question_'.$baselang]);
                 $_POST['help_'.$baselang]=$myFilter->process($_POST['help_'.$baselang]);
             }
-                   else
-                          {
-                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
-                            $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
-                          }
+            else
+            {
+                $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
+            }
 
             // Fix bug with FCKEditor saving strange BR types
             $_POST['title']=fix_FCKeditor_text($_POST['title']);
@@ -327,20 +327,20 @@ if(isset($surveyid))
 
             }
 
-           $qattributes=questionAttributes();
-           $validAttributes=$qattributes[$_POST['type']];
-           foreach ($validAttributes as $validAttribute)
-           {
-               if (isset($_POST[$validAttribute['name']]))
-               {
+            $qattributes=questionAttributes();
+            $validAttributes=$qattributes[$_POST['type']];
+            foreach ($validAttributes as $validAttribute)
+            {
+                if (isset($_POST[$validAttribute['name']]))
+                {
                     $query = "INSERT into ".db_table_name('question_attributes')."
                               (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
                     $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg()); // Checked
 
-               }
-           }
+                }
+            }
 
-           fixsortorderQuestions($postgid, $surveyid);
+            fixsortorderQuestions($postgid, $surveyid);
         }
     }
     elseif ($action == "renumberquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
@@ -381,29 +381,29 @@ if(isset($surveyid))
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
         $cqresult=db_execute_assoc($cqquery) or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
         $cqr=$cqresult->FetchRow();
-            $oldtype=$cqr['type'];
+        $oldtype=$cqr['type'];
         $oldgid=$cqr['gid'];
 
         // Remove invalid question attributes on saving
         $qattributes=questionAttributes();
         $attsql="delete from ".db_table_name('question_attributes')." where qid='{$postqid}' and ";
         if (isset($qattributes[$_POST['type']])){
-           $validAttributes=$qattributes[$_POST['type']];
-           foreach ($validAttributes as  $validAttribute)
-           {
-             $attsql.='attribute<>'.db_quoteall($validAttribute['name'])." and ";
-           }
+            $validAttributes=$qattributes[$_POST['type']];
+            foreach ($validAttributes as  $validAttribute)
+            {
+                $attsql.='attribute<>'.db_quoteall($validAttribute['name'])." and ";
+            }
         }
         $attsql.='1=1';
         db_execute_assoc($attsql) or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg()); // Checked
 
 
         //now save all valid attributes
-       $validAttributes=$qattributes[$_POST['type']];
-       foreach ($validAttributes as $validAttribute)
-       {
-           if (isset($_POST[$validAttribute['name']]))
-           {
+        $validAttributes=$qattributes[$_POST['type']];
+        foreach ($validAttributes as $validAttribute)
+        {
+            if (isset($_POST[$validAttribute['name']]))
+            {
                 $query = "select qaid from ".db_table_name('question_attributes')."
                           WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                 $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
@@ -419,8 +419,8 @@ if(isset($surveyid))
                               (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
                     $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                 }
-           }
-       }
+            }
+        }
 
 
         $qtypes=getqtypelist('','array');
@@ -436,9 +436,9 @@ if(isset($surveyid))
 
         // These are the questions types that have no validation - so zap it accordingly
 
-        if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" || 
-            $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
-            $_POST['type']== "X" || $_POST['type']== "")
+        if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" ||
+        $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
+        $_POST['type']== "X" || $_POST['type']== "")
         {
             $_POST['preg']='';
         }
@@ -477,10 +477,10 @@ if(isset($surveyid))
                         $myFilter = new InputFilter('','',1,1,1);
                         $_POST['title']=$myFilter->process($_POST['title']);
                     }
-                          else
-                          {
-                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
-                          }
+                    else
+                    {
+                        $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                    }
 
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['title']=fix_FCKeditor_text($_POST['title']);
@@ -492,11 +492,11 @@ if(isset($surveyid))
                             $_POST['question_'.$qlang]=$myFilter->process($_POST['question_'.$qlang]);
                             $_POST['help_'.$qlang]=$myFilter->process($_POST['help_'.$qlang]);
                         }
-                          else
-                          {
+                        else
+                        {
                             $_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
                             $_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
-                          }
+                        }
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
                         $_POST['help_'.$qlang]=fix_FCKeditor_text($_POST['help_'.$qlang]);
@@ -545,13 +545,13 @@ if(isset($surveyid))
                     }
                     // if the group has changed then fix the sortorder of old and new group
                     if ($oldgid!=$postgid)
-                            {
-                                    fixsortorderQuestions($oldgid, $surveyid);
-                                    fixsortorderQuestions($postgid, $surveyid);
+                    {
+                        fixsortorderQuestions($oldgid, $surveyid);
+                        fixsortorderQuestions($postgid, $surveyid);
                         // If some questions have conditions set on this question's answers
                         // then change the cfieldname accordingly
                         fixmovedquestionConditions($postqid, $oldgid, $postgid);
-                            }
+                    }
                     if (!$keepansweroptions)
                     {
                         $query = "DELETE FROM ".db_table_name('answers')." WHERE qid=".$postqid;
@@ -568,9 +568,9 @@ if(isset($surveyid))
                         if (!$result)
                         {
                             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-                }
+                        }
                     }
-                                   
+
                 }
                 else
                 {
@@ -579,8 +579,8 @@ if(isset($surveyid))
                     if (!is_null($array_result['notAbove']))
                     {
                         $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
-                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-                            . $clang->gT("See conditions:")."\\n";
+                        . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+                        . $clang->gT("See conditions:")."\\n";
 
                         foreach ($array_result['notAbove'] as $notAboveCond)
                         {
@@ -591,8 +591,8 @@ if(isset($surveyid))
                     if (!is_null($array_result['notBelow']))
                     {
                         $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-                            . $clang->gT("See conditions:")."\\n";
+                        . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+                        . $clang->gT("See conditions:")."\\n";
 
                         foreach ($array_result['notBelow'] as $notBelowCond)
                         {
@@ -635,12 +635,12 @@ if(isset($surveyid))
                 $_POST['question_'.$baselang]=$myFilter->process($_POST['question_'.$baselang]);
                 $_POST['help_'.$baselang]=$myFilter->process($_POST['help_'.$baselang]);
             }
-                   else
-                          {
-                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
-                            $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
-                          }
+            else
+            {
+                $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
+            }
 
 
             // Fix bug with FCKEditor saving strange BR types
@@ -665,21 +665,21 @@ if(isset($surveyid))
                     $_POST['question_'.$qlanguage]=$myFilter->process($_POST['question_'.$qlanguage]);
                     $_POST['help_'.$qlanguage]=$myFilter->process($_POST['help_'.$qlanguage]);
                 }
-                   else
-                          {
-                            $_POST['question_'.$qlanguage] = html_entity_decode($_POST['question_'.$qlanguage], ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$qlanguage] = html_entity_decode($_POST['help_'.$qlanguage], ENT_QUOTES, "UTF-8");
-                          }
+                else
+                {
+                    $_POST['question_'.$qlanguage] = html_entity_decode($_POST['question_'.$qlanguage], ENT_QUOTES, "UTF-8");
+                    $_POST['help_'.$qlanguage] = html_entity_decode($_POST['help_'.$qlanguage], ENT_QUOTES, "UTF-8");
+                }
 
-            // Fix bug with FCKEditor saving strange BR types
-            $_POST['question_'.$qlanguage]=fix_FCKeditor_text($_POST['question_'.$qlanguage]);
-            $_POST['help_'.$qlanguage]=fix_FCKeditor_text($_POST['help_'.$qlanguage]);
+                // Fix bug with FCKEditor saving strange BR types
+                $_POST['question_'.$qlanguage]=fix_FCKeditor_text($_POST['question_'.$qlanguage]);
+                $_POST['help_'.$qlanguage]=fix_FCKeditor_text($_POST['help_'.$qlanguage]);
 
-            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
-            $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, question_order, language)
+                if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
+                $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, question_order, language)
                       VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', $max,".db_quoteall($qlanguage).")";
-            $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()); // Checked
-            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
+                $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()); // Checked
+                if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
             }
             if (!$result)
             {
@@ -701,9 +701,9 @@ if(isset($surveyid))
                         $qr1['answer']=$myFilter->process($qr1['answer']);
                     }
                     else
-                          {
-                            $qr1['answer'] = html_entity_decode($qr1['answer'], ENT_QUOTES, "UTF-8");
-                          }
+                    {
+                        $qr1['answer'] = html_entity_decode($qr1['answer'], ENT_QUOTES, "UTF-8");
+                    }
 
 
                     // Fix bug with FCKEditor saving strange BR types
@@ -715,7 +715,7 @@ if(isset($surveyid))
                     . "'{$qr1['answer']}', '{$qr1['default_value']}', "
                     . "'{$qr1['sortorder']}', '{$qr1['language']}')";
                     $ir1 = $connect->Execute($i1);   // Checked
-					
+
                 }
             }
             if (returnglobal('copyattributes') == "Y")
@@ -736,8 +736,8 @@ if(isset($surveyid))
                 } // while
             }
             fixsortorderQuestions($postgid, $surveyid);
-			$gid=$postgid; //Sets the gid so that admin.php displays whatever group was chosen for this copied question
-			$qid=$newqid; //Sets the qid so that admin.php displays the newly created question
+            $gid=$postgid; //Sets the gid so that admin.php displays whatever group was chosen for this copied question
+            $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
         }
     }
     elseif ($action == "delquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
@@ -786,9 +786,9 @@ if(isset($surveyid))
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-                
+
         $alllanguages = $anslangs;
-        array_unshift($alllanguages,$baselang);        
+        array_unshift($alllanguages,$baselang);
 
 
         $query = "select type from ".db_table_name('questions')." where qid=$qid";
@@ -799,7 +799,7 @@ if(isset($surveyid))
         $count=0;
         $invalidCode = 0;
         $duplicateCode = 0;
-                   
+         
         require_once("../classes/inputfilter/class.inputfilter_clean.php");
         $myFilter = new InputFilter('','',1,1,1);
 
@@ -809,49 +809,49 @@ if(isset($surveyid))
 
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
         {
-            $maxcount=(int)$_POST['answercount_'.$scale_id];                 
+            $maxcount=(int)$_POST['answercount_'.$scale_id];
             for ($sortorderid=1;$sortorderid<$maxcount;$sortorderid++)
-                 {
+            {
                 $code=sanitize_paranoid_string($_POST['code_'.$sortorderid.'_'.$scale_id]);
                 $assessmentvalue=(int) $_POST['assessment_'.$sortorderid.'_'.$scale_id];
                 foreach ($alllanguages as $language)
                 {
                     $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
-                        if ($filterxsshtml)
-                        {
+                    if ($filterxsshtml)
+                    {
                         //Sanitize input, strip XSS
                         $answer=$myFilter->process($answer);
-                        }
-                        else
-                          {
-                       $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8"); 
-                          }
-                        // Fix bug with FCKEditor saving strange BR types
+                    }
+                    else
+                    {
+                        $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
+                    }
+                    // Fix bug with FCKEditor saving strange BR types
                     $answer=fix_FCKeditor_text($answer);
 
                     // Now we insert the answers
                     $query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language,assessment_value, scale_id)
                               VALUES (".db_quoteall($code).", ".
-                                        db_quoteall($answer).", ".
-                                        db_quote($qid).", ".
-                                        db_quote($sortorderid).", ".
-                                        db_quoteall($language).", ".
-                                        db_quote($assessmentvalue).",
-                                        $scale_id)";
-                        if (!$result = $connect->Execute($query)) // Checked
-                        {
+                    db_quoteall($answer).", ".
+                    db_quote($qid).", ".
+                    db_quote($sortorderid).", ".
+                    db_quoteall($language).", ".
+                    db_quote($assessmentvalue).",
+                    $scale_id)";
+                    if (!$result = $connect->Execute($query)) // Checked
+                    {
                         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                        }
-                } // foreach ($alllanguages as $language)   
-            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)  
+                    }
+                } // foreach ($alllanguages as $language)
+            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }  //  for ($scale_id=0;
-        
+
         if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
         if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
         $sortorderid--;
-        $action='editansweroptions'; 
-        
+        $action='editansweroptions';
+
         // Special treatment for ranking questions
         $surveyinfo=getSurveyInfo($surveyid);
         if ($questiontype=='R' && $surveyinfo['active']=='N')
@@ -862,33 +862,33 @@ if(isset($surveyid))
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
             }
         }
-        
+
     }
 
     elseif ($action == "updatesubquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);        
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($anslangs,$baselang);
-        
+
         $query = "select type from ".db_table_name('questions')." where qid=$qid";
         $questiontype = $connect->GetOne($query);    // Checked
         $qtypes=getqtypelist('','array');
-        $scalecount=$qtypes[$questiontype]['subquestions'];        
-        
+        $scalecount=$qtypes[$questiontype]['subquestions'];
+
         // First delete any deleted ids
-        $deletedqids=explode(' ', trim($_POST['deletedqids']));                 
-        
+        $deletedqids=explode(' ', trim($_POST['deletedqids']));
+
         foreach ($deletedqids as $deletedqid)
-                        {
+        {
             $deletedqid=(int)$deletedqid;
             $query = "DELETE FROM ".db_table_name('questions')." WHERE qid='{$deletedqid}'";  // Checked
             if (!$result = $connect->Execute($query))
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                        }
-                    }
+            }
+        }
 
         //Determine ids by evaluating the hidden field
         $rows=array();
@@ -910,25 +910,25 @@ if(isset($surveyid))
         $duplicateCode = 0;
         $dupanswers = array();
         /*
-        for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
-        {   
-            
-            // Find duplicate codes and add these to dupanswers array
-            $foundCat=array_count_values($codes);
-            foreach($foundCat as $key=>$value){
-                if($value>=2){
-                    $dupanswers[]=$key;
-                }
-            }
-        }
-        */
+         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
+         {
+
+         // Find duplicate codes and add these to dupanswers array
+         $foundCat=array_count_values($codes);
+         foreach($foundCat as $key=>$value){
+         if($value>=2){
+         $dupanswers[]=$key;
+         }
+         }
+         }
+         */
         require_once("../classes/inputfilter/class.inputfilter_clean.php");
         $myFilter = new InputFilter('','',1,1,1);
 
 
         $insertqids=array();
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
-        {        
+        {
             foreach ($anslangs as $language)
             {
                 $position=0;
@@ -945,24 +945,24 @@ if(isset($surveyid))
                         {
                             $query='INSERT into '.db_table_name('questions').' (sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
                             $connect->execute($query);
-                            $insertqid[$position]=$connect->Insert_Id(db_table_name_nq('questions'),"qid");                                
+                            $insertqid[$position]=$connect->Insert_Id(db_table_name_nq('questions'),"qid");
                         }
                         else
                         {
                             $query='INSERT into '.db_table_name('questions').' (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
                             if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
                             $connect->execute($query);
-                            }
+                        }
                     }
                     $position++;
-                }       
+                }
 
             }
         }
-        $action='editsubquestions'; 
+        $action='editsubquestions';
     }
 
-    
+
     elseif ($action == "updatesurvey" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
     {
 
@@ -1007,7 +1007,7 @@ if(isset($surveyid))
                             'adminemail'=>$_POST['adminemail'],
                             'startdate'=>$_POST['startdate'],
                             'bounce_email'=>$_POST['bounce_email'],
-//                            'usetokens'=>$_POST['usetokens'],
+        //                            'usetokens'=>$_POST['usetokens'],
                             'private'=>$_POST['private'],
                             'faxto'=>$_POST['faxto'],
                             'format'=>$_POST['format'],
@@ -1033,7 +1033,7 @@ if(isset($surveyid))
                             'usecaptcha'=>$_POST['usecaptcha'],
                             'emailresponseto'=>$_POST['emailresponseto'],
                             'tokenlength'=>$_POST['tokenlength']
-                            );
+        );
 
         $usquery=$connect->GetUpdateSQL($rs, $updatearray, false, get_magic_quotes_gpc());
         if ($usquery) {
@@ -1062,34 +1062,34 @@ if(isset($surveyid))
                 if ($usresult->RecordCount()==0)
                 {
 
-                if (getEmailFormat($surveyid) == "html")
-                {
-                    $ishtml=true;
-                }
-                else
-                {
-                    $ishtml=false;
-                }
+                    if (getEmailFormat($surveyid) == "html")
+                    {
+                        $ishtml=true;
+                    }
+                    else
+                    {
+                        $ishtml=false;
+                    }
 
                     $bplang = new limesurvey_lang($langname);
                     $languagedetails=getLanguageDetails($langname);
                     $usquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
-                             ." (surveyls_survey_id, surveyls_language, surveyls_title, "
-                             ." surveyls_email_invite_subj, surveyls_email_invite, "
-                             ." surveyls_email_remind_subj, surveyls_email_remind, "
-                             ." surveyls_email_confirm_subj, surveyls_email_confirm, "
-                             ." surveyls_email_register_subj, surveyls_email_register, "
-                             ." surveyls_dateformat) "
-                             ." VALUES ({$postsid}, '".$langname."', '',"
-                             .db_quoteall($bplang->gT("Invitation to participate in survey",'unescaped')).","
-                             .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}",'unescaped'),$ishtml)).","
-                             .db_quoteall($bplang->gT("Reminder to participate in survey",'unescaped')).","
-                             .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}",'unescaped'),$ishtml)).","
-                             .db_quoteall($bplang->gT("Confirmation of completed survey",'unescaped')).","
-                             .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
-                             .db_quoteall($bplang->gT("Survey Registration Confirmation",'unescaped')).","
-                             .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml)).","
-                             .$languagedetails['dateformat'].")";
+                    ." (surveyls_survey_id, surveyls_language, surveyls_title, "
+                    ." surveyls_email_invite_subj, surveyls_email_invite, "
+                    ." surveyls_email_remind_subj, surveyls_email_remind, "
+                    ." surveyls_email_confirm_subj, surveyls_email_confirm, "
+                    ." surveyls_email_register_subj, surveyls_email_register, "
+                    ." surveyls_dateformat) "
+                    ." VALUES ({$postsid}, '".$langname."', '',"
+                    .db_quoteall($bplang->gT("Invitation to participate in survey",'unescaped')).","
+                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}",'unescaped'),$ishtml)).","
+                    .db_quoteall($bplang->gT("Reminder to participate in survey",'unescaped')).","
+                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link: {OPTOUTURL}",'unescaped'),$ishtml)).","
+                    .db_quoteall($bplang->gT("Confirmation of completed survey",'unescaped')).","
+                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
+                    .db_quoteall($bplang->gT("Survey Registration Confirmation",'unescaped')).","
+                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml)).","
+                    .$languagedetails['dateformat'].")";
                     unset($bplang);
                     $usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br />".$connect->ErrorMsg()); // Checked
                 }
@@ -1151,14 +1151,14 @@ if(isset($surveyid))
                     $_POST['url_'.$langname]=$myFilter->process($_POST['url_'.$langname]);
                 }
                 else
-                          {
-                            $_POST['short_title_'.$langname] = html_entity_decode($_POST['short_title_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['description_'.$langname] = html_entity_decode($_POST['description_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['welcome_'.$langname] = html_entity_decode($_POST['welcome_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['endtext_'.$langname] = html_entity_decode($_POST['endtext_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['urldescrip_'.$langname] = html_entity_decode($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['url_'.$langname] = html_entity_decode($_POST['url_'.$langname], ENT_QUOTES, "UTF-8");
-                          }
+                {
+                    $_POST['short_title_'.$langname] = html_entity_decode($_POST['short_title_'.$langname], ENT_QUOTES, "UTF-8");
+                    $_POST['description_'.$langname] = html_entity_decode($_POST['description_'.$langname], ENT_QUOTES, "UTF-8");
+                    $_POST['welcome_'.$langname] = html_entity_decode($_POST['welcome_'.$langname], ENT_QUOTES, "UTF-8");
+                    $_POST['endtext_'.$langname] = html_entity_decode($_POST['endtext_'.$langname], ENT_QUOTES, "UTF-8");
+                    $_POST['urldescrip_'.$langname] = html_entity_decode($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
+                    $_POST['url_'.$langname] = html_entity_decode($_POST['url_'.$langname], ENT_QUOTES, "UTF-8");
+                }
 
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['short_title_'.$langname]=fix_FCKeditor_text($_POST['short_title_'.$langname]);
@@ -1217,12 +1217,12 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
             $_POST['urldescrip']=$myFilter->process($_POST['urldescrip']);
         }
         else
-              {
-                $_POST['surveyls_title'] = html_entity_decode($_POST['surveyls_title'], ENT_QUOTES, "UTF-8");
-                $_POST['description'] = html_entity_decode($_POST['description'], ENT_QUOTES, "UTF-8");
-                $_POST['welcome'] = html_entity_decode($_POST['welcome'], ENT_QUOTES, "UTF-8");
-                $_POST['urldescrip'] = html_entity_decode($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
-              }
+        {
+            $_POST['surveyls_title'] = html_entity_decode($_POST['surveyls_title'], ENT_QUOTES, "UTF-8");
+            $_POST['description'] = html_entity_decode($_POST['description'], ENT_QUOTES, "UTF-8");
+            $_POST['welcome'] = html_entity_decode($_POST['welcome'], ENT_QUOTES, "UTF-8");
+            $_POST['urldescrip'] = html_entity_decode($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
+        }
 
         //make sure only numbers are passed within the $_POST variable
         $_POST['dateformat'] = (int) $_POST['dateformat'];
@@ -1275,7 +1275,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'autoredirect'=>$_POST['autoredirect'],
                             'allowprev'=>$_POST['allowprev'],
                             'printanswers'=>$_POST['printanswers'],
-//                            'usetokens'=>$_POST['usetokens'],
+        //                            'usetokens'=>$_POST['usetokens'],
                             'datecreated'=>date("Y-m-d"),
                             'public'=>$_POST['public'],
                             'htmlemail'=>$_POST['htmlemail'],
@@ -1286,7 +1286,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'assessments'=>$_POST['assessments'],
                             'emailresponseto'=>$_POST['emailresponseto'],
                             'tokenlength'=>$_POST['tokenlength']
-                            );
+        );
         $dbtablename=db_table_name_nq('surveys');
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);
         $isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
@@ -1299,11 +1299,11 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['welcome']=fix_FCKeditor_text($_POST['welcome']);
 
         $bplang = new limesurvey_lang($_POST['language']);
-    $is_html_email = false;
-    if (isset($_POST['htmlemail'])  && $_POST['htmlemail'] == "Y")
-    {
-        $is_html_email = true;
-    }
+        $is_html_email = false;
+        if (isset($_POST['htmlemail'])  && $_POST['htmlemail'] == "Y")
+        {
+            $is_html_email = true;
+        }
         $insertarray=array( 'surveyls_survey_id'=>$surveyid,
                             'surveyls_language'=>$_POST['language'],
                             'surveyls_title'=>$_POST['surveyls_title'],
@@ -1321,7 +1321,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'surveyls_email_register_subj'=>$bplang->gT("Survey Registration Confirmation",'unescaped'),
                             'surveyls_email_register'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$is_html_email,'unescaped'),
                             'surveyls_dateformat'=>$_POST['dateformat']
-                            );
+        );
         $dbtablename=db_table_name_nq('surveys_languagesettings');
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);
         $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked

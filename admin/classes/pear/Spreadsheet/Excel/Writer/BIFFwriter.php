@@ -1,95 +1,95 @@
 <?php
 /*
-*  Module written/ported by Xavier Noguer <xnoguer@php.net>
-*
-*  The majority of this is _NOT_ my code.  I simply ported it from the
-*  PERL Spreadsheet::WriteExcel module.
-*
-*  The author of the Spreadsheet::WriteExcel module is John McNamara
-*  <jmcnamara@cpan.org>
-*
-*  I _DO_ maintain this code, and John McNamara has nothing to do with the
-*  porting of this code to PHP.  Any questions directly related to this
-*  class library should be directed to me.
-*
-*  License Information:
-*
-*    Spreadsheet_Excel_Writer:  A library for generating Excel Spreadsheets
-*    Copyright (c) 2002-2003 Xavier Noguer xnoguer@php.net
-*
-*    This library is free software; you can redistribute it and/or
-*    modify it under the terms of the GNU Lesser General Public
-*    License as published by the Free Software Foundation; either
-*    version 2.1 of the License, or (at your option) any later version.
-*
-*    This library is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-*    Lesser General Public License for more details.
-*
-*    You should have received a copy of the GNU Lesser General Public
-*    License along with this library; if not, write to the Free Software
-*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ *  Module written/ported by Xavier Noguer <xnoguer@php.net>
+ *
+ *  The majority of this is _NOT_ my code.  I simply ported it from the
+ *  PERL Spreadsheet::WriteExcel module.
+ *
+ *  The author of the Spreadsheet::WriteExcel module is John McNamara
+ *  <jmcnamara@cpan.org>
+ *
+ *  I _DO_ maintain this code, and John McNamara has nothing to do with the
+ *  porting of this code to PHP.  Any questions directly related to this
+ *  class library should be directed to me.
+ *
+ *  License Information:
+ *
+ *    Spreadsheet_Excel_Writer:  A library for generating Excel Spreadsheets
+ *    Copyright (c) 2002-2003 Xavier Noguer xnoguer@php.net
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) any later version.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once $homedir.'/classes/pear/PEAR.php';
 
 /**
-* Class for writing Excel BIFF records.
-*
-* From "MICROSOFT EXCEL BINARY FILE FORMAT" by Mark O'Brien (Microsoft Corporation):
-*
-* BIFF (BInary File Format) is the file format in which Excel documents are
-* saved on disk.  A BIFF file is a complete description of an Excel document.
-* BIFF files consist of sequences of variable-length records. There are many
-* different types of BIFF records.  For example, one record type describes a
-* formula entered into a cell; one describes the size and location of a
-* window into a document; another describes a picture format.
-*
-* @author   Xavier Noguer <xnoguer@php.net>
-* @category FileFormats
-* @package  Spreadsheet_Excel_Writer
-*/
+ * Class for writing Excel BIFF records.
+ *
+ * From "MICROSOFT EXCEL BINARY FILE FORMAT" by Mark O'Brien (Microsoft Corporation):
+ *
+ * BIFF (BInary File Format) is the file format in which Excel documents are
+ * saved on disk.  A BIFF file is a complete description of an Excel document.
+ * BIFF files consist of sequences of variable-length records. There are many
+ * different types of BIFF records.  For example, one record type describes a
+ * formula entered into a cell; one describes the size and location of a
+ * window into a document; another describes a picture format.
+ *
+ * @author   Xavier Noguer <xnoguer@php.net>
+ * @category FileFormats
+ * @package  Spreadsheet_Excel_Writer
+ */
 
 class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
 {
     /**
-    * The BIFF/Excel version (5).
-    * @var integer
-    */
+     * The BIFF/Excel version (5).
+     * @var integer
+     */
     var $_BIFF_version = 0x0500;
 
     /**
-    * The byte order of this architecture. 0 => little endian, 1 => big endian
-    * @var integer
-    */
+     * The byte order of this architecture. 0 => little endian, 1 => big endian
+     * @var integer
+     */
     var $_byte_order;
 
     /**
-    * The string containing the data of the BIFF stream
-    * @var string
-    */
+     * The string containing the data of the BIFF stream
+     * @var string
+     */
     var $_data;
 
     /**
-    * The size of the data in bytes. Should be the same as strlen($this->_data)
-    * @var integer
-    */
+     * The size of the data in bytes. Should be the same as strlen($this->_data)
+     * @var integer
+     */
     var $_datasize;
 
     /**
-    * The maximun length for a BIFF record. See _addContinue()
-    * @var integer
-    * @see _addContinue()
-    */
+     * The maximun length for a BIFF record. See _addContinue()
+     * @var integer
+     * @see _addContinue()
+     */
     var $_limit;
 
     /**
-    * Constructor
-    *
-    * @access public
-    */
+     * Constructor
+     *
+     * @access public
+     */
     function Spreadsheet_Excel_Writer_BIFFwriter()
     {
         $this->_byte_order = '';
@@ -101,11 +101,11 @@ class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
     }
 
     /**
-    * Determine the byte order and store it as class data to avoid
-    * recalculating it for each call to new().
-    *
-    * @access private
-    */
+     * Determine the byte order and store it as class data to avoid
+     * recalculating it for each call to new().
+     *
+     * @access private
+     */
     function _setByteOrder()
     {
         // Check if "pack" gives the required IEEE 64bit float
@@ -124,11 +124,11 @@ class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
     }
 
     /**
-    * General storage function
-    *
-    * @param string $data binary data to prepend
-    * @access private
-    */
+     * General storage function
+     *
+     * @param string $data binary data to prepend
+     * @access private
+     */
     function _prepend($data)
     {
         if (strlen($data) > $this->_limit) {
@@ -139,11 +139,11 @@ class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
     }
 
     /**
-    * General storage function
-    *
-    * @param string $data binary data to append
-    * @access private
-    */
+     * General storage function
+     *
+     * @param string $data binary data to append
+     * @access private
+     */
     function _append($data)
     {
         if (strlen($data) > $this->_limit) {
@@ -154,13 +154,13 @@ class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
     }
 
     /**
-    * Writes Excel BOF record to indicate the beginning of a stream or
-    * sub-stream in the BIFF file.
-    *
-    * @param  integer $type Type of BIFF file to write: 0x0005 Workbook,
-    *                       0x0010 Worksheet.
-    * @access private
-    */
+     * Writes Excel BOF record to indicate the beginning of a stream or
+     * sub-stream in the BIFF file.
+     *
+     * @param  integer $type Type of BIFF file to write: 0x0005 Workbook,
+     *                       0x0010 Worksheet.
+     * @access private
+     */
     function _storeBof($type)
     {
         $record  = 0x0809;        // Record identifier
@@ -186,10 +186,10 @@ class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
     }
 
     /**
-    * Writes Excel EOF record to indicate the end of a BIFF stream.
-    *
-    * @access private
-    */
+     * Writes Excel EOF record to indicate the end of a BIFF stream.
+     *
+     * @access private
+     */
     function _storeEof()
     {
         $record    = 0x000A;   // Record identifier
@@ -199,17 +199,17 @@ class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
     }
 
     /**
-    * Excel limits the size of BIFF records. In Excel 5 the limit is 2084 bytes. In
-    * Excel 97 the limit is 8228 bytes. Records that are longer than these limits
-    * must be split up into CONTINUE blocks.
-    *
-    * This function takes a long BIFF record and inserts CONTINUE records as
-    * necessary.
-    *
-    * @param  string  $data The original binary data to be written
-    * @return string        A very convenient string of continue blocks
-    * @access private
-    */
+     * Excel limits the size of BIFF records. In Excel 5 the limit is 2084 bytes. In
+     * Excel 97 the limit is 8228 bytes. Records that are longer than these limits
+     * must be split up into CONTINUE blocks.
+     *
+     * This function takes a long BIFF record and inserts CONTINUE records as
+     * necessary.
+     *
+     * @param  string  $data The original binary data to be written
+     * @return string        A very convenient string of continue blocks
+     * @access private
+     */
     function _addContinue($data)
     {
         $limit  = $this->_limit;

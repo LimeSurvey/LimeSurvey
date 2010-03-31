@@ -21,10 +21,10 @@
  * Test page for the "File Uploaders".
 -->
 <html>
-	<head>
-		<title>FCKeditor - Uploaders Tests</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<script type="text/javascript">
+<head>
+<title>FCKeditor - Uploaders Tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
 
 // Automatically detect the correct document.domain (#1919).
 (function()
@@ -118,75 +118,69 @@ function OnUploadCompleted( errorNumber, fileUrl, fileName, customMsg )
 }
 
 		</script>
-	</head>
-	<body>
-		<table cellSpacing="0" cellPadding="0" width="100%" border="0" height="100%">
+</head>
+<body>
+<table cellSpacing="0" cellPadding="0" width="100%" border="0"
+	height="100%">
+	<tr>
+		<td>
+		<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 			<tr>
-				<td>
-					<table cellSpacing="0" cellPadding="0" width="100%" border="0">
-						<tr>
-							<td nowrap>
-								Select the "File Uploader" to use: <br>
-								<select id="cmbUploaderUrl">
-									<option selected value="asp/upload.asp">ASP</option>
-									<option value="aspx/upload.aspx">ASP.Net</option>
-									<option value="cfm/upload.cfm">ColdFusion</option>
-									<option value="lasso/upload.lasso">Lasso</option>
-									<option value="perl/upload.cgi">Perl</option>
-									<option value="php/upload.php">PHP</option>
-									<option value="py/upload.py">Python</option>
-									<option value="">(Custom)</option>
-								</select>
-							</td>
-						<td>
-							Resource Type<br />
-							<select id="cmbType" name="cmbType">
-								<option value="">None</option>
-								<option value="File">File</option>
-								<option value="Image">Image</option>
-								<option value="Flash">Flash</option>
-								<option value="Media">Media</option>
-								<option value="Invalid">Invalid Type (for testing)</option>
-							</select>
-						</td>
-						<td>
-						Current Folder: <br>
-						<input type="text" name="CurrentFolder" id="CurrentFolder" value="/">
-						</td>
-							<td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-							<td width="100%">
-								Custom Uploader URL:<BR>
-								<input id="txtCustomUrl" style="WIDTH: 100%; BACKGROUND-COLOR: #dcdcdc" disabled type="text">
-							</td>
-						</tr>
-					</table>
-					<br>
-					<table cellSpacing="0" cellPadding="0" width="100%" border="0">
-						<tr>
-							<td noWrap>
-								<form id="frmUpload" target="UploadWindow" enctype="multipart/form-data" action="" method="post">
-									Upload a new file:<br>
-									<input type="file" name="NewFile"><br>
-
-									<input type="button" value="Send it to the Server" onclick="SendFile();">
-								</form>
-							</td>
-							<td style="WIDTH: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-							<td vAlign="top" width="100%">
-								Uploaded File URL:<br>
-								<INPUT id="txtUrl" style="WIDTH: 100%" readonly type="text">
-							</td>
-						</tr>
-					</table>
-					<br>
-					Post URL: <span id="eURL">&nbsp;</span>
+				<td nowrap>Select the "File Uploader" to use: <br>
+				<select id="cmbUploaderUrl">
+					<option selected value="asp/upload.asp">ASP</option>
+					<option value="aspx/upload.aspx">ASP.Net</option>
+					<option value="cfm/upload.cfm">ColdFusion</option>
+					<option value="lasso/upload.lasso">Lasso</option>
+					<option value="perl/upload.cgi">Perl</option>
+					<option value="php/upload.php">PHP</option>
+					<option value="py/upload.py">Python</option>
+					<option value="">(Custom)</option>
+				</select></td>
+				<td>Resource Type<br />
+				<select id="cmbType" name="cmbType">
+					<option value="">None</option>
+					<option value="File">File</option>
+					<option value="Image">Image</option>
+					<option value="Flash">Flash</option>
+					<option value="Media">Media</option>
+					<option value="Invalid">Invalid Type (for testing)</option>
+				</select></td>
+				<td>Current Folder: <br>
+				<input type="text" name="CurrentFolder" id="CurrentFolder" value="/">
 				</td>
-			</tr>
-			<tr>
-				<td height="100%">
-					<iframe name="UploadWindow" width="100%" height="100%" src="javascript:void(0)"></iframe>
+				<td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td width="100%">Custom Uploader URL:<BR>
+				<input id="txtCustomUrl"
+					style="WIDTH: 100%; BACKGROUND-COLOR: #dcdcdc" disabled type="text">
 				</td>
 			</tr>
 		</table>
-	</body>
+		<br>
+		<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+			<tr>
+				<td noWrap>
+				<form id="frmUpload" target="UploadWindow"
+					enctype="multipart/form-data" action="" method="post">
+				Upload a new file:<br>
+				<input type="file" name="NewFile"><br>
+
+				<input type="button" value="Send it to the Server"
+					onclick="SendFile();"></form>
+				</td>
+				<td style="WIDTH: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td vAlign="top" width="100%">Uploaded File URL:<br>
+				<INPUT id="txtUrl" style="WIDTH: 100%" readonly type="text">
+				</td>
+			</tr>
+		</table>
+		<br>
+		Post URL: <span id="eURL">&nbsp;</span></td>
+	</tr>
+	<tr>
+		<td height="100%"><iframe name="UploadWindow" width="100%"
+			height="100%" src="javascript:void(0)"></iframe></td>
+	</tr>
+</table>
+</body>
 </html>

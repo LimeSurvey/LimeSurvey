@@ -1,13 +1,12 @@
 /* The following styles are for IE 8 only*/
-.rank label
-{
+.rank label {
   line-height: 27px;
 }
 
 td .rank {
-    padding-right:20px;    
+  padding-right: 20px;
 }
 
 td.questionhelp {
-    text-align:left;
+  text-align: left;
 }

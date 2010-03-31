@@ -52,280 +52,280 @@ $sReturn = '';
 reset($_POST);
 while(list($key, $value) = each($_POST))
 {
-	switch ($key)
-	{
-		case "sendStatistic":
+    switch ($key)
+    {
+        case "sendStatistic":
 
-			try
-			{
-				$sReturn = $testclient->sendStatistics($_REQUEST['type'],$_REQUEST['email'], $_REQUEST['graph']);
-			}
-			catch(SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            try
+            {
+                $sReturn = $testclient->sendStatistics($_REQUEST['type'],$_REQUEST['email'], $_REQUEST['graph']);
+            }
+            catch(SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 
-			break;
-		case "delsurvey":
-			try
-			{
-				$sReturn = $testclient->deleteSurvey();
-			}
-			catch(SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			break;
-		case "sendMail":
+            break;
+        case "delsurvey":
+            try
+            {
+                $sReturn = $testclient->deleteSurvey();
+            }
+            catch(SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "sendMail":
 
-			$sType = $_REQUEST['type'];
-			$maxemails = $_REQUEST['maxemails'];
-			$subject = $_REQUEST['subject'];
-			$mailText = $_REQUEST['mailText'];
+            $sType = $_REQUEST['type'];
+            $maxemails = $_REQUEST['maxemails'];
+            $subject = $_REQUEST['subject'];
+            $mailText = $_REQUEST['mailText'];
 
-			try
-			{
-				$sReturn = $testclient->sendMail($sType, $maxemails, $subject, $mailText);
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			break;
-		case "getField":
+            try
+            {
+                $sReturn = $testclient->sendMail($sType, $maxemails, $subject, $mailText);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "getField":
 
-			try
-			{
-				$sReturn = $testclient->getFieldmap();
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			break;
-		case "delsurvey":
+            try
+            {
+                $sReturn = $testclient->getFieldmap();
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "delsurvey":
 
-			try
-			{
-				$sReturn = $testclient->deleteSurvey();
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			break;
-		case "impMatrix":
+            try
+            {
+                $sReturn = $testclient->deleteSurvey();
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "impMatrix":
 
-			$qText = $_REQUEST['quest'];
-			$mandatory = $_REQUEST['mandatory'];
-			for($n=1;$n<10;++$n)
-			{
-				if($_REQUEST['item'.$n]!='')
-				{
-					if($n==1)
-					{
-						$items = $_REQUEST['item'.$n];
-					}
-					else
-					{
-						$items .= ",".$_REQUEST['item'.$n];
-					}
-				}
-			}
+            $qText = $_REQUEST['quest'];
+            $mandatory = $_REQUEST['mandatory'];
+            for($n=1;$n<10;++$n)
+            {
+                if($_REQUEST['item'.$n]!='')
+                {
+                    if($n==1)
+                    {
+                        $items = $_REQUEST['item'.$n];
+                    }
+                    else
+                    {
+                        $items .= ",".$_REQUEST['item'.$n];
+                    }
+                }
+            }
 
-			$qHelp = $_REQUEST['help'];
+            $qHelp = $_REQUEST['help'];
 
-			try
-			{
+            try
+            {
 
-				$sReturn = $testclient->importMatrix($qTitle, $qText, $qHelp, $items, "Matrix5", $mandatory);
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			break;
-
-
-		case "impFree":
-
-			$qTitle = $_REQUEST['title'];
-			$qText = $_REQUEST['quest'];
-			$qHelp = $_REQUEST['help'];
-			$mandatory = $_REQUEST['mandatory'];
-
-			try
-			{
-
-				$sReturn = $testclient->sImportFreetext($qTitle, $qText, $qHelp, "Freitext", $mandatory);
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			break;
-
-		case "impQuest":
-
-			$sMod = $_REQUEST['mod'];
-			$mandatory = $_REQUEST['mandatory'];
-
-			try
-			{
-
-				$sReturn = $testclient->importQuestion($sMod, $mandatory);
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			break;
-
-		case "impGroup":
-
-			$sMod = $_REQUEST['mod'];
-			$sGroupName = $_REQUEST['groupName'];
-			$sGroupDescription = $_REQUEST['groupDescription'];
-			try
-			{
-				$sReturn = $client->sImportGroup($sMod, $sGroupName, $sGroupDescription);
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-
-			break;
-
-		case "activate":
-			$dStart = $_REQUEST['start'];
-			$dEnd = $_REQUEST['end'];
-			try
-			{
-				$sReturn = $testclient->activateSurvey( $dStart, $dEnd);
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+                $sReturn = $testclient->importMatrix($qTitle, $qText, $qHelp, $items, "Matrix5", $mandatory);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
 
 
-			break;
+        case "impFree":
 
-		case "createSurvey":
-			$sVbes = $_REQUEST['sdes'];
-			$sVtit = $_REQUEST['stit'];
-			$sVwel = $_REQUEST['sVwel'];
-			$sVend = $_REQUEST['sVend'];
-			$sMail = $_REQUEST['sEmail'];
-			$sName = $_REQUEST['sName'];
-			$sUrl = $_REQUEST['sUrl'];
-			$sUbes = $_REQUEST['sUdes'];
-			$sVtyp = $_REQUEST['core'];
+            $qTitle = $_REQUEST['title'];
+            $qText = $_REQUEST['quest'];
+            $qHelp = $_REQUEST['help'];
+            $mandatory = $_REQUEST['mandatory'];
 
-			try
-			{
-				$sReturn = $testclient->createSurvey($sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            try
+            {
+
+                $sReturn = $testclient->sImportFreetext($qTitle, $qText, $qHelp, "Freitext", $mandatory);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+
+        case "impQuest":
+
+            $sMod = $_REQUEST['mod'];
+            $mandatory = $_REQUEST['mandatory'];
+
+            try
+            {
+
+                $sReturn = $testclient->importQuestion($sMod, $mandatory);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+
+        case "impGroup":
+
+            $sMod = $_REQUEST['mod'];
+            $sGroupName = $_REQUEST['groupName'];
+            $sGroupDescription = $_REQUEST['groupDescription'];
+            try
+            {
+                $sReturn = $client->sImportGroup($sMod, $sGroupName, $sGroupDescription);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+            break;
+
+        case "activate":
+            $dStart = $_REQUEST['start'];
+            $dEnd = $_REQUEST['end'];
+            try
+            {
+                $sReturn = $testclient->activateSurvey( $dStart, $dEnd);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 
 
-			break;
+            break;
 
-		case "change":
+        case "createSurvey":
+            $sVbes = $_REQUEST['sdes'];
+            $sVtit = $_REQUEST['stit'];
+            $sVwel = $_REQUEST['sVwel'];
+            $sVend = $_REQUEST['sVend'];
+            $sMail = $_REQUEST['sEmail'];
+            $sName = $_REQUEST['sName'];
+            $sUrl = $_REQUEST['sUrl'];
+            $sUbes = $_REQUEST['sUdes'];
+            $sVtyp = $_REQUEST['core'];
 
-			$table = $_REQUEST['table'];
-			$key = $_REQUEST['key'];
-			$value = $_REQUEST['value'];
-			$where = $_REQUEST['whereKey'];
-			$mode = $_REQUEST['mode'];
-			//$whereValue = $_REQUEST['whereValue'];
-
-			try
-			{
-				$sReturn = $testclient->changeSurvey($table, $key, $value, $where, $mode);
-				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
+            try
+            {
+                $sReturn = $testclient->createSurvey($sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 
 
-			break;
+            break;
 
-		case "tokens":
+        case "change":
 
-			$sToken = $_REQUEST['token'];
-			try
-			{
-				$sReturn = $testclient->insertToken( $sToken );
-				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
+            $table = $_REQUEST['table'];
+            $key = $_REQUEST['key'];
+            $value = $_REQUEST['value'];
+            $where = $_REQUEST['whereKey'];
+            $mode = $_REQUEST['mode'];
+            //$whereValue = $_REQUEST['whereValue'];
 
-			break;
+            try
+            {
+                $sReturn = $testclient->changeSurvey($table, $key, $value, $where, $mode);
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
 
-		case "tokRet":
 
-			try
-			{
-				$sReturn = $testclient->tokenReturn();
-				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
+            break;
 
-			break;
+        case "tokens":
 
-		case "insPar":
+            $sToken = $_REQUEST['token'];
+            try
+            {
+                $sReturn = $testclient->insertToken( $sToken );
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
 
-			$sParticipantData = $_REQUEST['sParticipantData'];
-			try
-			{
-				$sReturn = $testclient->insertParticipants($sParticipantData);
-				
-				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-			}
-			catch (SoapFault $fault)
-			{
-				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-			}
-			//these are just outputs for testing
-			
+            break;
 
-			break;
-	}
+        case "tokRet":
+
+            try
+            {
+                $sReturn = $testclient->tokenReturn();
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+
+            break;
+
+        case "insPar":
+
+            $sParticipantData = $_REQUEST['sParticipantData'];
+            try
+            {
+                $sReturn = $testclient->insertParticipants($sParticipantData);
+
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+
+
+            break;
+    }
 }
 
 ##
@@ -345,35 +345,35 @@ while(list($key, $value) = each($_POST))
 <style type='text/css'>
 <!--
 body {
-	background-color: black;
-	color: white;
+  background-color: black;
+  color: white;
 }
 
 div {
-	background-color: white;
-	color: black;
-	padding: 0.2em;
+  background-color: white;
+  color: black;
+  padding: 0.2em;
 }
 
 a:link {
-	color: darkgreen;
-	fontweight: bold;
+  color: darkgreen;
+  fontweight: bold;
 }
 
 a:visited {
-	color: darkgreen;
-	fontweight: bold;
+  color: darkgreen;
+  fontweight: bold;
 }
 
 a:hover {
-	color: green;
-	fontweight: bold;
+  color: green;
+  fontweight: bold;
 }
 
 p {
-	border-top: solid 1px white;
-	margin-bottom: 0.5em;
-	margin-top: 0.2em;
+  border-top: solid 1px white;
+  margin-bottom: 0.5em;
+  margin-top: 0.2em;
 }
 -->
 </style>
@@ -386,26 +386,26 @@ echo $testclient->soapCheck();
  */
 if(isset($sReturn) && $sReturn!='')
 {
-	echo $testclient->getResponse();
+    echo $testclient->getResponse();
 }
 
 // we dump the client object functions (which are functions of the server  defined in the wsdl)
 if(!isset($sReturn) || $sReturn=='')
 {
-	echo $testclient->getServerFunctions();
+    echo $testclient->getServerFunctions();
 }
 
 if(isset($sOutput))
 {
 
-	echo '<div style="color:white;background-color:black;border: 1px solid white;">';
-	echo '<h3>testing output:</h3>';
-	if(isset($testclient->sid))
-	{
-		echo "<a href='{$testclient->limeUrl}/index.php?sid=".$testclient->sid."&amp;lang=de&amp;newtest=Y' target='_blank'>test Survey</a>";
-	}
-	echo $sOutput;
-	echo '</div>';
+    echo '<div style="color:white;background-color:black;border: 1px solid white;">';
+    echo '<h3>testing output:</h3>';
+    if(isset($testclient->sid))
+    {
+        echo "<a href='{$testclient->limeUrl}/index.php?sid=".$testclient->sid."&amp;lang=de&amp;newtest=Y' target='_blank'>test Survey</a>";
+    }
+    echo $sOutput;
+    echo '</div>';
 }
 ?>
 <div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
@@ -548,7 +548,7 @@ for($n=0;$n<count($aQues);++$n)
 <?php
 for($n=1;$n<10;++$n)
 {
-	echo "<b>Item {$n} :</b> <br />",
+    echo "<b>Item {$n} :</b> <br />",
 		 "<input type='text' name='item{$n}' size='50' maxlength='150'/>",
 		 "<br />";
 }

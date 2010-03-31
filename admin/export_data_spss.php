@@ -68,28 +68,28 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 $filterstate = incompleteAnsFilterstate();
 $spssver = returnglobal('spssver');
 if (is_null($spssver)) {
-	if (!isset($_SESSION['spssversion'])) {
-		$_SESSION['spssversion'] = 2;	//Set default to 2, version 16 or up
-	}
-	$spssver = $_SESSION['spssversion'];
+    if (!isset($_SESSION['spssversion'])) {
+        $_SESSION['spssversion'] = 2;	//Set default to 2, version 16 or up
+    }
+    $spssver = $_SESSION['spssversion'];
 } else {
-	$_SESSION['spssversion'] = $spssver;
-}	
+    $_SESSION['spssversion'] = $spssver;
+}
 
 $length_varlabel = '255'; // Set the max text length of Variable Labels
 $length_vallabel = '120'; // Set the max text length of Value Labels
 
 switch ($spssver) {
-	case 1:	//<16
-		$length_data	 = '255'; // Set the max text length of the Value
-		break;
-	case 2:	//>=16
-		$length_data	 = '16384'; // Set the max text length of the Value
-		break;
-	default:
-		$length_data	 = '16384'; // Set the max text length of the Value
+    case 1:	//<16
+        $length_data	 = '255'; // Set the max text length of the Value
+        break;
+    case 2:	//>=16
+        $length_data	 = '16384'; // Set the max text length of the Value
+        break;
+    default:
+        $length_data	 = '16384'; // Set the max text length of the Value
 
-}		
+}
 
 $headerComment = '*$Rev$' . " $filterstate $spssver.\n";
 
@@ -98,198 +98,198 @@ if (isset($_GET['dlstructure'])) $subaction = "dlstructure";
 
 if  (!isset($subaction))
 {
-	$exportspssoutput = browsemenubar($clang->gT('Export results'));
-	$exportspssoutput .= "<div class='header'>".$clang->gT("Export result data to SPSS")."</div>\n";
-	
-	$selecthide="";
-	$selectshow="";
-	$selectinc="";
-	switch ($filterstate) {
-		case "inc":
-		    $selectinc="selected='selected'";
-		    break;
-		case "filter":
-			$selecthide="selected='selected'";
-			break;
-		default: 
-			$selectshow="selected='selected'";
-	}
-	
-	$exportspssoutput .= "<form action='$scriptname' id='exportspss' method='get'><ul>\n"
-	."<li><label for='filterinc'>".$clang->gT("Data selection:")."</label><select id='filterinc' name='filterinc' onchange='this.form.submit();'>\n"
-	."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
-	."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
-	."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
-	."</select></li>\n";
-		
-	$exportspssoutput .= "<li><label for='spssver'>".$clang->gT("SPSS version:")."</label><select id='spssver' name='spssver' onchange='this.form.submit();'>\n";
-	if ($spssver == 1) $selected = "selected='selected'"; else $selected = "";
-	$exportspssoutput .= "\t<option value='1' $selected>".$clang->gT("Prior to 16")."</option>\n";
-	if ($spssver == 2) $selected = "selected='selected'"; else $selected = "";
-	$exportspssoutput .= "\t<option value='2' $selected>".$clang->gT("16 or up")."</option>\n";
-	$exportspssoutput .= "</select></li>\n";
-    $exportspssoutput .= "<input type='hidden' name='sid' value='$surveyid' />\n"
-	."<input type='hidden' name='action' value='exportspss' /></li>\n"
-	."<li><label for='dlstructure'>" . $clang->gT("Step 1:") . "</label><input type='submit' name='dlstructure' id='dlstructure' value='" . $clang->gT("Export syntax") . "'/></li>\n"
-	."<li><label for='dldata'/>" . $clang->gT("Step 2:") . "</label><input type='submit' name='dldata' id='dldata' value='" . $clang->gT("Export data") . "'/></li></ul>\n"
-	."</form>\n";
-	
-	$exportspssoutput .= "<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
-	."<br/><ol style='margin:0 auto; font-size:8pt;'>"
-	."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
-	."<li>".$clang->gT("Open the syntax file in SPSS in Unicode mode").".</li>"
-	."<li>".$clang->gT("Edit the 4th line and complete the filename with a full path to the downloaded data file.")."</li>"
-	."<li>".$clang->gT("Choose 'Run/All' from the menu to run the import.")."</li>"
-	."</ol><p>"
-	.$clang->gT("Your data should be imported now.").'</div>';
-	
-	
-} else {
-	// Get Base Language:
+    $exportspssoutput = browsemenubar($clang->gT('Export results'));
+    $exportspssoutput .= "<div class='header'>".$clang->gT("Export result data to SPSS")."</div>\n";
 
-	$language = GetBaseLanguageFromSurveyID($surveyid);
-	$clang = new limesurvey_lang($language);
-	require_once ("export_data_functions.php");
+    $selecthide="";
+    $selectshow="";
+    $selectinc="";
+    switch ($filterstate) {
+        case "inc":
+            $selectinc="selected='selected'";
+            break;
+        case "filter":
+            $selecthide="selected='selected'";
+            break;
+        default:
+            $selectshow="selected='selected'";
+    }
+
+    $exportspssoutput .= "<form action='$scriptname' id='exportspss' method='get'><ul>\n"
+    ."<li><label for='filterinc'>".$clang->gT("Data selection:")."</label><select id='filterinc' name='filterinc' onchange='this.form.submit();'>\n"
+    ."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
+    ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
+    ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
+    ."</select></li>\n";
+
+    $exportspssoutput .= "<li><label for='spssver'>".$clang->gT("SPSS version:")."</label><select id='spssver' name='spssver' onchange='this.form.submit();'>\n";
+    if ($spssver == 1) $selected = "selected='selected'"; else $selected = "";
+    $exportspssoutput .= "\t<option value='1' $selected>".$clang->gT("Prior to 16")."</option>\n";
+    if ($spssver == 2) $selected = "selected='selected'"; else $selected = "";
+    $exportspssoutput .= "\t<option value='2' $selected>".$clang->gT("16 or up")."</option>\n";
+    $exportspssoutput .= "</select></li>\n";
+    $exportspssoutput .= "<input type='hidden' name='sid' value='$surveyid' />\n"
+    ."<input type='hidden' name='action' value='exportspss' /></li>\n"
+    ."<li><label for='dlstructure'>" . $clang->gT("Step 1:") . "</label><input type='submit' name='dlstructure' id='dlstructure' value='" . $clang->gT("Export syntax") . "'/></li>\n"
+    ."<li><label for='dldata'/>" . $clang->gT("Step 2:") . "</label><input type='submit' name='dldata' id='dldata' value='" . $clang->gT("Export data") . "'/></li></ul>\n"
+    ."</form>\n";
+
+    $exportspssoutput .= "<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
+    ."<br/><ol style='margin:0 auto; font-size:8pt;'>"
+    ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
+    ."<li>".$clang->gT("Open the syntax file in SPSS in Unicode mode").".</li>"
+    ."<li>".$clang->gT("Edit the 4th line and complete the filename with a full path to the downloaded data file.")."</li>"
+    ."<li>".$clang->gT("Choose 'Run/All' from the menu to run the import.")."</li>"
+    ."</ol><p>"
+    .$clang->gT("Your data should be imported now.").'</div>';
+
+
+} else {
+    // Get Base Language:
+
+    $language = GetBaseLanguageFromSurveyID($surveyid);
+    $clang = new limesurvey_lang($language);
+    require_once ("export_data_functions.php");
 }
 
 
 
 if  ($subaction=='dldata') {
-	header("Content-Type: application/download; charset=utf-8");
-	header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_data_file.dat");
-	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	header('Pragma: no-cache');
+    header("Content-Type: application/download; charset=utf-8");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_data_file.dat");
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: no-cache');
 
-	$na = "";
-	spss_export_data($na);
+    $na = "";
+    spss_export_data($na);
 
-	exit;
+    exit;
 }
 
 
 if  ($subaction=='dlstructure') {
-	header("Content-Type: application/download; charset=utf-8");
-	header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_syntax_file.sps");
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	header('Pragma: no-cache');
+    header("Content-Type: application/download; charset=utf-8");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_syntax_file.sps");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: no-cache');
 
-	// Build array that has to be returned
-	$fields = spss_fieldmap();
+    // Build array that has to be returned
+    $fields = spss_fieldmap();
 
-	//Now get the query string with all fields to export
-	$query = spss_getquery();
+    //Now get the query string with all fields to export
+    $query = spss_getquery();
 
-	$result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
-	$num_fields = $result->FieldCount();
+    $result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
+    $num_fields = $result->FieldCount();
 
-	//Now we check if we need to adjust the size of the field or the type of the field
-	while ($row = $result->FetchRow()) {
-		$fieldno = 0;
-		while ($fieldno < $num_fields)
-		{
-			//Performance improvement, don't recheck fields that have valuelabels
-			if (!isset($fields[$fieldno]['answers'])) {
-				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
-				$len = mb_strlen($strTmp);
-				if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
+    //Now we check if we need to adjust the size of the field or the type of the field
+    while ($row = $result->FetchRow()) {
+        $fieldno = 0;
+        while ($fieldno < $num_fields)
+        {
+            //Performance improvement, don't recheck fields that have valuelabels
+            if (!isset($fields[$fieldno]['answers'])) {
+                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+                $len = mb_strlen($strTmp);
+                if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
 
-				if (trim($strTmp) != ''){
-					if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
-					{
-						$fields[$fieldno]['SPSStype']='A';
-					}
-				}
-			}
-			$fieldno++;
-		}
-	}
+                if (trim($strTmp) != ''){
+                    if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
+                    {
+                        $fields[$fieldno]['SPSStype']='A';
+                    }
+                }
+            }
+            $fieldno++;
+        }
+    }
 
-	/**
-	 * End of DATA print out
-	 *
-	 * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
-	 * be sent to the client.
-	 */
-	echo $headerComment;
-	if ($spssver == 2) echo "SET UNICODE=ON.\n";
-	echo "GET DATA\n"
-	." /TYPE=TXT\n"
-	." /FILE='survey_".$surveyid."_SPSS_data_file.dat'\n"
-	." /DELCASE=LINE\n"
-	." /DELIMITERS=\",\"\n"
-	." /QUALIFIER=\"'\"\n"
-	." /ARRANGEMENT=DELIMITED\n"
-	." /FIRSTCASE=1\n"
-	." /IMPORTCASE=ALL\n"
-	." /VARIABLES=";
-	foreach ($fields as $field){
-		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
-		if($field['SPSStype']=='F' && ($field['LStype'] == 'N' || $field['LStype']=='K')) {
-			$field['size'].='.'.($field['size']-1);
-		}
-		if (!$field['hide']) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
-	}
-	echo ".\nCACHE.\n"
-	."EXECUTE.\n";
+    /**
+     * End of DATA print out
+     *
+     * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
+     * be sent to the client.
+     */
+    echo $headerComment;
+    if ($spssver == 2) echo "SET UNICODE=ON.\n";
+    echo "GET DATA\n"
+    ." /TYPE=TXT\n"
+    ." /FILE='survey_".$surveyid."_SPSS_data_file.dat'\n"
+    ." /DELCASE=LINE\n"
+    ." /DELIMITERS=\",\"\n"
+    ." /QUALIFIER=\"'\"\n"
+    ." /ARRANGEMENT=DELIMITED\n"
+    ." /FIRSTCASE=1\n"
+    ." /IMPORTCASE=ALL\n"
+    ." /VARIABLES=";
+    foreach ($fields as $field){
+        if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
+        if($field['SPSStype']=='F' && ($field['LStype'] == 'N' || $field['LStype']=='K')) {
+            $field['size'].='.'.($field['size']-1);
+        }
+        if (!$field['hide']) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
+    }
+    echo ".\nCACHE.\n"
+    ."EXECUTE.\n";
 
-	//Create the variable labels:
-	echo "*Define Variable Properties.\n";
-	foreach ($fields as $field) {
-		if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . "\".\n";
-	}
+    //Create the variable labels:
+    echo "*Define Variable Properties.\n";
+    foreach ($fields as $field) {
+        if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . "\".\n";
+    }
 
-	// Create our Value Labels!
-	echo "*Define Value labels.\n";
-	foreach ($fields as $field) {
-		if (isset($field['answers'])) {
-			$answers = $field['answers'];
-			//print out the value labels!
-			echo "VALUE LABELS  {$field['id']}\n";
-			$i=0;
-			foreach ($answers as $answer) {
-				$i++;
-				if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
-					$str = "{$answer['code']}";
-				} else {
-					$str = "\"{$answer['code']}\"";
-				}
-				if ($i < count($answers)) {
-					echo " $str \"{$answer['value']}\"\n";
-				} else {
-					echo " $str \"{$answer['value']}\".\n";
-				}
-			}
-		}
-	}
+    // Create our Value Labels!
+    echo "*Define Value labels.\n";
+    foreach ($fields as $field) {
+        if (isset($field['answers'])) {
+            $answers = $field['answers'];
+            //print out the value labels!
+            echo "VALUE LABELS  {$field['id']}\n";
+            $i=0;
+            foreach ($answers as $answer) {
+                $i++;
+                if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
+                    $str = "{$answer['code']}";
+                } else {
+                    $str = "\"{$answer['code']}\"";
+                }
+                if ($i < count($answers)) {
+                    echo " $str \"{$answer['value']}\"\n";
+                } else {
+                    echo " $str \"{$answer['value']}\".\n";
+                }
+            }
+        }
+    }
 
-	foreach ($fields as $field){
-		if($field['scale']!=='') {
-			switch ($field['scale']) {
-				case 2:
-					echo "VARIABLE LEVEL {$field['id']}(ORDINAL).\n";
-					break;
-				case 3:
-					echo "VARIABLE LEVEL {$field['id']}(SCALE).\n";
-			}
-		}
-	}
+    foreach ($fields as $field){
+        if($field['scale']!=='') {
+            switch ($field['scale']) {
+                case 2:
+                    echo "VARIABLE LEVEL {$field['id']}(ORDINAL).\n";
+                    break;
+                case 3:
+                    echo "VARIABLE LEVEL {$field['id']}(SCALE).\n";
+            }
+        }
+    }
 
-	//Rename the Variables (in case somethings goes wrong, we still have the OLD values
-	foreach ($fields as $field){
-		if (isset($field['sql_name']) && $field['hide']===0) {
-			$ftitle = $field['title'];
-			if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
-				$ftitle = "q_" . $ftitle;
-			}
-			$ftitle = str_replace(array(" ","-",":",";","!","/","\\"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_"), $ftitle);
-			if ($ftitle != $field['title']) echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
-			echo "RENAME VARIABLE ( " . $field['id'] . " = " . $ftitle . " ).\n";
-		}
-	}
-	exit;
+    //Rename the Variables (in case somethings goes wrong, we still have the OLD values
+    foreach ($fields as $field){
+        if (isset($field['sql_name']) && $field['hide']===0) {
+            $ftitle = $field['title'];
+            if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                $ftitle = "q_" . $ftitle;
+            }
+            $ftitle = str_replace(array(" ","-",":",";","!","/","\\"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_"), $ftitle);
+            if ($ftitle != $field['title']) echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
+            echo "RENAME VARIABLE ( " . $field['id'] . " = " . $ftitle . " ).\n";
+        }
+    }
+    exit;
 }
 ?>

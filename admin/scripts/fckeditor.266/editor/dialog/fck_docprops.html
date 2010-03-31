@@ -23,11 +23,11 @@
 -->
 <html>
 <head>
-	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
-	<meta content="noindex, nofollow" name="robots" >
-	<script src="common/fck_dialog_common.js" type="text/javascript"></script>
-	<script type="text/javascript">
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta content="noindex, nofollow" name="robots">
+<script src="common/fck_dialog_common.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 var oEditor		= window.parent.InnerDialogLoaded() ;
 var FCK			= oEditor.FCK ;
@@ -396,205 +396,203 @@ function SetUrl( url )
 	</script>
 </head>
 <body style="overflow: hidden">
-	<table cellspacing="0" cellpadding="0" width="100%" border="0" style="height: 100%">
-		<tr>
-			<td valign="top" style="height: 100%">
-				<div id="divGeneral">
-					<span fcklang="DlgDocPageTitle">Page Title</span><br />
-					<input id="txtPageTitle" style="width: 100%" type="text" />
-					<br />
-					<table cellspacing="0" cellpadding="0" border="0">
-						<tr>
-							<td>
-								<span fcklang="DlgDocLangDir">Language Direction</span><br />
-								<select id="selDirection">
-									<option value="" selected="selected"></option>
-									<option value="ltr" fcklang="DlgDocLangDirLTR">Left to Right (LTR)</option>
-									<option value="rtl" fcklang="DlgDocLangDirRTL">Right to Left (RTL)</option>
-								</select>
-							</td>
-							<td>
-								&nbsp;&nbsp;&nbsp;</td>
-							<td>
-								<span fcklang="DlgDocLangCode">Language Code</span><br />
-								<input id="txtLang" type="text" />
-							</td>
-						</tr>
-					</table>
-					<br />
-					<table cellspacing="0" cellpadding="0" width="100%" border="0">
-						<tr>
-							<td style="white-space: nowrap">
-								<span fcklang="DlgDocCharSet">Character Set Encoding</span><br />
-								<select id="selCharSet" onchange="CheckOther( this, 'txtCustomCharSet' );">
-									<option value="" selected="selected"></option>
-									<option value="us-ascii">ASCII</option>
-									<option fcklang="DlgDocCharSetCE" value="iso-8859-2">Central European</option>
-									<option fcklang="DlgDocCharSetCT" value="big5">Chinese Traditional (Big5)</option>
-									<option fcklang="DlgDocCharSetCR" value="iso-8859-5">Cyrillic</option>
-									<option fcklang="DlgDocCharSetGR" value="iso-8859-7">Greek</option>
-									<option fcklang="DlgDocCharSetJP" value="iso-2022-jp">Japanese</option>
-									<option fcklang="DlgDocCharSetKR" value="iso-2022-kr">Korean</option>
-									<option fcklang="DlgDocCharSetTR" value="iso-8859-9">Turkish</option>
-									<option fcklang="DlgDocCharSetUN" value="utf-8">Unicode (UTF-8)</option>
-									<option fcklang="DlgDocCharSetWE" value="iso-8859-1">Western European</option>
-									<option fcklang="DlgOpOther" value="...">&lt;Other&gt;</option>
-								</select>
-							</td>
-							<td>
-								&nbsp;&nbsp;&nbsp;</td>
-							<td width="100%">
-								<span fcklang="DlgDocCharSetOther">Other Character Set Encoding</span><br />
-								<input id="txtCustomCharSet" style="width: 100%; background-color: #cccccc" disabled="disabled"
-									type="text" />
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								&nbsp;</td>
-						</tr>
-						<tr>
-							<td nowrap="nowrap">
-								<span fcklang="DlgDocDocType">Document Type Heading</span><br />
-								<select id="selDocType" onchange="CheckOther( this, 'txtDocType' );">
-									<option value="" selected="selected"></option>
-									<option value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;'>HTML
-										4.01 Transitional</option>
-									<option value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;'>
-										HTML 4.01 Strict</option>
-									<option value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd"&gt;'>
-										HTML 4.01 Frameset</option>
-									<option value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;'>
-										XHTML 1.0 Transitional</option>
-									<option value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;'>
-										XHTML 1.0 Strict</option>
-									<option value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"&gt;'>
-										XHTML 1.0 Frameset</option>
-									<option value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;'>
-										XHTML 1.1</option>
-									<option value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"&gt;'>HTML 3.2</option>
-									<option value='&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN"&gt;'>HTML 2.0</option>
-									<option value="..." fcklang="DlgOpOther">&lt;Other&gt;</option>
-								</select>
-							</td>
-							<td>
-							</td>
-							<td width="100%">
-								<span fcklang="DlgDocDocTypeOther">Other Document Type Heading</span><br />
-								<input id="txtDocType" style="width: 100%; background-color: #cccccc" disabled="disabled"
-									type="text" />
-							</td>
-						</tr>
-					</table>
-					<br />
-					<input id="chkIncXHTMLDecl" type="checkbox" />
-					<label for="chkIncXHTMLDecl" fcklang="DlgDocIncXHTML">
-						Include XHTML Declarations</label>
-				</div>
-				<div id="divBackground" style="display: none">
-					<span fcklang="DlgDocBgColor">Background Color</span><br />
-					<input id="txtBackColor" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();" />&nbsp;<input
-						id="btnSelBackColor" onclick="SelectColor( 'Back' )" type="button" value="Select..."
-						fcklang="DlgCellBtnSelect" /><br />
-					<br />
-					<span fcklang="DlgDocBgImage">Background Image URL</span><br />
-					<table cellspacing="0" cellpadding="0" width="100%" border="0">
-						<tr>
-							<td width="100%">
-								<input id="txtBackImage" style="width: 100%" type="text" onchange="UpdatePreview();"
-									onkeyup="UpdatePreview();" /></td>
-							<td id="tdBrowse" nowrap="nowrap">
-								&nbsp;<input id="btnBrowse" onclick="BrowseServerBack();" type="button" fcklang="DlgBtnBrowseServer"
-									value="Browse Server" /></td>
-						</tr>
-					</table>
-					<input id="chkBackNoScroll" type="checkbox" onclick="UpdatePreview();" />
-					<label for="chkBackNoScroll" fcklang="DlgDocBgNoScroll">
-						Nonscrolling Background</label>
-				</div>
-				<div id="divColors" style="display: none">
-					<table cellspacing="0" cellpadding="0" width="100%" border="0">
-						<tr>
-							<td>
-								<span fcklang="DlgDocCText">Text</span><br />
-								<input id="txtColorText" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();" /><input
-									onclick="SelectColor( 'ColorText' )" type="button" value="Select..." fcklang="DlgCellBtnSelect" />
-								<br />
-								<span fcklang="DlgDocCLink">Link</span><br />
-								<input id="txtColorLink" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();" /><input
-									onclick="SelectColor( 'ColorLink' )" type="button" value="Select..." fcklang="DlgCellBtnSelect" />
-								<br />
-								<span fcklang="DlgDocCVisited">Visited Link</span><br />
-								<input id="txtColorVisited" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();" /><input
-									onclick="SelectColor( 'ColorVisited' )" type="button" value="Select..." fcklang="DlgCellBtnSelect" />
-								<br />
-								<span fcklang="DlgDocCActive">Active Link</span><br />
-								<input id="txtColorActive" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();" /><input
-									onclick="SelectColor( 'ColorActive' )" type="button" value="Select..." fcklang="DlgCellBtnSelect" />
-							</td>
-							<td valign="middle" align="center">
-								<table cellspacing="2" cellpadding="0" border="0">
-									<tr>
-										<td>
-											<span fcklang="DlgDocMargins">Page Margins</span></td>
-									</tr>
-									<tr>
-										<td style="border: #000000 1px solid; padding: 5px">
-											<table cellpadding="0" cellspacing="0" border="0" dir="ltr">
-												<tr>
-													<td align="center" colspan="3">
-														<span fcklang="DlgDocMaTop">Top</span><br />
-														<input id="txtMarginTop" type="text" size="3" />
-													</td>
-												</tr>
-												<tr>
-													<td align="left">
-														<span fcklang="DlgDocMaLeft">Left</span><br />
-														<input id="txtMarginLeft" type="text" size="3" />
-													</td>
-													<td>
-														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-													<td align="right">
-														<span fcklang="DlgDocMaRight">Right</span><br />
-														<input id="txtMarginRight" type="text" size="3" />
-													</td>
-												</tr>
-												<tr>
-													<td align="center" colspan="3">
-														<span fcklang="DlgDocMaBottom">Bottom</span><br />
-														<input id="txtMarginBottom" type="text" size="3" />
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div id="divMeta" style="display: none">
-					<span fcklang="DlgDocMeIndex">Document Indexing Keywords (comma separated)</span><br />
-					<textarea id="txtMetaKeywords" style="width: 100%" rows="2" cols="20"></textarea>
-					<br />
-					<span fcklang="DlgDocMeDescr">Document Description</span><br />
-					<textarea id="txtMetaDescription" style="width: 100%" rows="4" cols="20"></textarea>
-					<br />
-					<span fcklang="DlgDocMeAuthor">Author</span><br />
-					<input id="txtMetaAuthor" style="width: 100%" type="text" /><br />
-					<br />
-					<span fcklang="DlgDocMeCopy">Copyright</span><br />
-					<input id="txtMetaCopyright" type="text" style="width: 100%" />
-				</div>
-			</td>
-		</tr>
-		<tr id="ePreview" style="display: none">
-			<td>
-				<span fcklang="DlgDocPreview">Preview</span><br />
-				<iframe id="frmPreview" src="fck_docprops/fck_document_preview.html" width="100%"
-					height="100"></iframe>
-			</td>
-		</tr>
-	</table>
+<table cellspacing="0" cellpadding="0" width="100%" border="0"
+	style="height: 100%">
+	<tr>
+		<td valign="top" style="height: 100%">
+		<div id="divGeneral"><span fcklang="DlgDocPageTitle">Page
+		Title</span><br />
+		<input id="txtPageTitle" style="width: 100%" type="text" /> <br />
+		<table cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td><span fcklang="DlgDocLangDir">Language Direction</span><br />
+				<select id="selDirection">
+					<option value="" selected="selected"></option>
+					<option value="ltr" fcklang="DlgDocLangDirLTR">Left to
+					Right (LTR)</option>
+					<option value="rtl" fcklang="DlgDocLangDirRTL">Right to
+					Left (RTL)</option>
+				</select></td>
+				<td>&nbsp;&nbsp;&nbsp;</td>
+				<td><span fcklang="DlgDocLangCode">Language Code</span><br />
+				<input id="txtLang" type="text" /></td>
+			</tr>
+		</table>
+		<br />
+		<table cellspacing="0" cellpadding="0" width="100%" border="0">
+			<tr>
+				<td style="white-space: nowrap"><span fcklang="DlgDocCharSet">Character
+				Set Encoding</span><br />
+				<select id="selCharSet"
+					onchange="CheckOther( this, 'txtCustomCharSet' );">
+					<option value="" selected="selected"></option>
+					<option value="us-ascii">ASCII</option>
+					<option fcklang="DlgDocCharSetCE" value="iso-8859-2">Central
+					European</option>
+					<option fcklang="DlgDocCharSetCT" value="big5">Chinese
+					Traditional (Big5)</option>
+					<option fcklang="DlgDocCharSetCR" value="iso-8859-5">Cyrillic</option>
+					<option fcklang="DlgDocCharSetGR" value="iso-8859-7">Greek</option>
+					<option fcklang="DlgDocCharSetJP" value="iso-2022-jp">Japanese</option>
+					<option fcklang="DlgDocCharSetKR" value="iso-2022-kr">Korean</option>
+					<option fcklang="DlgDocCharSetTR" value="iso-8859-9">Turkish</option>
+					<option fcklang="DlgDocCharSetUN" value="utf-8">Unicode
+					(UTF-8)</option>
+					<option fcklang="DlgDocCharSetWE" value="iso-8859-1">Western
+					European</option>
+					<option fcklang="DlgOpOther" value="...">&lt;Other&gt;</option>
+				</select></td>
+				<td>&nbsp;&nbsp;&nbsp;</td>
+				<td width="100%"><span fcklang="DlgDocCharSetOther">Other
+				Character Set Encoding</span><br />
+				<input id="txtCustomCharSet"
+					style="width: 100%; background-color: #cccccc" disabled="disabled"
+					type="text" /></td>
+			</tr>
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td nowrap="nowrap"><span fcklang="DlgDocDocType">Document
+				Type Heading</span><br />
+				<select id="selDocType" onchange="CheckOther( this, 'txtDocType' );">
+					<option value="" selected="selected"></option>
+					<option
+						value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;'>HTML
+					4.01 Transitional</option>
+					<option
+						value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;'>
+					HTML 4.01 Strict</option>
+					<option
+						value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd"&gt;'>
+					HTML 4.01 Frameset</option>
+					<option
+						value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;'>
+					XHTML 1.0 Transitional</option>
+					<option
+						value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;'>
+					XHTML 1.0 Strict</option>
+					<option
+						value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"&gt;'>
+					XHTML 1.0 Frameset</option>
+					<option
+						value='&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;'>
+					XHTML 1.1</option>
+					<option
+						value='&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"&gt;'>HTML
+					3.2</option>
+					<option
+						value='&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN"&gt;'>HTML
+					2.0</option>
+					<option value="..." fcklang="DlgOpOther">&lt;Other&gt;</option>
+				</select></td>
+				<td></td>
+				<td width="100%"><span fcklang="DlgDocDocTypeOther">Other
+				Document Type Heading</span><br />
+				<input id="txtDocType"
+					style="width: 100%; background-color: #cccccc" disabled="disabled"
+					type="text" /></td>
+			</tr>
+		</table>
+		<br />
+		<input id="chkIncXHTMLDecl" type="checkbox" /> <label
+			for="chkIncXHTMLDecl" fcklang="DlgDocIncXHTML"> Include XHTML
+		Declarations</label></div>
+		<div id="divBackground" style="display: none"><span
+			fcklang="DlgDocBgColor">Background Color</span><br />
+		<input id="txtBackColor" type="text" onchange="UpdatePreview();"
+			onkeyup="UpdatePreview();" />&nbsp;<input id="btnSelBackColor"
+			onclick="SelectColor( 'Back' )" type="button" value="Select..."
+			fcklang="DlgCellBtnSelect" /><br />
+		<br />
+		<span fcklang="DlgDocBgImage">Background Image URL</span><br />
+		<table cellspacing="0" cellpadding="0" width="100%" border="0">
+			<tr>
+				<td width="100%"><input id="txtBackImage" style="width: 100%"
+					type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();" /></td>
+				<td id="tdBrowse" nowrap="nowrap">&nbsp;<input id="btnBrowse"
+					onclick="BrowseServerBack();" type="button"
+					fcklang="DlgBtnBrowseServer" value="Browse Server" /></td>
+			</tr>
+		</table>
+		<input id="chkBackNoScroll" type="checkbox" onclick="UpdatePreview();" />
+		<label for="chkBackNoScroll" fcklang="DlgDocBgNoScroll">
+		Nonscrolling Background</label></div>
+		<div id="divColors" style="display: none">
+		<table cellspacing="0" cellpadding="0" width="100%" border="0">
+			<tr>
+				<td><span fcklang="DlgDocCText">Text</span><br />
+				<input id="txtColorText" type="text" onchange="UpdatePreview();"
+					onkeyup="UpdatePreview();" /><input
+					onclick="SelectColor( 'ColorText' )" type="button"
+					value="Select..." fcklang="DlgCellBtnSelect" /> <br />
+				<span fcklang="DlgDocCLink">Link</span><br />
+				<input id="txtColorLink" type="text" onchange="UpdatePreview();"
+					onkeyup="UpdatePreview();" /><input
+					onclick="SelectColor( 'ColorLink' )" type="button"
+					value="Select..." fcklang="DlgCellBtnSelect" /> <br />
+				<span fcklang="DlgDocCVisited">Visited Link</span><br />
+				<input id="txtColorVisited" type="text" onchange="UpdatePreview();"
+					onkeyup="UpdatePreview();" /><input
+					onclick="SelectColor( 'ColorVisited' )" type="button"
+					value="Select..." fcklang="DlgCellBtnSelect" /> <br />
+				<span fcklang="DlgDocCActive">Active Link</span><br />
+				<input id="txtColorActive" type="text" onchange="UpdatePreview();"
+					onkeyup="UpdatePreview();" /><input
+					onclick="SelectColor( 'ColorActive' )" type="button"
+					value="Select..." fcklang="DlgCellBtnSelect" /></td>
+				<td valign="middle" align="center">
+				<table cellspacing="2" cellpadding="0" border="0">
+					<tr>
+						<td><span fcklang="DlgDocMargins">Page Margins</span></td>
+					</tr>
+					<tr>
+						<td style="border: #000000 1px solid; padding: 5px">
+						<table cellpadding="0" cellspacing="0" border="0" dir="ltr">
+							<tr>
+								<td align="center" colspan="3"><span fcklang="DlgDocMaTop">Top</span><br />
+								<input id="txtMarginTop" type="text" size="3" /></td>
+							</tr>
+							<tr>
+								<td align="left"><span fcklang="DlgDocMaLeft">Left</span><br />
+								<input id="txtMarginLeft" type="text" size="3" /></td>
+								<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td align="right"><span fcklang="DlgDocMaRight">Right</span><br />
+								<input id="txtMarginRight" type="text" size="3" /></td>
+							</tr>
+							<tr>
+								<td align="center" colspan="3"><span
+									fcklang="DlgDocMaBottom">Bottom</span><br />
+								<input id="txtMarginBottom" type="text" size="3" /></td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</div>
+		<div id="divMeta" style="display: none"><span
+			fcklang="DlgDocMeIndex">Document Indexing Keywords (comma
+		separated)</span><br />
+		<textarea id="txtMetaKeywords" style="width: 100%" rows="2" cols="20"></textarea>
+		<br />
+		<span fcklang="DlgDocMeDescr">Document Description</span><br />
+		<textarea id="txtMetaDescription" style="width: 100%" rows="4"
+			cols="20"></textarea> <br />
+		<span fcklang="DlgDocMeAuthor">Author</span><br />
+		<input id="txtMetaAuthor" style="width: 100%" type="text" /><br />
+		<br />
+		<span fcklang="DlgDocMeCopy">Copyright</span><br />
+		<input id="txtMetaCopyright" type="text" style="width: 100%" /></div>
+		</td>
+	</tr>
+	<tr id="ePreview" style="display: none">
+		<td><span fcklang="DlgDocPreview">Preview</span><br />
+		<iframe id="frmPreview" src="fck_docprops/fck_document_preview.html"
+			width="100%" height="100"></iframe></td>
+	</tr>
+</table>
 </body>
 </html>

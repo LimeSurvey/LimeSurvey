@@ -23,27 +23,24 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>FCKeditor - BBCode Sample</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="robots" content="noindex, nofollow" />
-	<link href="../../../../_samples/sample.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="../../../../fckeditor.js"></script>
+<title>FCKeditor - BBCode Sample</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noindex, nofollow" />
+<link href="../../../../_samples/sample.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript" src="../../../../fckeditor.js"></script>
 </head>
 <body>
-	<h1>
-		FCKeditor - BBCode Sample</h1>
-	<p>
-		This is a sample of custom Data Processor implementation for (very) basic BBCode
-		syntax. Only <strong>[b]</strong>, <strong>[i]</strong>, <strong>[u]</strong> and
-		<strong>[url]</strong> may be used. It may be extended, but this is out of this
-		sample purpose.
-	</p>
-	<p>
-		Note that the input and output of the editor is not HTML, but BBCode
-	</p>
-	<hr />
-	<form action="../../../../_samples/html/sampleposteddata.asp" method="post" target="_blank">
-		<script type="text/javascript">
+<h1>FCKeditor - BBCode Sample</h1>
+<p>This is a sample of custom Data Processor implementation for
+(very) basic BBCode syntax. Only <strong>[b]</strong>, <strong>[i]</strong>,
+<strong>[u]</strong> and <strong>[url]</strong> may be used. It may be
+extended, but this is out of this sample purpose.</p>
+<p>Note that the input and output of the editor is not HTML, but
+BBCode</p>
+<hr />
+<form action="../../../../_samples/html/sampleposteddata.asp"
+	method="post" target="_blank"><script type="text/javascript">
 <!--
 // Automatically calculates the editor base path based on the _samples directory.
 // This is usefull only for these samples. A real application should use something like this:
@@ -59,9 +56,7 @@ oFCKeditor.Config['CustomConfigurationsPath'] = sBasePath + 'editor/plugins/bbco
 oFCKeditor.Value = 'This is some [b]sample text[/b]. You are using [url=http://www.fckeditor.net/]FCKeditor[/url].' ;
 oFCKeditor.Create() ;
 //-->
-		</script>
-		<br />
-		<input type="submit" value="Submit" />
-	</form>
+		</script> <br />
+<input type="submit" value="Submit" /></form>
 </body>
 </html>

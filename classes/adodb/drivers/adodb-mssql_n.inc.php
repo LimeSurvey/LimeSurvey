@@ -36,11 +36,11 @@
 ///////////////////////////////////////////////////////////////////////////
 
 /**
-*  MSSQL Driver with auto-prepended "N" for correct unicode storage
-*  of SQL literal strings. Intended to be used with MSSQL drivers that
-*  are sending UCS-2 data to MSSQL (FreeTDS and ODBTP) in order to get
-*  true cross-db compatibility from the application point of view.
-*/
+ *  MSSQL Driver with auto-prepended "N" for correct unicode storage
+ *  of SQL literal strings. Intended to be used with MSSQL drivers that
+ *  are sending UCS-2 data to MSSQL (FreeTDS and ODBTP) in order to get
+ *  true cross-db compatibility from the application point of view.
+ */
 
 // security - hide paths
 if (!defined('ADODB_DIR')) die();
@@ -51,18 +51,18 @@ if (!defined('SINGLEQUOTE')) define('SINGLEQUOTE', "'");
 include_once(ADODB_DIR.'/drivers/adodb-mssql.inc.php');
 
 class ADODB_mssql_n extends ADODB_mssql {
-	var $databaseType = "mssql_n";
-	
-	function ADODB_mssqlpo()
-	{
-		ADODB_mssql::ADODB_mssql();
-	}
+    var $databaseType = "mssql_n";
 
-	function _query($sql,$inputarr=false)
-	{
+    function ADODB_mssqlpo()
+    {
+        ADODB_mssql::ADODB_mssql();
+    }
+
+    function _query($sql,$inputarr=false)
+    {
         $sql = $this->_appendN($sql);
-		return ADODB_mssql::_query($sql,$inputarr);
-	}
+        return ADODB_mssql::_query($sql,$inputarr);
+    }
 
     /**
      * This function will intercept all the literals used in the SQL, prepending the "N" char to them
@@ -77,13 +77,13 @@ class ADODB_mssql_n extends ADODB_mssql {
 
         $result = $sql;
 
-    /// Check we have some single quote in the query. Exit ok.
+        /// Check we have some single quote in the query. Exit ok.
         if (strpos($sql, SINGLEQUOTE) === false) {
             return $sql;
         }
 
-    /// Check we haven't an odd number of single quotes (this can cause problems below
-    /// and should be considered one wrong SQL). Exit with debug info.
+        /// Check we haven't an odd number of single quotes (this can cause problems below
+        /// and should be considered one wrong SQL). Exit with debug info.
         if ((substr_count($sql, SINGLEQUOTE) & 1)) {
             if ($this->debug) {
                 ADOConnection::outp("{$this->databaseType} internal transformation: not converted. Wrong number of quotes (odd)");
@@ -91,8 +91,8 @@ class ADODB_mssql_n extends ADODB_mssql {
             return $sql;
         }
 
-    /// Check we haven't any backslash + single quote combination. It should mean wrong
-    /// backslashes use (bad magic_quotes_sybase?). Exit with debug info.
+        /// Check we haven't any backslash + single quote combination. It should mean wrong
+        /// backslashes use (bad magic_quotes_sybase?). Exit with debug info.
         $regexp = '/(\\\\' . SINGLEQUOTE . '[^' . SINGLEQUOTE . '])/';
         if (preg_match($regexp, $sql)) {
             if ($this->debug) {
@@ -101,7 +101,7 @@ class ADODB_mssql_n extends ADODB_mssql {
             return $sql;
         }
 
-    /// Remove pairs of single-quotes
+        /// Remove pairs of single-quotes
         $pairs = array();
         $regexp = '/(' . SINGLEQUOTE . SINGLEQUOTE . ')/';
         preg_match_all($regexp, $result, $list_of_pairs);
@@ -114,7 +114,7 @@ class ADODB_mssql_n extends ADODB_mssql {
             }
         }
 
-    /// Remove the rest of literals present in the query
+        /// Remove the rest of literals present in the query
         $literals = array();
         $regexp = '/(N?' . SINGLEQUOTE . '.*?' . SINGLEQUOTE . ')/is';
         preg_match_all($regexp, $result, $list_of_literals);
@@ -128,31 +128,31 @@ class ADODB_mssql_n extends ADODB_mssql {
         }
 
 
-    /// Analyse literals to prepend the N char to them if their contents aren't numeric
+        /// Analyse literals to prepend the N char to them if their contents aren't numeric
         if (!empty($literals)) {
             foreach ($literals as $key=>$value) {
                 if (!is_numeric(trim($value, SINGLEQUOTE))) {
-                /// Non numeric string, prepend our dear N
+                    /// Non numeric string, prepend our dear N
                     $literals[$key] = 'N' . trim($value, 'N'); //Trimming potentially existing previous "N"
                 }
             }
         }
 
-    /// Re-apply literals to the text
+        /// Re-apply literals to the text
         if (!empty($literals)) {
             $result = str_replace(array_keys($literals), $literals, $result);
         }
 
-    /// Any pairs followed by N' must be switched to N' followed by those pairs
-    /// (or strings beginning with single quotes will fail)
+        /// Any pairs followed by N' must be switched to N' followed by those pairs
+        /// (or strings beginning with single quotes will fail)
         $result = preg_replace("/((<@#@#@PAIR-(\d+)@#@#@>)+)N'/", "N'$1", $result);
 
-    /// Re-apply pairs of single-quotes to the text
+        /// Re-apply pairs of single-quotes to the text
         if (!empty($pairs)) {
             $result = str_replace(array_keys($pairs), $pairs, $result);
         }
 
-    /// Print transformation if debug = on
+        /// Print transformation if debug = on
         if ($result != $sql && $this->debug) {
             ADOConnection::outp("{$this->databaseType} internal transformation:<br>{$sql}<br>to<br>{$result}");
         }
@@ -162,10 +162,10 @@ class ADODB_mssql_n extends ADODB_mssql {
 }
 
 class ADORecordset_mssql_n extends ADORecordset_mssql {
-	var $databaseType = "mssql_n";
-	function ADORecordset_mssql_n($id,$mode=false)
-	{
-		$this->ADORecordset_mssql($id,$mode);
-	}
+    var $databaseType = "mssql_n";
+    function ADORecordset_mssql_n($id,$mode=false)
+    {
+        $this->ADORecordset_mssql($id,$mode);
+    }
 }
 ?>

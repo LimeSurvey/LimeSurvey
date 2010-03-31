@@ -1,64 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--
- * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2010 Frederico Caldeira Knabben
- *
- * == BEGIN LICENSE ==
- *
- * Licensed under the terms of any of the following licenses at your
- * choice:
- *
- *  - GNU General Public License Version 2 or later (the "GPL")
- *    http://www.gnu.org/licenses/gpl.html
- *
- *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
- *    http://www.gnu.org/licenses/lgpl.html
- *
- *  - Mozilla Public License Version 1.1 or later (the "MPL")
- *    http://www.mozilla.org/MPL/MPL-1.1.html
- *
- * == END LICENSE ==
- *
- * This is the sample style definitions file. It makes the styles combo
- * completely customizable.
- *
- * See FCKConfig.StylesXmlPath in the configuration file.
--->
+	<!--
+		* FCKeditor - The text editor for Internet - http://www.fckeditor.net
+		* Copyright (C) 2003-2010 Frederico Caldeira Knabben * * == BEGIN
+		LICENSE == * * Licensed under the terms of any of the following
+		licenses at your * choice: * * - GNU General Public License Version 2
+		or later (the "GPL") * http://www.gnu.org/licenses/gpl.html * * - GNU
+		Lesser General Public License Version 2.1 or later (the "LGPL") *
+		http://www.gnu.org/licenses/lgpl.html * * - Mozilla Public License
+		Version 1.1 or later (the "MPL") *
+		http://www.mozilla.org/MPL/MPL-1.1.html * * == END LICENSE == * * This
+		is the sample style definitions file. It makes the styles combo *
+		completely customizable. * * See FCKConfig.StylesXmlPath in the
+		configuration file.
+	-->
 <Styles>
 
 	<!-- Block Styles -->
 
 	<!--
-	# These styles are already available in the "Format" combo, so they are not
-	# needed here by default.
-
-	<Style name="Heading 1" element="h1" />
-	<Style name="Heading 2" element="h2" />
-	<Style name="Heading 3" element="h3" />
-	<Style name="Heading 4" element="h4" />
-	<Style name="Heading 5" element="h5" />
-	<Style name="Heading 6" element="h6" />
-	<Style name="Paragraph" element="p" />
-	<Style name="Document Block" element="div" />
-	<Style name="Preformatted Text" element="pre" />
-	<Style name="Address" element="address" />
+		# These styles are already available in the "Format" combo, so they
+		are not # needed here by default. <Style name="Heading 1" element="h1"
+		/> <Style name="Heading 2" element="h2" /> <Style name="Heading 3"
+		element="h3" /> <Style name="Heading 4" element="h4" /> <Style
+		name="Heading 5" element="h5" /> <Style name="Heading 6" element="h6"
+		/> <Style name="Paragraph" element="p" /> <Style name="Document Block"
+		element="div" /> <Style name="Preformatted Text" element="pre" />
+		<Style name="Address" element="address" />
 	-->
 
 	<!-- Inline Styles -->
 
 	<!--
-	# These are core styles available as toolbar buttons.
-
-	<Style name="Bold" element="b">
-		<Override element="strong" />
-	</Style>
-	<Style name="Italic" element="i">
-		<Override element="em" />
-	</Style>
-	<Style name="Underline" element="u" />
-	<Style name="Strikethrough" element="strike" />
-	<Style name="Subscript" element="sub" />
-	<Style name="Superscript" element="sup" />
+		# These are core styles available as toolbar buttons. <Style
+		name="Bold" element="b"> <Override element="strong" /> </Style> <Style
+		name="Italic" element="i"> <Override element="em" /> </Style> <Style
+		name="Underline" element="u" /> <Style name="Strikethrough"
+		element="strike" /> <Style name="Subscript" element="sub" /> <Style
+		name="Superscript" element="sup" />
 	-->
 
 	<Style name="Marker: Yellow" element="span">

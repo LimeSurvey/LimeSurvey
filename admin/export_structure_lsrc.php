@@ -1,17 +1,17 @@
 <?php
 /*
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-* 
-* $Id: export_structure_csv.php 5747 2008-10-07 19:40:33Z c_schmitz $
-*/
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id: export_structure_csv.php 5747 2008-10-07 19:40:33Z c_schmitz $
+ */
 
 
 
@@ -22,7 +22,7 @@
 // 3. Groups
 // 4. Questions
 // 5. Answers
-// 6. Conditions 
+// 6. Conditions
 // 7. Label Sets
 // 8. Labels
 // 9. Question Attributes
@@ -37,57 +37,57 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 if (!$surveyid)
 {
-	echo $htmlheader
-	."<br />\n"
-	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	.$clang->gT("Export Survey")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>\n"
-	."<br /><strong><font color='red'>"
-	.$clang->gT("Error")."</font></strong><br />\n"
-	.$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
-	."<br /><input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
-	."\t</td></tr>\n"
-	."</table>\n"
-	."</body></html>\n";
-	exit;
+    echo $htmlheader
+    ."<br />\n"
+    ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+    .$clang->gT("Export Survey")."</strong></td></tr>\n"
+    ."\t<tr><td align='center'>\n"
+    ."<br /><strong><font color='red'>"
+    .$clang->gT("Error")."</font></strong><br />\n"
+    .$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
+    ."<br /><input type='submit' value='"
+    .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
+    ."\t</td></tr>\n"
+    ."</table>\n"
+    ."</body></html>\n";
+    exit;
 }
 
 $dumphead = "# LimeSurvey Survey Dump\n"
-        . "# DBVersion $dbversionnumber\n"
-        . "# This is a dumped survey from the LimeSurvey Script\n"
-        . "# http://www.limesurvey.org/\n"
-        . "# Do not change this header!\n";
+. "# DBVersion $dbversionnumber\n"
+. "# This is a dumped survey from the LimeSurvey Script\n"
+. "# http://www.limesurvey.org/\n"
+. "# Do not change this header!\n";
 
 //1: Surveys table
-$squery = "SELECT * 
+$squery = "SELECT *
            FROM {$dbprefix}surveys 
 		   WHERE sid=$surveyid";
 $sdump = BuildCSVFromQuery($squery);
 
 //2: Surveys Languagsettings table
-$slsquery = "SELECT * 
+$slsquery = "SELECT *
              FROM {$dbprefix}surveys_languagesettings 
 			 WHERE surveyls_survey_id=$surveyid";
 $slsdump = BuildCSVFromQuery($slsquery);
 
 //3: Groups Table
-$gquery = "SELECT * 
+$gquery = "SELECT *
            FROM {$dbprefix}groups 
 		   WHERE sid=$surveyid 
 		   ORDER BY gid";
 $gdump = BuildCSVFromQuery($gquery);
 
 //4: Questions Table
-$qquery = "SELECT * 
+$qquery = "SELECT *
            FROM {$dbprefix}questions 
 		   WHERE sid=$surveyid 
 		   ORDER BY qid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //5: Answers table
-$aquery = "SELECT {$dbprefix}answers.* 
+$aquery = "SELECT {$dbprefix}answers.*
            FROM {$dbprefix}answers, {$dbprefix}questions 
 		   WHERE {$dbprefix}answers.language={$dbprefix}questions.language 
 		   AND {$dbprefix}answers.qid={$dbprefix}questions.qid 
@@ -95,14 +95,14 @@ $aquery = "SELECT {$dbprefix}answers.*
 $adump = BuildCSVFromQuery($aquery);
 
 //6: Conditions table
-$cquery = "SELECT DISTINCT {$dbprefix}conditions.* 
+$cquery = "SELECT DISTINCT {$dbprefix}conditions.*
            FROM {$dbprefix}conditions, {$dbprefix}questions 
 		   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid 
 		   AND {$dbprefix}questions.sid=$surveyid";
 $cdump = BuildCSVFromQuery($cquery);
 
 //7: Label Sets
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages 
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages
             FROM {$dbprefix}labelsets, {$dbprefix}questions 
 			WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1) 
 			AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';') 
@@ -110,7 +110,7 @@ $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}lab
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //8: Labels
-$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language 
+$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language
            FROM {$dbprefix}labels, {$dbprefix}questions 
 		   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) 
 		   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
@@ -119,26 +119,26 @@ $lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labe
 $ldump = BuildCSVFromQuery($lquery);
 
 //9: Question Attributes
-$query = "SELECT DISTINCT {$dbprefix}question_attributes.* 
+$query = "SELECT DISTINCT {$dbprefix}question_attributes.*
           FROM {$dbprefix}question_attributes, {$dbprefix}questions 
 		  WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid 
 		  AND {$dbprefix}questions.sid=$surveyid";
 $qadump = BuildCSVFromQuery($query);
 
 //10: Assessments;
-$query = "SELECT {$dbprefix}assessments.* 
+$query = "SELECT {$dbprefix}assessments.*
           FROM {$dbprefix}assessments 
 		  WHERE {$dbprefix}assessments.sid=$surveyid";
 $asdump = BuildCSVFromQuery($query);
 
 //11: Quota;
-$query = "SELECT {$dbprefix}quota.* 
+$query = "SELECT {$dbprefix}quota.*
           FROM {$dbprefix}quota 
 		  WHERE {$dbprefix}quota.sid=$surveyid";
 $quotadump = BuildCSVFromQuery($query);
 
 //12: Quota Members;
-$query = "SELECT {$dbprefix}quota_members.* 
+$query = "SELECT {$dbprefix}quota_members.*
           FROM {$dbprefix}quota_members 
 		  WHERE {$dbprefix}quota_members.sid=$surveyid";
 $quotamemdump = BuildCSVFromQuery($query);
@@ -160,10 +160,10 @@ include("remotecontrol/lsrc.config.php");
 $lsrcString = $dumphead. $sdump. $gdump. $qdump. $adump. $cdump. $lsdump. $ldump. $qadump. $asdump. $slsdump. $quotadump. $quotamemdump."\n";
 
 //Select title as Filename and save
-$surveyTitleSql = "SELECT surveyls_title 
+$surveyTitleSql = "SELECT surveyls_title
 	             FROM {$dbprefix}surveys_languagesettings 
 				 WHERE surveyls_survey_id=$surveyid";
-$surveyTitleRs = db_execute_assoc($surveyTitleSql);   
+$surveyTitleRs = db_execute_assoc($surveyTitleSql);
 $surveyTitle = $surveyTitleRs->FetchRow();
 file_put_contents("remotecontrol/".$coreDir.$surveyTitle['surveyls_title'].".csv",$lsrcString);
 

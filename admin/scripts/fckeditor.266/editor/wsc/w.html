@@ -21,40 +21,44 @@
 -->
 <html>
 <head>
-	<title></title>
-	<style>
-		#wsc_frames , #errorMessage{
-			position:absolute;
-			top:0px;
-			left:0px;
-			width:500px;
-			height:395px;
-			margin:0px;
-			padding:0px;
-			border:0px;
-			display:block;
-			overflow: hidden;
-		}
-		#wsc_frames   { z-index:10;}
-		#errorMessage {
-			color:red;
-			display:none;
-			font-size:16px;
-			font-weight:bold;
-			padding-top:160px;
-			text-align:center;
-			z-index:11;
-		}
-		#errorMessage p {
-			color:#000;
-			font-size:11px;
-			text-align:left;
-			font-weight: normal;
-			padding-left:80px;
-		}
+<title></title>
+<style>
+#wsc_frames,#errorMessage {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 500px;
+  height: 395px;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  display: block;
+  overflow: hidden;
+}
 
-	</style>
-	<script type="text/javascript">
+#wsc_frames {
+  z-index: 10;
+}
+
+#errorMessage {
+  color: red;
+  display: none;
+  font-size: 16px;
+  font-weight: bold;
+  padding-top: 160px;
+  text-align: center;
+  z-index: 11;
+}
+
+#errorMessage p {
+  color: #000;
+  font-size: 11px;
+  text-align: left;
+  font-weight: normal;
+  padding-left: 80px;
+}
+</style>
+<script type="text/javascript">
 
 var oEditor = window.parent.InnerDialogLoaded() ;
 var FCKConfig = oEditor.FCKConfig;
@@ -221,7 +225,7 @@ function initAndSpell()
 	</script>
 </head>
 <body onload="onLoad()" style="padding: 0px; overflow: hidden;">
-	<textarea style="display: none;" id="myEditor" rows="10" cols="40"></textarea>
-	<iframe src="" name="wsc_frames" id="wsc_frames"></iframe>
+<textarea style="display: none;" id="myEditor" rows="10" cols="40"></textarea>
+<iframe src="" name="wsc_frames" id="wsc_frames"></iframe>
 </body>
 </html>

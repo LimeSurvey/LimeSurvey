@@ -1,31 +1,31 @@
 <?PHP
 /*
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id: upgrade-mysql.php 7108 2009-06-15 05:43:21Z jcleeland $
-*/
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id: upgrade-mysql.php 7108 2009-06-15 05:43:21Z jcleeland $
+ */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
 // where based on the current database version the database is upgraded
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-/// This function does anything necessary to upgrade
-/// older versions to match current functionality
-global $modifyoutput, $databasename, $databasetabletype;
+    /// This function does anything necessary to upgrade
+    /// older versions to match current functionality
+    global $modifyoutput, $databasename, $databasetabletype;
     echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
     if ($oldversion < 111) {
-      // Language upgrades from version 110 to 111 since the language names did change
+        // Language upgrades from version 110 to 111 since the language names did change
 
-       $oldnewlanguages=array('german_informal'=>'german-informal',
+        $oldnewlanguages=array('german_informal'=>'german-informal',
                               'cns'=>'cn-Hans',
                               'cnt'=>'cn-Hant',
                               'pt_br'=>'pt-BR',
@@ -50,33 +50,33 @@ global $modifyoutput, $databasename, $databasetabletype;
 
         $resultdata=db_execute_assoc("select * from ".db_table_name("labelsets"));
         while ($datarow = $resultdata->FetchRow()){
-           $toreplace=$datarow['languages'];
-           $toreplace=str_replace('german_informal','german-informal',$toreplace);
-           $toreplace=str_replace('cns','cn-Hans',$toreplace);
-           $toreplace=str_replace('cnt','cn-Hant',$toreplace);
-           $toreplace=str_replace('pt_br','pt-BR',$toreplace);
-           $toreplace=str_replace('gr','el',$toreplace);
-           $toreplace=str_replace('jp','ja',$toreplace);
-           $toreplace=str_replace('si','sl',$toreplace);
-           $toreplace=str_replace('se','sv',$toreplace);
-           $toreplace=str_replace('vn','vi',$toreplace);
-           modify_database("","update  `prefix_labelsets` set `languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();
+            $toreplace=$datarow['languages'];
+            $toreplace=str_replace('german_informal','german-informal',$toreplace);
+            $toreplace=str_replace('cns','cn-Hans',$toreplace);
+            $toreplace=str_replace('cnt','cn-Hant',$toreplace);
+            $toreplace=str_replace('pt_br','pt-BR',$toreplace);
+            $toreplace=str_replace('gr','el',$toreplace);
+            $toreplace=str_replace('jp','ja',$toreplace);
+            $toreplace=str_replace('si','sl',$toreplace);
+            $toreplace=str_replace('se','sv',$toreplace);
+            $toreplace=str_replace('vn','vi',$toreplace);
+            modify_database("","update  `prefix_labelsets` set `languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();
         }
 
 
         $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));
         while ($datarow = $resultdata->FetchRow()){
-           $toreplace=$datarow['additional_languages'];
-           $toreplace=str_replace('german_informal','german-informal',$toreplace);
-           $toreplace=str_replace('cns','cn-Hans',$toreplace);
-           $toreplace=str_replace('cnt','cn-Hant',$toreplace);
-           $toreplace=str_replace('pt_br','pt-BR',$toreplace);
-           $toreplace=str_replace('gr','el',$toreplace);
-           $toreplace=str_replace('jp','ja',$toreplace);
-           $toreplace=str_replace('si','sl',$toreplace);
-           $toreplace=str_replace('se','sv',$toreplace);
-           $toreplace=str_replace('vn','vi',$toreplace);
-           modify_database("","update  `prefix_surveys` set `additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();
+            $toreplace=$datarow['additional_languages'];
+            $toreplace=str_replace('german_informal','german-informal',$toreplace);
+            $toreplace=str_replace('cns','cn-Hans',$toreplace);
+            $toreplace=str_replace('cnt','cn-Hant',$toreplace);
+            $toreplace=str_replace('pt_br','pt-BR',$toreplace);
+            $toreplace=str_replace('gr','el',$toreplace);
+            $toreplace=str_replace('jp','ja',$toreplace);
+            $toreplace=str_replace('si','sl',$toreplace);
+            $toreplace=str_replace('se','sv',$toreplace);
+            $toreplace=str_replace('vn','vi',$toreplace);
+            modify_database("","update  `prefix_surveys` set `additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();
         }
         modify_database("","update `prefix_settings_global` set `stg_value`='111' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 
@@ -106,12 +106,12 @@ global $modifyoutput, $databasename, $databasetabletype;
     }
 
     if ($oldversion < 126) {
-    //Adds new "public" field
+        //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `printanswers` CHAR(1) default 'N' AFTER allowsave"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `listpublic` CHAR(1) default 'N' AFTER `datecreated`"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
         upgrade_survey_tables118();
-	// 119
+        // 119
         modify_database("","CREATE TABLE `prefix_quota` (
  				            `id` int(11) NOT NULL auto_increment,
   							`sid` int(11) default NULL,
@@ -131,8 +131,8 @@ global $modifyoutput, $databasename, $databasetabletype;
   						   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
 						   )   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
 
-       // Rename Norwegian language code from NO to NB
-       $oldnewlanguages=array('no'=>'nb');
+        // Rename Norwegian language code from NO to NB
+        $oldnewlanguages=array('no'=>'nb');
         foreach  ($oldnewlanguages as $oldlang=>$newlang)
         {
             modify_database("","update `prefix_answers` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
@@ -146,16 +146,16 @@ global $modifyoutput, $databasename, $databasetabletype;
 
         $resultdata=db_execute_assoc("select * from ".db_table_name("labelsets"));
         while ($datarow = $resultdata->FetchRow()){
-           $toreplace=$datarow['languages'];
-           $toreplace2=str_replace('no','nb',$toreplace);
-           if ($toreplace2!=$toreplace) {modify_database("","update  `prefix_labelsets` set `languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();}
+            $toreplace=$datarow['languages'];
+            $toreplace2=str_replace('no','nb',$toreplace);
+            if ($toreplace2!=$toreplace) {modify_database("","update  `prefix_labelsets` set `languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();}
         }
 
         $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));
         while ($datarow = $resultdata->FetchRow()){
-           $toreplace=$datarow['additional_languages'];
-           $toreplace2=str_replace('no','nb',$toreplace);
-           if ($toreplace2!=$toreplace) {modify_database("","update `prefix_surveys` set `additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();}
+            $toreplace=$datarow['additional_languages'];
+            $toreplace2=str_replace('no','nb',$toreplace);
+            if ($toreplace2!=$toreplace) {modify_database("","update `prefix_surveys` set `additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();}
         }
 
 
@@ -179,21 +179,21 @@ global $modifyoutput, $databasename, $databasetabletype;
         //123
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `value` `value` VARCHAR(255) NOT NULL default ''"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_labels` CHANGE `title` `title` text"); echo $modifyoutput; flush();
-		//124
+        //124
         modify_database("","ALTER TABLE `prefix_surveys` ADD `bounce_email` text"); echo $modifyoutput; flush();
         //125
         upgrade_token_tables125();
         modify_database("","ALTER TABLE `prefix_users` ADD `superadmin` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("","UPDATE `prefix_users` SET `superadmin`=1 where (create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1)"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_users` DROP COLUMN `move_user`"); echo $modifyoutput; flush();
-		//126
+        //126
         modify_database("","ALTER TABLE `prefix_questions` ADD `lid1` integer NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("","UPDATE `prefix_conditions` SET `method`='==' where (`method` is null) or `method`='' or `method`='0'"); echo $modifyoutput; flush();
 
-		modify_database("","update `prefix_settings_global` set `stg_value`='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","update `prefix_settings_global` set `stg_value`='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
-	if ($oldversion < 127) {
+    if ($oldversion < 127) {
         modify_database("","create index `assessments_idx2` on `prefix_assessments` (`sid`)"); echo $modifyoutput;  flush();
         modify_database("","create index `assessments_idx3` on `prefix_assessments` (`gid`)"); echo $modifyoutput;  flush();
         modify_database("","create index `conditions_idx2` on `prefix_conditions` (`qid`)"); echo $modifyoutput;  flush();
@@ -208,38 +208,38 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("","create index `conditions_idx3` on `prefix_conditions` (`cqid`)"); echo $modifyoutput; flush();
         modify_database("","create index `questions_idx4` on `prefix_questions` (`type`)"); echo $modifyoutput; flush();
         modify_database("","update `prefix_settings_global` set `stg_value`='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
-	if ($oldversion < 128) {
-		//128
-		upgrade_token_tables128();
-	    modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
-	if ($oldversion < 129) {
-		//129
+    if ($oldversion < 128) {
+        //128
+        upgrade_token_tables128();
+        modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+    if ($oldversion < 129) {
+        //129
         modify_database("","ALTER TABLE `prefix_surveys` ADD `startdate` DATETIME"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `usestartdate` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-	    modify_database("","update `prefix_settings_global` set `stg_value`='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
-	if ($oldversion < 130)
-	{
-		modify_database("","ALTER TABLE `prefix_conditions` ADD `scenario` integer NOT NULL default '1' AFTER `qid`"); echo $modifyoutput; flush();
-		modify_database("","UPDATE `prefix_conditions` SET `scenario`=1 where (`scenario` is null) or `scenario`='' or `scenario`=0"); echo $modifyoutput; flush();
-	    	modify_database("","update `prefix_settings_global` set `stg_value`='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
-	if ($oldversion < 131)
-	{
+        modify_database("","update `prefix_settings_global` set `stg_value`='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+    if ($oldversion < 130)
+    {
+        modify_database("","ALTER TABLE `prefix_conditions` ADD `scenario` integer NOT NULL default '1' AFTER `qid`"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_conditions` SET `scenario`=1 where (`scenario` is null) or `scenario`='' or `scenario`=0"); echo $modifyoutput; flush();
+        modify_database("","update `prefix_settings_global` set `stg_value`='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+    if ($oldversion < 131)
+    {
         modify_database("","ALTER TABLE `prefix_surveys` ADD `publicstatistics` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-    	modify_database("","update `prefix_settings_global` set `stg_value`='131' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
-	if ($oldversion < 132)
-	{
+        modify_database("","update `prefix_settings_global` set `stg_value`='131' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+    if ($oldversion < 132)
+    {
         modify_database("","ALTER TABLE `prefix_surveys` ADD `publicgraphs` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-    	modify_database("","update `prefix_settings_global` set `stg_value`='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+        modify_database("","update `prefix_settings_global` set `stg_value`='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
 
-	if ($oldversion < 133)
-	{
+    if ($oldversion < 133)
+    {
         modify_database("","ALTER TABLE `prefix_users` ADD `one_time_pw` blob"); echo $modifyoutput; flush();
         // Add new assessment setting
         modify_database("","ALTER TABLE `prefix_surveys` ADD `assessments` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
@@ -270,8 +270,8 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("","update `prefix_surveys_languagesettings` set `surveyls_url`=(select `url` from `prefix_surveys` where `sid`=`prefix_surveys_languagesettings`.`surveyls_survey_id`)"); echo $modifyoutput; flush();
         // drop old URL field
         modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `url`"); echo $modifyoutput; flush();
-    	modify_database("","update `prefix_settings_global` set `stg_value`='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+        modify_database("","update `prefix_settings_global` set `stg_value`='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
     if ($oldversion < 134)
     {
         // Add new tokens setting
@@ -282,14 +282,14 @@ global $modifyoutput, $databasename, $databasetabletype;
         upgrade_token_tables134();
         modify_database("","update `prefix_settings_global` set `stg_value`='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-     if ($oldversion < 135)
+    if ($oldversion < 135)
     {
         modify_database("","ALTER TABLE `prefix_question_attributes` MODIFY `value` text"); echo $modifyoutput; flush();
         modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='135' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     if ($oldversion < 136) //New Quota Functions
     {
-	    modify_database("","ALTER TABLE `prefix_quota` ADD `autoload_url` int(1) NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_quota` ADD `autoload_url` int(1) NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("","CREATE TABLE `prefix_quota_languagesettings` (
 								         `quotals_id` int(11) NOT NULL auto_increment,
 										 `quotals_quota_id` int(11) NOT NULL default '0',
@@ -301,7 +301,7 @@ global $modifyoutput, $databasename, $databasetabletype;
 										 PRIMARY KEY (`quotals_id`)
 										 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
         modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='136' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
     if ($oldversion < 137) //New Quota Functions
     {
         modify_database("", "ALTER TABLE `prefix_surveys_languagesettings` ADD `surveyls_dateformat` int(1) NOT NULL default '1'"); echo $modifyoutput; flush();
@@ -312,11 +312,11 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `usestartdate`"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='137' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-	if ($oldversion < 138) //Modify quota field
-	{
-	    modify_database("", "ALTER TABLE `prefix_quota_members` CHANGE `code` `code` VARCHAR(11) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+    if ($oldversion < 138) //Modify quota field
+    {
+        modify_database("", "ALTER TABLE `prefix_quota_members` CHANGE `code` `code` VARCHAR(11) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
     if ($oldversion < 139) //Modify quota field
     {
@@ -324,17 +324,17 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
-	if ($oldversion < 140) //Modify surveys table
-	{
-	    modify_database("", "ALTER TABLE `prefix_surveys` ADD `emailresponseto` text DEFAULT NULL"); echo $modifyoutput; flush();
+    if ($oldversion < 140) //Modify surveys table
+    {
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `emailresponseto` text DEFAULT NULL"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
-	if ($oldversion < 141) //Modify surveys table
-	{
-	    modify_database("", "ALTER TABLE `prefix_surveys` ADD `tokenlength` tinyint(2) NOT NULL default '15'"); echo $modifyoutput; flush();
+    if ($oldversion < 141) //Modify surveys table
+    {
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `tokenlength` tinyint(2) NOT NULL default '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
     if ($oldversion < 142) //Modify surveys table
     {
@@ -365,8 +365,8 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid1`"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    
-    
+
+
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;
 }
@@ -394,12 +394,12 @@ function upgrade_survey_tables118()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
-        {
+    {
         while ( $sv = $surveyidresult->FetchRow() )
-            {
+        {
             modify_database("","ALTER TABLE ".$sv[0]." CHANGE `token` `token` VARCHAR(15)"); echo $modifyoutput; flush();
-            }
         }
+    }
 }
 
 function upgrade_token_tables125()
@@ -409,12 +409,12 @@ function upgrade_token_tables125()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
-        {
+    {
         while ( $sv = $surveyidresult->FetchRow() )
-            {
+        {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` varchar(300) NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();
-            }
         }
+    }
 }
 
 // Add the reminders tracking fields
@@ -425,13 +425,13 @@ function upgrade_token_tables128()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
-        {
+    {
         while ( $sv = $surveyidresult->FetchRow() )
-            {
+        {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `remindersent` VARCHAR(17) DEFAULT 'N'"); echo $modifyoutput; flush();
             modify_database("","ALTER TABLE ".$sv[0]." ADD `remindercount` INT(11)  DEFAULT 0"); echo $modifyoutput; flush();
-            }
         }
+    }
 }
 
 
@@ -456,13 +456,13 @@ function upgrade_token_tables134()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
-        {
+    {
         while ( $sv = $surveyidresult->FetchRow() )
-            {
+        {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `validfrom` Datetime"); echo $modifyoutput; flush();
             modify_database("","ALTER TABLE ".$sv[0]." ADD `validuntil` Datetime"); echo $modifyoutput; flush();
-            }
         }
+    }
 }
 
 function fix_mysql_collation()
@@ -471,47 +471,47 @@ function fix_mysql_collation()
     $sql = 'SHOW TABLE STATUS';
     $result = db_execute_assoc($sql);
     if (!$result) {
-           $modifyoutput .= 'SHOW TABLE - SQL Error';
-        }
+        $modifyoutput .= 'SHOW TABLE - SQL Error';
+    }
 
     while ( $tables = $result->FetchRow() ) {
-    // Loop through all tables in this database
-       $table = $tables['Name'];
-       $tablecollation=$tables['Collation'];
-       if (strpos($table,'old_')===false  && ($dbprefix==''  || ($dbprefix!='' && strpos($table,$dbprefix)!==false)))
-       {
-	       if ($tablecollation!='utf8_unicode_ci')
-	       {
-	       modify_database("","ALTER TABLE $table COLLATE utf8_unicode_ci");
-	       echo $modifyoutput; flush();
-	       }
+        // Loop through all tables in this database
+        $table = $tables['Name'];
+        $tablecollation=$tables['Collation'];
+        if (strpos($table,'old_')===false  && ($dbprefix==''  || ($dbprefix!='' && strpos($table,$dbprefix)!==false)))
+        {
+            if ($tablecollation!='utf8_unicode_ci')
+            {
+                modify_database("","ALTER TABLE $table COLLATE utf8_unicode_ci");
+                echo $modifyoutput; flush();
+            }
 
-	       # Now loop through all the fields within this table
-	       $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table);
-	       while ( $column = $result2->FetchRow())
-	       {
-	       if ($column['Collation']!= 'utf8_unicode_ci' )
-		       {
-		          $field_name = $column['Field'];
-		          $field_type = $column['Type'];
-		          $field_default = $column['Default'];
-		          if ($field_default!='NULL') {$field_default="'".$field_default."'";}
-		          # Change text based fields
-		          $skipped_field_types = array('char', 'text', 'enum', 'set');
+            # Now loop through all the fields within this table
+            $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table);
+            while ( $column = $result2->FetchRow())
+            {
+                if ($column['Collation']!= 'utf8_unicode_ci' )
+                {
+                    $field_name = $column['Field'];
+                    $field_type = $column['Type'];
+                    $field_default = $column['Default'];
+                    if ($field_default!='NULL') {$field_default="'".$field_default."'";}
+                    # Change text based fields
+                    $skipped_field_types = array('char', 'text', 'enum', 'set');
 
-		          foreach ( $skipped_field_types as $type )
-		          {
-		             if ( strpos($field_type, $type) !== false )
-		             {
-					    $modstatement="ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci";
-					    if ($type!='text') {$modstatement.=" DEFAULT $field_default";}
-					    modify_database("",$modstatement);
-		                echo $modifyoutput; flush();
-		             }
-		          }
-	          }
-	       }
-       }
+                    foreach ( $skipped_field_types as $type )
+                    {
+                        if ( strpos($field_type, $type) !== false )
+                        {
+                            $modstatement="ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+                            if ($type!='text') {$modstatement.=" DEFAULT $field_default";}
+                            modify_database("",$modstatement);
+                            echo $modifyoutput; flush();
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -523,15 +523,15 @@ function upgrade_survey_tables139()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
-        {
+    {
         while ( $sv = $surveyidresult->FetchRow() )
+        {
+            if (strpos($sv[0],$dbprefix."survey_")!==false)
             {
-                if (strpos($sv[0],$dbprefix."survey_")!==false)
-                {
-                    modify_database("","ALTER TABLE ".$sv[0]." ADD `lastpage` integer"); echo $modifyoutput; flush();
-                }
+                modify_database("","ALTER TABLE ".$sv[0]." ADD `lastpage` integer"); echo $modifyoutput; flush();
             }
         }
+    }
 }
 
 function upgrade_question_attributes142()
@@ -547,15 +547,15 @@ function upgrade_question_attributes142()
         $record['value']=implode(';',$attributevalues);
         $record['attribute']='exclude_all_other';
         $record['qid']=$questionid;
-        $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT'); 
+        $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT');
     }
 }
 
 function upgrade_tables143()
 {
     global $modifyoutput,$dbprefix, $connect;
-    
-    
+
+
     // Convert answers to subquestions
     $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
     $answerresult = db_execute_assoc($answerquery);
@@ -572,7 +572,7 @@ function upgrade_tables143()
     // Convert labels to answers
     $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
     $answerresult = db_execute_assoc($answerquery);
-    if (!$answerresult) 
+    if (!$answerresult)
     {
         return "Database Error";
     }
@@ -581,7 +581,7 @@ function upgrade_tables143()
         while ( $row = $answerresult->FetchRow() )
         {
             $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
-            $labelresult = db_execute_assoc($labelquery); 
+            $labelresult = db_execute_assoc($labelquery);
             while ( $lrow = $labelresult->FetchRow() )
             {
                 modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).")"); echo $modifyoutput; flush();
@@ -590,7 +590,7 @@ function upgrade_tables143()
             if ($row['type']=='1')
             {
                 $labelquery="Select * from {$dbprefix}labels where lid={$row['lid1']} and language=".db_quoteall($row['language']);
-                $labelresult = db_execute_assoc($labelquery); 
+                $labelresult = db_execute_assoc($labelquery);
                 while ( $lrow = $labelresult->FetchRow() )
                 {
                     modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
@@ -602,7 +602,7 @@ function upgrade_tables143()
     // Convert labels to subquestions
     $answerquery = "select * from {$dbprefix}questions where parent_qid=0 and type in (';',':')";
     $answerresult = db_execute_assoc($answerquery);
-    if (!$answerresult) 
+    if (!$answerresult)
     {
         return "Database Error";
     }
@@ -611,7 +611,7 @@ function upgrade_tables143()
         while ( $row = $answerresult->FetchRow() )
         {
             $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
-            $labelresult = db_execute_assoc($labelquery); 
+            $labelresult = db_execute_assoc($labelquery);
             while ( $lrow = $labelresult->FetchRow() )
             {
                 modify_database("","INSERT INTO {$dbprefix}questions (sid, gid, parent_qid, title, question, question_order, language, scale_id) VALUES ({$row['sid']},{$row['gid']},{$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
@@ -620,10 +620,10 @@ function upgrade_tables143()
     }
 
     // convert Ranking question type
-    
+
     $query="SELECT a.qid, count(a.qid) as answercount FROM {$dbprefix}answers a, {$dbprefix}questions q where a.qid=q.qid and q.type='R' group by a.qid";
     $queryresult = db_execute_assoc($query);
-    if (!$queryresult) 
+    if (!$queryresult)
     {
         return "Database Error";
     }
@@ -631,15 +631,15 @@ function upgrade_tables143()
     {
         while ( $row = $queryresult->FetchRow() )
         {
-           modify_database("","INSERT INTO {$dbprefix}question_attributes (qid, attribute, value) VALUES ({$row['qid']},'ranking_slots',".db_quoteall($row['answercount']).")"); echo $modifyoutput; flush();
+            modify_database("","INSERT INTO {$dbprefix}question_attributes (qid, attribute, value) VALUES ({$row['qid']},'ranking_slots',".db_quoteall($row['answercount']).")"); echo $modifyoutput; flush();
         }
     }
-    
+
 
 
     $updatequery = "update {$dbprefix}questions set type='!' where type='W'";
     modify_database("",$updatequery); echo $modifyoutput; flush();
     $updatequery = "update {$dbprefix}questions set type='L' where type='Z'";
     modify_database("",$updatequery); echo $modifyoutput; flush();
-    
+
 }

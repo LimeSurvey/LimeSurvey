@@ -1,10 +1,10 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Turkish version
-* Türkçe Versiyonu
-* ÝZYAZILIM - Elçin Özel - Can Yýlmaz - Mehmet Benlioðlu
-*/
+ * PHPMailer language file: refer to English translation for definitive list
+ * Turkish version
+ * Türkçe Versiyonu
+ * ÝZYAZILIM - Elçin Özel - Can Yýlmaz - Mehmet Benlioðlu
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP Hatasý: Doðrulanamýyor.';
 $PHPMAILER_LANG['connect_host']         = 'SMTP Hatasý: SMTP hosta baðlanýlamýyor.';

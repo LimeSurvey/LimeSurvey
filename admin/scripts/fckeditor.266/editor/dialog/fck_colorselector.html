@@ -22,20 +22,55 @@
  * Color Selection dialog window.
 -->
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="robots" content="noindex, nofollow" />
-		<style TYPE="text/css">
-			#ColorTable		{ cursor: pointer ; cursor: hand ; }
-			#hicolor		{ height: 74px ; width: 74px ; border-width: 1px ; border-style: solid ; }
-			#hicolortext	{ width: 75px ; text-align: right ; margin-bottom: 7px ; }
-			#selhicolor		{ height: 20px ; width: 74px ; border-width: 1px ; border-style: solid ; }
-			#selcolor		{ width: 75px ; height: 20px ; margin-top: 0px ; margin-bottom: 7px ; }
-			#btnClear		{ width: 75px ; height: 22px ; margin-bottom: 6px ; }
-			.ColorCell		{ height: 15px ; width: 15px ; }
-		</style>
-		<script src="common/fck_dialog_common.js" type="text/javascript"></script>
-		<script type="text/javascript">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noindex, nofollow" />
+<style TYPE="text/css">
+#ColorTable {
+  cursor: pointer;
+  cursor: hand;
+}
+
+#hicolor {
+  height: 74px;
+  width: 74px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+#hicolortext {
+  width: 75px;
+  text-align: right;
+  margin-bottom: 7px;
+}
+
+#selhicolor {
+  height: 20px;
+  width: 74px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+#selcolor {
+  width: 75px;
+  height: 20px;
+  margin-top: 0px;
+  margin-bottom: 7px;
+}
+
+#btnClear {
+  width: 75px;
+  height: 22px;
+  margin-bottom: 6px;
+}
+
+.ColorCell {
+  height: 15px;
+  width: 15px;
+}
+</style>
+<script src="common/fck_dialog_common.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 var oEditor = window.parent.InnerDialogLoaded() ;
 
@@ -142,31 +177,33 @@ function Ok()
 	return true ;
 }
 		</script>
-	</head>
-	<body onload="OnLoad()" scroll="no" style="OVERFLOW: hidden">
-		<table cellpadding="0" cellspacing="0" border="0" width="100%" height="100%">
+</head>
+<body onload="OnLoad()" scroll="no" style="OVERFLOW: hidden">
+<table cellpadding="0" cellspacing="0" border="0" width="100%"
+	height="100%">
+	<tr>
+		<td align="center" valign="middle">
+		<table border="0" cellspacing="5" cellpadding="0" width="100%">
 			<tr>
-				<td align="center" valign="middle">
-					<table border="0" cellspacing="5" cellpadding="0" width="100%">
-						<tr>
-							<td valign="top" align="center" nowrap width="100%">
-								<table id="ColorTable" border="0" cellspacing="0" cellpadding="0" width="270" onmouseout="ClearActual();">
-								</table>
-							</td>
-							<td valign="top" align="left" nowrap>
-								<span fckLang="DlgColorHighlight">Highlight</span>
-								<div id="hicolor"></div>
-								<div id="hicolortext">&nbsp;</div>
-								<span fckLang="DlgColorSelected">Selected</span>
-								<div id="selhicolor"></div>
-								<input id="selcolor" type="text" maxlength="20" onchange="UpdateColor();">
-								<br>
-								<input id="btnClear" type="button" fckLang="DlgColorBtnClear" value="Clear" onclick="Clear();" />
-							</td>
-						</tr>
-					</table>
+				<td valign="top" align="center" nowrap width="100%">
+				<table id="ColorTable" border="0" cellspacing="0" cellpadding="0"
+					width="270" onmouseout="ClearActual();">
+				</table>
 				</td>
+				<td valign="top" align="left" nowrap><span
+					fckLang="DlgColorHighlight">Highlight</span>
+				<div id="hicolor"></div>
+				<div id="hicolortext">&nbsp;</div>
+				<span fckLang="DlgColorSelected">Selected</span>
+				<div id="selhicolor"></div>
+				<input id="selcolor" type="text" maxlength="20"
+					onchange="UpdateColor();"> <br>
+				<input id="btnClear" type="button" fckLang="DlgColorBtnClear"
+					value="Clear" onclick="Clear();" /></td>
 			</tr>
 		</table>
-	</body>
+		</td>
+	</tr>
+</table>
+</body>
 </html>

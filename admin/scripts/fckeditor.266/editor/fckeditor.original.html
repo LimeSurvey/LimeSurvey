@@ -23,13 +23,13 @@
 -->
 <html>
 <head>
-	<title>FCKeditor</title>
-	<meta name="robots" content="noindex, nofollow">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<!-- @Packager.RemoveLine
+<title>FCKeditor</title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- @Packager.RemoveLine
 	<meta http-equiv="Cache-Control" content="public">
 	@Packager.RemoveLine -->
-	<script type="text/javascript">
+<script type="text/javascript">
 
 // #1645: Alert the user if opening FCKeditor in FF3 from local filesystem
 // without security.fileuri.strict_origin_policy disabled.
@@ -223,7 +223,7 @@ LoadScript( '_source/internals/fckplugins.js' ) ;
 LoadScript( '../fckconfig.js' ) ;
 
 	</script>
-	<script type="text/javascript">
+<script type="text/javascript">
 
 // Adobe AIR compatibility file.
 if ( FCKBrowserInfo.IsAIR )
@@ -262,7 +262,7 @@ if ( FCKConfig.CustomConfigurationsPath.length > 0 )
 	LoadScript( FCKConfig.CustomConfigurationsPath ) ;
 
 	</script>
-	<script type="text/javascript">
+<script type="text/javascript">
 
 // Load configurations defined at page level.
 FCKConfig_LoadPageConfig() ;
@@ -274,7 +274,7 @@ if ( FCKConfig.Debug )
 	LoadScript( '_source/internals/fckdebug.js' ) ;
 
 	</script>
-	<script type="text/javascript">
+<script type="text/javascript">
 
 var FCK_InternalCSS			= FCKConfig.BasePath + 'css/fck_internal.css' ;					// @Packager.RemoveLine
 var FCK_ShowTableBordersCSS	= FCKConfig.BasePath + 'css/fck_showtableborders_gecko.css' ;	// @Packager.RemoveLine
@@ -297,7 +297,7 @@ FCKLanguageManager.Initialize() ;
 LoadScript( 'lang/' + FCKLanguageManager.ActiveLanguage.Code + '.js' ) ;
 
 	</script>
-	<script type="text/javascript">
+<script type="text/javascript">
 
 // Initialize the editing area context menu.
 FCK_ContextMenu_Init() ;
@@ -305,13 +305,13 @@ FCK_ContextMenu_Init() ;
 FCKPlugins.Load() ;
 
 	</script>
-	<script type="text/javascript">
+<script type="text/javascript">
 
 // Set the editor interface direction.
 window.document.dir = FCKLang.Dir ;
 
 	</script>
-	<script type="text/javascript">
+<script type="text/javascript">
 
 window.onload = function()
 {
@@ -399,27 +399,31 @@ if ( FCKBrowserInfo.IsGecko || ( FCKBrowserInfo.IsSafari && !FCKBrowserInfo.IsSa
 	</script>
 </head>
 <body>
-	<table width="100%" cellpadding="0" cellspacing="0" style="height: 100%; table-layout: fixed">
-		<tr id="xToolbarRow" style="display: none">
-			<td id="xToolbarSpace" style="overflow: hidden">
-				<table width="100%" cellpadding="0" cellspacing="0">
-					<tr id="xCollapsed" style="display: none">
-						<td id="xExpandHandle" class="TB_Expand" colspan="3">
-							<img class="TB_ExpandImg" alt="" src="images/spacer.gif" width="8" height="4" /></td>
-					</tr>
-					<tr id="xExpanded" style="display: none">
-						<td id="xTBLeftBorder" class="TB_SideBorder" style="width: 1px; display: none;"></td>
-						<td id="xCollapseHandle" style="display: none" class="TB_Collapse" valign="bottom">
-							<img class="TB_CollapseImg" alt="" src="images/spacer.gif" width="8" height="4" /></td>
-						<td id="xToolbar" class="TB_ToolbarSet"></td>
-						<td class="TB_SideBorder" style="width: 1px"></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td id="xEditingArea" valign="top" style="height: 100%"></td>
-		</tr>
-	</table>
+<table width="100%" cellpadding="0" cellspacing="0"
+	style="height: 100%; table-layout: fixed">
+	<tr id="xToolbarRow" style="display: none">
+		<td id="xToolbarSpace" style="overflow: hidden">
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr id="xCollapsed" style="display: none">
+				<td id="xExpandHandle" class="TB_Expand" colspan="3"><img
+					class="TB_ExpandImg" alt="" src="images/spacer.gif" width="8"
+					height="4" /></td>
+			</tr>
+			<tr id="xExpanded" style="display: none">
+				<td id="xTBLeftBorder" class="TB_SideBorder"
+					style="width: 1px; display: none;"></td>
+				<td id="xCollapseHandle" style="display: none" class="TB_Collapse"
+					valign="bottom"><img class="TB_CollapseImg" alt=""
+					src="images/spacer.gif" width="8" height="4" /></td>
+				<td id="xToolbar" class="TB_ToolbarSet"></td>
+				<td class="TB_SideBorder" style="width: 1px"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td id="xEditingArea" valign="top" style="height: 100%"></td>
+	</tr>
+</table>
 </body>
 </html>

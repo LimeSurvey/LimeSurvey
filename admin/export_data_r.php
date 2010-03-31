@@ -74,24 +74,24 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 if  (!isset($subaction))
 {
-	$exportroutput = browsemenubar($clang->gT('Export results'));
-	$exportroutput .= "<div class='header'>".$clang->gT("Export result data to R")."</div>\n";
-	$exportroutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export R syntax file")."</a></li><li>"
-	."<a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export .csv data file")."</a></li></ul></p><br />\n"
-	."<div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
-	."<br/><ol style='margin:0 auto; font-size:8pt;'>"
-	."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
-	."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
-	."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
-	."</ol><br />"
-	.$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.")
-	."</div>";
+    $exportroutput = browsemenubar($clang->gT('Export results'));
+    $exportroutput .= "<div class='header'>".$clang->gT("Export result data to R")."</div>\n";
+    $exportroutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export R syntax file")."</a></li><li>"
+    ."<a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export .csv data file")."</a></li></ul></p><br />\n"
+    ."<div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
+    ."<br/><ol style='margin:0 auto; font-size:8pt;'>"
+    ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
+    ."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
+    ."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
+    ."</ol><br />"
+    .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.")
+    ."</div>";
 } else {
-	// Get Base Language:
+    // Get Base Language:
 
-	$language = GetBaseLanguageFromSurveyID($surveyid);
-	$clang = new limesurvey_lang($language);
-	require_once ("export_data_functions.php");
+    $language = GetBaseLanguageFromSurveyID($surveyid);
+    $clang = new limesurvey_lang($language);
+    require_once ("export_data_functions.php");
 }
 
 
@@ -99,143 +99,143 @@ if  (!isset($subaction))
 if  ($subaction=='dldata') {
     header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
-	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	header('Pragma: no-cache');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: no-cache');
 
-	$na="";	//change to empty string instead of two double quotes to fix warnings on NA
-	spss_export_data($na);
+    $na="";	//change to empty string instead of two double quotes to fix warnings on NA
+    spss_export_data($na);
 
-	exit;
+    exit;
 }
 
 
 if  ($subaction=='dlstructure') {
     header("Content-Disposition: attachment; filename=Surveydata_syntax.R");
-	header("Content-Type: application/download; charset=utf-8");
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	header('Pragma: no-cache');
+    header("Content-Type: application/download; charset=utf-8");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: no-cache');
 
-	// Build array that has to be returned
-	$fields = spss_fieldmap();
+    // Build array that has to be returned
+    $fields = spss_fieldmap();
 
-	//Now get the query string with all fields to export
-	$query = spss_getquery();
+    //Now get the query string with all fields to export
+    $query = spss_getquery();
 
-	$result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
-	$num_fields = $result->FieldCount();
+    $result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
+    $num_fields = $result->FieldCount();
 
-	//Now we check if we need to adjust the size of the field or the type of the field
-	while ($row = $result->FetchRow()) {
-		$fieldno = 0;
-		while ($fieldno < $num_fields)
-		{
-			//Performance improvement, don't recheck fields that have valuelabels
-			if (!isset($fields[$fieldno]['answers'])) {
-				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
-				$len = mb_strlen($strTmp);
-				if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
+    //Now we check if we need to adjust the size of the field or the type of the field
+    while ($row = $result->FetchRow()) {
+        $fieldno = 0;
+        while ($fieldno < $num_fields)
+        {
+            //Performance improvement, don't recheck fields that have valuelabels
+            if (!isset($fields[$fieldno]['answers'])) {
+                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+                $len = mb_strlen($strTmp);
+                if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
 
-				if (trim($strTmp) != ''){
-					if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
-					{
-						$fields[$fieldno]['SPSStype']='A';
-					}
-				}
-			}
-			$fieldno++;
-		}
-	}
+                if (trim($strTmp) != ''){
+                    if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
+                    {
+                        $fields[$fieldno]['SPSStype']='A';
+                    }
+                }
+            }
+            $fieldno++;
+        }
+    }
 
-	/**
-	 * End of DATA print out
-	 *
-	 * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
-	 * be sent to the client.
-	 */
-	echo $headerComment;
-	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=c(\"\",\"\\\"\\\"\"), stringsAsFactors=FALSE)\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
-	foreach ($fields as $field){
-		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
-		if($field['LStype'] == 'N' || $field['LStype']=='K') {
-			$field['size'].='.'.($field['size']-1);
-		}
-		switch ($field['SPSStype']) {
-			case 'F':
-				$type="numeric";
-				break;
-			case 'A':
-				$type="character";
-				break;
-			case 'DATETIME23.2':
-			case 'SDATE':
-				$type="character";
-				//@TODO set $type to format for date
-				break;
+    /**
+     * End of DATA print out
+     *
+     * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
+     * be sent to the client.
+     */
+    echo $headerComment;
+    echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=c(\"\",\"\\\"\\\"\"), stringsAsFactors=FALSE)\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
+    foreach ($fields as $field){
+        if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
+        if($field['LStype'] == 'N' || $field['LStype']=='K') {
+            $field['size'].='.'.($field['size']-1);
+        }
+        switch ($field['SPSStype']) {
+            case 'F':
+                $type="numeric";
+                break;
+            case 'A':
+                $type="character";
+                break;
+            case 'DATETIME23.2':
+            case 'SDATE':
+                $type="character";
+                //@TODO set $type to format for date
+                break;
 
-		}
-		if (!$field['hide']) echo " data[,which(names(data)==\"" . $field['id'] . "\")]=as.$type(data[,which(names(data)==\"" . $field['id'] . "\")])\n";
-	}
+        }
+        if (!$field['hide']) echo " data[,which(names(data)==\"" . $field['id'] . "\")]=as.$type(data[,which(names(data)==\"" . $field['id'] . "\")])\n";
+    }
 
-	//Create the variable labels:
-	echo "#Define Variable Properties.\n";
-	foreach ($fields as $field) {
-		if (!$field['hide']) echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . '"' . "\n";
-	}
+    //Create the variable labels:
+    echo "#Define Variable Properties.\n";
+    foreach ($fields as $field) {
+        if (!$field['hide']) echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . '"' . "\n";
+    }
 
-	// Create our Value Labels!
-	echo "#Define Value labels.\n";
-	foreach ($fields as $field) {
-		if (isset($field['answers'])) {
-			$answers = $field['answers'];
-			//print out the value labels!
-			// data$V14=factor(data$V14,levels=c(1,2,3),labels=c("Yes","No","Uncertain"))
-			echo 'data$' . $field["id"] . '=factor(data$' . $field["id"] . ',levels=c(';
-			$str="";
-			foreach ($answers as $answer) {
-				if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
-					$str .= ",{$answer['code']}";
-				} else {
-					$str .= ",\"{$answer['code']}\"";
-				}
-			}
-			$str = mb_substr($str,1);
-			echo $str . '),labels=c(';
-			$str="";
-			foreach ($answers as $answer) {
-				$str .= ",\"{$answer['value']}\"";
-			}
-			$str = mb_substr($str,1);
-			if($field['scale']!=='' && $field['scale'] == 2 ) {
-				$scale = ",ordered=TRUE";
-			} else {
-				$scale = "";
-			}
-			echo "$str)$scale)\n";
-		}
-	}
+    // Create our Value Labels!
+    echo "#Define Value labels.\n";
+    foreach ($fields as $field) {
+        if (isset($field['answers'])) {
+            $answers = $field['answers'];
+            //print out the value labels!
+            // data$V14=factor(data$V14,levels=c(1,2,3),labels=c("Yes","No","Uncertain"))
+            echo 'data$' . $field["id"] . '=factor(data$' . $field["id"] . ',levels=c(';
+            $str="";
+            foreach ($answers as $answer) {
+                if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
+                    $str .= ",{$answer['code']}";
+                } else {
+                    $str .= ",\"{$answer['code']}\"";
+                }
+            }
+            $str = mb_substr($str,1);
+            echo $str . '),labels=c(';
+            $str="";
+            foreach ($answers as $answer) {
+                $str .= ",\"{$answer['value']}\"";
+            }
+            $str = mb_substr($str,1);
+            if($field['scale']!=='' && $field['scale'] == 2 ) {
+                $scale = ",ordered=TRUE";
+            } else {
+                $scale = "";
+            }
+            echo "$str)$scale)\n";
+        }
+    }
 
-	//Rename the Variables (in case somethings goes wrong, we still have the OLD values
-	$errors = "";
-	echo "v.names=c(";
-	foreach ($fields as $field){
-		if (isset($field['sql_name'])) {
-			$ftitle = $field['title'];
-			if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
-				$ftitle = "q_" . $ftitle;
-			}
-			$ftitle = str_replace(array("-",":",";","!"), array("_hyph_","_dd_","_dc_","_excl_"), $ftitle);
-			if (!$field['hide']) {
-				if ($ftitle != $field['title']) $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
-				echo "\"". $ftitle . "\",";
-			}
-		}
-	}
-	echo "NA); names(data)= v.names[-length(v.names)]\nrm(v.names)\n";
-	echo $errors;
-	exit;
+    //Rename the Variables (in case somethings goes wrong, we still have the OLD values
+    $errors = "";
+    echo "v.names=c(";
+    foreach ($fields as $field){
+        if (isset($field['sql_name'])) {
+            $ftitle = $field['title'];
+            if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                $ftitle = "q_" . $ftitle;
+            }
+            $ftitle = str_replace(array("-",":",";","!"), array("_hyph_","_dd_","_dc_","_excl_"), $ftitle);
+            if (!$field['hide']) {
+                if ($ftitle != $field['title']) $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
+                echo "\"". $ftitle . "\",";
+            }
+        }
+    }
+    echo "NA); names(data)= v.names[-length(v.names)]\nrm(v.names)\n";
+    echo $errors;
+    exit;
 }
 ?>

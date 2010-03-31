@@ -1,8 +1,8 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* French Version
-*/
+ * PHPMailer language file: refer to English translation for definitive list
+ * French Version
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'Erreur SMTP : Echec de l\'authentification.';
 $PHPMAILER_LANG['connect_host']         = 'Erreur SMTP : Impossible de se connecter au serveur SMTP.';

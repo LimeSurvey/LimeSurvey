@@ -12,54 +12,53 @@
 <!--
 <link type="text/css" rel="stylesheet" href="tab.winclassic.css" />
 -->
-<link id="luna-tab-style-sheet" type="text/css" rel="stylesheet" href="css/luna/tab.css" disabled="disabled" />
-<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="css/tab.webfx.css" disabled="disabled" />
-<link id="winclassic-tab-style-sheet" type="text/css" rel="stylesheet" href="css/tab.winclassic.css"  disabled="disabled" />
+<link id="luna-tab-style-sheet" type="text/css" rel="stylesheet"
+	href="css/luna/tab.css" disabled="disabled" />
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet"
+	href="css/tab.webfx.css" disabled="disabled" />
+<link id="winclassic-tab-style-sheet" type="text/css" rel="stylesheet"
+	href="css/tab.winclassic.css" disabled="disabled" />
 <!-- the id is not needed. It is used here to be able to change css file at runtime -->
 
 <style type="text/css">
-
 .dynamic-tab-pane-control .tab-page {
-	height:		200px;
+  height: 200px;
 }
 
-.dynamic-tab-pane-control .tab-page .dynamic-tab-pane-control .tab-page {
-	height:		100px;
+.dynamic-tab-pane-control .tab-page .dynamic-tab-pane-control .tab-page
+  {
+  height: 100px;
 }
 
-html, body {
-	background:	ThreeDFace;
+html,body {
+  background: ThreeDFace;
 }
 
 form {
-	margin:		0;
-	padding:	0;
+  margin: 0;
+  padding: 0;
 }
 
 /* over ride styles from webfxlayout */
-
 body {
-	margin:		10px;
-	width:		auto;
-	height:		auto;
+  margin: 10px;
+  width: auto;
+  height: auto;
 }
 
 .dynamic-tab-pane-control h2 {
-	text-align:	center;
-	width:		auto;
+  text-align: center;
+  width: auto;
 }
 
 .dynamic-tab-pane-control h2 a {
-	display:	inline;
-	width:		auto;
+  display: inline;
+  width: auto;
 }
 
 .dynamic-tab-pane-control a:hover {
-	background: transparent;
+  background: transparent;
 }
-
-
-
 </style>
 <script type="text/javascript" src="js/tabpane.js"></script>
 </head>
@@ -83,87 +82,70 @@ setLinkSrc( "luna" );
 </script>
 
 <form action="#">
-<fieldset>
-	<legend>Select Style Sheet</legend>
+<fieldset><legend>Select Style Sheet</legend> <input
+	id="luna-radio" type="radio" name="tab-css-radio" checked="checked"
+	value="css/luna/tab.css" onclick="setLinkSrc('luna')" /> <label
+	for="luna-radio">luna/tab.css</label> <br />
 
-<input id="luna-radio" type="radio" name="tab-css-radio" checked="checked"
-	value="css/luna/tab.css" onclick="setLinkSrc('luna')"/>
-<label for="luna-radio">luna/tab.css</label>
-<br />
-
-<input id="webfx-radio" type="radio" name="tab-css-radio" value="css/tab.webfx.css"
-	 onclick="setLinkSrc('webfx')" />
-<label for="webfx-radio">tab.webfx.css</label>
-<br />
+<input id="webfx-radio" type="radio" name="tab-css-radio"
+	value="css/tab.webfx.css" onclick="setLinkSrc('webfx')" /> <label
+	for="webfx-radio">tab.webfx.css</label> <br />
 
 <input id="classic-radio" type="radio" name="tab-css-radio"
-	value="css/tab.winclassic.css" onclick="setLinkSrc('winclassic')"/>
-<label for="classic-radio">tab.winclassic.css</label>
-
-</fieldset>
+	value="css/tab.winclassic.css" onclick="setLinkSrc('winclassic')" /> <label
+	for="classic-radio">tab.winclassic.css</label></fieldset>
 </form>
 
 <p>&nbsp;</p>
 
-<div class="tab-pane" id="tabPane1">
-
-<script type="text/javascript">
+<div class="tab-pane" id="tabPane1"><script type="text/javascript">
 tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ) );
 //tp1.setClassNameTag( "dynamic-tab-pane-control-luna" );
 //alert( 0 )
 </script>
 
-	<div class="tab-page" id="tabPage1">
-		<h2 class="tab">General</h2>
-		
-		<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
-		
-		This is text of tab 1. This is text of tab 1. This is text of tab 1. 
-		This is text of tab 1. This is text of tab 1. This is text of tab 1. 
-		This is text of tab 1. This is text of tab 1. This is text of tab 1.
-		
-	</div>
+<div class="tab-page" id="tabPage1">
+<h2 class="tab">General</h2>
 
-	<div class="tab-page" id="tabPage2">
-		<h2 class="tab">Security</h2>
-		
-		<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script>
-		
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2.
-		<br />
-		<br />
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2.
-		
-	</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
 
-	<div class="tab-page" id="tabPage3">
-		<h2 class="tab">Privacy</h2>
-		
-		<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage3" ) );</script>
-		
-		This is text of tab 3. This is text of tab 3. This is text of tab 3. 
-		This is text of tab 3. This is text of tab 3. This is text of tab 3. 
-		This is text of tab 3. This is text of tab 3. This is text of tab 3.
-		
-	</div>
+This is text of tab 1. This is text of tab 1. This is text of tab 1.
+This is text of tab 1. This is text of tab 1. This is text of tab 1.
+This is text of tab 1. This is text of tab 1. This is text of tab 1.</div>
 
-	<div class="tab-page" id="tabPage4">
-		<h2 class="tab">Content</h2>
-		
-		<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage4" ) );</script>
-		
-		<fieldset>
-			<legend>Content</legend>
-			This is text of tab 4. This is text of tab 4. This is text of tab 4. 
-			This is text of tab 4. This is text of tab 4. This is text of tab 4. 
-			This is text of tab 4. This is text of tab 4. This is text of tab 4.
-		</fieldset>
-		
-	</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Security</h2>
+
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script>
+
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2. <br />
+<br />
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.</div>
+
+<div class="tab-page" id="tabPage3">
+<h2 class="tab">Privacy</h2>
+
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage3" ) );</script>
+
+This is text of tab 3. This is text of tab 3. This is text of tab 3.
+This is text of tab 3. This is text of tab 3. This is text of tab 3.
+This is text of tab 3. This is text of tab 3. This is text of tab 3.</div>
+
+<div class="tab-page" id="tabPage4">
+<h2 class="tab">Content</h2>
+
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage4" ) );</script>
+
+<fieldset><legend>Content</legend> This is text of tab 4.
+This is text of tab 4. This is text of tab 4. This is text of tab 4.
+This is text of tab 4. This is text of tab 4. This is text of tab 4.
+This is text of tab 4. This is text of tab 4.</fieldset>
+
+</div>
 
 </div>
 
@@ -174,56 +156,47 @@ tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ) );
 <!-- id is not necessary unless you want to support multiple tabs with persistence -->
 <div class="tab-pane" id="tabPane2">
 
-	<div class="tab-page">
-		<h2 class="tab">General</h2>
-		
-		This is text of tab 1. This is text of tab 1. This is text of tab 1. 
-		This is text of tab 1. This is text of tab 1. This is text of tab 1. 
-		This is text of tab 1. This is text of tab 1. This is text of tab 1.
-		
-	</div>
+<div class="tab-page">
+<h2 class="tab">General</h2>
 
-	<div class="tab-page">
-		<h2 class="tab">Security</h2>
-		
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2.
-		<br />
-		<br />
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-		This is text of tab 2. This is text of tab 2. This is text of tab 2.
-		
-	</div>
+This is text of tab 1. This is text of tab 1. This is text of tab 1.
+This is text of tab 1. This is text of tab 1. This is text of tab 1.
+This is text of tab 1. This is text of tab 1. This is text of tab 1.</div>
 
-	<div class="tab-page">
-		<h2 class="tab">Nested</h2>
-		
-		<!-- id is not necessary unless you want to support multiple tabs with persistence -->
-		<div class="tab-pane" id="tabPane3">
+<div class="tab-page">
+<h2 class="tab">Security</h2>
 
-			<div class="tab-page">
-				<h2 class="tab">General</h2>
-				
-				This is text of tab 1. This is text of tab 1. This is text of tab 1. 
-				This is text of tab 1. This is text of tab 1. This is text of tab 1. 
-				This is text of tab 1. This is text of tab 1. This is text of tab 1.
-				
-			</div>
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2. <br />
+<br />
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.</div>
 
-			<div class="tab-page">
-				<h2 class="tab">Privacy</h2>
-				
-				This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-				This is text of tab 2. This is text of tab 2. This is text of tab 2. 
-				This is text of tab 2. This is text of tab 2. This is text of tab 2.
-				
-			</div>
+<div class="tab-page">
+<h2 class="tab">Nested</h2>
 
-		</div>
-		
-	</div>
+<!-- id is not necessary unless you want to support multiple tabs with persistence -->
+<div class="tab-pane" id="tabPane3">
+
+<div class="tab-page">
+<h2 class="tab">General</h2>
+
+This is text of tab 1. This is text of tab 1. This is text of tab 1.
+This is text of tab 1. This is text of tab 1. This is text of tab 1.
+This is text of tab 1. This is text of tab 1. This is text of tab 1.</div>
+
+<div class="tab-page">
+<h2 class="tab">Privacy</h2>
+
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.
+This is text of tab 2. This is text of tab 2. This is text of tab 2.</div>
+
+</div>
+
+</div>
 
 </div>
 

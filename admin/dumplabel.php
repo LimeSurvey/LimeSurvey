@@ -1,17 +1,17 @@
 <?php
 /*
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-* 
-* $Id$
-*/
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id$
+ */
 
 
 
@@ -25,16 +25,16 @@ include_once("login_check.php");
 $lid=returnglobal('lid');
 if (!$lid)
 {
-	echo "<br />\n";
-	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Export Label Set")."</strong></td></tr>\n";
-	echo "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
-	echo "<br /><strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n".$clang->gT("No LID has been provided. Cannot dump label set.")."<br />\n";
-	echo "<br /><input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-	echo "\t</td></tr>\n";
-	echo "</table>\n";
-	echo "</body></html>\n";
-	exit;
+    echo "<br />\n";
+    echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+    echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Export Label Set")."</strong></td></tr>\n";
+    echo "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
+    echo "<br /><strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n".$clang->gT("No LID has been provided. Cannot dump label set.")."<br />\n";
+    echo "<br /><input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+    echo "\t</td></tr>\n";
+    echo "</table>\n";
+    echo "</body></html>\n";
+    exit;
 }
 
 $dumphead = "# LimeSurvey Label Set Dump\n"

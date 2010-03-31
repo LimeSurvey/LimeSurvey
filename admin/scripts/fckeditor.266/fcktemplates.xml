@@ -1,32 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--
- * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2010 Frederico Caldeira Knabben
- *
- * == BEGIN LICENSE ==
- *
- * Licensed under the terms of any of the following licenses at your
- * choice:
- *
- *  - GNU General Public License Version 2 or later (the "GPL")
- *    http://www.gnu.org/licenses/gpl.html
- *
- *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
- *    http://www.gnu.org/licenses/lgpl.html
- *
- *  - Mozilla Public License Version 1.1 or later (the "MPL")
- *    http://www.mozilla.org/MPL/MPL-1.1.html
- *
- * == END LICENSE ==
- *
- * This is the sample templates definitions file. It makes the "templates"
- * command completely customizable.
- *
- * See FCKConfig.TemplatesXmlPath in the configuration file.
--->
+	<!--
+		* FCKeditor - The text editor for Internet - http://www.fckeditor.net
+		* Copyright (C) 2003-2010 Frederico Caldeira Knabben * * == BEGIN
+		LICENSE == * * Licensed under the terms of any of the following
+		licenses at your * choice: * * - GNU General Public License Version 2
+		or later (the "GPL") * http://www.gnu.org/licenses/gpl.html * * - GNU
+		Lesser General Public License Version 2.1 or later (the "LGPL") *
+		http://www.gnu.org/licenses/lgpl.html * * - Mozilla Public License
+		Version 1.1 or later (the "MPL") *
+		http://www.mozilla.org/MPL/MPL-1.1.html * * == END LICENSE == * * This
+		is the sample templates definitions file. It makes the "templates" *
+		command completely customizable. * * See FCKConfig.TemplatesXmlPath in
+		the configuration file.
+	-->
 <Templates imagesBasePath="fck_template/images/">
 	<Template title="Image and Title" image="template1.gif">
-		<Description>One main image with a title and text that surround the image.</Description>
+		<Description>One main image with a title and text that surround the
+			image.</Description>
 		<Html>
 			<![CDATA[
 				<img style="MARGIN-RIGHT: 10px" height="100" alt="" width="100" align="left"/>
@@ -36,7 +26,8 @@
 		</Html>
 	</Template>
 	<Template title="Strange Template" image="template2.gif">
-		<Description>A template that defines two colums, each one with a title, and some text.</Description>
+		<Description>A template that defines two colums, each one with a
+			title, and some text.</Description>
 		<Html>
 			<![CDATA[
 				<table cellspacing="0" cellpadding="0" width="100%" border="0">

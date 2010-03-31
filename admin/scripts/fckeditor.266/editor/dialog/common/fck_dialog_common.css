@@ -20,66 +20,57 @@
  *
  * This is the CSS file used for interface details in some dialog
  * windows.
- */
-
-/* #########
+ */ /* #########
  *  WARNING
  * #########
  * When changing this file, the minified version of it must be updated in the
  * fck_dialog_common.js file (see GetCommonDialogCss).
  */
-
-.ImagePreviewArea
-{
-	border: #000000 1px solid;
-	overflow: auto;
-	width: 100%;
-	height: 170px;
-	background-color: #ffffff;
+.ImagePreviewArea {
+  border: #000000 1px solid;
+  overflow: auto;
+  width: 100%;
+  height: 170px;
+  background-color: #ffffff;
 }
 
-.FlashPreviewArea
-{
-	border: #000000 1px solid;
-	padding: 5px;
-	overflow: auto;
-	width: 100%;
-	height: 170px;
-	background-color: #ffffff;
+.FlashPreviewArea {
+  border: #000000 1px solid;
+  padding: 5px;
+  overflow: auto;
+  width: 100%;
+  height: 170px;
+  background-color: #ffffff;
 }
 
-.BtnReset
-{
-	float: left;
-	background-position: center center;
-	background-image: url(images/reset.gif);
-	width: 16px;
-	height: 16px;
-	background-repeat: no-repeat;
-	border: 1px none;
-	font-size: 1px ;
+.BtnReset {
+  float: left;
+  background-position: center center;
+  background-image: url(images/reset.gif);
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  border: 1px none;
+  font-size: 1px;
 }
 
-.BtnLocked, .BtnUnlocked
-{
-	float: left;
-	background-position: center center;
-	background-image: url(images/locked.gif);
-	width: 16px;
-	height: 16px;
-	background-repeat: no-repeat;
-	border: none 1px;
-	font-size: 1px ;
+.BtnLocked,.BtnUnlocked {
+  float: left;
+  background-position: center center;
+  background-image: url(images/locked.gif);
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  border: none 1px;
+  font-size: 1px;
 }
 
-.BtnUnlocked
-{
-	background-image: url(images/unlocked.gif);
+.BtnUnlocked {
+  background-image: url(images/unlocked.gif);
 }
 
-.BtnOver
-{
-	border: outset 1px;
-	cursor: pointer;
-	cursor: hand;
+.BtnOver {
+  border: outset 1px;
+  cursor: pointer;
+  cursor: hand;
 }

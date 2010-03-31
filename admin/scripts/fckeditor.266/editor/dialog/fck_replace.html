@@ -23,11 +23,11 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta content="noindex, nofollow" name="robots" />
-	<script src="common/fck_dialog_common.js" type="text/javascript"></script>
-	<script type="text/javascript">
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="noindex, nofollow" name="robots" />
+<script src="common/fck_dialog_common.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 var dialog	= window.parent ;
 var oEditor = dialog.InnerDialogLoaded() ;
@@ -579,72 +579,58 @@ window.onunload = function()
 	</script>
 </head>
 <body onload="OnLoad()" style="overflow: hidden">
-	<div id="divFind" style="display: none">
-		<table cellspacing="3" cellpadding="2" width="100%" border="0">
-			<tr>
-				<td nowrap="nowrap">
-					<label for="txtFindFind" fcklang="DlgReplaceFindLbl">
-						Find what:</label>
-				</td>
-				<td width="100%">
-					<input id="txtFindFind" onkeyup="btnStat()" oninput="btnStat()" onpaste="btnStatDelayed()" style="width: 100%" tabindex="1"
-						type="text" />
-				</td>
-				<td>
-					<input id="btnFind" style="width: 80px" disabled="disabled" onclick="Find();"
-						type="button" value="Find" fcklang="DlgFindFindBtn" />
-				</td>
-			</tr>
-			<tr>
-				<td valign="bottom" colspan="3">
-					&nbsp;<input id="chkCaseFind" tabindex="3" type="checkbox" /><label for="chkCaseFind" fcklang="DlgReplaceCaseChk">Match
-						case</label>
-					<br />
-					&nbsp;<input id="chkWordFind" tabindex="4" type="checkbox" /><label for="chkWordFind" fcklang="DlgReplaceWordChk">Match
-						whole word</label>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<div id="divReplace" style="display:none">
-		<table cellspacing="3" cellpadding="2" width="100%" border="0">
-			<tr>
-				<td nowrap="nowrap">
-					<label for="txtFindReplace" fcklang="DlgReplaceFindLbl">
-						Find what:</label>
-				</td>
-				<td width="100%">
-					<input id="txtFindReplace" onkeyup="btnStat()" oninput="btnStat()" onpaste="btnStatDelayed()" style="width: 100%" tabindex="1"
-						type="text" />
-				</td>
-				<td>
-					<input id="btnReplace" style="width: 80px" disabled="disabled" onclick="Replace();"
-						type="button" value="Replace" fcklang="DlgReplaceReplaceBtn" />
-				</td>
-			</tr>
-			<tr>
-				<td valign="top" nowrap="nowrap">
-					<label for="txtReplace" fcklang="DlgReplaceReplaceLbl">
-						Replace with:</label>
-				</td>
-				<td valign="top">
-					<input id="txtReplace" style="width: 100%" tabindex="2" type="text" />
-				</td>
-				<td>
-					<input id="btnReplaceAll" style="width: 80px" disabled="disabled" onclick="ReplaceAll()" type="button"
-						value="Replace All" fcklang="DlgReplaceReplAllBtn" />
-				</td>
-			</tr>
-			<tr>
-				<td valign="bottom" colspan="3">
-					&nbsp;<input id="chkCaseReplace" tabindex="3" type="checkbox" /><label for="chkCaseReplace" fcklang="DlgReplaceCaseChk">Match
-						case</label>
-					<br />
-					&nbsp;<input id="chkWordReplace" tabindex="4" type="checkbox" /><label for="chkWordReplace" fcklang="DlgReplaceWordChk">Match
-						whole word</label>
-				</td>
-			</tr>
-		</table>
-	</div>
+<div id="divFind" style="display: none">
+<table cellspacing="3" cellpadding="2" width="100%" border="0">
+	<tr>
+		<td nowrap="nowrap"><label for="txtFindFind"
+			fcklang="DlgReplaceFindLbl"> Find what:</label></td>
+		<td width="100%"><input id="txtFindFind" onkeyup="btnStat()"
+			oninput="btnStat()" onpaste="btnStatDelayed()" style="width: 100%"
+			tabindex="1" type="text" /></td>
+		<td><input id="btnFind" style="width: 80px" disabled="disabled"
+			onclick="Find();" type="button" value="Find" fcklang="DlgFindFindBtn" />
+		</td>
+	</tr>
+	<tr>
+		<td valign="bottom" colspan="3">&nbsp;<input id="chkCaseFind"
+			tabindex="3" type="checkbox" /><label for="chkCaseFind"
+			fcklang="DlgReplaceCaseChk">Match case</label> <br />
+		&nbsp;<input id="chkWordFind" tabindex="4" type="checkbox" /><label
+			for="chkWordFind" fcklang="DlgReplaceWordChk">Match whole
+		word</label></td>
+	</tr>
+</table>
+</div>
+<div id="divReplace" style="display: none">
+<table cellspacing="3" cellpadding="2" width="100%" border="0">
+	<tr>
+		<td nowrap="nowrap"><label for="txtFindReplace"
+			fcklang="DlgReplaceFindLbl"> Find what:</label></td>
+		<td width="100%"><input id="txtFindReplace" onkeyup="btnStat()"
+			oninput="btnStat()" onpaste="btnStatDelayed()" style="width: 100%"
+			tabindex="1" type="text" /></td>
+		<td><input id="btnReplace" style="width: 80px"
+			disabled="disabled" onclick="Replace();" type="button"
+			value="Replace" fcklang="DlgReplaceReplaceBtn" /></td>
+	</tr>
+	<tr>
+		<td valign="top" nowrap="nowrap"><label for="txtReplace"
+			fcklang="DlgReplaceReplaceLbl"> Replace with:</label></td>
+		<td valign="top"><input id="txtReplace" style="width: 100%"
+			tabindex="2" type="text" /></td>
+		<td><input id="btnReplaceAll" style="width: 80px"
+			disabled="disabled" onclick="ReplaceAll()" type="button"
+			value="Replace All" fcklang="DlgReplaceReplAllBtn" /></td>
+	</tr>
+	<tr>
+		<td valign="bottom" colspan="3">&nbsp;<input id="chkCaseReplace"
+			tabindex="3" type="checkbox" /><label for="chkCaseReplace"
+			fcklang="DlgReplaceCaseChk">Match case</label> <br />
+		&nbsp;<input id="chkWordReplace" tabindex="4" type="checkbox" /><label
+			for="chkWordReplace" fcklang="DlgReplaceWordChk">Match whole
+		word</label></td>
+	</tr>
+</table>
+</div>
 </body>
 </html>

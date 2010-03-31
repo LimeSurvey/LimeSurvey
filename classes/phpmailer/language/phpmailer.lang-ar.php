@@ -1,9 +1,9 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Arabic Version, UTF-8
-* by : bahjat al mostafa <bahjat983@hotmail.com>
-*/
+ * PHPMailer language file: refer to English translation for definitive list
+ * Arabic Version, UTF-8
+ * by : bahjat al mostafa <bahjat983@hotmail.com>
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP Error: لم نستطع تأكيد الهوية.';
 $PHPMAILER_LANG['connect_host']         = 'SMTP Error: لم نستطع الاتصال بمخدم SMTP.';

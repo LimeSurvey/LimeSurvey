@@ -23,11 +23,11 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Table Cell Properties</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="robots" content="noindex, nofollow" />
-	<script src="common/fck_dialog_common.js" type="text/javascript"></script>
-	<script type="text/javascript">
+<title>Table Cell Properties</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noindex, nofollow" />
+<script src="common/fck_dialog_common.js" type="text/javascript"></script>
+<script type="text/javascript">
 
 var dialog	= window.parent ;
 var oEditor = dialog.InnerDialogLoaded() ;
@@ -145,149 +145,127 @@ function SelectColor( wich )
 	</script>
 </head>
 <body scroll="no" style="overflow: hidden">
-	<table cellspacing="0" cellpadding="0" width="100%" border="0" height="100%">
-		<tr>
-			<td>
-				<table cellspacing="1" cellpadding="1" width="100%" border="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0"
+	height="100%">
+	<tr>
+		<td>
+		<table cellspacing="1" cellpadding="1" width="100%" border="0">
+			<tr>
+				<td>
+				<table cellspacing="0" cellpadding="0" border="0">
 					<tr>
-						<td>
-							<table cellspacing="0" cellpadding="0" border="0">
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellWidth">Width</span>:</td>
-									<td>
-										&nbsp;<input onkeypress="return IsDigit(event);" id="txtWidth" type="text" maxlength="4"
-											size="3" />&nbsp;<select id="selWidthType">
-												<option fcklang="DlgCellWidthPx" value="pixels" selected="selected">pixels</option>
-												<option fcklang="DlgCellWidthPc" value="percent">percent</option>
-											</select></td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellHeight">Height</span>:</td>
-									<td>
-										&nbsp;<input id="txtHeight" type="text" maxlength="4" size="3" onkeypress="return IsDigit(event);" />&nbsp;<span
-											fcklang="DlgCellWidthPx">pixels</span></td>
-								</tr>
-								<tr>
-									<td>
-										&nbsp;</td>
-									<td>
-										&nbsp;</td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellWordWrap">Word Wrap</span>:</td>
-									<td>
-										&nbsp;<select id="selWordWrap">
-											<option fcklang="DlgCellWordWrapYes" value="true" selected="selected">Yes</option>
-											<option fcklang="DlgCellWordWrapNo" value="false">No</option>
-										</select></td>
-								</tr>
-								<tr>
-									<td>
-										&nbsp;</td>
-									<td>
-										&nbsp;</td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellHorAlign">Horizontal Alignment</span>:</td>
-									<td>
-										&nbsp;<select id="selHAlign">
-											<option fcklang="DlgCellHorAlignNotSet" value="" selected>&lt;Not set&gt;</option>
-											<option fcklang="DlgCellHorAlignLeft" value="left">Left</option>
-											<option fcklang="DlgCellHorAlignCenter" value="center">Center</option>
-											<option fcklang="DlgCellHorAlignRight" value="right">Right</option>
-										</select></td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellVerAlign">Vertical Alignment</span>:</td>
-									<td>
-										&nbsp;<select id="selVAlign">
-											<option fcklang="DlgCellVerAlignNotSet" value="" selected>&lt;Not set&gt;</option>
-											<option fcklang="DlgCellVerAlignTop" value="top">Top</option>
-											<option fcklang="DlgCellVerAlignMiddle" value="middle">Middle</option>
-											<option fcklang="DlgCellVerAlignBottom" value="bottom">Bottom</option>
-											<option fcklang="DlgCellVerAlignBaseline" value="baseline">Baseline</option>
-										</select></td>
-								</tr>
-							</table>
-						</td>
-						<td>
-							&nbsp;&nbsp;&nbsp;</td>
-						<td align="right">
-							<table cellspacing="0" cellpadding="0" border="0">
-								<tr>
-									<td nowrap="nowrap">
-									 <span fcklang="DlgCellType">Cell Type</span>:</td>
-									<td colspan="2">
-										&nbsp; <select id="selCellType">
-											<option fcklang="DlgCellTypeData" value="td">Data</option>
-											<option fcklang="DlgCellTypeHeader" value="th">Header</option>
-										</select>
-								</tr>
-								<tr>
-									<td>
-										&nbsp;</td>
-									<td>
-										&nbsp;</td>
-									<td>
-										&nbsp;</td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellRowSpan">Rows Span</span>:</td>
-									<td>
-										&nbsp;
-										<input onkeypress="return IsDigit(event);" id="txtRowSpan" type="text" maxlength="3" size="2"
-											></td>
-									<td>
-									</td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellCollSpan">Columns Span</span>:</td>
-									<td>
-										&nbsp;
-										<input onkeypress="return IsDigit(event);" id="txtCollSpan" type="text" maxlength="2"
-											size="2"></td>
-									<td>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										&nbsp;</td>
-									<td>
-										&nbsp;</td>
-									<td>
-										&nbsp;</td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellBackColor">Background Color</span>:</td>
-									<td>
-										&nbsp;<input id="txtBackColor" type="text" size="8" /></td>
-									<td>
-										&nbsp;
-										<input type="button" fcklang="DlgCellBtnSelect" value="Select..." onclick="SelectColor( 'Back' )"></td>
-								</tr>
-								<tr>
-									<td nowrap="nowrap">
-										<span fcklang="DlgCellBorderColor">Border Color</span>:</td>
-									<td>
-										&nbsp;<input id="txtBorderColor" type="text" size="8" /></td>
-									<td>
-										&nbsp;
-										<input type="button" fcklang="DlgCellBtnSelect" value="Select..." onclick="SelectColor( 'Border' )" /></td>
-								</tr>
-							</table>
-						</td>
+						<td nowrap="nowrap"><span fcklang="DlgCellWidth">Width</span>:</td>
+						<td>&nbsp;<input onkeypress="return IsDigit(event);"
+							id="txtWidth" type="text" maxlength="4" size="3" />&nbsp;<select
+							id="selWidthType">
+							<option fcklang="DlgCellWidthPx" value="pixels"
+								selected="selected">pixels</option>
+							<option fcklang="DlgCellWidthPc" value="percent">percent</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellHeight">Height</span>:</td>
+						<td>&nbsp;<input id="txtHeight" type="text" maxlength="4"
+							size="3" onkeypress="return IsDigit(event);" />&nbsp;<span
+							fcklang="DlgCellWidthPx">pixels</span></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellWordWrap">Word
+						Wrap</span>:</td>
+						<td>&nbsp;<select id="selWordWrap">
+							<option fcklang="DlgCellWordWrapYes" value="true"
+								selected="selected">Yes</option>
+							<option fcklang="DlgCellWordWrapNo" value="false">No</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellHorAlign">Horizontal
+						Alignment</span>:</td>
+						<td>&nbsp;<select id="selHAlign">
+							<option fcklang="DlgCellHorAlignNotSet" value="" selected>&lt;Not
+							set&gt;</option>
+							<option fcklang="DlgCellHorAlignLeft" value="left">Left</option>
+							<option fcklang="DlgCellHorAlignCenter" value="center">Center</option>
+							<option fcklang="DlgCellHorAlignRight" value="right">Right</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellVerAlign">Vertical
+						Alignment</span>:</td>
+						<td>&nbsp;<select id="selVAlign">
+							<option fcklang="DlgCellVerAlignNotSet" value="" selected>&lt;Not
+							set&gt;</option>
+							<option fcklang="DlgCellVerAlignTop" value="top">Top</option>
+							<option fcklang="DlgCellVerAlignMiddle" value="middle">Middle</option>
+							<option fcklang="DlgCellVerAlignBottom" value="bottom">Bottom</option>
+							<option fcklang="DlgCellVerAlignBaseline" value="baseline">Baseline</option>
+						</select></td>
 					</tr>
 				</table>
-			</td>
-		</tr>
-	</table>
+				</td>
+				<td>&nbsp;&nbsp;&nbsp;</td>
+				<td align="right">
+				<table cellspacing="0" cellpadding="0" border="0">
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellType">Cell
+						Type</span>:</td>
+						<td colspan="2">&nbsp; <select id="selCellType">
+							<option fcklang="DlgCellTypeData" value="td">Data</option>
+							<option fcklang="DlgCellTypeHeader" value="th">Header</option>
+						</select>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellRowSpan">Rows
+						Span</span>:</td>
+						<td>&nbsp; <input onkeypress="return IsDigit(event);"
+							id="txtRowSpan" type="text" maxlength="3" size="2"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellCollSpan">Columns
+						Span</span>:</td>
+						<td>&nbsp; <input onkeypress="return IsDigit(event);"
+							id="txtCollSpan" type="text" maxlength="2" size="2"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellBackColor">Background
+						Color</span>:</td>
+						<td>&nbsp;<input id="txtBackColor" type="text" size="8" /></td>
+						<td>&nbsp; <input type="button" fcklang="DlgCellBtnSelect"
+							value="Select..." onclick="SelectColor( 'Back' )"></td>
+					</tr>
+					<tr>
+						<td nowrap="nowrap"><span fcklang="DlgCellBorderColor">Border
+						Color</span>:</td>
+						<td>&nbsp;<input id="txtBorderColor" type="text" size="8" /></td>
+						<td>&nbsp; <input type="button" fcklang="DlgCellBtnSelect"
+							value="Select..." onclick="SelectColor( 'Border' )" /></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
 </body>
 </html>

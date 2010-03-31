@@ -25,11 +25,11 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="robots" content="noindex, nofollow" />
-	<script src="common/fck_dialog_common.js" type="text/javascript"></script>
-	<script type="text/javascript">
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noindex, nofollow" />
+<script src="common/fck_dialog_common.js" type="text/javascript"></script>
+<script type="text/javascript">
 var dialog = window.parent ;
 var oEditor = dialog.InnerDialogLoaded() ;
 var FCK = oEditor.FCK;
@@ -307,41 +307,35 @@ function CleanWord( oNode, bIgnoreFont, bRemoveStyles )
 
 </head>
 <body style="overflow: hidden">
-	<table cellspacing="0" cellpadding="0" width="100%" border="0" style="height: 98%">
-		<tr>
-			<td>
-				<div id="xSecurityMsg" style="display: none">
-					<span fcklang="DlgPasteSec">Because of your browser security settings,
-						the editor is not able to access your clipboard data directly. You are required
-						to paste it again in this window.</span><br />
-					&nbsp;
-				</div>
-				<div>
-					<span fcklang="DlgPasteMsg2">Please paste inside the following box using the keyboard
-						(<strong>Ctrl+V</strong>) and hit <strong>OK</strong>.</span><br />
-					&nbsp;
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td id="xFrameSpace" valign="top" height="100%" style="border: #000000 1px solid">
-				<textarea id="txtData" cols="80" rows="5" style="border: #000000 1px; display: none;
-					width: 99%; height: 98%"></textarea>
-			</td>
-		</tr>
-		<tr id="oWordCommands">
-			<td>
-
-					<input id="chkRemoveFont" type="checkbox" checked="checked" />
-					<label for="chkRemoveFont" fcklang="DlgPasteIgnoreFont">
-						Ignore Font Face definitions</label>
-					<br />
-					<input id="chkRemoveStyles" type="checkbox" />
-					<label for="chkRemoveStyles" fcklang="DlgPasteRemoveStyles">
-						Remove Styles definitions</label>
-
-			</td>
-		</tr>
-	</table>
+<table cellspacing="0" cellpadding="0" width="100%" border="0"
+	style="height: 98%">
+	<tr>
+		<td>
+		<div id="xSecurityMsg" style="display: none"><span
+			fcklang="DlgPasteSec">Because of your browser security
+		settings, the editor is not able to access your clipboard data
+		directly. You are required to paste it again in this window.</span><br />
+		&nbsp;</div>
+		<div><span fcklang="DlgPasteMsg2">Please paste inside the
+		following box using the keyboard (<strong>Ctrl+V</strong>) and hit <strong>OK</strong>.</span><br />
+		&nbsp;</div>
+		</td>
+	</tr>
+	<tr>
+		<td id="xFrameSpace" valign="top" height="100%"
+			style="border: #000000 1px solid"><textarea id="txtData"
+			cols="80" rows="5"
+			style="border: #000000 1px; display: none; width: 99%; height: 98%"></textarea>
+		</td>
+	</tr>
+	<tr id="oWordCommands">
+		<td><input id="chkRemoveFont" type="checkbox" checked="checked" />
+		<label for="chkRemoveFont" fcklang="DlgPasteIgnoreFont">
+		Ignore Font Face definitions</label> <br />
+		<input id="chkRemoveStyles" type="checkbox" /> <label
+			for="chkRemoveStyles" fcklang="DlgPasteRemoveStyles"> Remove
+		Styles definitions</label></td>
+	</tr>
+</table>
 </body>
 </html>
