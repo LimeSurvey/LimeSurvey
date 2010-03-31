@@ -352,17 +352,10 @@ function setman_multiflex($ia)
 
 	global $dbprefix, $connect;
 	
-	$qq="SELECT lid FROM {$dbprefix}questions WHERE qid={$ia[0]}";
-	$qr=db_execute_assoc($qq);
 
-	while($qd=$qr->FetchRow())
-	{
-		$lid=$qd['lid'];
-	}
-
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	$ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order, title";
 	$ansresult = db_execute_assoc($ansquery);
-	$ans2query = "SELECT * FROM {$dbprefix}labels WHERE lid={$lid} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, title";
+	$ans2query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order, title";
 	$ans2result = db_execute_assoc($ans2query);
 
 	while ($ans2row=$ans2result->FetchRow())
@@ -394,7 +387,7 @@ function setman_multiflex($ia)
 		} else { //There is no array_filter option, so we should definitely add to the mandatory list here!
 			foreach($lset as $ls)
 			{
-				$mandatorys[]=$ia[1].$ansrow['code']."_".$ls['code'];
+				$mandatorys[]=$ia[1].$ansrow['title']."_".$ls['title'];
 				$mandatoryfns[]=$ia[1];
 			}
 		}

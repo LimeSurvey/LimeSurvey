@@ -148,7 +148,7 @@ if (!isset($_SESSION['loginID']))
 					}
 					$login = true;
 
-                    $loginsummary .= "<br /><span style='font-weight:bold;'>" .sprintf($clang->gT("Welcome %s!"),$_SESSION['user']) . "</span><br />";
+                    $loginsummary .= "<p><span style='font-weight:bold;'>" .sprintf($clang->gT("Welcome %s!"),$_SESSION['user']) . "</span><br />";
 					$loginsummary .= $clang->gT("You logged in successfully.");
 
 					if (isset($_POST['refererargs']) && $_POST['refererargs'] &&

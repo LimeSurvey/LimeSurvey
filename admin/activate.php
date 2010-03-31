@@ -267,6 +267,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 }
 else
 {
+    $createsurvey='';
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";
 	$presult=db_execute_assoc($pquery);
@@ -292,7 +293,6 @@ else
 		}
 	}
 	//Get list of questions for the base language
-    $createsurvey='';
     $fieldmap=createFieldMap($surveyid);
 	foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
 	{
