@@ -148,8 +148,10 @@ if (!isset($_SESSION['loginID']))
                     }
                     $login = true;
 
-                    $loginsummary .= "<p><span style='font-weight:bold;'>" .sprintf($clang->gT("Welcome %s!"),$_SESSION['user']) . "</span><br />";
-                    $loginsummary .= $clang->gT("You logged in successfully.");
+					$loginsummary .= "<div class='messagebox'>\n";
+                    $loginsummary .= "<div class='header'>" . $clang->gT("Logged In") . "</div>";
+					$loginsummary .= "<br />".sprintf($clang->gT("Welcome %s!"),$_SESSION['full_name'])."<br />&nbsp;";
+					$loginsummary .= "</div>\n";
 
                     if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
                     strpos($_POST['refererargs'], "action=logout") === FALSE)
