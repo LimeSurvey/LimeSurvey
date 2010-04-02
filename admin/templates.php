@@ -874,19 +874,37 @@ $SurveyList=array('startpage.pstpl',
              "<img name='DeleteTemplate' src='$imagefiles/delete.png' alt='".$clang->gT("Delete this template")."' " .
              " /></a>";
                                }
-                               $templatesoutput.= "\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n"
-                               ."\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".urlencode($screenname)."&amp;templatename=$templatename\", \"_top\")'"
-                               ." title=\"".$clang->gTview("Export Template")."\" >"
-                               ."<img name='Export' src='$imagefiles/export.png' alt='".$clang->gT("Export Template")."' /></a>\n"
-                               ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
-                               ." title=\"".$clang->gTview("Import template")."\" >"
-                               ."<img name='ImportTemplate' src='$imagefiles/import.png' alt='".$clang->gT("Import template")."' title='' /></a>\n"
-                               ."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-                               ."<a href='#' title=\"".$clang->gTview("Copy Template")."\" "
-                               ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">"
-                               ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='".$clang->gT("Copy Template")."' /></a>"
-                               ."</div>\n"
-                               ."<div class='menubar-right'>\n"
+$templatesoutput.= "\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n";
+if(is_writable($tempdir) && is_writable($templaterootdir))
+{
+$templatesoutput.="\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".urlencode($screenname)."&amp;templatename=$templatename\", \"_top\")'"
+    ." title=\"".$clang->gTview("Export Template")."\" >" 
+    ."<img name='Export' src='$imagefiles/export.png' alt='".$clang->gT("Export Template")."' /></a>\n"
+    ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
+    ." title=\"".$clang->gTview("Import template")."\" >" 
+    ."<img name='ImportTemplate' src='$imagefiles/import.png' alt='".$clang->gT("Import template")."' title='' /></a>\n"
+    ."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+    ."<a href='#' title=\"".$clang->gTview("Copy Template")."\" " 
+    ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', 	   	'$templatename', 'copy')\">" 
+    ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='".$clang->gT("Copy Template")."' /></a>";
+}
+elseif(is_writable($templaterootdir))
+{
+$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder in order to enable this option")."' /></a>\n"
+    ."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder in order to enable this option")."' title='' />\n"
+."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+    ."<a href='#' title=\"".$clang->gTview("Copy Template")."\" " 
+    ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
+    ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='".$clang->gT("Copy Template")."' /></a>";
+}
+else
+{
+
+$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder amd templates folder in order to enable this option")."' /></a>\n"
+	."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder amd templates folder in order to enable this option")."' title='' />\n"
+	."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+	."<img name='MakeCopy' src='$imagefiles/copy_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder amd templates folder in order to enable this option")."' /></a>";}
+				$templatesoutput.= "</div>\n<div class='menubar-right'>\n"
                                ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
                                . "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+escape(this.value), \"_top\")'>\n"
                                . makeoptions($screens, "id", "name", html_escape($screenname) )
@@ -1026,22 +1044,30 @@ $SurveyList=array('startpage.pstpl',
 
                                    // The following lines are forcing the browser to refresh the templates on each save
                                    $time=date("ymdHis");
-                                   $fnew=fopen("$tempdir/template_temp_$time.html", "w+");
-                                   fwrite ($fnew, getHeader());
-                                   foreach ($cssfiles as $cssfile)
-                                   {
-                                       $myoutput=str_replace($cssfile['name'],$cssfile['name']."?t=$time",$myoutput);
-                                   }
+                           @$fnew=fopen("$tempdir/template_temp_$time.html", "w+");
+if(!$fnew)
+{
+$templatesoutput.= "<p>\n"."<span class ='errortitle'>".$clang->gT(" Please change the directory permission of /tmp folder in order to preview templates.")."</span>"
+."</div>\n";
 
-                                   foreach($myoutput as $line) {
-                                       fwrite($fnew, $line);
-                                   }
-                                   fclose($fnew);
-                                   $langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
-                                   $templatesoutput.= "<p>\n"
-                                   ."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='768' name='previewiframe' style='background-color: white;'>Embedded Frame</iframe>\n"
-                                   ."</p></div>\n";
-                               }
+}
+else
+{
+@fwrite ($fnew, getHeader());
+foreach ($cssfiles as $cssfile)
+{
+    $myoutput=str_replace($cssfile['name'],$cssfile['name']."?t=$time",$myoutput);
+}
+
+foreach($myoutput as $line) {
+	@fwrite($fnew, $line);
+}
+@fclose($fnew);
+$langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
+$templatesoutput.= "<p>\n"."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='768' name='previewiframe' style='background-color: white;'>Embedded Frame</iframe>\n"
+."</div>\n";
+}
+}
 
                                function doreplacement($file) { //Produce sample page from template file
                                    $output=array();
