@@ -253,11 +253,14 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
         die();
     }
 
-    if (is_dir($homedir."/install") && $debug<2)
+if (is_dir($homedir."/install") && $debug<2)
     {
+      rmdirr($homedir."/install");
+      if (is_dir($homedir."/install") && $debug<2)
+       {
         die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
+       }  
     }
-
 }
 
 //Admin menus and standards
