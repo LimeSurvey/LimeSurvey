@@ -253,14 +253,10 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
         die();
     }
 
-if (is_dir($homedir."/install") && $debug<2)
-    {
-      rmdirr($homedir."/install");
       if (is_dir($homedir."/install") && $debug<2)
        {
         die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
        }  
-    }
 }
 
 //Admin menus and standards
@@ -2255,7 +2251,14 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
     }
 
     $counter=0;
-
+    $fieldmap[$counter]=array("fieldname"=>"submitdate", "type"=>"submitdate", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+	if ($style == "full")
+    {
+        $fieldmap[$counter]['title']="";
+        $fieldmap[$counter]['question']=$clang->gT("Date submitted");
+        $fieldmap[$counter]['group_name']="";
+    }
+    $counter++;
 
     $fieldmap[$counter]=array("fieldname"=>"id", "sid"=>$surveyid, "type"=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
@@ -2329,19 +2332,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
                 $fieldmap[$counter]['group_name']="";
             }
             $counter++;
-            $fieldmap[$counter]=array("fieldname"=>"submitdate",
-                                     "type"=>"submitdate", 
-                                     "sid"=>$surveyid, 
-                                     "gid"=>"", 
-                                     "qid"=>"", 
-                                     "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap[$counter]['title']="";
-                $fieldmap[$counter]['question']=$clang->gT("Date submitted");
-                $fieldmap[$counter]['group_name']="";
-            }
-            $counter++;
+            
         }
         if ($prow['ipaddr'] == "Y")
         {
