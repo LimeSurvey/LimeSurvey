@@ -347,8 +347,13 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         array_walk( $_POST, 'db_quote', true);
         $query = "INSERT INTO ".db_table_name('quota_members')." (sid,qid,quota_id,code) VALUES ('$surveyid','{$_POST['quota_qid']}','{$_POST['quota_id']}','{$_POST['quota_anscode']}')";
         $connect->Execute($query) or safe_die($connect->ErrorMsg());
-        $viewquota = "1";
-
+		if($_POST['createanother'] == "on") {
+			$_POST['action']="quotas";
+			$_POST['subaction']="new_answer";
+			$subaction="new_answer";
+		} else {
+			$viewquota = "1";
+		}
     }
 
     if($subaction == "quota_delans")
@@ -507,27 +512,32 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
         //create main quota <DIV> and headlines
         $quotasoutput .='<div class="header">'.$clang->gT("Survey quotas").'</div>
-          				<br /><table id="quotalist" class="quotalist"><thead>
-          				<tr>
-            				<th width="20%">'.$clang->gT("Quota Name").'</th>
-            				<th width="20%">'.$clang->gT("Status").'</th>
-            				<th width="30%">'.$clang->gT("Quota Action").'</th>
-            				<th width="5%">'.$clang->gT("Limit").'</th>
-            				<th width="5%">'.$clang->gT("Completed").'</th>
-            				<th width="20%">'.$clang->gT("Action").'</th>
-          				</tr></thead>';
+          				<br />
+		<table id="quotalist" class="quotalist">
+			<thead>
+          		<tr>
+            		<th width="20%">'.$clang->gT("Quota Name").'</th>
+            		<th width="20%">'.$clang->gT("Status").'</th>
+            		<th width="30%">'.$clang->gT("Quota Action").'</th>
+            		<th width="5%">'.$clang->gT("Limit").'</th>
+            		<th width="5%">'.$clang->gT("Completed").'</th>
+            		<th width="20%">'.$clang->gT("Action").'</th>
+          		</tr>
+			</thead>';
 
         //NOTE: the footer always has to be put BEFORE the tbody tag!
-        $quotasoutput .='<tfoot><tr>
-            				<td>&nbsp;</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">'.$totalquotas.'</td>
-            				<td align="center">'.$totalcompleted.'</td>
-            				<td align="center" style="padding: 3px;"><input type="button" value="'.$clang->gT("Quick CSV report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')" /></td>
-          					</tr>
-        					</tfoot>
-        					<tbody>';
+        $quotasoutput .='
+			<tfoot>
+				<tr>
+            		<td>&nbsp;</td>
+            		<td align="center">&nbsp;</td>
+            		<td align="center">&nbsp;</td>
+            		<td align="center">'.$totalquotas.'</td>
+            		<td align="center">'.$totalcompleted.'</td>
+            		<td align="center" style="padding: 3px;"><input type="button" value="'.$clang->gT("Quick CSV report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')" /></td>
+          		</tr>
+        	</tfoot>
+        	<tbody>';
 
         //if there are quotas let's proceed
         if ($result->RecordCount() > 0)
@@ -535,7 +545,12 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             //loop through all quotas
             while ($quotalisting = $result->FetchRow())
             {
-                $quotasoutput .='<tr>
+                $quotasoutput .='
+				<tr>
+					<td colspan="6" style="background-color: #567081; height: 2px">
+					</td>
+				</tr>
+				<tr>
             		<td align="center">'.$quotalisting['name'].'</td>
             		<td align="center">';
                 if ($quotalisting['active'] == 1)
@@ -544,7 +559,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                 } else {
                     $quotasoutput .= '<font color="#B73838">'.$clang->gT("Not Active").'</font>';
                 }
-                $quotasoutput .='</td>
+                $quotasoutput .='
+					</td>
             		<td align="center">';
                 if ($quotalisting['action'] == 1)
                 {
@@ -558,41 +574,45 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                 $totalcompleted=$totalcompleted+$completed;
                 $csvoutput[]=$quotalisting['name'].",".$quotalisting['qlimit'].",".$completed.",".($quotalisting['qlimit']-$completed)."\r\n";
 
-                $quotasoutput .='</td>
+                $quotasoutput .='
+					</td>
             		<td align="center">'.$quotalisting['qlimit'].'</td>
             		<td align="center" '.$highlight.'>'.$completed.'</td>
             		<td align="center" style="padding: 3px;">
-
-            		<form action="'.$scriptname.'" method="post">
-            			<input name="submit" type="submit" class="submit" value="'.$clang->gT("Modify").'" />
-            			<input type="hidden" name="sid" value="'.$surveyid.'" />
-            			<input type="hidden" name="action" value="quotas" />
-            			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
-            			<input type="hidden" name="subaction" value="quota_editquota" />
-            		</form>
-            		<form action="'.$scriptname.'" method="post">
-            			<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
-            			<input type="hidden" name="sid" value="'.$surveyid.'" />
-            			<input type="hidden" name="action" value="quotas" />
-            			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
-            			<input type="hidden" name="subaction" value="quota_delquota" />
-            		</form>
+						<form action="'.$scriptname.'" method="post">
+							<input name="submit" type="submit" class="submit" value="'.$clang->gT("Modify").'" />
+							<input type="hidden" name="sid" value="'.$surveyid.'" />
+							<input type="hidden" name="action" value="quotas" />
+							<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
+							<input type="hidden" name="subaction" value="quota_editquota" />
+						</form>
+						<form action="'.$scriptname.'" method="post">
+							<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
+							<input type="hidden" name="sid" value="'.$surveyid.'" />
+							<input type="hidden" name="action" value="quotas" />
+							<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
+							<input type="hidden" name="subaction" value="quota_delquota" />
+						</form>
             		</td>
           		</tr>';
 
                 //headline for quota sub-parts
-                $quotasoutput .='<tr class="evenrow">
+                $quotasoutput .='
+				<tr class="evenrow">
            			<td align="center">&nbsp;</td>
             		<td align="center"><strong>'.$clang->gT("Questions").'</strong></td>
             		<td align="center"><strong>'.$clang->gT("Answers").'</strong></td>
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
-            		<td style="padding: 3px;" align="center"><form action="'.$scriptname.'" method="post">
+            		<td style="padding: 3px;" align="center">
+						<form action="'.$scriptname.'" method="post">
             				<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add Answer").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
-            				<input type="hidden" name="subaction" value="new_answer" /></form></td>
+            				<input type="hidden" name="subaction" value="new_answer" />
+						</form>
+					</td>
           		</tr>';
 
                 //check how many sub-elements exist for a certain quota
@@ -605,13 +625,14 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                     while ($quota_questions = $result2->FetchRow())
                     {
                         $question_answers = getQuotaAnswers($quota_questions['qid'],$surveyid,$quotalisting['id']);
-                        $quotasoutput .='<tr class="evenrow">
-            			<td align="center">&nbsp;</td>
-            			<td align="center">'.$question_answers[$quota_questions['code']]['Title'].'</td>
-            			<td align="center">'.$question_answers[$quota_questions['code']]['Display'].'</td>
-            			<td align="center">&nbsp;</td>
-            			<td align="center">&nbsp;</td>
-            			<td style="padding: 3px;" align="center">
+                        $quotasoutput .='
+				<tr class="evenrow">
+            		<td align="center">&nbsp;</td>
+            		<td align="center">'.$question_answers[$quota_questions['code']]['Title'].'</td>
+            		<td align="center">'.$question_answers[$quota_questions['code']]['Display'].'</td>
+            		<td align="center">&nbsp;</td>
+            		<td align="center">&nbsp;</td>
+            		<td style="padding: 3px;" align="center">
             			<form action="'.$scriptname.'" method="post">
             				<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
@@ -621,8 +642,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<input type="hidden" name="quota_anscode" value="'.$quota_questions['code'].'" />
             				<input type="hidden" name="subaction" value="quota_delans" />
             			</form>
-            			</td>
-          				</tr>';
+            		</td>
+          		</tr>';
                     }
                 }
 
@@ -631,24 +652,30 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         }
         else
         {
-            $quotasoutput .='<tr>
-           	<td colspan="6" align="center">'.$clang->gT("No quotas have been set for this survey").'.</td>
-         	</tr>';
+            $quotasoutput .='
+				<tr>
+					<td colspan="6" align="center">'.$clang->gT("No quotas have been set for this survey").'.</td>
+				</tr>';
         }
 
-        $quotasoutput .='<tr>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">'.$totalquotas.'</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center" style="padding: 3px;"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add New Quota").'" />
-            				<input type="hidden" name="sid" value="'.$surveyid.'" />
-            				<input type="hidden" name="action" value="quotas" />
-            				<input type="hidden" name="subaction" value="new_quota" /></form></td>
-            				</tr></tbody>
-      						</table>';
+        $quotasoutput .='
+				<tr>
+            		<td align="center">&nbsp;</td>
+            		<td align="center">&nbsp;</td>
+            		<td align="center">&nbsp;</td>
+            		<td align="center">'.$totalquotas.'</td>
+            		<td align="center">&nbsp;</td>
+            		<td align="center" style="padding: 3px;">
+						<form action="'.$scriptname.'" method="post">
+							<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add New Quota").'" />
+							<input type="hidden" name="sid" value="'.$surveyid.'" />
+							<input type="hidden" name="action" value="quotas" />
+            				<input type="hidden" name="subaction" value="new_quota" />
+						</form>
+					</td>
+            	</tr>
+			</tbody>
+      	</table>';
     }
 
     if(isset($_GET['quickreport']) && $_GET['quickreport'])
@@ -679,42 +706,45 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         } else
         {
             $quotasoutput .='<div class="header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
-			<form action="'.$scriptname.'" method="post">
-				<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-					<tbody>
-					<tr class="evenrow">
-						<td align="center">&nbsp;</td>
-						<td align="center">&nbsp;</td>
-					</tr>
-					<tr class="evenrow">
-						<td width="21%" align="center" valign="top"><strong>'.$clang->gT("Select Question").':</strong></td>
-						<td align="left">
-							<select name="quota_qid" size="15">';
+			<div class="messagebox" style="width: 600px">
+				<form action="'.$scriptname.'" method="post">
+					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+						<tbody>
+						<tr class="evenrow">
+							<td align="center">&nbsp;</td>
+							<td align="center">&nbsp;</td>
+						</tr>
+						<tr class="evenrow">
+							<td width="30%" align="center" valign="top"><strong>'.$clang->gT("Select Question").':</strong></td>
+							<td align="left">
+								<select name="quota_qid" size="15">';
 
             while ($questionlisting = $result->FetchRow())
             {
                 $quotasoutput .='<option value="'.$questionlisting['qid'].'">'.$questionlisting['title'].': '.strip_tags(substr($questionlisting['question'],0,40)).'</option>';
             }
 
-            $quotasoutput .='</select>
-						</td>
-					</tr>
-					<tr align="left" class="evenrow">
-						<td colspan="2">&nbsp;</td>
-					</tr>
-					<tr align="left" class="evenrow">
-						<td>&nbsp;</td>
-						<td>
-							<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
-							<input type="hidden" name="sid" value="'.$surveyid.'" />
-							<input type="hidden" name="action" value="quotas" />
-							<input type="hidden" name="subaction" value="new_answer_two" />
-							<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
-						</td>
-					</tr>
-					</tbody>
-				</table><br />
-			</form>';
+            $quotasoutput .='
+								</select>
+							</td>
+						</tr>
+						<tr align="left" class="evenrow">
+							<td colspan="2">&nbsp;</td>
+						</tr>
+						<tr align="left" class="evenrow">
+							<td>&nbsp;</td>
+							<td>
+								<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
+								<input type="hidden" name="sid" value="'.$surveyid.'" />
+								<input type="hidden" name="action" value="quotas" />
+								<input type="hidden" name="subaction" value="new_answer_two" />
+								<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
+							</td>
+						</tr>
+						</tbody>
+					</table><br />
+				</form>
+			</div>';
         }
     }
 
@@ -742,17 +772,18 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         } else
         {
             $quotasoutput .='<div class="header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
-			<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" method="post">
-				<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-					<tbody>
-						<tr class="evenrow">
-							<td align="center">&nbsp;</td>
-							<td align="center">&nbsp;</td>
-						</tr>
-						<tr class="evenrow">
-							<td width="21%" align="center" valign="top"><strong>'.$clang->gT("Select Answer").':</strong></td>
-							<td align="left">
-								<select name="quota_anscode" size="15">';
+			<div class="messagebox" style="width: 600px">
+				<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" method="post">
+					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+						<tbody>
+							<tr class="evenrow">
+								<td align="center">&nbsp;</td>
+								<td align="center">&nbsp;</td>
+							</tr>
+							<tr class="evenrow">
+								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Select Answer").':</strong></td>
+								<td align="left">
+									<select name="quota_anscode" size="15">';
 
             while (list($key,$value) = each($question_answers))
             {
@@ -760,26 +791,32 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             }
 
 
-            $quotasoutput .='</select>
-							</td>
-						</tr>
-						<tr align="left" class="evenrow">
-							<td colspan="2">&nbsp;</td>
-						</tr>
-						<tr align="left" class="evenrow">
-							<td>&nbsp;</td>
-							<td>
-								<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
-								<input type="hidden" name="sid" value="'.$surveyid.'" />
-								<input type="hidden" name="action" value="quotas" />
-								<input type="hidden" name="subaction" value="insertquotaanswer" />
-								<input type="hidden" name="quota_qid" value="'.$_POST['quota_qid'].'" />
-								<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
-							</td>
-						</tr>
-					</tbody>
-				</table><br />
-			</form>';
+            $quotasoutput .='
+									</select>
+								</td>
+							</tr>
+							<tr align="left" class="evenrow">
+								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Save this, then create another:").'</td>
+								<td><input type="checkbox" name="createanother"></td>
+							</tr>
+							<tr align="left" class="evenrow">
+								<td colspan="2">&nbsp;</td>
+							</tr>
+							<tr align="left" class="evenrow">
+								<td>&nbsp;</td>
+								<td>
+									<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
+									<input type="hidden" name="sid" value="'.$surveyid.'" />
+									<input type="hidden" name="action" value="quotas" />
+									<input type="hidden" name="subaction" value="insertquotaanswer" />
+									<input type="hidden" name="quota_qid" value="'.$_POST['quota_qid'].'" />
+									<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
+								</td>
+							</tr>
+						</tbody>
+					</table><br />
+				</form>
+			</div>';
         }
     }
 
