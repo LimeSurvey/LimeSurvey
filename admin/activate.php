@@ -85,7 +85,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
     //	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
-    //  # "I" -> FILE CSV ONE
+	//  # "I" -> LANGUAGE SWITCH
     //  # ":" -> Array Multi Flexi Numbers
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
@@ -356,6 +356,9 @@ else
             case "Y":  //YesNo
             case "X":  //Boilerplate
                 $createsurvey .= " C(1)";
+                break;
+            case "I":  //Language switch
+                $createsurvey .= " C(20)";
                 break;
             default:
                 $createsurvey .= " C(5)";
