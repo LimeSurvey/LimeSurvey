@@ -3290,13 +3290,19 @@ function getSavedCount($surveyid)
 
 function GetBaseLanguageFromSurveyID($surveyid)
 {
+    static $cache = array();
     global $connect;
     $surveyid=(int)($surveyid);
-    $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $surveylanguage = $connect->GetOne($query); //Checked
-    if ($surveylanguage==false)
-    {
-        $surveylanguage='en';
+    if (!isset($cache[$surveyid])) {
+	    $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+	    $surveylanguage = $connect->GetOne($query); //Checked
+	    if ($surveylanguage==false)
+	    {
+	        $surveylanguage='en';	    
+	    }
+	    $cache[$surveyid] = $surveylanguage;
+    } else {
+        $surveylanguage = $cache[$surveyid];
     }
     return $surveylanguage;
 }
@@ -3304,17 +3310,23 @@ function GetBaseLanguageFromSurveyID($surveyid)
 
 function GetAdditionalLanguagesFromSurveyID($surveyid)
 {
+    static $cache = array();
     global $connect;
     $surveyid=sanitize_int($surveyid);
-    $query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $additional_languages = $connect->GetOne($query);
-    if ($additional_languages==false)
-    {
-        $additional_languages = array();
-    }
-    else
-    {
-        $additional_languages = explode(" ", trim($additional_languages));
+    if (!isset($cache[$surveyid])) {
+        $query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+	    $additional_languages = $connect->GetOne($query);
+	    if ($additional_languages==false)
+	    {
+	        $additional_languages = array();
+	    }
+	    else
+	    {
+	        $additional_languages = explode(" ", trim($additional_languages));
+	    }
+	    $cache[$surveyid] = $additional_languages;
+    } else {
+        $additional_languages = $cache[$surveyid];
     }
     return $additional_languages;
 }
@@ -4611,14 +4623,13 @@ function getArrayFiltersForGroup($surveyid,$gid)
     $grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qquery = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter' AND qid='".$qrow['qid']."'";
-        $qresult = db_execute_num($qquery);     //Checked
-        if ($qresult->RecordCount() == 1) // We Found a array_filter attribute
+        $qresult = getQuestionAttributes($qrow['qid']);
+        if (isset($qresult['array_filter'])) // We Found a array_filter attribute
         {
-            $val = $qresult->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+            $val = $qresult['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
             foreach ($grows2 as $avalue)
             {
-                if ($avalue['title'] == $val[0])
+                if ($avalue['title'] == $val)
                 {
                     $filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid'], 'gid2'=>$avalue['gid']);
                     array_push($attrmach,$filter);
@@ -4660,14 +4671,13 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qquery = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qrow['qid']."'";
-        $qresult = db_execute_num($qquery);     //Checked
-        if ($qresult->RecordCount() == 1) // We Found a array_filter attribute
+        $qresult = getQuestionAttributes($qrow['qid']);
+        if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
-            $val = $qresult->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+            $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
             foreach ($grows as $avalue) // Cycle through all the other questions in this group until we find the source question for this array_filter
             {
-                if ($avalue['title'] == $val[0])
+                if ($avalue['title'] == $val)
                 {
                     /* This question ($avalue) is the question that provides the source information we use
                      * to determine which answers show up in the question we're looking at, which is $qrow['qid']
@@ -4750,14 +4760,13 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
     $grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qquery = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qrow['qid']."'";
-        $qresult = db_execute_num($qquery);     //Checked
-        if ($qresult->RecordCount() == 1) // We Found a array_filter attribute
+        $qresult = getQuestionAttributes($qrow['qid']);
+        if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
-            $val = $qresult->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+            $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
             foreach ($grows2 as $avalue)
             {
-                if ($avalue['title'] == $val[0])
+                if ($avalue['title'] == $val)
                 {
                     //Get the code for this question, so we can see if any later questions in this group us it for an array_filter_exclude
                     $cqquery = "SELECT {$dbprefix}questions.title FROM {$dbprefix}questions WHERE {$dbprefix}questions.qid='".$qrow['qid']."'";
