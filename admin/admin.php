@@ -277,11 +277,6 @@ if(isset($_SESSION['loginID']))
         if(hasRight($surveyid,'browse_response'))    {include('saved.php');}
         else { include('access_denied.php');}
     }
-    elseif ($action == 'exportresults')
-    {
-        if(hasRight($surveyid,'export'))    {include('exportresults.php');}
-        else { include('access_denied.php');}
-    }
     elseif ($action == 'tokens')
     {
         if(hasRight($surveyid,'activate_survey'))    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php');}
@@ -440,6 +435,11 @@ if(isset($_SESSION['loginID']))
         {
             include('access_denied.php');
         }
+    }
+    elseif ($action == 'exportresults')
+    {
+        if(hasRight($surveyid,'export'))    {include('exportresults.php');}
+        else { include('access_denied.php');}
     }
     elseif ($action == 'statistics')
     {

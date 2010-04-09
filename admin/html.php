@@ -269,7 +269,7 @@ if ($action == "personalsettings")
 if (isset($surveyid) && $surveyid &&
 $action!='dataentry' && $action!='browse' && $action!='exportspss' &&
 $action!='statistics' && $action!='importoldresponses' && $action!='exportr' &&
-$action!='vvimport' && $action!='vvexport')
+$action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 {
     if(hasRight($surveyid))
     {
