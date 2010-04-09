@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-04 07:00+0200\n"
-"PO-Revision-Date: 2010-04-08 01:20+0530\n"
+"PO-Revision-Date: 2010-04-10 00:27+0530\n"
 "Last-Translator: smarthbehl <smarthbehl@gmail.com>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -6596,11 +6596,11 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:591
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:596
 msgid "All"
-msgstr ""
+msgstr "सब"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:587
 msgid "Invited"
-msgstr ""
+msgstr "आमंत्रित"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:588
 msgid "Not invited"
@@ -6658,24 +6658,24 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:649
 msgid "Email reminder subject:"
-msgstr ""
+msgstr "Email स्मरणपत्र विषय"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:654
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:656
 msgid "Email reminder:"
-msgstr ""
+msgstr "ईमेल स्मरणपत्र"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:660
 msgid "Confirmation email subject:"
-msgstr ""
+msgstr "प्रमाणी करण ईमेल विषय"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:665
 msgid "Confirmation email:"
-msgstr ""
+msgstr "प्रमाणी करण ईमेल"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:667
 msgid "Confirmation email"
-msgstr ""
+msgstr "प्रमाणी करण ईमेल"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:671
 msgid "Public registration email subject:"
@@ -6745,15 +6745,15 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:813
 msgid "Search"
-msgstr ""
+msgstr "खोज"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:821
 msgid "Records displayed:"
-msgstr ""
+msgstr "मान्य से"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:822
 msgid "Starting from:"
-msgstr ""
+msgstr "शुरुआत से"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:855
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:857
@@ -6781,7 +6781,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:960
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:970
 msgid "Sort by: "
-msgstr ""
+msgstr "क्रम से अलग अलग करना"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:864
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:867
@@ -6809,44 +6809,44 @@ msgstr "ईमेल पता"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:917
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2108
 msgid "Invite sent?"
-msgstr ""
+msgstr "निमन्त्रण भेज दिया?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:922
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:925
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:926
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2113
 msgid "Reminder sent?"
-msgstr ""
+msgstr "स्मरणपत्र संख्या "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:931
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:934
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:935
 msgid "Reminder count"
-msgstr ""
+msgstr "स्मरणपत्र संखया"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:940
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:943
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:944
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2126
 msgid "Completed?"
-msgstr ""
+msgstr "पूरा हो चुका?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:949
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:952
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:953
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2131
 msgid "Valid from"
-msgstr ""
+msgstr "मान्य से"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:958
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:961
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:962
 msgid "Valid until"
-msgstr ""
+msgstr "जब तक मान्य "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1017
 msgid "Invalid email address:"
-msgstr ""
+msgstr "अमान्य ईमेल पता"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1023
 #, fuzzy
@@ -6856,19 +6856,19 @@ msgstr "इस सर्वेक्षण में भाग लेने क�
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1049
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1051
 msgid "Do Survey"
-msgstr ""
+msgstr "निरीक्षण करो"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1059
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1061
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2057
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2179
 msgid "Edit token entry"
-msgstr ""
+msgstr "टोकन इंद्राज का सम्पादन "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1064
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1066
 msgid "Delete token entry"
-msgstr ""
+msgstr "टोकन इंद्राज मिटा दिया जाए"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1080
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1082
@@ -6908,7 +6908,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1148
 msgid "Delete Tokens Table"
-msgstr ""
+msgstr "टोकनस टेबल मिटा दिए जाएं"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1154
 msgid "If you delete this table tokens will no longer be required to access this survey."
@@ -6937,7 +6937,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1211
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1490
 msgid "Warning!"
-msgstr ""
+msgstr "चेतावनी"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1211
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1490
@@ -6954,7 +6954,7 @@ msgstr "विषय"
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:171
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:259
 msgid "Message"
-msgstr ""
+msgstr "सन्देश"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1267
 msgid "Invitation Email:"
@@ -7035,7 +7035,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1536
 msgid "Reminder Email:"
-msgstr ""
+msgstr "स्मरणपत्र ईमेल"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1545
 msgid "Send reminder to token IDs:"
@@ -7051,11 +7051,11 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1553
 msgid "Start at Token ID:"
-msgstr ""
+msgstr "टोकन ID से शुरूआत करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1558
 msgid "Send reminder to Token ID:"
-msgstr ""
+msgstr "टोकन ID को स्मरणपत्र भेजो"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1568
 msgid "Min days between reminders"
@@ -7067,7 +7067,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1575
 msgid "Send Reminders"
-msgstr ""
+msgstr "स्मरणपत्र भेजो"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1588
 msgid "Sending Reminders"
@@ -7075,7 +7075,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1602
 msgid "From Token ID"
-msgstr ""
+msgstr "टोकन ID से"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1748
 msgid "Reminder sent to:"
@@ -7279,7 +7279,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2330
 msgid "Note:"
-msgstr ""
+msgstr "नोट"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2331
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
@@ -7339,7 +7339,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2763
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2771
 msgid "List"
-msgstr ""
+msgstr "सूची"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2529
 #, php-format
@@ -7430,23 +7430,23 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:159
 msgid "Check Data"
-msgstr ""
+msgstr "डाटा चैक करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:182
 msgid "You have to login first."
-msgstr ""
+msgstr "आपको पहले लागइन करना पडेगा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:207
 msgid "Login"
-msgstr ""
+msgstr "लागइन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:208
 msgid "Forgot Your Password?"
-msgstr ""
+msgstr "क्या अपना पासवरड भूल गये? "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:107
 msgid "There are no groups available."
-msgstr ""
+msgstr "वहाँ कोई समूह उपलब्ध नहीं है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:123
 #, php-format
@@ -7455,12 +7455,12 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:131
 msgid "No SID Provided"
-msgstr ""
+msgstr "कोई भी SIP नहीं दिया गया"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:143
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:217
 msgid "Scope"
-msgstr ""
+msgstr "अवसर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:143
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:224
@@ -7479,32 +7479,32 @@ msgstr "अधिकतम "
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:155
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:180
 msgid "Edit"
-msgstr ""
+msgstr "संपादन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:163
 msgid "Assessment rules"
-msgstr ""
+msgstr "आंकलन नियम"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:167
 msgid "SID"
-msgstr ""
+msgstr "SID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:193
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:219
 msgid "Total"
-msgstr ""
+msgstr "कुल"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:222
 msgid "Group"
-msgstr ""
+msgstr "ग्रुप"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:257
 msgid "Heading"
-msgstr ""
+msgstr "शीर्षक"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:22
 msgid "Access denied!"
-msgstr ""
+msgstr "पहुंच असविकार की"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:27
 msgid "You are not allowed dump the database!"
@@ -7552,7 +7552,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:82
 msgid "You are not allowed to edit groups in this survey!"
-msgstr ""
+msgstr "इस सरवेक्षण में आपको समूह  संपादन करना मना है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:87
 msgid "You are not allowed to browse responses!"
@@ -7560,7 +7560,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:92
 msgid "You are not allowed to set assessment rules!"
-msgstr ""
+msgstr "आपको आंकलन नियम तय करने की इजाजत नही है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:97
 msgid "You are not allowed to delete this group!"
@@ -7665,15 +7665,15 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:60
 msgid "Source table:"
-msgstr ""
+msgstr "आयात प्रतिक्रियाऐं"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:67
 msgid "Import Responses"
-msgstr ""
+msgstr "आयात प्रतिक्रियाऐं"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:67
 msgid "Are you sure?"
-msgstr ""
+msgstr "क्या आपको विश्वास है? "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:69
 msgid "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
@@ -7682,16 +7682,16 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:45
 msgid "HTML Editor"
-msgstr ""
+msgstr "HTML संपादन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:53
 msgid "Close Editor"
-msgstr ""
+msgstr " संपादन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:86
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:136
 msgid "Editing"
-msgstr ""
+msgstr " संपादन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:167
 msgid "Do you want to save your changes ?"
@@ -8090,11 +8090,11 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:834
 msgid "Single checkbox"
-msgstr ""
+msgstr "एक चैकबाक्स"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:946
 msgid "Conditions designer"
-msgstr ""
+msgstr "शरतों का ङिजाइनर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:955
 msgid "Show conditions for this question"
@@ -8102,17 +8102,17 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:958
 msgid "Add and edit conditions"
-msgstr ""
+msgstr "जमा और संपादन शरतें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:960
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1562
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1601
 msgid "Copy conditions"
-msgstr ""
+msgstr "नकल शरतें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:964
 msgid "Before"
-msgstr ""
+msgstr "पहले"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:981
 #, fuzzy
@@ -8133,7 +8133,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1128
 msgid "Delete all conditions"
-msgstr ""
+msgstr " सभी शरतें मिटायें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1134
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
@@ -8145,11 +8145,11 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1180
 msgid "New scenario number"
-msgstr ""
+msgstr "नया पटकथा अंक"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1187
 msgid "Update scenario"
-msgstr ""
+msgstr "सुधार पटकथा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1198
 msgid "Are you sure you want to delete all conditions set in this scenario?"
@@ -8157,60 +8157,60 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1200
 msgid "Delete this scenario"
-msgstr ""
+msgstr "इस पटकथा को मिटायें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1206
 msgid "Edit scenario"
-msgstr ""
+msgstr "पटकथा संपादन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1260
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1762
 msgid "Less than"
-msgstr ""
+msgstr " कम "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1261
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1763
 msgid "Less than or equal to"
-msgstr ""
+msgstr " कम या बराबर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1262
 msgid "equals"
-msgstr ""
+msgstr "बराबर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1263
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1765
 msgid "Not equal to"
-msgstr ""
+msgstr "बराबर नहीं"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1264
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1766
 msgid "Greater than or equal to"
-msgstr ""
+msgstr "इससे बडा या बराबर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1265
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1767
 msgid "Greater than"
-msgstr ""
+msgstr "इससे बडा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1266
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1768
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1876
 msgid "Regular expression"
-msgstr ""
+msgstr "योग्य अभिव्यकति"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1340
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1413
 msgid "From token table"
-msgstr ""
+msgstr "संकेत सूची से"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1344
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1417
 msgid "Inexistant token table"
-msgstr ""
+msgstr "संकेत सूची नहीं है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1402
 msgid "Not found"
-msgstr ""
+msgstr "नहीं मिला"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1459
 msgid "Are you sure you want to delete this condition?"
@@ -8218,19 +8218,19 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1461
 msgid "Delete this condition"
-msgstr ""
+msgstr "इस शरत को मिटायें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1464
 msgid "Edit this condition"
-msgstr ""
+msgstr "इस शरत का संपादन करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1541
 msgid "This question is always shown."
-msgstr ""
+msgstr "यह प्रशन हमेशा दिखाया जाता है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1577
 msgid "Copy the selected conditions to"
-msgstr ""
+msgstr "चुनिंदा शरतों की नकल करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1601
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
@@ -8238,20 +8238,20 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1625
 msgid "This survey's questions don't use conditions"
-msgstr ""
+msgstr "इस सरवेक्षण के सवालों में शरतें  इस्तमाल नहीं होती"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1662
 msgid "Edit condition"
-msgstr ""
+msgstr "शरत का संपादन करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1666
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1896
 msgid "Add condition"
-msgstr ""
+msgstr "शरत जोडें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1677
 msgid "Add scenario"
-msgstr ""
+msgstr "पटकथा जोडें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1678
 #, fuzzy
@@ -8260,7 +8260,7 @@ msgstr "डिफ़ॉल्ट भाषा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1689
 msgid "Scenario"
-msgstr ""
+msgstr "पटकथा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1701
 #, fuzzy
@@ -8269,11 +8269,11 @@ msgstr "\tपिछले"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1759
 msgid "Comparison operator"
-msgstr ""
+msgstr "तुलनात्मक संचालक"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1764
 msgid "Equals"
-msgstr ""
+msgstr " बराबर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1775
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:711
@@ -8303,7 +8303,7 @@ msgstr "जवाब"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1823
 msgid "Predefined"
-msgstr ""
+msgstr "पहले से परिभाषित"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1824
 #, fuzzy
@@ -8333,7 +8333,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1890
 msgid "Update condition"
-msgstr ""
+msgstr "परिस्थिति में सुधार"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:27
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:28
@@ -8345,7 +8345,7 @@ msgstr "प्रारंभ करने के लिए इस सर्व�
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:29
 msgid "Important instructions"
-msgstr ""
+msgstr "ज्ञरूरी सूचनायें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:30
 msgid "Click on the following button if you want to"
@@ -8365,7 +8365,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:36
 msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?"
-msgstr ""
+msgstr "क्या आपको भरोसा है कि आप कुछ अधूरे ऊतत्रों को मिटाना चाहते हैं और पूरे हुए उतॅरों को और टोकनो को रीसैटल करना चाहते हैं?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:36
 msgid "Reset answers and token completed state"
@@ -8373,15 +8373,15 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:62
 msgid "Answers and tokens have been re-opened."
-msgstr ""
+msgstr "उतरों और टोकनों को दुबारा खोल दिया गया है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:102
 msgid "Export result data to SPSS"
-msgstr ""
+msgstr "एक्स्पोर्ट नतीजा डाटा SPSS के लिए"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:119
 msgid "Data selection:"
-msgstr ""
+msgstr "डाटा संकलन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:125
 #, fuzzy
@@ -8390,11 +8390,11 @@ msgstr "फारसी"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:127
 msgid "Prior to 16"
-msgstr ""
+msgstr "16 से पूर्व"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:129
 msgid "16 or up"
-msgstr ""
+msgstr "16 या उस के ऊपर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:133
 #, fuzzy
@@ -8403,7 +8403,7 @@ msgstr "सितम्बर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:133
 msgid "Export syntax"
-msgstr ""
+msgstr "निर्यात सिन्टैक्स"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:134
 #, fuzzy
@@ -8429,11 +8429,11 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:230
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:234
 msgid "Not Selected"
-msgstr ""
+msgstr "नहीं चुना गया"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:31
 msgid "Welcome to the ComfortUpdate"
-msgstr ""
+msgstr "सहूलियत सुधार में स्वागत है।"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:32
 msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
@@ -8441,7 +8441,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:33
 msgid "The following steps will be done by this update:"
-msgstr ""
+msgstr "इस सुधार से नीचे लिखे काम पूरे हो जायेंगें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:34
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
@@ -8453,15 +8453,15 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:36
 msgid "New files will be downloaded and installed."
-msgstr ""
+msgstr "नई फाईलों को डाउनलोड और संस्थापित कर दिया जाएगा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:37
 msgid "If necessary the database will be updated."
-msgstr ""
+msgstr "आवश्यकता पडने पर डाटाबेस में सुधार कर दिया जाएगा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:38
 msgid "Checking basic requirements..."
-msgstr ""
+msgstr "आधारीय ज्ञरूरतों का परीक्षण करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:40
 msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
@@ -8469,15 +8469,15 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:41
 msgid "Please enter a valid update-key:"
-msgstr ""
+msgstr "कृपया मानय सुधार key दर्ज करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:42
 msgid "Save update key"
-msgstr ""
+msgstr "सुधार key सुरक्षित करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:45
 msgid "Update key: Valid"
-msgstr ""
+msgstr "सुधार key: मानय"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:49
 #, php-format
@@ -8487,7 +8487,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:54
 #, php-format
 msgid "Version file is not writable (%s). Please set according file permissions."
-msgstr ""
+msgstr "अनुवाद फाईल %s लिखने के काबिल नहीं है। क्रपया अनुमति अनुसार फाईल सैट करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:57
 #, fuzzy
@@ -8496,27 +8496,27 @@ msgstr "रद्द करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:92
 msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
+msgstr "आपके संसथापनों की पढताल करने  पर हमने एक या अधिक कठिनाईयों  का सामना किया। क्रपया ऊपर किसी भी त्रुटि संदेश की पढताल करें और आगे जाने से पहले इनको ठीक करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:256
 msgid "Check again"
-msgstr ""
+msgstr "फिर जांच करे"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:98
 msgid "Everything looks alright. Please proceed to the next step."
-msgstr ""
+msgstr "सबकुछ ठीक लग रहा है। क्पया  आगे कदम बढायें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:101
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:262
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:349
 #, php-format
 msgid "Proceed to step %s"
-msgstr ""
+msgstr "%s की ओर कदम बढाये"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:117
 msgid "ComfortUpdate Step 2"
-msgstr ""
+msgstr "सहूलियत सुधार कदम - २"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:148
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:156
@@ -8525,37 +8525,37 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:362
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:370
 msgid "On requesting the update information from limesurvey.org there has been an error:"
-msgstr ""
+msgstr "limesurvey,org, से सुधार सूचना   मांगने पर त्रुटि सामने आई"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:153
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:285
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:367
 msgid "Your update key is invalid and was removed. "
-msgstr ""
+msgstr "आपकी सुधार key अमानय है उसे हटा  दिया"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:166
 msgid "Update server busy"
-msgstr ""
+msgstr "सुधार सरवर वयसत है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:167
 msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
-msgstr ""
+msgstr "सुधार सरवर वरतमान में वयसत लग रहा है। यह जयादातर तब होता है जब  ये अननुवाद की जरूरी सुधार  फाईलें  तैयार की जा रही हों।"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:168
 msgid "Please be patient and try again in about 10 minutes."
-msgstr ""
+msgstr "क्रपया धीरज रखें और १० मिनट बाद दोबारा कोशिश करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:169
 msgid "Back to global settings"
-msgstr ""
+msgstr "वापस गलोबल सैटिंगस पर"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:212
 msgid "Checking existing LimeSurvey files..."
-msgstr ""
+msgstr "वरतमान  limesurvey फाईलों  का निरीक्षण हो रहा है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:215
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
-msgstr ""
+msgstr "चेतावनी: निमनलिखित फाईलों या डाइऱकटरियों को सुधारिये"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:216
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
@@ -8563,12 +8563,12 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:228
 msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
-msgstr ""
+msgstr "सुधार करने पर नीचे वाली फाईलें जमा हो जायेंगी परनतु यह पहले ही मौजूद हैं। यह बहुत ही असाधारण हैं, ऐसा संयोगैतमक है।"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:229
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:242
 msgid "We recommend that these files should be replaced by the update procedure."
-msgstr ""
+msgstr "हम सलाह देते हैं कि इन फाईलों को  सुधार प्रणाली से बदल दें।"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:241
 msgid "The following files will be modified or deleted but were already modified by someone else."
@@ -8576,43 +8576,43 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:254
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
+msgstr "आपकी फाईल अनुमति का परीक्षण  करते समय हमें एक या अधिक समसयायों  का सामना करना पड़ा। क्रपया आगे जाने से पहले किसी भी त्रुटी संदेश  की जांच कर लें और उनहें सुधार लें। "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:260
 msgid "Please check any problems above and then proceed to the next step."
-msgstr ""
+msgstr "कृपया ऊपर किसी भी कठिनाई का निरीक्षण करें औऱ फिर अगले सटैप की ओऱ बढें"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:276
 msgid "ComfortUpdate Step 3"
-msgstr ""
+msgstr "सहूलियत सुधार सटैप तीन"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:277
 msgid "Creating DB & file backup"
-msgstr ""
+msgstr "DB और फाईल बैकअप बन रहा है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:320
 msgid "Creating file backup... "
-msgstr ""
+msgstr "फाईल बैकअप बन रहा है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:327
 msgid "File backup created:"
-msgstr ""
+msgstr "फाईल बैकअप बन चुका है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:335
 msgid "Creating database backup... "
-msgstr ""
+msgstr "डाटाबेस बैकअप बन रहा है..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:339
 msgid "DB backup created:"
-msgstr ""
+msgstr "DB बैकअप बन चुका है"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:344
 msgid "No DB backup created:"
-msgstr ""
+msgstr "किसी भी डाटाबेस बैकअप का निर्माण नहीं हुआ है।"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:344
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
-msgstr ""
+msgstr "डाटाबेस बैकअप वयहवारिकता वरतमान में आपके प्रकार के डाटाबेस के लिए उपलबध नहीं है। आगे जाने से पहले क्रपया अपने डाटाबेस को बैकअप कर लें बैकअप का प्रयोग भी करें।"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:347
 msgid "Please check any problems above and then proceed to the final step."
@@ -10945,7 +10945,7 @@ msgstr "समय सीमा चेतावनी संदेश प्र�
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4085
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
-msgstr ""
+msgstr "दूसरा संदेश \" समय बाधित चेतावनी दिखायेगा। (  इसको खाली छोडने से  default चेतावनी दिखायेगा )"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4086
 #, fuzzy
