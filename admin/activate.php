@@ -273,9 +273,10 @@ else
     $presult=db_execute_assoc($pquery);
     while($prow=$presult->FetchRow())
     {
+        if ($createsurvey!='') {$createsurvey .= ",\n";}
         if ($prow['private'] == "N")
         {
-            $createsurvey .= "  token C(36),\n";
+            $createsurvey .= "  token C(36)";
             $surveynotprivate="TRUE";
         }
         if ($prow['allowregister'] == "Y")
@@ -284,12 +285,12 @@ else
         }
         if ($prow['ipaddr'] == "Y")
         {
-            $createsurvey .= " ipaddr X,\n";
+            $createsurvey .= " ipaddr X";
         }
         //Check to see if 'refurl' field is required.
         if ($prow['refurl'] == "Y")
         {
-            $createsurvey .= " refurl X,\n";
+            $createsurvey .= " refurl X";
         }
     }
     //Get list of questions for the base language
