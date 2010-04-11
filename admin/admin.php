@@ -488,8 +488,8 @@ if(isset($_SESSION['loginID']))
         if(hasRight($surveyid,'browse_response'))    {include('vvimport.php');}
         else { include('access_denied.php');}
     }
-    if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' ||
-    $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')
+    if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' || $action=='editdefaultvalues' ||
+        $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')
     {
         if(hasRight($surveyid,'define_questions'))
         {
@@ -544,6 +544,7 @@ if(isset($_SESSION['loginID']))
 
     if (isset($editgroup)) {$adminoutput.= $editgroup;}
     if (isset($editquestion)) {$adminoutput.= $editquestion;}
+    if (isset($editdefvalues)) {$adminoutput.= $editdefvalues;}
     if (isset($editsurvey)) {$adminoutput.= $editsurvey;}
     if (isset($quotasoutput)) {$adminoutput.= $quotasoutput;}
     if (isset($labelsoutput)) {$adminoutput.= $labelsoutput;}

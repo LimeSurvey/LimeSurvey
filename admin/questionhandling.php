@@ -123,6 +123,53 @@ if ($action == "copyquestion")
     }
 }
 
+
+if ($action == "editdefaultvalues")
+{
+    $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $questlangs[] = $baselang;
+    $questlangs = array_flip($questlangs);
+    $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
+    $qtproperties=getqtypelist('','array');
+
+    $editdefvalues="<div class='header'>".$clang->gT('Edit default answer values')."</div> "
+    . '<div class="tab-pane" id="tab-pane-editdefaultvalues-'.$surveyid.'">'
+    . "<form id='frmdefaultvalues' name='frmdefaultvalues' action='$scriptname' method='post'>\n";
+    $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($baselang,false).'</h2>';
+    if ($qtproperties[$questiontype]['answerscales']>0)
+    {
+        $editdefvalues.="<ul> ";
+        for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
+        {
+            $editdefvalues.=" <li><label for='defaultanswerscale_{$scale_id}'>";
+            if ($qtproperties[$questiontype]['answerscales']>1)
+            {
+                $editdefvalues.=sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</label>";
+            }
+            else
+            {
+                $editdefvalues.=sprintf($clang->gT('Default answer:'),$scale_id)."</label>";
+            }
+            $editdefvalues.="<select name='defaultanswerscale_{$scale_id}' id='defaultanswerscale_{$scale_id}'>";
+            $editdefvalues.="<option value=''>".$clang->gT('<No default value>')."</option>";
+            $answerquery = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid=$qid and language='$baselang' order by sortorder";
+            $answerresult = db_execute_assoc($answerquery);  
+            foreach ($answerresult as $answer)     
+            {
+                $editdefvalues.="<option value='{$answer['code']}'>{$answer['answer']}</option>";
+            }       
+            $editdefvalues.="</select></li> ";
+        }
+        $editdefvalues.="</ul> ";
+        $editdefvalues.="</div> "; // Closing page
+        $editdefvalues.="</div> "; // Closing pane
+    }       
+    $editdefvalues.="<p><input type='submit' value='".$clang->gT('Save')."'/></form>";
+}
+
+
+
 if ($action == "editquestion" || $action=="addquestion")
 {
     $adding=($action=="addquestion");

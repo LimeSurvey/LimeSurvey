@@ -105,8 +105,8 @@ if (!isset($_SESSION['loginID']))
             if ($result->RecordCount() < 1)
             {
                 // wrong or unknown username
-                $loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
-                $loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 
             }
             else
@@ -165,8 +165,8 @@ if (!isset($_SESSION['loginID']))
                 }
                 else
                 {
-                    $loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
-                    $loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                    $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                    $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                 }
             }
         }
@@ -266,8 +266,8 @@ if (!isset($_SESSION['loginID']))
             else
             {
                 // wrong or unknown username
-                $loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
-                $loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                 $isAuthenticated=false;
             }
 

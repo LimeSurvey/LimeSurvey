@@ -349,14 +349,20 @@ function db_upgrade($oldversion) {
     if ($oldversion < 143) //Modify surveys table
     {
         modify_database("", "ALTER TABLE `prefix_questions` ADD `parent_qid` integer NOT NULL default '0'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_questions` ADD `default_value` text"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_answers` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_answers` DROP PRIMARY KEY, ADD PRIMARY KEY  USING BTREE(`qid`,`code`,`language`,`scale_id`)"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_answers` DROP PRIMARY KEY, ADD PRIMARY KEY  USING BTREE (`qid`,`code`,`language`,`scale_id`)"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE `prefix_defaultvalues` (
+                              `qid` int(11) NOT NULL default '0',
+                              `scale_id` int(11) NOT NULL default '0',
+                              `language` varchar(20) NOT NULL,
+                              `defaultvalue` text,
+                              PRIMARY KEY  (qid, scale_id, `language`)
+                            ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
 
         // -Move all 'answers' that are subquestions to the questions table
         // -Move all 'labels' that are answers to the answers table
-        // -Transscript the default values where applicable
+        // -Transscribe the default values where applicable
         // -Move default values from answers to questions
         upgrade_tables143();
 

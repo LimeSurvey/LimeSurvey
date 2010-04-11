@@ -858,11 +858,11 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
         if ($first) $surveysummary .= "</tr>";
 
-        if ($surveyinfo['surveyls_urldescription']==""){$surveyinfo['surveyls_urldescription']=$surveyinfo['surveyls_url'];}
+        if ($surveyinfo['surveyls_urldescription']==""){$surveyinfo['surveyls_urldescription']=htmlspecialchars($surveyinfo['surveyls_url']);}
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Exit Link").":</strong></td>\n"
-        . "<td align='left'>";
-        if ($surveyinfo['surveyls_url']!="") {$surveysummary .=" <a href=\"{$surveyinfo['surveyls_url']}\" title=\"{$surveyinfo['surveyls_url']}\">{$surveyinfo['surveyls_urldescription']}</a>";}
+        . "<td align='left'>";                                             
+        if ($surveyinfo['surveyls_url']!="") {$surveysummary .=" <a href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";}
         $surveysummary .="</td></tr>\n";
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Number of questions/groups").":</strong></td><td>$sumcount3/$sumcount2</td></tr>\n";
@@ -1225,6 +1225,12 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
+        if(hasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
+        {
+            $questionsummary .=  "<a href='".$scriptname."?action=editdefaultvalues&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
+            ."title=\"".$clang->gTview("Edit default answers for this question")."\">"
+            ."<img src='$imagefiles/defaultanswers.png' alt='".$clang->gT("Edit default answers for this question")."' name='EdtAnswerOptions' /></a>\n" ;
+        }
         $questionsummary .= "</div>\n"
         . "<div class='menubar-right'>\n"
         . "<input type='image' src='$imagefiles/minus.gif' title='"
@@ -1241,7 +1247,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         . "</div>\n";
         $questionsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
 
-        if ($action=='editansweroptions' || $action =="editsubquestions" || $action =="editquestion" || $action =="copyquestion")
+        if ($action=='editansweroptions' || $action =="editsubquestions" || $action =="editquestion" || $action =="editdefaultvalues" || $action =="copyquestion")
         {
             $qshowstyle = "style='display: none'";
         }
