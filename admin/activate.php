@@ -273,10 +273,9 @@ else
     $presult=db_execute_assoc($pquery);
     while($prow=$presult->FetchRow())
     {
-        if ($createsurvey!='') {$createsurvey .= ",\n";}
         if ($prow['private'] == "N")
         {
-            $createsurvey .= "  token C(36)";
+            $createsurvey .= "  token C(36),\n";
             $surveynotprivate="TRUE";
         }
         if ($prow['allowregister'] == "Y")
@@ -285,14 +284,17 @@ else
         }
         if ($prow['ipaddr'] == "Y")
         {
-            $createsurvey .= " ipaddr X";
+            $createsurvey .= " ipaddr X,\n";
         }
         //Check to see if 'refurl' field is required.
         if ($prow['refurl'] == "Y")
         {
-            $createsurvey .= " refurl X";
+            $createsurvey .= " refurl X,\n";
         }
     }
+    //strip trailing comma and new line feed (if any)
+    $createsurvey = rtrim($createsurvey, ",\n");
+
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)

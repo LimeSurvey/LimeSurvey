@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  * $Id$
- */
+*/
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
@@ -62,24 +62,24 @@ $browseoutput = "";
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
     $browseoutput .= "\t<div class='messagebox'><div class='header'>"
-    . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
-    .$clang->gT("Error")."\t</div>\n"
-    . $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
-    . $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
-    ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-    ."</div>";
+            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+            .$clang->gT("Error")."\t</div>\n"
+            . $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
+            . $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
+            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+            ."</div>";
     return;
 }
 if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
     $browseoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
-    . $clang->gT("Browse Responses")."</strong></td></tr>\n"
-    ."\t<tr><td align='center'>\n"
-    ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-    . $clang->gT("You have not selected a survey to browse.")."<br /><br />\n"
-    ."<input type='submit' value='"
-    . $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-    ."</td></tr></table>\n";
+            . $clang->gT("Browse Responses")."</strong></td></tr>\n"
+            ."\t<tr><td align='center'>\n"
+            ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+            . $clang->gT("You have not selected a survey to browse.")."<br /><br />\n"
+            ."<input type='submit' value='"
+            . $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+            ."</td></tr></table>\n";
     return;
 }
 
@@ -108,14 +108,14 @@ if ($actcount > 0)
         if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
         {
             $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-            . $clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
-            ."\t<tr><td align='center'>\n"
-            ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-            . $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
-            ."<input type='submit' value='"
-            . $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
-            ."</td></tr></table>\n"
-            ."</body>\n</html>";
+                    . $clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
+                    ."\t<tr><td align='center'>\n"
+                    ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+                    . $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
+                    ."<input type='submit' value='"
+                    . $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
+                    ."</td></tr></table>\n"
+                    ."</body>\n</html>";
             return;
         }
     }
@@ -123,13 +123,13 @@ if ($actcount > 0)
 else //SURVEY MATCHING $surveyid DOESN'T EXIST
 {
     $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-    . $clang->gT("Browse Responses")."</strong></td></tr>\n"
-    ."\t<tr><td align='center'>\n"
-    ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-    . $clang->gT("There is no matching survey.")." ($surveyid)<br /><br />\n"
-    ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-    ."</td></tr></table>\n"
-    ."</body>\n</html>";
+            . $clang->gT("Browse Responses")."</strong></td></tr>\n"
+            ."\t<tr><td align='center'>\n"
+            ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+            . $clang->gT("There is no matching survey.")." ($surveyid)<br /><br />\n"
+            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+            ."</td></tr></table>\n"
+            ."</body>\n</html>";
     return;
 }
 
@@ -169,7 +169,11 @@ if ($subaction == "id") // Looking at a SINGLE entry
             $fnames[] = array("completed", $clang->gT("Completed"), "0");
             if ($surveyinfo['private'] == "N") //add token to top ofl ist is survey is not private
             {
-                $fnames[] = array("token", $clang->gT("Token ID"));
+                $tokentable = db_table_name('tokens_'.$surveyid);
+                //$fnames[] = array("token", $clang->gT("Token ID"));
+                $fnames[] = array("firstname", $clang->gT("First Name"));
+                $fnames[] = array("lastname", $clang->gT("Last Name"));
+                $fnames[] = array("email", $clang->gT("Email"));
             }
         }
         $position++;
@@ -177,37 +181,47 @@ if ($subaction == "id") // Looking at a SINGLE entry
 
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
-    $idquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
-    if (incompleteAnsFilterstate() == "inc") {$idquery .= "(submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";}
-    elseif (incompleteAnsFilterstate() == "filter") {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";}
-    if ($id<1) {$id=1;}
+    $idquery = "SELECT * FROM $surveytable ";
+    if ($surveyinfo['private'] == "N")
+        $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+    if (incompleteAnsFilterstate() == "inc")
+        $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
+    elseif (incompleteAnsFilterstate() == "filter")
+        $idquery .= " WHERE submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";
+    else
+        $idquery .= " WHERE ";
+    if ($id < 1) { $id = 1; }
     if (isset($_POST['sql']) && $_POST['sql'])
     {
         if (get_magic_quotes_gpc()) {$idquery .= stripslashes($_POST['sql']);}
         else {$idquery .= "{$_POST['sql']}";}
     }
-    else {$idquery .= "id=$id";}
+    else {$idquery .= "$surveytable.id = $id";}
     $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
-    while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
+    while ($idrow = $idresult->FetchRow())
+    {
+        $id=$idrow['id'];
+        $rlangauge=$idrow['startlanguage'];
+    }
     $next=$id+1;
     $last=$id-1;
     $browseoutput .= "<div class='menubar'>\n"
-    ."<div class='menubar-title'>"
-    ."<strong>".$clang->gT("View Response").":</strong> $id\n"
-    ."\t</div><div class='menubar-main'>\n"
-    ."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
-    ."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+            ."<div class='menubar-title'>"
+            ."<strong>".$clang->gT("View Response").":</strong> $id\n"
+            ."\t</div><div class='menubar-main'>\n"
+            ."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
+            ."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
     if (isset($rlangauge))
     {
         $browseoutput .="<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlangauge' "
-        ."title='".$clang->gTview("Edit this entry")."'>"
-        ."<img align='left' src='$imagefiles/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
+                ."title='".$clang->gTview("Edit this entry")."'>"
+                ."<img align='left' src='$imagefiles/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
     }
     if (($sumrows5['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1) && isset($rlangauge))
     {
 
         $browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" >"
-        ."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='".$clang->gT("Delete this entry")."' /></a>\n";
+                ."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='".$clang->gT("Delete this entry")."' /></a>\n";
     }
     else
     {
@@ -215,43 +229,50 @@ if ($subaction == "id") // Looking at a SINGLE entry
     }
     //Export this response
     $browseoutput .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
-		"title='".$clang->gTview("Export this Response")."' >" .
-		"<img name='ExportAnswer' src='$imagefiles/export.png' alt='". $clang->gT("Export this Response")."' align='left' /></a>\n"
-		."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-		."<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
-		."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid' "
-		."title='".$clang->gTview("Show previous...")."' >"
-		."<img name='DataBack' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
-		."<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-		."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid' title='".$clang->gTview("Show next...")."'>"
-		."<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
-		."</div>\n"
-		."\t</div>\n";
+            "title='".$clang->gTview("Export this Response")."' >" .
+            "<img name='ExportAnswer' src='$imagefiles/export.png' alt='". $clang->gT("Export this Response")."' align='left' /></a>\n"
+            ."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
+            ."<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
+            ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid' "
+            ."title='".$clang->gTview("Show previous...")."' >"
+            ."<img name='DataBack' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
+            ."<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+            ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid' title='".$clang->gTview("Show next...")."'>"
+            ."<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
+            ."</div>\n"
+            ."\t</div>\n";
 
-		$browseoutput .= "<table class='detailbrowsetable' width='99%'>\n";
-		$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
-		while ($idrow = $idresult->FetchRow())
-		{
-		    $i=0;
-		    $highlight=false;
-		    for ($i; $i<$nfncount+1; $i++)
-		    {
-		        $inserthighlight='';
-		        if ($highlight)
-		        {
-		            $inserthighlight="class='highlight'";
-		        }
-		        $browseoutput .= "\t<tr $inserthighlight>\n"
-		        ."<th align='right' width='50%'>"
-		        .strip_tags(strip_javascript($fnames[$i][1]))."</th>\n"
-		        ."<td align='left' >"
-		        .htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']))), ENT_QUOTES)
-		        ."</td>\n"
-		        ."\t</tr>\n";
-		        $highlight=!$highlight;
-		    }
-		}
-		$browseoutput .= "</table>\n";
+    $browseoutput .= "<table class='detailbrowsetable' width='99%'>\n";
+    $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
+    while ($idrow = $idresult->FetchRow())
+    {
+        $i=0;
+        $highlight=false;
+        for ($i; $i<$nfncount+1; $i++)
+        {
+            $inserthighlight='';
+            if ($highlight)
+            {
+                $inserthighlight="class='highlight'";
+            }
+            $browseoutput .= "\t<tr $inserthighlight>\n"
+                    ."<th align='right' width='50%'>"
+                    .strip_tags(strip_javascript($fnames[$i][1]))."</th>\n"
+                    ."<td align='left' >";
+            if ($i == 2)
+            {
+                if ($idrow[$fnames[$i][0]] == NULL) { $browseoutput .= "N"; }
+                else { $browseoutput .= "Y"; }
+            }
+            else
+            {
+                $browseoutput .= htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']))), ENT_QUOTES);
+            }
+            $browseoutput .= "</td>\n\t</tr>\n";
+            $highlight=!$highlight;
+        }
+    }
+    $browseoutput .= "</table>\n";
 
 }
 
@@ -271,14 +292,14 @@ elseif ($subaction == "all")
     else
     {
         $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
-        ."\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
-        ."\t<tr>\n"
-        ."<td align='center'>\n"
-        ."".$clang->gT("Showing Filtered Results")."<br />\n"
-        ."&nbsp;[<a href=\"javascript:window.close()\">".$clang->gT("Close")."</a>]"
-        ."</font></td>\n"
-        ."\t</tr>\n"
-        ."</table></td></tr>\n";
+                ."\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
+                ."\t<tr>\n"
+                ."<td align='center'>\n"
+                ."".$clang->gT("Showing Filtered Results")."<br />\n"
+                ."&nbsp;[<a href=\"javascript:window.close()\">".$clang->gT("Close")."</a>]"
+                ."</font></td>\n"
+                ."\t</tr>\n"
+                ."</table></td></tr>\n";
 
     }
 
@@ -293,18 +314,29 @@ elseif ($subaction == "all")
     $counter=0;
     foreach ($fields as $fielddetails)
     {
-
-        if ($counter==1){
-            $fnames[] = array("completed", "Completed", $clang->gT("Completed"), "0", 'D');
+        if ($counter==1)
+        {
+            //add token to top of list if survey is not private
+            if ($surveyinfo['private'] == "N")
+            {
+                $tokentable = db_table_name('tokens_'.$surveyid);
+                $fnames[] = array("token", "Token", $clang->gT("Token ID"));
+                $fnames[] = array("firstname", "First Name", $clang->gT("First Name"));
+                $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"));
+                $fnames[] = array("email", "Email", $clang->gT("Email"));
+            }
+            $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
         }
-        if ($fielddetails['fieldname']=='lastpage'){
-            $counter++;  continue;
+        if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate')
+        {
+            $counter++;
+            continue;
         }
         $fnames[]=array($fielddetails['fieldname'],
-        $fielddetails['fieldname'],
-        $fielddetails['question'],
-        $fielddetails['gid'],
-        $fielddetails['type']
+                $fielddetails['fieldname'],
+                $fielddetails['question'],
+                $fielddetails['gid'],
+                $fielddetails['type']
         );
         $counter++;
     }
@@ -318,8 +350,8 @@ elseif ($subaction == "all")
     if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
     else {$tableheader .= "<table class='browsetable'>\n";}
     $tableheader .= "\t<thead><tr valign='top'>\n"
-    . "<th>&nbsp;</th>\n"
-    . "<th>Actions</th>\n";
+            . "<th>&nbsp;</th>\n"
+            . "<th>Actions</th>\n";
     foreach ($fnames as $fn)
     {
         if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
@@ -328,10 +360,10 @@ elseif ($subaction == "all")
             $currentgroup = $fn[3];
             if ($gbc == "oddrow") {$gbc = "evenrow";}
             else {$gbc = "oddrow";}
-        }
+            }
         $tableheader .= "<th class='$gbc'><strong>"
-        . strip_javascript("$fn[2]")
-        . "</strong></th>\n";
+                . strip_javascript("$fn[2]")
+                . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
 
@@ -341,9 +373,21 @@ elseif ($subaction == "all")
     if (!isset($start) || $start =='') {$start = 0;}
 
     //LETS COUNT THE DATA
-    $dtquery = "SELECT count(*) FROM $surveytable";
-    if (incompleteAnsFilterstate() == "inc") {$dtquery .= "WHERE submitdate IS NULL ";}
-    elseif (incompleteAnsFilterstate() == "filter") {$dtquery .= " WHERE submitdate is not null ";}
+    if ($surveyinfo['private'] == "N")
+    {
+        $dtquery = "SELECT count(*) FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+    } else
+    {
+        $dtquery = "SELECT count(*) FROM $surveytable ";
+    }
+    if (incompleteAnsFilterstate() == "inc")
+    {
+        $dtquery .= "WHERE submitdate IS NULL ";
+    }
+    elseif (incompleteAnsFilterstate() == "filter")
+    {
+        $dtquery .= " WHERE submitdate IS NOT NULL ";
+    }
     $dtresult=db_execute_num($dtquery);
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
@@ -354,31 +398,64 @@ elseif ($subaction == "all")
     {
         if ($_POST['sql'] == "NULL")
         {
-            $dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
-            if (incompleteAnsFilterstate() == "inc") {$dtquery .= "WHERE submitdate is null";}
-            elseif (incompleteAnsFilterstate() == "filter") {$dtquery .= " WHERE submitdate is not null ";}
+            if ($surveyinfo['private'] == "N")
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+            else
+                $dtquery = "SELECT * FROM $surveytable ";
+            if (incompleteAnsFilterstate() == "inc")
+            {
+                $dtquery .= "WHERE submitdate IS NULL";
+            }
+            elseif (incompleteAnsFilterstate() == "filter")
+            {
+                $dtquery .= " WHERE submitdate IS NOT NULL ";
+            }
             $dtquery .= " ORDER BY id";
         }
         else
         {
-            $dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
-            if (incompleteAnsFilterstate() == "inc") {
-                $dtquery .= "submitdate is null ";
-                if (stripcslashes($_POST['sql']) !== "") { $dtquery .= " AND "; }
+            if ($surveytable['private'] == "N")
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+            else
+                $dtquery = "SELECT * FROM $surveytable ";
+            if (incompleteAnsFilterstate() == "inc")
+            {
+                $dtquery .= "submitdate IS NULL ";
+                if (stripcslashes($_POST['sql']) !== "")
+                {
+                    $dtquery .= " AND ";
+                }
             }
-            elseif (incompleteAnsFilterstate() == "filter") {
-                $dtquery .= " submitdate is not null ";
-                if (stripcslashes($_POST['sql']) !== "") { $dtquery .= " AND "; }
+            elseif (incompleteAnsFilterstate() == "filter")
+            {
+                $dtquery .= " submitdate is NOT NULL ";
+                if (stripcslashes($_POST['sql']) !== "")
+                {
+                    $dtquery .= " AND ";
+                }
             }
-            if (stripcslashes($_POST['sql']) !== "") { $dtquery .= stripcslashes($_POST['sql'])." "; }
+            if (stripcslashes($_POST['sql']) !== "")
+            {
+                $dtquery .= stripcslashes($_POST['sql'])." ";
+            }
             $dtquery .= " ORDER BY id";
         }
     }
     else
     {
-        $dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
-        if (incompleteAnsFilterstate() == "inc") {$dtquery .= " WHERE submitdate is null ";}
-        elseif (incompleteAnsFilterstate() == "filter") {$dtquery .= " WHERE submitdate is not null ";}
+        if ($surveyinfo['private'] == "N")
+            $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+        else
+            $dtquery = "SELECT * FROM $surveytable ";
+
+        if (incompleteAnsFilterstate() == "inc")
+        {
+            $dtquery .= " WHERE submitdate IS NULL ";
+        }
+        elseif (incompleteAnsFilterstate() == "filter")
+        {
+            $dtquery .= " WHERE submitdate is IS NOT NULL ";
+        }
         $dtquery .= " ORDER BY id";
     }
     if ($order == "desc") {$dtquery .= " DESC";}
@@ -406,63 +483,55 @@ elseif ($subaction == "all")
     if ($end < 0) {$end=0;}
 
     $browseoutput .= "<div class='menubar'>\n"
-    . "\t<div class='menubar-title'>\n"
-    . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
-    . "\t<div class='menubar-main'>\n";
+            . "\t<div class='menubar-title'>\n"
+            . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
+            . "\t<div class='menubar-main'>\n";
     if (!isset($_POST['sql']))
     {
         $browseoutput .= "<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' "
-        ."title='".$clang->gTview("Show start...")."' >"
-        ."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
-        ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
-        ."title='".$clang->gTview("Show previous..")."' >"
-        ."<img name='DataBack' align='left'  src='$imagefiles/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
-        ."<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+                ."title='".$clang->gTview("Show start...")."' >"
+                ."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
+                ."title='".$clang->gTview("Show previous..")."' >"
+                ."<img name='DataBack' align='left'  src='$imagefiles/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
+                ."<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
 
-        ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
-				"title='".$clang->gT("Show next...")."' >".
-				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
-				."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
-				"title='".$clang->gT("Show last...")."' >" .
-				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
-				."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
+                "title='".$clang->gT("Show next...")."' >".
+                "<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
+                "title='".$clang->gT("Show last...")."' >" .
+                "<img name='DataEnd' align='left' src='$imagefiles/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
+                ."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
     }
     $selectshow='';
     $selectinc='';
     $selecthide='';
-    if(incompleteAnsFilterstate() == "inc")
-    {
-        $selectinc="selected='selected'";
-    }
-    elseif (incompleteAnsFilterstate() == "filter")
-    {
-        $selecthide="selected='selected'";
-    }
-    else
-    {
-        $selectshow="selected='selected'";
-    }
+
+    if(incompleteAnsFilterstate() == "inc") { $selectinc="selected='selected'"; }
+    elseif (incompleteAnsFilterstate() == "filter") { $selecthide="selected='selected'"; }
+    else { $selectshow="selected='selected'"; }
 
     $browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
-    ."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-    ."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
-    ."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
-    ."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
-    ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
-    ."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
-    ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
-    ."</select>\n"
-    ."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
-    ."</font>\n"
-    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-    ."<input type='hidden' name='action' value='browse' />\n"
-    ."<input type='hidden' name='subaction' value='all' />\n";
+            ."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
+            ."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
+            ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
+            ."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
+            ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
+            ."</select>\n"
+            ."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
+            ."</font>\n"
+            ."<input type='hidden' name='sid' value='$surveyid' />\n"
+            ."<input type='hidden' name='action' value='browse' />\n"
+            ."<input type='hidden' name='subaction' value='all' />\n";
     if (isset($_POST['sql']))
     {
         $browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
     }
     $browseoutput .= 	 "</form></div>\n"
-    ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
+            ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
 
     $browseoutput .= $tableheader;
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
@@ -474,10 +543,10 @@ elseif ($subaction == "all")
         {
             if ($bgcc == "evenrow") {$bgcc = "oddrow";}
             else {$bgcc = "evenrow";}
-        }
+            }
         $browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
-        ."<td align='center'><input type='checkbox' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
-        ."<td align='center'>
+                ."<td align='center'><input type='checkbox' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
+                ."<td align='center'>
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
@@ -487,7 +556,7 @@ elseif ($subaction == "all")
         {
             $SQL = "Select * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token=?";
             if ( db_tables_exist(db_table_name_nq('tokens_'.$surveyid)) &&
-            $SQLResult = db_execute_assoc($SQL, $dtrow['token']))
+                    $SQLResult = db_execute_assoc($SQL, $dtrow['token']))
             {
                 $TokenRow = $SQLResult->FetchRow();
             }
@@ -507,12 +576,14 @@ elseif ($subaction == "all")
         for ($i; $i<$fncount; $i++)
         {
             $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
-            if ($fnames[$i][4]=='D' && $dtrow[$fnames[$i][0]]!='N' && $dtrow[$fnames[$i][0]]!='Y' && $dtrow[$fnames[$i][0]]!='')
+
+            if ($fnames[$i][4] == 'D' && $fnames[$i][0] != '')
             {
-                $datetimeobj = new Date_Time_Converter($dtrow[$fnames[$i][0]] , "Y-m-d H:i:s");
-                $browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+                if ($dtrow[$fnames[$i][0]] == NULL)
+                    $browsedatafield = "N";
+                else
+                    $browsedatafield = "Y";
             }
-            if (trim($browsedatafield=='')) $browsedatafield='&nbsp;';
             $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
         }
         $browseoutput .= "\t</tr>\n";
@@ -536,11 +607,11 @@ else
     while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}
     while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}
     $browseoutput .= "<div class='header'>".$clang->gT("Response summary")."</div>"
-    ."<p><table class='statisticssummary'>\n"
-    ."<tfoot><tr><th>".$clang->gT("Total responses:")."</th><td>".$num_total_answers."</td></tr></tfoot>"
-    ."\t<tbody>"
-    ."<tr><th>".$clang->gT("Full responses:")."</th><td>".$num_completed_answers."</td></tr>"
-    ."<tr><th>".$clang->gT("Incomplete responses:")."</th><td>".($num_total_answers-$num_completed_answers)."</td></tr></tbody>"
-    ."</table>";
+            ."<p><table class='statisticssummary'>\n"
+            ."<tfoot><tr><th>".$clang->gT("Total responses:")."</th><td>".$num_total_answers."</td></tr></tfoot>"
+            ."\t<tbody>"
+            ."<tr><th>".$clang->gT("Full responses:")."</th><td>".$num_completed_answers."</td></tr>"
+            ."<tr><th>".$clang->gT("Incomplete responses:")."</th><td>".($num_total_answers-$num_completed_answers)."</td></tr></tbody>"
+            ."</table>";
 
 }
