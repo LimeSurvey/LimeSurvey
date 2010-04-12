@@ -164,10 +164,10 @@ if ($subaction == "id") // Looking at a SINGLE entry
             $question .='['.$field['scale'].']';
         }
         $fnames[]=array($field['fieldname'],$question);
-        if ($position==1)
+        /**if ($position==1)
         {
             $fnames[] = array("completed", $clang->gT("Completed"), "0");
-            if ($surveyinfo['private'] == "N") //add token to top ofl ist is survey is not private
+            if ($surveyinfo['private'] == "N") //add token to top of list if survey is not private
             {
                 $tokentable = db_table_name('tokens_'.$surveyid);
                 //$fnames[] = array("token", $clang->gT("Token ID"));
@@ -175,7 +175,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
                 $fnames[] = array("lastname", $clang->gT("Last Name"));
                 $fnames[] = array("email", $clang->gT("Email"));
             }
-        }
+        }**/
         $position++;
     }
 
@@ -320,10 +320,10 @@ elseif ($subaction == "all")
             if ($surveyinfo['private'] == "N")
             {
                 $tokentable = db_table_name('tokens_'.$surveyid);
-                $fnames[] = array("token", "Token", $clang->gT("Token ID"));
-                $fnames[] = array("firstname", "First Name", $clang->gT("First Name"));
-                $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"));
-                $fnames[] = array("email", "Email", $clang->gT("Email"));
+                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+                $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
+                $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
+                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
             }
             $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
         }
@@ -444,7 +444,7 @@ elseif ($subaction == "all")
     else
     {
         if ($surveyinfo['private'] == "N")
-            $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+            $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
         else
             $dtquery = "SELECT * FROM $surveytable ";
 
@@ -577,7 +577,7 @@ elseif ($subaction == "all")
         {
             $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
 
-            if ($fnames[$i][4] == 'D' && $fnames[$i][0] != '')
+            if ( isset($fnames[$i][4]) && $fnames[$i][4] == 'D' && $fnames[$i][0] != '')
             {
                 if ($dtrow[$fnames[$i][0]] == NULL)
                     $browsedatafield = "N";
