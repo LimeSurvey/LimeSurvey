@@ -733,7 +733,7 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
         $_SESSION[$sesskey]=$sessval;
     }
     //DELETE COOKIE (allow to use multiple times)
-    setcookie("$cookiename", "INCOMPLETE", time()-120);
+    setcookie($cookiename, "INCOMPLETE", time()-120);
     //echo "Reset Cookie!";
 }
 
@@ -745,10 +745,7 @@ GetReferringUrl();
 //  - the survey is active
 //  - a token information has been provided
 //  - the survey is setup to allow token-response-persistence
-if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
-!isset($_SESSION['srid']) &&
-$thissurvey['private'] == "N" &&
-$thissurvey['active'] == "Y" && isset($token) && $token !='')
+if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['private'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
     // load previous answers if any (dataentry with nosubmit)
     $srquery="SELECT id FROM {$thissurvey['tablename']}"
@@ -2419,6 +2416,7 @@ function buildsurveysession()
     }
     $qtypes=getqtypelist('','array');
     $fieldmap=createFieldMap($surveyid,'full');
+    $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
         if ($field['qid']!='')
@@ -2450,6 +2448,20 @@ function buildsurveysession()
         }
 
     }
+
+
+    // Prefill questions/answers from command line params
+    if (isset($_SESSION['insertarray']))        
+    {
+        foreach($_SESSION['insertarray'] as $field)
+        {
+            if (isset($_GET[$field]) && $field!='token')
+            {
+                $_SESSION[$field]=$_GET[$field];
+            }
+        }
+    }    
+           
     $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
 
     // Check if the current survey language is set - if not set it

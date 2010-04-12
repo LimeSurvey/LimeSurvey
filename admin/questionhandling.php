@@ -153,7 +153,7 @@ if ($action == "editdefaultvalues")
                 {
                     $editdefvalues.=sprintf($clang->gT('Default answer:'),$scale_id)."</label>";
                 }
-                $defaultvalue=$connect->GetOne("SELECT * FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND scale_id={$scale_id} AND language='{$language}'");
+                $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND scale_id={$scale_id} AND language='{$language}'");
                 
                 $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}' id='defaultanswerscale_{$scale_id}_{$language}'>";
                 $editdefvalues.="<option value='' ";

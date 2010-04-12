@@ -2021,13 +2021,15 @@ function do_list_radio($ia)
     while ($ansrow = $ansresult->FetchRow())
     {
         $myfname = $ia[1].$ansrow['code'];
+        $check_ans = '';
         if ($_SESSION[$ia[1]] == $ansrow['code'])
         {
             $check_ans = CHECKED;
         }
-        else
+        elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
         {
-            $check_ans = '';
+            $check_ans = CHECKED;
+            $defexists=true;
         }
 
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
@@ -6704,16 +6706,6 @@ function answer_replace($text)
     } //while
     return $text;
 }
+      
 
-
-
-// ---------------------------------------------------------------
-function labelset_exists($labelid,$language)
-{
-
-    $qulabel = "SELECT * FROM ".db_table_name('labels')." WHERE lid=$labelid AND language='$language'";
-    $tablabel = db_execute_assoc($qulabel) or safe_die("Couldn't check for labelset<br />$ansquery<br />".$connect->ErrorMsg()); //Checked
-    if ($tablabel->RecordCount()>0) {return true;} else {return false;}
-}
-
-?>
+// Closing PHP tag intentionally left out - yes, it is okay       

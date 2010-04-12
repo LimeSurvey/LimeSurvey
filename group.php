@@ -1172,4 +1172,4 @@ echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 echo "\n";
 doFooter();
 
-?>
+// Closing PHP tag intentionally left out - yes, it is okay       
