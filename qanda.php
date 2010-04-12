@@ -1029,31 +1029,6 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
         $output .="
     <script type='text/javascript'>
 	<!--
-		function createCookie(name,value,days) {
-			if (days) {
-				var date = new Date();
-				date.setTime(date.getTime()+(days*24*60*60*1000));
-				var expires = '; expires='+date.toGMTString();
-			}
-			else var expires = '';
-			document.cookie = name+'='+value+expires+'; path=/';
-		}
-
-		function readCookie(name) {
-			var nameEQ = name + '=';
-			var ca = document.cookie.split(';');
-			for(var i=0;i < ca.length;i++) {
-				var c = ca[i];
-				while (c.charAt(0)==' ') c = c.substring(1,c.length);
-				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-			}
-			return null;
-		}
-
-		function eraseCookie(name) {
-			createCookie(name,'',-1);
-		}
-		
 		function freezeFrame(elementid) {
 			if(document.getElementById(elementid) !== null) {
 				var answer=document.getElementById(elementid);
@@ -1063,7 +1038,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 				answer.blur();
 				answer.onfocus=function() {answer.blur();};
 			}		
-		}
+		};
 	//-->
 	</script>";
         $output .= "
@@ -1103,12 +1078,16 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			var timersessionname='timer_question_'+questionid;
 			document.getElementById(timersessionname).value=timeleft;
 			timeleft--;
-			cookietimer=readCookie(timersessionname);
-			if(cookietimer !== null && cookietimer <= timeleft) {
-			  timeleft=cookietimer;
+			cookietimer=subcookiejar.fetch('limesurvey_timers',timersessionname);
+			if(cookietimer) {
+				if(cookietimer <= timeleft) {
+				  timeleft=cookietimer;
+				}
 			}
-			eraseCookie(timersessionname);
-			createCookie(timersessionname, timeleft, 7);";
+			var timeleftobject=new Object();
+			subcookiejar.crumble('limesurvey_timers', timersessionname);
+			timeleftobject[timersessionname]=timeleft;
+			subcookiejar.bake('limesurvey_timers', timeleftobject, 7)\n";
         if($disable_next > 0) {
             $output .= "
 		if(document.getElementById('movenextbtn') !== null && timeleft > $disable_next) { 
@@ -1208,7 +1187,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
-						eraseCookie(timersessionname);
+						subcookiejar.crumble('limesurvey_timers', timersessionname);
 						if(document.getElementById('movenextbtn') != null) {
 						  document.limesurvey.submit();
 						} else {
@@ -1222,7 +1201,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
-						this.onsubmit=function() {eraseCookie(timersessionname);};
+						this.onsubmit=function() {subcookiejar.crumble('limesurvey_timers', timersessionname);};
 						break;
 					default: //Warn and move on
 						document.getElementById(expireddisplay).style.display='';
@@ -1231,7 +1210,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
-						eraseCookie(timersessionname);
+						subcookiejar.crumble('limesurvey_timers', timersessionname);
 						setTimeout('document.limesurvey.submit()', ".$time_limit_message_delay.");
 						break;
 				}
@@ -4139,7 +4118,7 @@ function do_numerical($ia)
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
-    global $clang;
+    global $clang, $js_header_includes;
 
     if ($ia[8] == 'Y')
     {
@@ -4239,6 +4218,7 @@ function do_shortfreetext($ia)
     }
     if (trim($qidattributes['time_limit'])!='')
     {
+		$js_header_includes[] = '/scripts/cookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
@@ -4253,7 +4233,7 @@ function do_shortfreetext($ia)
 // ---------------------------------------------------------------
 function do_longfreetext($ia)
 {
-    global $clang;
+    global $clang, $js_header_includes;
 
     if ($ia[8] == 'Y')
     {
@@ -4319,6 +4299,7 @@ function do_longfreetext($ia)
 
     if (trim($qidattributes['time_limit'])!='')
     {
+		$js_header_includes[] = '/scripts/cookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
@@ -4401,6 +4382,7 @@ function do_hugefreetext($ia)
 
     if (trim($qidattributes['time_limit']) != '')
     {
+		$js_header_includes[] = '/scripts/cookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
