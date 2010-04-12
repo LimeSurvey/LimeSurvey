@@ -428,7 +428,7 @@ elseif ($subaction == "all")
             }
             elseif (incompleteAnsFilterstate() == "filter")
             {
-                $dtquery .= " submitdate is NOT NULL ";
+                $dtquery .= " submitdate IS NOT NULL ";
                 if (stripcslashes($_POST['sql']) !== "")
                 {
                     $dtquery .= " AND ";
@@ -454,7 +454,7 @@ elseif ($subaction == "all")
         }
         elseif (incompleteAnsFilterstate() == "filter")
         {
-            $dtquery .= " WHERE submitdate is IS NOT NULL ";
+            $dtquery .= " WHERE submitdate IS NOT NULL ";
         }
         $dtquery .= " ORDER BY id";
     }
@@ -600,7 +600,7 @@ else
     $num_total_answers=0;
     $num_completed_answers=0;
     $gnquery = "SELECT count(id) FROM $surveytable";
-    $gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate is not null";
+    $gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate IS NOT NULL";
     $gnresult = db_execute_num($gnquery);
     $gnresult2 = db_execute_num($gnquery2);
 
