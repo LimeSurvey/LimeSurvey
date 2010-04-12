@@ -211,7 +211,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 
 
 			//now present edit/insert form
-			$assessmentsoutput.= "<br /><form method='post' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header'>\n";
+			$assessmentsoutput.= "<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header'>\n";
 			$assessmentsoutput.= "$actiontitle</div>\n";
 
 			$assessmentsoutput.="<ul><li><label>".$clang->gT("Scope")."</label><input type='radio' id='radiototal' name='scope' value='T' ";

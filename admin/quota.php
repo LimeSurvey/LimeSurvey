@@ -823,7 +823,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     if ($subaction == "new_quota")
     {
         $quotasoutput.="<div class='header'>".$clang->gT("New quota").'</div>';
-        $quotasoutput.='<form action="'.$scriptname.'" method="post" id="addnewquotaform" name="addnewquotaform">';
+        $quotasoutput.='<form class="form30" action="'.$scriptname.'" method="post" id="addnewquotaform" name="addnewquotaform">';
         $quotasoutput.='<ul>
           					<li>
             					<label for="quota_name">'.$clang->gT("Quota name").':</label>

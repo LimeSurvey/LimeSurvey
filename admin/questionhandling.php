@@ -27,7 +27,7 @@ if ($action == "copyquestion")
     $qattributes=questionAttributes();
     $editquestion = PrepareEditorScript();
     $editquestion .= "<div class='header'>".$clang->gT("Copy Question")."</div>\n"
-    . "<form id='frmcopyquestion' name='frmcopyquestion' action='$scriptname' method='post'>\n"
+    . "<form id='frmcopyquestion' class='form30' name='frmcopyquestion' action='$scriptname' method='post'>\n"
     . '<div class="tab-pane" id="tab-pane-copyquestion">';
     foreach ($questlangs as $language)
     {
@@ -128,43 +128,65 @@ if ($action == "editdefaultvalues")
 {
     $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $questlangs[] = $baselang;
-    $questlangs = array_flip($questlangs);
+    array_unshift($questlangs,$baselang);
+
     $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
     $qtproperties=getqtypelist('','array');
 
-    $editdefvalues="<div class='header'>".$clang->gT('Edit default answer values')."</div> "
+    $editdefvalues="<div class='header'>".$clang->gT('Edit default answer values')."</div> "   
     . '<div class="tab-pane" id="tab-pane-editdefaultvalues-'.$surveyid.'">'
-    . "<form id='frmdefaultvalues' name='frmdefaultvalues' action='$scriptname' method='post'>\n";
-    $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($baselang,false).'</h2>';
-    if ($qtproperties[$questiontype]['answerscales']>0)
+    . "<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues' action='$scriptname' method='post'>\n";
+    foreach ($questlangs as $language)
     {
-        $editdefvalues.="<ul> ";
-        for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
+        $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false).'</h2>';
+        if ($qtproperties[$questiontype]['answerscales']>0)
         {
-            $editdefvalues.=" <li><label for='defaultanswerscale_{$scale_id}'>";
-            if ($qtproperties[$questiontype]['answerscales']>1)
+            $editdefvalues.="<ul> ";
+            for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
             {
-                $editdefvalues.=sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</label>";
+                $editdefvalues.=" <li><label for='defaultanswerscale_{$scale_id}_{$language}'>";
+                if ($qtproperties[$questiontype]['answerscales']>1)
+                {
+                    $editdefvalues.=sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</label>";
+                }
+                else
+                {
+                    $editdefvalues.=sprintf($clang->gT('Default answer:'),$scale_id)."</label>";
+                }
+                $defaultvalue=$connect->GetOne("SELECT * FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND scale_id={$scale_id} AND language='{$language}'");
+                
+                $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}' id='defaultanswerscale_{$scale_id}_{$language}'>";
+                $editdefvalues.="<option value='' ";
+                if ($defaultvalue===false) {
+                 $editdefvalues.= " selected='selected' ";
+                }
+                $editdefvalues.=">".$clang->gT('<No default value>')."</option>";
+                $answerquery = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid=$qid and language='$language' order by sortorder";
+                $answerresult = db_execute_assoc($answerquery);  
+                foreach ($answerresult as $answer)     
+                {
+                    $editdefvalues.="<option ";
+                    if ($answer['code']==$defaultvalue)
+                    {
+                        $editdefvalues.= " selected='selected' ";
+                    }
+                    $editdefvalues.="value='{$answer['code']}'>{$answer['answer']}</option>";
+                }       
+                $editdefvalues.="</select></li> ";
             }
-            else
+            if ($language==$baselang && count($questlangs)>0)
             {
-                $editdefvalues.=sprintf($clang->gT('Default answer:'),$scale_id)."</label>";
+                $editdefvalues.="<li><label for=''>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox'></li>";
             }
-            $editdefvalues.="<select name='defaultanswerscale_{$scale_id}' id='defaultanswerscale_{$scale_id}'>";
-            $editdefvalues.="<option value=''>".$clang->gT('<No default value>')."</option>";
-            $answerquery = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid=$qid and language='$baselang' order by sortorder";
-            $answerresult = db_execute_assoc($answerquery);  
-            foreach ($answerresult as $answer)     
-            {
-                $editdefvalues.="<option value='{$answer['code']}'>{$answer['answer']}</option>";
-            }       
-            $editdefvalues.="</select></li> ";
-        }
-        $editdefvalues.="</ul> ";
-        $editdefvalues.="</div> "; // Closing page
-        $editdefvalues.="</div> "; // Closing pane
-    }       
+            $editdefvalues.="</ul> ";
+            $editdefvalues.="</div> "; // Closing page
+        }       
+    }
+    $editdefvalues.="</div> "; // Closing pane
+    $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
+        . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
+        . "\t<input type='hidden' id='gid' name='gid' value='$gid' /></p>\n"
+        . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
     $editdefvalues.="<p><input type='submit' value='".$clang->gT('Save')."'/></form>";
 }
 

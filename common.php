@@ -899,13 +899,13 @@ function getMaxquestionorder($gid)
     }
     else return $current_max ;
 }
-
+                                   
 /**
  * question_class() returns a class name for a given question type to allow custom styling for each question type.
  *
  * @param string $input containing unique character representing each question type.
  * @return string containing the class name for a given question type.
- */
+ */                                  
 function question_class($input)
 {
 

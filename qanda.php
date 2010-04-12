@@ -2025,11 +2025,6 @@ function do_list_radio($ia)
         {
             $check_ans = CHECKED;
         }
-        elseif ($ansrow['default_value'] == 'Y')
-        {
-            $check_ans = CHECKED;
-            $defexists = 'Y';
-        }
         else
         {
             $check_ans = '';

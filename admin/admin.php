@@ -82,7 +82,7 @@ if(isset($_SESSION['loginID']))
     if (
     preg_match
     (
-			'/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertnewgroup|insertCSV|insertnewquestion|updatesurvey|updatesurvey2|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions)$/', 
+			'/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertnewgroup|insertCSV|insertnewquestion|updatesurvey|updatesurvey2|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
     $action
     )
 
@@ -404,19 +404,11 @@ if(isset($_SESSION['loginID']))
         }
     }
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) &&
-    !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) &&
-    !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
-    !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&
-    !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
-    (
-    isset($surveyid) || $action == "" ||
-    preg_match
-    (
-			'/^(listsurveys|personalsettings|statistics|importsurvey|editsurvey|updatesurvey|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup)$/', 
-    $action
-    )
-    )
-    )
+        !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) &&
+        !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
+        !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&
+        !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
+        (isset($surveyid) || $action == "" || preg_match('/^(listsurveys|personalsettings|statistics|importsurvey|editsurvey|updatesurvey|updatedefaultvalues|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup)$/',$action)))
     {
         if ($action=='editsurvey' || $action=='updatesurvey')
         {

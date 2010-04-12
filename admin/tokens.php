@@ -622,7 +622,7 @@ if ($subaction == "emailsettings")
     $tokenoutput .="<tr><td align='center'>"
     . "<div class='header'>\n"
     . "".$clang->gT("Edit email settings")."</div>\n"
-    . "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
+    . "<form class='form30' name='frmemailsettings' action='$scriptname' method='post'>\n"
     . '<div class="tab-pane" id="tab-pane-emailsettings-'.$surveyid.'">';
     $surveyinfo=getSurveyInfo($surveyid);
     foreach ($grplangs as $grouplang)
@@ -1210,7 +1210,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
         {
             $tokenoutput .="<div class='messagebox'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
         }
-        $tokenoutput .= "<form id='sendinvitation' method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
+        $tokenoutput .= "<form id='sendinvitation' class='form30' method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
 
         $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1490,7 +1490,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
             $tokenoutput .="<div class='messagebox'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
         }
         //GET SURVEY DETAILS
-        $tokenoutput .= "<form method='post' id='sendreminder' action='$scriptname?action=tokens'>";
+        $tokenoutput .= "<form method='post' class='form30' id='sendreminder' action='$scriptname?action=tokens'>";
         $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($surveylangs,$baselang);
@@ -2062,7 +2062,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
     }
 
     $tokenoutput .="</div>"
-    ."<form id='edittoken' method='post' action='$scriptname?action=tokens'>\n"
+    ."<form id='edittoken' class='form30' method='post' action='$scriptname?action=tokens'>\n"
     ."<ul>\n"
     ."\t<li><label>ID:</label>\n";
     if ($subaction == "edit")

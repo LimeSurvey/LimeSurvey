@@ -2491,7 +2491,7 @@ if ($action == "editsurvey")
 
             // beginning TABs section - create tab pane
             $editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
-            $editsurvey .= "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n";
+            $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='$scriptname' method='post'>\n";
             // General & Contact TAB
             $editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2><ul>\n";
 
@@ -2984,7 +2984,7 @@ if ($action == "editsurvey")
             }
 
             $editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-            . "<form enctype='multipart/form-data' id='importsurveyresources' name='importsurveyresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+            . "<form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
             . "<input type='hidden' name='sid' value='$surveyid' />\n"
             . "<input type='hidden' name='action' value='importsurveyresources' />\n"
             . "<ul>\n"
@@ -3040,7 +3040,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
         . "}\n"
         . "--></script>\n"
         . "<div class='header'>".$clang->gT("Edit survey settings - Step 2 of 2")."</div>\n";
-        $editsurvey .= "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n"
+        $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='$scriptname' method='post'>\n"
         . '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
         foreach ($grplangs as $grouplang)
         {
@@ -3128,7 +3128,7 @@ if ($action == "newsurvey")
                        </script>";
 
         $newsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
-        $newsurvey  .= "<form name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
+        $newsurvey  .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
 
         // General and Contact TAB
         $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
@@ -3443,7 +3443,7 @@ if ($action == "newsurvey")
         $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import Survey")."</h2>\n";
 
         // Import Survey
-        $newsurvey .= "<form enctype='multipart/form-data' id='importsurvey' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        $newsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "<ul>\n"
         . "<li><label for='the_file'>".$clang->gT("Select CSV/SQL File:")."</label>\n"
         . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"

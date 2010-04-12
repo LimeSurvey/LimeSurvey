@@ -19,7 +19,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 if (isset($_SESSION['loginID']))
 {
 
-    $accesssummary = "<br /><strong>".$clang->gT("Access denied!")."</strong><br />\n";
+    $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
 
     $action=returnglobal('action');
     if  (  $action == "dumpdb"  )

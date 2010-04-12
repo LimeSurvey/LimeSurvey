@@ -31,7 +31,7 @@ if ($action == "addgroup")
     //    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
     $newgroupoutput .="\n"
     .  '<div class="tab-pane" id="tab-pane-newgroup">';
-    $newgroupoutput .= "<form action='$scriptname' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=\"if (1==0 ";
+    $newgroupoutput .= "<form action='$scriptname' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=\"if (1==0 ";
 
     foreach ($grplangs as $grouplang)
     {
@@ -64,7 +64,7 @@ if ($action == "addgroup")
     // Import TAB
     $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.$clang->gT("Import question group")."</h2>\n";
     $newgroupoutput.= ""
-    . "<form enctype='multipart/form-data' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+    . "<form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
     . "<ul>\n"
     . "<li>\n"
     . "<label for='the_file'>".$clang->gT("Select CSV File:")."</label>\n"
@@ -127,7 +127,7 @@ if ($action == "editgroup")
     $egresult = db_execute_assoc($egquery);
     $editgroup = PrepareEditorScript();
     $editgroup .= "<div class='header'>".$clang->gT("Edit Group")."</div>\n"
-    . "<form name='frmeditgroup' id='frmeditgroup' action='$scriptname' method='post'>\n"
+    . "<form name='frmeditgroup' id='frmeditgroup' action='$scriptname' class='form30' method='post'>\n"
     . '<div class="tab-pane" id="tab-pane-group-'.$gid.'">';
 
     $esrow = $egresult->FetchRow();

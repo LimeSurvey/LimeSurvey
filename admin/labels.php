@@ -124,7 +124,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         if (isset($row['lid'])) { $panecookie=$row['lid'];} else  {$panecookie='new';}
         $labelsoutput.= "<div class='tab-pane' id='tab-pane-labelset-{$panecookie}'>\n";
         $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$tabitem."</h2>\n";
-        $labelsoutput.= "<form method='post' id='labelsetform' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
+        $labelsoutput.= "<form method='post' class='form30' id='labelsetform' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
 
         $labelsoutput.= "<ul'>\n"
         ."<li><label for='languageids'>".$clang->gT("Set name:")."</label>\n"
@@ -423,7 +423,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         }
 
         $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-        . "\t<form enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        . "\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "\t<input type='hidden' name='lid' value='$lid' />\n"
         . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
         . "\t<ul>\n"

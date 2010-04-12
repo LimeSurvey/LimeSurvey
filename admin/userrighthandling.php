@@ -590,7 +590,7 @@ if ($action == "addusergroup")
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)  // only admins may do that
     {
         $usersummary ="<div class='header'>".$clang->gT("Add User Group")."</div>\n"
-        . "<form action='$scriptname' id='usergroupform' method='post'>"
+        . "<form action='$scriptname' id='usergroupform' class='form30' method='post'>"
         . "<ul>\n"
         . "<li><label for='group_name'>".$clang->gT("Name:")."</label>\n"
         . "<input type='text' size='50' id='group_name' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></li>\n"
@@ -610,7 +610,7 @@ if ($action == "editusergroup")
         $result = db_select_limit_assoc($query, 1);
         $esrow = $result->FetchRow();
         $usersummary = "<div class='header'>".sprintf($clang->gT("Editing user group (Owner: %s)"),$_SESSION['user'])."</div>"
-        ."<form action='$scriptname' id='usergroupform' name='usergroupform' method='post'>"
+        ."<form action='$scriptname' id='usergroupform' class='form30' name='usergroupform' method='post'>"
         . "<ul>\n"
         . "<li><label for='name'>".$clang->gT("Name:")."</label>\n"
         . "<input type='text' size='50' id='name' name='name' value=\"{$esrow['name']}\" /></li>\n"
@@ -631,7 +631,7 @@ if ($action == "mailusergroup")
     $crow = $result->FetchRow();
 
     $usersummary = "<div class='header'>".$clang->gT("Mail to all Members")."</div>"
-    . "<form action='$scriptname' id='usergroupform' name='usergroupform' method='post'><ul>"
+    . "<form action='$scriptname' class='form30' id='usergroupform' name='usergroupform' method='post'><ul>"
     . "<li><label for='copymail'>".$clang->gT("Send me a copy:")."</label>\n"
     . "<input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1' /></li>\n"
     . "<li><label for='subject'>".$clang->gT("Subject:")."</label>\n"

@@ -2002,12 +2002,17 @@ function submitfailed($errormsg='')
     return $completed;
 }
 
+/**
+* This function builds all the required session variables when a survey is first started and 
+* it loads any answer defaults from command line or from the table defaultvalues    
+* It is called from the related format script (group.php, question.php, survey.php)
+* if the survey has just started.
+* 
+* @returns  $totalquestions Total number of questions in the survey
+* 
+*/
 function buildsurveysession()
 {
-    // Performance optimized	: Nov 22, 2006
-    // Performance Improvement	: 17%
-    // Optimized By				: swales
-
     global $thissurvey, $secerror, $clienttoken;
     global $tokensexist, $thistpl;
     global $surveyid, $dbprefix, $connect;
@@ -2021,11 +2026,6 @@ function buildsurveysession()
     }
 
     $totalBoilerplatequestions = 0;
-
-    //This function builds all the required session variables when a survey is first started.
-    //It is called from each various format script (ie: group.php, question.php, survey.php)
-    //if the survey has just begun. This funcion also returns the variable $totalquestions.
-
 
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
     if ($tokensexist == 0 &&
@@ -2181,8 +2181,7 @@ function buildsurveysession()
     }
     // TOKENS REQUIRED, A TOKEN PROVIDED
     // SURVEY CAPTCHA REQUIRED
-    elseif ($tokensexist == 1 && returnglobal('token') &&
-    captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+    elseif ($tokensexist == 1 && returnglobal('token') && captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
         // IF CAPTCHA ANSWER IS CORRECT
@@ -2752,11 +2751,6 @@ function UpdateFieldArray()
         }
     }
 
-    // This seems to only work in PHP 5 because of the referenced (&) array in the foreach construct
-    /*    foreach($_SESSION['fieldarray'] as &$questionarray)
-    {
-    }
-    */
 }
 
 

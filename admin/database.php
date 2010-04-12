@@ -376,6 +376,48 @@ if(isset($surveyid))
         }
     }
 
+    
+    elseif ($action == "updatedefaultvalues" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
+    {
+        
+        $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        array_unshift($questlangs,$baselang);
+
+        $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE qid=$postqid");
+        $qtproperties=getqtypelist('','array');
+        if ($qtproperties[$questiontype]['answerscales']>0)
+        {
+            for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
+            {
+                foreach ($questlangs as $language)
+                {
+                   if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
+                   {
+                       if ($_POST['defaultanswerscale_'.$scale_id.'_'.$language]=='')  // Remove the default value if it is empty
+                       {
+                          $connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE qid=$postqid AND scale_id={$scale_id} AND language='{$language}'");                           
+                       }
+                       else
+                       {
+                           $exists=$connect->GetOne("SELECT * FROM ".db_table_name('defaultvalues')." WHERE qid=$postqid AND scale_id={$scale_id} AND language='{$language}'");
+                           if ($exists===false)
+                           {
+                               $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language) VALUES (".db_quoteall($_POST['defaultanswerscale_'.$scale_id.'_'.$language],true).",{$postqid},{$scale_id},'{$language}')");        
+                           }
+                           else
+                           {
+                               $connect->execute('Update '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($_POST['defaultanswerscale_'.$scale_id.'_'.$language],true)."  WHERE qid=$postqid AND scale_id={$scale_id} AND language='{$language}'");        
+                           }
+                       }
+                   } 
+                }
+            }
+        }
+            
+    }
+
+    
     elseif ($action == "updatequestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
     {
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
