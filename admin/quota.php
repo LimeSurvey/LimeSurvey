@@ -796,7 +796,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 								</td>
 							</tr>
 							<tr align="left" class="evenrow">
-								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Save this, then create another:").'</td>
+								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Save this, then create another:").'</strong></td>
 								<td><input type="checkbox" name="createanother"></td>
 							</tr>
 							<tr align="left" class="evenrow">
