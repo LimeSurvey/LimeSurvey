@@ -164,7 +164,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
             $question .='['.$field['scale'].']';
         }
         $fnames[]=array($field['fieldname'],$question);
-        /**if ($position==1)
+        if ($position==1)
         {
             $fnames[] = array("completed", $clang->gT("Completed"), "0");
             if ($surveyinfo['private'] == "N") //add token to top of list if survey is not private
@@ -175,7 +175,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
                 $fnames[] = array("lastname", $clang->gT("Last Name"));
                 $fnames[] = array("email", $clang->gT("Email"));
             }
-        }**/
+        }
         $position++;
     }
 
@@ -183,7 +183,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
     //SHOW INDIVIDUAL RECORD
     $idquery = "SELECT * FROM $surveytable ";
     if ($surveyinfo['private'] == "N")
-        $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+        $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
     if (incompleteAnsFilterstate() == "inc")
         $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
     elseif (incompleteAnsFilterstate() == "filter")
