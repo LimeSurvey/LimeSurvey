@@ -386,7 +386,7 @@ if(isset($surveyid))
 
         $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE qid=$postqid");
         $qtproperties=getqtypelist('','array');
-        if ($qtproperties[$questiontype]['answerscales']>0)
+        if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subqestions']==0)
         {
             for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
             {
@@ -394,15 +394,41 @@ if(isset($surveyid))
                 {
                    if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
                    {                                                                       
-                       Updatedefaultvalues($postqid,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
+                       Updatedefaultvalues($postqid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
                    }
                    if (isset($_POST['other_'.$scale_id.'_'.$language]))
                    {
-                       Updatedefaultvalues($postqid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
+                       Updatedefaultvalues($postqid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
                    } 
                 }
             }
         }
+        if ($qtproperties[$questiontype]['subquestions']>0)
+        {
+
+            foreach ($questlangs as $language)
+            {
+                $sqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND parent_qid=$postqid and language=".db_quoteall($language)." and scale_id=0 order by question_order";
+                $sqresult = db_execute_assoc($sqquery);
+                $sqrows = $sqresult->GetRows();
+
+                for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
+                {
+                   foreach ($sqrows as $aSubquestionrow)
+                   {
+                       if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
+                       {                                                                       
+                           Updatedefaultvalues($postqid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
+                       }
+/*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
+                       {
+                           Updatedefaultvalues($postqid,$qid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
+                       } */
+                       
+                   } 
+                }
+            }
+        }        
             
     }
 
@@ -1400,23 +1426,23 @@ else
 * @param mixed $defaultvalue    The default value itself
 * @param boolean $ispost   If defaultvalue is from a $_POST set this to true to properly quote things
 */
-function Updatedefaultvalues($qid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
+function Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
 {
    global $connect;
    if ($defaultvalue=='')  // Remove the default value if it is empty
    {
-      $connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");                           
+      $connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");                           
    }
    else
    {
-       $exists=$connect->GetOne("SELECT qid FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");
+       $exists=$connect->GetOne("SELECT qid FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");
        if ($exists===false)
        {
-           $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language,specialtype) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}')");        
+           $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");        
        }
        else
        {
-           $connect->execute('Update '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($defaultvalue,$ispost)."  WHERE qid=$qid AND specialtype='' AND scale_id={$scale_id} AND language='{$language}'");        
+           $connect->execute('Update '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($defaultvalue,$ispost)."  WHERE sqid=$sqid AND qid=$qid AND specialtype='' AND scale_id={$scale_id} AND language='{$language}'");        
        }
    }
 }

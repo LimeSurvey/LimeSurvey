@@ -351,15 +351,16 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_questions` ADD `parent_qid` integer NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_answers` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_questions` ADD `same_default` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_questions` ADD `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_answers` DROP PRIMARY KEY, ADD PRIMARY KEY  USING BTREE (`qid`,`code`,`language`,`scale_id`)"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_defaultvalues` (
                               `qid` int(11) NOT NULL default '0',
                               `scale_id` int(11) NOT NULL default '0',
+                              `sqid` int(11) NOT NULL default '0',
                               `language` varchar(20) NOT NULL,
                               `specialtype` varchar(20) NOT NULL default '',
                               `defaultvalue` text,
-                              PRIMARY KEY  (qid, scale_id, `language`)
+                              PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, sqid` )
                             ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
 
         // -Move all 'answers' that are subquestions to the questions table
@@ -564,7 +565,21 @@ function upgrade_tables143()
     global $modifyoutput,$dbprefix, $connect;
 
 
+   
+    $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('L','O','!') and a.default_value='Y'";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult) {return "Database Error";}
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            modify_database("","INSERT INTO {$dbprefix}defaultvalues (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".db_quoteall($row['language']).",'',".db_quoteall($row['code']).")"); echo $modifyoutput; flush();
+        }
+    }
+
+    
     // Convert answers to subquestions
+    
     $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}

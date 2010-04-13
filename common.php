@@ -399,7 +399,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'answerscales'=>1),
     "M"=>array('description'=>$clang->gT("Multiple Options"),
                'subquestions'=>1,
-               'hasdefaultvalues'=>0,
+               'hasdefaultvalues'=>1,
                'assessable'=>0,
                'answerscales'=>0),
     "N"=>array('description'=>$clang->gT("Numerical Input"),
@@ -5519,7 +5519,7 @@ function FixLanguageConsistency($sid, $availlangs)
                 if ($gresult->RecordCount() < 1)
                 {
                     if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}    //Checked
-                    $query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
+                    $query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']})";
                     $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked
                     if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}      //Checked
                 }
@@ -5546,7 +5546,7 @@ function FixLanguageConsistency($sid, $availlangs)
                     if ($gresult->RecordCount() < 1)
                     {
                         if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." ON");}    //Checked
-                        $query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language,assessment_value) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",".db_quoteall($answer['default_value']).",'{$answer['sortorder']}','{$lang}',{$answer['assessment_value']})";
+                        $query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,scale_id,sortorder,language,assessment_value) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",{$answer['scale_id']},'{$answer['sortorder']}','{$lang}',{$answer['assessment_value']})";
                         $connect->Execute($query) or safe_die($connect->ErrorMsg()); //Checked
                         if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." OFF");}   //Checked
                     }

@@ -43,9 +43,10 @@ CREATE TABLE `prefix_defaultvalues` (
   `qid` int(11) NOT NULL default '0',
   `specialtype` varchar(20) NOT NULL default '',
   `scale_id` int(11) NOT NULL default '0',
+  `sqid` int(11) NOT NULL default '0',
   `language` varchar(20) NOT NULL,
   `defaultvalue` text,
-  PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype` )
+  PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, `sqid` )
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -149,6 +150,7 @@ CREATE TABLE `prefix_questions` (
   `language` varchar(20) default 'en',
   `default_value` text,
   `scale_id` tinyint NOT NULL default '0',
+  `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
   PRIMARY KEY  (`qid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

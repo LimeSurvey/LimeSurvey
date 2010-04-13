@@ -1713,17 +1713,11 @@ if ($action=='editsubquestions')
             $vasummary .="<table class='answertable' id='answertable_{$anslang}_{$scale_id}' align='center'>\n"
             ."<thead>"
             ."<tr><th>&nbsp;</th>\n"
-            ."<th align='right'>\n"
-            .$clang->gT("Code")
-            ."</th>\n"
-            ."</th><th align='center'>\n"
-            .$clang->gT("Subquestion")
-            ."</th>\n";
+            ."<th align='right'>".$clang->gT("Code")."</th>\n"
+            ."</th><th align='center'>".$clang->gT("Subquestion")."</th>\n";
             if ($activated != 'Y' && $first)
             {
-                $vasummary .="<th align='center'>\n"
-                .$clang->gT("Action")
-                ."</th>\n";
+                $vasummary .="<th align='center'>".$clang->gT("Action")."</th>\n";
             }
             $vasummary .="</tr></thead>"
             ."<tbody align='center'>";
@@ -1750,7 +1744,7 @@ if ($action=='editsubquestions')
 
                 if ($activated == 'Y' ) // if activated
                 {
-                    $vasummary .= "&nbsp;</td><td><input type='hidden' name='code_{$row['qid']}' value=\"{$row['title']}\" maxlength='5' size='5'"
+                    $vasummary .= "&nbsp;</td><td><input type='hidden' name='code_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" maxlength='5' size='5'"
                     ." />{$row['title']}";
                 }
                 elseif ($activated != 'Y' && $first) // If survey is decactivated
