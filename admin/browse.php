@@ -375,7 +375,7 @@ elseif ($subaction == "all")
     //LETS COUNT THE DATA
     if ($surveyinfo['private'] == "N")
     {
-        $dtquery = "SELECT count(*) FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+        $dtquery = "SELECT count(*) FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
     } else
     {
         $dtquery = "SELECT count(*) FROM $surveytable ";
@@ -388,7 +388,7 @@ elseif ($subaction == "all")
     {
         $dtquery .= " WHERE submitdate IS NOT NULL ";
     }
-    $dtresult=db_execute_num($dtquery);
+    $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
     if ($limit > $dtcount) {$limit=$dtcount;}
@@ -399,7 +399,7 @@ elseif ($subaction == "all")
         if ($_POST['sql'] == "NULL")
         {
             if ($surveyinfo['private'] == "N")
-                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
             if (incompleteAnsFilterstate() == "inc")
@@ -415,7 +415,7 @@ elseif ($subaction == "all")
         else
         {
             if ($surveytable['private'] == "N")
-                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.tid ";
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
             if (incompleteAnsFilterstate() == "inc")
