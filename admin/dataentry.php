@@ -467,11 +467,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
         foreach ($results as $idrow)
         {
             //$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
-            for ($i=0; $i<$nfncount+1; $i++)
+            //for ($i=0; $i<$nfncount+1; $i++)
+	    foreach ($fnames as $i => $fname)
             {
-                //$dataentryoutput .= "<pre>"; print_r($fnames[$i]);$dataentryoutput .= "</pre>";
-                $answer = $idrow[$fnames[$i]['fieldname']];
-                $question=$fnames[$i]['question'];
+                //$dataentryoutput .= "<pre>"; print_r($fname);$dataentryoutput .= "</pre>";
+                $answer = $idrow[$fname['fieldname']];
+                $question=$fname['question'];
                 $dataentryoutput .= "\t<tr";
                 if ($highlight) $dataentryoutput .=" class='highlight'";
                 $highlight=!$highlight;
@@ -481,8 +482,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                 $dataentryoutput .= "\t<strong>".strip_javascript($question)."</strong>\n";
                 $dataentryoutput .= "</td>\n"
                 ."<td valign='top' align='left'>\n";
-                //$dataentryoutput .= "\t-={$fnames[$i][3]}=-"; //Debugging info
-                switch ($fnames[$i]['type'])
+                //$dataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
+                switch ($fname['type'])
                 {
                     case "completed":
                         // First compute the submitdate
@@ -497,15 +498,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         {
                             $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                         }
-                        $completedate= empty($idrow[$fnames[$i]['fieldname']]) ? $mysubmitdate : $idrow[$fnames[$i]['fieldname']];
+                        $completedate= empty($idrow[$fname['fieldname']]) ? $mysubmitdate : $idrow[$fname['fieldname']];
 
                         $dataentryoutput .= "                <select name='submitdate'>\n";
                         $dataentryoutput .= "                    <option value=";
-                        if(empty($idrow[$fnames[$i]['fieldname']])) { $dataentryoutput .= "'' selected"; }
+                        if(empty($idrow[$fname['fieldname']])) { $dataentryoutput .= "'' selected"; }
                         else    { $dataentryoutput .= "'N'"; }
                         $dataentryoutput .= ">".$clang->gT("No")."</option>\n";
                         $dataentryoutput .= "                    <option value=";
-                        if(!empty($idrow[$fnames[$i]['fieldname']])) { $dataentryoutput .= "'' selected"; }
+                        if(!empty($idrow[$fname['fieldname']])) { $dataentryoutput .= "'' selected"; }
                         else     { $dataentryoutput .= "'$completedate'"; }
                         $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n";
                         $dataentryoutput .= "                </select>\n";
@@ -515,41 +516,41 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "Q":
                     case "K":
-                        $dataentryoutput .= "\t{$fnames[$i]['subquestion']}&nbsp;<input type='text' name='{$fnames[$i]['fieldname']}' value='"
-                        .$idrow[$fnames[$i]['fieldname']] . "' />\n";
+                        $dataentryoutput .= "\t{$fname['subquestion']}&nbsp;<input type='text' name='{$fname['fieldname']}' value='"
+                        .$idrow[$fname['fieldname']] . "' />\n";
                         break;
                     case "id":
-                        $dataentryoutput .= "\t&nbsp;{$idrow[$fnames[$i]['fieldname']]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
+                        $dataentryoutput .= "\t&nbsp;{$idrow[$fname['fieldname']]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
                         break;
                     case "5": //5 POINT CHOICE radio-buttons
                         for ($x=1; $x<=5; $x++)
                         {
-                            $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='$x'";
-                            if ($idrow[$fnames[$i]['fieldname']] == $x) {$dataentryoutput .= " checked";}
+                            $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$x'";
+                            if ($idrow[$fname['fieldname']] == $x) {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />$x \n";
                         }
                         break;
                     case "D": //DATE
-                        $datetimeobj = new Date_Time_Converter($idrow[$fnames[$i]['fieldname']] , "Y-m-d H:i:s");
+                        $datetimeobj = new Date_Time_Converter($idrow[$fname['fieldname']] , "Y-m-d H:i:s");
                         $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);
-                        $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fnames[$i]['fieldname']}' value='{$thisdate}' />\n";
+                        $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' />\n";
                         break;
                     case "G": //GENDER drop-down list
-                        $dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
+                        $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                         ."<option value=''";
-                        if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
                         ."<option value='F'";
-                        if ($idrow[$fnames[$i]['fieldname']] == "F") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "F") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("Female")."</option>\n"
                         ."<option value='M'";
-                        if ($idrow[$fnames[$i]['fieldname']] == "M") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "M") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("Male")."</option>\n"
                         ."\t</select>\n";
                         break;
                     case "L": //LIST drop-down
                     case "!": //List (Radio)
-                        $qidattributes=getQuestionAttributes($fnames[$i]['qid']);
+                        $qidattributes=getQuestionAttributes($fname['qid']);
                         if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
                         {
                             $optCategorySeparator = $qidattributes['category_separator'];
@@ -559,18 +560,18 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             unset($optCategorySeparator);
                         }
 
-                        if (substr($fnames[$i]['fieldname'], -5) == "other")
+                        if (substr($fname['fieldname'], -5) == "other")
                         {
-                            $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
-                            .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n";
+                            $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                            .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                         }
                         else
                         {
-                            $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i]['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
+                            $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
                             $lresult = db_execute_assoc($lquery);
-                            $dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
+                            $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                             ."<option value=''";
-                            if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
+                            if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                             $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                             if (!isset($optCategorySeparator))
@@ -578,7 +579,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 while ($llrow = $lresult->FetchRow())
                                 {
                                     $dataentryoutput .= "<option value='{$llrow['code']}'";
-                                    if ($idrow[$fnames[$i]['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
+                                    if ($idrow[$fname['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
                                     $dataentryoutput .= ">{$llrow['answer']}</option>\n";
                                 }
                             }
@@ -605,7 +606,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                     foreach ($optionlistarray as $optionarray)
                                     {
                                         $dataentryoutput .= "\t<option value='{$optionarray['code']}'";
-                                        if ($idrow[$fnames[$i]['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
+                                        if ($idrow[$fname['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
                                         $dataentryoutput .= ">{$optionarray['answer']}</option>\n";
                                     }
                                     $dataentryoutput .= "</optgroup>\n";
@@ -613,13 +614,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 foreach ($defaultopts as $optionarray)
                                 {
                                     $dataentryoutput .= "<option value='{$optionarray['code']}'";
-                                    if ($idrow[$fnames[$i]['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
+                                    if ($idrow[$fname['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
                                     $dataentryoutput .= ">{$optionarray['answer']}</option>\n";
                                 }
 
                             }
 
-                            $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i]['qid']} AND ".db_table_name("questions").".language = '{$language}'";
+                            $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fname['qid']} AND ".db_table_name("questions").".language = '{$language}'";
                             $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
                             while($orow = $oresult->FetchRow())
                             {
@@ -628,42 +629,42 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             if ($fother =="Y")
                             {
                                 $dataentryoutput .= "<option value='-oth-'";
-                                if ($idrow[$fnames[$i]['fieldname']] == "-oth-"){$dataentryoutput .= " selected='selected'";}
+                                if ($idrow[$fname['fieldname']] == "-oth-"){$dataentryoutput .= " selected='selected'";}
                                 $dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
                             }
                             $dataentryoutput .= "\t</select>\n";
                         }
                         break;
                     case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i]['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
+                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
                         $lresult = db_execute_assoc($lquery);
-                        $dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
+                        $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                         ."<option value=''";
-                        if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                         while ($llrow = $lresult->FetchRow())
                         {
                             $dataentryoutput .= "<option value='{$llrow['code']}'";
-                            if ($idrow[$fnames[$i]['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
+                            if ($idrow[$fname['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
                             $dataentryoutput .= ">{$llrow['answer']}</option>\n";
                         }
                         $i++;
                         $dataentryoutput .= "\t</select>\n"
                         ."\t<br />\n"
-                        ."\t<textarea cols='45' rows='5' name='{$fnames[$i]['fieldname']}'>"
-                        .htmlspecialchars($idrow[$fnames[$i]['fieldname']]) . "</textarea>\n";
+                        ."\t<textarea cols='45' rows='5' name='{$fname['fieldname']}'>"
+                        .htmlspecialchars($idrow[$fname['fieldname']]) . "</textarea>\n";
                         break;
                     case "R": //RANKING TYPE QUESTION
                         $l=$i;
                         $thisqid=$fnames[$l]['qid'];
-                        $myfname=substr($fnames[$i]['fieldname'], 0, -1);
-                        while (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "R")
+                        $myfname=substr($fname['fieldname'], 0, -1);
+                        while (isset($fname['type']) && $fname['type'] == "R")
                         {
                             //Let's get all the existing values into an array
-                            if ($idrow[$fnames[$i]['fieldname']])
+                            if ($idrow[$fname['fieldname']])
                             {
-                                $currentvalues[] = $idrow[$fnames[$i]['fieldname']];
+                                $currentvalues[] = $idrow[$fname['fieldname']];
                             }
                             $i++;
                         }
@@ -817,7 +818,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
 
                     case "M": //MULTIPLE OPTIONS checkbox
-                        $qidattributes=getQuestionAttributes($fnames[$i]['qid']);
+                        $qidattributes=getQuestionAttributes($fname['qid']);
                         if (trim($qidattributes['display_columns'])!='')
                         {
                             $dcols=$qidattributes['display_columns'];
@@ -827,21 +828,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $dcols=0;
                         }
 
-                        //					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i]['type'])
-                        while ($fnames[$i]['type'] == "M" && $question == $fnames[$i]['question'])
+                        //					while ($fname[3] == "M" && $question != "" && $question == $fname['type'])
+                        while ($fname['type'] == "M" && $question == $fname['question'])
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
-                            //$dataentryoutput .= substr($fnames[$i]['fieldname'], strlen($fnames[$i]['fieldname'])-5, 5)."<br />\n";
-                            if (substr($fnames[$i]['fieldname'], -5) == "other")
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
+                            //$dataentryoutput .= substr($fname['fieldname'], strlen($fname['fieldname'])-5, 5)."<br />\n";
+                            if (substr($fname['fieldname'], -5) == "other")
                             {
-                                $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
-                                .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n";
+                                $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                                .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                             }
                             else
                             {
-                                $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i]['fieldname']}' value='Y'";
-                                if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />{$fnames[$i]['subquestion']}<br />\n";
+                                $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' value='Y'";
+                                if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+                                $dataentryoutput .= " />{$fname['subquestion']}<br />\n";
                             }
                             if ($i<$nfncount)
                             {
@@ -857,12 +858,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
 
                     case "J": //FILE CSV MORE
-                        while ($fnames[$i]['type'] == "U" && $question != "" && $question == $fnames[$i]['question'])
+                        while ($fname['type'] == "U" && $question != "" && $question == $fname['question'])
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
-                            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i]['fieldname']}' value='Y'";
-                            if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
-                            $dataentryoutput .= " />{$fnames[$i]['subquestion']}<br />\n";
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
+                            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' value='Y'";
+                            if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+                            $dataentryoutput .= " />{$fname['subquestion']}<br />\n";
                             if ($i<$nfncount)
                             {
                                 $i++;
@@ -877,7 +878,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
 
                     case "I": //Language Switch
-                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i]['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
+                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
                         $lresult = db_execute_assoc($lquery);
 
 
@@ -885,15 +886,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $baselang = GetBaseLanguageFromSurveyID($surveyid);
                         array_unshift($slangs,$baselang);
 
-                        $dataentryoutput.= "<select name='{$fnames[$i]['fieldname']}'>\n";
+                        $dataentryoutput.= "<select name='{$fname['fieldname']}'>\n";
                         $dataentryoutput .= "<option value=''";
-                        if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                         foreach ($slangs as $lang)
                         {
                             $dataentryoutput.="<option value='{$lang}'";
-                            if ($lang == $idrow[$fnames[$i]['fieldname']]) {$dataentryoutput .= " selected='selected'";}
+                            if ($lang == $idrow[$fname['fieldname']]) {$dataentryoutput .= " selected='selected'";}
                             $dataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
                         }
                         $dataentryoutput .= "</select>";
@@ -901,35 +902,35 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
                     case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
                         $dataentryoutput .= "<table>\n";
-                        while (isset($fnames[$i]) && $fnames[$i]['type'] == "P")
+                        while (isset($fname) && $fname['type'] == "P")
                         {
-                            $thefieldname=$fnames[$i]['fieldname'];
+                            $thefieldname=$fname['fieldname'];
                             if (substr($thefieldname, -7) == "comment")
                             {
-                                $dataentryoutput .= "<td><input type='text' name='{$fnames[$i]['fieldname']}' size='50' value='"
-                                .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' /></td>\n"
+                                $dataentryoutput .= "<td><input type='text' name='{$fname['fieldname']}' size='50' value='"
+                                .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' /></td>\n"
                                 ."\t</tr>\n";
                             }
-                            elseif (substr($fnames[$i]['fieldname'], -5) == "other")
+                            elseif (substr($fname['fieldname'], -5) == "other")
                             {
                                 $dataentryoutput .= "\t<tr>\n"
                                 ."<td>\n"
-                                ."\t<input type='text' name='{$fnames[$i]['fieldname']}' size='30' value='"
-                                .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n"
+                                ."\t<input type='text' name='{$fname['fieldname']}' size='30' value='"
+                                .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n"
                                 ."</td>\n"
                                 ."<td>\n";
                                 $i++;
-                                $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' size='50' value='"
-                                .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n"
+                                $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' size='50' value='"
+                                .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n"
                                 ."</td>\n"
                                 ."\t</tr>\n";
                             }
                             else
                             {
                                 $dataentryoutput .= "\t<tr>\n"
-                                ."<td><input type='checkbox' class='checkboxbtn' name=\"{$fnames[$i]['fieldname']}\" value='Y'";
-                                if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />{$fnames[$i]['subquestion']}</td>\n";
+                                ."<td><input type='checkbox' class='checkboxbtn' name=\"{$fname['fieldname']}\" value='Y'";
+                                if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+                                $dataentryoutput .= " />{$fname['subquestion']}</td>\n";
                             }
                             $i++;
                         }
@@ -937,47 +938,47 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $i--;
                         break;
                     case "N": //NUMERICAL TEXT
-                        $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='{$idrow[$fnames[$i]['fieldname']]}' "
+                        $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
                         ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
                         break;
                     case "S": //SHORT FREE TEXT
-                        $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
-                        .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "' />\n";
+                        $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                        .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                         break;
                     case "T": //LONG FREE TEXT
-                        $dataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fnames[$i]['fieldname']}'>"
-                        .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "</textarea>\n";
+                        $dataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fname['fieldname']}'>"
+                        .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "</textarea>\n";
                         break;
                     case "U": //HUGE FREE TEXT
-                        $dataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fnames[$i]['fieldname']}'>"
-                        .htmlspecialchars($idrow[$fnames[$i]['fieldname']], ENT_QUOTES) . "</textarea>\n";
+                        $dataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fname['fieldname']}'>"
+                        .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "</textarea>\n";
                         break;
                     case "Y": //YES/NO radio-buttons
-                        $dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n"
+                        $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                         ."<option value=''";
-                        if ($idrow[$fnames[$i]['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
                         ."<option value='Y'";
-                        if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n"
                         ."<option value='N'";
-                        if ($idrow[$fnames[$i]['fieldname']] == "N") {$dataentryoutput .= " selected='selected'";}
+                        if ($idrow[$fname['fieldname']] == "N") {$dataentryoutput .= " selected='selected'";}
                         $dataentryoutput .= ">".$clang->gT("No")."</option>\n"
                         ."\t</select>\n";
                         break;
                     case "A": //ARRAY (5 POINT CHOICE) radio-buttons
                         $dataentryoutput .= "<table>\n";
-                        $thisqid=$fnames[$i]['qid'];
-                        while ($fnames[$i]['qid'] == $thisqid)
+                        $thisqid=$fname['qid'];
+                        while ($fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
-                            ."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
+                            ."<td align='right'>{$fname['subquestion']}</td>\n"
                             ."<td>\n";
                             for ($j=1; $j<=5; $j++)
                             {
-                                $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='$j'";
-                                if ($idrow[$fnames[$i]['fieldname']] == $j) {$dataentryoutput .= " checked";}
+                                $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
+                                if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked";}
                                 $dataentryoutput .= " />$j&nbsp;\n";
                             }
                             $dataentryoutput .= "</td>\n"
@@ -989,17 +990,17 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "B": //ARRAY (10 POINT CHOICE) radio-buttons
                         $dataentryoutput .= "<table>\n";
-                        $thisqid=$fnames[$i]['qid'];
-                        while ($fnames[$i]['qid'] == $thisqid)
+                        $thisqid=$fname['qid'];
+                        while ($fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
-                            ."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
+                            ."<td align='right'>{$fname['subquestion']}</td>\n"
                             ."<td>\n";
                             for ($j=1; $j<=10; $j++)
                             {
-                                $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='$j'";
-                                if ($idrow[$fnames[$i]['fieldname']] == $j) {$dataentryoutput .= " checked";}
+                                $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
+                                if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked";}
                                 $dataentryoutput .= " />$j&nbsp;\n";
                             }
                             $dataentryoutput .= "</td>\n"
@@ -1011,21 +1012,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                         $dataentryoutput .= "<table>\n";
-                        $thisqid=$fnames[$i]['qid'];
-                        while ($fnames[$i]['qid'] == $thisqid)
+                        $thisqid=$fname['qid'];
+                        while ($fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
-                            ."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
+                            ."<td align='right'>{$fname['subquestion']}</td>\n"
                             ."<td>\n"
-                            ."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='Y'";
-                            if ($idrow[$fnames[$i]['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+                            ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='Y'";
+                            if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
-                            ."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='U'";
-                            if ($idrow[$fnames[$i]['fieldname']] == "U") {$dataentryoutput .= " checked";}
+                            ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='U'";
+                            if ($idrow[$fname['fieldname']] == "U") {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
-                            ."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='N'";
-                            if ($idrow[$fnames[$i]['fieldname']] == "N") {$dataentryoutput .= " checked";}
+                            ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='N'";
+                            if ($idrow[$fname['fieldname']] == "N") {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
                             ."</td>\n"
                             ."\t</tr>\n";
@@ -1036,21 +1037,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
                         $dataentryoutput .= "<table>\n";
-                        $thisqid=$fnames[$i]['qid'];
-                        while ($fnames[$i]['qid'] == $thisqid)
+                        $thisqid=$fname['qid'];
+                        while ($fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
-                            ."<td align='right'>{$fnames[$i]['subquestion']}</td>\n"
+                            ."<td align='right'>{$fname['subquestion']}</td>\n"
                             ."<td>\n"
-                            ."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='I'";
-                            if ($idrow[$fnames[$i]['fieldname']] == "I") {$dataentryoutput .= " checked";}
+                            ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='I'";
+                            if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />Increase&nbsp;\n"
-                            ."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='S'";
-                            if ($idrow[$fnames[$i]['fieldname']] == "I") {$dataentryoutput .= " checked";}
+                            ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='S'";
+                            if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />Same&nbsp;\n"
-                            ."\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='D'";
-                            if ($idrow[$fnames[$i]['fieldname']] == "D") {$dataentryoutput .= " checked";}
+                            ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='D'";
+                            if ($idrow[$fname['fieldname']] == "D") {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />Decrease&nbsp;\n"
                             ."</td>\n"
                             ."\t</tr>\n";
@@ -1063,31 +1064,31 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     case "H":
                     case "1":
                         $dataentryoutput .= "<table>\n";
-                        $thisqid=$fnames[$i]['qid'];
-                        while (isset($fnames[$i]['qid']) && $fnames[$i]['qid'] == $thisqid)
+                        $thisqid=$fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
-                            ."<td align='right' valign='top'>{$fnames[$i]['subquestion']}";
-                            if (isset($fnames[$i]['scale']))
+                            ."<td align='right' valign='top'>{$fname['subquestion']}";
+                            if (isset($fname['scale']))
                             {
-                                $dataentryoutput .= " (".$fnames[$i]['scale'].')';
+                                $dataentryoutput .= " (".$fname['scale'].')';
                             }
                             $dataentryoutput .="</td>\n";
                             $scale_id=0;
-                            if (isset($fnames[$i]['scale_id'])) $scale_id=$fnames[$i]['scale_id'];
-                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$fnames[$i]['qid']}' and scale_id={$scale_id} and language='$language' order by sortorder, answer";
+                            if (isset($fname['scale_id'])) $scale_id=$fname['scale_id'];
+                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$fname['qid']}' and scale_id={$scale_id} and language='$language' order by sortorder, answer";
                             $fresult = db_execute_assoc($fquery);
                             $dataentryoutput .= "<td>\n";
                             while ($frow=$fresult->FetchRow())
                             {
-                                $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value='{$frow['code']}'";
-                                if ($idrow[$fnames[$i]['fieldname']] == $frow['code']) {$dataentryoutput .= " checked";}
+                                $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='{$frow['code']}'";
+                                if ($idrow[$fname['fieldname']] == $frow['code']) {$dataentryoutput .= " checked";}
                                 $dataentryoutput .= " />".$frow['answer']."&nbsp;\n";
                             }
                             //Add 'No Answer'
-                            $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fnames[$i]['fieldname']}' value=''";
-                            if ($idrow[$fnames[$i]['fieldname']] == '') {$dataentryoutput .= " checked";}
+                            $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
+                            if ($idrow[$fname['fieldname']] == '') {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
 
                             $dataentryoutput .= "</td>\n"
@@ -1098,7 +1099,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case ":": //ARRAY (Multi Flexi) (Numbers)
-                        $qidattributes=getQuestionAttributes($fnames[$i]['qid']);
+                        $qidattributes=getQuestionAttributes($fname['qid']);
                         if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                             $maxvalue=$qidattributes['multiflexible_max'];
                             $minvalue=1;
@@ -1130,24 +1131,24 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $stepvalue=1;
                         }
                         $dataentryoutput .= "<table>\n";
-                        $thisqid=$fnames[$i]['qid'];
-                        while (isset($fnames[$i]['qid']) && $fnames[$i]['qid'] == $thisqid)
+                        $thisqid=$fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
-                            . "<td align='right' valign='top'>{$fnames[$i]['subquestion1']}:{$fnames[$i]['subquestion2']}</td>\n";
+                            . "<td align='right' valign='top'>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                             $dataentryoutput .= "<td>\n";
                             if ($qidattributes['input_boxes']!=0) {
-                                $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='";
-                                if (!empty($idrow[$fnames[$i]['fieldname']])) {$datentryoutput .= $idrow[$fnames[$i]['fieldname']];}
+                                $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
+                                if (!empty($idrow[$fname['fieldname']])) {$datentryoutput .= $idrow[$fname['fieldname']];}
                                 $dataentryoutput .= "' size=4 />";
                             } else {
-                                $dataentryoutput .= "\t<select name='{$fnames[$i]['fieldname']}'>\n";
+                                $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n";
                                 $dataentryoutput .= "<option value=''>...</option>\n";
                                 for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
                                 {
                                     $dataentryoutput .= "<option value='$ii'";
-                                    if($idrow[$fnames[$i]['fieldname']] == $ii) {$dataentryoutput .= " selected";}
+                                    if($idrow[$fname['fieldname']] == $ii) {$dataentryoutput .= " selected";}
                                     $dataentryoutput .= ">$ii</option>\n";
                                 }
                             }
@@ -1161,15 +1162,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case ";": //ARRAY (Multi Flexi)
                         $dataentryoutput .= "<table>\n";
-                        $thisqid=$fnames[$i]['qid'];
-                        while (isset($fnames[$i]['qid']) && $fnames[$i]['qid'] == $thisqid)
+                        $thisqid=$fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fnames[$i]['fieldname'], 0, strlen($fnames[$i]['fieldname']));
+                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
-                            . "<td align='right' valign='top'>{$fnames[$i]['subquestion1']}:{$fnames[$i]['subquestion2']}</td>\n";
+                            . "<td align='right' valign='top'>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                             $dataentryoutput .= "<td>\n";
-                            $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='";
-                            if(!empty($idrow[$fnames[$i]['fieldname']])) {$dataentryoutput .= $idrow[$fnames[$i]['fieldname']];}
+                            $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
+                            if(!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
                             $dataentryoutput .= "' /></td>\n"
                             ."\t</tr>\n";
                             $i++;
@@ -1178,8 +1179,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     default: //This really only applies to tokens for non-private surveys
-                        $dataentryoutput .= "\t<input type='text' name='{$fnames[$i]['fieldname']}' value='"
-                        .$idrow[$fnames[$i]['fieldname']] . "' />\n";
+                        $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                        .$idrow[$fname['fieldname']] . "' />\n";
                         break;
                 }
 
