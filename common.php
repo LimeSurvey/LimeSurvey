@@ -407,9 +407,9 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
-    "O"=>array('description'=>$clang->gT("List With Comment"),
+    "O"=>array('description'=>$clang->gT("List with comment"),
                'subquestions'=>0,
-               'hasdefaultvalues'=>0,
+               'hasdefaultvalues'=>1,
                'assessable'=>0,
                'answerscales'=>1),
     "P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
@@ -454,7 +454,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'answerscales'=>0),
     "!"=>array('description'=>$clang->gT("List (Dropdown)"),
                'subquestions'=>0,
-               'hasdefaultvalues'=>0,
+               'hasdefaultvalues'=>1,
                'assessable'=>0,
                'answerscales'=>1),
     ":"=>array('description'=>$clang->gT("Array (Numbers)"),
@@ -2437,7 +2437,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false) {
                 $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                 $fieldmap[$fieldname]['hasconditions']=$conditions;
                 $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['gid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
                 
             }
             switch($arow['type'])

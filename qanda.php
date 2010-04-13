@@ -1651,11 +1651,6 @@ function do_language($ia)
         {
             $answer .= SELECTED;
         }
-        elseif ($ansrow['default_value'] == 'Y')
-        {
-            $answer .= SELECTED;
-            $defexists = "Y";
-        }
         $answer .= '>'.getLanguageNameFromCode($ansrow, true)."</option>\n";
     }
     $answer .= "</select>\n";
@@ -1727,24 +1722,20 @@ function do_list_dropdown($ia)
     $ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
 
     if (!isset($optCategorySeparator))
-    {
+    {                                       
         while ($ansrow = $ansresult->FetchRow())
         {
+            $opt_select = '';  
             if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
                 $opt_select = SELECTED;
             }
-            elseif ($ansrow['default_value'] == 'Y')
+            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
             {
-                $opt_select = SELECTED;
-                $defexists = 'Y';
+                $check_ans = CHECKED;
+                $defexists=true;
             }
-            else
-            {
-                $opt_select = '';
-            }
-            $answer .= '					<option value="'.$ansrow['code'].'"'.$opt_select.'>'.$ansrow['answer'].'</option>
-				';
+            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$ansrow['answer']}</option>\n";
         }
     }
     else
@@ -1758,11 +1749,11 @@ function do_list_dropdown($ia)
             // The blank category is left at the end outside optgroups
             if ($categorytext == '')
             {
-                $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $ansrow['default_value']);
+                $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $_SESSION['fieldmap'][$ia[1]]['defaultvalue']);
             }
             else
             {
-                $optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $ansrow['default_value']);
+                $optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $_SESSION['fieldmap'][$ia[1]]['defaultvalue']);
             }
 
 
@@ -2249,18 +2240,15 @@ function do_listwithcomment($ia)
 
         while ($ansrow=$ansresult->FetchRow())
         {
+            $check_ans = '';
             if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
                 $check_ans = CHECKED;
             }
-            elseif ($ansrow['default_value'] == 'Y')
+            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
             {
                 $check_ans = CHECKED;
-                $defexists = 'Y';
-            }
-            else
-            {
-                $check_ans = '';
+                $defexists=true;
             }
             $answer .= '		<li>
 			<input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
@@ -2322,18 +2310,15 @@ function do_listwithcomment($ia)
         // --> END NEW FEATURE - SAVE
         while ($ansrow=$ansresult->FetchRow())
         {
+            $check_ans = '';
             if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
                 $check_ans = SELECTED;
             }
-            elseif ($ansrow['default_value'] == 'Y')
+            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
             {
-                $check_ans = SELECTED;
-                $defexists = "Y";
-            }
-            else
-            {
-                $check_ans = '';
+                $check_ans = CHECKED;
+                $defexists=true;
             }
             $answer .= '		<option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
 

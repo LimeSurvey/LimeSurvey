@@ -41,10 +41,11 @@ CREATE TABLE `prefix_conditions` (
 
 CREATE TABLE `prefix_defaultvalues` (
   `qid` int(11) NOT NULL default '0',
+  `specialtype` varchar(20) NOT NULL default '',
   `scale_id` int(11) NOT NULL default '0',
   `language` varchar(20) NOT NULL,
   `defaultvalue` text,
-  PRIMARY KEY  (`qid` , `scale_id`, `language` )
+  PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype` )
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 

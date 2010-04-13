@@ -393,23 +393,12 @@ if(isset($surveyid))
                 foreach ($questlangs as $language)
                 {
                    if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
+                   {                                                                       
+                       Updatedefaultvalues($postqid,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
+                   }
+                   if (isset($_POST['other_'.$scale_id.'_'.$language]))
                    {
-                       if ($_POST['defaultanswerscale_'.$scale_id.'_'.$language]=='')  // Remove the default value if it is empty
-                       {
-                          $connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE qid=$postqid AND scale_id={$scale_id} AND language='{$language}'");                           
-                       }
-                       else
-                       {
-                           $exists=$connect->GetOne("SELECT * FROM ".db_table_name('defaultvalues')." WHERE qid=$postqid AND scale_id={$scale_id} AND language='{$language}'");
-                           if ($exists===false)
-                           {
-                               $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language) VALUES (".db_quoteall($_POST['defaultanswerscale_'.$scale_id.'_'.$language],true).",{$postqid},{$scale_id},'{$language}')");        
-                           }
-                           else
-                           {
-                               $connect->execute('Update '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($_POST['defaultanswerscale_'.$scale_id.'_'.$language],true)."  WHERE qid=$postqid AND scale_id={$scale_id} AND language='{$language}'");        
-                           }
-                       }
+                       Updatedefaultvalues($postqid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
                    } 
                 }
             }
@@ -1400,5 +1389,36 @@ else
     include("access_denied.php");
 }
 
+/**
+* THis is a convenience function to update/delete answer default values. If the given 
+* $defaultvalue is empty then the entry is removed from table defaultvalues
+* 
+* @param mixed $qid   Question ID
+* @param mixed $scale_id  Scale ID
+* @param mixed $specialtype  Special type (i.e. for  'Other')
+* @param mixed $language     Language (defaults are language specific)
+* @param mixed $defaultvalue    The default value itself
+* @param boolean $ispost   If defaultvalue is from a $_POST set this to true to properly quote things
+*/
+function Updatedefaultvalues($qid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
+{
+   global $connect;
+   if ($defaultvalue=='')  // Remove the default value if it is empty
+   {
+      $connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");                           
+   }
+   else
+   {
+       $exists=$connect->GetOne("SELECT qid FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");
+       if ($exists===false)
+       {
+           $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language,specialtype) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}')");        
+       }
+       else
+       {
+           $connect->execute('Update '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($defaultvalue,$ispost)."  WHERE qid=$qid AND specialtype='' AND scale_id={$scale_id} AND language='{$language}'");        
+       }
+   }
+}
 
 ?>

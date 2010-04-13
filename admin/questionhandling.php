@@ -130,7 +130,7 @@ if ($action == "editdefaultvalues")
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     array_unshift($questlangs,$baselang);
 
-    $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
+    $questionrow=$connect->GetRow("SELECT type, other FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
     $qtproperties=getqtypelist('','array');
 
     $editdefvalues="<div class='header'>".$clang->gT('Edit default answer values')."</div> "   
@@ -139,21 +139,23 @@ if ($action == "editdefaultvalues")
     foreach ($questlangs as $language)
     {
         $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false).'</h2>';
-        if ($qtproperties[$questiontype]['answerscales']>0)
+        
+        // If there are answerscales
+        if ($qtproperties[$questionrow['type']]['answerscales']>0)
         {
             $editdefvalues.="<ul> ";
-            for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
+            for ($scale_id=0;$scale_id<$qtproperties[$questionrow['type']]['answerscales'];$scale_id++)
             {
                 $editdefvalues.=" <li><label for='defaultanswerscale_{$scale_id}_{$language}'>";
-                if ($qtproperties[$questiontype]['answerscales']>1)
+                if ($qtproperties[$questionrow['type']]['answerscales']>1)
                 {
                     $editdefvalues.=sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</label>";
                 }
                 else
                 {
-                    $editdefvalues.=sprintf($clang->gT('Default answer:'),$scale_id)."</label>";
+                    $editdefvalues.=sprintf($clang->gT('Default answer value:'),$scale_id)."</label>";
                 }
-                $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND scale_id={$scale_id} AND language='{$language}'");
+                $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND and specialtype='' scale_id={$scale_id} AND language='{$language}'");
                 
                 $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}' id='defaultanswerscale_{$scale_id}_{$language}'>";
                 $editdefvalues.="<option value='' ";
@@ -173,10 +175,16 @@ if ($action == "editdefaultvalues")
                     $editdefvalues.="value='{$answer['code']}'>{$answer['answer']}</option>";
                 }       
                 $editdefvalues.="</select></li> ";
+                if ($questionrow['other']=='Y')
+                {
+                    $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid and specialtype='other' AND scale_id={$scale_id} AND language='{$language}'");
+                    if ($defaultvalue===false) $defaultvalue='';
+                    $editdefvalues.="<li><label for='other_{$scale_id}_{$language}'>".$clang->gT("Default value for option 'Other':")."<label><input type='text' name='other_{$scale_id}_{$language}' value='$defaultvalue' id='other_{$scale_id}_{$language}'></li>";
+                }
             }
-            if ($language==$baselang && count($questlangs)>0)
+            if ($language==$baselang && count($questlangs)>1)
             {
-                $editdefvalues.="<li><label for=''>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox'></li>";
+                $editdefvalues.="<li><label for='samedefault'>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox' name='samedefault' id='samedefault'></li>";
             }
             $editdefvalues.="</ul> ";
             $editdefvalues.="</div> "; // Closing page
