@@ -676,7 +676,7 @@ function db_tables_exist($table)
  * @return string This string is returned containing <option></option> formatted list of existing surveys
  *
  */
-function getsurveylist($returnarray=false)
+function getsurveylist($returnarray=false,$returnwithouturl=false)
 {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang, $timeadjust;
     static $cached = null;
@@ -713,25 +713,59 @@ function getsurveylist($returnarray=false)
             if($sv['active']!='Y')
             {
                 $inactivesurveys .= "<option ";
-                if($_SESSION['loginID'] == $sv['owner_id']) {$inactivesurveys .= " style=\"font-weight: bold;\"";}
-                if ($sv['sid'] == $surveyid) {$inactivesurveys .= " selected='selected'"; $svexist = 1;}
-                $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
-            }
-            elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
+                if($_SESSION['loginID'] == $sv['owner_id'])
+                {
+                    $inactivesurveys .= " style=\"font-weight: bold;\"";
+                }
+                if ($sv['sid'] == $surveyid)
+                {
+                    $inactivesurveys .= " selected='selected'"; $svexist = 1;
+                }
+                if ($returnwithouturl===false)
+                {
+                    $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                } else
+                {
+                    $inactivesurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                }
+            } elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
                 $expiredsurveys .="<option ";
-                if ($_SESSION['loginID'] == $sv['owner_id']) {$expiredsurveys .= " style=\"font-weight: bold;\"";}
-                if ($sv['sid'] == $surveyid) {$expiredsurveys .= " selected='selected'"; $svexist = 1;}
-                $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
-            }
-            else
+                if ($_SESSION['loginID'] == $sv['owner_id'])
+                {
+                    $expiredsurveys .= " style=\"font-weight: bold;\"";
+                }
+                if ($sv['sid'] == $surveyid)
+                {
+                    $expiredsurveys .= " selected='selected'"; $svexist = 1;
+                }
+                if ($returnwithouturl===false)
+                {
+                    $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                } else
+                {
+                    $expiredsurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                }
+            } else
             {
                 $activesurveys .= "<option ";
-                if($_SESSION['loginID'] == $sv['owner_id']) {$activesurveys .= " style=\"font-weight: bold;\"";}
-                if ($sv['sid'] == $surveyid) {$activesurveys .= " selected='selected'"; $svexist = 1;}
-                $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                if($_SESSION['loginID'] == $sv['owner_id'])
+                {
+                    $activesurveys .= " style=\"font-weight: bold;\"";
+                }
+                if ($sv['sid'] == $surveyid)
+                {
+                    $activesurveys .= " selected='selected'"; $svexist = 1;
+                }
+                if ($returnwithouturl===false)
+                {
+                    $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                } else
+                {
+                    $activesurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                }
             }
-        }
+        } // End Foreach
     }
     //Only show each activesurvey group if there are some
     if ($activesurveys!='')
@@ -749,8 +783,19 @@ function getsurveylist($returnarray=false)
         $surveyselecter .= "<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
         $surveyselecter .= $inactivesurveys . "</optgroup>";
     }
-    if (!isset($svexist)) {$surveyselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
+    if (!isset($svexist))
+    {
+        $surveyselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
+    } else
+    {
+        if ($returnwithouturl===false)
+        {
+            $surveyselecter = "<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;
+        } else
+        {
+            $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
+        }
+    }
     return $surveyselecter;
 }
 
