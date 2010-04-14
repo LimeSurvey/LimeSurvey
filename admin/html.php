@@ -3090,7 +3090,7 @@ if ($action == "newsurvey")
 
         // header
         $newsurvey .= "<div class='header'>"
-        . "".$clang->gT("Create or Import Survey")."</div>\n";
+        . "".$clang->gT("Create, Import or Copy Survey")."</div>\n";
 
         // begin Tabs section
         $newsurvey .= "<script type=\"text/javascript\">
@@ -3421,11 +3421,34 @@ if ($action == "newsurvey")
         . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked='checked'/></li></ul>\n"
         . "<p><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
         . "<input type='hidden' name='action' value='importsurvey' /></p></form>\n";
-        //		. "</form>\n";
 
         // End Import TAB
         $newsurvey .= "</div>\n";
 
+        // Copy Survey TAB
+        $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Copy Survey")."</h2>\n";
+
+        // Copy Survey
+        $newsurvey .= "<form class='form30' action='$scriptname' id='copysurveyform' method='post'>\n"
+        . "<ul>\n"
+        . "<li><label for='copysurveylist'><span class='annotationasterisk'>*</span>".$clang->gT("Select Survey to Copy:")."</label>\n"
+        . "<select id='copysurveylist' name='tokenanswerspersistence'>\n"
+        . getsurveylist(false,true)."</select> <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
+        . "<li><label for='copysurveyname'><span class='annotationasterisk'>*</span>".$clang->gT("New Survey Title:")."</label>\n"
+        . "<input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' />"
+        . " <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
+        . "<li><label for='copysurveyexcludequotas'>".$clang->gT("Exclude Quotas?")."</label>\n"
+        . "<input id='copysurveyexcludequotas' name=\"copysurveyexcludequotas\" type=\"checkbox\" /></li>\n"
+        . "<li><label for='copysurveyexcludeanswers'>".$clang->gT("Exclude Answers?")."</label>\n"
+        . "<input id='copysurveyexcludeanswers' name=\"copysurveyexcludeanswers\" type=\"checkbox\" /></li>\n"
+        . "<li><label for='copysurveyresetconditions'>".$clang->gT("Reset Conditions?")."</label>\n"
+        . "<input id='copysurveyresetconditions' name=\"copysurveyresetconditions\" type=\"checkbox\" /></li></ul>\n"
+        . "<p><input type='submit' value='".$clang->gT("Copy Survey")."' />\n"
+        . "<input type='hidden' name='action' value='copysurvey' /></p></form>\n";
+
+        // End Copy Survey TAB
+        $newsurvey .= "</div>\n";
+        
         // End TAB pane
         $newsurvey .= "</div>\n";
 
@@ -3556,8 +3579,8 @@ function showadminmenu()
     if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
     {
         $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-        ."title=\"".$clang->gTview("Create or Import New Survey")."\" >"
-        ."<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
+        ."title=\"".$clang->gTview("Create, Import or Copy New Survey")."\" >"
+        ."<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create, Import or Copy New Survey")."' /></a>\n";
     }
 
 
