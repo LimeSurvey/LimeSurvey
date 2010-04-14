@@ -580,6 +580,9 @@ function upgrade_tables143()
     
     // Convert answers to subquestions
     
+    // ToDo: Does not properly convert multi-language surveys yet (subqeustions for multiple langauges have the same question id)
+    // ToDo: Does not convert default values for multiple choice questions yet
+    
     $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}

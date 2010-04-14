@@ -1732,7 +1732,7 @@ function do_list_dropdown($ia)
             }
             elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
             {
-                $check_ans = CHECKED;
+                $opt_select = SELECTED;
                 $defexists=true;
             }
             $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$ansrow['answer']}</option>\n";
@@ -2808,11 +2808,11 @@ function do_multiplechoice($ia)
                 }
             }
         }
-        /* Or if the question is marked as a default selection, check the checkbox
-         elseif ($ansrow['default_value'] == 'Y')
-         {
-         $answer .= CHECKED;
-         }            */
+        // Or if the question is marked as a default selection, check the checkbox
+        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
+        {
+            $answer .= CHECKED;
+        }            
 
         $answer .= " onclick='cancelBubbleThis(event);";
         /* Exclude all others coding */
@@ -3204,10 +3204,10 @@ function do_multiplechoice_withcomments($ia)
                 $answer_main .= CHECKED;
             }
         }
-        /*elseif ($ansrow['default_value'] == 'Y')
-         {
-         $answer_main .= CHECKED;
-         } */
+        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
+        {
+            $answer_main .= CHECKED;
+        }            
         $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type)' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
         . $ansrow['question']."</label>\n";

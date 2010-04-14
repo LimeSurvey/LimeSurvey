@@ -196,7 +196,7 @@ if ($action == "editdefaultvalues")
                 {
                     $editdefvalues.=" <div class='header'>".sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</div<";
                 }
-                if ($questionrow['type']=='M')
+                if ($questionrow['type']=='M' || $questionrow['type']=='P')
                 {
                     $options=array(''=>$clang->gT('<No default value>'),'Y'=>$clang->gT('Checked'));
                 } 

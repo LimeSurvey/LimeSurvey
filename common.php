@@ -414,7 +414,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'answerscales'=>1),
     "P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
                'subquestions'=>1,
-               'hasdefaultvalues'=>0,
+               'hasdefaultvalues'=>1,
                'assessable'=>0,
                'answerscales'=>0),
     "Q"=>array('description'=>$clang->gT("Multiple Short Text"),
@@ -2712,6 +2712,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false) {
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND specialtype='' and language='{$clang->langcode}'");
                 }
                 if ($arow['type'] == "P")
                 {
