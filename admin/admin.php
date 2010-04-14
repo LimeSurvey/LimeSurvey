@@ -104,7 +104,7 @@ if(isset($_SESSION['loginID']))
      `superadmin`
      */
 
-    if ($action == 'importsurvey')
+    if ($action == 'importsurvey' || $action == 'copysurvey')
     {
         if ($_SESSION['USER_RIGHT_CREATE_SURVEY']==1)	{include('http_importsurvey.php');}
         else { include('access_denied.php');}

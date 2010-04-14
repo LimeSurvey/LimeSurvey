@@ -17,14 +17,20 @@
 //importsurvey.php should be called from cmdline_importsurvey.php or http_importsurvey.php, they set the $importingfrom variable
 if (!isset($importingfrom) || isset($_REQUEST['importingfrom'])) {die("Cannot run this script directly");}
 
-$handle = fopen($the_full_file_path, "r");
-while (!feof($handle))
+if ($importingfrom != "copysurvey")
 {
+    $handle = fopen($the_full_file_path, "r");
+    while (!feof($handle))
+    {
 
-    $buffer = fgets($handle);
-    $bigarray[] = $buffer;
+        $buffer = fgets($handle);
+        $bigarray[] = $buffer;
+    }
+    fclose($handle);
+} else
+{
+    $bigarray=$copysurveydata;
 }
-fclose($handle);
 
 if (isset($bigarray[0])) $bigarray[0]=removeBOM($bigarray[0]);
 // Now we try to determine the dataformat of the survey file.
@@ -54,7 +60,7 @@ else    // unknown file - show error message
         unlink($the_full_file_path);
         return;
     }
-    else
+    elseif ($importingfrom != "copysurvey")
     {
         echo $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
         return;
@@ -69,7 +75,6 @@ for ($i=0; $i<9; $i++)
     unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
-
 
 
 //SURVEYS
@@ -612,7 +617,13 @@ if ($importversion>=111)
         // Convert the \n return char from welcometext to <br />
 
         // translate internal links
-        $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_title']);
+        if ($importingfrom == "copysurvey")
+        {
+            $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveyname);
+        } else
+        {
+            $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_title']);
+        }
         $surveylsrowdata['surveyls_description']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_description']);
         $surveylsrowdata['surveyls_welcometext']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_welcometext']);
         $surveylsrowdata['surveyls_urldescription']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_urldescription']);
@@ -1062,14 +1073,14 @@ if (isset($grouparray) && $grouparray) {
                                     // read all label codes from $questionrowdata["lid"]
                                     // for each one (as L) set SGQA_L
                                     /*								$labelq="SELECT DISTINCT code FROM {$dbprefix}labels WHERE lid=".$questionrowdata["lid"];
-                                    $labelqresult=db_execute_num($labelq) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
-                                    while ($labelqrow=$labelqresult->FetchRow())
-                                    {
-                                    $fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."_".$labelqrow[0],
-                                    "newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0],
-                                    "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."_".$labelqrow[0],
-                                    "newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0]);
-                                    }  */
+                                     $labelqresult=db_execute_num($labelq) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+                                     while ($labelqrow=$labelqresult->FetchRow())
+                                     {
+                                     $fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."_".$labelqrow[0],
+                                     "newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0],
+                                     "oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."_".$labelqrow[0],
+                                     "newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0]);
+                                     }  */
                                 }
                                 elseif ($type == "R") {
                                     $newrank++;
@@ -1421,10 +1432,16 @@ if (isset($fieldnames))
 
 
 
-if ($importingfrom == "http")
+if ($importingfrom == "http" || $importingfrom == "copysurvey")
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
-    $importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
+    if ($importingfrom == "http")
+    {
+        $importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
+    } else
+    {
+        $importsurvey .= "<strong><u>".$clang->gT("Survey Copy Summary")."</u></strong><br />\n";
+    }
     $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
     if ($importversion>=111)
     {
@@ -1444,8 +1461,16 @@ if ($importingfrom == "http")
     $importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota ($countquotamembers ".$clang->gT("quota members")." ".$clang->gT("and")." $countquotals ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
     if ($importwarning != "") $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">" . $importwarning . "</ul><br />\n";
 
-    $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
-    . "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
+    if ($importingfrom == "http")
+    {
+        $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
+        . "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
+    } else
+    {
+        $importsurvey .= "<strong>".$clang->gT("Copy of Survey is completed.")."</strong><br />\n"
+        . "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
+    }
+
     $importsurvey .= "</div><br />\n";
     unlink($the_full_file_path);
     unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights

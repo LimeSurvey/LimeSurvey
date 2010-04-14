@@ -18,8 +18,10 @@ include_once("login_check.php");
 
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
+if ($action == 'importsurvey')
+{
+    $importsurvey = "<div class='header'>".$clang->gT("Import Survey")."</div>\n";
 
-$importsurvey = "<div class='header'>".$clang->gT("Import Survey")."</div>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
@@ -38,6 +40,41 @@ $importsurvey .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importsurvey .= $clang->gT("Reading file..")."<br />\n";
 
 $importingfrom = "http";	// "http" for the web version and "cmdline" for the command line version
+} elseif ($action == 'copysurvey')
+{
+    $importsurvey = "<div class='header'>".$clang->gT("Copy Survey")."</div>\n";
+    $importingfrom = "copysurvey";
+    $surveyid = sanitize_int($_POST['copysurveylist']);
+    $exclude = array();
+    require_once("../classes/inputfilter/class.inputfilter_clean.php");
+    $myFilter = new InputFilter('','',1,1,1);
+    if ($filterxsshtml)
+    {
+        $surveyname = $myFilter->process($_POST['copysurveyname']);
+    } else {
+        $surveyname = html_entity_decode($_POST['copysurveyname'], ENT_QUOTES, "UTF-8");
+    }
+    if (isset($_POST['copysurveyexcludequotas']) && $_POST['copysurveyexcludequotas'] == "on")
+    {
+        $exclude['quotas'] = true;
+    }
+    if (isset($_POST['copysurveyexcludeanswers']) && $_POST['copysurveyexcludeanswers'] == "on")
+    {
+        $exclude['answers'] = true;
+    }
+    if (isset($_POST['copysurveyresetconditions']) && $_POST['copysurveyresetconditions'] == "on")
+    {
+        $exclude['conditions'] = true;
+    }
+    include("export_structure_csv.php");
+    $copysurveydata = explode("\n",getCSVStructure($exclude));
+    $ccount = count($copysurveydata);
+    for ($i=0; $i<$ccount; $i++)
+    {
+        $copysurveydata[$i] = $copysurveydata[$i]."\n";
+    }
+}
+
 include("importsurvey.php");
 
 ?>

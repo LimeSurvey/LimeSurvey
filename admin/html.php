@@ -3432,7 +3432,7 @@ if ($action == "newsurvey")
         $newsurvey .= "<form class='form30' action='$scriptname' id='copysurveyform' method='post'>\n"
         . "<ul>\n"
         . "<li><label for='copysurveylist'><span class='annotationasterisk'>*</span>".$clang->gT("Select Survey to Copy:")."</label>\n"
-        . "<select id='copysurveylist' name='tokenanswerspersistence'>\n"
+        . "<select id='copysurveylist' name='copysurveylist'>\n"
         . getsurveylist(false,true)."</select> <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
         . "<li><label for='copysurveyname'><span class='annotationasterisk'>*</span>".$clang->gT("New Survey Title:")."</label>\n"
         . "<input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' />"

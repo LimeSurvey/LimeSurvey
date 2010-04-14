@@ -59,9 +59,13 @@ if (!$surveyid)
 
 function getCSVStructure($exclude=array())
 {
-    global $dbprefix, $surveyid;
+    global $dbprefix, $surveyid, $dbversionnumber;
 
-    $sdump = "";
+       $sdump = "# LimeSurvey Survey Dump\n"
+    . "# DBVersion $dbversionnumber\n"
+    . "# This is a dumped survey from the LimeSurvey Script\n"
+    . "# http://www.limesurvey.org/\n"
+    . "# Do not change this header!\n";
 
     //1: Surveys table
     $squery = "SELECT *
@@ -89,7 +93,7 @@ function getCSVStructure($exclude=array())
 		   ORDER BY qid";
     $sdump .= BuildCSVFromQuery($qquery);
 
-    if ((!empty($exclude) && $exclude['answers'] !== true) || empty($exclude))
+    if (!isset($exclude['answers']))
     {
         //5: Answers table
         $aquery = "SELECT {$dbprefix}answers.*
@@ -100,7 +104,7 @@ function getCSVStructure($exclude=array())
         $sdump .= BuildCSVFromQuery($aquery);
     }
 
-    if ((!empty($exclude) && $exclude['conditions'] !== true) || empty($exclude))
+    if (!isset($exclude['conditions']))
     {
         //6: Conditions table
         $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
@@ -139,7 +143,7 @@ function getCSVStructure($exclude=array())
 		  WHERE {$dbprefix}assessments.sid=$surveyid";
     $sdump .= BuildCSVFromQuery($query);
 
-    if ((!empty($exclude) && $exclude['quotas'] !== true) || empty($exclude))
+    if (!isset($exclude['quotas']))
     {
         //11: Quota;
         $query = "SELECT {$dbprefix}quota.*
@@ -163,14 +167,8 @@ function getCSVStructure($exclude=array())
     return $sdump;
 }
 
-if (!isset($copyfunction))
+if (!isset($importingfrom))
 {
-    $dumphead = "# LimeSurvey Survey Dump\n"
-    . "# DBVersion $dbversionnumber\n"
-    . "# This is a dumped survey from the LimeSurvey Script\n"
-    . "# http://www.limesurvey.org/\n"
-    . "# Do not change this header!\n";
-
     $sdump = getCSVStructure();
 
     $fn = "limesurvey_survey_$surveyid.csv";
@@ -182,8 +180,7 @@ if (!isset($copyfunction))
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");                          // HTTP/1.0
 
-    echo $dumphead, $sdump."\n";
+    echo $sdump."\n";
+    exit;
 }
-
-exit;
 ?>
