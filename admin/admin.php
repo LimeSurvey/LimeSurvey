@@ -197,6 +197,11 @@ if(isset($_SESSION['loginID']))
         if(hasRight($surveyid,'export'))    {include('export_structure_quexml.php');}
         else { include('access_denied.php');}
     }
+    elseif ($action == 'exportstructurexml')
+    {
+        if(hasRight($surveyid,'export'))    {include('export_structure_xml.php');}
+        else { include('access_denied.php');}
+    }
     elseif ($action == 'exportstructurecsvGroup')
     {
         if(hasRight($surveyid,'export'))    {include('dumpgroup.php');}

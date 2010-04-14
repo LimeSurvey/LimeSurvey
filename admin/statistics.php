@@ -109,6 +109,10 @@ if ($chartfontfile=='auto')
     {
         $chartfontfile='KacstFarsi.ttf';
     }
+    elseif  ($language=='el' )
+    {
+        $chartfontfile='DejaVuLGCSans.ttf';
+    }
     elseif  ($language=='zh-Hant-HK' || $language=='zh-Hant-TW' || $language=='zh-Hans')
     {
         $chartfontfile='fireflysung.ttf';

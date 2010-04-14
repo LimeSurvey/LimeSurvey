@@ -2100,13 +2100,14 @@ if($action == "exportstructure")
         ."<div class='header'>"
         .$clang->gT("Export Survey Structure")."\n</div><br />\n"
         ."<ul style='margin-left:35%;'>\n"
-        ."<li><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv'
-	    onclick=\"this.form.action.value='exportstructurecsv'\" />"
+        ."<li><input type='radio' class='radiobtn' name='action' value='exportstructurecsv' checked='checked' id='surveycsv'"
 	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label></li>\n";
+	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label></li>\n"
+        ."<li><input type='radio' class='radiobtn' name='action' value='exportstructurexml' checked='checked' id='surveyxml'"
+        ."<label for='surveycsv'>"
+        .$clang->gT("LimeSurvey XML survey file (*.lss)")."</label></li>\n";
 
-	    $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML'
-	    onclick=\"this.form.action.value='exportstructurequexml'\" />"
+	    $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructurequeXML'  id='queXML'"
 	    ."<label for='queXML'>"
 	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
 	    ."</label></li>\n";
@@ -2128,8 +2129,7 @@ if($action == "exportstructure")
 	    $exportstructure.="<p>\n"
 	    ."<input type='submit' value='"
 	    .$clang->gT("Export To File")."' />\n"
-	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-	    ."<input type='hidden' name='action' value='exportstructurecsv' />\n";
+	    ."<input type='hidden' name='sid' value='$surveyid' />\n";
 	    $exportstructure.="</form>\n";
     }
 }

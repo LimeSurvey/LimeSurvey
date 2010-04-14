@@ -456,4 +456,40 @@ function spss_getquery() {
     }
     return $query;
 }
-?>
+
+function BuildXMLFromQuery($xmlwriter, $Query)
+{
+    global $dbprefix, $connect;
+    $QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
+    preg_match('/FROM (\w+)( |,)/', $Query, $MatchResults);
+    $TableName = $MatchResults[1];;
+    if ($dbprefix)
+    {
+        $TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
+    }
+    if ($QueryResult->RecordCount()>0)
+    {
+        $xmlwriter->startElement($TableName);
+        $xmlwriter->startElement('fields');
+        $Columninfo =  $QueryResult->fields;
+        foreach ($Columninfo as $fieldname=>$value)
+        {
+            $xmlwriter->writeElement('fieldname',$fieldname);
+        }
+        $xmlwriter->endElement(); // close columns
+        $xmlwriter->startElement('rows');
+        while ($Row = $QueryResult->FetchRow())
+        {
+            $xmlwriter->startElement('row');
+            foreach ($Row as $Key=>$Value)
+            {
+                $xmlwriter->startElement('data');
+                $xmlwriter->writeCData($Value);
+                $xmlwriter->endElement();
+            }
+            $xmlwriter->endElement(); // close row
+        }
+        $xmlwriter->endElement(); // close rows
+        $xmlwriter->endElement(); // close tablename
+    }
+}
