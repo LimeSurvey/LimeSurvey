@@ -2378,31 +2378,7 @@ if($action == "surveysecurity")
         } else {
             $surveysecurity .= "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>"; //fix error on empty table
         }
-        $surveysecurity .= "</tbody>\n";
-
-        $surveysecurity .= "<tfoot><form action='$scriptname?sid={$surveyid}' method='post'>\n"
-        . "<tr>\n"
-        . "<td colspan='9' align='right'>"
-        . "<strong>".$clang->gT("User").": </strong><select id='uidselect' name='uid'>\n"
-        . getsurveyuserlist()
-        . "</select>\n"
-        . "</td>\n"
-
-        . "<td><input type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
-        . "<input type='hidden' name='action' value='addsurveysecurity' /></td></form>\n"
-        . "</tr>\n";
-
-        $surveysecurity .= "<form action='$scriptname?sid={$surveyid}' method='post'>\n<tr>\n"
-
-        . "<td colspan='9' align='right'>"
-        . "<strong>".$clang->gT("Groups").": </strong><select id='ugidselect' name='ugid'>\n"
-        . getsurveyusergrouplist()
-        . "</select>\n"
-        . "</td>\n"
-
-        . "<td><input type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
-        . "<input type='hidden' name='action' value='addusergroupsurveysecurity' /></td>\n"
-        . "</tr></form></tfoot>\n"
+        $surveysecurity .= "</tbody>\n"
         . "</table>\n";
     }
     else
