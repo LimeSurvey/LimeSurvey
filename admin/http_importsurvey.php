@@ -66,7 +66,7 @@ $importingfrom = "http";	// "http" for the web version and "cmdline" for the com
     {
         $exclude['conditions'] = true;
     }
-    include("export_structure_csv.php");
+   // include("export_structure_csv.php");
     $copysurveydata = explode("\n",getCSVStructure($exclude));
     $ccount = count($copysurveydata);
     for ($i=0; $i<$ccount; $i++)

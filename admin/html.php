@@ -976,8 +976,8 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         if(hasRight($surveyid,'export'))
         {
 
-            $groupsummary .="<a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Export current question group")."\" >"
-            . "<img src='$imagefiles/exportcsv.png' title='' alt='".$clang->gT("Export current question group")."' name='ExportGroup'  /></a>\n";
+            $groupsummary .="<a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Export this question group")."\" >"
+            . "<img src='$imagefiles/dumpgroup.png' title='' alt='".$clang->gT("Export this question group")."' name='ExportGroup'  /></a>\n";
         }
         else
         {
@@ -1160,7 +1160,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
             . " title=\"".$clang->gTview("Export this Question")."\" >"
-            . "<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export this Question")."' name='ExportQuestion' /></a>\n";
+            . "<img src='$imagefiles/dumpquestion.png' alt='".$clang->gT("Export this Question")."' name='ExportQuestion' /></a>\n";
         }
         else
         {
@@ -2100,9 +2100,6 @@ if($action == "exportstructure")
         ."<div class='header'>"
         .$clang->gT("Export Survey Structure")."\n</div><br />\n"
         ."<ul style='margin-left:35%;'>\n"
-        ."<li><input type='radio' class='radiobtn' name='action' value='exportstructurecsv' checked='checked' id='surveycsv'"
-	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label></li>\n"
         ."<li><input type='radio' class='radiobtn' name='action' value='exportstructurexml' checked='checked' id='surveyxml'"
         ."<label for='surveycsv'>"
         .$clang->gT("LimeSurvey XML survey file (*.lss)")."</label></li>\n";
@@ -3415,9 +3412,9 @@ if ($action == "newsurvey")
         // Import Survey
         $newsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "<ul>\n"
-        . "<li><label for='the_file'>".$clang->gT("Select CSV/SQL File:")."</label>\n"
+        . "<li><label for='the_file'>".$clang->gT("Select survey structure file (*.lss, *.csv, *.sql):")."</label>\n"
         . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"
-        . "<li><label for='translinksfields'>".$clang->gT("Convert resources links and INSERTANS fields?")."</label>\n"
+        . "<li><label for='translinksfields'>".$clang->gT("Convert resource links and INSERTANS fields?")."</label>\n"
         . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked='checked'/></li></ul>\n"
         . "<p><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
         . "<input type='hidden' name='action' value='importsurvey' /></p></form>\n";

@@ -20,16 +20,15 @@
 // 1. questions
 // 2. answers
 
+//Ensure script is not run directly, avoid path disclosure
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 include_once("login_check.php");
+require_once("export_data_functions.php");      
+if(!hasRight($surveyid,'export')) safe_die("You are not allowed to export question groups."); 
 
 $gid = returnglobal('gid');
 $surveyid = returnglobal('sid');
 
-//Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
-
-//echo $htmlheader;
 if (!$gid)
 {
     echo $htmlheader;
@@ -45,75 +44,87 @@ if (!$gid)
     exit;
 }
 
-$fn = "limesurvey_group_$gid.csv";
-
-$dumphead = "# LimeSurvey Group Dump\n"
-. "# DBVersion $dbversionnumber\n"
-. "# This is a dumped group from the LimeSurvey Script\n"
-. "# http://www.limesurvey.org/\n"
-. "# Do not change this header!\n";
+$fn = "limesurvey_group_$gid.lsg";
+$xml = new XMLWriter();    
 
 
-
-//1: Groups Table
-$gquery = "SELECT *
-           FROM {$dbprefix}groups 
-		   WHERE gid=$gid";
-$gdump = BuildCSVFromQuery($gquery);
-
-//2: Questions Table
-$qquery = "SELECT *
-           FROM {$dbprefix}questions 
-		   WHERE gid=$gid";
-$qdump = BuildCSVFromQuery($qquery);
-
-//3: Answers table
-$aquery = "SELECT DISTINCT {$dbprefix}answers.*
-           FROM {$dbprefix}answers, {$dbprefix}questions 
-		   WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid) 
-		   AND ({$dbprefix}questions.gid=$gid)";
-$adump = BuildCSVFromQuery($aquery);
-
-//4: Conditions table - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
-$cquery = "SELECT DISTINCT {$dbprefix}conditions.*
-           FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b 
-		   WHERE ({$dbprefix}conditions.cqid={$dbprefix}questions.qid) 
-		   AND ({$dbprefix}conditions.qid=b.qid) 
-		   AND ({$dbprefix}questions.gid=$gid) 
-		   AND (b.gid=$gid)";
-$cdump = BuildCSVFromQuery($cquery);
-
-//5: Question Attributes
-$query = "SELECT {$dbprefix}question_attributes.*
-	   	  FROM {$dbprefix}question_attributes, {$dbprefix}questions 
-		  WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) 
-		  AND ({$dbprefix}questions.gid=$gid)";
-$qadump = BuildCSVFromQuery($query);
 
 if($action=='exportstructureLsrcCsvGroup')
 {
     include_once($homedir.'/remotecontrol/lsrc.config.php');
-    $lsrcString = $dumphead. $gdump. $qdump. $adump. $cdump. $qadump;
     //Select title as Filename and save
     $groupTitleSql = "SELECT group_name
-		             FROM {$dbprefix}groups 
-					 WHERE sid=$surveyid AND gid=$gid ";
-    $groupTitleRs = db_execute_assoc($groupTitleSql);
-    $groupTitle = $groupTitleRs->FetchRow();
-    file_put_contents("remotecontrol/".$modDir.substr($groupTitle['group_name'],0,20).".csv",$lsrcString);
+                     FROM {$dbprefix}groups 
+                     WHERE sid=$surveyid AND gid=$gid ";
+    $groupTitle = $connect->GetOne($groupTitleSql);
+    $xml->openURI('remotecontrol/'.$queDir.substr($groupTitle,0,20).".lsq");     
 }
 else
 {
-    // HTTP/1.0
-    header("Content-Type: application/download");
+    header("Content-Type: text/html/force-download");
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
+    header("Pragma: cache");                          // HTTP/1.0
 
-    echo $dumphead, $gdump, $qdump, $adump, $cdump, $qadump;
-    exit;
+    $xml->openURI('php://output');
 }
 
-?>
+$xml->setIndent(true);
+$xml->startDocument('1.0', 'UTF-8');
+$xml->startElement('document');
+$xml->writeElement('LimeSurveyDocType','Group');    
+$xml->writeElement('DBVersion',$dbversionnumber);    
+getXMLStructure($xml,$gid);
+$xml->endElement(); // close columns
+$xml->endDocument();
+exit;
+
+
+function getXMLStructure($xml,$gid)
+{
+    global $dbprefix; 
+    // Groups 
+    $gquery = "SELECT *
+               FROM {$dbprefix}groups 
+               WHERE gid=$gid";
+    BuildXMLFromQuery($xml,$gquery);                
+
+    // Questions 
+    $qquery = "SELECT *
+               FROM {$dbprefix}questions 
+               WHERE gid=$gid";
+    BuildXMLFromQuery($xml,$qquery);
+
+    //Answers 
+    $aquery = "SELECT DISTINCT {$dbprefix}answers.*
+               FROM {$dbprefix}answers, {$dbprefix}questions 
+               WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid) 
+               AND ({$dbprefix}questions.gid=$gid)";
+    BuildXMLFromQuery($xml,$aquery);
+
+    //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
+    $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
+               FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b 
+               WHERE ({$dbprefix}conditions.cqid={$dbprefix}questions.qid) 
+               AND ({$dbprefix}conditions.qid=b.qid) 
+               AND ({$dbprefix}questions.gid=$gid) 
+               AND (b.gid=$gid)";
+    BuildXMLFromQuery($xml,$cquery);
+
+    //Question attributes
+    $query = "SELECT {$dbprefix}question_attributes.*
+                 FROM {$dbprefix}question_attributes, {$dbprefix}questions 
+              WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) 
+              AND ({$dbprefix}questions.gid=$gid)";
+    BuildXMLFromQuery($xml,$query);
+    
+    // Default values
+    $query = "SELECT dv.*
+              FROM {$dbprefix}defaultvalues dv, {$dbprefix}questions  
+              WHERE ({$dbprefix}defaultvalues.qid={$dbprefix}questions.qid) 
+              AND ({$dbprefix}questions.gid=$gid) order by dv.language, dv.scale_id";
+    BuildXMLFromQuery($xml,$query);              
+    
+}

@@ -182,11 +182,6 @@ if(isset($_SESSION['loginID']))
         if (hasRight($surveyid,'define_questions'))	{$_SESSION['FileManagerContext']="edit:survey:$surveyid";include('import_resources_zip.php');}
         else { include('access_denied.php');}
     }
-    elseif ($action == 'exportstructurecsv')
-    {
-        if(hasRight($surveyid,'export'))    {include('export_structure_csv.php');}
-        else { include('access_denied.php');}
-    }
     elseif ($action == 'exportstructureLsrcCsv')
     {
         if(hasRight($surveyid,'export'))    {include('export_structure_lsrc.php');}

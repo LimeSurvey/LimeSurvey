@@ -15,20 +15,19 @@
 
 
 
-// DUMP THE RELATED DATA FOR A SINGLE SURVEY INTO A SQL FILE FOR IMPORTING LATER ON OR ON ANOTHER SURVEY SETUP
-// DUMP ALL DATA WITH RELATED SID FROM THE FOLLOWING TABLES
-// 1. Surveys
-// 2. Surveys Language Table
-// 3. Groups
-// 4. Questions
-// 5. Answers
-// 6. Conditions
-// 7. Label Sets
-// 8. Labels
-// 9. Question Attributes
-// 10. Assessments
-// 11. Quota
-// 12. Quota Members
+// DUMP THE RELATED DATA FOR A SINGLE SURVEY INTO AN XML FILE FOR IMPORTING LATER ON OR ON ANOTHER SURVEY SETUP
+// DUMP ALL DATA FOR RELATED SID FROM THE FOLLOWING TABLES:
+// Answers
+// Assessments
+// Conditions
+// Default values
+// Groups
+// Questions
+// Question attributes
+// Quota
+// Quota Members
+// Surveys
+// Surveys language settings
 
 include_once("login_check.php");
 require_once ("export_data_functions.php");
