@@ -271,26 +271,15 @@ else
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";
     $presult=db_execute_assoc($pquery);
-    while($prow=$presult->FetchRow())
+    $prow=$presult->FetchRow();
+    if ($prow['private'] == "N")
     {
-        if ($prow['private'] == "N")
-        {
-            $createsurvey .= "  token C(36),\n";
-            $surveynotprivate="TRUE";
-        }
-        if ($prow['allowregister'] == "Y")
-        {
-            $surveyallowsregistration="TRUE";
-        }
-        if ($prow['ipaddr'] == "Y")
-        {
-            $createsurvey .= " ipaddr X,\n";
-        }
-        //Check to see if 'refurl' field is required.
-        if ($prow['refurl'] == "Y")
-        {
-            $createsurvey .= " refurl X,\n";
-        }
+        $createsurvey .= "  token C(36),\n";
+        $surveynotprivate="TRUE";
+    }
+    if ($prow['allowregister'] == "Y")
+    {
+        $surveyallowsregistration="TRUE";
     }
     //strip trailing comma and new line feed (if any)
     $createsurvey = rtrim($createsurvey, ",\n");
@@ -362,6 +351,14 @@ else
                 break;
             case "I":  //Language switch
                 $createsurvey .= " C(20)";
+                break;
+            case "ipaddress":
+                if ($prow['ipaddr'] == "Y")
+                    $createsurvey .= " X";
+                break;
+            case "url":
+                if ($prow['refurl'] == "Y")
+                    $createsurvey .= " X";
                 break;
             default:
                 $createsurvey .= " C(5)";
