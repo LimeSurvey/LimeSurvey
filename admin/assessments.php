@@ -20,9 +20,9 @@ if (!isset($action)) {$action=returnglobal('action');}
 
 $surveyinfo=getSurveyInfo($surveyid);
 
-$js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
-$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
-$js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
+$js_admin_includes[]= $homeurl.'/scripts/assessments.js';
+$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+$js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 //                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
 
 

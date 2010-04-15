@@ -97,7 +97,7 @@ function globalsettingssave()
 
 function globalsettingsdisplay()
 {
-    global $action, $connect, $js_adminheader_includes, $editsurvey, $subaction, $scriptname, $clang;
+    global $action, $connect, $js_admin_includes, $editsurvey, $subaction, $scriptname, $clang;
     global $updateversion, $updatebuild, $updateavailable, $updatelastcheck, $demoModeOnly;
 
     if (isset($subaction) && $subaction == "updatecheck")
@@ -109,7 +109,7 @@ function globalsettingsdisplay()
     {
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         {
-            $js_adminheader_includes[]='scripts/globalsettings.js';
+            $js_admin_includes[]='scripts/globalsettings.js';
             // header
             $editsurvey = "<div class='header'>".$clang->gT("Global settings")."</div>\n";
 

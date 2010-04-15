@@ -208,8 +208,8 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
     }
 }
 
-$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
-$js_adminheader_includes[]='scripts/quotas.js';
+$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+$js_admin_includes[]='scripts/quotas.js';
 
 //get survey rights
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user

@@ -46,8 +46,8 @@ if ($subaction == "delete" && $surveyid && $scid)
         $savedsurveyoutput .=  "Couldn't delete<br />$query<br />".$connect->ErrorMsg();
     }
 }
-$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
-$js_adminheader_includes[]='scripts/saved.js';
+$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+$js_admin_includes[]='scripts/saved.js';
 
 $savedsurveyoutput .= "<div class='menubar'>\n"
 . "<div class='menubar-title'><span style='font-weight:bold;'>\n";

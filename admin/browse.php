@@ -83,7 +83,7 @@ if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
     return;
 }
 
-$js_adminheader_includes[]='scripts/browse.js';
+$js_admin_includes[]='scripts/browse.js';
 
 
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS

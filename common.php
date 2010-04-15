@@ -101,8 +101,8 @@ $css_header_includes =  array();
 
 // JS scripts and CSS to include in admin header
 // updated by admin scripts
-$js_adminheader_includes = array();
-$css_adminheader_includes = array();
+$js_admin_includes = array();
+$css_admin_includes = array();
 
 /*
  * $sourcefrom variable checks the location of the current script against
@@ -4310,6 +4310,7 @@ function doAdminFooter()
 
 function getAdminFooter($url, $explanation)
 {
+    global $js_admin_includes, $homeurl;
     global $versionnumber, $buildnumber, $setfont, $imagefiles, $clang;
 
     if ($buildnumber != "")
@@ -4329,7 +4330,7 @@ function getAdminFooter($url, $explanation)
         $buildtext="";
         $versiontitle="";
     }
-
+       
     $strHTMLFooter = "<div class='footer'>\n"
     . "<div style='float:left;width:110px;text-align:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/docs.png' "
     . "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
@@ -4338,7 +4339,19 @@ function getAdminFooter($url, $explanation)
     . "onclick=\"window.open('http://www.donate.limesurvey.org')\" "
     . "onmouseover=\"document.body.style.cursor='pointer'\" onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
     . "<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$versiontitle." $versionnumber $buildtext</div>"
-    . "</div></body>\n</html>";
+    . "</div>\n"
+    . "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
+    $js_admin_includes = array_unique($js_admin_includes);     
+    foreach ($js_admin_includes as $jsinclude)
+    {
+        $strHTMLFooter .= "<script type=\"text/javascript\" src=\"".$jsinclude."\"></script>\n";
+    }    
+    
+    $strHTMLFooter.="</body>\n</html>";
     return $strHTMLFooter;
 }
 
@@ -4350,7 +4363,7 @@ function doAdminHeader()
 
 function getAdminHeader($meta=false)
 {
-    global $sitename, $admintheme, $rooturl, $defaultlang, $js_adminheader_includes, $css_adminheader_includes, $homeurl;
+    global $sitename, $admintheme, $rooturl, $defaultlang, $css_admin_includes, $homeurl;
     if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']=$defaultlang;}
     $strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
     ."<html ";
@@ -4369,11 +4382,7 @@ function getAdminHeader($meta=false)
     {
         $strAdminHeader.=$meta;
     }
-    $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
-    . "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n";
+    $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
     if ($_SESSION['adminlang']!='en')
     {
         $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
@@ -4390,19 +4399,13 @@ function getAdminHeader($meta=false)
         $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
     }
 
-    $js_adminheader_includes = array_unique($js_adminheader_includes);
-    $css_adminheader_includes = array_unique($css_adminheader_includes);
+    $css_admin_includes = array_unique($css_admin_includes);
 
-    foreach ($js_adminheader_includes as $jsinclude)
-    {
-        $strAdminHeader .= "<script type=\"text/javascript\" src=\"".$jsinclude."\"></script>\n";
-    }
-    foreach ($css_adminheader_includes as $cssinclude)
+    foreach ($css_admin_includes as $cssinclude)
     {
         $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
     }
-    $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n"
-    . use_firebug()
+    $strAdminHeader.= use_firebug()
     . "</head>\n<body>\n";
     if (isset($_SESSION['dateformat']))
     {

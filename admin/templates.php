@@ -163,8 +163,8 @@ $SurveyList=array('startpage.pstpl',
                                }
 
 
-                               $js_adminheader_includes[]= $homeurl."/scripts/edit_area/edit_area_loader.js";
-                               $js_adminheader_includes[]= $homeurl."/scripts/templates.js";
+                               $js_admin_includes[]= $homeurl."/scripts/edit_area/edit_area_loader.js";
+                               $js_admin_includes[]= $homeurl."/scripts/templates.js";
 
                                // find out language for code editor
                                $availableeditorlanguages=array('bg','cs','de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');

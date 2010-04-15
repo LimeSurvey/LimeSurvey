@@ -92,7 +92,6 @@ if ($importingfrom == "http" || $importingfrom == "copysurvey")
 
     $importsurvey .= "</div><br />\n";
     unlink($the_full_file_path);
-    unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
 }
 else
 {
@@ -484,10 +483,10 @@ function ImportCSVFormat($bigarray)
         $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
     }
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
-    $surveyid=$surveyrowdata["sid"];
+    $oldsid=$surveyrowdata["sid"];
 
 
-    if (!$surveyid)
+    if (!$oldsid)
     {
         if ($importingfrom == "http")
         {
@@ -508,7 +507,7 @@ function ImportCSVFormat($bigarray)
 
     // Use the existing surveyid if it does not already exists
     // This allows the URL links to the survey to keep working because the sid did not change
-    $newsid = $surveyid;
+    $newsid = $oldsid;
     $isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid";
     $isresult = db_execute_assoc($isquery);
     if ($isresult->RecordCount()>0)
@@ -655,14 +654,14 @@ function ImportCSVFormat($bigarray)
 
 
         // translate internal links
-        $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_title']);
-        $surveylsrowdata['surveyls_description']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_description']);
-        $surveylsrowdata['surveyls_welcometext']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_welcometext']);
-        $surveylsrowdata['surveyls_urldescription']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_urldescription']);
-        $surveylsrowdata['surveyls_email_invite']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_invite']);
-        $surveylsrowdata['surveyls_email_remind']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_remind']);
-        $surveylsrowdata['surveyls_email_register']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_register']);
-        $surveylsrowdata['surveyls_email_confirm']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
+        $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_title']);
+        $surveylsrowdata['surveyls_description']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_description']);
+        $surveylsrowdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_welcometext']);
+        $surveylsrowdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_urldescription']);
+        $surveylsrowdata['surveyls_email_invite']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_invite']);
+        $surveylsrowdata['surveyls_email_remind']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_remind']);
+        $surveylsrowdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_register']);
+        $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
 
 
 
@@ -692,8 +691,6 @@ function ImportCSVFormat($bigarray)
     $insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
     $iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
 
-    $oldsid=$surveyid;
-
     // Now import the survey language settings
     if ($importversion>=111)
     {
@@ -709,18 +706,18 @@ function ImportCSVFormat($bigarray)
             // translate internal links
             if ($importingfrom == "copysurvey")
             {
-                $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveyname);
+                $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveyname);
             } else
             {
-                $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_title']);
+                $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_title']);
             }
-            $surveylsrowdata['surveyls_description']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_description']);
-            $surveylsrowdata['surveyls_welcometext']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_welcometext']);
-            $surveylsrowdata['surveyls_urldescription']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_urldescription']);
-            $surveylsrowdata['surveyls_email_invite']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_invite']);
-            $surveylsrowdata['surveyls_email_remind']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_remind']);
-            $surveylsrowdata['surveyls_email_register']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_register']);
-            $surveylsrowdata['surveyls_email_confirm']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
+            $surveylsrowdata['surveyls_description']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_description']);
+            $surveylsrowdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_welcometext']);
+            $surveylsrowdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_urldescription']);
+            $surveylsrowdata['surveyls_email_invite']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_invite']);
+            $surveylsrowdata['surveyls_email_remind']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_remind']);
+            $surveylsrowdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_register']);
+            $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
             unset($surveylsrowdata['lastpage']);
 
             $surveylsrowdata['surveyls_survey_id']=$newsid;
@@ -892,7 +889,7 @@ function ImportCSVFormat($bigarray)
             $gid=$grouprowdata['gid'];
             $gsid=$grouprowdata['sid'];
             //Now an additional integrity check if there are any groups not belonging into this survey
-            if ($gsid != $surveyid)
+            if ($gsid != $oldsid)
             {
                 if ($importingfrom == "http")
                 {
@@ -919,8 +916,8 @@ function ImportCSVFormat($bigarray)
             $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
 
             // translate internal links
-            $grouprowdata['group_name']=translink('survey', $surveyid, $newsid, $grouprowdata['group_name']);
-            $grouprowdata['description']=translink('survey', $surveyid, $newsid, $grouprowdata['description']);
+            $grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
+            $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
 
             $newvalues=array_values($grouprowdata);
 
@@ -1013,9 +1010,9 @@ function ImportCSVFormat($bigarray)
                         $other = $questionrowdata["other"]; //Get 'other' field value
                         $type = $questionrowdata['type'];
                         // translate internal links
-                        $questionrowdata['title']=translink('survey', $surveyid, $newsid, $questionrowdata['title']);
-                        $questionrowdata['question']=translink('survey', $surveyid, $newsid, $questionrowdata['question']);
-                        $questionrowdata['help']=translink('survey', $surveyid, $newsid, $questionrowdata['help']);
+                        $questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
+                        $questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
+                        $questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
 
                         $newvalues=array_values($questionrowdata);
                         if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
@@ -1102,7 +1099,7 @@ function ImportCSVFormat($bigarray)
                                     }
 
                                     // translate internal links
-                                    $answerrowdata['answer']=translink('survey', $surveyid, $newsid, $answerrowdata['answer']);
+                                    $answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
 
                                     unset($answerrowdata['default_value']);
                                     // Todo: Properly convert default values
@@ -1228,7 +1225,7 @@ function ImportCSVFormat($bigarray)
     $gres = db_execute_assoc($gquery);
     while ($grow = $gres->FetchRow())
     {
-        fixsortorderQuestions($grow['gid'], $surveyid);
+        fixsortorderQuestions($grow['gid'], $oldsid);
     }
 
     //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents

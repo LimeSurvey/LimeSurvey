@@ -22,8 +22,8 @@ if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
 if ($action == "listsurveys")
 {
-    $js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
-    $js_adminheader_includes[]='scripts/listsurvey.js';
+    $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+    $js_admin_includes[]='scripts/listsurvey.js';
     $query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "
     ." INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language "
     ." INNER JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
@@ -273,8 +273,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 {
     if(hasRight($surveyid))
     {
-        $js_adminheader_includes[]='../scripts/jquery/jquery.cookie.js';
-        $js_adminheader_includes[]='scripts/surveytoolbar.js';
+        $js_admin_includes[]='../scripts/jquery/jquery.cookie.js';
+        $js_admin_includes[]='scripts/surveytoolbar.js';
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
         $sumresult3 = $connect->Execute($sumquery3); //Checked
@@ -1328,9 +1328,9 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 
 if ($action=='editansweroptions')
 {
-    $js_adminheader_includes[]='scripts/answers.js';
-    $js_adminheader_includes[]='../scripts/jquery/jquery.blockUI.js';
-    $js_adminheader_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
+    $js_admin_includes[]='scripts/answers.js';
+    $js_admin_includes[]='../scripts/jquery/jquery.blockUI.js';
+    $js_admin_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
 
     $_SESSION['FileManagerContext']="edit:answer:$surveyid";
     // Get languages select on survey.
@@ -1579,9 +1579,9 @@ if ($action=='editansweroptions')
 if ($action=='editsubquestions')
 {
 
-    $js_adminheader_includes[]='scripts/subquestions.js';
-    $js_adminheader_includes[]='../scripts/jquery/jquery.blockUI.js';
-    $js_adminheader_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
+    $js_admin_includes[]='scripts/subquestions.js';
+    $js_admin_includes[]='../scripts/jquery/jquery.blockUI.js';
+    $js_admin_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
 
 
 
@@ -2230,8 +2230,8 @@ if($action == "surveysecurity")
 {
     if(hasRight($surveyid))
     {
-        $js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
-        $js_adminheader_includes[]='scripts/surveysecurity.js';
+        $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+        $js_admin_includes[]='scripts/surveysecurity.js';
         $query2 = "SELECT a.*, b.users_name, b.full_name FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.users_name";
         $result2 = db_execute_assoc($query2); //Checked
         $surveysecurity ="<div class='header'>".$clang->gT("Survey Security")."</div>\n";
@@ -2446,7 +2446,7 @@ if ($action == "editsurvey")
 {
     if(hasRight($surveyid,'edit_survey_property'))
     {
-        $js_adminheader_includes[]='scripts/surveysettings.js';
+        $js_admin_includes[]='scripts/surveysettings.js';
         $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
         $esresult = db_execute_assoc($esquery); //Checked
         while ($esrow = $esresult->FetchRow())
@@ -3080,7 +3080,7 @@ if ($action == "newsurvey")
 {
     if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
     {
-        $js_adminheader_includes[]='scripts/surveysettings.js';
+        $js_admin_includes[]='scripts/surveysettings.js';
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
         $newsurvey = PrepareEditorScript();

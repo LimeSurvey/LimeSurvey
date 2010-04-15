@@ -1150,8 +1150,8 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
 
     if ($scenariocount > 0)
     {
-        $js_adminheader_includes[]= $homeurl.'/scripts/conditions.js';
-        $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery.checkgroup.js';
+        $js_admin_includes[]= $homeurl.'/scripts/conditions.js';
+        $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery.checkgroup.js';
         while ($scenarionr=$scenarioresult->FetchRow())
         {
             $scenariotext = "";
@@ -1879,11 +1879,11 @@ $subaction == "editthiscondition" || $subaction == "delete")
     $conditionsoutput_main_content .= "</div>\n"; // end conditiontarget div
 
 
-    $js_adminheader_includes[]= $homeurl.'/scripts/conditions.js';
-    $js_adminheader_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
-    $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
+    $js_admin_includes[]= $homeurl.'/scripts/conditions.js';
+    $js_admin_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
+    $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 
-    //	$css_adminheader_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
+    //	$css_admin_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
 
     if ($subaction == "editthiscondition" && isset($p_cid))
     {

@@ -42,7 +42,7 @@ if(isset($tokenids)) {
 
 include_once("login_check.php");
 include_once("database.php");
-$js_adminheader_includes[]='scripts/tokens.js';
+$js_admin_includes[]='scripts/tokens.js';
 $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 $thissurvey=getSurveyInfo($surveyid);
 
@@ -53,7 +53,7 @@ $thissurvey=getSurveyInfo($surveyid);
 
 if ($subaction == "import" || $subaction == "upload" )  // THis array only needs to be defined for these two functions
 {
-    $js_adminheader_includes[]='scripts/tokens.js';
+    $js_admin_includes[]='scripts/tokens.js';
 
     $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
     ,"ascii"=>$clang->gT("US ASCII")
