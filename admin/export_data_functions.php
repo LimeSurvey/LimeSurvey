@@ -483,7 +483,7 @@ function BuildXMLFromQuery($xmlwriter, $Query)
             $xmlwriter->startElement('row');
             foreach ($Row as $Key=>$Value)
             {
-                $xmlwriter->startElement('data');
+                $xmlwriter->startElement($Key);
                 $xmlwriter->writeCData($Value);
                 $xmlwriter->endElement();
             }
