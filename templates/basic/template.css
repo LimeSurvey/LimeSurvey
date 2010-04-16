@@ -59,6 +59,10 @@ td.tenpoint {
   font-weight: bold;
 }
 
+.survey-question-help img {
+  margin-right: 5px;
+}
+
 #progress-graph {
   line-height: 1.5em;
   width: 14em;

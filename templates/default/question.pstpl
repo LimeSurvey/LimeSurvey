@@ -16,7 +16,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="questionhelp">
+						<td class="survey-question-help">
 							{QUESTIONHELP}
 						</td>
 					</tr>

@@ -84,6 +84,17 @@ textarea {
   font-family: verdana;
 }
 
+.survey-question-help {
+  font-size: 10px;
+  color: #777777;
+}
+
+.survey-question-help img {
+  margin: 0 5px;
+  margin-top: -4px;
+  vertical-align: middle;
+}
+
 td.graph {
   background-color: #e1e1e1;
   padding: 0.2em 0%;

@@ -75,12 +75,12 @@ h3 {
   border: 1px solid #2f5376;
 }
 
-div.questionhelp {
+div.survey-question-help {
   font-size: 10px;
   font-style: italic;
 }
 
-div.questionhelp img {
+div.survey-question-help img {
   margin: 0 5px;
   margin-top: -4px;
   vertical-align: middle;

@@ -178,7 +178,11 @@ a:link,a:visited {
   
 }
 
-/* Basic formatting for the three keyparts of an question */
+/* Basic formatting for the four keyparts of an question */
+
+span.questionhelp {
+}
+
 td.questiontext {
   font-family: verdana;
   font-size: 12px;
@@ -192,20 +196,20 @@ td.answer {
   padding: 0.5em 1.5em;
 }
 
-td.questionhelp {
+td.survey-question-help {
   font-size: 10px;
   background-color: #eef6ff;
   padding-left: 1em;
 }
 
-td.questionhelp img {
-  margin: 4px;
+td.survey-question-help img {
+  margin: 4px 4px 4px 0;
   padding-right: 5px;
   vertical-align: middle;
-  margin-left: 0px;
 }
 
-/* End formatting for the three keyparts of an question */
+/* End formatting for the four keyparts of an question */
+
 .error,.errormandatory,.warningjs {
   font-size: 12px;
   font-weight: 700;

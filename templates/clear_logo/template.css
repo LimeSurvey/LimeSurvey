@@ -56,15 +56,14 @@ td.tenpoint {
   font-size: 0.9em;
 }
 
-.questionhelp img {
-  margin: 4px;
-  padding-right: 5px;
-  vertical-align: middle;
-  margin-left: 0px;
+.survey-question-help {
+  font-size: 0.9em;
+  padding-left: 5px;
 }
 
-td.questionhelp {
-  padding-left: 5px;
+.survey-question-help img {
+  margin: 0 4px 4px 0;
+  padding-right: 5px;
 }
 
 .questiontext {

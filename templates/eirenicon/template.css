@@ -19,6 +19,11 @@ body {
   font-weight: bold;
 }
 
+td.survey-question-help {
+  text-align: center; 
+  background-color: #e5e5e5
+}
+
 .warningjs {
   font-size: 12px;
   font-weight: 700;

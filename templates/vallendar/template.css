@@ -26,6 +26,18 @@ body {
   font-weight: bold;
 }
 
+.survey-question-help {
+  font-size: 10px;
+  font-style: italic;
+  text-align: left;
+  background-color: #E5E5E5;
+}
+
+.survey-question-help img {
+  margin: 2px 4px 2px 0;
+  vertical-align: middle;
+}
+
 .warningjs {
   font-size: 12px;
   font-weight: 700;

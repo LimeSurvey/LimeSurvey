@@ -11,11 +11,13 @@
 							{QUESTION_VALID_MESSAGE}
 						</td>
 					</tr>
-        	                        <!--<tr><td><font size="-1"><i>{QUESTIONHELPPLAINTEXT}</i></font></td></tr>-->
+        	        <!--<tr><td><font size="-1"><i>{QUESTIONHELPPLAINTEXT}</i></font></td></tr>-->
 					<tr>
 						<td width="100%" class="answer">{ANSWER}</td>
 					</tr>
-	                                <tr><td>{QUESTIONHELP}</td></tr>
+	                <tr>
+						<td class="survey-question-help">{QUESTIONHELP}</td>
+					</tr>
 				</table>
 			</td>
 		</tr>

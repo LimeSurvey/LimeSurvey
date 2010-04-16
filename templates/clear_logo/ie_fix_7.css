@@ -74,9 +74,11 @@
   width: 22px;
 }
 
-td.questionhelp {
-  text-align: left;
+.survey-question-help img {
+  margin: 4px 4px 4px 0;
+  vertical-align: middle;
 }
+
 
 .numeric-multi ul li label {
   float: left;

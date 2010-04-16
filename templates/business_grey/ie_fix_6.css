@@ -1,4 +1,9 @@
 /* The following styles are for versions of IE 6 and older */
+
+.survey-question-help img {
+  margin-top: 0;
+}
+
 .choice-5-pt-radio ul {
   margin-left: 2.5em;
 }
@@ -71,10 +76,6 @@
   line-height: 15px;
   height: 21px;
   width: 22px;
-}
-
-td.questionhelp {
-  text-align: left;
 }
 
 .numeric-multi ul li label {
