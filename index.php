@@ -2778,7 +2778,7 @@ function check_quota($checkaction,$surveyid)
 {
     global $thistpl, $clang, $clienttoken;
     $global_matched = false;
-    $quota_info = getQuotaInformation($surveyid);
+    $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
     $x=0;
 
     if(count($quota_info) > 0) // Quota's have to exist

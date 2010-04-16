@@ -4339,12 +4339,7 @@ function getAdminFooter($url, $explanation)
     . "onclick=\"window.open('http://www.donate.limesurvey.org')\" "
     . "onmouseover=\"document.body.style.cursor='pointer'\" onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
     . "<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$versiontitle." $versionnumber $buildtext</div>"
-    . "</div>\n"
-    . "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
+    . "</div>\n";
     $js_admin_includes = array_unique($js_admin_includes);     
     foreach ($js_admin_includes as $jsinclude)
     {
@@ -4387,6 +4382,12 @@ function getAdminHeader($meta=false)
     {
         $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
     }
+    $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
+
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"
@@ -6630,18 +6631,15 @@ function safe_die($text)
  * @param string $quotaid - Optional quotaid that restricts the result to a given quota
  * @return array - nested array, Quotas->Members->Fields
  */
-function getQuotaInformation($surveyid,$quotaid='all')
+function getQuotaInformation($surveyid,$language,$quotaid='all')
 {
     global $clang, $clienttoken;
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    if (!isset($_SESSION['s_lang']))
-    {
-        return array();
-    }
+
     $query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
 		   	  WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
 			  AND sid='{$surveyid}'
-              AND quotals_language='".$_SESSION['s_lang']."'";  
+              AND quotals_language='".$language."'";  
     if ($quotaid != 'all')
     {
         $query .= " AND id=$quotaid";
@@ -6732,7 +6730,7 @@ function getQuotaInformation($surveyid,$quotaid='all')
 function get_quotaCompletedCount($surveyid, $quotaid)
 {
     $result ="N/A";
-    $quota_info = getQuotaInformation($surveyid,$quotaid);
+    $quota_info = getQuotaInformation($surveyid,GetBaseLanguageFromSurveyID($surveyid),$quotaid);
     $quota = $quota_info[0];
 
     if ( db_tables_exist(db_table_name_nq('survey_'.$surveyid))  &&
