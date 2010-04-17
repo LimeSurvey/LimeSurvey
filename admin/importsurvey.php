@@ -736,7 +736,7 @@ function ImportCSVFormat($bigarray)
     $importresults['deniedcountls'] =0;
 
 
-    //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
+    //DO ANY LABELSETS FIRST, SO WE WHAT THEIR NEW LID IS FOR THE QUESTIONS
     if (isset($labelsetsarray) && $labelsetsarray) {
         $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
         $count=0;

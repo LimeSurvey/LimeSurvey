@@ -281,9 +281,9 @@ if ($action == "editquestion" || $action=="addquestion")
             if ($value != 99)
             {
                 if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
-                $egquery = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
+                $egquery = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
                 ." VALUES ('{$qid}','{$surveyid}', '{$gid}', '{$basesettings['type']}', '{$basesettings['title']}',"
-                ." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['lid']}', '{$basesettings['lid1']}', '{$basesettings['question_order']}','{$key}')";
+                ." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['question_order']}','{$key}')";
                 $egresult = $connect->Execute($egquery);
                 if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
             }
@@ -522,42 +522,22 @@ if ($action == "editquestion" || $action=="addquestion")
         $editquestion .=$clang->gT("...or import a question");
         $editquestion .= "</div>\n"
         . "\t<form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-		
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        
         . "<ul>\n"
         . "\t<li>\n"
-        . "\t<label for='the_file'>".$clang->gT("Select CSV File").":</label>\n"
+        . "\t<label for='the_file'>".$clang->gT("Select LimeSurvey question file (*.lsq/*.csv)").":</label>\n"
         . "\t<input name='the_file' id='the_file' type=\"file\" size=\"50\" />\n"
         . "\t</li>\n"
         . "\t<li>\n"
-        . "\t<label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
+        . "\t<label for='translinksfields'>".$clang->gT("Convert resource links?")."</label>\n"
         . "\t<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked'/>\n"
         . "\t</li>\n"
         . "</ul>\n"
-        . "\t<p>\n"
-        . "\t<input type='submit' value='".$clang->gT("Import Question")."' />\n"
-        . "\t<input type='hidden' name='action' value='importquestion' />\n"
-        . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-        . "\t<input type='hidden' name='gid' value='$gid' />\n"
-        . "\t</p>\n"
-		
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        /*
-         . "<table width='100%' border='0' >\n\t"
-         . "\t<tr>"
-         . "<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
-         . "<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
-         . "<tr><td align='right' width='35%'>".$clang->gT("Convert resources links?")."</td>\n"
-         . "<td><input name='translinksfields' type='checkbox' checked='checked'/></td></tr>\n"
-         . "\t<tr><td colspan='2' align='center'><input type='submit' "
-         . "value='".$clang->gT("Import Question")."' />\n"
-         . "\t<input type='hidden' name='action' value='importquestion' />\n"
-         . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-         . "\t<input type='hidden' name='gid' value='$gid' />\n"
-         . "\t</td></tr></table>\n"
-         */
+        . "<p>\n"
+        . "<input type='submit' value='".$clang->gT("Import Question")."' />\n"
+        . "<input type='hidden' name='action' value='importquestion' />\n"
+        . "<input type='hidden' name='sid' value='$surveyid' />\n"
+        . "<input type='hidden' name='gid' value='$gid' />\n"
 
         ."</form>\n\n"
         ."<script type='text/javascript'>\n"
