@@ -457,14 +457,25 @@ function spss_getquery() {
     return $query;
 }
 
-function BuildXMLFromQuery($xmlwriter, $Query)
+/**
+* BuildXMLFromQuery() creates a datadump of a table in XML using XMLWriter
+* 
+* @param mixed $xmlwriter  The existing XMLWriter object
+* @param mixed $Query  The table query to build from
+* @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
+*/
+function BuildXMLFromQuery($xmlwriter, $Query, $tagname='')
 {
     global $dbprefix, $connect;
     $QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
     preg_match('/FROM (\w+)( |,)/', $Query, $MatchResults);
-    $TableName = $MatchResults[1];;
-    if ($dbprefix)
+    if ($tagname!='')
     {
+        $TableName=$tagname;
+    }
+    else
+    {
+        $TableName = $MatchResults[1];;
         $TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
     }
     if ($QueryResult->RecordCount()>0)

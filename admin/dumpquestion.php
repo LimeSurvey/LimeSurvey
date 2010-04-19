@@ -76,6 +76,16 @@ $xml->startDocument('1.0', 'UTF-8');
 $xml->startElement('document');
 $xml->writeElement('LimeSurveyDocType','Question');    
 $xml->writeElement('DBVersion',$dbversionnumber);    
+$xml->startElement('languages');
+$lquery = "SELECT language
+           FROM {$dbprefix}questions 
+           WHERE qid=$qid or parent_qid=$qid group by language";
+$lresult=db_execute_assoc($lquery);           
+while ($row=$lresult->FetchRow())   
+{
+    $xml->writeElement('language',$row['language']);    
+}
+$xml->endElement();
 getXMLStructure($xml,$qid);
 $xml->endElement(); // close columns
 $xml->endDocument();
@@ -84,12 +94,19 @@ exit;
 function getXMLStructure($xml,$qid)
 {
     global $dbprefix;
-    // Questions Table
+    // Questions table
     $qquery = "SELECT *
                FROM {$dbprefix}questions 
-               WHERE qid=$qid or parent_qid=$qid order by language, scale_id, question_order";
+               WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery);
 
+    // Questions table - Subquestions
+    $qquery = "SELECT *
+               FROM {$dbprefix}questions 
+               WHERE parent_qid=$qid order by language, scale_id, question_order";
+    BuildXMLFromQuery($xml,$qquery,'subquestions');
+    
+    
     // Answers table
     $aquery = "SELECT {$dbprefix}answers.*
                FROM {$dbprefix}answers 
@@ -99,7 +116,7 @@ function getXMLStructure($xml,$qid)
     // Question attributes
     $query = "SELECT {$dbprefix}question_attributes.*
               FROM {$dbprefix}question_attributes 
-              WHERE {$dbprefix}question_attributes.qid=$qid order by qid";
+              WHERE {$dbprefix}question_attributes.qid=$qid order by qid, attribute";
     BuildXMLFromQuery($xml,$query);
 
     // Default values
