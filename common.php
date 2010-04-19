@@ -5514,20 +5514,20 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 /**
  * FixLanguageConsistency() fixes missing groups,questions,answers & assessments for languages on a survey
  * @param string $sid - the currently selected survey
- * @param string $availlangs - space seperated list of additional languages in survey
+ * @param string $availlangs - space seperated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
  * @return bool - always returns true
  */
-function FixLanguageConsistency($sid, $availlangs)
+function FixLanguageConsistency($sid, $availlangs='')
 {
     global $connect, $databasetype;
 
-    if (!empty($availlangs) && $availlangs != " ")
+    if (trim($availlangs)!='')
     {
         $availlangs=sanitize_languagecodeS($availlangs);
         $langs = explode(" ",$availlangs);
         if($langs[count($langs)-1] == "") array_pop($langs);
     } else {
-        return true;
+       $langs=GetAdditionalLanguagesFromSurveyID($sid);
     }
 
     $baselang = GetBaseLanguageFromSurveyID($sid);

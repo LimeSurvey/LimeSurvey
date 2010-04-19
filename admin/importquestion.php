@@ -48,7 +48,7 @@ if (!returnglobal('sid'))
 }
 else
 {
-    $postsid=returnglobal('sid');
+    $surveyid=returnglobal('sid');
 }
 
 if (!returnglobal('gid'))
@@ -66,8 +66,8 @@ else
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-$importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
-$importquestion .= $clang->gT("File upload succeeded.")."<br /><br />\n"
+$importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n"
+.$clang->gT("File upload succeeded.")."<br /><br />\n"
 .$clang->gT("Reading file..")."<br /><br />\n";
 if (strtolower($sExtension)=='csv')
 {
@@ -78,14 +78,15 @@ elseif (strtolower($sExtension)=='lsq')
     $importresults=XMLImportQuestion($sFullFilepath, $surveyid, $gid);
 }
 else die('Unknown file extension');
+FixLanguageConsistency($surveyid);
 $importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n"
-."<strong><u>".$clang->gT("Question Import Summary")."</u></strong><br />\n"
+."<strong><u>".$clang->gT("Question import summary")."</u></strong><br />\n"
 ."<ul style=\"text-align:left;\">\n"
 ."\t<li>".$clang->gT("Questions").": ".$importresults['questions']."</li>\n"
 ."\t<li>".$clang->gT("Subquestions").": ".$importresults['subquestions']."</li>\n"
 ."\t<li>".$clang->gT("Answers").": ".$importresults['answers']."</li>\n"
-."\t<li>".$clang->gT("Label Sets").": ".$importresults['labelsets']." (".$importresults['labels'].")</li>\n"
-."\t<li>".$clang->gT("Question Attributes:").$importresults['question_attributes']."</li>"
+."\t<li>".$clang->gT("Label sets").": ".$importresults['labelsets']." (".$importresults['labels'].")</li>\n"
+."\t<li>".$clang->gT("Question attributes:").$importresults['question_attributes']."</li>"
 ."</ul>\n";
 
 $importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n";
@@ -96,6 +97,14 @@ $importquestion .= "</div><br />\n";
 unlink($sFullFilepath);
 
 
+
+/**
+* This function imports an old-school question file (*.csv,*.sql)
+* 
+* @param mixed $sFullFilepath Full file patch to the import file
+* @param mixed $newsid  Survey ID to which the question is attached
+* @param mixed $newgid  Group ID top which the question is attached
+*/
 function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 {
     global $dbprefix, $connect;
@@ -120,7 +129,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
     elseif
     (substr($bigarray[0], 0, 26) == "# LimeSurvey Question Dump" || substr($bigarray[0], 0, 27) == "# PHPSurveyor Question Dump")
     {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
-    $importversion=substr($bigarray[1], 12, 3);
+    $importversion=(integer)substr($bigarray[1], 12, 3);
     }
     else    // unknown file - show error message
     {
@@ -219,14 +228,11 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
     $bigarray = array_values($bigarray);
 
     //Question_attributes
-    if (!isset($noconditions) || $noconditions != "Y")
+    $stoppoint = count($bigarray);
+    for ($i=0; $i<=$stoppoint+1; $i++)
     {
-        $stoppoint = count($bigarray);
-        for ($i=0; $i<=$stoppoint+1; $i++)
-        {
-            if ($i<$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
-            unset($bigarray[$i]);
-        }
+        if ($i<$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
+        unset($bigarray[$i]);
     }
     $bigarray = array_values($bigarray);
 
@@ -242,23 +248,25 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
     if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
     if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}
 
-    $languagesSupported = array();  // this array will keep all the languages supported for the survey
+    $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
+
+    $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
+    $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
+    $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
+
 
     // Let's check that imported objects support at least the survey's baselang
-    $langcode = GetBaseLanguageFromSurveyID($newsid);
-
-    $languagesSupported[$langcode] = 1;     // adds the base language to the list of supported languages
-
+    
     if ($countquestions > 0)
     {
         $questionfieldnames = convertCSVRowToArray($questionarray[0],',','"');
         $langfieldnum = array_search("language", $questionfieldnames);
         $qidfieldnum = array_search("qid", $questionfieldnames);
-        $questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,true);
+        $questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$sBaseLanguage,true);
         if (!$questionssupportbaselang)
         {
             $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n"
-            .$clang->gT("You can't import a question which doesn't support the current survey's base language")."<br /><br />\n";
+            .$clang->gT("You can't import a question which doesn't support at least the survey base language.")."<br /><br />\n";
             $importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
             $importquestion .=  "</div>\n";
             unlink($sFullFilepath);
@@ -266,37 +274,29 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
         }
     }
 
-    foreach (GetAdditionalLanguagesFromSurveyID($newsid) as $language)
+    if ($countanswers > 0)
     {
-        $languagesSupported[$language] = 1;
+        $langfieldnum = array_search("language", $answerfieldnames);
+        $answercodefilednum1 =  array_search("qid", $answerfieldnames);
+        $answercodefilednum2 =  array_search("code", $answerfieldnames);
+        $answercodekeysarr = Array($answercodefilednum1,$answercodefilednum2);
+        $answerssupportbaselang = bDoesImportarraySupportsLanguage($answerarray,$answercodekeysarr,$langfieldnum,$sBaseLanguage);
+        if (!$answerssupportbaselang)
+        {
+            $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+            .$clang->gT("You can't import answers which don't support current survey's base language")."<br /><br />\n"
+            ."</td></tr></table>\n";
+            return;
+        }
+    
     }
-
-    // Let's assume that if the questions do support tye baselang
-    // Then the answers do support it as well.
-    // ==> So the following section is commented for now
-    //if ($countanswers > 0)
-    //{
-    //    $langfieldnum = array_search("language", $answerfieldnames);
-    //    $answercodefilednum1 =  array_search("qid", $answerfieldnames);
-    //    $answercodefilednum2 =  array_search("code", $answerfieldnames);
-    //    $answercodekeysarr = Array($answercodefilednum1,$answercodefilednum2);
-    //    $answerssupportbaselang = bDoesImportarraySupportsLanguage($answerarray,$answercodekeysarr,$langfieldnum,$langcode);
-    //    if (!$answerssupportbaselang)
-    //    {
-    //        $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-    //        .$clang->gT("You can't import answers which don't support current survey's base language")."<br /><br />\n"
-    //        ."</td></tr></table>\n";
-    //        return;
-    //    }
-    //
-    //}
 
     if ($countlabelsets > 0)
     {
         $labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
         $langfieldnum = array_search("languages", $labelsetfieldname);
         $lidfilednum =  array_search("lid", $labelsetfieldname);
-        $labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
+        $labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$sBaseLanguage,true);
         if (!$labelsetssupportbaselang)
         {
             $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n"
@@ -309,10 +309,6 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
     }
     // I assume that if a labelset supports the survey's baselang,
     // then it's labels do support it as well
-
-    // GET SURVEY AND GROUP DETAILS
-    $surveyid=$newsid;
-    $gid=$newgid;
 
     //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
     if (isset($labelsetsarray) && $labelsetsarray) {
@@ -405,7 +401,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 $csarray[$newlid]=$newcs;
             }
             //END CHECK FOR DUPLICATES
-            $labelreplacements[]=array($oldlid, $newlid);
+            $labelreplacements[$oldlid]=$newlid;
         }
     }
 
@@ -418,16 +414,13 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 
         //Assuming we will only import one question at a time we will now find out the maximum question order in this group
         //and save it for later
-        $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$newgid";
-        $qres = db_execute_assoc($qmaxqo) or safe_die ($clang->gT("Error").": Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
-        $qrow=$qres->FetchRow();
-        $newquestionorder=$qrow['maxqo']+1;
+        $newquestionorder = $connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
 
         foreach ($questionarray as $qa) {
             $qacfieldcontents=convertCSVRowToArray($qa,',','"');
             $newfieldcontents=$qacfieldcontents;
             $questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
-            if (isset($languagesSupported[$questionrowdata["language"]]))
+            if (in_array($questionrowdata["language"],$aLanguagesSupported))
             {
                 $oldqid = $questionrowdata['qid'];
                 $oldsid = $questionrowdata['sid'];
@@ -439,36 +432,35 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 else
                 $questionrowdata['qid'] = $newqid;
 
-                $questionrowdata["sid"] = $surveyid;
+                $questionrowdata["sid"] = $newsid;
                 $questionrowdata["gid"] = $newgid;
                 $questionrowdata["question_order"] = $newquestionorder;
 
-
-                // Now we will fix up the label id
-                $type = $questionrowdata["type"]; //Get the type
-                if ($type == "F" || $type == "H" || $type == "1" || $type == ":" || $type == ";" )
-                {//IF this is a flexible label array, update the lid entry
-                    if (isset($labelreplacements)) {
-                        foreach ($labelreplacements as $lrp) {
-                            if ($lrp[0] == $questionrowdata["lid"]) {
-                                $questionrowdata["lid"]=$lrp[1];
-                            }
-                            if ($lrp[0] == $questionrowdata["lid1"]) {
-                                $questionrowdata["lid1"]=$lrp[1];
-                            }
-                        }
-                    }
+                // Save the following values - will need them for proper conversion later
+                $oldquestion['lid1']=$questionrowdata['lid'];
+                $oldquestion['lid2']=$questionrowdata['lid1'];
+                $oldquestion['oldtype']=$questionrowdata['type'];
+                
+                // Unset label set IDs and convert question types
+                unset($questionrowdata['lid']);
+                unset($questionrowdata['lid1']);
+                if ($questionrowdata['type']=='W')
+                {
+                    $questionrowdata['type']='!';
                 }
-                $other = $questionrowdata["other"]; //Get 'other' field value
-                unset($questionrowdata["lid"]);
-                unset($questionrowdata["lid1"]);
+                elseif ($questionrowdata['type']=='Z')
+                {
+                    $questionrowdata['type']='L';
+                }      
+                $oldquestion['newtype']=$questionrowdata['type'];
+                
                 $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
 
                 // translate internal links
-                $questionrowdata['title']=translink('survey', $oldsid, $surveyid, $questionrowdata['title']);
+                $questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
                 $questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
                 $questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
-
+                
                 $newvalues=array_values($questionrowdata);
                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                 if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
@@ -483,7 +475,11 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
             }
         }
-
+        $qtypes = getqtypelist("" ,"array");   
+        $subquestionids=array();
+        $results['answers']=0;
+        $results['subquestions']=0;
+        
         //NOW DO ANSWERS FOR THIS QID - Is called just once and only if there was a question
         if (isset($answerarray) && $answerarray) {
             foreach ($answerarray as $aa) {
@@ -493,7 +489,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 {
                     $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
                 }
-                if (isset($languagesSupported[$answerrowdata["language"]]))
+                if (in_array($answerrowdata["language"],$aLanguagesSupported))
                 {
                     $code=$answerrowdata["code"];
                     $thisqid=$answerrowdata["qid"];
@@ -508,13 +504,92 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     unset($answerrowdata['default_value']);
                     $newvalues=array_values($answerrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                    $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")";
-                    $ares = $connect->Execute($ainsert) or safe_die ("Error: Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+                    
+                    if ($qtypes[$oldquestion['newtype']]['subquestions']>0)
+                    {
+                        if (isset($subquestionids[$answerrowdata['code']])){
+                           $fieldname='qid,';
+                           $data=$subquestionids[$answerrowdata['code']].',';
+                        }  
+                        else{
+                           $fieldname='' ;
+                           $data='';
+                        }
+                        $qinsert = "insert INTO ".db_table_name('questions')." ({$fieldname}parent_qid,sid,gid,title,question,question_order,language)
+                                    VALUES ({$data}{$answerrowdata['qid']},$newsid,$newgid,".db_quoteall($answerrowdata['code']).",".db_quoteall($answerrowdata['answer']).",".db_quoteall($answerrowdata['sortorder']).",".db_quoteall($answerrowdata['language']).")"; 
+                        $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                        if ($fieldname=='')
+                        {
+                           $subquestionids[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                        }
+                        $results['subquestions']++;
+                    }
+                    else
+                    {
+                        $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")";
+                        $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+                        $results['answers']++;                        
+                    }
                 }
             }
         }
+        
+        // Now we will fix up old label sets where they are used as answers
+        if ((isset($oldquestion['lid1']) || isset($oldquestion['lid2'])) && ($qtypes[$oldquestion['newtype']]['answerscales']>0 || $qtypes[$oldquestion['newtype']]['subquestions']>1))
+        {
+            $query="select * from ".db_table_name('labels')." where lid={$labelreplacements[$oldquestion['lid1']]} ";
+            $oldlabelsresult=db_execute_assoc($query);
+            while($labelrow=$oldlabelsresult->FetchRow())
+            {
+                if (in_array($labelrow['language'],$aLanguagesSupported)){
+                    
+                    if ($qtypes[$oldquestion['newtype']]['subquestions']<2)
+                    {
+                        $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id)
+                                    VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",0)"; 
+                        $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                        $results['answers']++;                        
+                    }
+                    else
+                    {
+                        if (isset($subquestionids[$answerrowdata['code']])){
+                           $fieldname='qid,';
+                           $data=$subquestionids[$answerrowdata['code']].',';
+                        }  
+                        else{
+                           $fieldname='' ;
+                           $data='';
+                        }
+                        
+                        $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname,parent_qid,title,question,question_order,language,scale_id)
+                                    VALUES ($data, $newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",0)"; 
+                        $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                        if ($fieldname=='')
+                        {
+                           $subquestionids[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                        }
+                        
+                    }
+                }
+            }
+                
+            if (isset($oldquestion['lid2']) && $qtypes[$oldquestion['newtype']]['answerscales']>1)
+            {
+                $query="select * from ".db_table_name('labels')." where lid={$labelreplacements[$oldquestion['lid2']]}";
+                $oldlabelsresult=db_execute_assoc($query);
+                while($labelrow=$oldlabelsresult->FetchRow())
+                {
+                    if (in_array($labelrow['language'],$aLanguagesSupported)){
+                        $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id)
+                                    VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",1)"; 
+                        $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                    }
+                }
+            }
+        }        
 
-        // Finally the question attributes - Is called just once and only if there was a question
+        $results['question_attributes']=0;
+        // Finally the question attributes - it is called just once and only if there was a question
         if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
             $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
             unset($question_attributesarray[0]);
@@ -524,14 +599,20 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 $qarowdata["qid"]=$newqid;
                 unset($qarowdata["qaid"]);
 
-                $newvalues=array_values($qarowdata);
-                $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                $qainsert = "INSERT INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")";
+                $tablename="{$dbprefix}question_attributes";
+                $qainsert=$connect->GetInsertSQL($tablename,$qarowdata);
                 $result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+                $results['question_attributes']++;
+                
             }
         }
 
     }
+    $results['newqid']=$newqid;
+    $results['questions']=1;
+    $results['labelsets']=0;
+    $results['labels']=0;
+    return $results;         
 }
 
 
@@ -591,7 +672,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
             $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
 
-            // Insert the new question            
+            // Insert the new question       
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
             $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
@@ -611,18 +692,24 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             }
             $insertdata['sid']=$newsid;
             $insertdata['gid']=$newgid;
-            $oldqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+            $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid']=$qidmappings[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
             $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
             $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            if (isset($qidmappings[$oldsqid])){
+               $insertdata['qid']=$qidmappings[$oldsqid];
+            }
             
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
             $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
             $newsqid=$connect->Insert_ID($tablename,"qid"); // save this for later
-            $qidmappings[$oldqid]=$newsqid; // add old and new qid to the mapping array
+            if (!isset($insertdata['qid']))
+            {
+                $qidmappings[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
+            }
             $results['subquestions']++;
        }
     }
