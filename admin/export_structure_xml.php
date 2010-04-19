@@ -152,6 +152,22 @@ function getXMLStructure($xmlwriter, $exclude=array())
     
 }
 
+function getXMLData($exclude = array())
+{
+    global $dbversionnumber;
+    $xml =new XMLWriter();
+    $xml->openMemory();
+    $xml->setIndent(true);
+    $xml->startDocument('1.0', 'UTF-8');
+    $xml->startElement('document');
+    $xml->writeElement('LimeSurveyDocType','Survey');    
+    $xml->writeElement('DBVersion',$dbversionnumber);
+    getXMLStructure($xml,$exclude);
+    $xml->endElement(); // close columns
+    $xml->endDocument();
+    return $xml->outputMemory(true);
+}
+
 if (!isset($copyfunction))
 {
     $fn = "limesurvey_survey_$surveyid.lss";      
@@ -161,18 +177,7 @@ if (!isset($copyfunction))
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");                          // HTTP/1.0
-    $xml =new XMLWriter();
-    $xml->openURI('php://output');
-    $xml->setIndent(true);
-    $xml->startDocument('1.0', 'UTF-8');
-    $xml->startElement('document');
-    $xml->writeElement('LimeSurveyDocType','Survey');    
-    $xml->writeElement('DBVersion',$dbversionnumber);    
-    
-    getXMLStructure($xml);
-    $xml->endElement(); // close columns
-    $xml->endDocument();
+    echo getXMLData();
+    exit;
 }
-
-exit;
 ?>
