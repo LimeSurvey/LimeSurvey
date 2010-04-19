@@ -1,15 +1,58 @@
 <?php
 
 /**
+ * Checks the fieldmap after survey structure modifications
+ * and compares them to the survey table and makes changes.
+ * Returns true if successful and false if not
+ * @param $surveyid - The Survey Identifier
+ * @return bool
+ */
+function surveyFixColumns($surveyid)
+{
+    global $dbprefix, $connect;
+    // Check and fix duplicate column names
+    surveyFixDuplicateColumns($surveyid);
+    
+    // Get latest fieldmap
+    $fieldmap=createFieldMap($surveyid);
+    
+    // Find any fields that do not exist
+    $fieldlist = array();
+    foreach($fieldmap as $fielddata)
+    {
+        $fieldlist[]=$fielddata['fieldname'];
+    }
+        
+    $dict = NewDataDictionary($connect);
+    $sqlfields = $dict->MetaColumns("{$dbprefix}survey_{$surveyid}");
+    $sqllist = array();
+    foreach ($sqlfields as $sqlfield)
+    {
+        $sqllist[]=$sqlfield->name;
+    }
+    
+    $missingFields = array_diff($fieldlist, $sqllist);
+    $removedFields = array_diff($sqllist, $fieldlist);
+    
+    die(print_r($missingFields).print_r($removedFields));
+    
+    // Find any fields that have been removed
+    
+    // Add fields that need to be added
+    
+    // Remove fields that need to be removed
+}
+
+/**
  * Checks for duplicate column names and fixes them
  * Returns true if a correction has been made and false if not
  *
- * @param none
+ * @param $surveyid - The Survey Identifier
  * @return bool
  */
-function surveyFixDuplicateColumns()
+function surveyFixDuplicateColumns($surveyid)
 {
-    list ($duplicates, $fieldmap) = surveyCheckUniqueColumns();
+    list ($duplicates, $fieldmap) = surveyCheckUniqueColumns($surveyid);
     if (!empty($duplicates))
     {
         foreach ($duplicates as $dup)
@@ -26,12 +69,11 @@ function surveyFixDuplicateColumns()
  * Checks to see if any columns being created for the survey will
  * conflict with field names.
  *
- * @param none
+ * @param $surveyid - The Survey Identifier
  * @return bool
  */
-function surveyCheckUniqueColumns()
+function surveyCheckUniqueColumns($surveyid)
 {
-    global $surveyid;
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
     $fieldmap=createFieldMap($surveyid, "full");
     $duplicates = array();
@@ -258,7 +300,7 @@ function surveyCheckStructure($surveyid)
  * @param surveyid
  * @return mixed
  */
-function surveyCreateSurveyTable($surveyid)
+function surveyCreateTable($surveyid)
 {
     global $dbprefix, $databasetabletype, $connect;
     $createsurvey='';
@@ -268,34 +310,22 @@ function surveyCreateSurveyTable($surveyid)
     $presult=db_execute_assoc($pquery);
     $prow=$presult->FetchRow();
 
-    if ($prow['private'] == "N")
-    {
-        $createsurvey .= "  token C(36),\n";
-        $surveynotprivate="TRUE";
-    }
-    if ($prow['allowregister'] == "Y")
-    {
-        $surveyallowsregistration="TRUE";
-    }
-
-    //strip trailing comma and new line feed (if any)
-    $createsurvey = rtrim($createsurvey, ",\n");
-
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
-
+ 
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
-        if ($createsurvey!='') {$createsurvey .= ",\n";}
-
         $createsurvey .= " `{$arow['fieldname']}`";
         switch($arow['type'])
         {
-            case 'startlanguage':
-                $createsurvey .= " C(20) NOTNULL";
-                break;
             case 'id':
                 $createsurvey .= " I NOTNULL AUTO PRIMARY";
+                break;
+            case 'token':
+                $createsurvey .= " C(36)";
+                break;
+            case 'startlanguage':
+                $createsurvey .= " C(20) NOTNULL";
                 break;
             case "startdate":
             case "datestamp":
@@ -316,7 +346,11 @@ function surveyCreateSurveyTable($surveyid)
                 $createsurvey .= " X";
                 break;
         }
+        $createsurvey .= ",\n";
     }
+    
+    //strip trailing comma and new line feed (if any)
+    $createsurvey = rtrim($createsurvey, ",\n");
 
     $tabname = "{$dbprefix}survey_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 

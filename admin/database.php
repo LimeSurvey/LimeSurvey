@@ -341,6 +341,8 @@ if(isset($surveyid))
             }
 
             fixsortorderQuestions($postgid, $surveyid);
+            //include("surveytable_functions.php");
+            //surveyFixColumns($surveyid);
         }
     }
     elseif ($action == "renumberquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
@@ -1016,6 +1018,8 @@ if(isset($surveyid))
 
             }
         }
+        //include("surveytable_functions.php");
+        //surveyFixColumns($surveyid);
         $action='editsubquestions';
     }
 
@@ -1397,6 +1401,15 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
             $databaseoutput .= htmlspecialchars($isquery);
         }
+        
+        // Create initial Survey table
+        //include("surveytable_functions.php");
+        //$creationResult = surveyCreateTable($surveyid);
+        // Survey table could not be created
+        //if ($creationResult !== true)
+        //{
+        //    safe_die ("Initial survey table could not be created, please report this as a bug."."<br />".$creationResult);
+        //}
     }
 }
 elseif ($action == "savepersonalsettings")
