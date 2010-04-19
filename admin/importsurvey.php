@@ -15,22 +15,21 @@
 
 //Ensure script is not run directly, avoid path disclosure
 //importsurvey.php should be called from cmdline_importsurvey.php or http_importsurvey.php, they set the $importingfrom variable
-if (!isset($importingfrom) || isset($_REQUEST['importingfrom'])) {die("Cannot run this script directly");}
-
-if ($importingfrom != "copysurvey")
+if (!isset($importingfrom) || isset($_REQUEST['importingfrom']))
 {
-    $handle = fopen($the_full_file_path, "r");
-    while (!feof($handle))
-    {
-
-        $buffer = fgets($handle);
-        $bigarray[] = $buffer;
-    }
-    fclose($handle);
-} else
-{
-    $bigarray=$copysurveydata;
+    die("Cannot run this script directly");
 }
+
+
+$handle = fopen($the_full_file_path, "r");
+while (!feof($handle))
+{
+
+    $buffer = fgets($handle);
+    $bigarray[] = $buffer;
+}
+fclose($handle);
+
 
 $counts=ImportCSVFormat($bigarray);
 
@@ -51,16 +50,10 @@ if (isset($counts['fieldnames']))
 
 
 
-if ($importingfrom == "http" || $importingfrom == "copysurvey")
+if ($importingfrom == "http")
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
-    if ($importingfrom == "http")
-    {
-        $importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
-    } else
-    {
-        $importsurvey .= "<strong><u>".$clang->gT("Survey Copy Summary")."</u></strong><br />\n";
-    }
+    $importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
     $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$counts['surveys']}</li>\n";
     if ($counts['importversion']>=111)
     {
@@ -79,17 +72,8 @@ if ($importingfrom == "http" || $importingfrom == "copysurvey")
     $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$counts['assessments']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$counts['quota']} ({$counts['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$counts['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
     if ($counts['importwarning'] != "") $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">" . $counts['importwarning'] . "</ul><br />\n";
-
-    if ($importingfrom == "http")
-    {
-        $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
-        . "<a href='$scriptname?sid={counts['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
-    } else
-    {
-        $importsurvey .= "<strong>".$clang->gT("Copy of Survey is completed.")."</strong><br />\n"
-        . "<a href='$scriptname?sid={counts['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
-    }
-
+    $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
+    . "<a href='$scriptname?sid={counts['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
     $importsurvey .= "</div><br />\n";
     unlink($the_full_file_path);
 }
@@ -149,7 +133,7 @@ function ImportCSVFormat($bigarray)
             unlink($the_full_file_path);
             return;
         }
-        elseif ($importingfrom != "copysurvey")
+        else
         {
             echo $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
             return;
@@ -704,13 +688,7 @@ function ImportCSVFormat($bigarray)
             // Convert the \n return char from welcometext to <br />
 
             // translate internal links
-            if ($importingfrom == "copysurvey")
-            {
-                $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveyname);
-            } else
-            {
-                $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_title']);
-            }
+            $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_title']);
             $surveylsrowdata['surveyls_description']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_description']);
             $surveylsrowdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_welcometext']);
             $surveylsrowdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_urldescription']);

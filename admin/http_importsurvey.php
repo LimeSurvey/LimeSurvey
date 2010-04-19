@@ -43,7 +43,6 @@ $importingfrom = "http";	// "http" for the web version and "cmdline" for the com
 } elseif ($action == 'copysurvey')
 {
     $importsurvey = "<div class='header'>".$clang->gT("Copy Survey")."</div>\n";
-    $importingfrom = "copysurvey";
     $surveyid = sanitize_int($_POST['copysurveylist']);
     $exclude = array();
     require_once("../classes/inputfilter/class.inputfilter_clean.php");
@@ -66,13 +65,10 @@ $importingfrom = "http";	// "http" for the web version and "cmdline" for the com
     {
         $exclude['conditions'] = true;
     }
-   // include("export_structure_csv.php");
-    $copysurveydata = explode("\n",getCSVStructure($exclude));
-    $ccount = count($copysurveydata);
-    for ($i=0; $i<$ccount; $i++)
-    {
-        $copysurveydata[$i] = $copysurveydata[$i]."\n";
-    }
+    $copyfunction = 1;
+    include("export_structure_xml.php");
+    $copysurveydata = getXMLData();
+    die(print_r($copysurveydata));
 }
 
 include("importsurvey.php");
