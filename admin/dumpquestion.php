@@ -108,15 +108,15 @@ function getXMLStructure($xml,$qid)
     
     
     // Answers table
-    $aquery = "SELECT {$dbprefix}answers.*
+    $aquery = "SELECT *
                FROM {$dbprefix}answers 
-               WHERE {$dbprefix}answers.qid = $qid order by language, scale_id, sortorder";
+               WHERE qid = $qid order by language, scale_id, sortorder";
     BuildXMLFromQuery($xml,$aquery);
 
     // Question attributes
-    $query = "SELECT {$dbprefix}question_attributes.*
+    $query = "SELECT *
               FROM {$dbprefix}question_attributes 
-              WHERE {$dbprefix}question_attributes.qid=$qid order by qid, attribute";
+              WHERE qid=$qid order by qid, attribute";
     BuildXMLFromQuery($xml,$query);
 
     // Default values

@@ -52,7 +52,7 @@ $xml = new XMLWriter();
 if($action=='exportstructureLsrcCsvGroup')
 {
     include_once($homedir.'/remotecontrol/lsrc.config.php');
-    //Select title as Filename and save
+    //Select group_name as Filename and save
     $groupTitleSql = "SELECT group_name
                      FROM {$dbprefix}groups 
                      WHERE sid=$surveyid AND gid=$gid ";
@@ -75,7 +75,17 @@ $xml->setIndent(true);
 $xml->startDocument('1.0', 'UTF-8');
 $xml->startElement('document');
 $xml->writeElement('LimeSurveyDocType','Group');    
-$xml->writeElement('DBVersion',$dbversionnumber);    
+$xml->writeElement('DBVersion',$dbversionnumber);
+$xml->startElement('languages');
+$lquery = "SELECT language
+           FROM {$dbprefix}groups 
+           WHERE gid=$gid group by language";
+$lresult=db_execute_assoc($lquery);           
+while ($row=$lresult->FetchRow())   
+{
+    $xml->writeElement('language',$row['language']);    
+}
+$xml->endElement();
 getXMLStructure($xml,$gid);
 $xml->endElement(); // close columns
 $xml->endDocument();
@@ -91,12 +101,18 @@ function getXMLStructure($xml,$gid)
                WHERE gid=$gid";
     BuildXMLFromQuery($xml,$gquery);                
 
-    // Questions 
+    // Questions table
     $qquery = "SELECT *
                FROM {$dbprefix}questions 
-               WHERE gid=$gid";
+               WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
     BuildXMLFromQuery($xml,$qquery);
 
+    // Questions table - Subquestions
+    $qquery = "SELECT *
+               FROM {$dbprefix}questions 
+               WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
+    BuildXMLFromQuery($xml,$qquery,'subquestions');    
+    
     //Answers 
     $aquery = "SELECT DISTINCT {$dbprefix}answers.*
                FROM {$dbprefix}answers, {$dbprefix}questions 
@@ -114,17 +130,16 @@ function getXMLStructure($xml,$gid)
     BuildXMLFromQuery($xml,$cquery);
 
     //Question attributes
-    $query = "SELECT {$dbprefix}question_attributes.*
-                 FROM {$dbprefix}question_attributes, {$dbprefix}questions 
-              WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) 
-              AND ({$dbprefix}questions.gid=$gid)";
-    BuildXMLFromQuery($xml,$query);
+    $query = "SELECT DISTINCT qa.*
+              FROM {$dbprefix}question_attributes qa, {$dbprefix}questions q 
+              WHERE (qa.qid=q.qid) 
+              AND (q.gid=$gid)";
+    BuildXMLFromQuery($xml,$query,'question_attributes');
     
     // Default values
-    $query = "SELECT dv.*
-              FROM {$dbprefix}defaultvalues dv, {$dbprefix}questions  
-              WHERE ({$dbprefix}defaultvalues.qid={$dbprefix}questions.qid) 
-              AND ({$dbprefix}questions.gid=$gid) order by dv.language, dv.scale_id";
-    BuildXMLFromQuery($xml,$query);              
-    
+    $query = "SELECT DISTINCT dv.*
+              FROM {$dbprefix}defaultvalues dv, {$dbprefix}questions q  
+              WHERE dv.qid=q.qid 
+              AND q.gid=$gid order by dv.language, dv.scale_id";
+    BuildXMLFromQuery($xml,$query,'defaultvalues');                 
 }

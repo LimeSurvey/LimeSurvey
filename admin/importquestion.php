@@ -23,8 +23,7 @@ $importquestion .= "<div class='messagebox'>\n";
 
 $sFullFilepath = $tempdir . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
 $aPathInfo = pathinfo($sFullFilepath);
-$sExtension = $aPathInfo['extension'];
-
+$sExtension = $aPathInfo['extension'];  
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
 {
@@ -692,11 +691,18 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
         $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
         $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
         $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
-        // Insert the new question       
+        // Insert the new question    
+        if (isset($qidmappings[$oldqid]))
+        {
+           $insertdata['qid']=$qidmappings[$oldqid]; 
+        }   
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
-        $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
-        $qidmappings[$oldqid]=$newqid; // add old and new qid to the mapping array
+        if (!isset($qidmappings[$oldqid]))
+        {
+            $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
+            $qidmappings[$oldqid]=$newqid; // add old and new qid to the mapping array
+        }
     }
 
     // Import subquestions --------------------------------------------------------------

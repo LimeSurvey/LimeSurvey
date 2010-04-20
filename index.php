@@ -74,7 +74,7 @@ else
 {
     session_name("LimeSurveyRuntime-$surveyid");
 }
-session_set_cookie_params(0,$relativeurl);
+session_set_cookie_params(0,$relativeurl.'/');
 @session_start();
 
 
@@ -382,7 +382,7 @@ if (!$surveyid)
                 $languagedetails=$result2->FetchRow();
                 $rows['surveyls_title']=$languagedetails['surveyls_title'];
             }
-            $link = "<li><a href='$relativeurl/index.php?sid=".$rows['sid'];
+            $link = "<li><a href='$rooturl/index.php?sid=".$rows['sid'];
             if (isset($_GET['lang']))
             {
                 $link .= "&lang=".sanitize_languagecode($_GET['lang']);

@@ -683,7 +683,7 @@ function ImportCSVFormat($bigarray)
         foreach ($surveylsarray as $slsrow) {
             $fieldcontents=convertCSVRowToArray($slsrow,',','"');
             $surveylsrowdata=array_combine($fieldorders,$fieldcontents);
-            // convert back the '\'.'n' cahr from the CSV file to true return char "\n"
+            // convert back the '\'.'n' char from the CSV file to true return char "\n"
             $surveylsrowdata=array_map('convertCsvreturn2return', $surveylsrowdata);
             // Convert the \n return char from welcometext to <br />
 
