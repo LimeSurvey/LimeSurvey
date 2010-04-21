@@ -135,8 +135,7 @@ div.menubar {
     border-style: solid;
     border-width: 1px;
     padding:0 0.2%;
-    height:14px;
-
+    min-height:14px;
 }
 
 .menubar-title img {
