@@ -121,13 +121,13 @@ function getXMLStructure($xml,$gid)
     BuildXMLFromQuery($xml,$aquery);
 
     //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
-    $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
-               FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b 
-               WHERE ({$dbprefix}conditions.cqid={$dbprefix}questions.qid) 
-               AND ({$dbprefix}conditions.qid=b.qid) 
-               AND ({$dbprefix}questions.gid=$gid) 
+    $cquery = "SELECT DISTINCT c.*
+               FROM {$dbprefix}conditions c, {$dbprefix}questions q, {$dbprefix}questions b 
+               WHERE (c.cqid=q.qid) 
+               AND (c.qid=b.qid) 
+               AND (q.gid=$gid) 
                AND (b.gid=$gid)";
-    BuildXMLFromQuery($xml,$cquery);
+    BuildXMLFromQuery($xml,$cquery,'conditions');
 
     //Question attributes
     $query = "SELECT DISTINCT qa.*

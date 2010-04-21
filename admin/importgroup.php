@@ -128,12 +128,18 @@ function CSVImportGroup($sFullFilepath, $newsid)
         $importgroup .= "</div>\n";
         unlink($sFullFilepath);
         return;
+        $importversion=0; 
     }
     else
     {
         $importversion=(int)trim(substr($bigarray[1],12));
     }
 
+    if  ((int)$importversion<112)
+    {
+        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey Version 1.50 (DBVersion 112) and later are support.");
+    }
+        
     for ($i=0; $i<9; $i++)
     {
         unset($bigarray[$i]);
@@ -648,7 +654,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
     // do ATTRIBUTES
     if (isset($question_attributesarray) && $question_attributesarray)
     {
-        $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+        $fieldorders=convertCSVRowToArray($question_attributesarray[0],',','"');
         unset($question_attributesarray[0]);
         foreach ($question_attributesarray as $qar) {
             $fieldcontents=convertCSVRowToArray($qar,',','"');
@@ -866,7 +872,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
         $insertdata=array(); 
         foreach ($row as $key=>$value)
         {
-            $insertdata[$key]=$value;
+            $insertdata[(string)$key]=(string)$value;
         }
         $insertdata['sid']=$newsid;
         $insertdata['gid']=$gidmappings[(int)$insertdata['gid']];;
@@ -901,7 +907,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
            $insertdata=array(); 
             foreach ($row as $key=>$value)
             {
-                $insertdata[$key]=$value;
+                $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['qid']=$qidmappings[(int)$insertdata['qid']]; // remap the parent_qid
 
@@ -922,7 +928,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $insertdata=array(); 
             foreach ($row as $key=>$value)
             {
-                $insertdata[$key]=$value;
+                $insertdata[(string)$key]=(string)$value;
             }
             unset($insertdata['qaid']);
             $insertdata['qid']=$qidmappings[(integer)$insertdata['qid']]; // remap the parent_qid
@@ -946,7 +952,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
            $insertdata=array(); 
             foreach ($row as $key=>$value)
             {
-                $insertdata[$key]=$value;
+                $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['qid']=$qidmappings[(int)$insertdata['qid']]; // remap the qid
             $insertdata['sqid']=$qidmappings[(int)$insertdata['sqid']]; // remap the subqeustion id
@@ -957,6 +963,62 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $results['defaultvalues']++;
         }             
     }
+
+    // Import conditions --------------------------------------------------------------
+    if(isset($xml->conditions))
+    {
+        $tablename=$dbprefix.'conditions';
+        
+        $results['conditions']=0;
+        foreach ($xml->defaultvalues->rows->row as $row)
+        {
+           $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this condition is orphan -> error, skip this record)
+            if (isset($qidmappings[$insertdata['qid']]))
+            {
+                $insertdata['qid']=$qidmappings[$insertdata['qid']]; // remap the qid
+            }
+            else continue; // a problem with this answer record -> don't consider
+            if (isset($qidmappings[$insertdata['cqid']]))
+            {
+                $insertdata['cqid']=$qidmappings[$insertdata['cqid']]; // remap the qid
+            }
+            else continue; // a problem with this answer record -> don't consider
+
+            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
+
+            if ($oldcgid != $oldgid)    // this means that the condition is in another group (so it should not have to be been exported -> skip it
+            continue;
+
+            unset($insertdata["cid"]);
+
+            // recreate the cfieldname with the new IDs
+            if (preg_match("/^\+/",$oldcsid))
+            {
+                $newcfieldname = '+'.$newsid . "X" . $newgid . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+            }
+            else
+            {
+                $newcfieldname = $newsid . "X" . $newgid . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+            }
+
+            $insertdata["cfieldname"] = $newcfieldname;
+            if (trim($insertdata["method"])=='')
+            {
+                $insertdata["method"]='==';
+            }            
+
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $results['conditions']++;
+        }             
+    }
+
     
     $results['newqid']=$newqid;
     $results['questions']=1;

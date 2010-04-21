@@ -108,6 +108,7 @@ function ImportCSVFormat($bigarray)
     if (isset($bigarray[0])) $bigarray[0]=removeBOM($bigarray[0]);
     // Now we try to determine the dataformat of the survey file.
 
+    $importversion=0;
     if (isset($bigarray[1]) && isset($bigarray[4])&& (substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
     {
         $importversion = 100;  // version 1.0 file
@@ -120,7 +121,7 @@ function ImportCSVFormat($bigarray)
     elseif
     (substr($bigarray[0], 0, 24) == "# LimeSurvey Survey Dump" || substr($bigarray[0], 0, 25) == "# PHPSurveyor Survey Dump")
     {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
-    $importversion=substr($bigarray[1], 12, 3);
+        $importversion=substr($bigarray[1], 12, 3);
     }
     else    // unknown file - show error message
     {
@@ -140,6 +141,10 @@ function ImportCSVFormat($bigarray)
         }
     }
 
+    if  ((int)$importversion<112)
+    {
+        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey Version 1.50 (DBVersion 112) and later are support.");
+    }    
 
     // okay.. now lets drop the first 9 lines and get to the data
     // This works for all versions
@@ -447,25 +452,17 @@ function ImportCSVFormat($bigarray)
 
     // CREATE SURVEY
 
-    if ($importversion>=111)
-    {
-        if ($importresults['surveys']>0){$importresults['surveys']--;};
-        if ($importresults['answers']>0){$importresults['answers']=($importresults['answers']-1)/$importresults['languages'];};
-        if ($importresults['groups']>0){$countgroups=($importresults['groups']-1)/$importresults['languages'];};
-        if ($importresults['questions']>0){$importresults['questions']=($importresults['questions']-1)/$importresults['languages'];};
-        if ($importresults['assessments']>0){$importresults['assessments']--;};
-        if ($importresults['conditions']>0){$importresults['conditions']--;};
-        if ($importresults['labelsets']>0){$importresults['labelsets']--;};
-        if ($importresults['question_attributes']>0){$importresults['question_attributes']--;};
-        if ($importresults['quota']>0){$importresults['quota']--;};
-        $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
-        $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
-    }
-    else
-    {
-        $sfieldorders=convertToArray($surveyarray[0], "`, `", "(`", "`)");
-        $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
-    }
+    if ($importresults['surveys']>0){$importresults['surveys']--;};
+    if ($importresults['answers']>0){$importresults['answers']=($importresults['answers']-1)/$importresults['languages'];};
+    if ($importresults['groups']>0){$countgroups=($importresults['groups']-1)/$importresults['languages'];};
+    if ($importresults['questions']>0){$importresults['questions']=($importresults['questions']-1)/$importresults['languages'];};
+    if ($importresults['assessments']>0){$importresults['assessments']--;};
+    if ($importresults['conditions']>0){$importresults['conditions']--;};
+    if ($importresults['labelsets']>0){$importresults['labelsets']--;};
+    if ($importresults['question_attributes']>0){$importresults['question_attributes']--;};
+    if ($importresults['quota']>0){$importresults['quota']--;};
+    $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
+    $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
     $oldsid=$surveyrowdata["sid"];
 
@@ -508,16 +505,8 @@ function ImportCSVFormat($bigarray)
 
     $importresults['importwarning'] = "";    // used to save the warnings while processing questions
     $insert=$surveyarray[0];
-    if ($importversion>=111)
-    {
-        $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
-        $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
-    }
-    else
-    {
-        $sfieldorders=convertToArray($surveyarray[0], "`, `", "(`", "`)");
-        $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
-    }
+    $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
+    $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
     // Set new owner ID
     $surveyrowdata['owner_id']=$_SESSION['loginID'];
@@ -526,137 +515,6 @@ function ImportCSVFormat($bigarray)
     $surveyrowdata['active']='N';
 
     if (validate_templatedir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarning'] .= "<li>". sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']) ."</li>";
-
-    if ($importversion<=100)
-    // find the old language field and replace its contents with the new language shortcuts
-    {
-        $oldlanguage=$surveyrowdata['language'];
-        $newlanguage='en'; //Default
-        switch ($oldlanguage)
-        {
-            case "bulgarian":
-                $newlanguage='bg';
-                break;
-            case "chinese-simplified":
-                $newlanguage='zh-Hans';
-                break;
-            case "chinese-traditional":
-                $newlanguage='zh-Hant-HK';
-                break;
-            case "croatian":
-                $newlanguage='hr';
-                break;
-            case "danish":
-                $newlanguage='da';
-                break;
-            case "dutch":
-                $newlanguage='nl';
-                break;
-            case "english":
-                $newlanguage='en';
-                break;
-            case "french":
-                $newlanguage='fr';
-                break;
-            case "german-informal":
-                $newlanguage='de-informal';
-                break;
-            case "german":
-                $newlanguage='de';
-                break;
-            case "greek":
-                $newlanguage='el';
-                break;
-            case "hungarian":
-                $newlanguage='hu';
-                break;
-            case "italian":
-                $newlanguage='it';
-                break;
-            case "japanese":
-                $newlanguage='ja';
-                break;
-            case "lithuanian":
-                $newlanguage='lt';
-                break;
-            case "norwegian":
-                $newlanguage='nb';
-                break;
-            case "portuguese":
-                $newlanguage='pt';
-                break;
-            case "romanian":
-                $newlanguage='ro';
-                break;
-            case "russian":
-                $newlanguage='ru';
-                break;
-            case "slovenian":
-                $newlanguage='sl';
-                break;
-            case "spanish":
-                $newlanguage='es';
-                break;
-            case "swedish":
-                $newlanguage='sv';
-                break;
-        }
-
-        $surveyrowdata['language']=$newlanguage;
-
-        // copy the survey row data
-
-        // now prepare the languagesettings table and drop according values from the survey array
-        $surveylsrowdata=array();
-        $surveylsrowdata['surveyls_survey_id']=$newsid;
-        $surveylsrowdata['surveyls_language']=$newlanguage;
-        $surveylsrowdata['surveyls_title']=$surveyrowdata['short_title'];
-        $surveylsrowdata['surveyls_description']=$surveyrowdata['description'];
-        $surveylsrowdata['surveyls_welcometext']=$surveyrowdata['welcome'];
-        $surveylsrowdata['surveyls_urldescription']=$surveyrowdata['urldescrip'];
-        if (isset($surveyrowdata['email_invite_subj'])) $surveylsrowdata['surveyls_email_invite_subj']=$surveyrowdata['email_invite_subj'];
-        $surveylsrowdata['surveyls_email_invite']=$surveyrowdata['email_invite'];
-        if (isset($surveyrowdata['email_remind_subj']))     $surveylsrowdata['surveyls_email_remind_subj']=$surveyrowdata['email_remind_subj'];
-        $surveylsrowdata['surveyls_email_remind']=$surveyrowdata['email_remind'];
-        if (isset($surveyrowdata['email_register_subj']))     $surveylsrowdata['surveyls_email_register_subj']=$surveyrowdata['email_register_subj'];
-        $surveylsrowdata['surveyls_email_register']=$surveyrowdata['email_register'];
-        if (isset($surveyrowdata['email_confirm_subj'])) $surveylsrowdata['surveyls_email_confirm_subj']=$surveyrowdata['email_confirm_subj'];
-        $surveylsrowdata['surveyls_email_confirm']=$surveyrowdata['email_confirm'];
-        if(!isset($defaultsurveylanguage)) {$defaultsurveylanguage=$newlanguage;}
-        unset($surveyrowdata['short_title']);
-        unset($surveyrowdata['description']);
-        unset($surveyrowdata['welcome']);
-        unset($surveyrowdata['urldescrip']);
-        unset($surveyrowdata['email_invite_subj']);
-        unset($surveyrowdata['email_invite']);
-        unset($surveyrowdata['email_remind_subj']);
-        unset($surveyrowdata['email_remind']);
-        unset($surveyrowdata['email_register_subj']);
-        unset($surveyrowdata['email_register']);
-        unset($surveyrowdata['email_confirm_subj']);
-        unset($surveyrowdata['email_confirm']);
-
-
-        // translate internal links
-        $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_title']);
-        $surveylsrowdata['surveyls_description']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_description']);
-        $surveylsrowdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_welcometext']);
-        $surveylsrowdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_urldescription']);
-        $surveylsrowdata['surveyls_email_invite']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_invite']);
-        $surveylsrowdata['surveyls_email_remind']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_remind']);
-        $surveylsrowdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_register']);
-        $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
-
-
-
-        // import the survey language-specific settings
-        $values=array_values($surveylsrowdata);
-        $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
-        $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-        $iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
-    }
-
-
 
     if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connect->BindTimeStamp($surveyrowdata['datecreated']);}
     unset($surveyrowdata['expires']);
@@ -676,35 +534,31 @@ function ImportCSVFormat($bigarray)
     $iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
 
     // Now import the survey language settings
-    if ($importversion>=111)
-    {
-        $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
-        unset($surveylsarray[0]);
-        foreach ($surveylsarray as $slsrow) {
-            $fieldcontents=convertCSVRowToArray($slsrow,',','"');
-            $surveylsrowdata=array_combine($fieldorders,$fieldcontents);
-            // convert back the '\'.'n' char from the CSV file to true return char "\n"
-            $surveylsrowdata=array_map('convertCsvreturn2return', $surveylsrowdata);
-            // Convert the \n return char from welcometext to <br />
+    $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
+    unset($surveylsarray[0]);
+    foreach ($surveylsarray as $slsrow) {
+        $fieldcontents=convertCSVRowToArray($slsrow,',','"');
+        $surveylsrowdata=array_combine($fieldorders,$fieldcontents);
+        // convert back the '\'.'n' char from the CSV file to true return char "\n"
+        $surveylsrowdata=array_map('convertCsvreturn2return', $surveylsrowdata);
+        // Convert the \n return char from welcometext to <br />
 
-            // translate internal links
-            $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_title']);
-            $surveylsrowdata['surveyls_description']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_description']);
-            $surveylsrowdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_welcometext']);
-            $surveylsrowdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_urldescription']);
-            $surveylsrowdata['surveyls_email_invite']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_invite']);
-            $surveylsrowdata['surveyls_email_remind']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_remind']);
-            $surveylsrowdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_register']);
-            $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
-            unset($surveylsrowdata['lastpage']);
+        // translate internal links
+        $surveylsrowdata['surveyls_title']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_title']);
+        $surveylsrowdata['surveyls_description']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_description']);
+        $surveylsrowdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_welcometext']);
+        $surveylsrowdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_urldescription']);
+        $surveylsrowdata['surveyls_email_invite']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_invite']);
+        $surveylsrowdata['surveyls_email_remind']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_remind']);
+        $surveylsrowdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_register']);
+        $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
+        unset($surveylsrowdata['lastpage']);
 
-            $surveylsrowdata['surveyls_survey_id']=$newsid;
-            $newvalues=array_values($surveylsrowdata);
-            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-            $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-            $lsiresult=$connect->Execute($lsainsert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
-        }
-
+        $surveylsrowdata['surveyls_survey_id']=$newsid;
+        $newvalues=array_values($surveylsrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+        $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+        $lsiresult=$connect->Execute($lsainsert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
     }
 
 
@@ -720,26 +574,14 @@ function ImportCSVFormat($bigarray)
         $count=0;
         foreach ($labelsetsarray as $lsa) {
              
-            if ($importversion>=111)
-            {
-                $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
-                $fieldcontents=convertCSVRowToArray($lsa,',','"');
-                if ($count==0) {$count++; continue;}
-            }
-            else
-            {
-                $fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
-                $fieldcontents=convertToArray($lsa, "', '", "('", "')");
-            }
+            $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($lsa,',','"');
+            if ($count==0) {$count++; continue;}
             $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
 
             // Save old labelid
             $oldlid=$labelsetrowdata['lid'];
-            // set the new language
-            if ($importversion<=100)
-            {
-                $labelsetrowdata['languages']=$newlanguage;
-            }
+
             unset($labelsetrowdata['lid']);
             $newvalues=array_values($labelsetrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -755,19 +597,9 @@ function ImportCSVFormat($bigarray)
             if ($labelsarray) {
                 $count=0;
                 foreach ($labelsarray as $la) {
-                    if ($importversion>=111)
-                    {
-                        $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
-                        $lfieldcontents=convertCSVRowToArray($la,',','"');
-                        if ($count==0) {$count++; continue;}
-                    }
-                    else
-                    {
-                        //Get field names into array
-                        $lfieldorders=convertToArray($la, "`, `", "(`", "`)");
-                        //Get field values into array
-                        $lfieldcontents=convertToArray($la, "', '", "('", "')");
-                    }
+                    $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
+                    $lfieldcontents=convertCSVRowToArray($la,',','"');
+                    if ($count==0) {$count++; continue;}
                     // Combine into one array with keys and values since its easier to handle
                     $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                     if ($importversion<=132)
@@ -775,10 +607,6 @@ function ImportCSVFormat($bigarray)
                         $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
                     }
                     $labellid=$labelrowdata['lid'];
-                    if ($importversion<=100)
-                    {
-                        $labelrowdata['language']=$newlanguage;
-                    }
                     if ($labellid == $oldlid) {
                         $labelrowdata['lid']=$newlid;
 
@@ -846,19 +674,11 @@ function ImportCSVFormat($bigarray)
         $count=0;
         $currentgid='';
         foreach ($grouparray as $ga) {
-            if ($importversion>=111)
-            {
-                $gafieldorders   =convertCSVRowToArray($grouparray[0],',','"');
-                $gacfieldcontents=convertCSVRowToArray($ga,',','"');
-                if ($count==0) {$count++; continue;}
-            }
-            else
-            {
-                //Get field names into array
-                $gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
-                //Get field values into array
-                $gacfieldcontents=convertToArray($ga, "', '", "('", "')");
-            }
+
+            $gafieldorders   =convertCSVRowToArray($grouparray[0],',','"');
+            $gacfieldcontents=convertCSVRowToArray($ga,',','"');
+            if ($count==0) {$count++; continue;}
+
             $grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
             // remember group id
             if ($currentgid=='' || ($currentgid!=$grouprowdata['gid'])) {$currentgid=$grouprowdata['gid'];$newgroup=true;}
@@ -885,11 +705,7 @@ function ImportCSVFormat($bigarray)
             else {$grouprowdata['gid']=$newgid;}
             //replace old surveyid by new surveyid
             $grouprowdata['sid']=$newsid;
-            // Version <=100 dont have a language field yet so we set it now
-            if ($importversion<=100)
-            {
-                $grouprowdata['language']=$newlanguage;
-            }
+
             $oldgid=$gid; // save it for later
             $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
 
@@ -914,17 +730,10 @@ function ImportCSVFormat($bigarray)
                 $count=0;
                 $currentqid='';
                 foreach ($questionarray as $qa) {
-                    if ($importversion>=111)
-                    {
-                        $qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
-                        $qacfieldcontents=convertCSVRowToArray($qa,',','"');
-                        if ($count==0) {$count++; continue;}
-                    }
-                    else
-                    {
-                        $qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
-                        $qacfieldcontents=convertToArray($qa, "', '", "('", "')");
-                    }
+                    $qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
+                    $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+                    if ($count==0) {$count++; continue;}
+
                     $questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
                     $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
 
@@ -957,11 +766,7 @@ function ImportCSVFormat($bigarray)
 
                         $questionrowdata["sid"] = $newsid;
                         $questionrowdata["gid"] = $newgid;
-                        // Version <=100 doesn't have a language field yet so we set it now
-                        if ($importversion<=100)
-                        {
-                            $questionrowdata['language']=$newlanguage;
-                        }
+
                         $oldqid=$qid;
 
                         unset($oldlid1); unset($oldlid2);
@@ -1049,17 +854,9 @@ function ImportCSVFormat($bigarray)
                         if (isset($answerarray) && $answerarray && $newquestion) {
                             $count=0;
                             foreach ($answerarray as $aa) {
-                                if ($importversion>=111)
-                                {
-                                    $aafieldorders = convertCSVRowToArray($answerarray[0],',','"');
-                                    $aacfieldcontents = convertCSVRowToArray($aa,',','"');
-                                    if ($count==0) {$count++; continue;}
-                                }
-                                else
-                                {
-                                    $aafieldorders = convertToArray($aa, "`, `", "(`", "`)");
-                                    $aacfieldcontents = convertToArray($aa, "', '", "('", "')");
-                                }
+                                $aafieldorders = convertCSVRowToArray($answerarray[0],',','"');
+                                $aacfieldcontents = convertCSVRowToArray($aa,',','"');
+                                if ($count==0) {$count++; continue;}
                                 $answerrowdata = array_combine($aafieldorders,$aacfieldcontents);
                                 if ($importversion<=132)
                                 {
@@ -1070,11 +867,6 @@ function ImportCSVFormat($bigarray)
                                 if ($thisqid == $qid)
                                 {
                                     $answerrowdata["qid"]=$newqid;
-                                    // Version <=100 doesn't have a language field yet so we set it now
-                                    if ($importversion<=100)
-                                    {
-                                        $answerrowdata['language']=$newlanguage;
-                                    }
 
                                     // translate internal links
                                     $answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
@@ -1211,17 +1003,9 @@ function ImportCSVFormat($bigarray)
     if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
         $count=0;
         foreach ($question_attributesarray as $qar) {
-            if ($importversion>=111)
-            {
-                $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
-                $fieldcontents=convertCSVRowToArray($qar,',','"');
-                if ($count==0) {$count++; continue;}
-            }
-            else
-            {
-                $fieldorders=convertToArray($qar, "`, `", "(`", "`)");
-                $fieldcontents=convertToArray($qar, "', '", "('", "')");
-            }
+            $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            if ($count==0) {$count++; continue;}
             $qarowdata=array_combine($fieldorders,$fieldcontents);
             $newqid="";
             $oldqid=$qarowdata['qid'];
@@ -1242,17 +1026,9 @@ function ImportCSVFormat($bigarray)
     if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUTES
         $count=0;
         foreach ($assessmentsarray as $qar) {
-            if ($importversion>=111)
-            {
-                $fieldorders  =convertCSVRowToArray($assessmentsarray[0],',','"');
-                $fieldcontents=convertCSVRowToArray($qar,',','"');
-                if ($count==0) {$count++; continue;}
-            }
-            else
-            {
-                $fieldorders=convertToArray($qar, "`, `", "(`", "`)");
-                $fieldcontents=convertToArray($qar, "', '", "('", "')");
-            }
+            $fieldorders  =convertCSVRowToArray($assessmentsarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            if ($count==0) {$count++; continue;}
             $asrowdata=array_combine($fieldorders,$fieldcontents);
             if (isset($asrowdata['link']))
             {
@@ -1409,17 +1185,9 @@ function ImportCSVFormat($bigarray)
     if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
         $count='0';
         foreach ($conditionsarray as $car) {
-            if ($importversion>=111)
-            {
-                $fieldorders  =convertCSVRowToArray($conditionsarray[0],',','"');
-                $fieldcontents=convertCSVRowToArray($car,',','"');
-                if ($count==0) {$count++; continue;}
-            }
-            else
-            {
-                $fieldorders=convertToArray($car, "`, `", "(`", "`)");
-                $fieldcontents=convertToArray($car, "', '", "('", "')");
-            }
+            $fieldorders  =convertCSVRowToArray($conditionsarray[0],',','"');
+            $fieldcontents=convertCSVRowToArray($car,',','"');
+            if ($count==0) {$count++; continue;}
             $conditionrowdata=array_combine($fieldorders,$fieldcontents);
 
             $oldcid=$conditionrowdata["cid"];

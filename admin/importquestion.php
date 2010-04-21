@@ -122,7 +122,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
         $bigarray[] = $buffer;
     }
     fclose($handle);
-
+    $importversion=0;
     // Now we try to determine the dataformat of the survey file.
     if ((substr($bigarray[1], 0, 24) == "# SURVEYOR QUESTION DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
     {
@@ -139,6 +139,11 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
     else    // unknown file - show error message
     {
         $results['fatalerror'] = $clang->gT("This file is not a LimeSurvey question file. Import failed.");
+    }
+    
+    if  ((int)$importversion<112)
+    {
+        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey Version 1.50 (DBVersion 112) and later are support.");
     }
 
     for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
