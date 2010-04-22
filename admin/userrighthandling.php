@@ -139,10 +139,10 @@ if ($action == "setusertemplates")
             }
 
             $usersummary .= "\t<tr>\n<th>"
-            .$clang->gT('Template Name')
+            .$clang->gT('Template name')
             ."<br />&nbsp;</th>\n<th>"
             .$clang->gT('Allowed')
-            ."<br /><input type='checkbox' alt='".$clang->gT("Check or Uncheck all items")."' class='tipme' id='checkall' />"
+            ."<br /><input type='checkbox' alt='".$clang->gT("Check or uncheck all items")."' class='tipme' id='checkall' />"
             ."</th>\n\t</tr>\n"
             ."\t</thead>\n\n<tbody>\n";
 
@@ -172,7 +172,7 @@ if ($action == "setusertemplates")
                 $usersummary .=" /></td>\n\t</tr>\n";
             }
             $usersummary .= "\n</tbody>\n\n<tfoot>\n\t<tr><td colspan=\"3\">\n"
-            ."\t<input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" />\n"
+            ."\t<input type=\"submit\" value=\"".$clang->gT('Save settings')."\" />\n"
             ."\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
             ."\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n</td>\n\t</tr>\n</tfoot>\n"
             ."\t</table>\n"

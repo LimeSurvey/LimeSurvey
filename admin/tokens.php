@@ -1892,7 +1892,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
         if(implode(", ", $tokenids) != "") {
             $dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid IN (".implode(", ", $tokenids).")";
             $dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg()."\n\n$dlquery");
-            $tokenoutput .= $clang->gT("Tokens have been deleted.");
+            $tokenoutput .= $clang->gT("Marked tokens have been deleted.");
         } else {
             $tokenoutput .= $clang->gT("No tokens were selected for deletion");
         }

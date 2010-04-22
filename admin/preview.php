@@ -32,6 +32,7 @@ if (!isset($_GET['lang']) || $_GET['lang'] == "")
 }
 
 $_SESSION['s_lang'] = $language;
+$_SESSION['fieldmap']=createFieldMap($surveyid,'full',true,$qid);
 $clang = new limesurvey_lang($language);
 
 $thissurvey=getSurveyInfo($surveyid);
@@ -41,7 +42,7 @@ $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid='$surveyid' AN
 $qresult = db_execute_assoc($qquery);
 $qrows = $qresult->FetchRow();
 $ia = array(0 => $qid,
-1 => "FIELDNAME",
+1 => $surveyid.'X'.$qrows['gid'].'X'.$qid,
 2 => $qrows['title'],
 3 => $qrows['question'],
 4 => $qrows['type'],
