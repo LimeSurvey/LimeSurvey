@@ -207,16 +207,16 @@ if(isset($surveyid))
     elseif ($action == "delgroup" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
     {
         if (!isset($gid)) $gid=returnglobal('gid');
-        $query = "SELECT qid FROM ".db_table_name('groups')." g, ".db_table_name('questions')." q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0";
+        $query = "SELECT qid FROM ".db_table_name('groups')." g, ".db_table_name('questions')." q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
         if ($result = db_execute_assoc($query)) // Checked
         {
             while ($row=$result->FetchRow())
             {
-                $result = $connect->Execute("DELETE FROM {$dbprefix}conditions WHERE qid={$row['qid']}");    // Checked
-                $result = $connect->Execute("DELETE FROM {$dbprefix}question_attributes WHERE qid={$row['qid']}"); // Checked
-                $result = $connect->Execute("DELETE FROM {$dbprefix}answers WHERE qid={$row['qid']}"); // Checked
-                $result = $connect->Execute("DELETE FROM {$dbprefix}questions WHERE qid={$row['qid']} or parent_qid={$row['qid']}"); // Checked
-                $result = $connect->Execute("DELETE FROM {$dbprefix}defaultvalues WHERE qid={$row['qid']}"); // Checked
+                $connect->Execute("DELETE FROM {$dbprefix}conditions WHERE qid={$row['qid']}");    // Checked
+                $connect->Execute("DELETE FROM {$dbprefix}question_attributes WHERE qid={$row['qid']}"); // Checked
+                $connect->Execute("DELETE FROM {$dbprefix}answers WHERE qid={$row['qid']}"); // Checked
+                $connect->Execute("DELETE FROM {$dbprefix}questions WHERE qid={$row['qid']} or parent_qid={$row['qid']}"); // Checked
+                $connect->Execute("DELETE FROM {$dbprefix}defaultvalues WHERE qid={$row['qid']}"); // Checked
             }
         }
         $query = "DELETE FROM ".db_table_name('assessments')." WHERE sid=$surveyid AND gid=$gid";
@@ -808,22 +808,16 @@ if(isset($surveyid))
             $gid = $connect->GetOne("SELECT gid FROM ".db_table_name('questions')." WHERE qid={$qid}"); // Checked
             
             //see if there are any conditions/attributes/answers/defaultvalues for this question, and delete them now as well
-            $result = $connect->Execute("DELETE FROM {$dbprefix}conditions WHERE qid={$qid}");    // Checked
-            $result = $connect->Execute("DELETE FROM {$dbprefix}question_attributes WHERE qid={$qid}"); // Checked
-            $result = $connect->Execute("DELETE FROM {$dbprefix}answers WHERE qid={$qid}"); // Checked
-            $result = $connect->Execute("DELETE FROM {$dbprefix}questions WHERE qid={$qid} or parent_qid={$qid}"); // Checked
-            $result = $connect->Execute("DELETE FROM {$dbprefix}defaultvalues WHERE qid={$qid}"); // Checked
+            $connect->Execute("DELETE FROM {$dbprefix}conditions WHERE qid={$qid}");    // Checked
+            $connect->Execute("DELETE FROM {$dbprefix}question_attributes WHERE qid={$qid}"); // Checked
+            $connect->Execute("DELETE FROM {$dbprefix}answers WHERE qid={$qid}"); // Checked
+            $connect->Execute("DELETE FROM {$dbprefix}questions WHERE qid={$qid} or parent_qid={$qid}"); // Checked
+            $connect->Execute("DELETE FROM {$dbprefix}defaultvalues WHERE qid={$qid}"); // Checked
             fixsortorderQuestions($gid, $surveyid);
-            if ($result)
-            {
-                $qid="";
-                $postqid="";
-                $_GET['qid']="";
-            }
-            else
-            {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
-            }
+
+            $qid="";
+            $postqid="";
+            $_GET['qid']="";
         }
     }
 

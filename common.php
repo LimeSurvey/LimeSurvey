@@ -2308,12 +2308,13 @@ function validate_templatedir($templatename)
 /**
  * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
  *
- * @param string $surveyid
- * @param mixed $style
+ * @param string $surveyid The Survey ID
+ * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values 
  * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
- * @return mixed
+ * @param int $questionid Limit to a certain qid only (for question preview)
+ * @return array
  */
-function createFieldMap($surveyid, $style='short', $force_refresh=false) {
+function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false) {
 
     global $dbprefix, $connect, $globalfieldmap, $clang;
     $surveyid=sanitize_int($surveyid);
@@ -2439,8 +2440,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false) {
         ." questions.sid=$surveyid AND "
         ." questions.language='{$s_lang}' AND "
         ." questions.parent_qid=0 AND "
-        ." groups.language='{$s_lang}' "
-        ." ORDER BY group_order, question_order"; 
+        ." groups.language='{$s_lang}' ";
+    if ($questionid!==false)
+    {
+        $aquery.=" and questions.qid={$questionid} ";
+    }
+    $aquery.=" ORDER BY group_order, question_order"; 
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
@@ -5569,7 +5574,7 @@ function FixLanguageConsistency($sid, $availlangs='')
                 if ($gresult->RecordCount() < 1)
                 {
                     if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}    //Checked
-                    $query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']})";
+                    $query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']})";
                     $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked
                     if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}      //Checked
                 }
