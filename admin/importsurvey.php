@@ -53,7 +53,7 @@ if (isset($counts['fieldnames']))
 if ($importingfrom == "http")
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
-    $importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
+    $importsurvey .= "<strong><u>".$clang->gT("Survey import summary")."</u></strong><br />\n";
     $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$counts['surveys']}</li>\n";
     if ($counts['importversion']>=111)
     {
@@ -66,9 +66,9 @@ if ($importingfrom == "http")
     $importsurvey .= "\t<li>".$clang->gT("Label Sets").": {$counts['labelsets']}</li>\n";
     if ($counts['deniedcountls']>0)
     {
-        $importsurvey .= "\t<li>".$clang->gT("Not imported Label Sets").": {$counts['deniedcountls']} ".$clang->gT("(Label Sets were not imported since you do not have the permission to create new label sets.)")."</li>\n";
+        $importsurvey .= "\t<li>".$clang->gT("Not imported label sets").": {$counts['deniedcountls']} ".$clang->gT("(Label sets were not imported since you do not have the permission to create new label sets.)")."</li>\n";
     }
-    $importsurvey .= "\t<li>".$clang->gT("Question Attributes").": {$counts['question_attributes']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Question attributes").": {$counts['question_attributes']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$counts['assessments']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$counts['quota']} ({$counts['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$counts['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
     if ($counts['importwarning'] != "") $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">" . $counts['importwarning'] . "</ul><br />\n";
@@ -143,7 +143,7 @@ function ImportCSVFormat($bigarray)
 
     if  ((int)$importversion<112)
     {
-        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey Version 1.50 (DBVersion 112) and later are support.");
+        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and later are support.");
     }    
 
     // okay.. now lets drop the first 9 lines and get to the data

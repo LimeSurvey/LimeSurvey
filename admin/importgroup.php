@@ -16,12 +16,10 @@
 //Ensure script is not run directly, avoid path disclosure 
 include_once("login_check.php");
 
-// A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
-
 $importgroup = "<div class='header'>".$clang->gT("Import question group")."</div>\n";
 $importgroup .= "<div class='messagebox'>\n";
 
-$sFullFilepath = $tempdir . "/" . $_FILES['the_file']['name'];
+$sFullFilepath = $tempdir . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
 $aPathInfo = pathinfo($sFullFilepath);
 $sExtension = $aPathInfo['extension'];
 
@@ -53,34 +51,30 @@ if (isset($fatalerror))
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 $importgroup .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n"
 .$clang->gT("File upload succeeded.")."<br /><br />\n"
-.$clang->gT("Reading file...")."<br />\n";
-
-
+.$clang->gT("Reading file..")."<br /><br />\n";
 if (strtolower($sExtension)=='csv')
 {
-    $importresults=CSVImportGroup($sFullFilepath, $surveyid);
+    $aImportResults=CSVImportGroup($sFullFilepath, $surveyid);
 }
 elseif (strtolower($sExtension)=='lsg')
 {
-    $importresults=XMLImportGroup($sFullFilepath, $surveyid);
+    $aImportResults=XMLImportGroup($sFullFilepath, $surveyid);
 }
 else die('Unknown file extension');
+FixLanguageConsistency($surveyid);
 
+if (isset($aImportResults['fatalerror']))
+{
+        $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+        $importgroup .= $aImportResults['fatalerror']."<br /><br />\n";
+        $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+        $importgroup .=  "</div>\n";
+        unlink($sFullFilepath);
+        return;
+}
 
-if (isset($skippedlanguages))
-{
-    $importgroup.="<br /><div class='partialheader'>".$clang->gT("Import partially successful.")."</div><br />";
-    $importgroup.=$clang->gT("The following languages in this group were not imported since the survey does not contain such a language: ")."<br />";
-    foreach  ($skippedlanguages as $sl)
-    {
-        $importgroup.= getLanguageNameFromCode($grouprowdata['language'], false).'<br />';
-    }
-    $importgroup.='<br />';
-}
-else
-{
-    $importgroup .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
-}
+$importgroup .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+
 $importgroup .="<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
 ."<ul>\n\t<li>".$clang->gT("Groups:");
 if (isset($countgroups)) {$importgroup .= $countgroups;}
@@ -109,6 +103,12 @@ $importgroup .= "<input type='submit' value='".$clang->gT("Go to group")."' oncl
 unlink($sFullFilepath);
 
 
+/**
+* This function imports an old-school question group file (*.csv,*.sql)
+* 
+* @param mixed $sFullFilepath Full file patch to the import file
+* @param mixed $newsid  Survey ID to which the question is attached
+*/
 function CSVImportGroup($sFullFilepath, $newsid)    
 {
     global $dbprefix, $connect;       
@@ -120,14 +120,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
     }
     fclose($handle);
 
-    if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump" && substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
+    if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump")
     {
-        $importgroup .= "<br /><div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-        $importgroup .= $clang->gT("This file is not a LimeSurvey group file. Import failed.")."<br /><br />\n";
-        $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-        $importgroup .= "</div>\n";
-        unlink($sFullFilepath);
-        return;
+        $results['fatalerror'] = $clang->gT("This file is not a LimeSurvey question file. Import failed.");
         $importversion=0; 
     }
     else
@@ -137,10 +132,10 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
     if  ((int)$importversion<112)
     {
-        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey Version 1.50 (DBVersion 112) and later are support.");
+        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and later are support.");
     }
         
-    for ($i=0; $i<9; $i++)
+    for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
     {
         unset($bigarray[$i]);
     }
@@ -292,8 +287,19 @@ function CSVImportGroup($sFullFilepath, $newsid)
     {
         $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
         unset($answerarray[0]);
-        $countanswers = 0;
+        $countanswers = count($answerarray);
     }
+    else {$countanswers=0;}
+    if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;}  else {$countlabelsets=0;}
+    if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
+    if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}
+
+    $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
+
+    $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
+    $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
+    $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
+
 
     $countconditions = 0;
     $countlabelsets=0;
@@ -326,33 +332,40 @@ function CSVImportGroup($sFullFilepath, $newsid)
     {
         $langfieldnum = array_search("language", $questionfieldnames);
         $qidfieldnum = array_search("qid", $questionfieldnames);
-        $questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,false);
+        $questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$sBaseLanguage,true);
         if (!$questionssupportbaselang)
         {
-            $importgroup .= "<br /><div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-            $importgroup .= $clang->gT("You can't import a question which doesn't support the current survey's base language.")."<br /><br />\n";
-            $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-            $importgroup .= "</div>\n";
-            unlink($sFullFilepath);
-            return;
+            $results['fatalerror']=$clang->gT("You can't import a question which doesn't support at least the survey base language.");
+            return $results;
         }
     }
 
+    if ($countanswers > 0)
+    {
+        $langfieldnum = array_search("language", $answerfieldnames);
+        $answercodefilednum1 =  array_search("qid", $answerfieldnames);
+        $answercodefilednum2 =  array_search("code", $answerfieldnames);
+        $answercodekeysarr = Array($answercodefilednum1,$answercodefilednum2);
+        $answerssupportbaselang = bDoesImportarraySupportsLanguage($answerarray,$answercodekeysarr,$langfieldnum,$sBaseLanguage);
+        if (!$answerssupportbaselang)
+        {
+            $results['fatalerror']=$clang->gT("You can't import answers which doesn't support at least the survey base language.");
+            return $results;
 
-    if (isset($labelsetsarray))
+        }
+    
+    }
+
+    if ($countlabelsets > 0)
     {
         $labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
         $langfieldnum = array_search("languages", $labelsetfieldname);
         $lidfilednum =  array_search("lid", $labelsetfieldname);
-        $labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
+        $labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$sBaseLanguage,true);
         if (!$labelsetssupportbaselang)
         {
-            $importquestion .= "<br /><div class='warningheader'>".$clang->gT("Error")."</div><br />\n"
-            .$clang->gT("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
-            ."</div>\n";
-            $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-            unlink($sFullFilepath);
-            return;
+            $results['fatalerror']=$clang->gT("You can't import label sets which don't support the current survey's base language");
+            return $results;
         }
     }
 
@@ -451,16 +464,15 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 $csarray[$newlid]=$newcs;
             }
             //END CHECK FOR DUPLICATES
-            $labelreplacements[]=array($oldlid, $newlid);
-            $newlids[$oldlid] = $newlid;
+            $labelreplacements[$oldlid]=$newlid;
         }
     }
 
     //these arrays will aloud to insert correctly groups an questions multi languague survey imports correctly, and will eliminate the need to "searh" the imported data
     //$newgids = array(); // this array will have the "new gid" for the groups, the kwy will be the "old gid"    <-- not needed when importing groups
-    $newqids = array(); // this array will have the "new qid" for the questions, the kwy will be the "old qid"
+    $aQIDReplacements = array(); // this array will have the "new qid" for the questions, the kwy will be the "old qid"
 
-    // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A __NOT__ NESTED FORMAT!
+    // Import groups
     if (isset($grouparray) && $grouparray)
     {
         $surveylanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -530,7 +542,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
         }
         // GROUPS is DONE
 
-        // do QUESTIONS
+    // Import questions
         if (isset($questionarray) && $questionarray)
         {
             foreach ($questionarray as $qa)
@@ -553,8 +565,8 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
                 // replace the qid or remove it if needed
                 $oldqid = $questionrowdata['qid'];
-                if (isset($newqids[$oldqid]))
-                $questionrowdata['qid'] = $newqids[$oldqid];
+                if (isset($aQIDReplacements[$oldqid]))
+                $questionrowdata['qid'] = $aQIDReplacements[$oldqid];
                 else
                 unset($questionrowdata['qid']);
 
@@ -591,9 +603,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
 
                 //GET NEW QID  .... if is not done before and we count a question if a new qid is required
-                if (!isset($newqids[$oldqid]))
+                if (!isset($aQIDReplacements[$oldqid]))
                 {
-                    $newqids[$oldqid] = $connect->Insert_ID("{$dbprefix}questions",'qid');
+                    $aQIDReplacements[$oldqid] = $connect->Insert_ID("{$dbprefix}questions",'qid');
                     $countquestions++;
                 }
             }
@@ -612,9 +624,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 if (!in_array($answerrowdata['language'],$surveylanguages))
                 continue;
 
-                // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this answer is orphan -> error, skip this record)
-                if (isset($newqids[$answerrowdata["qid"]]))
-                $answerrowdata["qid"] = $newqids[$answerrowdata["qid"]];
+                // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this answer is orphan -> error, skip this record)
+                if (isset($aQIDReplacements[$answerrowdata["qid"]]))
+                $answerrowdata["qid"] = $aQIDReplacements[$answerrowdata["qid"]];
                 else
                 continue; // a problem with this answer record -> don't consider
 
@@ -651,18 +663,19 @@ function CSVImportGroup($sFullFilepath, $newsid)
         }
     }
 
-    // do ATTRIBUTES
-    if (isset($question_attributesarray) && $question_attributesarray)
-    {
+    $results['question_attributes']=0;
+    // Finally the question attributes - it is called just once and only if there was a question
+    if (isset($question_attributesarray) && $question_attributesarray) 
+    {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
         $fieldorders=convertCSVRowToArray($question_attributesarray[0],',','"');
         unset($question_attributesarray[0]);
         foreach ($question_attributesarray as $qar) {
             $fieldcontents=convertCSVRowToArray($qar,',','"');
             $qarowdata=array_combine($fieldorders,$fieldcontents);
 
-            // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this attribute is orphan -> error, skip this record)
-            if (isset($newqids[$qarowdata["qid"]]))
-            $qarowdata["qid"] = $newqids[$qarowdata["qid"]];
+            // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this attribute is orphan -> error, skip this record)
+            if (isset($aQIDReplacements[$qarowdata["qid"]]))
+            $qarowdata["qid"] = $aQIDReplacements[$qarowdata["qid"]];
             else
             continue; // a problem with this answer record -> don't consider
 
@@ -690,15 +703,15 @@ function CSVImportGroup($sFullFilepath, $newsid)
             $oldqid = $conditionrowdata["qid"];
             $oldcqid = $conditionrowdata["cqid"];
 
-            // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this condition is orphan -> error, skip this record)
-            if (isset($newqids[$oldqid]))
-            $conditionrowdata["qid"] = $newqids[$oldqid];
+            // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this condition is orphan -> error, skip this record)
+            if (isset($aQIDReplacements[$oldqid]))
+            $conditionrowdata["qid"] = $aQIDReplacements[$oldqid];
             else
             continue; // a problem with this answer record -> don't consider
 
-            // replace the cqid for the new one (if there is no new qid in the $newqids array it mean that this condition is orphan -> error, skip this record)
-            if (isset($newqids[$oldcqid]))
-            $conditionrowdata["cqid"] = $newqids[$oldcqid];
+            // replace the cqid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this condition is orphan -> error, skip this record)
+            if (isset($aQIDReplacements[$oldcqid]))
+            $conditionrowdata["cqid"] = $aQIDReplacements[$oldcqid];
             else
             continue; // a problem with this answer record -> don't consider
 
@@ -731,8 +744,12 @@ function CSVImportGroup($sFullFilepath, $newsid)
             $countconditions++;
         }
     }
-    // CONDITIONS is DONE
-    
+    $results['newqid']=$newqid;
+    $results['questions']=1;
+    $results['labelsets']=0;
+    $results['labels']=0;
+    $results['newqid']=$newqid;
+    return $results;          
 }
 
 
@@ -754,8 +771,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     $xml = simplexml_load_file($sFullFilepath);    
     if ($xml->LimeSurveyDocType!='Group') safe_die('This is not a valid LimeSurvey group structure XML file.');
     $dbversion = (int) $xml->DBVersion;
-    $gidmappings=array();     
-    $qidmappings=array();     
+    $aQIDReplacements=array();     
     $results['defaultvalues']=0;
     $results['answers']=0;
     $results['question_attributes']=0;
@@ -808,16 +824,16 @@ function XMLImportGroup($sFullFilepath, $newsid)
         $insertdata['group_name']=translink('survey', $oldsid, $newsid, $insertdata['group_name']);
         $insertdata['description']=translink('survey', $oldsid, $newsid, $insertdata['description']);
         // Insert the new question    
-        if (isset($gidmappings[$oldgid]))
+        if (isset($aGIDReplacements[$oldgid]))
         {
-           $insertdata['gid']=$gidmappings[$oldgid]; 
+           $insertdata['gid']=$aGIDReplacements[$oldgid]; 
         }   
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
-        if (!isset($gidmappings[$oldgid]))
+        if (!isset($aGIDReplacements[$oldgid]))
         {
             $newgid=$connect->Insert_ID($tablename,"gid"); // save this for later
-            $gidmappings[$oldgid]=$newgid; // add old and new qid to the mapping array
+            $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
         }
     }
                            
@@ -844,7 +860,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
         }
         $oldsid=$insertdata['sid'];
         $insertdata['sid']=$newsid;
-        $insertdata['gid']=$gidmappings[$insertdata['gid']];
+        $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
         $insertdata['question_order']=$newquestionorder;
         $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
@@ -853,16 +869,16 @@ function XMLImportGroup($sFullFilepath, $newsid)
         $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
         $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
         // Insert the new question    
-        if (isset($qidmappings[$oldqid]))
+        if (isset($aQIDReplacements[$oldqid]))
         {
-           $insertdata['qid']=$qidmappings[$oldqid]; 
+           $insertdata['qid']=$aQIDReplacements[$oldqid]; 
         }   
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
-        if (!isset($qidmappings[$oldqid]))
+        if (!isset($aQIDReplacements[$oldqid]))
         {
             $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
-            $qidmappings[$oldqid]=$newqid; // add old and new qid to the mapping array
+            $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
         }
     }
 
@@ -875,16 +891,16 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $insertdata[(string)$key]=(string)$value;
         }
         $insertdata['sid']=$newsid;
-        $insertdata['gid']=$gidmappings[(int)$insertdata['gid']];;
+        $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
         $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
-        $insertdata['parent_qid']=$qidmappings[(int)$insertdata['parent_qid']]; // remap the parent_qid
+        $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
         // now translate any links
         $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
         $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
         $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
-        if (isset($qidmappings[$oldsqid])){
-           $insertdata['qid']=$qidmappings[$oldsqid];
+        if (isset($aQIDReplacements[$oldsqid])){
+           $insertdata['qid']=$aQIDReplacements[$oldsqid];
         }
         
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -892,7 +908,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
         $newsqid=$connect->Insert_ID($tablename,"qid"); // save this for later
         if (!isset($insertdata['qid']))
         {
-            $qidmappings[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
+            $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
         }
         $results['subquestions']++;
     }
@@ -909,7 +925,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            $insertdata['qid']=$qidmappings[(int)$insertdata['qid']]; // remap the parent_qid
+            $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -931,7 +947,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
                 $insertdata[(string)$key]=(string)$value;
             }
             unset($insertdata['qaid']);
-            $insertdata['qid']=$qidmappings[(integer)$insertdata['qid']]; // remap the parent_qid
+            $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -954,8 +970,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            $insertdata['qid']=$qidmappings[(int)$insertdata['qid']]; // remap the qid
-            $insertdata['sqid']=$qidmappings[(int)$insertdata['sqid']]; // remap the subqeustion id
+            $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
+            $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subqeustion id
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -977,15 +993,15 @@ function XMLImportGroup($sFullFilepath, $newsid)
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this condition is orphan -> error, skip this record)
-            if (isset($qidmappings[$insertdata['qid']]))
+            // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this condition is orphan -> error, skip this record)
+            if (isset($aQIDReplacements[$insertdata['qid']]))
             {
-                $insertdata['qid']=$qidmappings[$insertdata['qid']]; // remap the qid
+                $insertdata['qid']=$aQIDReplacements[$insertdata['qid']]; // remap the qid
             }
             else continue; // a problem with this answer record -> don't consider
-            if (isset($qidmappings[$insertdata['cqid']]))
+            if (isset($aQIDReplacements[$insertdata['cqid']]))
             {
-                $insertdata['cqid']=$qidmappings[$insertdata['cqid']]; // remap the qid
+                $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
             }
             else continue; // a problem with this answer record -> don't consider
 
