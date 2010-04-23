@@ -975,7 +975,7 @@ foreach ($theserows as $row)
         //$questionselecter = substr($question, 0, 35)."..";
         $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
     }
-    $quesitonNavOptions .= "<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: ".$questionselecter."</option>";
+    $quesitonNavOptions .= "<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions&amp;subaction=editconditionsform'>{$row['title']}: ".$questionselecter."</option>";
 }
 $quesitonNavOptions .= "</optgroup>\n";
 $quesitonNavOptions .= "<optgroup class='activesurveyselect' label='".$clang->gT("Current","js")."'>\n";
@@ -989,7 +989,7 @@ else
     //$questiontextshort = substr($question, 0, 35)."..";
     $questiontextshort = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 }
-$quesitonNavOptions .= "<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=conditions' selected='selected'>$questiontitle: $questiontextshort</option>";
+$quesitonNavOptions .= "<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=conditions&amp;subaction=editconditionsform' selected='selected'>$questiontitle: $questiontextshort</option>";
 $quesitonNavOptions .= "</optgroup>\n";
 $quesitonNavOptions .= "<optgroup class='activesurveyselect' label='".$clang->gT("After","js")."'>\n";
 foreach ($postrows as $row)
@@ -1005,7 +1005,7 @@ foreach ($postrows as $row)
         //$questionselecter = substr($question, 0, 35)."..";
         $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
     }
-    $quesitonNavOptions .=  "<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: ".$questionselecter."</option>";
+    $quesitonNavOptions .=  "<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions&amp;subaction=editconditionsform'>{$row['title']}: ".$questionselecter."</option>";
 }
 $quesitonNavOptions .= "</optgroup>\n";
 
