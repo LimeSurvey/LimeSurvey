@@ -351,6 +351,8 @@ function spss_fieldmap($prefix = 'V') {
         } elseif ($fieldname == 'refurl') {
             $fieldtype = 'A';
             $val_size = 255;
+        } elseif ($fieldname == 'lastpage') {
+        	$hide = 1;
         }
          
         #Get qid (question id)

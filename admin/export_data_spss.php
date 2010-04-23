@@ -239,7 +239,7 @@ if  ($subaction=='dlstructure') {
     //Create the variable labels:
     echo "*Define Variable Properties.\n";
     foreach ($fields as $field) {
-        if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . "\".\n";
+        if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . str_replace('"','""',mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . "\".\n";
     }
 
     // Create our Value Labels!
