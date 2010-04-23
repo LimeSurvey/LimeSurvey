@@ -647,9 +647,10 @@ isset($_SESSION['step']) && $_SESSION['step']>0)
         ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
         ."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	killSession();
         doFooter();
         exit;
-    }
+    } //TIBO
 }
 if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
 
@@ -674,6 +675,7 @@ if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid
         ."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
+	killSession();
         exit;
     }
 }
@@ -2173,6 +2175,7 @@ function buildsurveysession()
 
             echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
             doFooter();
+            killSession();
             exit;
         }
     }
