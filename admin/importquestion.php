@@ -114,7 +114,9 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 {
     global $dbprefix, $connect;
     $aLIDReplacements=array();
-    $aQIDReplacements = array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
+    $aQIDReplacements=array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
+    $aSQIDReplacements=array();     
+    
     $handle = fopen($sFullFilepath, "r");
     while (!feof($handle))
     {
@@ -139,7 +141,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
     
     if  ((int)$importversion<112)
     {
-        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and later are support.");
+        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
     }
 
     for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
@@ -492,7 +494,6 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             
         }
         $qtypes = getqtypelist("" ,"array");   
-        $subquestionids=array();
         $results['answers']=0;
         $results['subquestions']=0;
         
@@ -515,9 +516,9 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     }
                     else
                     {
-                        if (isset($subquestionids[$answerrowdata['code']])){
+                        if (isset($aSQIDReplacements[$answerrowdata['code']])){
                            $fieldname='qid,';
-                           $data=$subquestionids[$answerrowdata['code']].',';
+                           $data=$aSQIDReplacements[$answerrowdata['code']].',';
                         }  
                         else{
                            $fieldname='' ;
@@ -529,7 +530,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                         $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                         if ($fieldname=='')
                         {
-                           $subquestionids[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                           $aSQIDReplacements[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                         }
                         
                     }
@@ -594,8 +595,8 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion
                 {
                     $questionrowdata=array();
-                    if (isset($subquestionids[$answerrowdata['code']])){
-                       $questionrowdata['qid']=$subquestionids[$answerrowdata['code']];
+                    if (isset($aSQIDReplacements[$answerrowdata['code']])){
+                       $questionrowdata['qid']=$aSQIDReplacements[$answerrowdata['code']];
                     }  
                     $questionrowdata['parent_qid']=$answerrowdata['qid'];
                     $questionrowdata['sid']=$newsid;
@@ -611,7 +612,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     $qres = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                     if (!isset($questionrowdata['qid']))
                     {
-                       $subquestionids[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                       $aSQIDReplacements[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                     }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
@@ -619,7 +620,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     {                    
                         $insertdata=array();                      
                         $insertdata['qid']=$newqid;
-                        $insertdata['sqid']=$subquestionids[$answerrowdata['code']];
+                        $insertdata['sqid']=$aSQIDReplacements[$answerrowdata['code']];
                         $insertdata['language']=$answerrowdata['language'];
                         $insertdata['defaultvalue']='Y';
                         $tablename=$dbprefix.'defaultvalues'; 

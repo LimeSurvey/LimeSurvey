@@ -455,7 +455,12 @@ if ($surveyexists == 1 && tableExists('tokens_'.$thissurvey['sid']))
 else
 {
     $tokensexist = 0;
-}
+    unset ($_POST['token']);
+    unset ($_GET['token']);
+    unset($token);
+    unset($clienttoken);
+}    
+
 
 
 

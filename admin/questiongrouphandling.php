@@ -67,7 +67,7 @@ if ($action == "addgroup")
     . "<form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
     . "<ul>\n"
     . "<li>\n"
-    . "<label for='the_file'>".$clang->gT("Select CSV File:")."</label>\n"
+    . "<label for='the_file'>".$clang->gT("Select question group file (*.lsg/*.csv):")."</label>\n"
     . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"35\" /></li>\n"
     . "<li><label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
     . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></li></ul>\n"

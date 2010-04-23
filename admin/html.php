@@ -3412,7 +3412,7 @@ if ($action == "newsurvey")
         // Import Survey
         $newsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "<ul>\n"
-        . "<li><label for='the_file'>".$clang->gT("Select survey structure file (*.lss, *.csv, *.sql):")."</label>\n"
+        . "<li><label for='the_file'>".$clang->gT("Select survey structure file (*.lss, *.csv):")."</label>\n"
         . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"
         . "<li><label for='translinksfields'>".$clang->gT("Convert resource links and INSERTANS fields?")."</label>\n"
         . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked='checked'/></li></ul>\n"

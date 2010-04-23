@@ -126,7 +126,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
     if  ((int)$importversion<112)
     {
-        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and later are support.");
+        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
     }
         
     for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
@@ -170,7 +170,10 @@ function CSVImportGroup($sFullFilepath, $newsid)
     }
     for ($i=0; $i<=$stoppoint+1; $i++)
     {
-        if ($i<$stoppoint-2) {$questionarray[] = $bigarray[$i];}
+        if ($i<$stoppoint-2)
+        {
+            $questionarray[] = $bigarray[$i];
+        }
         unset($bigarray[$i]);
     }
     $bigarray = array_values($bigarray);
@@ -190,7 +193,10 @@ function CSVImportGroup($sFullFilepath, $newsid)
     }
     for ($i=0; $i<=$stoppoint+1; $i++)
     {
-        if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
+        if ($i<$stoppoint-2)
+        {
+            $answerarray[] = str_replace("`default`", "`default_value`", $bigarray[$i]);
+        }
         unset($bigarray[$i]);
     }
     $bigarray = array_values($bigarray);
@@ -203,10 +209,6 @@ function CSVImportGroup($sFullFilepath, $newsid)
     elseif (array_search("# LABELSETS TABLE\r\n", $bigarray))
     {
         $stoppoint = array_search("# LABELSETS TABLE\r\n", $bigarray);
-    }
-    else
-    {
-        $stoppoint = count($bigarray);
     }
     for ($i=0; $i<=$stoppoint+1; $i++)
     {
@@ -248,6 +250,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
     {
         $stoppoint = count($bigarray)-1;
     }
+
     for ($i=0; $i<=$stoppoint+1; $i++)
     {
         if ($i<$stoppoint-2) {$labelsarray[] = $bigarray[$i];}
@@ -255,7 +258,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
     }
     $bigarray = array_values($bigarray);
 
-    //Question_attributes
+    //Question attributes
     if (!isset($noconditions) || $noconditions != "Y")
     {
         // stoppoint is the last line number
@@ -354,8 +357,15 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
     //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
     $results['labelsets']=0;
+    $qtypes = getqtypelist("" ,"array");
     $results['labels']=0;
-    if (isset($labelsetsarray) && $labelsetsarray) {
+    $results['labelsets']=0;
+    $results['answers']=0;
+    $results['subquestions']=0;
+
+    //Do label sets
+    if (isset($labelsetsarray) && $labelsetsarray)
+    {
         $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
         $count=0;
         foreach ($labelsetsarray as $lsa) {
@@ -367,7 +377,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
             // Save old labelid
             $oldlid=$labelsetrowdata['lid'];
-            // set the new language
+
             unset($labelsetrowdata['lid']);
             $newvalues=array_values($labelsetrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -408,6 +418,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
             //CHECK FOR DUPLICATE LABELSETS
             $thisset="";
+
             $query2 = "SELECT code, title, sortorder, language, assessment_value
                        FROM {$dbprefix}labels
                        WHERE lid=".$newlid."
@@ -429,10 +440,10 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     }
                 }
             }
-            if (isset($lsmatch))
+            if (isset($lsmatch) || ($_SESSION['USER_RIGHT_MANAGE_LABEL'] != 1))
             {
-                //There is a matching labelset. So, we will delete this one and refer
-                //to the matched one.
+                //There is a matching labelset or the user is not allowed to edit labels -
+                // So, we will delete this one and refer to the matched one.
                 $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
                 $result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
                 $results['labels']=$results['labels']-$connect->Affected_Rows();
@@ -462,7 +473,6 @@ function CSVImportGroup($sFullFilepath, $newsid)
         $group_order = 0;   // just to initialize this variable
         foreach ($grouparray as $ga)
         {
-            //GET ORDER OF FIELDS
             $gacfieldcontents=convertCSVRowToArray($ga,',','"');
             $grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
 
@@ -497,17 +507,14 @@ function CSVImportGroup($sFullFilepath, $newsid)
             // Everything set - now insert it
             $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
 
-
             // translate internal links
             $grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
             $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
 
-            $newvalues=array_values($grouprowdata);
-            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}
-
-            $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")";
-            $gres = $connect->Execute($ginsert) or safe_die($clang->gT("Error").": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
+            $tablename=$dbprefix.'groups';
+            $ginsert = $connect->GetinsertSQL($tablename,$grouprowdata);
+            $gres = $connect->Execute($ginsert) or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
             if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
 
             //GET NEW GID  .... if is not done before and we count a group if a new gid is required
@@ -520,14 +527,14 @@ function CSVImportGroup($sFullFilepath, $newsid)
         // GROUPS is DONE
 
         // Import questions
-        $results['questions']=0;
-        $results['answers']=0;
         if (isset($questionarray) && $questionarray) 
         {
             foreach ($questionarray as $qa)
             {
                 $qacfieldcontents=convertCSVRowToArray($qa,',','"');
                 $questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
+                $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+                $questionrowdata["type"]=strtoupper($questionrowdata["type"]);
 
                 // Skip not supported languages
                 if (!in_array($questionrowdata['language'],$aLanguagesSupported))
@@ -543,11 +550,13 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 continue; // a problem with this question record -> don't consider
 
                 // replace the qid or remove it if needed
-                $oldqid = $questionrowdata['qid'];
                 if (isset($aQIDReplacements[$oldqid]))
                 $questionrowdata['qid'] = $aQIDReplacements[$oldqid];
                 else
-                unset($questionrowdata['qid']);
+				{
+                    $oldqid = $questionrowdata['qid'];
+				    unset($questionrowdata['qid']);
+				}
 
             // Save the following values - will need them for proper conversion later                if ((int)$questionrowdata['lid']>0)
                 if ((int)$questionrowdata['lid']>0)
@@ -594,7 +603,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     $aQIDReplacements[$oldqid] = $connect->Insert_ID("{$dbprefix}questions",'qid');
                 }
                 $qtypes = getqtypelist("" ,"array");   
-                $subquestionids=array();
+                $aSQIDReplacements=array();
         
                 
                 // Now we will fix up old label sets where they are used as answers
@@ -615,9 +624,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
                             }
                             else
                             {
-                                if (isset($subquestionids[$answerrowdata['code']])){
+                                if (isset($aSQIDReplacements[$answerrowdata['code']])){
                                    $fieldname='qid,';
-                                   $data=$subquestionids[$answerrowdata['code']].',';
+                                   $data=$aSQIDReplacements[$answerrowdata['code']].',';
                                 }  
                                 else{
                                    $fieldname='' ;
@@ -630,7 +639,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                                 $results['questions']++;
                                 if ($fieldname=='')
                                 {
-                                   $subquestionids[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                                   $aSQIDReplacements[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                                 }
                                 
                             }
@@ -639,7 +648,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                         
                     if (isset($oldquestion['lid2']) && $qtypes[$oldquestion['newtype']]['answerscales']>1)
                     {
-                        $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldquestion['lid2']]}";
+                        $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldquestion['lid2']]} and language='{$questionrowdata['language']}'";
                         $oldlabelsresult=db_execute_assoc($query);
                         while($labelrow=$oldlabelsresult->FetchRow())
                         {
@@ -699,8 +708,8 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion
                 {
                     $questionrowdata=array();
-                    if (isset($subquestionids[$answerrowdata['code']])){
-                       $questionrowdata['qid']=$subquestionids[$answerrowdata['code']];
+                    if (isset($aSQIDReplacements[$answerrowdata['code']])){
+                       $questionrowdata['qid']=$aSQIDReplacements[$answerrowdata['code']];
                     }  
                     $questionrowdata['parent_qid']=$answerrowdata['qid'];
                     $questionrowdata['sid']=$newsid;
@@ -716,7 +725,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     $qres = $connect->Execute($query) or safe_die ("Error: Failed to insert questions <br />{$qinsert}<br />".$connect->ErrorMsg());
                     if (!isset($questionrowdata['qid']))
                     {
-                       $subquestionids[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                       $aSQIDReplacements[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                     }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
@@ -724,7 +733,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     {                    
                         $insertdata=array();                      
                         $insertdata['qid']=$newqid;
-                        $insertdata['sqid']=$subquestionids[$answerrowdata['code']];
+                        $insertdata['sqid']=$aSQIDReplacements[$answerrowdata['code']];
                         $insertdata['language']=$answerrowdata['language'];
                         $insertdata['defaultvalue']='Y';
                         $tablename=$dbprefix.'defaultvalues'; 
@@ -746,7 +755,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
         }
         // ANSWERS is DONE
 
-        // Fix Group sortorder
+        // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
         fixsortorderGroups();
         //... and for the questions inside the groups
         // get all group ids and fix questions inside each group

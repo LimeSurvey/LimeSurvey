@@ -269,7 +269,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action=='addgroup' || $action=='editgroup')
     {
-        if(hasRight($surveyid,'define_questions'))    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include('grouphandling.php');}
+        if(hasRight($surveyid,'define_questions'))    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include('questiongrouphandling.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'saved')
