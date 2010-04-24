@@ -1517,10 +1517,10 @@ class LsrcHelper {
 
                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 
-                if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}
+                db_switchIDInsert('groups',true);
                 $ginsert = 'insert INTO '.db_table_name('groups').' ('.implode(',',array_keys($grouprowdata)).') VALUES ('.implode(',',$newvalues).')';
                 $gres = $connect->Execute($ginsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
-                if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
+                db_switchIDInsert('groups',false);
                 //GET NEW GID
                 if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
 
@@ -1632,7 +1632,7 @@ class LsrcHelper {
                             $questionrowdata['help']=translink('survey', $surveyid, $newsid, $questionrowdata['help']);
 
                             $newvalues=array_values($questionrowdata);
-                            if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
+                            db_switchIDInsert('questions',true);
 
                             //foreach($questionrowdata as $qrd)
                             //$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
@@ -1643,7 +1643,7 @@ class LsrcHelper {
                             $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK | ".$qinsert);
 
                             $qres = $connect->Execute($qinsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
-                            if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
+                            db_switchIDInsert('questions',false);
                             if ($newquestion)
                             {
                                 $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");

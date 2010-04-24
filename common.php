@@ -5549,10 +5549,10 @@ function FixLanguageConsistency($sid, $availlangs='')
                 $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
                 if ($gresult->RecordCount() < 1)
                 {
-                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}   //Checked
+                    db_switchIDInsert('groups',true);
                     $query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";
                     $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
-                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." OFF");}   //Checked
+                    db_switchIDInsert('groups',false);
                 }
             }
             reset($langs);
@@ -5573,10 +5573,10 @@ function FixLanguageConsistency($sid, $availlangs='')
                 $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());   //Checked
                 if ($gresult->RecordCount() < 1)
                 {
-                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}    //Checked
+                    db_switchIDInsert('questions',true);
                     $query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']})";
                     $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked
-                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}      //Checked
+                    db_switchIDInsert('questions',false);
                 }
             }
             reset($langs);
@@ -5600,10 +5600,10 @@ function FixLanguageConsistency($sid, $availlangs='')
                     $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
                     if ($gresult->RecordCount() < 1)
                     {
-                        if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." ON");}    //Checked
+                        db_switchIDInsert('answers',true);
                         $query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,scale_id,sortorder,language,assessment_value) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",{$answer['scale_id']},'{$answer['sortorder']}','{$lang}',{$answer['assessment_value']})";
                         $connect->Execute($query) or safe_die($connect->ErrorMsg()); //Checked
-                        if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." OFF");}   //Checked
+                        db_switchIDInsert('answers',false);
                     }
                 }
                 reset($langs);
@@ -5624,11 +5624,11 @@ function FixLanguageConsistency($sid, $availlangs='')
                 $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
                 if ($gresult->RecordCount() < 1)
                 {
-                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." ON");}   //Checked
+                    db_switchIDInsert('assessments',true);
                     $query = "INSERT INTO ".db_table_name('assessments')." (id,sid,scope,gid,name,minimum,maximum,message,language) "
                     ."VALUES('{$assessment['id']}','{$assessment['sid']}',".db_quoteall($assessment['scope']).",".db_quoteall($assessment['gid']).",".db_quoteall($assessment['name']).",".db_quoteall($assessment['minimum']).",".db_quoteall($assessment['maximum']).",".db_quoteall($assessment['message']).",'{$lang}')";
                     $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
-                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." OFF");}   //Checked
+                    db_switchIDInsert('assessments',false);
                 }
             }
             reset($langs);
@@ -7578,6 +7578,30 @@ function hasRight($sid, $right = null)
     }
     if (empty($right)) return true;
     if (isset($cache[$sid][$uid][$right]) && $cache[$sid][$uid][$right] == 1) return true; else return false;
+}
+
+
+/**
+* This function switches identity insert on/off for the MSSQL database
+* 
+* @param string $table table name (without prefix)
+* @param mixed $state  Set to true to activate ID insert, or false to deactivate
+*/
+function db_switchIDInsert($table,$state)
+{
+    global $databasetype, $connect;
+    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') 
+    {
+        if ($state==true) 
+        {
+            $connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' ON');
+        }
+        else
+        {
+            $connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' OFF');
+            
+        }
+    }
 }
 
 // Closing PHP tag intentionally left out - yes, it is okay       

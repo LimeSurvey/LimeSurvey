@@ -511,11 +511,11 @@ function CSVImportGroup($sFullFilepath, $newsid)
             $grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
             $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
 
-            if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}
+            db_switchIDInsert('groups',true);
             $tablename=$dbprefix.'groups';
             $ginsert = $connect->GetinsertSQL($tablename,$grouprowdata);
             $gres = $connect->Execute($ginsert) or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
-            if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
+            db_switchIDInsert('groups',false);
 
             //GET NEW GID  .... if is not done before and we count a group if a new gid is required
             if ($newgid == 0)
@@ -591,10 +591,10 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
                 $newvalues=array_values($questionrowdata);
                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                db_switchIDInsert('questions',true);
                 $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
-                if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
                 $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error")."Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
-                if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
+                db_switchIDInsert('questions',false);
                 $results['questions']++;
 
                 //GET NEW QID  .... if is not done before and we count a question if a new qid is required

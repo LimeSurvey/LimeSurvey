@@ -284,7 +284,7 @@ else
             }
             if (isset($fielddata['id']))
             {
-                if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.$surveytable." ON");}   //Checked
+                db_switchIDInsert(true);
             }
             // try again, without the 'id' field.
 
@@ -296,7 +296,7 @@ else
 
             if (isset($fielddata['id']))
             {
-                if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.$surveytable." OFF");}   //Checked
+                db_switchIDInsert(false);
             }
 
 

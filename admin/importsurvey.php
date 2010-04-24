@@ -20,31 +20,27 @@ if (!isset($importingfrom) || isset($_REQUEST['importingfrom']))
     die("Cannot run this script directly");
 }
 
+$sFullFilepath=$the_full_file_path;
+$aPathInfo = pathinfo($sFullFilepath);
+$sExtension = $aPathInfo['extension'];
 
-$handle = fopen($the_full_file_path, "r");
-while (!feof($handle))
+                    
+if (strtolower($sExtension)=='csv')
 {
-
-    $buffer = fgets($handle);
-    $bigarray[] = $buffer;
+    $aImportResults=CSVImportSurvey($sFullFilepath);
 }
-fclose($handle);
+elseif (strtolower($sExtension)=='lss')
+{
+    $aImportResults=XMLImportSurvey($sFullFilepath);
+}
 
 
-$counts=ImportCSVFormat($bigarray);
-
-/**
-* This function imports the old CSV data from 1.87 or older. Starting with 1.90 (DBVersion 143) there is an XML format instead
-* 
-* @param array $bigarray
-* @returns array Information of imported questions/answers/etc.
-*/
 
 
 // Translate INSERTANS codes
-if (isset($counts['fieldnames']))
+if (isset($aImportResults['fieldnames']))
 {
-    transInsertAns($counts['newsid'],$counts['oldsid'],$counts['fieldnames']);
+    transInsertAns($aImportResults['newsid'],$aImportResults['oldsid'],$aImportResults['fieldnames']);
 }
 
 
@@ -54,61 +50,89 @@ if ($importingfrom == "http")
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
     $importsurvey .= "<strong><u>".$clang->gT("Survey import summary")."</u></strong><br />\n";
-    $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$counts['surveys']}</li>\n";
-    if ($counts['importversion']>=111)
+    $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$aImportResults['surveys']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Languages").": {$aImportResults['languages']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Question groups").": {$aImportResults['groups']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Questions").": {$aImportResults['questions']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Answers").": {$aImportResults['answers']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";
+    if (isset($aImportResults['labelsets']))
     {
-        $importsurvey .= "\t<li>".$clang->gT("Languages").": {$counts['languages']}</li>\n";
+        $importsurvey .= "\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
     }
-    $importsurvey .= "\t<li>".$clang->gT("Question groups").": {$counts['groups']}</li>\n";
-    $importsurvey .= "\t<li>".$clang->gT("Questions").": {$counts['questions']}</li>\n";
-    $importsurvey .= "\t<li>".$clang->gT("Answers").": {$counts['answers']}</li>\n";
-    $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$counts['conditions']}</li>\n";
-    $importsurvey .= "\t<li>".$clang->gT("Label Sets").": {$counts['labelsets']}</li>\n";
-    if ($counts['deniedcountls']>0)
+    if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls']>0)
     {
-        $importsurvey .= "\t<li>".$clang->gT("Not imported label sets").": {$counts['deniedcountls']} ".$clang->gT("(Label sets were not imported since you do not have the permission to create new label sets.)")."</li>\n";
+        $importsurvey .= "\t<li>".$clang->gT("Not imported label sets").": {$aImportResults['deniedcountls']} ".$clang->gT("(Label sets were not imported since you do not have the permission to create new label sets.)")."</li>\n";
     }
-    $importsurvey .= "\t<li>".$clang->gT("Question attributes").": {$counts['question_attributes']}</li>\n";
-    $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$counts['assessments']}</li>\n";
-    $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$counts['quota']} ({$counts['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$counts['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
-    if ($counts['importwarning'] != "") $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">" . $counts['importwarning'] . "</ul><br />\n";
+    $importsurvey .= "\t<li>".$clang->gT("Question attributes").": {$aImportResults['question_attributes']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$aImportResults['assessments']}</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$aImportResults['quota']} ({$aImportResults['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$aImportResults['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
+    if (count($aImportResults['importwarnings'])>0) 
+    {
+        $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">";
+        foreach ($aImportResults['importwarnings'] as $warning)
+        {
+            $importsurvey .='<li>'.$warning.'</li>';
+        }
+        $importsurvey .= "</ul><br />\n";
+    }
     $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
-    . "<a href='$scriptname?sid={$counts['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
+    . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
     $importsurvey .= "</div><br />\n";
-    unlink($the_full_file_path);
+    unlink($sFullFilepath);
 }
 else
 {
     echo "\n".$clang->gT("Success")."\n\n";
     echo $clang->gT("Survey Import Summary")."\n";
-    echo $clang->gT("Surveys").": {$counts['surveys']}\n";
-    if ($counts['importversion']>=111)
+    echo $clang->gT("Surveys").": {$aImportResults['surveys']}\n";
+    if ($aImportResults['importversion']>=111)
     {
-        echo $clang->gT("Languages").": {$counts['languages']}\n";
+        echo $clang->gT("Languages").": {$aImportResults['languages']}\n";
     }
-    echo $clang->gT("Groups").": {$counts['groups']}\n";
-    echo $clang->gT("Questions").": {$counts['questions']}\n";
-    echo $clang->gT("Answers").": {$counts['answers']}\n";
-    echo $clang->gT("Conditions").": {$counts['conditions']}\n";
-    echo $clang->gT("Label Sets").": {$counts['labelsets']}\n";
+    echo $clang->gT("Groups").": {$aImportResults['groups']}\n";
+    echo $clang->gT("Questions").": {$aImportResults['questions']}\n";
+    echo $clang->gT("Answers").": {$aImportResults['answers']}\n";
+    echo $clang->gT("Conditions").": {$aImportResults['conditions']}\n";
+    if (isset($aImportResults['labelsets']))
+    {
+        echo $clang->gT("Label sets").": {$aImportResults['labelsets']}\n";
+    }
     if ($importresults['deniedcountls']>0) echo $clang->gT("Not imported Label Sets").": {$importresults['deniedcountls']} (".$clang->gT("(Label Sets were not imported since you do not have the permission to create new label sets.)");
-    echo $clang->gT("Question Attributes").": {$counts['question_attributes']}\n";
-    echo $clang->gT("Assessments").": {$counts['assessments']}\n\n";
+    echo $clang->gT("Question Attributes").": {$aImportResults['question_attributes']}\n";
+    echo $clang->gT("Assessments").": {$aImportResults['assessments']}\n\n";
 
     echo $clang->gT("Import of Survey is completed.")."\n";
-    if ($counts['importwarning'] != "") echo "\n".$clang->gT("Warnings").":\n" . $counts['importwarning'] . "\n";
+    if ($aImportResults['importwarnings'] != "") echo "\n".$clang->gT("Warnings").":\n" . $aImportResults['importwarnings'] . "\n";
     $surveyid=$newsid;
 
 }
 
-
-function ImportCSVFormat($bigarray)
+/**
+* This function imports the old CSV data from 1.50 to 1.87 or older. Starting with 1.90 (DBVersion 143) there is an XML format instead
+* 
+* @param array $sFullFilepath
+* @returns array Information of imported questions/answers/etc.
+*/
+function CSVImportSurvey($sFullFilepath)
 {
-    global $dbprefix, $connect, $timeadjust, $clang;    
+    global $dbprefix, $connect, $timeadjust, $clang; 
+
+    $handle = fopen($sFullFilepath, "r");
+    while (!feof($handle))
+    {
+
+        $buffer = fgets($handle);
+        $bigarray[] = $buffer;
+    }
+    fclose($handle);
+       
     $aSQIDReplacements=array();     
     $aGIDReplacements=array();     
     $substitutions=array();
     $aQuotaReplacements=array();     
+    $importresults['importwarnings']=array();     
+    $importresults['question_attributes']=0;
     
     if (isset($bigarray[0])) $bigarray[0]=removeBOM($bigarray[0]);
 
@@ -131,7 +155,7 @@ function ImportCSVFormat($bigarray)
             $importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
             $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
             $importsurvey .= "</div>\n";
-            unlink($the_full_file_path);
+            unlink($sFullFilepath);
             return;
         }
         else
@@ -435,12 +459,11 @@ function ImportCSVFormat($bigarray)
 
     if (isset($surveyarray)) {$importresults['surveys'] = count($surveyarray);} else {$importresults['surveys'] = 0;}
     if (isset($surveylsarray)) {$importresults['languages'] = count($surveylsarray)-1;} else {$importresults['languages'] = 1;}
-    if (isset($grouparray)) {$importresults['groups'] = count($grouparray);} else {$importresults['groups'] = 0;}
+    if (isset($grouparray)) {$importresults['groups'] = count($grouparray)-1;} else {$importresults['groups'] = 0;}
     if (isset($questionarray)) {$importresults['questions'] = count($questionarray);} else {$importresults['questions']=0;}
     if (isset($answerarray)) {$importresults['answers'] = count($answerarray);} else {$importresults['answers']=0;}
     if (isset($conditionsarray)) {$importresults['conditions'] = count($conditionsarray);} else {$importresults['conditions']=0;}
     if (isset($labelsetsarray)) {$importresults['labelsets'] = count($labelsetsarray);} else {$importresults['labelsets']=0;}
-    if (isset($question_attributesarray)) {$importresults['question_attributes'] = count($question_attributesarray);} else {$importresults['question_attributes']=0;}
     if (isset($assessmentsarray)) {$importresults['assessments']=count($assessmentsarray);} else {$importresults['assessments']=0;}
     if (isset($quotaarray)) {$importresults['quota']=count($quotaarray);} else {$importresults['quota']=0;}
     if (isset($quotamembersarray)) {$importresults['quotamembers']=count($quotamembersarray);} else {$importresults['quotamembers']=0;}
@@ -455,7 +478,6 @@ function ImportCSVFormat($bigarray)
     if ($importresults['assessments']>0){$importresults['assessments']--;};
     if ($importresults['conditions']>0){$importresults['conditions']--;};
     if ($importresults['labelsets']>0){$importresults['labelsets']--;};
-    if ($importresults['question_attributes']>0){$importresults['question_attributes']--;};
     if ($importresults['quota']>0){$importresults['quota']--;};
     $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
     $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
@@ -472,7 +494,7 @@ function ImportCSVFormat($bigarray)
             $importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br /><br />\n"; //Couldn't find the SID - cannot continue
             $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
             $importsurvey .= "</div>\n";
-            unlink($the_full_file_path); //Delete the uploaded file
+            unlink($sFullFilepath); //Delete the uploaded file
             return;
         }
         else
@@ -482,25 +504,8 @@ function ImportCSVFormat($bigarray)
         }
     }
 
-    // Use the existing surveyid if it does not already exists
-    // This allows the URL links to the survey to keep working because the sid did not change
-    $newsid = $oldsid;
-    $isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid";
-    $isresult = db_execute_assoc($isquery);
-    if ($isresult->RecordCount()>0)
-    {
-        // Get new random ids until one is found that is not used
-        do
-        {
-            $newsid = getRandomID();
-            $isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid";
-            $isresult = db_execute_assoc($isquery);
-        }
-        while ($isresult->RecordCount()>0);
-    }
-
+    $newsid = GetNewSurveyID($oldsid);
    
-    $importresults['importwarning'] = "";    // used to save the warnings while processing questions
     $insert=$surveyarray[0];
     $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
     $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
@@ -511,7 +516,7 @@ function ImportCSVFormat($bigarray)
     $surveyrowdata['sid']=$newsid;
     $surveyrowdata['active']='N';
 
-    if (validate_templatedir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarning'] .= "<li>". sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']) ."</li>";
+    if (validate_templatedir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarnings'][] = sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']);
 
     if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connect->BindTimeStamp($surveyrowdata['datecreated']);}
     unset($surveyrowdata['expires']);
@@ -712,14 +717,16 @@ function ImportCSVFormat($bigarray)
             $grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
             $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
 
-            if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}
+            db_switchIDInsert('groups',true);
             $tablename=$dbprefix.'groups';
             $ginsert = $connect->GetinsertSQL($tablename,$grouprowdata);
             $gres = $connect->Execute($ginsert) or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
-            if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
+            db_switchIDInsert('groups',false);
             //GET NEW GID
             if (!isset($grouprowdata['gid'])) {$aGIDReplacements[$oldgid]=$connect->Insert_ID("{$dbprefix}groups","gid");}
         }
+        // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
+        fixsortorderGroups();
     }
     // GROUPS is DONE
     
@@ -781,13 +788,17 @@ function ImportCSVFormat($bigarray)
             $questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
 
 
-            if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
+            if (isset($questionrowdata['qid'])) {
+                db_switchIDInsert('questions',true);
+            }
 
             $tablename=$dbprefix.'questions';
             $qinsert = $connect->GetInsertSQL($tablename,$questionrowdata);
             $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 
-            if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
+            if (isset($questionrowdata['qid'])) {
+                db_switchIDInsert('questions',false);
+            }
             else
             {
                 $aQIDReplacements[$oldqid]=$connect->Insert_ID("{$dbprefix}questions","qid");
@@ -940,8 +951,6 @@ function ImportCSVFormat($bigarray)
         }
     }
 
-    // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
-    fixsortorderGroups();
     //... and for the questions inside the groups
     // get all group ids and fix questions inside each group
     $gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)
@@ -954,62 +963,45 @@ function ImportCSVFormat($bigarray)
     //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
     //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions and question_attributes.
     if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
-        $count=0;
+        $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+        unset($question_attributesarray[0]);
         foreach ($question_attributesarray as $qar) {
-            $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
             $fieldcontents=convertCSVRowToArray($qar,',','"');
-            if ($count==0) {$count++; continue;}
             $qarowdata=array_combine($fieldorders,$fieldcontents);
             $newqid="";
-            $oldqid=$qarowdata['qid'];
-            foreach ($substitutions as $subs) {
-                if ($oldqid==$subs[2]) {$newqid=$subs[5];}
-            }
-
-            $qarowdata["qid"]=$newqid;
+            $qarowdata["qid"]=$aQIDReplacements[$qarowdata["qid"]];
             unset($qarowdata["qaid"]);
 
             $newvalues=array_values($qarowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")";
             $result=$connect->Execute($qainsert); // no safe_die since some LimeSurvey version export duplicate question attributes - these are just ignored
+            if ($connect->Affected_Rows()>0) {$importresults['question_attributes']++;}
         }
     }
 
     if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUTES
-        $count=0;
-        foreach ($assessmentsarray as $qar) {
-            $fieldorders  =convertCSVRowToArray($assessmentsarray[0],',','"');
+        $fieldorders=convertCSVRowToArray($assessmentsarray[0],',','"');
+        unset($assessmentsarray[0]);
+        foreach ($assessmentsarray as $qar) 
+        {
             $fieldcontents=convertCSVRowToArray($qar,',','"');
-            if ($count==0) {$count++; continue;}
             $asrowdata=array_combine($fieldorders,$fieldcontents);
             if (isset($asrowdata['link']))
             {
                 if (trim($asrowdata['link'])!='') $asrowdata['message']=$asrowdata['message'].'<br /><a href="'.$asrowdata['link'].'">'.$asrowdata['link'].'</a>';
                 unset($asrowdata['link']);
             }
-            $oldsid=$asrowdata["sid"];
-            $oldgid=$asrowdata["gid"];
-            if  ($oldgid>0)
+            if  ($asrowdata["gid"]>0)
             {
-                foreach ($substitutions as $subs) {
-                    if ($oldsid==$subs[0]) {$newsid=$subs[3];}
-                    if ($oldgid==$subs[1]) {$newgid=$subs[4];}
-                }
-            }
-            else
-            {
-                $newgid=0;
+                $asrowdata["gid"]=$aGIDReplacements[$asrowdata["gid"]];
             }
 
             $asrowdata["sid"]=$newsid;
-            $asrowdata["gid"]=$newgid;
             unset($asrowdata["id"]);
 
-
-            $newvalues=array_values($asrowdata);
-            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-            $asinsert = "insert INTO {$dbprefix}assessments (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")";
+            $tablename=$dbprefix.'assessments';
+            $asinsert = $connect->GetInsertSQL($tablename,$asrowdata);
             $result=$connect->Execute($asinsert) or safe_die ("Couldn't insert assessment<br />$asinsert<br />".$connect->ErrorMsg());
 
             unset($newgid);
@@ -1157,3 +1149,468 @@ function ImportCSVFormat($bigarray)
     $importresults['oldsid']=$oldsid;
     return $importresults;
 }
+
+
+
+/**
+* This function imports a LimeSurvey .lss survey XML file
+* 
+* @param mixed $sFullFilepath  The full filepath of the uploaded file
+*/
+function XMLImportSurvey($sFullFilepath)
+{
+    global $connect, $dbprefix, $clang;
+    
+    $xml = simplexml_load_file($sFullFilepath);    
+    if ($xml->LimeSurveyDocType!='Survey') safe_die('This is not a valid LimeSurvey survey structure XML file.');
+    $dbversion = (int) $xml->DBVersion;
+    $aQIDReplacements=array();   
+    $aQuotaReplacements=array();   
+    $results['defaultvalues']=0;
+    $results['answers']=0;
+    $results['surveys']=0;
+    $results['questions']=0;
+    $results['subquestions']=0;
+    $results['question_attributes']=0;
+    $results['groups']=0;
+    $results['assessments']=0;
+    $results['quota']=0;
+    $results['quotals']=0;
+    $results['quotamembers']=0;
+    $results['importwarnings']=array();
+
+    
+    $aLanguagesSupported=array();
+    foreach ($xml->languages->language as $language)
+    {
+        $aLanguagesSupported[]=(string)$language;
+    }     
+    $results['languages']=count($aLanguagesSupported);
+    
+
+    // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
+    /*
+    $fieldnames=array();
+    foreach ($xml->questions->fields->fieldname as $fieldname )
+    {
+        $fieldnames[]=(string)$fieldname;
+    };*/
+    
+                           
+    // Import surveys table ===================================================================================
+                           
+    $tablename=$dbprefix.'surveys';
+    foreach ($xml->surveys->rows->row as $row)
+    {
+        $insertdata=array(); 
+        foreach ($row as $key=>$value)
+        {
+            $insertdata[(string)$key]=(string)$value;
+        }
+        $oldsid=$insertdata['sid'];
+        $newsid=GetNewSurveyID($oldsid);
+        $insertdata['sid']=$newsid;
+
+        db_switchIDInsert('surveys',true);
+        $query=$connect->GetInsertSQL($tablename,$insertdata); 
+        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+        $results['surveys']++;
+        db_switchIDInsert('surveys',false);
+    } 
+    $results['newsid']=$newsid;                          
+
+    // Import survey languagesettings table ===================================================================================
+                           
+    $tablename=$dbprefix.'surveys_languagesettings';
+    foreach ($xml->surveys_languagesettings->rows->row as $row)
+    {
+        $insertdata=array(); 
+        foreach ($row as $key=>$value)
+        {
+            $insertdata[(string)$key]=(string)$value;
+        }
+        $insertdata['surveyls_survey_id']=$newsid;
+
+        $insertdata['surveyls_title']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_title']);
+        $insertdata['surveyls_description']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_description']);
+        $insertdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_welcometext']);
+        $insertdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_urldescription']);
+        $insertdata['surveyls_email_invite']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_email_invite']);
+        $insertdata['surveyls_email_remind']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_email_remind']);
+        $insertdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_email_register']);
+        $insertdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_email_confirm']);
+        
+        $query=$connect->GetInsertSQL($tablename,$insertdata); 
+        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+    }                           
+
+                           
+    // Import groups table ===================================================================================
+
+    $tablename=$dbprefix.'groups';
+    $newgrouporder=$connect->GetOne("SELECT MAX(group_order) AS maxqo FROM ".db_table_name('group')." WHERE sid=$newsid")+1;
+    if ($newgrouporder===false) 
+    {
+        $newgrouporder=0;
+    }
+    else {
+        $newgrouporder++;
+    }
+    foreach ($xml->groups->rows->row as $row)
+    {
+       $insertdata=array(); 
+        foreach ($row as $key=>$value)
+        {
+            $insertdata[(string)$key]=(string)$value;
+        }
+        $oldsid=$insertdata['sid'];
+        $insertdata['sid']=$newsid;
+        $insertdata['group_order']=$newgrouporder;
+        $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
+
+        // now translate any links
+        $insertdata['group_name']=translink('survey', $oldsid, $newsid, $insertdata['group_name']);
+        $insertdata['description']=translink('survey', $oldsid, $newsid, $insertdata['description']);
+        // Insert the new question    
+        if (isset($aGIDReplacements[$oldgid]))
+        {
+           $insertdata['gid']=$aGIDReplacements[$oldgid]; 
+        }   
+        $query=$connect->GetInsertSQL($tablename,$insertdata); 
+        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+        $results['groups']++;
+        
+        if (!isset($aGIDReplacements[$oldgid]))
+        {
+            $newgid=$connect->Insert_ID($tablename,"gid"); // save this for later
+            $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+        }
+    }
+                           
+                                                                                      
+    // Import questions table ===================================================================================
+
+    // We have to run the question table data two times - first to find all main questions
+    // then for subquestions (because we need to determine the new qids for the main questions first)
+    if(isset($xml->questions))  // there could be surveys without a any questions
+    {
+        $tablename=$dbprefix.'questions';
+        $newquestionorder=$connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
+        if ($newquestionorder===false) 
+        {
+            $newquestionorder=0;
+        }
+        else {
+            $newquestionorder++;
+        }
+        foreach ($xml->questions->rows->row as $row)
+        {
+           $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $oldsid=$insertdata['sid'];
+            $insertdata['sid']=$newsid;
+            $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
+            $insertdata['question_order']=$newquestionorder;
+            $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+
+            // now translate any links
+            $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
+            $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
+            $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            // Insert the new question    
+            if (isset($aQIDReplacements[$oldqid]))
+            {
+               $insertdata['qid']=$aQIDReplacements[$oldqid]; 
+            }   
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            if (!isset($aQIDReplacements[$oldqid]))
+            {
+                $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
+                $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
+                $results['questions']++;
+            }
+        }
+    }
+
+    // Import subquestions --------------------------------------------------------------
+    if(isset($xml->subquestions))
+    {
+        $tablename=$dbprefix.'questions';
+    
+        foreach ($xml->subquestions->rows->row as $row)
+        {
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['sid']=$newsid;
+            $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
+            $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+            $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
+
+            // now translate any links
+            $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
+            $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
+            $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            if (isset($aQIDReplacements[$oldsqid])){
+               $insertdata['qid']=$aQIDReplacements[$oldsqid];
+            }
+            
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            $newsqid=$connect->Insert_ID($tablename,"qid"); // save this for later
+            if (!isset($insertdata['qid']))
+            {
+                $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
+            }
+            $results['subquestions']++;
+        }
+    }
+
+    // Import answers --------------------------------------------------------------
+    if(isset($xml->answers))
+    {
+        $tablename=$dbprefix.'answers';
+        
+        foreach ($xml->answers->rows->row as $row)
+        {
+           $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
+
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            $results['answers']++;
+        }            
+    }
+
+    // Import questionattributes --------------------------------------------------------------
+    if(isset($xml->question_attributes))
+    {
+        $tablename=$dbprefix.'question_attributes';
+        
+        foreach ($xml->question_attributes->rows->row as $row)
+        {
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            unset($insertdata['qaid']);
+            $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the parent_qid
+
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            $results['question_attributes']++;
+        }        
+    }
+    
+    
+    // Import defaultvalues --------------------------------------------------------------
+    if(isset($xml->defaultvalues))
+    {
+        $tablename=$dbprefix.'defaultvalues';
+        
+        $results['defaultvalues']=0;
+        foreach ($xml->defaultvalues->rows->row as $row)
+        {
+           $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
+            $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subqeustion id
+
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $results['defaultvalues']++;
+        }             
+    }
+
+    // Import conditions --------------------------------------------------------------
+    if(isset($xml->conditions))
+    {
+        $tablename=$dbprefix.'conditions';
+        
+        $results['conditions']=0;
+        foreach ($xml->conditions->rows->row as $row)
+        {
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this condition is orphan -> error, skip this record)
+            if (isset($aQIDReplacements[$insertdata['qid']]))
+            {
+                $insertdata['qid']=$aQIDReplacements[$insertdata['qid']]; // remap the qid
+            }
+            else continue; // a problem with this answer record -> don't consider
+            if (isset($aQIDReplacements[$insertdata['cqid']]))
+            {
+                $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
+            }
+            else continue; // a problem with this answer record -> don't consider
+
+            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
+
+            unset($insertdata["cid"]);
+
+            // recreate the cfieldname with the new IDs
+            if (preg_match("/^\+/",$oldcsid))
+            {
+                $newcfieldname = '+'.$newsid . "X" . $newgid . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+            }
+            else
+            {
+                $newcfieldname = $newsid . "X" . $newgid . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+            }
+
+            $insertdata["cfieldname"] = $newcfieldname;
+            if (trim($insertdata["method"])=='')
+            {
+                $insertdata["method"]='==';
+            }            
+
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $results['conditions']++;
+        }             
+    }
+    
+    // Import assessments --------------------------------------------------------------
+    if(isset($xml->assessments))
+    {
+        $tablename=$dbprefix.'assessments';
+        
+        foreach ($xml->assessments->rows->row as $row)
+        {
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            if  ($insertdata['gid']>0)
+            {
+                $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']]; // remap the qid
+            }
+            
+            $insertdata['sid']=$newsid; // remap the survey id
+
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $results['assessments']++;
+        }             
+    }
+    
+    // Import quota --------------------------------------------------------------
+    if(isset($xml->quota))
+    {
+        $tablename=$dbprefix.'quota';
+        
+        foreach ($xml->quota->rows->row as $row)
+        {
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['sid']=$newsid; // remap the survey id
+            $oldid=$insertdata['id'];
+            unset($insertdata['id']);
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $aQuotaReplacements[$oldid] = $connect->Insert_ID(db_table_name_nq('quota'),"id");                 
+            $results['quota']++;
+        }             
+    }
+    
+    // Import quota_members --------------------------------------------------------------
+    if(isset($xml->quota_members))
+    {
+        $tablename=$dbprefix.'quota_members';
+        
+        foreach ($xml->quota_members->rows->row as $row)
+        {
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['sid']=$newsid; // remap the survey id
+            $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
+            $insertdata['quota_id']=$aQuotaReplacements[(int)$insertdata['quota_id']]; // remap the qid
+            unset($insertdata['id']);
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $results['quotamembers']++;
+        }             
+    }    
+    
+    // Import quota_languagesettings --------------------------------------------------------------
+    if(isset($xml->quota_languagesettings))
+    {
+        $tablename=$dbprefix.'quota_languagesettings';
+        
+        foreach ($xml->quota_languagesettings->rows->row as $row)
+        {
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['quotals_quota_id']=$aQuotaReplacements[(int)$insertdata['quotals_quota_id']]; // remap the qid
+            unset($insertdata['quotals_id']);
+            // now translate any links
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $results['quotals']++;
+        }             
+    }     
+    
+    return $results;
+}
+
+/**
+* This function returns a new random sid if the existing one is taken,
+* otherwise it returns the old one.
+* 
+* @param mixed $oldsid
+*/
+function GetNewSurveyID($oldsid)
+{
+    global $connect, $dbprefix;
+    $isresult = $connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$oldsid");
+    if ($isresult!==false)
+    {
+        // Get new random ids until one is found that is not used
+        do
+        {
+            $newsid = getRandomID();
+            $isresult = $connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid");
+        }
+        while ($isresult!==false);
+        return $newsid;
+    }
+    else
+    {
+        return $oldsid;
+    }
+}
+

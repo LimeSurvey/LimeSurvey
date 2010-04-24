@@ -106,15 +106,23 @@ function getXMLStructure($xmlwriter, $exclude=array())
     //Questions    
     $qquery = "SELECT *
            FROM {$dbprefix}questions 
-           WHERE sid=$surveyid 
+           WHERE sid=$surveyid and parent_qid=0 
            ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery);
+
+    //Subquestions    
+    $qquery = "SELECT *
+           FROM {$dbprefix}questions 
+           WHERE sid=$surveyid and parent_qid>0
+           ORDER BY qid";
+    BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
+
     
     //Question attributes
     $query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
           FROM {$dbprefix}question_attributes 
 		  WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where sid=$surveyid group by qid)";
-    BuildXMLFromQuery($xmlwriter,$query);
+    BuildXMLFromQuery($xmlwriter,$query,'question_attributes');
 
     if ((!empty($exclude) && $exclude['quotas'] !== true) || empty($exclude))
     {
@@ -154,7 +162,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
 
 function getXMLData($exclude = array())
 {
-    global $dbversionnumber;
+    global $dbversionnumber,$surveyid;
     $xml =new XMLWriter();
     $xml->openMemory();
     $xml->setIndent(true);
@@ -162,6 +170,14 @@ function getXMLData($exclude = array())
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType','Survey');    
     $xml->writeElement('DBVersion',$dbversionnumber);
+    $xml->startElement('languages');
+    $surveylanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
+    $surveylanguages[]=GetBaseLanguageFromSurveyID($surveyid);
+    foreach ($surveylanguages as $surveylanguage)   
+    {
+        $xml->writeElement('language',$surveylanguage);    
+    }
+    $xml->endElement();    
     getXMLStructure($xml,$exclude);
     $xml->endElement(); // close columns
     $xml->endDocument();

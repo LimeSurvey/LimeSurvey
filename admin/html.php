@@ -2104,7 +2104,7 @@ if($action == "exportstructure")
         ."<label for='surveycsv'>"
         .$clang->gT("LimeSurvey XML survey file (*.lss)")."</label></li>\n";
 
-	    $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructurequeXML'  id='queXML'"
+	    $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructurequexml'  id='queXML'"
 	    ."<label for='queXML'>"
 	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
 	    ."</label></li>\n";

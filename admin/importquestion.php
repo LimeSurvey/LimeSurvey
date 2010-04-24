@@ -481,12 +481,10 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             
             $newvalues=array_values($questionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-            if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
-
+            db_switchIDInsert('questions',true);
             $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
             $qres = $connect->Execute($qinsert) or safe_die ("Error: Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
-
-            if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
+            db_switchIDInsert('questions',false);
 
             // set the newqid only if is not set
             if (!isset($newqid))
