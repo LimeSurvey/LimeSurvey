@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Finnish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-13 07:00+0100\n"
-"PO-Revision-Date: 2010-01-13 16:54+0200\n"
+"PO-Revision-Date: 2010-03-12 10:59+0200\n"
 "Last-Translator: Tapio Nurminen <tapio.nurminen@tietokannat.fi>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -159,7 +159,7 @@ msgstr "hollanti"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:210
 msgid "Dutch Informal"
-msgstr ""
+msgstr "Hollanti, epävirallinen"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:216
 msgid "English"
@@ -279,7 +279,7 @@ msgstr "slovakia"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:390
 msgid "Sinhala"
-msgstr ""
+msgstr "Sinhala"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:396
 msgid "Slovenian"
@@ -316,11 +316,11 @@ msgstr "vietnam"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:250
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:453
 msgid "Back to main menu"
-msgstr ""
+msgstr "Takaisin päävalikkoon"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:322
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
-msgstr "Varoitus: Käytät edelleen oletussalasanaa ('salasana'). Vaihda salasana ja kirjaudu sisään uudelleen."
+msgstr "Varoitus: Käytät edelleen oletussalasanaa ('password'). Vaihda salasana ja kirjaudu sisään uudelleen."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:325
 msgid "Administration"
@@ -332,12 +332,12 @@ msgstr "Kirjautunut sisään tunnuksella:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:330
 msgid "Edit your personal preferences"
-msgstr ""
+msgstr "Muokkaa henkilölkohtaisia asetuksiasi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:336
-#, fuzzy, php-format
+#, php-format
 msgid "Update available: %s"
-msgstr "Ei saatavilla olevia kyselyjä"
+msgstr "Päivitys saatavilla: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:342
 msgid "Default Administration Page"
@@ -354,7 +354,6 @@ msgstr "Luo tai muokkaa ryhmiä"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:357
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:90
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:115
-#, fuzzy
 msgid "Global settings"
 msgstr "Yleiset asetukset"
 
@@ -402,18 +401,18 @@ msgid "LimeSurvey Online manual"
 msgstr "LimeSurvey verkkomanuaali"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:434
-#, fuzzy, php-format
+#, php-format
 msgid "Welcome to %s!"
-msgstr "Tervetuloa:"
+msgstr "Tervetuloa %s:iin!"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:435
 msgid "Some piece-of-cake steps to create your very own first survey:"
-msgstr "Yksinkertaiset ohjeet ensimmäisen tutkimuksen tekoon."
+msgstr "Yksinkertaiset ohjeet ensimmäisen kyselyn tekoon:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:437
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
-msgstr "Luo uusi kysely klikaamalla %s ikonia oikeassa yläkulmassa."
+msgstr "Luo uusi kysely napsauttamalla %s ikonia oikeassa yläkulmassa."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:437
 msgid "Add survey"
@@ -704,9 +703,8 @@ msgid "Export a VV survey file"
 msgstr "Vie VV-kysely -tiedosto"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1801
-#, fuzzy
 msgid "Iterate surevey"
-msgstr "Luo Kysely"
+msgstr "Toista kysely"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1882
 msgid "Preset"
@@ -1560,11 +1558,11 @@ msgstr "Näytä"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3293
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3294
 msgid "Sort answers alphabetically"
-msgstr ""
+msgstr "Järjestä vastaukset aakkosjärjestykseen"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3303
 msgid "Set the percentage width of the answer column (1-100)"
-msgstr ""
+msgstr "Aseta prosenttileveys (1-100) vastaussarakkeelle"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3304
 msgid "Answer width"
@@ -1581,43 +1579,43 @@ msgstr "Vastauksen leveys"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3547
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3566
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3577
-#, fuzzy
 msgid "Logic"
-msgstr "Kirjaudu sisään"
+msgstr "Logiikka"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3311
 msgid "Enter the code of a Multiple options question to only show the matching answer options in this question."
-msgstr ""
+msgstr "Syötä monivalintakysymyksen koodi, jos haluat näytettävän vain tähän kysymykseen sopivat vastausvaihtoehdot."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3312
 msgid "Array filter"
-msgstr ""
+msgstr "Taulukon suodatin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3319
 msgid "Enter the code of a Multiple options question to exclude the matching answer options in this question."
-msgstr ""
+msgstr "Syötä monivalintakysymyksen koodi, jos haluat piilotettavan tähän kysymykseen sopivat vastausvaihtoehdot."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3320
+#, fuzzy
 msgid "Array filter exclusion"
-msgstr ""
+msgstr "Jätä pois taulusuodatin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3327
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3328
 msgid "Category Separator"
-msgstr ""
+msgstr "Kategoriaerotin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3335
 msgid "Filter the available answers by this value"
-msgstr ""
+msgstr "Suodata käytettävissä olevat vastaukset tällä arvolla"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3336
-#, fuzzy
 msgid "Code filter"
-msgstr "Kopiointi epäonnistui"
+msgstr "Koodin suodatin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3346
+#, fuzzy
 msgid "The answer options will be distributed across the number of columns set here"
-msgstr ""
+msgstr "Vastausvaihtoehdot jaetaan asetetun sarakemäärän mukaisesti"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3347
 msgid "Display columns"
@@ -1625,15 +1623,16 @@ msgstr "Näytä sarakkeet"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3354
 msgid "How many rows to display"
-msgstr ""
+msgstr "Kuinka monta riviä näytetään"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3355
 msgid "Display rows"
 msgstr "Näytä rivit"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3365
+#, fuzzy
 msgid "Use accessible select boxes instead of calendar popup"
-msgstr ""
+msgstr "Käytä valintalaatikoita kalenteriponnahdusikkunan sijaan"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3366
 msgid "Display select boxes"
@@ -1641,27 +1640,27 @@ msgstr "Näytä valitut laatikot"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3373
 msgid "Minimum year value in calendar"
-msgstr ""
+msgstr "Kalenterin minimivuosiluku"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3374
 msgid "Minimum dropdown year"
-msgstr ""
+msgstr "Pudotusvalikon minimivuosi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3381
 msgid "Maximum year value for calendar"
-msgstr ""
+msgstr "Kalenterin maksimivuosiluku"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3382
 msgid "Maximum dropdown year"
-msgstr ""
+msgstr "Pudotusvalikon maksimivuosi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3389
 msgid "Prefix|Suffix for dropdown lists"
-msgstr ""
+msgstr "Etuliite|Takaliite pudotusvalikkolistoihin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3390
 msgid "Prefix|Suffix"
-msgstr ""
+msgstr "Etuliite|Takaliite"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3397
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
@@ -1669,7 +1668,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3398
 msgid "Dropdown separators"
-msgstr ""
+msgstr "Alasvetovalikon erottimet"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3405
 msgid "Enter a header text for scale A"
@@ -1692,27 +1691,27 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3480
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3496
 msgid "Input"
-msgstr ""
+msgstr "Syöte"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3421
 msgid "Multiple numeric inputs sum must equal this value"
-msgstr ""
+msgstr "Useiden numeeristen syötteiden summan tulee olla yhtä kuin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3422
 msgid "Equals sum value"
-msgstr ""
+msgstr "Yhtä kuin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3429
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code."
-msgstr ""
+msgstr "Jättää pois kaikki muut vaihtoehdot, jos tietty vastaus valitaan - syötä vain vastauskoodi."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3430
 msgid "Exclusive option"
-msgstr ""
+msgstr "Pois sulkeva ehto"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3440
 msgid "Hide the tip that is normally shown with a question"
-msgstr ""
+msgstr "Piilota vinkki, joka normaalisti näytetään kysymyksen yhteydessä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3441
 msgid "Hide tip"
@@ -1720,7 +1719,7 @@ msgstr "Piilota vihje"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3451
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
-msgstr ""
+msgstr "Piilota tämä kysymys koska hyvänsä. Se on hyödyksi sisällytettäessä tietoja käyttäen vastausten esitäyttöä."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3452
 msgid "Always hide this question"
@@ -1728,7 +1727,7 @@ msgstr "Piilota kysymys aina"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3459
 msgid "Limit the number of possible answers"
-msgstr ""
+msgstr "Rajoita mahdollisten vastausten määrää"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3460
 msgid "Maximum answers"
@@ -1736,31 +1735,31 @@ msgstr "Vastausten maksimimäärä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3467
 msgid "Maximum sum value of multiple numeric input"
-msgstr ""
+msgstr "Useiden numeeristen syötteiden maksimisummalukema"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3468
 msgid "Maximum sum value"
-msgstr ""
+msgstr "Maksimisummalukema"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3475
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
-msgstr ""
+msgstr "Syötä SGQA-tunniste käyttääksesi aiemman kysymyksen loppusummaa tämän kysymyksen maksimina"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3476
 msgid "Max value from SGQA"
-msgstr ""
+msgstr "Maksimiarvo SGQA:sta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3483
 msgid "Maximum characters allowed"
-msgstr ""
+msgstr "Merkkimäärärajoite"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3484
 msgid "Maximum characters"
-msgstr ""
+msgstr "Maksimimerkkimäärä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3491
 msgid "Ensure a minimum number of possible answers (0=No limit)"
-msgstr ""
+msgstr "Varmista mahdollisten vastausten minimilukumäärä (0=ei rajoitusta)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3492
 msgid "Minimum answers"
@@ -1768,23 +1767,23 @@ msgstr "Vastausten minimimäärä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3499
 msgid "Multiple numeric inputs must be greater than this value"
-msgstr ""
+msgstr "Useiden numeeristen syötteiden tulee olla enemmän kuin tämä arvo"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3500
 msgid "Minimum sum value"
-msgstr ""
+msgstr "Minimisummalukema"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3507
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
-msgstr ""
+msgstr "Syötä SGQA-tunnistaja käyttääksesi aiemman kysymyksen loppusummaa tämän kysymyksen miniminä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3508
 msgid "Min value from SGQA"
-msgstr ""
+msgstr "Minimiarvo SGQA:sta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3515
 msgid "Maximum value for array(mult-flexible) question type"
-msgstr ""
+msgstr "Maksimiarvo taulukkokysymykselle (joustavat nimikkeet)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3516
 msgid "Maximum value"
@@ -1792,7 +1791,7 @@ msgstr "Maksimiarvo"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3523
 msgid "Minimum value for array(multi-flexible) question type"
-msgstr ""
+msgstr "Minimiarvo taulukkokysymykselle (joustavat nimikkeet)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3524
 msgid "Minimum value"
@@ -1816,11 +1815,11 @@ msgstr "Tarkista tiedot"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3550
 msgid "SGQA identifier to use total of previous question as total for this question"
-msgstr ""
+msgstr "Syötä SGQA-tunnistaja käyttääksesi aiemman kysymyksen loppusummaa tämän kysymyksen loppusummana"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3551
 msgid "Value equals SGQA"
-msgstr ""
+msgstr "Arvo on yhtä kuin SGQA"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3561
 msgid "Allow only numerical input"
@@ -1832,7 +1831,7 @@ msgstr "Vain numeroita"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3572
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
-msgstr ""
+msgstr "Aseta 'Muu:'-kommenttikenttä pakolliseksi, kun 'Muu:'-vaihtoehto on valittuna"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3573
 msgid "'Other:' comment mandatory"
@@ -1848,23 +1847,23 @@ msgstr "Vain numeroita kohtaan 'Muu'"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3591
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
-msgstr ""
+msgstr "Korvaa 'Muu:'-vastausvaohtoehdon nimiön muokatulla tekstillä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3592
 msgid "Label for 'Other:' option"
-msgstr ""
+msgstr "Nimiö 'Muu:'-vaihtoehdolle"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3602
 msgid "Insert a page break before this question in printable view by setting this to Yes."
-msgstr ""
+msgstr "Lisää tulostettavassa näkymässä sivunvaihto ennen tätä kysymystä valitsemalla Kyllä."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3603
 msgid "Insert page break in printable view"
-msgstr ""
+msgstr "Lisää tulostettavassa näkymässä sivunvaihto"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3610
 msgid "Add a prefix to the answer field"
-msgstr ""
+msgstr "Lisää etuliitteen vastauskenttään"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3611
 #, fuzzy
@@ -1873,7 +1872,7 @@ msgstr "Vastausyksityisyys"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3621
 msgid "Show statistics of this question in the public statistics page"
-msgstr ""
+msgstr "Näytä tämän kysymyksen tilastot julkisten tilastojen sivulla"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3622
 msgid "Show in public statistics"
@@ -1881,11 +1880,11 @@ msgstr "Näytä julkisissa tilastoissa"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3632
 msgid "Present answers in random order"
-msgstr ""
+msgstr "Esitä vastaukset sattumanvaraisessa järjestyksessä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3633
 msgid "Random answer order"
-msgstr ""
+msgstr "Vastausten sattumanvarainen järjestys"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3637
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3648
@@ -1949,8 +1948,9 @@ msgid "Slider left/right text separator"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3713
+#, fuzzy
 msgid "Add a suffix to the answer field"
-msgstr ""
+msgstr "Lisää takaliite vastauskenttään"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3714
 #, fuzzy
@@ -1959,11 +1959,11 @@ msgstr "Vastaukset"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3721
 msgid "Width of text input box"
-msgstr ""
+msgstr "Tekstilaatikon leveys"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3722
 msgid "Input box width"
-msgstr ""
+msgstr "Syötelaatikon leveys"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3732
 msgid "Use dual dropdown boxes instead of dual scales"
@@ -1971,7 +1971,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3733
 msgid "Dual dropdown"
-msgstr ""
+msgstr "Kaksoisalavetovalikko"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3740
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:239
@@ -2028,11 +2028,11 @@ msgstr "Aikaraja"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3762
 msgid "Warn and move on"
-msgstr ""
+msgstr "Varoita ja jatka"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3763
 msgid "Move on without warning"
-msgstr ""
+msgstr "Jatka varoittamatta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3764
 msgid "Disable only"
@@ -2040,7 +2040,7 @@ msgstr "Estä vain"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3765
 msgid "Action to perform when time limit is up"
-msgstr ""
+msgstr "Suoritettava toiminto, kun aikaraja on umpeutunut"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3766
 #, fuzzy
@@ -2049,7 +2049,7 @@ msgstr "Aikarajatoiminto"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3773
 msgid "Message to display when time limit has expired"
-msgstr ""
+msgstr "Viesti, joka näytetään aikarajan umpeutuessa"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3774
 msgid "Time limit expiry message"
@@ -2057,15 +2057,15 @@ msgstr "Viesti aikarajan loppumisesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3781
 msgid "How long to display the time limit expiry message (in seconds)"
-msgstr ""
+msgstr "Kuinka kauan aikarajan umpeutumisviesti näytetään (sekunneissa)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3782
 msgid "Time limit expiry message delay"
-msgstr ""
+msgstr "Aikarajan umpeutumisviestin viive"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3791
 msgid "Disable the next button until time limit expires"
-msgstr ""
+msgstr "Estä 'Seuraava'-nappi kunnes aikaraja umpeutuu"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3792
 #, fuzzy
@@ -2074,15 +2074,15 @@ msgstr "Aikaraja estä seuraava"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3799
 msgid "CSS style for the time limit message"
-msgstr ""
+msgstr "CSS-tyyli aikarajaviestille"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3800
 msgid "Time limit message CSS style"
-msgstr ""
+msgstr "Aikarajaviestin CSS-tyyli"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3807
 msgid "CSS Style for the time limit countdown timer"
-msgstr ""
+msgstr "CSS-tyyli aikarajalaskurille"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3808
 #, fuzzy
@@ -2091,36 +2091,36 @@ msgstr "Aikaraja-ajastin CSS-tyyli"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3815
 msgid "Time until time limit expiry when time limit warning message is displayed (in seconds)"
-msgstr ""
+msgstr "Aika ennen aikarajan umpeutumista, kun aikarajavaroitusviesti näytetään (sekunneissa)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3816
 #, fuzzy
 msgid "Time limit warning message timer"
-msgstr "Aikarajavaroitus viesti ajastin"
+msgstr "Aikarajavaroitusviestin ajastin"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3823
 msgid "How long the time limit warning message will display (in seconds)"
-msgstr ""
+msgstr "Kuinka kauan aikarajavaroitusviestiä näytetään (sekunneissa)?"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3824
 msgid "Time limit warning message display time"
-msgstr ""
+msgstr "Aikarajavaroitusviesti näytetään"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3831
 msgid "Message to display warning that time limit is about to expire"
-msgstr ""
+msgstr "Viesti, jossa varoitetaan aikarajan loppumisesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3832
 msgid "Time limit warning message"
-msgstr ""
+msgstr "Aikarajavaroitusviesti"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3839
 msgid "CSS style for the time limit warning message"
-msgstr ""
+msgstr "Aikarajavaroitusviestin CSS-tyyli"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3840
 msgid "Time limit warning CSS style"
-msgstr ""
+msgstr "Aikarajavaroituksen CSS-tyyli"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4004
 msgid "Version"
@@ -2280,7 +2280,7 @@ msgstr "Viimeinen muistutus lähetetty:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:6854
 msgid "Total numbers of sent reminders"
-msgstr ""
+msgstr "Lähetettyjä muistutuksia yhteensä"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:6874
 #, php-format
@@ -2362,7 +2362,6 @@ msgstr "Tunniste on virheellinen tai se ei vastaa istuntosi tunnistetta."
 msgid "Please wait to begin with a new session."
 msgstr "Ole hyvä ja odota uutta sessiota."
 
-
 #: /var/lib/limesurvey-svn/subversion1x/index.php:125
 msgid "Previous session is set to be finished."
 msgstr "Edellinen sessio on lopetettu."
@@ -2415,7 +2414,7 @@ msgstr "Kyselyn tunnistenumero puuttuu"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:371
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:465
 msgid "The following surveys are available:"
-msgstr "Seuraavat tutkimukset tulisi poistaa"
+msgstr "Seuraavat tutkimukset ovat saatavilla:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:457
 msgid "This survey is no longer available."
@@ -2423,7 +2422,7 @@ msgstr "Tämä kysely ei ole enää saatavilla."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:474
 msgid "This survey is not yet started."
-msgstr "Tämä kysely ei ole vielä toiminnassa"
+msgstr "Tämä kysely ei ole vielä toiminnassa."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:494
 msgid "You have already completed this survey."
@@ -2435,7 +2434,7 @@ msgstr "Nimi puuttuu"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:550
 msgid "You did not provide a password"
-msgstr "Salasana puuttuu tai on virheellinen"
+msgstr "Salasana puuttuu"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:612
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:144
@@ -2460,7 +2459,7 @@ msgstr "Pahoittelumme, mutta et voi osallistua tähän kyselyyn."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:639
 msgid "Your token seems to be valid but can be used only during a certain time period."
-msgstr ""
+msgstr "Tunnisteesi on oikea, mutta sitä voidaan käyttää vain tietyn ajanjakson aikana."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:761
 msgid "Survey Saved"
@@ -2468,7 +2467,7 @@ msgstr "Kysely on tallennettu"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:802
 msgid "There is no matching saved survey"
-msgstr "Antamallasi nimellä ei ole tallennettukyselyjä"
+msgstr "Antamallasi nimellä ei ole tallennettu kyselyjä"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:885
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1098
@@ -2477,13 +2476,12 @@ msgid "You have completed %s%% of this survey"
 msgstr "Olet suorittanut %s%% tästä kyselystä"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1621
-#, fuzzy
 msgid "Answer Submission for Survey"
 msgstr "Lähetä vastaukset."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1623
 msgid "Survey Submitted"
-msgstr "Vastaukset on lähetetty"
+msgstr "Vastaukset lähetetty"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1624
 msgid "A new response was entered for your survey"
@@ -2507,7 +2505,7 @@ msgstr "Näytä tilastot klikkaamalla tästä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1745
 msgid "This email contains confirmation of the responses you made to the survey"
-msgstr ""
+msgstr "Tämä sähköposti sisältää vahvistuksen lähettämistäsi vastauksistasi kyselyyn"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1747
 #, fuzzy
@@ -2516,7 +2514,7 @@ msgstr "Vahvistus rekisteröitymisestä kyselyyn"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1766
 msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr "Järjestelmävirheen vuoksi vastauksia ei voitu tallentaa"
+msgstr "Järjestelmävirheen vuoksi vastauksia ei voitu tallentaa."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1769
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
@@ -2750,7 +2748,7 @@ msgstr "Aikaraja kysymykseen vastaamiseksi on umpeutunut"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:983
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
-msgstr ""
+msgstr "Vastausaikasi on lähes umpeutunut. Sinulla on {TIME} jäljellä."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1125
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1149
@@ -2822,7 +2820,7 @@ msgstr "loka"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1467
 msgid "Nov"
-msgstr "Marraskuu"
+msgstr "marras"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1468
 msgid "Dec"
@@ -2859,7 +2857,7 @@ msgstr "Vastaus"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1570
 msgid "Date picker"
-msgstr ""
+msgstr "Päivämäärävalitsija"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1577
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1961
@@ -2902,7 +2900,7 @@ msgstr "Muu vastaus"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2528
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr ""
+msgstr "Olet valinnut kysymyksen \"%s\" vastausvaihtoehdoksi \"muu\". Ole hyvä ja täytä myös siihen kuuluva \"muu kommentti\" -kenttä."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1994
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2432
@@ -2963,7 +2961,7 @@ msgstr "Valitse vähintään %d vastaus(ta) kysymykseen \"%s\""
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3700
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr ""
+msgstr "Olet valinnut kysymykselle \"%s\" kentän \"muu\". Ole hyvä ja täytä myös siihen kuuluva \"muu kommentti\" -kenttä."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3573
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3601
@@ -3038,7 +3036,7 @@ msgstr "Virhe: Kysymykseen ei ole määritelty vastausta."
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:169
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:98
 msgid "PDF Export"
-msgstr "Tallenna Pdf-muodossa"
+msgstr "Vie PDF-muotoon"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:178
 msgid "Survey Name (ID)"
@@ -3058,14 +3056,12 @@ msgid "Date Stamp"
 msgstr "Päiväys"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:303
-#, fuzzy
 msgid "First Scale"
-msgstr "Etunimi"
+msgstr "Ensimmäinen asteikko"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:304
-#, fuzzy
 msgid "Second Scale"
-msgstr "Muokkaa tunnusryhmää"
+msgstr "Toinen asteikko"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:350
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:352
@@ -3375,7 +3371,7 @@ msgstr "Haluatko varmasti poistaa tämän merkinnän?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:105
 msgid "View"
-msgstr ""
+msgstr "Katso"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:28
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:516
@@ -3502,11 +3498,11 @@ msgstr "Kysely ID %d tallennettu %s"
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:366
 #, php-format
 msgid "Survey ID %d saved at %s containing %d record(s)"
-msgstr ""
+msgstr "Kysely-ID %d tallennettu %s sisältäen %d tietuetta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:308
 msgid "The following old survey tables should be deleted because their parent survey no longer exists"
-msgstr ""
+msgstr "Seuraavat kyselytaulukot tulisi poistaa, sillä kyselyä, johon ne kuuluvat, ei enää ole"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:314
 msgid "All old survey tables meet consistency standards"
@@ -3539,7 +3535,7 @@ msgstr "Tietojen päällekkäisyyksien tarkistus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:457
 msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
-msgstr ""
+msgstr "Ylimäärä- ja päällekkäisyyshaussa voit hakea taulukoita, jotka ovat jääneet kyselyn deaktivoinnin jäljiltä. Voit poistaa ne, mikäli sinulla ei ole niille enää tarvetta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:467
 msgid "The following old survey tables contain no responses and can be deleted:"
@@ -3563,7 +3559,7 @@ msgstr "Poista valitut!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:500
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
-msgstr ""
+msgstr "Huomaa, että poistamista ei voi perua, jos jatkat. Tiedot poistetaan pysyvästi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:533
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:543
@@ -3651,7 +3647,7 @@ msgstr "Tietojen päällekkäisyyksien tarkistus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:636
 msgid "Deleting old token and response tables leftover from deactivation"
-msgstr ""
+msgstr "Poistetaan vanha tunniste ja vastaustaulukot, jotka ovat jääneet deaktivoinnin jäljiltä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:663
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:673
@@ -3719,7 +3715,7 @@ msgstr "Tätä osaa ei voi poistaa, koska nimiöhmässä täytyy olla ainakin yk
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:229
 msgid "Update"
-msgstr "Päivitys"
+msgstr "Päivitä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:178
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:181
@@ -3736,7 +3732,7 @@ msgstr "Valitse CSV-tiedosto:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:188
 msgid "Check for duplicates?"
-msgstr ""
+msgstr "Etsi kaksoiskappaleita?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:192
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:72
@@ -3785,7 +3781,7 @@ msgstr "Virhe: Vastauksissa on kaksi kertaa sama nimiökoodi."
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:268
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1332
 msgid "Error: 'other' is a reserved keyword."
-msgstr ""
+msgstr "Virhe: 'muu' on varattu avainsana."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:286
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1364
@@ -4074,7 +4070,7 @@ msgstr "Tiedoston lähetyksessä tapahtui virhe. Tämä voi johtua vääristä o
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:95
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_structure_csv.php:50
 msgid "Main Admin Screen"
-msgstr "Ylläpitäjien pääruutu"
+msgstr "Ylläpidon päänäkymä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:36
 msgid "No SID (Survey) has been provided. Cannot import group."
@@ -4389,9 +4385,8 @@ msgid "When an imported record matches an existing record ID:"
 msgstr "Kun tuotu tallenne täsmää olemassaolevan tallennetunnuksen kanssa:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:88
-#, fuzzy
 msgid "Report and skip the new record."
-msgstr "Tee virheraportti (ja ohita uusi tallenne)."
+msgstr "Tee virheraportti ja ohita uusi tallenne."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:89
 msgid "Renumber the new record."
@@ -4435,7 +4430,7 @@ msgstr "Luetaan tiedostoa.."
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:271
 #, php-format
 msgid "Record ID %d was skipped because of duplicate ID."
-msgstr ""
+msgstr "Tietue ID %d jätettiin väliin kaksois-ID:n vuoksi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:306
 #, php-format
@@ -4480,16 +4475,16 @@ msgstr "Yleiset filtterit"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:233
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
-msgstr ""
+msgstr "Sinulla ei ole GD-kirjastoa asennettuna. Kaavioiden esitys edellyttää toimivaa GD-kirjastoa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:234
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:238
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
-msgstr ""
+msgstr "lisätietoja sivulla http://us2.php.net/manual/en/ref.image.php"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:237
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
-msgstr ""
+msgstr "Sinulla ei ole Freetype-kirjastoa asennettuna. Kaavioiden esitys edellyttää toimivaa Freetype-kirjastoa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:265
 msgid "Data selection"
@@ -4514,7 +4509,7 @@ msgstr "Vain valmiit tietueet"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:196
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:122
 msgid "Incomplete records only"
-msgstr ""
+msgstr "Vain keskeneräiset tietueet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:272
 msgid "View summary of all available fields"
@@ -4563,7 +4558,7 @@ msgstr "Näytä graafit"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:339
 msgid "Select output format"
-msgstr ""
+msgstr "Valitse tulosteen formaatti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:344
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1586
@@ -4577,7 +4572,6 @@ msgid "Clear"
 msgstr "Tyhjennä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:350
-#, fuzzy
 msgid "Response filters"
 msgstr "Vastausfiltterit"
 
@@ -4791,7 +4785,7 @@ msgstr "Lisää uusi tunnistemerkintä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:471
 msgid "Manage additional attribute fields"
-msgstr ""
+msgstr "Hallinnoi lisämäärekenttiä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:475
 msgid "Import tokens from CSV file"
@@ -4840,7 +4834,6 @@ msgid "Total records in this token table"
 msgstr "Merkkejä yhteensä tässä tunnistetaulukossa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:537
-#, fuzzy
 msgid "Total with no unique Token"
 msgstr "Yhteensä tavallisia tunnisteita"
 
@@ -5178,7 +5171,6 @@ msgid "Delete all token entries"
 msgstr "Poista kaikki valtuusmerkinnät"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:793
-#, fuzzy
 msgid "Data view control"
 msgstr "Tietojenkatselun hallinta"
 
@@ -5262,7 +5254,6 @@ msgid "Reminder sent?"
 msgstr "Muistutus lähetetty?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:891
-#, fuzzy
 msgid "Reminder count"
 msgstr "Muistutusten määrä"
 
@@ -5291,12 +5282,10 @@ msgstr "Luo kysely"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:981
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1875
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2004
-#, fuzzy
 msgid "Edit token entry"
 msgstr "Muokkaa tunnistemerkintää"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:983
-#, fuzzy
 msgid "Delete token entry"
 msgstr "Poista tunnistemerkintä"
 
@@ -5526,7 +5515,7 @@ msgstr "Lisää tunnisteiden määreitä"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1775
 #, php-format
 msgid "There are %s user attribute fields in this token table"
-msgstr ""
+msgstr "Tässä tunnistetaulukossa on %s käyttäjämäärekenttää"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1777
 msgid "Number of attribute fields to add:"
@@ -5538,12 +5527,12 @@ msgstr "Lisää kenttiä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1808
 msgid "Token descriptions were successfully updated."
-msgstr ""
+msgstr "Tunnisteiden kuvaukset päivitetty onnistuneesti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1809
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1843
 msgid "Back to attribute field management."
-msgstr ""
+msgstr "Takaisin määrekenttien hallinnointiin."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1842
 #, php-format
@@ -5590,7 +5579,7 @@ msgstr "asti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1961
 msgid "hh:mm"
-msgstr ""
+msgstr "tt:mm"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1983
 msgid "Update token entry"
@@ -5598,7 +5587,7 @@ msgstr "Päivitä tunnistemerkintä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2056
 msgid "The token entry was successfully updated."
-msgstr ""
+msgstr "Tunnistetietue päivitettiin onnistuneesti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2057
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2122
@@ -5671,7 +5660,7 @@ msgstr "CSV-tiedosto ladattu onnistuneesti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2229
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
-msgstr ""
+msgstr "Virhe: Ladatusta tiedostosta puuttuu yksi tai useampi seuraavista pakollisista sarakkeista: 'etunimi', 'sukunimi' tai 'sähköposti'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2329
 msgid "Successfully created token entries"
@@ -5718,7 +5707,7 @@ msgstr "Lista"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2356
 #, php-format
 msgid "%s lines had a mismatching number of fields."
-msgstr ""
+msgstr "%s rivillä oli vastaamaton määrä kenttiä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2366
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2597
@@ -5769,9 +5758,8 @@ msgid "Filter duplicate records:"
 msgstr "Suodata kaksoistallenteet:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2640
-#, fuzzy
 msgid "Duplicates are determined by:"
-msgstr "Kaksoistallenteet määritelty"
+msgstr "Kaksoistallenteet määritelty:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2655
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:979
@@ -6048,7 +6036,7 @@ msgstr "Kyselyn URL-osoite"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:175
 msgid "Overall assessment score"
-msgstr ""
+msgstr "Kokonaisarvio"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:176
 msgid "Assessment group score"
@@ -6147,7 +6135,7 @@ msgstr "Malli '%s' onnistuneesti poistettu."
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:220
 #, php-format
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
-msgstr ""
+msgstr "Malli '%s' ei voitu poistaa. Tarkista "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:265
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:382
@@ -6192,11 +6180,11 @@ msgstr "Näyte mallista"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:405
 msgid "This is a sample survey description. It could be quite long."
-msgstr ""
+msgstr "Tämä on kyselykuvauksen malli. Kuvaus voi olla pitkäkin."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:405
 msgid "But this one isn't."
-msgstr ""
+msgstr "Mutta tämä ei ole."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:406
 msgid "Welcome to this sample survey"
@@ -6204,7 +6192,7 @@ msgstr "Tervetuloa esimerkkikyselyyn"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:406
 msgid "You should have a great time doing this"
-msgstr ""
+msgstr "Sinulla on varmasti hauskaa tätä tehdessä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:412
 msgid "Some URL description"
@@ -6216,11 +6204,11 @@ msgstr "Ryhmä 1: ensimmäiset kysymykset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:416
 msgid "This group description is fairly vacuous, but quite important."
-msgstr ""
+msgstr "Tämä ryhmäkuvaus on melko sisällötön, mutta varsin tärkeä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:419
 msgid "This is some help text."
-msgstr ""
+msgstr "Tämä on aputekstiä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:428
 msgid "Assessment heading"
@@ -6232,7 +6220,7 @@ msgstr "Arvion tiedot"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:428
 msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
-msgstr ""
+msgstr "Huomaa, että tämä arviokohta näytetään vain, jos arviointisäännöt on määritelty ja arviointimoodi on päällä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:429
 msgid "Survey name (ID)"
@@ -6245,7 +6233,7 @@ msgstr "Vastauksesi"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:513
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:514
 msgid "Please explain something in detail:"
-msgstr ""
+msgstr "Ole hyvä ja selitä jotakin yksityiskohtaisesti:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:650
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:711
@@ -6284,7 +6272,7 @@ msgstr "Kiitos vastauksistasi!."
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:804
 #, php-format
 msgid "Note: This is a standard template. If you want to edit it %s please copy it first%s."
-msgstr ""
+msgstr "Huomaa: tämä on vakiomalli. Jos haluat muokata sitä, %s ole hyvä ja kopioi se ensin%s."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:804
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:867
@@ -6372,7 +6360,7 @@ msgstr "Tuo mallin ZIP-arkisto"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:917
 #, php-format
 msgid "Editing template '%s' - File '%s'"
-msgstr ""
+msgstr "Muokataan mallia '%s' - tiedosto '%s'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:921
 msgid "Standard Files:"
@@ -6384,7 +6372,7 @@ msgstr "Muutoksia ei voi tallentaa oletusmalliin."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:942
 msgid "You can't save changes because the template directory is not writable."
-msgstr ""
+msgstr "Et voi tallentaa muutoksia, sillä mallihakemisto ei ole kirjoitettavissa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:946
 msgid "Other Files:"
@@ -6427,7 +6415,7 @@ msgstr "Jos haluat, paina oheista nappia"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:32
 msgid "Delete all incomplete answers that correspond to a token for which a completed answers is already recorded"
-msgstr ""
+msgstr "Poista kaikki epätäydelliset vastaukset, jotka kuuluvat tunnisteeseen, jolle on jo syötetty täydelliset vastaukset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:33
 msgid "Reset the completed answers to the incomplete state"
@@ -6435,7 +6423,7 @@ msgstr "Aseta kaikki valmiit vastaukset keskeneräisiksi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:34
 msgid "Reset all your tokens to the 'not used' state"
-msgstr ""
+msgstr "Aseta kaikki tunnisteesi takaisin tilaan 'ei käytetty'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:36
 msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?"
@@ -6475,7 +6463,7 @@ msgstr "Oletko varma?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:69
 msgid "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
-msgstr ""
+msgstr "Voit tuoda kaikki vanhat vastaukset yhtäläisellä määrällä sarakkeita kuin mitä aktiivisessa kyselyssäsi on. SINUN täytyy huolehtia, että vastaukset vastaavat kyselysi kysymyksiä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpdb.php:33
 msgid "Export database"
@@ -6501,15 +6489,15 @@ msgstr "Olet poistamassa kyselyä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:38
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
-msgstr "Tämä toiminto poistaa kyselyn, sekä kaikki siihen liittyvät ryhmät, vastaukset ja ehdot."
+msgstr "Tämä toiminto poistaa kyselyn sekä kaikki siihen liittyvät ryhmät, vastaukset ja ehdot."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:39
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr "Suosittelemme että ennen kuin poistat tämän kyselyn, viet koko kyselyn päähallintaruudusta."
+msgstr "Suosittelemme että ennen kuin poistat tämän kyselyn, teet kyselystä Vienti-tiedoston ylläpidon päänäkymässä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:43
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr "Tämä kysely on toiminnassa ja vastaustaulukko on olemassa. Jos poistat tämän kyselyn nämä vastaukset häviävät. Suosittelemme että viet vastaukset ennen kyselyn poistamista."
+msgstr "Tämä kysely on toiminnassa ja vastaustaulukko on olemassa. Jos poistat tämän kyselyn nämä vastaukset häviävät. Suosittelemme että teet kyselystä Vienti-tiedoston ennen kyselyn poistamista."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:48
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
@@ -6839,7 +6827,7 @@ msgstr "Yleiset asetukset tallennettu."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:121
 msgid "Overview & Update"
-msgstr ""
+msgstr "Yleiskuva & päivitys"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:124
 msgid "Updates"
@@ -6847,7 +6835,7 @@ msgstr "Päivitykset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:125
 msgid "Check for updates:"
-msgstr ""
+msgstr "Etsi päivityksiä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:129
 msgid "Never"
@@ -6876,7 +6864,7 @@ msgstr "Tarkista nyt"
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:142
 #, php-format
 msgid "Last check: %s"
-msgstr ""
+msgstr "Viimeisin tarkastus: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:146
 #, php-format
@@ -6886,20 +6874,20 @@ msgstr "LimeSurvey-päivitys tarjolla: versio %s"
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:147
 #, php-format
 msgid "You can update %smanually%s or use the %s"
-msgstr ""
+msgstr "Voit päivittää %smanuaalisesti%s tai käyttää %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:147
 msgid "3-Click ComfortUpdate"
-msgstr ""
+msgstr "3-Click ComfortUpdate"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:151
 #, php-format
 msgid "There was an error on update check (%s)"
-msgstr ""
+msgstr "Päivitystarkistuksessa tapahtui virhe (%s)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:157
 msgid "There is currently no newer LimeSurvey version available."
-msgstr ""
+msgstr "Tällä hetkellä ei ole tarjolla uudempaa versiota LimeSurveystä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2183
@@ -6949,19 +6937,19 @@ msgstr "Aikaero (tunneissa):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:217
 msgid "PDF export available:"
-msgstr ""
+msgstr "PDF-vienti käytettävissä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:221
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:232
 msgid "On"
-msgstr ""
+msgstr "Päällä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:224
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:235
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:281
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:293
 msgid "Off"
-msgstr ""
+msgstr "Pois"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:228
 msgid "Screen reader compatibility mode:"
@@ -6969,7 +6957,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:237
 msgid "Session lifetime (seconds):"
-msgstr ""
+msgstr "Istunnon pituus (sekunteja):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:247
 msgid "Email settings"
@@ -6980,7 +6968,6 @@ msgid "Default site admin email:"
 msgstr "Sivuston ylläpitäjän oletussähköposti:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:252
-#, fuzzy
 msgid "Default site bounce email:"
 msgstr "Sivuston oletusponnahdusosoite:"
 
@@ -6989,7 +6976,6 @@ msgid "Administrator name:"
 msgstr "Ylläpitäjä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:256
-#, fuzzy
 msgid "Email method:"
 msgstr "Sähköpostitapa:"
 
@@ -7012,11 +6998,11 @@ msgstr "Sähköposti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:271
 msgid "SMTP host:"
-msgstr ""
+msgstr "SMTP host:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:272
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
-msgstr ""
+msgstr "Syötä hostname ja portti, esim.: my.smtp.com:25"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:273
 msgid "SMTP username:"
@@ -7028,7 +7014,7 @@ msgstr "SMTP-salasana:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:277
 msgid "SMTP SSL/TLS:"
-msgstr ""
+msgstr "SMTP SSL/TLS:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:284
 msgid "SSL"
@@ -7045,7 +7031,7 @@ msgstr "Käyttäjätunnus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:296
 msgid "On errors"
-msgstr ""
+msgstr "Virheistä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:299
 msgid "Always"
@@ -7061,19 +7047,19 @@ msgstr "Turvallisuushuomautus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:314
 msgid "Survey preview only for administration users"
-msgstr ""
+msgstr "Kyselyn esikatselu vain ylläpitokäyttäjille"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:326
 msgid "Filter HTML for XSS:"
-msgstr ""
+msgstr "Suodata HTML (XSS suojaus):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:337
 msgid "Group member can only see own group:"
-msgstr ""
+msgstr "Ryhmän jäsen näkee vain oman ryhmänsä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:349
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Muut"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:353
 msgid "Show 'no answer' option for non-mandatory questions:"
@@ -7081,7 +7067,7 @@ msgstr "Salli 'ei vastausta' -vaihtoehto ei-pakollisille kysymyksille:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:363
 msgid "Number of answers to show before repeating the headings in array questions:"
-msgstr ""
+msgstr "Montako vastausta näytetään ennen otsikon toistamista taulukkokysymyksissä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:373
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:263
@@ -7090,7 +7076,7 @@ msgstr "Tallenna asetukset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:459
 msgid "System overview"
-msgstr ""
+msgstr "Järjestelmän yleiskuva"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:463
 msgid "Database name"
@@ -7386,14 +7372,12 @@ msgid "This survey is currently active."
 msgstr "Tämä kysely on toiminnassa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:153
-#, fuzzy
 msgid "This survey is currently not active - click here to activate this survey."
-msgstr "Kysely ei ole aktiivinen. Vastauksia ei tallenneta."
+msgstr "Kysely ei ole toiminnassa - klikkaa tästä aktivoidaksesi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:157
-#, fuzzy
 msgid "This survey is currently not active."
-msgstr "Tämä kysely on toiminnassa"
+msgstr "Tämä kysely ei ole tällä hetkellä toiminnassa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:188
 msgid "No Surveys available - please create one."
@@ -7404,9 +7388,8 @@ msgid "Your personal settings"
 msgstr "Omat asetuksesi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:224
-#, fuzzy
 msgid "Interface language"
-msgstr "Oletuskieli"
+msgstr "Käyttöliittymän kieli"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:237
 #, fuzzy
@@ -7439,16 +7422,14 @@ msgid "Survey cannot be activated. Either you have no permission or there are no
 msgstr "Kyselyä ei voi aktivoida. Joko sinulla ei ole oikeuksia tai kyselyssä ei ole kysymyksiä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:328
-#, fuzzy
 msgid "This survey is active but has a start date."
-msgstr "Tämä kysely on toiminnassa, mutta erääntynyt."
+msgstr "Tämä kysely on toiminnassa, mutta sille on asetettu aloituspäivämäärä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:333
 msgid "This survey is currently active"
 msgstr "Tämä kysely on toiminnassa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:339
-#, fuzzy
 msgid "Deactivate this Survey"
 msgstr "Sulje kysely"
 
@@ -7510,14 +7491,12 @@ msgid "Browse Responses For This Survey"
 msgstr "Selaa kyselyn vastauksia"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:547
-#, fuzzy
 msgid "Token management"
-msgstr "Virheellinen"
+msgstr "Tunnusten hallinta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:554
-#, fuzzy
 msgid "Change question group order"
-msgstr "Vaihda Kysymysten Järjestystä"
+msgstr "Vaihda kysymysryhmien järjestystä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:560
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1381
@@ -7639,15 +7618,13 @@ msgstr "Faksi:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:697
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2415
-#, fuzzy
 msgid "Start date/time:"
-msgstr "Aloituspäivämäärä:"
+msgstr "Aloituspäivämäärä/aika:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:710
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2425
-#, fuzzy
 msgid "Expiry date/time:"
-msgstr "Erääntymispäivä:"
+msgstr "Erääntymispäivä/aika:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:726
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2186
@@ -7693,9 +7670,8 @@ msgid "You need to add questions"
 msgstr "Sinun tulee lisätä kysymyksiä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:834
-#, fuzzy
 msgid "Edit current question group"
-msgstr "Poista Kyseinen Kysymys"
+msgstr "Muokkaa tätä kysymysryhmää"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:846
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
@@ -7703,18 +7679,16 @@ msgstr "Ryhmän poistaminen poistaa myös kaikki sen sisältämät kysymykset ja
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:848
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:855
-#, fuzzy
 msgid "Delete current question group"
-msgstr "Poista Kyseinen Kysymys"
+msgstr "Poista tämä kysymysryhmä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:853
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "Ryhmää ei voida poistaa, koska ainakin yhdellä kysymyksellä on ehto sen sisältöön"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:869
-#, fuzzy
 msgid "Export current question group"
-msgstr "Poista Kyseinen Kysymys"
+msgstr "Vie tämä kysymysryhmä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:880
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:575
@@ -7754,9 +7728,8 @@ msgid "Delete Current Question"
 msgstr "Poista valittu kysymys"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1013
-#, fuzzy
 msgid "It's impossible to delete this question because there is at least one question having a condition on it."
-msgstr "Kysymystä ei voida poistaa koska ainakin yhdellä muulla kysymyksellä on ehto siihen"
+msgstr "Kysymystä ei voida poistaa, sillä ainakin yhdellä muulla kysymyksellä on ehto siihen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1015
 msgid "Disabled - Delete Current Question"
@@ -7772,9 +7745,8 @@ msgid "Copy Current Question"
 msgstr "Kopioi valittu kysymys"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1045
-#, fuzzy
 msgid "You can't copy a question if the survey is active."
-msgstr "Olet vastannut tutkimuksen kysymyksiin."
+msgstr "Et voi kopioida kysymystä, jos kysely on toiminnassa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1058
 msgid "Set Conditions for this Question"
@@ -7787,9 +7759,8 @@ msgstr "Esikatsele kysymystä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1111
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1175
-#, fuzzy
 msgid "Edit/add answer options for this question"
-msgstr "Muokkaa/Lisää vastauksia tälle kysymykselle"
+msgstr "Muokkaa/lisää vastausvaihtoehtoja tälle kysymykselle"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1121
 msgid "Hide Details of this Question"
@@ -7853,9 +7824,8 @@ msgid "Type:"
 msgstr "Tyyppi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1173
-#, fuzzy
 msgid "You need to add answer options to this question"
-msgstr "Lisää kysymykseen vastauksia"
+msgstr "Sinun täytyy lisätä vastausvaihtoehtoja tälle kysymykselle"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1188
 msgid "You need to choose a label set for this question!"
@@ -7877,7 +7847,7 @@ msgstr "Muokka/Lisää tunnusryhmiä"
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:114
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:389
 msgid "Option 'Other':"
-msgstr ""
+msgstr "Vaihtoehto 'Muu':"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1247
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:126
@@ -7890,18 +7860,16 @@ msgid "Other questions having conditions on this question:"
 msgstr "Muut kysymykset, joilla on ehto tähän kysymykseen:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1329
-#, fuzzy
 msgid "Edit answer options"
-msgstr "Muokkaa vastauksia"
+msgstr "Muokkaa vastausvaihtoehtoja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1332
 msgid "Error: You are trying to use duplicate answer codes."
 msgstr "Virhe: Vastauksissa on kaksi kertaa sama koodi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1375
-#, fuzzy
 msgid "Answer option"
-msgstr "Vastausyksityisyys"
+msgstr "Vastausvaihtoehto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1459
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1529
@@ -7910,22 +7878,20 @@ msgstr "Vastaus:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1479
 msgid "Move answer option up"
-msgstr ""
+msgstr "Siirrä vastausta ylös"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1484
 msgid "Move answer option down"
-msgstr ""
+msgstr "Siirrä vastausta alas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1504
-#, fuzzy
 msgid "New answer option"
-msgstr "Uusi vastaus"
+msgstr "Uusi vastausvaihtoehto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1532
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:800
-#, fuzzy
 msgid "Add new answer option"
-msgstr "Lisää uusi Vastaus"
+msgstr "Lisää uusi vastausvaihtoehto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1550
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
@@ -7941,9 +7907,8 @@ msgid "Set Survey Rights"
 msgstr "Aseta kyselyn oikeudet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1597
-#, fuzzy
 msgid "Failed to add user."
-msgstr "Käyttäjän lisäys epäonnistui."
+msgstr "Käyttäjän lisääminen epäonnistui."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1644
 msgid "User Group added."
@@ -8008,7 +7973,7 @@ msgstr "queXML kysely XML-muoto (*.xml)"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1898
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1951
 msgid "Save for Lsrc (*.csv)"
-msgstr ""
+msgstr "Tallenna Lsrc:tä varten (*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1862
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1908
@@ -8017,20 +7982,17 @@ msgid "Export To File"
 msgstr "Vie tiedosto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1876
-#, fuzzy
 msgid "Export Group Structure"
-msgstr "Vie tutkimuksen rakenne"
+msgstr "Vie tutkimusrakenne"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1882
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1935
-#, fuzzy
 msgid "LimeSurvey group File (*.csv)"
-msgstr "LimeSurvey kyselytiedosto (*.csv)"
+msgstr "LimeSurvey-ryhmätiedosto (*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1929
-#, fuzzy
 msgid "Export Question Structure"
-msgstr "Vie tutkimuksen rakenne"
+msgstr "Vie kysymysrakenne"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1984
 msgid "Survey Security"
@@ -8050,9 +8012,8 @@ msgid "Groups"
 msgstr "Ryhmät"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2097
-#, fuzzy
 msgid "Please select a user group first"
-msgstr "Valitse vietävä tiedosto!"
+msgstr "Valitse ensin käyttäjäryhmä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2145
 msgid "Update survey rights successful."
@@ -8063,9 +8024,8 @@ msgid "Failed to update survey rights!"
 msgstr "Kyselyoikeuksien päivitys epäonnistui!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2177
-#, fuzzy
 msgid "Edit survey settings - Step 1 of 2"
-msgstr "Muokkaa Kyselyä - Osa 1/2"
+msgstr "Muokkaa kyselyasetuksia - Osa 1/2"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2233
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3098
@@ -8074,9 +8034,8 @@ msgstr "Ylläpitäjän sähköposti:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2235
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3100
-#, fuzzy
 msgid "Bounce Email:"
-msgstr "Sähköposti"
+msgstr "Ponnahdussähköpostiosoite:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2246
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3112
@@ -8115,14 +8074,13 @@ msgstr "Sallitaanko vastaajien tulostaa vastauksensa?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2321
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3168
-#, fuzzy
 msgid "Public statistics?"
-msgstr "Pika tilastot"
+msgstr "Julkiset tilastot?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2333
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3175
 msgid "Show graphs in public statistics?"
-msgstr ""
+msgstr "Näytä graafit julkisissa tilastoissa?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2345
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3182
@@ -8141,9 +8099,8 @@ msgstr "Julkaisu ja oikeuksien hallinta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2389
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3232
-#, fuzzy
 msgid "Set token length to:"
-msgstr "Poista tunnistemerkintä"
+msgstr "Aseta tunnisteen pituudeksi:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2394
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3237
@@ -8153,7 +8110,7 @@ msgstr "Salli yleinen rekisteröinti?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2428
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3254
 msgid "Set cookie to prevent repeated participation?"
-msgstr ""
+msgstr "Aseta eväste ehkäisemään moninkertaista osallistumista?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2441
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3265
@@ -8168,9 +8125,8 @@ msgstr "Käytä CAPTCHA:aa"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3268
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3269
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3271
-#, fuzzy
 msgid "Survey Access"
-msgstr "Onnistui"
+msgstr "Pääsy kyselyyn"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2445
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2449
@@ -8280,9 +8236,8 @@ msgstr "Vastauksiin kirjataan opastus-URL."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2624
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3343
-#, fuzzy
 msgid "Enable token-based response persistence?"
-msgstr "Salli nimikkeisiin perustuvien vastausten jatkuvuus?"
+msgstr "Salli tunnisteisiin perustuvien vastausten jatkuvuus?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2625
 msgid "This option can't be set if Anonymous answers are used"
@@ -8290,9 +8245,8 @@ msgstr "Tätä asetusta ei voi käyttää, jos vastaukset ovat anonyymejä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2635
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3350
-#, fuzzy
 msgid "Enable assessment mode?"
-msgstr "Aseta arvioiden/yhteenvetojen säännöt"
+msgstr "Salli arviotila"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2696
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
@@ -8303,24 +8257,21 @@ msgid "Save and Continue"
 msgstr "Tallenna ja jatka"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2730
-#, fuzzy
 msgid "Edit survey settings - Step 2 of 2"
-msgstr "Muokkaa Kyselyä - Osa 2/2"
+msgstr "Muokkaa kyselyasetuksia - Osa 2/2"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2750
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3088
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3090
-#, fuzzy
 msgid "Welcome message:"
-msgstr "Tervetulosivu"
+msgstr "Tervetuloviesti:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2754
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2756
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3092
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3094
-#, fuzzy
 msgid "End message:"
-msgstr "Viesti:"
+msgstr "Loppuviesti:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2758
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3189
@@ -8329,15 +8280,13 @@ msgstr "Loppu URL:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2761
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3194
-#, fuzzy
 msgid "URL description:"
-msgstr "URL-osoitteen Kuvaus:"
+msgstr "URL-osoitteen kuvaus:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2764
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3205
-#, fuzzy
 msgid "Date format:"
-msgstr "Päiväyksen muotoilu"
+msgstr "Päiväyksen muoto:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2868
 msgid "Change Group Order"
@@ -8369,7 +8318,7 @@ msgstr "Tunnus"
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:625
 #, fuzzy
 msgid "Place after.."
-msgstr "Odota..."
+msgstr "Aseta jälkeen..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2959
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:437
@@ -8403,9 +8352,9 @@ msgstr "Aloituspäivämäärä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3246
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3251
-#, fuzzy, php-format
+#, php-format
 msgid "Date format: %s"
-msgstr "Päiväyksen muotoilu"
+msgstr "Päiväyksen muoto: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3249
 msgid "Expiry Date:"
@@ -8422,14 +8371,12 @@ msgid "Select CSV/SQL File:"
 msgstr "Valitse CSV/SQL -tiedosto:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3374
-#, fuzzy
 msgid "Convert resources links and INSERTANS fields?"
-msgstr "Muunna linkkejä ja INSERTAND kenttiä?"
+msgstr "Muunna linkkejä ja INSERTANS-kenttiä?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:52
-#, fuzzy
 msgid "Export VV file"
-msgstr "Vie tiedosto"
+msgstr "Vie VV-tiedosto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:57
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_structure_lsrc.php:44
@@ -8439,22 +8386,19 @@ msgstr "Vie kysely"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:63
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:707
-#, fuzzy
 msgid "Completed Records Only"
-msgstr "Valmis Sivu"
+msgstr "Vain valmiit tallenteet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:64
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:708
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:195
-#, fuzzy
 msgid "All Records"
-msgstr "Uusi tallenne"
+msgstr "Kaikki tallenteet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:709
-#, fuzzy
 msgid "Incomplete Records Only"
-msgstr "Vain epätäydelliset vastaukset"
+msgstr "Vain epätäydelliset tallenteet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:69
 msgid "File Extension"
@@ -8469,7 +8413,7 @@ msgstr "Vie tulokset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:77
 msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
-msgstr ""
+msgstr "Avataksesi tiedoston helposti MS Excelissä, muuta pääte 'tab':ksi tai 'txt':ksi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:40
 msgid "You are about to delete all conditions on this survey's questions"
@@ -8502,14 +8446,12 @@ msgid "Answer was less than"
 msgstr "Vastaus oli pienempi kuin"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:428
-#, fuzzy
 msgid "Answer was less than or equal to"
-msgstr "Vähemmään kuin tai yhtä suuri"
+msgstr "Vastaus oli vähemmän tai yhtä suuri kuin"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:432
-#, fuzzy
 msgid "Answer was greater than or equal to"
-msgstr "Suurempi kuin tai yhtä suuri"
+msgstr "Vastaus oli suurempi kuin tai yhtä suuri kuin"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:436
 msgid "Answer was greater than"
@@ -8517,11 +8459,11 @@ msgstr "Vastaus oli suurempi kuin"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:440
 msgid "Answer matched (regexp)"
-msgstr ""
+msgstr "Vastaus täsmätty (regexp)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:622
 msgid "RANK"
-msgstr ""
+msgstr "SIJA"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:640
 #, fuzzy
@@ -8529,9 +8471,8 @@ msgid "at question"
 msgstr "kysymykseen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:648
-#, fuzzy
 msgid "Only answer this question if the following conditions are met:"
-msgstr "Vastaa tähän vain jos seuraavat ehdot on täytetty:"
+msgstr "Vastaa tähän vain jos seuraavat ehdot täyttyvät:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:728
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:730
@@ -8543,7 +8484,6 @@ msgid "Please number each box in order of preference from 1 to"
 msgstr "Aseta kohdat järjestykseen välillä 1-"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:922
-#, fuzzy
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Aseta kohdat järjestykseen välillä 1-"
 
@@ -8554,9 +8494,9 @@ msgstr "Valitse *kaikki* jotka soveltuvat:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:950
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:951
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose *at most* %s answers:"
-msgstr "Valitse *korkeintaan*"
+msgstr "Valitse *korkeintaan* %s vastausta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1016
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1017
@@ -8616,17 +8556,16 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1340
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
-msgstr ""
+msgstr "Ole hyvä ja syötä numero %d ja %d väliltä kullekin nimikkeelle:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1679
-#, fuzzy
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Kyselyssä on {NUMBEROFQUESTIONS} kysymystä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1760
-#, fuzzy, php-format
+#, php-format
 msgid "Please fax your completed survey to: %s"
-msgstr "Faksaa täyttämäsi lomake numeroon:"
+msgstr "Faksaa täyttämäsi lomake numeroon: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:189
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:190
@@ -8636,9 +8575,8 @@ msgid "Answered"
 msgstr "Vastattu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:107
-#, fuzzy
 msgid "There are no groups available."
-msgstr "Tämä kysely ei ole enää saatavilla."
+msgstr "Ryhmiä ei ole enää saatavilla."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:111
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1391
@@ -8649,7 +8587,7 @@ msgstr "Arviot"
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:123
 #, php-format
 msgid "Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
-msgstr ""
+msgstr "Huomaa: Arviointitila ei ole aktivoitu tälle kyselylle. Voit aktivoida sen %s kyselyasetuksista %s (välilehti 'Ilmoitusten ja tiedon hallinta')."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:131
 msgid "No SID Provided"
@@ -8666,9 +8604,8 @@ msgid "Edit"
 msgstr "Muokkaa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:163
-#, fuzzy
 msgid "Assessment rules"
-msgstr "Aseta arvioiden/yhteenvetojen säännöt"
+msgstr "Arvioiden säännöt"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:167
 #, fuzzy
@@ -8694,9 +8631,8 @@ msgid "No SID has been provided. Cannot dump survey"
 msgstr "SID puuttuu. Kyselyä ei voi poistaa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:66
-#, fuzzy
 msgid "The defined LimeSurvey database does not exist"
-msgstr "Määritettyä tarkastustietokantaa ei ole"
+msgstr "Määritettyä LimeSurvey-tietokantaa ei ole"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:67
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
@@ -8742,9 +8678,8 @@ msgid "Delete this entry"
 msgstr "Poista kohta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:324
-#, fuzzy
 msgid "You don't have permission to delete this entry."
-msgstr "Sinulla ei ole tarvittavia käyttöoikeuksia tähän."
+msgstr "Sinulla ei ole oikeuksia poistaa tätä syöttöä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:329
 msgid "Export this Response"
@@ -8763,12 +8698,10 @@ msgid "Data View Control"
 msgstr "Tietojenkatselun hallinta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:672
-#, fuzzy
 msgid "Show previous.."
 msgstr "Näytä edelliset..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:677
-#, fuzzy
 msgid "Show next.."
 msgstr "Näytä seuraavat..."
 
@@ -8777,9 +8710,8 @@ msgid "Show last.."
 msgstr "Näytä viimeinen..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:704
-#, fuzzy
 msgid "Records Displayed:"
-msgstr "Näytetyt Tallenteet:"
+msgstr "Näytetyt tallenteet:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:705
 msgid "Starting From:"
@@ -8794,29 +8726,25 @@ msgid "Edit this token"
 msgstr "Muokkaa tunnistetta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:788
-#, fuzzy
 msgid "Response summary"
-msgstr "Näytä tunnisteiden yhteenveto"
+msgstr "Vastausten yhteenveto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:790
 msgid "Total responses:"
 msgstr "Vastauksia yhteensä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:792
-#, fuzzy
 msgid "Full responses:"
-msgstr "Kaikki vastaajat"
+msgstr "Täydellisiä vastauksia:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:793
-#, fuzzy
 msgid "Incomplete responses:"
-msgstr "Tuo vastaukset"
+msgstr "Epätäydellisiä vastauksia:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:83
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:98
-#, fuzzy
 msgid "Conditions manager"
-msgstr "Ehtojen suunnittelu"
+msgstr "Ehtojen hallinointi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:100
 msgid "You have not selected a question"
@@ -8829,15 +8757,15 @@ msgstr "Ehtoa ei voi lisätä! Se ei sisältänyt kysymystä tai vastausta johon
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:366
 msgid "Conditions successfully copied (some were skipped because they were duplicates)"
-msgstr ""
+msgstr "Ehdot onnistuneesti kopioitu (osaa ei kopioitu, sillä ne olivat kaksoiskappaleita)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:370
 msgid "Conditions successfully copied"
-msgstr ""
+msgstr "Ehdot kopioitu onnistuneesti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:375
 msgid "No conditions could be copied (due to duplicates)"
-msgstr ""
+msgstr "Mitään ehtoja ei voitu kopioida (kaksoiskappaleiden vuoksi)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:380
 msgid "Did not copy questions"
@@ -8853,22 +8781,19 @@ msgstr "Kysymystä johon ehto kopioidaan ei valittu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:823
 msgid "Group of checkboxes"
-msgstr ""
+msgstr "Ruksauslaatikoiden ryhmä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:840
-#, fuzzy
 msgid "Single checkbox"
-msgstr "Yksittäinen Vastaus"
+msgstr "Yksittäinen vastauslaatikko"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:976
-#, fuzzy
 msgid "Conditions designer"
 msgstr "Ehtojen suunnittelu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:985
-#, fuzzy
 msgid "Show conditions for this question"
-msgstr "Aseta Ehtoja Kysymykselle"
+msgstr "Näytä kysymyksen ehdot"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:988
 msgid "Add and edit conditions"
@@ -8902,9 +8827,8 @@ msgid "Only show question {QID} IF"
 msgstr "Näytä vain kysymys {QID} JOS"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1156
-#, fuzzy
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
-msgstr "Haluatko varmasti kopioida nämä ehdot valittuihin kysymyksiin?"
+msgstr "Haluatko varmasti poistaa kaikki ehdot valittuihin kysymyksiin?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1158
 msgid "Delete all conditions"
@@ -8917,31 +8841,27 @@ msgstr "Oletko varma että haluat poistaa kaikki ainutkertaiset tunnistenumerot?
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1166
 msgid "Renumber scenario automatically"
-msgstr ""
+msgstr "Numeroi automaattisesti skenaario uudelleen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1210
 msgid "New scenario number"
-msgstr ""
+msgstr "Uusi skenaarionumero"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1217
-#, fuzzy
 msgid "Update scenario"
-msgstr "Päivitä käyttäjäryhmä"
+msgstr "Päivitä skenaario"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1228
-#, fuzzy
 msgid "Are you sure you want to delete all conditions set in this scenario?"
-msgstr "Haluatko varmasti poistaa tämän merkinnän?"
+msgstr "Haluatko varmasti poistaa kaikki skenaarion ehdot?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1230
-#, fuzzy
 msgid "Delete this scenario"
-msgstr "Poista kohta"
+msgstr "Poista skenaario"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1236
-#, fuzzy
 msgid "Edit scenario"
-msgstr "Muokkaa Käyttäjää"
+msgstr "Muokkaa skenaariota"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1289
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1798
@@ -8980,19 +8900,17 @@ msgstr "Säännöllinen lauseke"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1369
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1442
-#, fuzzy
 msgid "From token table"
-msgstr "Poista tunnistetaulu"
+msgstr "Tunnistetaulusta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1373
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1446
-#, fuzzy
 msgid "Inexistant token table"
-msgstr "Poista tunnistetaulu"
+msgstr "Ei-olemassaoleva tunnistetaulu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1431
 msgid "Not found"
-msgstr ""
+msgstr "Ei löytynyt"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1488
 msgid "Are you sure you want to delete this condition?"
@@ -9007,9 +8925,8 @@ msgid "Edit this condition"
 msgstr "Muokkaa tätä ehtoa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1568
-#, fuzzy
 msgid "This question is always shown."
-msgstr "Kysymys on pakollinen"
+msgstr "Tämä kysymys näytetään aina."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1607
 msgid "Copy the selected conditions to"
@@ -9033,14 +8950,12 @@ msgid "Add condition"
 msgstr "Lisää ehto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1717
-#, fuzzy
 msgid "Add scenario"
-msgstr "Muokkaa Käyttäjää"
+msgstr "Lisää skenaario"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1718
-#, fuzzy
 msgid "Default scenario"
-msgstr "Oletuskieli"
+msgstr "Oletusskenaario"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1729
 msgid "Scenario"
@@ -9051,7 +8966,6 @@ msgid "Previous questions"
 msgstr "Edelliset kysymykset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1796
-#, fuzzy
 msgid "Comparison operator"
 msgstr "Vertailuoperaattori"
 
@@ -9061,7 +8975,7 @@ msgstr "Samanlainen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1856
 msgid "Predefined"
-msgstr ""
+msgstr "Ennalta määritelty"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1857
 msgid "Constant"
@@ -9069,34 +8983,31 @@ msgstr "Vakio"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1860
 msgid "RegExp"
-msgstr ""
+msgstr "Säännöllinen lauseke"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1866
-#, fuzzy
 msgid "Predefined answer options for this question"
-msgstr "Muokkaa/Lisää Vastauksia tähän Kysymykseen"
+msgstr "Kysymyksen ennalta-asetetut vastausvaihtoehdot"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1871
 msgid "Constant value"
 msgstr "Vakion arvo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1888
-#, fuzzy
 msgid "Answers from previous questions"
-msgstr "vastaukset kysymykseen"
+msgstr "Edellisten kysymysten vastaukset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1900
 msgid "Attributes values from the participant's token"
-msgstr ""
+msgstr "Osallistujan tunnisteen määrearvot"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1919
 msgid "Update condition"
 msgstr "Päivitä ehto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:78
-#, fuzzy
 msgid "Export result data to R"
-msgstr "Vie tulokset SPSS-tiedostomuotoon."
+msgstr "Vie tulokset R:ään"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:79
 #, fuzzy
@@ -9120,7 +9031,7 @@ msgstr "Lataa data ja syntaksi tiedosto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:84
 msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
-msgstr ""
+msgstr "Tallenna molemmat R-työhakemistoon (käytä getwd() ja setwd() R-komentoikkunassa hakeaksesi ja asettaaksesi sen)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:85
 msgid "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window"
@@ -9154,73 +9065,69 @@ msgstr "QID puuttuu. Kysymystä ei voi poistaa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:31
 msgid "Welcome to the ComfortUpdate"
-msgstr ""
+msgstr "Tervetuloa ComfortUpdateen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:32
 msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
-msgstr ""
+msgstr "LimeSurvey ComfortUpdate on helppo tapa päivittää nopeasti uusimpaan LimeSurvey-versioon."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:33
-#, fuzzy
 msgid "The following steps will be done by this update:"
-msgstr "Seuraavat vastaukset tulisi poistaa"
+msgstr "Tämän päivityksen myötä suoritetaan seuraavat kohdat:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:34
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
-msgstr ""
+msgstr "LimeSurvey-asennustasi tarkistetaan, voidaanko päivitys tehdä onnistuneesti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:35
 msgid "Your DB and any changed files will be backed up."
-msgstr ""
+msgstr "Tietokannastasi ja muuttuneista tiedostoista otetaan varmuuskopiot."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:36
 msgid "New files will be downloaded and installed."
-msgstr ""
+msgstr "Uusia tiedostoja ladataan ja asennetaan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:37
 msgid "If necessary the database will be updated."
-msgstr ""
+msgstr "Jos on tarpeen, tietokanta päivitetään."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:38
 msgid "Checking basic requirements..."
-msgstr ""
+msgstr "Tarkistetaan perusedellytyksiä..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:40
 msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
-msgstr ""
+msgstr "Tarvitset päivitysavaimen ajaaksesi päivityksen. Päivitysominaisuuden betavaiheessa avainta \"LIMESURVEYUPDATE\" voi käyttää."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:41
-#, fuzzy
 msgid "Please enter a valid update-key:"
-msgstr "Päivämäärä:"
+msgstr "Syötä voimassa oleva päivityskoodi:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:42
 msgid "Save update key"
-msgstr ""
+msgstr "Tallenna päivitysavain."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:45
-#, fuzzy
 msgid "Update key: Valid"
-msgstr "Päivitä käyttäjäryhmä"
+msgstr "Päivityskoodi: voimassa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:49
 #, php-format
 msgid "Tempdir %s is not writable"
-msgstr ""
+msgstr "Väliaikainen hakemisto %s ei ole kirjoitettavissa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:54
 #, php-format
 msgid "Version file is not writable (%s). Please set according file permissions."
-msgstr ""
+msgstr "Versiotiedosto ei ole kirjoitettavissa (%s). Ole hyvä ja aseta oikeat tiedosto-oikeudet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:57
-#, fuzzy
 msgid "Change log"
-msgstr "Peruuta"
+msgstr "Muutoslogi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:92
 msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
+msgstr "Tarkistettaessa asennustasi yksi tai useampi ongelma löytyi. Katso ylhäältä virheilmoitukset ja korjaa virheet ennen kuin jatkat."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:242
@@ -9229,19 +9136,19 @@ msgstr "Tarkasta uudelleen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:98
 msgid "Everything looks alright. Please proceed to the next step."
-msgstr ""
+msgstr "Kaikki näyttäisi olevan kunnossa. Ole hyvä ja jatka seuraavaan vaiheeseen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:101
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:248
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:335
 #, php-format
 msgid "Proceed to step %s"
-msgstr ""
+msgstr "Jatka vaiheseen %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:117
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:148
 msgid "ComfortUpdate Step 2"
-msgstr ""
+msgstr "ComfortUpdate Vaihe 2"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:149
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:157
@@ -9250,107 +9157,99 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:348
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:356
 msgid "On requesting the update information from limesurvey.org there has been an error:"
-msgstr ""
+msgstr "Pyydettäessä päivitystietoja limesurvey.org:sta tapahtui virhe:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:154
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:271
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:353
-#, fuzzy
 msgid "Your update key is invalid and was removed. "
-msgstr "Tallenteet, joissa on virheelliset sähköpostiosoitteet, poistettu"
+msgstr "Päivityskoodisi ei ollut voimassa ja on poistettu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:167
-#, fuzzy
 msgid "Update server busy"
-msgstr "Luo Kysely"
+msgstr "Päivityspalvelin on ruuhkautunut"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:168
 msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
-msgstr ""
+msgstr "Päivityspalvelin vaikuttaisi olevan tällä hetkellä varattu. Tämä tapahtuu todennäköisimmin silloin, jos tarvittavia päivitystiedostoja valmistellaan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:169
 msgid "Please be patient and try again in about 10 minutes."
-msgstr ""
+msgstr "Olethan kärsivällinen ja yrität uudestaan noin 10 minuutin kuluttua."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:170
-#, fuzzy
 msgid "Back to global settings"
-msgstr "Tallenna asetukset"
+msgstr "Takaisin yleisiin asetuksiin"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:198
 msgid "Checking existing LimeSurvey files..."
-msgstr ""
+msgstr "Tarkistetaan olemassaolevia LimeSurvey-tiedostoja..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:201
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
-msgstr ""
+msgstr "Varoitus: Seuraavat tiedostot/hakemistot pitäisi päivittää, mutta niiden oikeuksiksi on asetettu read-only."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:202
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
-msgstr ""
+msgstr "Sinun täytyy muuttaa näiden tiedostojen oikeudet kirjoitettaviksi, ennen kuin voit jatkaa. Jos olet epävarma, mitä sinun pitäisi tehdä, ota yhteyttä järjestelmäylläpitäjääsi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:214
 msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
-msgstr ""
+msgstr "Seuraavat tiedostot lisättäisiin päivityksen yhteydessä, mutta ne ovat jo olemassa. Tämä on erittäin poikkeuksellista ja saattaa olla sattumaa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:215
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:228
 msgid "We recommend that these files should be replaced by the update procedure."
-msgstr ""
+msgstr "Suosittelemme, että seuraavat tiedostot korvataan päivityksen yhteydessä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:227
 msgid "The following files will be modified or deleted but were already modified by someone else."
-msgstr ""
+msgstr "Seuraavat tiedostot olisi poistettu tai muokattu, mutta niitä oli jo muokattu jonkun toisen toimesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:240
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
+msgstr "Tarkistettaessa tiedosto-oikeuksiasi yksi tai useampi ongelma löytyi. Katso ylhäältä virheilmoitukset ja korjaa virheet ennen kuin jatkat."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:246
-#, fuzzy
 msgid "Please check any problems above and then proceed to the next step."
-msgstr "Valitse vähintään yksi"
+msgstr "Tarkista yllä mainitut ongelmat ja jatka sen jälkeen seuraavaan kohtaan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:262
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:345
 msgid "ComfortUpdate Step 3"
-msgstr ""
+msgstr "ComfortUpdate Vaihe 3"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:263
 msgid "Creating DB & file backup"
-msgstr ""
+msgstr "Otetaan varmuuskopioita tietokannasta ja tiedostoista"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:306
 msgid "Creating file backup... "
 msgstr "Luodaan backup-tiedostoa..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:313
-#, fuzzy
 msgid "File backup created:"
-msgstr "Luomispäivämäärä"
+msgstr "Tiedoston varmuuskopio luotu:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:321
-#, fuzzy
 msgid "Creating database backup... "
-msgstr "Luo Tietokanta"
+msgstr "Tietokannan varmuuskopiota luodaan..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:325
-#, fuzzy
 msgid "DB backup created:"
-msgstr "Varmuuskopioi koko tietokanta"
+msgstr "Tietokannan varmuuskopio luotu:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:330
-#, fuzzy
 msgid "No DB backup created:"
-msgstr "Varmuuskopioi koko tietokanta"
+msgstr "Tietokannan varmuuskopiota ei ole luotu:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:330
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
-msgstr ""
+msgstr "Tietokannan varmuuskopiotoiminto tietokantatyypillesi ei ole tällä hetkellä käytettävissä. Ennen kuin jatkat, ota tietokannastasi varmuuskopio käyttäen varmuuskopiotyökalua!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:333
 msgid "Please check any problems above and then proceed to the final step."
-msgstr ""
+msgstr "Katso ylhäältä mahdolliset ongelmat ja jatka sen jälkeen viimeiseen vaiheeseen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:414
 #, php-format
@@ -9358,28 +9257,26 @@ msgid "File deleted: %s"
 msgstr "Tiedosto poistettu: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:426
-#, fuzzy
 msgid "New files were successfully installed."
-msgstr "Käyttäjäryhmän lisäys onnistui!"
+msgstr "Uusia tiedostoja asennettiin onnistuneesti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:432
 msgid "There was a problem downloading the update file. Please try to restart the update process."
-msgstr ""
+msgstr "Päivitystiedoston lataamisessa oli ongelmia. Kokeile käynnistää uudelleen päivitysprosessi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:450
-#, fuzzy, php-format
+#, php-format
 msgid "Buildnumber was successfully updated to %s."
-msgstr "Tietokanta on päivitetty versioon"
+msgstr "Tietokanta on päivitetty versioon %s."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:452
-#, fuzzy
 msgid "Please check any problems above - update was done."
-msgstr "Valitse vähintään yksi"
+msgstr "Tarkista yllä mainitut ongelmat - päivitys suoritettu."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:477
-#, fuzzy, php-format
+#, php-format
 msgid "Database has been successfully upgraded to version %s"
-msgstr "Tietokanta on päivitetty versioon"
+msgstr "Tietokanta on päivitetty versioon %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:25
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:34
@@ -9434,12 +9331,11 @@ msgstr "Kyselyyn liitetty tunnistetaulukko on uudelleennimetty: "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:122
 msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
-msgstr ""
+msgstr "Huomaa: Jos deaktivoit tämän kyselyn vahingossa, on mahdollista palauttaa data helposti, jos et tee muutoksia kyselyn rakenteeseen. Katso LimeSurvey-dokumentaatiosta tarkempia yksityiskohtia."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:69
-#, fuzzy
 msgid "This group does not contain any question(s)."
-msgstr "Tälle kysymykselle ei ole asetettu tyyppiä."
+msgstr "Ryhmä ei sisällä kysymyksiä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:99
 msgid "This question is a multiple answer type question but has no answers."
@@ -9518,9 +9414,8 @@ msgid "Change survey name or description"
 msgstr "Muuttaa kyselyn nimeä tai kuvausta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:266
-#, fuzzy
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Kun tiedot on kirjattu kyselyyn, jos haluat lisätä tai poistaa ryhmiä tai kysymyksiä, kysely täytyy deaktivoida, joka siirtää kaikki jo kirjatun tiedot erilliseen arkistoituun taulukkoon."
+msgstr "Kun tiedot on kirjattu kyselyyn, jos haluat lisätä tai poistaa ryhmiä tai kysymyksiä, kysely täytyy deaktivoida, mikä siirtää kaikki jo kirjatun tiedot erilliseen arkistoituun taulukkoon."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:526
 msgid "Survey could not be actived."
@@ -9556,7 +9451,7 @@ msgstr "Kutsukoodia ei tarvita tämän kyselyn suorittamiseen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:577
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
-msgstr "Voit siirtyä yksityiseen tilaan alustamalla tunnistetaulukon alla olevalla painikkeella."
+msgstr "Voit siirtyä suljettuun tilaan alustamalla tunnistetaulukko alla olevalla painikkeella."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:578
 msgid "Switch to closed-access mode"
@@ -9603,7 +9498,7 @@ msgstr "Virhe: kyselyllä on oltava nimi."
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1357
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
-msgstr ""
+msgstr "Ehto %d varten ohitettiin (%d ei ole olemassa)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1375
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1404
@@ -9636,13 +9531,12 @@ msgid "Quotas"
 msgstr "Lainaukset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1392
-#, fuzzy
 msgid "quota members"
-msgstr "Tilakiintiön nimi"
+msgstr "kiintiön jäsenet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1392
 msgid "quota language settings"
-msgstr ""
+msgstr "kiintiökieliasetus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1394
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1419
@@ -9678,14 +9572,13 @@ msgid "Group could not be deleted"
 msgstr "Ryhmää ei voitu poistaa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:254
-#, fuzzy
 msgid "The question could not be added. You must enter at least enter a question code."
-msgstr "Kysymystä ei voitu lisätä. Kirjoita koodi pakolliseen kenttään"
+msgstr "Kysymystä ei voitu lisätä. Sinun täytyy syöttää vähintään yksi kysymyskoodi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:316
-#, fuzzy, php-format
+#, php-format
 msgid "Question in language %s could not be created."
-msgstr "Kysymystä ei voitu luoda."
+msgstr "Kysymystä kielellä %s ei voitu luoda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:326
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:665
@@ -9787,9 +9680,8 @@ msgid "ERROR deleting Survey id"
 msgstr "VIRHE poistettaessa kyselyn tunnusta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1265
-#, fuzzy
 msgid "Survey could not be created because it did not have a title"
-msgstr "Kyselyä ei voitu luoda koska siitä puuttui lyhyt otsikkomerkintä"
+msgstr "Kyselyä ei voitu luoda koska siitä puuttui otsikko"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1412
 msgid "Survey could not be created"
@@ -9797,7 +9689,7 @@ msgstr "Kyselyä ei voitu luoda"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1427
 msgid "Your personal settings were successfully saved."
-msgstr ""
+msgstr "Henkilökohtaiset asetuksesi tallennettiin onnistuneesti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:141
@@ -9811,9 +9703,8 @@ msgstr "Huomautus: Kirjoita uusi kysymyskoodi!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:71
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:316
-#, fuzzy
 msgid "Label set:"
-msgstr "Tunnusryhmä:"
+msgstr "Nimiöryhmä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:89
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:343
@@ -9843,9 +9734,8 @@ msgid "Add a new question"
 msgstr "Lisää uusi kysymys"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:209
-#, fuzzy
 msgid "Error: You have to enter a question code."
-msgstr "Virhe: Aseta koodi tähän kysymykseen"
+msgstr "Virhe: Aseta koodi tähän kysymykseen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:300
 msgid "Question Type:"
@@ -9870,14 +9760,12 @@ msgid "At end"
 msgstr "Lopussa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:454
-#, fuzzy
 msgid "Show advanced settings"
-msgstr "Tallenna asetukset"
+msgstr "Näytä edistyneet asetukset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:454
-#, fuzzy
 msgid "Hide advanced settings"
-msgstr "Tallenna asetukset"
+msgstr "Piilota edistyneet asetukset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:456
 msgid "Loading..."
@@ -9918,23 +9806,20 @@ msgstr "Katso kysymystä"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:496
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:515
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:534
-#, fuzzy
 msgid "Number of records in this query:"
-msgstr "Vastauksien lukumäärä tutkimuksessa"
+msgstr "Tallenteita kyselyssä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:499
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:516
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:536
-#, fuzzy
 msgid "Total records in survey:"
-msgstr "Vastauksia tutkimuksessa yhteensä"
+msgstr "Tallenteita kyselyssä yhteensä:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:505
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:519
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:543
-#, fuzzy
 msgid "Percentage of total:"
-msgstr "Prosenttiosuus kaikista"
+msgstr "Prosenttiosuus kaikista:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:523
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:524
@@ -9954,9 +9839,9 @@ msgstr "Selaa"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1735
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1752
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1768
-#, fuzzy, php-format
+#, php-format
 msgid "Field summary for %s"
-msgstr "Kenttäyhteenveto"
+msgstr "Kenttäyhteenveto %s:lle"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
@@ -10051,7 +9936,7 @@ msgstr "Turvatiedote, joku saattaa yrittää käyttää LimeSurveyn sessiota tie
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:118
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:123
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
-msgstr ""
+msgstr "Myös tämä ongelma voi sattua, jos työskentelet LimeSurveyn kanssa useissa selainikkunoissa tai -välilehdillä samanaikaisesti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:123
 msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
@@ -10126,19 +10011,16 @@ msgstr "Uloskirjautuminen onnistui."
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:327
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:331
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:397
-#, fuzzy
 msgid "Failed to add user"
-msgstr "Käyttäjän lisäys epäonnistui."
+msgstr "Käyttäjän lisääminen epäonnistui"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:327
-#, fuzzy
 msgid "The email address is not valid."
-msgstr "Sähköpostiosoite on virheellinen"
+msgstr "Sähköpostiosoite on virheellinen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:332
-#, fuzzy
 msgid "A username was not supplied."
-msgstr "Käyttäjätunnus puuttuu."
+msgstr "Käyttäjätunnusta ei annettu."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:360
 #, php-format
@@ -10155,9 +10037,8 @@ msgid "You can use now the following credentials to log into the site:"
 msgstr "Voit käyttää seuraavia tunnuksia kirjautuaksesi sisään palveluun:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:370
-#, fuzzy
 msgid "Click here to log in."
-msgstr "Klikkaa tulostaaksesi vastauksesi."
+msgstr "Klikkaa kirjautuaksesi sisään."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:371
 #, php-format
@@ -10167,19 +10048,17 @@ msgstr "Jos sinulla on kysymyksiä koskien sähköpostiviestiä ole hyvä ja ota
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:373
 #, php-format
 msgid "User registration at '%s'"
-msgstr ""
+msgstr "Käyttäjärekisteröinti '%s':ssä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:380
 msgid "An email with a generated password was sent to the user."
 msgstr "Käyttäjälle lähetettiin luotu salasana sähköpostilla."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:397
-#, fuzzy
 msgid "The user name already exists."
 msgstr "Käyttäjätunnus on jo olemassa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:416
-#, fuzzy
 msgid "Initial Superadmin cannot be deleted!"
 msgstr "Ylläpitäjää ei voi poistaa!"
 
@@ -10202,9 +10081,8 @@ msgstr "Sähköpostiosoite on jo olemassa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:574
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:614
-#, fuzzy
 msgid "User permissions were updated successfully."
-msgstr "Käyttäjänäkymien päivitys onnistui."
+msgstr "Käyttäjänoikeuksien päivitys onnistui."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:624
 msgid "You are not allowed to change your own rights!"
@@ -10215,9 +10093,8 @@ msgid "Set Template Rights"
 msgstr "Aseta näkymien käyttöoikeudet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:658
-#, fuzzy
 msgid "Template permissions were updated successfully."
-msgstr "Käyttäjänäkymien päivitys onnistui."
+msgstr "Mallioikeuksien päivitys onnistui."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:664
 msgid "Error while updating usertemplates."
@@ -10234,9 +10111,8 @@ msgstr "Sulje HTML-editori"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:86
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:136
-#, fuzzy
 msgid "Editing"
-msgstr "Muokkaa"
+msgstr "Muokkaus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:167
 msgid "Do you want to save your changes ?"
@@ -10244,15 +10120,14 @@ msgstr "Haluatko tallentaa muutokset?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:246
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:302
-#, fuzzy
 msgid ""
 "Quota could not be added.\\n"
 "\\n"
 "It is missing a quota message for the following languages"
 msgstr ""
-"Ryhmää ei voitu lisätä.\\n"
+"Tilakiintiötä ei voitu lisätä.\\n"
 "\\n"
-"Siitä puuttuu ryhmän nimi seuraaville kielille"
+"Siitä puuttuu kiintiöviesti seuraavilla kielillä"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:390
 msgid "Modify Quota"
@@ -10286,13 +10161,12 @@ msgstr "Lopeta kysely varoituksen kanssa"
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:419
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:838
 msgid "Autoload URL"
-msgstr ""
+msgstr "Lataa URL automaattisesti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:459
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:865
-#, fuzzy
 msgid "Quota message"
-msgstr "Tilakiintiön nimi"
+msgstr "Tilakiintiöviesti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:465
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:869
@@ -10301,16 +10175,14 @@ msgstr "URL"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:471
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:873
-#, fuzzy
 msgid "URL description"
-msgstr "URL-osoitteen Kuvaus:"
+msgstr "URL-osoitteen kuvaus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:490
 msgid "Update Quota"
 msgstr "Päivitä tilakiintiö"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:521
-#, fuzzy
 msgid "Survey quotas"
 msgstr "Kyselyjen tilakiintiöt"
 
@@ -10341,13 +10213,12 @@ msgstr "Kyselylle ei ole asetettu kokorajoituksia"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:643
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:885
-#, fuzzy
 msgid "Add New Quota"
-msgstr "Uusi Tunniste Lisätty"
+msgstr "Lisää uusi tilakiintiö"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:654
 msgid "Quick CSV report"
-msgstr ""
+msgstr "Nopea CSV-raportti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:664
 msgid "Remaining"
@@ -10364,9 +10235,8 @@ msgstr "Kyselyssä ei ole tuettuja kysymystyyppejä."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:699
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:775
-#, fuzzy
 msgid "Survey Quota"
-msgstr "Kysely"
+msgstr "Kyselyn tilakiintiö"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:706
 msgid "Select Question"
@@ -10381,19 +10251,16 @@ msgid "Select Answer"
 msgstr "Valitse vastaus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:819
-#, fuzzy
 msgid "New quota"
-msgstr "Uusi"
+msgstr "Uusi tilakiintiö"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:823
-#, fuzzy
 msgid "Quota name"
 msgstr "Tilakiintiön nimi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:827
-#, fuzzy
 msgid "Quota limit"
-msgstr "Rajoitus"
+msgstr "Tilakiiintiö"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:831
 #, fuzzy
@@ -10401,28 +10268,26 @@ msgid "Quota action"
 msgstr "Tilakiintiövalinnat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:833
-#, fuzzy
 msgid "Terminate survey"
-msgstr "Lopeta/päätä kysely"
+msgstr "Lopeta kysely"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:834
-#, fuzzy
 msgid "Terminate survey with warning"
 msgstr "Lopeta kysely varoituksen kanssa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:46
 msgid "Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: "
-msgstr ""
+msgstr "Tiedot käyttäjätunnuksesta ja kertaluontoisesta salasanasta vastaanotettiin, mutta kertaluontoisen salasanan käyttö on estetty asetuksissa. Ole hyvä ja lisää seuraava rivi config.php:hen salliaksesi kertaluontoiset salasanat:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:64
 #, php-format
 msgid "No one-time password found for user %s"
-msgstr ""
+msgstr "Kertaluontoisia salasanoja ei löytynyt käyttäjälle %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:77
 #, php-format
 msgid "Passed one time password doesn't match one time password for user %s"
-msgstr ""
+msgstr "Syötetty kertaluontoinen salasana ei täsmää käyttäjän %s kohdalla"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:144
 msgid "You have to enter user name and email."
@@ -10449,9 +10314,8 @@ msgid "Export Results"
 msgstr "Vie Tulokset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:160
-#, fuzzy
 msgid "Filtered from statistics script"
-msgstr "Suodatettu Tilastokäsikirjoituksesta"
+msgstr "Suodatettu tilastokomentosarjasta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:161
 msgid "Single response"
@@ -10469,7 +10333,7 @@ msgstr "kenelle"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:193
 #, fuzzy
 msgid "Completion state"
-msgstr "Päätöspäivämäärä"
+msgstr "Valmistumistila"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:204
 msgid "Abbreviated headings"
@@ -10494,12 +10358,12 @@ msgstr "Vastauskoodit"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:222
 #, fuzzy
 msgid "Convert Y to"
-msgstr "Muunna Y numero 1:ksi."
+msgstr "Muunna Y "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:225
 #, fuzzy
 msgid "Convert N to"
-msgstr "Muunna Y numero 1:ksi."
+msgstr "Muunna N"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:229
 msgid "Full Answers"
@@ -10530,7 +10394,6 @@ msgid "PDF"
 msgstr "Pdf-tiedosto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:269
-#, fuzzy
 msgid "Column control"
 msgstr "Sarakkeenhallinta"
 
@@ -10566,7 +10429,6 @@ msgstr "Kyselysi voi viedä liitetyt tunnisteitiedot joka vastauksella.Valitse m
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:356
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:134
-#, fuzzy
 msgid "Export data"
 msgstr "Vie tiedot"
 
@@ -10606,7 +10468,7 @@ msgstr "Palaa Tunnuksiin Ylläpitäjät"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:201
 msgid "The label set was not imported because the same labelset already exists."
-msgstr ""
+msgstr "Tunnusryhmää ei tuotu, koska sama tunnusryhmä on jo olemassa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:209
 msgid "Label Set Import Summary"
@@ -10625,7 +10487,6 @@ msgid "Give focus to the HTML Editor Popup Window"
 msgstr "Anna HTML-editorille pop-ikkuna mahdollisuus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:114
-#, fuzzy
 msgid "Failed! Reason:"
 msgstr "Epäonnistui! Syy:"
 
@@ -10699,12 +10560,11 @@ msgstr "Vie tulokset SPSS-tiedostomuotoon"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:119
 #, fuzzy
 msgid "Data selection:"
-msgstr "Päivämäärän viimeinen toiminta"
+msgstr "Valitut tiedot:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:125
-#, fuzzy
 msgid "SPSS version:"
-msgstr "Versio"
+msgstr "SPSS-versio"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:127
 msgid "Prior to 16"
@@ -10719,9 +10579,8 @@ msgid "Step 1:"
 msgstr "Vaihe 1:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:133
-#, fuzzy
 msgid "Export syntax"
-msgstr "Tallenna tulokset SPSS-syntax formaatissa"
+msgstr "Vie syntaksi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:134
 msgid "Step 2:"
@@ -10732,7 +10591,6 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr "Avaa syntaksi-tiedosto SPSS:n Unicode-moodissa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:141
-#, fuzzy
 msgid "Edit the 4th line and complete the filename with a full path to the downloaded data file."
 msgstr "Muokkaa riviä 4 ja täydennä tiedoston nimi ja täydellinen osoiterivi ladatulle tiedostolle."
 
@@ -10748,13 +10606,13 @@ msgstr "Voit nyt tuoda tiedoston ohjelmaan."
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:3984
 #, php-format
 msgid "This is your personal statistic sheet for survey #%s"
-msgstr ""
+msgstr "Tämä on henkilökohtainen tilastosi kyselylle #%s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:3980
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:3985
-#, fuzzy, php-format
+#, php-format
 msgid "Statistics Survey #%s"
-msgstr "Palaa kyselyn alkuun"
+msgstr "Kyselyn tilastot #%s"
 
 #, fuzzy
 #~ msgid "Export result to a SPSS/PASW command file"
