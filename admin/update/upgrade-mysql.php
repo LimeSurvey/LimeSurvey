@@ -352,7 +352,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_answers` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` ADD `scale_id` tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` ADD `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_answers` DROP PRIMARY KEY, ADD PRIMARY KEY  USING BTREE (`qid`,`code`,`language`,`scale_id`)"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_answers` DROP PRIMARY KEY, ADD PRIMARY KEY (`qid`,`code`,`language`,`scale_id`)"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_defaultvalues` (
                               `qid` int(11) NOT NULL default '0',
                               `scale_id` int(11) NOT NULL default '0',

@@ -284,7 +284,7 @@ else
             }
             if (isset($fielddata['id']))
             {
-                db_switchIDInsert(true);
+                db_switchIDInsert("survey_$surveyid",true);
             }
             // try again, without the 'id' field.
 
@@ -296,7 +296,7 @@ else
 
             if (isset($fielddata['id']))
             {
-                db_switchIDInsert(false);
+                db_switchIDInsert("survey_$surveyid",false);
             }
 
 

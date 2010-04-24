@@ -499,7 +499,7 @@ function updateset($lid)
     }
     if (isset($sqlvalues))
     {
-        db_switchIDInsert(true);
+        db_switchIDInsert('labels',true);
         foreach ($sqlvalues as $sqlline)
         {
             $query = "INSERT INTO ".db_table_name('labels')." (lid,code,sortorder,language,assessment_value) VALUES ".($sqlline);
@@ -509,7 +509,7 @@ function updateset($lid)
                 $labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to Copy already defined labels to added languages","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
             }
         }
-        db_switchIDInsert(false);
+        db_switchIDInsert('labels',false);
     }
 
     // If languages are removed, delete labels for these languages
@@ -641,13 +641,13 @@ function modlabelsetanswers($lid)
                     $_POST['insertassessmentvalue']=(int)$_POST['insertassessmentvalue'];
                     foreach ($lslanguages as $lslanguage)
                     {
-                        db_switchIDInsert(true);
+                        db_switchIDInsert('labels',true);
                         $query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language, assessment_value) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage',{$_POST['insertassessmentvalue']})";
                         if (!$result = $connect->Execute($query))
                         {
                             $labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                         }
-                        db_switchIDInsert(false);
+                        db_switchIDInsert('labels',false);
                     }
                 }
                 else
