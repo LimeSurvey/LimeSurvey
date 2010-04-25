@@ -286,6 +286,7 @@ elseif ($subaction == "all")
 
     $browseoutput .= "\n<script type='text/javascript'>
                           var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
+                          var strDeleteAllConfirm='".$clang->gT('Do you really want all marked responses?','js')."'; 
                         </script>\n";    
     if (!isset($_POST['sql']))
     {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
@@ -305,11 +306,22 @@ elseif ($subaction == "all")
 
     if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
     {
-        $_POST['deleteanswer']=(int) $_POST['deleteanswer'];
+        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value     
         $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
-        $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());
+        $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }
 
+    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0)
+    {
+        foreach ($_POST['markedresponses'] as $iResponseID)
+        {
+            $iResponseID=(int)$iResponseID; // sanitize the value
+            $query="delete FROM $surveytable where id={$iResponseID}";
+            $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked  
+        }
+    }
+    
+    
     $fields=createFieldMap($surveyid,'full');
     $counter=0;
     foreach ($fields as $fielddetails)
@@ -350,7 +362,7 @@ elseif ($subaction == "all")
     if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
     else {$tableheader .= "<table class='browsetable'>\n";}
     $tableheader .= "\t<thead><tr valign='top'>\n"
-            . "<th>&nbsp;</th>\n"
+            . "<th><input type='checkbox' id='selectall'></th>\n"
             . "<th>Actions</th>\n";
     foreach ($fnames as $fn)
     {
@@ -366,6 +378,10 @@ elseif ($subaction == "all")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
+    $tableheader .= "\t<tfoot><tr><td colspan={$fncount}>"
+                   ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
+                   ."\t</tr></tfoot>\n\n";
+
 
     $start=returnglobal('start');
     $limit=returnglobal('limit');
@@ -545,7 +561,7 @@ elseif ($subaction == "all")
             else {$bgcc = "evenrow";}
             }
         $browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
-                ."<td align='center'><input type='checkbox' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
+                ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
                 ."<td align='center'>
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
@@ -592,7 +608,7 @@ elseif ($subaction == "all")
     <input type='hidden' name='sid' value='$surveyid' />
     <input type='hidden' name='subaction' value='all' />
     <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
-    <form>\n<br />\n";
+    </form>\n<br />\n";
 }
 else
 {

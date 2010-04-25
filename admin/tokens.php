@@ -2289,9 +2289,9 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         // AutoExecute
         $inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
         $tokenoutput .= "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
-        ."\t\t<br />".$clang->gT("Added New Token")."<br /><br />\n"
+        ."\t\t<br />".$clang->gT("New token was added.")."<br /><br />\n"
         ."\t\t<input type='button' value='".$clang->gT("Display Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Add new token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" /><br />\n";
+        ."\t\t<input type='button' value='".$clang->gT("Add another token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" /><br />\n";
     }
     else
     {

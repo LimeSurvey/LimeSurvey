@@ -19,7 +19,26 @@ $(document).ready(function(){
         if (answer==true)
         {
             $('#deleteanswer').val(thisid);
+            $('.cbResponseMarker').attr('checked',false);
             $('#resulttableform').submit();
         }
+    });
+
+    $("#imgDeleteMarkedResponses").click(function(){
+        if ($('.cbResponseMarker:checked').size()>0)
+        {
+            thisid=removechars($(this).attr('id')); 
+            answer = confirm(strDeleteAllConfirm);
+            if (answer==true)
+            {
+                $('#deleteanswer').val('');
+                $('#resulttableform').submit();
+            }
+        }
+    });
+    
+    
+    $("#selectall").click(function(){
+        $('.cbResponseMarker').attr('checked',$(this).attr('checked'));
     });
 });

@@ -634,6 +634,12 @@ a.optoutemail {
     text-align: center;          
 }
 
+.browsetable tfoot td {
+    text-align: left;          
+    background-color: #D2E0F2;     
+    padding:4px;
+}
+
 .users td,
 .listsurveys td {
     font-size:8pt;

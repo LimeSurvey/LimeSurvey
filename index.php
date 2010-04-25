@@ -2784,6 +2784,9 @@ function UpdateFieldArray()
  */
 function check_quota($checkaction,$surveyid)
 {
+    if (!isset($_SESSION['s_lang'])){
+        return;
+    }
     global $thistpl, $clang, $clienttoken;
     $global_matched = false;
     $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
