@@ -565,7 +565,7 @@ function upgrade_tables143()
     global $modifyoutput,$dbprefix, $connect;
 
 
-   
+    $aQIDReplacements=array();
     $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('L','O','!') and a.default_value='Y'";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}
@@ -577,20 +577,44 @@ function upgrade_tables143()
         }
     }
 
-    
     // Convert answers to subquestions
     
-    // ToDo: Does not properly convert multi-language surveys yet (subqeustions for multiple langauges have the same question id)
-    // ToDo: Does not convert default values for multiple choice questions yet
-    
-    $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
+    $answerquery = "select a.*, q.sid, q.gid, q.type from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}
     else
     {
         while ( $row = $answerresult->FetchRow() )
         {
-            modify_database("","INSERT INTO {$dbprefix}questions (sid, gid, parent_qid, title, question, question_order, language) VALUES ({$row['sid']},{$row['gid']},{$row['qid']},".db_quoteall($row['code']).",".db_quoteall($row['answer']).",{$row['sortorder']},".db_quoteall($row['language']).")"); echo $modifyoutput; flush();
+            
+            $insertarray=array();
+            if (isset($aQIDReplacements[$row['qid'].'_'.$row['code']]))
+            {
+                $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+            }
+            $insertarray['sid']=$row['sid'];
+            $insertarray['gid']=$row['gid'];
+            $insertarray['parent_qid']=$row['qid'];
+            $insertarray['title']=$row['code'];
+            $insertarray['question']=$row['answer'];
+            $insertarray['question_order']=$row['sortorder'];
+            $insertarray['language']=$row['language'];
+            $tablename="{$dbprefix}questions";
+            $query=$connect->GetInsertSQL($tablename,$insertarray);
+            modify_database("",$query); echo $modifyoutput; flush();
+            if (!isset($insertarray['qid']))
+            {
+               $aQIDReplacements[$row['qid'].'_'.$row['code']]=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+               $iSaveSQID=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+            }
+            else
+            {
+               $iSaveSQID=$insertarray['qid'];
+            }
+            if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
+            {
+                modify_database("","INSERT INTO {$dbprefix}defaultvalues (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".db_quoteall($row['language']).",'','Y')"); echo $modifyoutput; flush();
+            }
         }
     }
     modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
@@ -640,7 +664,26 @@ function upgrade_tables143()
             $labelresult = db_execute_assoc($labelquery);
             while ( $lrow = $labelresult->FetchRow() )
             {
-                modify_database("","INSERT INTO {$dbprefix}questions (sid, gid, parent_qid, title, question, question_order, language, scale_id) VALUES ({$row['sid']},{$row['gid']},{$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
+                $insertarray=array();
+                if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code']]))
+                {
+                    $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code']];
+                }
+                $insertarray['sid']=$row['sid'];
+                $insertarray['gid']=$row['gid'];
+                $insertarray['parent_qid']=$row['qid'];
+                $insertarray['title']=$lrow['code'];
+                $insertarray['question']=$lrow['title'];
+                $insertarray['question_order']=$row['sortorder'];
+                $insertarray['language']=$lrow['language'];
+                $insertarray['scale_id']=1;
+                $tablename="{$dbprefix}questions";
+                $query=$connect->GetInsertSQL($tablename,$insertarray);
+                modify_database("",$query); echo $modifyoutput; flush();
+                if (isset($insertarray['qid']))
+                {
+                   $aQIDReplacements[$row['qid'].'_'.$lrow['code']]=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+                }                
             }
         }
     }

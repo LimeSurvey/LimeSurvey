@@ -149,7 +149,7 @@ if (!isset($_SESSION['loginID']))
                     $login = true;
 
 					$loginsummary .= "<div class='messagebox'>\n";
-                    $loginsummary .= "<div class='header'>" . $clang->gT("Logged In") . "</div>";
+                    $loginsummary .= "<div class='header'>" . $clang->gT("Logged in") . "</div>";
 					$loginsummary .= "<br />".sprintf($clang->gT("Welcome %s!"),$_SESSION['full_name'])."<br />&nbsp;";
 					$loginsummary .= "</div>\n";
 
@@ -400,7 +400,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             $addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
         }
     }
-    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/></div>\n";
+    $addsummary .= "<p><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/></div>\n";
 }
 
 elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))

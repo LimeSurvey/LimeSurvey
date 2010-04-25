@@ -9,7 +9,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: browse.php 8331 2010-02-01 23:59:05Z c_schmitz $
+* $Id$
 */
 
 $(document).ready(function(){

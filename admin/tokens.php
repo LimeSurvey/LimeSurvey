@@ -1423,7 +1423,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
                     ."SET sent='$today' WHERE tid={$emrow['tid']}";
                     //
                     $uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
-                    $tokenoutput .= "[".$clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+                    $tokenoutput .= $clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)<br />\n";
                     if ($emailsmtpdebug==2)
                     {
                         $tokenoutput .=$maildebug;

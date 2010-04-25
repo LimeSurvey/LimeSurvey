@@ -2240,12 +2240,12 @@ if($action == "surveysecurity")
         . "<th>".$clang->gT("Username")."</th>\n"
         . "<th>".$clang->gT("User Group")."</th>\n"
         . "<th>".$clang->gT("Full name")."</th>\n"
-        . "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Edit Survey Property")."\"></th>\n"
-        . "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Define Questions")."\"></th>\n"
-        . "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Browse Response")."\"></th>\n"
-        . "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Export")."\"></th>\n"
-        . "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Delete Survey")."\"></th>\n"
-        . "<th align=\"center\"><img src=\"$imagefiles\\help.gif\" alt=\"".$clang->gT("Activate Survey")."\"></th>\n"
+        . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Edit Survey Property")."\"></th>\n"
+        . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Define Questions")."\"></th>\n"
+        . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Browse Response")."\"></th>\n"
+        . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Export")."\"></th>\n"
+        . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Delete Survey")."\"></th>\n"
+        . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Activate Survey")."\"></th>\n"
         . "<th>".$clang->gT("Action")."</th>\n"
         . "</tr></thead>\n";
 
@@ -2347,7 +2347,7 @@ if($action == "surveysecurity")
                     if ($resul2row[$right]==1) {
                         $insert = "<div class=\"ui-icon ui-icon-check\"></div>";
                     } else {
-                        $insert = "<div class=\"ui-icon ui-icon-radio-off\"></div>";
+                        $insert = "<div></div>";
                     }
                     $surveysecurity .= "<td align=\"center\">\n$insert\n</td>\n";
                 }
@@ -3603,8 +3603,8 @@ function showadminmenu()
             .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
             .'<ol>'
             .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imagefiles/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
-            .'<li>'.$clang->gT('Create a new group inside your survey.').'</li>'
-            .'<li>'.$clang->gT('Create one or more question inside the new group.').'</li>'
+            .'<li>'.$clang->gT('Create a new question group inside your survey.').'</li>'
+            .'<li>'.$clang->gT('Create one or more questions inside the new question group.').'</li>'
             .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imagefiles/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
             .'</ol></p><br />&nbsp;</div>';
         }

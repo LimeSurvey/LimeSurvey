@@ -1,4 +1,4 @@
-// $Id: templates.js 7699 2009-09-30 22:28:50Z c_schmitz $
+// $Id$
        var labelcache=[];  
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
