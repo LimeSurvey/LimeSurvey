@@ -57,6 +57,7 @@ function deleteinput()
        language=info[1];
        scale_id=info[2];
        languages=langs.split(';');
+
        var x;
        for (x in languages)
        {
@@ -294,14 +295,28 @@ function lsbrowser()
                 remind=json[x][0];
             }
         }
+        if ($('#labelsets > option').size()>0)
+        {
         $('#labelsets').selectOptions(remind);  
         lspreview();           
+        } 
+        else
+        {
+            $('#btnlsreplace').addClass('ui-state-disabled');
+            $('#btnlsinsert').addClass('ui-state-disabled');
+        }
     });
+    
 }
 
 // previews the labels in a label set after selecting it in the select box
 function lspreview()
 {
+   if ($('#labelsets > option').size()==0)
+   {
+       return;
+   }
+    
    var lsid=$('#labelsets').selectedValues();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))

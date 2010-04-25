@@ -1,5 +1,5 @@
 // $Id$
-       var labelcache=[];  
+var labelcache=[];  
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
                                             start:startmove,
@@ -250,14 +250,28 @@ function lsbrowser()
                 remind=json[x][0];
             }
         }
-        $('#labelsets').selectOptions(remind);  
-        lspreview();           
+        if ($('#labelsets > option').size()>0)
+        {
+            $('#labelsets').selectOptions(remind); 
+            lspreview();           
+        } 
+        else
+        {
+            $('#btnlsreplace').addClass('ui-state-disabled');
+            $('#btnlsinsert').addClass('ui-state-disabled');
+        }
     });
+    
 }
 
 // previews the labels in a label set after selecting it in the select box
 function lspreview()
 {
+   if ($('#labelsets > option').size()==0)
+   {
+       return;
+   }
+    
    var lsid=$('#labelsets').selectedValues();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))
@@ -347,14 +361,23 @@ function dump(arr,level) {
 
 function transferlabels()
 {
-   if ($(this).attr('id')=='btnlsreplace')
-   {
-       var lsreplace=true;
-   } 
-   else
-   {
-       var lsreplace=false;
-   }
+    if ($(this).attr('id')=='btnlsreplace')
+    {
+        var lsreplace=true;
+    } 
+    else
+    {
+        var lsreplace=false;
+    }
+   
+    if (lsreplace)
+    {
+       $('.answertable:first tbody tr').each(function(){
+          aRowInfo=this.id.split('_');  
+          $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
+       }); 
+    }
+   
    var lsid=$('#labelsets').selectedValues();
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
@@ -438,6 +461,14 @@ function quickaddlabels()
        var lsreplace=false;
     }
 
+    if (lsreplace)
+    {
+       $('.answertable:first tbody tr').each(function(){
+          aRowInfo=this.id.split('_');  
+          $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
+       }); 
+    }
+    
     languages=langs.split(';');   
     for (x in languages)
     {
