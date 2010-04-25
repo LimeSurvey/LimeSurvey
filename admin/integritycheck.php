@@ -28,6 +28,12 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         . "<div class='header'>".$clang->gT("Data Consistency Check")."<br />\n"
         . "<span style='font-size:7pt;'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</span></div>\n"
         . "<ul>\n";
+        
+        /****** Plainly delete survey permissions if the survey or user does not exist ***/
+        
+        $connect->query("delete FROM {$dbprefix}surveys_rights where sid not in (select sid from {$dbprefix}surveys)");
+        $connect->query("delete FROM {$dbprefix}surveys_rights where uid not in (select uid from {$dbprefix}users)");
+        
         /**********************************************************************/
         /*     CHECK CONDITIONS                                               */
         /**********************************************************************/

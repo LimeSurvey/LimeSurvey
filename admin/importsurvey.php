@@ -1582,7 +1582,12 @@ function XMLImportSurvey($sFullFilepath)
             $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
             $results['quotals']++;
         }             
-    }     
+    } 
+    
+    // Set survey rights
+    $sQuery = "INSERT INTO {$dbprefix}surveys_rights (sid, uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey) VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
+    $connect->Execute($sQuery);
+        
     
     return $results;
 }
