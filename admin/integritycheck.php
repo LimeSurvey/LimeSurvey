@@ -199,6 +199,29 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
 
         /**********************************************************************/
+        /*     CHECK SURVEY LANGUAGE SETTINGS                                 */
+        /**********************************************************************/
+        $query = "SELECT surveyls_survey_id FROM {$dbprefix}surveys_languagesettings where surveyls_survey_id not in (select sid from {$dbprefix}surveys) group by surveyls_survey_id order by surveyls_survey_id";
+        $result = db_execute_assoc($query) or safe_die ("Couldn't get list of answers from database<br />$query<br />".$connect->ErrorMsg());
+        while ($row=$result->FetchRow())
+        {
+                $sldelete[]=$row['surveyls_survey_id'];
+        }
+        if (isset($sldelete) && $sldelete)
+        {
+            $integritycheck .= "<strong>".$clang->gT("The following survey language settings should be deleted").":</strong><br /><span style='font-size:7pt;'>\n";
+            foreach ($sldelete as $sld) {
+                $integritycheck .= sprintf($clang->gT("SLID `%s` because the related survey is missing."),$sld)."<br />\n";
+            }
+            $integritycheck .= "</span><br />\n";
+        }
+        else
+        {
+            $integritycheck .= "<li>".$clang->gT("All survey language settings meet consistency standards")."</li>\n";
+        }
+        
+        
+        /**********************************************************************/
         /*     CHECK QUESTIONS                                                */
         /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}questions ORDER BY sid, gid, qid";
@@ -231,20 +254,16 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         /**********************************************************************/
         /*     CHECK GROUPS                                                   */
         /**********************************************************************/
-        $query = "SELECT * FROM {$dbprefix}groups ORDER BY sid, gid";
+        $query = "SELECT gid FROM {$dbprefix}groups where sid not in (select sid from {$dbprefix}surveys) group by gid order by gid";
         $result=db_execute_assoc($query) or safe_die ("Couldn't get list of groups for checking<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
         {
-            //make sure survey exists
-            $qquery = "SELECT * FROM {$dbprefix}groups WHERE sid={$row['sid']}";
-            $qresult=$connect->Execute($qquery) or safe_die("Couldn't check surveys table for gids from groups<br />$qquery<br />".$connect->ErrorMsg());
-            $qcount=$qresult->RecordCount();
-            if (!$qcount) {$gdelete[]=array($row['gid']);}
+           $gdelete[]=$row['gid'];
         }
         if (isset($gdelete) && $gdelete)
         {
             $integritycheck .= "<li>".$clang->gT("The following groups should be deleted").":</li><span style='font-size:7pt;'>\n";
-            $integritycheck .= implode(", ", $gdelete);
+            foreach ($gdelete as $gd) {$integritycheck .= sprintf($clang->gT("GID `%s` because there is no matching survey."),$gd)."<br />\n";}
             $integritycheck .= "</span><br />\n";
         }
         else
@@ -390,7 +409,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) &&
         !isset($gdelete) && !isset($asgdelete) && !isset($sdelete) &&
         !isset($assdelete) && !isset($qadelete) && !isset($oldsdelete) &&
-        !isset($oldtdelete)) {
+        !isset($oldtdelete) && !isset($sldelete)) {
             $integritycheck .= "<br />".$clang->gT("No database action required");
         } else {
             $integritycheck .= "<br />".$clang->gT("Should we proceed with the delete?")."<br />\n";
@@ -423,7 +442,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             }
             if (isset($gdelete)) {
                 foreach ($gdelete as $gd) {
-                    $integritycheck .= "<input type='hidden' name='gdelete[]' value='{$gd['gid']}' />\n";
+                    $integritycheck .= "<input type='hidden' name='gdelete[]' value='{$gd}' />\n";
                 }
             }
             if (isset($qadelete)) {
@@ -444,6 +463,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             if (isset($sdelete)) {
                 foreach ($sdelete as $asg) {
                     $integritycheck .= "<input type='hidden' name='sdelete[]' value='{$asg['sid']}'/>\n";
+                }
+            }
+            if (isset($sldelete)) {
+                foreach ($sldelete as $sld) {
+                    $integritycheck .= "<input type='hidden' name='sldelete[]' value='{$sld}'/>\n";
                 }
             }
             $integritycheck .= "<input type='hidden' name='ok' value='Y'>\n"
@@ -525,6 +549,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $asgdelete=returnglobal('asgdelete');
         $qadelete=returnglobal('qadelete');
         $sdelete=returnglobal('sdelete');
+        $sldelete=returnglobal('sldelete');
         $oldsdelete=returnglobal('oldsdelete');
         $oldtdelete=returnglobal('oldtdelete');
 
@@ -554,6 +579,16 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($sdelete as $ass) {
                 $integritycheck .= $clang->gT("Deleting Survey ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}surveys WHERE sid=$ass";
+                $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
+            }
+            $integritycheck .= "</span><br />\n";
+        }
+        
+        if (isset($sldelete)) {
+            $integritycheck .= $clang->gT("Deleting survey language settings").":<br /><spanstyle='font-size:7pt;'>\n";
+            foreach ($sldelete as $sld) {
+                $integritycheck .= $clang->gT("Deleting survey language setting").":".$sld."<br />\n";
+                $sql = "DELETE FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$sld";
                 $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
             $integritycheck .= "</span><br />\n";
