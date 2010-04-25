@@ -741,7 +741,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
     $query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0";
     $result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-    $tokenoutput .= "<div class='header'>".$clang->gT("Clear token invites")."</div>\n"
+    $tokenoutput .= "<div class='header'>".$clang->gT("Reset token invitation status")."</div>\n"
     ."<div class='messagebox'><div class='successheader'>".$clang->gT("All token entries have been set to 'Not invited'.")."</div></div><br />\n";
     $subaction="";
 }
@@ -766,7 +766,7 @@ if (!$subaction && ($sumrows5['edit_survey_property'] || $sumrows5['activate_sur
     ."<div style='width:30%; margin:0 auto;'><ul><li><a href='#' onclick=\"if( confirm('"
     .$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
     ."<li><a href='#' onclick=\"if ( confirm('"
-    .$clang->gT("Are you sure you want to delete all unique token numbers?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token numbers")."</a></li>\n"
+    .$clang->gT("Are you sure you want to delete all unique token strings?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token strings")."</a></li>\n"
     ."<li><a href='#' onclick=\" if (confirm('"
     .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
     $tokenoutput .= "<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul></div>\n";
@@ -1542,7 +1542,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 
         if (isset($tokenids)) {
             $tokenoutput .= "\t<li>\n"
-            . "<label>".$clang->gT("Send reminder to token IDs:")."</label>\n"
+            . "<label>".$clang->gT("Send reminder to token ID(s):")."</label>\n"
             . implode(", ", $tokenids)."</li>\n";
         } elseif (!isset($tokenid)) {
             $tokenoutput .= "<li><label>"
@@ -1555,7 +1555,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
             ."\t</li>\n";
         } elseif (isset($tokenid)) {
             $tokenoutput .= "\t<li>\n"
-            ."<label>".$clang->gT("Send reminder to Token ID:")."</label>\n"
+            ."<label>".$clang->gT("Send reminder to token ID(s):")."</label>\n"
             ."{$tokenid}</li>\n";
         }
         $tokenoutput .="<li><label for='bypassbademails'>\n"
@@ -1936,7 +1936,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
         $tokenoutput.="</td></tr>";
     }
     $tokenoutput.="</table><p>"
-    .'<input type="submit" value="'.$clang->gT('Save attribute descriptions').'" />'
+    .'<input type="submit" value="'.$clang->gT('Save').'" />'
     ."<input type='hidden' name='action' value='tokens' />\n"
     ."<input type='hidden' name='subaction' value='updatetokenattributedescriptions' />\n"
     ."<input type='hidden' name='sid' value=\"{$surveyid}\" /></p>\n"
@@ -1979,12 +1979,12 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
     ."\t<div class='messagebox'>";
     if ($execresult===false)
     {
-        $tokenoutput.="\t\t<div class='warningheader'>".$clang->gT("Updating token descriptions failed:")."".htmlspecialchars($connect->ErrorMsg())."</div>"
+        $tokenoutput.="\t\t<div class='warningheader'>".$clang->gT("Updating token attribute descriptions failed:")."".htmlspecialchars($connect->ErrorMsg())."</div>"
         ."\t\t<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" />\n";
     }
     else
     {
-        $tokenoutput.="\t\t<div class='successheader'>".$clang->gT("Token descriptions were successfully updated.")."</div>"
+        $tokenoutput.="\t\t<div class='successheader'>".$clang->gT("Token attribute descriptions were successfully updated.")."</div>"
         ."\t\t<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" />\n";
     }
     $tokenoutput .= "\t</div>";
@@ -2016,7 +2016,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
     ."\t<div class='messagebox'>";
     if ($execresult==0)
     {
-        $tokenoutput.="\t\t<div class='warningheader'>".$clang->gT("Adding fields failed:")."".htmlspecialchars($connect->ErrorMsg())."</div>"
+        $tokenoutput.="\t\t<div class='warningheader'>".$clang->gT("Adding attribute fields failed:")."".htmlspecialchars($connect->ErrorMsg())."</div>"
         ."\t\t<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" />\n";
     }
     else

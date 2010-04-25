@@ -286,7 +286,7 @@ elseif ($subaction == "all")
 
     $browseoutput .= "\n<script type='text/javascript'>
                           var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
-                          var strDeleteAllConfirm='".$clang->gT('Do you really want all marked responses?','js')."'; 
+                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."'; 
                         </script>\n";    
     if (!isset($_POST['sql']))
     {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on

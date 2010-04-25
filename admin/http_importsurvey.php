@@ -42,7 +42,7 @@ $importsurvey .= $clang->gT("Reading file..")."<br />\n";
 $importingfrom = "http";	// "http" for the web version and "cmdline" for the command line version
 } elseif ($action == 'copysurvey')
 {
-    $importsurvey = "<div class='header'>".$clang->gT("Copy Survey")."</div>\n";
+    $importsurvey = "<div class='header'>".$clang->gT("Copy survey")."</div>\n";
     $surveyid = sanitize_int($_POST['copysurveylist']);
     $exclude = array();
     require_once("../classes/inputfilter/class.inputfilter_clean.php");

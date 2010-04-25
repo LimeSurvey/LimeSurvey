@@ -346,8 +346,7 @@ if(isset($surveyid))
         $group_number=0;
         $gselect="SELECT a.qid, a.gid\n"
         ."FROM ".db_table_name('questions')." as a, ".db_table_name('groups')."\n"
-        ."WHERE a.gid=".db_table_name('groups').".gid\n"
-        ."AND a.sid=$surveyid\n"
+        ."WHERE a.gid=".db_table_name('groups').".gid AND a.sid=$surveyid AND a.parent_qid=0 "
         ."GROUP BY a.gid, a.qid, ".db_table_name('groups').".group_order, question_order\n"
         ."ORDER BY ".db_table_name('groups').".group_order, question_order";
         $gresult=db_execute_assoc($gselect) or safe_die ("Error: ".$connect->ErrorMsg());  // Checked
