@@ -598,9 +598,14 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 $results['questions']++;
 
                 //GET NEW QID  .... if is not done before and we count a question if a new qid is required
-                if (!isset($aQIDReplacements[$oldqid]))
+                if (isset($questionrowdata['qid']))
                 {
-                    $aQIDReplacements[$oldqid] = $connect->Insert_ID("{$dbprefix}questions",'qid');
+                    $saveqid=$questionrowdata['qid']; 
+                }
+                else
+	            {
+                    $aQIDReplacements[$oldqid]=$connect->Insert_ID("{$dbprefix}questions",'qid');
+                    $saveqid=$aQIDReplacements[$oldqid];
                 }
                 $qtypes = getqtypelist("" ,"array");   
                 $aSQIDReplacements=array();
@@ -613,7 +618,8 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     $oldlabelsresult=db_execute_assoc($query);
                     while($labelrow=$oldlabelsresult->FetchRow())
                     {
-                        if (in_array($labelrow['language'],$aLanguagesSupported)){
+                        if (in_array($labelrow['language'],$aLanguagesSupported))
+                        {
                             
                             if ($qtypes[$oldquestion['newtype']]['subquestions']<2)
                             {
@@ -624,9 +630,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
                             }
                             else
                             {
-                                if (isset($aSQIDReplacements[$answerrowdata['code']])){
+                            if (isset($aSQIDReplacements[$labelrow['code'].'_'.$saveqid])){
                                    $fieldname='qid,';
-                                   $data=$aSQIDReplacements[$answerrowdata['code']].',';
+                                   $data=$aSQIDReplacements[$labelrow['code'].'_'.$saveqid].',';
                                 }  
                                 else{
                                    $fieldname='' ;
@@ -639,7 +645,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                                 $results['questions']++;
                                 if ($fieldname=='')
                                 {
-                                   $aSQIDReplacements[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                                   $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                                 }
                                 
                             }

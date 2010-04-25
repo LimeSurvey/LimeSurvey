@@ -798,10 +798,12 @@ function CSVImportSurvey($sFullFilepath)
 
             if (isset($questionrowdata['qid'])) {
                 db_switchIDInsert('questions',false);
+                $saveqid=$questionrowdata['qid'];
             }
             else
             {
-                $aQIDReplacements[$oldqid]=$connect->Insert_ID("{$dbprefix}questions","qid");
+                $aQIDReplacements[$oldqid]=$connect->Insert_ID("{$dbprefix}questions",'qid');
+                $saveqid=$aQIDReplacements[$oldqid];
             }
 
 
@@ -823,21 +825,21 @@ function CSVImportSurvey($sFullFilepath)
                         }
                         else
                         {
-                            if (isset($aSQIDReplacements[$labelrow['code']])){
+                            if (isset($aSQIDReplacements[$labelrow['code'].'_'.$saveqid])){
                                $fieldname='qid,';
-                               $data=$aSQIDReplacements[$labelrow['code']].',';
+                               $data=$aSQIDReplacements[$labelrow['code'].'_'.$saveqid].',';
                             }  
                             else{
                                $fieldname='' ;
                                $data='';
                             }
                             
-                            $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname,parent_qid,title,question,question_order,language,scale_id,type)
-                                        VALUES ($data, {$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",0,'{$questionrowdata['type']}')"; 
+                            $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname parent_qid,title,question,question_order,language,scale_id,type)
+                                        VALUES ($data{$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",0,'{$questionrowdata['type']}')"; 
                             $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                             if ($fieldname=='')
                             {
-                               $aSQIDReplacements[$labelrow['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                               $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                             }
                         }
                         if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1)

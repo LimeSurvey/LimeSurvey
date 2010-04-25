@@ -1,3 +1,4 @@
+//$Id$    
 $(document).ready(function(){
     setupAllTabs();
     if(typeof(userdateformat) !== 'undefined') 

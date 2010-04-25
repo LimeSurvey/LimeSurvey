@@ -6592,12 +6592,9 @@ function conditional_nl2br($mytext,$ishtml,$encoded='')
         // and thus \n has already been translated to &#10;
         if ($encoded == '')
         {
-            return str_replace('&#10;', '<br />',$mytext);
+            $mytext=str_replace('&#10;', '<br />',$mytext);
         }
-        elseif ($encoded == 'unescaped')
-        {
-            return str_replace("\n", '<br />',$mytext);
-        }
+        return str_replace("\n", '<br />',$mytext);
     }
     else
     {
