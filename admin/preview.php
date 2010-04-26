@@ -56,28 +56,28 @@ $answers = retrieveAnswers($ia);
 
 if (!$thissurvey['template'])
 {
-    $thistpl=$templaterootdir."/".$defaulttemplate;
+    $thistpl=sGetTemplatePath($defaulttemplate);
 }
 else
 {
-    $thistpl=$templaterootdir."/".validate_templatedir($thissurvey['template']);
+    $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
 }
 
 doHeader();
 $dummy_js = '
-		    <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-		    <script type="text/javascript">
-            /* <![CDATA[ */
-                function checkconditions(value, name, type)
-                {
-                }
+		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+		<script type="text/javascript">
+        /* <![CDATA[ */
+            function checkconditions(value, name, type)
+            {
+            }
 		function noop_checkconditions(value, name, type)
 		{
 		}
-            /* ]]> */
-		    </script>
-		    <form method="post" action="index.php" id="limesurvey" name="limesurvey">
-            ';
+        /* ]]> */
+		</script>
+		<form method="post" action="index.php" id="limesurvey" name="limesurvey">
+        ';
 
 
 $answer=$answers[0][1];

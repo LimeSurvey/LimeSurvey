@@ -134,7 +134,7 @@ if ($action == "listsurveys")
                 }
                 else
                 {
-                    if (hasRight($rows['sid'],'activate_survey'))
+                    if (bHasRight($rows['sid'],'activate_survey'))
                     {
                         $listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
                         . " title=\"".$clang->gTview("This survey is active - click here to deactivate this survey.")."\" >"
@@ -146,7 +146,7 @@ if ($action == "listsurveys")
                     }
                 }
             } else {
-                if ( $questionsCount > 0 && hasRight($rows['sid'],'activate_survey') )
+                if ( $questionsCount > 0 && bHasRight($rows['sid'],'activate_survey') )
                 {
                     $listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
                     . " title=\"".$clang->gTview("This survey is currently not active - click here to activate this survey.")."\" >"
@@ -271,7 +271,7 @@ $action!='dataentry' && $action!='browse' && $action!='exportspss' &&
 $action!='statistics' && $action!='importoldresponses' && $action!='exportr' &&
 $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 {
-    if(hasRight($surveyid))
+    if(bHasRight($surveyid))
     {
         $js_admin_includes[]='../scripts/jquery/jquery.cookie.js';
         $js_admin_includes[]='scripts/surveytoolbar.js';
@@ -308,7 +308,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<img src='$imagefiles/inactive.png' "
             . "alt='".$clang->gT("This survey is not currently active")."' />\n";
-            if($sumcount3>0 && hasRight($surveyid,'activate_survey'))
+            if($sumcount3>0 && bHasRight($surveyid,'activate_survey'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
                 . " title=\"".$clang->gTview("Activate this Survey")."\" >"
@@ -337,7 +337,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 $surveysummary .= "<img src='$imagefiles/active.png' title='' "
                 . "alt='".$clang->gT("This survey is currently active")."' />\n";
             }
-            if(hasRight($surveyid,'activate_survey'))
+            if(bHasRight($surveyid,'activate_survey'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
                 . " title=\"".$clang->gTview("Deactivate this Survey")."\" >"
@@ -401,14 +401,14 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
 
-        if($activated == "Y" && hasRight($surveyid,'browse_response'))
+        if($activated == "Y" && bHasRight($surveyid,'browse_response'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Dataentry Screen for Survey")."\" >"
             . "<img src='$imagefiles/dataentry.png' alt='".$clang->gT("Dataentry Screen for Survey")."' name='DoDataentry' />"
             . "</a>\n";
         }
-        else if (!hasRight($surveyid,'browse_response'))
+        else if (!bHasRight($surveyid,'browse_response'))
         {
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         } else {
@@ -452,7 +452,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         }
 
-        if(hasRight($surveyid,'edit_survey_property'))
+        if(bHasRight($surveyid,'edit_survey_property'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Edit survey settings")."\" >"
@@ -464,7 +464,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
 
 
-        if (hasRight($surveyid,'delete_survey'))
+        if (bHasRight($surveyid,'delete_survey'))
         {
             //			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid', '_top')\""
             $surveysummary .= "<a href=\"#\" onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid")."\""
@@ -476,7 +476,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
         }
 
-        if (hasRight($surveyid,'export'))
+        if (bHasRight($surveyid,'export'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=exportstructure&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Export Survey Structure")."\">"
@@ -488,7 +488,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />";
         }
 
-        if ($activated == "Y" && hasRight($surveyid,'browse_response'))
+        if ($activated == "Y" && bHasRight($surveyid,'browse_response'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Browse Responses For This Survey")."\" >"
@@ -500,14 +500,14 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 . "<img src='$imagefiles/saved.png' name='BrowseSaved' alt='".$clang->gT("View Saved but not submitted Responses")."' /></a>\n";
             }
         }
-        if (hasRight($surveyid,'export') || hasRight($surveyid,'activate_survey'))
+        if (bHasRight($surveyid,'export') || bHasRight($surveyid,'activate_survey'))
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Token management")."\" >"
             . "<img src='$imagefiles/tokens.png' name='TokensControl' alt='".$clang->gT("Token management")."' /></a>\n" ;
         }
-        if($activated!="Y" && hasRight($surveyid,'define_questions') && getGroupSum($surveyid,$surveyinfo['language'])>1)
+        if($activated!="Y" && bHasRight($surveyid,'define_questions') && getGroupSum($surveyid,$surveyinfo['language'])>1)
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
@@ -528,7 +528,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<img src='$imagefiles/inactive.png' "
             . "alt='".$clang->gT("This survey is not currently active")."' />\n";
-            if($sumcount3>0 && hasRight($surveyid,'activate_survey'))
+            if($sumcount3>0 && bHasRight($surveyid,'activate_survey'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
                 . "title=\"".$clang->gTview("Activate this Survey")."\" >"
@@ -557,7 +557,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 $surveysummary .= "<img src='$imagefiles/active.png' title='' "
                 . "alt='".$clang->gT("This survey is currently active")."' />\n";
             }
-            if(hasRight($surveyid,'activate_survey'))
+            if(bHasRight($surveyid,'activate_survey'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
                 . "title=\"".$clang->gTview("Deactivate this Survey")."\" >"
@@ -609,7 +609,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
-        if (hasRight($surveyid,'edit_survey_property'))
+        if (bHasRight($surveyid,'edit_survey_property'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=assessments&amp;sid=$surveyid', '_top')\" "
             . "title=\"".$clang->gTview("Set Assessment Rules")."\" >"
@@ -620,7 +620,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
         }
 
-        if (hasRight($surveyid,'edit_survey_property'))
+        if (bHasRight($surveyid,'edit_survey_property'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=quotas&amp;sid=$surveyid', '_top')\" "
             . "title=\"".$clang->gTview("Set Survey Quotas")."\" >"
@@ -631,7 +631,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
         }
 
-        if (hasRight($surveyid,'define_questions'))
+        if (bHasRight($surveyid,'define_questions'))
         {
             if ($sumcount6 > 0) {
                 $surveysummary .= "<a href=\"#\" onclick=\"".get2post("$scriptname?action=resetsurveylogic&amp;sid=$surveyid")."\" "
@@ -650,7 +650,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        if (hasRight($surveyid,'define_questions'))
+/*        if (bHasRight($surveyid,'define_questions'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"".get2post("$scriptname?action=quicktranslate&amp;sid=$surveyid")."\" "
             . "title=\"".$clang->gTview("Quick-translation")."\" >"
@@ -659,7 +659,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         else
         {
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
-        }
+        }*/
 
         $surveysummary .="</div>"
         
@@ -683,7 +683,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        elseif(hasRight($surveyid,'define_questions'))
+        elseif(bHasRight($surveyid,'define_questions'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Add new group to survey")."\">"
@@ -753,7 +753,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 break;
         }
 
-        if(hasRight($surveyid,'edit_survey_property'))
+        if(bHasRight($surveyid,'edit_survey_property'))
         {
             $surveysummary2 .= $clang->gT("Regenerate question codes:")
             . " [<a href='#' "
@@ -883,11 +883,11 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if ($activated == "N" && $sumcount3 == 0)
         {
             $surveysummary .= $clang->gT("Survey cannot be activated yet.")."<br />\n";
-            if ($sumcount2 == 0 && hasRight($surveyid,'define_questions'))
+            if ($sumcount2 == 0 && bHasRight($surveyid,'define_questions'))
             {
                 $surveysummary .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add question groups")."]</span><br />";
             }
-            if ($sumcount3 == 0 && hasRight($surveyid,'define_questions'))
+            if ($sumcount3 == 0 && bHasRight($surveyid,'define_questions'))
             {
                 $surveysummary .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</span><br />";
             }
@@ -933,7 +933,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         . "<img src='$imagefiles/blank.gif' alt='' width='180' height='20'  />"
         . "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
-        if(hasRight($surveyid,'define_questions'))
+        if(bHasRight($surveyid,'define_questions'))
         {
             $groupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
             . " title=\"".$clang->gTview("Edit current question group")."\">"
@@ -944,7 +944,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
 
-        if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") && hasRight($surveyid,'define_questions'))
+        if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") && bHasRight($surveyid,'define_questions'))
         {
             if (is_null($condarray))
             {
@@ -967,7 +967,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         }
 
 
-        if(hasRight($surveyid,'export'))
+        if(bHasRight($surveyid,'export'))
         {
 
             $groupsummary .="<a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Export this question group")."\" >"
@@ -978,7 +978,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
         $groupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
-        if($activated!="Y" && hasRight($surveyid,'define_questions') && getQuestionSum($surveyid, $gid)>1)
+        if($activated!="Y" && bHasRight($surveyid,'define_questions') && getQuestionSum($surveyid, $gid)>1)
         {
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
             $groupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
@@ -1000,7 +1000,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        elseif(hasRight($surveyid,'define_questions'))
+        elseif(bHasRight($surveyid,'define_questions'))
         {
             $groupsummary .= "<a href='$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'"
             ." title=\"".$clang->gTview("Add New Question to Group")."\" >"
@@ -1085,7 +1085,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         . "<div class='menubar-left'>\n"
         . "<img src='$imagefiles/blank.gif' alt='' width='55' height='20' />\n"
         . "<img src='$imagefiles/seperator.gif' alt='' />\n";
-        if(hasRight($surveyid,'define_questions'))
+        if(bHasRight($surveyid,'define_questions'))
         {
             if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
             {
@@ -1120,7 +1120,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='117' height='20'  />\n"
         . "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
-        if(hasRight($surveyid,'define_questions'))
+        if(bHasRight($surveyid,'define_questions'))
         {
             $questionsummary .= "<a href='$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
             . " title=\"".$clang->gTview("Edit Current Question")."\">"
@@ -1131,7 +1131,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
 
-        if ((($qct == 0 && $activated != "Y") || $activated != "Y") && hasRight($surveyid,'define_questions'))
+        if ((($qct == 0 && $activated != "Y") || $activated != "Y") && bHasRight($surveyid,'define_questions'))
         {
             if (is_null($condarray))
             {
@@ -1150,7 +1150,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         }
         else {$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";}
 
-        if(hasRight($surveyid,'export'))
+        if(bHasRight($surveyid,'export'))
         {
             $questionsummary .= "<a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
             . " title=\"".$clang->gTview("Export this Question")."\" >"
@@ -1162,7 +1162,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         }
         $questionsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
-        if(hasRight($surveyid,'define_questions'))
+        if(bHasRight($surveyid,'define_questions'))
         {
             if ($activated != "Y")
             {
@@ -1183,7 +1183,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        if(hasRight($surveyid,'define_questions'))
+        if(bHasRight($surveyid,'define_questions'))
         {
             $questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;subaction=editconditionsform', '_top')\""
             . " title=\"".$clang->gTview("Set Conditions for this Question")."\">"
@@ -1196,7 +1196,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         }
 
         $qtypes=getqtypelist('','array');
-        if(hasRight($surveyid,'define_questions'))
+        if(bHasRight($surveyid,'define_questions'))
         {
             if ($qtypes[$qrrow['type']]['subquestions'] >0)
             {
@@ -1209,7 +1209,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        if(hasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['answerscales'] >0)
+        if(bHasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['answerscales'] >0)
         {
             $questionsummary .=  "<a href='".$scriptname."?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
             ."title=\"".$clang->gTview("Edit answer options for this question")."\">"
@@ -1219,7 +1219,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        if(hasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
+        if(bHasRight($surveyid,'define_questions') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
         {
             $questionsummary .=  "<a href='".$scriptname."?action=editdefaultvalues&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
             ."title=\"".$clang->gTview("Edit default answers for this question")."\">"
@@ -2088,7 +2088,7 @@ if($action == "setusergroupsurveysecurity")
 // This is the action to export the structure of a complete survey
 if($action == "exportstructure")
 {
-    if(hasRight($surveyid,'export'))
+    if(bHasRight($surveyid,'export'))
     {
         $exportstructure = "<form id='exportstructure' name='exportstructure' action='$scriptname' method='post'>\n"
         ."<div class='header'>"
@@ -2128,7 +2128,7 @@ if($action == "exportstructure")
 // This is the action to export the structure of a group
 if($action == "exportstructureGroup")
 {
-    if($export4lsrc === true && hasRight($surveyid,'export'))
+    if($export4lsrc === true && bHasRight($surveyid,'export'))
     {
         $exportstructure = "<form id='exportstructureGroup' name='exportstructureGroup' action='$scriptname' method='post'>\n"
         ."<div class='header'>".$clang->gT("Export group structure")."\n</div>\n"
@@ -2175,7 +2175,7 @@ if($action == "exportstructureGroup")
 // This is the action to export the structure of a question
 if($action == "exportstructureQuestion")
 {
-    if($export4lsrc === true && hasRight($surveyid,'export'))
+    if($export4lsrc === true && bHasRight($surveyid,'export'))
     {
         $exportstructure = "<form id='exportstructureQuestion' name='exportstructureQuestion' action='$scriptname' method='post'>\n"
         ."<div class='header'>".$clang->gT("Export question structure")."\n</div>\n"
@@ -2222,7 +2222,7 @@ if($action == "exportstructureQuestion")
 
 if($action == "surveysecurity")
 {
-    if(hasRight($surveyid))
+    if(bHasRight($surveyid))
     {
         $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
         $js_admin_includes[]='scripts/surveysecurity.js';
@@ -2438,7 +2438,7 @@ elseif ($action == "surveyrights")
 // Editing the survey
 if ($action == "editsurvey")
 {
-    if(hasRight($surveyid,'edit_survey_property'))
+    if(bHasRight($surveyid,'edit_survey_property'))
     {
         $js_admin_includes[]='scripts/surveysettings.js';
         $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -2467,7 +2467,8 @@ if ($action == "editsurvey")
             $jsX=0;
             $jsRemLang ="<script type=\"text/javascript\">
                             var mylangs = new Array();
-                            templaterooturl='$templaterooturl'; \n";
+                            standardtemplaterooturl='$standardtemplaterooturl';
+                            templaterooturl='$usertemplaterooturl'; \n";
 
             foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
             {
@@ -2538,7 +2539,7 @@ if ($action == "editsurvey")
             //TEMPLATES
             $editsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
             . "<select id='template' name='template'>\n";
-            foreach (gettemplatelist() as $tname)
+			foreach (array_keys(gettemplatelist()) as $tname)
             {
 
                 if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )
@@ -2554,7 +2555,7 @@ if ($action == "editsurvey")
             . "</li>\n";
 
             $editsurvey .= "<li><label for='preview'>".$clang->gT("Template Preview:")."</label>\n"
-            . "<img alt='".$clang->gT("Template Preview:")."' id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
+            . "<img alt='".$clang->gT("Template preview image")."' id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
             . "</li>\n" ;
 
             //ALLOW SAVES
@@ -2981,7 +2982,7 @@ if ($action == "editsurvey")
 
 if ($action == "updatesurvey")  // Edit survey step 2  - editing language dependent settings
 {
-    if(hasRight($surveyid,'edit_survey_property'))
+    if(bHasRight($surveyid,'edit_survey_property'))
     {
 
         $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -3159,7 +3160,7 @@ if ($action == "newsurvey")
         . "</li>\n";
         $newsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
         . "<select id='template' name='template'>\n";
-        foreach (gettemplatelist() as $tname)
+		foreach (array_keys(gettemplatelist()) as $tname)
         {
 
             if ($_SESSION["loginID"] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )  {

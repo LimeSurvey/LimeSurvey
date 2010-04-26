@@ -443,8 +443,19 @@ $homeurl        =   "$rooturl/admin";                           // The website l
 $publicurl      =   "$rooturl";                                 // The public website location (url) of the public survey script
 $tempurl        =   "$rooturl/tmp";
 $imagefiles     =   "$rooturl/images";                          // Location of button bar files for admin script
-$templaterootdir=   "$rootdir".DIRECTORY_SEPARATOR."templates"; // Location of the templates
-$templaterooturl=   "$rooturl/templates";                       // Location of the templates
+
+
+//Location of the user directory
+$uploaddir      =     "$rootdir".DIRECTORY_SEPARATOR."upload";
+
+// Location of the user templates
+$usertemplaterootdir= "$uploaddir".DIRECTORY_SEPARATOR."templates"; // Location of the templates
+$usertemplaterooturl= "$uploadurl/templates"; // Location of the templates
+
+// Location of the standard tempaltes
+$standardtemplaterootdir= "$rootdir".DIRECTORY_SEPARATOR."templates";               // Location of the templates
+$standardtemplaterooturl= "$rooturl/templates"; // Location of the templates
+
 $homedir        =   "$rootdir".DIRECTORY_SEPARATOR."admin";     // The physical disk location of the admin scripts
 $publicdir      =   "$rootdir";                                 // The physical disk location of the public scripts
 $tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical location where LimeSurvey can store temporary files

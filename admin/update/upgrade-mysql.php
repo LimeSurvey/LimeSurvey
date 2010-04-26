@@ -720,5 +720,24 @@ function upgrade_tables143()
     modify_database("",$updatequery); echo $modifyoutput; flush();
     $updatequery = "update {$dbprefix}questions set type='L' where type='Z'";
     modify_database("",$updatequery); echo $modifyoutput; flush();
+    
+    // Now move all non-standard templates to the /upload dir
+    global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;
+
+    if (!$usertemplaterootdir) {die("gettemplatelist() no template directory");}
+    if ($handle = opendir($standardtemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn" && !isStandardTemplate($file))
+            {
+                if (!rename($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file,$usertemplaterootdir.DIRECTORY_SEPARATOR.$file))
+                {
+                   echo "There was a problem moving directory '".$standardtemplaterootdir.DIRECTORY_SEPARATOR.$file."' to '".$usertemplaterootdir.DIRECTORY_SEPARATOR.$file."' due to missing permissions. Please do this manually.<br />";
+                };
+            }
+        }
+        closedir($handle);
+    }        
 
 }

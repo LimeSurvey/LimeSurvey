@@ -485,7 +485,26 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     return $qtypeselecter;
 }
 
-
+/**
+* isStandardTemplate returns true if a template is a standard template
+* This function does not check if a template actually exists
+* 
+* @param mixed $sTemplateName template name to look for
+* @return bool True if standard template, otherwise false
+*/
+function isStandardTemplate($sTemplateName)
+{
+    return in_array($sTemplateName,array('basic',
+                                        'bluengrey',
+                                        'business_grey',
+                                        'clear_logo',
+                                        'default',
+                                        'eirenicon',
+                                        'limespired',
+                                        'mint_idea',
+                                        'sherpa',
+                                        'vallendar')); 
+}
 
 
 function &db_execute_num($sql,$inputarr=false)
@@ -1488,27 +1507,6 @@ function getuserlist($outputformat='fullinfoarray')
 }
 
 
-function gettemplatelist()
-{
-    global $publicdir;
-    if (!$publicdir) {$publicdir=dirname(getcwd());}
-    $tloc="$publicdir/templates";
-    if ($handle = opendir($tloc))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$tloc/$file") && $file != "." && $file != ".." && $file!=".svn")
-            {
-                $list_of_files[] = $file;
-            }
-        }
-        closedir($handle);
-    }
-    usort($list_of_files, 'StandardSort');
-    return $list_of_files;
-}
-
-
 /**
  * Gets all survey infos in one big array including the language specific settings
  *
@@ -2294,12 +2292,16 @@ function strip_comments($comment, $email, $replace=''){
 
 function validate_templatedir($templatename)
 {
-    global $publicdir, $defaulttemplate;
-    if (is_dir("$publicdir/templates/{$templatename}/"))
+    global $usertemplaterootdir, $standardtemplaterootdir, $defaulttemplate;
+    if (is_dir("$usertemplaterootdir/{$templatename}/"))
     {
         return $templatename;
     }
-    elseif (is_dir("$publicdir/templates/{$defaulttemplate}/"))
+    elseif (is_dir("$standardtemplaterootdir/{$templatename}/"))
+    {
+         return $templatename;
+    }
+    elseif (is_dir("$usertemplaterootdir/{$defaulttemplate}/"))
     {
         return $defaulttemplate;
     }
@@ -2825,7 +2827,7 @@ function templatereplace($line, $replacements=array())
     global $publicurl, $templatedir, $token;
     global $assessments, $s_lang;
     global $errormsg, $clang;
-    global $saved_id, $templaterootdir;
+	global $saved_id, $usertemplaterootdir;
     global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;
     global $printoutput, $captchapath, $loadname;
@@ -2841,9 +2843,9 @@ function templatereplace($line, $replacements=array())
     }
     $templatename=validate_templatedir($templatename);
 
-    // create absoulte template URL and template dir vars
-    $templateurl="{$templaterooturl}/".$templatename.'/';
-    $templatedir=$templaterootdir.DIRECTORY_SEPARATOR.$templatename.DIRECTORY_SEPARATOR;
+    // create absolute template URL and template dir vars
+    $templateurl=getTemplateURL($templatename).'/';
+    $templatedir=sgetTemplatePath($templatename);
 
     if (stripos ($line,"</head>"))
     {
@@ -3027,15 +3029,6 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{SAVE}", $saveall, $line);
     }
     if (strpos($line, "{TEMPLATEURL}") !== false) {
-
-
-        if ($thissurvey['templatedir'])
-        {
-            $templateurl="$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/";
-        }
-        else  {
-            $templateurl="$publicurl/templates/{$defaulttemplate}/";
-        }
         $line=str_replace("{TEMPLATEURL}", $templateurl, $line);
     }
 
@@ -7549,61 +7542,72 @@ function getTokenData($surveyid, $token)
     return $thistoken;
 }
 
-/**
- * Returns true if a user has a given right in the particular survey
- *
- * @param $sid
- * @param $right
- * @return bool
- */
-function hasRight($sid, $right = null)
-{
-    global $dbprefix, $connect;
-
-    static $cache = array();
-
-    if (isset($_SESSION['loginID'])) $uid = $_SESSION['loginID']; else return false;
-
-    if ($_SESSION['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
-
-    if (!isset($cache[$sid][$uid]))
-    {
-        $sql = "SELECT * FROM " . db_table_name('surveys_rights') . " WHERE sid=".db_quote($sid)." AND uid = ".db_quote($uid); //Getting rights for this survey
-        $result = db_execute_assoc($sql);
-        $rights = $result->FetchRow();
-        if ($rights===false)
-        {
-            return false;
-        } else {
-            $cache[$sid][$uid]=$rights;
-        }
-    }
-    if (empty($right)) return true;
-    if (isset($cache[$sid][$uid][$right]) && $cache[$sid][$uid][$right] == 1) return true; else return false;
-}
-
 
 /**
-* This function switches identity insert on/off for the MSSQL database
+* This function returns the complete directory path to a given template name
 * 
-* @param string $table table name (without prefix)
-* @param mixed $state  Set to true to activate ID insert, or false to deactivate
+* @param mixed $sTemplateName
 */
-function db_switchIDInsert($table,$state)
+function sGetTemplatePath($sTemplateName)
 {
-    global $databasetype, $connect;
-    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') 
+    global $standardtemplaterootdir, $usertemplaterootdir, $defaulttemplate;
+    if (isStandardTemplate($sTemplateName))
     {
-        if ($state==true) 
+        return $standardtemplaterootdir.'/'.$sTemplateName;
+    }
+    else
+    {
+        if (file_exists($usertemplaterootdir.'/'.$sTemplateName))
         {
-            $connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' ON');
+            return $usertemplaterootdir.'/'.$sTemplateName;
+        }
+        elseif (file_exists($usertemplaterootdir.'/'.$defaulttemplate))
+        {
+            return $usertemplaterootdir.'/'.$defaulttemplate;
+        }
+        elseif (file_exists($standardtemplaterootdir.'/'.$defaulttemplate))
+        {
+            return $standardtemplaterootdir.'/'.$defaulttemplate;
         }
         else
         {
-            $connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' OFF');
-            
+            return $standardtemplaterootdir.'/default';
         }
     }
 }
+               
+/**
+* This function returns the complete URL path to a given template name
+* 
+* @param mixed $sTemplateName
+*/               
+function getTemplateURL($sTemplateName)
+{
+    global $standardtemplaterooturl, $usertemplaterooturl, $usertemplaterootdir, $defaulttemplate;      
+    if (isStandardTemplate($sTemplateName))
+    {
+        return $standardtemplaterooturl.'/'.$sTemplateName;
+    }
+    else
+    {
+        if (file_exists($usertemplaterootdir.'/'.$sTemplateName))
+        {
+            return $usertemplaterooturl.'/'.$sTemplateName;
+        }
+        elseif (file_exists($usertemplaterootdir.'/'.$defaulttemplate))
+        {
+            return $usertemplaterooturl.'/'.$defaulttemplate;
+        }
+        elseif (file_exists($standardtemplaterootdir.'/'.$defaulttemplate))
+        {
+            return $standardtemplaterooturl.'/'.$defaulttemplate;
+        }
+        else
+        {
+            return $standardtemplaterooturl.'/default';
+        }
+    }
+}
+
 
 // Closing PHP tag intentionally left out - yes, it is okay       
