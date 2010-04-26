@@ -124,7 +124,15 @@ if (!isset($_SESSION['loginID']))
                         $_SESSION['pw_notify']=false;
                     } // Check if the user has changed his default password
 
-                    session_regenerate_id();
+                    if ($sessionhandler=='db')
+                    {
+                        adodb_session_regenerate_id();
+                    }
+                    else
+                    {
+                        session_regenerate_id();
+                        
+                    }
                     $_SESSION['loginID'] = intval($fields['uid']);
                     $_SESSION['user'] = $fields['users_name'];
                     $_SESSION['full_name'] = $fields['full_name'];

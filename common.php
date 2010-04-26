@@ -48,9 +48,6 @@ if ($debug>2) {//For debug purposes - switch on in config.php
     error_reporting(E_ALL | E_STRICT);
 }
 
-
-
-
 if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
 @ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
 
@@ -70,6 +67,14 @@ require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
 require_once ($rootdir.'/classes/php-gettext/gettext.inc');
 require_once ($rootdir.'/classes/core/surveytranslator.php');
 require_once ($rootdir.'/classes/core/sanitize.php');
+
+//  DB session handling
+if ($sessionhandler=='db')
+{
+    require_once($rootdir."/classes/adodb/session/adodb-session2.php");
+    $sessionoptions['table'] = $dbprefix.'sessions';
+    ADOdb_Session::config($databasetype, $databaselocation, $databaseuser, $databasepass, $databasename, $sessionoptions);
+}
 
 
 $dbprefix=strtolower($dbprefix);

@@ -62,7 +62,14 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
             {
                 // wrong or unknown username
                 $loginsummary = sprintf($clang->gT("No one-time password found for user %s"),htmlspecialchars($user))."<br />";
-                session_regenerate_id();
+                if ($sessionhandler=='db')
+                {
+                    adodb_session_regenerate_id();
+                }
+                else
+                {
+                    session_regenerate_id();
+                }
             }
             else
             {

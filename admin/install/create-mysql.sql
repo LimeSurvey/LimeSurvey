@@ -319,6 +319,18 @@ CREATE TABLE `prefix_templates` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+CREATE TABLE `prefix_sessions`(
+      sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+        expiry DATETIME NOT NULL ,
+      expireref VARCHAR( 250 ) DEFAULT '',
+      created DATETIME NOT NULL ,
+      modified DATETIME NOT NULL ,
+      sessdata LONGTEXT,
+      PRIMARY KEY ( sesskey ) ,
+      INDEX sess2_expiry( expiry ),
+      INDEX sess2_expireref( expireref )
+)
+
 -- Secondary indexes 
 create index `answers_idx2` on `prefix_answers` (`sortorder`);
 create index `assessments_idx2` on `prefix_assessments` (`sid`);

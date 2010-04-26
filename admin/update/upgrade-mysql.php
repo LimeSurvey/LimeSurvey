@@ -372,6 +372,16 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_answers` DROP COLUMN `default_value`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid1`"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE prefix_sessions(
+                              sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+                              expiry DATETIME NOT NULL ,
+                              expireref VARCHAR( 250 ) DEFAULT '',
+                              created DATETIME NOT NULL ,
+                              modified DATETIME NOT NULL ,
+                              sessdata LONGTEXT,
+                              PRIMARY KEY ( sesskey ) ,
+                              INDEX sess2_expiry( expiry ),
+                              INDEX sess2_expireref( expireref ))"); echo $modifyoutput; flush();          
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 

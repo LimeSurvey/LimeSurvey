@@ -189,7 +189,7 @@ $surveyPreview_require_Auth === true)
         {
             session_name("LimeSurveyAdmin");
         }
-        @session_start(); // Loads Admin Session
+        session_start(); // Loads Admin Session
 
         $previewright=false;
         $savesessionvars=Array();
@@ -214,7 +214,11 @@ $surveyPreview_require_Auth === true)
         // ==> the original admin session remains valid
         // ==> it is possible to start a new session
         session_name($initial_session_name);
-        if (session_regenerate_id() === false)
+        if ($sessionhandler=='db')
+        {
+            adodb_session_regenerate_id();
+        }
+        elseif (session_regenerate_id() === false)
         {
             safe_die("Error Regenerating Session Id");
         }
@@ -225,7 +229,11 @@ $surveyPreview_require_Auth === true)
         // regenerate id so that the header geenrated by previous
         // regenerate_id is overwritten
         // needed after clearall
-        if (session_regenerate_id() === false)
+        if ($sessionhandler=='db')
+        {
+            adodb_session_regenerate_id();
+        }
+        elseif (session_regenerate_id() === false)
         {
             safe_die("Error Regenerating Session Id");
         }

@@ -22,6 +22,7 @@ require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 
 if (isset($_GET['sid'])) $surveyid=(int)$_GET['sid']; else die();
+
 $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
 $usresult = db_execute_assoc($usquery,'',true);          //Checked
 if ($usresult)

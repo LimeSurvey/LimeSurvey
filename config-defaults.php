@@ -86,9 +86,17 @@ $allowedresourcesuploads = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,
 
 $memorylimit        =  '32M';   // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
 
-$sessionlifetime    =  3600;    // How long until a survey session expires in seconds
 $showpopups         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
+
+
+// Session options
+
+// $sessionlifetime sets how long until a survey session expires in seconds
+$sessionlifetime    =  3600;
+// $sessionhandler can be either 'file' or 'db'. (default: 'file'). 
+// Generally you don't want to change that unless you are using LimeSurvey on load-balanced servers   
+$sessionhandler     =  'file';   
 
 
 
