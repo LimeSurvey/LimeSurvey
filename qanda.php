@@ -1467,7 +1467,7 @@ function do_date($ia)
             $currentyear='';
         }
 
-        $dateorder = split('[/.-]', $dateformatdetails['phpdate']);
+        $dateorder = preg_split('/[-\.\/ ]/', $dateformatdetails['phpdate']);
         $answer='<p class="question">';
         foreach($dateorder as $datepart)
         {
