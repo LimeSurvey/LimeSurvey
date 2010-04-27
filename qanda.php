@@ -76,6 +76,7 @@ function retrieveConditionInfo($ia)
         ."{$dbprefix}conditions.cqid, "
         ."{$dbprefix}conditions.cfieldname";
         $cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
+
         $cquerytoken =	"SELECT {$dbprefix}conditions.qid, "
         ."{$dbprefix}conditions.scenario, "
         ."{$dbprefix}conditions.cqid, "
@@ -93,6 +94,7 @@ function retrieveConditionInfo($ia)
         ."ORDER BY {$dbprefix}conditions.scenario, "
         ."{$dbprefix}conditions.cqid, "
         ."{$dbprefix}conditions.cfieldname";
+    
         $cresulttoken = db_execute_assoc($cquerytoken) or safe_die ("OOPS<br />$cquerytoken<br />".$connect->ErrorMsg());     //Checked
 
         while ($tempcrow = $cresulttoken->FetchRow())
@@ -122,6 +124,17 @@ function retrieveConditionInfo($ia)
             $crow['scenario'],
             $crow['srcgid']);
         }
+
+
+        foreach ($conditions as $condkey => $condarr)
+        { // We need to sort the merged array by Ascending scenario, cqid, then cfieldname
+          // otherwise condition evaluations of Tokens in Scenarii won't work in "live" Javascript eval
+            $scenariolist[$condkey] = $condarr[7];
+            $cqidlist[$condkey] = $condarr[1];
+            $cfieldnamelist[$condkey] = $condarr[2];
+        }
+        array_multisort($scenariolist,SORT_ASC,$cqidlist,SORT_ASC,$cfieldnamelist,SORT_ASC,$conditions);
+        
         return $conditions;
     }
     else
@@ -3840,7 +3853,7 @@ function do_multiplenumeric($ia)
                     $displaycallout_atstart=1;
                 }
                 elseif ($slider_middlestart != '')
-                { //TIBO
+                { 
                     $slider_startvalue = $slider_middlestart;
                     $displaycallout_atstart=0;
                 }
