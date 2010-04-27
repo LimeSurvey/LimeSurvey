@@ -3479,6 +3479,8 @@ function buildLabelSetCheckSumArray()
 function getQuestionAttributes($qid, $type='')
 {
     static $cache = array();
+    static $availableattributes = null;
+    
     if (isset($cache[$qid])) {
         return $cache[$qid];
     }
@@ -3490,7 +3492,9 @@ function getQuestionAttributes($qid, $type='')
         $type=$row['type'];
     }
 
-    $availableattributes=questionAttributes();
+    //Now read available attributes, make sure we do this only once per request to save
+    //processing cycles and memory
+    if (is_null($availableattributes)) $availableattributes=questionAttributes();
     if (isset($availableattributes[$type]))
     {
         $availableattributes=$availableattributes[$type];
