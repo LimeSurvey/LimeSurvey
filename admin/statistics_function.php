@@ -941,7 +941,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $fieldname=substr($rt, 1, strlen($rt));
 
                     //special treatment for MS SQL databases
-                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+					if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
                     {
                         //standard deviation
                         $query = "SELECT STDEVP(".db_quote_id($fieldname)."*1) as stdev";
@@ -968,7 +968,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                     //special treatment for MS SQL databases
-                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+					if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
                     {
                         //no NULL/empty values please
                         $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL";
@@ -1823,7 +1823,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //get more data
 
-                            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+							if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
                                 $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
@@ -1840,7 +1840,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //  ==> value is ''
                             // * NoAnswer due to conditions, or a page not displayed
                             //  ==> value is NULL
-                            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+                            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
                                 //$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "

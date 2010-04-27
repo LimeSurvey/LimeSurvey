@@ -68,6 +68,7 @@ if (isset($argv[1]) && $argv[1]=='install')
 
     $createdbtype=$databasetype;
     if ($createdbtype=='mssql_n' || $createdbtype=='odbc_mssql' || $createdbtype=='odbtp') $createdbtype='mssql';
+	if ($createdbtype=='mssqlnative') $createdbtype == 'mssqlnative';
     $sqlfile = dirname(__FILE__).'/create-'.$createdbtype.'.sql' ;
 
     if (!empty($sqlfile)) {
@@ -156,7 +157,7 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
 
     $upgradedbtype=$databasetype;
     if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
-
+    if ($upgradedbtype=='mssqnlative') $upgradedbtype='mssqlnative';   
     include ('upgrade-'.$upgradedbtype.'.php');
 
     $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";

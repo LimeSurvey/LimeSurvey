@@ -4093,7 +4093,7 @@ class LsrcHelper {
 			. "firstname C(40) ,\n "
 			. "lastname C(40) ,\n ";
 			//MSSQL needs special treatment because of some strangeness in ADODB
-			if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
+			if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n' || $databasetype == 'mssqlnative')
 			{
 			    $createtokentable.= "email text ,\n "
 			    ."emailstatus text ,\n ";

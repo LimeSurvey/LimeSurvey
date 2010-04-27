@@ -449,7 +449,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n ";
 		//MSSQL needs special treatment because of some strangeness in ADODB
-		if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
+		if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n' || $databasetype == 'mssqlnative')
 		{
 		    $createtokentable.= "email C(320) ,\n "
 		    ."emailstatus C(300) DEFAULT 'OK',\n ";

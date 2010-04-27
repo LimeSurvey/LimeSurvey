@@ -126,7 +126,7 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
     $bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid").' where 1=1';
     if (trim($_POST['filteremail'])!='')
     {
-        if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n')
+        if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $connect->databaseType == 'mssqlnative')
         {
             $bquery .= ' and CAST(email as varchar) like '.db_quoteall('%'.$_POST['filteremail'].'%', true);
         }
@@ -301,7 +301,7 @@ if (!$tokenexists) //If no tokens table exists
 		. "firstname C(40),\n "
 		. "lastname C(40),\n ";
 		//MSSQL needs special treatment because of some strangeness in ADODB
-		if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+        if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
 		{
 		    $createtokentable.= "email C(320),\n "
 		    ."emailstatus C(300) DEFAULT 'OK',\n ";

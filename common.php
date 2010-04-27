@@ -160,6 +160,7 @@ switch ($databasetype)
     else {$dbhost=$databaselocation;}
     break;
     case "mssql_n":
+	case "mssqlnative":
     case "mssql": if ($databaseport!="default") {$dbhost="$databaselocation,$databaseport";}
     else {$dbhost=$databaselocation;}
     break;
@@ -220,7 +221,7 @@ if ($databasetype=='mysql' || $databasetype=='mysqli') {
 }
 
 // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
-if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {
+if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative') {
     @$connect->Execute('SET DATEFORMAT ymd;');     //Checked
     @$connect->Execute('SET QUOTED_IDENTIFIER ON;');     //Checked
 }
@@ -586,6 +587,7 @@ function db_quote_id($id)
             break;
         case "mssql_n" :
         case "mssql" :
+		case "mssqlnative" :
         case "odbc_mssql" :
             return "[".$id."]";
             break;

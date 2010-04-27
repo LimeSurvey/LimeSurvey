@@ -34,7 +34,7 @@ if (!$column)
     exit;
 }
 
-if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
 { $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." NOT LIKE '')"; }
 else
 { $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." != '')"; }
@@ -64,7 +64,7 @@ $result=db_execute_assoc($query) or safe_die("Error with query: ".$query."<br />
 $listcolumnoutput= "<table width='98%' class='statisticstable' border='1' cellpadding='2' cellspacing='0'>\n";
 $listcolumnoutput.= "<thead><tr><th><input type='image' src='$imagefiles/downarrow.png' align='middle' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$column&amp;order=id', '_top')\" /></th>\n";
 $listcolumnoutput.= "<th valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";
-if ($connect->databaseType != 'odbc_mssql' && $connect->databaseType != 'odbtp' && $connect->databaseType != 'mssql_n')
+if ($connect->databaseType != 'odbc_mssql' && $connect->databaseType != 'odbtp' && $connect->databaseType != 'mssql_n' || $connect->databaseType == 'mssqlnative')
 { $listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$column&amp;order=alpha', '_top')\" />"; }
 $listcolumnoutput.= "</th></tr>\n";
 while ($row=$result->FetchRow())

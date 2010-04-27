@@ -1,4 +1,4 @@
--- LimeSurvey MS SQL Server 2000 database schema
+-- LimeSurvey Native MS SQL Server 2005+ database schema
 
 -- --------------------------------------------------------
 
@@ -19,7 +19,7 @@ CREATE TABLE [prefix_quota_languagesettings] (
   [quotals_quota_id] int,
   [quotals_language] varchar(45) NOT NULL default 'en',
   [quotals_name] varchar(255),
-  [quotals_message] text NULL,
+  [quotals_message] varchar(max),
   [quotals_url] varchar(255),
   [quotals_urldescrip] varchar(255),
   PRIMARY KEY ([quotals_id])
@@ -65,10 +65,10 @@ CREATE TABLE [prefix_assessments] (
   [sid] INT NOT NULL default '0',
   [scope] VARCHAR(5) NOT NULL default '',
   [gid] INT NOT NULL default '0',
-  [name] text NOT NULL,
+  [name] varchar(max) NOT NULL,
   [minimum] VARCHAR(50) NOT NULL default '',
   [maximum] VARCHAR(50) NOT NULL default '',
-  [message] text NOT NULL,
+  [message] varchar(max) NOT NULL,
   [language] VARCHAR(20) NOT NULL default 'en',
   PRIMARY KEY  ([id],[language])
 ) 
@@ -101,7 +101,7 @@ CREATE TABLE [prefix_groups] (
   [sid] INT NOT NULL default '0',
   [group_name] VARCHAR(100) NOT NULL default '',
   [group_order] INT NOT NULL default '0',
-  [description] text NULL,
+  [description] varchar(max),
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([gid],[language])
 ) 
@@ -151,8 +151,8 @@ CREATE TABLE [prefix_labelsets] (
 CREATE TABLE [prefix_question_attributes] (
   [qaid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
-  [attribute] VARCHAR(50) NULL,
-  [value] TEXT NULL,
+  [attribute] VARCHAR(50) default NULL,
+  [value] varchar(max) default NULL,
   PRIMARY KEY  ([qaid])
 ) 
 ;
@@ -169,11 +169,11 @@ CREATE TABLE [prefix_questions] (
   [gid] INT NOT NULL default '0',
   [type] char(1) NOT NULL default 'T',
   [title] VARCHAR(20) NOT NULL default '',
-  [question] text NOT NULL,
-  [preg] text NULL,
-  [help] text NULL,
+  [question] varchar(max) NOT NULL,
+  [preg] varchar(max),
+  [help] varchar(max),
   [other] char(1) NOT NULL default 'N',
-  [mandatory] char(1) NULL,
+  [mandatory] char(1) default NULL,
   [lid] INT NOT NULL default '0',
   [lid1] INT NOT NULL default '0',
   [question_order] INT NOT NULL,
@@ -194,13 +194,13 @@ CREATE TABLE [prefix_saved_control] (
   [sid] INT NOT NULL default '0',
   [srid] INT NOT NULL default '0',
   [identifier] varchar(255) NOT NULL,
-  [access_code] text NOT NULL,
-  [email] VARCHAR(320) NULL,
-  [ip] text NOT NULL,
-  [saved_thisstep] text NOT NULL,
+  [access_code] varchar(max) NOT NULL,
+  [email] VARCHAR(320) default NULL,
+  [ip] varchar(max) NOT NULL,
+  [saved_thisstep] varchar(max) NOT NULL,
   [status] char(1) NOT NULL default '',
   [saved_date] datetime, 
-  [refurl] text NULL,
+  [refurl] varchar(max),
   PRIMARY KEY  ([scid])
 ) 
 ;
@@ -246,8 +246,8 @@ CREATE TABLE [prefix_surveys] (
   [usecaptcha] char(1) default 'N',
   [usetokens] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
-  [attributedescriptions] text NULL,
-  [emailresponseto] text NULL,
+  [attributedescriptions] varchar(max),
+  [emailresponseto] varchar(max),
   [tokenlength] tinyint default '15',
   
   PRIMARY KEY  ([sid])
@@ -265,19 +265,19 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_survey_id] INT NOT NULL DEFAULT 0, 
   [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
   [surveyls_title] VARCHAR(200) NOT NULL,
-  [surveyls_description] TEXT NULL,
-  [surveyls_welcometext] TEXT NULL,
-  [surveyls_endtext] TEXT NULL,
+  [surveyls_description] varchar(max) NULL,
+  [surveyls_welcometext] varchar(max) NULL,
+  [surveyls_endtext] varchar(max) NULL,
   [surveyls_url] VARCHAR(255) NULL,
   [surveyls_urldescription] VARCHAR(255) NULL,
   [surveyls_email_invite_subj] VARCHAR(255) NULL,
-  [surveyls_email_invite] TEXT NULL,
+  [surveyls_email_invite] varchar(max) NULL,
   [surveyls_email_remind_subj] VARCHAR(255) NULL,
-  [surveyls_email_remind] TEXT NULL,
+  [surveyls_email_remind] varchar(max) NULL,
   [surveyls_email_register_subj] VARCHAR(255) NULL,
-  [surveyls_email_register] TEXT NULL,
+  [surveyls_email_register] varchar(max) NULL,
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
-  [surveyls_email_confirm] TEXT NULL,
+  [surveyls_email_confirm] varchar(max) NULL,
   [surveyls_dateformat] INT NOT NULL DEFAULT 1, 
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 )
@@ -303,7 +303,7 @@ CREATE TABLE [prefix_users] (
   [manage_template] TINYINT NOT NULL default '0',
   [manage_label] TINYINT NOT NULL default '0',
   [htmleditormode] char(7) default 'default',
-  [one_time_pw] TEXT NULL,
+  [one_time_pw] varchar(max),
   [dateformat] INT NOT NULL DEFAULT 1
 );
 
@@ -332,7 +332,7 @@ CREATE TABLE [prefix_surveys_rights] (
 CREATE TABLE [prefix_user_groups] (
 	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
 	[name] VARCHAR(20) NOT NULL UNIQUE,
-	[description] TEXT NOT NULL default '',
+	[description] varchar(max) NOT NULL default '',
 	[owner_id] INT NOT NULL  
 ) 
 ;

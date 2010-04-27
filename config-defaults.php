@@ -28,6 +28,7 @@ $databasetype       =   'mysql';       // ADOdb database driver - valid values a
 // mysql: Recommended driver for mysql
 // mysqli: Slightly faster driver for mysql - not on all server systems available
 // odbc_mssql: MSSQL driver for easy run with MS SQL Server
+// mssqlnative: Native SQL Server driver for SQL Server 2005+
 // mssql_n: Experimental driver for  MS SQL Server which handles UTF-8 charsets
 // odbtp: Best choice for MSSQL-Server to handle UTF-8 correctly - we recommend to activate $databasepersistent for decent speed
 // postgres: Standard postgres driver
