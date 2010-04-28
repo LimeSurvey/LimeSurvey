@@ -82,14 +82,21 @@ switch($dateformattype)
     break;
     case 7: $dformat = 'Y/m/d'; // yyyy/mm/dd
     break;
+    case 6: $dbformat = 'Y-m-d'; // yyyy-mm-dd
+    break;
     case 4: $dformat = 'j.n.Y'; // d.m.yyyy
     break;
     case 8: $dformat = 'j/n/y'; // d/m/yyyy
     break;
+    case 12: $dbformat = 'j-n-Y'; // d-m-yyyy
+    break;
     case 9: $dformat = 'm-d-Y'; // mm-dd-yyyy
     break;
-    case 6:
-    default:$dformat = 'Y-m-d'; // yyyy-mm-dd
+    case 10: $dbformat = 'm.d.Y'; // mm.dd.yyyy
+    break;
+    case 11: $dbformat = 'm/d/Y'; // mm/dd/yyyy
+    break;
+    default: $dformat = 'Y-m-d'; // yyyy-mm-dd
     break;
 };
 $expirytimestamp = strtotime($surveyexpirydate);
