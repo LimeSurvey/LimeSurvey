@@ -279,8 +279,8 @@ function sanitize_userfullname($string)
 
 function sanitize_labelname($string)
 {
-    $username_length=100;
-    $string=mb_substr($string,0,$username_length);
+    $labelname_length=100;
+    $string=mb_substr($string,0,$labelname_length);
     return $string;
 }
 

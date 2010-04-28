@@ -31,7 +31,7 @@ $labelsoutput='';
 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 {
 
-
+    $js_admin_includes[]='scripts/labels.js';
     if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
 
     if (!isset($action)) {$action=returnglobal('action');}
@@ -64,9 +64,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     ."\t<div class='menubar-main'>\n"
     ."\t<div class='menubar-left'>\n"
     ."\t<a href='$scriptname' title=\"".$clang->gTview("Return to survey administration")."\" >"
-    ."<img name='Administration' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>"
+    ."<img name='Administration' src='$imagefiles/home.png' align='left' alt='".$clang->gT("Return to survey administration")."' /></a>"
     ."\t<img src='$imagefiles/blank.gif' width='11' height='20' alt='' />\n"
-    ."\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+    ."\t<img src='$imagefiles/seperator.gif' align='left' alt='' />\n"
+    ."\t<img src='$imagefiles/blank.gif' width='76' align='left' height='20' alt='' />\n"
+    ."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
+    ."\t<a href='admin.php?action=labels&amp;subaction=exportmulti' title=\"".$clang->gTview("Export Label Set")."\" >" 
+    ."<img src='$imagefiles/dumplabelmulti.png' alt='".$clang->gT("Export multiple label sets")."' align='left' /></a>" 
     ."\t</div>\n"
     ."\t<div class='menubar-right'>\n"
     ."\t<img src='$imagefiles/blank.gif' width='5' height='20' alt='' />\n"
@@ -103,7 +107,38 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     ."\t\t</div>\n"
     ."\t</div>\n"
     ."</div>\n";
-     
+
+    if ($subaction == "exportmulti")    
+    {
+            
+           $labelsoutput.="<script type='text/javascript'>\n"
+            ."<!--\n"
+            ."var strSelectLabelset='".$clang->gT('You have to select at least one label set.','js')."';\n"
+            ."//-->\n"
+            ."</script>\n";
+        
+        $labelsoutput .="<div class='header'>".$clang->gT('Export multiple label sets')."</div>"
+        ."<form method='post' id='exportlabelset' class='form30' action='admin.php'><ul>"
+        ."<li><label for='labelsets'>".$clang->gT('Please choose the label sets you want to export:')."<br />".$clang->gT('(Select multiple label sets by using the Ctrl key)')."</label>"
+        ."<select id='labelsets' multiple='multiple' name='lids[]' size='20'>\n";
+        $labelsets=getlabelsets();
+        if (count($labelsets)>0)
+        {
+            foreach ($labelsets as $lb)
+            {
+                $labelsoutput.="<option value='{$lb[0]}'>{$lb[0]}: {$lb[1]}</option>\n";
+            }
+        }
+
+        $labelsoutput.= "\t</select></li>\n"
+        ."</ul><p><input type='submit' id='btnDumpLabelSets' value='".$clang->gT('Export selected labelsets')."' />"
+        ."<input type='hidden' name='action' value='dumplabel' />"
+        ."</form>";
+        
+
+    }
+
+    
     //NEW SET
     if ($action == "newlabelset" || $action == "editlabelset")
     {
@@ -129,7 +164,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $labelsoutput.= "<ul'>\n"
         ."<li><label for='languageids'>".$clang->gT("Set name:")."</label>\n"
         ."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
-        ."\t<input type='text' id='label_name' name='label_name' value='";
+        ."\t<input type='text' id='label_name' name='label_name' maxlength='100' size='50' value='";
         if (isset($lbname)) {$labelsoutput.= $lbname;}
         $labelsoutput.= "' />\n"
         ."</li>\n"
@@ -212,15 +247,15 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             ."</div>\n"
             ."<div class='menubar-main'>\n"
             ."\t<div class='menubar-left'>\n"
-            ."\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt='' />\n"
+            ."\t<img src='$imagefiles/blank.gif' width='40' height='20' border='0' hspace='0' align='left' alt='' />\n"
             ."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
             ."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' title=\"".$clang->gTview("Edit label set")."\" >" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='".$clang->gT("Edit label set")."' align='left'  /></a>" 
 			."\t<a href='#' title='".$clang->gTview("Delete label set")."' onclick=\"if (confirm('".$clang->gT("Do you really want to delete this label set?","js")."')) {".get2post("admin.php?action=deletelabelset&amp;lid=$lid")."}\" >"
 			."<img src='$imagefiles/delete.png' border='0' alt='".$clang->gT("Delete label set")."' align='left' /></a>\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' title=\"".$clang->gTview("Export Label Set")."\" >" .
-					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' align='left' /></a>" 
+			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' title=\"".$clang->gTview("Export this label set")."\" >" .
+					"<img src='$imagefiles/dumplabel.png' alt='".$clang->gT("Export this label set")."' align='left' /></a>" 
 					."\t</div>\n"
 					."\t<div class='menubar-right'>\n"
 					."\t<input type='image' src='$imagefiles/close.gif' title='".$clang->gT("Close Window")."'"

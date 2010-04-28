@@ -22,23 +22,18 @@
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
+require_once("export_data_functions.php");      
 $lids=returnglobal('lids');
-if (!$lid) die('No LID has been provided. Cannot dump label set.');
+$lid=returnglobal('lid');
+if (!$lid && !$lids) die('No LID has been provided. Cannot dump label set.');
 
-$fn = "limesurvey_question_$qid.lsq";      
-$xml = new XMLWriter();  
-
-
-
-//1: Questions Table
-$qquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
-$qdump = BuildCSVFromQuery($qquery);
-
-//2: Answers table
-$aquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {$dbprefix}labels WHERE lid=$lid";
-$adump = BuildCSVFromQuery($aquery);
-
-$fn = "limesurvey_labelset_$lid.csv";
+if ($lid)
+{
+  $lids=array($lid);
+}
+$lids=array_map('sanitize_int',$lids);
+                        
+$fn = "limesurvey_labelset_".implode('_',$lids).".lsl";
 $xml = new XMLWriter();             
 
 header("Content-Type: text/html/force-download");
@@ -54,33 +49,23 @@ $xml->setIndent(true);
 $xml->startDocument('1.0', 'UTF-8');
 $xml->startElement('document');
 $xml->writeElement('LimeSurveyDocType','Label');    
-$xml->writeElement('DBVersion',$dbversionnumber);    
+$xml->writeElement('DBVersion',$dbversionnumber);
 getXMLStructure($xml,$lids);
 $xml->endElement(); // close columns
 $xml->endDocument();
 exit;
 
-function getXMLStructure($xml,$lid)
+function getXMLStructure($xml,$lids)
 {
     global $dbprefix;
     
-    $xml->startElement('languages');
-    $lquery = "SELECT language
-               FROM {$dbprefix}questions 
-               WHERE qid=$qid or parent_qid=$qid group by language";
-    $lresult=db_execute_assoc($lquery);           
-    while ($row=$lresult->FetchRow())   
-    {
-        $xml->writeElement('language',$row['language']);    
-    }
-    $xml->endElement();
-    
+   
     // Label sets table
-    $lsquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
+    $lsquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=".implode(' or lid=',$lids);
     BuildXMLFromQuery($xml,$lsquery,'labelsets');
 
     // Labels
-    $lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {$dbprefix}labels WHERE lid=$lid";
+    $lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {$dbprefix}labels WHERE lid=".implode(' or lid=',$lids);           
     BuildXMLFromQuery($xml,$lquery,'labels');
 }
 

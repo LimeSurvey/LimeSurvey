@@ -57,6 +57,13 @@ class limesurvey_lang {
         }
     }
 
+    /**
+    * This function translates strings to their according language
+    * 
+    * @param string $string The string to translate
+    * @param mixed $escapemode Different uses require the string to be escaped accordinlgy. Possible values are 'html'(default),'js' and 'unescaped'
+    * @return string Translated string
+    */
     function gT($string, $escapemode = 'html')
     {
         if ($this->gettextclass)
