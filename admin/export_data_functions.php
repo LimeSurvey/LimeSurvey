@@ -178,8 +178,11 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
             //We have a comment field, so free text
         } else {
             $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer,
-            {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE
-            {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
+			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE";
+            
+            if (isset($field['scale_id'])) $query .= " {$dbprefix}answers.scale_id = " . (int) $field['scale_id'] . " AND";
+            
+            $query .= " {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
 			    and {$dbprefix}questions.qid='".$field['qid']."' ORDER BY sortorder ASC";
             $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
             $num_results = $result->RecordCount();
@@ -331,6 +334,7 @@ function spss_fieldmap($prefix = 'V') {
         $hide = 0;
         $export_scale = '';
         $code='';
+        $scale_id = null;
         $aQuestionAttribs=array();
          
         #Determine field type
@@ -382,6 +386,7 @@ function spss_fieldmap($prefix = 'V') {
                 $ftitle=$fielddata['title'];
                 if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
                 if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
+                if (isset($fielddata['scale_id'])) $scale_id = $fielddata['scale_id'];
                 if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
                 if (isset($typeMap[$ftype]['hide'])) {
                     $hide = $typeMap[$ftype]['hide'];
@@ -401,7 +406,7 @@ function spss_fieldmap($prefix = 'V') {
         $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
 		    'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
 		    'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
-		    'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale);
+		    'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
         $answers = spss_getvalues($tempArray, $aQuestionAttribs);
         if (is_array($answers)) {
