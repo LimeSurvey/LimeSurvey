@@ -104,15 +104,15 @@ if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m))
 };
 
 //define('PRINT_TEMPLATE' , '/templates/print/' , true);
-if(is_file($templaterootdir.'/'.$template.'/print_survey.pstpl'))
+if(is_file($usertemplaterootdir.'/'.$template.'/print_survey.pstpl'))
 {
-    define('PRINT_TEMPLATE_DIR' , $templaterootdir.'/'.$template.'/' , true);
-    define('PRINT_TEMPLATE_URL' , $rooturl.'/templates/'.$template.'/' , true);
+	define('PRINT_TEMPLATE_DIR' , $usertemplaterootdir.'/'.$template.'/' , true);
+	define('PRINT_TEMPLATE_URL' , $usertemplaterooturl.'/'.$template.'/' , true);
 }
 else
 {
-    define('PRINT_TEMPLATE_DIR' , $templaterootdir.'/default/' , true);
-    define('PRINT_TEMPLATE_URL' , $rooturl.'/templates/default/' , true);
+	define('PRINT_TEMPLATE_DIR' , $standardtemplaterootdir.'/default/' , true);
+	define('PRINT_TEMPLATE_URL' , $standardtemplaterooturl.'/default/' , true);
 }
 
 

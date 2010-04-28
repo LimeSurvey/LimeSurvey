@@ -2818,7 +2818,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 function templatereplace($line, $replacements=array())
 {
     global $surveylist, $sitename, $clienttoken, $rooturl;
-    global $thissurvey, $imagefiles, $defaulttemplate, $templaterooturl;
+    global $thissurvey, $imagefiles, $defaulttemplate;
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
     global $question;
@@ -2846,7 +2846,7 @@ function templatereplace($line, $replacements=array())
     $templatename=validate_templatedir($templatename);
 
     // create absolute template URL and template dir vars
-    $templateurl=getTemplateURL($templatename).'/';
+    $templateurl=sGetTemplateURL($templatename).'/';
     $templatedir=sgetTemplatePath($templatename);
 
     if (stripos ($line,"</head>"))
@@ -5122,12 +5122,12 @@ function modify_database($sqlfile='', $sqlstring='')
                 $line = substr($line, 0, $length-1);   // strip ;
                 $command .= $line;
                 $command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
-                $command = str_replace('$defaultuser', $defaultuser, $command); // variables By Moses
-                $command = str_replace('$defaultpass', SHA256::hashing($defaultpass), $command); // variables By Moses
+                $command = str_replace('$defaultuser', $defaultuser, $command); 
+                $command = str_replace('$defaultpass', SHA256::hashing($defaultpass), $command); 
                 $command = str_replace('$siteadminname', $siteadminname, $command);
-                $command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
-                $command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
-                $command = str_replace('$sessionname', 'ls'.getRandomID().getRandomID().getRandomID().getRandomID(), $command); // variables By Moses
+                $command = str_replace('$siteadminemail', $siteadminemail, $command); 
+                $command = str_replace('$defaultlang', $defaultlang, $command); 
+                $command = str_replace('$sessionname', 'ls'.getRandomID().getRandomID().getRandomID().getRandomID(), $command); 
                 $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
                 if (! db_execute_num($command)) {  //Checked
@@ -7587,7 +7587,7 @@ function sGetTemplatePath($sTemplateName)
 * 
 * @param mixed $sTemplateName
 */               
-function getTemplateURL($sTemplateName)
+function sGetTemplateURL($sTemplateName)
 {
     global $standardtemplaterooturl, $usertemplaterooturl, $usertemplaterootdir, $defaulttemplate;      
     if (isStandardTemplate($sTemplateName))

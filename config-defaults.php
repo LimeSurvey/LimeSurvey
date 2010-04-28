@@ -444,10 +444,10 @@ $homeurl        =   "$rooturl/admin";                           // The website l
 $publicurl      =   "$rooturl";                                 // The public website location (url) of the public survey script
 $tempurl        =   "$rooturl/tmp";
 $imagefiles     =   "$rooturl/images";                          // Location of button bar files for admin script
-
-
+    
 //Location of the user directory
 $uploaddir      =     "$rootdir".DIRECTORY_SEPARATOR."upload";
+$uploadurl      =     "$rooturl".DIRECTORY_SEPARATOR."upload";
 
 // Location of the user templates
 $usertemplaterootdir= "$uploaddir".DIRECTORY_SEPARATOR."templates"; // Location of the templates

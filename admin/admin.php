@@ -650,19 +650,6 @@ else
 }
 
 
-
-function convertToArray($stringtoconvert, $seperator, $start, $end)
-// this function is still used to read SQL files from version 1.0 or older
-{
-    $begin=strpos($stringtoconvert, $start)+strlen($start);
-    $len=strpos($stringtoconvert, $end)-$begin;
-    $stringtoconvert=substr($stringtoconvert, $begin, $len);
-    $stringtoconvert=str_replace('\n',"\n",$stringtoconvert);  //removes masking
-    $stringtoconvert=stripslashes($stringtoconvert);
-    $resultarray=explode($seperator, $stringtoconvert);
-    return $resultarray;
-}
-
 function get2post($url)
 {
     $url = preg_replace('/&amp;/i','&',$url);
@@ -694,7 +681,7 @@ function get2post($url)
 function db_switchIDInsert($table,$state)
 {
     global $databasetype, $connect;
-    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') 
+    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative') 
     {
         if ($state==true) 
         {
@@ -703,7 +690,6 @@ function db_switchIDInsert($table,$state)
         else
         {
             $connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' OFF');
-            
         }
     }
 }

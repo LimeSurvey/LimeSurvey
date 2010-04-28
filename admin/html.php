@@ -3084,13 +3084,14 @@ if ($action == "newsurvey")
         $newsurvey .= "<div class='header'>"
         . "".$clang->gT("Create, import or copy survey")."</div>\n";
 
-        // begin Tabs section
-        $newsurvey .= "<script type=\"text/javascript\">
-                           templaterooturl='$templaterooturl'; \n
-                       </script>";
+        $newsurvey .="<script type=\"text/javascript\">
+                        standardtemplaterooturl='$standardtemplaterooturl';
+                        templaterooturl='$usertemplaterooturl'; \n";
+        $newsurvey .= "</script>\n";
 
+        // begin Tabs section
         $newsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
-        $newsurvey  .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
+        $newsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
 
         // General and Contact TAB
         $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";

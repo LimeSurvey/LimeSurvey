@@ -1036,25 +1036,18 @@ class LsrcHelper {
 
         // CREATE SURVEY
 
-        if ($importversion>=111)
-        {
-            if ($countsurveys>0){$countsurveys--;};
-            if ($countanswers>0){$countanswers=($countanswers-1)/$countlanguages;};
-            if ($countgroups>0){$countgroups=($countgroups-1)/$countlanguages;};
-            if ($countquestions>0){$countquestions=($countquestions-1)/$countlanguages;};
-            if ($countassessments>0){$countassessments--;};
-            if ($countconditions>0){$countconditions--;};
-            if ($countlabelsets>0){$countlabelsets--;};
-            if ($countquestion_attributes>0){$countquestion_attributes--;};
-            if ($countquota>0){$countquota--;};
-            $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
-            $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
-        }
-        else
-        {
-            $sfieldorders=convertToArray($surveyarray[0], "`, `", "(`", "`)");
-            $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
-        }
+        if ($countsurveys>0){$countsurveys--;};
+        if ($countanswers>0){$countanswers=($countanswers-1)/$countlanguages;};
+        if ($countgroups>0){$countgroups=($countgroups-1)/$countlanguages;};
+        if ($countquestions>0){$countquestions=($countquestions-1)/$countlanguages;};
+        if ($countassessments>0){$countassessments--;};
+        if ($countconditions>0){$countconditions--;};
+        if ($countlabelsets>0){$countlabelsets--;};
+        if ($countquestion_attributes>0){$countquestion_attributes--;};
+        if ($countquota>0){$countquota--;};
+        $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
+        $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
+
         $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
         $surveyid=$surveyrowdata["sid"];
 
@@ -1097,16 +1090,8 @@ class LsrcHelper {
 
 
         $insert=$surveyarray[0];
-        if ($importversion>=111)
-        {
-            $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
-            $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
-        }
-        else
-        {
-            $sfieldorders=convertToArray($surveyarray[0], "`, `", "(`", "`)");
-            $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
-        }
+        $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
+        $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
         $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
         // Set new owner ID
         $surveyrowdata['owner_id']=$_SESSION['loginID'];
@@ -1330,17 +1315,9 @@ class LsrcHelper {
             $count=0;
             foreach ($labelsetsarray as $lsa) {
                  
-                if ($importversion>=111)
-                {
-                    $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
-                    $fieldcontents=convertCSVRowToArray($lsa,',','"');
-                    if ($count==0) {$count++; continue;}
-                }
-                else
-                {
-                    $fieldorders=convertToArray($lsa, "`, `", "(`", "`)");
-                    $fieldcontents=convertToArray($lsa, "', '", "('", "')");
-                }
+                $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
+                $fieldcontents=convertCSVRowToArray($lsa,',','"');
+                if ($count==0) {$count++; continue;}
                 $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
 
                 // Save old labelid
@@ -1366,18 +1343,9 @@ class LsrcHelper {
                     $count=0;
                     foreach ($labelsarray as $la) {
                         if ($importversion>=111)
-                        {
-                            $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
-                            $lfieldcontents=convertCSVRowToArray($la,',','"');
-                            if ($count==0) {$count++; continue;}
-                        }
-                        else
-                        {
-                            //Get field names into array
-                            $lfieldorders=convertToArray($la, "`, `", "(`", "`)");
-                            //Get field values into array
-                            $lfieldcontents=convertToArray($la, "', '", "('", "')");
-                        }
+                        $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
+                        $lfieldcontents=convertCSVRowToArray($la,',','"');
+                        if ($count==0) {$count++; continue;}
                         // Combine into one array with keys and values since its easier to handle
                         $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                         if ($importversion<=132)
@@ -1461,19 +1429,9 @@ class LsrcHelper {
             $count=0;
             $currentgid='';
             foreach ($grouparray as $ga) {
-                if ($importversion>=111)
-                {
-                    $gafieldorders   =convertCSVRowToArray($grouparray[0],',','"');
-                    $gacfieldcontents=convertCSVRowToArray($ga,',','"');
-                    if ($count==0) {$count++; continue;}
-                }
-                else
-                {
-                    //Get field names into array
-                    $gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
-                    //Get field values into array
-                    $gacfieldcontents=convertToArray($ga, "', '", "('", "')");
-                }
+                $gafieldorders   =convertCSVRowToArray($grouparray[0],',','"');
+                $gacfieldcontents=convertCSVRowToArray($ga,',','"');
+                if ($count==0) {$count++; continue;}
                 $grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
                 // remember group id
                 if ($currentgid=='' || ($currentgid!=$grouprowdata['gid'])) {$currentgid=$grouprowdata['gid'];$newgroup=true;}
@@ -1534,17 +1492,9 @@ class LsrcHelper {
 
                         //$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qa);
 
-                        if ($importversion>=111)
-                        {
-                            $qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
-                            $qacfieldcontents=convertCSVRowToArray($qa,',','"');
-                            if ($count==0) {$count++; continue;}
-                        }
-                        else
-                        {
-                            $qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
-                            $qacfieldcontents=convertToArray($qa, "', '", "('", "')");
-                        }
+                        $qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
+                        $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+                        if ($count==0) {$count++; continue;}
                         $questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
                         $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
 
@@ -1656,17 +1606,9 @@ class LsrcHelper {
                             if (isset($answerarray) && $answerarray && $newquestion) {
                                 $count=0;
                                 foreach ($answerarray as $aa) {
-                                    if ($importversion>=111)
-                                    {
-                                        $aafieldorders   =convertCSVRowToArray($answerarray[0],',','"');
-                                        $aacfieldcontents=convertCSVRowToArray($aa,',','"');
-                                        if ($count==0) {$count++; continue;}
-                                    }
-                                    else
-                                    {
-                                        $aafieldorders=convertToArray($aa, "`, `", "(`", "`)");
-                                        $aacfieldcontents=convertToArray($aa, "', '", "('", "')");
-                                    }
+                                    $aafieldorders   =convertCSVRowToArray($answerarray[0],',','"');
+                                    $aacfieldcontents=convertCSVRowToArray($aa,',','"');
+                                    if ($count==0) {$count++; continue;}
                                     $answerrowdata=array_combine($aafieldorders,$aacfieldcontents);
                                     if ($importversion<=132)
                                     {
@@ -1820,17 +1762,9 @@ class LsrcHelper {
         if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
             $count=0;
             foreach ($question_attributesarray as $qar) {
-                if ($importversion>=111)
-                {
-                    $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
-                    $fieldcontents=convertCSVRowToArray($qar,',','"');
-                    if ($count==0) {$count++; continue;}
-                }
-                else
-                {
-                    $fieldorders=convertToArray($qar, "`, `", "(`", "`)");
-                    $fieldcontents=convertToArray($qar, "', '", "('", "')");
-                }
+                $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+                $fieldcontents=convertCSVRowToArray($qar,',','"');
+                if ($count==0) {$count++; continue;}
                 $qarowdata=array_combine($fieldorders,$fieldcontents);
                 $newqid="";
                 $oldqid=$qarowdata['qid'];
@@ -1851,17 +1785,9 @@ class LsrcHelper {
         if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
             $count=0;
             foreach ($assessmentsarray as $qar) {
-                if ($importversion>=111)
-                {
-                    $fieldorders  =convertCSVRowToArray($assessmentsarray[0],',','"');
-                    $fieldcontents=convertCSVRowToArray($qar,',','"');
-                    if ($count==0) {$count++; continue;}
-                }
-                else
-                {
-                    $fieldorders=convertToArray($qar, "`, `", "(`", "`)");
-                    $fieldcontents=convertToArray($qar, "', '", "('", "')");
-                }
+                $fieldorders  =convertCSVRowToArray($assessmentsarray[0],',','"');
+                $fieldcontents=convertCSVRowToArray($qar,',','"');
+                if ($count==0) {$count++; continue;}
                 $asrowdata=array_combine($fieldorders,$fieldcontents);
                 if (isset($asrowdata['link']))
                 {
@@ -1967,17 +1893,9 @@ class LsrcHelper {
         if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
             $count='0';
             foreach ($conditionsarray as $car) {
-                if ($importversion>=111)
-                {
-                    $fieldorders  =convertCSVRowToArray($conditionsarray[0],',','"');
-                    $fieldcontents=convertCSVRowToArray($car,',','"');
-                    if ($count==0) {$count++; continue;}
-                }
-                else
-                {
-                    $fieldorders=convertToArray($car, "`, `", "(`", "`)");
-                    $fieldcontents=convertToArray($car, "', '", "('", "')");
-                }
+                $fieldorders  =convertCSVRowToArray($conditionsarray[0],',','"');
+                $fieldcontents=convertCSVRowToArray($car,',','"');
+                if ($count==0) {$count++; continue;}
                 $conditionrowdata=array_combine($fieldorders,$fieldcontents);
 
                 $oldcid=$conditionrowdata["cid"];
