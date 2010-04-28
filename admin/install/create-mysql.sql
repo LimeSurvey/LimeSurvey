@@ -329,7 +329,7 @@ CREATE TABLE `prefix_sessions`(
       PRIMARY KEY ( sesskey ) ,
       INDEX sess2_expiry( expiry ),
       INDEX sess2_expireref( expireref )
-)
+);
 
 -- Secondary indexes 
 create index `answers_idx2` on `prefix_answers` (`sortorder`);
