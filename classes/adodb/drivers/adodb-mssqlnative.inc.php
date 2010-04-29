@@ -177,8 +177,8 @@ class ADODB_mssqlnative extends ADOConnection {
     }
 
     function _affectedrows()
-    {
-        return sqlsrv_rows_affected($this->_queryID);
+    {   
+        return @sqlsrv_rows_affected($this->_queryID);
     }
 
     function CreateSequence($seq='adodbseq',$start=1)
@@ -623,7 +623,7 @@ class ADODB_mssqlnative extends ADOConnection {
             $mask = $this->qstr(($mask));
             $this->metaTablesSQL .= " AND name like $mask";
         }
-        $ret =& ADOConnection::MetaTables($ttype,$showSchema);
+        $ret = ADOConnection::MetaTables($ttype,$showSchema);
 
         if ($mask) {
             $this->metaTablesSQL = $save;

@@ -323,9 +323,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
         $sumresult3 = $connect->Execute($sumquery3); //Checked
         $sumcount3 = $sumresult3->RecordCount();
-        $sumquery6 = "SELECT * FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')."as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
-        $sumresult6 = $connect->Execute($sumquery6) or die("Can't coun't conditions"); //Checked
-        $sumcount6 = $sumresult6->RecordCount();
+        $sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
+        $sumcount6 = $connect->GetOne($sumquery6); //Checked
         $sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of groups for this survey
         $sumresult2 = $connect->Execute($sumquery2); //Checked
         $sumcount2 = $sumresult2->RecordCount();

@@ -756,11 +756,11 @@ function CSVImportSurvey($sFullFilepath)
             $grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
             $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
 
-            db_switchIDInsert('groups',true);
+            if (isset($grouprowdata['gid'])) db_switchIDInsert('groups',true);
             $tablename=$dbprefix.'groups';
             $ginsert = $connect->GetinsertSQL($tablename,$grouprowdata);
             $gres = $connect->Execute($ginsert) or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
-            db_switchIDInsert('groups',false);
+            if (isset($grouprowdata['gid'])) db_switchIDInsert('groups',false);
             //GET NEW GID
             if (!isset($grouprowdata['gid'])) {$aGIDReplacements[$oldgid]=$connect->Insert_ID("{$dbprefix}groups","gid");}
         }
@@ -960,10 +960,15 @@ function CSVImportSurvey($sFullFilepath)
                 
                 $tablename=$dbprefix.'questions'; 
                 $query=$connect->GetInsertSQL($tablename,$questionrowdata);                         
+                if (isset($questionrowdata['qid'])) db_switchIDInsert('questions',true);
                 $qres = $connect->Execute($query) or safe_die ("Error: Failed to insert subquestion <br />{$query}<br />".$connect->ErrorMsg());
                 if (!isset($questionrowdata['qid']))
                 {
                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                }
+                else
+                {
+                    db_switchIDInsert('questions',false);    
                 }
                 $results['subquestions']++;
                 // also convert default values subquestions for multiple choice
@@ -1663,7 +1668,7 @@ function GetNewSurveyID($oldsid)
             $newsid = getRandomID();
             $isresult = $connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid");
         }
-        while ($isresult!==false);
+        while (isset($isresult));
         return $newsid;
     }
     else
