@@ -63,7 +63,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
 
     $sdump = "";
 
-    if ((!empty($exclude) && $exclude['answers'] !== true) || empty($exclude))
+    if ((!isset($exclude) && $exclude['answers'] !== true) || empty($exclude))
     {
         //Answers table
         $aquery = "SELECT {$dbprefix}answers.*
@@ -80,7 +80,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
           WHERE {$dbprefix}assessments.sid=$surveyid";
     BuildXMLFromQuery($xmlwriter,$query);
     
-    if ((!empty($exclude) && $exclude['conditions'] !== true) || empty($exclude))
+    if ((!isset($exclude) && $exclude['conditions'] !== true) || empty($exclude))
     {
         //Conditions table
         $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
@@ -124,7 +124,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
 		  WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where sid=$surveyid group by qid)";
     BuildXMLFromQuery($xmlwriter,$query,'question_attributes');
 
-    if ((!empty($exclude) && $exclude['quotas'] !== true) || empty($exclude))
+    if ((!isset($exclude) && $exclude['quotas'] !== true) || empty($exclude))
     {
         //Quota
         $query = "SELECT {$dbprefix}quota.*

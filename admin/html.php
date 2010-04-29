@@ -721,7 +721,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
         || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey" || $action=="resetsurveylogic"
         || $action=="importsurveyresources"
-        || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
+        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";}
         $additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
         $surveysummary .= "<table $showstyle id='surveydetails'><tr><td align='right' valign='top' width='15%'>"
@@ -3429,7 +3429,9 @@ if ($action == "newsurvey")
         . getsurveylist(false,true)."</select> <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
         . "<li><label for='copysurveyname'><span class='annotationasterisk'>*</span>".$clang->gT("New survey title:")."</label>\n"
         . "<input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' />"
-        . " <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
+        . "<span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
+        . "<li><label for='copysurveytranslinksfields'>".$clang->gT("Convert resource links and INSERTANS fields?")."</label>\n"
+        . "<input id='copysurveytranslinksfields' name=\"copysurveytranslinksfields\" type=\"checkbox\" checked='checked'/></li>\n"
         . "<li><label for='copysurveyexcludequotas'>".$clang->gT("Exclude quotas?")."</label>\n"
         . "<input id='copysurveyexcludequotas' name=\"copysurveyexcludequotas\" type=\"checkbox\" /></li>\n"
         . "<li><label for='copysurveyexcludeanswers'>".$clang->gT("Exclude answers?")."</label>\n"

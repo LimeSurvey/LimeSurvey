@@ -15,47 +15,65 @@
 
 //Ensure script is not run directly, avoid path disclosure
 //importsurvey.php should be called from cmdline_importsurvey.php or http_importsurvey.php, they set the $importingfrom variable
-if (!isset($importingfrom) || isset($_REQUEST['importingfrom']))
+if ((!isset($importingfrom) && !isset($copyfunction)) || isset($_REQUEST['importingfrom']))
 {
     die("Cannot run this script directly");
 }
 
-$sFullFilepath=$the_full_file_path;
-$aPathInfo = pathinfo($sFullFilepath);
-$sExtension = $aPathInfo['extension'];
-
-                    
-if (strtolower($sExtension)=='csv')
+if (!isset($copyfunction))
+{
+    $sFullFilepath=$the_full_file_path;
+    $aPathInfo = pathinfo($sFullFilepath);
+    $sExtension = $aPathInfo['extension'];
+}
+                  
+if (isset($sExtension) && strtolower($sExtension)=='csv')
 {
     $aImportResults=CSVImportSurvey($sFullFilepath);
 }
-elseif (strtolower($sExtension)=='lss')
+elseif (isset($sExtension) && strtolower($sExtension)=='lss')
 {
     $aImportResults=XMLImportSurvey($sFullFilepath);
+} elseif (isset($copyfunction))
+{
+    $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
 }
 
 
-
-
-// Translate INSERTANS codes
-if (isset($aImportResults['fieldnames']))
+// Translate INSERTANS codes if chosen
+if (isset($aImportResults['fieldnames']) && $sTransLinks === true)
 {
     transInsertAns($aImportResults['newsid'],$aImportResults['oldsid'],$aImportResults['fieldnames']);
 }
 
-
-
-
-if ($importingfrom == "http")
+                 
+if ((isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
-    $importsurvey .= "<strong><u>".$clang->gT("Survey import summary")."</u></strong><br />\n";
+    if (isset($copyfunction))
+    {
+        $importsurvey .= "<strong><u>".$clang->gT("Survey copy summary")."</u></strong><br />\n";        
+    } else
+    {
+        $importsurvey .= "<strong><u>".$clang->gT("Survey import summary")."</u></strong><br />\n";        
+    }    
     $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$aImportResults['surveys']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Languages").": {$aImportResults['languages']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Question groups").": {$aImportResults['groups']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Questions").": {$aImportResults['questions']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Answers").": {$aImportResults['answers']}</li>\n";
-    $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";
+    if (isset($aImportResults['subquestions']))
+    {
+        $importsurvey .= "\t<li>".$clang->gT("Subquestions").": {$aImportResults['subquestions']}</li>\n";     
+    }
+    if (isset($aImportResults['defaultvalues']))
+    {
+        $importsurvey .= "\t<li>".$clang->gT("Default answers").": {$aImportResults['defaultvalues']}</li>\n";     
+    }
+    if (isset($aImportResults['conditions']))
+    {
+        $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";     
+    }
     if (isset($aImportResults['labelsets']))
     {
         $importsurvey .= "\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
@@ -76,10 +94,20 @@ if ($importingfrom == "http")
         }
         $importsurvey .= "</ul><br />\n";
     }
-    $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
-    . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
+    if (isset($copyfunction))
+    {
+        $importsurvey .= "<strong>".$clang->gT("Copy of Survey is completed.")."</strong><br />\n"
+        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";        
+    } else
+    {
+        $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
+        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";        
+    }
     $importsurvey .= "</div><br />\n";
-    unlink($sFullFilepath);
+    if (!isset($copyfunction))
+    {
+        unlink($sFullFilepath);    
+    }
 }
 else
 {
@@ -93,7 +121,18 @@ else
     echo $clang->gT("Groups").": {$aImportResults['groups']}\n";
     echo $clang->gT("Questions").": {$aImportResults['questions']}\n";
     echo $clang->gT("Answers").": {$aImportResults['answers']}\n";
-    echo $clang->gT("Conditions").": {$aImportResults['conditions']}\n";
+    if (isset($aImportResults['subquestions']))
+    {
+        echo $clang->gT("Subquestions").": {$aImportResults['subquestions']}\n";      
+    }
+    if (isset($aImportResults['defaultvalues']))
+    {
+        echo $clang->gT("Default answers").": {$aImportResults['defaultvalues']}\n";     
+    }
+    if (isset($aImportResults['conditions']))
+    {
+        echo $clang->gT("Conditions").": {$aImportResults['conditions']}\n";       
+    }
     if (isset($aImportResults['labelsets']))
     {
         echo $clang->gT("Label sets").": {$aImportResults['labelsets']}\n";
@@ -1159,11 +1198,18 @@ function CSVImportSurvey($sFullFilepath)
 * 
 * @param mixed $sFullFilepath  The full filepath of the uploaded file
 */
-function XMLImportSurvey($sFullFilepath)
+function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
 {
     global $connect, $dbprefix, $clang;
     
-    $xml = simplexml_load_file($sFullFilepath);    
+    if ($sXMLdata == NULL)
+    {
+        $xml = simplexml_load_file($sFullFilepath);           
+    } else
+    {
+        $xml = simplexml_load_string($sXMLdata);   
+    }
+     
     if ($xml->LimeSurveyDocType!='Survey') safe_die('This is not a valid LimeSurvey survey structure XML file.');
     $dbversion = (int) $xml->DBVersion;
     $aQIDReplacements=array();   
@@ -1232,8 +1278,13 @@ function XMLImportSurvey($sFullFilepath)
             $insertdata[(string)$key]=(string)$value;
         }
         $insertdata['surveyls_survey_id']=$newsid;
-
-        $insertdata['surveyls_title']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_title']);
+        if ($sNewSurveyName == NULL)
+        {
+            $insertdata['surveyls_title']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_title']);    
+        } else {
+            $insertdata['surveyls_title']=translink('survey', $oldsid, $newsid, $sNewSurveyName);    
+        }
+        
         $insertdata['surveyls_description']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_description']);
         $insertdata['surveyls_welcometext']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_welcometext']);
         $insertdata['surveyls_urldescription']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_urldescription']);

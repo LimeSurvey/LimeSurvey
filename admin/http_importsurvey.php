@@ -13,9 +13,14 @@
  * $Id$
  */
 
-//Ensure script is not run directly, avoid path disclosure
+// Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
+// Enable 'Convert resource links and INSERTANS fields?' if selected
+if ( (isset($_POST['copysurveytranslinksfields']) && $_POST['copysurveytranslinksfields'] == "on")  || (isset($_POST['translinksfields']) && $_POST['translinksfields'] == "on"))
+{
+    $sTransLinks = true;    
+}
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 if ($action == 'importsurvey')
@@ -43,15 +48,16 @@ $importingfrom = "http";	// "http" for the web version and "cmdline" for the com
 } elseif ($action == 'copysurvey')
 {
     $importsurvey = "<div class='header'>".$clang->gT("Copy survey")."</div>\n";
+    $importsurvey .= "<div class='messagebox'><br />\n";
     $surveyid = sanitize_int($_POST['copysurveylist']);
     $exclude = array();
     require_once("../classes/inputfilter/class.inputfilter_clean.php");
     $myFilter = new InputFilter('','',1,1,1);
     if ($filterxsshtml)
     {
-        $surveyname = $myFilter->process($_POST['copysurveyname']);
+        $sNewSurveyName = $myFilter->process($_POST['copysurveyname']);
     } else {
-        $surveyname = html_entity_decode($_POST['copysurveyname'], ENT_QUOTES, "UTF-8");
+        $sNewSurveyName = html_entity_decode($_POST['copysurveyname'], ENT_QUOTES, "UTF-8");
     }
     if (isset($_POST['copysurveyexcludequotas']) && $_POST['copysurveyexcludequotas'] == "on")
     {
@@ -65,10 +71,9 @@ $importingfrom = "http";	// "http" for the web version and "cmdline" for the com
     {
         $exclude['conditions'] = true;
     }
-    $copyfunction = 1;
+    $copyfunction = true;
     include("export_structure_xml.php");
-    $copysurveydata = getXMLData();
-    die(print_r($copysurveydata));
+    $copysurveydata = getXMLData($exclude);
 }
 
 include("importsurvey.php");
