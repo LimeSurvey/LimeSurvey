@@ -36,7 +36,6 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
     if (!isset($action)) {$action=returnglobal('action');}
     if (!isset($lid)) {$lid=returnglobal('lid');}
-    if (!isset($lid1)) {$lid1=returnglobal('lid1');}
 
     //DO DATABASE UPDATESTUFF
     if ($action == "updateset") {updateset($lid);}
@@ -46,8 +45,6 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     if ($action == "importlabels")
     {
         include("importlabel.php");
-        if (isset($importlabeloutput)) {$labelsoutput.= $importlabeloutput;}
-        return;
     }
     if ($action == "importlabelresources")
     {
@@ -92,8 +89,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
     $labelsoutput.= "\t</select>\n"
     ."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\""
-    ." title=\"".$clang->gTview("Add new label set")."\">"
-    ."<img src='$imagefiles/add.png' name='AddLabel' alt='". $clang->gT("Add new label set")."' /></a>\n"
+    ." title=\"".$clang->gTview("Create or import new label set(s)")."\">"
+    ."<img src='$imagefiles/add.png' name='AddLabel' alt='". $clang->gT("Create or import new label set(s)")."' /></a>\n"
     ."\t<img src='$imagefiles/seperator.gif'  alt='' />\n"
     ."\t<img src='$imagefiles/blank.gif' width='5' height='20' alt='' />\n"
     //Logout button
@@ -108,6 +105,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     ."\t</div>\n"
     ."</div>\n";
 
+    if (isset($importlabeloutput)) {
+        $labelsoutput.= $importlabeloutput;
+        return;
+    }
+
+    
     if ($subaction == "exportmulti")    
     {
             
@@ -131,7 +134,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         }
 
         $labelsoutput.= "\t</select></li>\n"
-        ."</ul><p><input type='submit' id='btnDumpLabelSets' value='".$clang->gT('Export selected labelsets')."' />"
+        ."</ul><p><input type='submit' id='btnDumpLabelSets' value='".$clang->gT('Export selected label sets')."' />"
         ."<input type='hidden' name='action' value='dumplabel' />"
         ."</form>";
         
@@ -151,8 +154,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $labelsoutput.="<div class='header header_statistics'>\n"
         ."<input type='image' src='$imagefiles/close.gif' align='right' "
         ."onclick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
-        if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create or Import New Label Set"); $langids=$_SESSION['adminlang']; $tabitem=$clang->gT("Create New Label Set");}
-        else {$labelsoutput.= $clang->gT("Edit Label Set"); $tabitem=$clang->gT("Edit Label Set");}
+        if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create or import new label set(s)"); $langids=$_SESSION['adminlang']; $tabitem=$clang->gT("Create New Label Set");}
+        else {$labelsoutput.= $clang->gT("Edit Label Set"); $tabitem=$clang->gT("Edit label set");}
         $langidsarray=explode(" ",trim($langids)); //Make an array of it
         $labelsoutput.= "\n\t</div>\n";
 
@@ -195,7 +198,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $labelsoutput.= "\t</select></td>"
         ." </tr></table></li></ul>\n"
         ."<p><input type='submit' value='";
-        if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Save label set");}
+        if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Save");}
         else {$labelsoutput.= $clang->gT("Update");}
         $labelsoutput.= "' />\n"
         ."<input type='hidden' name='action' value='";
@@ -210,24 +213,24 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $labelsoutput.= "</form></div>\n";
 
         if ($action == "newlabelset"){
-            $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import Label Set")."</h2>\n"
+            $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import label set(s)")."</h2>\n"
             ."<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
             ."<div class='header'>\n"
-            .$clang->gT("Import Label Set")."\n"
+            .$clang->gT("Import label set(s)")."\n"
             ."</div><ul>\n"
             ."<li><label for='the_file'>"
-            .$clang->gT("Select CSV File:")."</label>\n"
+            .$clang->gT("Select label set file (*.lsl,*.csv):")."</label>\n"
             ."<input id='the_file' name='the_file' type='file' size='35' />"
             ."</li>\n"
             ."<li><label for='checkforduplicates'>"
-            .$clang->gT("Check for duplicates?")."</label>\n"
+            .$clang->gT("Don't import if label set already exists:")."</label>\n"
             ."<input name='checkforduplicates' id='checkforduplicates' type='checkbox' checked='checked' />\n"
             ."</li>"
             ."<li><label for='translinksfields'>"
             .$clang->gT("Convert resources links?")."</label>\n"
             ."<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked' />\n"
             ."</li></ul>\n"
-            ."<p><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
+            ."<p><input type='submit' value='".$clang->gT("Import label set(s)")."' />\n"
             ."<input type='hidden' name='action' value='importlabels' />\n"
             ."</form></div>\n";
         }
@@ -297,7 +300,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
             $labelcount = $result->RecordCount();
             $labelsoutput.= "<div class='tab-page'>"
-            ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
+            ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage,false)."</h2>"
             ."\t<table class='answertable' align='center'>\n"
             ."<thead align='center'>"
             ."<tr>\n"
@@ -563,7 +566,7 @@ function updateset($lid)
         }
     }
 
-    // Update the labelset itself
+    // Update the label set itself
     $query = "UPDATE ".db_table_name('labelsets')." SET label_name={$postlabel_name}, languages={$postlanguageids} WHERE lid=$lid";
     if (!$result = $connect->Execute($query))
     {
@@ -572,28 +575,20 @@ function updateset($lid)
 }
 
 
-
+/**
+* Deletes a label set alog with its labels
+* 
+* @param mixed $lid Label ID
+* @return boolean Returns always true
+*/
 function deletelabelset($lid)
-// language proof
 {
-    global $dbprefix, $connect, $clang, $labelsoutput;
-    //CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
-    $query = "SELECT qid FROM ".db_table_name('questions')." WHERE type IN ('F','H','W','Z') AND lid=$lid";
-    $result = $connect->Execute($query) or safe_die("Error");
-    $count = $result->RecordCount();
-    if ($count > 0)
-    {
-        $labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.","js")."\")\n //-->\n</script>\n";
-        return false;
-    }
-    else //There are no dependencies. We can delete this safely
-    {
-        $query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid";
-        $result = $connect->Execute($query);
-        $query = "DELETE FROM ".db_table_name('labelsets')." WHERE lid=$lid";
-        $result = $connect->Execute($query);
-        return true;
-    }
+    global $connect;
+    $query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid";
+    $result = $connect->Execute($query);
+    $query = "DELETE FROM ".db_table_name('labelsets')." WHERE lid=$lid";
+    $result = $connect->Execute($query);
+    return true;
 }
 
 
@@ -619,7 +614,7 @@ function insertlabelset()
     $query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$postlabel_name},{$postlanguageids})";
     if (!$result = $connect->Execute($query))
     {
-        $labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Insert of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        safe_die("Inserting the label set failed:<br />".$query."<br />".$connect->ErrorMsg());
     }
     else
     {
@@ -796,9 +791,12 @@ function modlabelsetanswers($lid)
     }
 }
 
-
-function fixorder($lid) //Function rewrites the sortorder for a group of answers
-{
+/**
+* Function rewrites the sortorder for a label set  
+* 
+* @param mixed $lid Label set ID
+*/
+function fixorder($lid) {
     global $dbprefix, $connect, $labelsoutput;
     $qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
     $rslabelset = db_execute_assoc($qulabelset) or safe_die($connect->ErrorMsg());
@@ -806,8 +804,8 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
     $lslanguages=explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage)
     {
-        $query = "SELECT lid, code, title FROM ".db_table_name('labels')." WHERE lid=? and language='$lslanguage' ORDER BY sortorder, code";
-        $result = db_execute_num($query, array($lid));
+        $query = "SELECT lid, code, title FROM ".db_table_name('labels')." WHERE lid=? and language='?' ORDER BY sortorder, code";
+        $result = db_execute_num($query, array($lid,$lslanguage));
         $position=0;
         while ($row=$result->FetchRow())
         {
