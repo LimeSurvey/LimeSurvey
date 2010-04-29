@@ -51,7 +51,13 @@ if ($action == "listsurveys")
 				    <th>".$clang->gT("Full Responses")."</th>
                     <th>".$clang->gT("Partial Responses")."</th>
                     <th>".$clang->gT("Total Responses")."</th>
-				  </tr></thead><tbody>";
+                    <th>".$clang->gT("Tokens available")."</th>
+                    <th>".$clang->gT("Response rate")."</th>
+				  </tr></thead>
+				  <tfoot><tr class='header'>
+		<td colspan=\"12\">&nbsp;</td>".
+		"</tr></tfoot>
+		<tbody>";
         $gbc = "evenrow";
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
@@ -177,13 +183,51 @@ if ($action == "listsurveys")
                 $listsurveys .= "<td>&nbsp;</td>";
                 $listsurveys .= "<td>&nbsp;</td>";
             }
-            $listsurveys .= "</tr>" ;
+            
+            if ($rows['active']=="Y" && tableExists("tokens_".$rows['sid']))
+		    {
+		    	//get the number of tokens for each survey
+		    	$tokencountquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid']);
+                            $tokencountresult = db_execute_num($tokencountquery); //Checked
+                            while ($tokenrow = $tokencountresult->FetchRow())
+                            {
+                                $tokencount = $tokenrow[0];
+                            }
+                            
+		    	//get the number of COMLETED tokens for each survey
+		    	$tokencompletedquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid'])." WHERE completed='N'";
+                            $tokencompletedresult = db_execute_num($tokencompletedquery); //Checked
+                            while ($tokencompletedrow = $tokencompletedresult->FetchRow())
+                            {
+                                $tokencompleted = $tokencompletedrow[0];
+                            }
+                            
+                            //calculate percentage
+                            
+                            //prevent division by zero problems
+                            if($tokencompleted != 0 && $tokencount != 0)
+                            {
+                            $tokenpercentage = round(($tokencompleted / $tokencount) * 100, 1);
+                            }
+                            else
+                            {
+                            $tokenpercentage = 0;
+                            }
+                            
+                            $listsurveys .= "<td>".$tokencount."</td>";
+                            $listsurveys .= "<td>".$tokenpercentage."%</td>";
+		    }
+		    else
+		    {
+				$listsurveys .= "<td>&nbsp;</td>";
+				$listsurveys .= "<td>&nbsp;</td>";
+		    }
+		    
+		    $listsurveys .= "</tr>" ;
         }
 
-        $listsurveys.="</tbody><tfoot><tr>
-		<td colspan=\"11\">&nbsp;</td>".
-		"</tr></tfoot>";
-        $listsurveys.="</table><br />" ;
+		$listsurveys.="</tbody>";
+		$listsurveys.="</table><br />" ;
     }
     else $listsurveys="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
 }
