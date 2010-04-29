@@ -48,7 +48,7 @@ $xml->openURI('php://output');
 $xml->setIndent(true);
 $xml->startDocument('1.0', 'UTF-8');
 $xml->startElement('document');
-$xml->writeElement('LimeSurveyDocType','Label');    
+$xml->writeElement('LimeSurveyDocType','Label set');    
 $xml->writeElement('DBVersion',$dbversionnumber);
 getXMLStructure($xml,$lids);
 $xml->endElement(); // close columns
