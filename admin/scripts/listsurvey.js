@@ -7,4 +7,5 @@ $(document).ready(function(){
                                               9:{sorter:'digit'} // Total Responses
                                              }
                                    });
+    $(".listsurveys tr:eq(1) th:eq(2)").css('min-width','200px');
 });

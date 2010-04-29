@@ -40,17 +40,22 @@ if ($action == "listsurveys")
 
     if($result->RecordCount() > 0) {
         $listsurveys= "<br /><table class='listsurveys'><thead>
+                  <tr>
+                    <th colspan='7'>&nbsp;</th>
+                    <th colspan='3'>".$clang->gT("Responses")."</th>
+                    <th colspan='2'>&nbsp;</th>
+                  </tr>
 				  <tr>
 				    <th>".$clang->gT("Status")."</th>
-                    <th>".$clang->gT("Survey ID")."</th>
-				    <th style='width:20%;'>".$clang->gT("Survey")."</th>
-				    <th>".$clang->gT("Date Created")."</th>
+                    <th>".$clang->gT("SID")."</th>
+				    <th>".$clang->gT("Survey")."</th>
+				    <th>".$clang->gT("Date created")."</th>
 				    <th>".$clang->gT("Owner") ."</th>
 				    <th>".$clang->gT("Access")."</th>
 				    <th>".$clang->gT("Anonymous answers")."</th>
-				    <th>".$clang->gT("Full Responses")."</th>
-                    <th>".$clang->gT("Partial Responses")."</th>
-                    <th>".$clang->gT("Total Responses")."</th>
+				    <th>".$clang->gT("Full")."</th>
+                    <th>".$clang->gT("Partial")."</th>
+                    <th>".$clang->gT("Total")."</th>
                     <th>".$clang->gT("Tokens available")."</th>
                     <th>".$clang->gT("Response rate")."</th>
 				  </tr></thead>
@@ -72,11 +77,11 @@ if ($action == "listsurveys")
 
             if (tableExists('tokens_'.$rows['sid']))
             {
-                $visibility = $clang->gT("Closed-access");
+                $visibility = $clang->gT("Closed");
             }
             else
             {
-                $visibility = $clang->gT("Open-access");
+                $visibility = $clang->gT("Open");
             }
 
             if($rows['active']=="Y")
