@@ -272,11 +272,6 @@ else
     $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";
     $presult=db_execute_assoc($pquery);
     $prow=$presult->FetchRow();
-    if ($prow['private'] == "N")
-    {
-        $createsurvey .= "  token C(36),\n";
-        $surveynotprivate="TRUE";
-    }
     if ($prow['allowregister'] == "Y")
     {
         $surveyallowsregistration="TRUE";
@@ -359,6 +354,13 @@ else
             case "url":
                 if ($prow['refurl'] == "Y")
                     $createsurvey .= " X";
+                break;
+            case "token":
+                if ($prow['private'] == "N")
+                {
+                    $createsurvey .= " C(36)";
+                    $surveynotprivate="TRUE";
+                }
                 break;
             default:
                 $createsurvey .= " C(5)";
