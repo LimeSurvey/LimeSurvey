@@ -1329,9 +1329,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
         // now translate any links
         $insertdata['group_name']=translink('survey', $oldsid, $newsid, $insertdata['group_name']);
         $insertdata['description']=translink('survey', $oldsid, $newsid, $insertdata['description']);
-        // Insert the new question    
+        // Insert the new group    
         if (isset($aGIDReplacements[$oldgid]))
         {
+           db_switchIDInsert('groups',true);
            $insertdata['gid']=$aGIDReplacements[$oldgid]; 
         }   
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -1342,6 +1343,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
         {
             $newgid=$connect->Insert_ID($tablename,"gid"); // save this for later
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+        }
+        else
+        {
+           db_switchIDInsert('groups',false);
         }
     }
                            
@@ -1382,6 +1387,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
             if (isset($aQIDReplacements[$oldqid]))
             {
                $insertdata['qid']=$aQIDReplacements[$oldqid]; 
+               db_switchIDInsert('questions',true);
+               
             }   
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
             $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
@@ -1390,6 +1397,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
                 $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
                 $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
                 $results['questions']++;
+            }
+            else
+            {
+               db_switchIDInsert('questions',false);
             }
         }
     }

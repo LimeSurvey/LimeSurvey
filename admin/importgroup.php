@@ -883,6 +883,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
     $results['answers']=0;
     $results['question_attributes']=0;
     $results['subquestions']=0;
+    $results['conditions']=0;
+    $results['groups']=0;
     
     $importlanguages=array();
     foreach ($xml->languages->language as $language)
@@ -934,13 +936,20 @@ function XMLImportGroup($sFullFilepath, $newsid)
         if (isset($aGIDReplacements[$oldgid]))
         {
            $insertdata['gid']=$aGIDReplacements[$oldgid]; 
+           db_switchIDInsert('groups',true);
         }   
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+       $results['groups']++;
+        
         if (!isset($aGIDReplacements[$oldgid]))
         {
             $newgid=$connect->Insert_ID($tablename,"gid"); // save this for later
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+        }
+        else
+        {
+            db_switchIDInsert('groups',false);
         }
     }
                            
@@ -979,7 +988,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
         // Insert the new question    
         if (isset($aQIDReplacements[$oldqid]))
         {
-           $insertdata['qid']=$aQIDReplacements[$oldqid]; 
+           $insertdata['qid']=$aQIDReplacements[$oldqid];
+           db_switchIDInsert('questions',true);
         }   
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
@@ -989,37 +999,45 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
             $results['questions']++;
         }
+        else
+        {
+           db_switchIDInsert('questions',false);
+        }
     }
 
     // Import subquestions --------------------------------------------------------------
-    foreach ($xml->subquestions->rows->row as $row)
+    if (isset($xml->subquestions))
     {
-        $insertdata=array(); 
-        foreach ($row as $key=>$value)
+            
+        foreach ($xml->subquestions->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $insertdata['sid']=$newsid;
-        $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
-        $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
-        $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
+            $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['sid']=$newsid;
+            $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
+            $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+            $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
-        // now translate any links
-        $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
-        $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
-        $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
-        if (isset($aQIDReplacements[$oldsqid])){
-           $insertdata['qid']=$aQIDReplacements[$oldsqid];
+            // now translate any links
+            $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
+            $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
+            $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            if (isset($aQIDReplacements[$oldsqid])){
+               $insertdata['qid']=$aQIDReplacements[$oldsqid];
+            }
+            
+            $query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            $newsqid=$connect->Insert_ID($tablename,"qid"); // save this for later
+            if (!isset($insertdata['qid']))
+            {
+                $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
+            }
+            $results['subquestions']++;
         }
-        
-        $query=$connect->GetInsertSQL($tablename,$insertdata); 
-        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
-        $newsqid=$connect->Insert_ID($tablename,"qid"); // save this for later
-        if (!isset($insertdata['qid']))
-        {
-            $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
-        }
-        $results['subquestions']++;
     }
 
     // Import answers --------------------------------------------------------------
@@ -1094,7 +1112,6 @@ function XMLImportGroup($sFullFilepath, $newsid)
     {
         $tablename=$dbprefix.'conditions';
         
-        $results['conditions']=0;
         foreach ($xml->defaultvalues->rows->row as $row)
         {
            $insertdata=array(); 

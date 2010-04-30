@@ -130,10 +130,9 @@ function getXMLStructure($xml,$gid)
     BuildXMLFromQuery($xml,$cquery,'conditions');
 
     //Question attributes
-    $query = "SELECT DISTINCT qa.*
-              FROM {$dbprefix}question_attributes qa, {$dbprefix}questions q 
-              WHERE (qa.qid=q.qid) 
-              AND (q.gid=$gid)";
+    $query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
+          FROM {$dbprefix}question_attributes 
+          WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where gid=$gid group by qid)";
     BuildXMLFromQuery($xml,$query,'question_attributes');
     
     // Default values
