@@ -46,11 +46,11 @@ CREATE TABLE [prefix_answers] (
   [qid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
   [answer] varchar(8000) NOT NULL,
-  [default_value] char(1) NOT NULL default 'N',
   [sortorder] INT NOT NULL,
   [assessment_value] INT NOT NULL default '0',
   [language] VARCHAR(20) default 'en',
-  PRIMARY KEY  ([qid],[code],[language])
+  [scale_id] tinyint NOT NULL default '0',
+  PRIMARY KEY  ([qid],[code],[language],[scale_id])
 ) 
 ;
 
@@ -92,6 +92,16 @@ CREATE TABLE [prefix_conditions] (
 ) 
 ;
 
+
+CREATE TABLE [prefix_defaultvalues] (
+  [qid] integer NOT NULL default '0',
+  [scale_id] tinyint NOT NULL default '0',
+  [sqid] integer NOT NULL default '0',
+  [language] varchar(20) NOT NULL,
+  [specialtype] varchar(20) NOT NULL default '',
+  [defaultvalue] varchar(max),
+  CONSTRAINT pk_defaultvalues_qlss PRIMARY KEY ([qid] , [scale_id], [language], [specialtype], [sqid]))
+                              
 -- 
 -- Table structure for table [groups]
 -- 
@@ -165,6 +175,7 @@ CREATE TABLE [prefix_question_attributes] (
 
 CREATE TABLE [prefix_questions] (
   [qid] INT NOT NULL IDENTITY (1,1),
+  [parent_qid] INT NOT NULL default '0',
   [sid] INT NOT NULL default '0',
   [gid] INT NOT NULL default '0',
   [type] char(1) NOT NULL default 'T',
@@ -174,10 +185,10 @@ CREATE TABLE [prefix_questions] (
   [help] varchar(max),
   [other] char(1) NOT NULL default 'N',
   [mandatory] char(1) default NULL,
-  [lid] INT NOT NULL default '0',
-  [lid1] INT NOT NULL default '0',
   [question_order] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
+  [scale_id] tinyint NOT NULL default '0',
+  [same_default] tinyint NOT NULL default '0',
   PRIMARY KEY  ([qid],[language])
 ) 
 ;
@@ -347,6 +358,18 @@ CREATE TABLE [prefix_user_in_groups] (
 ) 
 ;
 
+
+CREATE TABLE prefix_sessions(
+    sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+    expiry DATETIME NOT NULL ,
+    expireref VARCHAR( 250 ) DEFAULT '',
+    created DATETIME NOT NULL ,
+    modified DATETIME NOT NULL ,
+    sessdata varchar(max),
+    CONSTRAINT pk_sessions_sesskey PRIMARY KEY ( [sesskey] ));
+create index [idx_expiry] on [prefix_sessions] ([expiry]);
+create index [idx_expireref] on [prefix_sessions] ([expireref]);
+
 --
 -- Table structure for table [settings_global]
 --
@@ -375,7 +398,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '142');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '143');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 

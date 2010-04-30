@@ -186,6 +186,47 @@ function db_upgrade($oldversion) {
         modify_database("", "UPDATE prefix_question_attributes SET value='1' WHERE value='true'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+    if ($oldversion < 143) //Modify surveys table
+    {
+        modify_database("", "ALTER TABLE prefix_questions ADD parent_qid integer NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_answers ADD scale_id smallint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions ADD scale_id smallint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions ADD same_default smallint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_answers DROP CONSTRAINT prefix_answers_pkey"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_answers ADD CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid,code,language,scale_id)"); echo $modifyoutput; flush();
+        
+        modify_database("", "CREATE TABLE prefix_defaultvalues (
+                              qid integer NOT NULL default '0',
+                              scale_id integer NOT NULL default '0',
+                              sqid integer NOT NULL default '0',
+                              language character varying(20) NOT NULL,
+                              specialtype character varying(20) NOT NULL default '',
+                              defaultvalue text)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)"); echo $modifyoutput; flush();
+
+        // -Move all 'answers' that are subquestions to the questions table
+        // -Move all 'labels' that are answers to the answers table
+        // -Transscribe the default values where applicable
+        // -Move default values from answers to questions
+        upgrade_tables143();
+
+        modify_database("", "ALTER TABLE prefix_answers DROP COLUMN default_value"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid1"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE prefix_sessions(
+                             sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+                             expiry TIMESTAMP NOT NULL ,
+                             expireref VARCHAR( 250 ) DEFAULT '',
+                             created TIMESTAMP NOT NULL ,
+                             modified TIMESTAMP NOT NULL ,
+                             sessdata TEXT DEFAULT '',
+                             PRIMARY KEY ( sesskey )
+                             );"); echo $modifyoutput; flush();     
+        modify_database("", "create INDEX sess_expiry on prefix_sessions( expiry );"); echo $modifyoutput; flush();
+        modify_database("", "create INDEX sess_expireref on prefix_sessions ( expireref );"); echo $modifyoutput; flush();
+                                  
+     //   modify_database("", "UPDATE prefix_settings_global SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;
@@ -265,4 +306,176 @@ function upgrade_question_attributes142()
         $record['qid']=$questionid;
         $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT');
     }
+}
+
+function upgrade_tables143()
+{
+    global $modifyoutput,$dbprefix, $connect;
+
+
+    $aQIDReplacements=array();
+    $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('L','O','!') and a.default_value='Y'";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult) {return "Database Error";}
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            modify_database("","INSERT INTO {$dbprefix}defaultvalues (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".db_quoteall($row['language']).",'',".db_quoteall($row['code']).")"); echo $modifyoutput; flush();
+        }
+    }
+
+    // Convert answers to subquestions
+    
+    $answerquery = "select a.*, q.sid, q.gid, q.type from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult) {return "Database Error";}
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            
+            $insertarray=array();
+            if (isset($aQIDReplacements[$row['qid'].'_'.$row['code']]))
+            {
+                $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+            }
+            $insertarray['sid']=$row['sid'];
+            $insertarray['gid']=$row['gid'];
+            $insertarray['parent_qid']=$row['qid'];
+            $insertarray['title']=$row['code'];
+            $insertarray['question']=$row['answer'];
+            $insertarray['question_order']=$row['sortorder'];
+            $insertarray['language']=$row['language'];
+            $tablename="{$dbprefix}questions";
+            $query=$connect->GetInsertSQL($tablename,$insertarray);
+            modify_database("",$query); echo $modifyoutput; flush();
+            if (!isset($insertarray['qid']))
+            {
+               $aQIDReplacements[$row['qid'].'_'.$row['code']]=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+               $iSaveSQID=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+            }
+            else
+            {
+               $iSaveSQID=$insertarray['qid'];
+            }
+            if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
+            {
+                modify_database("","INSERT INTO {$dbprefix}defaultvalues (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".db_quoteall($row['language']).",'','Y')"); echo $modifyoutput; flush();
+            }
+        }
+    }
+    modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
+
+    // Convert labels to answers
+    $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult)
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
+            $labelresult = db_execute_assoc($labelquery);
+            while ( $lrow = $labelresult->FetchRow() )
+            {
+                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).")"); echo $modifyoutput; flush();
+                //$labelids[]
+            }
+            if ($row['type']=='1')
+            {
+                $labelquery="Select * from {$dbprefix}labels where lid={$row['lid1']} and language=".db_quoteall($row['language']);
+                $labelresult = db_execute_assoc($labelquery);
+                while ( $lrow = $labelresult->FetchRow() )
+                {
+                    modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
+                }
+            }
+        }
+    }
+
+    // Convert labels to subquestions
+    $answerquery = "select * from {$dbprefix}questions where parent_qid=0 and type in (';',':')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult)
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
+            $labelresult = db_execute_assoc($labelquery);
+            while ( $lrow = $labelresult->FetchRow() )
+            {
+                $insertarray=array();
+                if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code']]))
+                {
+                    $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code']];
+                }
+                $insertarray['sid']=$row['sid'];
+                $insertarray['gid']=$row['gid'];
+                $insertarray['parent_qid']=$row['qid'];
+                $insertarray['title']=$lrow['code'];
+                $insertarray['question']=$lrow['title'];
+                $insertarray['question_order']=$row['sortorder'];
+                $insertarray['language']=$lrow['language'];
+                $insertarray['scale_id']=1;
+                $tablename="{$dbprefix}questions";
+                $query=$connect->GetInsertSQL($tablename,$insertarray);
+                modify_database("",$query); echo $modifyoutput; flush();
+                if (isset($insertarray['qid']))
+                {
+                   $aQIDReplacements[$row['qid'].'_'.$lrow['code']]=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+                }                
+            }
+        }
+    }
+
+    // convert Ranking question type
+
+    $query="SELECT a.qid, count(a.qid) as answercount FROM {$dbprefix}answers a, {$dbprefix}questions q where a.qid=q.qid and q.type='R' group by a.qid";
+    $queryresult = db_execute_assoc($query);
+    if (!$queryresult)
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $queryresult->FetchRow() )
+        {
+            modify_database("","INSERT INTO {$dbprefix}question_attributes (qid, attribute, value) VALUES ({$row['qid']},'ranking_slots',".db_quoteall($row['answercount']).")"); echo $modifyoutput; flush();
+        }
+    }
+
+
+
+    $updatequery = "update {$dbprefix}questions set type='!' where type='W'";
+    modify_database("",$updatequery); echo $modifyoutput; flush();
+    $updatequery = "update {$dbprefix}questions set type='L' where type='Z'";
+    modify_database("",$updatequery); echo $modifyoutput; flush();
+    
+    // Now move all non-standard templates to the /upload dir
+    global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;
+
+    if (!$usertemplaterootdir) {die("gettemplatelist() no template directory");}
+    if ($handle = opendir($standardtemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn" && !isStandardTemplate($file))
+            {
+                if (!rename($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file,$usertemplaterootdir.DIRECTORY_SEPARATOR.$file))
+                {
+                   echo "There was a problem moving directory '".$standardtemplaterootdir.DIRECTORY_SEPARATOR.$file."' to '".$usertemplaterootdir.DIRECTORY_SEPARATOR.$file."' due to missing permissions. Please do this manually.<br />";
+                };
+            }
+        }
+        closedir($handle);
+    }        
+
 }

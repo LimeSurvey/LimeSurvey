@@ -148,7 +148,6 @@ CREATE TABLE `prefix_questions` (
   `lid1` int(11) NOT NULL default '0',
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
-  `default_value` text,
   `scale_id` tinyint NOT NULL default '0',
   `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
   PRIMARY KEY  (`qid`,`language`)

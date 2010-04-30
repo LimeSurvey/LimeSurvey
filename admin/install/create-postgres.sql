@@ -20,12 +20,14 @@ CREATE TABLE prefix_answers (
     qid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
     answer text NOT NULL,
-    default_value character(1) DEFAULT 'N'::bpchar NOT NULL,
     sortorder integer NOT NULL,
     assessment_value integer DEFAULT 0 NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
+    scale_id smallint DEFAULT 0 NOT NULL,
 );
 
+ALTER TABLE ONLY prefix_answers
+    ADD CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid, code, "language", scale_id);
 
 --
 -- TOC entry 1302 (class 1259 OID 16418)
@@ -61,6 +63,18 @@ CREATE TABLE prefix_conditions (
     method character(2) DEFAULT ''::bpchar NOT NULL,
     value character varying(255) DEFAULT ''::character varying NOT NULL
 );
+
+
+CREATE TABLE prefix_defaultvalues (
+      qid integer NOT NULL default '0',
+      scale_id integer NOT NULL default '0',
+      sqid integer NOT NULL default '0',
+      language character varying(20) NOT NULL,
+      specialtype character varying(20) NOT NULL default '',
+      defaultvalue text);
+
+ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)
+
 
 --
 -- TOC entry 1306 (class 1259 OID 16445)
@@ -169,6 +183,7 @@ CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree
 --
 CREATE TABLE prefix_questions (
     qid serial NOT NULL,
+    parent_qid integer DEFAULT 0 NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
     gid integer DEFAULT 0 NOT NULL,
     "type" character(1) DEFAULT 'T'::bpchar NOT NULL,
@@ -178,10 +193,10 @@ CREATE TABLE prefix_questions (
     help text,
     other character(1) DEFAULT 'N'::bpchar NOT NULL,
     mandatory character(1),
-    lid integer DEFAULT 0 NOT NULL,
-    lid1 integer DEFAULT 0 NOT NULL,
     question_order integer NOT NULL,
-    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
+    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
+    scale_id smallint DEFAULT 0 NOT NULL,
+    same_default smallint DEFAULT 0 NOT NULL,
 );
 
 
@@ -207,6 +222,17 @@ CREATE TABLE prefix_saved_control (
 );
 
 
+CREATE TABLE prefix_sessions(
+     sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+     expiry TIMESTAMP NOT NULL ,
+     expireref VARCHAR( 250 ) DEFAULT '',
+     created TIMESTAMP NOT NULL ,
+     modified TIMESTAMP NOT NULL ,
+     sessdata TEXT DEFAULT '',
+     PRIMARY KEY ( sesskey )
+     );
+create INDEX sess_expiry on prefix_sessions( expiry );
+create INDEX sess_expireref on prefix_sessions ( expireref );
 
 --
 -- Dependencies: 1697 1698 4
@@ -371,16 +397,6 @@ ALTER TABLE ONLY prefix_templates
 
 
 --
--- TOC entry 1734 (class 2606 OID 16415)
--- Dependencies: 1300 1300 1300 1300
--- Name: prefix_answers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_answers
-    ADD CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid, code, "language");
-
-
---
 -- TOC entry 1736 (class 2606 OID 16430)
 -- Dependencies: 1302 1302
 -- Name: prefix_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
@@ -512,7 +528,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '142');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '143');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 
