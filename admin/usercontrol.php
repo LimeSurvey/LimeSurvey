@@ -496,7 +496,8 @@ elseif ($action == "moduser")
     {
         $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
         $email = html_entity_decode($postemail,ENT_QUOTES, 'UTF-8');
-        $pass = html_entity_decode($_POST['pass'],ENT_QUOTES, 'UTF-8');
+        $sPassword = html_entity_decode($_POST['pass'],ENT_QUOTES, 'UTF-8');
+        if ($sPassword=='%%unchanged%%') $sPassword='';
         $full_name = html_entity_decode($postfull_name,ENT_QUOTES, 'UTF-8');
         $valid_email = true;
 
@@ -510,22 +511,22 @@ elseif ($action == "moduser")
         elseif($valid_email)
         {
             $failed = false;
-            if(empty($pass))
+            if(empty($sPassword))
             {
                 $uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".$postuserid;
             } else {
-                $uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hashing($pass)."' WHERE uid=".$postuserid;
+                $uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hashing($sPassword)."' WHERE uid=".$postuserid;
             }
 
             $uresult = $connect->Execute($uquery);//Checked
 
-            if($uresult && empty($pass))
+            if($uresult && empty($sPassword))
             {
-                $addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": {".$clang->gT("Unchanged")."}<br /><br />\n";
+                $addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": (".$clang->gT("Unchanged").")<br /><br />\n";
                 $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
-            } elseif($uresult && !empty($pass))
+            } elseif($uresult && !empty($sPassword))
             {
-                $addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": $pass<br /><br />\n";
+                $addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": {$sPassword}<br /><br />\n";
                 $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
             }
             else

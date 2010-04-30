@@ -22,8 +22,8 @@ CREATE TABLE prefix_answers (
     answer text NOT NULL,
     sortorder integer NOT NULL,
     assessment_value integer DEFAULT 0 NOT NULL,
-    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
-    scale_id smallint DEFAULT 0 NOT NULL,
+    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
+    scale_id smallint DEFAULT 0 NOT NULL
 );
 
 ALTER TABLE ONLY prefix_answers
@@ -73,7 +73,7 @@ CREATE TABLE prefix_defaultvalues (
       specialtype character varying(20) NOT NULL default '',
       defaultvalue text);
 
-ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)
+ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid);
 
 
 --
@@ -83,7 +83,7 @@ ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMAR
 --
 
 CREATE TABLE prefix_groups (
-    gid serial ,
+    gid serial,
     sid integer DEFAULT 0 NOT NULL,
     group_name character varying(100) DEFAULT ''::character varying NOT NULL,
     group_order integer DEFAULT 0 NOT NULL,
@@ -196,14 +196,13 @@ CREATE TABLE prefix_questions (
     question_order integer NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
     scale_id smallint DEFAULT 0 NOT NULL,
-    same_default smallint DEFAULT 0 NOT NULL,
+    same_default smallint DEFAULT 0 NOT NULL
 );
 
-
+ALTER TABLE ONLY prefix_questions
+    ADD CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language");
 
 --
--- TOC entry 1315 (class 1259 OID 16502)
--- Dependencies: 1694 1695 1696 4
 -- Name: prefix_saved_control; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -455,22 +454,6 @@ ALTER TABLE ONLY prefix_labelsets
 ALTER TABLE ONLY prefix_question_attributes
     ADD CONSTRAINT prefix_question_attributes_pkey PRIMARY KEY (qaid);
 
-
---
--- TOC entry 1747 (class 2606 OID 16491)
--- Dependencies: 1311 1311 1311
--- Name: prefix_questions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_questions
-    ADD CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language");
-
-
---
--- TOC entry 1751 (class 2606 OID 16512)
--- Dependencies: 1315 1315
--- Name: prefix_saved_control_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
 
 ALTER TABLE ONLY prefix_saved_control
     ADD CONSTRAINT prefix_saved_control_pkey PRIMARY KEY (scid);

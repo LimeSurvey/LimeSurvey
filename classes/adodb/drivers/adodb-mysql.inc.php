@@ -162,7 +162,7 @@ if (! defined("_ADODB_MYSQL_LAYER")) {
                 $rs = $this->SelectLimit($sql,1,-1,$inputarr);
                 if ($rs) {
                     $rs->Close();
-                    if ($rs->EOF) return false;
+                    if ($rs->EOF) return null;
                     return reset($rs->fields);
                 }
             } else {

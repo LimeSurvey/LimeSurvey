@@ -178,7 +178,7 @@ function globalsettingsdisplay()
             $editsurvey .= "\t\t</select></li>";
 
             $thisdefaulttemplate=getGlobalSetting('defaulttemplate');
-            $templatenames=gettemplatelist();
+            $templatenames=array_keys(gettemplatelist());
             $editsurvey .= ""
             . "\t<li><label for='defaulttemplate'>".$clang->gT("Default template:")."</label>\n"
             . "\t\t\t<select name='defaulttemplate' id='defaulttemplate'>\n";
@@ -392,9 +392,9 @@ function getGlobalSetting($settingname)
     global $connect, $$settingname;
     $registry = SettingsStorage::getInstance();
     if (!$registry->isRegistered($settingname)) {
-        $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='$settingname'";
+        $usquery = "SELECT stg_value FfROM ".db_table_name("settings_global")." where stg_name='$settingname'";
         $dbvalue=$connect->GetOne($usquery);
-        if ($dbvalue!==false)
+        if (is_null($dbvalue))
         {
             $registry->set($settingname,$dbvalue);
         } elseif (isset($$settingname)) {

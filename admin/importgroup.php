@@ -910,7 +910,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
 
     $tablename=$dbprefix.'groups';
     $newgrouporder=$connect->GetOne("SELECT MAX(group_order) AS maxqo FROM ".db_table_name('group')." WHERE sid=$newsid")+1;
-    if ($newgrouporder===false) 
+    if (is_null($newgrouporder)) 
     {
         $newgrouporder=0;
     }
@@ -961,7 +961,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     $tablename=$dbprefix.'questions';
     $results['questions']=0;
     $newquestionorder=$connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
-    if ($newquestionorder===false) 
+    if (is_null($newquestionorder)) 
     {
         $newquestionorder=0;
     }

@@ -144,8 +144,6 @@ CREATE TABLE `prefix_questions` (
   `help` text,
   `other` char(1) NOT NULL default 'N',
   `mandatory` char(1) default NULL,
-  `lid` int(11) NOT NULL default '0',
-  `lid1` int(11) NOT NULL default '0',
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   `scale_id` tinyint NOT NULL default '0',

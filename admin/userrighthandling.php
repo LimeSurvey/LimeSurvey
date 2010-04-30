@@ -224,12 +224,12 @@ if ($action == "modifyuser")
             . "<td align='center'>\n<input type='text' size=30 name='full_name' value=\"{$mrw['full_name']}\" />\n"
             . "<input type='hidden' name='user' value=\"{$mrw['users_name']}\" />\n"
             . "<input type='hidden' name='uid' value=\"{$mrw['uid']}\" /></td>\n";
-            $usersummary .= "<td align='center'>\n<input type='password' name='pass' value=\"\" /></td>\n";
+            $usersummary .= "<td align='center'>\n<input type='password' name='pass' value=\"%%unchanged%%\" /></td>\n";
         }
-        $usersummary .= "</tr>\n<tr><td colspan='4' align='center'>\n"
-        . "<input type='submit' value='".$clang->gT("Update")."' />\n"
-        . "<input type='hidden' name='action' value='moduser' /></td></tr></tbody>\n"
-        . "</table></form>\n";
+        $usersummary .= "</tr></tbody></table><p>\n"
+        . "<input type='submit' value='".$clang->gT("Save")."' />\n"
+        . "<input type='hidden' name='action' value='moduser' />\n"
+        . "</form>\n";
     }
     else
     {

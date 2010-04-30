@@ -1307,7 +1307,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
 
     $tablename=$dbprefix.'groups';
     $newgrouporder=$connect->GetOne("SELECT MAX(group_order) AS maxqo FROM ".db_table_name('group')." WHERE sid=$newsid")+1;
-    if ($newgrouporder===false) 
+    if (is_null($newgrouporder))
     {
         $newgrouporder=0;
     }
@@ -1359,7 +1359,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
     {
         $tablename=$dbprefix.'questions';
         $newquestionorder=$connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
-        if ($newquestionorder===false) 
+        if (is_null($newquestionorder))
         {
             $newquestionorder=0;
         }
@@ -1671,7 +1671,7 @@ function GetNewSurveyID($oldsid)
 {
     global $connect, $dbprefix;
     $isresult = $connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$oldsid");
-    if ($isresult!==false)
+    if (!is_null($isresult))
     {
         // Get new random ids until one is found that is not used
         do
@@ -1679,7 +1679,7 @@ function GetNewSurveyID($oldsid)
             $newsid = getRandomID();
             $isresult = $connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid");
         }
-        while (isset($isresult));
+        while (!is_null($isresult));
         return $newsid;
     }
     else

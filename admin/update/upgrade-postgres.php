@@ -125,20 +125,20 @@ function db_upgrade($oldversion) {
     }
     if ($oldversion < 136)
     {
-        modify_database("", "ALTER TABLE prefix_quota ADD autoload_url integer NOT NULL DEFAULT 0"); echo $modifyoutput; flush();
-        modify_database("", "CREATE TABLE prefix_quota_languagesettings (
-						   quotals_id serial NOT NULL,
-  						   quotals_quota_id integer NOT NULL DEFAULT 0,
-						   quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
-						   quotals_name character varying(200),
-  						   quotals_message text NOT NULL,
-  						   quotals_url character varying(255),
-  						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
-  	   					    ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
-        modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_quota ADD autoload_url integer NOT NULL DEFAULT 0"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE prefix_quota_languagesettings (
+                            quotals_id serial NOT NULL,
+                            quotals_quota_id integer NOT NULL DEFAULT 0,
+                            quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
+                            quotals_name character varying(200),
+                            quotals_message text NOT NULL,
+                            quotals_url character varying(255),
+                            quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE ONLY prefix_quota_languagesettings
+  	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
+        modify_database("","update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 
     }
 
@@ -225,7 +225,7 @@ function db_upgrade($oldversion) {
         modify_database("", "create INDEX sess_expiry on prefix_sessions( expiry );"); echo $modifyoutput; flush();
         modify_database("", "create INDEX sess_expireref on prefix_sessions ( expireref );"); echo $modifyoutput; flush();
                                   
-     //   modify_database("", "UPDATE prefix_settings_global SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
@@ -327,7 +327,7 @@ function upgrade_tables143()
 
     // Convert answers to subquestions
     
-    $answerquery = "select a.*, q.sid, q.gid, q.type from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
+    $answerquery = "select a.*, q.sid, q.gid, q.type from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and a.language=q.language and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}
     else
@@ -365,7 +365,7 @@ function upgrade_tables143()
             }
         }
     }
-    modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
+    modify_database("","delete from {$dbprefix}answers using {$dbprefix}questions where {$dbprefix}answers.qid={$dbprefix}questions.qid and {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
 
     // Convert labels to answers
     $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";

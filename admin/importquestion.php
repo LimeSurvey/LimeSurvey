@@ -417,7 +417,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
         //Assuming we will only import one question at a time we will now find out the maximum question order in this group
         //and save it for later
         $newquestionorder = $connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid");
-        if ($newquestionorder===false)
+        if (is_null($newquestionorder))
         {
             $newquestionorder=0;
         }
@@ -739,7 +739,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     // then for subquestions (because we need to determine the new qids for the main questions first)
     $tablename=$dbprefix.'questions';
     $newquestionorder=$connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
-    if ($newquestionorder===false) 
+    if (is_null($newquestionorder))
     {
         $newquestionorder=0;
     }

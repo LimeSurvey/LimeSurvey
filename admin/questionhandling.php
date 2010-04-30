@@ -159,7 +159,7 @@ if ($action == "editdefaultvalues")
                 
                 $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}' id='defaultanswerscale_{$scale_id}_{$language}'>";
                 $editdefvalues.="<option value='' ";
-                if ($defaultvalue===false) {
+                if (is_null($defaultvalue)) {
                  $editdefvalues.= " selected='selected' ";
                 }
                 $editdefvalues.=">".$clang->gT('<No default value>')."</option>";
@@ -178,7 +178,7 @@ if ($action == "editdefaultvalues")
                 if ($questionrow['other']=='Y')
                 {
                     $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid and specialtype='other' AND scale_id={$scale_id} AND language='{$language}'");
-                    if ($defaultvalue===false) $defaultvalue='';
+                    if (is_null($defaultvalue)) $defaultvalue='';
                     $editdefvalues.="<li><label for='other_{$scale_id}_{$language}'>".$clang->gT("Default value for option 'Other':")."<label><input type='text' name='other_{$scale_id}_{$language}' value='$defaultvalue' id='other_{$scale_id}_{$language}'></li>";
                 }
             }

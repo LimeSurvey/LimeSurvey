@@ -3365,7 +3365,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
     if (!isset($cache[$surveyid])) {
 	    $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	    $surveylanguage = $connect->GetOne($query); //Checked
-	    if ($surveylanguage==false)
+	    if (!is_null($surveylanguage))
 	    {
 	        $surveylanguage='en';	    
 	    }
@@ -3385,7 +3385,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
     if (!isset($cache[$surveyid])) {
         $query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	    $additional_languages = $connect->GetOne($query);
-	    if ($additional_languages==false)
+        if (is_null($additional_languages))
 	    {
 	        $additional_languages = array();
 	    }
