@@ -200,7 +200,7 @@ if ($action == "listsurveys")
                             }
                             
 		    	//get the number of COMLETED tokens for each survey
-		    	$tokencompletedquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid'])." WHERE completed='N'";
+		    	$tokencompletedquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid'])." WHERE completed!='N'";
                             $tokencompletedresult = db_execute_num($tokencompletedquery); //Checked
                             while ($tokencompletedrow = $tokencompletedresult->FetchRow())
                             {
