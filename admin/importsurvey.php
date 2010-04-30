@@ -96,7 +96,7 @@ if ((isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
     }
     if (isset($copyfunction))
     {
-        $importsurvey .= "<strong>".$clang->gT("Copy of Survey is completed.")."</strong><br />\n"
+        $importsurvey .= "<strong>".$clang->gT("Copy of survey is completed.")."</strong><br />\n"
         . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";        
     } else
     {
