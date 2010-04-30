@@ -771,7 +771,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         || $action=="importsurveyresources"
         || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";}
-        $additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
         $surveysummary .= "<table $showstyle id='surveydetails'><tr><td align='right' valign='top' width='15%'>"
         . "<strong>".$clang->gT("Title").":</strong></td>\n"
         . "<td align='left' class='settingentryhighlight'><strong>{$surveyinfo['surveyls_title']} "
@@ -818,16 +818,16 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if ( $modrewrite ) {
             $tmp_url = $GLOBALS['publicurl'] . '/' . $surveyinfo['sid'];
             $surveysummary .= "<td align='left'> <a href='$tmp_url/lang-".$surveyinfo['language']."' target='_blank'>$tmp_url/lang-".$surveyinfo['language']."</a>";
-            foreach ($additionnalLanguagesArray as $langname)
+            foreach ($aAdditionalLanguages as $langname)
             {
-                $surveysummary .= "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
+                $surveysummary .= "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
             }
         } else {
             $tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $surveyinfo['sid'];
             $surveysummary .= "<td align='left'> <a href='$tmp_url&amp;lang=".$surveyinfo['language']."' target='_blank'>$tmp_url&amp;lang=".$surveyinfo['language']."</a>";
-            foreach ($additionnalLanguagesArray as $langname)
+            foreach ($aAdditionalLanguages as $langname)
             {
-                $surveysummary .= "&nbsp;<a href='$tmp_url&amp;lang=$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
+                $surveysummary .= "&nbsp;<a href='$tmp_url&amp;lang=$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
             }
         }
 
@@ -883,13 +883,13 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         // get the rowspan of the Additionnal languages row
         // is at least 1 even if no additionnal language is present
-        $additionnalLanguagesCount = count($additionnalLanguagesArray);
+        $additionnalLanguagesCount = count($aAdditionalLanguages);
         if ($additionnalLanguagesCount == 0) $additionnalLanguagesCount = 1;
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Additional Languages").":</strong></td>\n";
 
         $first=true;
-        foreach ($additionnalLanguagesArray as $langname)
+        foreach ($aAdditionalLanguages as $langname)
         {
             if ($langname)
             {

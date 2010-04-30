@@ -3385,7 +3385,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
     if (!isset($cache[$surveyid])) {
         $query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	    $additional_languages = $connect->GetOne($query);
-        if (is_null($additional_languages))
+        if (trim($additional_languages)=='')
 	    {
 	        $additional_languages = array();
 	    }
