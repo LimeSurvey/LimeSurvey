@@ -1002,7 +1002,7 @@ function CSVImportSurvey($sFullFilepath)
     $gres = db_execute_assoc($sQuery);
     while ($aRow = $gres->FetchRow())
     {
-        $iSlots=$connect->GetOne("select count(code) from {$dbprefix}answers where qid={$aRow['qid']} where language='{$sBaseLanguage}');
+        $iSlots=$connect->GetOne("select count(code) from {$dbprefix}answers where qid={$aRow['qid']} where language='{$sBaseLanguage}'");
         setQuestionAttribute($aRow['qid'],'ranking_slots',$iSlots);
     }
     
