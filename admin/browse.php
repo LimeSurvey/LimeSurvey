@@ -96,6 +96,7 @@ if ($actcount > 0)
     while ($actrow = $actresult->FetchRow())
     {
         $surveytable = db_table_name("survey_".$actrow['sid']);
+        $tokentable = db_table_name("tokens_".$actrow['sid']);
         /*
          * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
          * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
@@ -169,8 +170,6 @@ if ($subaction == "id") // Looking at a SINGLE entry
             $fnames[] = array("completed", $clang->gT("Completed"), "0");
             if ($surveyinfo['private'] == "N") //add token to top of list if survey is not private
             {
-                $tokentable = db_table_name('tokens_'.$surveyid);
-                //$fnames[] = array("token", $clang->gT("Token ID"));
                 $fnames[] = array("firstname", $clang->gT("First Name"));
                 $fnames[] = array("lastname", $clang->gT("Last Name"));
                 $fnames[] = array("email", $clang->gT("Email"));
@@ -182,7 +181,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
     $idquery = "SELECT * FROM $surveytable ";
-    if ($surveyinfo['private'] == "N")
+    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
         $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
     if (incompleteAnsFilterstate() == "inc")
         $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
@@ -331,7 +330,6 @@ elseif ($subaction == "all")
             //add token to top of list if survey is not private
             if ($surveyinfo['private'] == "N")
             {
-                $tokentable = db_table_name('tokens_'.$surveyid);
                 $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
                 $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
                 $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
@@ -389,7 +387,7 @@ elseif ($subaction == "all")
     if (!isset($start) || $start =='') {$start = 0;}
 
     //LETS COUNT THE DATA
-    if ($surveyinfo['private'] == "N")
+    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
     {
         $dtquery = "SELECT count(*) FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
     } else
@@ -412,9 +410,9 @@ elseif ($subaction == "all")
     //NOW LETS SHOW THE DATA
     if (isset($_POST['sql']))
     {
-        if ($_POST['sql'] == "NULL")
+        if ($_POST['sql'] == "NULL" )
         {
-            if ($surveyinfo['private'] == "N")
+            if ($surveyinfo['private'] == "N" && db_table_exists($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
@@ -430,7 +428,7 @@ elseif ($subaction == "all")
         }
         else
         {
-            if ($surveytable['private'] == "N")
+            if ($surveytable['private'] == "N" && db_table_exists($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
@@ -459,7 +457,7 @@ elseif ($subaction == "all")
     }
     else
     {
-        if ($surveyinfo['private'] == "N")
+        if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
             $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
         else
             $dtquery = "SELECT * FROM $surveytable ";
