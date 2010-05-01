@@ -882,7 +882,7 @@ if ($action == "ajaxquestionattributes")
             $ajaxoutput .= "<li>"
             ."<label for='{$qa['name']}' title='".$qa['help']."'>".$qa['caption']."</label>";
 
-            if (isset($qa['readonly']) && $qa['readonly']==true && $thissurvey['active']==true)
+            if (isset($qa['readonly']) && $qa['readonly']==true && $thissurvey['active']=='Y')
             {
                 $ajaxoutput .= "$value";
             }

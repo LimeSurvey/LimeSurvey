@@ -3779,7 +3779,7 @@ function do_multiplenumeric($ia)
             }
             else
             {
-                $answer_and_slider_array=explode($slider_separator,$ansrow['answer']);
+                $answer_and_slider_array=explode($slider_separator,$ansrow['question']);
                 if (isset($answer_and_slider_array[0]))
                 $theanswer=$answer_and_slider_array[0];
                 else

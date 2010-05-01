@@ -761,4 +761,22 @@ function gettemplatelist()
 }
 
 
+/**
+* This function set a question attribute to a certain value
+* 
+* @param mixed $qid
+* @param mixed $sAttributeName
+* @param mixed $sAttributeValue
+*/
+function setQuestionAttribute($qid,$sAttributeName,$sAttributeValue)
+{
+    global $dbprefix,$connect;
+    $tablename=$dbprefix.'question_attributes';
+    $aInsertArray=array('qid'=>$qid,
+                        'attribute'=>$sAttributeName,
+                        'value'=>$sAttributeValue);
+    $sQuery=$connect->GetInsertSQL($tablename,$aInsertArray);
+    $connect->Execute('delete from '.db_table_name('question_attributes')." where qid={$qid} and attribute=".db_quoteall($sAttributeName));
+    $connect->Execute($sQuery);
+}
 // Closing PHP tag intentionally left out - yes, it is okay       

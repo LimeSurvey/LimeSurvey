@@ -873,26 +873,26 @@ function CSVImportSurvey($sFullFilepath)
                                $data='';
                             }
                             
-                            $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname parent_qid,title,question,question_order,language,scale_id,type)
-                                        VALUES ($data{$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",0,'{$questionrowdata['type']}')"; 
+                            $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname parent_qid,title,question,question_order,language,scale_id,type, sid, gid)
+                                        VALUES ($data{$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})"; 
                             $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                             if ($fieldname=='')
                             {
                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                             }
                         }
-                        if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1)
-                        {
-                            $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldlid2]} and language='{$questionrowdata['language']}'";
-                            $oldlabelsresult=db_execute_assoc($query);
-                            while($labelrow=$oldlabelsresult->FetchRow())
-                            {
-                                $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id)
-                                            VALUES ({$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",1)"; 
-                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer (lid2)<br />\n$qinsert<br />\n".$connect->ErrorMsg());
-                            }
-                        }
-                    }                           
+                    }
+                }
+                if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1)
+                {
+                    $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldlid2]} and language='{$questionrowdata['language']}'";
+                    $oldlabelsresult=db_execute_assoc($query);
+                    while($labelrow=$oldlabelsresult->FetchRow())
+                    {
+                        $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id)
+                                    VALUES ({$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",1)"; 
+                        $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer (lid2)<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                    }
                 }
             }
         }
@@ -997,6 +997,16 @@ function CSVImportSurvey($sFullFilepath)
         }
     }
 
+    // Fix up the slots for ranking questions
+    $sQuery = "SELECT qid FROM {$dbprefix}questions where sid=$newsid and type='R' and parent_qid=0"; //Get last question added (finds new qid)
+    $gres = db_execute_assoc($sQuery);
+    while ($aRow = $gres->FetchRow())
+    {
+        $iSlots=$connect->GetOne("select count(code) from {$dbprefix}answers where qid={$aRow['qid']} where language='{$sBaseLanguage}');
+        setQuestionAttribute($aRow['qid'],'ranking_slots',$iSlots);
+    }
+    
+    
     //... and for the questions inside the groups
     // get all group ids and fix questions inside each group
     $gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)
