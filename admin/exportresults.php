@@ -48,106 +48,11 @@ $thissurvey=getSurveyInfo($surveyid);
 
 if (!$exportstyle)
 {
-    // First add the standard fields
-    $excesscols[]="id";
-    $excesscols[]='completed';
-    if ($thissurvey["datestamp"]=='Y') {$excesscols[]='datestamp';}
-    if ($thissurvey["datestamp"]=='Y') {$excesscols[]='startdate';}
-    if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
-    if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}
 
     //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-    $query=" SELECT other, q.type, q.gid, q.qid FROM {$dbprefix}questions as q, {$dbprefix}groups as g "
-    ." where q.gid=g.gid and g.sid=$surveyid and g.language='$surveybaselang' and q.language='$surveybaselang'"
-    ." order by group_order, question_order";
-
-    $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
-    while ($rows = $result->FetchRow())
-    {
-        if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type'] == "K") ||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
-        {
-            $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-            $detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
-            while ($detailrows = $detailresult->FetchRow())
-            {
-                $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code'];
-                if ($rows['type']=='P')
-                {
-                    $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."comment";
-                }
-            }
-        }
-        elseif ($rows['type']==":" || $rows['type'] == ";")
-        {
-            $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-            $detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
-            while ($detailrows = $detailresult->FetchRow())
-            {
-                $detailquery2="SELECT *
-				               FROM {$dbprefix}labels 
-							   WHERE lid=".$rows['lid']."
-							   AND language='$surveybaselang'
-							   ORDER BY sortorder, title";
-                $detailresult2=db_execute_assoc($detailquery2) or die("Couldn't find labels<br />$detailquery2<br />".htmlspecialchars($connect->ErrorMsg()));
-                while ($dr2 = $detailresult2->FetchRow())
-                {
-                    $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."_".$dr2['code'];
-                }
-            }
-        }
-        elseif ($rows['type']=='R')
-        {
-            $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-            $detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
-            $i=1;
-            while ($detailrows = $detailresult->FetchRow())
-            {
-                $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$i;
-                $i++;
-            }
-        }
-        elseif ($rows['type']=='1')
-        {
-            // $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-            $detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid'].") and a.language='$surveybaselang' group by a.code, l.lid order by a.code ";
-            $detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
-            $i=0;
-            while ($detailrows = $detailresult->FetchRow())
-            {
-                // $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$rows['code'].$detailrows['code']."#".$i;
-                $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."#0";
-                $i++;
-            }
-            // second scale
-            $detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid1'].") and a.language='$surveybaselang' group by a.code, l.lid  order by a.code ";
-            $detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
-            $i=0;
-            while ($detailrows = $detailresult->FetchRow())
-            {
-                // $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$rows['code'].$detailrows['code']."#".$i;
-                $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."#1";
-                $i++;
-            }
-
-        }
-        else
-        {
-            $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'];
-        }
-        if ($rows['other']=="Y" && ($rows['type']=='M' || $rows['type']=='!'|| $rows['type']=='L' || $rows['type']=='P'))
-        {
-            $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."other";
-        }
-        if ($rows['other']=="Y" && ($rows['type']=='P' ))
-        {
-            $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."othercomment";
-        }
-        if ($rows['type']=='O' )
-        {
-            $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."comment";
-        }
-
-    }
+    $excesscols=createFieldMap($surveyid);
+    unset($excesscols['submitdate']);
+    $excesscols=array_keys($excesscols);
 
 
 
@@ -452,14 +357,12 @@ foreach ($fieldmap as $fieldentry)
     $outmap[$fieldentry['fieldname']]['gid']= $fieldentry['gid'];
     $outmap[$fieldentry['fieldname']]['qid']= $fieldentry['qid'];
     $outmap[$fieldentry['fieldname']]['aid']= $fieldentry['aid'];
-    if (isset($fieldentry['lid1'])) {$outmap[$fieldentry['fieldname']]['lid1']= $fieldentry['lid1'];}
     if ($fieldentry['qid']!='')
     {
-        $qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid={$fieldentry['qid']} and language='$surveybaselang'";
+        $qq = "SELECT other FROM {$dbprefix}questions WHERE qid={$fieldentry['qid']} and language='$surveybaselang'";
         $qr = db_execute_assoc($qq) or safe_die("Error selecting type and lid from questions table.<br />".$qq."<br />".$connect->ErrorMsg());
         while ($qrow = $qr->FetchRow())
         {
-            $outmap[$fieldentry['fieldname']]['lid']=$qrow['lid'];
             $outmap[$fieldentry['fieldname']]['other']=$qrow['other'];
         }
     }
@@ -599,9 +502,19 @@ for ($i=0; $i<$fieldcount; $i++)
         if ($type == "csv") {$firstline .= "\"".$elang->gT("Referring URL")."\"$separator";}
         else {$firstline .= $elang->gT("Referring URL")."$separator";}
     }
+    elseif ($fieldinfo == "lastpage")
+    {
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Last page seen")."\"$separator";}
+        else {$firstline .= $elang->gT("Last page seen")."$separator";}
+    }
+    elseif ($fieldinfo == "startlanguage")
+    {
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Start language")."\"$separator";}
+        else {$firstline .= $elang->gT("Start language")."$separator";}
+    }
     else
     {
-        //Data fields!
+        //Data field heading!
         //$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
         $fielddata=$outmap[$fieldinfo];
 
@@ -656,7 +569,7 @@ for ($i=0; $i<$fieldcount; $i++)
                         $fquest .= " - Comment";
                     }
                     break;
-                case "M": //multioption
+                case "M": //Multiple option
                     if ($faid == "other")
                     {
                         $fquest .= " [".$elang->gT("Other")."]";
@@ -677,7 +590,7 @@ for ($i=0; $i<$fieldcount; $i++)
                         }
                     }
                     break;
-                case "P": //multioption with comment
+                case "P": //Multiple option with comment
                     if (mb_substr($faid, -7, 7) == "comment")
                     {
                         $faid=mb_substr($faid, 0, -7);
@@ -718,11 +631,11 @@ for ($i=0; $i<$fieldcount; $i++)
                     }
                     else
                     {
-                        $lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
+                        $lq = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=$fqid AND title= '$faid' AND language = '$explang'";
                         $lr = db_execute_assoc($lq);
                         while ($lrow=$lr->FetchRow())
                         {
-                            $fquest .= " [".strip_tags_full($lrow['answer'])."]";
+                            $fquest .= " [".strip_tags_full($lrow['question'])."]";
                         }
                     }
                     break;
@@ -751,24 +664,13 @@ for ($i=0; $i<$fieldcount; $i++)
                     }
                     break;
                 case "1": // multi scale Headline
-                    $flid=$fielddata['lid'];
-                    $flid1=$fielddata['lid1'];
-                    if (mb_substr($fieldinfo,-1) == '0')
-                    { //TIBO
-                        $strlabel = "1";
-                        $lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  AND t.lid=$flid";
-                    }
-                    else
-                    {
-                        $strlabel = "2";
-                        $lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  AND t.lid=$flid1";
-                    }
+                    $iAnswerScale = substr($fieldinfo,-1)+1;
+                    $lq = "select sq.question from {$dbprefix}questions as sq where sq.title='$faid' and parent_qid=$fqid AND sq.language='$surveybaselang' and sq.scale_id=0";
                     $lr = db_execute_assoc($lq);
                     $j=0;
                     while ($lrow=$lr->FetchRow())
                     {
-                        $strlabel = $strlabel."-".$lrow['labeltitle'];
-                        $fquest .= " [".FlattenText($lrow['answer'],true)."][".FlattenText($strlabel,true)."]";
+                        $fquest .= " [".FlattenText($lrow['question'],true)."][Scale {$iAnswerScale}]";
                         $j++;
                     }
                     break;
@@ -1010,10 +912,7 @@ elseif ($answers == "long")        //chose complete answers
                 $fsid=$fielddata['sid'];
                 $fgid=$fielddata['gid'];
                 $faid=$fielddata['aid'];
-                $flid=$fielddata['lid'];
-                if (isset($fielddata['lid1'])) {$flid1=$fielddata['lid1'];}
 
-                $fother=$fielddata['other'];
                 if ($type == "doc" || $type == "pdf")
                 {
                     $ftitle=$flarray[$i];
@@ -1101,12 +1000,12 @@ elseif ($answers == "long")        //chose complete answers
                     if (mb_substr($fieldinfo,-1) == 0)
                     {
                         //$lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
-                        $lq = "select l.title as ltitle from {$dbprefix}labels as l where  l.lid =$flid AND l.language='$explang'  AND l.code = ?";
+                        $lq = "select answer as ltitle from {$dbprefix}answers where qid=$fqid AND language='$explang' and scale_id=0 AND code = ?";
                     }
                     else
                     {
                         //$lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid1 AND a.language='$explang' AND l.code = ? group by l.lid";
-                        $lq = "select l.title as ltitle from {$dbprefix}labels as l where  l.lid =$flid1 AND l.language='$explang'  AND l.code = ?";
+                        $lq = "select answer as ltitle from {$dbprefix}answers where qid=$fqid AND language='$explang' and scale_id=1 AND code = ?";
                     }
                     $lr = db_execute_assoc($lq, array($drow[$i])) or safe_die($lq."<br />ERROR:<br />".$connect->ErrorMsg());
                     while ($lrow = $lr->FetchRow())
