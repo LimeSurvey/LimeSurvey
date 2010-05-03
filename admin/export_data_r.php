@@ -97,7 +97,7 @@ if  (!isset($subaction))
 
 
 if  ($subaction=='dldata') {
-    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.dat");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: public");
