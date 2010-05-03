@@ -571,7 +571,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<img id='surveyhandleright' class='btnsurveybar' alt=\"".$clang->gT("Standard survey options")."\"src='$imagefiles/handle-right.png' />\n"
         . "<img id='surveyhandleleft' class='btnsurveybar' alt=\"".$clang->gT("Advanced survey options")."\"src='$imagefiles/handle-left.png' />\n"
         ."</div>"
-        . "<div class='menubar-left' id='advancedsurveybar' style='display:none'>\n";
+        . "<div class='menubar-left' id='advancedsurveybar'>\n";
         if ($activated == "N" )
         {
             $surveysummary .= "<img src='$imagefiles/inactive.png' "
