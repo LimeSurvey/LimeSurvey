@@ -682,6 +682,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
         header("Content-type: text/comma-separated-values; charset=UTF-8");
+        header("Pragma: public");
         echo $clang->gT("Quota Name").",".$clang->gT("Limit").",".$clang->gT("Completed").",".$clang->gT("Remaining")."\r\n";
         foreach($csvoutput as $line)
         {
