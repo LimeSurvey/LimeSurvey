@@ -1841,7 +1841,7 @@ function do_list_dropdown($ia)
 
     if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && $shownoanswer == 1)
     {
-        $answer .= '					<option value=" ">'.$clang->gT('No answer')."</option>\n";
+        $answer .= '<option value="">'.$clang->gT('No answer')."</option>\n";
     }
     $answer .= '				</select>
 				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
@@ -2350,7 +2350,7 @@ function do_listwithcomment($ia)
             {
                 $check_ans = '';
             }
-            $answer .= '		<option value=" "'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
+            $answer .= '<option value=""'.$check_ans.'>'.$clang->gT('No answer')."</option>\n"; 
         }
         $answer .= '	</select>
 </p>
