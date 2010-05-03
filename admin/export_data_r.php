@@ -97,12 +97,10 @@ if  (!isset($subaction))
 
 
 if  ($subaction=='dldata') {
-    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.csv");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.dat");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Pragma: no-cache');
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: public");
 
     $na="";	//change to empty string instead of two double quotes to fix warnings on NA
     spss_export_data($na);
@@ -113,11 +111,9 @@ if  ($subaction=='dldata') {
 
 if  ($subaction=='dlstructure') {
     header("Content-Disposition: attachment; filename=Surveydata_syntax.R");
-    header("Content-Type: application/download; charset=utf-8");
-    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Pragma: no-cache');
+    header("Content-type: application/download; charset=UTF-8");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: public");
 
     // Build array that has to be returned
     $fields = spss_fieldmap();

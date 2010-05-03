@@ -333,7 +333,8 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
         $separator=",";
         break;
 }
-Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Pragma: public");
 
 // Export Language is set by default to surveybaselang
 // * the explang language code is used in SQL queries
