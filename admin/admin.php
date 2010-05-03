@@ -512,7 +512,7 @@ if(isset($_SESSION['loginID']))
     !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
     !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
     !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) &&
-    (substr($action,0,4)!= 'ajax') && $action!='update')
+    (substr($action,0,4)!= 'ajax') && $action!='update' && $action!='showphpinfo')
     {
         $adminoutput.= showadminmenu();
     }
