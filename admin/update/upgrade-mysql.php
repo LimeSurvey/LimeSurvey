@@ -360,7 +360,7 @@ function db_upgrade($oldversion) {
                               `language` varchar(20) NOT NULL,
                               `specialtype` varchar(20) NOT NULL default '',
                               `defaultvalue` text,
-                              PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, sqid` )
+                              PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, `sqid` )
                             ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
 
         // -Move all 'answers' that are subquestions to the questions table
@@ -684,7 +684,7 @@ function upgrade_tables143()
                 $insertarray['parent_qid']=$row['qid'];
                 $insertarray['title']=$lrow['code'];
                 $insertarray['question']=$lrow['title'];
-                $insertarray['question_order']=$row['sortorder'];
+                $insertarray['question_order']=$lrow['sortorder'];
                 $insertarray['language']=$lrow['language'];
                 $insertarray['scale_id']=1;
                 $tablename="{$dbprefix}questions";

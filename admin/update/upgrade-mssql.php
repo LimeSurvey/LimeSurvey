@@ -663,7 +663,7 @@ function upgrade_tables143()
                 $insertarray['parent_qid']=$row['qid'];
                 $insertarray['title']=$lrow['code'];
                 $insertarray['question']=$lrow['title'];
-                $insertarray['question_order']=$row['sortorder'];
+                $insertarray['question_order']=$lrow['sortorder'];
                 $insertarray['language']=$lrow['language'];
                 $insertarray['scale_id']=1;
                 $tablename="{$dbprefix}questions";
