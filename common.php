@@ -3365,7 +3365,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
     if (!isset($cache[$surveyid])) {
 	    $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	    $surveylanguage = $connect->GetOne($query); //Checked
-	    if (!is_null($surveylanguage))
+	    if (is_null($surveylanguage))
 	    {
 	        $surveylanguage='en';	    
 	    }
@@ -7615,5 +7615,17 @@ function sGetTemplateURL($sTemplateName)
     }
 }
 
-
+/**
+ * Return the goodchars to be used when filtering input for numbers.
+ * 
+ * @param $lang 	string	language used, for localisation
+ * @param $integer	bool	use only integer
+ * @param $negative	bool	allow negative values
+ */
+function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
+    $goodchars = "0123456789";
+    if ($integer === false) $goodchars .= ".";    //Todo, add localisation
+    if ($negative === true) $goodchars .= "-";    //Todo, check databases
+    return $goodchars;
+}
 // Closing PHP tag intentionally left out - yes, it is okay       
