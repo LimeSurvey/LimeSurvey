@@ -1890,34 +1890,47 @@ function sendsubmitnotification($sendnotification)
 
     $results="";
     if ($sendnotification > 1 || $emailresponseto)
-    { //Send results as well. Currently just bare-bones - will be extended in later release
+    { 
+        // Send results
         $results = "----------------------------\n";
         $prevquestion='';
+        $fieldmap=createFieldMap($surveyid,'full');
         foreach ($_SESSION['insertarray'] as $value)
         {
-            $qaarray=returnquestiontitlefromfieldcode($value);
-            if ($prevquestion!=$qaarray[0])
+            $squestion = strip_tags($fieldmap[$value]['question']);
+            if (isset($fieldmap[$value]['subquestion2']))
             {
-                $prevquestion=$qaarray[0];
-                $questiontitle=FlattenText(html_entity_decode($prevquestion, ENT_QUOTES, $emailcharset));
+                $ssubquestion = "[".strip_tags($fieldmap[$value]['subquestion1'])."] [".strip_tags($fieldmap[$value]['subquestion2'])."]";     
+            } elseif (isset($fieldmap[$value]['subquestion']))
+            {
+                $ssubquestion = strip_tags($fieldmap[$value]['subquestion']);    
+            } else
+            {
+                // Nothing, there are no subquestions, just answers in db.
+            }
+
+            if ($prevquestion!=$squestion)
+            {
+                $prevquestion=$squestion;
+                $questiontitle=FlattenText(html_entity_decode($squestion, ENT_QUOTES, $emailcharset));
                 $results .= "\n$questiontitle: ";
-                if ($qaarray[1]!='')
+                if ($ssubquestion!='')
                 {
                     $results .= "\n";
                 }
             }
-            if ($qaarray[1]!='')
+            if ($ssubquestion!='')
             {
-                $answeroption=FlattenText(html_entity_decode($qaarray[1], ENT_QUOTES, $emailcharset));
+                $answeroption=FlattenText(html_entity_decode($ssubquestion, ENT_QUOTES, $emailcharset));
                 $results .= "[$answeroption]:   ";
             }
-            $details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
-            if ( $details['type'] == "T" or $details['type'] == "U")
+
+            if ( $fieldmap[$value]['type'] == "T" || $fieldmap[$value]['type'] == "U")
             {
                 $results .= "\r\n";
                 if (isset($_SESSION[$value]))
                 {
-                    foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line)
+                    foreach (explode("\n",$_SESSION[$value]) as $line)
                     {
                         $results .= "\t" . FlattenText(html_entity_decode($line, ENT_QUOTES, $emailcharset));
                         $results .= "\n";
@@ -1934,7 +1947,7 @@ function sendsubmitnotification($sendnotification)
     }
     $message .= $results;
     $message.= "LimeSurvey";
-
+            die(print_r($message));   
     if ($recips=explode(";", $thissurvey['adminemail']))
     {
         $from = $thissurvey['adminname'].' <'.$recips[0].'>';
