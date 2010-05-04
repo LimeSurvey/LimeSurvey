@@ -1947,7 +1947,7 @@ function sendsubmitnotification($sendnotification)
     }
     $message .= $results;
     $message.= "LimeSurvey";
-            die(print_r($message));   
+ 
     if ($recips=explode(";", $thissurvey['adminemail']))
     {
         $from = $thissurvey['adminname'].' <'.$recips[0].'>';
