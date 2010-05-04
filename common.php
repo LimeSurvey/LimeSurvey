@@ -4884,7 +4884,7 @@ function getArrayFiltersForQuestion($qid)
     $qid=sanitize_int($qid);
     $query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter' AND qid='".$qid."'";
     $result = db_execute_assoc($query);  //Checked
-    if ($result->RecordCount() == 1) // We Found a array_filter attribute
+    if ($result->RecordCount() == 1 && isset($_SESSION['fieldarray'])) // We Found a array_filter attribute - on question preview there is no $_SESSION['fieldarray']
     {
         $val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
         foreach ($_SESSION['fieldarray'] as $fields)

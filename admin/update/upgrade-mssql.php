@@ -654,9 +654,9 @@ function upgrade_tables143()
             while ( $lrow = $labelresult->FetchRow() )
             {
                 $insertarray=array();
-                if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code']]))
+                if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']))
                 {
-                    $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code']];
+                    $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1'];
                 }
                 $insertarray['sid']=$row['sid'];
                 $insertarray['gid']=$row['gid'];
@@ -671,7 +671,7 @@ function upgrade_tables143()
                 modify_database("",$query); echo $modifyoutput; flush();
                 if (isset($insertarray['qid']))
                 {
-                   $aQIDReplacements[$row['qid'].'_'.$lrow['code']]=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+                   $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=$connect->Insert_ID("{$dbprefix}questions","qid"); 
                 }                
             }
         }
