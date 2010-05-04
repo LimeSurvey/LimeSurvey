@@ -267,7 +267,7 @@ if(isset($_SESSION['loginID']))
         if(bHasRight($surveyid,'define_questions'))    {include('preview.php');}
         else { include('access_denied.php');}
     }
-    elseif ($action=='addgroup' || $action=='editgroup')
+    elseif ($action=='addgroup' || $action=='editgroup' || $action=='ordergroups')
     {
         if(bHasRight($surveyid,'define_questions'))    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include('questiongrouphandling.php');}
         else { include('access_denied.php');}
