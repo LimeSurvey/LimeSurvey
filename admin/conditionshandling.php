@@ -662,44 +662,54 @@ if ($questionscount > 0)
                 $maxvalue=1;
                 $stepvalue=1;
             }
-            //Get the AIDs
-            $fquery = "SELECT * "
-            ."FROM {$dbprefix}answers "
-            ."WHERE qid={$rows['qid']} "
-            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."AND scale_id=0 "
-            ."ORDER BY sortorder, code ";
+            // Get the Y-Axis
 
-            $fresult = db_execute_assoc($fquery);
-            while ($frow=$fresult->FetchRow())
+            $fquery = "SELECT sq.*, q.other"
+            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
+            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
+            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+            ." AND q.qid={$rows['qid']}
+               AND sq.scale_id=0
+               ORDER BY sq.question_order, sq.question";
+            
+            $y_axis_db = db_execute_assoc($fquery);
+            
+             // Get the X-Axis   
+             $aquery = "SELECT sq.*
+                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
+                         WHERE q.sid=$surveyid 
+                         AND sq.parent_qid=q.qid
+                         AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                         AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                         AND q.qid=".$rows['qid']."
+                         AND sq.scale_id=1
+                         ORDER BY sq.question_order, sq.question";
+              
+            $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+
+            while ($frow=$x_axis_db->FetchRow())
             {
-                $lids[$frow['code']]=$frow['answer'];
+                $x_axis[$frow['title']]=$frow['question'];
             }
-            //Now cycle through the answers
-            $aquery="SELECT * "
-            ."FROM {$dbprefix}questions "
-            ."WHERE parent_qid={$rows['qid']} "
-            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
-            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-
-            while ($arows = $aresult->FetchRow())
+            
+            while ($arows = $y_axis_db->FetchRow())
             {
-                foreach($lids as $key=>$val)
+                foreach($x_axis as $key=>$val)
                 {
                     $shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
                     $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
+
                     if ($rows['type'] == ":")
                     {
                         for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key, $ii, $ii);
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $ii, $ii);
                         }
                     }
                 }
             }
-            unset($lids);
+            unset($x_axis);
         } //if A,B,C,E,F,H
         elseif ($rows['type'] == "1") //Multi Scale
         {
