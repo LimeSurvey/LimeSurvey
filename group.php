@@ -52,12 +52,6 @@ $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalma
 //CHECK PREGS
 $notvalidated=checkpregs($move,$backok);
 
-//CHECK QUOTA
-if ($thissurvey['active'] == "Y")
-{
-    check_quota('enforce',$surveyid);
-}
-
 //SEE IF THIS GROUP SHOULD DISPLAY
 $show_empty_group = false;
 if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")

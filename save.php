@@ -111,9 +111,11 @@ else
     $bFinalizeThisAnswer = false;
 }
 
-//SAVE if on page with questions or on submit page
+// SAVE if on page with questions or on submit page
 if (isset($postedfieldnames))
 {
+    check_quota('enforce',$surveyid);   
+    
     if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
     {
         // SAVE DATA TO SURVEY_X RECORD

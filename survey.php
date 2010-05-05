@@ -36,12 +36,6 @@ $notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys
 //CHECK PREGS
 $notvalidated=checkpregs($move);
 
-//CHECK QUOTA
-if ($thissurvey['active'] == "Y")
-{
-    check_quota('enforce',$surveyid);
-}
-
 //SUBMIT
 if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
