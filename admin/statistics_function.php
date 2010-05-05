@@ -349,6 +349,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 {
                     $thismulti=implode(" OR ", $mselects);
                     $selects[]="($thismulti)";
+                    $mselects = "";
                 }
             }
 
@@ -632,7 +633,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
                  
                 //select details for this question
-                $nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' parent_qid=0 AND and qid='$qqid'";
+                $nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
                 $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
                  
                 //loop through question data
