@@ -1,0 +1,4 @@
+# Do not remove this file. With a correct apache configuration
+# this file should prevent snooping on your LimeSurvey version by
+# reading the release_notes.txt
+deny from all

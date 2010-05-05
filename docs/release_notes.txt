@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.87+!
+Welcome to LimeSurvey v1.90beta!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -56,7 +56,7 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 --------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -69,13 +69,90 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87+
    could suit your setup. If you need to change the default setting, copy the
    parameter lines to your config.php file and adjust their values accordingly.
 8. Copy your previously backuped 'upload' directory to the new 
-   limesurvey/upload directory. 
+   limesurvey/upload directory.
 9. Run the installer in /admin/install/index.php to update the database.
-10. Copy back all your saved templates. You will have to adjust your templates since the CSS has been changed since version 1.72x. 
+10. Copy back all your customized templates to /upload/templates. You might have to adjust your templates since the CSS has been changed since version 1.72x. 
     It is easier to try adapting one of the default templates to your template again instead of fixing your old template! 
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.87+ (build 8518) to 1.90beta (build 8691) Legend: # updated feature, - bug fix 
++New feature: Show number of tokens and response rate for surveys using tokens. (maziminke)
++New feature: Layout improvements to make distingushing quotas a bit easier, messagebox class for add-answer, and new option to make adding multiple answers to a quota simpler (jcleeland)
++New feature: Default values can now be set in a different dialog. Language dependant default values for the option 'Other' now possible (c_schmitz)
++New feature: Multiple label sets can be exported/imported now as one file. (c_schmitz)
++New feature: Non-standard design templates now reside in the /upload/templates dir. Makes backup of user generated content easier since it is all in one place and also allows to set stricter permissions on the standard /templates dir (c_schmitz)
++New feature: Show number of tokens and response rate for surveys using tokens. (maziminke)
++New feature: Support for native MSSQL 2005+ adodb driver - patch by c-pucci (c_schmitz)
++New feature: When browsing responses you can mark now several responses for deletion and delete all with a single click (c_schmitz)
++New feature #4272: Disable scrollwheel in listboxes/dropdownboxes to prevent accidental scrolling - patch kindly provided by 'jas' (lemeur)
++New feature: Database-based sessions for load balanced servers which can be activated by a new configuration settings (see config-defaults.php) (c_schmitz)
++New feature: While creating a survey you can now copy an existing one (machaven)
++New feature: Completely reworked XML-based import/export format for questions/groups/surveys/label sets (cschmitz)
++New feature: Label sets are no longer connected to questions - they are merely templates for subquestions or answers (cschmitz)
++New feature: New concept of sub-questions was introduced (cschmitz)
++New feature: Completely new AJAX interface for editing answers/subquestion including the ability to quick-add/replace from label sets or by pasting from Excel or CSV (cschmitz)
++New feature: Integrity check now checks and removes invalid survey permissions automatically (c_schmitz)
++New feature: Integrity check now checks for orphaned survey language settings (c_schmitz)
++New feature: Multiple checkbox selection in template rights screen, so you can choose all templates or no templates with one click (jcleeland)
++New feature #2613: Added question attribute "numbers_only" to question type "Array Multi Flexible Text" - actually, it's adding attribute "Text inputs" to the array (numbers) question type, so that it presents a text input box rather than a dropdown. Note, if selected, overrides minimum value, maximum value and step. (jcleeland)
++New feature: Input-boxes for array (numbers) question type (jcleeland)
++New feature: When filtering for text questions you can use now % and * as wildcards and use OR and ',' as separators matching vor multiple values at the same time - patch by ecaron (c_schmitz)
++New feature: If the maximum character question attribute is set then the print view is properly adjusted (mdekker)
++New feature: Question divs now have ID with schema 'question<qestion_id>' so you can style questions in print view individually (c_schmitz)
++New feature: When copying a question, LimeSurvey now displays the newly created (copied) question after saving (jcleeland)
++New feature: Delete multiple token entries using select boxes (jcleeland)
++New feature: Usability enhancements to response browsing (cschmitz)
++New feature: Use @@SURVEYURL@@ in invitation/reminder emails to be able to use it inside an <a href > link (cschmitz)
++New feature: Opt-out feature for invitations/reminder emails (cschmitz)
++New feature: Question attributes for the time_limit feature - disable previous button while timer counts down, 2nd warning message, insert your own countdown text. Also re-ordered display of time limit group in advanced settings. (jcleeland)
++New feature: Survey count for each users is shown in the user administration (c_schmitz)
++New feature: {INSERTANS:xxx} placeholders are now available in confirmation email for surveys with non-anonymous answers. (lemeur)
++New translation: Hindi (abhinav1, smartbehl)
+#Updated feature: the {TOKEN} replacement field is now available in confirmation email. (lemeur)
+#Updated feature: Dropped support for importing questions/question groups/survey from any PHPSurveyor/LimeSurvey version older than 1.50 (DBversion 114) (c_schmitz)
+#Updated feature: Changed the class for the {QUESTIONHELP} element to "survey-question-help" in all templates (differentiates it from the {QUESTION_HELP} element) (tpartner)
+#Updated translation: Dutch (nl) and Dutch informal (nl-informal), thanks to Marcel Ausma (gandalfar)
+#Updated translation: Dutch (nl), thanks to Fred Dekkers and Han Velthuis (gandalfar)
+#Updated translation: Dutch informal (nl-informal), thanks to Fred Dekkers and Han Velthuis (gandalfar)
+#Updated translation: Finnish (thanks Tapio Nurminen) (gandalfar)
+#Updated translation: French (b00z00)
+#Updated translation: Portuguese (thanks to Rui Gouveia) (gandalfar)
+#Updated translation: Slovenian (gandalfar)
+#Updated translation: Bulgarian (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue #4028: PostgreSQL syntax errors while upgrading from 1.80 to 1.87 (gandalfar) 
+-Fixed issue #4245: CSS class "questionhelp" used for two different elements (tpartner)
+-Fixed issue #4287: Long question text overlaps itself when editing question (tpartner)
+-Fixed issue #4302: Navigating between pages may change already saved answers (tpartner)
+-Fixed issue #4295: SPSS export of labels for dual scale questions is incorrect (mennodekker)
+-Fixed issue #4304: IE has problems with downloads over HTTPS (mennodekker)
+-Fixed issue #4281: Fixing a bug which can hang the Webserver when the survey is activated with an empty group. The activation empty-group check wasn't working on all surveys. (lemeur)
+-Fixed issue #4175: Adding support for some additional dateformats (texens)
+-Fixed issue #4176: Array filter does not know how to handle 'other' field (jcleeland)
+-Fixed issue #4256: Having too many timer questions completely kills the session - new cookies.js allows for the use of "sub" cookies meaning all LS timer cookies are in one single cookie (jcleeland)
+-Fixed issue #4277: Conditions don't work when combining data from token attributes and survey questions using scenerios (lemeur)
+-Fixed issue #3908: DB dump file not quite in standard MySQL (harsha_mora)
+-Fixed issue #4155: Question Code is missing at Template Preview (harsha_mora)
+-Fixed issue #4234: Results are overwritten in very specific circumstances (lemeur)
+-Fixed issue #4242: Unable to send group e-mails in Google Chrome (c_schmitz)
+-Fixed issue #4260: Language question switch to Chinese not working (c_schmitz)
+-Fixed issue #4143: applied user patch to fix broken multipage surveys activated via lsrc (wahrendorff)
+-Fixed issue #4249 Disable icons depending on directory permission. (anishseth)
+-Fixed issue #4250: applied a user patch to insertPaticipants with an apostroph (wahrendorff)
+-Fixed issue #4254: The user needs to delete or rename the installation directory after installation. (anishseth)
+-Fixed issue #4288: Quotes in SPSS export variable labels cause errors (mennodekker)
+-Fixed issue #4283: (anishseth)
+-Fixed issue: Modified Array (MultiFlexi) Numbers in statistics to work properly (harsha_mora)
+-Fixed issue: Actual quota scores are not shown in overview (c_schmitz)
+-Fixed issue: Cookie URL causing session problems with root dir installations (c_schmitz)
+-Fixed issue: Integrity check for orphaned groups not working (c_schmitz)
+-Fixed issue: Missing Portuguese language file for calendar (c_schmitz)
+-Fixed issue: Using blanks in label sets codes breaks the Multi Flexi question saving (c_schmitz)
+-Fixed issue: Wrong numbers were taken from DB to calculate the percentage of completed tokens at the list survey overview. (maziminke)
 
 
 Changes from  1.87+ (build 8498) to 1.87+ (build 8518)- Legend: # updated feature, - bug fix 
