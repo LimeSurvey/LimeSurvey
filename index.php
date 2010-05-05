@@ -2187,12 +2187,13 @@ function buildsurveysession()
         list($tkexist) = $tkresult->FetchRow();
         if (!$tkexist)
         {
+            //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT 
+                        
+            killSession();     
             sendcacheheaders();
             doHeader();
-            //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
             echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-
             echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
             ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br />\n"
@@ -2202,7 +2203,6 @@ function buildsurveysession()
 
             echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
             doFooter();
-            killSession();
             exit;
         }
     }
