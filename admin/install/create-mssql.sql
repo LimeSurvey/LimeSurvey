@@ -19,7 +19,7 @@ CREATE TABLE [prefix_quota_languagesettings] (
   [quotals_quota_id] int,
   [quotals_language] varchar(45) NOT NULL default 'en',
   [quotals_name] varchar(255),
-  [quotals_message] text,
+  [quotals_message] text NULL,
   [quotals_url] varchar(255),
   [quotals_urldescrip] varchar(255),
   PRIMARY KEY ([quotals_id])
@@ -46,11 +46,11 @@ CREATE TABLE [prefix_answers] (
   [qid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
   [answer] varchar(8000) NOT NULL,
-  [default_value] char(1) NOT NULL default 'N',
   [sortorder] INT NOT NULL,
   [assessment_value] INT NOT NULL default '0',
   [language] VARCHAR(20) default 'en',
-  PRIMARY KEY  ([qid],[code],[language])
+  [scale_id] tinyint NOT NULL default '0',
+  PRIMARY KEY  ([qid],[code],[language],[scale_id])
 ) 
 ;
 
@@ -92,6 +92,16 @@ CREATE TABLE [prefix_conditions] (
 ) 
 ;
 
+
+CREATE TABLE [prefix_defaultvalues] (
+  [qid] integer NOT NULL default '0',
+  [scale_id] tinyint NOT NULL default '0',
+  [sqid] integer NOT NULL default '0',
+  [language] varchar(20) NOT NULL,
+  [specialtype] varchar(20) NOT NULL default '',
+  [defaultvalue] text,
+  CONSTRAINT pk_defaultvalues_qlss PRIMARY KEY ([qid] , [scale_id], [language], [specialtype], [sqid]))
+                              
 -- 
 -- Table structure for table [groups]
 -- 
@@ -101,7 +111,7 @@ CREATE TABLE [prefix_groups] (
   [sid] INT NOT NULL default '0',
   [group_name] VARCHAR(100) NOT NULL default '',
   [group_order] INT NOT NULL default '0',
-  [description] text,
+  [description] text NULL,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([gid],[language])
 ) 
@@ -165,19 +175,20 @@ CREATE TABLE [prefix_question_attributes] (
 
 CREATE TABLE [prefix_questions] (
   [qid] INT NOT NULL IDENTITY (1,1),
+  [parent_qid] INT NOT NULL default '0',
   [sid] INT NOT NULL default '0',
   [gid] INT NOT NULL default '0',
   [type] char(1) NOT NULL default 'T',
   [title] VARCHAR(20) NOT NULL default '',
   [question] text NOT NULL,
-  [preg] text,
-  [help] text,
+  [preg] text NULL,
+  [help] text NULL,
   [other] char(1) NOT NULL default 'N',
-  [mandatory] char(1) default NULL,
-  [lid] INT NOT NULL default '0',
-  [lid1] INT NOT NULL default '0',
+  [mandatory] char(1) NULL,
   [question_order] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
+  [scale_id] tinyint NOT NULL default '0',
+  [same_default] tinyint NOT NULL default '0',
   PRIMARY KEY  ([qid],[language])
 ) 
 ;
@@ -200,7 +211,7 @@ CREATE TABLE [prefix_saved_control] (
   [saved_thisstep] text NOT NULL,
   [status] char(1) NOT NULL default '',
   [saved_date] datetime, 
-  [refurl] text,
+  [refurl] text NULL,
   PRIMARY KEY  ([scid])
 ) 
 ;
@@ -246,8 +257,8 @@ CREATE TABLE [prefix_surveys] (
   [usecaptcha] char(1) default 'N',
   [usetokens] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
-  [attributedescriptions] text,
-  [emailresponseto] text,
+  [attributedescriptions] text NULL,
+  [emailresponseto] text NULL,
   [tokenlength] tinyint default '15',
   
   PRIMARY KEY  ([sid])
@@ -303,7 +314,7 @@ CREATE TABLE [prefix_users] (
   [manage_template] TINYINT NOT NULL default '0',
   [manage_label] TINYINT NOT NULL default '0',
   [htmleditormode] char(7) default 'default',
-  [one_time_pw] TEXT,
+  [one_time_pw] TEXT NULL,
   [dateformat] INT NOT NULL DEFAULT 1
 );
 
@@ -347,6 +358,18 @@ CREATE TABLE [prefix_user_in_groups] (
 ) 
 ;
 
+
+CREATE TABLE prefix_sessions(
+    sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+    expiry DATETIME NOT NULL ,
+    expireref VARCHAR( 250 ) DEFAULT '',
+    created DATETIME NOT NULL ,
+    modified DATETIME NOT NULL ,
+    sessdata text,
+    CONSTRAINT pk_sessions_sesskey PRIMARY KEY ( [sesskey] ));
+create index [idx_expiry] on [prefix_sessions] ([expiry]);
+create index [idx_expireref] on [prefix_sessions] ([expireref]);
+
 --
 -- Table structure for table [settings_global]
 --
@@ -375,7 +398,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '142');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '143');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 

@@ -16,7 +16,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="text-align: center; background-color: #e5e5e5">
+						<td class="survey-question-help">
 							{QUESTIONHELP}
 						</td>
 					</tr>

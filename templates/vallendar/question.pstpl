@@ -14,8 +14,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td align="left" bgcolor="#E5E5E5">
-							<font size="1"><i>{QUESTIONHELP}</i></font>
+						<td class="survey-question-help">
+							{QUESTIONHELP}</i>
 						</td>
 					</tr>
 					<tr>

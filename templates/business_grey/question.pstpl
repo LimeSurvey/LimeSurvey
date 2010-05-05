@@ -20,7 +20,7 @@
 					</tr>
 					<tr>
 						<td>
-							<font size="1" color="#777777">{QUESTIONHELP}</font>
+							<span class="survey-question-help">{QUESTIONHELP}</span>
 						</td>
 					</tr>
 				</table>

@@ -1,34 +1,34 @@
 <?php
 # Hungarian language, encoding by ISO 8859-2 charset (Iso Latin-2)
-# Halászvári Gábor <g.halaszvari#portmax.hu>
+# Halï¿½szvï¿½ri Gï¿½bor <g.halaszvari#portmax.hu>
 $ADODB_LANG_ARRAY = array (
 			'LANG'                      => 'hu',
-            DB_ERROR                    => 'ismeretlen hiba',
-            DB_ERROR_ALREADY_EXISTS     => 'már létezik',
-            DB_ERROR_CANNOT_CREATE      => 'nem sikerült létrehozni',
-            DB_ERROR_CANNOT_DELETE      => 'nem sikerült törölni',
-            DB_ERROR_CANNOT_DROP        => 'nem sikerült eldobni',
-            DB_ERROR_CONSTRAINT         => 'szabályok megszegése',
-            DB_ERROR_DIVZERO            => 'osztás nullával',
-            DB_ERROR_INVALID            => 'érvénytelen',
-            DB_ERROR_INVALID_DATE       => 'érvénytelen dátum vagy idõ',
-            DB_ERROR_INVALID_NUMBER     => 'érvénytelen szám',
-            DB_ERROR_MISMATCH           => 'nem megfelelõ',
-            DB_ERROR_NODBSELECTED       => 'nincs kiválasztott adatbázis',
-            DB_ERROR_NOSUCHFIELD        => 'nincs ilyen mezõ',
-            DB_ERROR_NOSUCHTABLE        => 'nincs ilyen tábla',
-            DB_ERROR_NOT_CAPABLE        => 'DB backend nem támogatja',
-            DB_ERROR_NOT_FOUND          => 'nem található',
-            DB_ERROR_NOT_LOCKED         => 'nincs lezárva',
-            DB_ERROR_SYNTAX             => 'szintaktikai hiba',
-            DB_ERROR_UNSUPPORTED        => 'nem támogatott',
-            DB_ERROR_VALUE_COUNT_ON_ROW => 'soron végzett érték számlálás',
-            DB_ERROR_INVALID_DSN        => 'hibás DSN',
-            DB_ERROR_CONNECT_FAILED     => 'sikertelen csatlakozás',
-            0	                       => 'nincs hiba', // DB_OK
-            DB_ERROR_NEED_MORE_DATA     => 'túl kevés az adat',
-            DB_ERROR_EXTENSION_NOT_FOUND=> 'bõvítmény nem található',
-            DB_ERROR_NOSUCHDB           => 'nincs ilyen adatbázis',
-            DB_ERROR_ACCESS_VIOLATION   => 'nincs jogosultság'
+DB_ERROR                    => 'ismeretlen hiba',
+DB_ERROR_ALREADY_EXISTS     => 'mï¿½r lï¿½tezik',
+DB_ERROR_CANNOT_CREATE      => 'nem sikerï¿½lt lï¿½trehozni',
+DB_ERROR_CANNOT_DELETE      => 'nem sikerï¿½lt tï¿½rï¿½lni',
+DB_ERROR_CANNOT_DROP        => 'nem sikerï¿½lt eldobni',
+DB_ERROR_CONSTRAINT         => 'szabï¿½lyok megszegï¿½se',
+DB_ERROR_DIVZERO            => 'osztï¿½s nullï¿½val',
+DB_ERROR_INVALID            => 'ï¿½rvï¿½nytelen',
+DB_ERROR_INVALID_DATE       => 'ï¿½rvï¿½nytelen dï¿½tum vagy idï¿½',
+DB_ERROR_INVALID_NUMBER     => 'ï¿½rvï¿½nytelen szï¿½m',
+DB_ERROR_MISMATCH           => 'nem megfelelï¿½',
+DB_ERROR_NODBSELECTED       => 'nincs kivï¿½lasztott adatbï¿½zis',
+DB_ERROR_NOSUCHFIELD        => 'nincs ilyen mezï¿½',
+DB_ERROR_NOSUCHTABLE        => 'nincs ilyen tï¿½bla',
+DB_ERROR_NOT_CAPABLE        => 'DB backend nem tï¿½mogatja',
+DB_ERROR_NOT_FOUND          => 'nem talï¿½lhatï¿½',
+DB_ERROR_NOT_LOCKED         => 'nincs lezï¿½rva',
+DB_ERROR_SYNTAX             => 'szintaktikai hiba',
+DB_ERROR_UNSUPPORTED        => 'nem tï¿½mogatott',
+DB_ERROR_VALUE_COUNT_ON_ROW => 'soron vï¿½gzett ï¿½rtï¿½k szï¿½mlï¿½lï¿½s',
+DB_ERROR_INVALID_DSN        => 'hibï¿½s DSN',
+DB_ERROR_CONNECT_FAILED     => 'sikertelen csatlakozï¿½s',
+0	                       => 'nincs hiba', // DB_OK
+DB_ERROR_NEED_MORE_DATA     => 'tï¿½l kevï¿½s az adat',
+DB_ERROR_EXTENSION_NOT_FOUND=> 'bï¿½vï¿½tmï¿½ny nem talï¿½lhatï¿½',
+DB_ERROR_NOSUCHDB           => 'nincs ilyen adatbï¿½zis',
+DB_ERROR_ACCESS_VIOLATION   => 'nincs jogosultsï¿½g'
 );
 ?>

@@ -1,8 +1,8 @@
 <?php
-# 
+#
 # PHPZip v1.2 by Sext (sext@neud.net) 2002-11-18
 # 	(Changed: 2003-03-01)
-# 
+#
 # Makes zip archive
 #
 # Based on "Zip file creation class", uses zLib
@@ -12,72 +12,72 @@
 
 class PHPZip
 {
-	function Zip($dir, $zipfilename)
-	{
-    	if (@function_exists('gzcompress'))
-		{	
-			$curdir = getcwd();
-			if (is_array($dir)) 
-			{
-					$filelist = $dir;
-			}
-			else 
-			{
-				$filelist = $this -> GetFileList($dir);
-			}
-			
-			if ((!empty($dir))&&(!is_array($dir))&&(file_exists($dir))) chdir($dir);
-			else chdir($curdir);
+    function Zip($dir, $zipfilename)
+    {
+        if (@function_exists('gzcompress'))
+        {
+            $curdir = getcwd();
+            if (is_array($dir))
+            {
+                $filelist = $dir;
+            }
+            else
+            {
+                $filelist = $this -> GetFileList($dir);
+            }
 
-			if (count($filelist)>0)
-			{
-				foreach($filelist as $filename)
-				{
-					if (is_file($filename))
-					{
-						$fd = fopen ($filename, "r");
-						$content = @fread ($fd, filesize ($filename));
-						fclose ($fd);
+            if ((!empty($dir))&&(!is_array($dir))&&(file_exists($dir))) chdir($dir);
+            else chdir($curdir);
 
-						if (is_array($dir)) $filename = basename($filename);
-						$this -> addFile($content, $filename);
-					}
-				}
-				$out = $this -> file();
+            if (count($filelist)>0)
+            {
+                foreach($filelist as $filename)
+                {
+                    if (is_file($filename))
+                    {
+                        $fd = fopen ($filename, "r");
+                        $content = @fread ($fd, filesize ($filename));
+                        fclose ($fd);
 
-				chdir($curdir);
-				$fp = fopen($zipfilename, "w");
-				fwrite($fp, $out, strlen($out));
-				fclose($fp);
-			}
-			return 1;
-		} 
-		else return 0;
-	}
+                        if (is_array($dir)) $filename = basename($filename);
+                        $this -> addFile($content, $filename);
+                    }
+                }
+                $out = $this -> file();
 
-	function GetFileList($dir)
-	{
-		$file=Array();
-		if (file_exists($dir))
-		{
-			$args = func_get_args();
-			if(isset($args[1])) {$pref = $args[1];} else {$pref="";}
-			   	
-			$dh = opendir($dir);
-			while($files = readdir($dh))
-			{
-				if (($files!=".")&&($files!="..")) 
-				{
-					if (!is_dir($dir.$files)) 
-					{
-						$file[]=$pref.$files;
-					}
-				}
-			}
-			closedir($dh);
-		}
-		return $file;
-	}
+                chdir($curdir);
+                $fp = fopen($zipfilename, "w");
+                fwrite($fp, $out, strlen($out));
+                fclose($fp);
+            }
+            return 1;
+        }
+        else return 0;
+    }
+
+    function GetFileList($dir)
+    {
+        $file=Array();
+        if (file_exists($dir))
+        {
+            $args = func_get_args();
+            if(isset($args[1])) {$pref = $args[1];} else {$pref="";}
+
+            $dh = opendir($dir);
+            while($files = readdir($dh))
+            {
+                if (($files!=".")&&($files!=".."))
+                {
+                    if (!is_dir($dir.$files))
+                    {
+                        $file[]=$pref.$files;
+                    }
+                }
+            }
+            closedir($dh);
+        }
+        return $file;
+    }
 
     var $datasec      = array();
     var $ctrl_dir     = array();
@@ -98,16 +98,16 @@ class PHPZip
         $timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
 
         if ($timearray['year'] < 1980) {
-        	$timearray['year']    = 1980;
-        	$timearray['mon']     = 1;
-        	$timearray['mday']    = 1;
-        	$timearray['hours']   = 0;
-        	$timearray['minutes'] = 0;
-        	$timearray['seconds'] = 0;
+            $timearray['year']    = 1980;
+            $timearray['mon']     = 1;
+            $timearray['mday']    = 1;
+            $timearray['hours']   = 0;
+            $timearray['minutes'] = 0;
+            $timearray['seconds'] = 0;
         } // end if
 
         return (($timearray['year'] - 1980) << 25) | ($timearray['mon'] << 21) | ($timearray['mday'] << 16) |
-                ($timearray['hours'] << 11) | ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
+        ($timearray['hours'] << 11) | ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
     } // end of the 'unix2DosTime()' method
 
 
@@ -126,9 +126,9 @@ class PHPZip
 
         $dtime    = dechex($this->unix2DosTime($time));
         $hexdtime = '\x' . $dtime[6] . $dtime[7]
-                  . '\x' . $dtime[4] . $dtime[5]
-                  . '\x' . $dtime[2] . $dtime[3]
-                  . '\x' . $dtime[0] . $dtime[1];
+        . '\x' . $dtime[4] . $dtime[5]
+        . '\x' . $dtime[2] . $dtime[3]
+        . '\x' . $dtime[0] . $dtime[1];
         eval('$hexdtime = "' . $hexdtime . '";');
 
         $fr   = "\x50\x4b\x03\x04";
@@ -204,68 +204,68 @@ class PHPZip
         $ctrldir = implode('', $this -> ctrl_dir);
 
         return
-            $data .
-            $ctrldir .
-            $this -> eof_ctrl_dir .
-            pack('v', sizeof($this -> ctrl_dir)) .  // total # of entries "on this disk"
-            pack('v', sizeof($this -> ctrl_dir)) .  // total # of entries overall
-            pack('V', strlen($ctrldir)) .           // size of central dir
-            pack('V', strlen($data)) .              // offset to start of central dir
+        $data .
+        $ctrldir .
+        $this -> eof_ctrl_dir .
+        pack('v', sizeof($this -> ctrl_dir)) .  // total # of entries "on this disk"
+        pack('v', sizeof($this -> ctrl_dir)) .  // total # of entries overall
+        pack('V', strlen($ctrldir)) .           // size of central dir
+        pack('V', strlen($data)) .              // offset to start of central dir
             "\x00\x00";                             // .zip file comment length
     } // end of the 'file()' method
 
 
-// This comes from http://de.tikiwiki.org/xref-BRANCH-1-9/nav.html?lib/sheet/include/org/apicnet/io/archive/CZip.php.source.html
-function extract($dir, $zipfilename){
-          if (function_exists("zip_open")) {
+    // This comes from http://de.tikiwiki.org/xref-BRANCH-1-9/nav.html?lib/sheet/include/org/apicnet/io/archive/CZip.php.source.html
+    function extract($dir, $zipfilename){
+        if (function_exists("zip_open")) {
 
-              $this->createDir($dir);
-              $zip  = zip_open($zipfilename);
-              if ($zip) {
-                 while ($zip_entry = zip_read($zip)) {
-                     if (zip_entry_open($zip, $zip_entry, "r")) {
-                         $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+            $this->createDir($dir);
+            $zip  = zip_open($zipfilename);
+            if ($zip) {
+                while ($zip_entry = zip_read($zip)) {
+                    if (zip_entry_open($zip, $zip_entry, "r")) {
+                        $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
 
-                 // LimeSurvey Only extract first dir for the moment
-                         if ( ! preg_match("/(\/)/i", zip_entry_name($zip_entry)))
-			{ 
-                         $this->createFile($dir."/".zip_entry_name($zip_entry), $buf,zip_entry_filesize($zip_entry));
-			}
-                         zip_entry_close($zip_entry);
-                     }
-                 }
-                 zip_close($zip);
-              }
-	      else
-	      {
-		return "Error:OpenZip";
-	      }
-          } 
-	  return 'OK';
-      }
+                        // LimeSurvey Only extract first dir for the moment
+                        if ( ! preg_match("/(\/)/i", zip_entry_name($zip_entry)))
+                        {
+                            $this->createFile($dir."/".zip_entry_name($zip_entry), $buf,zip_entry_filesize($zip_entry));
+                        }
+                        zip_entry_close($zip_entry);
+                    }
+                }
+                zip_close($zip);
+            }
+            else
+            {
+                return "Error:OpenZip";
+            }
+        }
+        return 'OK';
+    }
 
-  	function createDir($dir){
-          if (preg_match("/(\/$)/", $dir)) @mkdir (substr($dir, 0, strlen($dir) - 1));
-          else @mkdir ($dir);
-      }
-      
-      
-	// This comes from http://fr.php.net/zip
-  	function createFile($file, $data, $size){
-          //$file = new File($file, TRUE);
-          //if ($file->exists()) {
-          //    $file->delFile();
-          //    $file->createFile();
-          //}
-          //$file->writeData($data);
+    function createDir($dir){
+        if (preg_match("/(\/$)/", $dir)) @mkdir (substr($dir, 0, strlen($dir) - 1));
+        else @mkdir ($dir);
+    }
 
-	  if (is_file($file))
-	{
-		unlink($file);
-	}
-	$fopen = fopen($file, "w");
-	fwrite($fopen,$data,$size);
-      }
+
+    // This comes from http://fr.php.net/zip
+    function createFile($file, $data, $size){
+        //$file = new File($file, TRUE);
+        //if ($file->exists()) {
+        //    $file->delFile();
+        //    $file->createFile();
+        //}
+        //$file->writeData($data);
+
+        if (is_file($file))
+        {
+            unlink($file);
+        }
+        $fopen = fopen($file, "w");
+        fwrite($fopen,$data,$size);
+    }
 
 } // end of the 'PHPZip' class
 ?>

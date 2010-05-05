@@ -1,8 +1,8 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Dutch Version
-*/
+ * PHPMailer language file: refer to English translation for definitive list
+ * Dutch Version
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP Fout: authenticatie mislukt.';
 $PHPMAILER_LANG['connect_host']         = 'SMTP Fout: Kon niet verbinden met SMTP host.';

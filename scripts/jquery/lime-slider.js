@@ -31,8 +31,13 @@ $(document).ready(function(){
 		sliderparams['slide'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;
 				if ($('#slider-modifiedstate-'+basename).val() ==0) $('#slider-modifiedstate-'+basename).val('1');
-				var thevalue = slider_stepping * Math.round(ui.value / slider_stepping) / slider_divisor;
-				$('#slider-callout-'+basename).css('left', $(ui.handle).css('left')).text(slider_prefix + thevalue + slider_suffix);
+				
+				function updateCallout() {
+					var thevalue = slider_stepping * Math.round(ui.value / slider_stepping) / slider_divisor;
+					$('#slider-callout-'+basename).css('left', $(ui.handle).css('left')).text(slider_prefix + thevalue + slider_suffix);
+				}
+				// Delay updating the callout because it was picking up the last postion of the slider
+				setTimeout(updateCallout, 10); 
 			};
 		sliderparams['stop'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;

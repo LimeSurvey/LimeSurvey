@@ -6,20 +6,20 @@
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
-// 	
+//
 // 	This program is free software: you can redistribute it and/or modify
 // 	it under the terms of the GNU Lesser General Public License as published by
 // 	the Free Software Foundation, either version 2.1 of the License, or
 // 	(at your option) any later version.
-// 	
+//
 // 	This program is distributed in the hope that it will be useful,
 // 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 // 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // 	GNU Lesser General Public License for more details.
-// 	
+//
 // 	You should have received a copy of the GNU Lesser General Public License
 // 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// 	
+//
 // 	See LICENSE.TXT file for more information.
 //  ----------------------------------------------------------------------------
 //
@@ -48,35 +48,35 @@
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2.1.000 (2008-01-08)
-*/
+ */
 
 /**
-* Left-to-Right Mark
-*/
+ * Left-to-Right Mark
+ */
 define('K_LRM', 8206);
 /**
-* Right-to-Left Mark
-*/
+ * Right-to-Left Mark
+ */
 define('K_RLM', 8207);
 /**
-* Left-to-Right Embedding
-*/
+ * Left-to-Right Embedding
+ */
 define('K_LRE', 8234);
 /**
-* Right-to-Left Embedding
-*/
+ * Right-to-Left Embedding
+ */
 define('K_RLE', 8235);
 /**
-* Pop Directional Format
-*/
+ * Pop Directional Format
+ */
 define('K_PDF', 8236);
 /**
-* Left-to-Right Override
-*/
+ * Left-to-Right Override
+ */
 define('K_LRO', 8237);
 /**
-* Right-to-Left Override
-*/
+ * Right-to-Left Override
+ */
 define('K_RLO', 8238);
 
 /*
@@ -17851,7 +17851,7 @@ $unicode = array(
 
 /**
  * Mirror unicode characters.
- * For information on bidi mirroring, see UAX #9: Bidirectional Algorithm, 
+ * For information on bidi mirroring, see UAX #9: Bidirectional Algorithm,
  * at http://www.unicode.org/unicode/reports/tr9/
  */
 global $unicode_mirror;
@@ -18307,7 +18307,7 @@ $laa_array = array (
 
 /**
  * Array of character substitutions for sequences of two diacritics symbols starting with SHADDA (0651 HEX, 1617 DEC).
- * Combining characters that can occur with Shadda (U0651) are placed in UE586-UE594. 
+ * Combining characters that can occur with Shadda (U0651) are placed in UE586-UE594.
  * Putting the combining mark and shadda in the same glyph allows us to avoid the two marks overlapping each other in an illegible manner.
  * second NSM char code=>substitution char
  */

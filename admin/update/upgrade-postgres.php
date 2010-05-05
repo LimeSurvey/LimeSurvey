@@ -1,28 +1,28 @@
 <?PHP
 /*
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id: upgrade-odbc_mssql.php 3631 2007-11-12 18:13:06Z c_schmitz $
-*/
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id: upgrade-odbc_mssql.php 3631 2007-11-12 18:13:06Z c_schmitz $
+ */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
 // where based on the current database version the database is upgraded
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-global $modifyoutput, $databasename, $databasetabletype; 
+    global $modifyoutput, $databasename, $databasetabletype;
 
     echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
 
-	if ($oldversion < 127) {
+    if ($oldversion < 127) {
         modify_database("","create index answers_idx2 on prefix_answers (sortorder)"); echo $modifyoutput;  flush();
         modify_database("","create index assessments_idx2 on prefix_assessments (sid)"); echo $modifyoutput;  flush();
         modify_database("","create index assessments_idx on prefix_assessments (gid)"); echo $modifyoutput;  flush();
@@ -37,27 +37,27 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("","create index saved_control_idx2 on prefix_saved_control (sid)"); echo $modifyoutput;  flush();
         modify_database("","create index user_in_groups_idx1 on prefix_user_in_groups (ugid, uid)"); echo $modifyoutput;  flush();
         modify_database("","update prefix_settings_global set stg_value='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
-	if ($oldversion < 128) {
-		//128
-		upgrade_token_tables128();
-	    modify_database("","update prefix_settings_global set stg_value='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    if ($oldversion < 128) {
+        //128
+        upgrade_token_tables128();
+        modify_database("","update prefix_settings_global set stg_value='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
 
-	if ($oldversion < 129) {
-		//129
+    if ($oldversion < 129) {
+        //129
         modify_database("","ALTER TABLE prefix_surveys ADD startdate date"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys ADD usestartdate char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-	    modify_database("","update prefix_settings_global set stg_value='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+        modify_database("","update prefix_settings_global set stg_value='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
 
-	if ($oldversion < 130)
-	{
-		modify_database("","ALTER TABLE prefix_conditions ADD scenario integer NOT NULL default '1'"); echo $modifyoutput; flush();
-		modify_database("","UPDATE prefix_conditions SET scenario=1 where (scenario is null) or scenario=0"); echo $modifyoutput; flush();
-	    modify_database("","update prefix_settings_global set stg_value='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    if ($oldversion < 130)
+    {
+        modify_database("","ALTER TABLE prefix_conditions ADD scenario integer NOT NULL default '1'"); echo $modifyoutput; flush();
+        modify_database("","UPDATE prefix_conditions SET scenario=1 where (scenario is null) or scenario=0"); echo $modifyoutput; flush();
+        modify_database("","update prefix_settings_global set stg_value='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
     if ($oldversion < 131)
     {
         modify_database("","ALTER TABLE prefix_surveys ADD publicstatistics char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
@@ -68,7 +68,7 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("","ALTER TABLE prefix_surveys ADD publicgraphs char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update prefix_settings_global set stg_value='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-	if ($oldversion < 133)
+    if ($oldversion < 133)
     {
         modify_database("","ALTER TABLE prefix_users ADD one_time_pw bytea"); echo $modifyoutput; flush();
 
@@ -89,7 +89,7 @@ global $modifyoutput, $databasename, $databasetabletype;
         // copy assessment link to message since from now on we will have HTML assignment messages
         modify_database("","update prefix_assessments set message=cast(message as character) ||'<br /><a href=\"'||link||'\">'||link||'</a>'"); echo $modifyoutput; flush();
         // drop the old link field
-         modify_database("","ALTER TABLE prefix_assessments DROP COLUMN link"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_assessments DROP COLUMN link"); echo $modifyoutput; flush();
         // change the primary index to include language
         modify_database("","ALTER TABLE prefix_assessments DROP CONSTRAINT prefix_assessments_pkey"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_assessments ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)"); echo $modifyoutput; flush();
@@ -118,74 +118,115 @@ global $modifyoutput, $databasename, $databasetabletype;
         modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 
     }
-     if ($oldversion < 135)
+    if ($oldversion < 135)
     {
         modify_database("","ALTER TABLE prefix_question_attributes ALTER COLUMN value TYPE text"); echo $modifyoutput; flush();
         modify_database("","update prefix_settings_global set stg_value='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     if ($oldversion < 136)
     {
-	   modify_database("", "ALTER TABLE prefix_quota ADD autoload_url integer NOT NULL DEFAULT 0"); echo $modifyoutput; flush();
-	   modify_database("", "CREATE TABLE prefix_quota_languagesettings (
-						   quotals_id serial NOT NULL,
-  						   quotals_quota_id integer NOT NULL DEFAULT 0,
-						   quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
-						   quotals_name character varying(200),
-  						   quotals_message text NOT NULL,
-  						   quotals_url character varying(255),
-  						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
-	   modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
-  	   					    ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
-       modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
-       modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
-       modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_quota ADD autoload_url integer NOT NULL DEFAULT 0"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE prefix_quota_languagesettings (
+                            quotals_id serial NOT NULL,
+                            quotals_quota_id integer NOT NULL DEFAULT 0,
+                            quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
+                            quotals_name character varying(200),
+                            quotals_message text NOT NULL,
+                            quotals_url character varying(255),
+                            quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE ONLY prefix_quota_languagesettings
+  	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
+        modify_database("","update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 
-	}
+    }
 
     if ($oldversion < 137) //New date format specs
     {
-       modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
-       modify_database("", "ALTER TABLE prefix_users ADD \"dateformat\" integer NOT NULL default 1"); echo $modifyoutput; flush();
-       modify_database("", "update prefix_surveys set startdate=null where usestartdate='N'"); echo $modifyoutput; flush();
-       modify_database("", "update prefix_surveys set expires=null where useexpiry='N'"); echo $modifyoutput; flush();
-       modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN usestartdate"); echo $modifyoutput; flush();
-       modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN useexpiry"); echo $modifyoutput; flush();
-       modify_database("", "update prefix_settings_global set stg_value='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_users ADD \"dateformat\" integer NOT NULL default 1"); echo $modifyoutput; flush();
+        modify_database("", "update prefix_surveys set startdate=null where usestartdate='N'"); echo $modifyoutput; flush();
+        modify_database("", "update prefix_surveys set expires=null where useexpiry='N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN usestartdate"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN useexpiry"); echo $modifyoutput; flush();
+        modify_database("", "update prefix_settings_global set stg_value='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
-	if ($oldversion < 138) //Modify quota field
-	{
-	    modify_database("", "ALTER TABLE prefix_quota_members ALTER COLUMN code TYPE character varying(11)"); echo $modifyoutput; flush();
+    if ($oldversion < 138) //Modify quota field
+    {
+        modify_database("", "ALTER TABLE prefix_quota_members ALTER COLUMN code TYPE character varying(11)"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
-	if ($oldversion < 139) //Modify quota field
-	{
+    if ($oldversion < 139) //Modify quota field
+    {
         upgrade_survey_tables139();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
-	if ($oldversion < 140) //Modify surveys table
-	{
-	    modify_database("", "ALTER TABLE prefix_surveys ADD \"emailresponseto\" TEXT"); echo $modifyoutput; flush();
+    if ($oldversion < 140) //Modify surveys table
+    {
+        modify_database("", "ALTER TABLE prefix_surveys ADD \"emailresponseto\" TEXT"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
-	if ($oldversion < 141) //Modify surveys table
-	{
-	    modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" smallint NOT NULL DEFAULT '15'"); echo $modifyoutput; flush();
+    if ($oldversion < 141) //Modify surveys table
+    {
+        modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" smallint NOT NULL DEFAULT '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
 
-	if ($oldversion < 142) //Modify surveys table
-	{
+    if ($oldversion < 142) //Modify surveys table
+    {
         upgrade_question_attributes142();
-        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"startdate\" timestamp"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"expires\" timestamp"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"startdate\" TYPE timestamp"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ALTER COLUMN \"expires\" TYPE timestamp"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_question_attributes SET value='0' WHERE value='false'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_question_attributes SET value='1' WHERE value='true'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
+    }
+    if ($oldversion < 143) //Modify surveys table
+    {
+        modify_database("", "ALTER TABLE prefix_questions ADD parent_qid integer NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_answers ADD scale_id smallint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions ADD scale_id smallint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions ADD same_default smallint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_answers DROP CONSTRAINT prefix_answers_pkey"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_answers ADD CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid,code,language,scale_id)"); echo $modifyoutput; flush();
+        
+        modify_database("", "CREATE TABLE prefix_defaultvalues (
+                              qid integer NOT NULL default '0',
+                              scale_id integer NOT NULL default '0',
+                              sqid integer NOT NULL default '0',
+                              language character varying(20) NOT NULL,
+                              specialtype character varying(20) NOT NULL default '',
+                              defaultvalue text)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)"); echo $modifyoutput; flush();
+
+        // -Move all 'answers' that are subquestions to the questions table
+        // -Move all 'labels' that are answers to the answers table
+        // -Transscribe the default values where applicable
+        // -Move default values from answers to questions
+        upgrade_tables143();
+
+        modify_database("", "ALTER TABLE prefix_answers DROP COLUMN default_value"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid1"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE prefix_sessions(
+                             sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+                             expiry TIMESTAMP NOT NULL ,
+                             expireref VARCHAR( 250 ) DEFAULT '',
+                             created TIMESTAMP NOT NULL ,
+                             modified TIMESTAMP NOT NULL ,
+                             sessdata TEXT DEFAULT '',
+                             PRIMARY KEY ( sesskey )
+                             );"); echo $modifyoutput; flush();     
+        modify_database("", "create INDEX sess_expiry on prefix_sessions( expiry );"); echo $modifyoutput; flush();
+        modify_database("", "create INDEX sess_expireref on prefix_sessions ( expireref );"); echo $modifyoutput; flush();
+                                  
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;
@@ -199,12 +240,12 @@ function upgrade_token_tables128()
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-		while ( $sv = $surveyidresult->FetchRow() )
-		{
-			modify_database("","ALTER TABLE ".$sv['0']." ADD remindersent character varying(17) DEFAULT 'N'"); echo $modifyoutput; flush();
-			modify_database("","ALTER TABLE ".$sv['0']." ADD remindercount INTEGER DEFAULT 0"); echo $modifyoutput; flush();
-		}
-	}
+        while ( $sv = $surveyidresult->FetchRow() )
+        {
+            modify_database("","ALTER TABLE ".$sv['0']." ADD remindersent character varying(17) DEFAULT 'N'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv['0']." ADD remindercount INTEGER DEFAULT 0"); echo $modifyoutput; flush();
+        }
+    }
 }
 
 function upgrade_survey_tables133()
@@ -242,12 +283,12 @@ function upgrade_survey_tables139()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
-        {
+    {
         while ( $sv = $surveyidresult->FetchRow() )
-            {
+        {
             modify_database("","ALTER TABLE ".$sv[0]." ADD lastpage integer"); echo $modifyoutput; flush();
-            }
         }
+    }
 }
 
 function upgrade_question_attributes142()
@@ -263,6 +304,178 @@ function upgrade_question_attributes142()
         $record['value']=implode(';',$attributevalues);
         $record['attribute']='exclude_all_other';
         $record['qid']=$questionid;
-        $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT'); 
+        $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT');
     }
+}
+
+function upgrade_tables143()
+{
+    global $modifyoutput,$dbprefix, $connect;
+
+
+    $aQIDReplacements=array();
+    $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('L','O','!') and a.default_value='Y'";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult) {return "Database Error";}
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            modify_database("","INSERT INTO {$dbprefix}defaultvalues (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".db_quoteall($row['language']).",'',".db_quoteall($row['code']).")"); echo $modifyoutput; flush();
+        }
+    }
+
+    // Convert answers to subquestions
+    
+    $answerquery = "select a.*, q.sid, q.gid, q.type from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and a.language=q.language and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult) {return "Database Error";}
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            
+            $insertarray=array();
+            if (isset($aQIDReplacements[$row['qid'].'_'.$row['code']]))
+            {
+                $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+            }
+            $insertarray['sid']=$row['sid'];
+            $insertarray['gid']=$row['gid'];
+            $insertarray['parent_qid']=$row['qid'];
+            $insertarray['title']=$row['code'];
+            $insertarray['question']=$row['answer'];
+            $insertarray['question_order']=$row['sortorder'];
+            $insertarray['language']=$row['language'];
+            $tablename="{$dbprefix}questions";
+            $query=$connect->GetInsertSQL($tablename,$insertarray);
+            modify_database("",$query); echo $modifyoutput; flush();
+            if (!isset($insertarray['qid']))
+            {
+               $aQIDReplacements[$row['qid'].'_'.$row['code']]=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+               $iSaveSQID=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+            }
+            else
+            {
+               $iSaveSQID=$insertarray['qid'];
+            }
+            if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
+            {
+                modify_database("","INSERT INTO {$dbprefix}defaultvalues (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".db_quoteall($row['language']).",'','Y')"); echo $modifyoutput; flush();
+            }
+        }
+    }
+    modify_database("","delete from {$dbprefix}answers using {$dbprefix}questions where {$dbprefix}answers.qid={$dbprefix}questions.qid and {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
+
+    // Convert labels to answers
+    $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult)
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
+            $labelresult = db_execute_assoc($labelquery);
+            while ( $lrow = $labelresult->FetchRow() )
+            {
+                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).")"); echo $modifyoutput; flush();
+                //$labelids[]
+            }
+            if ($row['type']=='1')
+            {
+                $labelquery="Select * from {$dbprefix}labels where lid={$row['lid1']} and language=".db_quoteall($row['language']);
+                $labelresult = db_execute_assoc($labelquery);
+                while ( $lrow = $labelresult->FetchRow() )
+                {
+                    modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
+                }
+            }
+        }
+    }
+
+    // Convert labels to subquestions
+    $answerquery = "select * from {$dbprefix}questions where parent_qid=0 and type in (';',':')";
+    $answerresult = db_execute_assoc($answerquery);
+    if (!$answerresult)
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $answerresult->FetchRow() )
+        {
+            $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
+            $labelresult = db_execute_assoc($labelquery);
+            while ( $lrow = $labelresult->FetchRow() )
+            {
+                $insertarray=array();
+                if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']))
+                {
+                    $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1'];
+                }
+                $insertarray['sid']=$row['sid'];
+                $insertarray['gid']=$row['gid'];
+                $insertarray['parent_qid']=$row['qid'];
+                $insertarray['title']=$lrow['code'];
+                $insertarray['question']=$lrow['title'];
+                $insertarray['question_order']=$lrow['sortorder'];
+                $insertarray['language']=$lrow['language'];
+                $insertarray['scale_id']=1;
+                $tablename="{$dbprefix}questions";
+                $query=$connect->GetInsertSQL($tablename,$insertarray);
+                modify_database("",$query); echo $modifyoutput; flush();
+                if (isset($insertarray['qid']))
+                {
+                   $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+                }                
+            }
+        }
+    }
+
+    // convert Ranking question type
+
+    $query="SELECT a.qid, count(a.qid) as answercount FROM {$dbprefix}answers a, {$dbprefix}questions q where a.qid=q.qid and q.type='R' group by a.qid";
+    $queryresult = db_execute_assoc($query);
+    if (!$queryresult)
+    {
+        return "Database Error";
+    }
+    else
+    {
+        while ( $row = $queryresult->FetchRow() )
+        {
+            modify_database("","INSERT INTO {$dbprefix}question_attributes (qid, attribute, value) VALUES ({$row['qid']},'ranking_slots',".db_quoteall($row['answercount']).")"); echo $modifyoutput; flush();
+        }
+    }
+
+
+
+    $updatequery = "update {$dbprefix}questions set type='!' where type='W'";
+    modify_database("",$updatequery); echo $modifyoutput; flush();
+    $updatequery = "update {$dbprefix}questions set type='L' where type='Z'";
+    modify_database("",$updatequery); echo $modifyoutput; flush();
+    
+    // Now move all non-standard templates to the /upload dir
+    global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;
+
+    if (!$usertemplaterootdir) {die("gettemplatelist() no template directory");}
+    if ($handle = opendir($standardtemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn" && !isStandardTemplate($file))
+            {
+                if (!rename($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file,$usertemplaterootdir.DIRECTORY_SEPARATOR.$file))
+                {
+                   echo "There was a problem moving directory '".$standardtemplaterootdir.DIRECTORY_SEPARATOR.$file."' to '".$usertemplaterootdir.DIRECTORY_SEPARATOR.$file."' due to missing permissions. Please do this manually.<br />";
+                };
+            }
+        }
+        closedir($handle);
+    }        
+
 }

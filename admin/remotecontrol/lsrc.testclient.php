@@ -1,51 +1,339 @@
 <?php
 /*
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-* 
-* $Id$
-* 
-*/
-$wsdl = isset($_REQUEST['wsdl'])?$_REQUEST['wsdl']:'';
-
-#####################################################################
-## Configuration Parameters
-//set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='http://localhost/limesource/limesurvey';
-
-//We need authentication for every function, so just write the logindata once for all (this is the default)
-$user ="admin";
-$pass ="password";
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id$
+ *
+ */
 
 //we don't like caching while testing, so we disable it
-ini_set("soap.wsdl_cache_enabled", 0);
+//ini_set("soap.wsdl_cache_enabled", 0);
+//
+//// errors are ok, but warnings have nothing to say (in this case, sometimes warnings are useful!)
+//ini_set("error_reporting", "E_ALL & ~E_WARNING");
 
-// errors are ok, but warnings just destroy our layout while they have nothing to say (in this case, sometimes warnings are useful!)
-ini_set("error_reporting", "E_ALL & ~E_WARNING");
+include_once("lsrc.client.php");
+/**
+ * initiate the testclient object
+ */
+$testclient = new lsrcClient();
 
-if($wsdl=='')
+/**
+ * prepare the lsrcClient class (initiate the soapClient, set variables, set sid if given/needed)
+ */
+if(isset($_POST['sid']))
+$testclient->prepare($_POST['sid']);
+else
+$testclient->prepare();
+
+/**
+ * set user and password
+ */
+//$testclient->user = 'admin';
+//$testclient->pass = 'hisuser';
+
+/**
+ * set the path2wsdl to what ever is set by the user
+ */
+//if(isset($_POST['wsdl']))
+//	$testclient->path2wsdl = $_POST['wsdl'];
+
+$sReturn = '';
+
+/** call the desired function */
+reset($_POST);
+while(list($key, $value) = each($_POST))
 {
-	// give full uri of the wsdl from the webservice you want to connect to...
-	// THIS NEEDS TO BE CHANGED to the webservice you want to connect, localhost is just for testing on one machine...
-	// change http to https if you want to use ssl connection to the wsdl...
-	$wsdl=$limeUrl.'/admin/remotecontrol/lsrc.server.php?wsdl';
+    switch ($key)
+    {
+        case "sendStatistic":
+
+            try
+            {
+                $sReturn = $testclient->sendStatistics($_REQUEST['type'],$_REQUEST['email'], $_REQUEST['graph']);
+            }
+            catch(SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+            break;
+        case "delsurvey":
+            try
+            {
+                $sReturn = $testclient->deleteSurvey();
+            }
+            catch(SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "sendMail":
+
+            $sType = $_REQUEST['type'];
+            $maxemails = $_REQUEST['maxemails'];
+            $subject = $_REQUEST['subject'];
+            $mailText = $_REQUEST['mailText'];
+
+            try
+            {
+                $sReturn = $testclient->sendMail($sType, $maxemails, $subject, $mailText);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "getField":
+
+            try
+            {
+                $sReturn = $testclient->getFieldmap();
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "delsurvey":
+
+            try
+            {
+                $sReturn = $testclient->deleteSurvey();
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+        case "impMatrix":
+
+            $qText = $_REQUEST['quest'];
+            $mandatory = $_REQUEST['mandatory'];
+            for($n=1;$n<10;++$n)
+            {
+                if($_REQUEST['item'.$n]!='')
+                {
+                    if($n==1)
+                    {
+                        $items = $_REQUEST['item'.$n];
+                    }
+                    else
+                    {
+                        $items .= ",".$_REQUEST['item'.$n];
+                    }
+                }
+            }
+
+            $qHelp = $_REQUEST['help'];
+
+            try
+            {
+
+                $sReturn = $testclient->importMatrix($qTitle, $qText, $qHelp, $items, "Matrix5", $mandatory);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+
+
+        case "impFree":
+
+            $qTitle = $_REQUEST['title'];
+            $qText = $_REQUEST['quest'];
+            $qHelp = $_REQUEST['help'];
+            $mandatory = $_REQUEST['mandatory'];
+
+            try
+            {
+
+                $sReturn = $testclient->sImportFreetext($qTitle, $qText, $qHelp, "Freitext", $mandatory);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+
+        case "impQuest":
+
+            $sMod = $_REQUEST['mod'];
+            $mandatory = $_REQUEST['mandatory'];
+
+            try
+            {
+
+                $sReturn = $testclient->importQuestion($sMod, $mandatory);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            break;
+
+        case "impGroup":
+
+            $sMod = $_REQUEST['mod'];
+            $sGroupName = $_REQUEST['groupName'];
+            $sGroupDescription = $_REQUEST['groupDescription'];
+            try
+            {
+                $sReturn = $client->sImportGroup($sMod, $sGroupName, $sGroupDescription);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+            break;
+
+        case "activate":
+            $dStart = $_REQUEST['start'];
+            $dEnd = $_REQUEST['end'];
+            try
+            {
+                $sReturn = $testclient->activateSurvey( $dStart, $dEnd);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+
+            break;
+
+        case "createSurvey":
+            $sVbes = $_REQUEST['sdes'];
+            $sVtit = $_REQUEST['stit'];
+            $sVwel = $_REQUEST['sVwel'];
+            $sVend = $_REQUEST['sVend'];
+            $sMail = $_REQUEST['sEmail'];
+            $sName = $_REQUEST['sName'];
+            $sUrl = $_REQUEST['sUrl'];
+            $sUbes = $_REQUEST['sUdes'];
+            $sVtyp = $_REQUEST['core'];
+
+            try
+            {
+                $sReturn = $testclient->createSurvey($sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+            $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+
+            break;
+
+        case "change":
+
+            $table = $_REQUEST['table'];
+            $key = $_REQUEST['key'];
+            $value = $_REQUEST['value'];
+            $where = $_REQUEST['whereKey'];
+            $mode = $_REQUEST['mode'];
+            //$whereValue = $_REQUEST['whereValue'];
+
+            try
+            {
+                $sReturn = $testclient->changeSurvey($table, $key, $value, $where, $mode);
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+
+
+            break;
+
+        case "tokens":
+
+            $sToken = $_REQUEST['token'];
+            try
+            {
+                $sReturn = $testclient->insertToken( $sToken );
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+
+            break;
+
+        case "tokRet":
+
+            try
+            {
+                $sReturn = $testclient->tokenReturn();
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+
+            break;
+
+        case "insPar":
+
+            $sParticipantData = $_REQUEST['sParticipantData'];
+            try
+            {
+                $sReturn = $testclient->insertParticipants($sParticipantData);
+
+                $sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+            }
+            catch (SoapFault $fault)
+            {
+                $sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+            }
+            //these are just outputs for testing
+
+
+            break;
+    }
 }
-
-
-// fixed certificate, if U use some... you need this if you have an own trusted certificate.
-// If you dont know what I am taking about, just leave this option untouched.
-//$cert='allinone.pem';
-
 
 ##
 #####################################################################
+
+/**
+ * begin with output (some css first)
+ */
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -57,499 +345,82 @@ if($wsdl=='')
 <style type='text/css'>
 <!--
 body {
-	background-color: black;
-	color: white;
+  background-color: black;
+  color: white;
 }
 
 div {
-	background-color: white;
-	color: black;
-	padding: 0.2em;
+  background-color: white;
+  color: black;
+  padding: 0.2em;
 }
-a:link{
-	color:darkgreen;
-	fontweight:bold;
+
+a:link {
+  color: darkgreen;
+  fontweight: bold;
 }
-a:visited{
-	color:darkgreen;
-	fontweight:bold;
+
+a:visited {
+  color: darkgreen;
+  fontweight: bold;
 }
-a:hover{
-	color:green;
-	fontweight:bold;
+
+a:hover {
+  color: green;
+  fontweight: bold;
 }
-p{
-	border-top:solid 1px white;
-	margin-bottom:0.5em;
-	margin-top:0.2em;
+
+p {
+  border-top: solid 1px white;
+  margin-bottom: 0.5em;
+  margin-top: 0.2em;
 }
 -->
 </style>
-<?php
-
-// Checkfunction für die soap Klasse und die benötigte libxml version...
-function soapCheck ($path2wsdl)
-{
-	$soapCheck ='<div style="color:white;background-color:black;border: 1px solid green;">';
-	if(class_exists(SoapClient))
-	{
-		$soapCheck .= "<div style='float:left;background:green;color:white;padding:5px;margin-right:5px;'>
-						SOAP Erweiterung existiert</div> ";
-	}
-	else
-	{
-		$soapCheck .= "<div style='float:left;background:red;color:white;padding:5px;margin-right:5px;'>
-						SOAP Erweiterung fehlt!</div> ";
-	}
-	if(LIBXML_VERSION>=20540)
-	{
-		$soapCheck .= " <div style='float:left;background:green;color:white;padding:5px;margin-right:5px;'>
-						libXML version '".LIBXML_DOTTED_VERSION."' OK</div>";
-	}
-	else
-	{
-		$soapCheck .= " <div style='float:left;background:red;color:white;padding:5px;margin-right:5px;'>
-						libXML version '".(LIBXML_DOTTED_VERSION )."' nicht OK</div>";
-	}
-	// Check ob eine wsdl Datei gefunden werden kann
-	//$wsdlfile = ;
-	
-	ini_set("allow_url_fopen", 1);
-	if (!fopen($path2wsdl,"r"))
-	{
-		$soapCheck .= "<div style='float:left;background:red;color:white;padding:5px;'>
-						Der Pfad zur WSDL Datei ist nicht korrekt oder die WSDL Datei fehlt!</div>";
-	}
-	else
-	{
-		$soapCheck .= "<div style='float:left;background:green;color:white;padding:5px;'>
-						WSDL Datei konnte gefunden werden</div>";
-	}
-	$soapCheck .= "<div style='clear:both;background-color:black;'>
-					<form action='".$_SERVER['PHP_SELF']."' method='post'>
-					<input type='text' name='wsdl' size='97' value='".$path2wsdl."' />
-					<input type='submit' name='validate' value='neu checken!' />
-					</form>
-					</div></div>";
-	return $soapCheck;
-}
-
-//// We initiate a SOAPclient Object and give the ssl-certificate, if wished:
-//$cert = 'D:\\xampp\apache\privkey.pem';
-if(isset($cert) && $cert!="")
-{
-	ini_set("allow_url_fopen", 1);
-	$file = fopen($wsdl,"r");
-	if(class_exists(SoapClient) && $file!=FALSE)
-	{
-		/**
-		 * TODO: no documentation in PHP manual... no doc here... Can't tell you what to do in order to get Communication working with fixed Certificates
-		 * Can't even say, which certificates, how they have to be (.pem, .crt, .key etc.?) 
-		 * Own Microkosmos for Geeks only... Sad truth...
-		 */
-		$context = array(
-			'ssl'=> array(
-				'verify_peer' => false,
-				'allow_self_signed'	=> true,
-				'local_cert' => $cert
-			)
-		);
-		$stream_context = stream_context_create($context);
-
-		$client = new SoapClient($wsdl, array('soap_version' => SOAP_1_1,
-				'trace' => 1, 
-				'stream_context' => $stream_context
-		));
-	}
-}
-else
-{
-	ini_set("allow_url_fopen", 1);
-	$file = fopen($wsdl,"r");
-	if(class_exists(SoapClient) && $file!=FALSE)
-	{
-		$client = new SoapClient($wsdl, array('soap_version' => SOAP_1_1,
-            'trace' => 1));   
-	}
-}
-if($file!=FALSE)
-{
-	try
-	{	$ques = $client->sAvailableModules($user, "password", "que");}
-	catch (SoapFault $fault)
-	{	$ques .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
-}
-if($file!=FALSE)
-{
-	try
-	{	$mods = $client->sAvailableModules($user, "password", "mod");}
-	catch (SoapFault $fault)
-	{	$mods .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
-}
-if($file!=FALSE)
-{
-	try
-	{	$cores = $client->sAvailableModules($user, "password", "core");}
-	catch (SoapFault $fault)
-	{	$cores .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
-}
-
-$iVid = $_REQUEST['sid'];
-//$sVbes = utf8_encode($sVbes);
-//$user = $_REQUEST['user'];
-//$pass = $_REQUEST['password'];
-
-// Calling the desired function //XXX
-reset($_REQUEST);
-while(list($key, $value) = each($_REQUEST))
-{
-	if(substr($key,0,13)=="sendStatistic")
-	{
-		$iVid = $_REQUEST['sid'];
-		$type = $_REQUEST['type'];
-		$email = $_REQUEST['email'];
-		$graph = $_REQUEST['graph'];
-		
-		try
-		{
-			$sReturn = $client->fSendStatistic($user, $pass, $iVid, $email, $type, $graph);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-		
-		
-		
-	}
-	if(substr($key,0,8)=="sendMail")
-	{
-		$iVid = $_REQUEST['sid'];
-		$sType = $_REQUEST['type'];
-		$maxemails = $_REQUEST['maxemails'];
-		$subject = $_REQUEST['subject'];
-		$mailText = $_REQUEST['mailText'];
-		
-		try
-		{
-			$sReturn = $client->sSendEmail($user, $pass, $iVid, $sType, $maxemails, $subject, $mailText);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-		
-		
-		
-	}
-	if(substr($key,0,8)=="getField")
-	{
-		$iVid = $_REQUEST['sid'];
-		
-		try
-		{
-			$sReturn = $client->sGetFieldmap($user, $pass, $iVid);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-		
-		
-	}
-	if(substr($key,0,9)=="delsurvey")
-	{
-		$iVid = $_REQUEST['sid'];
-		//$sMod = $_REQUEST['mod'];
-		try
-		{
-			$sReturn = $client->sDeleteSurvey($user, $pass, $iVid);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-	
-	if(substr($key,0,9)=="impMatrix")
-	{
-		$iVid = $_REQUEST['sid'];
-		// $sMod = $_REQUEST['mod'];
-		// $qTitle = $_REQUEST['title'];
-		$qText = $_REQUEST['quest'];
-		$mandatory = $_REQUEST['mandatory'];
-		for($n=1;$n<10;++$n)
-		{
-			if($_REQUEST['item'.$n]!='')
-			{
-				if($n==1)
-				{
-					$items = $_REQUEST['item'.$n];
-				}
-				else
-				{
-					$items .= ",".$_REQUEST['item'.$n];
-				}
-			}
-		}
-
-		$qHelp = $_REQUEST['help'];
-			
-		try
-		{
-
-			$sReturn = $client->sImportMatrix($user, $pass, $iVid, $qTitle, $qText, $qHelp, $items, "Matrix5", $mandatory);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-	if(substr($key,0,8)=="impFree")
-	{
-		$iVid = $_REQUEST['sid'];
-		// $sMod = $_REQUEST['mod'];
-		$qTitle = $_REQUEST['title'];
-		$qText = $_REQUEST['quest'];
-		$qHelp = $_REQUEST['help'];
-		$mandatory = $_REQUEST['mandatory'];
-			
-		try
-		{
-
-			$sReturn = $client->sImportFreetext($user, $pass, $iVid, $qTitle, $qText, $qHelp, "Freitext", $mandatory);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-	if(substr($key,0,8)=="impQuest")
-	{
-		$iVid = $_REQUEST['sid'];
-		// $sMod = $_REQUEST['mod'];
-		$sMod = $_REQUEST['mod'];
-		$mandatory = $_REQUEST['mandatory'];
-			
-		try
-		{
-
-			$sReturn = $client->sImportQuestion($user, $pass, $iVid, $sMod, $mandatory);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-
-	if(substr($key,0,8)=="impGroup")
-	{
-		$iVid = $_REQUEST['sid'];
-		$sMod = $_REQUEST['mod'];
-		$sGroupName = $_REQUEST['groupName'];
-		$sGroupDescription = $_REQUEST['groupDescription'];
-		try
-		{
-			$sReturn = $client->sImportGroup($user, $pass, $iVid, $sMod, $sGroupName, $sGroupDescription);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-
-	if(substr($key,0,8)=="activate")
-	{
-		$iVid = $_REQUEST['sid'];
-		$dStart = $_REQUEST['start'];
-		$dEnd = $_REQUEST['end'];
-		if(isset($dStart) && $dStart!='')
-		{
-			$sUseStart='Y';
-		}
-		if(isset($dEnd) && $dEnd!='')
-		{
-			$sUseEnd='Y';
-		}
-
-		try
-		{
-			$sReturn = $client->sActivateSurvey($user, $pass, $iVid, $dStart, $dEnd);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-
-	if(substr($key,0,6)=="submit")
-	{
-		//$functionToCall = "sCreateSurvey";
-		$iVid = $_REQUEST['sid'];
-		$sVbes = $_REQUEST['sdes'];
-		$sVtit = $_REQUEST['stit'];
-		$sVwel = $_REQUEST['sVwel'];
-		$sVend = $_REQUEST['sVend'];
-		$sMail = $_REQUEST['sEmail'];
-		$sName = $_REQUEST['sName'];
-		$sUrl = $_REQUEST['sUrl'];
-		$sUbes = $_REQUEST['sUdes'];
-		$sVtyp = $_REQUEST['core'];
-
-		try
-		{
-			$sReturn = $client->sCreateSurvey($user, $pass, $iVid, $sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-	if(substr($key,0,6)=="change")
-	{
-		$table = $_REQUEST['table'];
-		$key = $_REQUEST['key'];
-		$value = $_REQUEST['value'];
-		$where = $_REQUEST['whereKey'];
-		$mode = $_REQUEST['mode'];
-		//$whereValue = $_REQUEST['whereValue'];
-		 
-		try
-		{
-			$sReturn = $client->sChangeSurvey($user, $pass , $table, $key, $value, $where, $mode);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-	if(substr($key,0,6)=="tokens")
-	{
-		$sToken = $_REQUEST['token'];
-		try
-		{
-			$sReturn = $client->sInsertToken($user, $pass, $iVid, $sToken );
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//this are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-	if(substr($key,0,6)=="tokRet")
-	{
-		//$functionToCall = "sTokenReturn";
-		try
-		{
-			$sReturn = $client->sTokenReturn($user, $pass, $iVid);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//this are the return Values
-		$sOutput .= "<br/><br/><b>Return</b>: <br/> ['return'] => ". $sReturn;
-	}
-	if(substr($key,0,6)=="insPar")
-	{
-		$sParticipantData = $_REQUEST['sParticipantData'];
-		try
-		{
-			$sReturn = $client->sInsertParticipants($user, $pass, $iVid, $sParticipantData);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-	}
-}
-if(isset($sReturn))
-{
-	$sOutput .="<br/><br/>Dumping <b>request headers</b>:<br/><pre>"
-	.$client->__getLastRequestHeaders()."</pre>";
-
-	$sOutput .="Dumping <b>request</b>:<code>".htmlentities($client->__getLastRequest())."</code>";
-
-	$sOutput .="<br/><br/><br/> Dumping <b>response headers</b>:<br/><pre>"
-	.$client->__getLastResponseHeaders()."</pre>";
-	$sOutput .="<br/>Dumping <b>response</b>:<br/><code>".htmlentities($client->__getLastResponse())."</code>";
-	//$resp[] = $client->__getLastResponse();
-	// echo $resp['resParam'];
-}
-?>
 </head>
 <body>
-<?php echo soapCheck($wsdl); ?>
 <?php
-// we dump the client object functions (which are functions of the server  defined in the wsdl)
-if(!isset($sOutput))
+echo $testclient->soapCheck();
+/**
+ * if there is an return, output request and response for debugging
+ */
+if(isset($sReturn) && $sReturn!='')
 {
-	echo "<b>Client object functions:</b> <font style='font-size:x-small'>(As given in the wsdl file. Functions could be disabled or else on the serverside. There is no guarantee the functions really have these Params nor that the functions exist on the serverside.)</font><br/>";
-	if($file!=FALSE)
-	{
-		$funcs=$client->__getFunctions();
-		
-		foreach($funcs as $func)
-		{
-			echo '<p><font style="font-family:tahoma, arial;font-size:small;" >';
-			print_r($func);
-			echo '</font></p>';
-		}
-	}
+    echo $testclient->getResponse();
+}
+
+// we dump the client object functions (which are functions of the server  defined in the wsdl)
+if(!isset($sReturn) || $sReturn=='')
+{
+    echo $testclient->getServerFunctions();
 }
 
 if(isset($sOutput))
 {
-	
-	echo '<div style="color:white;background-color:black;border: 1px solid white;">';
-	echo '<h3>testing output:</h3>';
-	if(isset($iVid))
-	{
-		echo "<a href='{$limeUrl}/index.php?sid=".$iVid."&amp;lang=de&amp;newtest=Y' target='_blank'>test Survey</a>";
-	}
-	echo $sOutput;
-	echo '</div>';
+
+    echo '<div style="color:white;background-color:black;border: 1px solid white;">';
+    echo '<h3>testing output:</h3>';
+    if(isset($testclient->sid))
+    {
+        echo "<a href='{$testclient->limeUrl}/index.php?sid=".$testclient->sid."&amp;lang=de&amp;newtest=Y' target='_blank'>test Survey</a>";
+    }
+    echo $sOutput;
+    echo '</div>';
 }
 ?>
-<div style='float:left; margin-bottom: 5px; margin-right: 5px;'>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sCreateSurvey function</h3>
-<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
-<b><font color='red'>* </font>VeranstaltungsTyp:</b>
-<br />
+<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
+	color='red'>* </font>VeranstaltungsTyp:</b> <br />
 <select name='core' size='1'>
 <?php
-$aCores = explode(",", $cores);
+$aCores = explode(",", $testclient->getAvailableModules('core'));
 for($n=0;$n<count($aCores);++$n)
 {echo "<option value='".$aCores[$n]."'>".$aCores[$n]."</option>";}
 ?>
 </select> <? //print_r($cores);?> <br />
-<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
-<br />
+<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be
+Integer):</b> <br />
 <input type='text' name='sid' size='8' maxlength='11' /> <br />
 <b><font color='red'>* </font>Veranstaltungs Titel / Survey Title (used
 as part of the welcome message, if welcome Message is left blank):</b> <br />
@@ -571,15 +442,14 @@ Message is left blank):</b> <br />
 <b>Url Description:</b> <br />
 <input type='text' name='sUdes' size='30' maxlength='150' /> <br />
 <?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
-<input type='submit' name='submit' value='Create Survey!' /></form>
+<input type='submit' name='createSurvey' value='Create Survey!' /></form>
 </div>
 
 
-<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sActivateSurvey function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
-	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
-<br />
+	color='red'>* </font>VeranstaltungsID / SurveyID:</b> <br />
 <input type='text' name='sid' size='5' maxlength='5'
 	value='<?php echo $iVid ?>' /> <br />
 <b>Startdate (YYYY-MM-DD):</b> <br />
@@ -590,18 +460,18 @@ Message is left blank):</b> <br />
 <input type='submit' name='activate' value='Start Survey!' /></form>
 </div>
 
-<div style='float: left;  margin-bottom: 5px; margin-right: 5px'>
-<h3>sDeleteSurvey function</h3>(attention: no safetyquestion is asked!)<br/>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px'>
+<h3>sDeleteSurvey function</h3>
+(attention: no safetyquestion is asked!)<br />
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
-	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
-<br />
+	color='red'>* </font>VeranstaltungsID / SurveyID:</b> <br />
 <input type='text' name='sid' size='5' maxlength='5'
 	value='<?php echo $iVid ?>' /> <br />
-	<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='delsurvey' value='Delete Survey!' /></form>
 </div>
 
-<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sImportGroup function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
@@ -612,15 +482,16 @@ Message is left blank):</b> <br />
 there for testing):</b> <br />
 <select name='mod' size='1'>
 <?php
-$aMods = explode(",", $mods);
+$aMods = explode(",", $testclient->getAvailableModules('mod'));
 for($n=0;$n<count($aMods);++$n)
 {echo "<option value='".$aMods[$n]."'>".$aMods[$n]."</option>";}
 ?>
 </select> <? //print_r($mods);?> <br />
-<b>Name of the group:</b><br/>
+<b>Name of the group:</b><br />
 <input type='text' name='groupName' size='30' maxlength='150' /> <br />
-<b>groupDescription:</b><br/>
-<input type='text' name='groupDescription' size='30' maxlength='255' /> <br />
+<b>groupDescription:</b><br />
+<input type='text' name='groupDescription' size='30' maxlength='255' />
+<br />
 <?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='impGroup' value='add group to survey!' /></form>
 </div>
@@ -632,7 +503,7 @@ for($n=0;$n<count($aMods);++$n)
 <br />
 <input type='text' name='sid' size='5' maxlength='5'
 	value='<?php echo $iVid ?>' /> <br />
-	<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
+<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
 <b><font color='red'>* </font>Question Title :</b> <br />
 <input type='text' name='title' size='30' maxlength='150' /> <br />
 <b><font color='red'>* </font>Question:</b> <br />
@@ -643,18 +514,18 @@ for($n=0;$n<count($aMods);++$n)
 <input type='submit' name='impFree' value='Create Question!' /></form>
 </div>
 
-<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sImportQuestion</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
 <br />
 <input type='text' name='sid' size='5' maxlength='5'
 	value='<?php echo $iVid ?>' /> <br />
-	<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
+<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
 <b><font color='red'>* </font>Question csv to import:</b> <br />
 <select name='mod' size='1'>
 <?php
-$aQues = explode(",", $ques);
+$aQues = explode(",", $testclient->getAvailableModules('que'));
 for($n=0;$n<count($aQues);++$n)
 {echo "<option value='".$aQues[$n]."'>".$aQues[$n]."</option>";}
 ?>
@@ -664,21 +535,20 @@ for($n=0;$n<count($aQues);++$n)
 </div>
 
 
-<div
-	style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sImportMatrix</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
 <br />
 <input type='text' name='sid' size='5' maxlength='5'
 	value='<?php echo $iVid ?>' /> <br />
-	<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
+<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
 <b><font color='red'>* </font>Question :</b> <br />
 <textarea name='quest' cols='50' rows='3'></textarea> <br />
 <?php
 for($n=1;$n<10;++$n)
 {
-	echo "<b>Item {$n} :</b> <br />",
+    echo "<b>Item {$n} :</b> <br />",
 		 "<input type='text' name='item{$n}' size='50' maxlength='150'/>",
 		 "<br />";
 }
@@ -689,12 +559,13 @@ for($n=1;$n<10;++$n)
 </div>
 
 
-<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sChangeSurvey function</h3>
-( this is not part of the lsrc, it just shows the power of it, <br/>it has to be activated in server.php on line ~60 )
-<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
-<input type="radio" name="mode" value="0" checked='checked' /> update
-<input type="radio" name="mode" value="1" /> insert<br/>
+( this is not part of the lsrc, it just shows the power of it, <br />
+it has to be activated in server.php on line ~60 )
+<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><input
+	type="radio" name="mode" value="0" checked='checked' /> update <input
+	type="radio" name="mode" value="1" /> insert<br />
 <b>Table to change</b> <br />
 <input type='text' name='table' size='30' maxlength='150' /> <br />
 <b>Key</b><br />
@@ -710,7 +581,7 @@ for($n=1;$n<10;++$n)
 
 </div>
 
-<?php 
+<?php
 echo "<div style='float:left;margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sInsertToken function</h3>";
 echo "<p>Makes the Survey closed.<br/> Means: It's only available to people who have an unused token</p>";

@@ -1,4 +1,4 @@
-// $Id: templates.js 7699 2009-09-30 22:28:50Z c_schmitz $
+// $Id$
 
 $(document).ready(function(){
    $("#filterduplicatetoken").change(function(){
@@ -23,7 +23,7 @@ $(document).ready(function(){
 				$('#tokenboxeschecked').val(selecteditems);
 				/* alert(selecteditems); */
 			}
-		});
+});
 		tog=!tog;
 	});
 	$('input[type=checkbox]').click(function() {

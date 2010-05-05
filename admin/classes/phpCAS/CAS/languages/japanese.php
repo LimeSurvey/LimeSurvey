@@ -3,25 +3,25 @@
 /**
  * @file languages/japanese.php
  * @author fnorif (fnorif@yahoo.co.jp)
- * 
+ *
  * Now Encoding is EUC-JP and LF
  **/
 
 $this->_strings = array(
- CAS_STR_USING_SERVER 
- => 'using server',
- CAS_STR_AUTHENTICATION_WANTED 
- => 'CAS¤Ë¤è¤ëÇ§¾Ú¤ò¹Ô¤¤¤Þ¤¹',
- CAS_STR_LOGOUT 
- => 'CAS¤«¤é¥í¥°¥¢¥¦¥È¤·¤Þ¤¹!',
- CAS_STR_SHOULD_HAVE_BEEN_REDIRECTED 
- => 'CAS¥µ¡¼¥Ð¤Ë¹Ô¤¯É¬Í×¤¬¤¢¤ê¤Þ¤¹¡£¼«Æ°Åª¤ËÅ¾Á÷¤µ¤ì¤Ê¤¤¾ì¹ç¤Ï <a href="%s">¤³¤Á¤é</a> ¤ò¥¯¥ê¥Ã¥¯¤·¤ÆÂ³¹Ô¤·¤Þ¤¹¡£',
- CAS_STR_AUTHENTICATION_FAILED 
- => 'CAS¤Ë¤è¤ëÇ§¾Ú¤Ë¼ºÇÔ¤·¤Þ¤·¤¿',
- CAS_STR_YOU_WERE_NOT_AUTHENTICATED 
- => '<p>Ç§¾Ú¤Ç¤­¤Þ¤»¤ó¤Ç¤·¤¿.</p><p>¤â¤¦°ìÅÙ¥ê¥¯¥¨¥¹¥È¤òÁ÷¿®¤¹¤ë¾ì¹ç¤Ï<a href="%s">¤³¤Á¤é</a>¤ò¥¯¥ê¥Ã¥¯.</p><p>ÌäÂê¤¬²ò·è¤·¤Ê¤¤¾ì¹ç¤Ï <a href="mailto:%s">¤³¤Î¥µ¥¤¥È¤Î´ÉÍý¼Ô</a>¤ËÌä¤¤¹ç¤ï¤»¤Æ¤¯¤À¤µ¤¤.</p>',
- CAS_STR_SERVICE_UNAVAILABLE
- => '¥µ¡¼¥Ó¥¹ `<b>%s</b>\' ¤ÏÍøÍÑ¤Ç¤­¤Þ¤»¤ó (<b>%s</b>).'
+CAS_STR_USING_SERVER
+=> 'using server',
+CAS_STR_AUTHENTICATION_WANTED
+=> 'CASï¿½Ë¤ï¿½ï¿½Ç§ï¿½Ú¤ï¿½Ô¤ï¿½ï¿½Þ¤ï¿½',
+CAS_STR_LOGOUT
+=> 'CASï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Þ¤ï¿½!',
+CAS_STR_SHOULD_HAVE_BEEN_REDIRECTED
+=> 'CASï¿½ï¿½ï¿½ï¿½ï¿½Ð¤Ë¹Ô¤ï¿½É¬ï¿½×¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½Æ°Åªï¿½ï¿½Å¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ <a href="%s">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a> ï¿½ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½Â³ï¿½Ô¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½',
+CAS_STR_AUTHENTICATION_FAILED
+=> 'CASï¿½Ë¤ï¿½ï¿½Ç§ï¿½Ú¤Ë¼ï¿½ï¿½Ô¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½',
+CAS_STR_YOU_WERE_NOT_AUTHENTICATED
+=> '<p>Ç§ï¿½Ú¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½.</p><p>ï¿½â¤¦ï¿½ï¿½ï¿½Ù¥ê¥¯ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<a href="%s">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a>ï¿½ò¥¯¥ï¿½Ã¥ï¿½.</p><p>ï¿½ï¿½ï¿½ê¤¬ï¿½ï¿½è¤·ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ <a href="mailto:%s">ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤Î´ï¿½ï¿½ï¿½ï¿½</a>ï¿½ï¿½ï¿½ä¤¤ï¿½ï¿½ï¤»ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.</p>',
+CAS_STR_SERVICE_UNAVAILABLE
+=> 'ï¿½ï¿½ï¿½ï¿½ï¿½Ó¥ï¿½ `<b>%s</b>\' ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ (<b>%s</b>).'
 );
 
 ?>

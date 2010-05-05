@@ -1,3 +1,4 @@
+//$Id$    
 $(document).ready(function(){
     setupAllTabs();
     if(typeof(userdateformat) !== 'undefined') 
@@ -53,6 +54,29 @@ $(document).ready(function(){
                });
         }
     });    
+
+    $('label[title]').each(function() {
+        if($(this).attr('title') != '')
+        {
+             $(this).qtip({
+               style: { name: 'cream',
+                        tip:true, 
+                        color:'#111111', 
+                        border: {
+                             width: 1,
+                             radius: 5,
+                             color: '#EADF95'}
+                       },  
+               position: { adjust: { 
+                        screen: true, scroll:true },
+                        corner: {
+                                target: 'bottomRight'}
+                        },
+               show: {effect: { length:50}}
+               });
+        }
+    });    
+    
 
     $('.tipme').each(function() {
         if($(this).attr('alt') != '')

@@ -9,6 +9,9 @@ $(document).ready(function()
     {
         $(focus_element).focus();
     }
+    $(".question").find("select").each(function () {
+        hookEvent($(this).attr('id'),'mousewheel',noScroll);
+    });
 });
 
 Array.prototype.push = function()
@@ -139,6 +142,41 @@ function cancelBubbleThis(eventObject)
 	if (eventObject && eventObject.stopPropagation) {
 		eventObject.stopPropagation();
 	}
+}
+
+function cancelEvent(e)
+{
+  e = e ? e : window.event;
+  if(e.stopPropagation)
+    e.stopPropagation();
+  if(e.preventDefault)
+    e.preventDefault();
+  e.cancelBubble = true;
+  e.cancel = true;
+  e.returnValue = false;
+  return false;
+}
+
+function hookEvent(element, eventName, callback)
+{
+  if(typeof(element) == "string")
+    element = document.getElementById(element);
+  if(element == null)
+    return;
+  if(element.addEventListener)
+  {
+    if(eventName == 'mousewheel')
+      element.addEventListener('DOMMouseScroll', callback, false); 
+    element.addEventListener(eventName, callback, false);
+  }
+  else if(element.attachEvent)
+    element.attachEvent("on" + eventName, callback);
+}
+
+function noScroll(e)
+{
+  e = e ? e : window.event;
+  cancelEvent(e);
 }
 
 

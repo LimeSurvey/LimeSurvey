@@ -1,143 +1,129 @@
 /* The following styles are for all versions of IE 7 */
-.choice-5-pt-radio ul {
-	margin-left: 2.5em;
+
+.survey-question-help img {
+  margin-top: 0;
 }
- .yes-no ul
-,.gender ul {
-	margin-left: 1em;
+
+.choice-5-pt-radio ul {
+  margin-left: 2.5em;
+}
+
+.yes-no ul,.gender ul {
+  margin-left: 1em;
 }
 
 .multiple-short-txt ul.numbers-only li span {
-	width: 10em;
+  width: 10em;
 }
 
-
- .multiple-short-txt ul
-,.multiple-opt-comments ul
-,.numeric-multi ul
-,.multiple-short-txt ul li
-,.multiple-opt-comments ul li
-,.numeric-multi ul li {
-	margin-left: 0%;
-	padding-left: 0%;
+.multiple-short-txt ul,.multiple-opt-comments ul,.numeric-multi ul,.multiple-short-txt ul li,.multiple-opt-comments ul li,.numeric-multi ul li
+  {
+  margin-left: 0%;
+  padding-left: 0%;
 }
-
 
 .multiple-short-txt ul label {
-    margin-left: 0em;
-    float:left;
-    display: block;
-    width: 40%;      
-    text-align:right;
+  margin-left: 0em;
+  float: left;
+  display: block;
+  width: 40%;
+  text-align: right;
 }
 
-
-.multiple-opt-comments ul li label{
-    float: left;
-    width: 35%; 
-    display:block; 
-    margin:0;
-    padding:0;    
-    padding-left:25px;
+.multiple-opt-comments ul li label {
+  float: left;
+  width: 35%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding-left: 25px;
 }
 
-
-.multiple-opt-comments ul li span.comment{
-    float:left;
-    width:40%;
-    display:block;
-    margin:0;
-    padding:0; 
+.multiple-opt-comments ul li span.comment {
+  float: left;
+  width: 40%;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
-.multiple-opt-comments ul li span.comment input{
-    width:200px;
+.multiple-opt-comments ul li span.comment input {
+  width: 200px;
 }
 
-.multiple-short-txt ul li,
-.multiple-opt-comments ul li {  
-    float: left;  
-    clear: left;  
-    width: 100%;  
+.multiple-short-txt ul li,.multiple-opt-comments ul li {
+  float: left;
+  clear: left;
+  width: 100%;
 }
 
 .innergraph img {
-    height:16px;
-    vertical-align:top;
-    margin:0px 0px 0px 0px;
+  height: 16px;
+  vertical-align: top;
+  margin: 0px 0px 0px 0px;
 }
 
-.multiple-short-txt td.answer,
-.date td.answer,
-.yes-no td.answer,
-.list-radio td.answer,
-.list-radio-flexible td.answer,
-.choice-5-pt-radio td.answer,
-.gender td.answer {
-    padding-bottom:10px;
+.multiple-short-txt td.answer,.date td.answer,.yes-no td.answer,.list-radio td.answer,.list-radio-flexible td.answer,.choice-5-pt-radio td.answer,.gender td.answer
+  {
+  padding-bottom: 10px;
 }
 
-.choice-5-pt-radio label
-{
-    margin:0 ;
-    padding:0;
+.choice-5-pt-radio label {
+  margin: 0;
+  padding: 0;
 }
 
 .date button {
-    line-height:15px;
-    height:21px;
-    width:22px;
-}
-
-td.questionhelp {
-    text-align:left;
+  line-height: 15px;
+  height: 21px;
+  width: 22px;
 }
 
 .numeric-multi ul li label {
-    float: left;
-	width: auto; 
+  float: left;
+  width: auto;
 }
 
 .numeric-multi ul {
-	float: left;
-	margin: 0 0 1.5em 0;
+  float: left;
+  margin: 0 0 1.5em 0;
 }
 
-.numeric-multi ul li {  
-    width: 100%;
-	padding-bottom: 1em;  
+.numeric-multi ul li {
+  width: 100%;
+  padding-bottom: 1em;
 }
 
-.numeric-multi ul li.multiplenumerichelp {  
-	padding-top: 0.6em; 
-	padding-bottom: 0; 
+.numeric-multi ul li.multiplenumerichelp {
+  padding-top: 0.6em;
+  padding-bottom: 0;
 }
 
 .numeric-multi ul li span {
-    padding-left:0;
+  padding-left: 0;
 }
 
 .numeric-multi input {
-    padding-left:1px;
+  padding-left: 1px;
 }
 
-input.submit
-{
-    padding:0px;
+input.submit {
+  padding: 0px;
 }
 
 /** UI Slider **/
-
 .numeric-multi label.slider-label {
-	margin-top: 1.3em;
+  margin-top: 1.3em;
+  display: inline;
+  width: 30%;
 }
 
 .slider_lefttext {
-	float: left;
-	margin-top: 1.5em;
+  float: left;
+  padding-top: 1.5em;
 }
 
 .slider_righttext {
-	float: left;
-	margin-top: 1.5em;
+  float: left;
+  padding-top: 1.5em;
 }

@@ -1,9 +1,9 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Simplified Chinese Version
-* @author liqwei <liqwei@liqwei.com>
-*/
+ * PHPMailer language file: refer to English translation for definitive list
+ * Simplified Chinese Version
+ * @author liqwei <liqwei@liqwei.com>
+ */
 
 $PHPMAILER_LANG['authenticate'] = 'SMTP 错误：登录失败。';
 $PHPMAILER_LANG['connect_host'] = 'SMTP 错误：无法连接到 SMTP 主机。';

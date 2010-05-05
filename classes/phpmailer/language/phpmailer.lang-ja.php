@@ -1,9 +1,9 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Japanese Version
-* By Mitsuhiro Yoshida - http://mitstek.com/
-*/
+ * PHPMailer language file: refer to English translation for definitive list
+ * Japanese Version
+ * By Mitsuhiro Yoshida - http://mitstek.com/
+ */
 
 $PHPMAILER_LANG['authenticate'] = 'SMTPエラー: 認証できませんでした。';
 $PHPMAILER_LANG['connect_host'] = 'SMTPエラー: SMTPホストに接続できませんでした。';
@@ -12,7 +12,7 @@ $PHPMAILER_LANG['data_not_accepted'] = 'SMTPエラー: データが受け付け�
 $PHPMAILER_LANG['encoding'] = '不明なエンコーディング: ';
 $PHPMAILER_LANG['execute'] = '実行できませんでした: ';
 $PHPMAILER_LANG['file_access'] = 'ファイルにアクセスできません: ';
-$PHPMAILER_LANG['file_open'] = 'ファイルエラー: ファイルを開けません: ';
+$PHPMAILER_LANG['file_open'] = 'ファイルエラー: ファイルを開けません: '
 $PHPMAILER_LANG['from_failed'] = '次のFromアドレスに間違いがあります: ';
 $PHPMAILER_LANG['instantiate'] = 'メール関数が正常に動作しませんでした。';
 //$PHPMAILER_LANG['invalid_email']        = 'Not sending, email address is invalid: ';

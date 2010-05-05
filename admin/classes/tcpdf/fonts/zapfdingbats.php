@@ -1,5 +1,5 @@
 <?php
- // core font definition file for TCPDF (www.tcpdf.org)
+// core font definition file for TCPDF (www.tcpdf.org)
 $type='core';
 $dw=788;
 $cw=array(0=>0,1=>0,2=>0,3=>0,4=>0,5=>0,6=>0,7=>0,8=>0,9=>0,10=>0,11=>0,12=>0,

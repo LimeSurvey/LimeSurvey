@@ -18,8 +18,9 @@
 {GROUPS}
 {PRIVACY}
 			<p class="submit-by">
-				{SUBMIT_BY}<br />
-				{FAX_TO}
+				{END}<br />
+                {SUBMIT_BY}<br />
+				{FAX_TO}<br />
 				{SUBMIT_TEXT}<br />
 				{THANKS}<br />
 			</p>

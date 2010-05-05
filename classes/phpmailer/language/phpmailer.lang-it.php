@@ -1,10 +1,10 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Italian version
-* @package PHPMailer
-* @author Ilias Bartolini <brain79@inwind.it>
-*/
+ * PHPMailer language file: refer to English translation for definitive list
+ * Italian version
+ * @package PHPMailer
+ * @author Ilias Bartolini <brain79@inwind.it>
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP Error: Impossibile autenticarsi.';
 $PHPMAILER_LANG['connect_host']         = 'SMTP Error: Impossibile connettersi all\'host SMTP.';

@@ -1,366 +1,351 @@
 /* Start reset CSS */
-    body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
-        margin:0;
-        padding:0;
-    }
-    table {
-        border-collapse:collapse;
-        border-spacing:0;
-    }
-    fieldset,img { 
-        border:0;
-    }
-    address,caption,cite,code,dfn,em,strong,th,var {
-        font-style:normal;
-        font-weight:normal;
-    }
-    ol,ul {
-        list-style:none;
-    }
-    caption,th {
-        text-align:left;
-    }
-    h1,h2,h3,h4,h5,h6 {
-        font-size:100%;
-        font-weight:normal;
-    }
-    q:before,q:after {
-        content:'';
-    }
-    abbr,acronym { border:0;
-    }
-/* End reset CSS */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td
+  {
+  margin: 0;
+  padding: 0;
+}
 
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+fieldset,img {
+  border: 0;
+}
+
+address,caption,cite,code,dfn,em,strong,th,var {
+  font-style: normal;
+  font-weight: normal;
+}
+
+ol,ul {
+  list-style: none;
+}
+
+caption,th {
+  text-align: left;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+q:before,q:after {
+  content: '';
+}
+
+abbr,acronym {
+  border: 0;
+}
+
+/* End reset CSS */
 body {
-    color:#444;
-    background-color:#2F5376;
-    font-family:Verdana;
-    font-size:12px;
-    background-image: url(gradient_bg.gif);
-    background-repeat:repeat-x;
+  color: #444;
+  background-color: #2F5376;
+  font-family: Verdana;
+  font-size: 12px;
+  background-image: url(gradient_bg.gif);
+  background-repeat: repeat-x;
 }
 
 label {
-    font-size:12px;
+  font-size: 12px;
 }
 
 h3 {
-    font-size:1.3em;
-    font-weight:bold;
-    color:#1D2D45;
-    padding-bottom:10px;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #1D2D45;
+  padding-bottom: 10px;
 }
 
-
-#answers
-{
-    margin:0;
-    width:90%;
+#answers {
+  margin: 0;
+  width: 90%;
 }
 
-
-#completed
-{
-   width:75%;
-   text-align:center;
-   background-color:#fff;
-   margin:10px auto;
-   padding-top:10px;
-   border: 1px solid #2f5376;
+#completed {
+  width: 75%;
+  text-align: center;
+  background-color: #fff;
+  margin: 10px auto;
+  padding-top: 10px;
+  border: 1px solid #2f5376;
 }
 
-
-div.questionhelp
-{
-font-size: 10px; 
-font-style: italic;
-
-
-
+div.survey-question-help {
+  font-size: 10px;
+  font-style: italic;
 }
 
-div.questionhelp img
-{
-   margin:0 5px;
-   margin-top:-4px;
-   vertical-align:middle;   
+div.survey-question-help img {
+  margin: 0 5px;
+  margin-top: -4px;
+  vertical-align: middle;
 }
-div.question
-{
-border: 1px solid #2f5376;
-background-color:#fff;
-width:96%;
-margin:20px auto;
-padding: 0.5em;
+
+div.question {
+  border: 1px solid #2f5376;
+  background-color: #fff;
+  width: 96%;
+  margin: 20px auto;
+  padding: 0.5em;
 }
 
 div.questiontext {
-    font-weight:bold;
-    font-family:verdana;
-    font-size:12px;
-    margin-bottom:10px;
+  font-weight: bold;
+  font-family: verdana;
+  font-size: 12px;
+  margin-bottom: 10px;
 }
 
 #groupheader {
-  margin:1%;
+  margin: 1%;
 }
-           
+
 #groupdescription {
-  margin:1%;
+  margin: 1%;
 }
 
 #container {
-    width:85%;
-    margin:0 auto;
-    border: 1px solid #2f5376;
-    background-color:#E9E9E9;
-    padding: 0% 0% 0.5em 0%;
+  width: 85%;
+  margin: 0 auto;
+  border: 1px solid #2f5376;
+  background-color: #E9E9E9;
+  padding: 0% 0% 0.5em 0%;
 }
 
-
-
 #welcometext {
-    width: 50%;
-    margin:0 auto;
-    padding-top: 1em;
-    padding-bottom: 30px;
-    text-align:center;
+  width: 50%;
+  margin: 0 auto;
+  padding-top: 1em;
+  padding-bottom: 30px;
+  text-align: center;
 }
 
 #welcometext p {
-    padding-bottom: 1em;    
+  padding-bottom: 1em;
 }
-
 
 #welcome {
-    background-color:#2F5376;
-    color:#fff;
-    text-align:center;
-    padding: 10px 0px;
-    border-top:5px solid #E9E9E9 ;
+  background-color: #2F5376;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0px;
+  border-top: 5px solid #E9E9E9;
 }
 
-
-
-#welcome p
-{
-    font-size:0.8em;
-    margin:6px auto;
+#welcome p {
+  font-size: 0.8em;
+  margin: 6px auto;
 }
 
-
-.submit, 
-input.saveall,
-input.clearall {
-    background-color:#FFF;
-    color:#2F5376;
-    padding:0 10px;
+.submit,input.saveall,input.clearall {
+  background-color: #FFF;
+  color: #2F5376;
+  padding: 0 10px;
 }
 
 input.submit {
-    min-width:100px;
+  min-width: 100px;
 }
 
-input.saveall,
-input.clearall {
-    font-size:0.8em;
-    padding:0 5px;
+input.saveall,input.clearall {
+  font-size: 0.8em;
+  padding: 0 5px;
 }
 
 .select {
-    background-color:#EFEFEF;
-    color:#555;
+  background-color: #EFEFEF;
+  color: #555;
 }
+
 .clearall A:hover {
-    text-decoration:underline;
+  text-decoration: underline;
 }
 
 .graph {
-    border:solid;
-    background-color:#EFEFEF;
-    font-family:Verdana;
-    font-size:10px;
-    border-color:#FFF;
-    border-width:1px;
+  border: solid;
+  background-color: #EFEFEF;
+  font-family: Verdana;
+  font-size: 10px;
+  border-color: #FFF;
+  border-width: 1px;
 }
 
- .answertext
-,.answertextright {
-    font-size: 12px;
+.answertext,.answertextright {
+  font-size: 12px;
 }
 
 .answertextright {
-    text-align:left;
+  text-align: left;
 }
 
 #progress-graph {
-    line-height: 1.5em;
-    font-size:0.8em;
-    width: 16em;
-    margin:0 auto;
-    padding: 0.2em 0.5em 0.3em 1em;
-    text-align: left;
-    background-color: #efefef;
-    color: #777777;
-    border: 1px solid #fff;         
+  line-height: 1.5em;
+  font-size: 0.8em;
+  width: 16em;
+  margin: 0 auto;
+  padding: 0.2em 0.5em 0.3em 1em;
+  text-align: left;
+  background-color: #efefef;
+  color: #777777;
+  border: 1px solid #fff;
 }
 
-.hide
-{
-    font-weight: normal;
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
+.hide {
+  font-weight: normal;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
 }
-#progress-graph div.zero
-{
-    width: 3.6em;
-    margin-right: 0%;
+
+#progress-graph div.zero {
+  width: 3.6em;
+  margin-right: 0%;
 }
-#progress-graph div.graph
-{
-    width: 8em;
-    height: 1.2em;
-    border: 1px solid #000;
-    margin-top: -1.3em;
-    margin-left: 2.8em;
-    margin-right: 0%;
+
+#progress-graph div.graph {
+  width: 8em;
+  height: 1.2em;
+  border: 1px solid #000;
+  margin-top: -1.3em;
+  margin-left: 2.8em;
+  margin-right: 0%;
 }
+
 #progress-graph div.cent {
-    width: 3em;
-    margin-top: -1.65em;
-    margin-left: 12.1em;
-    margin-right: 0%;    
+  width: 3em;
+  margin-top: -1.65em;
+  margin-left: 12.1em;
+  margin-right: 0%;
 }
 
 .array1 {
-background-color:#D1D1D1;
-text-align:center;
+  background-color: #D1D1D1;
+  text-align: center;
 }
 
 .array2 {
-background-color:#EFEFEF;
-text-align:center;
+  background-color: #EFEFEF;
+  text-align: center;
 }
 
 .question {
-background-color:#FFF;
-font-family:Verdana;
-font-size:12pt;
+  background-color: #FFF;
+  font-family: Verdana;
+  font-size: 12pt;
 }
 
-
 .questionhelp {
-font-size:10px;
-font-style:italic;
+  font-size: 10px;
+  font-style: italic;
 }
 
 .asterisk {
-color:red;
-font-size:9pt;
-font-family:verdana;
+  color: red;
+  font-size: 9pt;
+  font-family: verdana;
 }
 
 .innergraph img {
-height:12px;
-vertical-align:top;
+  height: 12px;
+  vertical-align: top;
 }
 
 .innergraph table {
-height:12px;
-border:1px solid #000;
-table-layout:fixed !important;
+  height: 12px;
+  border: 1px solid #000;
+  table-layout: fixed !important;
 }
 
 .innergraph td {
-height:12px;
+  height: 12px;
 }
 
 .printouttable {
-width:100%;
+  width: 100%;
 }
 
 .printouttable td {
-border-color:#fff #fff #ddf #000;
-border-style:solid;
-border-width:1px;
+  border-color: #fff #fff #ddf #000;
+  border-style: solid;
+  border-width: 1px;
 }
 
 .printouttable td:first-child {
-font-weight:700;
-text-align:right;
-padding-right:5px;
-padding-left:5px;
+  font-weight: 700;
+  text-align: right;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 .printouttitle {
-padding-right:5px;
-padding-left:5px;
-font-size:18px;
+  padding-right: 5px;
+  padding-left: 5px;
+  font-size: 18px;
 }
 
 .surveytitle {
-font-size:1.2em;
-height:1.5em;
+  font-size: 1.2em;
+  height: 1.5em;
 }
 
 .surveytitle:hover {
-background-color:#F0F0FF;
+  background-color: #F0F0FF;
 }
 
 .languagechanger {
-font-size:1em;
+  font-size: 1em;
 }
 
 .errormandatory,.warningjs {
-font-size:12px;
-font-weight:700;
-color:RED;
+  font-size: 12px;
+  font-weight: 700;
+  color: RED;
 }
 
 font,.text {
+  
 }
 
 .clearall
 A:link,.clearall
 A:visited,.clearall
 A:active {
-text-decoration:none;
+  text-decoration: none;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {
-background-color:#A7A9D1;
+  background-color: #A7A9D1;
 }
 
-table.question td{
-   padding:3px 10px;
+table.question td {
+  padding: 3px 10px;
 }
 
-table.question th{
-   padding:2px 5px;
+table.question th {
+  padding: 2px 5px;
 }
 
-table.question tr:first-child td:first-child{
-   background-color:#fff;
+table.question tr:first-child td:first-child {
+  background-color: #fff;
 }
 
-
-td.answertext
-{
-  padding:3px 6px;
+td.answertext {
+  padding: 3px 6px;
 }
 
-.dsheader
-{
-font-size:12px;
-font-weight:bold;
+.dsheader {
+  font-size: 12px;
+  font-weight: bold;
 }
-
 
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
-
-/* =====================================
+  /* =====================================
 == Full list of question classes =======
 
  .boilerplate
@@ -395,717 +380,695 @@ font-weight:bold;
 ,.array-multi-flexi 
 ,.array-multi-flexi-text
 ,.array-flexible-duel-scale 
-*/
-
-/* - - -  - - -  - - -  - - - - - -  - - -  - - - -
+*/ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
- .choice-5-pt-radio ul
-,.list-radio-flexible ul
-,.list-radio ul
-,.list-with-comment ul
-,.multiple-opt ul
-,.multiple-opt-comments ul
-,.multiple-short-txt ul
-,.numeric-multi ul
-,.yes-no ul
-,.gender ul
-{
-    margin-left: 0%;
-    padding-left: 0%;
+.choice-5-pt-radio ul,.list-radio-flexible ul,.list-radio ul,.list-with-comment ul,.multiple-opt ul,.multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul,.yes-no ul,.gender ul
+  {
+  margin-left: 0%;
+  padding-left: 0%;
 }
 
- .choice-5-pt-radio li
-,.list-radio-flexible li
-,.list-radio li
-,.list-with-comment li
-,.multiple-opt li
-,.multiple-opt-comments li
-,.multiple-short-txt li
-,.numeric-multi li
-,.yes-no li
-,.gender li
-{
-    list-style-type: none;
-    text-align: left;
-    margin: 0 0 0.3em 0.5em;
-}
- .choice-5-pt-radio li
-,.list-radio-flexible li
-,.list-radio li
-,.list-with-comment li
-,.yes-no li
-,.gender li
-{
-    margin-left: 2em;
-    text-indent: -1.7em;
+.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.multiple-opt li,.multiple-opt-comments li,.multiple-short-txt li,.numeric-multi li,.yes-no li,.gender li
+  {
+  list-style-type: none;
+  text-align: left;
+  margin: 0 0 0.3em 0.5em;
 }
 
+.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.yes-no li,.gender li
+  {
+  margin-left: 2em;
+  text-indent: -1.7em;
+}
 
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
-
-
-/* STYLES NOT YET DEFINED - - - - -
+  /* STYLES NOT YET DEFINED - - - - -
 .boilerplate {}
 */
-
- .choice-5-pt-radio ul
-,.yes-no ul
-,.gender ul
-{
-    text-align: left;
-	margin-left: 0%;
-	padding-left: 0%;
-	font-size: 90%;
-}
- .choice-5-pt-radio ul li
-,.yes-no ul li
-,.gender ul li
-{
-	display: inline;
-	padding: 0% 2em 0% 0%;
-	margin-left: 0%;
-	
+.choice-5-pt-radio ul,.yes-no ul,.gender ul {
+  text-align: left;
+  margin-left: 0%;
+  padding-left: 0%;
+  font-size: 90%;
 }
 
+.choice-5-pt-radio ul li,.yes-no ul li,.gender ul li {
+  display: inline;
+  padding: 0% 2em 0% 0%;
+  margin-left: 0%;
+}
 
 /* STYLES NOT YET DEFINED - - - - -
 .date {}
 */
-.date p.question { margin-left: 1em; }
-.date p.question select.day {}
-.date p.question select.month {}
-.date p.question select.year {}
+.date p.question {
+  margin-left: 1em;
+}
 
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-,.list-with-comment div.list p.tip 
-{
-    margin-left: 0.9em;
-    font-size: 0.6em;
-    font-style: italic;
-    line-height: 150%;
-    margin-bottom:10px;
+.date p.question select.day {
+  
+}
+
+.date p.question select.month {
+  
+}
+
+.date p.question select.year {
+  
+}
+
+.date p.tip,.numeric-multi p.tip,.numeric p.tip,.list-with-comment div.list p.tip
+  {
+  margin-left: 0.9em;
+  font-size: 0.6em;
+  font-style: italic;
+  line-height: 150%;
+  margin-bottom: 10px;
 }
 
 /* Currently numeric-multi table is only the width of the widest box they contain (ul.computed/ul.slider.computed). Because ul.multinumerichelp is floated, it's outside the normal flow, so cannot affect the width of the wrapping table box.
 If you want ul.multinumerichelp to float beside the input boxes, you need to uncomment the following. NOTE: the result makes multi-numeric different from the rest of the question types.*/
-/*.numeric-multi table { width: 100%; } */
-
- .numeric-multi p.tip.error
-,.numeric-multi input.tip.error
-{
-    color: #f70;
-    font-weight: bold;
-}
- .numeric-multi p.tip.good
-,.numeric-multi input.tip.good
-{
-    color: #090;
-    font-weight: bold;
+  /*.numeric-multi table { width: 100%; } */
+.numeric-multi p.tip.error,.numeric-multi input.tip.error {
+  color: #f70;
+  font-weight: bold;
 }
 
-.text-short p.question
-,.numeric p.question
-,.numeric-multi span
-,.multiple-short-txt ul li span
-{
-	font-size: 12px;
-/*	font-style: italic;*/
+.numeric-multi p.tip.good,.numeric-multi input.tip.good {
+  color: #090;
+  font-weight: bold;
 }
-.numeric p.question input
-{
-	margin:0% 0.2em;
+
+.text-short p.question,.numeric p.question,.numeric-multi span,.multiple-short-txt ul li span
+  {
+  font-size: 12px;
+  /*	font-style: italic;*/
 }
+
+.numeric p.question input {
+  margin: 0% 0.2em;
+}
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .list-radio-flexible
 .list-radio
 */
-
 .list-radio .answer li label {
-    display:inline-block;
-    width:85%;
+  display: inline-block;
+  width: 85%;
 }
 
-
-.list-radio .answer li input { 
-    vertical-align:top !important;
-    margin-top:2px;
+.list-radio .answer li input {
+  vertical-align: top !important;
+  margin-top: 2px;
 }
 
-  ul.cols-2 , table.cols-2
-, ul.cols-3 , table.cols-3
-, ul.cols-4 , table.cols-4
-, ul.cols-5 , table.cols-5
-, ul.cols-6 , table.cols-6
-, ul.cols-7 , table.cols-7
-, ul.cols-8 , table.cols-8
-{
-    width: 98%;
-    margin: 0% auto 0% auto;
+ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
+  {
+  width: 98%;
+  margin: 0% auto 0% auto;
 }
 
-ul.cols-2 li,
-ul.cols-3 li,
-ul.cols-4 li,
-ul.cols-5 li,
-ul.cols-6 li,
-ul.cols-7 li,
-ul.cols-8 li {
-    float: left;
-    padding: 0 0.5em;
-    white-space: normal;
+ul.cols-2 li,ul.cols-3 li,ul.cols-4 li,ul.cols-5 li,ul.cols-6 li,ul.cols-7 li,ul.cols-8 li
+  {
+  float: left;
+  padding: 0 0.5em;
+  white-space: normal;
 }
 
-ul.cols-2 li, table.cols-2 td { width: 47% }
-ul.cols-3 li, table.cols-3 td { width: 30%; }
-ul.cols-4 li, table.cols-4 td { width: 22%; }
-ul.cols-5 li, table.cols-5 td { width: 17%; }
-ul.cols-6 li, table.cols-6 td { width: 15.5%; }
-ul.cols-7 li, table.cols-7 td { width: 12%; }
-ul.cols-8 li, table.cols-8 td { width: 10%; }
+ul.cols-2 li,table.cols-2 td {
+  width: 47%
+}
+
+ul.cols-3 li,table.cols-3 td {
+  width: 30%;
+}
+
+ul.cols-4 li,table.cols-4 td {
+  width: 22%;
+}
+
+ul.cols-5 li,table.cols-5 td {
+  width: 17%;
+}
+
+ul.cols-6 li,table.cols-6 td {
+  width: 15.5%;
+}
+
+ul.cols-7 li,table.cols-7 td {
+  width: 12%;
+}
+
+ul.cols-8 li,table.cols-8 td {
+  width: 10%;
+}
 
 /* List/radios displayed in columns */
-
-ul.cols-2-ul,
-ul.cols-3-ul,
-ul.cols-4-ul,
-ul.cols-5-ul,
-ul.cols-6-ul,
-ul.cols-7-ul,
-ul.cols-8-ul {
-    float: left;
-	width: auto;
-    padding: 0;
-	margin-bottom: 1em;
+ul.cols-2-ul,ul.cols-3-ul,ul.cols-4-ul,ul.cols-5-ul,ul.cols-6-ul,ul.cols-7-ul,ul.cols-8-ul
+  {
+  float: left;
+  width: auto;
+  padding: 0;
+  margin-bottom: 1em;
 }
 
-ul.cols-2-ul li,
-ul.cols-3-ul li,
-ul.cols-4-ul li,
-ul.cols-5-ul li,
-ul.cols-6-ul li,
-ul.cols-7-ul li,
-ul.cols-8-ul li {
-    padding: 0 1.5em 0 0;
+ul.cols-2-ul li,ul.cols-3-ul li,ul.cols-4-ul li,ul.cols-5-ul li,ul.cols-6-ul li,ul.cols-7-ul li,ul.cols-8-ul li
+  {
+  padding: 0 1.5em 0 0;
 }
 
-ul.cols-2-ul label,
-ul.cols-3-ul label,
-ul.cols-4-ul label,
-ul.cols-5-ul label,
-ul.cols-6-ul label,
-ul.cols-7-ul label,
-ul.cols-8-ul label {
-	text-indent: 0;
+ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.cols-6-ul label,ul.cols-7-ul label,ul.cols-8-ul label
+  {
+  text-indent: 0;
 }
 
-.list-dropdown-flexible p.question
-{
-    margin-left: 1em;
+.list-dropdown-flexible p.question {
+  margin-left: 1em;
 }
+
 /* STYLES NOT YET DEFINED - - - - -
 .list-dropdown {}
 */
-.list-with-comment div.list
-{
-    width: 47%;
-    float: left;
-    padding: 0.5em;
-}
-.list-with-comment p.select
-{
-    width: 47%;
-    float: left;
-    padding: 0.5em;
-    margin: 0%;
-}
-.list-with-comment div.list p
-{
-    margin: 0%;
-    text-align: left;
-}
-.list-with-comment p.comment
-{
-    margin: 0%;
-    padding: 0.5em;
-    text-align: left;
-    float: left;
-    width: 47%;
+.list-with-comment div.list {
+  width: 47%;
+  float: left;
+  padding: 0.5em;
 }
 
-
-.list-with-comment p.comment textarea
-{
-    width: 100%;
-    margin-top:10px;
+.list-with-comment p.select {
+  width: 47%;
+  float: left;
+  padding: 0.5em;
+  margin: 0%;
 }
 
+.list-with-comment div.list p {
+  margin: 0%;
+  text-align: left;
+}
 
+.list-with-comment p.comment {
+  margin: 0%;
+  padding: 0.5em;
+  text-align: left;
+  float: left;
+  width: 47%;
+}
 
-.ranking {}
+.list-with-comment p.comment textarea {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.ranking {
+  
+}
 
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
+.language {
+  
+}
 
-.language {}
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
- .multiple-opt-comments td.answer
-,.multiple-short-txt td.answer
-,.numeric-multi td.answer
-{
+.multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
+  {
+  
 }
- .multiple-opt-comments ul
-,.multiple-short-txt ul
-,.numeric-multi ul
-,.numeric-multi.slider ul
-{
-	display: table;
-	padding: 0%;
-	margin: 1em;
+
+.multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul,.numeric-multi.slider ul
+  {
+  display: table;
+  padding: 0%;
+  margin: 1em;
 }
-.numeric-multi ul	{	margin: 0% 1em 1.5em 1em;	}
-.numeric-multi ul.computed
-{
-	float:left;
-	padding-right: 2em;
+
+.numeric-multi ul {
+  margin: 0% 1em 1.5em 1em;
+}
+
+.numeric-multi ul.computed {
+  float: left;
+  padding-right: 2em;
 }
 
 .numeric-multi div.multinum-slider {
-	width: auto;
-	float: left;
-	margin-top: 1.5em;
-	margin-bottom: 0.2em;
+  width: auto;
+  float: left;
+  margin-top: 1.5em;
+  margin-bottom: 0.2em;
 }
 
-.numeric-multi ul.slider.computed
-{
-	width: 13em;
-    margin-bottom: 1em;
-}
- .multiple-opt-comments ul li
-,.multiple-short-txt ul li
-,.numeric-multi ul li
-,.numeric-multi.slider ul li
-{
-	display: table-row;
-	font-size: 90%;
-}
-.multiple-opt-comments ul li span.option
-{
-	padding: 0.3em 1em 0% 1.5em;
-    text-indent: -1.5em;
-	display: table-cell;
-	vertical-align: baseline;
+.numeric-multi ul.slider.computed {
+  width: 13em;
+  margin-bottom: 1em;
 }
 
-.numeric-multi ul li label,
-.numeric-multi ul.slider li label {
-	padding: 0.3em 1em 0% 0%;
-	display: table-cell;
-	vertical-align: baseline;
+.multiple-opt-comments ul li,.multiple-short-txt ul li,.numeric-multi ul li,.numeric-multi.slider ul li
+  {
+  display: table-row;
+  font-size: 90%;
+}
+
+.multiple-opt-comments ul li span.option {
+  padding: 0.3em 1em 0% 1.5em;
+  text-indent: -1.5em;
+  display: table-cell;
+  vertical-align: baseline;
+}
+
+.numeric-multi ul li label,.numeric-multi ul.slider li label {
+  padding: 0.3em 1em 0% 0%;
+  display: table-cell;
+  vertical-align: baseline;
 }
 
 .multiple-short-txt ul li label {
-	padding: 0.3em 1em 0% 0%;
-	display: table-cell;
-	vertical-align: middle;
+  padding: 0.3em 1em 0% 0%;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .numeric-multi ul.computed li label
-.numeric-multi ul.slider.computed li label
-{
-	padding-right: 0%;
-    font-size:12px;
+.numeric-multi ul.slider.computed li label {
+  padding-right: 0%;
+  font-size: 12px;
 }
 
- .multiple-opt-comments ul li span.comment
-,.multiple-short-txt ul li span
-,.numeric-multi ul li span
-,.numeric-multi ul li.slider span
-{
-	padding: 0.3em 0% 0% 1em;
-	display: table-cell;
-	vertical-align: baseline;
-	white-space: nowrap;
-}
-.multiple-opt-comments ul li span	{	padding: 0.3em 1em 0% 0%;	}
-
- .numeric-multi ul.multiplenumerichelp
-,.numeric-multi ul.multiplenumerichelp.slider
-{
-	display: table; font-size: 80%;
-}
- .numeric-multi ul.multiplenumerichelp li
-,.numeric-multi ul.multiplenumerichelp.slider li
-{
-	display: table-row
+.multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span,.numeric-multi ul li.slider span
+  {
+  padding: 0.3em 0% 0% 1em;
+  display: table-cell;
+  vertical-align: baseline;
+  white-space: nowrap;
 }
 
- .numeric-multi ul.multiplenumerichelp li span
-,.numeric-multi ul.multiplenumerichelp.slider li span
-{
-	padding: 0% 0% 0% 0.3em;
-	display: table-cell;
-}
-.numeric-multi ul.multiplenumerichelp span input
-{
-    border: none;
-    background-color: #fff;
-    color: #222;
-    padding: 0%;
-    width: 7em;
+.multiple-opt-comments ul li span {
+  padding: 0.3em 1em 0% 0%;
 }
 
- .numeric input
-,.text-short input
-,.text-long textarea
-,.text-huge textarea
-{
-    margin-left: 1em;
+.numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
+  {
+  display: table;
+  font-size: 80%;
 }
+
+.numeric-multi ul.multiplenumerichelp li,.numeric-multi ul.multiplenumerichelp.slider li
+  {
+  display: table-row
+}
+
+.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
+  {
+  padding: 0% 0% 0% 0.3em;
+  display: table-cell;
+}
+
+.numeric-multi ul.multiplenumerichelp span input {
+  border: none;
+  background-color: #fff;
+  color: #222;
+  padding: 0%;
+  width: 7em;
+}
+
+.numeric input,.text-short input,.text-long textarea,.text-huge textarea
+  {
+  margin-left: 1em;
+}
+
 /* STYLES NOT YET DEFINED - - - - -
 .yes-no {}
 .gender {}
 */
-
-#limesurvey table.question tbody th.arraycaptionleft,
-#limesurvey table.question thead th,
-#limesurvey table.question .repeat th {
-   text-align: center;
-   padding:3px 10px;
-   background-color:#D1D1D1;
-   vertical-align:middle !important;
-   font-size:0.6em;
-   font-weight: bold;
-}    
-
-#limesurvey table.question .answer tbody td
-{
-    text-align: center;
+#limesurvey table.question tbody th.arraycaptionleft,#limesurvey table.question thead th,#limesurvey table.question .repeat th
+  {
+  text-align: center;
+  padding: 3px 10px;
+  background-color: #D1D1D1;
+  vertical-align: middle !important;
+  font-size: 0.6em;
+  font-weight: bold;
 }
 
- #limesurvey table.question tbody th.answertext
-{
-    text-align: right;
-    font-weight: normal;
-    font-size: 12px;
-}
-#limesurvey table.question tbody th.answertextright
-{
-    text-align: left;
-    font-weight: normal;
-    font-size: 12px;
+#limesurvey table.question .answer tbody td {
+  text-align: center;
 }
 
-.array-flexible-column  table.question thead th
-{
-    font-size: 12px !important;    
-    font-weight:normal !important;
+#limesurvey table.question tbody th.answertext {
+  text-align: right;
+  font-weight: normal;
+  font-size: 12px;
 }
 
-.array-flexible-column thead th.odd
-{
-   background-color:#f1f1f1 !important;        
+#limesurvey table.question tbody th.answertextright {
+  text-align: left;
+  font-weight: normal;
+  font-size: 12px;
 }
 
+.array-flexible-column  table.question thead th {
+  font-size: 12px !important;
+  font-weight: normal !important;
+}
+
+.array-flexible-column thead th.odd {
+  background-color: #f1f1f1 !important;
+}
 
 .array-flexible-column col.odd {
-    background-color: #eee;
+  background-color: #eee;
 }
 
 .array-flexible-column col.even {
-    background-color: #d1d1d1;
+  background-color: #d1d1d1;
 }
 
-.array-flexible-column table.question td
-{
-  text-align:center;
-  
+.array-flexible-column table.question td {
+  text-align: center;
 }
-
-
 
 /* Jquery CSS
- */
-/** UI Base **/
-.ui-wrapper { 
-    border: 1px solid #50A029; 
+ */ /** UI Base **/
+.ui-wrapper {
+  border: 1px solid #50A029;
 }
 
-.ui-wrapper input, 
-.ui-wrapper textarea { 
-    border: 0; 
+.ui-wrapper input,.ui-wrapper textarea {
+  border: 0;
 }
 
 /** UI Slider **/
-
 .numeric-multi label.slider-label {
-	display: table-cell;
-	padding:0 1em 0 0;
-	margin-top: 1.3em;
-	vertical-align: middle;
+  display: table-cell;
+  padding: 0 1em 0 0;
+  margin-top: 1.3em;
+  vertical-align: middle;
 }
 
 .ui-slider-disabled .ui-slider-handle {
-    opacity: 0.5; 
-    filter: alpha(opacity=50); 
+  opacity: 0.5;
+  filter: alpha(opacity =           50);
 }
 
-.ui-slider-1 { 
-    width: 200px; position: relative; height: 10px;
+.ui-slider-1 {
+  width: 200px;
+  position: relative;
+  height: 10px;
 }
-.slider_callout { 
-    height: 20px; 
-    width: 100px; 
-    overflow: hidden; 
-    position: absolute; 
-    top: -20px; 
-    margin-left:+15px; 
-    color: #284a6e; 
-    font-size: 0.75em; 
-    font-weight: bold; 
-    text-align: left;
+
+.slider_callout {
+  height: 20px;
+  width: 100px;
+  overflow: hidden;
+  position: absolute;
+  top: -20px;
+  margin-left: -3px;
+  color: #284a6e;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-align: left;
 }
 
 .slider_showmin {
-    float: left;
-	width: 50px;
-    margin: 15px 0 0 -25px;
-  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 0.7em;
-	font-weight: normal;
-	text-align: center;
+  float: left;
+  width: 50px;
+  margin: 15px 0 0 0;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 0.7em;
+  font-weight: normal;
+  text-align: left;
 }
 
 .slider_showmax {
-    float: right;
-	width: 50px;
-    margin: 15px -28px 0 0;
-  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 0.7em;
-	font-weight: normal;
-	text-align: center;
+  float: right;
+  width: 50px;
+  margin: 15px 0 0 0;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 0.7em;
+  font-weight: normal;
+  text-align: right;
 }
 
 .slider_lefttext {
-    display: table-cell;
-	padding-right: 11px;
-    vertical-align: middle;
-	text-align: right;
-	font-size: 0.9em;
+  display: table-cell;
+  padding-top: 1.5em;
+  padding-right: 11px;
+  vertical-align: top;
+  text-align: right;
+  font-size: 0.9em;
 }
 
 .slider_righttext {
-    display: table-cell;
-	padding-left: 11px;
-    vertical-align: middle;
-	font-size: 0.9em;
+  display: table-cell;
+  padding-top: 1.5em;
+  padding-left: 11px;
+  vertical-align: top;
+  font-size: 0.9em;
 }
 
-
 div.privacynote {
-    text-align:center;
-    background-color: #fff;
-    width:80%;
-    margin: 10px auto;
-    padding:5px;
+  text-align: center;
+  background-color: #fff;
+  width: 80%;
+  margin: 10px auto;
+  padding: 5px;
 }
 
 table.navigator {
-    width:98%;
-    margin-bottom:5px;
+  width: 98%;
+  margin-bottom: 5px;
 }
 
-table.navigator td{
-    width:33%;
+table.navigator td {
+  width: 33%;
 }
 
-div.answers  {
-    margin-bottom:10px;
+div.answers {
+  margin-bottom: 10px;
 }
 
 div.answers table {
-    margin:0 auto;
-    border-collapse:separate;
-    border-spacing: 1px;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 1px;
 }
 
-.numeric-multi div.input 
-{
- font-size:12px;
+.numeric-multi div.input {
+  font-size: 12px;
 }
 
-.choice-5-pt-radio li
-{
-    display: inline;
-    margin-left: 0.5em;
-} 
- .choice-5-pt-radio ul {
-  margin-bottom:10px;
+.choice-5-pt-radio li {
+  display: inline;
+  margin-left: 0.5em;
 }
 
-div #loadtable, div #savetable
-{
-    padding-top:10px;
+.choice-5-pt-radio ul {
+  margin-bottom: 10px;
 }
 
-#loadtable td, #savetable td {
-    padding-top:5px;
-    padding-left:3px;
+div #loadtable,div #savetable {
+  padding-top: 10px;
 }
 
-#loadbutton, #savebutton {
-    padding:0 10px;
+#loadtable td,#savetable td {
+  padding-top: 5px;
+  padding-left: 3px;
 }
 
-td.rank label, td.rank td strong {
-    font-size:0.7em;
+#loadbutton,#savebutton {
+  padding: 0 10px;
+}
+
+td.rank label,td.rank td strong {
+  font-size: 0.7em;
 }
 
 .ranking select {
-    min-width:140px;
-    min-height:60px;
+  min-width: 140px;
+  min-height: 60px;
 }
 
 li.other .answer-comment {
-    margin-top:-1.65em;
+  margin-top: -1.65em;
 }
 
-p.captcha
-{
-    margin-left:10px;
-    margin-top:10px;
+p.captcha {
+  margin-left: 10px;
+  margin-top: 10px;
 }
 
-form.captcha table td
-{
-    padding:5px 5px;
+form.captcha table td {
+  padding: 5px 5px;
 }
 
-form.captcha label
-{
-    font-weight:bold
+form.captcha label {
+  font-weight: bold
 }
 
-#tokenform
-{
-  margin-top:1em;
+#tokenform {
+  margin-top: 1em;
 }
 
-#tokenform input
-{
+#tokenform input {
+  
 }
 
-#tokenform label {  
-float: left;  
-width: 20em;  
-margin-right: 0.5em;  
-text-align: right;
+#tokenform label {
+  float: left;
+  width: 20em;
+  margin-right: 0.5em;
+  text-align: right;
 }
 
-#tokenform li
-{
-  padding-bottom:5px;
+#tokenform li {
+  padding-bottom: 5px;
 }
 
-#tokenform img
-{
-  margin-bottom:-5px;
+#tokenform img {
+  margin-bottom: -5px;
   margin-right: 5px;
 }
 
-
-p#tokenmessage
-{
-  margin:20px;
+p#tokenmessage {
+  margin: 20px;
 }
 
-
-p#tokenmessage
-{
-  margin:20px;
-  text-align:center;
+p#tokenmessage {
+  margin: 20px;
+  text-align: center;
 }
 
-
-div#wrapper{
-  width:600px;
-  margin:0 auto;
+div#wrapper {
+  width: 600px;
+  margin: 0 auto;
 }
 
-
-#tokenform input.submit
-{
- margin-left:18em;
- margin-top:1em;
- margin-bottom:1em;
+#tokenform input.submit {
+  margin-left: 18em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 #statsContainer {
-    width:720px;
-    margin:8px auto;
-    border: 1px solid #2f5376;
-    background-color:#E9E9E9;
-    padding: 0% 0% 0.5em 0%;
+  width: 720px;
+  margin: 8px auto;
+  border: 1px solid #2f5376;
+  background-color: #E9E9E9;
+  padding: 0% 0% 0.5em 0%;
 }
 
-#statsHeader{
-	background-color:#2F5376;
-    color:#fff;
-    text-align:center;
-    padding: 10px 0px;
-	height:96px;
+#statsHeader {
+  background-color: #2F5376;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0px;
+  height: 96px;
 }
 
 .statsSurveyTitle {
-	text-align:center;
-	font-size:1.66em;
-	padding: 15px 0px 10px 0px;
+  text-align: center;
+  font-size: 1.66em;
+  padding: 15px 0px 10px 0px;
 }
 
 .statsNumRecords {
-	text-align:center;
-	font-size:1em;
+  text-align: center;
+  font-size: 1em;
 }
 
-table.statisticstable{
-	width: 690px; 
-	border: 0px solid;
-	text-align:left;
-	background-color:#fff;
-	margin:0px auto;
-	padding-bottom: 8px;
-	
+table.statisticstable {
+  width: 690px;
+  border: 0px solid;
+  text-align: left;
+  background-color: #fff;
+  margin: 0px auto;
+  padding-bottom: 8px;
 }
 
-table.statisticstable td{
-	padding-top: 4px;
-	padding-bottom: 4px;
-	border-bottom: 1px solid #CCC;
+table.statisticstable td {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #CCC;
 }
 
-table.statisticstable strong{
-	font-weight: bold;
+table.statisticstable strong {
+  font-weight: bold;
 }
 
-table.statisticstable img{
-	margin:3px auto;
+table.statisticstable img {
+  margin: 3px auto;
 }
 
-div.fieldSummary{
-	font-size:.9em;
-	padding: 10px 10px 0px 10px;
-	display: block;
+div.fieldSummary {
+  font-size: .9em;
+  padding: 10px 10px 0px 10px;
+  display: block;
 }
-div.questionTitle{
-	font-size:1.2em;
-	padding: 20px 20px 20px 20px;
-	font-weight: bold;
+
+div.questionTitle {
+  font-size: 1.2em;
+  padding: 20px 20px 20px 20px;
+  font-weight: bold;
 }
 
 td.statsImageholder {
-	background-color:#fff;
+  background-color: #fff;
+}
+
+/* Survey listing styles */
+#listingHeader {
+  margin-top: 5px;
+  padding: 10px 0px;
+  background-color: #2F5376;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+#listingContent p {
+  margin: 15px 0;
+  text-align: center;
+  line-height: 150%;
+}
+
+#listingContent .surveyListHeading {
+  font-weight: bold;
+}
+
+#listingList {
+  width: 80%;
+  margin: 0 auto;
+  padding: 5px 0 10px 0;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+}
+
+#listingList ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+#listingList .surveytitle {
+  font-size: 12px;
+  line-height: 160%;
+}
+
+#listingList a {
+  margin-left: 5px;
+  color: #444444;
+  text-decoration: underline;
+}
+
+#listingList a:hover {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+#listingList a.surveytitle {
+  margin-left: 0px;
 }

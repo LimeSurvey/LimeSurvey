@@ -1,162 +1,137 @@
 /* The following styles are for versions of IE 6 and older */
-
 .choice-5-pt-radio ul {
-	margin-left: 2.5em;
+  margin-left: 2.5em;
 }
- .yes-no ul
-,.gender ul {
-	margin-left: 1em;
+
+.yes-no ul,.gender ul {
+  margin-left: 1em;
 }
 
 .multiple-short-txt ul.numbers-only li span {
-	width: 10em;
+  width: 10em;
 }
 
-
- .multiple-short-txt ul
-,.multiple-opt-comments ul
-,.numeric-multi ul
-,.multiple-short-txt ul li
-,.multiple-opt-comments ul li
-,.numeric-multi ul li {
-	margin-left: 0%;
-	padding-left: 0%;
+.multiple-short-txt ul,.multiple-opt-comments ul,.numeric-multi ul,.multiple-short-txt ul li,.multiple-opt-comments ul li,.numeric-multi ul li
+  {
+  margin-left: 0%;
+  padding-left: 0%;
 }
-
 
 .multiple-short-txt ul label {
-    margin-left: 0em;
-    float:left;
-    display: block;
-    width: 40%;      
-    text-align:right;
+  margin-left: 0em;
+  float: left;
+  display: block;
+  width: 40%;
+  text-align: right;
 }
 
-
-.multiple-opt-comments ul li label{
-    float: left;
-    width: 35%; 
-    display:block; 
-    margin:0;
-    padding:0;    
-    padding-left:25px;
+.multiple-opt-comments ul li label {
+  float: left;
+  width: 35%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding-left: 25px;
 }
 
-
-.multiple-opt-comments ul li span.comment{
-    float:left;
-    width:40%;
-    display:block;
-    margin:0;
-    padding:0; 
+.multiple-opt-comments ul li span.comment {
+  float: left;
+  width: 40%;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
-.multiple-opt-comments ul li span.comment input{
-    width:200px;
+.multiple-opt-comments ul li span.comment input {
+  width: 200px;
 }
 
-.multiple-short-txt ul li,
-.multiple-opt-comments ul li {  
-    float: left;  
-    clear: left;  
-    width: 100%;  
+.multiple-short-txt ul li,.multiple-opt-comments ul li {
+  float: left;
+  clear: left;
+  width: 100%;
 }
 
 .innergraph img {
-    height:16px;
-    vertical-align:top;
-    margin:0px 0px 0px 0px;
+  height: 16px;
+  vertical-align: top;
+  margin: 0px 0px 0px 0px;
 }
 
 .numeric-multi label {
-    width:400px;
-    text-align:right;
-    
+  width: 400px;
+  text-align: right;
 }
 
 .rank select {
-    margin-top:4px !important;
+  margin-top: 4px !important;
 }
 
-.multiple-short-txt td.answer,
-.date td.answer,
-.yes-no td.answer,
-.list-radio td.answer,
-.list-radio-flexible td.answer,
-.choice-5-pt-radio td.answer,
-.gender td.answer {
-    padding-bottom:10px;
+.multiple-short-txt td.answer,.date td.answer,.yes-no td.answer,.list-radio td.answer,.list-radio-flexible td.answer,.choice-5-pt-radio td.answer,.gender td.answer
+  {
+  padding-bottom: 10px;
 }
 
 .date button {
-    line-height:15px;
-    height:21px;
-    width:22px;
-}
-
-td.questionhelp {
-    text-align:left;
+  line-height: 15px;
+  height: 21px;
+  width: 22px;
 }
 
 .numeric-multi ul li label {
-    float: left;
-	width: auto;  
+  float: left;
+  width: auto;
 }
 
-.numeric-multi ul li {  
-    float: left;  
-    clear: left;  
-    width: 100%;  
+.numeric-multi ul li {
+  float: left;
+  clear: left;
+  width: 100%;
 }
 
 .numeric-multi ul li span {
-    padding-left:0;
+  padding-left: 0;
 }
 
 .numeric-multi input {
-    padding-left:1px;
+  padding-left: 1px;
 }
 
-input.submit
-{
-    padding:0px;
+input.submit {
+  padding: 0px;
 }
 
 /** UI Slider **/
-
 .numeric-multi label.slider-label {
-	margin-top: 1.3em;
+  margin-top: 1.3em;
+  width: 40%;
 }
 
 .slider_lefttext {
-	float: left;
-	margin-top: 1.4em;
+  float: left;
+  padding-top: 1.4em;
 }
 
 .slider_righttext {
-	float: left;
-	margin-top: 1.4em;
+  float: left;
+  padding-top: 1.4em;
 }
 
-.ui-slider-1 { 
-	position: relative;
+.ui-slider-1 {
+  position: relative;
 }
 
 .slider_showmin {
-	margin: 0;
-	float: none;
-	position: absolute;
-	top: 17px;
-	left: -22px;
+  margin: 0;
+  float: none;
+  position: absolute;
+  top: 17px;
 }
 
 .slider_showmax {
-	margin: 0;
-	float: none;
-	position: absolute;
-	top: 17px;
-	left: 178px;
+  margin: 0;
+  float: none;
+  position: absolute;
+  top: 17px;
+  left: 150px;
 }
-
-
-

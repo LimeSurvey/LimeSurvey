@@ -3,19 +3,19 @@ final class SettingsStorage extends ArrayObject
 {
     protected static $_instance = null;
 
-	public function __construct($array = array(), $flags = parent::ARRAY_AS_PROPS)
+    public function __construct($array = array(), $flags = parent::ARRAY_AS_PROPS)
     {
         parent::__construct($array, $flags);
     }
-     
-    public static function getInstance() 
+
+    public static function getInstance()
     {
-      if( self::$_instance === NULL ) {
-        self::$_instance = new self();
-      }
-      return self::$_instance;
+        if( self::$_instance === NULL ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
     }
-    
+
     public static function get($index)
     {
         $instance = self::getInstance();
@@ -32,7 +32,7 @@ final class SettingsStorage extends ArrayObject
         $instance = self::getInstance();
         $instance->offsetSet($index, $value);
     }
-    
+
     public static function isRegistered($index)
     {
         if (self::$_instance === null) {
@@ -48,7 +48,7 @@ final class SettingsStorage extends ArrayObject
     {
         return array_key_exists($index, $this);
     }
-    
-    
+
+
 }
 ?>

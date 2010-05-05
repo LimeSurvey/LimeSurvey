@@ -1,5 +1,5 @@
-// $Id: templates.js 7699 2009-09-30 22:28:50Z c_schmitz $
-       var labelcache=[];  
+// $Id$
+var labelcache=[];  
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
                                             start:startmove,
@@ -89,11 +89,11 @@ function addinput()
         nextcode=getNextCode($(this).parent().parent().find('.code').val());
         var randomid='new'+Math.floor(Math.random()*111111)        
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input id="code_'+randomid+'" name="code_'+randomid+'" class="code" type="text" maxlength="5" size="5" value="'+nextcode+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="'+newansweroption_text+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" class="code" type="text" maxlength="5" size="5" value="'+nextcode+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+newansweroption_text+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         else
         {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+nextcode+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'" name="answer_'+languages[x]+'_'+randomid+'" class="answer" value="New answer option"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td>&nbsp;</td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+nextcode+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="New answer option"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td>&nbsp;</td></tr>'
         }
         tablerow.after(inserthtml);
         tablerow.next().find('.btnaddanswer').click(addinput);
@@ -250,14 +250,28 @@ function lsbrowser()
                 remind=json[x][0];
             }
         }
-        $('#labelsets').selectOptions(remind);  
-        lspreview();           
+        if ($('#labelsets > option').size()>0)
+        {
+            $('#labelsets').selectOptions(remind); 
+            lspreview();           
+        } 
+        else
+        {
+            $('#btnlsreplace').addClass('ui-state-disabled');
+            $('#btnlsinsert').addClass('ui-state-disabled');
+        }
     });
+    
 }
 
 // previews the labels in a label set after selecting it in the select box
 function lspreview()
 {
+   if ($('#labelsets > option').size()==0)
+   {
+       return;
+   }
+    
    var lsid=$('#labelsets').selectedValues();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))
@@ -347,14 +361,23 @@ function dump(arr,level) {
 
 function transferlabels()
 {
-   if ($(this).attr('id')=='btnlsreplace')
-   {
-       var lsreplace=true;
-   } 
-   else
-   {
-       var lsreplace=false;
-   }
+    if ($(this).attr('id')=='btnlsreplace')
+    {
+        var lsreplace=true;
+    } 
+    else
+    {
+        var lsreplace=false;
+    }
+   
+    if (lsreplace)
+    {
+       $('.answertable:first tbody tr').each(function(){
+          aRowInfo=this.id.split('_');  
+          $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
+       }); 
+    }
+   
    var lsid=$('#labelsets').selectedValues();
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
@@ -438,6 +461,14 @@ function quickaddlabels()
        var lsreplace=false;
     }
 
+    if (lsreplace)
+    {
+       $('.answertable:first tbody tr').each(function(){
+          aRowInfo=this.id.split('_');  
+          $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
+       }); 
+    }
+    
     languages=langs.split(';');   
     for (x in languages)
     {
