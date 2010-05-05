@@ -2408,7 +2408,7 @@ function do_ranking($ia)
         $max_answers = false;
     }
     $ansresult = db_execute_assoc($ansquery);   //Checked
-    $anscount = $ansresult->RecordCount();
+    $anscount = $qidattributes["ranking_slots"];
     if(!$max_answers) {
         $max_answers=$anscount;
     }
