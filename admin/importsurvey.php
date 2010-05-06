@@ -1273,6 +1273,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
         $oldsid=$insertdata['sid'];
         $newsid=GetNewSurveyID($oldsid);
         $insertdata['sid']=$newsid;
+        $insertdata['active']='N';    //Make sure it is not set active
 
         db_switchIDInsert('surveys',true);
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
