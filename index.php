@@ -664,7 +664,7 @@ isset($_SESSION['step']) && $_SESSION['step']>0)
 	killSession();
         doFooter();
         exit;
-    } //TIBO
+    }
 }
 if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
 

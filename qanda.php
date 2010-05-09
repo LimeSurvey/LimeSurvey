@@ -156,8 +156,10 @@ function retrieveJSidname($cd,$currentgid=null)
 {
     global $dbprefix, $connect, $dropdownthreshold;
 
-    preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[5],$matchGID);
-    $questiongid=$matchGID[1];
+    preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[2],$matchFields);
+    $questiongid=$matchFields[1];
+    $questionFieldpart=$matchFields[2];
+    
 
     if ($cd[4] == "L")
     {
@@ -169,11 +171,12 @@ function retrieveJSidname($cd,$currentgid=null)
     {
         if (!isset($currentgid) || $questiongid == $currentgid)
         { // if question is on same page then field is fvalue_XXXX
-        $idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
+        //$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1); // broken when ranking more than 9 items
+            $idname="fvalue_".$questionFieldpart;
         }
         else
         { // If question is on another page then field if javaXXXX
-        $idname="java$cd[2]";
+            $idname="java$cd[2]";
         }
     }
     elseif ($cd[4] == "5" ||

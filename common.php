@@ -6920,7 +6920,7 @@ function checkquestionfordisplay($qid, $gid=null)
                 }
             }
             elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['value'],$targetconditiontokenattr))
-            { //TIBO
+            { 
                 if ( isset($_SESSION['token']) &&
                 in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
                 {
