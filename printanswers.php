@@ -23,12 +23,6 @@ if(isset($usepdfexport) && $usepdfexport == 1)
     require_once(dirname(__FILE__).$pdfexportdir."/extensiontcpdf.php");
 }
 
-
-//DEFAULT SETTINGS FOR TEMPLATES
-if (!$publicdir) {$publicdir=".";}
-$templaterootdir="$publicdir/templates";
-
-
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 else {
     //This next line ensures that the $surveyid value is never anything but a number.
@@ -76,14 +70,14 @@ if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents(validate_templatedir("default")."/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
     ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
     ."</center><br />\n";
 
-    echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents(validate_templatedir("default")."/endpage.pstpl"));
     doFooter();
     exit;
 };
@@ -122,8 +116,14 @@ if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run 
 $language = GetBaseLanguageFromSurveyID($surveyid);
 $thissurvey = getSurveyInfo($surveyid);
 //SET THE TEMPLATE DIRECTORY
-if (!$thissurvey['templatedir']) {$thistpl=$templaterootdir."/default";} else {$thistpl=$templaterootdir."/{$thissurvey['templatedir']}";}
-if (!is_dir($thistpl)) {$thistpl=$templaterootdir."/default";}
+if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
+{
+    $thistpl=validate_templatedir("default");
+}
+else 
+{
+    $thistpl=validate_templatedir($thissurvey['templatedir']);
+}
 
 if ($thissurvey['printanswers']=='N') die();  //Die quietly if print answers is not permitted
 
