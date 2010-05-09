@@ -853,6 +853,11 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
             foreach ($drow as $rowfield)
             {
                 $rowfield=str_replace("?","-",$rowfield);
+                // Let's enclose in \" if begins by =
+                if (substr($rowfield,0,1) ==  "=")
+                {
+                    $rowfield = "\"".$rowfield."\"";
+                }
                 $sheet->write($rowcounter,$colcounter,$rowfield);
                 $colcounter++;
             }
@@ -1255,6 +1260,11 @@ elseif ($answers == "long")        //chose complete answers
             $fli=0;
             foreach ($rowarray as $row)
             {
+                // Let's enclose in \" if begins by =
+                if (substr($row,0,1) ==  "=")
+                {
+                    $row = "\"".$row."\"";
+                }
                 $sheet->write($rowcounter,$fli,$row);
                 $fli++;
             }
