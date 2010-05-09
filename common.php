@@ -3455,6 +3455,25 @@ function getQuestionAttributes($qid, $type='')
     return $qid_attributes;
 }
 
+/**
+ *
+ * Returns the questionAttribtue value set or '' if not set 
+ * @author: lemeur
+ * @param $questionAttributeArray 
+ * @param $attributeName
+ * @return string
+ */
+function getQuestionAttributeValue($questionAttributeArray, $attributeName)
+{
+    if (isset($questionAttributeArray[$attributeName]))
+    {
+        return $questionAttributeArray[$attributeName];
+    }
+    else
+    {
+        return '';
+    }
+}
 
 /**
  * Returns array of question type chars with attributes
