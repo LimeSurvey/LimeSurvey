@@ -473,8 +473,9 @@ function spss_getquery() {
 * @param mixed $xmlwriter  The existing XMLWriter object
 * @param mixed $Query  The table query to build from
 * @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
+* @param array $excludes array of columnames not to include in export 
 */
-function BuildXMLFromQuery($xmlwriter, $Query, $tagname='')
+function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
     global $dbprefix, $connect;
     $QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
@@ -490,12 +491,13 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='')
     }
     if ($QueryResult->RecordCount()>0)
     {
+        $exclude = array_flip($excludes);    //Flip key/value in array for faster checks
         $xmlwriter->startElement($TableName);
         $xmlwriter->startElement('fields');
         $Columninfo =  $QueryResult->fields;
         foreach ($Columninfo as $fieldname=>$value)
         {
-            $xmlwriter->writeElement('fieldname',$fieldname);
+            if (!isset($exclude[$fieldname])) $xmlwriter->writeElement('fieldname',$fieldname);
         }
         $xmlwriter->endElement(); // close columns
         $xmlwriter->startElement('rows');
@@ -504,9 +506,11 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='')
             $xmlwriter->startElement('row');
             foreach ($Row as $Key=>$Value)
             {
-                $xmlwriter->startElement($Key);
-                $xmlwriter->writeCData($Value);
-                $xmlwriter->endElement();
+                if (!isset($exclude[$Key])) {
+	                $xmlwriter->startElement($Key);
+	                $xmlwriter->writeCData($Value);
+	                $xmlwriter->endElement();
+                }
             }
             $xmlwriter->endElement(); // close row
         }

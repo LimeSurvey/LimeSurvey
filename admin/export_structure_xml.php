@@ -150,7 +150,8 @@ function getXMLStructure($xmlwriter, $exclude=array())
     $squery = "SELECT *
            FROM {$dbprefix}surveys 
            WHERE sid=$surveyid";
-    BuildXMLFromQuery($xmlwriter,$squery);
+    //Exclude some fields from the export
+    BuildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
 
     // Survey language settings 
     $slsquery = "SELECT *

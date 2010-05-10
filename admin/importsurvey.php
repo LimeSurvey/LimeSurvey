@@ -1272,8 +1272,15 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
         }
         $oldsid=$insertdata['sid'];
         $newsid=GetNewSurveyID($oldsid);
+
+        //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
-        $insertdata['active']='N';    //Make sure it is not set active
+        //Make sure it is not set active
+        $insertdata['active']='N';
+        //Set current user to be the owner
+        $insertdata['owner_id']=$_SESSION['loginID'];
+        //Change creation date to import date
+        $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));
 
         db_switchIDInsert('surveys',true);
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
