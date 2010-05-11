@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.90beta!
+Welcome to LimeSurvey v1.90beta2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
