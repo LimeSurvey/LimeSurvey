@@ -78,7 +78,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
-Changes from 1.90beta (build 8691) to 1.90beta2 (build 8706) Legend: # updated feature, - bug fix 
+Changes from 1.90beta (build 8691) to 1.90beta2 (build 8708) Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
 #Updated translation: Spanish (Mexico) (es-MX), thanks to Roberto González (ganalfar)
 #Updated translation: Polish (elisa-ls)
