@@ -227,12 +227,22 @@ foreach ($fnrows as $fnrow)
         $fnrow['type'] == "P" || $fnrow['type'] == "^")
         {
 
-            $fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
+            $fnrquery="SELECT * "
+            ."FROM {$dbprefix}questions "
+            ."WHERE parent_qid={$fnrow['qid']} "
+            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+            ."ORDER BY question_order, "
+            ."question";
+            
+            //$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
             $fnrresult = db_execute_assoc($fnrquery);  //Checked
             while ($fnrrow = $fnrresult->FetchRow())
             {
-                $fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
-                if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");}
+                $fnames[] = array($field.$fnrrow['title'], "$ftitle ({$fnrrow['title']})", "{$fnrow['question']} ({$fnrrow['question']})");
+                if ($fnrow['type'] == "P")
+                {
+                    $fnames[] = array($field.$fnrrow['title']."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");
+                }
             }
             if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
             {
@@ -245,30 +255,51 @@ foreach ($fnrows as $fnrow)
         }
         elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
         {
-            $lset=array();
-            $fnrquery = "SELECT *
-						FROM ".db_table_name('answers')." 
-						WHERE qid={$fnrow['qid']}
-					AND language='{$language}' 
-						ORDER BY sortorder, answer";
-            $fnrresult = db_execute_assoc($fnrquery);
-            $fnr2query = "SELECT *
-						FROM ".db_table_name('labels')."
-						WHERE lid={$fnrow['lid']}
-					AND language = '{$language}'
-						ORDER BY sortorder, title";
-            $fnr2result = db_execute_assoc($fnr2query);
-            while( $fnr2row = $fnr2result->FetchRow())
+            // Get the Y-Axis
+            $fquery = "SELECT sq.*, q.other"
+            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
+            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
+            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+            ." AND q.qid={$fnrow['qid']}
+               AND sq.scale_id=0
+               ORDER BY sq.question_order, sq.question";            
+            $y_axis_db = db_execute_assoc($fquery);           
+             // Get the X-Axis   
+             $aquery = "SELECT sq.*
+                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
+                         WHERE q.sid=$surveyid 
+                         AND sq.parent_qid=q.qid
+                         AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                         AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                         AND q.qid=".$fnrow['qid']."
+                         AND sq.scale_id=1
+                         ORDER BY sq.question_order, sq.question";            
+            $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+            while ($frow=$x_axis_db->FetchRow())
             {
-                $lset[]=$fnr2row;
+                $x_axis[$frow['title']]=$frow['question'];
             }
-            while ($fnrrow = $fnrresult->FetchRow())
+            while ($arows = $y_axis_db->FetchRow())
             {
-                foreach($lset as $ls)
+                foreach($x_axis as $key=>$val)
                 {
-                    $fnames[] = array("$field{$fnrrow['code']}_{$ls['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']}: {$ls['title']})");
+                   
+                    $fnames[] = array($field.$arows['title']."_".$key, "$ftitle ({$rows['title']})", "{$arows['question']} ({$arows['title']}: {$key})"); 
+                                       
+                    //$shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
+                    
+                    //$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
+
+                    if ($rows['type'] == ":")
+                    {
+                        for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
+                        {
+                            //$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $ii, $ii);
+                        }
+                    }
                 }
-            }
+            }       
         }
         elseif ($fnrow['type'] == "R")
         {
@@ -290,11 +321,12 @@ foreach ($fnrows as $fnrow)
             $fquestion = $fnrow['question'];
 
             $aquery="SELECT * "
-            ."FROM {$dbprefix}answers "
-            ."WHERE qid={$fnrow['qid']} "
-            ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY sortorder, "
-            ."answer";
+            ."FROM {$dbprefix}questions "
+            ."WHERE parent_qid={$fnrow['qid']} "
+            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+            ."ORDER BY question_order, "
+            ."question";
+            
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked
             $header1=$clang->gT('First Scale');
             $header2=$clang->gT('Second Scale');
@@ -308,8 +340,32 @@ foreach ($fnrows as $fnrow)
             }
             while ($arows = $aresult->FetchRow())
             {
-                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#0", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header1);
-                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#1", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header2);
+                // first label
+                $lquery="SELECT * "
+                ."FROM {$dbprefix}answers "
+                ."WHERE qid={$fnrow['qid']} "
+                ."AND scale_id=0 "
+                ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."ORDER BY sortorder, answer";
+                $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
+                while ($lrows = $lresult->FetchRow())
+                {
+                    $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['title']}#0", "$ftitle ", "{$fnrow['question']} {$arows['question']} - ".$header1);
+                }
+                
+                // second label
+                $lquery="SELECT * "
+                ."FROM {$dbprefix}answers "
+                ."WHERE qid={$fnrow['qid']} "
+                ."AND scale_id=1 "
+                ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."ORDER BY sortorder, answer";
+                $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
+                while ($lrows = $lresult->FetchRow())
+                {
+                   
+                    $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['title']}#0", "$ftitle ", "{$fnrow['question']} {$arows['question']} - ".$header12);
+                }
             } //while
         }
 
@@ -344,23 +400,22 @@ $printoutput .= "<table class='printouttable' >\n";
 if(isset($_POST['printableexport']))
 {
     $pdf->intopdf($clang->gT("Question").": ".$clang->gT("Your Answer"));
-}
+}     
 $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>\n";
 $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked
 while ($idrow = $idresult->FetchRow())
 {
     $i=0;
     for ($i; $i<$nfncount+1; $i++)
-    {
+    {   
         $printoutput .= "\t<tr>\n"
         ."<td>{$fnames[$i][2]}</td>\n"
         ."<td>"
         .getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])
         ."</td>\n"
         ."\t</tr>\n";
-
         if(isset($_POST['printableexport']))
-        {
+        {            
             $pdf->intopdf(FlattenText($fnames[$i][2]).": ".FlattenText(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
             $pdf->ln(2);
         }
@@ -435,9 +490,9 @@ if(!isset($_POST['printableexport']))
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo templatereplace(file_get_contents("$thistpl/printanswers.pstpl"));
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+    echo templatereplace(file_get_contents("templates/$thistpl/startpage.pstpl"));
+    echo templatereplace(file_get_contents("templates/$thistpl/printanswers.pstpl"));
+    echo templatereplace(file_get_contents("templates/$thistpl/endpage.pstpl"));
     echo "</body></html>";
 }
 ?>
