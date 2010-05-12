@@ -716,7 +716,7 @@ if (isset($summary) && $summary)
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
-            $nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' and qid='$qqid'";
+            $nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE language='{$language}' and qid='$qqid'";
             $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 
             //loop through question data
@@ -727,8 +727,7 @@ if (isset($summary) && $summary)
                 // CHANGE JSW_NZ - allow html formatted questions to show
                 //$qquestion=FlattenText($nrow[2]);
                 $qquestion=$nrow[2];
-                $qlid=$nrow[3];
-                $qother=$nrow[4];
+                $qother=$nrow[3];
             }
 
             //1. Get list of answers
@@ -828,7 +827,7 @@ if (isset($summary) && $summary)
             else
             {
                 //we can use the qqid without any editing
-                $nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
+                $nquery = "SELECT title, type, question, qid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
                 $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
             }
 
@@ -841,7 +840,6 @@ if (isset($summary) && $summary)
                 //$qquestion=FlattenText($nrow[2]);
                 $qquestion=$nrow[2];
                 $qiqid=$nrow[3];
-                $qlid=$nrow[4];
             }
 
             //Get answer texts for multiple numerical
@@ -1178,7 +1176,7 @@ if (isset($summary) && $summary)
             $rqid=$qqid;
 
             //get question data
-            $nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
+            $nquery = "SELECT title, type, question, qid, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
             $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 
             //loop though question data
@@ -1190,9 +1188,7 @@ if (isset($summary) && $summary)
                 //$qquestion=FlattenText($nrow[2]);
                 $qquestion=$nrow[2];
                 $qiqid=$nrow[3];
-                $qlid=$nrow[4];
-                $qlid1=$nrow[5];
-                $qother=$nrow[6];
+                $qother=$nrow[4];
             }
 
             //check question types
@@ -1321,7 +1317,7 @@ if (isset($summary) && $summary)
 
                     while ($qrow=$qresult->FetchRow())
                     {
-                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
+                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
                         $fresult = db_execute_assoc($fquery);
                         while ($frow=$fresult->FetchRow())
                         {
@@ -1351,7 +1347,7 @@ if (isset($summary) && $summary)
                     while ($qrow=$qresult->FetchRow())
                     {
                         //this question type uses its own labels
-                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}'ORDER BY sortorder, code";
+                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE language='{$language}'ORDER BY sortorder, code";
                         $fresult = db_execute_assoc($fquery);
                          
                         //add code and title to results for outputting them later
@@ -1402,7 +1398,7 @@ if (isset($summary) && $summary)
                     if (substr($rt,-1,1) == 0)
                     {
                         //get label 1
-                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE language='{$language}' ORDER BY sortorder, code";
 
                         //header available?
                         if (trim($qidattributes['dualscale_headerA'])!='') {
@@ -1424,7 +1420,7 @@ if (isset($summary) && $summary)
                     else
                     {
                         //get label 2
-                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
+                        $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE language='{$language}' ORDER BY sortorder, code";
 
                         //header available?
                         if (trim($qidattributes['dualscale_headerB'])!='')
