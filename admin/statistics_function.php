@@ -153,7 +153,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     }
     if($q2show=='all' )
     {
-        $summarySql=" SELECT gid, lid, qid, type "
+        $summarySql=" SELECT gid, parent_qid, qid, type "
         ." FROM {$dbprefix}questions where parent_qid=0"
         ." WHERE sid=$surveyid ";
 
@@ -633,7 +633,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
                  
                 //select details for this question
-                $nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
+                $nquery = "SELECT title, type, question, parent_qid, other FROM ".db_table_name("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
                 $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
                  
                 //loop through question data
@@ -691,7 +691,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                  
                  
                 //get question data
-                $nquery = "SELECT title, type, question, other, lid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                $nquery = "SELECT title, type, question, other, parent_qid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
                 $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
                  
                 //loop through question data
@@ -841,7 +841,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
 
                         //get question details from DB
-                        $nquery = "SELECT title, type, question, qid, lid
+                        $nquery = "SELECT title, type, question, qid, parent_qid
 								   FROM ".db_table_name("questions")." 
 								   WHERE parent_qid=0 AND qid='".substr($qqid, 0, $qidlength)."' 
 								   AND language='{$language}'";
@@ -852,7 +852,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     else
                     {
                         //we can use the qqid without any editing
-                        $nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                        $nquery = "SELECT title, type, question, qid, parent_qid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
                         $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
                     }
 
@@ -1357,7 +1357,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $rqid=$qqid;
                  
                 //get question data
-                $nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
+                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
                 $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
                  
                 //loop though question data
