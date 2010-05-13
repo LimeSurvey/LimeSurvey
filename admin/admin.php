@@ -414,6 +414,7 @@ if(isset($_SESSION['loginID']))
         {
             $_SESSION['FileManagerContext']="edit:survey:$surveyid";
         }
+        include('html_functions.php');
         include('html.php');
     }
 
