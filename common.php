@@ -4338,15 +4338,16 @@ function getAdminHeader($meta=false)
         $strAdminHeader.=$meta;
     }
     $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
-    if ($_SESSION['adminlang']!='en')
-    {
-        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
-    }
     $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
+	
+    if ($_SESSION['adminlang']!='en')
+    {
+        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
+    }
 
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
