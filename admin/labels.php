@@ -804,8 +804,8 @@ function fixorder($lid) {
     $lslanguages=explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage)
     {
-        $query = "SELECT lid, code, title FROM ".db_table_name('labels')." WHERE lid=? and language='?' ORDER BY sortorder, code";
-        $result = db_execute_num($query, array($lid,$lslanguage));
+        $query = "SELECT lid, code, title, sortorder FROM ".db_table_name('labels')." WHERE lid=? and language=? ORDER BY sortorder, code";
+        $result = db_execute_num($query, array($lid,$lslanguage)) or safe_die("Can't read labels table: $query // (lid=$lid, language=$lslanguage) ".$connect->ErrorMsg());
         $position=0;
         while ($row=$result->FetchRow())
         {
