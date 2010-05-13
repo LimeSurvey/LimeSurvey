@@ -181,7 +181,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
     $idquery = "SELECT * FROM $surveytable ";
-    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+    if ($surveyinfo['private'] == "N" && db_tables_exist(`$tokentable`))
         $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
     if (incompleteAnsFilterstate() == "inc")
         $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
@@ -260,7 +260,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
                     ."<td align='left' >";
             if ($i == 2)
             {
-                if ($idrow[$fnames[$i][0]] == NULL) { $browseoutput .= "N"; }
+                if ($idrow[$fnames[$i][0]] == NULL || $idrow[$fnames[$i][0]] == "N") { $browseoutput .= "N"; }
                 else { $browseoutput .= "Y"; }
             }
             else
@@ -385,9 +385,9 @@ elseif ($subaction == "all")
     $limit=returnglobal('limit');
     if (!isset($limit) || $limit== '') {$limit = 50;}
     if (!isset($start) || $start =='') {$start = 0;}
-
+    
     //LETS COUNT THE DATA
-    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+    if ($surveyinfo['private'] == "N" && db_tables_exist(`$tokentable`))
     {
         $dtquery = "SELECT count(*) FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
     } else
@@ -457,7 +457,7 @@ elseif ($subaction == "all")
     }
     else
     {
-        if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+        if ($surveyinfo['private'] == "N" && db_tables_exist(`$tokentable`))
             $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
         else
             $dtquery = "SELECT * FROM $surveytable ";
