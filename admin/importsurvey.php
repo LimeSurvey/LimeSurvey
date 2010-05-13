@@ -1215,7 +1215,7 @@ function CSVImportSurvey($sFullFilepath)
 */
 function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
 {
-    global $connect, $dbprefix, $clang;
+    global $connect, $dbprefix, $clang, $timeadjust;
     
     if ($sXMLdata == NULL)
     {
