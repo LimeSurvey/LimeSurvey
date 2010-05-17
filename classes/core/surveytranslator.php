@@ -212,7 +212,7 @@ function getLanguageData($orderbynative=false) {
 
     // Dutch
     $supportedLanguages['nl-informal']['description'] = $clang->gT('Dutch Informal');
-    $supportedLanguages['nl-informal']['nativedescription'] = 'Nederlands (Du)';
+    $supportedLanguages['nl-informal']['nativedescription'] = 'Nederlands (informeel)';
     $supportedLanguages['nl-informal']['rtl'] = false;
     $supportedLanguages['nl-informal']['dateformat'] = 2;
 
