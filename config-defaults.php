@@ -447,7 +447,7 @@ $imagefiles     =   "$rooturl/images";                          // Location of b
     
 //Location of the user directory
 $uploaddir      =     "$rootdir".DIRECTORY_SEPARATOR."upload";
-$uploadurl      =     "$rooturl".DIRECTORY_SEPARATOR."upload";
+$uploadurl      =     "$rooturl/upload";
 
 // Location of the user templates
 $usertemplaterootdir= "$uploaddir".DIRECTORY_SEPARATOR."templates"; // Location of the templates
