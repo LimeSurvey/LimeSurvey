@@ -376,7 +376,11 @@ if (isset($_POST['colselect']))
     $selectfields="";
     foreach($_POST['colselect'] as $cs)
     {
-        if ($cs != 'completed')
+        if ($tokenTableExists && $cs == 'token')
+        {
+            // We shouldnt include the token field when we are joining with the token field    
+        } 
+        elseif ($cs != 'completed')
         {
             $selectfields.= db_quote_id($cs).", ";
         }
@@ -646,22 +650,38 @@ for ($i=0; $i<$fieldcount; $i++)
                     if ($answers == "short") {
                         $fquest .= " [$faid] [$fcode]";
                     } else {
-                        $lq1="SELECT lid FROM {$dbprefix}questions WHERE qid=$fqid";
-                        $lr1=db_execute_assoc($lq1);
-                        while($lrow1=$lr1->FetchRow()) {
-                            $flid = $lrow1['lid'];
-                        }
-                        $lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
-                        $lr = db_execute_assoc($lq);
-                        while ($lrow=$lr->FetchRow())
-                        {
-                            $lq2 = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND code='$fcode' AND language = '$explang'";
-                            $lr2 = db_execute_assoc($lq2);
-                            while ($lrow2=$lr2->FetchRow())
-                            {
-                                $fquest .= " [".$lrow['answer']."] [".$lrow2['title']."]";
-                            }
-                        }
+                        
+                        $fquery = "SELECT sq.*, q.other"
+                            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
+                            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
+                            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+                            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+                            ." AND q.qid={$rows['qid']}
+                               AND sq.scale_id=0
+                               ORDER BY sq.question_order, sq.question";
+            
+                            $y_axis_db = db_execute_assoc($fquery);
+            
+                            // Get the X-Axis   
+                            $aquery = "SELECT sq.*
+                                FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
+                                WHERE q.sid=$surveyid 
+                                AND sq.parent_qid=q.qid
+                                AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                                AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                                AND q.qid=".$rows['qid']."
+                                AND sq.scale_id=1
+                                ORDER BY sq.question_order, sq.question";
+              
+                            $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+
+                           while ($arows = $y_axis_db->FetchRow())
+                           {
+                                foreach($x_axis as $key=>$val)
+                                {
+                                $fquest .= " [".strip_tags_full($arows['question'])."] [".strip_tags_full($val)."]";
+                                }
+                        } 
                     }
                     break;
                 case "1": // multi scale Headline
@@ -1186,7 +1206,7 @@ elseif ($answers == "long")        //chose complete answers
                 case "H":
                     if (!isset($labelscache[$flid.'|'.$explang.'|'.$drow[$i]]))
                     {
-                        $fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND language='$explang' AND code='$drow[$i]'";
+                        $fquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND scale_id=0 AND code='$drow[$i]'";
                         $fresult = db_execute_assoc($fquery) or safe_die("ERROR:".$fquery."\n".$qq."\n".$connect->ErrorMsg());
                         if ($fresult)
                         {
