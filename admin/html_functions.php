@@ -120,7 +120,7 @@ function browsemenubar($title='')
     $thissurvey['tokenanswerspersistence'] == 'Y'
     ))
     {
-        $browsemenubar .= "<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' title=\"".$clang->gTview("Iterate surevey")."\" >"
+        $browsemenubar .= "<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' title=\"".$clang->gTview("Iterate survey")."\" >"
         ."<img src='$imagefiles/iterate.png' title='' alt='".$clang->gT("Iterate surevey")."' /></a>\n";
     }
     $browsemenubar .= "</div>\n"
