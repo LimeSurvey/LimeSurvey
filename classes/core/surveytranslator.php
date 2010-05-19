@@ -126,6 +126,9 @@ function getLanguageDetails($codetosearch)
 function getLanguageData($orderbynative=false) {
     global $clang;
     static $supportedLanguages;
+    static $result = array();
+    
+    if (isset($result[$orderbynative])) return $result[$orderbynative];
 
     if (!isset($supportedLanguages)) {
     // Albanian
@@ -462,6 +465,8 @@ function getLanguageData($orderbynative=false) {
     {
         uasort($supportedLanguages,"user_sort");
     }
+    
+    $result[$orderbynative] = $supportedLanguages;
 
     Return $supportedLanguages;
 }
