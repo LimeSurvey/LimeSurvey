@@ -1,11 +1,12 @@
+# Jure Cuhalev <gandalf@owca.info>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-19 18:00+0200\n"
-"PO-Revision-Date: 2010-05-19 22:45+0100\n"
+"PO-Revision-Date: 2010-05-20 01:10+0100\n"
 "Last-Translator: Jure Cuhalev <gandalf@owca.info>\n"
-"Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
+"Language-Team: American English <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,6 +15,8 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-KeywordsList: gT\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: /Users/gandalf/hacking/limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
@@ -518,6 +521,9 @@ msgid ""
 "\\n"
 "It is missing a quota message for the following languages"
 msgstr ""
+"Kvote ni bilo mogoče dodati.\\n"
+"\\n"
+"Manjkajo sporočila o kvoti za naslednje jezike"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:399
 msgid "Modify Quota"
@@ -891,16 +897,14 @@ msgstr "Dodaj:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:100
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:64
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:121
-#, fuzzy
 msgid "All responses"
-msgstr "Popolnih odgovorov:"
+msgstr "Vseh odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:260
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:535
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:99
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:63
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:120
-#, fuzzy
 msgid "Completed responses only"
 msgstr "Samo dokončane ankete"
 
@@ -909,9 +913,8 @@ msgstr "Samo dokončane ankete"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:101
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:122
-#, fuzzy
 msgid "Incomplete responses only"
-msgstr "Nepopolni odgovori:"
+msgstr "Samo nepopolni odgovori"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:264
 msgid "View summary of all available fields"
@@ -1700,9 +1703,9 @@ msgstr "Ustrezni odgovori (regexp)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:633
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:640
-#, fuzzy, php-format
+#, php-format
 msgid "Label %s"
-msgstr "Odgovori"
+msgstr "Odgovori %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:665
 msgid "RANK"
@@ -1876,14 +1879,14 @@ msgid "Please fax your completed survey to: %s"
 msgstr "Prosimo, pošljite vašo izpolnjeno anketo po telefaksu na številko: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1813
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question for the items you selected in question %d ('%s')"
-msgstr "Na to vprašanje odgovorite samo, če je zadoščeno naslednjim pogojem:"
+msgstr "Na to vprašanje odgovorite samo v zvezi z vnosi, ki ste jih izbrali v vprašanju %d ('%s')"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1822
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question for the items you did not select in question %d ('%s')"
-msgstr "Na to vprašanje odgovorite samo, če je zadoščeno naslednjim pogojem:"
+msgstr "Na to vprašanje odgovorite samo v zvezi z vnosi, ki jih niste izbrali v vprašanju %d ('%s')"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:34
 msgid "Show summary information"
@@ -1948,7 +1951,6 @@ msgid "Export a VV survey file"
 msgstr "Izvozi VV datoteko ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:124
-#, fuzzy
 msgid "Iterate surevey"
 msgstr "Ponovi anketo"
 
@@ -1965,9 +1967,8 @@ msgid "You have not selected a survey to browse."
 msgstr "Niste izbrali ankete, ki jo želite pregledati."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:115
-#, fuzzy
 msgid "This survey has not been activated. There are no results to browse."
-msgstr "This survey has not been activated. There are no results to browse."
+msgstr "Ta anketa ni bila aktivirana. Ni rezultatov za brskanje."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:130
 msgid "There is no matching survey."
@@ -2051,14 +2052,12 @@ msgid "Show next..."
 msgstr "Prikaži naslednje..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:287
-#, fuzzy
 msgid "Do you really want to delete this response?"
-msgstr "Do you really want to delete this label set?"
+msgstr "Ali res želite izbrisati ta odgovor?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:288
-#, fuzzy
 msgid "Do you really want to delete all marked responses?"
-msgstr "Do you really want to delete this label set?"
+msgstr "Ali res želite izbrisati vse označene odgovore?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:298
 msgid "Showing Filtered Results"
@@ -2075,9 +2074,8 @@ msgid "Token ID"
 msgstr "ID gesla:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:380
-#, fuzzy
 msgid "Delete marked responses"
-msgstr "Delete this user"
+msgstr "Izbriši označene odgovore"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:501
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:792
@@ -2124,19 +2122,16 @@ msgid "Show"
 msgstr "Prikaži"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:564
-#, fuzzy
 msgid "View response details"
-msgstr "Preglej odgovore"
+msgstr "Preglej podrobnosti vnosa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:565
-#, fuzzy
 msgid "Edit this response"
-msgstr "Izvozi ta vnos"
+msgstr "Uredi ta vnos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:566
-#, fuzzy
 msgid "Delete this response"
-msgstr "Delete this user"
+msgstr "Izbriši ta vnos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:580
 msgid "Edit this token"
@@ -2185,14 +2180,12 @@ msgstr "Prišlo je do nepričakovane napake pri nalaganju vaše datoteke. Vzrok 
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:34
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:34
-#, fuzzy
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "Manjka SID (številka ankete). Cannot import question."
+msgstr "Manjka SID (številka ankete). Ne morem uvoziti vprašanja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:43
-#, fuzzy
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr "No GID (Group) has been provided. Cannot import question"
+msgstr "Manjka GID (številka skupine). Ne morem uvoziti vprašanja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:63
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:36
@@ -2217,7 +2210,6 @@ msgid "Reading file.."
 msgstr "Berem datoteko.."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:87
-#, fuzzy
 msgid "Question import summary"
 msgstr "Povzetek uvoza vprašanj"
 
@@ -2225,22 +2217,19 @@ msgstr "Povzetek uvoza vprašanj"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:81
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:67
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:126
-#, fuzzy
 msgid "Subquestions"
-msgstr "Vprašanje"
+msgstr "Podvprašanja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:93
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:85
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:79
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:138
-#, fuzzy
 msgid "Label sets"
 msgstr "Seznami odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:95
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:87
-#, fuzzy
 msgid "Question attributes:"
 msgstr "Lastnosti vprašanja:"
 
@@ -2265,15 +2254,13 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:279
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:322
-#, fuzzy
 msgid "You can't import a question which doesn't support at least the survey base language."
 msgstr "Ne morete uvozit vprašanja ki ne podpira privzetega jezika trenutne ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:293
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:336
-#, fuzzy
 msgid "You can't import answers which doesn't support at least the survey base language."
-msgstr "Ne morete uvozit skupine vprašanj ki ne podpira privzetega jezika trenutne ankete."
+msgstr "Ne morete uvozit odgovorov ki ne podpirajo privzetega jezika trenutne ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:308
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:351
@@ -2502,9 +2489,8 @@ msgstr "URL prihoda"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:512
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:513
-#, fuzzy
 msgid "Last page seen"
-msgstr "Zadnja stran"
+msgstr "Zadnja videna stran"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:517
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:518
@@ -2550,9 +2536,8 @@ msgid "Tokens problem - token table missing"
 msgstr "Problem z gesli - manjka tabela z gesli"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:45
-#, fuzzy
 msgid "Responses"
-msgstr "ID odgovora"
+msgstr "Odgovori"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:50
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:167
@@ -2570,9 +2555,8 @@ msgid "Survey"
 msgstr "Anketa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:52
-#, fuzzy
 msgid "Date created"
-msgstr "Datum ustvarjen"
+msgstr "Datum ustvarjenja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:53
 msgid "Owner"
@@ -2587,9 +2571,8 @@ msgid "Anonymous answers"
 msgstr "Anonimni odgovori"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:56
-#, fuzzy
 msgid "Full"
-msgstr "Polno ime"
+msgstr "Polno"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:57
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:160
@@ -2605,24 +2588,20 @@ msgid "Total"
 msgstr "Skupaj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:59
-#, fuzzy
 msgid "Tokens available"
-msgstr "Izbriši tabelo dostopnih gesel"
+msgstr "Gesla, ki so na voljo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:60
-#, fuzzy
 msgid "Response rate"
-msgstr "Filtri odgovorov"
+msgstr "Stopnja odziva"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:80
-#, fuzzy
 msgid "Closed"
-msgstr "Zapri"
+msgstr "Zaprto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:84
-#, fuzzy
 msgid "Open"
-msgstr "Vklopljeno"
+msgstr "Odprto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:91
 #: /var/lib/limesurvey-svn/subversion1x/common.php:804
@@ -2786,14 +2765,12 @@ msgid "Change question group order"
 msgstr "Spremeni vrstni red skupin vprašanj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:571
-#, fuzzy
 msgid "Standard survey options"
-msgstr "Standardni odklon"
+msgstr "Standardne možnosti ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:572
-#, fuzzy
 msgid "Advanced survey options"
-msgstr "Dodaj novo možnost odgovora"
+msgstr "Napredne možnosti ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:664
 msgid "Set Assessment Rules"
@@ -2922,9 +2899,8 @@ msgid "Detailed email notification with result codes"
 msgstr "Podrobno obvestilo po elektronski pošti skupaj s kodami odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:806
-#, fuzzy
 msgid "Regenerate question codes:"
-msgstr "Ponastavi kode vprašanj:"
+msgstr "Ponovno zgradi kode vprašanj:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:808
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:811
@@ -2945,7 +2921,6 @@ msgstr "URL ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:823
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:830
-#, fuzzy
 msgid "Survey URL for language:"
 msgstr "URL ankete v jeziku:"
 
@@ -3042,9 +3017,8 @@ msgid "Survey cannot be activated yet."
 msgstr "Ankete še ni mogoče aktivirati."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:936
-#, fuzzy
 msgid "You need to add question groups"
-msgstr "Dodati morate vprašanja"
+msgstr "Dodati morate skupine vprašanj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:940
 msgid "You need to add questions"
@@ -3068,7 +3042,6 @@ msgid "Impossible to delete this group because there is at least one question ha
 msgstr "Skupine ni mogoče izbrisati, ker obstaja vsaj eno vprašanje s pogojem na vprašanja iz te skupine."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1022
-#, fuzzy
 msgid "Export this question group"
 msgstr "Izvozi trenutno skupino vprašanj"
 
@@ -3107,12 +3080,10 @@ msgid "Edit Current Question"
 msgstr "Uredi trenutno vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1187
-#, fuzzy
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
-msgstr "Če boste izbrisali to vprašanje, bodo izbrisani tudi vsi odgovori, ki pripadajo vprašanju. Ali ste prepričani, da želite nadaljevati?"
+msgstr "Če boste izbrisali to vprašanje, bodo izbrisani tudi vse možnosti odgovorov in vključena podvprašanja. Ali ste prepričani, da želite nadaljevati?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1188
-#, fuzzy
 msgid "Delete current question"
 msgstr "Izbriši trenutno vprašanje"
 
@@ -3121,7 +3092,6 @@ msgid "It's impossible to delete this question because there is at least one que
 msgstr "Vprašanja ni mogoče izbrisati, ker obstaja vsaj eno vprašanje s pogojem na to vprašanje."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1196
-#, fuzzy
 msgid "Disabled - Delete current question"
 msgstr "Onemogočeno - Izbriši trenutno vprašanje"
 
@@ -3143,19 +3113,16 @@ msgid "Set Conditions for this Question"
 msgstr "Nastavi pogoje za to vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1253
-#, fuzzy
 msgid "Edit subquestions for this question"
-msgstr "Uredi/Dodaj možni odgovor za to vprašanje"
+msgstr "Uredi podvprašanja za to vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1264
-#, fuzzy
 msgid "Edit answer options for this question"
-msgstr "Uredi/Dodaj možni odgovor za to vprašanje"
+msgstr "Uredi možnosti odgovora za to vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1274
-#, fuzzy
 msgid "Edit default answers for this question"
-msgstr "Uredi/Dodaj možni odgovor za to vprašanje"
+msgstr "Uredi možne odgovore za to vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1279
 msgid "Hide Details of this Question"
@@ -3263,9 +3230,8 @@ msgid "Other questions having conditions on this question:"
 msgstr "Druga vprašanja, ki imajo nastavljene pogoje na to vprašanje:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1393
-#, fuzzy
 msgid "Some example answer option"
-msgstr "Nova možnost odgovora"
+msgstr "Primer možnosti odgovora"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1447
 msgid "Edit answer options"
@@ -3286,15 +3252,13 @@ msgstr "Koda"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1471
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1669
-#, fuzzy
 msgid "Label set browser"
-msgstr "Seznami odgovorov"
+msgstr "Pregled seznamov odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1472
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1670
-#, fuzzy
 msgid "Quick-add subquestions"
-msgstr "Dodaj vprašanje"
+msgstr "Hitro-dodaj podvprašanja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1473
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1712
@@ -3302,9 +3266,9 @@ msgid "Error: You are trying to use duplicate answer codes."
 msgstr "Napaka: uporabiti želite podvojene kode odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1489
-#, fuzzy, php-format
+#, php-format
 msgid "Answer scale %s"
-msgstr "Odgovor je bil"
+msgstr "Lestvica odgovorov %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1500
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:310
@@ -3321,9 +3285,8 @@ msgstr "Odgovor:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1583
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1828
-#, fuzzy
 msgid "Predefined label sets..."
-msgstr "Izbriši seznam odgovorov"
+msgstr "Pred-nastavljeni seznami odgovorov..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1584
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1829
@@ -3332,23 +3295,20 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1595
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1838
-#, fuzzy
 msgid "Available label sets:"
-msgstr "Izbriši seznam odgovorov"
+msgstr "Seznam odgovorov, ki so na voljo:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1597
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1840
-#, fuzzy
 msgid "Match language"
-msgstr "Osnovni jezik"
+msgstr "Ujemaj jezik"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1598
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1606
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1841
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1848
-#, fuzzy
 msgid "Replace"
-msgstr "Predloga:"
+msgstr "Zamenjaj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1599
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1607
@@ -3362,30 +3322,25 @@ msgstr "Dodaj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1604
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1846
-#, fuzzy
 msgid "Enter your subquestions:"
-msgstr "Varnostno vprašanje:"
+msgstr "Vnesite vaša podvprašanja:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1611
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1853
-#, fuzzy
 msgid "Save changes"
 msgstr "Shrani spremembe"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1640
-#, fuzzy
 msgid "Some example subquestion"
-msgstr "Izberi vprašanje"
+msgstr "Primeri podvprašanj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1671
-#, fuzzy
 msgid "Error: You are trying to use duplicate subquestion codes."
-msgstr "Napaka: uporabiti želite podvojene kode odgovorov."
+msgstr "Napaka: uporabiti želite podvojene kode podvprašanj."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1710
-#, fuzzy
 msgid "Edit subquestions"
-msgstr "Uredi vprašanje"
+msgstr "Uredi podvprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1712
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:290
@@ -3393,29 +3348,24 @@ msgid "Error: 'other' is a reserved keyword."
 msgstr "Napaka: 'other' je rezervirana beseda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1745
-#, fuzzy
 msgid "Y-Scale"
-msgstr "Lestvica"
+msgstr "Y-Lestvica"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1749
-#, fuzzy
 msgid "X-Scale"
-msgstr "Lestvica"
+msgstr "X-Lestvica"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1759
-#, fuzzy
 msgid "Subquestion"
-msgstr "Vprašanje"
+msgstr "Podvprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1807
-#, fuzzy
 msgid "Subquestion:"
-msgstr "Vprašanje:"
+msgstr "Podvprašanje:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1859
-#, fuzzy
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
-msgstr "Anketa je trenutno aktivna, zato ni mogoče dodati novih odgovorov ali urediti njihovih kod."
+msgstr "Anketa je trenutno aktivna, zato ni mogoče dodati novih podvprašanj ali urediti njihovih kod."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1877
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2302
@@ -3567,9 +3517,8 @@ msgid "Browse Response"
 msgstr "Prebrskaj odgovore"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2147
-#, fuzzy
 msgid "LimeSurvey XML survey file (*.lss)"
-msgstr "Datoteka LimeSurvey ankete (*.csv)"
+msgstr "Datoteka XML LimeSurvey ankete (*.lss)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2151
 msgid "queXML Survey XML Format (*.xml)"
@@ -3586,24 +3535,20 @@ msgid "Export To File"
 msgstr "Izvoz v datoteko"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2182
-#, fuzzy
 msgid "Export group structure"
-msgstr "Izvozi strukturo anketa"
+msgstr "Izvozi strukturo skupine"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2188
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2235
-#, fuzzy
 msgid "LimeSurvey group file (*.csv)"
 msgstr "Datoteka LimeSurvey skupine (*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2211
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2258
-#, fuzzy
 msgid "Export to file"
-msgstr "Izvoz v datoteko"
+msgstr "Izvozi v datoteko"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2229
-#, fuzzy
 msgid "Export question structure"
 msgstr "Izvozi strukturo vprašanj"
 
@@ -3705,9 +3650,8 @@ msgid "Template Preview:"
 msgstr "Predogled predloge"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2606
-#, fuzzy
 msgid "Template preview image"
-msgstr "Predogled predloge"
+msgstr "Predogled slike predloge"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2610
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3230
@@ -3989,9 +3933,8 @@ msgid "Date format:"
 msgstr "Oblika datuma:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3133
-#, fuzzy
 msgid "Create, import or copy survey"
-msgstr "Ustvari ali uvozi anketo"
+msgstr "Ustvari, uvozi ali kopiraj anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3142
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3195
@@ -4006,24 +3949,21 @@ msgid "This is the base language of your survey and it can't be changed later. Y
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3167
-#, fuzzy
 msgid "*This setting cannot be changed later!"
-msgstr "Te nastavitve kasneje ni mogoče spreminjati!"
+msgstr "*Te nastavitve kasneje ni mogoče spreminjati!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3171
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3477
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3480
-#, fuzzy
 msgid "*Required"
-msgstr "Zahtevano"
+msgstr "*Zahtevano"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3195
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3304
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3373
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3449
-#, fuzzy
 msgid "Save survey"
-msgstr "Testiraj anketo"
+msgstr "Shrani anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3331
 msgid "Start date:"
@@ -4041,51 +3981,43 @@ msgstr "Datum poteka ankete:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3454
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3463
-#, fuzzy
 msgid "Import survey"
 msgstr "Uvozi anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3459
-#, fuzzy
 msgid "Select survey structure file (*.lss, *.csv):"
-msgstr "Datoteka LimeSurvey skupine (*.csv)"
+msgstr "Izberite datoteko s strukturo ankete (*.lss, *.csv):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3461
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3481
-#, fuzzy
 msgid "Convert resource links and INSERTANS fields?"
 msgstr "Pretvori povezave virov in polja INSERTANS?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3470
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3489
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:50
-#, fuzzy
 msgid "Copy survey"
-msgstr "Izvedi anketiranje"
+msgstr "Kopiraj anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3475
-#, fuzzy
 msgid "Select survey to copy:"
-msgstr "Izbriši anketo"
+msgstr "Izberi anketo za kopiranje:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3478
 msgid "New survey title:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3483
-#, fuzzy
 msgid "Exclude quotas?"
-msgstr "Izloči ID?"
+msgstr "Izloči kvote?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3485
-#, fuzzy
 msgid "Exclude answers?"
-msgstr "Izloči ID?"
+msgstr "Izloči odgovore?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3487
-#, fuzzy
 msgid "Reset conditions?"
-msgstr "Glej pogoje:"
+msgstr "Ponastavi pogoje?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3535
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
@@ -4139,7 +4071,6 @@ msgid "Backup Entire Database"
 msgstr "Izdelaj varnostno kopijo celotne baze podatkov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3604
-#, fuzzy
 msgid "Edit label sets"
 msgstr "Uredi seznam odgovorov"
 
@@ -4162,9 +4093,8 @@ msgid "Surveys"
 msgstr "Ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3626
-#, fuzzy
 msgid "Create, import, or copy a survey"
-msgstr "Ustvari ali uvozi anketo"
+msgstr "Ustvari, uvozi ali kopiraj anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3635
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:838
@@ -4195,12 +4125,10 @@ msgid "Add survey"
 msgstr "Dodaj anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3652
-#, fuzzy
 msgid "Create a new question group inside your survey."
-msgstr "Ustvari novo skupino za anketo."
+msgstr "Ustvari novo skupino vprašanj znotraj vaše ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3653
-#, fuzzy
 msgid "Create one or more questions inside the new question group."
 msgstr "Ustvari eno ali več vprašanj v novi skupini."
 
@@ -4454,9 +4382,9 @@ msgstr "To je vaša osebna statistika za anketo #%s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:3896
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:3901
-#, fuzzy, php-format
+#, php-format
 msgid "Statistics Survey #%s"
-msgstr "Statistics Survey #%s"
+msgstr "Statistika ankete #%s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:21
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:215
@@ -4471,7 +4399,6 @@ msgid "Warnings"
 msgstr "Opozorila"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:64
-#, fuzzy
 msgid "Label set import summary"
 msgstr "Povzetek uvažanja seznama odgovorov"
 
@@ -4481,14 +4408,12 @@ msgid "Labels"
 msgstr "Odgovori"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:67
-#, fuzzy
 msgid "Import of label set(s) is completed."
 msgstr "Uvoz seznama odgovorov je končan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:68
-#, fuzzy
 msgid "Return to label set administration"
-msgstr "Nazaj na upravljanje z anketo"
+msgstr "Nazaj na upravljanje s skupino odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:92
 msgid "This file is not a LimeSurvey label set file. Import failed."
@@ -4496,24 +4421,22 @@ msgstr "Ta datoteka ni datoteka s seznamom label za LimeSurvey. Uvoz ni uspel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:232
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:337
-#, fuzzy
 msgid "Label set was not imported because the same label set already exists."
-msgstr "Seznam label ni ni bil uvožen, ker isti seznam label že obstaja."
+msgstr "Seznam odgovorov ni ni bil uvožen, ker isti seznam odgovorov obstaja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:232
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:337
-#, fuzzy, php-format
+#, php-format
 msgid "Existing LID: %s"
-msgstr "Urejanje zapisa (ID %s)"
+msgstr "Obstoječi LID: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpdb.php:33
 msgid "Export database"
 msgstr "Izvozi bazo podatkov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpdb.php:34
-#, fuzzy
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
-msgstr "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Izvoz baze je mogoč samo za MySQL baze. Za ostale tipe baz, uporabite primerna orodja za ustvarjanje varnostne kopije za izvoz baze."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:103
@@ -4550,14 +4473,13 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:152
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:197
-#, fuzzy, php-format
+#, php-format
 msgid "Default answer for scale %s:"
-msgstr "Odgovor je bil"
+msgstr "Privzeti odgovor za skalo %s:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:156
-#, fuzzy
 msgid "Default answer value:"
-msgstr "Default site language:"
+msgstr "Privzeta vrednost odgovora:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:165
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:201
@@ -4569,9 +4491,8 @@ msgid "Default value for option 'Other':"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:201
-#, fuzzy
 msgid "Checked"
-msgstr "Check now"
+msgstr "Izbrano"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:225
 msgid "Use same default value across languages:"
@@ -4634,9 +4555,8 @@ msgid "Loading..."
 msgstr "Nalagam..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:503
-#, fuzzy
 msgid "Save question"
-msgstr "na vprašanje"
+msgstr "Shrani vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:508
 msgid "Update Question"
@@ -4647,14 +4567,12 @@ msgid "...or import a question"
 msgstr "... ali uvozi vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:528
-#, fuzzy
 msgid "Select LimeSurvey question file (*.lsq/*.csv)"
-msgstr "Datoteka LimeSurvey skupine (*.csv)"
+msgstr "Datoteka LimeSurvey skupine vprašanj (*.lsq/*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:532
-#, fuzzy
 msgid "Convert resource links?"
-msgstr "Pretvori linke virov?"
+msgstr "Pretvori povezave virov?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:632
 msgid "Current group is using conditional questions"
@@ -4710,18 +4628,16 @@ msgstr "Pošiljanje elektronskega sporočila za {NAME} ({EMAIL}) ni bilo uspešn
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:108
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:176
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:277
-#, fuzzy
 msgid "Incorrect username and/or password!"
 msgstr "Napačno uporabniško ime in/ali geslo!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:160
-#, fuzzy
 msgid "Logged in"
-msgstr "Prijavljeni ste kot:"
+msgstr "Prijavljeni"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:161
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:302
-#, fuzzy, php-format
+#, php-format
 msgid "Welcome %s!"
 msgstr "Dobrodošli v %s!"
 
@@ -4784,9 +4700,9 @@ msgid "Click here to log in."
 msgstr "Kliknite tukaj za prijavo."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
-msgstr "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Najlepša hvala!"
+msgstr "Če imate vprašanje v zvezi s tem email sporočilom stopite v stik z administratorjem na %s. Najlepša hvala!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:384
 #, php-format
@@ -5049,7 +4965,6 @@ msgid "Set templates that this user may access"
 msgstr "Nastavi predloge za tega uporabnika"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:142
-#, fuzzy
 msgid "Template name"
 msgstr "Ime predloge"
 
@@ -5058,9 +4973,8 @@ msgid "Allowed"
 msgstr "Dovoljeno"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:145
-#, fuzzy
 msgid "Check or uncheck all items"
-msgstr "Prosimo, razvrstite vse možnosti"
+msgstr "Izberite ali odzberite vse možnosti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:283
 msgid "SuperAdministrator"
@@ -5100,14 +5014,12 @@ msgid "Set Parent successful."
 msgstr "Določanje starša je uspelo."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:399
-#, fuzzy
 msgid "User control"
 msgstr "Upravljanje z uporabniki"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:411
-#, fuzzy
 msgid "No of surveys"
-msgstr "Pojdi na anketo"
+msgstr "Število anket"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:413
 msgid "Created by"
@@ -5122,18 +5034,16 @@ msgid "Edit this user"
 msgstr "Edit this user"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:506
-#, fuzzy
 msgid "Set global permissions for this user"
-msgstr "Set global permissions for this user"
+msgstr "Nastavi globalne pravice za tega uporabnika"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:515
 msgid "Take Ownership"
 msgstr "Prevzemi lastništvo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:524
-#, fuzzy
 msgid "Set template permissions for this user"
-msgstr "Set template permissions for this user"
+msgstr "Nastavi pravice predlog za tega uporabnika"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:535
 msgid "Delete this user"
@@ -5543,9 +5453,8 @@ msgstr "Nepravilne pravice v mapi %s"
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:82
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:265
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:456
-#, fuzzy
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr "This file is not a valid ZIP file archive. Uvoz ni uspel."
+msgstr "Datoteka ni veljaven ZIP arhiv. Uvoz ni uspel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:103
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:286
@@ -5661,9 +5570,8 @@ msgid "Import question group"
 msgstr "Uvozi skupino vprašanj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:77
-#, fuzzy
 msgid "Question group import summary"
-msgstr "Povzetek uvoza vprašanj"
+msgstr "Povzetek uvoza skupine vprašanj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:83
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:75
@@ -5672,31 +5580,26 @@ msgid "Conditions"
 msgstr "Pogoji"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:90
-#, fuzzy
 msgid "Question group import is complete."
-msgstr "Uvoz vprašanj je zaključen"
+msgstr "Uvoz vprašanj je zaključen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:91
-#, fuzzy
 msgid "Go to question group"
-msgstr "Uvozi skupino vprašanj"
+msgstr "Pojdi na skupino vprašanj"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:310
-#, fuzzy
 msgid "You can't import a group which doesn't support at least the survey base language."
-msgstr "Ne morete uvozit skupine vprašanj ki ne podpira privzetega jezika trenutne ankete."
+msgstr "Ne morete uvozit skupine vprašanj ki ne podpira vsaj privzetega jezika trenutne ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:906
 msgid "The languages of the imported group file must at least include the base language of this survey."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:55
-#, fuzzy
 msgid "Survey copy summary"
-msgstr "Povzetek uvoza ankete"
+msgstr "Povzetek kopiranja ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:58
-#, fuzzy
 msgid "Survey import summary"
 msgstr "Povzetek uvoza ankete"
 
@@ -5707,22 +5610,18 @@ msgstr "Jeziki"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:71
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:130
-#, fuzzy
 msgid "Default answers"
-msgstr "Brisanje odgovorov"
+msgstr "Privzeti odgovori"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:83
-#, fuzzy
 msgid "Not imported label sets"
-msgstr "Seznami label, ki niso bili uvoženi"
+msgstr "Skupine vprašanj, ki niso bile uvožene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:83
-#, fuzzy
 msgid "(Label sets were not imported since you do not have the permission to create new label sets.)"
-msgstr "(Nabori label niso bili uvoženi ker nimate pravic za ustvarjanje novih naborov label)"
+msgstr "(Skupine vprašanj niso bili uvoženi ker nimate pravic za ustvarjanje novih skupin vprašanj)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:85
-#, fuzzy
 msgid "Question attributes"
 msgstr "Lastnosti vprašanja"
 
@@ -5745,9 +5644,8 @@ msgid "quota language settings"
 msgstr "nastavitve kvote za jezik"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:99
-#, fuzzy
 msgid "Copy of survey is completed."
-msgstr "Uvoz ankete je končan."
+msgstr "Kopiranje ankete je končano."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:100
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:104
@@ -6016,14 +5914,12 @@ msgid "Please explain something in detail:"
 msgstr "Podrobno razložite nekaj:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:693
-#, fuzzy
 msgid "Submit your survey."
 msgstr "Pošlji anketo."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:697
-#, fuzzy
 msgid "This is the survey end message."
-msgstr "Ta anketa se še ni začela."
+msgstr "To je sporočilo ob koncu ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:818
 #, php-format
@@ -6188,9 +6084,8 @@ msgstr "Ta skupina ne vsebuje vprašanj."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:104
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:195
-#, fuzzy
 msgid "This question is a subquestion type question but has no configured subquestions."
-msgstr "To je vprašanje z več možnimi odgovori, vendar možni odgovori niso podani."
+msgstr "To je vprašanje s podvprašanji, vendar podvprašanja niso podana."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:114
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:205
@@ -6204,15 +6099,13 @@ msgstr "'Tip' vprašanja še ni določen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:134
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:223
-#, fuzzy
 msgid "This question requires answers, but none are set."
-msgstr "To vprašanje zahteva seznam odgovorov, vendar seznam odgovorov ni izbran."
+msgstr "To vprašanje zahteva odgovore, vendar niso izbrani."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:141
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:231
-#, fuzzy
 msgid "This question requires a second answer set but none is set."
-msgstr "To vprašanje zahteva sekundarne labele, vendar sekundarne labele niso nastavljene."
+msgstr "To vprašanje zahteva drugo skupino odgovorov, vendar ni izbrani."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:196
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:288
@@ -6253,28 +6146,24 @@ msgid "Add or delete questions"
 msgstr "Dodaj ali odstrani vprašanje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:261
-#, fuzzy
 msgid "Add or delete subquestions or change their codes"
-msgstr "Dodaj ali odstrani vprašanje"
+msgstr "Dodaj ali odstrani podvprašanja ali spremeni njihove kode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:262
 msgid "However you can still:"
 msgstr "Še vedno pa lahko:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:262
-#, fuzzy
 msgid "Edit your questions code/title/text and advanced options"
-msgstr "Uredi (spremeni) kodo, tekst ali tip vprašanja"
+msgstr "Uredi kodo, tekst ali tip vprašanja in naprednih možnosti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:262
-#, fuzzy
 msgid "Edit your group names or descriptions"
-msgstr "Spremeni ime ali opis ankete"
+msgstr "Uredi imena skupin ali opisov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:262
-#, fuzzy
 msgid "Add, remove or edit answer options"
-msgstr "Dodaj novo možnost odgovora"
+msgstr "Dodaj, odstrani ali uredi možnosti odgovora"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:262
 msgid "Change survey name or description"
@@ -6335,9 +6224,8 @@ msgstr "Upravljanje s seznami odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:70
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:123
-#, fuzzy
 msgid "Export multiple label sets"
-msgstr "Izvozi seznam odgovorov"
+msgstr "Izvozi več seznamov odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:74
 msgid "Labelsets"
@@ -6358,32 +6246,28 @@ msgstr "Prosimo, izberite..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:93
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:157
-#, fuzzy
 msgid "Create or import new label set(s)"
-msgstr "Ustvari ali uvozi novo nabor label"
+msgstr "Ustvari ali uvozi novo skupino odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:103
 msgid "Show Help"
 msgstr "Prikaži pomoč"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:119
-#, fuzzy
 msgid "You have to select at least one label set."
-msgstr "Niste označili ankete, ki jo želite izbrisati"
+msgstr "Izbrati morate vsaj eno skupino odgovorov."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:125
-#, fuzzy
 msgid "Please choose the label sets you want to export:"
-msgstr "Izberite stolpce, ki jih želite izvoziti."
+msgstr "Izberite skupine odgovorov, ki jih želite izvoziti:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:125
 msgid "(Select multiple label sets by using the Ctrl key)"
 msgstr "(Več seznamov odgovorov lahko izberete s pomočjo tipke Ctrl)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:137
-#, fuzzy
 msgid "Export selected label sets"
-msgstr "Izbriši seznam odgovorov"
+msgstr "Izvozi izbrane sezname odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:157
 msgid "Create New Label Set"
@@ -6421,7 +6305,6 @@ msgstr "Osveži"
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:216
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:219
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:233
-#, fuzzy
 msgid "Import label set(s)"
 msgstr "Uvozi seznam odgovorov"
 
@@ -6430,9 +6313,8 @@ msgid "Select label set file (*.lsl,*.csv):"
 msgstr "Izberite datoteko s skupino odgovorov (*.lsl, *.csv):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:226
-#, fuzzy
 msgid "Don't import if label set already exists:"
-msgstr "Seznam label ni ni bil uvožen, ker isti seznam label že obstaja."
+msgstr "Ne uvozi, če seznam odgovorov že obstaja:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:230
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:72
@@ -6444,16 +6326,14 @@ msgid "Label Set"
 msgstr "Seznam odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:257
-#, fuzzy
 msgid "Do you really want to delete this label set?"
-msgstr "Do you really want to delete this label set?"
+msgstr "Ali res želite izbrisati to skupino vprašanj?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:258
 msgid "Delete label set"
 msgstr "Izbriši seznam odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:261
-#, fuzzy
 msgid "Export this label set"
 msgstr "Izvozi seznam odgovorov"
 
@@ -6819,7 +6699,6 @@ msgid "All token entries have been set to 'Not invited'."
 msgstr "All token entries have been set to 'Not invited'."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:757
-#, fuzzy
 msgid "Remove unique token numbers"
 msgstr "Izbriši vsa unikatna dostopna gesla"
 
@@ -6840,12 +6719,10 @@ msgid "Set all entries to 'No invitation sent'."
 msgstr "Nastavi vse vnose na 'Povabilo ni bilo poslano'."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:769
-#, fuzzy
 msgid "Are you sure you want to delete all unique token strings?"
 msgstr "Ali ste prepričani, da želite izbrisati vsa edinstvena dostopna gesla?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:769
-#, fuzzy
 msgid "Delete all unique token strings"
 msgstr "Izbriši vsa unikatna dostopna gesla"
 
@@ -6957,9 +6834,8 @@ msgid "Invalid email address:"
 msgstr "Nepravilen elektronski naslov:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1023
-#, fuzzy
 msgid "This participant opted out of this survey."
-msgstr "Najlepša hvala za registracijo za sodelovanje v anketi."
+msgstr "Ta anketiranec je odklonil sodelovanje v tej anketi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1049
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1051
@@ -6995,14 +6871,12 @@ msgstr "Pošlji elektronsko sporočilo z opomnikom za ta vnos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1114
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1116
-#, fuzzy
 msgid "Delete the selected entries"
-msgstr "Izbriši vse vnose dostopnih gesel"
+msgstr "Izbriši izbrane vnose"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1118
-#, fuzzy
 msgid "Are you sure you want to delete the selected entries?"
-msgstr "Ali ste prepričani, da želite izbrisati ta vnos?"
+msgstr "Ali ste prepričani, da želite izbrisati izbrane vnose?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1122
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1124
@@ -7023,9 +6897,8 @@ msgid "If you delete this table tokens will no longer be required to access this
 msgstr "Če boste izbrisali tabelo z gesli bo anketa postala dostopna brez gesel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1154
-#, fuzzy
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Če se odločite nadaljevati bo narejena varnostna kopija baze. Vaš sistemski administrator bo lahko dostopal do te tabele."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1157
 msgid "Delete Tokens"
@@ -7050,9 +6923,8 @@ msgstr "Opozorilo!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1211
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1490
-#, fuzzy
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
-msgstr "This survey is not yet activated and so your participants won't be able to fill out the survey."
+msgstr "Ta anketa še ni aktivna in vaši anketiranci ne bodo mogli izpolniti te ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1260
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1513
@@ -7080,9 +6952,8 @@ msgid "Send Invitations"
 msgstr "Pošlji povabila"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1308
-#, fuzzy
 msgid "Sending invitations..."
-msgstr "Sending invitations..."
+msgstr "Pošiljam povabila..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1310
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1603
@@ -7091,9 +6962,8 @@ msgstr "Pošiljam k geslu ID:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1311
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1604
-#, fuzzy
 msgid "Sending to Token IDs"
-msgstr "Pošiljam k geslu ID:"
+msgstr "Pošiljam k geslom z ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1412
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1732
@@ -7125,23 +6995,20 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Poslanih bo še {EMAILCOUNT} elektronskih sporočil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1468
-#, fuzzy
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
-msgstr "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Nobeno sporočilo ni bilo poslano. To je posledica tega da nobeno sporočilo ni ustrezalo kriterijem:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1469
-#, fuzzy
 msgid "having a valid email address"
-msgstr "Nepravilen elektronski naslov:"
+msgstr "imajo veljaven email naslov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1470
 msgid "not having been sent an invitation already"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1471
-#, fuzzy
 msgid "having already completed the survey"
-msgstr "To anketo ste že izpolnili."
+msgstr "so že izpolnili to anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1472
 msgid "having a token"
@@ -7153,19 +7020,16 @@ msgstr "Opomnik po e-mailu:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1545
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1558
-#, fuzzy
 msgid "Send reminder to token ID(s):"
-msgstr "Pošiljam k geslu ID:"
+msgstr "Pošlji preostanek k geslom z ID:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1549
-#, fuzzy
 msgid "Sending to:"
-msgstr "Pošiljam k geslu ID:"
+msgstr "Pošiljam:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1550
-#, fuzzy
 msgid "All token entries to whom a reminder email would apply"
-msgstr "Vsi vnosi za dostopna gesla so bili odstranjeni."
+msgstr "Vsi vnosi gesel na katere bi poslali email z opomnikom."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1553
 msgid "Start at Token ID:"
@@ -7196,28 +7060,24 @@ msgid "Reminder sent to:"
 msgstr "Opomnik poslan na:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1807
-#, fuzzy
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Nobeno sporočilo ni bilo poslano. To je posledica tega da nobeno sporočilo ni ustrezalo kriterijem - obstaja email naslov, povabilo je bilo poslano, vendar pa še ni bilo rešene ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1822
-#, fuzzy
 msgid "Create tokens"
-msgstr "Create tokens"
+msgstr "Ustvari gesla"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1826
-#, fuzzy
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
-msgstr "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "S klikom na da boste ustvarili gesla za vse v seznamu gesel, ki jim geslo še ni bilo dodeljeno. Je to vredu?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1875
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "Ustvarjenih je bilo {TOKENCOUNT} dostopnih gesel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1895
-#, fuzzy
 msgid "Marked tokens have been deleted."
-msgstr "Dostopna gesla so bila izbrisana."
+msgstr "Označena dostopna gesla so bila izbrisana."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1897
 msgid "No tokens were selected for deletion"
@@ -7232,19 +7092,16 @@ msgid "Manage token attribute fields"
 msgstr "Urejanje lastnosti dostopnih gesel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1917
-#, fuzzy
 msgid "Attribute field"
-msgstr "Attribute field"
+msgstr "Lastnost polja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1917
-#, fuzzy
 msgid "Field description"
-msgstr "Field description"
+msgstr "Opis polja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1917
-#, fuzzy
 msgid "Example data"
-msgstr "Example data"
+msgstr "Primer podatkov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1934
 msgid "<no data>"
@@ -7272,9 +7129,8 @@ msgid "Update token attribute descriptions"
 msgstr "Posodobi opise dostopnih gesel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1982
-#, fuzzy
 msgid "Updating token attribute descriptions failed:"
-msgstr "Posodobi opise dostopnih gesel"
+msgstr "Posodobiitve lastnosti dostopnih gesel ni uspela:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1983
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1988
@@ -7284,18 +7140,16 @@ msgid "Back to attribute field management."
 msgstr "Nazaj na urejanje lastnosti polij."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1987
-#, fuzzy
 msgid "Token attribute descriptions were successfully updated."
-msgstr "Opisi dostopnih gesel so bili uspešno posodobljeni."
+msgstr "Opisi lastnosti opisov so bili uspešno posodobljeni."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2015
 msgid "Update token attributes"
 msgstr "Posodobi lastnosti dostopnih gesel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2019
-#, fuzzy
 msgid "Adding attribute fields failed:"
-msgstr "Dodajanje polj ni uspelo:"
+msgstr "Dodajanje lastnosti polj ni uspelo:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2024
 #, php-format
@@ -7372,9 +7226,8 @@ msgid "New token was added."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2294
-#, fuzzy
 msgid "Add another token entry"
-msgstr "Dodaj nov vnos z dostopnim geslom"
+msgstr "Dodaj naslednje geslo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2312
 msgid "Upload CSV File"
@@ -7916,9 +7769,8 @@ msgid "All survey settings meet consistency standards"
 msgstr "Vsi nastavitve ankete zadoščajo standardom konsistentnosti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:218
-#, fuzzy
 msgid "The following survey language settings should be deleted"
-msgstr "Naslednje ankete bi morale biti izbrisane"
+msgstr "Naslednje nastavitve jezika anket bi morale biti izbrisane"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:220
 #, php-format
@@ -7926,9 +7778,8 @@ msgid "SLID `%s` because the related survey is missing."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:226
-#, fuzzy
 msgid "All survey language settings meet consistency standards"
-msgstr "Vsi nastavitve ankete zadoščajo standardom konsistentnosti"
+msgstr "Vse nastavitve jezika ankete zadoščajo standardom konsistentnosti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:252
 msgid "The following questions should be deleted"
@@ -7943,9 +7794,9 @@ msgid "The following groups should be deleted"
 msgstr "Naslednje skupine bi morale biti izbrisane"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:272
-#, fuzzy, php-format
+#, php-format
 msgid "GID `%s` because there is no matching survey."
-msgstr "Takšna anketa ne obstaja."
+msgstr "GID `%s` ker takšna anketa ne obstaja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:277
 msgid "All groups meet consistency standards"
@@ -8049,14 +7900,12 @@ msgid "Deleting Survey ID"
 msgstr "Brisanje ankete ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:594
-#, fuzzy
 msgid "Deleting survey language settings"
-msgstr "nastavitve kvote za jezik"
+msgstr "Brišem nastavitve jezika za ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:596
-#, fuzzy
 msgid "Deleting survey language setting"
-msgstr "nastavitve kvote za jezik"
+msgstr "Brišem nastavitve jezika ankete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:604
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:614
@@ -8695,30 +8544,25 @@ msgid "Warning: The following files/directories need to be updated but their per
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:216
-#, fuzzy
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
-msgstr "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
+msgstr "Pred nadaljevanjem morate tem datotekam dati primerne pravice za pisanje. Če niste prepričani kaj storiti, kontaktirajte vašega administratorja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:228
-#, fuzzy
 msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
-msgstr "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
+msgstr "Naslednje datoteke bi posodobitve dodala vendar že obstajajo. To je nenavadna in morda kaže na napake."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:229
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:242
-#, fuzzy
 msgid "We recommend that these files should be replaced by the update procedure."
-msgstr "We recommend that these files should be replaced by the update procedure."
+msgstr "Priporočamo, da so te datoteke posodobljene s pomočjo posodobitvenega procesa."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:241
-#, fuzzy
 msgid "The following files will be modified or deleted but were already modified by someone else."
-msgstr "The following files will be modified or deleted but were already modified by someone else."
+msgstr "Naslednje datoteke bodo spremenjene ali zbrisane vender so bile predhodno spremenjene s strani nekoga drugega."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:254
-#, fuzzy
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
+msgstr "Pri preverjanju pravic datotek je bil najden eden ali več problemov. Preverite morebitna sporočila o napakah in jih popravite preden nadaljujete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:260
 msgid "Please check any problems above and then proceed to the next step."
