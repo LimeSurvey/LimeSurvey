@@ -125,7 +125,9 @@ function getLanguageDetails($codetosearch)
 
 function getLanguageData($orderbynative=false) {
     global $clang;
+    static $supportedLanguages;
 
+    if (!isset($supportedLanguages)) {
     // Albanian
     $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
     $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
@@ -450,6 +452,7 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
     $supportedLanguages['vi']['rtl'] = false;
     $supportedLanguages['vi']['dateformat'] = 5;
+    }
 
     if ($orderbynative)
     {
