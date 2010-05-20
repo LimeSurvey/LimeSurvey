@@ -62,7 +62,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     ."\t<div class='menubar-left'>\n"
     ."\t<a href='$scriptname' title=\"".$clang->gTview("Return to survey administration")."\" >"
     ."<img name='Administration' src='$imagefiles/home.png' align='left' alt='".$clang->gT("Return to survey administration")."' /></a>"
-    ."\t<img src='$imagefiles/blank.gif' width='11' height='20' alt='' />\n"
+    ."\t<img src='$imagefiles/blank.gif' width='11' height='20' align='left' alt='' />\n"
     ."\t<img src='$imagefiles/seperator.gif' align='left' alt='' />\n"
     ."\t<img src='$imagefiles/blank.gif' width='76' align='left' height='20' alt='' />\n"
     ."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
