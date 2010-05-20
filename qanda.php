@@ -417,40 +417,63 @@ function setman_questionandcode_multiscale($ia)
     global $dbprefix, $connect;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
-    while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-    $ansresult = db_execute_assoc($ansquery); //Checked
-
-    $lquery = "SELECT q.qid FROM {$dbprefix}labels l, {$dbprefix}questions q WHERE l.lid = q.lid AND q.qid=".$ia[0]." AND l.language='".$_SESSION['s_lang']."' AND q.language='".$_SESSION['s_lang']."'";
-    $labelsresult = db_execute_assoc($lquery);   //Checked
-    $labelscount = $labelsresult->RowCount();
-
-    $lquery1 = "SELECT q.qid FROM {$dbprefix}labels l, {$dbprefix}questions q WHERE l.lid = q.lid1 AND q.qid=".$ia[0]." AND l.language='".$_SESSION['s_lang']."' AND q.language='".$_SESSION['s_lang']."'";
-    $labelsresult1 = db_execute_assoc($lquery1);   //Checked
-    $labelscount1 = $labelsresult1->RowCount();
-
-    while ($ansrow = $ansresult->FetchRow())
+    while ($qrow = $qresult->FetchRow())
     {
-        if ($labelscount > 0)
-        {
-            $mandatorys[]=$ia[1].$ansrow['code']."#0";
-            $mandatoryfns[]=$ia[1];
-        }
-        else
-        {
-            $mandatorys[]=$ia[1].$ansrow['code'];
-            $mandatoryfns[]=$ia[1];
-        }
-        // second label set
+        $other = $qrow['other'];
+    }
+    
+    // Get Subquestions
+    $subquery="SELECT * "
+            ."FROM {$dbprefix}questions "
+            ."WHERE parent_qid={$ia[0]} "
+            ."AND language='".$_SESSION['s_lang']."' "
+            ."ORDER BY question_order, "
+            ."question";
+    $subresult = db_execute_assoc($subquery); //Checked
+    
+    // Get Answer Scale 1
+    $ans1query="SELECT qid "
+            ."FROM {$dbprefix}answers "
+            ."WHERE qid={$ia[0]} "
+            ."AND scale_id=0 "
+            ."AND language='".$_SESSION['s_lang']."' "
+            ."ORDER BY sortorder, answer";
+    $ans1result = db_execute_assoc($ans1query);   //Checked
+    $ans1count = $ans1result->RowCount();
 
-        if ($labelscount1 > 0)
+    // Get Answer Scale 2    
+    $ans2query="SELECT qid "
+            ."FROM {$dbprefix}answers "
+            ."WHERE qid={$ia[0]} "
+            ."AND scale_id=1 "
+            ."AND language='".$_SESSION['s_lang']."' "
+            ."ORDER BY sortorder, answer";
+    $ans2result = db_execute_assoc($ans2query);   //Checked
+    $ans2count = $ans2result->RowCount();
+
+    while ($subrow = $subresult->FetchRow())
+    {
+        // first answer set     
+        if ($ans1count > 0)
         {
-            $mandatorys[]=$ia[1].$ansrow['code']."#1";
+            $mandatorys[]=$ia[1].$subrow['title']."#0";
             $mandatoryfns[]=$ia[1];
         }
         else
         {
-            $mandatorys[]=$ia[1].$ansrow['code'];
+            $mandatorys[]=$ia[1].$subrow['title'];
+            $mandatoryfns[]=$ia[1];
+        }
+        
+        // second answer set
+        if ($ans2count > 0)
+        {
+            $mandatorys[]=$ia[1].$subrow['title']."#1";
+            $mandatoryfns[]=$ia[1];
+        }
+        else
+        {
+            $mandatorys[]=$ia[1].$subrow['title'];
             $mandatoryfns[]=$ia[1];
         }
     }
@@ -460,7 +483,6 @@ function setman_questionandcode_multiscale($ia)
         $mandatorys[]=$ia[1]."other";
         $mandatoryfns[]=$ia[1];
     }
-
     return array($mandatorys, $mandatoryfns);
 }
 
