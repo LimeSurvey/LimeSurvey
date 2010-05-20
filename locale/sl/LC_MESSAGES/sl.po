@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-19 18:00+0200\n"
-"PO-Revision-Date: 2010-05-20 01:10+0100\n"
+"PO-Revision-Date: 2010-05-21 00:13+0100\n"
 "Last-Translator: Jure Cuhalev <gandalf@owca.info>\n"
 "Language-Team: American English <sl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -831,7 +831,7 @@ msgstr "Izberi odgovor"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:800
 msgid "Save this, then create another:"
-msgstr ""
+msgstr "Shrani to, nato ustvari naslednjo:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:826
 msgid "New quota"
@@ -2250,7 +2250,7 @@ msgstr "This file is not a LimeSurvey question file. Uvoz ni uspel."
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:129
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:209
 msgid "This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported."
-msgstr ""
+msgstr "Ta datoteka je prestara. Samo datoteke iz LimeSurvey različice 1.50 (DBVersion 112) in novejše so podprte."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:279
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:322
@@ -2275,7 +2275,7 @@ msgstr "Napačen uvoz vrstice - polja in podatki se ne ujemajo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:724
 msgid "The languages of the imported question file must at least include the base language of this survey."
-msgstr ""
+msgstr "Jeziki uvoženih datotek s vprašanji morajo vsebovati vsaj osnovni jezik te ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:54
 msgid "Saved Responses"
@@ -2441,7 +2441,7 @@ msgstr "Pomoč"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:202
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr ""
+msgstr "Vaša anketa vsebuje za več kot 255 stolpcev odgovorov. Preglednice kot je Excel so omejene na 255 stolpcev. V spodnjem seznamu izberite stolpce, ki jih želite izvoziti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:208
 msgid "Choose the columns you wish to export."
@@ -2457,7 +2457,7 @@ msgstr "Izberi polja dostopnih gesel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:240
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr ""
+msgstr "Vaša anketa lahko izvozi povezane podatke o dostopnem geslu pri vsakem odgovoru. Izberite dodatna polja, ki jih želite izvoziti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:261
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:134
@@ -3291,7 +3291,7 @@ msgstr "Pred-nastavljeni seznami odgovorov..."
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1584
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1829
 msgid "Quick add..."
-msgstr ""
+msgstr "Hitro dodajanje..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1595
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1838
@@ -3946,7 +3946,7 @@ msgstr "Napaka: Vpisati morate naslov ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3148
 msgid "This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."
-msgstr ""
+msgstr "To je osnovni jezik ankete in ga kasneje ni mogoče spremeniti. Dodatne jezike lahko dodate po tem, ko že ustvarite anketo."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3167
 msgid "*This setting cannot be changed later!"
@@ -4005,7 +4005,7 @@ msgstr "Izberi anketo za kopiranje:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3478
 msgid "New survey title:"
-msgstr ""
+msgstr "Naslov nove ankete:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3483
 msgid "Exclude quotas?"
@@ -4147,6 +4147,9 @@ msgid ""
 "\\n"
 "It is missing the group name for the following languages"
 msgstr ""
+"Skupine ni bilo mogoče dodati.\\n"
+"\\n"
+"Manjkajo imena skupin za naslednje jezike"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:129
 msgid "Error: The database reported the following error:"
@@ -4178,7 +4181,7 @@ msgstr "Vprašanja ni mogoče ustvariti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:510
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr ""
+msgstr "Vprašanja ni bilo mogoče posodobiti. Obstajajo pogoji za ostala vprašanja, ki se nanašajo na odgovore v tem vprašanju. Spremembe vprašanja bi povzročilo probleme. Te pogoje morate ročno odstraniti preden spremenite tip tega vprašanja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:593
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:660
@@ -4206,15 +4209,15 @@ msgstr "Glej pogoje:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:644
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
-msgstr ""
+msgstr "Nekatera vprašanja se zanašajo na odgovore tega vprašanja. Tega vprašanja ne morete premakniti pod groupId:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:670
 msgid "Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
+msgstr "Vprašanja ni bilo mogoče dodati. Dodati morate kodo v obvezno polje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:805
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr ""
+msgstr "Vprašanja ni bilo mogoče izbrisati. Pogoji drugih vprašanj se nanašajo na to vprašanje. Tega vprašanja ne morete izbrisati dokler ti pogoji niso odstranjeni"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:884
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:903
@@ -4265,6 +4268,24 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Pozdravljeni {FIRSTNAME},\n"
+"\n"
+"Povabljeni ste k sodelovanju v anketi.\n"
+"\n"
+"Naslov ankete je:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Za sodelovanje, kliknite na spodnjo povezavo.\n"
+"\n"
+"S spoštovanjem,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Kliknite sem za sodelovanje v anketi:\n"
+"{SURVEYURL}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1129
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1131
@@ -4279,6 +4300,8 @@ msgid ""
 "If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n"
 "{OPTOUTURL}"
 msgstr ""
+"Če ne želite sodelovati v anketi in ne želite več prejemati povabil k sodelovanju, kliknite na naslednjo povezavo:\n"
+"{OPTOUTURL}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1130
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1361
@@ -4312,6 +4335,26 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Pozdravljeni {FIRSTNAME},\n"
+"\n"
+"Pred kratkim smo vas povabili k sodelovanju v anketi.\n"
+"\n"
+"Opazili smo, da ankete še niste izpolnili, in bi vas radi opozorili, da je anketa še vedno na voljo za izpolnjevanja, če želite sodelovati.\n"
+"\n"
+"Naslov ankete je:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Za sodelovanje, kliknite na spodnjo povezavo.\n"
+"\n"
+"S spoštovanjem,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Kliknite sem za sodelovanje v anketi:\n"
+"{SURVEYURL}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1132
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1363
@@ -4333,6 +4376,15 @@ msgid ""
 "\n"
 "{ADMINNAME}"
 msgstr ""
+"Pozdravljeni {FIRSTNAME},\n"
+"\n"
+"Ta email potrjuje, da ste izpolnili anketo z naslovom {SURVEYNAME} in da so bili vaši odgovori shranjeni. Hvala za sodelovanje.\n"
+"\n"
+"Za vsa morebitna vprašanja kontaktirajte {ADMINNAME} na {ADMINEMAIL}.\n"
+"\n"
+"S spoštovanjem,\n"
+"\n"
+"{ADMINNAME}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1134
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1365
@@ -4353,6 +4405,15 @@ msgid ""
 "\n"
 "If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
+"Pozdravljeni {FIRSTNAME},\n"
+"\n"
+"Vi ali nekdo z vašim email naslovom se je registriral za sodelovanje v spletni anketi z naslovom {SURVEYNAME}.\n"
+"\n"
+"Za sodelovanje v anketi, kliknite spodnjo povezavo:\n"
+"\n"
+"{SURVEYURL}\n"
+"\n"
+"Če imate vprašanja v zvezi z anketo ali pa se niste registrirali za sodelovanje in menite, da ste to sporočilo dobili pomotoma, stopite v kontakt z {ADMINNAME} na {ADMINEMAIL}."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1151
 msgid "Survey could not be updated"
@@ -4469,7 +4530,7 @@ msgstr "Kopiraj lastnosti?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:136
 msgid "Edit default answer values"
-msgstr ""
+msgstr "Uredi privzete vrednosti odgovora"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:152
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:197
@@ -4484,11 +4545,11 @@ msgstr "Privzeta vrednost odgovora:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:165
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:201
 msgid "<No default value>"
-msgstr ""
+msgstr "<Brez privzete vrednosti>"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:182
 msgid "Default value for option 'Other':"
-msgstr ""
+msgstr "Privzeta vrednost za možnost 'Drugo:':"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:201
 msgid "Checked"
@@ -4496,7 +4557,7 @@ msgstr "Izbrano"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:225
 msgid "Use same default value across languages:"
-msgstr ""
+msgstr "Uporabi isto privzeto vrednost za vse jezike:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:297
 msgid "Edit question"
@@ -4805,11 +4866,11 @@ msgstr "Preden izbrišete anketo vam priporočamo, da celotno anketo izvozite. T
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:43
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr ""
+msgstr "Ta anketa je aktivna in tabela odgovorov obstaja. Če zbrišete to anketo, bodo izbrisani ti odgovori. Priporočamo vam, da pred izbrisom, te odgovore izvozite."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:48
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr ""
+msgstr "Ta anketa ima povezano tabelo dostopnih gesel. Z izbrisom ankete boste izbrisali tudi tabelo dostopnih gesel. Priporočamo vam, da pred izbrisom, ta dostopna gesla izvozite."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:116
 msgid "This survey has been deleted."
@@ -5486,7 +5547,7 @@ msgstr "Seznam uvoženih datotek"
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:151
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:334
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
+msgstr "Ta ZIP arhiv ne vsebuje veljavnih Resource datotek. Uvoz ni uspel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:152
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:335
@@ -5549,7 +5610,7 @@ msgstr "Predloga '%s' že obstaja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:527
 msgid "This ZIP archive contains no valid template files. Import failed."
-msgstr ""
+msgstr "Ta ZIP arhiv ne vsebuje veljavnih datotek predlog. Uvoz ni uspel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:528
 msgid "Remember that we do not support subdirectories in ZIP archives."
@@ -5593,7 +5654,7 @@ msgstr "Ne morete uvozit skupine vprašanj ki ne podpira vsaj privzetega jezika 
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:906
 msgid "The languages of the imported group file must at least include the base language of this survey."
-msgstr ""
+msgstr "Jeziki uvožene skupine vprašanj morajo vsebovati vsaj osnovni jezik te ankete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:55
 msgid "Survey copy summary"
@@ -5676,7 +5737,7 @@ msgstr "Lastnosti vprašanja"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:194
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:202
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr ""
+msgstr "Ta datoteka ni LimeSurvey anketna datoteka. Uvoz ni uspel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:532
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:541
@@ -5693,11 +5754,11 @@ msgstr "Datoteka ne vsebuje podatkov v pravilnem zapisu za program LimeSurvey."
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:558
 #, php-format
 msgid "Template %s not found, please review when activating."
-msgstr ""
+msgstr "Predloga %s ni bila najdena, preverite pred aktivacijo."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:739
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
-msgstr ""
+msgstr "Skupina v CSV/SQL ni del iste ankete. Uvoz ankete je bil ustavljen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:631
 #: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:641
@@ -5770,7 +5831,7 @@ msgstr "Predloga '%s' je bila uspešno zbrisana."
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:212
 #, php-format
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
-msgstr ""
+msgstr "Pri izbrisu predloge '%s' je prišlo do težav. Preverite pravice direktorija/datoteke."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:257
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:378
@@ -5816,7 +5877,7 @@ msgstr "Primer predloge"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:411
 msgid "This is a sample survey description. It could be quite long."
-msgstr ""
+msgstr "To je primer opisa anketa. Lahko je kar dolg."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:411
 msgid "But this one isn't."
@@ -5991,13 +6052,13 @@ msgstr "Uvozi predlogo"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:887
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:888
 msgid "Please change the directory permissions of tmp folder in order to enable this option"
-msgstr ""
+msgstr "Spremenite pravice direktorija tmp pred vklopom te možnosti"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:897
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:898
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:900
 msgid "Please change the directory permissions of /tmp and /templates folder in order to enable this option."
-msgstr ""
+msgstr "Spremenite pravice direktorijev /tmp in /templates, da boste lahko vklopili to možnost."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:902
 msgid "Screen:"
@@ -6069,7 +6130,7 @@ msgstr "Predogled:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1044
 msgid " Please change the directory permission of /tmp folder in order to preview templates."
-msgstr ""
+msgstr "Spremenite pravice direktorija /tmp, da boste lahko naredili predogled predlog."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1129
 #: /var/lib/limesurvey-svn/subversion1x/index.php:937
@@ -6881,12 +6942,12 @@ msgstr "Ali ste prepričani, da želite izbrisati izbrane vnose?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1122
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1124
 msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
-msgstr ""
+msgstr "Pošlji emaile s povabilom na izbrane vnose (če jim povabilo še ni bilo poslano)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1128
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1130
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
-msgstr ""
+msgstr "Pošlji email z opomnikom na izbrane vnose (če so že prejeli email s povabilom)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1148
 msgid "Delete Tokens Table"
@@ -6968,12 +7029,12 @@ msgstr "Pošiljam k geslom z ID"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1412
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1732
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
-msgstr ""
+msgstr "Email za {FIRSTNAME} {LASTNAME} ({EMAIL}) je v čakanju: Dostopno geslo še ni veljavno."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1416
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1736
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
-msgstr ""
+msgstr "Email za {FIRSTNAME} {LASTNAME} ({EMAIL}) preskočen: Dostopno geslo ni več veljavno."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1426
 msgid "Invitation sent to:"
@@ -6982,7 +7043,7 @@ msgstr "Povabilo poslano na:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1434
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1752
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr ""
+msgstr "Email za {FIRSTNAME} {LASTNAME} ({EMAIL}) ni uspel. Sporočilo o napaki:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1447
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1769
@@ -7004,7 +7065,7 @@ msgstr "imajo veljaven email naslov"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1470
 msgid "not having been sent an invitation already"
-msgstr ""
+msgstr "povabilo še ni bilo poslano"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1471
 msgid "having already completed the survey"
@@ -7012,7 +7073,7 @@ msgstr "so že izpolnili to anketo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1472
 msgid "having a token"
-msgstr ""
+msgstr "ima dostopno geslo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1536
 msgid "Reminder Email:"
@@ -7081,7 +7142,7 @@ msgstr "Označena dostopna gesla so bila izbrisana."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1897
 msgid "No tokens were selected for deletion"
-msgstr ""
+msgstr "Nobeno dostopno geslo ni bilo izbrano za izbris"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1902
 msgid "Token has been deleted."
@@ -7215,7 +7276,7 @@ msgstr "Ni uspelo"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2237
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2299
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
-msgstr ""
+msgstr "V tabeli je že vnos z enakim dostopnim geslom. Isto dostopno geslo ne more biti večkrat v uporabi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2238
 msgid "Show this token entry"
@@ -7223,7 +7284,7 @@ msgstr "Prikaži ta vnos gesla"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2292
 msgid "New token was added."
-msgstr ""
+msgstr "Novo dostopno geslo je bilo dodano."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2294
 msgid "Add another token entry"
@@ -7239,7 +7300,7 @@ msgstr "CSV input format"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2316
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
-msgstr ""
+msgstr "Datoteka mora biti standardne CSV oblike (datoteka deljena z vejicami) z opcijskimi dvojnimi narekovaji okrog vrednosti (privzeto za OpenOffice in Excel). Prva vrstica mora vsebovati imena polij. Vrstni red polij ni pomemben."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2316
 msgid "Mandatory fields:"
@@ -7263,11 +7324,11 @@ msgstr "Poizvedbe LDAP definira administrator v konfiguracijski datoteki config-
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2345
 msgid "Token file upload"
-msgstr ""
+msgstr "Nalaganje datoteke dostopnih gesel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2360
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr ""
+msgstr "Naložena datoteka ni bila najdena. Preverite pravice in pot do direktorija za nalaganje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2365
 msgid "Uploaded CSV file successfully"
@@ -7320,13 +7381,13 @@ msgstr "Seznam"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2529
 #, php-format
 msgid "%s lines had a mismatching number of fields."
-msgstr ""
+msgstr "%s vrstic je imelo napačno število polij."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2539
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2770
 #, php-format
 msgid "%s records with invalid email address removed"
-msgstr ""
+msgstr "%s vnosov z neveljavnim email naslovom je bilo odstranjenih"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2565
 msgid "Uploading LDAP Query"
@@ -7553,16 +7614,16 @@ msgstr "Varnostno opozorilo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:118
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Nekdo morda poizkuša uporabiti vašo LimeSurvey sejo (možnost CSRF napada). Če ste ravnokar kliknili na zlonamerno povezavo, sporočite to vašemu administratorju."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:118
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:123
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
-msgstr ""
+msgstr "Do tega problema lahko pride tudi, če delate/urejate v LimeSurvey v večih brskalnikih/zavihkih hkrati."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:123
 msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Nekdo morda poizkuša uporabiti vašo LimeSurvey sejo s pomočjo nevarnih GET zahtevkov (možnost CSRF napada). Če ste ravnokar kliknili na zlonamerno povezavo, sporočite to vašemu administratorju."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -7644,7 +7705,7 @@ msgstr "Ali ste prepričani?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:69
 msgid "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
-msgstr ""
+msgstr "Stare odgovore z enakim številom stolpcev lahko uvozite v vašo aktivno anketo. SAMI morate poskrbeti, da ti odgovori ustrezajo vprašanjem v vaši aktivni anketi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:45
@@ -7775,7 +7836,7 @@ msgstr "Naslednje nastavitve jezika anket bi morale biti izbrisane"
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:220
 #, php-format
 msgid "SLID `%s` because the related survey is missing."
-msgstr ""
+msgstr "SLID `%s` ker povezana anketa manjka."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:226
 msgid "All survey language settings meet consistency standards"
@@ -8428,7 +8489,7 @@ msgstr "LimeSurvey ComfortUpdate je preprosti proces za hitro posodobitev na zad
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:33
 msgid "The following steps will be done by this update:"
-msgstr ""
+msgstr "Posodobitev bo izvedla naslednje korake:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:34
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
@@ -8452,7 +8513,7 @@ msgstr "Preverjanje osnovnih zahtev..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:40
 msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
-msgstr ""
+msgstr "Za posodobitev potrebujete ključ. Med beta testiranjem posodobitve lahko uporabite ključ \"LIMESURVEYUPDATE\"."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:41
 msgid "Please enter a valid update-key:"
@@ -8469,12 +8530,12 @@ msgstr "Posodobitveni ključ: Veljaven"
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:49
 #, php-format
 msgid "Tempdir %s is not writable"
-msgstr ""
+msgstr "V začasni direktorij %s ni mogoče pisati"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:54
 #, php-format
 msgid "Version file is not writable (%s). Please set according file permissions."
-msgstr ""
+msgstr "V datoteko z različico (%s) ni mogoče pisati. Nastavite primerne pravice datoteke."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:57
 msgid "Change log"
@@ -8482,7 +8543,7 @@ msgstr "Seznam sprememb"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:92
 msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
+msgstr "Pri preverjanju vaše namestitve smo našli enega ali več problemov. Preverite sporočila o napakah in jih popravite preden nadaljujete."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:256
@@ -8491,14 +8552,14 @@ msgstr "Preveri ponovno"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:98
 msgid "Everything looks alright. Please proceed to the next step."
-msgstr ""
+msgstr "Vse zglede vredu. Nadaljujte z naslednjim korakom."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:101
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:262
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:349
 #, php-format
 msgid "Proceed to step %s"
-msgstr ""
+msgstr "Nadaljujte na korak %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:117
 msgid "ComfortUpdate Step 2"
@@ -8511,13 +8572,13 @@ msgstr "ComfortUpdate korak 2"
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:362
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:370
 msgid "On requesting the update information from limesurvey.org there has been an error:"
-msgstr ""
+msgstr "Pri iskanju informacij o posodobitvah na limesurvey.org je prišlo do napake:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:153
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:285
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:367
 msgid "Your update key is invalid and was removed. "
-msgstr ""
+msgstr "Vaš posodobitveni ključ ni veljaven in je bil odstranjen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:166
 msgid "Update server busy"
@@ -8525,7 +8586,7 @@ msgstr "Posodobitveni strežnik je zaseden"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:167
 msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
-msgstr ""
+msgstr "Posodobitveni strežnik je trenutno zaseden. To se navadno zgodi, če se pripravljajo potrebne datoteke za novo različico."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:168
 msgid "Please be patient and try again in about 10 minutes."
@@ -8537,11 +8598,11 @@ msgstr "Nazaj na globalne nastatvitve"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:212
 msgid "Checking existing LimeSurvey files..."
-msgstr ""
+msgstr "Preverjam obstoječe LimeSurvey datoteke..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:215
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
-msgstr ""
+msgstr "Opozorilo: Naslednje datoteke/direktoriji morajo biti posodobljeni vendar so njihove pravice nastavljene tako, da dovolijo samo branje."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:216
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
@@ -8943,11 +9004,11 @@ msgstr "Časovna razlika (v urah):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:215
 msgid "Server time:"
-msgstr ""
+msgstr "Čas strežnika:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:215
 msgid "Corrected time :"
-msgstr ""
+msgstr "Popravljen čas:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:219
 msgid "PDF export available:"
@@ -9083,7 +9144,7 @@ msgstr "Število odgovorov, ki naj bodo prikazani preden se zaglavje ponovi:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:378
 msgid "Note: Demo mode is activated. Marked (*) settings won't be saved."
-msgstr ""
+msgstr "Pozor: Demo način je vklopljen. Označene (*) nastavitve ne bodo shranjene."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:469
 msgid "System overview"
@@ -9944,25 +10005,25 @@ msgstr "Kliknite na škarje poleg vsakega elementa na desni za odstranitev zadnj
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2623
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
-msgstr ""
+msgstr "Razvrstite vsaj %d vnos(ov) za vprašanje \"%s\"."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3011
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3311
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
-msgstr ""
+msgstr "Izberite največ %d odgovor(ov) na vprašanje \"%s\" "
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3032
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3336
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
-msgstr ""
+msgstr "Izberite vsaj %s odgovor(ov) na vprašanje \"%s\""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3067
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3368
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr ""
+msgstr "Izbrali ste polje \"drugo\" za vprašanje \"%s\". Izpolnite tudi polje \"komentar drugo\"."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3467
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3770
@@ -10062,7 +10123,7 @@ msgstr "Lestvica (povečalo/ostalo enako/zmanjšalo)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:376
 msgid "Array"
-msgstr ""
+msgstr "Lestvica"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:381
 msgid "Gender"
@@ -10171,7 +10232,7 @@ msgstr "Lestvica 2"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2628
 #, php-format
 msgid "Rank %s"
-msgstr ""
+msgstr "Rang %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2701
 msgid "Other comment"
@@ -10600,11 +10661,11 @@ msgstr "Samo števila"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3780
 msgid "Present as text input boxes instead of dropdown lists"
-msgstr ""
+msgstr "Predstavi kot tekstovna vnosna polja namesto padajočih seznamov."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3781
 msgid "Text inputs"
-msgstr ""
+msgstr "Tekstovni vnosi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3791
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
@@ -10664,7 +10725,7 @@ msgstr "Naključni vrstni red odgovorov"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3861
 msgid "Set the number of slots available to rank the available answers. Note: This settings can't be changed after survey activation."
-msgstr ""
+msgstr "Nastavite število mest, ki so na voljo za rangiranje posameznih odgovorov. Opomba: Teh nastavitev ne morete spremeniti potem, ko je anketa že aktivna."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3862
 msgid "Ranking slots"
@@ -10840,7 +10901,7 @@ msgstr "Časovna omejitev onemogoči nazaj"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4022
 msgid "The text message that displays in the countdown timer during the countdown"
-msgstr ""
+msgstr "Sporočilo, ki se prikaže v števcu med odštevanje."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4023
 msgid "Time limit countdown message"
@@ -10856,7 +10917,7 @@ msgstr "CSS stil števca časovne omejitve"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4038
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
-msgstr ""
+msgstr "Prikaži 'sporočilo o poteku časovne omejitve', ko je še toliko sekund pred 'akcijo časovne omejitve' (privzeto na 1 sekundo, če je prazno)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4039
 msgid "Time limit expiry message display time"
@@ -10864,7 +10925,7 @@ msgstr "Zakasnitev sporočila o preteku časovne omejitve"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4046
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
-msgstr ""
+msgstr "Sporočilo, ki se naj prikaže, ko je časovna omejitev potekla (privzeto sporočilo bo prikazano, če je ta vrednost prazna)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4047
 msgid "Time limit expiry message"
@@ -10880,7 +10941,7 @@ msgstr "CSS stil sporočila o časovni omejitvi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4062
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
-msgstr ""
+msgstr "Prikaži 'sporočilo o omejenem času', ko je še toliko sekund do konca (sporočilo ne bo prikazano, če ga pustite praznega)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4063
 msgid "1st Time limit warning message timer"
@@ -10888,7 +10949,7 @@ msgstr "Sporočilo prvega opozorila o časovni omejitvi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4070
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
-msgstr ""
+msgstr "'Opozorilo o časovni omejitvi' bo vidno toliko sekund (če pustite prazno se ne bo nikoli ugasnilo)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4071
 msgid "1st Time limit warning message display time"
@@ -10896,7 +10957,7 @@ msgstr "Čas, ko se naj pokaže prvo opozorilo o časovni omejitvi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4078
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
-msgstr ""
+msgstr "Sporočilo, ki se naj prikaže kot 'opozorilo o časovni omejitvi' (v primeru, da je prazno bo prikazano privzeto sporočilo)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4079
 msgid "1st Time limit warning message"
@@ -10912,7 +10973,7 @@ msgstr "CSS stil prvega sporočila časovne omejitve"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4094
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
-msgstr ""
+msgstr "Prikaži drugo 'sporočilo o omejenem času', ko je še toliko sekund do konca (sporočilo ne bo prikazano, če ga pustite praznega)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4095
 msgid "2nd Time limit warning message timer"
@@ -10920,7 +10981,7 @@ msgstr "Sporočilo drugega opozorilo o časovni omejitvi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4102
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
-msgstr ""
+msgstr "Drugo 'opozorilo o časovni omejitvi' bo vidno toliko sekund (če pustite prazno se ne bo nikoli ugasnilo)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4103
 msgid "2nd Time limit display time"
@@ -10928,7 +10989,7 @@ msgstr "Čas, ko se naj pokaže drugo opozorilo o časovni omejitvi"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4110
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
-msgstr ""
+msgstr "Drugo sporočilo, ki se naj prikaže kot 'opozorilo o časovni omejitvi' (v primeru, da je prazno bo prikazano privzeto sporočilo)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4111
 msgid "2nd Time limit warning message"
