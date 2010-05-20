@@ -1374,14 +1374,16 @@ function checkconfield($value)
         {
             list($value_code, $value_label)=explode("_", $value_code);
         }
-        $arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_qid);
-        if ( $arrayfilterXcludes_selected_codes !== false &&
-        in_array($value_code,$arrayfilterXcludes_selected_codes))
+        if (isset($value_qa['array_filter_exclude']))
         {
-            $fieldisdisplayed=false;
+            $arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_qid);
+            if ( $arrayfilterXcludes_selected_codes !== false &&
+            in_array($value_code,$arrayfilterXcludes_selected_codes))
+            {
+                $fieldisdisplayed=false;
+            }
         }
-        elseif (!isset($value_qa['array_filter_exclude']) ||
-        trim($value_qa['array_filter_exclude']) == '')
+        elseif (isset($value_qa['array_filter']))
         {
             $arrayfilter_selected_codes = getArrayFiltersForQuestion($value_qid);
             if ( $arrayfilter_selected_codes !== false &&

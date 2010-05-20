@@ -2649,7 +2649,22 @@ function do_multiplechoice($ia)
 {
     global $dbprefix, $clang, $connect, $thissurvey;
 
-    if ($ia[8] == 'Y')
+    // Find out if any quesitons have attributes which reference this questions
+    // based on value of attribute. This could be array_filter and array_filter_exclude
+    
+    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value=lower('".strtolower($ia[2])."')";
+    $qaresult = db_execute_assoc($qaquery);     //Checked
+    while($qarow = $qaresult->FetchRow())
+    {
+        $qquery = "SELECT qid FROM ".db_table_name('questions')." WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
+        $qresult = db_execute_assoc($qquery);     //Checked
+        if ($qresult->RecordCount() > 0)
+        {
+            $attribute_ref = true;    
+        }
+    }
+      
+    if ($ia[8] == 'Y' || $attribute_ref === true)
     {
         $checkconditionFunction = "checkconditions";
     }
