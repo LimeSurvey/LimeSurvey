@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.90beta2!
+Welcome to LimeSurvey v1.90beta3!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -77,6 +77,34 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.90beta2 (build 8708) to 1.90beta3 (build 8745) Legend: # updated feature, - bug fix 
+#Updated language: Catalan (thanks to Bernat Segura Turigas) (gandalfar)
+#Updated language: Dutch (thanks to Han Velthuis) (gandalfar)
+#Updated language: Dutch-informal (thanks to Han Velthuis) (gandalfar)
+#Updated language: Slovenian (gandalfar)
+-Fixed issue #04320: Fixed Import group with updates from import survey. (machaven)
+-Fixed issue #04329: SQL error when using "print answers" at the end of a survey (machaven)
+-Fixed issue #04332: Export to QueXML does not work and other queXML export fixes (machaven)
+-Fixed issue #04334: don't include token field in select statement when token is used to join. (machaven)
+-Fixed issue #04347: Survey Crash by usage of Array Dual Scale (machaven)
+-Fixed issue #04325: Quick fix, can't see that lid was used actually for anything in here. (machaven)
+-Fixed unreported issue: array filter not working on same page and change to subquestions. (machaven)
+-Fixed issue #04310: page errors in IE 7 in edit survey settings (tpartner)
+-Fixed issue #04322: javascript error after logging in in Admin with Dutch language (tpartner)
+-Fixed issue #4274: Wrong description nl-informal (mennodekker)
+-Fixed issue #4353: Problem in editing template-rtl.css (mennodekker)
+-Fixed Issue #04327: Some oddities in survey results (texens)
+-Fixed issue #04313: Can't add or replace answers from a multilingual label sets (lemeur)
+-Fixed issue #04321: Error when importing template from 1.87+ on 1.90beta (lemeur)
+-Fixed issue #04328: Button 'iterate surveys' doesn't work (lemeur)
+-Fixed issue #04336: When creating a label set there is an SQL error when saving answers (lemeur)
+-Fixed issue #04351: some user profile not taken into account when using onetime passwords (lemeur)
+-Fixed issue #4333 and #4337:  Survey hangs in question-per-page mode, when the participant click the Previous survey page button and reaches the first question if this question is hidden (lemeur)
+-Fixed issue related to #04313: Can't add or replace -subquestions- from a multilingual label sets. This also fixes the mixed titles and codes for languages other than the survey base language. (lemeur)
+-Fixed unreported issue: bug in word export for question types ;:H. (machaven)
+-Fixed unreported issue: pb at copying survey where timeadjust is not taken into account. (lemeur)
+-Fixed unreproted issue: bug at participants' statistics resulting in an SQL error (idobraca)
 
 Changes from 1.90beta (build 8691) to 1.90beta2 (build 8708) Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
