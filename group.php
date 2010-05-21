@@ -385,6 +385,8 @@ foreach ($_SESSION['fieldarray'] as $ia)
             $conditions = addtoarray_single($conditions, $plus_conditions);
         }
     }
+    if ($ia[4] == "|")
+        $upload_file = TRUE;
 } //end iteration
 
 
@@ -410,7 +412,12 @@ echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 $hiddenfieldnames=implode("|", $inputnames);
 
-echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
+if ($upload_file)
+    echo "<form enctype=\"multipart/form-data\" method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
+      <!-- INPUT NAMES -->
+      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+else
+    echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 

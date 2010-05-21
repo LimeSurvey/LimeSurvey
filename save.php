@@ -416,6 +416,29 @@ function createinsertquery()
                 {
                     $values[]='NULL';
                 }
+                else if ($_SESSION[$value]=='' && $fieldexists['type']=='|')
+                {
+                    //TODO: file upload
+                    // save the files in an uploads directory
+                    // save the JSON string into the database -> this is done by default
+                    //TODO: remove the hardcoded path
+                    
+                    $tempdir = "/opt/lampp/htdocs/gsocls/upload/files";
+                    
+                    for ($i = 1, $file_upload_error = FALSE; $i <= count($_FILES); $i++)
+                    {
+                        if ($_FILES['the_file_'.$i]['name'] != '')
+                        {
+                            $the_full_file_path = $tempdir . "/" . $_FILES['the_file_'.$i]['name'];
+                            if (!@move_uploaded_file($_FILES['the_file_'.$i]['tmp_name'], $the_full_file_path))
+                                    $file_upload_error = TRUE;
+                        }
+                    }
+                    if ($file_upload_error)
+                        echo "error uploading";
+                    else
+                        echo "successs uploading file";
+                }
                 else
                 {
                     if ($fieldexists['type']=='N') //sanitize numerical fields
@@ -603,9 +626,6 @@ function createinsertquery()
                 }
             }
         }
-        //DEBUG START
-        //echo $query;
-        //DEBUG END
         return $query;
     }
     else

@@ -702,6 +702,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
         case '1': //Array (Flexible Labels) dual scale
             $values=do_array_flexible_dual($ia);
             break;
+        case '|': //File Upload
+            $values=do_file_upload($ia);
+            break;
+
     } //End Switch
 
     if (isset($values)) //Break apart $values array returned from switch
@@ -6688,6 +6692,82 @@ function do_array_flexible_dual($ia)
     return array($answer, $inputnames);
 }
 
+
+
+
+// ---------------------------------------------------------------
+function do_file_upload($ia)
+{
+    global $clang, $js_header_includes;
+
+    if ($ia[8] == 'Y')
+    {
+        $checkconditionFunction = "checkconditions";
+    }
+    else
+    {
+        $checkconditionFunction = "noop_checkconditions";
+    }
+
+   	$qidattributes=getQuestionAttributes($ia[0]);
+
+    if (trim($qidattributes['max_num_of_files'])!='')
+    {
+        $maxfiles=$qidattributes['max_num_of_files'];
+    }
+    else
+    {
+        //TODO: use the global settings for maximum no. of files
+    }
+
+    if (trim($qidattributes['min_num_of_files'])!='')
+    {
+        $minfiles=$qidattributes['min_num_of_files'];
+    }
+    else
+    {
+        //TODO: use the global settings for minimum no. of files
+    }
+
+    if (trim($qidattributes['max_filesize'])!='')
+    {
+        $maxfilesize=$qidattributes['max_filesize'];
+    }
+    else
+    {
+        //TODO: use the global settings for maximum size of file
+    }
+
+    if (trim($qidattributes['allowed_filetypes'])!='')
+    {
+        $allowed_filetypes=$qidattributes['allowed_filetypes'];
+    }
+    else
+    {
+        //TODO: use the global settings for allowed file types
+    }
+
+
+    //TODO: check the max no. of files that can be uploaded,
+    // accordingly display those many upload buttons
+
+    //TODO: use a javascript to ensure that the size of file
+    // is not more than $max_filesize
+
+    //TODO: have a javascript that actually copies all the metadata into a
+    //JSON string and then saves it into the $_SESSION['qid'] field
+    
+    // --> START NEW FEATURE - SAVE
+    for ($i = 1, $answer = ""; $i <= $maxfiles; $i++) {
+        $answer .= $clang->gT("Select file for uploading").' <input class="file" '
+            .'type="file" name="the_file_'.$i.'" id="answer'.$ia[1].'_'.$i.'" size="25" alt="'
+            .$clang->gT("Answer").'" ></input> <br><br>'."\n";
+    }
+    // --> END NEW FEATURE - SAVE
+
+    $inputnames[]=$ia[1];
+    return array($answer, $inputnames);
+}
 
 
 

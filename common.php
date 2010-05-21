@@ -473,6 +473,11 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
+    "|"=>array('description'=>$clang->gT("File Upload"),
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     );
     asort($qtypes);
     if ($ReturnType == "array") {return $qtypes;}
@@ -3630,7 +3635,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Hide tip'));
 
     $qattributes['hidden']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;',
+    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|',
     'category'=>$clang->gT('Display'),
     'sortorder'=>101,
     'inputtype'=>'singleselect',
@@ -4099,6 +4104,37 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
 	"caption"=>$clang->gT("2nd Time Limit Warning CSS Style"));
 
+    $qattributes["max_filesize"]=array(
+	"types"=>"|",
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>124,
+    "inputtype"=>"integer",
+	"help"=>$clang->gT("The surveyee cannot upload a single file larger than this size"),
+	"caption"=>$clang->gT("Maximum file size allowed"));
+
+    $qattributes["max_num_of_files"]=array(
+	"types"=>"|",
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>126,
+    "inputtype"=>"integer",
+	"help"=>$clang->gT("Maximum number of files that the surveyee can upload for this question"),
+	"caption"=>$clang->gT("Max number of files"));
+
+    $qattributes["min_num_of_files"]=array(
+	"types"=>"|",
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>128,
+    "inputtype"=>"integer",
+	"help"=>$clang->gT("Minimum number of files that the surveyee must upload for this question"),
+	"caption"=>$clang->gT("Min number of files"));
+
+    $qattributes["allowed_filetypes"]=array(
+	"types"=>"|",
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>130,
+    "inputtype"=>"textarea",
+	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf, doc, odt"),
+	"caption"=>$clang->gT("Allowed file types"));
 
 
     //This builds a more useful array (don't modify)

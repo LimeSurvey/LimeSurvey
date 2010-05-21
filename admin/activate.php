@@ -74,7 +74,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
             $failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".$clang->gT("This group does not contain any question(s)."));
         }
     }
-
+    
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
@@ -346,6 +346,9 @@ else
                 break;
             case "I":  //Language switch
                 $createsurvey .= " C(20)";
+                break;
+            case "|":  //File Upload
+                $createsurvey .= " C(256)";
                 break;
             case "ipaddress":
                 if ($prow['ipaddr'] == "Y")
