@@ -51,7 +51,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
         else
         {
             //check if user exists in DB
-            $query = "SELECT uid, users_name, password, one_time_pw FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($user);
+            $query = "SELECT uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($user);
             $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
             $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
             if(!$result)
@@ -99,6 +99,9 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
                     $_SESSION['user'] = $srow['users_name'];
                     $_SESSION['checksessionpost'] = randomkey(10);
                     $_SESSION['loginID'] = $srow['uid'];
+                    $_SESSION['dateformat'] = $srow['dateformat'];
+                    $_SESSION['htmleditormode'] = $srow['htmleditormode'];
+                    $_SESSION['full_name'] = $srow['full_name'];
                     GetSessionUserRights($_SESSION['loginID']);
 
                     // Check if the user has changed his default password
