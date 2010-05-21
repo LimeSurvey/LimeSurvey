@@ -422,7 +422,7 @@ function transferlabels()
                 var defaultdata_labels = null;
                 for (x in languages)
                 {
-                    lang_x_found_in_label=false;;
+                    lang_x_found_in_label=false;
                     if (assessmentvisible)
                     {
                         assessment_style='';

@@ -387,26 +387,30 @@ function transferlabels()
           success: function(json){
                 languages=langs.split(';');   
                 var x;
+                var defaultdata_labels = null;
                 for (x in languages)
                 {
-                   
+                    lang_x_found_in_label=false;
                     var tablerows='';
                     var y;
                     for (y in json)
                     {
 
                         language=json[y];
-                        defaultdata=language[languages[0]][0];
+                        var lsrows = new Array();
+                        //defaultdata=language[languages[0]][0];
                         for (z in language)
                         {
-                            if (z==languages[y])
+                            if (z==languages[0])
                             {
+                                defaultdata_labels=language[languages[0]];
+                            }
+                            if (z==languages[x])
+                            {
+                                lang_x_found_in_label = true;
                                 lsrows=language[z][0];
                             }
-                            else
-                            {
-                                lsrows=defaultdata;
-                            }
+
                             var k;
                             for (k in lsrows)
                             {
@@ -416,11 +420,20 @@ function transferlabels()
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+lsrows[k].code+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>'+lsrows[k].code+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                             }
                         }
                     }                    
+                    if (lang_x_found_in_label === false)
+                    {
+                        lsrows=defaultdata_labels[0];
+                        k=0;
+                        for (k in lsrows)
+                        {
+                            tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>'+lsrows[k].code+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                        }
+                    }
                     if (lsreplace) {
                         $('#answertable_'+languages[x]+'_'+scale_id+' tbody').empty();
                     }
