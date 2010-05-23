@@ -651,6 +651,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
                 }
             }
             break;
+        case '|': //File Upload
+            $values=do_file_upload($ia);
+            break;
         case 'Q': //MULTIPLE SHORT TEXT
             $values=do_multipleshorttext($ia);
             break;
@@ -701,9 +704,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             break;
         case '1': //Array (Flexible Labels) dual scale
             $values=do_array_flexible_dual($ia);
-            break;
-        case '|': //File Upload
-            $values=do_file_upload($ia);
             break;
 
     } //End Switch
@@ -3380,6 +3380,100 @@ function do_multiplechoice_withcomments($ia)
 
     $answer = $minanswscript . $checkotherscript . $answer;
 
+    return array($answer, $inputnames);
+}
+
+
+
+// ---------------------------------------------------------------
+function do_file_upload($ia)
+{
+    global $clang, $js_header_includes;
+
+    if ($ia[8] == 'Y')
+        $checkconditionFunction = "checkconditions";
+    else
+        $checkconditionFunction = "noop_checkconditions";
+
+   	$qidattributes=getQuestionAttributes($ia[0]);
+
+    if (trim($qidattributes['max_num_of_files'])!='')
+        $maxfiles=$qidattributes['max_num_of_files'];
+    else
+    {
+        //TODO: use the global settings for maximum no. of files
+    }
+
+    if (trim($qidattributes['min_num_of_files'])!='')
+        $minfiles=$qidattributes['min_num_of_files'];
+    else
+    {
+        //TODO: use the global settings for minimum no. of files
+    }
+
+    if (trim($qidattributes['max_filesize'])!='')
+        $maxfilesize=$qidattributes['max_filesize'];
+    else
+    {
+        //TODO: use the global settings for maximum size of file
+    }
+
+    if (trim($qidattributes['allowed_filetypes'])!='')
+        $allowed_filetypes=$qidattributes['allowed_filetypes'];
+    else
+    {
+        //TODO: use the global settings for allowed file types
+    }
+
+    //TODO: check the max no. of files that can be uploaded,
+    // accordingly display those many upload buttons
+
+    //TODO: use a javascript to ensure that the size of file
+    // is not more than $max_filesize
+
+    // --> START NEW FEATURE - SAVE
+    $answer = '<table border="0" cellpadding="10" cellspacing="10" align="center">
+                    <tr>
+                        <th align="center"><b>Title</b></th>
+                        <th>&nbsp;&nbsp;</th>
+                        <th align="center"><b>Comment</b></th>
+                        <th>&nbsp;&nbsp;</th>
+                        <th align="center"><b>Select file</b></th>
+                    </tr>
+                    <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    <tbody>';
+
+    for ($i = 1; $i <= $maxfiles; $i++) {
+         $answer .= '<tr>
+                        <td>
+                            <input class="text" type="text" size="30" name="'.$ia[1].'_title_'.$i
+                            .'" id="answer'.$ia[1].'_title_'.$i.'" value="'.$_SESSION[$ia[1]]
+                            .'" maxlength="100" />
+                        </td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td>
+                            <input type="textarea" name="'.$ia[1].'_comment_'.$i
+                            .'" id="answer'.$ia[1].'_comment_'.$i.'" value="'.$_SESSION[$ia[1]]
+                            .'" maxlength="100" />
+                        </td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td>'
+                            .' <input class="file" '
+                            .'type="file" name="the_file_'.$i.'" id="answer'.$ia[1].'_'.$i.'" size="25" alt="'
+                            .$clang->gT("Answer").'" ></input></td>
+                        </tr>'
+                        .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
+    }
+    // --> END NEW FEATURE - SAVE
+
+    $answer .= '</tbody></table>';
+
+    $inputnames[] = $ia[1];
+    for ($i = 1; $i <= $maxfiles; $i++)
+    {
+        $inputnames[]=$ia[1].'_title_'.$i;
+        $inputnames[]=$ia[1].'_comment_'.$i;
+    }
     return array($answer, $inputnames);
 }
 
@@ -6689,83 +6783,6 @@ function do_array_flexible_dual($ia)
         $answer = "<p class='error'>".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames="";
     }
-    return array($answer, $inputnames);
-}
-
-
-
-
-// ---------------------------------------------------------------
-function do_file_upload($ia)
-{
-    global $clang, $js_header_includes;
-
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
-
-   	$qidattributes=getQuestionAttributes($ia[0]);
-
-    if (trim($qidattributes['max_num_of_files'])!='')
-    {
-        $maxfiles=$qidattributes['max_num_of_files'];
-    }
-    else
-    {
-        //TODO: use the global settings for maximum no. of files
-    }
-
-    if (trim($qidattributes['min_num_of_files'])!='')
-    {
-        $minfiles=$qidattributes['min_num_of_files'];
-    }
-    else
-    {
-        //TODO: use the global settings for minimum no. of files
-    }
-
-    if (trim($qidattributes['max_filesize'])!='')
-    {
-        $maxfilesize=$qidattributes['max_filesize'];
-    }
-    else
-    {
-        //TODO: use the global settings for maximum size of file
-    }
-
-    if (trim($qidattributes['allowed_filetypes'])!='')
-    {
-        $allowed_filetypes=$qidattributes['allowed_filetypes'];
-    }
-    else
-    {
-        //TODO: use the global settings for allowed file types
-    }
-
-
-    //TODO: check the max no. of files that can be uploaded,
-    // accordingly display those many upload buttons
-
-    //TODO: use a javascript to ensure that the size of file
-    // is not more than $max_filesize
-
-    //TODO: have a javascript that actually copies all the metadata into a
-    //JSON string and then saves it into the $_SESSION['qid'] field
-    
-    // --> START NEW FEATURE - SAVE
-    for ($i = 1, $answer = ""; $i <= $maxfiles; $i++) {
-        $answer .= $clang->gT("Select file for uploading").' <input class="file" '
-            .'type="file" name="the_file_'.$i.'" id="answer'.$ia[1].'_'.$i.'" size="25" alt="'
-            .$clang->gT("Answer").'" ></input> <br><br>'."\n";
-    }
-    // --> END NEW FEATURE - SAVE
-
-    $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
 

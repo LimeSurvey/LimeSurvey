@@ -2421,7 +2421,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
         // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U"
 
-        if ($qtypes[$arow['type']]['subquestions']==0 && $arow['type'] != "R")
+        if ($qtypes[$arow['type']]['subquestions']==0 && $arow['type'] != "R" && $arow['type'] != "|")
         {
             $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
@@ -2631,6 +2631,52 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['title']=$arow['title'];
                     $fieldmap[$fieldname]['question']=$arow['question'];
                     $fieldmap[$fieldname]['subquestion']=sprintf($clang->gT('Rank %s'),$i);
+                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$fieldname]['hasconditions']=$conditions;
+                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                }
+            }
+        }
+        elseif ($arow['type'] == "|")
+        {
+            $abquery = "SELECT value FROM ".db_table_name('question_attributes')
+                ." WHERE attribute='max_num_of_files' AND qid=".$arow['qid'];
+            $abresult = db_execute_assoc($abquery) or safe_die ("Couldn't get maximum
+                number of files that can be uploaded <br />$abquery<br />".$connect->ErrorMsg());
+            $abrow = $abresult->FetchRow();
+            
+            for ($i = 1; $i <= $abrow['value']; $i++)
+            {
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_title_".$i;
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+                    'type'=>$arow['type'],
+                    'sid'=>$surveyid,
+                    "gid"=>$arow['gid'],
+                    "qid"=>$arow['qid']
+                    );
+                if ($style == "full")
+                {
+                    $fieldmap[$fieldname]['title']=$arow['title'];
+                    $fieldmap[$fieldname]['question']=$arow['question'];
+                    $fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
+                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$fieldname]['hasconditions']=$conditions;
+                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                }
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_comment_".$i;
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+                    'type'=>$arow['type'],
+                    'sid'=>$surveyid,
+                    "gid"=>$arow['gid'],
+                    "qid"=>$arow['qid']
+                    );
+                if ($style == "full")
+                {
+                    $fieldmap[$fieldname]['title']=$arow['title'];
+                    $fieldmap[$fieldname]['question']=$arow['question'];
+                    $fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;

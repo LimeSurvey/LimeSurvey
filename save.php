@@ -387,7 +387,7 @@ function createinsertquery()
     if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
     {
         $inserts=array_unique($_SESSION['insertarray']);
-
+        
         $colnames_hidden=Array();
         foreach ($inserts as $value)
         {
@@ -405,7 +405,14 @@ function createinsertquery()
                     }
                 }
                 //Only create column name and data entry if there is actually data!
-                $colnames[]=$value;
+                if ($fieldexists['type'] !='|')
+                    $colnames[]=$value;
+                else if (!isset($colnames))
+                    $colnames[] = substr($value, 0, strpos($value, "_"));
+                else if (isset($colnames) && (!in_array(substr($value, 0, strpos($value, "_")), $colnames)))
+                    $colnames[] = substr($value, 0, strpos($value, "_"));
+                    
+                
                 // most databases do not allow to insert an empty value into a datefield,
                 // therefore if no date was chosen in a date question the insert value has to be NULL
                 if ($deletenonvalues==1 && !checkconfield($value))
@@ -416,28 +423,38 @@ function createinsertquery()
                 {
                     $values[]='NULL';
                 }
-                else if ($_SESSION[$value]=='' && $fieldexists['type']=='|')
+                else if ($fieldexists['type']=='|')
                 {
-                    //TODO: file upload
-                    // save the files in an uploads directory
-                    // save the JSON string into the database -> this is done by default
-                    //TODO: remove the hardcoded path
+                    $i = substr(strrchr($value, "_"), 1);
                     
-                    $tempdir = "/opt/lampp/htdocs/gsocls/upload/files";
-                    
-                    for ($i = 1, $file_upload_error = FALSE; $i <= count($_FILES); $i++)
+                    if ($_FILES['the_file_'.$i]['tmp_name'] != '')
                     {
-                        if ($_FILES['the_file_'.$i]['name'] != '')
+                        if (!isset($values))       // if this is the first file to be uploaded
+                            $values[0] = '\'{[';
+                        else if ((strrpos($values[0], ",") == strlen($values[0]) - 1) || (strpos($values[0], "]") == strlen($values[0]) - 1))    // last char is a comma or sq brkt
+                            ;                       // do nothing
+                        else                        // remove the braces '}' and add a ',['
+                            $values[0] = substr($values[0], 0, strlen($values[0]) - 1).',[';
+
+                        if (strpos($value, "title")  != false)
+                            $values[0] .= '"title": "'.$_SESSION[$value].'",';
+                        else if (strpos($value, "comment") != false)
                         {
-                            $the_full_file_path = $tempdir . "/" . $_FILES['the_file_'.$i]['name'];
+                            $values[0] .= '"comment": "'.$_SESSION[$value].'",';
+
+                            $random_file_name = randomkey(20);
+
+                            //TODO: remove the hardcoded path
+                            $uploads_dir = "/opt/lampp/htdocs/gsocls/upload/files";
+
+                            $the_full_file_path = $uploads_dir."/".$random_file_name;//.strrchr($_FILES['the_file_'.$i]['tmp_name'], ".");
+
                             if (!@move_uploaded_file($_FILES['the_file_'.$i]['tmp_name'], $the_full_file_path))
-                                    $file_upload_error = TRUE;
+                                    echo "error uploading";
+                            else
+                                $values[0] .= '"filename": "'.$random_file_name.'"]}\'';
                         }
                     }
-                    if ($file_upload_error)
-                        echo "error uploading";
-                    else
-                        echo "successs uploading file";
                 }
                 else
                 {
