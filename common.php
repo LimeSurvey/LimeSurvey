@@ -3983,16 +3983,16 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Input box width'));
 
     $qattributes["use_dropdown"]=array(
-    "types"=>"1",
+    "types"=>"1F",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,      
-    "help"=>$clang->gT('Use dual dropdown boxes instead of dual scales'),
-    "caption"=>$clang->gT('Dual dropdown'));
-
+    "help"=>$clang->gT('Use dropdown boxes instead of list of radio buttons'),
+    "caption"=>$clang->gT('Dropdown'));
+   
     $qattributes["scale_export"]=array(
     "types"=>"CEFGHLMOPWYZ1!:",
     'category'=>$clang->gT('Other'),

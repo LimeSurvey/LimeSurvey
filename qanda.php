@@ -5276,8 +5276,17 @@ function do_array_flexible($ia)
     }
     $columnswidth=100-$answerwidth;
 
+   if ($qidattributes['use_dropdown'] == 1)
+   {
+       $useDropdownLayout = true;
+   }
+   else
+   {
+       $useDropdownLayout = false;
+   }
+   
     $lresult = db_execute_assoc($lquery);   //Checked
-    if ($lresult->RecordCount() > 0)
+    if ($useDropdownLayout === false && $lresult->RecordCount() > 0)
     {
         while ($lrow=$lresult->FetchRow())
         {
@@ -5453,7 +5462,124 @@ function do_array_flexible($ia)
 
         $answer = $answer_start . $answer_cols . $answer_head .$answer . "\t</tbody>\n</table>\n";
     }
-    else
+   elseif ($useDropdownLayout === true && $lresult->RecordCount() > 0)
+   {
+       while ($lrow=$lresult->FetchRow())
+           $labels[]=Array('code' => $lrow['code'],
+                           'answer' => $lrow['answer']);
+        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+       $ansresult = db_execute_assoc($ansquery);  //Checked
+       if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
+       // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+        if ($qidattributes['random_order']==1) {
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        }
+        else
+        {
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        }
+       $ansresult = db_execute_assoc($ansquery); //Checked
+       $anscount = $ansresult->RecordCount();
+       $fn=1;
+
+       $numrows = count($labels);
+       if ($ia[6] != 'Y' && $shownoanswer == 1)
+       {
+           ++$numrows;
+       }
+       if ($right_exists)
+       {
+           ++$numrows;
+       }
+       $cellwidth = round( ($columnswidth / $numrows ) , 1 );
+
+       $answer_start = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question\" >\n";
+
+       $answer = "\t<tbody>\n";
+       $trbc = '';
+        $inputnames=array();
+
+       while ($ansrow = $ansresult->FetchRow())
+       {
+           $myfname = $ia[1].$ansrow['title'];
+           $trbc = alternation($trbc , 'row');
+           $answertext=answer_replace($ansrow['question']);
+            $answertextsave=$answertext;
+           if (strpos($answertext,'|'))
+           {
+               $answertext=substr($answertext,0, strpos($answertext,'|'));
+           }
+           /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+           containing a list of unanswered questions, the current question must be in the array,
+           and there must be no answer available for the item in this session. */
+
+           if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
+
+           if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
+               $answertext = '<span class="errormandatory">'.$answertext.'</span>';
+           }
+           // Get array_filter stuff
+           list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+           $answer .= $htmltbody2;
+           
+           $answer .= "<tr class=\"$trbc\">\n"
+           . "\t<th class=\"answertext\">\n$answertext"
+           . $hiddenfield
+           . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+           if (isset($_SESSION[$myfname]))
+           {
+               $answer .= $_SESSION[$myfname];
+           }
+           $answer .= "\" />\n\t</th>\n";
+           
+           $answer .= "\t<td >\n"
+           . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
+
+           if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
+           {
+               $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
+           }
+
+           foreach ($labels as $lrow)
+           {
+               $answer .= "\t<option value=\"".$lrow['code'].'" ';
+               if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $lrow['code'])
+               {
+                   $answer .= SELECTED;
+               }
+               $answer .= '>'.$lrow['answer']."</option>\n";
+           }
+           // If not mandatory and showanswer, show no ans
+           if ($ia[6] != 'Y' && $shownoanswer == 1)
+           {
+               $answer .= "\t<option value=\"\" ";
+               if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
+               {
+                   $answer .= SELECTED;
+               }
+               $answer .= '>'.$clang->gT('No answer')."</option>\n";
+           }
+           $answer .= "</select>\n";
+               
+           if (strpos($answertextsave,'|')) 
+           {
+               $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
+               $answer .= "\t<th class=\"answertextright\">$answertext</th>\n";
+           }
+           elseif ($right_exists)
+           {
+               $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
+           }
+           
+           $answer .= "</tr>\n</tbody>";
+           $inputnames[]=$myfname;
+           //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
+           $fn++;
+       }
+
+       $answer = $answer_start . $answer . "\t</tbody>\n</table>\n";
+   }
+   else
     {
         $answer = "\n<p class=\"error\">".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames='';
