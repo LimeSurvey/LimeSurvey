@@ -33,6 +33,15 @@ td.questiontext {
   text-align: right;
 }
 
+.choice-5-pt-radio li,
+.list-radio-flexible li,
+.list-radio li,
+.list-with-comment li,
+.yes-no li,
+.gender li {
+    text-indent: 1.7em;
+}
+
 /* line 479 */
 .list-with-comment div.list {
   float: right;
