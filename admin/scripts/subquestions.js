@@ -273,13 +273,14 @@ function lspreview()
    }
     
    var lsid=$('#labelsets').selectedValues();
+   surveyid=$('input[name=sid]').val();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))
    {
        $.ajax({
               url: 'admin.php?action=ajaxlabelsetdetails',
               dataType: 'json',
-              data: {lid:lsid},
+              data: {lid:lsid, sid:surveyid},
               cache: true,
               success: function(json){
                     $("#labelsetpreview").tabs('destroy');
@@ -361,6 +362,7 @@ function dump(arr,level) {
 
 function transferlabels()
 {
+    surveyid=$('input[name=sid]').val();
     if ($(this).attr('id')=='btnlsreplace')
     {
         var lsreplace=true;
@@ -382,7 +384,7 @@ function transferlabels()
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
           dataType: 'json',
-          data: {lid:lsid},
+          data: {lid:lsid, sid:surveyid},
           cache: true,
           success: function(json){
                 languages=langs.split(';');   

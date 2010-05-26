@@ -403,6 +403,7 @@ function dump(arr,level) {
 
 function transferlabels()
 {
+   surveyid=$('input[name=sid]').val(); 
    if ($(this).attr('id')=='btnlsreplace')
    {
        var lsreplace=true;
@@ -415,7 +416,7 @@ function transferlabels()
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
           dataType: 'json',
-          data: {lid:lsid},
+          data: {lid:lsid, sid:surveyid},
           cache: true,
           success: function(json){
                 languages=langs.split(';');   
