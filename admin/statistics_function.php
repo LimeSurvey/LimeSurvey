@@ -291,13 +291,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
      * Remember there might be some filters applied which have to be put into an SQL statement
      */
     if(isset($postvars))
+
     foreach ($postvars as $pv)
     {
         //Only do this if there is actually a value for the $pv
-        if (in_array($pv, $allfields))
+        if (in_array($pv, $allfields) || in_array(substr($pv,0,-1), $allfields))
         {
             $firstletter=substr($pv,0,1);
-
             /*
              * these question types WON'T be handled here:
              * M = Multiple Options
@@ -401,25 +401,25 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             }
 
             //D - Date
-            elseif ($firstletter == "D" && $_POST[$pv] != "")
+            elseif ($firstletter == "D")
             {
                 //Date equals
-                if (substr($pv, -1, 1) == "=")
+                if (substr($pv, -1, 1) == "=" && $_POST[$pv] != "")
                 {
                     $selects[]=db_quote_id(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
                 }
                 else
                 {
                     //date less than
-                    if (substr($pv, -1, 1) == "<")
+                    if (substr($pv, -1, 1) == "<"  && $_POST[$pv] != "")
                     {
-                        $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " > '".$_POST[$pv]."'";
+                        $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
                     }
 
                     //date greater than
-                    if (substr($pv, -1, 1) == ">")
+                    if (substr($pv, -1, 1) == ">"  && $_POST[$pv] != "")
                     {
-                        $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " < '".$_POST[$pv]."'";
+                        $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
                     }
                 }
             }
@@ -456,7 +456,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
             }
         }
-
         else
         {
             $statisticsoutput .= "<!-- $pv DOES NOT EXIST IN ARRAY -->";
