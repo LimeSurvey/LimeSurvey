@@ -1071,6 +1071,11 @@ textarea.updater-changelog {
     float: left;      
     font-weight: bold;
     color: #121A28;
+}       
+
+.form30 table {
+    width: auto;
+    float: left;      
 }
 
 .form30 li,
@@ -1313,7 +1318,6 @@ clear:both;
    padding: 1px 1em; 
    text-decoration:none !important; 
    cursor:pointer; 
-   position: relative; 
    text-align: center; 
    zoom: 1; 
 }

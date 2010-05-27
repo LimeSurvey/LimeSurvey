@@ -3016,7 +3016,7 @@ if ($action == "editsurvey")
 
 
             // The external button to sumbit Survey edit changes
-            $editsurvey .= "<p><button onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >".$clang->gT("Save and Continue")." >></button>\n";
+            $editsurvey .= "<p><button onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >".$clang->gT("Save and Continue")." >></button></p>\n";
         }
 
     }
