@@ -401,23 +401,23 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             }
 
             //D - Date
-            elseif ($firstletter == "D")
+            elseif ($firstletter == "D"  && $_POST[$pv] != "")
             {
                 //Date equals
-                if (substr($pv, -1, 1) == "=" && $_POST[$pv] != "")
+                if (substr($pv, -1, 1) == "=")
                 {
                     $selects[]=db_quote_id(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
                 }
                 else
                 {
                     //date less than
-                    if (substr($pv, -1, 1) == "<"  && $_POST[$pv] != "")
+                    if (substr($pv, -1, 1) == "<")
                     {
                         $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
                     }
 
                     //date greater than
-                    if (substr($pv, -1, 1) == ">"  && $_POST[$pv] != "")
+                    if (substr($pv, -1, 1) == ">")
                     {
                         $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
                     }
