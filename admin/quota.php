@@ -695,6 +695,14 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         if ($subaction == "new_answer_two") $_POST['quota_id'] = $_POST['quota_id'];
 
         $allowed_types = "(type ='G' or type ='M' or type ='Y' or type ='A' or type ='B' or type ='I' or type = 'L' or type='O' or type='!')";
+
+        $query = "SELECT name FROM ".db_table_name('quota')." WHERE id='".$_POST['quota_id']."'";
+        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+        while ($quotadetails = $result->FetchRow()) 
+        {
+            $quota_name=$quotadetails['name'];
+        }
+        
         $query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
         if ($result->RecordCount() == 0)
@@ -710,6 +718,11 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 			<div class="messagebox" style="width: 600px">
 				<form action="'.$scriptname.'" method="post">
 					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+						<thead>
+						<tr>
+						  <th class="header"  colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
+						</tr>
+						</thead>
 						<tbody>
 						<tr class="evenrow">
 							<td align="center">&nbsp;</td>
@@ -753,6 +766,13 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         array_walk( $_POST, 'db_quote', true);
 
+        $query = "SELECT name FROM ".db_table_name('quota')." WHERE id='".$_POST['quota_id']."'";
+        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+        while ($quotadetails = $result->FetchRow()) 
+        {
+            $quota_name=$quotadetails['name'];
+        }
+
         $question_answers = getQuotaAnswers($_POST['quota_qid'],$surveyid,$_POST['quota_id']);
         $x=0;
 
@@ -777,6 +797,11 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" method="post">
 					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 						<tbody>
+							<thead>
+							<tr>
+							  <th class="header" colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
+							</tr>
+							</thead>
 							<tr class="evenrow">
 								<td align="center">&nbsp;</td>
 								<td align="center">&nbsp;</td>
