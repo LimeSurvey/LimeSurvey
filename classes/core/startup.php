@@ -80,7 +80,7 @@ if ( !function_exists('json_decode') ){
 }
 
 if ( !function_exists('json_encode') ){
-    function json_decode($content){
+    function json_encode($content){
         global $homedir;
         require_once($homedir."/classes/json/JSON.php");
         $json = new Services_JSON;
