@@ -396,24 +396,18 @@ function createinsertquery()
             //Iterate through possible responses
             if (isset($_SESSION[$value]) && !empty($fieldexists))
             {
-                //If deletenonvalues is ON, delete any values that shouldn't exist
-                if($deletenonvalues==1)
-                {
-                    if (!checkconfield($value))
-                    {
-                        $colnames_hidden[]=$value;
-                    }
-                }
                 //Only create column name and data entry if there is actually data!
                 $colnames[]=$value;
-                // most databases do not allow to insert an empty value into a datefield,
-                // therefore if no date was chosen in a date question the insert value has to be NULL
+                //If deletenonvalues is ON, delete any values that shouldn't exist
                 if ($deletenonvalues==1 && !checkconfield($value))
                 {
                     $values[]='NULL';
+                    $colnames_hidden[]=$value;
                 }
                 elseif (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))
                 {
+                    // most databases do not allow to insert an empty value into a datefield,
+                    // therefore if no date was chosen in a date question the insert value has to be NULL
                     $values[]='NULL';
                 }
                 else
@@ -541,7 +535,7 @@ function createinsertquery()
                     $hiddenfields=array_unique(array_values($colnames_hidden));
                     foreach ($hiddenfields as $hiddenfield)
                     {
-                        $fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
+                        //$fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
                         //if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
                         //{
                         $query .= db_quote_id($hiddenfield)." = NULL,";
