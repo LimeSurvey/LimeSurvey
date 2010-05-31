@@ -532,8 +532,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             		<td>&nbsp;</td>
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
-            		<td align="center">'.$totalquotas.'</td>
-            		<td align="center">'.$totalcompleted.'</td>
+            		<td align="center">&nbsp;</td>
+            		<td align="center">&nbsp;</td>
             		<td align="center" style="padding: 3px;"><input type="button" value="'.$clang->gT("Quick CSV report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')" /></td>
           		</tr>
         	</tfoot>
@@ -664,7 +664,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
             		<td align="center">'.$totalquotas.'</td>
-            		<td align="center">&nbsp;</td>
+            		<td align="center">'.$totalcompleted.'</td>
             		<td align="center" style="padding: 3px;">
 						<form action="'.$scriptname.'" method="post">
 							<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add New Quota").'" />
