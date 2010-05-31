@@ -880,25 +880,33 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
     $array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
     unset($qattributes);
     if (!isset($appendj)) {$appendj="";}
-
     foreach ($array_filterqs as $attralist)
     {
         $qbase = $surveyid."X".$gid."X".$attralist['qid'];
         $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
-        if ($attralist['type'] == "M")
-        {
-            $qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
-            $qresult = db_execute_assoc($qquery); //Checked
+        if ($attralist['type'] == "M" || $attralist['type'] == "P")
+        { 
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
+            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $OrigQuestion = $tqresult->FetchRow();
+            
+            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
+            {
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+            } else {
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE parent_qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by title;";
+            } 
+            $qresult = db_execute_assoc($qquery); //Checked       
             $other=null;
             while ($fansrows = $qresult->FetchRow())
             {
                 if($fansrows['other']== "Y") $other="Y";
                 if(strpos($array_filter_types, $fansrows['type']) === false) {} else
                 {
-                    $fquestans = "java".$qfbase.$fansrows['code'];
-                    $tbody = "javatbd".$qbase.$fansrows['code'];
-                    $dtbody = "tbdisp".$qbase.$fansrows['code'];
-                    $tbodyae = $qbase.$fansrows['code'];
+                    $fquestans = "java".$qfbase.$fansrows['title'];
+                    $tbody = "javatbd".$qbase.$fansrows['title'];
+                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
+                    $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
                     $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
                     $appendj .= "\t{\n";
@@ -912,7 +920,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     // This line resets the text fields in the hidden row
                     $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
                     // This line resets any radio group in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+                    $appendj .= "\t\t$('#$tbody input[type=checkbox]').attr('checked', false); ";
                     $appendj .= "\t}\n";
                 }
             }

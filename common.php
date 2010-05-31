@@ -3512,7 +3512,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLT",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3520,7 +3520,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLT",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -4846,6 +4846,7 @@ function getArrayFiltersForQuestion($qid)
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
                 $query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
+
                 $qresult = db_execute_assoc($query);  //Checked
                 $selected = array();
                 while ($code = $qresult->fetchRow())
@@ -4853,6 +4854,7 @@ function getArrayFiltersForQuestion($qid)
                     if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
                     || $_SESSION[$fields[1]] == $code['title'])			 array_push($selected,$code['title']);
                 }
+
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 $query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
                 $qresult = db_execute_assoc($query);

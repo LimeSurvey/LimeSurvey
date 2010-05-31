@@ -1319,7 +1319,8 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
     )
     {
         $selected = getArrayFiltersForQuestion($ia[0]);
-        if (!empty($selected) && !in_array($ansrow['code'],$selected))
+        if (isset($ansrow['code'])) $ansrow['title'] = $ansrow['code'];
+        if (!empty($selected) && !in_array($ansrow['title'],$selected))
         {
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'";
             $htmltbody2 .= ($class !== null) ? " class='$class'": "";
@@ -3140,7 +3141,19 @@ function do_multiplechoice_withcomments($ia)
 {
     global $dbprefix, $clang, $thissurvey;
 
-    if ($ia[8] == 'Y')
+    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value=lower('".strtolower($ia[2])."')";
+    $qaresult = db_execute_assoc($qaquery);     //Checked
+    while($qarow = $qaresult->FetchRow())
+    {
+        $qquery = "SELECT qid FROM ".db_table_name('questions')." WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
+        $qresult = db_execute_assoc($qquery);     //Checked
+        if ($qresult->RecordCount() > 0)
+        {
+            $attribute_ref = true;    
+        }
+    }
+    
+    if ($ia[8] == 'Y' || $attribute_ref === true)
     {
         $checkconditionFunction = "checkconditions";
     }
@@ -3232,7 +3245,8 @@ function do_multiplechoice_withcomments($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
         $trbc='';
-        /* Check for array_filter */
+         /* Check for array_filter */    
+        
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
 
         if($label_width < strlen(trim(strip_tags($ansrow['question']))))
@@ -3261,7 +3275,7 @@ function do_multiplechoice_withcomments($ia)
         {
             $answer_main .= CHECKED;
         }            
-        $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type)' "
+        $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
         . $ansrow['question']."</label>\n";
 
