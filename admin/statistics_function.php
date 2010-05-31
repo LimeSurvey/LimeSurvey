@@ -1364,9 +1364,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $qtype=$nrow[1];
                     $qquestion=FlattenText($nrow[2]);
                     $qiqid=$nrow[3];
-                    $qlid=$nrow[4];
-                    $qlid1=$nrow[5];
-                    $qother=$nrow[6];
+                    $qparentqid=$nrow[4];
+                    $qother=$nrow[5];
                 }
                  
                 //check question types
@@ -1512,30 +1511,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $stepvalue=1;
                         }
 
-                        list($qacode, $licode)=explode("_", $qanswer);
-
-                        $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order, question";
-                        //echo $qquery."<br />";
-                        $qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
-
-                        while ($qrow=$qresult->FetchRow())
-                        {
-                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-                            $fresult = db_execute_assoc($fquery);
-                            while ($frow=$fresult->FetchRow())
-                            {
-                                //$alist[]=array($frow['code'], $frow['title']);
-                                $ltext=$frow['answer'];
-                            }
-                            $atext=FlattenText($qrow[1]);
-                        }
-
                         for($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue)
                         {
                             $alist[]=array($i, $i);
                         }
 
-                        $qquestion .= "<br />\n[".$atext."] [".$ltext."]";
+                        $qquestion .= "<br />\n[".$fielddata['subquestion1']."] [".$fielddata['subquestion2']."]";
                         list($myans, $mylabel)=explode("_", $qanswer);
                         $qtitle .= "[$myans][$mylabel]";
                         break;
@@ -1876,12 +1857,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $TotalCompleted += $row[0];
 
                         //"no answer" handling
-                        if ($al[0] == "")
+                        if ($al[0] === "")
                         {$fname=$statlang->gT("No answer");}
                          
                         //"other" handling
                         //"Answers" means that we show an option to list answer to "other" text field
-                        elseif ($al[0] == $statlang->gT("Other") || $al[0] == "Answers" || $qtype == "P")
+                        elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || $qtype === "P")
                         {
                             if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
                             else  $ColumnName_RM = $al[2];
