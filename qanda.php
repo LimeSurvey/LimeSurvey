@@ -1382,10 +1382,8 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
     )
     {
         $selected = getArrayFilterExcludesForQuestion($ia[0]);
-        //echo "<pre>"; print_r($selected); echo "<hr />-->"; print_r($ansrow['code']); echo "</pre>";
-        //if(in_array($ansrow['code'], $selected)) echo "Hi there".$ansrow['code'];
-        //if(!empty($selected)) echo "notempty ".$ansrow['code'];
-        if (!empty($selected) && !in_array($ansrow['code'],$selected))
+        if (isset($ansrow['code'])) $ansrow['title'] = $ansrow['code'];  
+        if (!empty($selected) && !in_array($ansrow['title'],$selected))
         {
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
             $hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
