@@ -4846,7 +4846,6 @@ function getArrayFiltersForQuestion($qid)
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
                 $query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
-
                 $qresult = db_execute_assoc($query);  //Checked
                 $selected = array();
                 while ($code = $qresult->fetchRow())
@@ -4927,12 +4926,12 @@ function getArrayFilterExcludesForQuestion($qid)
                 {
                     // we found the target question, now we need to know what the answers were!
                     $fields[0]=sanitize_int($fields[0]);
-                    $query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
+                    $query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
                     $qresult = db_execute_assoc($query);  //Checked
                     while ($code = $qresult->fetchRow())
                     {
-                        if ((isset($_SESSION[$fields[1].$code['code']]) && $_SESSION[$fields[1].$code['code']] == "Y")
-                        || $_SESSION[$fields[1]] == $code['code'])						array_push($selected,$code['code']);
+                        if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
+                        || $_SESSION[$fields[1]] == $code['title'])						array_push($selected,$code['title']);
                     }
                     //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                     $query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
