@@ -1070,14 +1070,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $total=0;
                          
                         // fix if there are too few values to evaluate.
-                        if ($q1c<1) {$q1c=1;$lastnumber=0;}
+                        if ($q1c<0) {$q1c=0;}
                          
                         if ($q1 != $q1b)
                         {
                             //ODD NUMBER
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-                            $result=db_select_limit_assoc($query, $q1c, 2) or safe_die("1st Quartile query failed<br />".$connect->ErrorMsg());
-
+                            $result=db_select_limit_assoc($query, 2, $q1c) or safe_die("1st Quartile query failed<br />".$connect->ErrorMsg());
+                            
                             while ($row=$result->FetchRow())
                             {
                                 if ($total == 0)    {$total=$total-$row[$fieldname];}
@@ -1087,7 +1087,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $lastnumber=$row[$fieldname];
                             }
 
-                            $q1total=$lastnumber-(1-($total*$q1diff));
+                            $q1total=$lastnumber-((1-$q1diff)*$total);
 
                             if ($q1total < $minimum) {$q1total=$minimum;}
 
@@ -1114,7 +1114,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $medianc=$medianb-1;
                         $mediandiff=$median-$medianb;
                          
-                        if ($median != (int)((($medcount+1)/2)-1))
+                        if ($median != $medianb)
                         {
                             //remainder
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
@@ -1132,7 +1132,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //EVEN NUMBER
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-                            $result=db_select_limit_assoc($query,1, $medianc) or safe_die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
+                            $result=db_select_limit_assoc($query,1, $medianc-1) or safe_die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
 
                             while ($row=$result->FetchRow())
                             {
@@ -1154,17 +1154,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
                             $result = db_select_limit_assoc($query,2,$q3c) or safe_die("3rd Quartile query failed<br />".$connect->ErrorMsg());
 
-                            $lastnumber='';
-
                             while ($row=$result->FetchRow())
                             {
                                 if ($total == 0)    {$total=$total-$row[$fieldname];}
                                  
                                 else                {$total=$total+$row[$fieldname];}
                                  
-                                if (!$lastnumber) {$lastnumber=$row[$fieldname];}
+                                $lastnumber=$row[$fieldname];
                             }
-                            $q3total=$lastnumber+($total*$q3diff);
+                            $q3total=$lastnumber-((1-$q3diff)*$total);
 
                             if ($q3total < $maximum) {$q1total=$maximum;}
 
