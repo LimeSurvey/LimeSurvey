@@ -11,7 +11,7 @@ $this->_strings = array(
 CAS_STR_USING_SERVER
 => '��������������� � ������������',
 CAS_STR_AUTHENTICATION_WANTED
-=> '���������� � ����������� CAS!'
+=> '���������� � ����������� CAS!',
 CAS_STR_LOGOUT
 => '���������� � ���������� ��� CAS!',
 CAS_STR_SHOULD_HAVE_BEEN_REDIRECTED
