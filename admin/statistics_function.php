@@ -83,7 +83,7 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
 //generate_statistics('999','all',0,'pdf','F');
 
-function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='DD',$statlangcode=null)
+function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='DD',$statlangcode=null, $browse = true)
 {
     //$allfields ="";
     global $connect, $dbprefix, $clang,
@@ -154,8 +154,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     if($q2show=='all' )
     {
         $summarySql=" SELECT gid, parent_qid, qid, type "
-        ." FROM {$dbprefix}questions where parent_qid=0"
-        ." WHERE sid=$surveyid ";
+        ." FROM {$dbprefix}questions WHERE parent_qid=0"
+        ." AND sid=$surveyid ";
 
         $summaryRs = db_execute_assoc($summarySql);
 
@@ -199,7 +199,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     else
     {
         // This gets all the 'to be shown questions' from the POST and puts these into an array
-        $summary=returnglobal('summary');
+        if (!is_array($q2show)) 
+            $summary = returnglobal('summary');
+        else
+            $summary = $q2show;           
+        
         //print_r($_POST);
         //if $summary isn't an array we create one
         if (isset($summary) && !is_array($summary))
@@ -291,7 +295,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
      * Remember there might be some filters applied which have to be put into an SQL statement
      */
     if(isset($postvars))
-
+    
     foreach ($postvars as $pv)
     {
         //Only do this if there is actually a value for the $pv
@@ -587,7 +591,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //only continue if we have something to output
     if ($results > 0)
     {
-        if($outputType=='html')
+        if($outputType=='html' && $browse === true)
         {
             //add a buttons to browse results
             $statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
@@ -1866,7 +1870,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
                             else  $ColumnName_RM = $al[2];
-                            $fname="$al[1] <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                            $fname="$al[1]";
+                            if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                         }
                          
                         /*
@@ -1885,7 +1890,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //show free text answers
                             if ($al[0] == "Answers")
                             {
-                                $fname= "$al[1] <input type='submit' value='"
+                                $fname= "$al[1]";
+                                if ($browse===true) $fname .= " <input type='submit' value='"
                                 . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
                                 . urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                             }
