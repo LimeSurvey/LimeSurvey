@@ -156,7 +156,9 @@ function retrieveJSidname($cd,$currentgid=null)
 {
     global $dbprefix, $connect, $dropdownthreshold;
 
-    preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[2],$matchFields);
+    //preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[2],$matchFields);
+    //^^^^^does not seem to work, explode below should
+    $matchFields = explode('X', $cd[2], 3);
     $questiongid=$matchFields[1];
     $questionFieldpart=$matchFields[2];
     
