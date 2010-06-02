@@ -269,7 +269,7 @@ foreach ($filters as $flt)
         case "K": // Multiple Numerical
         case "Q": // Multiple Short Text
             //get answers
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
+            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //go through all the (multiple) answers
@@ -286,7 +286,7 @@ foreach ($filters as $flt)
         case "F": // FlEXIBLE ARRAY
         case "H": // ARRAY (By Column)
             //get answers
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
+            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //go through all the (multiple) answers
@@ -304,7 +304,7 @@ foreach ($filters as $flt)
             $allfields[] = $myfield;
             break;
         case ";":  //ARRAY (Multi Flex) (Text)
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             while ($row=$result->FetchRow())
             {
@@ -318,7 +318,7 @@ foreach ($filters as $flt)
             }
             break;
         case ":":  //ARRAY (Multi Flex) (Numbers)
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}'  AND scale_id=0 ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}'  AND scale_id=0 ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             while ($row=$result->FetchRow())
@@ -352,7 +352,7 @@ foreach ($filters as $flt)
             break;
         case "1":  // MULTI SCALE
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //loop through answers

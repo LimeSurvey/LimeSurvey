@@ -331,7 +331,7 @@ function setman_questionandcode($ia)
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+    $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     $sqresult = db_execute_assoc($subquestionquery); //Checked
 
     while ($subquestionrow = $sqresult->FetchRow())
@@ -429,8 +429,7 @@ function setman_questionandcode_multiscale($ia)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$ia[0]} "
             ."AND language='".$_SESSION['s_lang']."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
     $subresult = db_execute_assoc($subquery); //Checked
     
     // Get Answer Scale 1
@@ -439,7 +438,7 @@ function setman_questionandcode_multiscale($ia)
             ."WHERE qid={$ia[0]} "
             ."AND scale_id=0 "
             ."AND language='".$_SESSION['s_lang']."' "
-            ."ORDER BY sortorder, answer";
+            ."ORDER BY sortorder";
     $ans1result = db_execute_assoc($ans1query);   //Checked
     $ans1count = $ans1result->RowCount();
 
@@ -449,7 +448,7 @@ function setman_questionandcode_multiscale($ia)
             ."WHERE qid={$ia[0]} "
             ."AND scale_id=1 "
             ."AND language='".$_SESSION['s_lang']."' "
-            ."ORDER BY sortorder, answer";
+            ."ORDER BY sortorder";
     $ans2result = db_execute_assoc($ans2query);   //Checked
     $ans2count = $ans2result->RowCount();
 
@@ -2672,14 +2671,15 @@ function do_multiplechoice($ia)
 {
     global $dbprefix, $clang, $connect, $thissurvey;
 
-    // Find out if any quesitons have attributes which reference this questions
+    // Find out if any questions have attributes which reference this questions
     // based on value of attribute. This could be array_filter and array_filter_exclude
     
-    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value=lower('".strtolower($ia[2])."')";
+    $attribute_ref=false;
+    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."' and (attribute='array_filter' or attribute='array_filter_exclude')";
     $qaresult = db_execute_assoc($qaquery);     //Checked
     while($qarow = $qaresult->FetchRow())
     {
-        $qquery = "SELECT qid FROM ".db_table_name('questions')." WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
+        $qquery = "SELECT qid FROM ".db_table_name('questions')." WHERE sid=".$thissurvey['sid']." AND scale_id=0 AND qid=".$qarow['qid'];
         $qresult = db_execute_assoc($qquery);     //Checked
         if ($qresult->RecordCount() > 0)
         {
@@ -2783,11 +2783,11 @@ function do_multiplechoice($ia)
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = $connect->GetAll($ansquery);  //Checked
@@ -3141,7 +3141,7 @@ function do_multiplechoice_withcomments($ia)
 {
     global $dbprefix, $clang, $thissurvey;
 
-    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value=lower('".strtolower($ia[2])."')";
+    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value='".strtolower($ia[2])."'";
     $qaresult = db_execute_assoc($qaquery);     //Checked
     while($qarow = $qaresult->FetchRow())
     {
@@ -3223,7 +3223,7 @@ function do_multiplechoice_withcomments($ia)
     if ($qidattributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->RecordCount()*2;
@@ -3500,7 +3500,7 @@ function do_multipleshorttext($ia)
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);    //Checked
@@ -3805,7 +3805,7 @@ function do_multiplenumeric($ia)
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);	//Checked
@@ -5740,7 +5740,7 @@ function do_array_multiflexi($ia)
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);
         $anscount = $ansresult->RecordCount();
@@ -5984,7 +5984,7 @@ function do_array_flexiblecolumns($ia)
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);  //Checked
         $anscount = $ansresult->RecordCount();
@@ -6197,7 +6197,7 @@ function do_array_flexible_dual($ia)
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);   //Checked
         $anscount = $ansresult->RecordCount();
@@ -6500,7 +6500,7 @@ function do_array_flexible_dual($ia)
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);    //Checked
         $anscount = $ansresult->RecordCount();
