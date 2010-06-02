@@ -818,6 +818,7 @@ function CSVImportSurvey($sFullFilepath)
             elseif ($questionrowdata['type']=='Z')
             {
                 $questionrowdata['type']='L';
+                $aIgnoredAnswers[]=$oldqid;
             }
 
             if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;}
@@ -901,11 +902,18 @@ function CSVImportSurvey($sFullFilepath)
     //Do answers
     if (isset($answerarray) && $answerarray) 
     {
+        $answerfieldnames = convertCSVRowToArray($answerarray[0],',','"');
+        unset($answerarray[0]);
         foreach ($answerarray as $aa) 
         {
-            $answerfieldnames = convertCSVRowToArray($answerarray[0],',','"');
             $answerfieldcontents = convertCSVRowToArray($aa,',','"');
             $answerrowdata = array_combine($answerfieldnames,$answerfieldcontents);
+            if (in_array($answerrowdata['qid'],$aIgnoredAnswers)) 
+            {
+                 // Due to a bug in previous LS versions there may be orphaned answers with question type Z (which is now L)
+                 // this way they are ignored
+                 continue;
+            }
             if ($answerrowdata===false)
             {
                 $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
