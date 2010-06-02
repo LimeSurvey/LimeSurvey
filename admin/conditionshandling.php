@@ -578,8 +578,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
 
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
@@ -717,8 +716,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($arows = $aresult->FetchRow())
@@ -774,8 +772,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($arows = $aresult->FetchRow())
@@ -831,8 +828,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($arows=$aresult->FetchRow())
