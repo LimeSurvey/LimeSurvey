@@ -86,11 +86,18 @@ session_set_cookie_params(0,$relativeurl.'/');
 if ($surveyid)
 {
     $issurveyactive=false;
-    $actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
-    $actresult=db_execute_assoc($actquery) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());      //Checked
-    if ($actresult->RecordCount() > 0)
+    $aRow=$connect->GetRow("SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid");
+    if (isset($aRow['active']))
     {
-        $issurveyactive=true;
+        $surveyexists==true;
+        if($aRow['active']=='Y')
+        {
+            $issurveyactive=true;
+        }
+    }
+    else
+    {
+        $surveyexists=false;
     }
 }
 
@@ -144,7 +151,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
 }
 
 if ($surveyid &&
-$issurveyactive===false &&
+$issurveyactive===false && $surveyexists &&
 isset ($surveyPreview_require_Auth) &&
 $surveyPreview_require_Auth === true)
 {
@@ -440,15 +447,6 @@ if (!isset($token))
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
-
-if (is_array($thissurvey))
-{
-    $surveyexists=1;
-}
-else
-{
-    $surveyexists=0;
-}
 
 if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
 
