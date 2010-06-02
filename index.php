@@ -89,7 +89,7 @@ if ($surveyid)
     $aRow=$connect->GetRow("SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid");
     if (isset($aRow['active']))
     {
-        $surveyexists==true;
+        $surveyexists=true;
         if($aRow['active']=='Y')
         {
             $issurveyactive=true;
@@ -868,7 +868,7 @@ function loadanswers()
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
             }
-            if ($column =='lastpage' && !isset($_SESSION['step']))
+            if ($column =='lastpage' && isset($_GET['token']))
             {
                 if ($value<1) $value=1;
                 $_SESSION['step']=$value;
