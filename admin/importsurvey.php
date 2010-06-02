@@ -166,6 +166,7 @@ function CSVImportSurvey($sFullFilepath)
     }
     fclose($handle);
        
+    $aIgnoredAnswers=array();
     $aSQIDReplacements=array();     
     $aGIDReplacements=array();     
     $substitutions=array();
