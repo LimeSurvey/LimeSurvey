@@ -187,7 +187,7 @@ function surveyCheckStructure($surveyid)
     {
         if ($qtypes[$chkrow['type']]['subquestions']>0)
         {
-            $chaquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order, question";
+            $chaquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order";
             $charesult=$connect->Execute($chaquery);
             $chacount=$charesult->RecordCount();
             if ($chacount == 0)

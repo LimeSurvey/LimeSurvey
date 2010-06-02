@@ -1695,7 +1695,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "Q": //MULTIPLE SHORT TEXT
                     case "K":
-                        $deaquery = "SELECT question,title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+                        $deaquery = "SELECT question,title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
                         $dearesult = db_execute_assoc($deaquery);
                         $dataentryoutput .= "\t<table>\n";
                         while ($dearow = $dearesult->FetchRow())
@@ -1710,7 +1710,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
 
                     case "1": // multi scale^
-                        $deaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order, question";
+                        $deaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
                         $dearesult = db_execute_assoc($deaquery);
                         $dataentryoutput .='<table><tr><td></td><th>'.$clang->gT('Label 1').'</th><th>'.$clang->gT('Label 2').'</th></tr>';
 
@@ -2039,7 +2039,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         {
                             $dcols=0;
                         }
-                        $meaquery = "SELECT title, question, default_value FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+                        $meaquery = "SELECT title, question, default_value FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         $meacount = $mearesult->RecordCount();
                         if ($deqrow['other'] == "Y") {$meacount++;}
@@ -2154,7 +2154,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "\t</select>\n";
                         break;
                     case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2175,7 +2175,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2196,7 +2196,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery);
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2216,7 +2216,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2271,7 +2271,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "<table>\n";
                         $dataentryoutput .= "  <tr><td></td>\n";
                         $labelcodes=array();
-                        $lquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='$language' ORDER BY question_order, question";
+                        $lquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='$language' ORDER BY question_order";
                         $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         while ($data=$lresult->FetchRow())
                         {
@@ -2281,7 +2281,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                          
                         $dataentryoutput .= "  </tr>\n";
                          
-                        $meaquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='$language' ORDER BY question_order, question";
+                        $meaquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='$language' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $i=0;
                         while ($mearow=$mearesult->FetchRow())
@@ -2324,7 +2324,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     case ";": //ARRAY (Multi Flexi)
                         $dataentryoutput .= "<table>\n";
                         $dataentryoutput .= "  <tr><td></td>\n";
-                        $lquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order, question";
+                        $lquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order";
                         $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $labelcodes=array();
                         while ($data=$lresult->FetchRow())
@@ -2335,7 +2335,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                          
                         $dataentryoutput .= "  </tr>\n";
                          
-                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order, question";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $i=0;
                         while ($mearow=$mearesult->FetchRow())
@@ -2366,7 +2366,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "F": //ARRAY (Flexible Labels)
                     case "H":
-                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order, question";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())

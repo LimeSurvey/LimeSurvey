@@ -519,7 +519,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
 
             //get answers
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
+            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //counter is used for layout
@@ -579,7 +579,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //get subqestions
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -818,7 +818,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -872,7 +872,7 @@ foreach ($filters as $flt)
             //just like above only a different loop
         case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             while ($row=$result->FetchRow())
@@ -919,7 +919,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -978,7 +978,7 @@ foreach ($filters as $flt)
             //similiar to the above one
         case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -1027,7 +1027,7 @@ foreach ($filters as $flt)
 
         case ";":  //ARRAY (Multi Flex) (Text)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             while ($row=$result->FetchRow())
@@ -1061,7 +1061,7 @@ foreach ($filters as $flt)
 
         case ":":  //ARRAY (Multi Flex) (Numbers)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}'  AND scale_id=0 ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}'  AND scale_id=0 ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             //Get qidattributes for this question
@@ -1138,7 +1138,7 @@ foreach ($filters as $flt)
             //$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //Get answers. We always use the answer code because the label might be too long elsewise
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -1296,7 +1296,7 @@ foreach ($filters as $flt)
             $counter2=0;
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //loop through answers
@@ -1475,7 +1475,7 @@ foreach ($filters as $flt)
         case "M":  //M - Multiple options
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //loop through answers
