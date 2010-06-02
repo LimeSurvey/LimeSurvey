@@ -260,7 +260,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
                     ."<td align='left' >";
             if ($i == 2)
             {
-                if ($idrow[$fnames[0][0]] == NULL || $idrow[$fnames[0][0]] == "N") { $browseoutput .= "N"; }
+                if ($idrow['submitdate'] == NULL || $idrow['submitdate'] == "N") { $browseoutput .= "N"; }
                 else { $browseoutput .= "Y"; }
             }
             else

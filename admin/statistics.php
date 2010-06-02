@@ -200,7 +200,7 @@ $result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br /
 $rows = $result->GetRows();
 
 //SORT IN NATURAL ORDER!
-usort($rows, 'CompareGroupThenTitle');
+usort($rows, 'GroupOrderThenQuestionOrder');
 
 //put the question information into the filter array
 foreach ($rows as $row)

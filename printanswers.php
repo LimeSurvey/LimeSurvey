@@ -185,7 +185,7 @@ $fnrows = array(); //Create an empty array in case fetch_array does not return a
 while ($fnrow = $fnresult->FetchRow()) {++$fncount; $fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr']; $refurl=$fnrow['refurl'];} // Get table output into array
 
 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-usort($fnrows, 'CompareGroupThenTitle');
+usort($fnrows, 'GroupOrderThenQuestionOrder');
 
 $fnames[] = array("id", "id", "id");
 
@@ -263,7 +263,7 @@ foreach ($fnrows as $fnrow)
             ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
             ." AND q.qid={$fnrow['qid']}
                AND sq.scale_id=0
-               ORDER BY sq.question_order, sq.question";            
+               ORDER BY sq.question_order";            
             $y_axis_db = db_execute_assoc($fquery);           
              // Get the X-Axis   
              $aquery = "SELECT sq.*
@@ -274,7 +274,7 @@ foreach ($fnrows as $fnrow)
                          AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                          AND q.qid=".$fnrow['qid']."
                          AND sq.scale_id=1
-                         ORDER BY sq.question_order, sq.question";            
+                         ORDER BY sq.question_order";            
             $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
             while ($frow=$x_axis_db->FetchRow())
             {

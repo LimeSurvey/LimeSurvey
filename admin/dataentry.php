@@ -370,23 +370,10 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             $ipaddr=$fnrow['ipaddr'];
         } // Get table output into array
         // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-        usort($fnrows, 'CompareGroupThenTitle');
+        usort($fnrows, 'GroupOrderThenQuestionOrder');
         // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
-        $fnames[] = array('fieldname'=>"id", 'question'=>$clang->gT("ID"), 'type'=>'id');
-        $fnames[] = array('fieldname'=>"submitdate", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
-        /*
-         if ($private == "N") //show token info if survey not private
-         {
-         $fnames[] = array ("token", $clang->gT("Token"), "token", "TID", "", "");
-         }
-         if ($datestamp == "Y")
-         {
-         $fnames[] = array ("datestamp", $clang->gT("Date Stamp"), "datestamp", "datestamp", "", "");
-         }
-         if ($ipaddr == "Y")
-         {
-         $fnames[] = array ("ipaddr", $clang->gT("IP address"), "ipaddr", "ipaddr", "", "");
-         }*/
+
+        $fnames['completed'] = array('fieldname'=>"completed", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
 
         $fnames=array_merge($fnames,createFieldMap($surveyid,'full'));
         $nfncount = count($fnames)-1;
@@ -464,14 +451,16 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
         $dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
         ."<table id='responsedetail' width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
         $highlight=false;
+        unset($fnames['lastpage']);
         foreach ($results as $idrow)
         {
             //$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
             //for ($i=0; $i<$nfncount+1; $i++)
-	    foreach ($fnames as $i => $fname)
+            $fname=reset($fnames);
+	        do
             {
                 //$dataentryoutput .= "<pre>"; print_r($fname);$dataentryoutput .= "</pre>";
-                $answer = $idrow[$fname['fieldname']];
+                if (isset($idrow[$fname['fieldname']])) $answer = $idrow[$fname['fieldname']];
                 $question=$fname['question'];
                 $dataentryoutput .= "\t<tr";
                 if ($highlight) $dataentryoutput .=" class='highlight'";
@@ -649,15 +638,14 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             if ($idrow[$fname['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
                             $dataentryoutput .= ">{$llrow['answer']}</option>\n";
                         }
-                        $i++;
+                        $fname=next($fnames);
                         $dataentryoutput .= "\t</select>\n"
                         ."\t<br />\n"
                         ."\t<textarea cols='45' rows='5' name='{$fname['fieldname']}'>"
                         .htmlspecialchars($idrow[$fname['fieldname']]) . "</textarea>\n";
                         break;
                     case "R": //RANKING TYPE QUESTION
-                        $l=$i;
-                        $thisqid=$fnames[$l]['qid'];
+                        $thisqid=$fname['qid'];
                         $myfname=substr($fname['fieldname'], 0, -1);
                         while (isset($fname['type']) && $fname['type'] == "R")
                         {
@@ -666,7 +654,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             {
                                 $currentvalues[] = $idrow[$fname['fieldname']];
                             }
-                            $i++;
+                            $fname=next($fnames);
                         }
                         $ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE language = '{$language}' AND qid=$thisqid ORDER BY sortorder, answer";
                         $ansresult = db_execute_assoc($ansquery);
@@ -814,7 +802,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $choicelist="";
                         $ranklist="";
                         unset($answers);
-                        $i--;
+                        $fname=prev($fnames);
                         break;
 
                     case "M": //MULTIPLE OPTIONS checkbox
@@ -829,7 +817,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         }
 
                         //					while ($fname[3] == "M" && $question != "" && $question == $fname['type'])
-                        while ($fname['type'] == "M" && $question == $fname['question'])
+                        $thisqid=$fname['qid'];
+                        while ($fname['qid'] == $thisqid)
                         {
                             $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             //$dataentryoutput .= substr($fname['fieldname'], strlen($fname['fieldname'])-5, 5)."<br />\n";
@@ -844,37 +833,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
                                 $dataentryoutput .= " />{$fname['subquestion']}<br />\n";
                             }
-                            if ($i<$nfncount)
-                            {
-                                $i++;
-                            }
-                            else
-                            {
-                                $i++;
-                                break;
-                            }
-                        }
-                        $i--;
-                        break;
 
-                    case "J": //FILE CSV MORE
-                        while ($fname['type'] == "U" && $question != "" && $question == $fname['question'])
-                        {
-                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' value='Y'";
-                            if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
-                            $dataentryoutput .= " />{$fname['subquestion']}<br />\n";
-                            if ($i<$nfncount)
-                            {
-                                $i++;
-                            }
-                            else
-                            {
-                                $i++;
-                                break;
-                            }
+                            $fname=next($fnames);
                         }
-                        $i--;
+                        $fname=prev($fnames);
+
                         break;
 
                     case "I": //Language Switch
@@ -919,7 +882,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n"
                                 ."</td>\n"
                                 ."<td>\n";
-                                $i++;
+                                $fname=next($fnames);
                                 $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' size='50' value='"
                                 .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n"
                                 ."</td>\n"
@@ -932,10 +895,10 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
                                 $dataentryoutput .= " />{$fname['subquestion']}</td>\n";
                             }
-                            $i++;
+                            $fname=next($fnames);
                         }
                         $dataentryoutput .= "</table>\n";
-                        $i--;
+                        $fname=prev($fnames);
                         break;
                     case "N": //NUMERICAL TEXT
                         $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
@@ -971,7 +934,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $thisqid=$fname['qid'];
                         while ($fname['qid'] == $thisqid)
                         {
-                            $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                             $dataentryoutput .= "\t<tr>\n"
                             ."<td align='right'>{$fname['subquestion']}</td>\n"
                             ."<td>\n";
@@ -983,10 +945,10 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             }
                             $dataentryoutput .= "</td>\n"
                             ."\t</tr>\n";
-                            $i++;
+                            $fname=next($fnames);
                         }
                         $dataentryoutput .= "</table>\n";
-                        $i--;
+                        $fname=prev($fnames);
                         break;
                     case "B": //ARRAY (10 POINT CHOICE) radio-buttons
                         $dataentryoutput .= "<table>\n";
@@ -1005,9 +967,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             }
                             $dataentryoutput .= "</td>\n"
                             ."\t</tr>\n";
-                            $i++;
+                            $fname=next($fnames);
                         }
-                        $i--;
+                        $fname=prev($fnames);
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
@@ -1030,9 +992,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
                             ."</td>\n"
                             ."\t</tr>\n";
-                            $i++;
+                            $fname=next($fnames);
                         }
-                        $i--;
+                        $fname=prev($fnames);
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
@@ -1055,9 +1017,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $dataentryoutput .= " />Decrease&nbsp;\n"
                             ."</td>\n"
                             ."\t</tr>\n";
-                            $i++;
+                            $fname=next($fnames);
                         }
-                        $i--;
+                        $fname=prev($fnames);
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "F": //ARRAY (Flexible Labels)
@@ -1093,9 +1055,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
                             $dataentryoutput .= "</td>\n"
                             ."\t</tr>\n";
-                            $i++;
+                            $fname=next($fnames);
                         }
-                        $i--;
+                        $fname=prev($fnames);
                         $dataentryoutput .= "</table>\n";
                         break;
                     case ":": //ARRAY (Multi Flexi) (Numbers)
@@ -1155,9 +1117,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
                             $dataentryoutput .= "</td>\n"
                             ."\t</tr>\n";
-                            $i++;
+                            $fname=next($fnames);
                         }
-                        $i--;
+                        $fname=prev($fnames);
                         $dataentryoutput .= "</table>\n";
                         break;
                     case ";": //ARRAY (Multi Flexi)
@@ -1173,9 +1135,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             if(!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
                             $dataentryoutput .= "' /></td>\n"
                             ."\t</tr>\n";
-                            $i++;
+                            $fname=next($fnames);
                         }
-                        $i--;
+                        $fname=prev($fnames);
                         $dataentryoutput .= "</table>\n";
                         break;
                     default: //This really only applies to tokens for non-private surveys
@@ -1190,7 +1152,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								<td colspan='2' height='1'>
 								</td>
 							</tr>\n";
-            }
+            } while ($fname=next($fnames));
         }
         $dataentryoutput .= "</table>\n"
         ."<table class='data-entry-tbl' cellspacing='0'>\n";
@@ -1483,7 +1445,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} //Get table output into array
 
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-            usort($deqrows, 'CompareGroupThenTitle');
+            usort($deqrows, 'GroupOrderThenQuestionOrder');
 
             foreach ($deqrows as $deqrow)
             {
@@ -2039,7 +2001,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         {
                             $dcols=0;
                         }
-                        $meaquery = "SELECT title, question, default_value FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         $meacount = $mearesult->RecordCount();
                         if ($deqrow['other'] == "Y") {$meacount++;}
@@ -2058,7 +2020,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                     $upto=0;
                                 }
                                 $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['title']}' id='answer$fieldname{$mearow['title']}' value='Y'";
-                                if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+                                //if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
                                 $dataentryoutput .= " /><label for='$fieldname{$mearow['title']}'>{$mearow['question']}</label><br />\n";
                                 $upto++;
                             }

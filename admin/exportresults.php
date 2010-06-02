@@ -658,7 +658,7 @@ for ($i=0; $i<$fieldcount; $i++)
                             ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
                             ." AND q.qid={$rows['qid']}
                                AND sq.scale_id=0
-                               ORDER BY sq.question_order, sq.question";
+                               ORDER BY sq.question_order";
             
                             $y_axis_db = db_execute_assoc($fquery);
             
@@ -671,7 +671,7 @@ for ($i=0; $i<$fieldcount; $i++)
                                 AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                                 AND q.qid=".$rows['qid']."
                                 AND sq.scale_id=1
-                                ORDER BY sq.question_order, sq.question";
+                                ORDER BY sq.question_order";
               
                             $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 

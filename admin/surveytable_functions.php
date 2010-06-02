@@ -250,7 +250,7 @@ function surveyCheckStructure($surveyid)
     {
         $qrows[] = $qrow;
     }
-    usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+    usort($qrows, 'GroupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
     $c=0;
     foreach ($qrows as $qr)
     {

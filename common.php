@@ -1603,7 +1603,7 @@ function getlabelsets($languages=null)
  * @param mixed $b
  * @return int
  */
-function CompareGroupThenTitle($a, $b)
+function GroupOrderThenQuestionOrder($a, $b)
 {
     if (isset($a['group_order']) && isset($b['group_order']))
     {
@@ -2491,7 +2491,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             ." AND sq.language='{$s_lang}'"
             ." AND q.qid={$arow['qid']}
                AND sq.scale_id=0
-               ORDER BY sq.question_order, sq.question"; //converted
+               ORDER BY sq.question_order"; //converted
             $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case :)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
             $ab2query = "SELECT sq.*
                          FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
@@ -2501,7 +2501,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                          AND sq.language='".$s_lang."'
                          AND q.qid=".$arow['qid']."
                          AND sq.scale_id=1
-                         ORDER BY sq.question_order, sq.question"; //converted
+                         ORDER BY sq.question_order"; //converted
             $ab2result=db_execute_assoc($ab2query) or safe_die("Couldn't get list of answers in createFieldMap function (type : and ;)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
             $answerset=array();
             while($ab2row=$ab2result->FetchRow())
@@ -2542,7 +2542,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             ." WHERE sq.parent_qid=q.qid AND q.sid=$surveyid AND q.qid={$arow['qid']} "
             ." AND sq.language='".$s_lang. "' "
             ." AND q.language='".$s_lang. "' "
-            ." ORDER BY sq.question_order, sq.question";
+            ." ORDER BY sq.question_order";
             $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());    //Checked
             $abcount=$abresult->RecordCount();
             while ($abrow=$abresult->FetchRow())

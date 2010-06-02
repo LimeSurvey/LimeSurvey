@@ -204,7 +204,7 @@ $rows = $result->GetRows();
 
 
 //SORT IN NATURAL ORDER!
-usort($rows, 'CompareGroupThenTitle');
+usort($rows, 'GroupOrderThenQuestionOrder');
 
 //put the question information into the filter array
 foreach ($rows as $row)

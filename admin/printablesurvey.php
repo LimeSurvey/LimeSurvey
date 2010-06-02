@@ -380,7 +380,7 @@ while ($degrow = $degresult->FetchRow())
     while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} // Get table output into array
 
     // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    usort($deqrows, 'CompareGroupThenTitle');
+    usort($deqrows, 'GroupOrderThenQuestionOrder');
 
     if ($degrow['description'])
     {

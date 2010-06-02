@@ -2427,7 +2427,7 @@ function buildsurveysession()
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //	usort($arows, 'CompareGroupThenTitle');
+    //	usort($arows, 'GroupOrderThenQuestionOrder');
 
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage

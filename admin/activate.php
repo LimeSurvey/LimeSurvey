@@ -158,7 +158,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
     $qorderresult = db_execute_assoc($qorderquery) or safe_die ("$qorderquery<br />".$connect->ErrorMsg());
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     while ($qrow = $qorderresult->FetchRow()) {$qrows[] = $qrow;} // Get table output into array
-    usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+    usort($qrows, 'GroupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
     $c=0;
     foreach ($qrows as $qr)
     {
