@@ -156,7 +156,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
         {
             $question .=' ('.$field['subquestion'].')';
         }
-        if (isset($field['subquestion1']) && isset($field['subquestion1']))
+        if (isset($field['subquestion1']) && isset($field['subquestion2']))
         {
             $question .=' ('.$field['subquestion1'].':'.$field['subquestion2'].')';
         }
