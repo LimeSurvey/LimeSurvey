@@ -375,7 +375,8 @@ else
             if (!in_array($question, $fuqtQuestions))
             {
                 $createsurvey .= ",\n";
-                $createsurvey .= " `".$question."` C(1024)";
+                $createsurvey .= " `".$question."` X, \n";
+                $createsurvey .= " `".$question."_filecount` I1";
                 $fuqtQuestions[] = $question;
             }
         }

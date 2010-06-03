@@ -3432,6 +3432,32 @@ function do_file_upload($ia)
     // is not more than $max_filesize
 
     // --> START NEW FEATURE - SAVE
+
+    $answer =  "<link type='text/css' media='screen' rel='stylesheet' href='scripts/jquery/css/colorbox/colorbox.css' />
+                <script type='text/javascript' src='scripts/jquery/jquery.js'></script>
+
+                <script type='text/javascript' src='scripts/jquery/jquery.colorbox.js'></script>
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        $('.fuqt').colorbox({
+                            width       :   '70%',
+                            height      :   '70%',
+                            iframe      :   true,
+                            title       :   false,
+                            opacity     :   '0.5'
+                        });
+                        //Example of preserving a JavaScript event for inline calls.
+                        $('#click').click(function(){
+                            $('#click').css({'background-color':'#f00', 'color':'#fff', 'cursor':'inherit'}).text('Open this window again and this message will still be here.');
+                            return false;
+                        });
+                    });
+                </script>";
+
+    $answer .= "<p><a class='fuqt' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Upload</a></p>";
+
+    
+    /*
     $answer = '<table border="0" cellpadding="10" cellspacing="10" align="center">
                     <tr>
                         <th align="center"><b>Title</b></th>
@@ -3464,6 +3490,7 @@ function do_file_upload($ia)
                         </tr>'
                         .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
     }
+    */
     // --> END NEW FEATURE - SAVE
 
     $answer .= '</tbody></table>';
