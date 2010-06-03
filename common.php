@@ -4746,6 +4746,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
             }
         }
     }
+    $cascade2=array();
     if($output == "title")
     {
         foreach($cascaded as $key=>$cascade) {

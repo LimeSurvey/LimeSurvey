@@ -3143,6 +3143,7 @@ function do_multiplechoice_withcomments($ia)
 
     $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value='".strtolower($ia[2])."'";
     $qaresult = db_execute_assoc($qaquery);     //Checked
+    $attribute_ref=false;
     while($qarow = $qaresult->FetchRow())
     {
         $qquery = "SELECT qid FROM ".db_table_name('questions')." WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
