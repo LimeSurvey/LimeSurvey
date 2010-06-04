@@ -87,6 +87,8 @@ if ($surveyid)
         if ($surveyinfo['publicgraphs']=='Y')
         {
             $publicgraphs = 1;
+        } else {
+            $publicgraphs = 0;
         }
     }
 }
