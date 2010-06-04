@@ -285,13 +285,13 @@ foreach ($fnrows as $fnrow)
                 foreach($x_axis as $key=>$val)
                 {
                    
-                    $fnames[] = array($field.$arows['title']."_".$key, "$ftitle ({$rows['title']})", "{$arows['question']} ({$arows['title']}: {$key})"); 
+                    $fnames[] = array($field.$arows['title']."_".$key, "$ftitle ({$frow['title']})", "{$arows['question']} ({$arows['title']}: {$key})"); 
                                        
                     //$shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
                     
                     //$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
 
-                    if ($rows['type'] == ":")
+                    if ($frow['type'] == ":")
                     {
                         for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
                         {
@@ -330,11 +330,11 @@ foreach ($fnrows as $fnrow)
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked
             $header1=$clang->gT('First Scale');
             $header2=$clang->gT('Second Scale');
-            if (trim($qidattributes['dualscale_headerA'])!='')
+            if (isset($qidattributes['dualscale_headerA']) && trim($qidattributes['dualscale_headerA']) != '')
             {
                 $header1=$clang->gT($qidattributes['dualscale_headerA']);
             }
-            if (trim($qidattributes['dualscale_headerB'])!='')
+            if (isset($qidattributes['dualscale_headerB']) && trim($qidattributes['dualscale_headerB'])!= '')
             {
                 $header2=$clang->gT($qidattributes['dualscale_headerB']);
             }
@@ -364,7 +364,7 @@ foreach ($fnrows as $fnrow)
                 while ($lrows = $lresult->FetchRow())
                 {
                    
-                    $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['title']}#0", "$ftitle ", "{$fnrow['question']} {$arows['question']} - ".$header12);
+                    $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['title']}#0", "$ftitle ", "{$fnrow['question']} {$arows['question']} - ".$header2);
                 }
             } //while
         }
