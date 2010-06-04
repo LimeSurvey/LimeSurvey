@@ -771,7 +771,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
         // ANSWERS is DONE
 
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
-        fixsortorderGroups();
+        fixSortOrderGroups($surveyid);
         //... and for the questions inside the groups
         // get all group ids and fix questions inside each group
         $gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)

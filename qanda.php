@@ -3141,6 +3141,7 @@ function do_multiplechoice_withcomments($ia)
 {
     global $dbprefix, $clang, $thissurvey;
 
+    $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value='".strtolower($ia[2])."'";
     $qaresult = db_execute_assoc($qaquery);     //Checked
     $attribute_ref=false;
@@ -3154,7 +3155,7 @@ function do_multiplechoice_withcomments($ia)
         }
     }
     
-    if ($ia[8] == 'Y' || $attribute_ref === true)
+    if ($ia[8] == 'Y' || $attribute_ref == true)
     {
         $checkconditionFunction = "checkconditions";
     }

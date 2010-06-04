@@ -656,7 +656,7 @@ for ($i=0; $i<$fieldcount; $i++)
                             ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
                             . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
                             ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-                            ." AND q.qid={$rows['qid']}
+                            ." AND q.qid={$fqid}
                                AND sq.scale_id=0
                                ORDER BY sq.question_order";
             
@@ -669,7 +669,7 @@ for ($i=0; $i<$fieldcount; $i++)
                                 AND sq.parent_qid=q.qid
                                 AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                                 AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                                AND q.qid=".$rows['qid']."
+                                AND q.qid={$fqid}
                                 AND sq.scale_id=1
                                 ORDER BY sq.question_order";
               
@@ -677,9 +677,9 @@ for ($i=0; $i<$fieldcount; $i++)
 
                            while ($arows = $y_axis_db->FetchRow())
                            {
-                                foreach($x_axis as $key=>$val)
+                                while ($xrows = $x_axis_db->FetchRow())
                                 {
-                                $fquest .= " [".strip_tags_full($arows['question'])."] [".strip_tags_full($val)."]";
+                                $fquest .= " [".strip_tags_full($arows['question'])."] [".strip_tags_full($xrows['question'])."]";
                                 }
                         } 
                     }
@@ -1204,27 +1204,25 @@ elseif ($answers == "long")        //chose complete answers
                     break;
                 case "F":
                 case "H":
-                    if (!isset($labelscache[$flid.'|'.$explang.'|'.$drow[$i]]))
+                    if (!isset($labelscache[$fqid.'|'.$explang.'|'.$drow[$i]]))
                     {
-                        $fquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND scale_id=0 AND code='$drow[$i]'";
+                        $fquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND scale_id=0 AND code='{$drow[$i]}'";
                         $fresult = db_execute_assoc($fquery) or safe_die("ERROR:".$fquery."\n".$qq."\n".$connect->ErrorMsg());
                         if ($fresult)
                         {
                             $frow=$fresult->FetchRow();
-                            if($type == "pdf"){$pdf->intopdf(strip_tags_full($frow['title']));}
-                            $exportoutput .= strip_tags_full($frow['title']);
-                            $labelscache[$flid.'|'.$explang.'|'.$drow[$i]]=strip_tags_full($frow['title']);
+                            if($type == "pdf"){$pdf->intopdf(strip_tags_full($frow['answer']));}
+                            $exportoutput .= strip_tags_full($frow['answer']);
+                            $labelscache[$fqid.'|'.$explang.'|'.$drow[$i]]=strip_tags_full($frow['answer']);
                         }
                     }
                     else
                     {
-                        $exportoutput .=$labelscache[$flid.'|'.$explang.'|'.$drow[$i]];
-                        if($type == "pdf"){$pdf->intopdf($labelscache[$flid.'|'.$explang.'|'.$drow[$i]]);}
+                        $exportoutput .=$labelscache[$fqid.'|'.$explang.'|'.$drow[$i]];
+                        if($type == "pdf"){$pdf->intopdf($labelscache[$fqid.'|'.$explang.'|'.$drow[$i]]);}
                     }
                     break;
                 case "1": //dual scale
-                    $flid=$fielddata['lid'];
-                    $flid1=$fielddata['lid1'];
                     if (mb_substr($fieldinfo,-1) == '0')
                     {
                         $strlabel = "1";

@@ -1714,8 +1714,7 @@ class LsrcHelper {
         }
         $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
-        //fixsortorderGroups(); //XXX changed: commented out
-        //fixsortorderGroups() in full length (using global vars, i cannot work with such things) - rakete
+        fixSortOrderGroups($surveyid); 
         $baselang = GetBaseLanguageFromSurveyID($iVid);
         $cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
         $position=0;
@@ -3131,8 +3130,8 @@ class LsrcHelper {
             }
             // ANSWERS is DONE
             $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK ");
-            // Fix Group sortorder
-            //fixsortorderGroups(); //XXX commented out by rakete... and written in full length
+            // Fix question group sortorder
+            fixSortOrderGroups($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
             $position=0;

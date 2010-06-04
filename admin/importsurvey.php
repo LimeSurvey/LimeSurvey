@@ -766,7 +766,7 @@ function CSVImportSurvey($sFullFilepath)
             if (!isset($grouprowdata['gid'])) {$aGIDReplacements[$oldgid]=$connect->Insert_ID("{$dbprefix}groups","gid");}
         }
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
-        fixsortorderGroups();
+        fixSortOrderGroups($newsid);
     }
     // GROUPS is DONE
     

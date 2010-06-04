@@ -197,7 +197,7 @@ if(isset($surveyid))
         {
             $gid = "";
             $groupselect = getgrouplist($gid);
-            fixsortorderGroups();
+            fixSortOrderGroups($surveyid);
         }
         else
         {
@@ -229,7 +229,7 @@ if(isset($surveyid))
         {
             $gid = "";
             $groupselect = getgrouplist($gid);
-            fixsortorderGroups();
+            fixSortOrderGroups($surveyid);
         }
         else
         {

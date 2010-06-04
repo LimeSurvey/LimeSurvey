@@ -1684,9 +1684,9 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
     }
 }
 
-function fixsortorderGroups() //Function rewrites the sortorder for groups
+function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
-    global $dbprefix, $connect, $surveyid;
+    global $dbprefix, $connect;
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
     $position=0;
