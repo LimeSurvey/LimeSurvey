@@ -1,17 +1,17 @@
 <html>
     <head>
-        <link rel="stylesheet" href="uploader-style.css" type="text/css" />
-        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-        <script src="scripts/jquery/jquery.sTabs.min.js" type="text/javascript"></script>
+        <link type="text/css" href="scripts/jquery/css/jquery-ui-1.8.1.custom.css" rel="stylesheet" />
 
+        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+        
         <script type="text/javascript">
 
+            $(function() {
+                $("#tabs").tabs();
+            });
+            
             $(document).ready(function(){
-                $(function(){
-                    $('#default').sTabs();
-                    $('#options').sTabs({animate:true, duration:400, startWith: 2});
-                });
-
                 $('#f1_result').hide();
                 $('#f1_upload_process').hide();
             });
@@ -42,72 +42,72 @@
 
     </head>
 
-    <body bgcolor="white">
+    <body style="font-size: x-small">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">From Computer</a></li>
+                <li><a href="#tabs-2">From URL</a></li>
+                <li><a href="#tabs-3">Gallery</a></li>
+            </ul>
 
+            <div id="tabs-1">
 
-        <ul id="default">
-            <li><a href="#def-first">From Computer</a></li>
-            <li><a href="#def-second">From URL</a></li>
-            <li><a href="#def-third">Gallery</a></li>
-        </ul>
+                <form action="upload.php" method="post" enctype="multipart/form-data" target="upload_target" onsubmit="startUpload();" >
+                    <div id="f1_result" align="center"></div>
+                    <div id="f1_upload_process" align="center">Loading...<br/><img src="images/loader.gif" align="center" alt="Loading..."/><br/></div>
+                    <div id="f1_upload_form" align="center"><br/>
+                        <table border="0" cellpadding="10" cellspacing="10" align="center" width="100%">
+                            <tr>
+                                <th align="center"><b>Title</b></th>
+                                <th align="center"><b>Comment</b></th>
+                                <th align="center"><b>Select file</b></th>
+                            </tr>
+                            <tbody>
 
-        <div id="def-first">
+            <?php
+                $maxfiles = $_GET['maxfiles'];
+                $ia = $_GET['ia'];
 
+                for ($i = 1; $i <= $maxfiles; $i++) {
+                        $output='<tr>
+                                    <td align="center">
+                                        <input class="text" type="text" name="'.$ia.'_title_'.$i
+                                        .'" id="answer'.$ia.'_title_'.$i.'" maxlength="100" />
+                                    </td>
+                                    <td align="center">
+                                        <input type="textarea" name="'.$ia.'_comment_'.$i
+                                        .'" id="answer'.$ia.'_comment_'.$i.'" maxlength="100" />
+                                    </td>
+                                    <td align="center">
+                                        <input class="file" type="file" name="myfile'.$i.'" ></input>
+                                    </td>
+                                    </tr>';
+                        echo $output;
+                }
+            ?>
+                            </tbody>
+                        </table>
 
-            <form action="upload.php" method="post" enctype="multipart/form-data" target="upload_target" onsubmit="startUpload();" >
-                <div id="f1_result" align="center"></div>
-                <div id="f1_upload_process" align="center">Loading...<br/><img src="images/loader.gif" align="center" alt="Loading..."/><br/></div>
-                <div id="f1_upload_form" align="center"><br/>
-                    <table border="0" cellpadding="10" cellspacing="10" align="center" width="100%">
-                        <tr>
-                            <th align="center"><b>Title</b></th>
-                            <th align="center"><b>Comment</b></th>
-                            <th align="center"><b>Select file</b></th>
-                        </tr>
-                        <tbody>
+                     <br />
+                     <?php echo "<input type='hidden' name='maxfiles' value='".$maxfiles."'></input>"; ?>
 
-        <?php
-            $maxfiles = $_GET['maxfiles'];
-            $ia = $_GET['ia'];
+                     <label><input type="submit" value="Upload" /></label>
+                     <br /><br />
+                     </div>
 
-            for ($i = 1; $i <= $maxfiles; $i++) {
-                    $output='<tr>
-                                <td align="center">
-                                    <input class="text" type="text" name="'.$ia.'_title_'.$i
-                                    .'" id="answer'.$ia.'_title_'.$i.'" maxlength="100" />
-                                </td>
-                                <td align="center">
-                                    <input type="textarea" name="'.$ia.'_comment_'.$i
-                                    .'" id="answer'.$ia.'_comment_'.$i.'" maxlength="100" />
-                                </td>
-                                <td align="center">
-                                    <input class="file" type="file" name="myfile'.$i.'" ></input>
-                                </td>
-                                </tr>';
-                    echo $output;
-            }
-        ?>
-                        </tbody>
-                    </table>
-                    
-                 <br />
-                 <?php echo "<input type='hidden' name='maxfiles' value='".$maxfiles."'></input>"; ?>
-                 <label><input type="submit" value="Upload" /></label>
-                 <br /><br />
-                 </div>
+                     <iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
+                </form>
 
-                 <iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
-            </form>
+            </div>
 
+            <div id="tabs-2">
+                <p>Upload from URL - Coming Soon !</p>
+            </div>
 
-        </div>
-
-        <div id="def-second">
-            <p>Upload from URL - Coming Soon !</p>
-        </div>
-
-        <div id="def-third">
-            <p>Gallery - Coming Soon !</p>
+            <div id="tabs-3">
+                <p>Gallery - Coming Soon !</p>
+            </div>
+            
         </div>
 
     </body>

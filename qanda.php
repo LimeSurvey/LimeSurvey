@@ -3425,36 +3425,39 @@ function do_file_upload($ia)
         //TODO: use the global settings for allowed file types
     }
 
-    //TODO: check the max no. of files that can be uploaded,
-    // accordingly display those many upload buttons
-
     //TODO: use a javascript to ensure that the size of file
     // is not more than $max_filesize
 
     // --> START NEW FEATURE - SAVE
 
-    $answer =  "<link type='text/css' media='screen' rel='stylesheet' href='scripts/jquery/css/colorbox/colorbox.css' />
-                <script type='text/javascript' src='scripts/jquery/jquery.js'></script>
+    $answer =  "<script type='text/javascript' src='scripts/jquery.js'></script>
+                <script type='text/javascript' src='scripts/jquery-ui.js'></script>
 
-                <script type='text/javascript' src='scripts/jquery/jquery.colorbox.js'></script>
                 <script type='text/javascript'>
-                    $(document).ready(function(){
-                        $('.fuqt').colorbox({
-                            width       :   '70%',
-                            height      :   '70%',
-                            iframe      :   true,
-                            title       :   false,
-                            opacity     :   '0.5'
-                        });
-                        //Example of preserving a JavaScript event for inline calls.
-                        $('#click').click(function(){
-                            $('#click').css({'background-color':'#f00', 'color':'#fff', 'cursor':'inherit'}).text('Open this window again and this message will still be here.');
-                            return false;
+                    $(function() {
+                        $('a').click(function(e) {
+                            e.preventDefault();
+                            var \$this = $(this);
+                            var horizontalPadding = 30;
+                            var verticalPadding = 30;
+                            $('<iframe id=\"externalSite\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
+                                title: (\$this.attr('title')) ? \$this.attr('title') : 'Upload your files',
+                                autoOpen: true,
+                                width: 1084,
+                                height: 400,
+                                modal: true,
+                                resizable: true,
+                                autoResize: true,
+                                overlay: {
+                                    opacity: 0.85,
+                                    background: \"black\"
+                                }
+                            }).width(1084 - horizontalPadding).height(500 - verticalPadding);
                         });
                     });
                 </script>";
 
-    $answer .= "<p><a class='fuqt' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Upload</a></p>";
+    $answer .= "<p><a class='fuqt' id='dialog-modal' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Upload</a></p>";
 
     
     /*
