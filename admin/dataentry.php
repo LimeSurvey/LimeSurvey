@@ -1466,7 +1466,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     while ($distinctrow=$distinctresult->FetchRow())
                     {
                         if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
-                        $conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".lid, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type, method FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}";
+                        $conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type, method FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}";
                         $conresult=db_execute_assoc($conquery);
                         while ($conrow=$conresult->FetchRow())
                         {
@@ -1524,10 +1524,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 case "H":
                                 default:
                                     $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-                                    $fquery = "SELECT * FROM ".db_table_name("answers")."\n"
+                                    $fquery = "SELECT * FROM ".db_table_name("questions")."\n"
                                     . "WHERE qid='{$conrow['cqid']}'\n and language='$language' "
-                                    . "AND title='{$conrow['code']}' and scale_id=0";
+                                    . "AND title='{$conrow['title']}' and scale_id=0";
                                     $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
+                                    if ($fresult->RecordCount() <= 0) die($fquery);
                                     while($frow=$fresult->FetchRow())
                                     {
                                         $postans=$frow['title'];
