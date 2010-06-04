@@ -874,6 +874,12 @@ function loadanswers()
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
             }
+            if ($column =='startlanguage')
+            {
+                $clang = SetSurveyLanguage( $surveyid, $value);
+                UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
+                UpdateFieldArray();        // to refresh question titles and question text
+            }
             if ($column == "scid")
             {
                 $_SESSION['scid']=$value;
