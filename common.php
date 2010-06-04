@@ -2484,31 +2484,17 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($qtypes[$arow['type']]['subquestions']==2 && $qtypes[$arow['type']]['answerscales']==0)
         {
             //MULTI FLEXI
-            $abquery = "SELECT sq.*, q.other\n"
-            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
-            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
-            . "AND q.language='{$s_lang}'"
-            ." AND sq.language='{$s_lang}'"
-            ." AND q.qid={$arow['qid']}
-               AND sq.scale_id=0
-               ORDER BY sq.question_order"; //converted
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case :)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
-            $ab2query = "SELECT sq.*
-                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
-                         WHERE q.sid=$surveyid 
-                         AND sq.parent_qid=q.qid
-                         AND q.language='".$s_lang."'
-                         AND sq.language='".$s_lang."'
-                         AND q.qid=".$arow['qid']."
-                         AND sq.scale_id=1
-                         ORDER BY sq.question_order"; //converted
-            $ab2result=db_execute_assoc($ab2query) or safe_die("Couldn't get list of answers in createFieldMap function (type : and ;)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-            $answerset=array();
-            while($ab2row=$ab2result->FetchRow())
+            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            //Now first process scale=1
+            foreach ($abrows as $key=>$abrow)
             {
-                $answerset[]=$ab2row;
+                if($abrow['scale_id']==1) {
+                    $answerset[]=$abrow;
+                    unset($abrows[$key]);
+                }
             }
-            while ($abrow=$abresult->FetchRow())
+            reset($abrows);
+            foreach ($abrows as $abrow)
             {
                 foreach($answerset as $answer)
                 {
@@ -2538,14 +2524,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "1")
         {
-            $abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
-            ." WHERE sq.parent_qid=q.qid AND q.sid=$surveyid AND q.qid={$arow['qid']} "
-            ." AND sq.language='".$s_lang. "' "
-            ." AND q.language='".$s_lang. "' "
-            ." ORDER BY sq.question_order";
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());    //Checked
-            
-            while ($abrow=$abresult->FetchRow())
+            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
@@ -2608,15 +2588,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
             //MULTI ENTRY
-            $abquery = "SELECT subquestions.*, questions.other\n"
-            ." FROM ".db_table_name('questions')." as subquestions, ".db_table_name('questions')." as questions"
-            ." WHERE questions.sid=$surveyid AND subquestions.parent_qid=questions.qid "
-            . "AND subquestions.language='{$s_lang}'"
-            ." AND questions.language='{$s_lang}'"
-            ." AND questions.qid={$arow['qid']} "
-            ." ORDER BY subquestions.question_order"; //converted
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
-            while ($abrow=$abresult->FetchRow())
+            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
@@ -7615,5 +7588,35 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
     if ($integer === false) $goodchars .= ".";    //Todo, add localisation
     if ($negative === true) $goodchars .= "-";    //Todo, check databases
     return $goodchars;
+}      
+
+/**
+ * Return an array of subquestions for a given sid/qid
+ * 
+ * @param int $sid
+ * @param int $qid
+ */
+function getSubQuestions($sid, $qid) {
+    global $dbprefix, $connect, $clang;
+    static $subquestions;
+    
+    if (!isset($subquestions[$sid])) {
+	    $sid = sanitize_int($sid);
+	    $s_lang = GetBaseLanguageFromSurveyID($sid);
+	    $query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+	            ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
+	            ." AND sq.language='".$s_lang. "' "
+	            ." AND q.language='".$s_lang. "' "
+	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+	    $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
+	    
+	    while ($row=$result->FetchRow())   
+	    {
+	        $resultset[$row['parent_qid']][] = $row;
+	    }
+	    $subquestions[$sid] = $resultset;
+    }
+    if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
+    return false;
 }
-// Closing PHP tag intentionally left out - yes, it is okay       
+// Closing PHP tag intentionally left out - yes, it is okay
