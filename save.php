@@ -392,7 +392,8 @@ function createinsertquery()
         foreach ($inserts as $value)
         {
             //Work out if the field actually exists in this survey
-            $fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
+            $fieldexists = '';
+            if (isset($fieldmap[$value])) $fieldexists = $fieldmap[$value];
             //Iterate through possible responses
             if (isset($_SESSION[$value]) && !empty($fieldexists))
             {
@@ -558,7 +559,7 @@ function createinsertquery()
                 {
                     if(!empty($field))
                     {
-                        $fieldinfo = arraySearchByKey($field, $fieldmap, "fieldname", 1);
+                        $fieldinfo = $fieldmap[$field];
                         if (!isset($_POST[$field])) {$_POST[$field]='';}
                         //fixed numerical question fields. They have to be NULL instead of '' to avoid database errors
                         if (($_POST[$field]=='' && $fieldinfo['type']=='D') || ($_POST[$field]=='' && $fieldinfo['type']=='N') || ($_POST[$field]=='' && $fieldinfo['type']=='K'))
