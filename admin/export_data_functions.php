@@ -508,7 +508,8 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             {
                 if (!isset($exclude[$Key])) {
 	                $xmlwriter->startElement($Key);
-	                $xmlwriter->writeCData($Value);
+                    // Remove invalid XML characters
+                    $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
 	                $xmlwriter->endElement();
                 }
             }
