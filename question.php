@@ -195,7 +195,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         {
             // ClearAll link is only relevant for survey with printanswers enabled
             // in other cases the session is cleared at submit time
-            $completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+            $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
         }
 
     }
@@ -396,7 +396,7 @@ if (isset($vpopup)) {echo $vpopup;}
 
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
-echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n";
@@ -622,12 +622,12 @@ function checkIfNewGroup($ia)
 }
 
 function display_first_page() {
-    global $clang, $thistpl, $token, $surveyid, $thissurvey, $navigator;
+    global $clang, $thistpl, $token, $surveyid, $thissurvey, $navigator,$publicurl;
     sendcacheheaders();
     doHeader();
 
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+    echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
     echo "\n\n<!-- START THE SURVEY -->\n";
 

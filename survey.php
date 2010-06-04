@@ -82,7 +82,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         {
             // ClearAll link is only relevant for survey with printanswers enabled
             // in other cases the session is cleared at submit time
-            $completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+            $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
         }
     }
     else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -318,7 +318,7 @@ doHeader();
 if(isset($popup)) {echo $popup;}
 if(isset($vpopup)) {echo $vpopup;}
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n<!-- INPUT NAMES -->\n"
 ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"

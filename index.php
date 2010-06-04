@@ -2044,7 +2044,7 @@ function buildsurveysession()
     global $surveyid, $dbprefix, $connect;
     global $register_errormsg, $clang;
     global $totalBoilerplatequestions;
-    global $templang, $move, $rooturl;
+    global $templang, $move, $rooturl, $publicurl;
 
     if (!isset($templang) || $templang=='')
     {
@@ -2077,7 +2077,7 @@ function buildsurveysession()
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."<br /><p>
-			        <form class='captcha' method='get' action='".$_SERVER['PHP_SELF']."'>
+			        <form class='captcha' method='get' action='{$publicurl}/index.php'>
 			        <table align='center'>
 				        <tr>
 					        <td align='right' valign='middle'>
@@ -2138,7 +2138,7 @@ function buildsurveysession()
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
-	        <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+	        <form id='tokenform' method='get' action='{$publicurl}/index.php'>
 
                 <ul>
                 <li>
@@ -2271,7 +2271,7 @@ function buildsurveysession()
                 if (!isset($gettoken))
                 {
                     echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."</p>
-			            <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+			            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
                         <ul>
                         <li>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -2290,7 +2290,7 @@ function buildsurveysession()
                 else
                 {
                     echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
-			            <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+			            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
                         <ul>
 			            <li>
 					            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -2809,7 +2809,7 @@ function check_quota($checkaction,$surveyid)
     if (!isset($_SESSION['s_lang'])){
         return;
     }
-    global $thistpl, $clang, $clienttoken;
+    global $thistpl, $clang, $clienttoken, $publicurl;
     $global_matched = false;
     $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
     $x=0;
@@ -2962,7 +2962,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; ". $clang->gT("Previous")." ' name='move2' />
+                echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; ". $clang->gT("Previous")." ' name='move2' />
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
 					<input type='hidden' name='token' value='".$clienttoken."' id='token' /></form>\n";

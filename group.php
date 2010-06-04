@@ -127,7 +127,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         {
             // ClearAll link is only relevant for survey with printanswers enabled
             // in other cases the session is cleared at submit time
-            $completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+            $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
         }
     }
     else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -275,7 +275,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
     sendcacheheaders();
     doHeader();
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+    echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
     echo "\n\n<!-- START THE SURVEY -->\n";
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
     if ($thissurvey['private'] == "Y")
@@ -409,7 +409,7 @@ echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 $hiddenfieldnames=implode("|", $inputnames);
 
-echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
+echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 

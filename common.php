@@ -2910,7 +2910,7 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{CLEARALL}") !== false)  {
 
         $clearall = "<input type='button' name='clearallbtn' value='".$clang->gT("Exit and Clear Survey")."' class='clearall' "
-        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?")."')) {window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
+        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?")."')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
         if (returnglobal('token'))
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
@@ -3026,7 +3026,7 @@ function templatereplace($line, $replacements=array())
     {
         if ($thissurvey['active'] == "N")
         {
-            $replacetext= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;newtest=Y";
+            $replacetext= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y";
             if (isset($s_lang) && $s_lang!='') $replacetext.="&amp;lang=".$s_lang;
             $replacetext.="'>".$clang->gT("Restart this Survey")."</a>";
             $line=str_replace("{RESTART}", $replacetext, $line);
@@ -3036,7 +3036,7 @@ function templatereplace($line, $replacements=array())
             if (!empty($restart_token)) $restart_extra .= "&amp;token=".urlencode($restart_token);
             else $restart_extra = "&amp;newtest=Y";
             if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".returnglobal('lang');
-            $line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
+            $line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
         }
     }
     if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a>", $line);
@@ -5328,14 +5328,15 @@ function getusergrouplist($outputformat='optionlist')
 
 function languageDropdown($surveyid,$selected)
 {
+    global $homeurl;
     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     array_unshift($slangs,$baselang);
     $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
     foreach ($slangs as $lang)
     {
-        if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?action=dataentry&sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
-        if ($lang != $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?action=dataentry&sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang == $selected) $html .= "\t<option value='{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang != $selected) $html .= "\t<option value='{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }
     $html .= "</select>";
     return $html;
