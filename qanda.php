@@ -306,7 +306,7 @@ function setman_ranking($ia)
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
     $ansresult = $connect->Execute($ansquery);  //Checked
     $anscount = $ansresult->RecordCount();
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['max_answers'])!='') {
         $max_answers = $qidattributes['max_answers'];
@@ -381,7 +381,7 @@ function setman_multiflex($ia)
         $lset[]=$ans2row;
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     while ($ansrow = $ansresult->FetchRow())
     {
         //Don't add to mandatory list if the row is filtered out with the array_filter option
@@ -529,7 +529,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
     if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     //echo "<pre>";print_r($qidattributes);echo "</pre>";
     //Create the question/answer html
 
@@ -888,7 +888,7 @@ function mandatory_message($ia)
                     $qrow = $qresult->FetchRow();
                     if ($qrow['other']=='Y')
                     {
-                        $qidattributes=getQuestionAttributes($ia[0],'P');
+                        $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
                         if (trim($qidattributes['other_replace_text'])!='')
                         {
                             $othertext=$qidattributes['other_replace_text'];
@@ -1417,7 +1417,7 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
 
     if (trim($qidattributes['time_limit'])!='')
@@ -1479,7 +1479,7 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
     global $clang, $js_header_includes, $css_header_includes, $thissurvey;
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
 
@@ -1716,7 +1716,7 @@ function do_list_dropdown($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
@@ -1986,7 +1986,7 @@ function do_list_radio($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     unset ($defexists);
 
@@ -2246,7 +2246,7 @@ function do_listwithcomment($ia)
 
     $answer = '';
 
-    $qidattributes=getQuestionAttributes($ia[0],'O');
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
     //question attribute random order set?
@@ -2419,7 +2419,7 @@ function do_ranking($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer="";
     if ($qidattributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
@@ -2696,7 +2696,7 @@ function do_multiplechoice($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
@@ -3163,7 +3163,7 @@ function do_multiplechoice_withcomments($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['other_numbers_only']==1)
     {
@@ -3453,7 +3453,7 @@ function do_multipleshorttext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
     $answer='';
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['numbers_only']==1)
     {
@@ -3628,7 +3628,7 @@ function do_multiplenumeric($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributes($ia[0],'K');
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
     //Must turn on the "numbers only javascript"
     $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\'.\')>0 && String.fromCharCode(getkey(event))==\'.\') return false; return goodchars(event,\'0123456789.\')"';
@@ -4113,7 +4113,7 @@ function do_numerical($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['prefix'])!='') {
         $prefix=$qidattributes['prefix'];
     }
@@ -4181,7 +4181,7 @@ function do_shortfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['numbers_only']==1)
     {
@@ -4296,7 +4296,7 @@ function do_longfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-   	$qidattributes=getQuestionAttributes($ia[0]);
+   	$qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['maximum_chars'])!='')
     {
@@ -4376,7 +4376,7 @@ function do_hugefreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['maximum_chars'])!='')
     {
@@ -4513,7 +4513,7 @@ function do_gender($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     $answer = "<ul>\n"
     . "\t<li>\n"
@@ -4589,7 +4589,7 @@ function do_array_5point($ia)
     }
 
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['answer_width'])!='')
     {
@@ -4759,7 +4759,7 @@ function do_array_10point($ia)
     $qresult = db_execute_assoc($qquery);      //Checked
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -4894,7 +4894,7 @@ function do_array_yesnouncertain($ia)
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);	//Checked
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -5049,7 +5049,7 @@ function do_array_increasesamedecrease($ia)
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -5224,7 +5224,7 @@ function do_array_flexible($ia)
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -5447,7 +5447,7 @@ function do_array_multitext($ia)
     $qresult = db_execute_assoc($qquery);
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
 
     if ($qidattributes['numbers_only']==1)
@@ -5664,7 +5664,7 @@ function do_array_multiflexi($ia)
     $qresult = db_execute_assoc($qquery);
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
         $maxvalue=$qidattributes['multiflexible_max'];
         if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
@@ -5960,7 +5960,7 @@ function do_array_flexiblecolumns($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);    //Checked
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -6120,7 +6120,7 @@ function do_array_flexible_dual($ia)
     $other = $connect->GetOne($qquery);    //Checked
     $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['use_dropdown']==1)
     {
