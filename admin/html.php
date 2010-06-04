@@ -1363,7 +1363,6 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             }
             $questionsummary .= "</td></tr>";
         }
-        $qid_attributes=getQuestionAttributes($qid);
         $questionsummary .= "</table>";
     }
 }
