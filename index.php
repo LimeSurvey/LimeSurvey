@@ -901,7 +901,20 @@ function loadanswers()
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['insertarray']))
                 {
-                    $_SESSION[$column]=$value;
+                    if (($_SESSION['fieldmap'][$column]['type'] == 'N' ||
+                            $_SESSION['fieldmap'][$column]['type'] == 'K' ||
+                            $_SESSION['fieldmap'][$column]['type'] == 'D') && $value == null)
+                    {   // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
+                        // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
+                        // This is especially important for the deletenonvalue feature,
+                        // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
+                        // question types (NKD)
+                        $_SESSION[$column]='';
+                    }
+                    else
+                    {
+                        $_SESSION[$column]=$value;
+                    }
                 }
             }
         } // foreach
