@@ -405,14 +405,8 @@ function createinsertquery()
                     }
                 }
                 //Only create column name and data entry if there is actually data!
-                if ($fieldexists['type'] !='|')
-                    $colnames[]=$value;
-                else if (!isset($colnames))
-                    $colnames[] = substr($value, 0, strpos($value, "_"));
-                else if (isset($colnames) && (!in_array(substr($value, 0, strpos($value, "_")), $colnames)))
-                    $colnames[] = substr($value, 0, strpos($value, "_"));
-                    
-                
+                $colnames[]=$value;
+
                 // most databases do not allow to insert an empty value into a datefield,
                 // therefore if no date was chosen in a date question the insert value has to be NULL
                 if ($deletenonvalues==1 && !checkconfield($value))
@@ -423,6 +417,7 @@ function createinsertquery()
                 {
                     $values[]='NULL';
                 }
+/*
                 else if ($fieldexists['type']=='|')
                 {
                     $i = substr(strrchr($value, "_"), 1);
@@ -456,6 +451,7 @@ function createinsertquery()
                         }
                     }
                 }
+*/
                 else
                 {
                     if ($fieldexists['type']=='N') //sanitize numerical fields
@@ -474,7 +470,7 @@ function createinsertquery()
 
             }
         }
-
+                
         if ($thissurvey['datestamp'] == "Y")
         {
             $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);

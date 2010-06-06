@@ -3440,7 +3440,7 @@ function do_file_upload($ia)
                             var \$this = $(this);
                             var horizontalPadding = 30;
                             var verticalPadding = 30;
-                            $('<iframe id=\"externalSite\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
+                            $('<iframe id=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
                                 title: (\$this.attr('title')) ? \$this.attr('title') : 'Upload your files',
                                 autoOpen: true,
                                 width: 1084,
@@ -3451,14 +3451,24 @@ function do_file_upload($ia)
                                 overlay: {
                                     opacity: 0.85,
                                     background: \"black\"
+                                },
+                                close: function(event, ui) {
+                                    document.getElementById('uploader').contentWindow.passJSON('".$ia[1]."');
                                 }
                             }).width(1084 - horizontalPadding).height(500 - verticalPadding);
                         });
                     });
+
+                    function copyJSON(jsonstring, filecount) {
+                        $('#".$ia[1]."').val(jsonstring);
+                        $('#".$ia[1]."_filecount').val(filecount);
+
+                    }
                 </script>";
 
-    $answer .= "<p><a class='fuqt' id='dialog-modal' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Upload</a></p>";
-
+    $answer .= "<p><a class='fuqt' id='dialog-modal' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Open Uploader</a></p>";
+    $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
+    $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='".$_SESSION[$ia[1].'_filecount']."' />";
     
     /*
     $answer = '<table border="0" cellpadding="10" cellspacing="10" align="center">
@@ -3499,11 +3509,7 @@ function do_file_upload($ia)
     $answer .= '</tbody></table>';
 
     $inputnames[] = $ia[1];
-    for ($i = 1; $i <= $maxfiles; $i++)
-    {
-        $inputnames[]=$ia[1].'_title_'.$i;
-        $inputnames[]=$ia[1].'_comment_'.$i;
-    }
+    $inputnames[] = $ia[1]."_filecount";
     return array($answer, $inputnames);
 }
 

@@ -17,29 +17,60 @@
 
     // Edit upload location here
 
-    $maxfiles = $_POST['maxfiles'];
-   
+    $maxfiles       = $_POST['maxfiles'];
+    $ia             = $_POST['ia'];
+    $json           = $_POST['json'];
+    $filecount      = $_POST['filecount'];
+
     $destination_path = getcwd().DIRECTORY_SEPARATOR."upload/tmp/";
     $result = 0;
 
+    if (!$json || $json != '')
+        $phparray = json_decode($json);
+    else
+        $json[] = array();
+
     for ($i = 1; $i <= $maxfiles; $i++)
     {
-        $myfile = 'myfile'.$i;
+        $myfile  = 'myfile'.$i;
+        $title   = $ia.'_title_'.$i;
+        $comment = $ia.'_comment_'.$i;
+        
         if ($_FILES[$myfile]['tmp_name'] == NULL)
             break;
 
         $target_path = $destination_path . basename( $_FILES[$myfile]['name']);
 
         if (move_uploaded_file($_FILES[$myfile]['tmp_name'], $target_path))
-           $result = 1;
+        {
+            $result = 1;
+            $filecount += 1;
+
+            //TODO-FUQT: randomize filenames !
+            $phparray[] = array(
+                "title" => "$_POST[$title]",
+                "comment" => "$_POST[$comment]",
+                "filename" => basename($target_path)
+            );
+        }
         else
         {
             $result = 0;
             break;
         }
     }
+    
+    $json = json_encode($phparray);
 
     sleep(1);
 ?>
 
-<script language="javascript" type="text/javascript">window.parent.window.stopUpload(<?php echo $result ; ?>);</script>
+<script language="javascript" type="text/javascript">
+    
+    var result      =  <?php echo $result       ; ?>;
+    var filecount   =  <?php echo $filecount    ; ?>;
+    var json        =  <?php echo $json         ; ?>;
+    var ia          = '<?php echo $ia           ; ?>';
+    
+    window.parent.window.stopUpload(result, filecount, json, ia);
+</script>

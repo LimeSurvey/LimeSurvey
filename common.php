@@ -2648,7 +2648,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             
             for ($i = 1; $i <= $abrow['value']; $i++)
             {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_title_".$i;
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                     'type'=>$arow['type'],
                     'sid'=>$surveyid,
@@ -2665,7 +2665,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 }
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_comment_".$i;
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                     'type'=>$arow['type'],
                     'sid'=>$surveyid,

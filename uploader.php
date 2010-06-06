@@ -23,21 +23,32 @@
                 return true;
             }
 
-            function stopUpload(success){
+            function stopUpload(success, filecount, json, ia){
                 var result = '';
-                if (success == 1){
-                     result = '<span>The file was uploaded successfully!<\/span><br/><br/>';
+                if (success === 1){
+                    result = '<span>The file was uploaded successfully!</span><br/><br/>';
+                    $("#"+ia+"_filecount").val(filecount);
+                    $("#"+ia).val(JSON.stringify(json));
+                    $("input.uploadform").val('');
                 }
                 else {
-                     result = '<span>There was an error during file upload!<\/span><br/><br/>';
+                     result = '<span>There was an error during file upload!</span><br/><br/>';
                 }
                 $('#f1_result').html(result);
                 $('#f1_result').show();
                 $('#f1_upload_process').hide();
                 $('#f1_upload_form').show();
+
                 <!-- // set the value of file input boxes to blank -->
                   return true;
             }
+
+            function passJSON(ia) {
+                var jsonstring = $('#'+ia).val();
+                var filecount  = $('#'+ia+'_filecount').val();
+                window.parent.window.copyJSON(jsonstring, filecount);
+            }
+
         </script>
 
     </head>
@@ -71,15 +82,15 @@
                 for ($i = 1; $i <= $maxfiles; $i++) {
                         $output='<tr>
                                     <td align="center">
-                                        <input class="text" type="text" name="'.$ia.'_title_'.$i
+                                        <input class="uploadform" type="text" name="'.$ia.'_title_'.$i
                                         .'" id="answer'.$ia.'_title_'.$i.'" maxlength="100" />
                                     </td>
                                     <td align="center">
-                                        <input type="textarea" name="'.$ia.'_comment_'.$i
+                                        <input type="textarea" class="uploadform" name="'.$ia.'_comment_'.$i
                                         .'" id="answer'.$ia.'_comment_'.$i.'" maxlength="100" />
                                     </td>
                                     <td align="center">
-                                        <input class="file" type="file" name="myfile'.$i.'" ></input>
+                                        <input  class="uploadform" type="file" name="myfile'.$i.'" ></input>
                                     </td>
                                     </tr>';
                         echo $output;
@@ -89,7 +100,10 @@
                         </table>
 
                      <br />
-                     <?php echo "<input type='hidden' name='maxfiles' value='".$maxfiles."'></input>"; ?>
+                     <?php echo "<input type='text' class='maxfiles' id='maxfiles' name='maxfiles' value='".$maxfiles."'></input>"; ?>
+                     <?php echo "<input type='text' name='ia' value='".$ia."'></input>"; ?>
+                     <?php echo "<input type='text' id='".$ia."' name='json' value=''></input>"; ?>
+                     <?php echo "<input type='text' id='".$ia."_filecount' name='filecount' value=0></input><br>"; ?>
 
                      <label><input type="submit" value="Upload" /></label>
                      <br /><br />
