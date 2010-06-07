@@ -380,7 +380,7 @@ if(isset($surveyid))
 
         $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE qid=$postqid");
         $qtproperties=getqtypelist('','array');
-        if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subqestions']==0)
+        if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subquestions']==0)
         {
             for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
             {
