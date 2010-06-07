@@ -609,8 +609,8 @@ while ($degrow = $degresult->FetchRow())
                             case "F":
                             case "H":
                             case "K":
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                 //$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
                                 while ($ansrow=$ansresult->FetchRow())
@@ -621,8 +621,8 @@ while ($degrow = $degresult->FetchRow())
 
                             case "1": // dual: (Label 1), (Label 2)
                                 $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                 //$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
 
@@ -643,8 +643,8 @@ while ($degrow = $degresult->FetchRow())
                                 break;
                             case ":":
                             case ";": //multi flexi: ( answer [label] )
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
                                 while ($ansrow=$ansresult->FetchRow())
                                 {
@@ -660,8 +660,8 @@ while ($degrow = $degresult->FetchRow())
                                 }
                                 break;
                             case "R": // (Rank 1), (Rank 2)... TIBO
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $rankid=$thiscquestion[0]['aid'];
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $rankid=$thiscquestion['aid'];
                                 $answer_section=" (".$clang->gT("RANK")." $rankid)";
                                 break;
                             default: // nothing to add
@@ -741,7 +741,7 @@ while ($degrow = $degresult->FetchRow())
                 if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
             }
 
-            $qidattributes=getQuestionAttributes($deqrow['qid']);
+            $qidattributes=getQuestionAttributes($deqrow['qid'],$deqrow['type']);
 
             if ($qidattributes['page_break']!=0)
             {
@@ -865,7 +865,7 @@ while ($degrow = $degresult->FetchRow())
                     }
                     if ($deqrow['other'] == 'Y')
                     {
-                        $qidattributes = getQuestionAttributes($deqrow['qid']);
+                        $qidattributes = getQuestionAttributes($deqrow['qid'],$deqrow['type']);
                         if(trim($qidattributes["other_replace_text"])=='')
                         {$qidattributes["other_replace_text"]="Other";}
                         //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];

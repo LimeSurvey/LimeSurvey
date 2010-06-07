@@ -186,14 +186,7 @@ if (!$exportstyle)
         .stripcslashes(returnglobal('id'))
         ."\" />\n";
     }
-
-    // Find out if survey results are anonymous
-    if ($thissurvey['private'] == "N")
-    {
-        $query=db_select_tables_like("{$dbprefix}tokens_$surveyid"); //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
-        $result=$connect->Execute($query) or safe_die("Couldn't get table list<br />$query<br />".$connect->ErrorMsg());
-        $tablecount=$result->RecordCount();
-    }
+    
     $exportoutput .= $clang->gT("Choose Columns").":\n";
 
     if ($afieldcount > 255)
@@ -229,33 +222,31 @@ if (!$exportstyle)
     }
     $exportoutput .= "\t</select>\n";
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
-    if (isset($tablecount) && $tablecount > 0) //Do second column
+    //OPTIONAL EXTRAS (FROM TOKENS TABLE)
+    // Find out if survey results are anonymous
+    if ($thissurvey['private'] == "N" && tableExists("{$dbprefix}tokens_$surveyid"))
     {
-        //OPTIONAL EXTRAS (FROM TOKENS TABLE)
-        if ($tablecount > 0)
-        {
-            $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
-            .$clang->gT("Choose Token Fields").":"
-            ."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
-            .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
-            ."\")' /><ul><li>\n"
-            ."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name' />"
-            ."<label for='first_name'>".$clang->gT("First Name")."</label></li>\n"
-            ."<li><input type='checkbox' class='checkboxbtn' name='last_name' id='last_name' />"
-            ."<label for='last_name'>".$clang->gT("Last Name")."</label></li>\n"
-            ."<li><input type='checkbox' class='checkboxbtn' name='email_address' id='email_address' />"
-            ."<label for='email_address'>".$clang->gT("Email")."</label></li>\n"
-            ."<li><input type='checkbox' class='checkboxbtn' name='token' id='token' />"
-            ."<label for='token'>".$clang->gT("Token")."</label></li>\n";
+        $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
+        .$clang->gT("Choose Token Fields").":"
+        ."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+        .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
+        ."\")' /><ul><li>\n"
+        ."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name' />"
+        ."<label for='first_name'>".$clang->gT("First Name")."</label></li>\n"
+        ."<li><input type='checkbox' class='checkboxbtn' name='last_name' id='last_name' />"
+        ."<label for='last_name'>".$clang->gT("Last Name")."</label></li>\n"
+        ."<li><input type='checkbox' class='checkboxbtn' name='email_address' id='email_address' />"
+        ."<label for='email_address'>".$clang->gT("Email")."</label></li>\n"
+        ."<li><input type='checkbox' class='checkboxbtn' name='token' id='token' />"
+        ."<label for='token'>".$clang->gT("Token")."</label></li>\n";
 
-            $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
-            foreach ($attrfieldnames as $attr_name=>$attr_desc)
-            {
-                $exportoutput .= "<li><input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
-                ."<label for='$attr_name'>".$attr_desc."</label></li>\n";
-            }
-            $exportoutput .= "</ul></fieldset>\n";
+        $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
+        foreach ($attrfieldnames as $attr_name=>$attr_desc)
+        {
+            $exportoutput .= "<li><input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
+            ."<label for='$attr_name'>".$attr_desc."</label></li>\n";
         }
+        $exportoutput .= "</ul></fieldset>\n";
     }
     $exportoutput .= "</div>\n"
     ."\t<div style='clear:both;'><p><input type='submit' value='".$clang->gT("Export data")."' /></div></form></div>\n";
@@ -348,27 +339,6 @@ $elang=new limesurvey_lang($explang);
 
 $fieldmap=createFieldMap($surveyid);
 
-// We make the fieldmap alot more accesible by using the SGQA identifier as key
-// so we do not need ArraySearchByKey later
-foreach ($fieldmap as $fieldentry)
-{
-    $outmap[]=$fieldentry['fieldname'];
-    $outmap[$fieldentry['fieldname']]['type']= $fieldentry['type'];
-    $outmap[$fieldentry['fieldname']]['sid']= $fieldentry['sid'];
-    $outmap[$fieldentry['fieldname']]['gid']= $fieldentry['gid'];
-    $outmap[$fieldentry['fieldname']]['qid']= $fieldentry['qid'];
-    $outmap[$fieldentry['fieldname']]['aid']= $fieldentry['aid'];
-    if ($fieldentry['qid']!='')
-    {
-        $qq = "SELECT other FROM {$dbprefix}questions WHERE qid={$fieldentry['qid']} and language='$surveybaselang'";
-        $qr = db_execute_assoc($qq) or safe_die("Error selecting type and lid from questions table.<br />".$qq."<br />".$connect->ErrorMsg());
-        while ($qrow = $qr->FetchRow())
-        {
-            $outmap[$fieldentry['fieldname']]['other']=$qrow['other'];
-        }
-    }
-
-}
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$surveyid";
 if (isset($_POST['colselect']))
@@ -520,8 +490,7 @@ for ($i=0; $i<$fieldcount; $i++)
     else
     {
         //Data field heading!
-        //$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-        $fielddata=$outmap[$fieldinfo];
+        $fielddata=$fieldmap[$fieldinfo];
 
         $fqid=$fielddata['qid'];
         $ftype=$fielddata['type'];
@@ -831,7 +800,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         {
             $convertyto=returnglobal('convertyto');
             foreach($drow as $key=>$dr) {
-                $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
+                $fielddata=$fieldmap[$key];
                 if(isset($fielddata['type']) &&
                 ($fielddata['type'] == "M" ||
                 $fielddata['type'] == "P" ||
@@ -849,7 +818,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         {
             $convertnto=returnglobal('convertnto');
             foreach($drow as $key=>$dr) {
-                $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
+                $fielddata=$fieldmap[$key];
                 if(isset($fielddata['type']) &&
                 ($fielddata['type'] == "M" ||
                 $fielddata['type'] == "P" ||
@@ -931,8 +900,7 @@ elseif ($answers == "long")        //chose complete answers
             $fieldinfo=$field->name;
             if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "startdate" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && (substr($fieldinfo,0,10)!="attribute_") && $fieldinfo != "completed")
             {
-                //				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-                $fielddata=$outmap[$fieldinfo];
+                $fielddata=$fieldmap[$fieldinfo];
                 $fqid=$fielddata['qid'];
                 $ftype=$fielddata['type'];
                 $fsid=$fielddata['sid'];
@@ -994,7 +962,7 @@ elseif ($answers == "long")        //chose complete answers
                             }
                             else
                             {
-                                $fielddata=$outmap[$fieldinfo];
+                                $fielddata=$fieldmap[$fieldinfo];
                                 if (isset($fielddata['title']) && !isset($ftitle)) {$ftitle=$fielddata['title'].":";}
                             }
                     } // switch

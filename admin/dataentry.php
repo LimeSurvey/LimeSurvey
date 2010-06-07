@@ -1559,8 +1559,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 case "H":
                                 case ":":
                                 case ";":
-                                    $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                    $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$language}'";
+                                    $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                    $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion['aid']}' AND language='{$language}'";
                                     $ansresult=db_execute_assoc($ansquery);
                                     $i=0;
                                     while ($ansrow=$ansresult->FetchRow())

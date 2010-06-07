@@ -366,16 +366,17 @@ function spss_fieldmap($prefix = 'V') {
             $ftitle = $fieldname;
         } else{
             //GET FIELD DATA
-            $fielddata=arraySearchByKey($fieldname, $fieldmap, 'fieldname', 1);
-            if (count($fielddata)==0) {
+            if (!isset($fieldmap[$fieldname])) {
                 //Field in database but no longer in survey... how is this possible?
                 //@TODO: think of a fix.
+                $fielddata = array();
                 $qid=0;
                 $varlabel = $fieldname;
                 $ftitle = $fieldname;
                 $fieldtype = "F";
                 $val_size = 1;
             } else {
+                $fielddata=$fieldmap[$fieldname];
                 $qid=$fielddata['qid'];
                 $ftype=$fielddata['type'];
                 $fsid=$fielddata['sid'];

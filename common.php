@@ -1865,14 +1865,13 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
     //Returns NULL if question type does not suit
     if (substr_count($fieldcode, "X") > 1) //Only check if it looks like a real fieldcode
     {
-        $fields=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
+        $fieldmap = createFieldMap($surveyid);
+        if (isset($fieldmap[$fieldcode])) 
+            $fields = $fieldmap[$fieldcode]; 
+        else
+            safe_die ("Couldn't get question type - getextendedanswer() in common.php for field $fieldcode<br />");
         //Find out the question type
-        $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
-        $result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getextendedanswer() in common.php<br />".$connect->ErrorMsg()); //Checked
-        while($row=$result->FetchRow())
-        {
-            $this_type=$row['type'];
-        } // while
+        $this_type = $fields['type'];
         switch($this_type)
         {
             case 'D': if (trim($value)!='')

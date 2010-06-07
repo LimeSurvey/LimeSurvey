@@ -1633,7 +1633,7 @@ function checkpregs($move,$backok=null)
                 if (isset($_POST[$field]) && isset($_SESSION['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
 
                 {
-                    $fieldinfo=arraySearchByKey($field, $fieldmap, "fieldname", 1);
+                    $fieldinfo=$fieldmap[$field];
                     $pregquery="SELECT preg\n"
                     ."FROM ".db_table_name('questions')."\n"
                     ."WHERE qid=".$fieldinfo['qid']." "

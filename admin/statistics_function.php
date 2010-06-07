@@ -680,7 +680,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $fieldmap=createFieldMap($surveyid, "full");
                  
                 //search for key
-                $fielddata=arraySearchByKey(substr($rt, 1, strlen($rt)), $fieldmap, "fieldname", 1);
+                $fld = substr($rt, 1, strlen($rt));
+                $fielddata=$fieldmap[$fld];
                  
                 //get SGQA IDs
                 $qsid=$fielddata['sid'];
@@ -1340,7 +1341,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $fieldmap=createFieldMap($surveyid, "full");
                 //print_r($fieldmap);
                 //search for key
-                $fielddata=arraySearchByKey($rt, $fieldmap, "fieldname", 1);
+                $fld = 
+                $fielddata=$fieldmap[$rt];
                 //print_r($fielddata);
                 //get SGQA IDs
                 $qsid=$fielddata['sid'];
