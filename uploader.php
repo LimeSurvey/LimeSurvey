@@ -23,13 +23,24 @@
                 return true;
             }
 
-            function stopUpload(success, filecount, json, ia){
+            function stopUpload(success, filecount, json, ia, maxfiles){
                 var result = '';
                 if (success === 1){
                     result = '<span>The file was uploaded successfully!</span><br/><br/>';
                     $("#"+ia+"_filecount").val(filecount);
                     $("#"+ia).val(JSON.stringify(json));
                     $("input.uploadform").val('');
+                    for (i = 0; i < json.length; i++)
+                    {
+                        $("#"+ia+"_gallery_title_"+i).val(json[i].title);
+                        $("#"+ia+"_gallery_comment_"+i).val(json[i].comment);
+                        //TODO-FUQT : if image, then display the image, else display a placeholder for that filetype
+                        $("#"+ia+"_gallery_image_"+i).attr("src", "upload/tmp/"+json[i].filename);
+                    }
+                    for (i = 0; i < 3*json.length; i++)
+                        $("#tabs-3 tr:eq("+i+")").show();
+                    for (i = 3*json.length; i < 3*maxfiles; i++)
+                        $("#tabs-3 tr:eq("+i+")").hide();
                 }
                 else {
                      result = '<span>There was an error during file upload!</span><br/><br/>';
@@ -61,6 +72,8 @@
                 <li><a href="#tabs-3">Gallery</a></li>
             </ul>
 
+
+            <!-- From Computer Tab -->
             <div id="tabs-1">
 
                 <form action="upload.php" method="post" enctype="multipart/form-data" target="upload_target" onsubmit="startUpload();" >
@@ -118,11 +131,42 @@
                 <p>Upload from URL - Coming Soon !</p>
             </div>
 
+            <!-- Gallery Tab -->
             <div id="tabs-3">
-                <p>Gallery - Coming Soon !</p>
-            </div>
-            
-        </div>
+                <p>
+                    <?php
+                        $output = "
+                            <form action='update.php' method='post' target='update_target'>"
+                            .'<table border="0" cellpadding="10" cellspacing="10" align="center" width="100%">';
+                        for ($i = 0; $i < $maxfiles; $i++)
+                        {
+                            $output .= '<tr>
+                                            <td><label>Title</label></td>
+                                            <td><input class="gallery" type="text" name="'.$ia.'_gallery_title_'.$i
+                                            .'" id="'.$ia.'_gallery_title_'.$i.'" maxlength="100" /><br /></td>
+                                             <td rowspan="2"><img id="'.$ia.'_gallery_image_'.$i.'" height="200" width="200" src="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>Comment</label></td>
+                                            <td><input class="gallery" type="text" name="'.$ia.'_gallery_comment_'.$i
+                                            .'" id="'.$ia.'_gallery_comment_'.$i.'" maxlength="100" /></td>
+                                        </tr>
+                                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
 
+
+                        }
+                      $output .= "<input type='text' class='maxfiles' id='maxfiles' name='maxfiles' value='".$maxfiles."'></input>"
+                                ."<input type='text' name='ia' value='".$ia."'></input>"
+                                ."<input type='text' id='".$ia."' name='json' value=''></input>"
+                                ."<input type='text' id='".$ia."_filecount' name='filecount' value=0></input><br>";
+
+                      $output .= '<label><input type="submit" value="Save Changes" /></label>';
+
+                        $output .= "</form>";
+                        echo $output;
+                    ?>
+                </p>
+            </div>
+        </div>
     </body>
 </html>

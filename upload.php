@@ -28,7 +28,7 @@
     if (!$json || $json != '')
         $phparray = json_decode($json);
     else
-        $json[] = array();
+        $phparray[] = array();
 
     for ($i = 1; $i <= $maxfiles; $i++)
     {
@@ -37,7 +37,7 @@
         $comment = $ia.'_comment_'.$i;
         
         if ($_FILES[$myfile]['tmp_name'] == NULL)
-            break;
+            continue;
 
         $target_path = $destination_path . basename( $_FILES[$myfile]['name']);
 
@@ -71,6 +71,7 @@
     var filecount   =  <?php echo $filecount    ; ?>;
     var json        =  <?php echo $json         ; ?>;
     var ia          = '<?php echo $ia           ; ?>';
+    var maxfiles    =  <?php echo $maxfiles     ; ?>;
     
-    window.parent.window.stopUpload(result, filecount, json, ia);
+    window.parent.window.stopUpload(result, filecount, json, ia, maxfiles);
 </script>
