@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.90beta3!
+Welcome to LimeSurvey v1.90RC1!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -77,6 +77,57 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.90beta3 (build 8745) to 1.90RC1 (build 8819) Legend: # updated feature, - bug fix 
++New feature: actually, minor beautification - displays name of quota as header when adding new 'answers' (jcleeland)
+#Updated translation: French (b00z00)
+#Updated translation: Chinese (Simpified) 1.9 (yooyooh)
+#Updated translation: Spanish (Mexico) (es-MX) thanks to Roberto Gonzalez (gandalfr)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+-Fixed issue #04189 Array Flexible Numbers and Date question type filters where broken. (machaven)
+-Fixed issue #04189 Array Flexible Numbers and Date question type filters where broken. Small change. (machaven)
+-Fixed issue #04323 Error when copying a questionnaire - Remove invalid utf-8 XML characters on export. (machaven)
+-Fixed issue #04330 Partial - Fix notice on $publicgraphs (machaven)
+-Fixed issue #04346 Fixes for conditions displayed on dataentry. (machaven)
+-Fixed issue #04355 - Removed code to assign new question and group orders which is not needed when importing/copying a survey. (machaven)
+-Fixed issue #04370, Fixed Array Filter with multi comment question type as base for filter. Also switch between subquestions and answers depending on what question type is being filtered. Similar changes need to be done for array exclude filter. (machaven)
+-Fixed issue #04390 Removed $_SERVER['PHP_SELF'] from limesurvey, this was also a security risk.  (machaven)
+-Fixed issue #04399 (machaven)
+-Fixed unreported issue: updated installation directory removal message (jcleeland)
+-Fixed unreported issue:  Array Exclusion Filter additional fix for subquestions. (machaven)
+-Fixed unreported issue: array exclusion filter with multi comment question type as base for filter. Also switch between subquestions and answers depending on what question type is being filtered. (machaven)
+-Fixed issue #04363: cannot add/remove additional languages in IE7 (tpartner)
+-Fix issue 04364: Radio Buttons Not Showing with Arabic Survey (tpartner)
+-Fix issue 04371: Survey toolbar arrows make permanent tooltip in IE7 (tpartner)
+-Fixed issue #04330: SQL error when trying to view public statistics (mennodekker)
+-Fixed issue #04335: Quartile calculations are off (mennodekker)
+-Fixed issue #4385: "Duplicate key" problem when importing a survey (c_schmitz)
+-Fixed issue #04372: After running install script, loading the admin page crashes blank. Typo in function declaration (texens)
+-Fixed issue #4388: Cannot browse responses on survey without tokens (texens)
+-Fixed issue #04360: Lacking the 'Manage labels' right cause the label set browser to be unusable (lemeur)
+-Fixed issue #04376: 'no answer' condition on Numerical or Date question removes recorded value (lemeur)
+-Fixed issue #04378: Copy question does not copy subquestions (c_schmitz)
+-Fixed issue #04392: unuseful lookup of question type in html.php (lemeur)
+-Fixed issue #4265: Users see "Error / We are sorry but you don't have permission to do this..." when accessing a survey that doesn't exist instead of expected Survey is not available message (c_schmitz)
+-Fixed issue #4338: token-based response persistence recover answers but starts from first page when the token is entered manually (c_schmitz)
+-Fixed issue #4349: Question import issues (c_schmitz)
+-Fixed issue #4367: Survey language is not set properly when loading answers from an URL (c_schmitz)
+-Fixed issue #4374: Upgrade not correctly upgrading DB on MSSQL (c_schmitz)
+-Fixed issue #4375: small display issue when browsing responses with the new subquestion feature (lemeur)
+-Fixed issue #4381: Variety of crashes with MS SQL DB (c_schmitz)
+-Fixed issue #4386: Problem with export to application - Excel, Word (c_schmitz)
+-Fixed issue #4387: Data entry leads to an endless loading page (c_schmitz)
+-Fixed issue #4394: When editing answer and assessment mode os activated the field to enter assessment value is missing with certain question types (c_schmitz)
+-Fixed issue - quota summary (total quotas, total completed) was not displaying properly in quota screen (jcleeland)
+-Fixed issue 04401: Edit Template Permissions screen / templates table in database has full path of template, not just name (jcleeland)
+-Fixed issue: Captcha not properly working with short URLs and registration (c_schmitz)
+-Fixed notices reported in issue #4379: Other comment manditory on list radio does not work (lemeur)
+-Fixed performance issue: slow saving of answers when survey contains numerous questions with conditions (lemeur)
+-Fixed: #4389: abmultiscalequery is executed more times than is necessary (mennodekker)
+-Fixed unreported issue: quotas not displayed in any order - now display in alphabetic order based on name (jcleeland)
+-Fixed (partially) issue #4377: slow recording of answers when survey contains a lot of questions some having conditions (mennodekker)
 
 Changes from 1.90beta2 (build 8708) to 1.90beta3 (build 8745) Legend: # updated feature, - bug fix 
 #Updated language: Catalan (thanks to Bernat Segura Turigas) (gandalfar)
