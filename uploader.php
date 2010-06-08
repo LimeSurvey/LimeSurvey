@@ -10,10 +10,29 @@
             $(function() {
                 $("#tabs").tabs();
             });
-            
+
             $(document).ready(function(){
                 $('#f1_result').hide();
                 $('#f1_upload_process').hide();
+                $("#tabs-3 tr").hide();
+            });
+
+            $(function() {
+                $("#savechanges").click(function() {
+                    var filecount = $("#filecount").val();
+                    var jsonstr = '[';
+                    var i;
+                    for (i = 0; i < filecount; i++)
+                    {
+                        if (i != 0)
+                            jsonstr += ',';
+                        jsonstr += '{"title":"'+$("#gallery_title_"+i).val()+'",';
+                        jsonstr += '"comment":"'+$("#gallery_comment_"+i).val()+'",';
+                        jsonstr += '"filename":"'+$("#gallery_image_"+i).attr("src").replace(/\\/g,'/').replace(  /.*\//, '' )+'"}';
+                    }
+                    jsonstr += ']';
+                    $("#json").val(jsonstr);
+                });
             });
 
             function startUpload(){
@@ -27,19 +46,20 @@
                 var result = '';
                 if (success === 1){
                     result = '<span>The file was uploaded successfully!</span><br/><br/>';
-                    $("#"+ia+"_filecount").val(filecount);
-                    $("#"+ia).val(JSON.stringify(json));
+                    $("#filecount").val(filecount);
+                    $("#json").val(JSON.stringify(json));
                     $("input.uploadform").val('');
+                    var i;
                     for (i = 0; i < json.length; i++)
                     {
-                        $("#"+ia+"_gallery_title_"+i).val(json[i].title);
-                        $("#"+ia+"_gallery_comment_"+i).val(json[i].comment);
+                        $("#gallery_title_"+i).val(json[i].title);
+                        $("#gallery_comment_"+i).val(json[i].comment);
                         //TODO-FUQT : if image, then display the image, else display a placeholder for that filetype
-                        $("#"+ia+"_gallery_image_"+i).attr("src", "upload/tmp/"+json[i].filename);
+                        $("#gallery_image_"+i).attr("src", "upload/tmp/"+json[i].filename);
                     }
-                    for (i = 0; i < 3*json.length; i++)
+                    for (i = 0; i < 4*json.length; i++)
                         $("#tabs-3 tr:eq("+i+")").show();
-                    for (i = 3*json.length; i < 3*maxfiles; i++)
+                    for (i = 4*json.length; i < 4*maxfiles; i++)
                         $("#tabs-3 tr:eq("+i+")").hide();
                 }
                 else {
@@ -50,15 +70,54 @@
                 $('#f1_upload_process').hide();
                 $('#f1_upload_form').show();
 
-                <!-- // set the value of file input boxes to blank -->
                   return true;
             }
 
-            function passJSON(ia) {
-                var jsonstring = $('#'+ia).val();
-                var filecount  = $('#'+ia+'_filecount').val();
+            function passJSON() {
+                var jsonstring = $('#json').val();
+                var filecount  = $('#filecount').val();
                 window.parent.window.copyJSON(jsonstring, filecount);
             }
+
+            function deletefile(i) {
+                if (window.XMLHttpRequest)
+                    xmlhttp=new XMLHttpRequest();
+                else
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+
+                xmlhttp.onreadystatechange=function() {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                    {
+                        document.getElementById("mydiv").innerHTML=xmlhttp.responseText;
+                    }
+                }
+                var filename = $("#gallery_image_"+i).attr('src');
+                xmlhttp.open('GET','delete.php?file="'+filename+'"',true);
+                xmlhttp.send();
+
+                var json = $("#json").val();
+
+                var jsonObj = eval('('+json+')');
+                jsonObj.splice(i, 1);
+                json = JSON.stringify(jsonObj);
+                $("#json").val(json);
+                $("#filecount").val(jsonObj.length);
+
+                var i;
+                for (i = 0; i < jsonObj.length; i++)
+                {
+                    $("#gallery_title_"+i).val(jsonObj[i].title);
+                    $("#gallery_comment_"+i).val(jsonObj[i].comment);
+                    //TODO-FUQT : if image, then display the image, else display a placeholder for that filetype
+                    $("#gallery_image_"+i).attr("src", "upload/tmp/"+jsonObj[i].filename);
+                }
+                var maxfiles = $("#maxfiles").val();
+                for (i = 0; i < 4*jsonObj.length; i++)
+                    $("#tabs-3 tr:eq("+i+")").show();
+                for (i = 4*jsonObj.length; i < 4*maxfiles; i++)
+                    $("#tabs-3 tr:eq("+i+")").hide();
+            }
+
 
         </script>
 
@@ -88,41 +147,32 @@
                             </tr>
                             <tbody>
 
-            <?php
-                $maxfiles = $_GET['maxfiles'];
-                $ia = $_GET['ia'];
+                                <?php
+                                    $maxfiles = $_GET['maxfiles'];
+                                    $ia = $_GET['ia'];
 
-                for ($i = 1; $i <= $maxfiles; $i++) {
-                        $output='<tr>
-                                    <td align="center">
-                                        <input class="uploadform" type="text" name="'.$ia.'_title_'.$i
-                                        .'" id="answer'.$ia.'_title_'.$i.'" maxlength="100" />
-                                    </td>
-                                    <td align="center">
-                                        <input type="textarea" class="uploadform" name="'.$ia.'_comment_'.$i
-                                        .'" id="answer'.$ia.'_comment_'.$i.'" maxlength="100" />
-                                    </td>
-                                    <td align="center">
-                                        <input  class="uploadform" type="file" name="myfile'.$i.'" ></input>
-                                    </td>
-                                    </tr>';
-                        echo $output;
-                }
-            ?>
-                            </tbody>
-                        </table>
+                                    for ($i = 1; $i <= $maxfiles; $i++) {
+                                            $output='<tr>
+                                                        <td align="center"><input class="uploadform" type="text" name="title_'.$i  .'" id="title_'.$i  .'" maxlength="100" /></td>
+                                                        <td align="center"><input class="uploadform" type="text" name="comment_'.$i.'" id="comment_'.$i.'" maxlength="100" /></td>
+                                                        <td align="center"><input class="uploadform" type="file" name="myfile'.$i  .'" id="file_'.$i.'">             </input></td>
+                                                     </tr>';
+                                            echo $output;
+                                    }
+                                ?>
+                                </tbody>
+                            </table>
+                        <br />
+                        <input type="text" id="maxfiles"  name="maxfiles"   value="<?php echo $maxfiles ; ?>" />
+                        <input type="text" id="ia"        name="ia"         value="<?php echo $ia ;       ?>" />
+                        <input type="text" id="json"      name="json"       value="" />
+                        <input type="text" id="filecount" name="filecount"  value=0  />
 
-                     <br />
-                     <?php echo "<input type='text' class='maxfiles' id='maxfiles' name='maxfiles' value='".$maxfiles."'></input>"; ?>
-                     <?php echo "<input type='text' name='ia' value='".$ia."'></input>"; ?>
-                     <?php echo "<input type='text' id='".$ia."' name='json' value=''></input>"; ?>
-                     <?php echo "<input type='text' id='".$ia."_filecount' name='filecount' value=0></input><br>"; ?>
+                        <label><input type="submit" value="Upload" /></label>
+                        <br /><br />
+                    </div>
 
-                     <label><input type="submit" value="Upload" /></label>
-                     <br /><br />
-                     </div>
-
-                     <iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
+                    <iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
                 </form>
 
             </div>
@@ -133,40 +183,35 @@
 
             <!-- Gallery Tab -->
             <div id="tabs-3">
-                <p>
+                <table border="0" cellpadding="10" cellspacing="10" align="center" width="100%">
                     <?php
-                        $output = "
-                            <form action='update.php' method='post' target='update_target'>"
-                            .'<table border="0" cellpadding="10" cellspacing="10" align="center" width="100%">';
+                    $output = '';
                         for ($i = 0; $i < $maxfiles; $i++)
                         {
-                            $output .= '<tr>
-                                            <td><label>Title</label></td>
-                                            <td><input class="gallery" type="text" name="'.$ia.'_gallery_title_'.$i
-                                            .'" id="'.$ia.'_gallery_title_'.$i.'" maxlength="100" /><br /></td>
-                                             <td rowspan="2"><img id="'.$ia.'_gallery_image_'.$i.'" height="200" width="200" src="" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label>Comment</label></td>
-                                            <td><input class="gallery" type="text" name="'.$ia.'_gallery_comment_'.$i
-                                            .'" id="'.$ia.'_gallery_comment_'.$i.'" maxlength="100" /></td>
-                                        </tr>
-                                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
-
-
+                            $output .= '
+                                <tr>
+                                    <td><label>Title</label></td>
+                                    <td><input type="text" id="gallery_title_'.$i.'" maxlength="100" /><br /></td>
+                                    <td rowspan="3"><img id="gallery_image_'.$i.'" height="200" width="200" src="" /></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Comment</label></td>
+                                    <td><input type="text" id="gallery_comment_'.$i.'" maxlength="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td><button type="button" onClick="deletefile('.$i.')">Delete</button>
+                                </tr>
+                                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
                         }
-                      $output .= "<input type='text' class='maxfiles' id='maxfiles' name='maxfiles' value='".$maxfiles."'></input>"
-                                ."<input type='text' name='ia' value='".$ia."'></input>"
-                                ."<input type='text' id='".$ia."' name='json' value=''></input>"
-                                ."<input type='text' id='".$ia."_filecount' name='filecount' value=0></input><br>";
-
-                      $output .= '<label><input type="submit" value="Save Changes" /></label>';
-
-                        $output .= "</form>";
                         echo $output;
                     ?>
-                </p>
+                </table>
+                <button id="savechanges">Save Changes</button>
             </div>
+            <!-- TODO-FUQT: Add a Save and Exit Button
+                <p align="center"><button id="saveandexit">Save and Exit</button></p>
+            -->
         </div>
+
     </body>
 </html>

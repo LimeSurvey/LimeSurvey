@@ -3453,7 +3453,7 @@ function do_file_upload($ia)
                                     background: \"black\"
                                 },
                                 close: function(event, ui) {
-                                    document.getElementById('uploader').contentWindow.passJSON('".$ia[1]."');
+                                    document.getElementById('uploader').contentWindow.passJSON();
                                 }
                             }).width(1084 - horizontalPadding).height(500 - verticalPadding);
                         });

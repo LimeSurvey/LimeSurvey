@@ -33,8 +33,8 @@
     for ($i = 1; $i <= $maxfiles; $i++)
     {
         $myfile  = 'myfile'.$i;
-        $title   = $ia.'_title_'.$i;
-        $comment = $ia.'_comment_'.$i;
+        $title   = 'title_'.$i;
+        $comment = 'comment_'.$i;
         
         if ($_FILES[$myfile]['tmp_name'] == NULL)
             continue;
