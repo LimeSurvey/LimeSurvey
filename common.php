@@ -3106,7 +3106,7 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{REGISTERMESSAGE2}") !== false) $line=str_replace("{REGISTERMESSAGE2}", $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
     if (strpos($line, "{REGISTERFORM}") !== false)
     {
-        $registerform="<form method='post' action='register.php'>\n"
+        $registerform="<form method='post' action='{$publicurl}/register.php'>\n"
         ."<table class='register' summary='Registrationform'>\n"
         ."<tr><td align='right'>"
         ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
