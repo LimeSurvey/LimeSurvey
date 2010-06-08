@@ -1153,26 +1153,22 @@ function checkconfield($value)
     }
     $value_qid=0;
     $value_type='';
-    // record the qid and question type for future use
-    foreach ($_SESSION['fieldarray'] as $sfa)
+    
+    //$value is the fieldname for the field we are checking for conditions
+    foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
     {
+        // record the qid and question type for future use
         if ($sfa[1]  == $masterFieldName)
         {
             $value_qid=$sfa[0];
             $value_type=$sfa[4];
         }
-    }
-
-    //$value is the fieldname for the field we are checking for conditions
-    foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
-
-    {
+        
         // this fieldname '$value' is inside a question identified by the SGQ code '$masterFieldName'
         // we are looping on fieldnames $sfa
         // if $sfa[1] == $masterFieldName, we are processing a fieldname inside the same question as $value
         // check if this question is conditionnal ($sfa[7]): if yes eval conditions
         if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
-
         {
             $scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
             ." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
