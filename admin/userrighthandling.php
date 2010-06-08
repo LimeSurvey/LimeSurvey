@@ -1068,7 +1068,7 @@ function refreshtemplates() {
     global $dbprefix ;
 
     $template_a = gettemplatelist();
-    foreach ($template_a as $tp) {
+	foreach ($template_a as $tp=>$fullpath) {
         // check for each folder if there is already an entry in the database
         // if not create it with current user as creator (user with rights "create user" can assign template rights)
         $query = "SELECT * FROM ".$dbprefix."templates WHERE folder LIKE '".$tp."'";
