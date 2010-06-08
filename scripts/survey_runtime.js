@@ -63,7 +63,7 @@ function match_regex(testedstring,str_regexp)
 
 function prepareCellAdapters()
 {
-	$('TD INPUT[type=radio]:first-child,TD INPUT[type=checkbox]:first-child').each( function(){
+	$('TD INPUT[type=radio],TD INPUT[type=checkbox]').each( function(){
        $(this).parents('TD').click(function(evt){
           if($('INPUT[type=radio],INPUT[type=checkbox]',this).length==1)
           {
@@ -72,14 +72,14 @@ function prepareCellAdapters()
                 if (this.type == 'radio')
                 {
                     this.checked = true;
-                    if(this.onclick) this.onclick(evt);
-                    if(this.onchange) this.onchange(evt);
+                    this.click();
+                    this.change();
                 }
                 else if (this.type == 'checkbox')
                 {
                     this.checked = !this.checked;
-                    if(this.onclick) this.onclick(evt);
-                    if(this.onchange) this.onchange(evt);
+                    this.click();
+                    this.change();
                 };
               });
           }
