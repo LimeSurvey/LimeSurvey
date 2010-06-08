@@ -1333,14 +1333,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
     // Import groups table ===================================================================================
 
     $tablename=$dbprefix.'groups';
-    $newgrouporder=$connect->GetOne("SELECT MAX(group_order) AS maxqo FROM ".db_table_name('group')." WHERE sid=$newsid")+1;
-    if (is_null($newgrouporder))
-    {
-        $newgrouporder=0;
-    }
-    else {
-        $newgrouporder++;
-    }
     foreach ($xml->groups->rows->row as $row)
     {
        $insertdata=array(); 
@@ -1350,7 +1342,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
         }
         $oldsid=$insertdata['sid'];
         $insertdata['sid']=$newsid;
-        $insertdata['group_order']=$newgrouporder;
         $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
         // now translate any links
@@ -1385,14 +1376,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
     if(isset($xml->questions))  // there could be surveys without a any questions
     {
         $tablename=$dbprefix.'questions';
-        $newquestionorder=$connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
-        if (is_null($newquestionorder))
-        {
-            $newquestionorder=0;
-        }
-        else {
-            $newquestionorder++;
-        }
         foreach ($xml->questions->rows->row as $row)
         {
            $insertdata=array(); 
@@ -1403,7 +1386,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
             $oldsid=$insertdata['sid'];
             $insertdata['sid']=$newsid;
             $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
-            $insertdata['question_order']=$newquestionorder;
             $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
             // now translate any links
