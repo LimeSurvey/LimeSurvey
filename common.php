@@ -144,7 +144,7 @@ if ($sourcefrom == "admin")
 }
 else
 {
-    $captchapath='';
+    $captchapath=$rooturl.'/';  
 }
 
 
