@@ -322,35 +322,29 @@ elseif ($subaction == "all")
     
     
     $fields=createFieldMap($surveyid,'full');
-    $counter=0;
+
+    //add token to top of list if survey is not private
+    if ($surveyinfo['private'] == "N")
+    {
+        $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+        $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
+        $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
+        $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+    }
+    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
+
     foreach ($fields as $fielddetails)
     {
-        if ($counter==1)
-        {
-            //add token to top of list if survey is not private
-            if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
-            {
-                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
-                $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
-                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-            }
-            $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
-        }
-        if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate')
-        {
-            $counter++;
+        if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
             continue;
-        }
-        if ($fielddetails['fieldname'] == 'token')
-            continue;
-        $fnames[]=array($fielddetails['fieldname'],
-                $fielddetails['fieldname'],
-                $fielddetails['question'],
-                $fielddetails['gid'],
-                $fielddetails['type']
-        );
-        $counter++;
+        $question=$fielddetails['question'];
+        if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
+            $question .=' ('.$fielddetails['subquestion'].')';
+        if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
+            $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
+        if (isset($fielddetails['scale_id']))
+            $question .='['.$field['scale'].']';
+        $fnames[]=array($fielddetails['fieldname'],$question);
     }
 
 
@@ -366,15 +360,15 @@ elseif ($subaction == "all")
             . "<th>Actions</th>\n";
     foreach ($fnames as $fn)
     {
-        if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
-        if ($currentgroup != $fn[3])
+        if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}
+        if ($currentgroup != $fn[1])
         {
-            $currentgroup = $fn[3];
+            $currentgroup = $fn[1];
             if ($gbc == "oddrow") {$gbc = "evenrow";}
             else {$gbc = "oddrow";}
             }
         $tableheader .= "<th class='$gbc'><strong>"
-                . strip_javascript("$fn[2]")
+                . strip_javascript("$fn[1]")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
