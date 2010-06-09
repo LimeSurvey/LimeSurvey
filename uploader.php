@@ -45,7 +45,8 @@
             function stopUpload(success, filecount, json, ia, maxfiles){
                 var result = '';
                 if (success === 1){
-                    result = '<span>The file was uploaded successfully!</span><br/><br/>';
+                    result = '<span>The file was uploaded successfully!</span><br/>\n\
+                        You may preview/edit or delete uploaded files in the gallery tab<br/>';
                     $("#filecount").val(filecount);
                     $("#json").val(JSON.stringify(json));
                     $("input.uploadform").val('');

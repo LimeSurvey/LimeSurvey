@@ -136,7 +136,11 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 
 //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
-if ($subaction == "id") // Looking at a SINGLE entry
+
+
+// Looking at a SINGLE entry
+
+if ($subaction == "id")
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
@@ -148,35 +152,48 @@ if ($subaction == "id") // Looking at a SINGLE entry
 
 
     $fieldmap=createFieldMap($surveyid,'full');
-    $position=0;
+
+    //add token to top of list if survey is not private
+    if ($surveyinfo['private'] == "N")
+    {
+        $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+        $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
+        $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
+        $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+    }
+    $fnames[] = array("submitdate", "Submit Date", $clang->gT("Completed"), "0", 'D');
+    $fnames[] = array("completed", $clang->gT("Completed"), "0");
+
     foreach ($fieldmap as $field)
     {
         $question=$field['question'];
-        if (isset($field['subquestion']) && $field['subquestion']!='')
+        if ($field['type'] != "|")
         {
-            $question .=' ('.$field['subquestion'].')';
+            if ($field['fieldname']=='lastpage' || $field['fieldname'] == 'submitdate')
+                continue;
+            if (isset($field['subquestion']) && $field['subquestion']!='')
+                $question .=' ('.$field['subquestion'].')';
+            if (isset($field['subquestion1']) && isset($field['subquestion2']))
+                $question .=' ('.$field['subquestion1'].':'.$field['subquestion2'].')';
+            if (isset($field['scale_id']))
+                $question .='['.$field['scale'].']';
+            $fnames[]=array($field['fieldname'],$question);
         }
-        if (isset($field['subquestion1']) && isset($field['subquestion1']))
+        else
         {
-            $question .=' ('.$field['subquestion1'].':'.$field['subquestion2'].')';
-        }
-        if (isset($field['scale_id']))
-        {
-            $question .='['.$field['scale'].']';
-        }
-        $fnames[]=array($field['fieldname'],$question);
-        if ($position==1)
-        {
-            $fnames[] = array("completed", $clang->gT("Completed"), "0");
-            if ($surveyinfo['private'] == "N") //add token to top of list if survey is not private
+            if (!isset($field['aid']))
             {
-                $fnames[] = array("firstname", $clang->gT("First Name"));
-                $fnames[] = array("lastname", $clang->gT("Last Name"));
-                $fnames[] = array("email", $clang->gT("Email"));
+                for ($i = 0; $i < $field['max_files']; $i++)
+                {
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Title)",     "type"=>"|", "metadata"=>"title",    "index"=>$i);
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Comment)",   "type"=>"|", "metadata"=>"comment",  "index"=>$i);
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (File name)", "type"=>"|", "metadata"=>"filename", "index"=>$i);
+                }
             }
+            else
+                $fnames[] = array($field['fieldname'], "File count");
         }
-        $position++;
-    }
+}
 
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
@@ -245,27 +262,36 @@ if ($subaction == "id") // Looking at a SINGLE entry
     $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
     while ($idrow = $idresult->FetchRow())
     {
-        $i=0;
         $highlight=false;
-        for ($i; $i<$nfncount+1; $i++)
+        for ($i = 0; $i < $nfncount+1; $i++)
         {
             $inserthighlight='';
             if ($highlight)
-            {
                 $inserthighlight="class='highlight'";
-            }
             $browseoutput .= "\t<tr $inserthighlight>\n"
                     ."<th align='right' width='50%'>"
                     .strip_tags(strip_javascript($fnames[$i][1]))."</th>\n"
                     ."<td align='left' >";
-            if ($i == 2)
+            if ($fnames[$i][0] == 'completed')
             {
-                if ($idrow[$fnames[$i][0]] == NULL) { $browseoutput .= "N"; }
+                if ($idrow['submitdate'] == NULL) { $browseoutput .= "N"; }
                 else { $browseoutput .= "Y"; }
             }
             else
             {
-                $browseoutput .= htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']))), ENT_QUOTES);
+                if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
+                {
+                    $index = $fnames[$i]['index'];
+                    $metadata = $fnames[$i]['metadata'];
+                    $phparray = json_decode($idrow[$fnames[$i][0]], true);
+                    if (isset($phparray[$index]))
+                        //$browseoutput .= "<td align='center'>".$phparray[$index][$metadata]."</td>\n";
+                        $browseoutput .= htmlspecialchars($phparray[$index][$metadata]);
+                    else
+                        $browseoutput .= "";
+                }
+                else
+                    $browseoutput .= htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']))), ENT_QUOTES);
             }
             $browseoutput .= "</td>\n\t</tr>\n";
             $highlight=!$highlight;
@@ -322,35 +348,49 @@ elseif ($subaction == "all")
     
     
     $fields=createFieldMap($surveyid,'full');
-    $counter=0;
+    
+    //add token to top of list if survey is not private
+    if ($surveyinfo['private'] == "N")
+    {
+        $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+        $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
+        $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
+        $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+    }
+    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
+
     foreach ($fields as $fielddetails)
     {
-        if ($counter==1)
-        {
-            //add token to top of list if survey is not private
-            if ($surveyinfo['private'] == "N")
-            {
-                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
-                $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
-                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-            }
-            $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
-        }
         if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate')
-        {
-            $counter++;
             continue;
-        }
-        $fnames[]=array($fielddetails['fieldname'],
-                $fielddetails['fieldname'],
-                $fielddetails['question'],
-                $fielddetails['gid'],
-                $fielddetails['type']
-        );
-        $counter++;
-    }
 
+        
+        $question=$fielddetails['question'];
+        if ($fielddetails['type'] != "|")
+        {
+            if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
+                $question .=' ('.$fielddetails['subquestion'].')';
+            if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
+                $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
+            if (isset($fielddetails['scale_id']))
+                $question .='['.$field['scale'].']';
+            $fnames[]=array($fielddetails['fieldname'],$question);
+        }
+        else
+        {
+            if (!isset($fielddetails['aid']))
+            {
+                for ($i = 0; $i < $fielddetails['max_files']; $i++)
+                {
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",    "index"=>$i);
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment",  "index"=>$i);
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File name)", "type"=>"|", "metadata"=>"filename", "index"=>$i);
+                }
+            }
+            else
+                $fnames[] = array($fielddetails['fieldname'], "File count");
+        }
+    }
 
     $fncount = count($fnames);
 
@@ -364,19 +404,19 @@ elseif ($subaction == "all")
             . "<th>Actions</th>\n";
     foreach ($fnames as $fn)
     {
-        if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
-        if ($currentgroup != $fn[3])
+        if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}
+        if ($currentgroup != $fn[1])
         {
-            $currentgroup = $fn[3];
+            $currentgroup = $fn[1];
             if ($gbc == "oddrow") {$gbc = "evenrow";}
             else {$gbc = "oddrow";}
             }
         $tableheader .= "<th class='$gbc'><strong>"
-                . strip_javascript("$fn[2]")
+                . strip_javascript("$fn[1]")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
-    $tableheader .= "\t<tfoot><tr><td colspan={$fncount}>"
+    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
                    ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
                    ."\t</tr></tfoot>\n\n";
 
@@ -598,7 +638,18 @@ elseif ($subaction == "all")
                 else
                     $browsedatafield = "Y";
             }
-            $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
+            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
+            {
+                $index = $fnames[$i]['index'];
+                $metadata = $fnames[$i]['metadata'];
+                $phparray = json_decode($dtrow[$fnames[$i][0]], true);
+                if (isset($phparray[$index]))
+                    $browseoutput .= "<td align='center'>".$phparray[$index][$metadata]."</td>\n";
+                else
+                    $browseoutput .= "<td align='center'>&nbsp;</td>\n";
+            }
+            else
+                $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
         }
         $browseoutput .= "\t</tr>\n";
     }

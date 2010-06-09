@@ -2659,7 +2659,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
                     $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
+                    $fieldmap[$fieldname]['max_files']=$abrow['value'];
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2670,13 +2670,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     'type'=>$arow['type'],
                     'sid'=>$surveyid,
                     "gid"=>$arow['gid'],
-                    "qid"=>$arow['qid']
+                    "qid"=>$arow['qid'],
+                    "aid"=>"filecount"
                     );
                 if ($style == "full")
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
+                    $fieldmap[$fieldname]['question']="filecount (".$arow['question'].")";
+                    //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
