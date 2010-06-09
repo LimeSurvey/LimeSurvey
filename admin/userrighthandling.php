@@ -613,7 +613,7 @@ if ($action == "editusergroup")
         ."<form action='$scriptname' id='usergroupform' class='form30' name='usergroupform' method='post'>"
         . "<ul>\n"
         . "<li><label for='name'>".$clang->gT("Name:")."</label>\n"
-        . "<input type='text' size='50' id='name' name='name' value=\"{$esrow['name']}\" /></li>\n"
+        . "<input type='text' size='50' maxlength='20' id='name' name='name' value=\"{$esrow['name']}\" /></li>\n"
         . "<li><label for='description'>".$clang->gT("Description:")."</label>\n"
         . "<textarea cols='50' rows='4' id='description' name='description'>{$esrow['description']}</textarea></li>\n"
         . "<ul><p><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
@@ -826,20 +826,27 @@ if ($action == "editusergroupindb")
         $html_name = html_escape($_POST['name']);
         $html_description = html_escape($_POST['description']);
 
+		$usersummary = "<div class=\"messagebox\">\n";
         if(updateusergroup($db_name, $db_description, $ugid))
         {
-            $usersummary = "<br /><strong>".$clang->gT("Edit User Group Successfully!")."</strong><br />\n";
-            $usersummary .= "<br />".$clang->gT("Name").": {$html_name}<br />\n";
-            $usersummary .= $clang->gT("Description: ").$html_description."<br />\n";
-            $usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            
+			$usersummary .= "<div class=\"successheader\">".$clang->gT("Edit User Group Successfully!")."</div>\n"
+            . "<br />".$clang->gT("Name").": {$html_name}<br />\n"
+            . $clang->gT("Description: ").$html_description."<br />\n"
+            . "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }
-        else $usersummary .= "<br /><strong>".$clang->gT("Failed to update!")."</strong><br />\n"
-        . "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-    }
+        else 
+		{
+			$usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update!")."</div>\n"
+			. "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		}
+		$usersummary .= "</div>\n";
+	}
     else
     {
         include("access_denied.php");
     }
+
 }
 
 if ($action == "editusergroups" )
