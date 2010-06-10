@@ -81,13 +81,6 @@ $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
 
-//Deal with Xitami server issues
-//Todo: find out if this still is an issue with the latest Xitami server version
-if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami")
-{
-    $_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
-}
-
 // Deal with server systems having not set a default time zone
 if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get"))
 @date_default_timezone_set(@date_default_timezone_get());
