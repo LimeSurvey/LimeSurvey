@@ -166,26 +166,23 @@ if ($subaction == "id")
 
     foreach ($fieldmap as $field)
     {
+        if ($field['fieldname']=='lastpage' || $field['fieldname'] == 'submitdate')
+            continue;
+
         $question=$field['question'];
         if ($field['type'] != "|")
         {
-            if ($field['fieldname']=='lastpage' || $field['fieldname'] == 'submitdate')
-                continue;
             if (isset($field['subquestion']) && $field['subquestion']!='')
                 $question .=' ('.$field['subquestion'].')';
-        }
-        if (isset($field['subquestion1']) && isset($field['subquestion2']))
-        {
+            if (isset($field['subquestion1']) && isset($field['subquestion2']))
                 $question .=' ('.$field['subquestion1'].':'.$field['subquestion2'].')';
-        }
             if (isset($field['scale_id']))
                 $question .='['.$field['scale'].']';
             $fnames[]=array($field['fieldname'],$question);
         }
         else
         {
-            $fnames[] = array("completed", $clang->gT("Completed"), "0");
-            if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
+            if (!isset($field['aid']))
             {
                 for ($i = 0; $i < $field['max_files']; $i++)
                 {
@@ -381,14 +378,6 @@ elseif ($subaction == "all")
             if (isset($fielddetails['scale_id']))
                 $question .='['.$field['scale'].']';
             $fnames[]=array($fielddetails['fieldname'],$question);
-        $question=$fielddetails['question'];
-        if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
-            $question .=' ('.$fielddetails['subquestion'].')';
-        if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-            $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
-        if (isset($fielddetails['scale_id']))
-            $question .='['.$field['scale'].']';
-        $fnames[]=array($fielddetails['fieldname'],$question);
         }
         else
         {
