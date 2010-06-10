@@ -1073,6 +1073,11 @@ textarea.updater-changelog {
     color: #121A28;
 }
 
+.form30 table {
+    width: auto;
+    float: left;      
+}
+
 .form30 li,
 .form44 li,
 #exportstructureQuestion li,
@@ -1313,7 +1318,6 @@ clear:both;
    padding: 1px 1em; 
    text-decoration:none !important; 
    cursor:pointer; 
-   position: relative; 
    text-align: center; 
    zoom: 1; 
 }

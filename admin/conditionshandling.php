@@ -431,7 +431,7 @@ $qquery = "SELECT * "
 $qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
 $qrows = $qresult->GetRows();
 // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
-usort($qrows, 'CompareGroupThenTitle');
+usort($qrows, 'GroupOrderThenQuestionOrder');
 
 $position="before";
 // Go through each question until we reach the current one
@@ -578,8 +578,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
 
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
@@ -671,7 +670,7 @@ if ($questionscount > 0)
             ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
             ." AND q.qid={$rows['qid']}
                AND sq.scale_id=0
-               ORDER BY sq.question_order, sq.question";
+               ORDER BY sq.question_order";
             
             $y_axis_db = db_execute_assoc($fquery);
             
@@ -684,7 +683,7 @@ if ($questionscount > 0)
                          AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                          AND q.qid=".$rows['qid']."
                          AND sq.scale_id=1
-                         ORDER BY sq.question_order, sq.question";
+                         ORDER BY sq.question_order";
               
             $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
@@ -717,8 +716,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($arows = $aresult->FetchRow())
@@ -774,8 +772,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($arows = $aresult->FetchRow())
@@ -831,8 +828,7 @@ if ($questionscount > 0)
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$rows['qid']} "
             ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
+            ."ORDER BY question_order";
             $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($arows=$aresult->FetchRow())

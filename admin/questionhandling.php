@@ -95,33 +95,22 @@ if ($action == "copyquestion")
 
     $editquestion .= questionjavascript($eqrow['type'])."</li>\n";
 
-
-    if ($eqrow['type'] == "J" || $eqrow['type'] == "I")
-    {
-        $editquestion .= "\t</ul>\n"
-        . "<p><input type='hidden' name='copyanswers' value='Y'>\n"
-        . "<input type='submit' value='".$clang->gT("Copy Question")."' />\n"
-        . "<input type='hidden' name='action' value='copynewquestion' />\n"
-        . "<input type='hidden' name='sid' value='$sid' />\n"
-        . "<input type='hidden' name='oldqid' value='$qid' />\n"
-        . "<input type='hidden' name='gid' value='$gid' />\n"
-        . "</form>\n";
-    }
-    else
-    {
-        $editquestion .= "<li><label for='copyanswers'>".$clang->gT("Copy Answers?")."</label>\n"
+    $editquestion .= "<li><label for='copysubquestions'>".$clang->gT("Copy subquestions?")."</label>\n"
+    . "<input type='checkbox' class='checkboxbtn' checked='checked' id='copysubquestions' name='copysubquestions' value='Y' />"
+    . "</li>\n";
+    $editquestion .= "<li><label for='copyanswers'>".$clang->gT("Copy answer options?")."</label>\n"
         . "<input type='checkbox' class='checkboxbtn' checked='checked' id='copyanswers' name='copyanswers' value='Y' />"
         . "</li>\n"
-        . "<li><label for='copyattributes'>".$clang->gT("Copy Attributes?")."</label>\n"
+    . "<li><label for='copyattributes'>".$clang->gT("Copy advanced settings?")."</label>\n"
         . "<input type='checkbox' class='checkboxbtn' checked='checked' id='copyattributes' name='copyattributes' value='Y' />"
         . "</li></ul>\n"
-        . "<p><input type='submit' value='".$clang->gT("Copy Question")."' />\n"
+    . "<p><input type='submit' value='".$clang->gT("Copy question")."' />\n"
         . "<input type='hidden' name='action' value='copynewquestion' />\n"
         . "<input type='hidden' name='sid' value='$surveyid' />\n"
         . "<input type='hidden' name='oldqid' value='$qid' />\n"
         . "\t</form>\n";
+    
     }
-}
 
 
 if ($action == "editdefaultvalues")

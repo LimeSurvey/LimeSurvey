@@ -166,6 +166,7 @@ function CSVImportSurvey($sFullFilepath)
     }
     fclose($handle);
        
+    $aIgnoredAnswers=array();
     $aSQIDReplacements=array();     
     $aGIDReplacements=array();     
     $substitutions=array();
@@ -765,7 +766,7 @@ function CSVImportSurvey($sFullFilepath)
             if (!isset($grouprowdata['gid'])) {$aGIDReplacements[$oldgid]=$connect->Insert_ID("{$dbprefix}groups","gid");}
         }
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
-        fixsortorderGroups();
+        fixSortOrderGroups($newsid);
     }
     // GROUPS is DONE
     
@@ -818,6 +819,7 @@ function CSVImportSurvey($sFullFilepath)
             elseif ($questionrowdata['type']=='Z')
             {
                 $questionrowdata['type']='L';
+                $aIgnoredAnswers[]=$oldqid;
             }
 
             if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;}
@@ -901,11 +903,18 @@ function CSVImportSurvey($sFullFilepath)
     //Do answers
     if (isset($answerarray) && $answerarray) 
     {
+        $answerfieldnames = convertCSVRowToArray($answerarray[0],',','"');
+        unset($answerarray[0]);
         foreach ($answerarray as $aa) 
         {
-            $answerfieldnames = convertCSVRowToArray($answerarray[0],',','"');
             $answerfieldcontents = convertCSVRowToArray($aa,',','"');
             $answerrowdata = array_combine($answerfieldnames,$answerfieldcontents);
+            if (in_array($answerrowdata['qid'],$aIgnoredAnswers)) 
+            {
+                 // Due to a bug in previous LS versions there may be orphaned answers with question type Z (which is now L)
+                 // this way they are ignored
+                 continue;
+            }
             if ($answerrowdata===false)
             {
                 $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
@@ -1215,7 +1224,7 @@ function CSVImportSurvey($sFullFilepath)
 */
 function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
 {
-    global $connect, $dbprefix, $clang;
+    global $connect, $dbprefix, $clang, $timeadjust;
     
     if ($sXMLdata == NULL)
     {
@@ -1272,7 +1281,15 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
         }
         $oldsid=$insertdata['sid'];
         $newsid=GetNewSurveyID($oldsid);
+
+        //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
+        //Make sure it is not set active
+        $insertdata['active']='N';
+        //Set current user to be the owner
+        $insertdata['owner_id']=$_SESSION['loginID'];
+        //Change creation date to import date
+        $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));
 
         db_switchIDInsert('surveys',true);
         $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -1316,14 +1333,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
     // Import groups table ===================================================================================
 
     $tablename=$dbprefix.'groups';
-    $newgrouporder=$connect->GetOne("SELECT MAX(group_order) AS maxqo FROM ".db_table_name('group')." WHERE sid=$newsid")+1;
-    if (is_null($newgrouporder))
-    {
-        $newgrouporder=0;
-    }
-    else {
-        $newgrouporder++;
-    }
     foreach ($xml->groups->rows->row as $row)
     {
        $insertdata=array(); 
@@ -1333,7 +1342,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
         }
         $oldsid=$insertdata['sid'];
         $insertdata['sid']=$newsid;
-        $insertdata['group_order']=$newgrouporder;
         $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
         // now translate any links
@@ -1368,14 +1376,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
     if(isset($xml->questions))  // there could be surveys without a any questions
     {
         $tablename=$dbprefix.'questions';
-        $newquestionorder=$connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
-        if (is_null($newquestionorder))
-        {
-            $newquestionorder=0;
-        }
-        else {
-            $newquestionorder++;
-        }
         foreach ($xml->questions->rows->row as $row)
         {
            $insertdata=array(); 
@@ -1386,7 +1386,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
             $oldsid=$insertdata['sid'];
             $insertdata['sid']=$newsid;
             $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
-            $insertdata['question_order']=$newquestionorder;
             $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
             // now translate any links

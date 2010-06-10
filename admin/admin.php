@@ -408,12 +408,13 @@ if(isset($_SESSION['loginID']))
         !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
         !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&
         !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
-        (isset($surveyid) || $action == "" || preg_match('/^(listsurveys|personalsettings|statistics|copysurvey|importsurvey|editsurvey|updatesurvey|updatedefaultvalues|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|usergroupindb)$/',$action)))
+        (isset($surveyid) || $action == "" || preg_match('/^(listsurveys|personalsettings|statistics|copysurvey|importsurvey|editsurvey|updatesurvey|updatedefaultvalues|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
     {
         if ($action=='editsurvey' || $action=='updatesurvey')
         {
             $_SESSION['FileManagerContext']="edit:survey:$surveyid";
         }
+        include('html_functions.php');
         include('html.php');
     }
 

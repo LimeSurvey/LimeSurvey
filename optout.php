@@ -69,8 +69,14 @@ else
 
 
 //PRINT COMPLETED PAGE
-if (!$thissurvey['template']) {$thistpl="$templaterootdir/default";} else {$thistpl="$templaterootdir/{$thissurvey['template']}";}
-if (!is_dir($thistpl)) {$thistpl="$templaterootdir/default";}
+if (!isset($thissurvey['template']) || !$thissurvey['template'])
+{
+    $thistpl=validate_templatedir("default");
+}
+else
+{
+    $thistpl=validate_templatedir($thissurvey['template']);
+}
 
 sendcacheheaders();
 doHeader();

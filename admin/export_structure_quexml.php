@@ -100,7 +100,7 @@ function fixed_array($array)
 
 
 
-function create_fixed($qlid,$rotate=false,$labels=true)
+function create_fixed($qlid,$rotate=false,$labels=true,$scale=0)
 {
     global $dom;
     global $connect ;
@@ -109,8 +109,7 @@ function create_fixed($qlid,$rotate=false,$labels=true)
     if ($labels)
     $Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $qlid ORDER BY sortorder ASC";
     else
-    $Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid ORDER BY sortorder ASC";
-    //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+    $Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid AND scale_id = $scale ORDER BY sortorder ASC";
     $QueryResult = db_execute_assoc($Query);
 
     $fixed = $dom->create_element("fixed");
@@ -200,17 +199,15 @@ function create_subQuestions(&$question,$qid,$varname)
     global $dbprefix;
     global $connect ;
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-    $Query = "SELECT * FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
-    //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+    $Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid ORDER BY question_order ASC";
     $QueryResult = db_execute_assoc($Query);
-
     while ($Row = $QueryResult->FetchRow())
     {
         $subQuestion = $dom->create_element("subQuestion");
         $text = $dom->create_element("text");
-        $text->set_content(cleanup($Row['answer']));
+        $text->set_content(cleanup($Row['question']));
         $subQuestion->append_child($text);
-        $subQuestion->set_attribute("varName",$varname . "_" . cleanup($Row['code']));
+        $subQuestion->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
         $question->append_child($subQuestion);
     }
 
@@ -315,7 +312,7 @@ while ($Row = $QueryResult->FetchRow())
 
 
     //foreach question
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type NOT LIKE 'X' ORDER BY question_order ASC";
+    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND type NOT LIKE 'X' ORDER BY question_order ASC";
     $QR = db_execute_assoc($Query);
     while ($RowQ = $QR->FetchRow())
     {
@@ -450,22 +447,23 @@ while ($Row = $QueryResult->FetchRow())
             case "F": //ARRAY (Flexible) - Row Format
                 //select subQuestions from answers table where QID
                 create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(create_fixed($lid,false));
+                $response->append_child(create_fixed($qid,false,false));
                 $question->append_child($response);
                 //select fixed responses from
                 break;
             case "H": //ARRAY (Flexible) - Column Format
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(create_fixed($lid,true));
+                create_subQuestions(&$question,$RowQ['qid'],$RowQ['title']);
+                $response->append_child(create_fixed($qid,true,false));
                 $question->append_child($response);
                 break;
             case "1": //Dualscale multi-flexi array
                 //select subQuestions from answers table where QID
                 create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(create_fixed($lid,false));
+                $response = $dom->create_element("response");
+                $response->append_child(create_fixed($qid,false,false)); 
                 $response2 = $dom->create_element("response");
                 $response2->set_attribute("varName",cleanup($RowQ['title']) . "_2");
-                $response2->append_child(create_fixed($RowQ['lid1'],false));
+                $response2->append_child(create_fixed($qid,false,false,1));   
                 $question->append_child($response);
                 $question->append_child($response2);
                 break;

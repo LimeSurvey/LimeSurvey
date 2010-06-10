@@ -200,7 +200,7 @@ $result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br /
 $rows = $result->GetRows();
 
 //SORT IN NATURAL ORDER!
-usort($rows, 'CompareGroupThenTitle');
+usort($rows, 'GroupOrderThenQuestionOrder');
 
 //put the question information into the filter array
 foreach ($rows as $row)
@@ -519,7 +519,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
 
             //get answers
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
+            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //counter is used for layout
@@ -579,7 +579,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //get subqestions
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -709,13 +709,12 @@ foreach ($filters as $flt)
             $myfield5="$myfield2>";
             $statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 
-            //no statistics available yet!
-            //."<input type='checkbox'  name='summary[]' value='$myfield2'";
+            $statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
-            //if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
-            //{$statisticsoutput .= " checked='checked'";}
+            if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+            {$statisticsoutput .= " checked='checked'";}
 
-            //$statisticsoutput .= " /><strong>"
+            $statisticsoutput .= " /><strong>";
             $statisticsoutput .= showSpeaker($niceqtext)
             ."<br />\n"
 		
@@ -725,13 +724,13 @@ foreach ($filters as $flt)
             if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
 
             $statisticsoutput .= "' /><br />\n"
-            ."\t\t\t\t\t&nbsp;&nbsp;".$clang->gT("OR between").":<br />\n"
+            ."\t\t\t\t\t&nbsp;&nbsp;".$clang->gT("Date is")." >=<br />\n"
             ."\t\t\t\t\t<input name='$myfield4' value='";
 
             if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
 
             $statisticsoutput .= "' type='text' /> <br />"
-            .$clang->gT("and")."<br /> <input  name='$myfield5' value='";
+            .$clang->gT("AND/OR Date is")." <= <br /> <input  name='$myfield5' value='";
 
             if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 
@@ -819,7 +818,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -873,7 +872,7 @@ foreach ($filters as $flt)
             //just like above only a different loop
         case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             while ($row=$result->FetchRow())
@@ -920,7 +919,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -979,7 +978,7 @@ foreach ($filters as $flt)
             //similiar to the above one
         case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -1028,7 +1027,7 @@ foreach ($filters as $flt)
 
         case ";":  //ARRAY (Multi Flex) (Text)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             while ($row=$result->FetchRow())
@@ -1062,7 +1061,7 @@ foreach ($filters as $flt)
 
         case ":":  //ARRAY (Multi Flex) (Numbers)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}'  AND scale_id=0 ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             //Get qidattributes for this question
@@ -1099,11 +1098,11 @@ foreach ($filters as $flt)
             }
             while ($row=$result->FetchRow())
             {
-                $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' and scale_id=0 ORDER BY sortorder, code";
+                $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$flt[0]} AND language='{$language}' AND scale_id=1 ORDER BY question_order, title";
                 $fresult = db_execute_assoc($fquery);
                 while ($frow = $fresult->FetchRow())
                 {
-                    $myfield2 = $myfield . $row[0] . "_" . $frow['code'];
+                    $myfield2 = $myfield . $row[0] . "_" . $frow['title'];
                     $statisticsoutput .= "<!-- $myfield2 - ";
                     if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
                     $statisticsoutput .= " -->\n";
@@ -1112,7 +1111,7 @@ foreach ($filters as $flt)
                     ."<input type='checkbox'  name='summary[]' value='$myfield2'";
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
                     $statisticsoutput .= " />&nbsp;<strong>"
-                    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['answer']."]")." - ".$row[0]."/".$frow['code'])
+                    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
                     ."</strong><br />\n";
                     //$statisticsoutput .= $fquery;
                     $statisticsoutput .= "\t\t\t\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5'>\n";
@@ -1134,12 +1133,12 @@ foreach ($filters as $flt)
              * The only difference is that the labels are applied to column heading
              * or rows respectively
              */
-        case "F": // ARRAY
+        case "F": // FlEXIBLE ARRAY
         case "H": // ARRAY (By Column)
             //$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
             //Get answers. We always use the answer code because the label might be too long elsewise
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
 
@@ -1297,7 +1296,7 @@ foreach ($filters as $flt)
             $counter2=0;
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //loop through answers
@@ -1476,7 +1475,7 @@ foreach ($filters as $flt)
         case "M":  //M - Multiple options
 
             //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order, question";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
             //loop through answers

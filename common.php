@@ -81,13 +81,6 @@ $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
 
-//Deal with Xitami server issues
-//Todo: find out if this still is an issue with the latest Xitami server version
-if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami")
-{
-    $_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
-}
-
 // Deal with server systems having not set a default time zone
 if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get"))
 @date_default_timezone_set(@date_default_timezone_get());
@@ -144,7 +137,7 @@ if ($sourcefrom == "admin")
 }
 else
 {
-    $captchapath='';
+    $captchapath=$rooturl.'/';  
 }
 
 
@@ -261,7 +254,7 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 
       if (is_dir($homedir."/install") && $debug<2)
        {
-        die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
+        die ("<p style='text-align: center; margin-left: auto; margin-right: auto; width: 500px; margin-top: 50px;'><img src='../images/limecursor-handle.png' /><strong>Congratulations</strong><br /><br />Your installation is now complete. The final step is to remove or rename the LimeSurvey installation directory (admin/install) on your server since it may be a security risk.<br /><br />Once this directory has been removed or renamed you will be able to log in to your new LimeSurvey Installation.<br /><br /><a href='admin.php'>Try again</a></p>");
        }  
 }
 
@@ -340,7 +333,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     $qtypes = array(
     "1"=>array('description'=>$clang->gT("Array Dual Scale"),
                'subquestions'=>1,
-               'assessable'=>0,
+               'assessable'=>1,
                'hasdefaultvalues'=>0,
                'answerscales'=>2),
     "5"=>array('description'=>$clang->gT("5 Point Choice"),
@@ -386,7 +379,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     "H"=>array('description'=>$clang->gT("Array by column"),
                'hasdefaultvalues'=>0,
                'subquestions'=>1,
-               'assessable'=>0,
+               'assessable'=>1,
                'answerscales'=>1),
     "I"=>array('description'=>$clang->gT("Language Switch"),
                'hasdefaultvalues'=>0,
@@ -401,12 +394,12 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     "L"=>array('description'=>$clang->gT("List (Radio)"),
                'subquestions'=>0,
                'hasdefaultvalues'=>1,
-               'assessable'=>0,
+               'assessable'=>1,
                'answerscales'=>1),
     "M"=>array('description'=>$clang->gT("Multiple Options"),
                'subquestions'=>1,
                'hasdefaultvalues'=>1,
-               'assessable'=>0,
+               'assessable'=>1,
                'answerscales'=>0),
     "N"=>array('description'=>$clang->gT("Numerical Input"),
                'subquestions'=>0,
@@ -416,12 +409,12 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     "O"=>array('description'=>$clang->gT("List with comment"),
                'subquestions'=>0,
                'hasdefaultvalues'=>1,
-               'assessable'=>0,
+               'assessable'=>1,
                'answerscales'=>1),
     "P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
                'subquestions'=>1,
                'hasdefaultvalues'=>1,
-               'assessable'=>0,
+               'assessable'=>1,
                'answerscales'=>0),
     "Q"=>array('description'=>$clang->gT("Multiple Short Text"),
                'subquestions'=>1,
@@ -461,7 +454,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     "!"=>array('description'=>$clang->gT("List (Dropdown)"),
                'subquestions'=>0,
                'hasdefaultvalues'=>1,
-               'assessable'=>0,
+               'assessable'=>1,
                'answerscales'=>1),
     ":"=>array('description'=>$clang->gT("Array (Numbers)"),
                'subquestions'=>2,
@@ -1608,7 +1601,7 @@ function getlabelsets($languages=null)
  * @param mixed $b
  * @return int
  */
-function CompareGroupThenTitle($a, $b)
+function GroupOrderThenQuestionOrder($a, $b)
 {
     if (isset($a['group_order']) && isset($b['group_order']))
     {
@@ -1689,9 +1682,9 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
     }
 }
 
-function fixsortorderGroups() //Function rewrites the sortorder for groups
+function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
-    global $dbprefix, $connect, $surveyid;
+    global $dbprefix, $connect;
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
     $position=0;
@@ -1870,14 +1863,13 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
     //Returns NULL if question type does not suit
     if (substr_count($fieldcode, "X") > 1) //Only check if it looks like a real fieldcode
     {
-        $fields=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
+        $fieldmap = createFieldMap($surveyid);
+        if (isset($fieldmap[$fieldcode])) 
+            $fields = $fieldmap[$fieldcode]; 
+        else
+            safe_die ("Couldn't get question type - getextendedanswer() in common.php for field $fieldcode<br />");
         //Find out the question type
-        $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
-        $result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getextendedanswer() in common.php<br />".$connect->ErrorMsg()); //Checked
-        while($row=$result->FetchRow())
-        {
-            $this_type=$row['type'];
-        } // while
+        $this_type = $fields['type'];
         switch($this_type)
         {
             case 'D': if (trim($value)!='')
@@ -2489,31 +2481,17 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($qtypes[$arow['type']]['subquestions']==2 && $qtypes[$arow['type']]['answerscales']==0)
         {
             //MULTI FLEXI
-            $abquery = "SELECT sq.*, q.other\n"
-            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
-            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
-            . "AND q.language='{$s_lang}'"
-            ." AND sq.language='{$s_lang}'"
-            ." AND q.qid={$arow['qid']}
-               AND sq.scale_id=0
-               ORDER BY sq.question_order, sq.question"; //converted
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case :)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
-            $ab2query = "SELECT sq.*
-                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
-                         WHERE q.sid=$surveyid 
-                         AND sq.parent_qid=q.qid
-                         AND q.language='".$s_lang."'
-                         AND sq.language='".$s_lang."'
-                         AND q.qid=".$arow['qid']."
-                         AND sq.scale_id=1
-                         ORDER BY sq.question_order, sq.question"; //converted
-            $ab2result=db_execute_assoc($ab2query) or safe_die("Couldn't get list of answers in createFieldMap function (type : and ;)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-            $answerset=array();
-            while($ab2row=$ab2result->FetchRow())
+            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            //Now first process scale=1
+            foreach ($abrows as $key=>$abrow)
             {
-                $answerset[]=$ab2row;
+                if($abrow['scale_id']==1) {
+                    $answerset[]=$abrow;
+                    unset($abrows[$key]);
             }
-            while ($abrow=$abresult->FetchRow())
+            }
+            reset($abrows);
+            foreach ($abrows as $abrow)
             {
                 foreach($answerset as $answer)
                 {
@@ -2543,28 +2521,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "1")
         {
-            $abquery = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
-            ." WHERE sq.parent_qid=q.qid AND q.sid=$surveyid AND q.qid={$arow['qid']} "
-            ." AND sq.language='".$s_lang. "' "
-            ." AND q.language='".$s_lang. "' "
-            ." ORDER BY sq.question_order, sq.question";
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());    //Checked
-            $abcount=$abresult->RecordCount();
-            while ($abrow=$abresult->FetchRow())
+            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            foreach ($abrows as $abrow)
             {
-                $abmultiscalequery = "SELECT a.* FROM {$dbprefix}questions as q, {$dbprefix}answers as a, {$dbprefix}questions as sq"
-                ." WHERE sq.parent_qid=q.qid AND q.sid=$surveyid AND q.qid={$arow['qid']} "
-                ." AND a.qid=q.qid AND sq.sid=$surveyid AND q.qid={$arow['qid']}"
-                ." AND a.scale_id=0 "
-                ." AND sq.language='".$s_lang. "' "
-                ." AND a.language='".$s_lang. "' "
-                ." AND q.language='".$s_lang. "' ";  //converted
-
-                $abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
-                $abmultiscalecount=$abmultiscaleresult->RecordCount();
-                //if ($abmultiscalecount>0)
-                if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
-                {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
                     if ($style == "full")
@@ -2578,20 +2537,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     }
-                }
-                // multi-scale
-                $abmultiscalequery = "SELECT a.* FROM {$dbprefix}questions as q, {$dbprefix}answers as a, {$dbprefix}questions as sq"
-                ." WHERE sq.parent_qid=q.qid AND q.sid=$surveyid AND q.qid={$arow['qid']} "
-                ." AND a.qid=q.qid AND sq.sid=$surveyid AND q.qid={$arow['qid']}"
-                ." AND a.scale_id=1 "
-                ." AND sq.language='".$s_lang. "' "
-                ." AND a.language='".$s_lang. "' "
-                ." AND q.language='".$s_lang. "' ";  //converted
                  
-                $abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
-                $abmultiscalecount=$abmultiscaleresult->RecordCount();
-                if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
-                {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
                     if ($style == "full")
@@ -2605,10 +2551,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     }
-
                 }
             }
-        }
 
         elseif ($arow['type'] == "R")
         {
@@ -2688,15 +2632,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
             //MULTI ENTRY
-            $abquery = "SELECT subquestions.*, questions.other\n"
-            ." FROM ".db_table_name('questions')." as subquestions, ".db_table_name('questions')." as questions"
-            ." WHERE questions.sid=$surveyid AND subquestions.parent_qid=questions.qid "
-            . "AND subquestions.language='{$s_lang}'"
-            ." AND questions.language='{$s_lang}'"
-            ." AND questions.qid={$arow['qid']} "
-            ." ORDER BY subquestions.question_order"; //converted
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
-            while ($abrow=$abresult->FetchRow())
+            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
@@ -2806,7 +2743,8 @@ function templatereplace($line, $replacements=array())
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
     global $question;
-    global $questioncode, $answer, $navigator;
+    global $showXquestions, $showgroupinfo, $showqnumcode;
+    global $answer, $navigator;
     global $help, $totalquestions, $surveyformat;
     global $completed, $register_errormsg;
     global $notanswered, $privacy, $surveyid;
@@ -2868,8 +2806,33 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
     if (strpos($line, "{LANGUAGECHANGER}") !== false) $line=str_replace("{LANGUAGECHANGER}", $languagechanger, $line);
     if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
+
+    if(
+        $showgroupinfo == 'both' ||
+	$showgroupinfo == 'name' ||
+	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
+	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
+    )
+    {
     if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
+    }
+    else
+    {
+        if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", '' , $line);
+    };
+    if(
+        $showgroupinfo == 'both' ||
+	$showgroupinfo == 'number' ||
+	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
+	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
+    )
+    {
     if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
+    }
+    else
+    {
+        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", '' , $line);
+    };
 
     if (is_array($question))
     {
@@ -2895,9 +2858,37 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, '{QUESTION_MAN_CLASS}') !== false) $line=str_replace('{QUESTION_MAN_CLASS}', $question['man_class'], $line);
     if (strpos($line, "{QUESTION_INPUT_ERROR_CLASS}") !== false) $line=str_replace("{QUESTION_INPUT_ERROR_CLASS}", $question['input_error_class'], $line);
 
+    if(
+        $showqnumcode == 'both' ||
+	$showqnumcode == 'number' ||
+	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
+	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
+    )
+    {
+        if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", $question['number'], $line);
+    }
+    else
+    {
+        if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", '' , $line);
+    };
+    if(
+        $showqnumcode == 'both' ||
+	$showqnumcode == 'code' ||
+	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
+	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
+    )
+    {
     if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
+    }
+    else
+    {
+        if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", '' , $line);
+    };
+
     if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
     $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
+    if($showXquestions == 'show' || ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y'))
+    {
     if ($totalquestionsAsked < 1)
     {
         if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
@@ -2909,7 +2900,12 @@ function templatereplace($line, $replacements=array())
     else
     {
         if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+	};
     }
+    else
+    {
+    	if (strpos($line, '{THEREAREXQUESTIONS}') !== false) $line=str_replace('{THEREAREXQUESTIONS}' , '' , $line); 
+    };
     if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestionsAsked, $line);
 
     if (strpos($line, "{TOKEN}") !== false) {
@@ -2962,7 +2958,7 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{CLEARALL}") !== false)  {
 
         $clearall = "<input type='button' name='clearallbtn' value='".$clang->gT("Exit and Clear Survey")."' class='clearall' "
-        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?")."')) {window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
+        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?")."')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
         if (returnglobal('token'))
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
@@ -3078,7 +3074,7 @@ function templatereplace($line, $replacements=array())
     {
         if ($thissurvey['active'] == "N")
         {
-            $replacetext= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;newtest=Y";
+            $replacetext= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y";
             if (isset($s_lang) && $s_lang!='') $replacetext.="&amp;lang=".$s_lang;
             $replacetext.="'>".$clang->gT("Restart this Survey")."</a>";
             $line=str_replace("{RESTART}", $replacetext, $line);
@@ -3088,7 +3084,7 @@ function templatereplace($line, $replacements=array())
             if (!empty($restart_token)) $restart_extra .= "&amp;token=".urlencode($restart_token);
             else $restart_extra = "&amp;newtest=Y";
             if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".returnglobal('lang');
-            $line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
+            $line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
         }
     }
     if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a>", $line);
@@ -3155,7 +3151,7 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{REGISTERMESSAGE2}") !== false) $line=str_replace("{REGISTERMESSAGE2}", $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
     if (strpos($line, "{REGISTERFORM}") !== false)
     {
-        $registerform="<form method='post' action='register.php'>\n"
+        $registerform="<form method='post' action='{$publicurl}/register.php'>\n"
         ."<table class='register' summary='Registrationform'>\n"
         ."<tr><td align='right'>"
         ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
@@ -3507,6 +3503,25 @@ function getQuestionAttributes($qid, $type='')
     return $qid_attributes;
 }
 
+/**
+ *
+ * Returns the questionAttribtue value set or '' if not set 
+ * @author: lemeur
+ * @param $questionAttributeArray 
+ * @param $attributeName
+ * @return string
+ */
+function getQuestionAttributeValue($questionAttributeArray, $attributeName)
+{
+    if (isset($questionAttributeArray[$attributeName]))
+    {
+        return $questionAttributeArray[$attributeName];
+    }
+    else
+    {
+        return '';
+    }
+}
 
 /**
  * Returns array of question type chars with attributes
@@ -3545,7 +3560,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLT",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3553,7 +3568,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLT",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -4402,15 +4417,16 @@ function getAdminHeader($meta=false)
         $strAdminHeader.=$meta;
     }
     $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
-    if ($_SESSION['adminlang']!='en')
-    {
-        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
-    }
     $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
+
+    if ($_SESSION['adminlang']!='en')
+    {
+        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
+    }
 
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
@@ -4809,6 +4825,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
             }
         }
     }
+    $cascade2=array();
     if($output == "title")
     {
         foreach($cascaded as $key=>$cascade) {
@@ -4908,14 +4925,15 @@ function getArrayFiltersForQuestion($qid)
             {
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
-                $query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
+                $query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
                 $qresult = db_execute_assoc($query);  //Checked
                 $selected = array();
                 while ($code = $qresult->fetchRow())
                 {
-                    if ((isset($_SESSION[$fields[1].$code['code']]) && $_SESSION[$fields[1].$code['code']] == "Y")
-                    || $_SESSION[$fields[1]] == $code['code'])			 array_push($selected,$code['code']);
+                    if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
+                    || $_SESSION[$fields[1]] == $code['title'])			 array_push($selected,$code['title']);
                 }
+
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 $query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
                 $qresult = db_execute_assoc($query);
@@ -4988,12 +5006,12 @@ function getArrayFilterExcludesForQuestion($qid)
                 {
                     // we found the target question, now we need to know what the answers were!
                     $fields[0]=sanitize_int($fields[0]);
-                    $query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
+                    $query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
                     $qresult = db_execute_assoc($query);  //Checked
                     while ($code = $qresult->fetchRow())
                     {
-                        if ((isset($_SESSION[$fields[1].$code['code']]) && $_SESSION[$fields[1].$code['code']] == "Y")
-                        || $_SESSION[$fields[1]] == $code['code'])						array_push($selected,$code['code']);
+                        if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
+                        || $_SESSION[$fields[1]] == $code['title'])						array_push($selected,$code['title']);
                     }
                     //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                     $query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
@@ -5389,14 +5407,15 @@ function getusergrouplist($outputformat='optionlist')
 
 function languageDropdown($surveyid,$selected)
 {
+    global $homeurl;
     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     array_unshift($slangs,$baselang);
     $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
     foreach ($slangs as $lang)
     {
-        if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?action=dataentry&sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
-        if ($lang != $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?action=dataentry&sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang == $selected) $html .= "\t<option value='{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang != $selected) $html .= "\t<option value='{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }
     $html .= "</select>";
     return $html;
@@ -6235,7 +6254,9 @@ function retrieve_Answer($code, $phpdateformat=null)
 function tableExists($tablename)
 {
     global $connect;
-    $tablelist = $connect->MetaTables();
+    static $tablelist; 
+    
+    if (!isset($tablelist)) $tablelist = $connect->MetaTables();
     if ($tablelist==false)
     {
         return false;
@@ -7003,7 +7024,7 @@ function checkquestionfordisplay($qid, $gid=null)
                 }
             }
             elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['value'],$targetconditiontokenattr))
-            { //TIBO
+            { 
                 if ( isset($_SESSION['token']) &&
                 in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
                 {
@@ -7643,4 +7664,34 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
     if ($negative === true) $goodchars .= "-";    //Todo, check databases
     return $goodchars;
 }
-// Closing PHP tag intentionally left out - yes, it is okay       
+
+/**
+ * Return an array of subquestions for a given sid/qid
+ * 
+ * @param int $sid
+ * @param int $qid
+ */
+function getSubQuestions($sid, $qid) {
+    global $dbprefix, $connect, $clang;
+    static $subquestions;
+    
+    if (!isset($subquestions[$sid])) {
+	    $sid = sanitize_int($sid);
+	    $s_lang = GetBaseLanguageFromSurveyID($sid);
+	    $query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+	            ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
+	            ." AND sq.language='".$s_lang. "' "
+	            ." AND q.language='".$s_lang. "' "
+	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+	    $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
+	    
+	    while ($row=$result->FetchRow())   
+	    {
+	        $resultset[$row['parent_qid']][] = $row;
+	    }
+	    $subquestions[$sid] = $resultset;
+    }
+    if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
+    return false;
+}
+// Closing PHP tag intentionally left out - yes, it is okay

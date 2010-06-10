@@ -86,11 +86,18 @@ session_set_cookie_params(0,$relativeurl.'/');
 if ($surveyid)
 {
     $issurveyactive=false;
-    $actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
-    $actresult=db_execute_assoc($actquery) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());      //Checked
-    if ($actresult->RecordCount() > 0)
+    $aRow=$connect->GetRow("SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid");
+    if (isset($aRow['active']))
     {
+        $surveyexists=true;
+        if($aRow['active']=='Y')
+        {
         $issurveyactive=true;
+    }
+}
+    else
+    {
+        $surveyexists=false;
     }
 }
 
@@ -144,7 +151,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
 }
 
 if ($surveyid &&
-$issurveyactive===false &&
+$issurveyactive===false && $surveyexists &&
 isset ($surveyPreview_require_Auth) &&
 $surveyPreview_require_Auth === true)
 {
@@ -441,15 +448,6 @@ if (!isset($token))
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
-if (is_array($thissurvey))
-{
-    $surveyexists=1;
-}
-else
-{
-    $surveyexists=0;
-}
-
 if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
 
 
@@ -664,7 +662,7 @@ isset($_SESSION['step']) && $_SESSION['step']>0)
 	killSession();
         doFooter();
         exit;
-    } //TIBO
+}
 }
 if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
 
@@ -870,11 +868,17 @@ function loadanswers()
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
             }
-            if ($column =='lastpage' && !isset($_SESSION['step']))
+            if ($column =='lastpage' && isset($_GET['token']))
             {
                 if ($value<1) $value=1;
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
+            }
+            if ($column =='startlanguage')
+            {
+                $clang = SetSurveyLanguage( $surveyid, $value);
+                UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
+                UpdateFieldArray();        // to refresh question titles and question text
             }
             if ($column == "scid")
             {
@@ -897,8 +901,21 @@ function loadanswers()
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['insertarray']))
                 {
+                    if (($_SESSION['fieldmap'][$column]['type'] == 'N' ||
+                            $_SESSION['fieldmap'][$column]['type'] == 'K' ||
+                            $_SESSION['fieldmap'][$column]['type'] == 'D') && $value == null)
+                    {   // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
+                        // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
+                        // This is especially important for the deletenonvalue feature,
+                        // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
+                        // question types (NKD)
+                        $_SESSION[$column]='';
+                    }
+                    else
+                    {
                     $_SESSION[$column]=$value;
                 }
+            }
             }
         } // foreach
     }
@@ -1136,26 +1153,22 @@ function checkconfield($value)
     }
     $value_qid=0;
     $value_type='';
-    // record the qid and question type for future use
-    foreach ($_SESSION['fieldarray'] as $sfa)
+    
+    //$value is the fieldname for the field we are checking for conditions
+    foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
     {
+    // record the qid and question type for future use
         if ($sfa[1]  == $masterFieldName)
         {
             $value_qid=$sfa[0];
             $value_type=$sfa[4];
         }
-    }
 
-    //$value is the fieldname for the field we are checking for conditions
-    foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
-
-    {
         // this fieldname '$value' is inside a question identified by the SGQ code '$masterFieldName'
         // we are looping on fieldnames $sfa
         // if $sfa[1] == $masterFieldName, we are processing a fieldname inside the same question as $value
         // check if this question is conditionnal ($sfa[7]): if yes eval conditions
         if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
-
         {
             $scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
             ." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
@@ -1374,14 +1387,16 @@ function checkconfield($value)
         {
             list($value_code, $value_label)=explode("_", $value_code);
         }
+        if (isset($value_qa['array_filter_exclude']))
+        {
         $arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_qid);
         if ( $arrayfilterXcludes_selected_codes !== false &&
         in_array($value_code,$arrayfilterXcludes_selected_codes))
         {
             $fieldisdisplayed=false;
         }
-        elseif (!isset($value_qa['array_filter_exclude']) ||
-        trim($value_qa['array_filter_exclude']) == '')
+        }
+        elseif (isset($value_qa['array_filter']))
         {
             $arrayfilter_selected_codes = getArrayFiltersForQuestion($value_qid);
             if ( $arrayfilter_selected_codes !== false &&
@@ -1614,7 +1629,7 @@ function checkpregs($move,$backok=null)
                 if (isset($_POST[$field]) && isset($_SESSION['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
 
                 {
-                    $fieldinfo=arraySearchByKey($field, $fieldmap, "fieldname", 1);
+                    $fieldinfo=$fieldmap[$field];
                     $pregquery="SELECT preg\n"
                     ."FROM ".db_table_name('questions')."\n"
                     ."WHERE qid=".$fieldinfo['qid']." "
@@ -2044,7 +2059,7 @@ function buildsurveysession()
     global $surveyid, $dbprefix, $connect;
     global $register_errormsg, $clang;
     global $totalBoilerplatequestions;
-    global $templang, $move, $rooturl;
+    global $templang, $move, $rooturl, $publicurl;
 
     if (!isset($templang) || $templang=='')
     {
@@ -2077,7 +2092,7 @@ function buildsurveysession()
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."<br /><p>
-			        <form class='captcha' method='get' action='".$_SERVER['PHP_SELF']."'>
+			        <form class='captcha' method='get' action='{$publicurl}/index.php'>
 			        <table align='center'>
 				        <tr>
 					        <td align='right' valign='middle'>
@@ -2138,7 +2153,7 @@ function buildsurveysession()
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
-	        <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+	        <form id='tokenform' method='get' action='{$publicurl}/index.php'>
 
                 <ul>
                 <li>
@@ -2271,7 +2286,7 @@ function buildsurveysession()
                 if (!isset($gettoken))
                 {
                     echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."</p>
-			            <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+			            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
                         <ul>
                         <li>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -2290,7 +2305,7 @@ function buildsurveysession()
                 else
                 {
                     echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
-			            <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+			            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
                         <ul>
 			            <li>
 					            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -2427,7 +2442,7 @@ function buildsurveysession()
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //	usort($arows, 'CompareGroupThenTitle');
+    //	usort($arows, 'GroupOrderThenQuestionOrder');
 
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage
@@ -2809,7 +2824,7 @@ function check_quota($checkaction,$surveyid)
     if (!isset($_SESSION['s_lang'])){
         return;
     }
-    global $thistpl, $clang, $clienttoken;
+    global $thistpl, $clang, $clienttoken, $publicurl;
     $global_matched = false;
     $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
     $x=0;
@@ -2962,7 +2977,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; ". $clang->gT("Previous")." ' name='move2' />
+                echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; ". $clang->gT("Previous")." ' name='move2' />
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
 					<input type='hidden' name='token' value='".$clienttoken."' id='token' /></form>\n";

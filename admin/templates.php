@@ -131,7 +131,7 @@ $_SESSION['s_lang']=$_SESSION['adminlang'];
 
 if (!isset($templatename)) {$templatename = sanitize_paranoid_string(returnglobal('templatename'));}
 if (!isset($templatedir)) {$templatedir = sanitize_paranoid_string(returnglobal('templatedir'));}
-if (!isset($editfile)) {$editfile = sanitize_paranoid_string(returnglobal('editfile'));}
+if (!isset($editfile)) {$editfile = sanitize_filename(returnglobal('editfile'));}
 if (!isset($screenname)) {$screenname=auto_unescape(returnglobal('screenname'));}
 
 // Checks if screen name is in the list of allowed screen names

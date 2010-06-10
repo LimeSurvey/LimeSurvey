@@ -226,7 +226,7 @@ if ($isInstertansEnabled===true)
     $qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
     $qrows = $qresult->GetRows();
     // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
-    usort($qrows, 'CompareGroupThenTitle');
+    usort($qrows, 'GroupOrderThenQuestionOrder');
 
 
 

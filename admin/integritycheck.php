@@ -419,7 +419,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "<br />".$clang->gT("No database action required");
         } else {
             $integritycheck .= "<br />".$clang->gT("Should we proceed with the delete?")."<br />\n";
-            $integritycheck .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='post'>\n";
+            $integritycheck .= "<form action='{$scriptname}?action=checkintegrity' method='post'>\n";
 
             if (isset($oldsdelete)) {
                 foreach($oldsdelete as $olds) {
@@ -491,7 +491,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck2 .= "<br />".$clang->gT("No database action required");
         } else {
 
-            $integritycheck2 .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='post'>\n"
+            $integritycheck2 .= "<form action='{$scriptname}?action=checkintegrity' method='post'>\n"
             . "<ul>\n";
             if(isset($oldsoptionaldelete)) {
                 $integritycheck2 .= "<li>".$clang->gT("The following old survey tables contain no responses and can be deleted:")."<br /><span style='font-size: 7pt'>\n";
@@ -668,7 +668,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "</span><br />\n";
         }
         $integritycheck .= $clang->gT("Check database again?")."<br />\n"
-        ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
+        ."<a href='{$scriptname}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
         ."</td></tr></table><br />\n";
     } elseif ($ok == "R")
     {
@@ -721,7 +721,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
 
         $integritycheck .= $clang->gT("Check database again?")."<br />\n"
-        ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
+        ."<a href='{$scriptname}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
         ."</div><br />\n";
          
     }

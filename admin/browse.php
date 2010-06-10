@@ -96,7 +96,7 @@ if ($actcount > 0)
     while ($actrow = $actresult->FetchRow())
     {
         $surveytable = db_table_name("survey_".$actrow['sid']);
-        $tokentable = db_table_name("tokens_".$actrow['sid']);
+        $tokentable = $dbprefix."tokens_".$actrow['sid'];
         /*
          * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
          * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
@@ -173,15 +173,19 @@ if ($subaction == "id")
                 continue;
             if (isset($field['subquestion']) && $field['subquestion']!='')
                 $question .=' ('.$field['subquestion'].')';
-            if (isset($field['subquestion1']) && isset($field['subquestion2']))
+        }
+        if (isset($field['subquestion1']) && isset($field['subquestion2']))
+        {
                 $question .=' ('.$field['subquestion1'].':'.$field['subquestion2'].')';
+        }
             if (isset($field['scale_id']))
                 $question .='['.$field['scale'].']';
             $fnames[]=array($field['fieldname'],$question);
         }
         else
         {
-            if (!isset($field['aid']))
+            $fnames[] = array("completed", $clang->gT("Completed"), "0");
+            if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
             {
                 for ($i = 0; $i < $field['max_files']; $i++)
                 {
@@ -274,7 +278,7 @@ if ($subaction == "id")
                     ."<td align='left' >";
             if ($fnames[$i][0] == 'completed')
             {
-                if ($idrow['submitdate'] == NULL) { $browseoutput .= "N"; }
+                if ($idrow['submitdate'] == NULL || $idrow['submitdate'] == "N") { $browseoutput .= "N"; }
                 else { $browseoutput .= "Y"; }
             }
             else
@@ -348,7 +352,7 @@ elseif ($subaction == "all")
     
     
     $fields=createFieldMap($surveyid,'full');
-    
+
     //add token to top of list if survey is not private
     if ($surveyinfo['private'] == "N")
     {
@@ -368,6 +372,8 @@ elseif ($subaction == "all")
         $question=$fielddetails['question'];
         if ($fielddetails['type'] != "|")
         {
+        if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
+            continue;
             if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
                 $question .=' ('.$fielddetails['subquestion'].')';
             if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
@@ -375,6 +381,14 @@ elseif ($subaction == "all")
             if (isset($fielddetails['scale_id']))
                 $question .='['.$field['scale'].']';
             $fnames[]=array($fielddetails['fieldname'],$question);
+        $question=$fielddetails['question'];
+        if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
+            $question .=' ('.$fielddetails['subquestion'].')';
+        if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
+            $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
+        if (isset($fielddetails['scale_id']))
+            $question .='['.$field['scale'].']';
+        $fnames[]=array($fielddetails['fieldname'],$question);
         }
         else
         {
@@ -452,7 +466,7 @@ elseif ($subaction == "all")
     {
         if ($_POST['sql'] == "NULL" )
         {
-            if ($surveyinfo['private'] == "N" && db_table_exists($tokentable))
+            if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
@@ -468,7 +482,7 @@ elseif ($subaction == "all")
         }
         else
         {
-            if ($surveytable['private'] == "N" && db_table_exists($tokentable))
+            if ($surveytable['private'] == "N" && db_tables_exist($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
@@ -606,7 +620,7 @@ elseif ($subaction == "all")
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
 
         $i = 0;
-        if ($surveyinfo['private'] == "N" && $dtrow['token'])
+        if ($surveyinfo['private'] == "N" && $dtrow['token'] && db_tables_exist($tokentable))
         {
             $SQL = "Select * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token=?";
             if ( db_tables_exist(db_table_name_nq('tokens_'.$surveyid)) &&

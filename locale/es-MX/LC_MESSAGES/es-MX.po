@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: es-MX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-19 16:38+0100\n"
-"PO-Revision-Date: 2009-05-19 16:39+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"PO-Revision-Date: 2010-05-24 21:48-0600\n"
+"Last-Translator: Roberto González O <robertglex@gmail.com>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -114,9 +114,9 @@ msgid "Show Help"
 msgstr "Mostrar Ayuda"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:423
-#, fuzzy, php-format
+#, php-format
 msgid "Welcome to %s!"
-msgstr "Bienvenido:"
+msgstr "Bienvenido a %s:"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:424
 msgid "Some piece-of-cake steps to create your very own first survey:"
@@ -128,9 +128,8 @@ msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:426
-#, fuzzy
 msgid "Add survey"
-msgstr "Agregar Usuario"
+msgstr "Agregar encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:427
 msgid "Create a new group inside your survey."
@@ -146,9 +145,8 @@ msgid "Done. Test your survey using the %s icon."
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:429
-#, fuzzy
 msgid "Test survey"
-msgstr "Probar la encuesta"
+msgstr "Probar encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:661
 msgid "Active"
@@ -360,7 +358,6 @@ msgid "Export Results to Application"
 msgstr "Exportar los resultados"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:1852
-#, fuzzy
 msgid "Export results to a SPSS command file"
 msgstr "Exportar los resultados a un archivo de comandos SPSS"
 
@@ -370,9 +367,8 @@ msgstr "Exportar los resultados a un archivo de comandos SPSS"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:1857
 #: D:\web\xampp\htdocs\limesurvey/common.php:1859
-#, fuzzy
 msgid "Export results to a R data file"
-msgstr "Exportar los resultados a un archivo de comandos SPSS"
+msgstr "Exportar resultados a un archivo de datos R"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/importoldresponses.php:58
 #: D:\web\xampp\htdocs\limesurvey/common.php:1863
@@ -424,7 +420,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey/common.php:1966
 #, fuzzy
 msgid "Date Started"
-msgstr "Fecha guardada"
+msgstr "Fecha de inicio"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:1967
 #: D:\web\xampp\htdocs\limesurvey/printanswers.php:178
@@ -650,9 +646,8 @@ msgstr "Hay {NUMBEROFQUESTIONS} preguntas en este cuestionario"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2700
 #: D:\web\xampp\htdocs\limesurvey/index.php:2392
-#, fuzzy
 msgid "Submit"
-msgstr "enviar"
+msgstr "Enviar"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
 #: D:\web\xampp\htdocs\limesurvey/common.php:2726
@@ -878,18 +873,16 @@ msgid "Number of columns to display"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3263
-#, fuzzy
 msgid "Display columns"
-msgstr "Mostrar Participantes"
+msgstr "Mostrar columnos"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3267
 msgid "How many rows to display"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3268
-#, fuzzy
 msgid "Display rows"
-msgstr "Mostrar Participantes"
+msgstr "Mostrar filas"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3272
 msgid "Hide the tip that is normally shown with a question"
@@ -904,9 +897,8 @@ msgid "Limit the number of possible answers"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3278
-#, fuzzy
 msgid "Maximum answers"
-msgstr "Máximo"
+msgstr "Número máximo de preguntas"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3282
 msgid "Maximum sum value of multiple numeric input"
@@ -929,19 +921,16 @@ msgid "Ensure a minimum number of possible answers"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3293
-#, fuzzy
 msgid "Minimum answers"
-msgstr "¿Preservar el anonimato de respuesta?"
+msgstr "Número mínimo de preguntas"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3297
-#, fuzzy
 msgid "Allow only numerical input"
-msgstr "Entrada Numérica"
+msgstr "Permitir sólo entrada numérica"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3298
-#, fuzzy
 msgid "Numbers only"
-msgstr "Número Menor Que"
+msgstr "Sólo números"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3302
 msgid "Present answers in random order"
@@ -1006,18 +995,16 @@ msgid "Add a prefix to the answer field"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3348
-#, fuzzy
 msgid "Answer prefix"
-msgstr "Privacidad"
+msgstr "Prefijo de respuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3352
 msgid "Add a suffix to the answer field"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3353
-#, fuzzy
 msgid "Answer suffix"
-msgstr "Respuestas"
+msgstr "Sufijo de respuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3357
 msgid "Use accessible select boxes instead of calendar popup"
@@ -1066,9 +1053,8 @@ msgid "Minimum value for array(multi-flexible) question type"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3383
-#, fuzzy
 msgid "Minimum value"
-msgstr "Mínimo"
+msgstr "Valor mínimo"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3387
 msgid "Step value for array (multi-flexible) question type"
@@ -1140,9 +1126,8 @@ msgid "Show statistics of a certain question to the user"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3428
-#, fuzzy
 msgid "Show in public statistics"
-msgstr "Estadísticas Rápidas"
+msgstr "Mostrar en estadísticas públicas"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3432
 msgid "SGQA identifier to use total of previous question as maximum for this question"
@@ -1288,7 +1273,6 @@ msgid "Error"
 msgstr "Error"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:6121
-#, fuzzy
 msgid "Email address"
 msgstr "Dirección de correo electrónico"
 
@@ -1303,33 +1287,29 @@ msgstr "Dirección de correo electrónico"
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:475
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1070
 #: D:\web\xampp\htdocs\limesurvey/common.php:6122
-#, fuzzy
 msgid "Token code"
-msgstr "Clave de acceso"
+msgstr "Código de pase"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:6123
-#, fuzzy
 msgid "Language code"
-msgstr "Idioma"
+msgstr "Código de idioma"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:6124
-#, fuzzy
 msgid "Invitation sent date"
-msgstr "Invitación enviada a: "
+msgstr "Fecha de envío de invitación"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:6125
-#, fuzzy
 msgid "Last Reminder sent date"
-msgstr "Recordatorio enviado a:"
+msgstr "Fecha de envío de último recordatorio"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:6126
 msgid "Total numbers of sent reminders"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:6146
-#, fuzzy, php-format
+#, php-format
 msgid "Attribute %s"
-msgstr "Atributo 1"
+msgstr "Atributo %s"
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:36
 #: D:\web\xampp\htdocs\limesurvey/question.php:36
@@ -1354,7 +1334,6 @@ msgstr "Borrar las respuestas"
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:181
 #: D:\web\xampp\htdocs\limesurvey/question.php:245
-#, fuzzy
 msgid "Thank you!"
 msgstr "Gracias"
 
@@ -1364,9 +1343,8 @@ msgid "Your survey responses have been recorded."
 msgstr "Sus respuestas han sido guardadas."
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:194
-#, fuzzy
 msgid "Print your answers."
-msgstr "si usted respondió"
+msgstr "Imprimir respuestas."
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:199
 #: D:\web\xampp\htdocs\limesurvey/question.php:263
@@ -1375,9 +1353,8 @@ msgstr "o"
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:206
 #: D:\web\xampp\htdocs\limesurvey/question.php:270
-#, fuzzy
 msgid "View the statistics for this survey."
-msgstr "Ocultar detalles del cuestionario"
+msgstr "Ver estadísticas de esta encuesta."
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:257
 #: D:\web\xampp\htdocs\limesurvey/question.php:66
@@ -1395,18 +1372,16 @@ msgstr "Este cuestionario no está activo. No podrá guardar sus respuestas."
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
 #: D:\web\xampp\htdocs\limesurvey/group.php:426
 #: D:\web\xampp\htdocs\limesurvey/question.php:449
-#, fuzzy
 msgid "Date is not valid!"
-msgstr "La dirección de correo electrónico no es válida"
+msgstr "¡La fecha no es válida!"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:79
 msgid "Token mismatch"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:80
-#, fuzzy
 msgid "The token you provided doesn't match the one in your session."
-msgstr "La contraseña que se le ha proporcionado no es válida o ya fue usada."
+msgstr "El pase que proporcionó no coincide con el de su sesión."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:81
 #: D:\web\xampp\htdocs\limesurvey/index.php:105
@@ -1432,9 +1407,8 @@ msgstr "ERROR"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:111
 #: D:\web\xampp\htdocs\limesurvey/index.php:224
-#, fuzzy
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "Quizá no tenga permisos."
+msgstr "Lo sentimos pero no tiene permisos para hacer esto."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:225
 #: D:\web\xampp\htdocs\limesurvey/index.php:254
@@ -1443,9 +1417,9 @@ msgstr "Quizá no tenga permisos."
 #: D:\web\xampp\htdocs\limesurvey/index.php:453
 #: D:\web\xampp\htdocs\limesurvey/index.php:473
 #: D:\web\xampp\htdocs\limesurvey/printanswers.php:51
-#, fuzzy, php-format
+#, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "si desea más ayuda"
+msgstr "Por favor contacte a %s (%s) si desea más ayuda."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:69
 #: D:\web\xampp\htdocs\limesurvey/index.php:253
@@ -1456,23 +1430,20 @@ msgstr "Lamentablemente su sesión ha expirado."
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:69
 #: D:\web\xampp\htdocs\limesurvey/index.php:253
 #: D:\web\xampp\htdocs\limesurvey/printanswers.php:50
-#, fuzzy
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
-msgstr "O bien ha estado inactivo por mucho tiempo o hubo algún problema con su conexión."
+msgstr "O bien ha estado inactivo por mucho tiempo, las cookies en su navegador están desactivadas o hubo algún problema con su conexión."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:344
-#, fuzzy
 msgid "No available surveys"
-msgstr "No se encontró ese cuestionario."
+msgstr "No hay encuestas disponibles"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:347
 msgid "You have not provided a survey identification number"
 msgstr "No ha proporcionado el número de identificación del cuestionario "
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:349
-#, fuzzy
 msgid "The following surveys are available:"
-msgstr "Los siguientes cuestionarios deberían ser eliminados"
+msgstr "Las siguientes encuestas están disponibles:"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:435
 msgid "This survey is no longer available."
@@ -1504,7 +1475,6 @@ msgstr "No ingresó la contraseña"
 #: D:\web\xampp\htdocs\limesurvey/index.php:1869
 #: D:\web\xampp\htdocs\limesurvey/register.php:57
 #: D:\web\xampp\htdocs\limesurvey/save.php:246
-#, fuzzy
 msgid "The answer to the security question is incorrect."
 msgstr "La respuesta a la pregunta de seguridad es incorrecta."
 
@@ -1522,9 +1492,9 @@ msgstr "La contraseña que se le ha proporcionado no es válida o ya fue usada."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:592
 #: D:\web\xampp\htdocs\limesurvey/index.php:618
-#, fuzzy, php-format
+#, php-format
 msgid "For further information please contact %s"
-msgstr "Para más información contactar con"
+msgstr "Para más información favor de contactar con %s"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:616
 #, fuzzy
@@ -1610,9 +1580,8 @@ msgid "Please confirm access to survey by answering the security question below 
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:1707
-#, fuzzy
 msgid "Security question:"
-msgstr "Pregunta de seguridad"
+msgstr "Pregunta de seguridad:"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:1741
 #: D:\web\xampp\htdocs\limesurvey/index.php:1801
@@ -1622,9 +1591,8 @@ msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Este cuestionario tiene control de acceso. Necesita una contraseña válida para participar."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:1742
-#, fuzzy
 msgid "If you have been issued a token, please enter it in the box below and click continue."
-msgstr "Si se le ha proporcionado una contraseña, por favor ingrésela en el cuadro y haga click en continuar."
+msgstr "Si se le ha proporcionado un pase, por favor ingréselo en la caja de texto y haga click en continuar."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:1803
 #: D:\web\xampp\htdocs\limesurvey/index.php:1839
@@ -1653,9 +1621,8 @@ msgstr "Si se le ha proporcionado una contraseña, por favor ingrésela en el cu
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:475
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1070
 #: D:\web\xampp\htdocs\limesurvey/index.php:1912
-#, fuzzy
 msgid "Token:"
-msgstr "Clave de acceso"
+msgstr "Pase:"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:2010
 msgid "This survey does not yet have any questions and cannot be tested or completed."
@@ -1766,17 +1733,17 @@ msgstr "Marque a lo sumo"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:580
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:622
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:623
-#, fuzzy, php-format
+#, php-format
 msgid "Check at most %d answers"
-msgstr "Marque a lo sumo"
+msgstr "Marque a lo sumo %d respuestas"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:584
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:585
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:627
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:628
-#, fuzzy, php-format
+#, php-format
 msgid "Check at least %d answers"
-msgstr "Marque a lo sumo"
+msgstr "Marque por lo menos %d respuestas"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:596
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:597
@@ -1791,9 +1758,8 @@ msgid "*"
 msgstr "*"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:764
-#, fuzzy
 msgid "This question must be answered correctly."
-msgstr "Esta pregunta debe ser contestada correctamente"
+msgstr "Esta pregunta debe ser contestada correctamente."
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:783
 msgid "This question is mandatory"
@@ -1844,9 +1810,8 @@ msgid "Month"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:980
-#, fuzzy
 msgid "Jan"
-msgstr "y"
+msgstr "Ene"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:981
 msgid "Feb"
@@ -1949,19 +1914,16 @@ msgstr ""
 # D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1290
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:942
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:990
-#, fuzzy
 msgid "Nov"
-msgstr "No"
+msgstr "Nov"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:991
-#, fuzzy
 msgid "Dec"
-msgstr "Borrar"
+msgstr "Dic"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1008
-#, fuzzy
 msgid "Year"
-msgstr "Borrar"
+msgstr "Año"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1074
 #, fuzzy
@@ -2075,14 +2037,12 @@ msgstr ""
 # D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:119
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:963
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:3469
-#, fuzzy
 msgid "Total: "
-msgstr "Total"
+msgstr "Total:"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:3472
-#, fuzzy
 msgid "Remaining: "
-msgstr "Ranking"
+msgstr "Restantes:"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:3518
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:3526
@@ -2862,35 +2822,33 @@ msgid "Edit this token"
 msgstr "Editar esta entrada"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:801
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses for this survey"
-msgstr "respuestas a este cuestionario"
+msgstr "%d respuestas a este cuestionario"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:802
-#, fuzzy, php-format
+#, php-format
 msgid "%d full responses"
-msgstr "respuestas completas"
+msgstr "%d respuestas completas"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/browse.php:655
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:803
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses not completely filled out"
-msgstr "respuestas no completadas"
+msgstr "%d respuestas parcialmente completadas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
 msgstr "Nombre de usuario incorrecto!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/cmdline_importsurvey.php:80
-#, fuzzy
 msgid "User name and password do not match!"
-msgstr "Su usuario/contraseña no concuerdan."
+msgstr "¡Su usuario/contraseña no concuerdan!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:107
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:121
-#, fuzzy
 msgid "Conditions manager"
-msgstr "Diseñador de Condiciones"
+msgstr "Manejador de condiciones"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:109
 msgid "You have not selected a survey"
@@ -2898,41 +2856,34 @@ msgstr "No ha seleccionado un cuestionario"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:111
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:125
-#, fuzzy
 msgid "Main admin screen"
-msgstr "Pantalla de Administración Principal"
+msgstr "Pantalla de administración principal"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:123
-#, fuzzy
 msgid "You have not selected a question"
-msgstr "No ha seleccionado una pregunta."
+msgstr "No ha seleccionado una pregunta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:133
-#, fuzzy
 msgid "Conditions designer"
-msgstr "Diseñador de Condiciones"
+msgstr "Diseñador de condiciones"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:145
-#, fuzzy
 msgid "Return to survey administration"
-msgstr "Regresar a la Administración de Encuestas"
+msgstr "Regresar al administrador de encuestas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:149
-#, fuzzy
 msgid "Show conditions for this question"
-msgstr "Establecer Condiciones para esta Pregunta"
+msgstr "Mostrar condiciones para esta pregunta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:153
-#, fuzzy
 msgid "Add and edit conditions"
-msgstr "Agregar Condición"
+msgstr "Agregar y editar condiciones"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:156
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1600
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1640
-#, fuzzy
 msgid "Copy conditions"
-msgstr "Copiar Condiciones"
+msgstr "Copiar condiciones"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:162
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1833
@@ -2941,9 +2892,8 @@ msgstr "Preguntas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:168
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:170
-#, fuzzy
 msgid "Show help"
-msgstr "Mostrar Ayuda"
+msgstr "Mostrar ayuda"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:88
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:196
@@ -3003,19 +2953,16 @@ msgid "Only show question {QID} IF"
 msgstr "Sólo mostrar la respuesta {QID} SI"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1160
-#, fuzzy
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
-msgstr "¿Está seguro de que desea copiar estas condiciones a las preguntas que ha seleccionado?"
+msgstr "¿Está seguro de que desea eliminar todas las condiciones de las preguntas que ha seleccionado?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1161
-#, fuzzy
 msgid "Delete all conditions"
-msgstr "Eliminando Condiciones"
+msgstr "Eliminando todas las condiciones"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1169
-#, fuzzy
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
-msgstr "¿Está seguro(a) de querer borrar todas las contraseñas únicas?"
+msgstr "¿Está seguro de querer volver a numerar los escenarios con números incrementables comenzando desde 1?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1170
 msgid "Renumber scenario automatically"
@@ -3060,38 +3007,32 @@ msgstr "Editar usuario"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1294
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1805
-#, fuzzy
 msgid "Less than"
-msgstr "Número Menor Que"
+msgstr "Menor que"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1295
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1806
-#, fuzzy
 msgid "Less than or equal to"
-msgstr "Número Menor Que"
+msgstr "Menor o igual que"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1296
-#, fuzzy
 msgid "equals"
-msgstr "Equivale"
+msgstr "igual"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1297
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1808
-#, fuzzy
 msgid "Not equal to"
-msgstr "No equivale"
+msgstr "Diferente"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1298
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1809
-#, fuzzy
 msgid "Greater than or equal to"
-msgstr "Número Mayor Que"
+msgstr "Mayor o igual que"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1299
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1810
-#, fuzzy
 msgid "Greater than"
-msgstr "Número Mayor Que"
+msgstr "Mayor que"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1300
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1811
@@ -3121,23 +3062,20 @@ msgid "Are you sure you want to delete this condition?"
 msgstr "¿Está seguro de que quiere borrar esta entrada?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1495
-#, fuzzy
 msgid "Delete this condition"
-msgstr "Eliminando Condiciones"
+msgstr "Eliminar condición"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1500
-#, fuzzy
 msgid "Edit this condition"
-msgstr "Editar esta entrada"
+msgstr "Editar esta condición"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1577
 msgid "Always display this condition"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1616
-#, fuzzy
 msgid "Copy the selected conditions to"
-msgstr "No se ha seleccionado una pregunta como destino para copiar"
+msgstr "Copiar las condiciones seleccionadas a"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1640
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
@@ -3148,15 +3086,13 @@ msgid "Condition"
 msgstr "Condición"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1705
-#, fuzzy
 msgid "Edit condition"
-msgstr "Agregar Condición"
+msgstr "Editar condición"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1709
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1901
-#, fuzzy
 msgid "Add condition"
-msgstr "Agregar Condición"
+msgstr "Agregar condición"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1725
 #, fuzzy
@@ -3168,9 +3104,8 @@ msgid "Scenario"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1748
-#, fuzzy
 msgid "Previous questions"
-msgstr "Probar esta Pregunta"
+msgstr "Pregunta anterior"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1803
 msgid "Comparison operator"
@@ -3194,9 +3129,8 @@ msgid "RegExp"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1841
-#, fuzzy
 msgid "Predefined answers for this question"
-msgstr "Modificar/Agregar respuestas para esta pregunta"
+msgstr "Respuestas predefinidas para esta pregunta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1846
 #, fuzzy
@@ -3204,18 +3138,16 @@ msgid "Constant value"
 msgstr "Continuar"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1863
-#, fuzzy
 msgid "Answers from previous questions"
-msgstr "respuesta(s) para la pregunta"
+msgstr "Respuestas de pregunta anterior"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1875
 msgid "Attributes values from the participant's token"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1895
-#, fuzzy
 msgid "Update condition"
-msgstr "Condiciones:"
+msgstr "Actualizar condición"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1911
 msgid "Clear"
@@ -3244,9 +3176,8 @@ msgid "Group could not be deleted"
 msgstr "No se pudo borrar el grupo."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:288
-#, fuzzy
 msgid "The question could not be added. You must enter at least enter a question code."
-msgstr "No se pudo agregar la pregunta. Debe incluir un código en el campo obligatorio."
+msgstr "No se pudo agregar la pregunta. Debe ingresar al menos un código de pregunta."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:359
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:667
@@ -3555,9 +3486,8 @@ msgid "You have not selected a survey for data-entry."
 msgstr "No ha seleccionado un cuestionario para realizar la entrada de datos."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:146
-#, fuzzy
 msgid "The token you have provided is not valid or has already been used."
-msgstr "La contraseña que se le ha proporcionado no es válida o ya fue usada."
+msgstr "El pase que ha proporcionado no es válida o ya fue usada."
 
 # C:/documentos/www/docs/limesurvey15/admin/dataentry.php:122
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:150
@@ -3570,9 +3500,8 @@ msgstr "Siga el enlace para actualizar"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:159
-#, fuzzy
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr "Este cuestionario es anónimo, no puede actualizar la respuesta"
+msgstr "Este cuestionario utiliza respuestas anónimas, así que no puede actualizar su respuesta."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:186
 msgid "Try again"
@@ -3698,18 +3627,15 @@ msgid "Help about this question"
 msgstr "Ayuda sobre esta pregunta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2163
-#, fuzzy
 msgid "Label 1"
-msgstr "Etiquetas"
+msgstr "Etiqueta 1"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2163
-#, fuzzy
 msgid "Label 2"
-msgstr "Etiquetas"
+msgstr "Etiqueta 2"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2172
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2184
-#, fuzzy
 msgid "Please choose..."
 msgstr "Por favor elija..."
 
@@ -3828,9 +3754,8 @@ msgid "Export Results"
 msgstr "Exportar Resultados"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:163
-#, fuzzy
 msgid "Export responses"
-msgstr "Exportar Respuestas"
+msgstr "Exportar respuestas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:164
 #, fuzzy
@@ -3840,7 +3765,7 @@ msgstr "Filtrado por la Aplicación de Estadísticas"
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:165
 #, fuzzy
 msgid "Single response"
-msgstr "Respuesta Única"
+msgstr "Respuesta única"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:186
 msgid "Columns"
@@ -3855,9 +3780,8 @@ msgid "Full headings"
 msgstr "Cabeceras Completas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:199
-#, fuzzy
 msgid "Question codes"
-msgstr "Códigos de Pregunta"
+msgstr "Códigos de pregunta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:203
 msgid "Convert spaces in question text to underscores"
@@ -3894,9 +3818,8 @@ msgstr "Procesador de texto (OOo Writer, MS Word, etc.) ISO-8859-1"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/export.php:155
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:249
-#, fuzzy
 msgid "Microsoft Excel (All charsets)"
-msgstr "Hojas de cálculo (OOo Calc, MS Excel, etc.) ISO-8859-1"
+msgstr "Microsoft Excel (Todos los juegos de caracteres)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:252
 msgid "(Iconv Library not installed)"
@@ -3913,13 +3836,13 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:284
 #, fuzzy
 msgid "from"
-msgstr "De"
+msgstr "de"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1501
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:285
 #, fuzzy
 msgid "to"
-msgstr "Automático"
+msgstr "hasta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:294
 msgid "Export Data"
@@ -3964,9 +3887,8 @@ msgid "General information in language: "
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1030
-#, fuzzy
 msgid "New Record"
-msgstr "Ver Este Registro"
+msgstr "Nuevo registro"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/exportresults.php:730
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1063
@@ -4002,24 +3924,20 @@ msgstr "Atributo 2"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_r.php:77
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_spss.php:77
-#, fuzzy
 msgid "Export results"
-msgstr "Exportar Resultados"
+msgstr "Exportar resultados"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_r.php:79
-#, fuzzy
 msgid "Export result data to R"
-msgstr "Exportar los resultados a un archivo de comandos SPSS"
+msgstr "Exportar los resultados a un archivo R"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_r.php:80
-#, fuzzy
 msgid "Export R syntax file"
-msgstr "Exportar un Archivo de cuestionario VV"
+msgstr "Exportar archivo de sintaxis R"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_r.php:81
-#, fuzzy
 msgid "Export .csv data file"
-msgstr "Exportar base de datos"
+msgstr "Exportar archivo de datos .cvs"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_r.php:82
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_spss.php:82
@@ -4051,19 +3969,16 @@ msgid "Not Selected"
 msgstr "No seleccionado"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_spss.php:79
-#, fuzzy
 msgid "Export result data to SPSS"
-msgstr "Exportar los resultados a un archivo de comandos SPSS"
+msgstr "Exportar los datos resultado a SPSS"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_spss.php:80
-#, fuzzy
 msgid "Export SPSS syntax file"
-msgstr "Exportar un Archivo de cuestionario VV"
+msgstr "Exportar archivo de sintaxis SPSS"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_spss.php:81
-#, fuzzy
 msgid "Export SPSS data file"
-msgstr "Exportar base de datos"
+msgstr "Exportar archivo de datos SPSS"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/export_data_spss.php:85
 msgid "Open the syntax file in SPSS in Unicode mode"
@@ -4139,28 +4054,24 @@ msgid "Token code for this participant"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:141
-#, fuzzy
 msgid "Name of the survey"
-msgstr "No se encontró ese cuestionario."
+msgstr "Nombre de la encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:142
-#, fuzzy
 msgid "Description of the survey"
-msgstr "respuestas a este cuestionario"
+msgstr "Descripción de la encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:148
-#, fuzzy
 msgid "Name of the survey administrator"
-msgstr "Administrador del cuestionario:"
+msgstr "Nombre del administrador del cuestionario"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:149
 msgid "Email address of the survey administrator"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:150
-#, fuzzy
 msgid "URL of the survey"
-msgstr "No se encontró ese cuestionario."
+msgstr "URL de la encuesta"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:108
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:174
@@ -4173,9 +4084,8 @@ msgid "No replacement variable available for this field"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:505
-#, fuzzy
 msgid "Standard Fields"
-msgstr "Archivo Estándar:"
+msgstr "Campos estándar"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:517
 msgid "Previous Answers Fields"
@@ -4293,9 +4203,8 @@ msgid "Status"
 msgstr "Estado"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:50
-#, fuzzy
 msgid "Full Responses"
-msgstr "respuestas completas"
+msgstr "Respuestas completas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:51
 #, fuzzy
@@ -4472,7 +4381,6 @@ msgstr "Versión Imprimible de la Encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:591
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:592
-#, fuzzy
 msgid "Edit survey settings"
 msgstr "Editar las propiedades de la encuesta"
 
@@ -4485,14 +4393,12 @@ msgstr "Borrar la encuesta actual"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:621
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:628
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:630
-#, fuzzy
 msgid "Reset Survey Logic"
-msgstr "Eliminar Encuesta"
+msgstr "Reiniciar lógica de la encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:625
-#, fuzzy
 msgid "This survey's questions don't use conditions"
-msgstr "Esta encuesta actualmente NO está activa"
+msgstr "Las preguntas de esta encuesta no utilizan condiciones "
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:881
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1041
@@ -4500,15 +4406,13 @@ msgstr "Esta encuesta actualmente NO está activa"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:651
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:652
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1229
-#, fuzzy
 msgid "disabled"
-msgstr "Deshabilitado"
+msgstr "deshabilitado"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:643
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:644
-#, fuzzy
 msgid "Change question group order"
-msgstr "Cambiar el orden de las preguntas"
+msgstr "Cambiar el orden de los grupos de preguntas"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:568
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:569
@@ -4522,9 +4426,8 @@ msgstr "Cambiar el orden de los grupos"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:660
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:661
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2019
-#, fuzzy
 msgid "Export Survey Structure"
-msgstr "Exportar el cuestionario"
+msgstr "Exportar estructura de encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:674
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:675
@@ -4545,41 +4448,35 @@ msgstr "Examinar las Respuestas de esta encuesta"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:717
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:718
 msgid "Token management"
-msgstr ""
+msgstr "Administrar pases"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:722
-#, fuzzy
 msgid "Question groups"
-msgstr "Códigos de Pregunta"
+msgstr "Grupos de preguntas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:744
-#, fuzzy
 msgid "Add new question group to survey"
-msgstr "Agregar nuevo grupo al cuestionario"
+msgstr "Agregar nuevo grupo de preguntas a la encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:749
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:750
-#, fuzzy
 msgid "Hide details of this Survey"
-msgstr "Ocultar detalles del cuestionario"
+msgstr "Ocultar detalles de esta encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:752
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:753
-#, fuzzy
 msgid "Show details of this survey"
-msgstr "Mostrar Detalles del cuestionario"
+msgstr "Mostrar detalles de esta encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:757
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:758
-#, fuzzy
 msgid "Close this survey"
-msgstr "Cerrar este cuestionario"
+msgstr "Cerrar esta encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:788
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2612
-#, fuzzy
 msgid "Answers to this survey are anonymized."
-msgstr "La importación del cuestionario falló."
+msgstr "Las respuestas a esta encuesta son anónimas."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:789
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2611
@@ -4675,9 +4572,8 @@ msgstr "Nº Fax:"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:863
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2497
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3336
-#, fuzzy
 msgid "Start date:"
-msgstr "Idioma inicial:"
+msgstr "Fecha inicial:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:874
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2509
@@ -5256,7 +5152,7 @@ msgstr "Éxito"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3370
 #, fuzzy
 msgid "Registration"
-msgstr "Administración"
+msgstr "Registro"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2530
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2538
@@ -5266,9 +5162,8 @@ msgstr "Administración"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3367
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3368
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3371
-#, fuzzy
 msgid "Save & Load"
-msgstr "Guardar ahora"
+msgstr "Guardar y cargar"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2561
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3381
@@ -5416,17 +5311,15 @@ msgstr "Editar Encuesta - Paso 2 de 2"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2856
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3183
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3185
-#, fuzzy
 msgid "Welcome message:"
-msgstr "Página de Bienvenida"
+msgstr "Mensaje de bienvenida:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2860
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2862
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3187
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3189
-#, fuzzy
 msgid "End message:"
-msgstr "Mensaje:"
+msgstr "Mensaje final:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2864
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3295
@@ -5486,7 +5379,7 @@ msgstr "Crear o Importar una Nueva Encuesta"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2510
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3173
 msgid "This setting cannot be changed later!"
-msgstr "¡Este dato no podrá ser cambiado luego!"
+msgstr "¡Este dato no podrá ser cambiado después!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3178
 msgid "(This field is mandatory.)"
@@ -6845,19 +6738,17 @@ msgid "Date Saved"
 msgstr "Fecha guardada"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:132
-#, fuzzy
 msgid "Quick statistics"
-msgstr "Estadísticas Rápidas"
+msgstr "Estadísticas rápidas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:140
-#, fuzzy
 msgid "Filter settings"
-msgstr "Opciones del Filtro"
+msgstr "Opciones del filtro"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:224
 #, fuzzy
 msgid "General Filters"
-msgstr "Género"
+msgstr "Filtro general"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:234
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:477
@@ -6868,9 +6759,8 @@ msgstr "Número Mayor Que"
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:238
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:483
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:602
-#, fuzzy
 msgid "Number less than"
-msgstr "Número Menor Que"
+msgstr "Número menor que"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:263
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:651
@@ -6892,9 +6782,8 @@ msgstr "Respuestas Que Contienen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1333
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1428
-#, fuzzy
 msgid "Label"
-msgstr "Etiquetas"
+msgstr "Etiqueta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1871
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
@@ -6914,9 +6803,8 @@ msgid "View summary of all available fields"
 msgstr "Ver resumen de todos los campos disponibles"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1889
-#, fuzzy
 msgid "Show graphs"
-msgstr "Mostrar anterior..."
+msgstr "Mostrar gráficas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1895
 msgid "Include:"
@@ -7458,9 +7346,8 @@ msgstr "UTF-8 Unicode"
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:197
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:212
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:225
-#, fuzzy
 msgid "Token control"
-msgstr "Clave de acceso"
+msgstr "Control de claves"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:277
 msgid "Token table could not be created."
@@ -7476,29 +7363,24 @@ msgid "Tokens have not been initialised for this survey."
 msgstr "No se ha inicializado una Tabla de Participantes para este cuestionario."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:346
-#, fuzzy
 msgid "If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
-msgstr "Si inicializa una Tabla de Participantes para esta encuesta, ésta sólo será accesible a usuarios que tengan asignada una contraseña."
+msgstr "Si inicializa una Tabla de Participantes (pases) para esta encuesta, ésta sólo será accesible a usuarios que proporcionen un pase de forma manual o por URL."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:353
-#, fuzzy
 msgid "Note: If you turn on the -Anonymous answers- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Si usted activa la opción de encuesta anónima y crea una tabla de encuestados/as, LimeSurvey marcará las respuestas completadas con una 'Y' en vez de con la fecha y hora para asegurar el anonimato de sus participantes."
+msgstr "Nota: Si activa la opción de \"encuesta anónima\", entonces LimeSurvey marcará los pases utilizados solo con una 'S' en lugar de la fecha/hora para asegurar el anonimato de sus participantes."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:357
-#, fuzzy
 msgid "Do you want to create a token table for this survey?"
 msgstr "¿Desea crear una Tabla de Participantes para esta encuesta?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:360
-#, fuzzy
 msgid "Initialise tokens"
-msgstr "Inicializar Participantes"
+msgstr "Inicializar pases"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:372
-#, fuzzy
 msgid "Restore options"
-msgstr "Opciones de Recuperación"
+msgstr "Restaurar opciones"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:376
 msgid "The following old token tables could be restored:"
@@ -7514,9 +7396,8 @@ msgid "Show token summary"
 msgstr "Sumario del Sistema de LimeSurvey"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:418
-#, fuzzy
 msgid "Display tokens"
-msgstr "Mostrar Participantes"
+msgstr "Mostrar pases"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:426
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2046
@@ -7544,9 +7425,8 @@ msgid "Export tokens to CSV file"
 msgstr "Exportar Participantes a un archivo CSV"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:450
-#, fuzzy
 msgid "Edit email templates"
-msgstr "Exportar Plantilla"
+msgstr "Editar plantillas de correo electrónico"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:452
 msgid "Send email invitation"
@@ -7557,9 +7437,8 @@ msgid "Send email reminder"
 msgstr "Enviar Recordatorio (por email)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:458
-#, fuzzy
 msgid "Generate tokens"
-msgstr "Generar contraseñas"
+msgstr "Generar pases"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:462
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:708
@@ -7567,37 +7446,30 @@ msgid "Drop tokens table"
 msgstr "Borrar Tabla de Participantes"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:490
-#, fuzzy
 msgid "Total records in this token table"
-msgstr "Total de Registros en la Tabla de Participantes"
+msgstr "Total de registros en la Tabla de Participantes"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:497
-#, fuzzy
 msgid "Total with no unique Token"
-msgstr "Total con Contraseña No Única"
+msgstr "Total con pase No Único"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:504
-#, fuzzy
 msgid "Total invitations sent"
-msgstr "Total de Invitaciones Enviadas"
+msgstr "Total de invitaciones enviadas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:509
-#, fuzzy
 msgid "Total surveys completed"
-msgstr "Total de encuestas Completadas"
+msgstr "Total de encuestas completadas"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:548
-#, fuzzy
 msgid "Edit email settings"
-msgstr "Modificar Conjunto de Etiquetas"
+msgstr "Editar opciones de correo electrónico"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:559
-#, fuzzy
 msgid "Base language"
 msgstr "Idioma por omisión"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:561
-#, fuzzy
 msgid "Invitation email subject:"
 msgstr "Asunto del correo de invitación:"
 
@@ -7614,28 +7486,23 @@ msgstr "Usar los valores por defecto"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:566
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:568
-#, fuzzy
 msgid "Invitation email:"
 msgstr "Mensaje de correo de invitación:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:572
-#, fuzzy
 msgid "Email reminder subject:"
 msgstr "Asunto del mensaje recordatorio:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:577
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:579
-#, fuzzy
 msgid "Email reminder:"
 msgstr "Mensaje recordatorio:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:583
-#, fuzzy
 msgid "Confirmation email subject:"
-msgstr "Asunto del mensaje de confirmación"
+msgstr "Asunto del mensaje de confirmación:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:588
-#, fuzzy
 msgid "Confirmation email:"
 msgstr "Mensaje de confirmación"
 
@@ -7717,14 +7584,12 @@ msgid "Search"
 msgstr "Buscar"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:768
-#, fuzzy
 msgid "Records displayed:"
-msgstr "Registros Desplegados:"
+msgstr "Registros desplegados:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:769
-#, fuzzy
 msgid "Starting from:"
-msgstr "Empezando Desde:"
+msgstr "Empezando desde:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:801
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:806
@@ -7743,14 +7608,12 @@ msgid "Sort by: "
 msgstr "Ordenar por: "
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:806
-#, fuzzy
 msgid "First name"
-msgstr "Nombre/s"
+msgstr "Nombre(s)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:810
-#, fuzzy
 msgid "Last name"
-msgstr "Apellido/s"
+msgstr "Apellidos"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:835
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1870
@@ -7778,28 +7641,24 @@ msgid "Valid from"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:855
-#, fuzzy
 msgid "Valid until"
-msgstr "Validación:"
+msgstr "Válido hasta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:899
-#, fuzzy
 msgid "Invalid email address:"
-msgstr "Dirección de correo electrónico"
+msgstr "Dirección de correo electrónico no válida:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:920
 msgid "Do Survey"
 msgstr "Contestar la Encuesta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:927
-#, fuzzy
 msgid "Edit token entry"
-msgstr "Modificar encuestado/a"
+msgstr "Editar pase"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:929
-#, fuzzy
 msgid "Delete token entry"
-msgstr "Borrar encuestado/a"
+msgstr "Eliminar pase"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:943
 #, fuzzy
@@ -7993,9 +7852,8 @@ msgstr "Atributos de los Participantes:"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:65
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:194
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1694
-#, fuzzy
 msgid "<no data>"
-msgstr "Sus datos:"
+msgstr "<sin datos>"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1699
@@ -8004,9 +7862,8 @@ msgid "Save attribute descriptions"
 msgstr "Cambiar el nombre o descripción del cuestionario"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1706
-#, fuzzy
 msgid "Add token attributes"
-msgstr "Atributos de los Participantes:"
+msgstr "Atributos de los Participantes"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1708
 #, php-format
@@ -8018,9 +7875,8 @@ msgid "Please enter the number of user attribute fields you want to add:"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1712
-#, fuzzy
 msgid "Add fields"
-msgstr "Archivo Estándar:"
+msgstr "Agregar campos"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1741
 msgid "Token descriptions were successfully updated."
@@ -8028,9 +7884,9 @@ msgstr ""
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1774
-#, fuzzy, php-format
+#, php-format
 msgid "%s field(s) were successfully added."
-msgstr "¡Se agregó el grupo de usuarios con éxito!"
+msgstr "%s archivo(s) agregado(s) exitosamente."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1775
 msgid "Back to attribute field management."
@@ -8039,9 +7895,8 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1808
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1950
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2021
-#, fuzzy
 msgid "Add or Edit Token Entry"
-msgstr "Agregar o Modificar Encuestado/a"
+msgstr "Agregar o modificar pase"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1501
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1812
@@ -8122,14 +7977,12 @@ msgid "File should be a standard CSV (comma delimited) file with double quotes a
 msgstr "El archivo debe ser CSV estándar codificado en formato UNICODE UTF-8 (atención si usa MS Windows), delimitado por comas y con comillas dobles para textos (por defecto en OpenOffice y Excel). La primera línea debe contener la información de la cabecera (que será eliminada). Los datos deben estar ordenados como «nombre, apellido, correo electrónico, [contraseña], [idioma], [atributo1], [atributo2]»."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2074
-#, fuzzy
 msgid "Mandatory fields:"
-msgstr "Obligatoria:"
+msgstr "Campos obligatorios:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2075
-#, fuzzy
 msgid "Optional fields:"
-msgstr "Pregunta opcional"
+msgstr "Campos opcionales:"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1279
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2090
@@ -8155,26 +8008,26 @@ msgstr "Creando Participantes"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1380
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2243
-#, fuzzy, php-format
+#, php-format
 msgid "%s records in CSV"
-msgstr "Registros en CSV"
+msgstr "%s registros en CSV"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1381
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2244
-#, fuzzy, php-format
+#, php-format
 msgid "%s records met minumum requirements"
-msgstr "Los registros cumplen los requerimientos mínimos"
+msgstr "%s registros cumplen los requerimientos mínimos"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2245
-#, fuzzy, php-format
+#, php-format
 msgid "%s records imported"
-msgstr "Total de registros importados:"
+msgstr "%s registros importados"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1383
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2248
-#, fuzzy, php-format
+#, php-format
 msgid "%s duplicate records removed"
-msgstr "Se eliminaron los registros duplicados"
+msgstr "Se eliminaron %s registros duplicados"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2251
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2260
@@ -8241,9 +8094,8 @@ msgstr ""
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1383
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2536
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2570
-#, fuzzy
 msgid "Filter duplicate records:"
-msgstr "Se eliminaron los registros duplicados"
+msgstr "Filtrar registros duplicados:"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/tokens.php:1567
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2550
@@ -8358,9 +8210,8 @@ msgid "You can use now the following credentials to log into the site:"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:368
-#, fuzzy
 msgid "Click here to log in."
-msgstr "Por favor, escriba su(s) respuesta(s) aquí:"
+msgstr "Clic aquí para iniciar sesión"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:369
 #, php-format
@@ -8385,9 +8236,8 @@ msgid "Username and/or email address already exists."
 msgstr "Ya existe el Nombre de usuario y/o dirección de correo electrónico.!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:413
-#, fuzzy
 msgid "Initial Superadmin cannot be deleted!"
-msgstr "El administrador no puede ser eliminado"
+msgstr "¡El superAdministrador inicial no puede ser eliminado!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:469
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:183
@@ -8424,9 +8274,8 @@ msgstr "¡No puede cambiar sus propios permisos!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:618
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:544
-#, fuzzy
 msgid "Set Template Rights"
-msgstr "Establecer permisos de usuario"
+msgstr "Establecer permisos de plantilla"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:397
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:643
@@ -8468,9 +8317,8 @@ msgid "Set templates that this user may access"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:134
-#, fuzzy
 msgid "Template Name"
-msgstr "Plantilla:"
+msgstr "Nombre de plantilla"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:134
 #, fuzzy
@@ -8478,9 +8326,8 @@ msgid "Allowed"
 msgstr "¿Permitir Guardar?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:152
-#, fuzzy
 msgid "Save Settings"
-msgstr "Opciones"
+msgstr "Guardar opciones"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:187
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:384
@@ -8488,9 +8335,8 @@ msgid "Full name"
 msgstr "Nombre completo"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:259
-#, fuzzy
 msgid "SuperAdministrator"
-msgstr "Administrador del cuestionario:"
+msgstr "SuperAdministrador"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:265
 msgid "Configurator"
@@ -8632,9 +8478,9 @@ msgstr "Para:"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:787
-#, fuzzy, php-format
+#, php-format
 msgid "Email to %s failed. Error Message:"
-msgstr "El envío de correo a {FIRSTNAME} {LASTNAME} ({EMAIL}) falló"
+msgstr "El envío de correo a %s falló. Mensaje de error:"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:690
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:816
@@ -8670,9 +8516,8 @@ msgid "Disable"
 msgstr "Deshabilitar"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/vvexport.php:60
-#, fuzzy
 msgid "File Extension"
-msgstr "Motivo de la Falla:"
+msgstr "Extensión de archivo"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/vvexport.php:65
 msgid "Export Responses"
@@ -8867,9 +8712,8 @@ msgstr "Chino (Tradicional)"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:71
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:121
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
-msgstr "Chino (Tradicional)"
+msgstr "Chino (Tradicional - Taiwan)"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:126
 msgid "Croatian"
@@ -8931,7 +8775,7 @@ msgstr "Griego"
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:187
 #, fuzzy
 msgid "Hindi"
-msgstr "Ayudas"
+msgstr "Hindi"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:116
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:192
@@ -8965,7 +8809,7 @@ msgstr "Japonés"
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:222
 #, fuzzy
 msgid "Korean"
-msgstr "Noruego"
+msgstr "Korean"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:132
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:227
@@ -8992,9 +8836,8 @@ msgid "Norwegian (Nynorsk)"
 msgstr "Noruego (Nynorsk)"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:252
-#, fuzzy
 msgid "Persian"
-msgstr "Versión"
+msgstr "Persa"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:91
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:257
@@ -9073,14 +8916,17 @@ msgstr "Vietnamita"
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr ""
 #~ "Parece como si faltaran algunas tablas o campos en la base de datos."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Revisar Campos de la Base de Datos"
 
 #, fuzzy
 #~ msgid "%s %% complete"
 #~ msgstr "completo"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Agregar un Nuevo Conjunto de Etiquetas"
+
 #~ msgid "Ignore the new record."
 #~ msgstr "Ignorar el nuevo elemento."
 
@@ -9094,6 +8940,7 @@ msgstr "Vietnamita"
 #, fuzzy
 #~ msgid "Enabled"
 #~ msgstr "Habilitar"
+
 #~ msgid "Updated Token"
 #~ msgstr "Encuestado/a actualizado/a"
 
@@ -9109,11 +8956,13 @@ msgstr "Vietnamita"
 #, fuzzy
 #~ msgid "Email not sent!"
 #~ msgstr "¡Mensaje de correo electrónico no enviado!"
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr ""
 #~ "Disculpe, la importación de preguntas está limitada a la misma versión. "
 #~ "La importación falló."
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Modificar la encuesta actual"
 
@@ -9123,8 +8972,10 @@ msgstr "Vietnamita"
 #, fuzzy
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Cambiar el orden de los grupos"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Activar/Modificar los participantes de esta encuesta"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "¿Utilizar Cookies?"
 
@@ -9135,6 +8986,7 @@ msgstr "Vietnamita"
 #, fuzzy
 #~ msgid "Only answer this question %s"
 #~ msgstr "Sólo responda esta pregunta"
+
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -9154,12 +9006,16 @@ msgstr "Vietnamita"
 #, fuzzy
 #~ msgid "Error: You have to enter a code for this question."
 #~ msgstr "Error: Debe ingresar un nombre para este conjunto de etiquetas."
+
 #~ msgid "Group:"
 #~ msgstr "Grupo:"
+
 #~ msgid "Record ID"
 #~ msgstr "Identificación de registro"
+
 #~ msgid "Completion Date"
 #~ msgstr "Fecha de finalización"
+
 #~ msgid "Start Language"
 #~ msgstr "Idioma Inicial"
 
@@ -9220,4 +9076,3 @@ msgstr "Vietnamita"
 #, fuzzy
 #~ msgid "No matching Survey!"
 #~ msgstr "No se encontró ese cuestionario."
-

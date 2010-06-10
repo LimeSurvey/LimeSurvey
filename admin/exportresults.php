@@ -187,13 +187,6 @@ if (!$exportstyle)
         ."\" />\n";
     }
 
-    // Find out if survey results are anonymous
-    if ($thissurvey['private'] == "N")
-    {
-        $query=db_select_tables_like("{$dbprefix}tokens_$surveyid"); //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
-        $result=$connect->Execute($query) or safe_die("Couldn't get table list<br />$query<br />".$connect->ErrorMsg());
-        $tablecount=$result->RecordCount();
-    }
     $exportoutput .= $clang->gT("Choose Columns").":\n";
 
     if ($afieldcount > 255)
@@ -229,10 +222,9 @@ if (!$exportstyle)
     }
     $exportoutput .= "\t</select>\n";
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
-    if (isset($tablecount) && $tablecount > 0) //Do second column
-    {
         //OPTIONAL EXTRAS (FROM TOKENS TABLE)
-        if ($tablecount > 0)
+    // Find out if survey results are anonymous
+    if ($thissurvey['private'] == "N" && tableExists("{$dbprefix}tokens_$surveyid"))
         {
             $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
             .$clang->gT("Choose Token Fields").":"
@@ -256,7 +248,6 @@ if (!$exportstyle)
             }
             $exportoutput .= "</ul></fieldset>\n";
         }
-    }
     $exportoutput .= "</div>\n"
     ."\t<div style='clear:both;'><p><input type='submit' value='".$clang->gT("Export data")."' /></div></form></div>\n";
     return;
@@ -348,27 +339,6 @@ $elang=new limesurvey_lang($explang);
 
 $fieldmap=createFieldMap($surveyid);
 
-// We make the fieldmap alot more accesible by using the SGQA identifier as key
-// so we do not need ArraySearchByKey later
-foreach ($fieldmap as $fieldentry)
-{
-    $outmap[]=$fieldentry['fieldname'];
-    $outmap[$fieldentry['fieldname']]['type']= $fieldentry['type'];
-    $outmap[$fieldentry['fieldname']]['sid']= $fieldentry['sid'];
-    $outmap[$fieldentry['fieldname']]['gid']= $fieldentry['gid'];
-    $outmap[$fieldentry['fieldname']]['qid']= $fieldentry['qid'];
-    $outmap[$fieldentry['fieldname']]['aid']= $fieldentry['aid'];
-    if ($fieldentry['qid']!='')
-    {
-        $qq = "SELECT other FROM {$dbprefix}questions WHERE qid={$fieldentry['qid']} and language='$surveybaselang'";
-        $qr = db_execute_assoc($qq) or safe_die("Error selecting type and lid from questions table.<br />".$qq."<br />".$connect->ErrorMsg());
-        while ($qrow = $qr->FetchRow())
-        {
-            $outmap[$fieldentry['fieldname']]['other']=$qrow['other'];
-        }
-    }
-
-}
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$surveyid";
 if (isset($_POST['colselect']))
@@ -376,7 +346,11 @@ if (isset($_POST['colselect']))
     $selectfields="";
     foreach($_POST['colselect'] as $cs)
     {
-        if ($cs != 'completed')
+        if ($tokenTableExists && $cs == 'token')
+        {
+            // We shouldnt include the token field when we are joining with the token field    
+        } 
+        elseif ($cs != 'completed')
         {
             $selectfields.= db_quote_id($cs).", ";
         }
@@ -516,8 +490,7 @@ for ($i=0; $i<$fieldcount; $i++)
     else
     {
         //Data field heading!
-        //$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-        $fielddata=$outmap[$fieldinfo];
+        $fielddata=$fieldmap[$fieldinfo];
 
         $fqid=$fielddata['qid'];
         $ftype=$fielddata['type'];
@@ -646,20 +619,36 @@ for ($i=0; $i<$fieldcount; $i++)
                     if ($answers == "short") {
                         $fquest .= " [$faid] [$fcode]";
                     } else {
-                        $lq1="SELECT lid FROM {$dbprefix}questions WHERE qid=$fqid";
-                        $lr1=db_execute_assoc($lq1);
-                        while($lrow1=$lr1->FetchRow()) {
-                            $flid = $lrow1['lid'];
-                        }
-                        $lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
-                        $lr = db_execute_assoc($lq);
-                        while ($lrow=$lr->FetchRow())
+                        
+                        $fquery = "SELECT sq.*, q.other"
+                            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
+                            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
+                            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+                            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+                            ." AND q.qid={$fqid}
+                               AND sq.scale_id=0
+                               ORDER BY sq.question_order";
+            
+                            $y_axis_db = db_execute_assoc($fquery);
+            
+                            // Get the X-Axis   
+                            $aquery = "SELECT sq.*
+                                FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
+                                WHERE q.sid=$surveyid 
+                                AND sq.parent_qid=q.qid
+                                AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                                AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                                AND q.qid={$fqid}
+                                AND sq.scale_id=1
+                                ORDER BY sq.question_order";
+              
+                            $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+
+                           while ($arows = $y_axis_db->FetchRow())
                         {
-                            $lq2 = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND code='$fcode' AND language = '$explang'";
-                            $lr2 = db_execute_assoc($lq2);
-                            while ($lrow2=$lr2->FetchRow())
+                                while ($xrows = $x_axis_db->FetchRow())
                             {
-                                $fquest .= " [".$lrow['answer']."] [".$lrow2['title']."]";
+                                $fquest .= " [".strip_tags_full($arows['question'])."] [".strip_tags_full($xrows['question'])."]";
                             }
                         }
                     }
@@ -811,7 +800,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         {
             $convertyto=returnglobal('convertyto');
             foreach($drow as $key=>$dr) {
-                $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
+                $fielddata=$fieldmap[$key];
                 if(isset($fielddata['type']) &&
                 ($fielddata['type'] == "M" ||
                 $fielddata['type'] == "P" ||
@@ -829,7 +818,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         {
             $convertnto=returnglobal('convertnto');
             foreach($drow as $key=>$dr) {
-                $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
+                $fielddata=$fieldmap[$key];
                 if(isset($fielddata['type']) &&
                 ($fielddata['type'] == "M" ||
                 $fielddata['type'] == "P" ||
@@ -853,6 +842,11 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
             foreach ($drow as $rowfield)
             {
                 $rowfield=str_replace("?","-",$rowfield);
+                // Let's enclose in \" if begins by =
+                if (substr($rowfield,0,1) ==  "=")
+                {
+                    $rowfield = "\"".$rowfield."\"";
+                }
                 $sheet->write($rowcounter,$colcounter,$rowfield);
                 $colcounter++;
             }
@@ -906,8 +900,7 @@ elseif ($answers == "long")        //chose complete answers
             $fieldinfo=$field->name;
             if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "startdate" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && (substr($fieldinfo,0,10)!="attribute_") && $fieldinfo != "completed")
             {
-                //				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-                $fielddata=$outmap[$fieldinfo];
+                $fielddata=$fieldmap[$fieldinfo];
                 $fqid=$fielddata['qid'];
                 $ftype=$fielddata['type'];
                 $fsid=$fielddata['sid'];
@@ -969,7 +962,7 @@ elseif ($answers == "long")        //chose complete answers
                             }
                             else
                             {
-                                $fielddata=$outmap[$fieldinfo];
+                                $fielddata=$fieldmap[$fieldinfo];
                                 if (isset($fielddata['title']) && !isset($ftitle)) {$ftitle=$fielddata['title'].":";}
                             }
                     } // switch
@@ -1179,27 +1172,25 @@ elseif ($answers == "long")        //chose complete answers
                     break;
                 case "F":
                 case "H":
-                    if (!isset($labelscache[$flid.'|'.$explang.'|'.$drow[$i]]))
+                    if (!isset($labelscache[$fqid.'|'.$explang.'|'.$drow[$i]]))
                     {
-                        $fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND language='$explang' AND code='$drow[$i]'";
+                        $fquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND scale_id=0 AND code='{$drow[$i]}'";
                         $fresult = db_execute_assoc($fquery) or safe_die("ERROR:".$fquery."\n".$qq."\n".$connect->ErrorMsg());
                         if ($fresult)
                         {
                             $frow=$fresult->FetchRow();
-                            if($type == "pdf"){$pdf->intopdf(strip_tags_full($frow['title']));}
-                            $exportoutput .= strip_tags_full($frow['title']);
-                            $labelscache[$flid.'|'.$explang.'|'.$drow[$i]]=strip_tags_full($frow['title']);
+                            if($type == "pdf"){$pdf->intopdf(strip_tags_full($frow['answer']));}
+                            $exportoutput .= strip_tags_full($frow['answer']);
+                            $labelscache[$fqid.'|'.$explang.'|'.$drow[$i]]=strip_tags_full($frow['answer']);
                         }
                     }
                     else
                     {
-                        $exportoutput .=$labelscache[$flid.'|'.$explang.'|'.$drow[$i]];
-                        if($type == "pdf"){$pdf->intopdf($labelscache[$flid.'|'.$explang.'|'.$drow[$i]]);}
+                        $exportoutput .=$labelscache[$fqid.'|'.$explang.'|'.$drow[$i]];
+                        if($type == "pdf"){$pdf->intopdf($labelscache[$fqid.'|'.$explang.'|'.$drow[$i]]);}
                     }
                     break;
                 case "1": //dual scale
-                    $flid=$fielddata['lid'];
-                    $flid1=$fielddata['lid1'];
                     if (mb_substr($fieldinfo,-1) == '0')
                     {
                         $strlabel = "1";
@@ -1255,6 +1246,11 @@ elseif ($answers == "long")        //chose complete answers
             $fli=0;
             foreach ($rowarray as $row)
             {
+                // Let's enclose in \" if begins by =
+                if (substr($row,0,1) ==  "=")
+                {
+                    $row = "\"".$row."\"";
+                }
                 $sheet->write($rowcounter,$fli,$row);
                 $fli++;
             }

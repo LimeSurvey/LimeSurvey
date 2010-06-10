@@ -318,13 +318,14 @@ function lspreview()
    }
     
    var lsid=$('#labelsets').selectedValues();
+   surveyid=$('input[name=sid]').val();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))
    {
        $.ajax({
               url: 'admin.php?action=ajaxlabelsetdetails',
               dataType: 'json',
-              data: {lid:lsid},
+              data: {lid:lsid, sid:surveyid},
               cache: true,
               success: function(json){
                     $("#labelsetpreview").tabs('destroy');
@@ -402,6 +403,7 @@ function dump(arr,level) {
 
 function transferlabels()
 {
+   surveyid=$('input[name=sid]').val(); 
    if ($(this).attr('id')=='btnlsreplace')
    {
        var lsreplace=true;
@@ -414,13 +416,15 @@ function transferlabels()
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
           dataType: 'json',
-          data: {lid:lsid},
+          data: {lid:lsid, sid:surveyid},
           cache: true,
           success: function(json){
                 languages=langs.split(';');   
                 var x;
+                var defaultdata_labels = null;
                 for (x in languages)
                 {
+                    lang_x_found_in_label=false;
                     if (assessmentvisible)
                     {
                         assessment_style='';
@@ -438,17 +442,20 @@ function transferlabels()
                     {
 
                         language=json[y];
-                        defaultdata=language[languages[0]][0];
+                        var lsrows = new Array();
                         for (z in language)
                         {
-                            if (z==languages[y])
+                            if (z == languages[0])
                             {
+                                defaultdata_labels=language[languages[0]];
+                            }
+
+                            if (z==languages[x])
+                            {
+                                lang_x_found_in_label = true;
                                 lsrows=language[z][0];
                             }
-                            else
-                            {
-                                lsrows=defaultdata;
-                            }
+
                             var k;
                             for (k in lsrows)
                             {
@@ -457,11 +464,20 @@ function transferlabels()
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+lsrows[k].code+'</td><td><input type="text" size="100" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                             }
                         }
                     }                    
+                    if (lang_x_found_in_label === false)
+                    {
+                        lsrows=defaultdata_labels[0];
+                        var k=0;
+                        for (k in lsrows)
+                        {
+                            tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+lsrows[k].code+'</td><td><input type="text" size="100" class="answer" value="'+lsrows[k].title+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                        }
+                    }
                     if (lsreplace) {
                         $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
                     }

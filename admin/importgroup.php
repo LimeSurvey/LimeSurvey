@@ -102,7 +102,7 @@ unlink($sFullFilepath);
 */
 function CSVImportGroup($sFullFilepath, $newsid)    
 {
-    global $dbprefix, $connect;       
+    global $dbprefix, $connect, $clang;       
     $aLIDReplacements=array();
     $aQIDReplacements = array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
     $aGIDReplacements = array();
@@ -549,9 +549,10 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 else
                 continue; // a problem with this question record -> don't consider
 
-                // replace the qid or remove it if needed
-                if (isset($aQIDReplacements[$oldqid]))
-                $questionrowdata['qid'] = $aQIDReplacements[$oldqid];
+                if (isset($aQIDReplacements[$questionrowdata['qid']]))
+                {
+                    $questionrowdata['qid']=$aQIDReplacements[$questionrowdata['qid']];
+                }
                 else
 				{
                     $oldqid = $questionrowdata['qid'];
@@ -559,17 +560,15 @@ function CSVImportGroup($sFullFilepath, $newsid)
 				}
 
             // Save the following values - will need them for proper conversion later                if ((int)$questionrowdata['lid']>0)
-                if ((int)$questionrowdata['lid']>0)
+                unset($oldlid1); unset($oldlid2);
+                if ((isset($questionrowdata['lid']) && $questionrowdata['lid']>0))
                 {
-                  $oldquestion['lid1']=(int)$questionrowdata['lid'];
+                    $oldlid1=$questionrowdata['lid'];
                 }
-                if ((int)$questionrowdata['lid1']>0)
+                if ((isset($questionrowdata['lid1']) && $questionrowdata['lid1']>0))
                 {
-                  $oldquestion['lid2']=(int)$questionrowdata['lid1'];
+                    $oldlid2=$questionrowdata['lid1'];
                 }
-                $oldquestion['oldtype']=$questionrowdata['type'];
-                
-                // Unset label set IDs and convert question types
                 unset($questionrowdata['lid']);
                 unset($questionrowdata['lid1']);
                 if ($questionrowdata['type']=='W')
@@ -580,7 +579,8 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 {
                     $questionrowdata['type']='L';
                 }      
-                $oldquestion['newtype']=$questionrowdata['type'];                
+
+                if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;}                
 
                 $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
 
@@ -591,10 +591,16 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
                 $newvalues=array_values($questionrowdata);
                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                                
+                if (isset($questionrowdata['qid']))
+                {
                 db_switchIDInsert('questions',true);
-                $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
-                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error")."Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
-                db_switchIDInsert('questions',false);
+                }
+
+                $tablename=$dbprefix.'questions';
+                $qinsert = $connect->GetInsertSQL($tablename,$questionrowdata);
+                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+
                 $results['questions']++;
 
                 //GET NEW QID  .... if is not done before and we count a question if a new qid is required
@@ -609,24 +615,23 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 }
                 $qtypes = getqtypelist("" ,"array");   
                 $aSQIDReplacements=array();
+                db_switchIDInsert('questions',false);         
         
-                
                 // Now we will fix up old label sets where they are used as answers
-                if ((isset($oldquestion['lid1']) || isset($oldquestion['lid2'])) && ($qtypes[$oldquestion['newtype']]['answerscales']>0 || $qtypes[$oldquestion['newtype']]['subquestions']>1))
+                if ((isset($oldlid1) || isset($oldlid2)) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
                 {
-                    $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldquestion['lid1']]} and language='{$questionrowdata['language']}'";
+                    $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldlid1]} and language='{$questionrowdata['language']}'";
                     $oldlabelsresult=db_execute_assoc($query);
                     while($labelrow=$oldlabelsresult->FetchRow())
                     {
                         if (in_array($labelrow['language'],$aLanguagesSupported))
                         {
                             
-                            if ($qtypes[$oldquestion['newtype']]['subquestions']<2)
+                            if ($qtypes[$questionrowdata['type']]['subquestions']<2)
                             {
-                                $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id)
-                                            VALUES ({$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",0)"; 
-                                $qres = $connect->Execute($qinsert) or safe_die ("Error: Failed to insert answer <br />{$qinsert}<br />".$connect->ErrorMsg());
-                                $results['answers']++;                        
+                                $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value)
+                                        VALUES ({$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).")"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer (lid1) <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                             }
                             else
                             {
@@ -634,40 +639,36 @@ function CSVImportGroup($sFullFilepath, $newsid)
                                    $fieldname='qid,';
                                    $data=$aSQIDReplacements[$labelrow['code'].'_'.$saveqid].',';
                                 }  
-                                else{
+                                else
+                                {
                                    $fieldname='' ;
                                    $data='';
                                 }
                                 
-                                $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname,parent_qid,title,question,question_order,language,scale_id)
-                                            VALUES ($data, {$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",0)"; 
-                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
-                                $results['questions']++;
+                                $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname parent_qid,title,question,question_order,language,scale_id,type, sid, gid)
+                                        VALUES ($data{$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})"; 
+                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                                 if ($fieldname=='')
                                 {
                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                                 }
-                                
                             }
                         }
                     }
-                        
-                    if (isset($oldquestion['lid2']) && $qtypes[$oldquestion['newtype']]['answerscales']>1)
+                    if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1)
                     {
-                        $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldquestion['lid2']]} and language='{$questionrowdata['language']}'";
+                        $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldlid2]} and language='{$questionrowdata['language']}'";
                         $oldlabelsresult=db_execute_assoc($query);
                         while($labelrow=$oldlabelsresult->FetchRow())
                         {
-                            if (in_array($labelrow['language'],$aLanguagesSupported)){
                                 $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value,scale_id)
-                                            VALUES ($newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",1)"; 
-                                $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                                    VALUES ({$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).",1)"; 
+                            $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert answer (lid2)<br />\n$qinsert<br />\n".$connect->ErrorMsg());
                             }
                         }
                     }
                 }        
             }
-        }
 
         //Do answers
         $results['subquestions']=0;
@@ -696,6 +697,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     $answerrowdata["assessment_value"]=(int)$answerrowdata["code"];
                 }
                 // Convert default values for single select questions
+            $questiontemp=$connect->GetRow('select type,gid from '.db_table_name('questions').' where qid='.$answerrowdata["qid"]);
+            $oldquestion['newtype']=$questiontemp['type'];
+            $oldquestion['gid']=$questiontemp['gid'];
                 if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!'))
                 {                    
                     $insertdata=array();                      
@@ -714,12 +718,12 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion
                 {
                     $questionrowdata=array();
-                    if (isset($aSQIDReplacements[$answerrowdata['code']])){
-                       $questionrowdata['qid']=$aSQIDReplacements[$answerrowdata['code']];
+                if (isset($aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']])){
+                   $questionrowdata['qid']=$aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']];
                     }  
-                    $questionrowdata['parent_qid']=$answerrowdata['qid'];
+                $questionrowdata['parent_qid']=$answerrowdata['qid'];;
                     $questionrowdata['sid']=$newsid;
-                    $questionrowdata['gid']=$newgid;
+                $questionrowdata['gid']=$oldquestion['gid'];      
                     $questionrowdata['title']=$answerrowdata['code'];
                     $questionrowdata['question']=$answerrowdata['answer'];
                     $questionrowdata['question_order']=$answerrowdata['sortorder'];
@@ -728,11 +732,16 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     
                     $tablename=$dbprefix.'questions'; 
                     $query=$connect->GetInsertSQL($tablename,$questionrowdata);                         
-                    $qres = $connect->Execute($query) or safe_die ("Error: Failed to insert questions <br />{$qinsert}<br />".$connect->ErrorMsg());
+                if (isset($questionrowdata['qid'])) db_switchIDInsert('questions',true);
+                $qres = $connect->Execute($query) or safe_die ("Error: Failed to insert subquestion <br />{$query}<br />".$connect->ErrorMsg());
                     if (!isset($questionrowdata['qid']))
                     {
-                       $aSQIDReplacements[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                   $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                     }
+                else
+                {
+                    db_switchIDInsert('questions',false);    
+                }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
                     if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P'))
@@ -762,7 +771,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
         // ANSWERS is DONE
 
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
-        fixsortorderGroups();
+        fixSortOrderGroups($surveyid);
         //... and for the questions inside the groups
         // get all group ids and fix questions inside each group
         $gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)

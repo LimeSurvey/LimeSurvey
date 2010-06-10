@@ -410,7 +410,7 @@ if (!$tokenexists) //If no tokens table exists
             .$clang->gT("Initialise tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y")."\" />\n";
         }
         $tokenoutput .= "<input type='submit' value='"
-        .$clang->gT("No, thanks.")."' onclick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\" /></div>\n";
+        .$clang->gT("No, thanks.")."' onclick=\"window.open('{$scriptname}?sid=$surveyid', '_top')\" /></div>\n";
         // Do not offer old postgres token tables for restore since these are having an issue with missing index
         if ($tcount>0 && $databasetype!='postgres' &&
         ($sumrows5['edit_survey_property'] ||
@@ -815,7 +815,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t<input type='hidden' name='subaction' value='search' />\n"
 	."\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	."\t</form>\n"
-	."<form id='tokenrange' action='$homeurl/admin.php'>\n"
+	."<form id='tokenrange' action='{$scriptname}'>\n"
 	."<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
 	."<font size='1' face='verdana'>"
 	."&nbsp;<label for='limit'>".$clang->gT("Records displayed:")."</label> <input type='text' size='4' value='$limit' id='limit' name='limit' />"
@@ -1089,7 +1089,7 @@ if ($subaction == "browse" || $subaction == "search")
 	                .$clang->gT("Send invitation email to this entry")
 	                ."' alt='"
 	                .$clang->gT("Send invitation email to this entry")
-	                ."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
+	                ."' onclick=\"window.open('{$$scriptname}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
 	            }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            {
@@ -1097,7 +1097,7 @@ if ($subaction == "browse" || $subaction == "search")
 	                .$clang->gT("Send reminder email to this entry")
 	                ."' alt='"
 	                .$clang->gT("Send reminder email to this entry")
-	                ."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />";
+	                ."' onclick=\"window.open('{$scriptname}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />";
 	            }
 	            $tokenoutput .= "\n</td>\n";
 	        }
@@ -1122,13 +1122,13 @@ if ($subaction == "browse" || $subaction == "search")
 	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
 	    ."' alt='"
 	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-	    ."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+	    ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
 	    . "&nbsp;"
 	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
 	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
 	    ."' alt='"
 	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-	    ."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+	    ."' onclick=\"window.open('{$scriptname}/?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
 	    . "</td>\n"
 	    . "</tr>\n";
 	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
@@ -2830,7 +2830,7 @@ function form_csv_upload($error=false)
 
 function formldap($error=false)
 {
-    global $surveyid, $tokenoutput, $ldap_queries, $clang;
+    global $surveyid, $tokenoutput, $ldap_queries, $clang, $scriptname;
 
     if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
 
@@ -2847,7 +2847,7 @@ function formldap($error=false)
         $tokenoutput .= '<br /><br /><br />';
     }
     else {
-        $tokenoutput .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?action=tokens' method='post'>";
+        $tokenoutput .= "<form method='post' action='{$scriptname}?action=tokens' method='post'>";
         $tokenoutput .= '<p>';
         $tokenoutput .= $clang->gT("Select the LDAP query you want to run:")."<br />";
         $tokenoutput .= "<select name='ldapQueries' style='length=35'><br />";

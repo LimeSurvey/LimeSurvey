@@ -380,7 +380,7 @@ function db_upgrade($oldversion) {
         // -Move all 'labels' that are answers to the answers table
         // -Transscribe the default values where applicable
         // -Move default values from answers to questions
-      //  upgrade_tables143();
+        upgrade_tables143();
 
         mssql_drop_constraint('default_value','answers');
         modify_database("", "ALTER TABLE [prefix_answers] DROP COLUMN [default_value]"); echo $modifyoutput; flush();

@@ -19,6 +19,7 @@
  */
 
 include_once('login_check.php');
+include('html_functions.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 

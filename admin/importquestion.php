@@ -112,7 +112,7 @@ unlink($sFullFilepath);
 */
 function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 {
-    global $dbprefix, $connect;
+    global $dbprefix, $connect, $clang;
     $aLIDReplacements=array();
     $aQIDReplacements=array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
     $aSQIDReplacements=array();     
@@ -525,9 +525,9 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     }
                     else
                     {
-                        if (isset($aSQIDReplacements[$answerrowdata['code']])){
+                        if (isset($aSQIDReplacements[$labelrow['code']])){
                            $fieldname='qid,';
-                           $data=$aSQIDReplacements[$answerrowdata['code']].',';
+                           $data=$aSQIDReplacements[$labelrow['code']].',';
                            db_switchIDInsert('questions',true);
                         }  
                         else{
@@ -535,12 +535,12 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                            $data='';
                         }
                         
-                        $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname,parent_qid,title,question,question_order,language,scale_id)
-                                    VALUES ($data, $newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",0)"; 
+                        $qinsert = "insert INTO ".db_table_name('questions')." ($fieldname sid,gid,parent_qid,title,question,question_order,language,scale_id,type)
+                                    VALUES ($data $newsid,$newgid,$newqid,".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",1,".db_quoteall($oldquestion['newtype']).")"; 
                         $qres = $connect->Execute($qinsert) or safe_die ("Error: Failed to insert subquestion <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                         if ($fieldname=='')
                         {
-                           $aSQIDReplacements[$answerrowdata['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
+                           $aSQIDReplacements[$labelrow['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");   
                         }
                         else
                         { 
@@ -722,7 +722,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     if (!in_array($sBaseLanguage,$importlanguages))
     {
         $results['fatalerror'] = $clang->gT("The languages of the imported question file must at least include the base language of this survey.");
-        return;
+        return $results;
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
     /*

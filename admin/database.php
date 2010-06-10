@@ -197,7 +197,7 @@ if(isset($surveyid))
         {
             $gid = "";
             $groupselect = getgrouplist($gid);
-            fixsortorderGroups();
+            fixSortOrderGroups($surveyid);
         }
         else
         {
@@ -229,7 +229,7 @@ if(isset($surveyid))
         {
             $gid = "";
             $groupselect = getgrouplist($gid);
-            fixsortorderGroups();
+            fixSortOrderGroups($surveyid);
         }
         else
         {
@@ -380,7 +380,7 @@ if(isset($surveyid))
 
         $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE qid=$postqid");
         $qtproperties=getqtypelist('','array');
-        if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subqestions']==0)
+        if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subquestions']==0)
         {
             for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
             {
@@ -737,6 +737,41 @@ if(isset($surveyid))
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
 
             }
+            if (returnglobal('copysubquestions') == "Y")
+            {
+                $aSQIDMappings=array();
+                $q1 = "SELECT * FROM {$dbprefix}questions WHERE parent_qid="
+                . returnglobal('oldqid')
+                . " ORDER BY question_order";
+                $r1 = db_execute_assoc($q1);  // Checked
+                $tablename=$dbprefix.'questions';
+                while ($qr1 = $r1->FetchRow())
+                {
+                    $qr1['parent_qid']=$newqid;
+                    if (isset($aSQIDMappings[$qr1['qid']]))
+                    {
+                        $qr1['qid']=$aSQIDMappings[$qr1['qid']];
+                        db_switchIDInsert($tablename,true); 
+                    }
+                    else
+                    {
+                        $oldqid=$qr1['qid'];
+                        unset($qr1['qid']);
+                    }
+                    $sInsertSQL = $connect->GetInsertSQL($tablename,$qr1);
+                    $ir1 = $connect->Execute($sInsertSQL);   // Checked
+                    if (isset($qr1['qid']))
+                    {
+                        db_switchIDInsert($tablename,false); 
+                    }
+                    else
+                    {
+                        $aSQIDMappings[$oldqid]=$connect->Insert_ID($tablename,"qid");
+                    }
+
+                }
+            }
+
             if (returnglobal('copyanswers') == "Y")
             {
                 $q1 = "SELECT * FROM {$dbprefix}answers WHERE qid="
@@ -745,21 +780,6 @@ if(isset($surveyid))
                 $r1 = db_execute_assoc($q1);  // Checked
                 while ($qr1 = $r1->FetchRow())
                 {
-                    if ($filterxsshtml)
-                    {
-                        require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                        $myFilter = new InputFilter('','',1,1,1);
-                        $qr1['answer']=$myFilter->process($qr1['answer']);
-                    }
-                    else
-                    {
-                        $qr1['answer'] = html_entity_decode($qr1['answer'], ENT_QUOTES, "UTF-8");
-                    }
-
-
-                    // Fix bug with FCKEditor saving strange BR types
-                    $qr1['answer']=fix_FCKeditor_text($qr1['answer']);
-
                     $qr1 = array_map('db_quote', $qr1);
                     $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder, language) "
                     . "VALUES ('$newqid', '{$qr1['code']}', "

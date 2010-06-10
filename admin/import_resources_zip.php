@@ -414,7 +414,7 @@ if ($action == "templateupload")
     // If dangerous content is unzipped
     // then no one will know the path
     $extractdir=tempdir($tempdir);
-    $basedestdir = $templaterootdir;
+    $basedestdir = $usertemplaterootdir;
     $newdir=str_replace('.','',strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
     $destdir=$basedestdir.'/'.$newdir.'/';
 

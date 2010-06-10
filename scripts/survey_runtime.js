@@ -4,7 +4,7 @@ $(document).ready(function()
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
-	prepCellAdapters();
+	prepareCellAdapters();
     if (typeof(focus_element) != 'undefined') 
     {
         $(focus_element).focus();
@@ -59,72 +59,33 @@ function match_regex(testedstring,str_regexp)
 	return pattern.test(testedstring)
 }
 
-function cellAdapter(evt,src)
-{
-	var eChild = null, eChildren = src.getElementsByTagName('INPUT');
-	var curCount = eChildren.length;
-	//This cell contains multiple controls, don't know which to set.
-	if (eChildren.length > 1)
-	{
-		//Some cells contain hidden fields
-		for (i = 0; i < eChildren.length; i++)
-		{
-			if ( ( eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox' ) && eChild == null)
-				eChild = eChildren[i];
-			else if ( ( eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox' ) && eChild != null)
-			{
-				//A cell with multiple radio buttons -- unhandled
-				return;
-			}
             
-		}
-	}
-	else eChild = eChildren[0];
 
-	if (eChild && eChild.type == 'radio')
+function prepareCellAdapters()
 	{
-		eChild.checked = true;
-		//Make sure the change propagates to the conditions handling mechanism
-		if(eChild.onclick) eChild.onclick(evt);
-		if(eChild.onchange) eChild.onchange(evt);
-	}
-	else if (eChild && eChild.type == 'checkbox')
+	$('TD INPUT[type=radio],TD INPUT[type=checkbox]').each( function(){
+       $(this).parents('TD').click(function(evt){
+          if($('INPUT[type=radio],INPUT[type=checkbox]',this).length==1)
 	{
-		eChild.checked = !eChild.checked;
-		//Make sure the change propagates to the conditions handling mechanism
-		if(eChild.onclick) eChild.onclick(evt);
-		if(eChild.onchange) eChild.onchange(evt);
-	}
-}
-
-function prepCellAdapters()
+              $('INPUT[type=radio],INPUT[type=checkbox]',this).each( function()
 {
-	if (!DOM1) return;
-	var formCtls = document.getElementsByTagName('INPUT');
-	var ptr = null;
-	var foundTD = false;
-	for (var i = 0; i < formCtls.length; i++)
+                if (this.type == 'radio')
 	{
-		ptr = formCtls[i];
-		if (ptr.type == 'radio' || ptr.type == 'checkbox')
+                    this.checked = true;
+                    this.click();
+                    this.change();
+                }
+                else if (this.type == 'checkbox')
 		{
-			foundTD = false;
-			while (ptr && !foundTD)
-			{
-				if(ptr.nodeName == 'TD')
-				{
-					foundTD = true;
-					ptr.onclick = 
-						function(evt){
-							return cellAdapter(evt,this);
+                    this.checked = !this.checked;
+                    this.click();
+                    this.change();
 						};
-					continue;
+              });
 				}
-				ptr = ptr.parentNode;	
+       }); 
+    });
 			}	
-		}
-	}
-}
 
 function addHiddenField(theform,thename,thevalue)
 {

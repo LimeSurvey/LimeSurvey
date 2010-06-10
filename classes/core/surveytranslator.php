@@ -125,7 +125,12 @@ function getLanguageDetails($codetosearch)
 
 function getLanguageData($orderbynative=false) {
     global $clang;
+    static $supportedLanguages;
+    static $result = array();
 
+    if (isset($result[$orderbynative])) return $result[$orderbynative];
+
+    if (!isset($supportedLanguages)) {
     // Albanian
     $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
     $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
@@ -212,7 +217,7 @@ function getLanguageData($orderbynative=false) {
 
     // Dutch
     $supportedLanguages['nl-informal']['description'] = $clang->gT('Dutch Informal');
-    $supportedLanguages['nl-informal']['nativedescription'] = 'Nederlands (Du)';
+    $supportedLanguages['nl-informal']['nativedescription'] = 'Nederlands (informeel)';
     $supportedLanguages['nl-informal']['rtl'] = false;
     $supportedLanguages['nl-informal']['dateformat'] = 2;
 
@@ -450,6 +455,7 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
     $supportedLanguages['vi']['rtl'] = false;
     $supportedLanguages['vi']['dateformat'] = 5;
+    }
 
     if ($orderbynative)
     {
@@ -459,6 +465,8 @@ function getLanguageData($orderbynative=false) {
     {
         uasort($supportedLanguages,"user_sort");
     }
+
+    $result[$orderbynative] = $supportedLanguages;
 
     Return $supportedLanguages;
 }

@@ -127,7 +127,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         {
             // ClearAll link is only relevant for survey with printanswers enabled
             // in other cases the session is cleared at submit time
-            $completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+            $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
         }
     }
     else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -275,7 +275,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
     sendcacheheaders();
     doHeader();
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+    echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
     echo "\n\n<!-- START THE SURVEY -->\n";
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
     if ($thissurvey['private'] == "Y")
@@ -388,7 +388,6 @@ foreach ($_SESSION['fieldarray'] as $ia)
     if ($ia[4] == "|")
         $upload_file = TRUE;
 } //end iteration
-
 
 if ($show_empty_group) {
     $percentcomplete = makegraph($_SESSION['totalsteps']+1, $_SESSION['totalsteps']);
@@ -658,7 +657,6 @@ END;
         }
 
 
-
         if (!isset($oldcq) || !$oldcq)
         {
             $oldcq = $cd[2];
@@ -889,14 +887,22 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
     $array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
     unset($qattributes);
     if (!isset($appendj)) {$appendj="";}
-
     foreach ($array_filterqs as $attralist)
     {
         $qbase = $surveyid."X".$gid."X".$attralist['qid'];
         $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
-        if ($attralist['type'] == "M")
+        if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
+            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $OrigQuestion = $tqresult->FetchRow();
+            
+            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
+            {
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+            } else {
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE parent_qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by title;";
+            } 
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
@@ -904,10 +910,10 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 if($fansrows['other']== "Y") $other="Y";
                 if(strpos($array_filter_types, $fansrows['type']) === false) {} else
                 {
-                    $fquestans = "java".$qfbase.$fansrows['code'];
-                    $tbody = "javatbd".$qbase.$fansrows['code'];
-                    $dtbody = "tbdisp".$qbase.$fansrows['code'];
-                    $tbodyae = $qbase.$fansrows['code'];
+                    $fquestans = "java".$qfbase.$fansrows['title'];
+                    $tbody = "javatbd".$qbase.$fansrows['title'];
+                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
+                    $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
                     $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
                     $appendj .= "\t{\n";
@@ -921,7 +927,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     // This line resets the text fields in the hidden row
                     $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
                     // This line resets any radio group in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+                    $appendj .= "\t\t$('#$tbody input[type=checkbox]').attr('checked', false); ";
                     $appendj .= "\t}\n";
                 }
             }
@@ -954,14 +960,18 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
     {
         $qbase = $surveyid."X".$gid."X".$attralist['qid'];
         $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
-        if ($attralist['type'] == "M")
+        if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type, {$dbprefix}questions.other
-					   FROM {$dbprefix}answers, {$dbprefix}questions 
-					   WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid 
-					   AND {$dbprefix}answers.qid='".$attralist['qid']."' 
-					   AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' 
-					   ORDER BY code;";
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
+            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $OrigQuestion = $tqresult->FetchRow();
+            
+            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
+            {
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+            } else {
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE parent_qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by title;";
+            } 
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
@@ -969,10 +979,10 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 if($fansrows['other']== "Y") $other="Y";
                 if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
                 {
-                    $fquestans = "java".$qfbase.$fansrows['code'];
-                    $tbody = "javatbd".$qbase.$fansrows['code'];
-                    $dtbody = "tbdisp".$qbase.$fansrows['code'];
-                    $tbodyae = $qbase.$fansrows['code'];
+                    $fquestans = "java".$qfbase.$fansrows['title'];
+                    $tbody = "javatbd".$qbase.$fansrows['title'];
+                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
+                    $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
                     $appendj .= "\tif (\n";
                     $appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";

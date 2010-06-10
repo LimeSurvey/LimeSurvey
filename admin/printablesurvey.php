@@ -380,7 +380,7 @@ while ($degrow = $degresult->FetchRow())
     while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} // Get table output into array
 
     // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    usort($deqrows, 'CompareGroupThenTitle');
+    usort($deqrows, 'GroupOrderThenQuestionOrder');
 
     if ($degrow['description'])
     {
@@ -609,8 +609,8 @@ while ($degrow = $degresult->FetchRow())
                             case "F":
                             case "H":
                             case "K":
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                 //$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
                                 while ($ansrow=$ansresult->FetchRow())
@@ -621,8 +621,8 @@ while ($degrow = $degresult->FetchRow())
 
                             case "1": // dual: (Label 1), (Label 2)
                                 $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                 //$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
 
@@ -643,8 +643,8 @@ while ($degrow = $degresult->FetchRow())
                                 break;
                             case ":":
                             case ";": //multi flexi: ( answer [label] )
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
                                 while ($ansrow=$ansresult->FetchRow())
                                 {
@@ -660,8 +660,8 @@ while ($degrow = $degresult->FetchRow())
                                 }
                                 break;
                             case "R": // (Rank 1), (Rank 2)... TIBO
-                                $thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-                                $rankid=$thiscquestion[0]['aid'];
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $rankid=$thiscquestion['aid'];
                                 $answer_section=" (".$clang->gT("RANK")." $rankid)";
                                 break;
                             default: // nothing to add
@@ -741,7 +741,7 @@ while ($degrow = $degresult->FetchRow())
                 if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
             }
 
-            $qidattributes=getQuestionAttributes($deqrow['qid']);
+            $qidattributes=getQuestionAttributes($deqrow['qid'],$deqrow['type']);
 
             if ($qidattributes['page_break']!=0)
             {
@@ -865,7 +865,7 @@ while ($degrow = $degresult->FetchRow())
                     }
                     if ($deqrow['other'] == 'Y')
                     {
-                        $qidattributes = getQuestionAttributes($deqrow['qid']);
+                        $qidattributes = getQuestionAttributes($deqrow['qid'],$deqrow['type']);
                         if(trim($qidattributes["other_replace_text"])=='')
                         {$qidattributes["other_replace_text"]="Other";}
                         //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
@@ -937,7 +937,7 @@ while ($degrow = $degresult->FetchRow())
                         $question['QUESTION_TYPE_HELP'] = sprintf($clang->gT('Please choose *at most* %s answers:' ),'<span class="num">'.$maxansw.'</span>');
                         if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT('Please choose *at most* %s answers:' ),$maxansw),"U");}
                     }
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY question_order";
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
                     $mearesult = db_execute_assoc($meaquery);
                     $meacount = $mearesult->RecordCount();
@@ -1010,7 +1010,7 @@ while ($degrow = $degresult->FetchRow())
                         $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw.'</span> '.$clang->gT("answers and provide a comment:");
                         if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers and provide a comment:"),"U");}
                     }
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
                     $mearesult = db_execute_assoc($meaquery);
                     //				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
@@ -1067,7 +1067,7 @@ while ($degrow = $degresult->FetchRow())
                     }
                     $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer(s) here:");
 
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
                     $longest_string = 0;
                     while ($mearow = $mearesult->FetchRow())
@@ -1139,7 +1139,7 @@ while ($degrow = $degresult->FetchRow())
 
                     // ==================================================================
                 case "A":  //ARRAY (5 POINT CHOICE)
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
@@ -1193,7 +1193,7 @@ while ($degrow = $degresult->FetchRow())
 
                     // ==================================================================
                 case "B":  //ARRAY (10 POINT CHOICE)
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
 
                     $mearesult = db_execute_assoc($meaquery);
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
@@ -1230,7 +1230,7 @@ while ($degrow = $degresult->FetchRow())
 
                     // ==================================================================
                 case "C":  //ARRAY (YES/UNCERTAIN/NO)
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
@@ -1271,7 +1271,7 @@ while ($degrow = $degresult->FetchRow())
                     break;
 
                 case "E":  //ARRAY (Increase/Same/Decrease)
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
@@ -1343,7 +1343,7 @@ while ($degrow = $degresult->FetchRow())
                     } else {
                         $checkboxlayout=false;
                     }
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
                     if ($checkboxlayout === false)
                     {
@@ -1365,7 +1365,7 @@ while ($degrow = $degresult->FetchRow())
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                     $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-                    $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
                     $fresult = db_execute_assoc($fquery);
                     $fcount = $fresult->RecordCount();
                     $fwidth = "120";
@@ -1425,13 +1425,13 @@ while ($degrow = $degresult->FetchRow())
                     // ==================================================================
                 case ";": //ARRAY (Multi Flexible) (text)
                     $headstyle="style='padding-left: 20px; padding-right: 7px'";
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
 
                     $question['QUESTION_TYPE_HELP'] = array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                     $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-                    $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
                     $fresult = db_execute_assoc($fquery);
                     $fcount = $fresult->RecordCount();
                     $fwidth = "120";
@@ -1480,7 +1480,7 @@ while ($degrow = $degresult->FetchRow())
                     // ==================================================================
                 case "F": //ARRAY (Flexible Labels)
 
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
 
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
@@ -1560,7 +1560,7 @@ while ($degrow = $degresult->FetchRow())
                     $rightheader= $qidattributes['dualscale_headerB'];
 
                     $headstyle = 'style="padding-left: 20px; padding-right: 7px"';
-                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, question";
+                    $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
 
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");

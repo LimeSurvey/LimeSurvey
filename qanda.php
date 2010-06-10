@@ -156,8 +156,12 @@ function retrieveJSidname($cd,$currentgid=null)
 {
     global $dbprefix, $connect, $dropdownthreshold;
 
-    preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[5],$matchGID);
-    $questiongid=$matchGID[1];
+    //preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[2],$matchFields);
+    //^^^^^does not seem to work, explode below should
+    $matchFields = explode('X', $cd[2], 3);
+    $questiongid=$matchFields[1];
+    $questionFieldpart=$matchFields[2];
+
 
     if ($cd[4] == "L")
     {
@@ -169,7 +173,8 @@ function retrieveJSidname($cd,$currentgid=null)
     {
         if (!isset($currentgid) || $questiongid == $currentgid)
         { // if question is on same page then field is fvalue_XXXX
-        $idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
+        //$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1); // broken when ranking more than 9 items
+            $idname="fvalue_".$questionFieldpart;
         }
         else
         { // If question is on another page then field if javaXXXX
@@ -301,7 +306,7 @@ function setman_ranking($ia)
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
     $ansresult = $connect->Execute($ansquery);  //Checked
     $anscount = $ansresult->RecordCount();
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['max_answers'])!='') {
         $max_answers = $qidattributes['max_answers'];
@@ -326,7 +331,7 @@ function setman_questionandcode($ia)
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+    $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     $sqresult = db_execute_assoc($subquestionquery); //Checked
 
     while ($subquestionrow = $sqresult->FetchRow())
@@ -376,7 +381,7 @@ function setman_multiflex($ia)
         $lset[]=$ans2row;
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     while ($ansrow = $ansresult->FetchRow())
     {
         //Don't add to mandatory list if the row is filtered out with the array_filter option
@@ -414,40 +419,62 @@ function setman_questionandcode_multiscale($ia)
     global $dbprefix, $connect;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
-    while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-    $ansresult = db_execute_assoc($ansquery); //Checked
-
-    $lquery = "SELECT q.qid FROM {$dbprefix}labels l, {$dbprefix}questions q WHERE l.lid = q.lid AND q.qid=".$ia[0]." AND l.language='".$_SESSION['s_lang']."' AND q.language='".$_SESSION['s_lang']."'";
-    $labelsresult = db_execute_assoc($lquery);   //Checked
-    $labelscount = $labelsresult->RowCount();
-
-    $lquery1 = "SELECT q.qid FROM {$dbprefix}labels l, {$dbprefix}questions q WHERE l.lid = q.lid1 AND q.qid=".$ia[0]." AND l.language='".$_SESSION['s_lang']."' AND q.language='".$_SESSION['s_lang']."'";
-    $labelsresult1 = db_execute_assoc($lquery1);   //Checked
-    $labelscount1 = $labelsresult1->RowCount();
-
-    while ($ansrow = $ansresult->FetchRow())
+    while ($qrow = $qresult->FetchRow())
     {
-        if ($labelscount > 0)
-        {
-            $mandatorys[]=$ia[1].$ansrow['code']."#0";
-            $mandatoryfns[]=$ia[1];
-        }
-        else
-        {
-            $mandatorys[]=$ia[1].$ansrow['code'];
-            $mandatoryfns[]=$ia[1];
-        }
-        // second label set
+        $other = $qrow['other'];
+    }
 
-        if ($labelscount1 > 0)
+    // Get Subquestions
+    $subquery="SELECT * "
+            ."FROM {$dbprefix}questions "
+            ."WHERE parent_qid={$ia[0]} "
+            ."AND language='".$_SESSION['s_lang']."' "
+            ."ORDER BY question_order";
+    $subresult = db_execute_assoc($subquery); //Checked
+
+    // Get Answer Scale 1
+    $ans1query="SELECT qid "
+            ."FROM {$dbprefix}answers "
+            ."WHERE qid={$ia[0]} "
+            ."AND scale_id=0 "
+            ."AND language='".$_SESSION['s_lang']."' "
+            ."ORDER BY sortorder";
+    $ans1result = db_execute_assoc($ans1query);   //Checked
+    $ans1count = $ans1result->RowCount();
+
+    // Get Answer Scale 2    
+    $ans2query="SELECT qid "
+            ."FROM {$dbprefix}answers "
+            ."WHERE qid={$ia[0]} "
+            ."AND scale_id=1 "
+            ."AND language='".$_SESSION['s_lang']."' "
+            ."ORDER BY sortorder";
+    $ans2result = db_execute_assoc($ans2query);   //Checked
+    $ans2count = $ans2result->RowCount();
+
+    while ($subrow = $subresult->FetchRow())
+    {
+        // first answer set     
+        if ($ans1count > 0)
         {
-            $mandatorys[]=$ia[1].$ansrow['code']."#1";
+            $mandatorys[]=$ia[1].$subrow['title']."#0";
             $mandatoryfns[]=$ia[1];
         }
         else
         {
-            $mandatorys[]=$ia[1].$ansrow['code'];
+            $mandatorys[]=$ia[1].$subrow['title'];
+            $mandatoryfns[]=$ia[1];
+        }
+
+        // second answer set
+        if ($ans2count > 0)
+        {
+            $mandatorys[]=$ia[1].$subrow['title']."#1";
+            $mandatoryfns[]=$ia[1];
+        }
+        else
+        {
+            $mandatorys[]=$ia[1].$subrow['title'];
             $mandatoryfns[]=$ia[1];
         }
     }
@@ -457,7 +484,6 @@ function setman_questionandcode_multiscale($ia)
         $mandatorys[]=$ia[1]."other";
         $mandatoryfns[]=$ia[1];
     }
-
     return array($mandatorys, $mandatoryfns);
 }
 
@@ -503,7 +529,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
     if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     //echo "<pre>";print_r($qidattributes);echo "</pre>";
     //Create the question/answer html
 
@@ -866,7 +892,7 @@ function mandatory_message($ia)
                     $qrow = $qresult->FetchRow();
                     if ($qrow['other']=='Y')
                     {
-                        $qidattributes=getQuestionAttributes($ia[0],'P');
+                        $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
                         if (trim($qidattributes['other_replace_text'])!='')
                         {
                             $othertext=$qidattributes['other_replace_text'];
@@ -1298,7 +1324,8 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
     )
     {
         $selected = getArrayFiltersForQuestion($ia[0]);
-        if (!empty($selected) && !in_array($ansrow['code'],$selected))
+        if (isset($ansrow['code'])) $ansrow['title'] = $ansrow['code'];
+        if (!empty($selected) && !in_array($ansrow['title'],$selected))
         {
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'";
             $htmltbody2 .= ($class !== null) ? " class='$class'": "";
@@ -1360,10 +1387,8 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
     )
     {
         $selected = getArrayFilterExcludesForQuestion($ia[0]);
-        //echo "<pre>"; print_r($selected); echo "<hr />-->"; print_r($ansrow['code']); echo "</pre>";
-        //if(in_array($ansrow['code'], $selected)) echo "Hi there".$ansrow['code'];
-        //if(!empty($selected)) echo "notempty ".$ansrow['code'];
-        if (!empty($selected) && !in_array($ansrow['code'],$selected))
+        if (isset($ansrow['code'])) $ansrow['title'] = $ansrow['code'];  
+        if (!empty($selected) && !in_array($ansrow['title'],$selected))
         {
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
             $hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
@@ -1396,7 +1421,7 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
 
     if (trim($qidattributes['time_limit'])!='')
@@ -1458,7 +1483,7 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
     global $clang, $js_header_includes, $css_header_includes, $thissurvey;
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
 
@@ -1695,7 +1720,7 @@ function do_list_dropdown($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
@@ -1913,7 +1938,7 @@ function do_list_dropdown($ia)
     }
 
     $checkotherscript = "";
-    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
+    if (isset($other) && $other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
     {
         $checkotherscript = "\n<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -1965,7 +1990,7 @@ function do_list_radio($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     unset ($defexists);
 
@@ -2178,7 +2203,7 @@ function do_list_radio($ia)
 
     $checkotherscript = "";
 
-    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
+    if (isset($other) && $other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
     {
         $checkotherscript = "<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -2225,7 +2250,7 @@ function do_listwithcomment($ia)
 
     $answer = '';
 
-    $qidattributes=getQuestionAttributes($ia[0],'O');
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
     //question attribute random order set?
@@ -2398,7 +2423,7 @@ function do_ranking($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer="";
     if ($qidattributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
@@ -2650,7 +2675,23 @@ function do_multiplechoice($ia)
 {
     global $dbprefix, $clang, $connect, $thissurvey;
 
-    if ($ia[8] == 'Y')
+    // Find out if any questions have attributes which reference this questions
+    // based on value of attribute. This could be array_filter and array_filter_exclude
+    
+    $attribute_ref=false;
+    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."' and (attribute='array_filter' or attribute='array_filter_exclude')";
+    $qaresult = db_execute_assoc($qaquery);     //Checked
+    while($qarow = $qaresult->FetchRow())
+    {
+        $qquery = "SELECT qid FROM ".db_table_name('questions')." WHERE sid=".$thissurvey['sid']." AND scale_id=0 AND qid=".$qarow['qid'];
+        $qresult = db_execute_assoc($qquery);     //Checked
+        if ($qresult->RecordCount() > 0)
+        {
+            $attribute_ref = true;    
+        }
+    }
+      
+    if ($ia[8] == 'Y' || $attribute_ref === true)
     {
         $checkconditionFunction = "checkconditions";
     }
@@ -2659,7 +2700,7 @@ function do_multiplechoice($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
@@ -2746,11 +2787,11 @@ function do_multiplechoice($ia)
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = $connect->GetAll($ansquery);  //Checked
@@ -2952,7 +2993,7 @@ function do_multiplechoice($ia)
             // even if the -other- input field is still empty
             // This will be differetn for the minansw script
             // ==> hence the 1==2
-            if (1==2 || $qidattributes['other_comment_mandatory']==1)
+            if (1==2 || getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
             {
                 $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
             }
@@ -2968,7 +3009,7 @@ function do_multiplechoice($ia)
             // so in fact I need to assume that other_comment_mandatory is set to true
             // We only count the -other- as valid if both the cbox and the other text is filled
             // ==> hence the 1==1
-            if (1==1 || $qidattributes['other_comment_mandatory']==1)
+            if (1==1 || getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
             {
                 $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
             }
@@ -3104,7 +3145,21 @@ function do_multiplechoice_withcomments($ia)
 {
     global $dbprefix, $clang, $thissurvey;
 
-    if ($ia[8] == 'Y')
+    $attribute_ref=false;
+    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value='".strtolower($ia[2])."'";
+    $qaresult = db_execute_assoc($qaquery);     //Checked
+    $attribute_ref=false;
+    while($qarow = $qaresult->FetchRow())
+    {
+        $qquery = "SELECT qid FROM ".db_table_name('questions')." WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
+        $qresult = db_execute_assoc($qquery);     //Checked
+        if ($qresult->RecordCount() > 0)
+        {
+            $attribute_ref = true;    
+        }
+    }
+    
+    if ($ia[8] == 'Y' || $attribute_ref == true)
     {
         $checkconditionFunction = "checkconditions";
     }
@@ -3113,7 +3168,7 @@ function do_multiplechoice_withcomments($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['other_numbers_only']==1)
     {
@@ -3174,7 +3229,7 @@ function do_multiplechoice_withcomments($ia)
     if ($qidattributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->RecordCount()*2;
@@ -3197,6 +3252,7 @@ function do_multiplechoice_withcomments($ia)
         $myfname = $ia[1].$ansrow['title'];
         $trbc='';
         /* Check for array_filter */
+        
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
 
         if($label_width < strlen(trim(strip_tags($ansrow['question']))))
@@ -3225,7 +3281,7 @@ function do_multiplechoice_withcomments($ia)
         {
             $answer_main .= CHECKED;
         }            
-        $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type)' "
+        $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
         . $ansrow['question']."</label>\n";
 
@@ -3274,7 +3330,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($maxansw > 0)
         {
-            if ($qidattributes['other_comment_mandatory']==1)
+            if (getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
             {
                 $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3286,7 +3342,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($minansw > 0)
         {
-            if ($qidattributes['other_comment_mandatory']==1)
+            if (getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
             {
                 $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3350,8 +3406,10 @@ function do_multiplechoice_withcomments($ia)
         //$answer = $minanswscript . $answer;
     }
 
+    //getQuestionAttributeValue($questionAttributeArray, $attributeName)
     $checkotherscript = "";
-    if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1)
+    //if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
+    if ($other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1) //TIBO
     {
         // Multiple options with 'other' is a specific case as the checkbox isn't recorded into DB
         // this means that if it is cehcked We must force the end-user to enter text in the input
@@ -3530,7 +3588,7 @@ function do_multipleshorttext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
     $answer='';
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['numbers_only']==1)
     {
@@ -3578,7 +3636,7 @@ function do_multipleshorttext($ia)
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);    //Checked
@@ -3705,7 +3763,7 @@ function do_multiplenumeric($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributes($ia[0],'K');
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
     //Must turn on the "numbers only javascript"
     $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\'.\')>0 && String.fromCharCode(getkey(event))==\'.\') return false; return goodchars(event,\'0123456789.\')"';
@@ -3883,7 +3941,7 @@ function do_multiplenumeric($ia)
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);	//Checked
@@ -4190,7 +4248,7 @@ function do_numerical($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['prefix'])!='') {
         $prefix=$qidattributes['prefix'];
     }
@@ -4258,7 +4316,7 @@ function do_shortfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['numbers_only']==1)
     {
@@ -4373,7 +4431,7 @@ function do_longfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-   	$qidattributes=getQuestionAttributes($ia[0]);
+   	$qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['maximum_chars'])!='')
     {
@@ -4453,7 +4511,7 @@ function do_hugefreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['maximum_chars'])!='')
     {
@@ -4590,7 +4648,7 @@ function do_gender($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     $answer = "<ul>\n"
     . "\t<li>\n"
@@ -4666,7 +4724,7 @@ function do_array_5point($ia)
     }
 
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['answer_width'])!='')
     {
@@ -4836,7 +4894,7 @@ function do_array_10point($ia)
     $qresult = db_execute_assoc($qquery);      //Checked
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -4971,7 +5029,7 @@ function do_array_yesnouncertain($ia)
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);	//Checked
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -5126,7 +5184,7 @@ function do_array_increasesamedecrease($ia)
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -5301,7 +5359,7 @@ function do_array_flexible($ia)
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -5650,7 +5708,7 @@ function do_array_multitext($ia)
     $qresult = db_execute_assoc($qquery);
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
 
     if ($qidattributes['numbers_only']==1)
@@ -5867,7 +5925,7 @@ function do_array_multiflexi($ia)
     $qresult = db_execute_assoc($qquery);
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
         $maxvalue=$qidattributes['multiflexible_max'];
         if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
@@ -5944,7 +6002,7 @@ function do_array_multiflexi($ia)
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);
         $anscount = $ansresult->RecordCount();
@@ -6163,7 +6221,7 @@ function do_array_flexiblecolumns($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);    //Checked
     while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -6188,7 +6246,7 @@ function do_array_flexiblecolumns($ia)
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);  //Checked
         $anscount = $ansresult->RecordCount();
@@ -6323,7 +6381,7 @@ function do_array_flexible_dual($ia)
     $other = $connect->GetOne($qquery);    //Checked
     $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-    $qidattributes=getQuestionAttributes($ia[0]);
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['use_dropdown']==1)
     {
@@ -6401,7 +6459,7 @@ function do_array_flexible_dual($ia)
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);   //Checked
         $anscount = $ansresult->RecordCount();
@@ -6704,7 +6762,7 @@ function do_array_flexible_dual($ia)
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order, question";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);    //Checked
         $anscount = $ansresult->RecordCount();

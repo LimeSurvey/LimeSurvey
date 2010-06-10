@@ -62,7 +62,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     ."\t<div class='menubar-left'>\n"
     ."\t<a href='$scriptname' title=\"".$clang->gTview("Return to survey administration")."\" >"
     ."<img name='Administration' src='$imagefiles/home.png' align='left' alt='".$clang->gT("Return to survey administration")."' /></a>"
-    ."\t<img src='$imagefiles/blank.gif' width='11' height='20' alt='' />\n"
+    ."\t<img src='$imagefiles/blank.gif' width='11' height='20' align='left' alt='' />\n"
     ."\t<img src='$imagefiles/seperator.gif' align='left' alt='' />\n"
     ."\t<img src='$imagefiles/blank.gif' width='76' align='left' height='20' alt='' />\n"
     ."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
@@ -804,8 +804,8 @@ function fixorder($lid) {
     $lslanguages=explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage)
     {
-        $query = "SELECT lid, code, title FROM ".db_table_name('labels')." WHERE lid=? and language='?' ORDER BY sortorder, code";
-        $result = db_execute_num($query, array($lid,$lslanguage));
+        $query = "SELECT lid, code, title, sortorder FROM ".db_table_name('labels')." WHERE lid=? and language=? ORDER BY sortorder, code";
+        $result = db_execute_num($query, array($lid,$lslanguage)) or safe_die("Can't read labels table: $query // (lid=$lid, language=$lslanguage) ".$connect->ErrorMsg());
         $position=0;
         while ($row=$result->FetchRow())
         {

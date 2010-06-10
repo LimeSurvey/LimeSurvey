@@ -317,7 +317,7 @@ ul.cols-4 li,ul.cols-4-ul,table.cols-4 td {
 }
 
 ul.cols-5 li,ul.cols-5-ul,table.cols-5 td {
-  width: 19%;
+  width: 17%;
 }
 
 ul.cols-6 li,ul.cols-6-ul,table.cols-6 td {
@@ -329,7 +329,7 @@ ul.cols-7 li,ul.cols-7-ul,table.cols-7 td {
 }
 
 ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
-  width: 11.5%;
+  width: 11%;
 }
 
 .list-dropdown-flexible p.question {
