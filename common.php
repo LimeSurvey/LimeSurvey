@@ -2620,7 +2620,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 if ($style == "full")
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']="filecount (".$arow['question'].")";
+                    $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
                     //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];

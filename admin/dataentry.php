@@ -42,6 +42,7 @@
  ! - List (Dropdown)
  : - Array (Flexible Labels) multiple drop down
  ; - Array (Flexible Labels) multiple texts
+ | - File Upload Question
 
 
  */
@@ -899,6 +900,45 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         }
                         $dataentryoutput .= "</table>\n";
                         $fname=prev($fnames);
+                        break;
+                    case "|": //FILE UPLOAD
+                        $dataentryoutput .= "<table>\n";
+                        if (!isset($fname['aid']))
+                        {//file metadata
+                            $metadata = json_decode($idrow[$fname['fieldname']], true);
+                            for ($i = 0; $i < $idrow[$fname['fieldname']]['max_files'], isset($metadata[$i]); $i++)
+                            {
+                                $dataentryoutput .= '<tr><td width="25%">Title   </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>'
+                                                    .'<tr><td>           Comment </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>'
+                                                    .'<tr><td>           Filename</td><td><input   readonly  class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_filename_'.$i.'" name="filename" size=50 value="'.htmlspecialchars($metadata[$i]["filename"]).'" /></td></tr>';
+                            }
+                            $dataentryoutput .= '<tr><td>debug</td><td><input type="text" id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" size=50 value="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></tr>';
+                            $dataentryoutput .= '</table>';
+                            $dataentryoutput .= '<script type="text/javascript">
+                                                     $(function() {
+                                                        $(".'.$fname['fieldname'].'").keyup(function() {
+                                                            var filecount = $("#'.$fname['fieldname'].'_filecount").val();
+                                                            var jsonstr = "[";
+                                                            var i;
+                                                            for (i = 0; i < filecount; i++)
+                                                            {
+                                                                if (i != 0)
+                                                                    jsonstr += ",";
+                                                                jsonstr += \'{"title":"\'+$("#'.$fname['fieldname'].'_title_"+i).val()+\'",\';
+                                                                jsonstr += \'"comment":"\'+$("#'.$fname['fieldname'].'_comment_"+i).val()+\'",\';
+                                                                jsonstr += \'"filename":"\'+$("#'.$fname['fieldname'].'_filename_"+i).val()+\'"}\';;
+                                                            }
+                                                            jsonstr += "]";
+                                                            $("#'.$fname['fieldname'].'").val(jsonstr);
+
+                                                        });
+                                                     });
+                                                 </script>';
+                        }
+                        else
+                        {//file count
+                            $dataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></table>';
+                        }
                         break;
                     case "N": //NUMERICAL TEXT
                         $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
