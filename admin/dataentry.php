@@ -2068,19 +2068,19 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
                         $dataentryoutput .= "<table border='0'>\n";
-                        $meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
                         $mearesult = db_execute_assoc($meaquery);
                         while ($mearow = $mearesult->FetchRow())
                         {
                             $dataentryoutput .= "\t<tr>\n";
                             $dataentryoutput .= "<td>\n";
-                            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
+                            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['title']}' value='Y'";
                             //if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-                            $dataentryoutput .= " />{$mearow['answer']}\n";
+                            $dataentryoutput .= " />{$mearow['question']}\n";
                             $dataentryoutput .= "</td>\n";
                             //This is the commments field:
                             $dataentryoutput .= "<td>\n";
-                            $dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
+                            $dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}comment' size='50' />\n";
                             $dataentryoutput .= "</td>\n";
                             $dataentryoutput .= "\t</tr>\n";
                         }
