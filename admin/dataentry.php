@@ -231,6 +231,40 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     { // can't add '' in Date column
                         // Do nothing
                     }
+                    else if ($irow['type'] == "|")
+                    {
+                        $metadata = array();
+                        $maxfiles = $connect->GetOne("SELECT value FROM ".db_table_name('question_attributes')." WHERE qid={$irow['qid']} AND attribute='max_num_of_files'");
+
+                        $destination_path = getcwd().DIRECTORY_SEPARATOR."../upload/tmp/";
+
+                        for ($i = 0; $i < $maxfiles; $i++)
+                        {
+                            $myfile = $fieldname."_myfile_".$i;
+                            $title  = $fieldname."_title_".$i;
+                            $comment= $fieldname."_comment_".$i;
+
+                            if ($_FILES[$myfile]['tmp_name'] == NULL)
+                                continue;
+
+                            $target_path = $destination_path . basename( $_FILES[$myfile]['name']);
+
+                            if (move_uploaded_file($_FILES[$myfile]['tmp_name'], $target_path))
+                            {
+                                $filename = $_FILES[$myfile]['name'];
+                                $metadata[]  = array(
+                                    "title" => "$_POST[$title]",
+                                    "comment" => "$_POST[$comment]",
+                                    "filename" => "$filename"
+                                );
+                            }
+                        }
+                        $columns[] .= db_quote_id($fieldname);
+                        $values[] .= db_quoteall(json_encode($metadata), true);
+
+                        $columns[] .= db_quote_id($fieldname."_filecount");
+                        $values[] .= db_quoteall(count($metadata), true);
+                    }
                     else
                     {
                         $columns[] .= db_quote_id($fieldname);
@@ -1386,7 +1420,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
         $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
 
-        $dataentryoutput .= "<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
+        $dataentryoutput .= "<form action='$scriptname?action=dataentry' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>\n"
         ."<table class='data-entry-tbl' cellspacing='0'>\n"
         ."\t<tr>\n"
         ."\t<td colspan='3' align='center'>\n"
@@ -2108,19 +2142,19 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
                         $dataentryoutput .= "<table border='0'>\n";
-                        $meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
                         $mearesult = db_execute_assoc($meaquery);
                         while ($mearow = $mearesult->FetchRow())
                         {
                             $dataentryoutput .= "\t<tr>\n";
                             $dataentryoutput .= "<td>\n";
-                            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
+                            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['title']}' value='Y'";
                             //if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-                            $dataentryoutput .= " />{$mearow['answer']}\n";
+                            $dataentryoutput .= " />{$mearow['question']}\n";
                             $dataentryoutput .= "</td>\n";
                             //This is the commments field:
                             $dataentryoutput .= "<td>\n";
-                            $dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
+                            $dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}comment' size='50' />\n";
                             $dataentryoutput .= "</td>\n";
                             $dataentryoutput .= "\t</tr>\n";
                         }
@@ -2136,6 +2170,21 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $dataentryoutput .= "\t</tr>\n";
                         }
                         $dataentryoutput .= "</table>\n";
+                        break;
+                    case "|":
+                        $dataentryoutput .= "<table border='0'>\n";
+
+                        $maxfiles = $connect->GetOne("SELECT value FROM ".db_table_name('question_attributes')." WHERE qid={$deqrow['qid']} AND attribute='max_num_of_files'");
+                        for ($i = 0; $i < $maxfiles; $i++)
+                        {
+                            $dataentryoutput .= '<tr>
+                                                    <td align="center"><input type="text" name="'.$fieldname.'_title_'.$i  .'" id="title_'.$i  .'" maxlength="100" /></td>
+                                                    <td align="center"><input type="text" name="'.$fieldname.'_comment_'.$i.'" id="comment_'.$i.'" maxlength="100" /></td>
+                                                    <td align="center"><input type="file" name="'.$fieldname.'_myfile_'.$i .'" id="file_'.$i.'" />          </input></td>
+                                                 </tr>';
+                        }
+                        $dataentryoutput .= '<td align="center"><input type="hidden" name="'.$fieldname.'" value=""/></input></td>';
+                        $dataentryoutput .= "</table>";
                         break;
                     case "N": //NUMERICAL TEXT
                         $dataentryoutput .= "\t<input type='text' name='$fieldname' onkeypress=\"return goodchars(event,'0123456789.,')\" />";
