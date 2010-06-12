@@ -1112,9 +1112,15 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 {
     // TODO: check that surveyid is set and that so is $baselang
     //Show Question Details
+	//Count answer-options for this question
     $qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."' ORDER BY sortorder, answer";
     $qrr = $connect->Execute($qrq); //Checked
     $qct = $qrr->RecordCount();
+	//Count sub-questions for this question
+	$sqrq= "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
+	$sqrr= $connect->Execute($sqrq); //Checked
+	$sqct = $sqrr->RecordCount();
+	
     $qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
     $qrresult = db_execute_assoc($qrquery) or safe_die($qrquery."<br />".$connect->ErrorMsg()); //Checked
     $questionsummary = "<div class='menubar'>\n";
@@ -1328,9 +1334,18 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             . "<font face='verdana' size='1' color='red'>"
             . $clang->gT("Warning").": ". $clang->gT("You need to add answer options to this question")." "
             . "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
-            . $clang->gT("Edit/add answer options for this question")."' name='EditThisQuestionAnswers'"
+            . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'"
             . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editansweroptions', '_top')\" /></font></td></tr>\n";
         }
+		if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
+		{
+           $questionsummary .= "<tr ><td></td><td align='left'>"
+            . "<font face='verdana' size='1' color='red'>"
+            . $clang->gT("Warning").": ". $clang->gT("You need to add subquestions to this question")." "
+            . "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
+            . $clang->gT("Edit subquestions for this question")."' name='EditThisQuestionAnswers'"
+            . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editsubquestions', '_top')\" /></font></td></tr>\n";
+		}
 
         if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
         {
