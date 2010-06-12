@@ -330,23 +330,176 @@ elseif ($subaction == "all")
 
     }
 
-    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
+    //Delete Individual answer using inrow delete buttons/links - checked
+    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked')
     {
         $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value     
         $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
         $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }
-
-    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0)
+    // Marked responses -> deal with the whole batch of marked responses
+    else if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0)
     {
-        foreach ($_POST['markedresponses'] as $iResponseID)
+        // Delete the marked responses - checked
+        if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
         {
-            $iResponseID=(int)$iResponseID; // sanitize the value
-            $query="delete FROM $surveytable where id={$iResponseID}";
-            $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked  
+            foreach ($_POST['markedresponses'] as $iResponseID)
+            {
+                $iResponseID = (int)$iResponseID; // sanitize the value
+                $query="delete FROM $surveytable where id={$iResponseID}";
+                $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked
+            }
+        }
+        // Download all the marked file bundles - checked
+        else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
+        {
+            $fieldmap = createFieldMap($surveyid, 'full');
+
+            $files = array();
+            $filelist = array();
+            foreach ($fieldmap as $field)
+            {
+                if ($field['type'] == "|" && !isset($field['aid']))
+                {
+                    $filequestion[] = $field['fieldname'];
+                }
+            }
+
+            $initquery = "SELECT ";
+            $count = 0;
+            foreach ($filequestion as $question)
+            {
+                if ($count == 0)
+                    $initquery .= " $question ";
+                else
+                    $initquery .= ", $question ";
+                $count++;
+            }
+
+            foreach ($_POST['markedresponses'] as $iResponseID)
+            {
+                $iResponseID=(int)$iResponseID; // sanitize the value
+
+                $query = $initquery." FROM $surveytable WHERE id={$iResponseID}";
+                $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
+                $metadata = array();
+                while ($metadata = $filearray->FetchRow())
+                {
+                    foreach ($metadata as $data)
+                    {
+                        $phparray = json_decode($data, true);
+                        for ($i = 0; isset($phparray[$i]); $i++)
+                            $filelist[] = $phparray[$i]['filename'];
+                    }
+                }
+            }
+            // Now, zip all the files in the filelist
+            $tmpdir = getcwd()."/../upload/tmp";
+
+            $zip = new ZipArchive();
+            $zipfilename = "uploadedfiles.zip";
+            if (file_exists($tmpdir."/".$zipfilename))
+                unlink($tmpdir."/".$zipfilename);
+
+            if ($zip->open($tmpdir."/".$zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
+            {
+                exit("Cannot Open <$zipfilename>\n");
+            }
+
+            foreach ($filelist as $file)
+                $zip->addFile($tmpdir."/".$file, basename($file));
+
+            $zip->close();
+
+            if (file_exists($tmpdir."/".$zipfilename)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename='.basename($zipfilename));
+                header('Content-Transfer-Encoding: binary');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($tmpdir."/".$zipfilename));
+                ob_clean();
+                flush();
+                readfile($tmpdir."/".$zipfilename);
+                //unlink($tmpdir."/".$zipfilename);
+                exit;
+            }
         }
     }
-    
+    // Download individual file bundle via the row download icon - checked
+    else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] != '' && $_POST['downloadfile'] !== true)
+    {
+        $_POST['downloadfile'] = (int) $_POST['downloadfile'];
+        $fieldmap = createFieldMap($surveyid, 'full');
+
+        $files = array();
+        $filelist = array();
+        foreach ($fieldmap as $field)
+        {
+            if ($field['type'] == "|" && !isset($field['aid']))
+            {
+                $filequestion[] = $field['fieldname'];
+            }
+        }
+        $query = "SELECT ";
+        $count = 0;
+        foreach ($filequestion as $question)
+        {
+            if ($count == 0)
+                $query .= " $question ";
+            else
+                $query .= ", $question ";
+            $count++;
+        }
+        $query .= " FROM $surveytable WHERE id={$_POST['downloadfile']}";
+        $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
+        while ($metadata = $filearray->FetchRow())
+        {
+            foreach ($metadata as $data)
+            {
+                $phparray = json_decode($data, true);
+                for ($i = 0; isset($phparray[$i]); $i++)
+                {
+                    $filelist[] = $phparray[$i]['filename'];
+                }
+            }
+        }
+
+        // Now, zip all the files in the filelist
+        $tmpdir = getcwd()."/../upload/tmp";
+        
+        $zip = new ZipArchive();
+        $zipfilename = "uploadedfiles.zip";
+        if (file_exists($tmpdir."/".$zipfilename))
+            unlink($tmpdir."/".$zipfilename);
+
+        if ($zip->open($tmpdir."/".$zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
+        {
+            exit("Cannot Open <$zipfilename>\n");
+        }
+
+        foreach ($filelist as $file)
+            $zip->addFile($tmpdir."/".$file, basename($file));
+        
+        $zip->close();
+        if (file_exists($tmpdir."/".$zipfilename)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename='.basename($zipfilename));
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($tmpdir."/".$zipfilename));
+            ob_clean();
+            flush();
+            readfile($tmpdir."/".$zipfilename);
+            //unlink($tmpdir."/".$zipfilename);
+            exit;
+        }
+    }
     
     $fields=createFieldMap($surveyid,'full');
 
@@ -421,7 +574,8 @@ elseif ($subaction == "all")
     $tableheader .= "\t</tr></thead>\n\n";
     $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
                    ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
-                   ."\t</tr></tfoot>\n\n";
+                   ."<img id='imgDownloadMarkedFiles' src='$imagefiles/down.png' alt='".$clang->gT('Download Marked Files')."' />"
+                   ."</td></tr></tfoot>\n\n";
 
 
     $start=returnglobal('start');
@@ -606,6 +760,7 @@ elseif ($subaction == "all")
                 ."<td align='center'>
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
+        <a><img id='downloadfile_{$dtrow['id']}' src='$imagefiles/down.png' alt='".$clang->gT('Download these files')."' class='downloadfile'/></a>
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
 
         $i = 0;
@@ -660,6 +815,7 @@ elseif ($subaction == "all")
     <input type='hidden' name='sid' value='$surveyid' />
     <input type='hidden' name='subaction' value='all' />
     <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
+    <input id='downloadfile' name='downloadfile' value='' type='hidden' />
     </form>\n<br />\n";
 }
 else

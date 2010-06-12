@@ -13,6 +13,7 @@
 */
 
 $(document).ready(function(){
+    // Delete individual file
     $(".deleteresponse").click(function(){
         thisid=removechars($(this).attr('id')); 
         answer = confirm(strdeleteconfirm);
@@ -24,19 +25,34 @@ $(document).ready(function(){
         }
     });
 
+    // Delete all marked responses
     $("#imgDeleteMarkedResponses").click(function(){
         if ($('.cbResponseMarker:checked').size()>0)
         {
-            thisid=removechars($(this).attr('id')); 
+            thisid=removechars($(this).attr('id'));
             answer = confirm(strDeleteAllConfirm);
             if (answer==true)
             {
-                $('#deleteanswer').val('');
+                $('#deleteanswer').val('marked');
                 $('#resulttableform').submit();
             }
         }
     });
-    
+
+    // Download individual file bundle
+    $(".downloadfile").click(function() {
+        thisid = removechars($(this).attr('id'));
+        $('#downloadfile').val(thisid);
+        $('.cbResponseMarker').attr('checked', false);
+        $('#resulttableform').submit();
+    });
+
+    // Download all marked files
+    $("#imgDownloadMarkedFiles").click(function() {
+        if ($('.cbResponseMarker:checked').size() > 0)
+            $('#downloadfile').val('marked');
+            $('#resulttableform').submit();
+    });
     
     $("#selectall").click(function(){
         $('.cbResponseMarker').attr('checked',$(this).attr('checked'));
