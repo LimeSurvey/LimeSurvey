@@ -415,6 +415,11 @@ while ($degrow = $degresult->FetchRow())
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // START doing questions
 
+            $qidattributes=getQuestionAttributes($deqrow['qid'],$deqrow['type']);
+            if ($qidattributes['hidden']==1)
+            {
+                continue;
+            }
             //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 
             $printablesurveyoutput = '';
@@ -741,13 +746,13 @@ while ($degrow = $degresult->FetchRow())
                 if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
             }
 
-            $qidattributes=getQuestionAttributes($deqrow['qid'],$deqrow['type']);
 
             if ($qidattributes['page_break']!=0)
             {
                 $question['QUESTION_CLASS'] .=' breakbefore ';
             }
 
+            
             if (isset($qidattributes['maximum_chars']) && $qidattributes['maximum_chars']!='') {
                 $question['QUESTION_CLASS'] ="max-chars-{$qidattributes['maximum_chars']} ".$question['QUESTION_CLASS'];
             }
