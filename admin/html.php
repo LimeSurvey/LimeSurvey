@@ -1415,12 +1415,10 @@ if ($action=='editansweroptions')
     {
         foreach ($anslangs as $language)
         {
-            $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$language."'";
-            $qresult = db_execute_assoc($qquery); //Checked
-            $qrow = $qresult->FetchRow();
-            if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
+            $iAnswerCount = $connect->GetOne("SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$language."'");
+            if ($iAnswerCount == 0)   // means that no record for the language exists in the answers table
             {
-                $qquery = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language,scale_id, assessment_value) (SELECT qid,code,answer,default_value,sortorder, '".$language."','$i', assessment_value FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$baselang."')";
+                $qquery = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,scale_id, assessment_value) (SELECT qid,code,answer,sortorder, '".$language."','$i', assessment_value FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$baselang."')";
                 $connect->Execute($qquery); //Checked
             }
         }
