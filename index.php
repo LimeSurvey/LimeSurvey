@@ -864,32 +864,32 @@ function loadanswers()
                 $clienttoken=$value;
                 $token=$value;
             }
-            if ($column == "saved_thisstep")
+            elseif ($column == "saved_thisstep")
             {
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
             }
-            if ($column =='lastpage' && isset($_GET['token']))
+            elseif ($column =='lastpage' && isset($_GET['token']))
             {
                 if ($value<1) $value=1;
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
             }
-            if ($column =='startlanguage')
+            elseif ($column =='startlanguage')
             {
                 $clang = SetSurveyLanguage( $surveyid, $value);
                 UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
                 UpdateFieldArray();        // to refresh question titles and question text
             }
-            if ($column == "scid")
+            elseif ($column == "scid")
             {
                 $_SESSION['scid']=$value;
             }
-            if ($column == "srid")
+            elseif ($column == "srid")
             {
                 $_SESSION['srid']=$value;
             }
-            if ($column == "datestamp")
+            elseif ($column == "datestamp")
             {
                 $_SESSION['datestamp']=$value;
             }
@@ -915,9 +915,9 @@ function loadanswers()
                     else
                     {
                         $_SESSION[$column]=$value;
-                    }
-                }
-            }
+                    } 
+                }  // if (in_array(   
+            }  // else
         } // foreach
     }
     return true;
