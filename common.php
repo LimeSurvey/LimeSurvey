@@ -4323,11 +4323,7 @@ function getAdminHeader($meta=false)
     {
         $strAdminHeader.=" dir=\"rtl\" ";
     }
-    $strAdminHeader.=">\n<head>\n"
-    . "<!--[if lt IE 7]>\n"
-    . "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
-    . "<![endif]-->\n"
-    . "<title>$sitename</title>\n";
+    $strAdminHeader.=">\n<head>\n";
 
     if ($meta)
     {
@@ -4345,6 +4341,14 @@ function getAdminHeader($meta=false)
         $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
     }
 
+    $strAdminHeader.= "<!--[if lt IE 7]>\n"
+    . "<script type=\"text/javascript\" src=\"scripts/DD_belatedPNG_0.0.8a-min.js\"></script>\n"
+    ."<script>
+  DD_belatedPNG.fix('img');
+</script>\n"
+    . "<![endif]-->"
+    . "<title>$sitename</title>\n";
+    
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"
@@ -4395,7 +4399,10 @@ function getPrintableHeader()
             <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
 
     <!--[if lt IE 7]>
-            <script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
+            <script type="text/javascript" src="'.$rooturl.'/scripts/DD_belatedPNG_0.0.8a-min.js"></script>
+            <script>
+  DD_belatedPNG.fix("img");
+</script>
     <![endif]-->
     '; 
     return $headelements;
