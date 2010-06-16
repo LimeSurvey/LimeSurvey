@@ -5232,6 +5232,23 @@ function setuserrights($uid, $rights)
     return $connect->Execute($uquery);     //Checked
 }
 
+function enableSettableSurveyRightsOnly($sid, &$rightDefs)
+{
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+	{
+		// If the user is not a superadmin, it may not set rights he doesn't have.
+		$query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$sid} AND uid = ".$_SESSION['loginID'];
+		$result2 = db_execute_assoc($query2); //Checked
+		if ($result2->RecordCount() > 0)
+			foreach ($result2->FetchRow() as $rightName => $checked)
+				if ((isset($rightDefs[$rightName])) && ($checked))
+					$rightDefs[$rightName]['enabled'] = true;
+	}
+	else
+		foreach ($rightDefs as $rightName => $rightDef)
+			$rightDefs[$rightName]['enabled'] = true;
+}
+
 // set the rights for a survey
 function setsurveyrights($uids, $rights)
 {
@@ -5239,15 +5256,20 @@ function setsurveyrights($uids, $rights)
     $uids=array_map('sanitize_int',$uids);
     $uids_implode = implode(" OR uid = ", $uids);
 
-    $updates = "edit_survey_property=".$rights['edit_survey_property']
-    . ", define_questions=".$rights['define_questions']
-    . ", browse_response=".$rights['browse_response']
-    . ", export=".$rights['export']
-    . ", delete_survey=".$rights['delete_survey']
-    . ", activate_survey=".$rights['activate_survey'];
-    $uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
-    // TODO
-    return $connect->Execute($uquery);   //Checked
+	$updates = '';
+	foreach ($rights as $rightName => $right)
+	{
+		if ($updates !== '')
+			$updates .= ', ';
+		$updates .= $rightName . '=' . $right;
+	}
+	if ($updates !== '')
+	{
+		$uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
+		// TODO
+		return $connect->Execute($uquery);   //Checked
+	}
+	return (true);
 }
 
 function createPassword()
