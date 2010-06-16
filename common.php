@@ -829,7 +829,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
  */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-    global $dbprefix, $scriptname, $connect, $clang;
+    global $scriptname, $clang;
 
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
