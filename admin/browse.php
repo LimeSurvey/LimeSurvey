@@ -343,7 +343,7 @@ elseif ($subaction == "all")
         if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
             $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
         if (isset($fielddetails['scale_id']))
-            $question .='['.$field['scale'].']';
+            $question .='['.$fielddetails['scale'].']';
         $fnames[]=array($fielddetails['fieldname'],$question);
     }
 
