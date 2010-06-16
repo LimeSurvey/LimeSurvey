@@ -2691,8 +2691,7 @@ function templatereplace($line, $replacements=array())
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
     global $question;
-    global $showXquestions, $showgroupinfo, $showqnumcode;
-    global $answer, $navigator;
+    global $questioncode, $answer, $navigator;
     global $help, $totalquestions, $surveyformat;
     global $completed, $register_errormsg;
     global $notanswered, $privacy, $surveyid;
@@ -2754,33 +2753,8 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
     if (strpos($line, "{LANGUAGECHANGER}") !== false) $line=str_replace("{LANGUAGECHANGER}", $languagechanger, $line);
     if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
-
-    if(
-        $showgroupinfo == 'both' ||
-	$showgroupinfo == 'name' ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
-    )
-    {
-        if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
-    }
-    else
-    {
-        if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", '' , $line);
-    };
-    if(
-        $showgroupinfo == 'both' ||
-	$showgroupinfo == 'number' ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
-    )
-    {
-        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
-    }
-    else
-    {
-        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", '' , $line);
-    };
+    if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
+    if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
 
     if (is_array($question))
     {
@@ -2806,54 +2780,21 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, '{QUESTION_MAN_CLASS}') !== false) $line=str_replace('{QUESTION_MAN_CLASS}', $question['man_class'], $line);
     if (strpos($line, "{QUESTION_INPUT_ERROR_CLASS}") !== false) $line=str_replace("{QUESTION_INPUT_ERROR_CLASS}", $question['input_error_class'], $line);
 
-    if(
-        $showqnumcode == 'both' ||
-	$showqnumcode == 'number' ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
-    )
-    {
-        if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", $question['number'], $line);
-    }
-    else
-    {
-        if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", '' , $line);
-    };
-    if(
-        $showqnumcode == 'both' ||
-	$showqnumcode == 'code' ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
-    )
-    {
-        if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
-    }
-    else
-    {
-        if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", '' , $line);
-    };
-
+    if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
     if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
     $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
-    if($showXquestions == 'show' || ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y'))
+    if ($totalquestionsAsked < 1)
     {
-        if ($totalquestionsAsked < 1)
-	{
-            if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
-        }
-	if ($totalquestionsAsked == 1)
-	{
-            if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There is 1 question in this survey"), $line); //Singular
-        }
-	else
-	{
-            if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
-	};
+        if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
+    }
+    if ($totalquestionsAsked == 1)
+    {
+        if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There is 1 question in this survey"), $line); //Singular
     }
     else
     {
-    	if (strpos($line, '{THEREAREXQUESTIONS}') !== false) $line=str_replace('{THEREAREXQUESTIONS}' , '' , $line); 
-    };
+        if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+    }
     if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestionsAsked, $line);
 
     if (strpos($line, "{TOKEN}") !== false) {
