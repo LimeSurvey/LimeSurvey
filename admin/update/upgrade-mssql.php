@@ -580,6 +580,7 @@ function upgrade_tables143()
             if (isset($aQIDReplacements[$row['qid'].'_'.$row['code']]))
             {
                 $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+                db_switchIDInsert('questions',true);                
             }
             $insertarray['sid']=$row['sid'];
             $insertarray['gid']=$row['gid'];
@@ -599,6 +600,7 @@ function upgrade_tables143()
             else
             {
                $iSaveSQID=$insertarray['qid'];
+                db_switchIDInsert('questions',false);                
             }
             if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
             {
@@ -657,6 +659,8 @@ function upgrade_tables143()
                 if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']))
                 {
                     $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1'];
+                    db_switchIDInsert('questions',true);                
+                    
                 }
                 $insertarray['sid']=$row['sid'];
                 $insertarray['gid']=$row['gid'];
@@ -672,6 +676,8 @@ function upgrade_tables143()
                 if (isset($insertarray['qid']))
                 {
                    $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+                   db_switchIDInsert('questions',false);                
+
                 }                
             }
         }
