@@ -1660,13 +1660,15 @@ if ($action=='editsubquestions')
     {
         foreach ($subquestiondata as $row)
         {
-            $qquery = "SELECT count(*) FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$language."' AND title=".db_quoteall($row['title']);
+            $qquery = "SELECT count(*) FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$language."' AND qid=".$row['qid'];
             $qrow = $connect->GetOne($qquery); //Checked
             if ($qrow == 0)   // means that no record for the language exists in the questions table
             {
-                $qquery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language)
-                           VALUES($surveyid,{$row['gid']},$qid,".db_quoteall($row['title']).",".db_quoteall($row['question']).",{$row['question_order']},".db_quoteall($language).")";
+                db_switchIDInsert('questions',true);
+                $qquery = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,parent_qid,title,question,question_order,language)
+                           VALUES({$row['qid']},$surveyid,{$row['gid']},$qid,".db_quoteall($row['title']).",".db_quoteall($row['question']).",{$row['question_order']},".db_quoteall($language).")";
                 $connect->Execute($qquery); //Checked
+                db_switchIDInsert('questions',false);
             }
         }
     }
