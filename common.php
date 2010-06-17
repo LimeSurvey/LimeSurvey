@@ -2512,7 +2512,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     }
                 }
             }
-            unset($lset);
+            unset($answerset);
         }
         elseif ($arow['type'] == "1")
         {
@@ -2552,14 +2552,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "R")
         {
             //MULTI ENTRY
-            $abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM "
-            .db_table_name('answers').", ".db_table_name('questions')." WHERE "
-            .db_table_name('answers').".qid=".db_table_name('questions').".qid AND sid=$surveyid AND "
-            .db_table_name('answers').".language='".$s_lang."' AND "
-            .db_table_name('questions').".language='".$s_lang."' AND"
-            .db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers')
-            .".sortorder, ".db_table_name('answers').".answer";
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
             $slots=$connect->GetOne("select value from ".db_table_name('question_attributes')." where qid={$arow['qid']} and attribute='ranking_slots'");
             for ($i=1; $i<=$slots; $i++)
             {
