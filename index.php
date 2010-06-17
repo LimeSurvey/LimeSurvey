@@ -762,14 +762,13 @@ GetReferringUrl();
 if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['private'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
     // load previous answers if any (dataentry with nosubmit)
-    // @TODO Check if sql should be updated http://bugs.limesurvey.org/view.php?id=4415
     $srquery="SELECT id FROM {$thissurvey['tablename']}"
     . " WHERE {$thissurvey['tablename']}.token='".db_quote($token)."'\n";
 
-    $result = db_execute_assoc($srquery) or safe_die ("Error loading results<br />$query<br />".$connect->ErrorMsg());   //Checked
-    while ($srrow = $result->FetchRow() )
+    $result = $connect->GetOne($srquery);
+    if ($result !== false && !is_null($result))
     {
-        $_SESSION['srid'] = $srrow['id'];
+        $_SESSION['srid'] = $result;
     }
     buildsurveysession();
     loadanswers();
