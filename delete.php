@@ -1,11 +1,11 @@
 <?php
 
-    $filename = getcwd()."/".trim($_GET['file'], "\"");
+
+    $filename = "upload/tmp/".$_GET['file'];
 
     $fh = fopen($filename, 'w') or die("can't open file");
     fclose($filename);
 
-    //echo $filename;
     if (unlink($filename))
         echo 'File '.$filename.' deleted';
     else

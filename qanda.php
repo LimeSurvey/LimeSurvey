@@ -3504,7 +3504,7 @@ function do_file_upload($ia)
                                 width: 1084,
                                 height: 400,
                                 modal: true,
-                                resizable: true,
+                                resizable: false,
                                 autoResize: true,
                                 overlay: {
                                     opacity: 0.85,
@@ -3526,7 +3526,7 @@ function do_file_upload($ia)
 
     $answer .= "<p><a class='fuqt' id='dialog-modal' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Open Uploader</a></p>";
     $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
-    $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='".$_SESSION[$ia[1].'_filecount']."' />";
+    $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='' />";
     
     /*
     $answer = '<table border="0" cellpadding="10" cellspacing="10" align="center">

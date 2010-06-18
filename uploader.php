@@ -1,83 +1,119 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <link type="text/css" href="scripts/jquery/css/jquery-ui-1.8.1.custom.css" rel="stylesheet" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Advanced File Uploader</title>
 
         <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+        <script type="text/javascript" src="scripts/swfupload/swfupload.js"></script>
+        <script type="text/javascript" src="scripts/jquery.swfupload.js"></script>
+
+        <link type="text/css" href="scripts/jquery/css/jquery-ui-1.8.1.custom.css" rel="stylesheet" />
+
         <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
         
         <script type="text/javascript">
+            
+            $(function(){
+                $('#swfupload-control').swfupload({
+                    upload_url: "upload.php",
+                    file_post_name: 'uploadfile',
+                    file_size_limit : "1024",
+                    file_types : "*.png",
+                    file_types_description : "png files",
+                    file_upload_limit : 5,
+                    flash_url : "scripts/swfupload/swfupload.swf",
+                    button_image_url : 'scripts/swfupload/wdp_buttons_upload_114x29.png',
+                    button_width : 114,
+                    button_height : 29,
+                    button_placeholder : $('#button')[0],
+                    debug: false
+                })
+                    .bind('fileQueued', function(event, file){
+                        var index = file.id.split("_").pop();
+                        var listitem='<li id="'+file.id+'" >'+
+                            '<div class="progressbar" ><div class="progress" ></div></div>'+
+                            '<p class="status" >Pending</p>'+
+                            '<span class="cancel" ></span>'+
+                            '<a href="#"><img src="images/trash.png" onclick="deletefile('+index+')" border="0" ></a>'+
+                            '<input type="text"   id="title_'  +index+'" value='+file.name.substring(0, file.name.lastIndexOf("."))+' />'+
+                            '<input type="hidden" id="size_'   +index+'" value='+file.size+' />'+
+                            '<input type="hidden" id="name_'   +index+'" value='+file.name+' />'+
+                            '<input type="hidden" id="ext_'    +index+'" value='+file.name.split(".").pop().toLowerCase()+' />'+
+                            '<input type="text"   id="comment_'+index+'" value="Comments" />'+
+                            '<em>'+file.name+'</em>'+
+                            '</li>';
+                        $('#log').append(listitem);
+                        $('li#'+file.id+' .cancel').bind('click', function(){
+                            var swfu = $.swfupload.getInstance('#swfupload-control');
+                            swfu.cancelUpload(file.id);
+                            $('li#'+file.id).slideUp('slow');
+                        });
+                        // start the upload since it's queued
+                        $(this).swfupload('startUpload');
+                    })
+                    .bind('fileQueueError', function(event, file, errorCode, message){
+                        alert('Size of the file '+file.name+' is greater than limit');
+                    })
+                    .bind('fileDialogComplete', function(event, numFilesSelected, numFilesQueued){
+                        $('#queuestatus').text('Files Selected: '+numFilesSelected+' / Queued Files: '+numFilesQueued);
+                    })
+                    .bind('uploadStart', function(event, file){
+                        $('#log li#'+file.id).find('p.status').text('Uploading...');
+                        $('#log li#'+file.id).find('span.progressvalue').text('0%');
+                        $('#log li#'+file.id).find('span.cancel').hide();
+                    })
+                    .bind('uploadProgress', function(event, file, bytesLoaded){
+                        //Show Progress
+                        var percentage=Math.round((bytesLoaded/file.size)*100);
+                        $('#log li#'+file.id).find('div.progress').css('width', percentage+'%');
+                        $('#log li#'+file.id).find('span.progressvalue').text(percentage+'%');
+                    })
+                    .bind('uploadSuccess', function(event, file, serverData){
+                        var item=$('#log li#'+file.id);
+                        item.find('div.progress').css('width', '100%');
+                        item.find('span.progressvalue').text('100%');
+                        var pathtofile='upload/tmp/'+file.name;
+                        item.addClass('success').find('p.status').html('<img src="'+pathtofile+'" height="50px" width="50px" />');
+                    })
+                    .bind('uploadComplete', function(event, file){
+                        // upload has completed, try the next one in the queue
+                        var item=$('#log li#'+file.id);
+                        item.find('div.progress').hide();
+                        item.find('div.progressbar').hide();
+                        item.find('span.progressvalue').text(' ');
+                        $(this).swfupload('startUpload');
+                    })
 
-            $(function() {
-                $("#tabs").tabs();
             });
-
-            $(document).ready(function(){
-                $('#f1_result').hide();
-                $('#f1_upload_process').hide();
-                $("#tabs-3 tr").hide();
-            });
-
-            $(function() {
-                $("#savechanges").click(function() {
-                    var filecount = $("#filecount").val();
-                    var jsonstr = '[';
-                    var i;
-                    for (i = 0; i < filecount; i++)
-                    {
-                        if (i != 0)
-                            jsonstr += ',';
-                        jsonstr += '{"title":"'+$("#gallery_title_"+i).val()+'",';
-                        jsonstr += '"comment":"'+$("#gallery_comment_"+i).val()+'",';
-                        jsonstr += '"filename":"'+$("#gallery_image_"+i).attr("src").replace(/\\/g,'/').replace(  /.*\//, '' )+'"}';
-                    }
-                    jsonstr += ']';
-                    $("#json").val(jsonstr);
-                });
-            });
-
-            function startUpload(){
-                $('#f1_result').hide();
-                $('#f1_upload_form').hide();
-                $('#f1_upload_process').show();
-                return true;
-            }
-
-            function stopUpload(success, filecount, json, ia, maxfiles){
-                var result = '';
-                if (success === 1){
-                    result = '<span>The file was uploaded successfully!</span><br/>\n\
-                        You may preview/edit or delete uploaded files in the gallery tab<br/>';
-                    $("#filecount").val(filecount);
-                    $("#json").val(JSON.stringify(json));
-                    $("input.uploadform").val('');
-                    var i;
-                    for (i = 0; i < json.length; i++)
-                    {
-                        $("#gallery_title_"+i).val(json[i].title);
-                        $("#gallery_comment_"+i).val(json[i].comment);
-                        //TODO-FUQT : if image, then display the image, else display a placeholder for that filetype
-                        $("#gallery_image_"+i).attr("src", "upload/tmp/"+json[i].filename);
-                    }
-                    for (i = 0; i < 4*json.length; i++)
-                        $("#tabs-3 tr:eq("+i+")").show();
-                    for (i = 4*json.length; i < 4*maxfiles; i++)
-                        $("#tabs-3 tr:eq("+i+")").hide();
-                }
-                else {
-                     result = '<span>There was an error during file upload!</span><br/><br/>';
-                }
-                $('#f1_result').html(result);
-                $('#f1_result').show();
-                $('#f1_upload_process').hide();
-                $('#f1_upload_form').show();
-
-                  return true;
-            }
 
             function passJSON() {
-                var jsonstring = $('#json').val();
-                var filecount  = $('#filecount').val();
-                window.parent.window.copyJSON(jsonstring, filecount);
+                var json = "[";
+                var filecount = 0;
+                var i = 0;
+                while ($("#size_"+i).length != 0)
+                {
+                    if (filecount > 0)
+                        json += ",";
+
+                    if ($("#size_"+i).val() == 0)
+                    {
+                        i += 1;
+                    }
+                    else
+                    {
+                        json += '{"title":"' +$("#title_"  +filecount).val()+'",'+
+                                '"comment":"'+$("#comment_"+filecount).val()+'",'+
+                                '"size":"'   +$("#size_"   +filecount).val()+'",'+
+                                '"name":"'   +$("#name_"   +filecount).val()+'",'+
+                                '"ext":"'    +$("#ext_"    +filecount).val()+'"}';
+
+                        filecount += 1;
+                        i += 1;
+                    }
+                }
+                json += "]";
+                window.parent.window.copyJSON(json, filecount);
             }
 
             function deletefile(i) {
@@ -92,127 +128,37 @@
                         document.getElementById("mydiv").innerHTML=xmlhttp.responseText;
                     }
                 }
-                var filename = $("#gallery_image_"+i).attr('src');
-                xmlhttp.open('GET','delete.php?file="'+filename+'"',true);
+                xmlhttp.open('GET','delete.php?file='+$("#name_"+i).val(),true);
                 xmlhttp.send();
-
-                var json = $("#json").val();
-
-                var jsonObj = eval('('+json+')');
-                jsonObj.splice(i, 1);
-                json = JSON.stringify(jsonObj);
-                $("#json").val(json);
-                $("#filecount").val(jsonObj.length);
-
-                var i;
-                for (i = 0; i < jsonObj.length; i++)
-                {
-                    $("#gallery_title_"+i).val(jsonObj[i].title);
-                    $("#gallery_comment_"+i).val(jsonObj[i].comment);
-                    //TODO-FUQT : if image, then display the image, else display a placeholder for that filetype
-                    $("#gallery_image_"+i).attr("src", "upload/tmp/"+jsonObj[i].filename);
-                }
-                var maxfiles = $("#maxfiles").val();
-                for (i = 0; i < 4*jsonObj.length; i++)
-                    $("#tabs-3 tr:eq("+i+")").show();
-                for (i = 4*jsonObj.length; i < 4*maxfiles; i++)
-                    $("#tabs-3 tr:eq("+i+")").hide();
+                $("#SWFUpload_0_"+i).hide();
+                $("#size_"+i).val(0);
             }
-
-
         </script>
+
+        <style type="text/css" >
+            #swfupload-control p{ margin-top:70px; font-size:0.9em; }
+            #log{ margin: 12px 50px 0px 50px; padding:0; list-style-type: none; }
+            #log li{ list-style-position:inside; margin:2px; border:1px solid #ccc; padding:15px; font-size:12px;
+                font-family:Arial, Helvetica, sans-serif; color:#333; background:#fff; position:relative;}
+            #log li .progressbar{ border:1px solid #333; height:15px; background:#fff; }
+            #log li .progress{ background:#999; width:0%; height:15px; }
+            #log li p{ margin:0; line-height:18px; }
+            #log li input{ padding: 5px; border: 10px; margin-left: 15px; margin-right: 15px; }
+            #log li.success{ border:1px solid #339933; background:#ccf9b9; }
+            #log li p img{ float: right; margin-right: 20px; margin-top: 10px; }
+            #log li em{ margin-bottom: 10px; }
+            #log li span.cancel{ position:absolute; top:5px; right:5px; width:20px; height:20px;
+                background:url('scripts/swfupload/cancel.png') no-repeat; cursor:pointer; }
+        </style>
+
 
     </head>
 
-    <body style="font-size: x-small">
-        <div id="tabs">
-            <ul>
-                <li><a href="#tabs-1">From Computer</a></li>
-                <li><a href="#tabs-2">From URL</a></li>
-                <li><a href="#tabs-3">Gallery</a></li>
-            </ul>
-
-
-            <!-- From Computer Tab -->
-            <div id="tabs-1">
-
-                <form action="upload.php" method="post" enctype="multipart/form-data" target="upload_target" onsubmit="startUpload();" >
-                    <div id="f1_result" align="center"></div>
-                    <div id="f1_upload_process" align="center">Loading...<br/><img src="images/loader.gif" align="center" alt="Loading..."/><br/></div>
-                    <div id="f1_upload_form" align="center"><br/>
-                        <table border="0" cellpadding="10" cellspacing="10" align="center" width="100%">
-                            <tr>
-                                <th align="center"><b>Title</b></th>
-                                <th align="center"><b>Comment</b></th>
-                                <th align="center"><b>Select file</b></th>
-                            </tr>
-                            <tbody>
-
-                                <?php
-                                    $maxfiles = $_GET['maxfiles'];
-                                    $ia = $_GET['ia'];
-
-                                    for ($i = 1; $i <= $maxfiles; $i++) {
-                                            $output='<tr>
-                                                        <td align="center"><input class="uploadform" type="text" name="title_'.$i  .'" id="title_'.$i  .'" maxlength="100" /></td>
-                                                        <td align="center"><input class="uploadform" type="text" name="comment_'.$i.'" id="comment_'.$i.'" maxlength="100" /></td>
-                                                        <td align="center"><input class="uploadform" type="file" name="myfile'.$i  .'" id="file_'.$i.'">             </input></td>
-                                                     </tr>';
-                                            echo $output;
-                                    }
-                                ?>
-                                </tbody>
-                            </table>
-                        <br />
-                        <input type="text" id="maxfiles"  name="maxfiles"   value="<?php echo $maxfiles ; ?>" />
-                        <input type="text" id="ia"        name="ia"         value="<?php echo $ia ;       ?>" />
-                        <input type="text" id="json"      name="json"       value="" />
-                        <input type="text" id="filecount" name="filecount"  value=0  />
-
-                        <label><input type="submit" value="Upload" /></label>
-                        <br /><br />
-                    </div>
-
-                    <iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
-                </form>
-
-            </div>
-
-            <div id="tabs-2">
-                <p>Upload from URL - Coming Soon !</p>
-            </div>
-
-            <!-- Gallery Tab -->
-            <div id="tabs-3">
-                <table border="0" cellpadding="10" cellspacing="10" align="center" width="100%">
-                    <?php
-                    $output = '';
-                        for ($i = 0; $i < $maxfiles; $i++)
-                        {
-                            $output .= '
-                                <tr>
-                                    <td><label>Title</label></td>
-                                    <td><input type="text" id="gallery_title_'.$i.'" maxlength="100" /><br /></td>
-                                    <td rowspan="3"><img id="gallery_image_'.$i.'" height="200" width="200" src="" /></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Comment</label></td>
-                                    <td><input type="text" id="gallery_comment_'.$i.'" maxlength="100" /></td>
-                                </tr>
-                                <tr>
-                                    <td><button type="button" onClick="deletefile('.$i.')">Delete</button>
-                                </tr>
-                                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
-                        }
-                        echo $output;
-                    ?>
-                </table>
-                <button id="savechanges">Save Changes</button>
-            </div>
-            <!-- TODO-FUQT: Add a Save and Exit Button
-                <p align="center"><button id="saveandexit">Save and Exit</button></p>
-            -->
+    <body>
+        <div id="swfupload-control">
+            <p align="center"><input type="button" id="button" /></p>
+            <p id="queuestatus" ></p>
+            <ul id="log"></ul>
         </div>
-
     </body>
 </html>
