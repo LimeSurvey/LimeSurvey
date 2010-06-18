@@ -224,7 +224,7 @@ if (!$exportstyle)
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
     //OPTIONAL EXTRAS (FROM TOKENS TABLE)
     // Find out if survey results are anonymous
-    if ($thissurvey['private'] == "N" && tableExists("{$dbprefix}tokens_$surveyid"))
+    if ($thissurvey['private'] == "N" && tableExists("tokens_$surveyid"))
     {
         $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
         .$clang->gT("Choose Token Fields").":"
