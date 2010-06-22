@@ -2882,7 +2882,7 @@ function do_multiplechoice($ia)
             . "if (doconditioncheck == 'yes') {\n"
             . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
             . "}\n}\n";
-            $excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
+            $excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['title']}').disabled='';\n";
         }
         elseif (count($excludeallothers)>0)
         {
