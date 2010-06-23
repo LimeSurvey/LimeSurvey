@@ -969,14 +969,6 @@ function XMLImportGroup($sFullFilepath, $newsid)
     // then for subquestions (because we need to determine the new qids for the main questions first)
     $tablename=$dbprefix.'questions';
     $results['questions']=0;
-    $newquestionorder=$connect->GetOne("SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid")+1;
-    if (is_null($newquestionorder)) 
-    {
-        $newquestionorder=0;
-    }
-    else {
-        $newquestionorder++;
-    }
     foreach ($xml->questions->rows->row as $row)
     {
        $insertdata=array(); 
@@ -987,7 +979,6 @@ function XMLImportGroup($sFullFilepath, $newsid)
         $oldsid=$insertdata['sid'];
         $insertdata['sid']=$newsid;
         $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
-        $insertdata['question_order']=$newquestionorder;
         $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
         // now translate any links
@@ -1121,7 +1112,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     {
         $tablename=$dbprefix.'conditions';
         
-        foreach ($xml->defaultvalues->rows->row as $row)
+        foreach ($xml->conditions->rows->row as $row)
         {
            $insertdata=array(); 
             foreach ($row as $key=>$value)
