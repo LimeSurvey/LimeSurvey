@@ -326,9 +326,13 @@ $inputnames=array();
 
 $qtypesarray = array();
 
+$qnumber = 0;
+
 foreach ($_SESSION['fieldarray'] as $ia)
 {
     $qtypesarray[$ia[1]] = $ia[4];
+    ++$qnumber;
+    $ia[9] = $qnumber; // incremental question count;
 
     if ($ia[5] == $gid)
     {

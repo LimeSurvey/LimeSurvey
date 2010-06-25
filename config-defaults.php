@@ -76,7 +76,7 @@ $allowmandbackwards =   1;                // Allow moving backwards (ie: << prev
 // has not been answered. 1=Allow, 0=Deny
 $deletenonvalues    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $printanswershonorsconditions = 1;	      // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic
-$shownoanswer       =   1;                // Show 'no answer' for non mandatory questions
+$shownoanswer       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $admintheme         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 
 $defaulttemplate    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
@@ -423,6 +423,47 @@ $chartfontsize =10;
  * Recommended: 7
  */
 $updatecheckperiod=7;
+
+/**
+ * @var $showXquestions string allows you to control whether or not
+ * {THEREAREXQUESTIONS} is displayed (if it is included in a template)
+ *	hide = always hide {THEREAREXQUESTIONS}
+ *	show = always show {THEREAREXQUESTIONS}
+ *	choose = allow survey admins to choose
+ */
+$showXquestions = 'choose';
+
+
+/**
+ * @var $showgroupinfo string allows you to control whether or not
+ * {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
+ * included in a template)
+ *	none = always hide both title and description
+ *	name = always {GROUPNAME} only
+ *	description = always show {GROUPDESCRIPTION} only
+ *	both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
+ *	choose = allow survey admins to choose
+ */
+$showgroupinfo = 'choose';
+
+
+/**
+ * @var $showqnumcode string allows you to control whether or not
+ * {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
+ * are included in a template)
+ *	none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
+ *	code = always show {QUESTION_CODE} only
+ *	number = always show {QUESTION_NUMBER} only
+ *	both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
+ *	choose = allow survey admins to choose
+ */
+$showqnumcode = 'choose';
+
+
+
+
+
+
 
 
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------

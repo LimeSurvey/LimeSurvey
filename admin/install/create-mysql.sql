@@ -199,6 +199,10 @@ CREATE TABLE `prefix_surveys` (
   `allowsave` char(1) default 'Y',
   `autonumber_start` bigint(11) default '0',
   `autoredirect` char(1) default 'N',
+  `showXquestions` char(1) default 'Y',
+  `showgroupinfo` char(1) default 'B',
+  `shownoanswer` char(1) default 'Y',
+  `showqnumcode` char(1) default 'X',
   `allowprev` char(1) default 'Y',
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
@@ -344,7 +348,7 @@ create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 
 
 -- data
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '143');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '144');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);

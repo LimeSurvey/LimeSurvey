@@ -34,6 +34,7 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
  * $ia[6] => mandatory Y || N
  * $ia[7] => conditions exist for this question
  * $ia[8] => other questions have conditions which rely on this question (including array_filter and array_filter_exclude attributes)
+ * $ia[9] => incremental question count (used by {QUESTION_NUMBER})
  *
  * $conditions element structure
  * $condition[n][0] => qid = question id
@@ -45,6 +46,15 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
  * $condition[n][6] => method used to evaluate
  * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
  */
+
+if($shownoanswer > 0 && $thissurvey['shownoanswer'] != 'N')
+{
+    define('SHOW_NO_ANSWER',1);
+}
+else
+{
+    define('SHOW_NO_ANSWER',0);
+};
 
 function retrieveConditionInfo($ia)
 {
@@ -500,7 +510,7 @@ function setman_questionandcode_multiscale($ia)
 function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 {
     //globalise required config variables
-    global $dbprefix, $shownoanswer, $clang; //These are from the config-defaults.php file
+    global $dbprefix, $clang; //These are from the config-defaults.php file
     global $thissurvey, $gl; //These are set by index.php
     global $connect;
 
@@ -539,6 +549,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     $question_text = array(
 				 'all' => '' // All has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
     ,'text' => $qtitle
+    ,'code' => $ia[2]
+    ,'number' => $ia[9]
     ,'help' => ''
     ,'mandatory' => ''
     ,'man_message' => ''
@@ -1439,7 +1451,7 @@ function do_boilerplate($ia)
 // ---------------------------------------------------------------
 function do_5pointchoice($ia)
 {
-    global $shownoanswer, $clang;
+    global $clang;
 
     if ($ia[8] == 'Y')
     {
@@ -1461,7 +1473,7 @@ function do_5pointchoice($ia)
         $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
     }
 
-    if ($ia[6] != "Y"  && $shownoanswer == 1) // Add "No Answer" option if question is not mandatory
+    if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
         $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
         if (!$_SESSION[$ia[1]])
@@ -1711,7 +1723,7 @@ function do_language($ia)
 function do_list_dropdown($ia)
 {
     global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
-    global $shownoanswer, $clang;
+    global $clang;
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -1868,7 +1880,7 @@ function do_list_dropdown($ia)
         $answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
     }
 
-    if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && $shownoanswer == 1)
+    if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $answer .= '<option value="">'.$clang->gT('No answer')."</option>\n";
     }
@@ -1978,7 +1990,7 @@ function do_list_dropdown($ia)
 function do_list_radio($ia)
 {
     global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
-    global $shownoanswer, $thissurvey;
+    global $thissurvey;
 
 
     if ($ia[8] == 'Y')
@@ -2040,7 +2052,7 @@ function do_list_radio($ia)
     }
 
     if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
-    if ($ia[6] != 'Y' && $shownoanswer == 1) {$anscount++;} //Count up if "No answer" is showing
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
     $wrapper = setup_columns($dcols , $anscount);
     $answer = $wrapper['whole-start'];
@@ -2164,7 +2176,7 @@ function do_list_radio($ia)
         }
     }
 
-    if ($ia[6] != 'Y' && $shownoanswer == 1)
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
         {
@@ -2237,7 +2249,7 @@ function do_list_radio($ia)
 function do_listwithcomment($ia)
 {
     global $maxoptionsize, $dbprefix, $dropdownthreshold, $lwcdropdowns;
-    global $shownoanswer, $clang;
+    global $clang;
 
     if ($ia[8] == 'Y')
     {
@@ -2299,7 +2311,7 @@ function do_listwithcomment($ia)
 ';
         }
 
-        if ($ia[6] != 'Y' && $shownoanswer == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
             {
@@ -2369,7 +2381,7 @@ function do_listwithcomment($ia)
                 $maxoptionsize = strlen($ansrow['answer']);
             }
         }
-        if ($ia[6] != 'Y' && $shownoanswer == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
             {
@@ -4583,7 +4595,7 @@ function do_hugefreetext($ia)
 // ---------------------------------------------------------------
 function do_yesno($ia)
 {
-    global $shownoanswer, $clang;
+    global $clang;
 
     if ($ia[8] == 'Y')
     {
@@ -4614,7 +4626,7 @@ function do_yesno($ia)
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".$clang->gT('No')."\n</label>\n\t</li>\n";
     // --> END NEW FEATURE - SAVE
 
-    if ($ia[6] != 'Y' && $shownoanswer == 1)
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
         if ($_SESSION[$ia[1]] == '')
@@ -4637,7 +4649,7 @@ function do_yesno($ia)
 // ---------------------------------------------------------------
 function do_gender($ia)
 {
-    global $shownoanswer, $clang;
+    global $clang;
 
     if ($ia[8] == 'Y')
     {
@@ -4668,7 +4680,7 @@ function do_gender($ia)
     }
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".$clang->gT('Male')."</label>\n\t</li>\n";
 
-    if ($ia[6] != 'Y' && $shownoanswer == 1)
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         /* columns now done by CSS
          if ($dcols > 2)
@@ -4712,7 +4724,7 @@ function do_gender($ia)
  */
 function do_array_5point($ia)
 {
-    global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+    global $dbprefix, $notanswered, $thissurvey, $clang;
 
     if ($ia[8] == 'Y')
     {
@@ -4736,7 +4748,7 @@ function do_array_5point($ia)
     }
     $cellwidth  = 5; // number of columns
 
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
     }
@@ -4771,7 +4783,7 @@ function do_array_5point($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4784,7 +4796,7 @@ function do_array_5point($ia)
         $answer .= "\t<th>$xc</th>\n";
     }
     if ($right_exists) {$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";}
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
     }
@@ -4847,7 +4859,7 @@ function do_array_5point($ia)
         }
 
 
-        if ($ia[6] != 'Y' && $shownoanswer == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td>\n<label for=\"answer$myfname-\">"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer').'"';
@@ -4879,7 +4891,7 @@ function do_array_5point($ia)
  */
 function do_array_10point($ia)
 {
-    global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+    global $dbprefix, $notanswered, $thissurvey, $clang;
 
     if ($ia[8] == 'Y')
     {
@@ -4904,7 +4916,7 @@ function do_array_10point($ia)
         $answerwidth = 20;
     }
     $cellwidth  = 10; // number of columns
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
     }
@@ -4931,7 +4943,7 @@ function do_array_10point($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth$\" />\n";
@@ -4943,7 +4955,7 @@ function do_array_10point($ia)
     {
         $answer .= "\t<th>$xc</th>\n";
     }
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
     }
@@ -4990,7 +5002,7 @@ function do_array_10point($ia)
             // --> END NEW FEATURE - SAVE
 
         }
-        if ($ia[6] != "Y" && $shownoanswer == 1)
+        if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td>\n<label for=\"answer$myfname-\">\n"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
@@ -5015,7 +5027,7 @@ function do_array_10point($ia)
 // ---------------------------------------------------------------
 function do_array_yesnouncertain($ia)
 {
-    global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+    global $dbprefix, $notanswered, $thissurvey, $clang;
 
     if ($ia[8] == 'Y')
     {
@@ -5039,7 +5051,7 @@ function do_array_yesnouncertain($ia)
         $answerwidth = 20;
     }
     $cellwidth  = 3; // number of columns
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
     }
@@ -5064,7 +5076,7 @@ function do_array_yesnouncertain($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -5075,7 +5087,7 @@ function do_array_yesnouncertain($ia)
     . "\t<th>".$clang->gT('Yes')."</th>\n"
     . "\t<th>".$clang->gT('Uncertain')."</th>\n"
     . "\t<th>".$clang->gT('No')."</th>\n";
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
     }
@@ -5146,7 +5158,7 @@ function do_array_yesnouncertain($ia)
             }
             $answer_t_content .= "\" />\n\t</td>\n";
 
-            if ($ia[6] != 'Y' && $shownoanswer == 1)
+            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer_t_content .= "\t<td>\n\t<label for=\"answer$myfname-\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
@@ -5170,7 +5182,6 @@ function do_array_yesnouncertain($ia)
 function do_array_increasesamedecrease($ia)
 {
     global $dbprefix, $thissurvey, $clang;
-    global $shownoanswer;
     global $notanswered;
 
     if ($ia[8] == 'Y')
@@ -5194,7 +5205,7 @@ function do_array_increasesamedecrease($ia)
         $answerwidth = 20;
     }
     $cellwidth  = 3; // number of columns
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
     }
@@ -5226,7 +5237,7 @@ function do_array_increasesamedecrease($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -5238,7 +5249,7 @@ function do_array_increasesamedecrease($ia)
     . "\t<th>".$clang->gT('Increase')."</th>\n"
     . "\t<th>".$clang->gT('Same')."</th>\n"
     . "\t<th>".$clang->gT('Decrease')."</th>\n";
-    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
     }
@@ -5315,7 +5326,7 @@ function do_array_increasesamedecrease($ia)
         if (isset($_SESSION[$myfname])) {$answer_body .= $_SESSION[$myfname];}
         $answer_body .= "\" />\n\t</td>\n";
 
-        if ($ia[6] != 'Y' && $shownoanswer == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_body .= "\t<td>\n"
             . "<label for=\"answer$myfname-\">\n"
@@ -5340,7 +5351,6 @@ function do_array_increasesamedecrease($ia)
 function do_array_flexible($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
-    global $shownoanswer;
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
@@ -5406,7 +5416,7 @@ function do_array_flexible($ia)
         $fn=1;
 
         $numrows = count($labelans);
-        if ($ia[6] != 'Y' && $shownoanswer == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
         }
@@ -5425,7 +5435,7 @@ function do_array_flexible($ia)
             $answer_head .= "\t<th>".$ld."</th>\n";
         }
         if ($right_exists) {$answer_head .= "\t<td>&nbsp;</td>\n";}
-        if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
         {
             $answer_head .= "\t<th>".$clang->gT('No answer')."</th>\n";
         }
@@ -5447,7 +5457,7 @@ function do_array_flexible($ia)
                     {
                         $answer .= "\t<th>".$ld."</th>\n";
                     }
-                    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+                    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
                     {
                         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
                     }
@@ -5514,7 +5524,7 @@ function do_array_flexible($ia)
                 $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
             }
 
-            if ($ia[6] != 'Y' && $shownoanswer == 1)
+            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer .= "\t<td>\n<label for=\"answer$myfname-\">\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
@@ -5547,7 +5557,7 @@ function do_array_flexible($ia)
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
         }
-        if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -5577,7 +5587,7 @@ function do_array_flexible($ia)
        $fn=1;
 
        $numrows = count($labels);
-       if ($ia[6] != 'Y' && $shownoanswer == 1)
+       if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
        {
            ++$numrows;
        }
@@ -5644,7 +5654,7 @@ function do_array_flexible($ia)
                $answer .= '>'.$lrow['answer']."</option>\n";
            }
            // If not mandatory and showanswer, show no ans
-           if ($ia[6] != 'Y' && $shownoanswer == 1)
+           if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
            {
                $answer .= "\t<option value=\"\" ";
                if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
@@ -5688,7 +5698,6 @@ function do_array_flexible($ia)
 function do_array_multitext($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
-    global $shownoanswer;
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
@@ -5748,7 +5757,7 @@ function do_array_multitext($ia)
             $labelcode[]=$lrow['title'];
         }
         $numrows=count($labelans);
-        if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf('%02d', $cellwidth);
@@ -5905,7 +5914,6 @@ function do_array_multitext($ia)
 function do_array_multiflexi($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
-    global $shownoanswer;
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
@@ -5988,7 +5996,7 @@ function do_array_multiflexi($ia)
             $labelcode[]=$lrow['title'];
         }
         $numrows=count($labelans);
-        if ($ia[6] != 'Y' && $shownoanswer == 1) {$numrows++;}
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf('%02d', $cellwidth);
@@ -6209,7 +6217,6 @@ function do_array_multiflexi($ia)
 function do_array_flexiblecolumns($ia)
 {
     global $dbprefix;
-    global $shownoanswer;
     global $notanswered, $clang;
 
     if ($ia[8] == 'Y')
@@ -6235,7 +6242,7 @@ function do_array_flexiblecolumns($ia)
             $labelcode[]=$lrow['code'];
             $labels[]=array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
         }
-        if ($ia[6] != 'Y' && $shownoanswer == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $labelcode[]='';
             $labelans[]=$clang->gT('No answer');
@@ -6362,7 +6369,6 @@ function do_array_flexiblecolumns($ia)
 function do_array_flexible_dual($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
-    global $shownoanswer;
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
@@ -6438,7 +6444,7 @@ function do_array_flexible_dual($ia)
             }
         }
         $numrows=count($labelans) + count($labelans1);
-        if ($ia[6] != "Y" && $shownoanswer == 1) {$numrows++;}
+        if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf("%02d", $cellwidth);
@@ -6529,7 +6535,7 @@ function do_array_flexible_dual($ia)
         {
             $mycolumns .= "\n\t<col class=\"seperator\" />\n\n";
         }
-        if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
         {
             $myheader2 .= "\t<th>".$clang->gT('No answer')."</th>\n";
             $odd_even = alternation($odd_even);
@@ -6556,7 +6562,7 @@ function do_array_flexible_dual($ia)
 
             $myheader1 .= "\t<td>&nbsp;</td>\n";
 
-            if ($ia[6] != 'Y' && $shownoanswer == 1)
+            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $myheader1 .= "\t<th>&nbsp;</th>\n";
             }
@@ -6596,7 +6602,7 @@ function do_array_flexible_dual($ia)
                             $answer .= "\t<th>".$ld."</th>\n";
                         }
                     }
-                    if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+                    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
                     {
                         $answer .= "\t<td>&nbsp;</td>\n";		// separator
                         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
@@ -6703,7 +6709,7 @@ function do_array_flexible_dual($ia)
                 $answer .= "\t<td>&nbsp;</td>\n";		// separator
             }
 
-            if ($ia[6] != "Y" && $shownoanswer == 1)
+            if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
             {
                 $answer .= "\t<td>\n"
                 . "<label for='answer$myfname-'>\n"
@@ -6914,7 +6920,7 @@ function do_array_flexible_dual($ia)
                     $answer .= '>'.$lrow['title']."</option>\n";
                 }
                 // If not mandatory and showanswer, show no ans
-                if ($ia[6] != 'Y' && $shownoanswer == 1)
+                if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
                 {
                     $answer .= "\t<option value=\"\" ";
                     if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
@@ -6968,7 +6974,7 @@ function do_array_flexible_dual($ia)
                     $answer .= '>'.$lrow1['title']."</option>\n";
                 }
                 // If not mandatory and showanswer, show no ans
-                if ($ia[6] != 'Y' && $shownoanswer == 1)
+                if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
                 {
                     $answer .= "\t<option value='' ";
                     if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] == '')

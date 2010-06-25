@@ -86,6 +86,8 @@ else {$currentquestion=$_SESSION['step']-1;}
 
 $ia=$_SESSION['fieldarray'][$currentquestion];
 
+$ia[]=$_SESSION['step'];
+
 list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 // MANAGE CONDITIONAL QUESTIONS AND HIDDEN QUESTIONS

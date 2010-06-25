@@ -2673,6 +2673,156 @@ if ($action == "editsurvey")
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "</select></li>";
 
+ 
+            // Show {THEREAREXQUESTIONS} block
+	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t".'<input type="hidden" name="showXquestions" id="" value="';
+	    $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="';
+	    $show_dis_post = "\" size=\"70\" />\n\t</li>\n";
+	    switch($showXquestions)
+	    {
+		case 'show':
+		    $editsurvey .= $show_dis_pre.'Y'.$show_dis_mid.$clang->gT('Yes (Forced by the system administrator)').$show_dis_post;
+		    break;
+		case 'hide':
+		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('No (Forced by the system administrator)').$show_dis_post;
+		    break;
+	    	case 'choose':
+		default:
+		    $sel_showxq = array( 'Y' => '' , 'N' => '' );
+		    if(isset($esrow['showXquestions']))
+		    {
+		    	$set_showxq = $esrow['showXquestions'];
+			$sel_showxq[$set_showxq] = ' selected="selected"';
+		    }
+		    if(empty($sel_showxq['Y']) && empty($sel_showxq['N']))
+		    {
+		    	$sel_showxq['Y'] = ' selected="selected"';
+		    };
+		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t"
+		    . "<select id=\"showXquestions\" name=\"showXquestions\">\n\t\t\t"
+		    . '<option value="Y"'.$sel_showxq['Y'].'>'.$clang->gT('Yes')."</option>\n\t\t\t"
+		    . '<option value="N"'.$sel_showxq['N'].'>'.$clang->gT('No')."</option>\n\t\t"
+		    . "</select>\n\t</li>\n";
+		    unset($sel_showxq,$set_showxq);
+		    break;
+	    };
+
+
+            // Show {GROUPNAME} and/or {GROUPDESCRIPTION} block
+	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n\t\t".'<input type="hidden" name="showgroupinfo" id="showgroupinfo" value="';
+            $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="';
+	    switch($showgroupinfo)
+	    {
+		case 'both':
+		    $editsurvey .= $show_dis_pre.'B'.$show_dis_mid.$clang->gT('Show both (Forced by the system administrator)').$show_dis_post;
+		    break;
+		case 'name':
+		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('Show group name only (Forced by the system administrator)').$show_dis_post;
+		    break;
+		case 'description':
+		    $editsurvey .= $show_dis_pre.'D'.$show_dis_mid.$clang->gT('Show group description only (Forced by the system administrator)').$show_dis_post;
+		    break;
+		case 'none':
+		    $editsurvey .= $show_dis_pre.'X'.$show_dis_mid.$clang->gT('Hide both (Forced by the system administrator)').$show_dis_post;
+		    break;
+	    	case 'choose':
+		default:
+		    $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
+		    if(isset($esrow['showgroupinfo']))
+		    {
+		    	$set_showgri = $esrow['showgroupinfo'];
+			$sel_showgri[$set_showgri] = ' selected="selected"';
+		    }
+		    if(empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']) )
+		    {
+		    	$sel_showgri['C'] = ' selected="selected"';
+		    };
+		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n\t\t"
+		    . "<select id=\"showgroupinfo\" name=\"showgroupinfo\">\n\t\t\t"
+		    . '<option value="B"'.$sel_showgri['B'].'>'.$clang->gT('Show both')."</option>\n\t\t\t"
+		    . '<option value="N"'.$sel_showgri['N'].'>'.$clang->gT('Show group name only')."</option>\n\t\t\t"
+		    . '<option value="D"'.$sel_showgri['D'].'>'.$clang->gT('Show group description only')."</option>\n\t\t\t"
+		    . '<option value="X"'.$sel_showgri['X'].'>'.$clang->gT('Hide both')."</option>\n\t\t"
+		    . "</select>\n\t</li>\n";
+		    unset($sel_showgri,$set_showgri);
+		    break;
+	    };
+
+
+
+            // Show {QUESTION_CODE} and/or {QUESTION_NUMBER} block
+	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n\t\t".'<input type="hidden" name="showqnumcode" id="showqnumcode" value="';
+            $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="';
+	    switch($showqnumcode)
+	    {
+		case 'none':
+		    $editsurvey .= $show_dis_pre.'X'.$show_dis_mid.$clang->gT('Hide both (Forced by the system administrator)').$show_dis_post;
+		    break;
+		case 'number':
+		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('Show question number only (Forced by the system administrator)').$show_dis_post;
+		    break;
+		case 'code':
+		    $editsurvey .= $show_dis_pre.'C'.$show_dis_mid.$clang->gT('Show question code only (Forced by the system administrator)').$show_dis_post;
+		    break;
+		case 'both':
+		    $editsurvey .= $show_dis_pre.'B'.$show_dis_mid.$clang->gT('Show both (Forced by the system administrator)').$show_dis_post;
+		    break;
+	    	case 'choose':
+		default:
+		    $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' );
+		    if(isset($esrow['showqnumcode']))
+		    {
+		    	$set_showqnc = $esrow['showqnumcode'];
+			$sel_showqnc[$set_showqnc] = ' selected="selected"';
+		    }
+		    if(empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X']) )
+		    {
+		    	$sel_showqnc['C'] = ' selected="selected"';
+		    };
+		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n\t\t"
+		    . "<select id=\"showqnumcode\" name=\"showqnumcode\">\n\t\t\t"
+		    . '<option value="B"'.$sel_showqnc['B'].'>'.$clang->gT('Show both')."</option>\n\t\t\t"
+		    . '<option value="N"'.$sel_showqnc['N'].'>'.$clang->gT('Show question number only')."</option>\n\t\t\t"
+		    . '<option value="C"'.$sel_showqnc['C'].'>'.$clang->gT('Show question Code only')."</option>\n\t\t\t"
+		    . '<option value="X"'.$sel_showqnc['X'].'>'.$clang->gT('Hide both')."</option>\n\t\t"
+		    . "</select>\n\t</li>\n";
+		    unset($sel_showqnc,$set_showqnc);
+		    break;
+	    };
+
+
+            // Show "No Answer" block
+	    $shownoanswer = isset($shownoanswer)?$shownoanswer:'Y';
+	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_shownoanswer\">".$clang->gT('Show no answer')."</label>\n\t\t".'<input type="hidden" name="shownoanswer" id="shownoanswer" value="';
+            $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="';
+	    switch($shownoanswer)
+	    {
+	    	case 0:
+		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('Off (Forced by the system administrator)').$show_dis_post;
+		    break;
+	        case 2:
+		    $sel_showno = array( 'Y' => '' , 'N' => '' );
+		    if(isset($esrow['shownoanswer']))
+		    {
+		    	$set_showno = $esrow['shownoanswer'];
+			$sel_showno[$set_showno] = ' selected="selected"';
+		    };
+		    if(empty($sel_showno))
+		    {
+		    	$sel_showno['Y'] = ' selected="selected"';
+		    };
+	    	    $editsurvey .= "\n\t<li>\n\t\t<label for=\"shownoanswer\">".$clang->gT('Show No Answer')."</label>\n\t\t"
+		    . "<select id=\"shownoanswer\" name=\"shownoanswer\">\n\t\t\t"
+		    . '<option value="Y"'.$sel_showno['Y'].'>'.$clang->gT('Yes')."</option>\n\t\t\t"
+		    . '<option value="N"'.$sel_showno['N'].'>'.$clang->gT('No')."</option>\n\t\t"
+		    . "</select>\n\t</li>\n";
+		    break;
+		default:
+		    $editsurvey .= $show_dis_pre.'Y'.$show_dis_mid.$clang->gT('On (Forced by the system administrator)').$show_dis_post;
+		    break;
+	    };
+
+
 
             // End Presention and navigation TAB
             $editsurvey .= "</ul></div>\n";

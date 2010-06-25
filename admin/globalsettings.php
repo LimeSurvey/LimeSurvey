@@ -72,6 +72,9 @@ function globalsettingssave()
             setGlobalSetting('siteadminemail',strip_tags($_POST['siteadminemail']));
             setGlobalSetting('siteadminname',strip_tags($_POST['siteadminname']));
             setGlobalSetting('shownoanswer',sanitize_int($_POST['shownoanswer']));
+            setGlobalSetting('showXquestions',($_POST['showXquestions']));
+            setGlobalSetting('showgroupinfo',($_POST['showgroupinfo']));
+            setGlobalSetting('showqnumcode',($_POST['showqnumcode']));
             $repeatheadingstemp=(int)($_POST['repeatheadings']);
             if ($repeatheadingstemp==0)  $repeatheadingstemp=25;
             setGlobalSetting('repeatheadings',$repeatheadingstemp);
@@ -352,18 +355,72 @@ function globalsettingsdisplay()
 
             // shownoanswer
             $shownoanswer=getGlobalSetting('shownoanswer');
+	    $sel_na = array( 0 => '' , 1 => '' , 2 => '');
+	    $sel_na[$shownoanswer] = ' selected="selected"';
             $editsurvey .= "\t<li><label for='shownoanswer'>".$clang->gT("Show 'no answer' option for non-mandatory questions:")."</label>\n"
             . "\t\t<select id='shownoanswer' name='shownoanswer'>\n"
-            . "\t\t\t<option value='1'";
-            if ($shownoanswer == 1) {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "\t\t\t<option value='0'";
-            if ($shownoanswer == 0) {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "\t\t\t<option value=\"1\"{$sel_na[1]}>".$clang->gT('Yes')."</option>\n"
+            . "\t\t\t<option value=\"0\"{$sel_na[0]}>".$clang->gT('No')."</option>\n"
+            . "\t\t\t<option value=\"2\"{$sel_na[2]}>".$clang->gT('Survey admin can choose')."</option>\n"
             . "\t\t</select></li>\n";
+
             $thisrepeatheadings=getGlobalSetting('repeatheadings');
             $editsurvey .= "\t<li><label for='repeatheadings'>".$clang->gT("Number of answers to show before repeating the headings in array questions:")."</label>\n"
             . "\t\t<input id='repeatheadings' name='repeatheadings' value='$thisrepeatheadings' size='4' maxlength='4' /></li>\n";
+
+
+            // showXquestions
+            $set_xq=getGlobalSetting('showXquestions');
+	    $sel_xq = array( 'hide' => '' , 'show' => '' , 'choose' => '');
+	    $sel_xq[$set_xq] = ' selected="selected"';
+	    if( empty($sel_xq['hide']) && empty($sel_xq['show']) && empty($sel_xq['choose']))
+	    {
+	    	$sel_xq['choose'] = ' selected="selected"';
+	    };
+            $editsurvey .= "\t<li><label for=\"showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n"
+            . "\t\t<select id=\"showXquestions\" name=\"showXquestions\">\n"
+            . "\t\t\t<option value=\"show\"{$sel_xq['show']}>".$clang->gT('Yes')."</option>\n"
+            . "\t\t\t<option value=\"hide\"{$sel_xq['hide']}>".$clang->gT('No')."</option>\n"
+            . "\t\t\t<option value=\"choose\"{$sel_xq['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"
+            . "\t\t</select></li>\n";
+	    unset($set_xq,$sel_xq);
+
+	    // showgroupinfo
+            $set_gri=getGlobalSetting('showgroupinfo');
+	    $sel_gri = array( 'both' => '' , 'choose' =>'' , 'description' => '' , 'name' => '' , 'none' => '' );
+	    $sel_gri[$set_gri] = ' selected="selected"';
+	    if( empty($sel_gri['both']) && empty($sel_gri['choose']) && empty($sel_gri['description']) && empty($sel_gri['name']) && empty($sel_gri['none']))
+	    {
+	    	$sel_gri['choose'] = ' selected="selected"';
+	    };
+            $editsurvey .= "\t<li><label for=\"showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n"
+            . "\t\t<select id=\"showgroupinfo\" name=\"showgroupinfo\">\n"
+            . "\t\t\t<option value=\"both\"{$sel_gri['both']}>".$clang->gT('Show both')."</option>\n"
+            . "\t\t\t<option value=\"name\"{$sel_gri['name']}>".$clang->gT('Show group name only')."</option>\n"
+            . "\t\t\t<option value=\"description\"{$sel_gri['description']}>".$clang->gT('Show group description only')."</option>\n"
+            . "\t\t\t<option value=\"none\"{$sel_gri['none']}>".$clang->gT('Hide both')."</option>\n"
+            . "\t\t\t<option value=\"choose\"{$sel_gri['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"
+            . "\t\t</select></li>\n";
+	    unset($set_gri,$sel_gri);
+
+	    // showqnumcode
+            $set_qnc=getGlobalSetting('showqnumcode');
+	    $sel_qnc = array( 'both' => '' , 'choose' =>'' , 'number' => '' , 'code' => '' , 'none' => '' );
+	    $sel_qnc[$set_qnc] = ' selected="selected"';
+	    if( empty($sel_qnc['both']) && empty($sel_qnc['choose']) && empty($sel_qnc['number']) && empty($sel_qnc['code']) && empty($sel_qnc['none']))
+	    {
+	    	$sel_qnc['choose'] = ' selected="selected"';
+	    };
+            $editsurvey .= "\t<li><label for=\"showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n"
+            . "\t\t<select id=\"showqnumcode\" name=\"showqnumcode\">\n"
+            . "\t\t\t<option value=\"both\"{$sel_qnc['both']}>".$clang->gT('Show both')."</option>\n"
+            . "\t\t\t<option value=\"number\"{$sel_qnc['number']}>".$clang->gT('Show question number only')."</option>\n"
+            . "\t\t\t<option value=\"code\"{$sel_qnc['code']}>".$clang->gT('Show question code only')."</option>\n"
+            . "\t\t\t<option value=\"none\"{$sel_qnc['none']}>".$clang->gT('Hide both')."</option>\n"
+            . "\t\t\t<option value=\"choose\"{$sel_qnc['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"
+           . "\t\t</select></li>\n";
+	    unset($set_qnc,$sel_qnc);
+
             $editsurvey .= "\t</ul>\n";
             // End TAB page & form
             $editsurvey .= "\t</div><input type='hidden' name='action' value='globalsettingssave'/></form>\n";

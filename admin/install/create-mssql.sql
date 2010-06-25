@@ -243,6 +243,10 @@ CREATE TABLE [prefix_surveys] (
   [allowsave] char(1) default 'Y',
   [autonumber_start] bigINT default '0',
   [autoredirect] char(1) default 'N',
+  [showXquestions] char(1) default 'Y',
+  [showgroupinfo] char(1) default 'B',
+  [shownoanswer] char(1) default 'Y',
+  [showqnumcode] char(1) default 'X',
   [allowprev] char(1) default 'Y',
   [printanswers] char(1) default 'N',
   [ipaddr] char(1) default 'N',
@@ -398,7 +402,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '143');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '144');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 

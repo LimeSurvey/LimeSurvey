@@ -251,8 +251,12 @@ foreach ($_SESSION['grouplist'] as $gl)
 {
     $gid=$gl[0];
     $groupUnconditionnalQuestionsCount[$gid]=0;
+    $qnumber = 0;
+
     foreach ($_SESSION['fieldarray'] as $ia)
     {
+    	++$qnumber;
+	$ia[9] = $qnumber; // incremental question count;
         if ($ia[5] == $gid)
         {
             $qidattributes=getQuestionAttributes($ia[0]);

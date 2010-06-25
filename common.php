@@ -2810,11 +2810,12 @@ function templatereplace($line, $replacements=array())
     if(
         $showgroupinfo == 'both' ||
 	$showgroupinfo == 'name' ||
+	($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
 	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
 	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
     )
     {
-    if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
+        if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
     }
     else
     {
@@ -2822,12 +2823,13 @@ function templatereplace($line, $replacements=array())
     };
     if(
         $showgroupinfo == 'both' ||
-	$showgroupinfo == 'number' ||
+	$showgroupinfo == 'description' ||
+	($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
 	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
 	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
     )
     {
-    if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
+        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
     }
     else
     {
@@ -2861,6 +2863,7 @@ function templatereplace($line, $replacements=array())
     if(
         $showqnumcode == 'both' ||
 	$showqnumcode == 'number' ||
+	($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
 	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
 	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
     )
@@ -2874,6 +2877,7 @@ function templatereplace($line, $replacements=array())
     if(
         $showqnumcode == 'both' ||
 	$showqnumcode == 'code' ||
+	($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
 	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
 	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
     )
@@ -2887,19 +2891,23 @@ function templatereplace($line, $replacements=array())
 
     if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
     $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
-    if($showXquestions == 'show' || ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y'))
+    if(
+      $showXquestions == 'show' ||
+      ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
+      ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y')
+    )
     {
-    if ($totalquestionsAsked < 1)
-    {
-        if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
-    }
-    if ($totalquestionsAsked == 1)
-    {
-        if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There is 1 question in this survey"), $line); //Singular
-    }
-    else
-    {
-        if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+        if ($totalquestionsAsked < 1)
+        {
+            if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
+        }
+        elseif ($totalquestionsAsked == 1)
+        {
+            if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There is 1 question in this survey"), $line); //Singular
+        }
+        else
+        {
+             if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
 	};
     }
     else
