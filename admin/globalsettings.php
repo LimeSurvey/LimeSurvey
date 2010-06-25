@@ -83,6 +83,7 @@ function globalsettingssave()
             $sessionlifetimetemp=(int)($_POST['sessionlifetime']);
             if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
+            setGlobalSetting('forceSSL',$forceSSL);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
             if ((substr($savetime,0,1)!='-') && (substr($savetime,0,1)!='+')) { $savetime = '+'.$savetime;}
@@ -214,9 +215,9 @@ function globalsettingsdisplay()
 
             $dateformatdata=getDateFormatData($_SESSION['dateformat']);
             $editsurvey.= "\t<li><label for='timeadjust'>".$clang->gT("Time difference (in hours):")."</label>\n"
-            . "\t\t<input type='text' size='10' id='timeadjust' name='timeadjust' value=\"".htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust')))."\" /> "
+            . "\t\t<span><input type='text' size='10' id='timeadjust' name='timeadjust' value=\"".htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust')))."\" /> "
             . $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ".$clang->gT("Corrected time :").' '.convertDateTimeFormat(date_shift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')."
-            </li>\n";
+            </span></li>\n";
 
             $thisusepdfexport=getGlobalSetting('usepdfexport');
             $editsurvey .= "\t<li><label for='usepdfexport'>".$clang->gT("PDF export available:")."</label>\n"
@@ -242,6 +243,32 @@ function globalsettingsdisplay()
             . "<li><label for='sessionlifetime'>".$clang->gT("Session lifetime (seconds):")."</label>\n"
             . "<input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value=\"".htmlspecialchars(getGlobalSetting('sessionlifetime'))."\" /></li>";
 
+            $thisforceSSL = getGlobalSetting('forceSSL');
+	    $opt_forceSSL_on = $opt_forceSSL_off = $opt_forceSSL_neither = '';
+	    $warning_forceSSL = ' Do <strong>NOT</strong> force "On" if you\'re <strong>not completely certain</strong> your server has a SSL enabled. <br />'
+	    . '<strong>LimeSurvey will break</strong> if SSL is forced on but your server does not have a valid secure certificate installed and enabled.';
+	    switch($thisforceSSL)
+	    {
+	    	case 'on':
+		    $warning_forceSSL = '';
+		    break;
+		case 'off':
+		case 'neither':
+		    break;
+	    	default:
+		    $thisforceSSL = 'neither';
+	    };
+	    $this_opt = 'opt_forceSSL_'.$thisforceSSL;
+	    $$this_opt = ' selected="selected"';
+	    $editsurvey .= '<li><label for="forceSSL">'.$clang->gT('Force SSL:')."</label>\n"
+	    . "<span>\n"
+	    . "<select name=\"forceSSL\" id=\"forceSSL\">\n\t"
+            . '<option value="on" '.$opt_forceSSL_on.'>'.$clang->gT('On')."</option>\n\t"
+            . '<option value="off" '.$opt_forceSSL_off.'>'.$clang->gT('Off')."</option>\n\t"
+            . '<option value="neither" '.$opt_forceSSL_neither.'>'.$clang->gT('Don\'t force on or off')."</option>\n\t"
+	    . "</select>\n"
+	    . "$warning_forceSSL\n</span></li>\n";
+	    unset($thisforceSSL,$opt_forceSSL_on,$opt_forceSSL_off,$opt_forceSSL_neither,$warning_forceSSL,$this_opt);
 
 
             // End General TAB
@@ -273,9 +300,9 @@ function globalsettingsdisplay()
             if (getGlobalSetting('emailmethod')=='qmail') {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("Qmail")."</option>\n"
             . "\t\t</select></li>\n"
-            . "\t<li><label for='emailsmtphost'>".$clang->gT("SMTP host:")."</label>\n"
-            . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: my.smtp.com:25")."</font></li>\n"
-            . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."</label>\n"
+            . "\t<li>\n\t\t<label for=\"emailsmtphost\">".$clang->gT("SMTP host:")."</label>\n"
+            . "\t\t<span>\n\t\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: my.smtp.com:25")."</font></li>\n"
+            . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."\n\t\t</span>\n\t</label>\n"
             . "\t\t<input type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value=\"".htmlspecialchars(getGlobalSetting('emailsmtpuser'))."\" /></li>\n"
             . "\t<li><label for='emailsmtppassword'>".$clang->gT("SMTP password:")."</label>\n"
             . "\t\t<input type='password' size='50' id='emailsmtppassword' name='emailsmtppassword' value='somepassword' /></li>\n"

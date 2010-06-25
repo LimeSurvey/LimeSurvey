@@ -18,6 +18,8 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 
+SSL_mode($force_secure);
+
 // Include version information
 require($rootdir.'/version.php');
 
@@ -7724,4 +7726,69 @@ function getSubQuestions($sid, $qid) {
     if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
     return false;
 }
+
+/**
+ * redirect() generates a redirect URL for the apporpriate SSL mode then applies it.
+ * 
+ * @param $ssl_mode string 's' or '' (empty).
+ */
+function redirect($ssl_mode)
+{
+    $url = 'http'.$ssl_mode.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    if (!headers_sent())
+    {	// If headers not sent yet... then do php redirect
+        ob_clean();
+	header('Location: '.$url);
+	ob_flush();
+	exit;
+    };
+};
+
+/**
+ * SSL_mode() $force_secure is on or off, it checks if the current
+ * request is to HTTPS (or not). If $force_secure is on, and the
+ * request is not to HTTPS, it redirects the request to the HTTPS
+ * version of the URL, if the request is to HTTPS, it rewrites all
+ * the URL variables so they also point to HTTPS.
+ *
+ * @param $force_secure string 'on' or 'off'
+ * @return does not return
+ */
+function SSL_mode($force_secure = '')
+{
+    global $rooturl , $homeurl , $publicurl , $tempurl , $imagefiles , $uploadurl;
+    global $usertemplaterooturl , $standardtemplaterooturl;
+    global $parsedurl , $relativeurl , $fckeditordir;
+
+    $force_secure = strtolower($force_secure);
+    if( $force_secure == 'on' && $_SERVER['HTTPS'] != 'on' )
+    {
+                redirect('s');
+    }
+    if( $force_secure == 'off' && $_SERVER['HTTPS'] == 'on' )
+    {
+                redirect();
+    };
+
+    $http_protocol = 'http://';
+    if($_SERVER['HTTPS'] == 'on')
+    {
+        $rooturl = str_replace( 'http://' , 'https://' , $rooturl );
+        $homeurl = str_replace( 'http://' , 'https://' , $homeurl );
+        $publicurl = str_replace( 'http://' , 'https://' , $publicurl );
+        $tempurl = str_replace( 'http://' , 'https://' , $tempurl );
+        $imagefiles = str_replace( 'http://' , 'https://' , $imagefiles );
+        $uploadurl = str_replace( 'http://' , 'https://' , $uploadurl );
+        $usertemplaterooturl = str_replace( 'http://' , 'https://' , $usertemplaterooturl );
+        $standardtemplaterooturl = str_replace( 'http://' , 'https://' , $standardtemplaterooturl );
+        $parsedurl = str_replace( 'http://' , 'https://' , $parsedurl );
+        $relativeurl = str_replace( 'http://' , 'https://' , $relativeurl );
+        $fckeditordir = str_replace( 'http://' , 'https://' , $fckeditordir );
+
+        $http_protocol = 'https://';
+    };
+    define('HTTP_PROTOCOL',$http_protocol);
+};
+
+
 // Closing PHP tag intentionally left out - yes, it is okay

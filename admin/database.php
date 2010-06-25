@@ -1206,7 +1206,7 @@ if(isset($surveyid))
             if ($langname)
             {
 
-                if ($_POST['url_'.$langname] == "http://") {$_POST['url_'.$langname]="";}
+                if ($_POST['url_'.$langname] == 'http://') {$_POST['url_'.$langname]="";}
 
                 // Clean XSS attacks
                 if ($filterxsshtml)
@@ -1255,7 +1255,7 @@ if(isset($surveyid))
 elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-    if ($_POST['url'] == "http://") {$_POST['url']="";}
+    if ($_POST['url'] == 'http://') {$_POST['url']="";}
     if (!$_POST['surveyls_title'])
     {
         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a title","js")."\")\n //-->\n</script>\n";

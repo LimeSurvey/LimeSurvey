@@ -460,6 +460,25 @@ $showgroupinfo = 'choose';
 $showqnumcode = 'choose';
 
 
+/**
+ * @var $force_secure string - forces LimeSurvey to run through HTTPS or to block HTTPS
+ * 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
+ *		to fail in SSL is turned off)
+ *	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
+ *		running through SSL)
+ *	'' =	do nothing (default)
+ *
+ * DO NOT turn on secure unless you are sure SSL/HTTPS is working and
+ * that you have a current, working, valid certificate. If you are
+ * unsure whether your server has a valid certificate, just add 's'
+ * to the http part of your normal LimeSurvey URL.
+ *	e.g. https://your.domain.org/limesurvey/admin/admin.php
+ * If LimeSurvey comes up as normal, then everything is fine. If you
+ * get a page not found error or permission denied error then 
+ */
+$force_secure = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
+
+
 
 
 
