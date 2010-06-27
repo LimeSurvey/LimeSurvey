@@ -2896,10 +2896,10 @@ function templatereplace($line, $replacements=array())
     }
 
     if (strpos($line, "{TEMPLATECSS}") !== false) {
-        $templatecss="<link rel='stylesheet' type='text/css' href='{$templateurl}/template.css' />\n";
+        $templatecss="<link rel='stylesheet' type='text/css' href='{$templateurl}template.css' />\n";
         if (getLanguageRTL($clang->langcode))
         {
-            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}/template-rtl.css' />\n";
+            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}template-rtl.css' />\n";
         }
         $line=str_replace("{TEMPLATECSS}", $templatecss, $line);
     }
@@ -2912,12 +2912,12 @@ function templatereplace($line, $replacements=array())
                 if (file_exists($templatedir.'/help.gif'))
                 {
 
-                    $helpicon=$templateurl.'/help.gif';
+                    $helpicon=$templateurl.'help.gif';
                 }
                 elseif (file_exists($templatedir.'/help.png'))
                 {
 
-                    $helpicon=$templateurl.'/help.png';
+                    $helpicon=$templateurl.'help.png';
                 }
                 else
                 {
