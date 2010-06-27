@@ -51,7 +51,7 @@ else
     $usquery = "SELECT emailstatus from ".db_table_name("tokens_{$surveyid}")." where token=".db_quoteall($token,true);
     $usresult = $connect->GetOne($usquery);
 
-    if ($usresult===false)
+    if ($usresult==false)
     {
         $html='<p>'.$clang->gT('You are not a participant in this survey.');
     }
@@ -81,16 +81,16 @@ else
 sendcacheheaders();
 doHeader();
 
-foreach(file("$thistpl/startpage.pstpl") as $op)
+foreach(file("templates/$thistpl/startpage.pstpl") as $op)
 {
     echo templatereplace($op);
 }
-foreach(file("$thistpl/survey.pstpl") as $op)
+foreach(file("templates/$thistpl/survey.pstpl") as $op)
 {
     echo "\t".templatereplace($op);
 }
 echo $html;
-foreach(file("$thistpl/endpage.pstpl") as $op)
+foreach(file("templates/$thistpl/endpage.pstpl") as $op)
 {
     echo templatereplace($op);
 }
