@@ -269,7 +269,6 @@ if ($tokenTableExists)
     $attributeFields=array_keys($attributeFieldAndNames);
 }
 
-//sendcacheheaders();             // sending "cache headers" before this permit us to send something else than a "text/html" content-type
 switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
     case "doc":
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".doc");
@@ -1265,7 +1264,7 @@ if ($type=='xls')
 }
 else if($type=='pdf')
 {
-    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
+    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","DD");
 }
 else
 {
