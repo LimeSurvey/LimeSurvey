@@ -169,7 +169,7 @@ if(isset($_POST['printableexport']))
     $pdf = new PDF($pdforientation);
     $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
     $pdf->AddPage();
-    $pdf->titleintopdf("Survey Name: ".$surveyname,"SurveyID: ".$surveyid);
+        $pdf->titleintopdf($clang->gT("Survey Name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
 }
 $printoutput .= "\t<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)").":</strong> $surveyname ($surveyid)</span><br />\n";
 
@@ -187,11 +187,20 @@ while ($fnrow = $fnresult->FetchRow()) {++$fncount; $fnrows[] = $fnrow; $private
 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
 usort($fnrows, 'GroupOrderThenQuestionOrder');
 
+    if(isset($_POST['printableexport']))
+    {
+        $sEscapemode='unescaped';
+    }
+    else
+    {
+        $sEscapemode='html';
+    }
+
 $fnames[] = array("id", "id", "id");
 
 if ($private == "N") //add token to top ofl ist is survey is not private
 {
-    $fnames[] = array("token", "token", $clang->gT("Token ID"));
+		$fnames[] = array("token", "token", $clang->gT("Token ID",$sEscapemode));
 }
 //The "submitdate" field shouldn't show. If there is a datestamp being recorded, that's covered in "datestamp".
 //The submitdate field is an internal field and always filled out, but sometimes is not actually the date the
@@ -199,15 +208,15 @@ if ($private == "N") //add token to top ofl ist is survey is not private
 //$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
 if ($datestamp == "Y") //add datetime to list if survey is datestamped
 {
-    $fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp"));
+		$fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp",$sEscapemode));
 }
 if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
 {
-    $fnames[] = array("ipaddr", "ipaddr", $clang->gT("IP Address"));
+		$fnames[] = array("ipaddr", "ipaddr", $clang->gT("IP Address",$sEscapemode));
 }
 if ($refurl == "Y") //add refer_URL  to list if survey should save referring URL
 {
-    $fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"));
+		$fnames[] = array("refurl", "refurl", $clang->gT("Referring URL",$sEscapemode));
 }
 
 foreach ($fnrows as $fnrow)
@@ -399,7 +408,7 @@ $last=$id-1;
 $printoutput .= "<table class='printouttable' >\n";
 if(isset($_POST['printableexport']))
 {
-    $pdf->intopdf($clang->gT("Question").": ".$clang->gT("Your Answer"));
+        $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your Answer",'unescaped'));
 }     
 $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>\n";
 $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked
@@ -456,7 +465,7 @@ if(isset($_POST['printableexport']))
          readfile($dateiname);
          */
          
-        header("Content-type: application/pdf");
+			header("Content-type: application/pdf");
         header("Content-Transfer-Encoding: binary");
          
          
@@ -470,10 +479,7 @@ if(isset($_POST['printableexport']))
     }
     else
     {
-         
-        header("Content-Type: application/pdf");
-        //header("Content-Length: ". $size);
-        $pdf->write_out($clang->gT($surveyname)."-".$surveyid.".pdf");
+			$pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf","DD");
     }
 
 
