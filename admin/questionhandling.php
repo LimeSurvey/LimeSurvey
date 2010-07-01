@@ -27,7 +27,7 @@ if ($action == "copyquestion")
     $qattributes=questionAttributes();
     $editquestion = PrepareEditorScript();
     $editquestion .= "<div class='header'>".$clang->gT("Copy Question")."</div>\n"
-    . "<form id='frmcopyquestion' class='form30' name='frmcopyquestion' action='$scriptname' method='post'>\n"
+    . "<form id='frmcopyquestion' class='form30' name='frmcopyquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n"
     . '<div class="tab-pane" id="tab-pane-copyquestion">';
     foreach ($questlangs as $language)
     {
