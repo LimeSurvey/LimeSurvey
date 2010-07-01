@@ -48,7 +48,7 @@ if ($debug>2) {//For debug purposes - switch on in config.php
     error_reporting(E_ALL | E_STRICT);
 }
 
-if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
+if (ini_get("max_execution_time")<1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
 @ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
 
 $maildebug='';
@@ -5028,7 +5028,7 @@ function modify_database($sqlfile='', $sqlstring='')
                 else
                 {
                     $command=htmlspecialchars($command);
-                    $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#00FF00'>...".$clang->gT("Success!")."</font>";
+                    $modifyoutput .=". ";
                 }
 
                 $command = '';

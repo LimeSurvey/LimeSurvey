@@ -20,7 +20,7 @@
 function db_upgrade($oldversion) {
     global $modifyoutput, $databasename, $databasetabletype;
 
-    echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
+    echo str_pad('The LimeSurvey database is upgraded ('.date('Y-m-d H:i:s').')',4096).". Please be patient...<br />\n";
 
     if ($oldversion < 127) {
         modify_database("","create index answers_idx2 on prefix_answers (sortorder)"); echo $modifyoutput;  flush();

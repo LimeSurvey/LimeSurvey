@@ -21,7 +21,7 @@ function db_upgrade($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $databasename, $databasetabletype;
-    echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
+    echo str_pad('The LimeSurvey database is upgraded ('.date('Y-m-d H:i:s').')',4096).". Please be patient...<br />\n";
     if ($oldversion < 111) {
         // Language upgrades from version 110 to 111 since the language names did change
 
@@ -593,7 +593,7 @@ function upgrade_tables143()
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}
     else
-    {
+    {                
         while ( $row = $answerresult->FetchRow() )
         {
             
@@ -627,8 +627,9 @@ function upgrade_tables143()
             }
         }
     }
-    modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
-
+    // Sanitize data
+    modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':','W','L')"); echo $modifyoutput; flush();
+    
     // Convert labels to answers
     $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
     $answerresult = db_execute_assoc($answerquery);
