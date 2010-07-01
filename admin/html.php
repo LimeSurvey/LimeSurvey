@@ -2016,17 +2016,9 @@ if($action == "setsurveysecurity")
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
-		$rightDefs = array(
-			'edit_survey_property' => array('enabled' => false, 'label' => 'Edit Survey Properties'),
-			'define_questions' => array('enabled' => false, 'label' => 'Define Questions'),
-			'browse_response' => array('enabled' => false, 'label' => 'Browse Responses'),
-			'export' => array('enabled' => false, 'label' => 'Export'),
-			'delete_survey' => array('enabled' => false, 'label' => 'Delete Survey'),
-			'activate_survey' => array('enabled' => false, 'label' => 'Activate Survey'));
-		enableSettableSurveyRightsOnly($surveyid, $rightDefs);
-
         $query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$postuserid;
         $result2 = db_execute_assoc($query2); //Checked
+
         if($result2->RecordCount() > 0)
         {
             $resul2row = $result2->FetchRow();
@@ -2034,23 +2026,47 @@ if($action == "setsurveysecurity")
             $usersummary = "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
             . "<table width='100%' border='0'>\n<tr><td colspan='6' class='header'>\n"
             . "".$clang->gT("Set Survey Rights")."</td></tr>\n";
-			// ******************************
-            $usersummary .= '<tr>';
-			foreach ($rightDefs as $rightName => $rightDef)
-				$usersummary .= '<th align="center">' . $clang->gT($rightDef['label']) . '</th>' . "\n";
-            $usersummary .= '</tr>' . "\n";
-            $usersummary .= "<tr>";
-			foreach ($rightDefs as $rightName => $rightDef)
-			{
-				$usersummary .= '<td align="center"><input type="checkbox"  class="checkboxbtn" name="' . $rightName . '" value="' . $rightName . '"';
-				if ($resul2row[$rightName])
-					$usersummary .= ' checked="checked" ';
-				if (!$rightDef['enabled'])
-					$usersummary .= ' disabled="disabled" ';
-				$usersummary .=' /></td>' . "\n";
-			}
-            $usersummary .= "</tr>\n";
-			// ******************************
+
+            $usersummary .= "<tr><th align='center'>".$clang->gT("Edit Survey Properties")."</th>\n"
+            . "<th align='center'>".$clang->gT("Define Questions")."</th>\n"
+            . "<th align='center'>".$clang->gT("Browse Responses")."</th>\n"
+            . "<th align='center'>".$clang->gT("Export")."</th>\n"
+            . "<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
+            . "<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
+            . "</tr>\n";
+
+            //content
+            $usersummary .= "<tr><td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
+            if($resul2row['edit_survey_property']) {
+                $usersummary .= ' checked="checked" ';
+            }
+            $usersummary .=" /></td>\n";
+            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"define_questions\" value=\"define_questions\"";
+            if($resul2row['define_questions']) {
+                $usersummary .= ' checked="checked" ';
+            }
+            $usersummary .=" /></td>\n";
+            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"browse_response\" value=\"browse_response\"";
+            if($resul2row['browse_response']) {
+                $usersummary .= ' checked="checked" ';
+            }
+            $usersummary .=" /></td>\n";
+            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"export\" value=\"export\"";
+            if($resul2row['export']) {
+                $usersummary .= ' checked="checked" ';
+            }
+            $usersummary .=" /></td>\n";
+            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_survey\" value=\"delete_survey\"";
+            if($resul2row['delete_survey']) {
+                $usersummary .= ' checked="checked" ';
+            }
+            $usersummary .=" /></td>\n";
+            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"activate_survey\" value=\"activate_survey\"";
+            if($resul2row['activate_survey']) {
+                $usersummary .= ' checked="checked" ';
+            }
+            $usersummary .=" /></td></tr>\n";
+
             $usersummary .= "\n<tr><td colspan='6' align='center'>"
             ."<input type='submit' value='".$clang->gT("Save Now")."' />"
             ."<input type='hidden' name='action' value='surveyrights' />"
@@ -2071,34 +2087,38 @@ if($action == "setusergroupsurveysecurity")
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
-		$rightDefs = array(
-			'edit_survey_property' => array('enabled' => false, 'label' => 'Edit Survey Properties'),
-			'define_questions' => array('enabled' => false, 'label' => 'Define Questions'),
-			'browse_response' => array('enabled' => false, 'label' => 'Browse Responses'),
-			'export' => array('enabled' => false, 'label' => 'Export'),
-			'delete_survey' => array('enabled' => false, 'label' => 'Delete Survey'),
-			'activate_survey' => array('enabled' => false, 'label' => 'Activate Survey'));
-		enableSettableSurveyRightsOnly($surveyid, $rightDefs);
+        $usersummary = "<table width='100%' border='0'>\n<tr><td colspan='6'>\n"
+        . "".$clang->gT("Set Survey Rights")."</td></tr>\n";
 
-		$usersummary = "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
-		. "<table width='100%' border='0'>\n<tr><td colspan='6' class='header'>\n"
-		. "".$clang->gT("Set Survey Rights")."</td></tr>\n";
-		// ******************************
-		$usersummary .= '<tr>';
-		foreach ($rightDefs as $rightName => $rightDef)
-			$usersummary .= '<th align="center">' . $clang->gT($rightDef['label']) . '</th>' . "\n";
-		$usersummary .= '</tr>' . "\n";
-		$usersummary .= "<tr>";
-		foreach ($rightDefs as $rightName => $rightDef)
-		{
-			$usersummary .= '<td align="center"><input type="checkbox"  class="checkboxbtn" name="' . $rightName . '" value="' . $rightName . '"';
-			if (!$rightDef['enabled'])
-				$usersummary .= ' disabled="disabled" ';
-			$usersummary .=' /></td>' . "\n";
-		}
-		$usersummary .= "</tr>\n";
-		// ******************************
-		
+        $usersummary .= "<th align='center'>".$clang->gT("Edit Survey Property")."</th>\n"
+        . "<th align='center'>".$clang->gT("Define Questions")."</th>\n"
+        . "<th align='center'>".$clang->gT("Browse Response")."</th>\n"
+        . "<th align='center'>".$clang->gT("Export")."</th>\n"
+        . "<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
+        . "<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
+        . "</tr>\n"
+        . "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
+
+        //content
+        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
+
+        $usersummary .=" /></td>\n";
+        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"define_questions\" value=\"define_questions\"";
+
+        $usersummary .=" /></td>\n";
+        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"browse_response\" value=\"browse_response\"";
+
+        $usersummary .=" /></td>\n";
+        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"export\" value=\"export\"";
+
+        $usersummary .=" /></td>\n";
+        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_survey\" value=\"delete_survey\"";
+
+        $usersummary .=" /></td>\n";
+        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"activate_survey\" value=\"activate_survey\"";
+
+        $usersummary .=" /></td>\n";
+
         $usersummary .= "\n<tr><td colspan='6' align='center'>"
         ."<input type='submit' value='".$clang->gT("Save Now")."' />"
         ."<input type='hidden' name='action' value='surveyrights' />"
@@ -2423,20 +2443,14 @@ elseif ($action == "surveyrights")
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0)
     {
-		$rightDefs = array(
-			'edit_survey_property' => array('enabled' => false),
-			'define_questions' => array('enabled' => false),
-			'browse_response' => array('enabled' => false),
-			'export' => array('enabled' => false),
-			'delete_survey' => array('enabled' => false),
-			'activate_survey' => array('enabled' => false)
-		);
-		enableSettableSurveyRightsOnly($surveyid, $rightDefs);
         $rights = array();
-		
-		foreach ($rightDefs as $rightName => $rightDef)
-			if ($rightDef['enabled'])
-				$rights[$rightName] = isset($_POST[$rightName]) ? 1 : 0;
+
+        if(isset($_POST['edit_survey_property']))$rights['edit_survey_property']=1;	else $rights['edit_survey_property']=0;
+        if(isset($_POST['define_questions']))$rights['define_questions']=1;			else $rights['define_questions']=0;
+        if(isset($_POST['browse_response']))$rights['browse_response']=1;			else $rights['browse_response']=0;
+        if(isset($_POST['export']))$rights['export']=1;								else $rights['export']=0;
+        if(isset($_POST['delete_survey']))$rights['delete_survey']=1;				else $rights['delete_survey']=0;
+        if(isset($_POST['activate_survey']))$rights['activate_survey']=1;			else $rights['activate_survey']=0;
 
         if(isset($postuserid)){
             $uids[] = $postuserid;
