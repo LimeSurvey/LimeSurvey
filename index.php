@@ -2460,7 +2460,7 @@ function buildsurveysession()
         $_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
     }
     $qtypes=getqtypelist('','array');
-    $fieldmap=createFieldMap($surveyid,'full');
+    $fieldmap=createFieldMap($surveyid,'full','short',false,$_SESSION['s_lang']);
     $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {

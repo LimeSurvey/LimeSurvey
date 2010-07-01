@@ -2247,7 +2247,7 @@ function validate_templatedir($templatename)
  * @param int $questionid Limit to a certain qid only (for question preview)
  * @return array
  */
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false) {
+function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
     global $dbprefix, $connect, $globalfieldmap, $clang;
     $surveyid=sanitize_int($surveyid);
@@ -2361,7 +2361,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     }
     //Get list of questions
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    if (is_null($sQuestionLanguage))
+    {
+        $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    }
+    else
+    {
+        $s_lang = $sQuestionLanguage;
+    }
     $qtypes=getqtypelist('','array');
     $aquery = "SELECT *, "
         ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
