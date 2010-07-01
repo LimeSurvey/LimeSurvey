@@ -895,7 +895,7 @@ function loadanswers()
             if ($column == "startdate")
             {
                 $_SESSION['startdate']=$value;
-            }
+            }                              
             else
             {
                 //Only make session variables for those in insertarray[]
@@ -2548,7 +2548,7 @@ function surveymover()
 
     if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
     {
-        $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; "
+        $surveymover .= "<input class='submit' accesskey='p' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; "
         . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' />\n";
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
