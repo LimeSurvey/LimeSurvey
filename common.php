@@ -7208,65 +7208,6 @@ function strip_javascript($content){
 
 
 /**
- *
- * formats a datestring (YY-MM-DD or YYYY-MM-DD or YY-M-D... to whatever)
- * @param $date Datestring, that should be formated normally it is in YYYY-MM-DD, but we take also YY-MM-DD or YY-M-D
- * @param $format Format you want your date in (DD.MM.YYYY or MM.DD.YYYY or MM/YY ? everything possible )
- * @return formated datestring
-
- function dateFormat($date, $format="DD.MM.YYYY")
- {
- if(preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/",$date))
- {
- $pieces = explode("-",$date);
- $yy = $pieces[0];
- $mm = $pieces[1];
- $dd = $pieces[2];
- }
- elseif(preg_match("/^([0-9]{2})-([0-9]{1,2})-([0-9]{1,2})/",$date))
- {
- $pieces = explode("-",$date);
- $yy = $pieces[0];
- $mm = $pieces[1];
- $dd = $pieces[2];
- }
- else
- {
- return "No valid Date";
- }
- // Format check
- $c['Y'] = substr_count($format,"Y" );
- $c['M'] = substr_count($format,"M" );
- $c['D'] = substr_count($format,"D" );
-
- foreach($c as $key => $value)
- {
- for($n=0;$n<$value;++$n)
- {
- $dFormat[$key] .= "".$key;
- }
- }
-
- if(strlen($yy)>$c['Y'])
- {$yy = substr($yy,-2,2);}
- if(strlen($yy)<4 && strlen($yy)<$c['Y'])
- {$yy = "20".$yy;}
- if(strlen($mm)<2 && strlen($mm)<$c['M'])
- {$mm = "0".$mm;}
- if(strlen($dd)>2 )
- {$dd = substr($dd,0,2);}
- if(strlen($dd)<2 && strlen($dd)<$c['D'])
- {$dd = "0".$dd;}
-
- $return = str_replace($dFormat['Y'],substr($yy,-$c['Y'], $c['Y']), $format);
- $return = str_replace($dFormat['M'],substr($mm,-$c['M'], $c['M']), $return);
- $return = str_replace($dFormat['D'],substr($dd,-$c['D'], $c['D']), $return);
-
- return $return;
- }
- */
-
-/**
  * This function cleans files from the temporary directory being older than 1 day
  * @todo Make the days configurable
  */
@@ -7276,7 +7217,7 @@ function cleanTempDirectory()
     $dir=  $tempdir.'/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if ((filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
             unlink($dir.$file);
         }
     }
