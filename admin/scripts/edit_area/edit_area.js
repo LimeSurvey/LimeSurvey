@@ -118,7 +118,8 @@
 				option.value= syntax;
 				if(syntax==s['syntax'])
 					option.selected= "selected";
-				option.innerHTML= t.get_translation("syntax_" + syntax, "word");
+				dispSyntax	= parent.editAreaLoader.syntax_display_name[ syntax ];
+				option.innerHTML= typeof( dispSyntax ) == 'undefined' ? syntax.substring( 0, 1 ).toUpperCase() + syntax.substring( 1 ) : dispSyntax;//t.get_translation("syntax_" + syntax, "word");
 				syntax_selec.appendChild(option);
 			}
 		}
@@ -381,8 +382,9 @@
 					this.line_number++;
 				}
 				destDiv.innerHTML= destDiv.innerHTML + newLines;
-				
-				this.fixLinesHeight( this.textarea.value, start, -1 );
+				if(this.settings['word_wrap']){
+					this.fixLinesHeight( this.textarea.value, start, -1 );
+				}
 			}
 		
 			//4) be sure the text is well displayed

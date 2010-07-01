@@ -8,7 +8,7 @@
 
 function EditAreaLoader(){
 	var t=this;
-	t.version= "0.8.1.1";
+	t.version= "0.8.2";
 	date= new Date();
 	t.start_time=date.getTime();
 	t.win= "loading";	// window loading state
@@ -24,6 +24,7 @@ function EditAreaLoader(){
 	// scripts that must be loaded in the iframe
 	t.scripts_to_load= ["elements_functions", "resize_area", "reg_syntax"];
 	t.sub_scripts_to_load= ["edit_area", "manage_area" ,"edit_area_functions", "keyboard", "search_replace", "highlight", "regexp"];
+	t.syntax_display_name= { /*syntax_display_name_AUTO-FILL-BY-COMPRESSOR*/ };
 	
 	t.resize= []; // contain resizing datas
 	t.hidden= {};	// store datas of the hidden textareas
@@ -347,7 +348,7 @@ EditAreaLoader.prototype ={
 		}
 				
 		// get toolbar content
-		area=editAreas[id];
+		var area=editAreas[id];
 		
 		for(i=0; i<area["settings"]["tab_toolbar"].length; i++){
 		//	alert(this.tab_toolbar[i]+"\n"+ this.get_control_html(this.tab_toolbar[i]));
@@ -598,7 +599,7 @@ EditAreaLoader.prototype ={
 	
 			for( i=0; i<elems.length; i++ ){
 				if (elems[i].src && elems[i].src.match(/edit_area_[^\\\/]*$/i) ) {
-					var src = elems[i].src;
+					var src = unescape( elems[i].src ); // use unescape for utf-8 encoded urls
 					src = src.substring(0, src.lastIndexOf('/'));
 					this.baseURL = src;
 					this.file_name= elems[i].src.substr(elems[i].src.lastIndexOf("/")+1);

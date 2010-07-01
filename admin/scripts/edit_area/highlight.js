@@ -186,7 +186,9 @@
 		 * The goal here will be to find the text node concerned by the modification and to update it
 		 */
 		//-------------------------------------------
-		// 
+		
+		// disable latest optimization tricks (introduced in 0.8.1 and removed in 0.8.2), TODO: check for another try later
+		doSyntaxOpti	= doHtmlOpti = false;
 		if( doSyntaxOpti )
 		{
 			try
@@ -207,11 +209,10 @@
 				{
 				}
 				nbEnd	= i;
-				
+				//console.log( nbStart, nbEnd, replacedBloc, updated_highlight );
 				// get the changes
 				lastHtml	= replacedBloc.substring( nbStart, lengthOld - nbEnd );
 				newHtml		= updated_highlight.substring( nbStart, lengthNew - nbEnd );
-				
 				
 				// We can do the optimisation only if we havn't touch to span elements
 				if( newHtml.indexOf('<span') == -1 && newHtml.indexOf('</span') == -1 
@@ -220,7 +221,9 @@
 					var beginStr, nbOpendedSpan, nbClosedSpan, nbUnchangedChars, span, textNode;
 					doHtmlOpti		= true;
 					beginStr		= t.last_hightlighted_text.substr( 0, stay_begin.length + nbStart );
-			
+					// fix special chars
+					newHtml			= newHtml.replace( /&lt;/g, '<').replace( /&gt;/g, '>').replace( /&amp;/g, '&');
+		
 					nbOpendedSpan	= beginStr.split('<span').length - 1;
 					nbClosedSpan	= beginStr.split('</span').length - 1;
 					// retrieve the previously opened span (Add 1 for the first level span?)
@@ -313,11 +316,23 @@
 					// update the textNode content
 					
 					// number of caracters after the last opened of closed span
-					nbUnchangedChars = beginStr.length - Math.max( 0, beginStr.lastIndexOf( '>' ) + 1 );
+					//nbUnchangedChars = ( lastIndex = beginStr.lastIndexOf( '>' ) ) == -1 ? beginStr.length : beginStr.length - ( lastIndex + 1 );
+					//nbUnchangedChars =  ? beginStr.length : beginStr.substr( lastIndex + 1 ).replace( /&lt;/g, '<').replace( /&gt;/g, '>').replace( /&amp;/g, '&').length;
 					
+					if( ( lastIndex = beginStr.lastIndexOf( '>' ) ) == -1 )
+					{
+						nbUnchangedChars	= beginStr.length;
+					}
+					else
+					{
+						nbUnchangedChars	= beginStr.substr( lastIndex + 1 ).replace( /&lt;/g, '<').replace( /&gt;/g, '>').replace( /&amp;/g, '&').length; 	
+						//nbUnchangedChars	+= beginStr.substr( ).replace( /&/g, '&amp;').replace( /</g, '&lt;').replace( />/g, '&gt;').length - beginStr.length;
+					}
+					//alert( nbUnchangedChars );
 					//	console.log( span, textNode, nbOpendedSpan,nbClosedSpan,  span.nextSibling, textNode.length, nbUnchangedChars, lastHtml, lastHtml.length, newHtml, newHtml.length );
 					//	alert( textNode.parentNode.className +'-'+ textNode.parentNode.tagName+"\n"+ textNode.data +"\n"+ nbUnchangedChars +"\n"+ lastHtml.length +"\n"+ newHtml +"\n"+ newHtml.length  );
-					
+				//	console.log( nbUnchangedChars, lastIndex, beginStr.length, beginStr.replace(/&/g, '&amp;'), lastHtml.length, '|', newHtml.replace( /\t/g, 't').replace( /\n/g, 'n').replace( /\r/g, 'r'), lastHtml.replace( /\t/g, 't').replace( /\n/g, 'n').replace( /\r/, 'r') );
+				//	console.log( textNode.data.replace(/&/g, '&amp;') );
 					// IE only manage \r for cariage return in textNode and not \n or \r\n
 					if( t.isIE )
 					{
@@ -336,11 +351,12 @@
 			catch( e )
 			{
 		//		throw e;
-		//		console.log( e );
+			//	console.log( e );
 				doHtmlOpti	= false;
 			}
 			
 		}
+	
 		/*** END HTML update's optimisation ***/
 		// end test
 		
