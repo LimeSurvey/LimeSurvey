@@ -244,7 +244,7 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
     $supportedLanguages['fr']['rtl'] = false;
     $supportedLanguages['fr']['dateformat'] = 2;
-
+    
     // Galician
     $supportedLanguages['gl']['description'] = $clang->gT('Galician');
     $supportedLanguages['gl']['nativedescription'] = 'Galego';
@@ -298,6 +298,12 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['id']['nativedescription'] = 'Bahasa Indonesia';
     $supportedLanguages['id']['rtl'] = false;
     $supportedLanguages['id']['dateformat'] = 5;
+
+    // Irish
+    $supportedLanguages['ie']['description'] = $clang->gT('Irish');
+    $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
+    $supportedLanguages['ie']['rtl'] = false;    
+    $supportedLanguages['id']['dateformat'] = 2;
 
     // Italian
     $supportedLanguages['it']['description'] = $clang->gT('Italian');
