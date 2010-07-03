@@ -3518,12 +3518,12 @@ function do_file_upload($ia)
                                 modal: true,
                                 resizable: false,
                                 autoResize: true,
-                                overlay: {
-                                    opacity: 0.85,
-                                    background: \"black\"
+                                beforeclose: function() {
+                                    $('#uploader').contents().find('#saveandexit').click();
                                 },
-                                close: function(event, ui) {
-                                    document.getElementById('uploader').contentWindow.passJSON();
+                                overlay: {
+                                    opacity: 0,
+                                    background: 'black'
                                 }
                             }).width(1084 - horizontalPadding).height(500 - verticalPadding);
                         });
@@ -3532,13 +3532,13 @@ function do_file_upload($ia)
                     function copyJSON(jsonstring, filecount) {
                         $('#".$ia[1]."').val(jsonstring);
                         $('#".$ia[1]."_filecount').val(filecount);
-
+                        $('.externalSite').dialog('close');
                     }
                 </script>";
 
-    $answer .= "<p><a class='fuqt' id='dialog-modal' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Open Uploader</a></p>";
+    $answer .= "<a class='upload' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Open Uploader</a><br />";
     $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
-    $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='' />";
+    $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
     
     /*
     $answer = '<table border="0" cellpadding="10" cellspacing="10" align="center">

@@ -3,15 +3,33 @@
     $uploaddir = 'upload/tmp/';
     $file = $uploaddir . basename($_FILES['uploadfile']['name']);
     $size=$_FILES['uploadfile']['size'];
-    if($size>1048576)
+
+    // TODO: use the size from configuration/settings
+    if($size > 1024000)
     {
-        echo "error file size > 1 MB";
+        $return = array(
+                        "success" => false,
+                        "error" => "The file is too large"
+                    );
+
         unlink($_FILES['uploadfile']['tmp_name']);
-        exit;
+        echo json_encode($return);
     }
-    if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file)) {
-      echo "success";
+    else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file)) {
+        $pathinfo = pathinfo(basename($file));
+        $size     = filesize($file);
+        $return = array(
+                        "success" => true,
+                        "size" => $size,
+                        "name" => basename($file),
+                        "ext" => $pathinfo['extension']
+                    );
+        echo json_encode($return);
     } else {
-        echo "error ".$_FILES['uploadfile']['error']." --- ".$_FILES['uploadfile']['tmp_name']." %%% ".$file."($size)";
+        $return = array(
+                        "success" => false,
+                        "error" => "Unknown error"
+                    );
+        echo json_encode($return);
     }
 ?>

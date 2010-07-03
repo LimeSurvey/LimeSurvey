@@ -5,160 +5,201 @@
         <title>Advanced File Uploader</title>
 
         <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-        <script type="text/javascript" src="scripts/swfupload/swfupload.js"></script>
-        <script type="text/javascript" src="scripts/jquery.swfupload.js"></script>
+        <script type="text/javascript" src="scripts/ajaxupload.js"></script>
 
         <link type="text/css" href="scripts/jquery/css/jquery-ui-1.8.1.custom.css" rel="stylesheet" />
-
         <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
         
-        <script type="text/javascript">
+    <style type="text/css">
+        body {font-family: verdana, arial, helvetica, sans-serif;font-size: 12px;color: #D0D0D0; direction: ltr;}
+        h1 {color: #C7D92C;	font-size: 18px; font-weight: 400;}
+        a {	color: white;}
+        a:hover, a.hover {color: #C7D92C;}
+        ul { list-style: none; }
+        #dialog-confirm { padding: 0 20px; float: left; width: 750px; }
+
+		div.button {
+			height: 29px;
+			width: 133px;
+			background: url(images/button.png) 0 0;
+            margin:0 auto;
             
-            $(function(){
-                $('#swfupload-control').swfupload({
-                    upload_url: "upload.php",
-                    file_post_name: 'uploadfile',
-                    file_size_limit : "1024",
-                    file_types : "*.png",
-                    file_types_description : "png files",
-                    file_upload_limit : 5,
-                    flash_url : "scripts/swfupload/swfupload.swf",
-                    button_image_url : 'scripts/swfupload/wdp_buttons_upload_114x29.png',
-                    button_width : 114,
-                    button_height : 29,
-                    button_placeholder : $('#button')[0],
-                    debug: false
-                })
-                    .bind('fileQueued', function(event, file){
-                        var index = file.id.split("_").pop();
-                        var listitem='<li id="'+file.id+'" >'+
-                            '<div class="progressbar" ><div class="progress" ></div></div>'+
-                            '<p class="status" >Pending</p>'+
-                            '<span class="cancel" ></span>'+
-                            '<a href="#"><img src="images/trash.png" onclick="deletefile('+index+')" border="0" ></a>'+
-                            '<input type="text"   id="title_'  +index+'" value='+file.name.substring(0, file.name.lastIndexOf("."))+' />'+
-                            '<input type="hidden" id="size_'   +index+'" value='+file.size+' />'+
-                            '<input type="hidden" id="name_'   +index+'" value='+file.name+' />'+
-                            '<input type="hidden" id="ext_'    +index+'" value='+file.name.split(".").pop().toLowerCase()+' />'+
-                            '<input type="text"   id="comment_'+index+'" value="Comments" />'+
-                            '<em>'+file.name+'</em>'+
-                            '</li>';
-                        $('#log').append(listitem);
-                        $('li#'+file.id+' .cancel').bind('click', function(){
-                            var swfu = $.swfupload.getInstance('#swfupload-control');
-                            swfu.cancelUpload(file.id);
-                            $('li#'+file.id).slideUp('slow');
-                        });
-                        // start the upload since it's queued
-                        $(this).swfupload('startUpload');
-                    })
-                    .bind('fileQueueError', function(event, file, errorCode, message){
-                        alert('Size of the file '+file.name+' is greater than limit');
-                    })
-                    .bind('fileDialogComplete', function(event, numFilesSelected, numFilesQueued){
-                        $('#queuestatus').text('Files Selected: '+numFilesSelected+' / Queued Files: '+numFilesQueued);
-                    })
-                    .bind('uploadStart', function(event, file){
-                        $('#log li#'+file.id).find('p.status').text('Uploading...');
-                        $('#log li#'+file.id).find('span.progressvalue').text('0%');
-                        $('#log li#'+file.id).find('span.cancel').hide();
-                    })
-                    .bind('uploadProgress', function(event, file, bytesLoaded){
-                        //Show Progress
-                        var percentage=Math.round((bytesLoaded/file.size)*100);
-                        $('#log li#'+file.id).find('div.progress').css('width', percentage+'%');
-                        $('#log li#'+file.id).find('span.progressvalue').text(percentage+'%');
-                    })
-                    .bind('uploadSuccess', function(event, file, serverData){
-                        var item=$('#log li#'+file.id);
-                        item.find('div.progress').css('width', '100%');
-                        item.find('span.progressvalue').text('100%');
-                        var pathtofile='upload/tmp/'+file.name;
-                        item.addClass('success').find('p.status').html('<img src="'+pathtofile+'" height="50px" width="50px" />');
-                    })
-                    .bind('uploadComplete', function(event, file){
-                        // upload has completed, try the next one in the queue
-                        var item=$('#log li#'+file.id);
-                        item.find('div.progress').hide();
-                        item.find('div.progressbar').hide();
-                        item.find('span.progressvalue').text(' ');
-                        $(this).swfupload('startUpload');
-                    })
+			font-size: 14px; color: #C7D92C; text-align: center; padding-top: 15px;
+		}
+		/*
+		We can't use ":hover" preudo-class because we have
+		invisible file input above, so we have to simulate
+		hover effect with JavaScript.
+		 */
+		div.button.hover {
+			background: url(images/button.png) 0 56px;
+			color: #95A226;
+		}
+	</style>
 
-            });
+ 	<script type="text/javascript">
+        $(document).ready(function(){
+            
+            var button = $('#button1'), interval;
+            var ia = $('#ia').val();
 
-            function passJSON() {
-                var json = "[";
-                var filecount = 0;
-                var i = 0;
-                while ($("#size_"+i).length != 0)
+            /* Load the previously uploaded files */
+            var filecount = window.parent.window.$('#'+ia+'_filecount').val();
+
+            if (filecount > 0)
+            {
+                var jsontext = window.parent.window.$('#'+ia).val();
+                var json = eval('(' + jsontext + ')');
+
+                var i;
+                $('#licount').val(filecount);
+
+                for (i = 0; i <  filecount; i++)
                 {
-                    if (filecount > 0)
-                        json += ",";
+                    var previewblock =  "<li id='li_"+i+"'><div>"+
+                            "<table align='center'><tr>"+
+                                "<td  align='center' width='50%'><img src='upload/tmp/"+json[i].name+"' height='100px' /></td>"+
+                                "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
+                                "<td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /><br /><br />"+
+                                "<input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>"+
+                                "<td  align='center' width='20%'><img src='images/trash.png'  onclick='deletefile("+i+")' /></td>"+
+                            "</tr></table>"+
+                            "<input type='hidden' id='size_"+i+"' value="+json[i].size+" />"+
+                            "<input type='hidden' id='name_"+i+"' value="+json[i].name+" />"+
+                            "<input type='hidden' id='ext_" +i+"' value="+json[i].ext+"  />"+
+                        "</div></li>";
 
-                    if ($("#size_"+i).val() == 0)
-                    {
-                        i += 1;
-                    }
-                    else
-                    {
-                        json += '{"title":"' +$("#title_"  +filecount).val()+'",'+
-                                '"comment":"'+$("#comment_"+filecount).val()+'",'+
-                                '"size":"'   +$("#size_"   +filecount).val()+'",'+
-                                '"name":"'   +$("#name_"   +filecount).val()+'",'+
-                                '"ext":"'    +$("#ext_"    +filecount).val()+'"}';
-
-                        filecount += 1;
-                        i += 1;
-                    }
+                    // add file to the list
+                    $('#listfiles').append(previewblock);
                 }
-                json += "]";
-                window.parent.window.copyJSON(json, filecount);
             }
 
-            function deletefile(i) {
-                if (window.XMLHttpRequest)
-                    xmlhttp=new XMLHttpRequest();
+            // The upload button
+            new AjaxUpload(button, {
+                action: 'upload.php',
+                name: 'uploadfile',
+                onSubmit : function(file, ext){
+                    // change button text, when user selects file
+                    button.text('Uploading');
+
+                    // If you want to allow uploading only 1 file at time,
+                    // you can disable upload button
+                    this.disable();
+
+                    // Uploding -> Uploading. -> Uploading...
+                    interval = window.setInterval(function(){
+                        var text = button.text();
+                        if (text.length < 13){
+                            button.text(text + '.');
+                        } else {
+                            button.text('Uploading');
+                        }
+                    }, 200);
+                },
+                onComplete: function(file, response){
+                    button.text('Upload');
+                    window.clearInterval(interval);
+                    // enable upload button
+                    this.enable();
+
+                    // Once the file has been uploaded via AJAX,
+                    // the preview is appended to the list of files
+                    var metadata = eval('(' + response + ')');
+                    var count = parseInt($('#licount').val());
+                    
+
+                    if (metadata.success)
+                    {
+                        var previewblock =  "<li id='li_"+count+"'><div>"+
+                                                "<table align='center'><tr>"+
+                                                    "<td  align='center' width='50%'><img src='upload/tmp/"+file+"' width='100px' /></td>"+
+                                                    "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
+                                                    "<td align='center'><input type='text' value='' id='title_"+count+"' /><br /><br />"+
+                                                    "<input type='text' value='' id='comment_"+count+"' /></td>"+
+                                                    "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+count+")'/></td>"+
+                                                "</tr></table>"+
+                                                "<input type='hidden' id='size_"+count+"' value="+metadata.size+" />"+
+                                                "<input type='hidden' id='name_"+count+"' value="+metadata.name+" />"+
+                                                "<input type='hidden' id='ext_" +count+"' value="+metadata.ext+"  />"+
+                                            "</div></li>";
+
+                        // add file to the list
+                        $('#listfiles').append(previewblock);
+                        count++;
+                        $('#licount').val(count);
+                    }
+                }
+            });
+        });
+
+        // pass the JSON data from the iframe to the main survey page
+        function passJSON() {
+            var json = "[";
+            var filecount = 0;
+            var licount = parseInt($('#licount').val());
+            var i = 0;
+            
+            while (i < licount)
+            {
+                if (filecount > 0)
+                    json += ",";
+
+                if (!$("#li_"+i).is(":visible"))
+                {
+                    i += 1;
+                }
                 else
-                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                {
+                    json += '{"title":"' +$("#title_"  +i).val()+'",'+
+                            '"comment":"'+$("#comment_"+i).val()+'",'+
+                            '"size":"'   +$("#size_"   +i).val()+'",'+
+                            '"name":"'   +$("#name_"   +i).val()+'",'+
+                            '"ext":"'    +$("#ext_"    +i).val()+'"}';
 
-                xmlhttp.onreadystatechange=function() {
-                    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                    {
-                        document.getElementById("mydiv").innerHTML=xmlhttp.responseText;
-                    }
+                    filecount += 1;
+                    i += 1;
                 }
-                xmlhttp.open('GET','delete.php?file='+$("#name_"+i).val(),true);
-                xmlhttp.send();
-                $("#SWFUpload_0_"+i).hide();
-                $("#size_"+i).val(0);
             }
-        </script>
+            json += "]";
+            window.parent.window.copyJSON(json, filecount);
+        }
 
-        <style type="text/css" >
-            #swfupload-control p{ margin-top:70px; font-size:0.9em; }
-            #log{ margin: 12px 50px 0px 50px; padding:0; list-style-type: none; }
-            #log li{ list-style-position:inside; margin:2px; border:1px solid #ccc; padding:15px; font-size:12px;
-                font-family:Arial, Helvetica, sans-serif; color:#333; background:#fff; position:relative;}
-            #log li .progressbar{ border:1px solid #333; height:15px; background:#fff; }
-            #log li .progress{ background:#999; width:0%; height:15px; }
-            #log li p{ margin:0; line-height:18px; }
-            #log li input{ padding: 5px; border: 10px; margin-left: 15px; margin-right: 15px; }
-            #log li.success{ border:1px solid #339933; background:#ccf9b9; }
-            #log li p img{ float: right; margin-right: 20px; margin-top: 10px; }
-            #log li em{ margin-bottom: 10px; }
-            #log li span.cancel{ position:absolute; top:5px; right:5px; width:20px; height:20px;
-                background:url('scripts/swfupload/cancel.png') no-repeat; cursor:pointer; }
-        </style>
+        function deletefile(i) {
+        	if (window.XMLHttpRequest)
+                xmlhttp=new XMLHttpRequest();
+            else
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    $('#notice').val(responseText);
+                }
+            }
+            xmlhttp.open('GET','delete.php?file='+$("#name_"+i).val(),true);
+            xmlhttp.send();
+            
+            $("#li_"+i).hide();
+        }
+        
+    </script>
 
     </head>
 
     <body>
-        <div id="swfupload-control">
-            <p align="center"><input type="button" id="button" /></p>
-            <p id="queuestatus" ></p>
-            <ul id="log"></ul>
-        </div>
+        <input type="hidden" id="ia" value="<?php echo $_GET['ia'] ?>" />
+        <input type="hidden" id="licount" value="0" />
+
+        <!-- The upload button -->
+        <div id="button1" class="button" align="center">Upload</div>
+
+        <!-- TODO: show flash notice on updates -->
+        <p id="notice"></p>
+
+        <!-- The list of uploaded files -->
+        <ul id="listfiles"></ul>
+
+        <button id="saveandexit" onclick="passJSON()">Save and Exit</button>
     </body>
 </html>
