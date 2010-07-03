@@ -186,9 +186,11 @@ if ($subaction == "id")
             {
                 for ($i = 0; $i < $field['max_files']; $i++)
                 {
-                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Title)",     "type"=>"|", "metadata"=>"title",    "index"=>$i);
-                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Comment)",   "type"=>"|", "metadata"=>"comment",  "index"=>$i);
-                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (File name)", "type"=>"|", "metadata"=>"filename", "index"=>$i);
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (File name)", "type"=>"|", "metadata"=>"name",    "index"=>$i);
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (File size)", "type"=>"|", "metadata"=>"size",    "index"=>$i);
+                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                 }
             }
             else
@@ -286,8 +288,12 @@ if ($subaction == "id")
                     $metadata = $fnames[$i]['metadata'];
                     $phparray = json_decode($idrow[$fnames[$i][0]], true);
                     if (isset($phparray[$index]))
-                        //$browseoutput .= "<td align='center'>".$phparray[$index][$metadata]."</td>\n";
+                    {
+                        if ($metadata === "size")
+                            $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]/1000))." KB";
+
                         $browseoutput .= htmlspecialchars($phparray[$index][$metadata]);
+                    }
                     else
                         $browseoutput .= "";
                 }
@@ -538,9 +544,11 @@ elseif ($subaction == "all")
             {
                 for ($i = 0; $i < $fielddetails['max_files']; $i++)
                 {
-                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",    "index"=>$i);
-                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment",  "index"=>$i);
-                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File name)", "type"=>"|", "metadata"=>"filename", "index"=>$i);
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File name)", "type"=>"|", "metadata"=>"name",    "index"=>$i);
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File size)", "type"=>"|", "metadata"=>"size",    "index"=>$i);
+                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                 }
             }
             else
@@ -802,7 +810,12 @@ elseif ($subaction == "all")
                 $metadata = $fnames[$i]['metadata'];
                 $phparray = json_decode($dtrow[$fnames[$i][0]], true);
                 if (isset($phparray[$index]))
+                {
+                    if ($metadata === "size")
+                        $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]/1000))." KB";
+                    
                     $browseoutput .= "<td align='center'>".$phparray[$index][$metadata]."</td>\n";
+                }
                 else
                     $browseoutput .= "<td align='center'>&nbsp;</td>\n";
             }
