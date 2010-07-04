@@ -1909,10 +1909,11 @@ function sendsubmitnotification($sendnotification)
         // Send results
         $results = "----------------------------\n";
         $prevquestion='';
+        $ssubquestion='';
         $fieldmap=createFieldMap($surveyid,'full');
         foreach ($_SESSION['insertarray'] as $value)
         {
-            $squestion = strip_tags($fieldmap[$value]['question']);
+            $sQuestion = strip_tags($fieldmap[$value]['question']);
             if (isset($fieldmap[$value]['subquestion2']))
             {
                 $ssubquestion = "[".strip_tags($fieldmap[$value]['subquestion1'])."] [".strip_tags($fieldmap[$value]['subquestion2'])."]";     
@@ -1921,13 +1922,13 @@ function sendsubmitnotification($sendnotification)
                 $ssubquestion = strip_tags($fieldmap[$value]['subquestion']);    
             } else
             {
-                // Nothing, there are no subquestions, just answers in db.
+                $ssubquestion='';
             }
 
-            if ($prevquestion!=$squestion)
+            if ($prevquestion!=$sQuestion)
             {
-                $prevquestion=$squestion;
-                $questiontitle=FlattenText(html_entity_decode($squestion, ENT_QUOTES, $emailcharset));
+                $prevquestion=$sQuestion;
+                $questiontitle=FlattenText(html_entity_decode($sQuestion, ENT_QUOTES, $emailcharset));
                 $results .= "\n$questiontitle: ";
                 if ($ssubquestion!='')
                 {
@@ -1955,6 +1956,9 @@ function sendsubmitnotification($sendnotification)
             elseif (isset($_SESSION[$value]))
             {
                 $results .= FlattenText(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
+            }
+            else
+            {
                 $results .= "\n";
             }
         }
