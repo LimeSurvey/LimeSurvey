@@ -1862,7 +1862,7 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
         if (isset($fieldmap[$fieldcode])) 
             $fields = $fieldmap[$fieldcode]; 
         else
-            safe_die ("Couldn't get question type - getextendedanswer() in common.php for field $fieldcode<br />");
+            return false;
         //Find out the question type
         $this_type = $fields['type'];
         switch($this_type)
@@ -2911,7 +2911,7 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{TEMPLATECSS}", $templatecss, $line);
     }
 
-    if ($help) {
+    if (FlattenText($help,true)!='') {
         if (strpos($line, "{QUESTIONHELP}") !== false)
         {
             If (!isset($helpicon))
@@ -4546,11 +4546,11 @@ function FlattenText($texttoflatten, $decodeUTF8Entities=false)
     $nicetext = strip_javascript($texttoflatten);
     $nicetext = strip_tags($nicetext);
     $nicetext = str_replace(array("\n","\r"),array('',''), $nicetext);
-    $nicetext = trim($nicetext);
     if ($decodeUTF8Entities==true)
     {
         $nicetext=html_entity_decode($nicetext,ENT_QUOTES,'UTF-8');
     }
+    $nicetext = trim($nicetext);
     return  $nicetext;
 }
 
