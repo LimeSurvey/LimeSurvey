@@ -395,7 +395,7 @@ elseif ($subaction == "all")
                     {
                         $phparray = json_decode($data, true);
                         for ($i = 0; isset($phparray[$i]); $i++)
-                            $filelist[] = $phparray[$i]['filename'];
+                            $filelist[] = $phparray[$i]['name'];
                     }
                 }
             }
@@ -468,7 +468,7 @@ elseif ($subaction == "all")
                 $phparray = json_decode($data, true);
                 for ($i = 0; isset($phparray[$i]); $i++)
                 {
-                    $filelist[] = $phparray[$i]['filename'];
+                    $filelist[] = $phparray[$i]['name'];
                 }
             }
         }

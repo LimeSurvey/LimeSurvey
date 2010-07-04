@@ -252,10 +252,14 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             if (move_uploaded_file($_FILES[$myfile]['tmp_name'], $target_path))
                             {
                                 $filename = $_FILES[$myfile]['name'];
-                                $metadata[]  = array(
-                                    "title" => "$_POST[$title]",
+                                $pathinfo = pathinfo(basename($filename));
+                                $size     = filesize($target_path);
+                                $metadata[]   = array(
+                                    "title"   => "$_POST[$title]",
                                     "comment" => "$_POST[$comment]",
-                                    "filename" => "$filename"
+                                    "name"    => "$filename",
+                                    "size"    => "$size",
+                                    "ext"     => $pathinfo['extension']
                                 );
                             }
                         }

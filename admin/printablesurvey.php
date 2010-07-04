@@ -1699,6 +1699,9 @@ while ($degrow = $degresult->FetchRow())
 
                     if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
                     break;
+                case "|":   // File Upload
+                    $question['QUESTION_TYPE_HELP'] .= "Kindly attach the aforementioned documents along with the survey";
+                    break;
                     // === END SWITCH ===================================================
             }
             if(isset($_POST['printableexport'])){$pdf->ln(5);}
