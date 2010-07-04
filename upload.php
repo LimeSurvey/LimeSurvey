@@ -9,7 +9,7 @@
     {
         $return = array(
                         "success" => false,
-                        "error" => "The file is too large"
+                        "msg" => "The file is too large"
                     );
 
         unlink($_FILES['uploadfile']['tmp_name']);
@@ -20,15 +20,16 @@
         $size     = filesize($file);
         $return = array(
                         "success" => true,
-                        "size" => $size,
-                        "name" => basename($file),
-                        "ext" => $pathinfo['extension']
+                        "size"    => $size,
+                        "name"    => basename($file),
+                        "ext"     => $pathinfo['extension'],
+                        "msg"     => "The file has been successfuly uploaded"
                     );
         echo json_encode($return);
     } else {
         $return = array(
                         "success" => false,
-                        "error" => "Unknown error"
+                        "msg" => "Unknown error"
                     );
         echo json_encode($return);
     }

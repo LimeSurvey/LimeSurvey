@@ -7,7 +7,7 @@
     fclose($filename);
 
     if (unlink($filename))
-        echo 'File '.$filename.' deleted';
+        echo 'File '.basename($filename).' deleted';
     else
         echo 'Oops, There was an error deleting the file';
     

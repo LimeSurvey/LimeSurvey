@@ -11,7 +11,7 @@
         <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
         
     <style type="text/css">
-        body {font-family: verdana, arial, helvetica, sans-serif;font-size: 12px;color: #D0D0D0; direction: ltr;}
+        body {font-family: verdana, arial, helvetica, sans-serif;font-size: 12px;color: black; direction: ltr;}
         h1 {color: #C7D92C;	font-size: 18px; font-weight: 400;}
         a {	color: white;}
         a:hover, a.hover {color: #C7D92C;}
@@ -22,8 +22,7 @@
 			height: 29px;
 			width: 133px;
 			background: url(images/button.png) 0 0;
-            margin:0 auto;
-            
+            margin: 50px auto;
 			font-size: 14px; color: #C7D92C; text-align: center; padding-top: 15px;
 		}
 		/*
@@ -35,16 +34,42 @@
 			background: url(images/button.png) 0 56px;
 			color: #95A226;
 		}
+
+        .notice {
+            background: #FFF6BF;
+            border: 2px solid #FFD324;
+            text-align: center;
+            margin: 10px auto;
+            padding: 5px 20px;
+            color: red;
+        }
+
+        .previewblock {
+            background-color: #99CCFF;
+            margin: 10px auto;
+            padding: 5px 20px;
+        }
+        img {
+            display: block;
+            margin: 5px;
+            border: 0 none;
+            border-style: solid;
+        }
+
 	</style>
 
  	<script type="text/javascript">
         $(document).ready(function(){
             
-            var button = $('#button1'), interval;
             var ia = $('#ia').val();
+
+            $('#saveandexit').click(function() {
+                passJSON();
+            });
 
             /* Load the previously uploaded files */
             var filecount = window.parent.window.$('#'+ia+'_filecount').val();
+            $('#filecount').val(filecount);
 
             if (filecount > 0)
             {
@@ -62,7 +87,8 @@
                                 "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
                                 "<td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /><br /><br />"+
                                 "<input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>"+
-                                "<td  align='center' width='20%'><img src='images/trash.png'  onclick='deletefile("+i+")' /></td>"+
+                                /* If the file is not an image, use a placeholder */
+                                "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+i+")' /></td>"+
                             "</tr></table>"+
                             "<input type='hidden' id='size_"+i+"' value="+json[i].size+" />"+
                             "<input type='hidden' id='name_"+i+"' value="+json[i].name+" />"+
@@ -75,10 +101,24 @@
             }
 
             // The upload button
-            new AjaxUpload(button, {
+            var button = $('#button1'), interval;
+            
+            var AJAXUploadbutton = new AjaxUpload(button, {
                 action: 'upload.php',
                 name: 'uploadfile',
                 onSubmit : function(file, ext){
+
+                    var maxfiles = $('#maxfiles').val();
+                    var filecount = $('#filecount').val();
+
+                    if (filecount >= maxfiles)
+                    {
+                        $('body').prepend('<div class="notice">Sorry, No more files can be uploaded !</div>');
+                        setTimeout(function() {
+                            $(".notice").remove();
+                        }, 10000);
+                        return false;
+                    }
                     // change button text, when user selects file
                     button.text('Uploading');
 
@@ -105,13 +145,18 @@
                     // Once the file has been uploaded via AJAX,
                     // the preview is appended to the list of files
                     var metadata = eval('(' + response + ')');
+                    $('body').prepend('<div class="notice">'+metadata.msg+'</div>');
+                    setTimeout(function() {
+                        $(".notice").remove();
+                    }, 2000);
                     var count = parseInt($('#licount').val());
                     
 
                     if (metadata.success)
                     {
-                        var previewblock =  "<li id='li_"+count+"'><div>"+
+                        var previewblock =  "<li id='li_"+count+"' class='previewblock'><div>"+
                                                 "<table align='center'><tr>"+
+                                                    /* TODO: If the file is not an image, use a placeholder */
                                                     "<td  align='center' width='50%'><img src='upload/tmp/"+file+"' width='100px' /></td>"+
                                                     "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
                                                     "<td align='center'><input type='text' value='' id='title_"+count+"' /><br /><br />"+
@@ -124,9 +169,19 @@
                                             "</div></li>";
 
                         // add file to the list
-                        $('#listfiles').append(previewblock);
+                        $('#listfiles').prepend(previewblock);
                         count++;
                         $('#licount').val(count);
+                        var filecount = $('#filecount').val();
+                        filecount++;
+                        $('#filecount').val(filecount);
+                        var maxfiles = $('#maxfiles').val();
+                        if (filecount >= maxfiles) {
+                            $('body').prepend('<div class="notice">Maximum number of files have been uploaded<br />You may Save and Exit !</div>');
+                            setTimeout(function() {
+                                $(".notice").remove();
+                            }, 2000);
+                        }
                     }
                 }
             });
@@ -173,14 +228,22 @@
             xmlhttp.onreadystatechange=function()
             {
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                {
-                    $('#notice').val(responseText);
-                }
+                    addNotice(xmlhttp.responseText);
             }
             xmlhttp.open('GET','delete.php?file='+$("#name_"+i).val(),true);
             xmlhttp.send();
             
             $("#li_"+i).hide();
+            var filecount = $('#filecount').val();
+            filecount--;
+            $('#filecount').val(filecount);
+        }
+
+        function addNotice(notice) {
+            $('body').prepend('<div class="notice">'+notice+'</div>');
+            setTimeout(function() {
+                $(".notice").remove();
+            }, 2000);
         }
         
     </script>
@@ -188,18 +251,21 @@
     </head>
 
     <body>
-        <input type="hidden" id="ia" value="<?php echo $_GET['ia'] ?>" />
-        <input type="hidden" id="licount" value="0" />
+        <input type="hidden" id="ia"                value="<?php echo $_GET['ia']                 ?>" />
+        <input type="hidden" id="minfiles"          value="<?php echo $_GET['minfiles']           ?>" />
+        <input type="hidden" id="maxfiles"          value="<?php echo $_GET['maxfiles']           ?>" />
+        <input type="hidden" id="maxfilesize"       value="<?php echo $_GET['maxfilesize']        ?>" />
+        <input type="hidden" id="allowed_filetypes" value="<?php echo $_GET['allowed_filetypes']  ?>" />
+        <input type="hidden" id="licount"           value="0" />
+        <input type="hidden" id="filecount"         value="0" />
 
         <!-- The upload button -->
         <div id="button1" class="button" align="center">Upload</div>
 
-        <!-- TODO: show flash notice on updates -->
-        <p id="notice"></p>
-
         <!-- The list of uploaded files -->
         <ul id="listfiles"></ul>
 
-        <button id="saveandexit" onclick="passJSON()">Save and Exit</button>
+        <div  id="saveandexit" class="button" align="center">Save and Exit</div>
+
     </body>
 </html>

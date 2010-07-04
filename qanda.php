@@ -3511,10 +3511,10 @@ function do_file_upload($ia)
                             var horizontalPadding = 30;
                             var verticalPadding = 30;
                             $('<iframe id=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-                                title: (\$this.attr('title')) ? \$this.attr('title') : 'Upload your files',
+                                title: 'Upload your files',
                                 autoOpen: true,
                                 width: 1084,
-                                height: 400,
+                                height: 500,
                                 modal: true,
                                 resizable: false,
                                 autoResize: true,
@@ -3522,7 +3522,7 @@ function do_file_upload($ia)
                                     $('#uploader').contents().find('#saveandexit').click();
                                 },
                                 overlay: {
-                                    opacity: 0,
+                                    opacity: 0.85,
                                     background: 'black'
                                 }
                             }).width(1084 - horizontalPadding).height(500 - verticalPadding);
@@ -3536,7 +3536,7 @@ function do_file_upload($ia)
                     }
                 </script>";
 
-    $answer .= "<a class='upload' href='uploader.php?maxfiles=".$maxfiles."&ia=".$ia[1]."' >Open Uploader</a><br />";
+    $answer .= "<a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowedfiletypes=".$allowed_filetypes."' >Open Uploader</a><br />";
     $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
     $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
     
