@@ -714,10 +714,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_array_increasesamedecrease($ia);
             break;
         case 'F': //ARRAY (Flexible) - Row Format
-            $values=do_array_flexible($ia);
+            $values=do_array($ia);
             break;
         case 'H': //ARRAY (Flexible) - Column Format
-            $values=do_array_flexiblecolumns($ia);
+            $values=do_arraycolumns($ia);
             break;
         case ':': //ARRAY (Multi Flexi) 1 to 10
             $values=do_array_multiflexi($ia);
@@ -726,7 +726,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
             $values=do_array_multitext($ia);  //It's like the "5th element" movie, come to life
             break;
         case '1': //Array (Flexible Labels) dual scale
-            $values=do_array_flexible_dual($ia);
+            $values=do_array_dual($ia);
             break;
     } //End Switch
 
@@ -5203,7 +5203,7 @@ function do_array_increasesamedecrease($ia)
 }
 
 // ---------------------------------------------------------------
-function do_array_flexible($ia)
+function do_array($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
     global $shownoanswer;
@@ -5946,7 +5946,7 @@ function do_array_multiflexi($ia)
 
 
 // ---------------------------------------------------------------
-function do_array_flexiblecolumns($ia)
+function do_arraycolumns($ia)
 {
     global $dbprefix;
     global $shownoanswer;
@@ -6099,7 +6099,7 @@ function do_array_flexiblecolumns($ia)
 
 
 // ---------------------------------------------------------------
-function do_array_flexible_dual($ia)
+function do_array_dual($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
     global $shownoanswer;

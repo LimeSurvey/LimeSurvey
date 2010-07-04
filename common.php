@@ -7497,6 +7497,6 @@ function getSubQuestions($sid, $qid) {
 	    $subquestions[$sid] = $resultset;
     }
     if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
-    return false;
+    return array();
 }
 // Closing PHP tag intentionally left out - yes, it is okay
