@@ -49,7 +49,7 @@ if ($debug>2) {//For debug purposes - switch on in config.php
 }
 
 if (ini_get("max_execution_time")<1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
-@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
+//@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
 
 $maildebug='';
 

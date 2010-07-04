@@ -88,7 +88,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //$allfields ="";
     global $connect, $dbprefix, $clang,
     $rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname,
-    $chartfontfile, $chartfontsize, $admintheme;
+    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
 
     if (is_null($statlangcode))
     {
@@ -222,6 +222,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
         // create new PDF document
         $pdf = new MyPDF();
+        $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
+        
         $surveyInfo = getSurveyInfo($surveyid,$language);
 
         // set document information
