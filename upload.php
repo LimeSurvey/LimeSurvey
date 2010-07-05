@@ -4,23 +4,26 @@
     $file = $uploaddir . basename($_FILES['uploadfile']['name']);
     $size=$_FILES['uploadfile']['size'];
     $valid_extensions = $_POST['valid_extensions'];
+    $maxfilesize = $_POST['maxfilesize'];
 
     $valid_extensions_array = explode(",", $valid_extensions);
 
     $pathinfo = pathinfo(basename($file));
     $ext = $pathinfo['extension'];
 
-    // TODO: use the size from configuration/settings
-    if($size > 1024000)
+    // check to ensure that the file does not cross the maximum file size
+    if($size > $maxfilesize)
     {
         $return = array(
                         "success" => false,
-                        "msg" => "The file is too large"
+                        "msg" => "Sorry, This file is too large. Only files upto ".$maxfilesize." KB are allowed"
                     );
 
         unlink($_FILES['uploadfile']['tmp_name']);
         echo json_encode($return);
     }
+    // check to see that this file type is allowed
+    // it is also  checked at the client side, but jst double checking
     else if (!in_array($ext, $valid_extensions_array))
     {
         $return = array(
@@ -31,6 +34,8 @@
         unlink($_FILES['uploadfile']['tmp_name']);
         echo json_encode($return);
     }
+    // if everything went fine and the file was uploaded successfuly,
+    // send the file related info back to the client
     else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file)) {
         $size     = filesize($file);
         $return = array(
@@ -41,7 +46,9 @@
                         "msg"     => "The file has been successfuly uploaded"
                     );
         echo json_encode($return);
-    } else {
+    }
+    // if there was some error, report error message
+    else {
         $return = array(
                         "success" => false,
                         "msg" => "Unknown error"

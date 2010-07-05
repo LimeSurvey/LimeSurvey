@@ -116,7 +116,8 @@
                 action: 'upload.php',
                 name: 'uploadfile',
                 data: {
-                    valid_extensions : $('#allowed_filetypes').val()
+                    valid_extensions : $('#allowed_filetypes').val(),
+                    maxfilesize : $('#maxfilesize').val()
                 },
                 onSubmit : function(file, ext){
 
@@ -195,9 +196,9 @@
                     {
                         var previewblock =  "<li id='li_"+count+"' class='previewblock'><div>"+
                                                 "<table align='center'><tr>"+
-                                                    /* TODO: If the file is not an image, use a placeholder */
                                                     "<td  align='center' width='50%'>";
 
+                        // If the file is not an image, use a placeholder
                         if (isValueInArray(image_extensions, metadata.ext))
                             previewblock += "<img src='upload/tmp/"+metadata.name+"' height='100px' />";
                         else
