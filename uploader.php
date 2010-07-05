@@ -83,11 +83,17 @@
                 {
                     var previewblock =  "<li id='li_"+i+"'><div>"+
                             "<table align='center'><tr>"+
-                                "<td  align='center' width='50%'><img src='upload/tmp/"+json[i].name+"' height='100px' /></td>"+
+                                "<td  align='center' width='50%'>";
+
+                    if (in_array(json[i].ext, $image_extensions))
+                        var previewblock += "<img src='upload/tmp/"+json[i].name+"' height='100px' />";
+                    else
+                        var previewblock += "<img src='images/placeholder.png' height='100px' />";
+
+                        var previewblock += "</td>"+
                                 "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
                                 "<td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /><br /><br />"+
                                 "<input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>"+
-                                /* If the file is not an image, use a placeholder */
                                 "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+i+")' /></td>"+
                             "</tr></table>"+
                             "<input type='hidden' id='size_"+i+"' value="+json[i].size+" />"+
@@ -103,14 +109,20 @@
             // The upload button
             var button = $('#button1'), interval;
             
-            var AJAXUploadbutton = new AjaxUpload(button, {
+            new AjaxUpload(button, {
                 action: 'upload.php',
                 name: 'uploadfile',
+                data: {
+                    valid_extensions : $('#allowed_filetypes').val()
+                },
                 onSubmit : function(file, ext){
 
                     var maxfiles = $('#maxfiles').val();
                     var filecount = $('#filecount').val();
+                    var allowed_filetypes = $('#allowed_filetypes').val().split(",");
 
+                    /* If maximum number of allowed filetypes have already been uploaded,
+                     * do not upload the file and display an error message ! */
                     if (filecount >= maxfiles)
                     {
                         $('body').prepend('<div class="notice">Sorry, No more files can be uploaded !</div>');
@@ -119,6 +131,29 @@
                         }, 10000);
                         return false;
                     }
+
+                    /* If the file being uploaded is not allowed,
+                     * do not upload the file and display an error message ! */
+                    var allowSubmit = false;
+                    for (var i = 0; i < allowed_filetypes.length; i++)
+                    {
+                        //check to see if it's the proper extension
+                        if (allowed_filetypes[i] == ext)
+                        {
+                            //it's the proper extension
+                            allowSubmit = true;
+                            break;
+                        }
+                    }
+                    if (allowSubmit == false)
+                    {
+                        $('body').prepend('<div class="notice">Sorry, Only "'+ $('#allowed_filetypes').val()+'" files can be uploaded for this question !</div>');
+                        setTimeout(function() {
+                            $(".notice").remove();
+                        }, 5000);
+                        return false;
+                    }
+                    
                     // change button text, when user selects file
                     button.text('Uploading');
 

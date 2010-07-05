@@ -3536,7 +3536,7 @@ function do_file_upload($ia)
                     }
                 </script>";
 
-    $answer .= "<a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowedfiletypes=".$allowed_filetypes."' >Open Uploader</a><br />";
+    $answer .= "<a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."' >Open Uploader</a><br />";
     $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
     $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
     
