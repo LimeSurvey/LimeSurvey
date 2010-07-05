@@ -71,6 +71,8 @@
             var filecount = window.parent.window.$('#'+ia+'_filecount').val();
             $('#filecount').val(filecount);
 
+            var image_extensions = new Array("png", "jpg", "jpeg", "bmp", "gif");
+
             if (filecount > 0)
             {
                 var jsontext = window.parent.window.$('#'+ia).val();
@@ -84,16 +86,17 @@
                     var previewblock =  "<li id='li_"+i+"'><div>"+
                             "<table align='center'><tr>"+
                                 "<td  align='center' width='50%'>";
-
-                    if (in_array(json[i].ext, $image_extensions))
-                        var previewblock += "<img src='upload/tmp/"+json[i].name+"' height='100px' />";
+                            
+                    if (isValueInArray(image_extensions, json[i].ext))
+                        previewblock += "<img src='upload/tmp/"+json[i].name+"' height='100px' />";
                     else
-                        var previewblock += "<img src='images/placeholder.png' height='100px' />";
+                        previewblock += "<img src='images/placeholder.png' height='100px' />";
 
-                        var previewblock += "</td>"+
+                    previewblock += "</td>"+
                                 "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
                                 "<td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /><br /><br />"+
                                 "<input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>"+
+                                /* If the file is not an image, use a placeholder */
                                 "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+i+")' /></td>"+
                             "</tr></table>"+
                             "<input type='hidden' id='size_"+i+"' value="+json[i].size+" />"+
@@ -185,14 +188,22 @@
                         $(".notice").remove();
                     }, 2000);
                     var count = parseInt($('#licount').val());
-                    
+
+                    var image_extensions = new Array("png", "jpg", "jpeg", "bmp", "gif");
 
                     if (metadata.success)
                     {
                         var previewblock =  "<li id='li_"+count+"' class='previewblock'><div>"+
                                                 "<table align='center'><tr>"+
                                                     /* TODO: If the file is not an image, use a placeholder */
-                                                    "<td  align='center' width='50%'><img src='upload/tmp/"+file+"' width='100px' /></td>"+
+                                                    "<td  align='center' width='50%'>";
+
+                        if (isValueInArray(image_extensions, metadata.ext))
+                            previewblock += "<img src='upload/tmp/"+metadata.name+"' height='100px' />";
+                        else
+                            previewblock += "<img src='images/placeholder.png' height='100px' />";
+
+                        previewblock += "</td>"+
                                                     "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
                                                     "<td align='center'><input type='text' value='' id='title_"+count+"' /><br /><br />"+
                                                     "<input type='text' value='' id='comment_"+count+"' /></td>"+
@@ -221,6 +232,15 @@
                 }
             });
         });
+
+        function isValueInArray(arr, val) {
+            inArray = false;
+            for (i = 0; i < arr.length; i++)
+                if (val == arr[i])
+                    inArray = true;
+            
+            return inArray;
+        }
 
         // pass the JSON data from the iframe to the main survey page
         function passJSON() {
