@@ -425,7 +425,7 @@ while ($idrow = $idresult->FetchRow())
         ."\t</tr>\n";
         if(isset($_POST['printableexport']))
         {            
-            $pdf->intopdf(FlattenText($fnames[$i][2]).": ".FlattenText(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
+            $pdf->intopdf(FlattenText($fnames[$i][2],true).": ".FlattenText(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]]),true));
             $pdf->ln(2);
         }
     }
