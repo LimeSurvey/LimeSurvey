@@ -495,7 +495,9 @@ function CheckForDBUpgrades()
         if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
         if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
         include ('upgrade-'.$upgradedbtype.'.php');
+        include ('upgrade-all.php');
         $tables = $connect->MetaTables();
+        db_upgrade_all(intval($currentDBVersion));
         db_upgrade(intval($currentDBVersion));
         $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
     }

@@ -21,7 +21,6 @@ function db_upgrade($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $databasename, $databasetabletype;
-    echo str_pad('The LimeSurvey database is upgraded ('.date('Y-m-d H:i:s').')',4096).". Please be patient...<br />\n";
     if ($oldversion < 111) {
         // Language upgrades from version 110 to 111 since the language names did change
 
