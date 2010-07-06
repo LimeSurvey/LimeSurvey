@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.90RC1!
+Welcome to LimeSurvey v1.90RC2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,61 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.90RC1 (build 8819) to 1.90RC2 (build 8906) Legend: +new feature, # updated feature, - bug fix 
++New feature: Very basic HTTPS support (c_schmitz) - allows dynamic switching between https and http
++New feature: Irish Translation - kindly contributed by Karin Whooley, National Centre for Technology in Education, Dublin (c_schmitz)
+#Updated language: Czech (cs), thanks to Vladimír Braun (gandalfar)
+#Updated language: Dutch (nl), thanks to Han Velthuis (gandalfar)
+#Updated language: Dutch informal (nl-informal), thanks to Han Velthuis (gandalfar)
+#Updated language: French (b00z00)
+#Updated language: Lithuanian (lt), thanks to Antas Keršulis (gandalfar)
+#Updated language: Portuguese (pt), thanks to António Correia (gandalfar)
+#Updated language: Spanish (es) (kadejo)
+#Updated language: Swedish (sv), thanks to Alexander Wireen and Jonas Norlinder (gandalfar)
+-Fixed issue #4433: "Exclusive option" setting for multiple options questions causes PHP errors (tpartner)
+-Fixed issue: Not loading html.php for required functions - added delete user group, and fixed editgroup (jcleeland)
+-Fixed issue #4397: limesurvey/index.php has a while loop for a query that can only return one row (mennodekker)
+-Fixed issue #4429: Replacement Field Properties loading non-stop (mennodekker)
+-Fixed issue #4440: Order is the opposite after importing a question group (mennodekker)
+-Fixed issue #4425: No Group name and description displayed (mennodekker)
+-Fixed issue #04403: Token fields not shown at Export screen. (texens)
+-Fixed issue: "Browse responses for this survey" screen doesn't show subquestions in the heading for question types with subquestions. (texens)
+-Fixed issue: dataentry doesn't show up the subquestions as the subquestions are now stored in the *questions* table, and not the *answers* table. (texens)
+-Fixed issue: Missing function showadmindir() when editing groups (jcleeland)
+-Fixed issue #04431: small error in Polish translation (idobraca)
+-Fixed issue #04432: An extra slash is put into the template css line in the survey html (idobraca)
+-Fixed issue #04434: Unable to call template in optout.php (idobraca)
+-Fixed issue #04445: Une classe différente assignée à un textarea (idobraca)
+-Fixed issue #4270: LSRC returns Internal Server Error when attempting to send reminder emails for a survey that has no reminders to send - patch by elameno (c_schmitz)
+-Fixed issue #4391: Errors during database upgrade (c_schmitz)
+-Fixed issue #4406: Hidden questions appear in survey print view (c_schmitz)
+-Fixed issue #4407: Multilingual surveys with Array questions may induce ghost subquestions (c_schmitz)
+-Fixed issue #4408: Multilingual surveys with Array questions may block answers editing (c_schmitz)
+-Fixed issue #4412: Identity insert problems on SQL Server 2008 upgrading from 1.87 to 1.90 (c_schmitz)
+-Fixed issue #4422: Navigator code fails to call any onsubmit function when previous is pressed (c_schmitz)
+-Fixed issue #4430: Questions are not translated (but labels and sub-questions/answers are!) (c_schmitz)
+-Fixed issue #4435: Result e-mail duplicates last sub-question until another one happens (c_schmitz)
+-Fixed issue #4437: Cannot use Multiple option question for quotas (c_schmitz)
+-Fixed issue #4443: When copying a question and the question number is omitted all changes are lost on submission (c_schmitz)
+-Fixed issue #4444: Export PDF on print answers does not handle correctly accents (c_schmitz)
+-Fixed issue #4447: Unlink on a directory in temp folder creates error (c_schmitz)
+-Fixed issue #4451: User templates are not moved to new location on upgrade (c_schmitz)
+-Fixed issue #4454: Help icon not always hidden if no text entered (c_schmitz)
+-Fixed issue #4456: Error message: Invalid argument... when testing inactive survey and a question is missing necessary subquestions (c_schmitz)
+-Fixed issue #4457: When copying question, answer options are not copied (c_schmitz)
+-Fixed issue #4458: Wrong PDF charset when creating PDF file from statistics - font & size from config.php were not used. (c_schmitz)
+-Fixed issue #4459: Text in template HTML/CSS editor has a shadow, is hard to read in Safari 5 (c_schmitz)
+-Fixed issue #4461: Quotas are check on inactive survey and survey breaks with error message (c_schmitz)
+-Fixed issue: Confirmation/success page after editing group was not using standard "messagebox" div style. Also set maxlength for group name text input. (jcleeland)
+-Fixed issue: Qquestion screen displays correct message and link when new question is created that requires answer-options or subquestions to be set. (jcleeland)
+-Fixed issue: More group edit/use problems - this time fixed email functions (jcleeland)
+-Fixed issue: FastCGI problems with PDF export of results (c_schmitz)
+-Fixed issue: Incorrect optout URL in invitations/reminders (idobraca)
+-Fixed issue: Incorrect optout message in browser (idobraca)
+-Fixed issue: PDF Output when printing answers shows HTML entities (c_schmitz)
+-Fixed issue: Print answers not working when using FastCGI  (c_schmitz)
+-Fixed issue: SPSS is having problems opening syntax and data files as UTF-8 because the BOM is missing (c_schmitz)
 
 
 Changes from 1.90beta3 (build 8745) to 1.90RC1 (build 8819) Legend: # updated feature, - bug fix 
