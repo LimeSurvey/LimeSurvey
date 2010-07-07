@@ -900,10 +900,11 @@ foreach ($_SESSION['grouplist'] as $gl)
 
                 $question_template = file_get_contents($thistpl.'/question.pstpl');
 
-                if( (strpos( $question_template , '{QUESTION_ESSENTIALS}') == false) || (strpos( $question_template , '{QUESTION_CLASS}') == false) )
+                if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
                 {
                     // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
-                    $question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
+                   $question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
+                   $question_template = str_replace( '{QUESTION_CLASS}' , '' , $question_template );
 
                     echo '
 	<!-- NEW QUESTION -->
