@@ -168,7 +168,6 @@ if (isset($postedfieldnames))
 
     }
 }
-
 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
 if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
 {
@@ -191,7 +190,14 @@ if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' 
 // Show 'SAVE FORM' only when click the 'Save so far' button the first time
 if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SESSION['scid']))
 {
-    showsaveform();
+    if($thissurvey['tokenanswerspersistence'] != 'Y')
+    {
+        showsaveform();
+    }
+    else
+    {
+    	$flashmessage = savedsilent();
+    };
 }
 elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
 {
@@ -371,6 +377,49 @@ function savedcontrol()
         return  $clang->gT('Your survey was successfully saved.');
     }
 }
+
+/**
+ * savesilent() saves survey responses when the "Resume later" button
+ * is press but has no interaction. i.e. it does not ask for email,
+ * username or password or capture.
+ *
+ * @return string confirming successful save.
+ */
+function savedsilent()
+{
+    global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
+    submitanswer();
+    // Prepare email
+    $tokenentryquery = 'SELECT * from '.$dbprefix.'tokens_'.$surveyid.' WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
+    $tokenentryresult = db_execute_assoc($tokenentryquery);
+    $tokenentryarray = $tokenentryresult->FetchRow();
+
+    $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+    $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
+    $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
+    $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.","unescaped")."\n\n";
+    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
+    $language = $tokenentryarray['language'];
+
+    if($modrewrite)
+    {
+        $message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
+    }
+    else
+    {
+        $message .= "\n\n$publicurl/index.php?lang=$language&sid=$surveyid&token=$clienttoken";
+    };
+    if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
+    {
+        $emailsent="Y";
+    }
+    else
+    {
+        echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
+    };
+    return  $clang->gT('Your survey was successfully saved.');
+};
+
 
 //FUNCTIONS USED WHEN SUBMITTING RESULTS:
 function createinsertquery()
