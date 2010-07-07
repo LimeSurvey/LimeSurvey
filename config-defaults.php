@@ -427,7 +427,7 @@ $updatecheckperiod=7;
 
 //DO NOT EVER CHANGE THE FOLLOWING FOUR LINES ---------------
 require_once(dirname(__FILE__).'/config.php');
-if ($_SERVER['HTTPS']=='on')
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
 {
        $rooturl='https'.substr($rooturl,4);
 }  
