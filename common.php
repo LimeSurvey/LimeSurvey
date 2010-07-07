@@ -3816,15 +3816,47 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;S",
-    'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
-    'inputtype'=>'singleselect',
-    'options'=>array(0=>$clang->gT('No'),
-    1=>$clang->gT('Yes')),
-    'default'=>0,                 
-    "help"=>$clang->gT('Allow only numerical input'),
-    "caption"=>$clang->gT('Numbers only'));
+        "types"=>"Q;S",
+        'category'=>$clang->gT('Other'),
+        'sortorder'=>100,
+        'inputtype'=>'singleselect',
+        'options'=>array(
+	    0=>$clang->gT('No'),
+            1=>$clang->gT('Yes')
+	),
+        'default'=>0,                 
+        "help"=>$clang->gT('Allow only numerical input'),
+        "caption"=>$clang->gT('Numbers only'));
+
+    $qattributes['show_totals'] =	array(
+ 	'types' =>	';',
+ 	'category' =>	$clang->gT('Other'),
+ 	'sortorder' =>	100,
+ 	'inputtype'	=> 'singleselect',
+ 	'options' =>	array(
+ 	    0 =>	$clang->gT('none'),
+ 	    1 =>	$clang->gT('Rows'),
+ 	    2 =>	$clang->gT('Columns'),
+ 	    3 =>	$clang->gT('Both rows and columns')
+ 	),
+ 	'default' =>	0,                 
+ 	'help' =>	$clang->gT('Show totals either rows, columns or both rows and columns'),
+        'caption' =>	$clang->gT('Show totals for')
+    );
+ 
+    $qattributes['show_grand_total'] =	array(
+ 	'types' =>	';',
+ 	'category' =>	$clang->gT('Other'),
+ 	'sortorder' =>	100,
+ 	'inputtype' =>	'singleselect',
+ 	'options' =>	array(
+             0 =>	$clang->gT('No'),
+             1 =>	$clang->gT('Yes')
+ 	),
+ 	'default' =>	0,                 
+        'help' =>	$clang->gT('Show grand total for either columns or rows'),
+        'caption' =>	$clang->gT('Show grand total')
+    );
 
     $qattributes["input_boxes"]=array(
 	"types"=>":",

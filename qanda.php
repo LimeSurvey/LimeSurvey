@@ -5719,16 +5719,112 @@ function do_array_multitext($ia)
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
+    $show_grand = $qidattributes['show_grand_total'];
+    $totals_class = '';
+    $num_class = '';
+    $show_totals = '';
+    $col_total = '';
+    $row_total = '';
+    $total_col = '';
+    $col_head = '';
+    $row_head = '';
+    $grand_total = '';
+    $q_table_id = '';
+    $q_table_id_HTML = '';
+    $numbersonly = '';
 
     if ($qidattributes['numbers_only']==1)
     {
-        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+        $q_table_id = 'totals_'.$ia[0];
+	$q_table_id_HTML = ' id="'.$q_table_id.'"';
+//	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+        $num_class = ' numbers-only';
+	switch ($qidattributes['show_totals'])
+	{
+	    case 1:
+	    case 'row':
+	        $totals_class = $show_totals = 'row';
+		$row_total = '			<td class="total">
+ 				<label>
+ 					<input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
+ 				</label>
+ 			</td>';
+ 		$col_head = '			<th class="total">Total</th>';
+ 		if($show_grand == true)
+ 		{
+ 			$row_head = '
+ 			<th class="answertext total">Grand total</th>';
+ 			$col_total = '
+ 			<td>&nbsp;</td>';
+ 			$grand_total = '
+ 			<td class="total grand">
+ 				<input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+ 			</td>';
+ 		};
+ 		break;
+ 	    case 2:
+	    case 'col':
+	        $totals_class = $show_totals = 'col';
+		$col_total = '
+ 			<td>
+ 				<input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+ 			</td>';
+ 		$row_head = '
+ 			<th class="answertext total">Total</th>';
+ 		if($show_grand == true)
+ 		{
+ 		    $row_total = '
+ 			<td class="total">&nbsp;</td>';
+ 		    $col_head = '			<th class="total">Grand Total</th>';
+		    $grand_total = '
+ 			<td class="total grand">
+ 				<input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+ 			</td>';
+ 		};
+ 		break;
+ 	    case 3:
+	    case 'both':
+	        $totals_class = $show_totals = 'both';
+		$row_total = '			<td class="total">
+ 				<label>
+ 					<input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
+ 				</label>
+ 			</td>';
+ 		$col_total = '
+ 			<td>
+ 				<input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+ 			</td>';
+ 		$col_head = '			<th class="total">Total</th>';
+		$row_head = '
+ 			<th class="answertext">Total</th>';
+ 		if($show_grand == true)
+ 		{
+ 		    $grand_total = '
+ 			<td class="total grand">
+ 				<input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled"/>
+ 			</td>';
+ 		}
+ 		else
+ 		{
+ 		    $grand_total = '
+ 			<td>&nbsp;</td>';
+ 		};
+ 		break;
+ 	};
+ 	if(!empty($totals_class))
+ 	{
+ 	    $totals_class = ' show-totals '.$totals_class;
+	    if($qidattributes['show_grand_total'])
+	    {
+	        $totals_class .= ' grand';
+		$show_grand = true;
+	    };
+	};
     }
     else
     {
         $numbersonly = '';
-    }
-
+    };
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -5736,7 +5832,7 @@ function do_array_multitext($ia)
     else
     {
         $answerwidth=20;
-    }
+    };
     if (trim($qidattributes['text_input_width'])!='')
     {
         $inputwidth=$qidattributes['text_input_width'];
@@ -5758,6 +5854,10 @@ function do_array_multitext($ia)
         }
         $numrows=count($labelans);
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
+	if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
+	{
+	    ++$numrows;
+	};
         $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf('%02d', $cellwidth);
@@ -5786,11 +5886,11 @@ function do_array_multitext($ia)
         $fn=1;
 
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
-        ."\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n" ;
+        ."\n\t\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
 
         $answer_head = "\n\t<thead>\n"
-        . "<tr>\n"
-        . "\t<td width='$answerwidth%'>&nbsp;</td>\n";
+        . "\t\t<tr>\n"
+        . "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
 
         $odd_even = '';
         foreach ($labelans as $ld)
@@ -5806,12 +5906,18 @@ function do_array_multitext($ia)
             $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
         }
 
-        $answer_cols .= "\n\t</colgroup>\n";
+	if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
+	{
+	    $answer_head .= $col_head;
+	    $odd_even = alternation($odd_even);
+	    $answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+	};
+        $answer_cols .= "\t</colgroup>\n";
 
         $answer_head .= "</tr>\n"
         . "\t</thead>\n";
 
-        $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
+	$answer = "\n<table$q_table_id_HTML class=\"question$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
 
         $trbc = '';
         while ($ansrow = $ansresult->FetchRow())
@@ -5821,13 +5927,14 @@ function do_array_multitext($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $trbc = alternation($trbc , 'row');
-                    $answer .= "<tr class=\"$trbc repeat\">\n"
-                    . "\t<td>&nbsp;</td>\n";
+                    $answer .= "\t\t<tr class=\"$trbc repeat\">\n"
+                    . "\t\t\t<td>&nbsp;</td>\n";
+
                     foreach ($labelans as $ld)
                     {
-                        $answer .= "\t<th>".$ld."</td>\n";
+                        $answer .= "\t\t\t<th>".$ld."</td>\n";
                     }
-                    $answer .= "</tr>\n";
+                    $answer .= "\t\t</tr>\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -5857,17 +5964,17 @@ function do_array_multitext($ia)
             // Get array_filter stuff
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
-            $answer .= $htmltbody2;
+//          $answer .= $htmltbody2;
 
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
             $trbc = alternation($trbc , 'row');
-            $answer .= "\t\t<tr class=\"$trbc\">\n"
+            $answer .= "\t\t<tr class=\"$trbc\" id=\"$myfname\">\n"
             . "\t\t\t<th class=\"answertext\">\n"
-            . $hiddenfield
+            . "\t\t\t\t".$hiddenfield
             . "$answertext\n"
-            . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+            . "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-            $answer .= "\" />\n\t</th>\n";
+            $answer .= "\" />\n\t\t\t</th>\n";
             $thiskey=0;
             foreach ($labelcode as $ld)
             {
@@ -5875,31 +5982,44 @@ function do_array_multitext($ia)
                 $myfname2=$myfname."_$ld";
                 $myfname2value = isset($_SESSION[$myfname2]) ? $_SESSION[$myfname2] : "";
                 $answer .= "\t<td class=\"answer_cell_00$ld\">\n"
-                . "<label for=\"answer{$myfname2}\">\n"
-                . "<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-                . "<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
+                . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
+                . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
+                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                 . FlattenText($labelans[$thiskey]).'" '
-                . "onchange=\"getElementById('java{$myfname2}').value=this.value;$checkconditionFunction(this.value, this.name, this.type)\" size=\"$inputwidth\" "
-                . $numbersonly
+                . 'size="'.$numbersonly.'" '
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
                 $inputnames[]=$myfname2;
-                $answer .= "</label>\n\t</td>\n";
+                $answer .= "\t\t\t\t</label>\n\t\t\t</td>\n";
                 $thiskey += 1;
             }
             if (strpos($answertextsave,'|'))
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>$answertext</td>\n";
+                $answer .= "\t\t\t<td class=\"answertextright\" style=\"text-align:left;\" width=\"$answerwidth%\">$answertext</td>\n";
             }
             elseif ($right_exists)
             {
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
+                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
             }
-            $answer .= "</tr>\n";
+            $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
+	    $answer .= "\n\t\t</tr>\n";
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
+	if($show_totals == 'col' || $show_totals = 'both' || $grand_total == true)
+	{
+            $answer .= "\t\t<tr class=\"total\">$row_head";
+	    for( $a = 0; $a < count($labelcode) ; ++$a )
+	    {
+	        $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $col_total);
+	    };
+	    $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $grand_total)."\n\t\t</tr>\n";
+        };
         $answer .= "\t</tbody>\n</table>\n";
+	if(!empty($q_table_id))
+	{
+            $answer .= "\n<script type=\"text/javascript\">new multi_set('$q_table_id');</script>\n";
+	};
     }
     else
     {
