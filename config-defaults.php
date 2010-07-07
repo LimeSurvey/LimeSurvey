@@ -461,7 +461,7 @@ $showqnumcode = 'choose';
 
 
 /**
- * @var $force_secure string - forces LimeSurvey to run through HTTPS or to block HTTPS
+ * @var $forcehttps string - forces LimeSurvey to run through HTTPS or to block HTTPS
  * 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
  *		to fail in SSL is turned off)
  *	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
@@ -476,10 +476,23 @@ $showqnumcode = 'choose';
  * If LimeSurvey comes up as normal, then everything is fine. If you
  * get a page not found error or permission denied error then 
  */
-$force_secure = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
+$forcehttps = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
 
 
-
+/**
+ * @var $https_emergency_override boolean forces SSL off
+ * if You've turned HTTPS/SSL on in the global settings but your
+ * server doesn't have HTTPS enabled, the only way to turn it off is
+ * by changing a value in the database directly. This allows you to
+ * force HTTPS off while you change the global settings for Force Secure.
+ * 
+ *     false = do nothing;
+ *     true = override $force_secure=on;
+ *
+ * This should always be false except in emergencies where you change
+ * it to true until you fix the problem.
+ */
+$https_emergency_override = false;
 
 
 
@@ -488,6 +501,11 @@ $force_secure = ''; // DO not turn on unless you are sure your server supports S
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------
+
+if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+{
+    $rooturl = str_replace('http://','https://',$rooturl);
+};
 
 // === Advanced Setup
 // The following parameters need information from config.php

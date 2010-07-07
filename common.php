@@ -18,8 +18,6 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 
-SSL_mode($force_secure);
-
 // Include version information
 require($rootdir.'/version.php');
 
@@ -236,6 +234,7 @@ $updatekey='';
 $updatekeyvaliduntil='';
 
 require ($homedir.'/globalsettings.php');
+SSL_mode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
 // Check if the DB is up to date
 If (!$dbexistsbutempty && $sourcefrom=='admin')
@@ -7723,50 +7722,35 @@ function redirect($ssl_mode)
 };
 
 /**
- * SSL_mode() $force_secure is on or off, it checks if the current
- * request is to HTTPS (or not). If $force_secure is on, and the
+ * SSL_mode() $forcehttps is on or off, it checks if the current
+ * request is to HTTPS (or not). If $forcehttps is on, and the
  * request is not to HTTPS, it redirects the request to the HTTPS
  * version of the URL, if the request is to HTTPS, it rewrites all
  * the URL variables so they also point to HTTPS.
- *
- * @param $force_secure string 'on' or 'off'
- * @return does not return
  */
-function SSL_mode($force_secure = '')
+function SSL_mode()
 {
     global $rooturl , $homeurl , $publicurl , $tempurl , $imagefiles , $uploadurl;
     global $usertemplaterooturl , $standardtemplaterooturl;
-    global $parsedurl , $relativeurl , $fckeditordir;
+    global $parsedurl , $relativeurl , $fckeditordir , $https_emergency_override;
 
-    $force_secure = strtolower($force_secure);
-    if( $force_secure == 'on' && $_SERVER['HTTPS'] != 'on' )
+    $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
+    if($https_emergency_override !== true )
+    {
+        $forcehttps = strtolower(getGlobalSetting('forcehttps'));
+    }
+    else
+    {
+        $forcehttps = 'off';
+    };
+    if( $forcehttps == 'on' && $https != 'on' )
     {
                 redirect('s');
     }
-    if( $force_secure == 'off' && $_SERVER['HTTPS'] == 'on' )
+    if( $forcehttps == 'off' && $https == 'on') 
     {
                 redirect();
     };
-
-    $http_protocol = 'http://';
-    if($_SERVER['HTTPS'] == 'on')
-    {
-        $rooturl = str_replace( 'http://' , 'https://' , $rooturl );
-        $homeurl = str_replace( 'http://' , 'https://' , $homeurl );
-        $publicurl = str_replace( 'http://' , 'https://' , $publicurl );
-        $tempurl = str_replace( 'http://' , 'https://' , $tempurl );
-        $imagefiles = str_replace( 'http://' , 'https://' , $imagefiles );
-        $uploadurl = str_replace( 'http://' , 'https://' , $uploadurl );
-        $usertemplaterooturl = str_replace( 'http://' , 'https://' , $usertemplaterooturl );
-        $standardtemplaterooturl = str_replace( 'http://' , 'https://' , $standardtemplaterooturl );
-        $parsedurl = str_replace( 'http://' , 'https://' , $parsedurl );
-        $relativeurl = str_replace( 'http://' , 'https://' , $relativeurl );
-        $fckeditordir = str_replace( 'http://' , 'https://' , $fckeditordir );
-
-        $http_protocol = 'https://';
-    };
-    define('HTTP_PROTOCOL',$http_protocol);
 };
-
 
 // Closing PHP tag intentionally left out - yes, it is okay

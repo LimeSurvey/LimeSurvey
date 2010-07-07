@@ -83,7 +83,7 @@ function globalsettingssave()
             $sessionlifetimetemp=(int)($_POST['sessionlifetime']);
             if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
-            setGlobalSetting('forceSSL',$forceSSL);
+            setGlobalSetting('forcehttps',$_POST['forcehttps']);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
             if ((substr($savetime,0,1)!='-') && (substr($savetime,0,1)!='+')) { $savetime = '+'.$savetime;}
@@ -243,34 +243,6 @@ function globalsettingsdisplay()
             . "<li><label for='sessionlifetime'>".$clang->gT("Session lifetime (seconds):")."</label>\n"
             . "<input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value=\"".htmlspecialchars(getGlobalSetting('sessionlifetime'))."\" /></li>";
 
-            $thisforceSSL = getGlobalSetting('forceSSL');
-	    $opt_forceSSL_on = $opt_forceSSL_off = $opt_forceSSL_neither = '';
-	    $warning_forceSSL = ' Do <strong>NOT</strong> force "On" if you\'re <strong>not completely certain</strong> your server has a SSL enabled. <br />'
-	    . '<strong>LimeSurvey will break</strong> if SSL is forced on but your server does not have a valid secure certificate installed and enabled.';
-	    switch($thisforceSSL)
-	    {
-	    	case 'on':
-		    $warning_forceSSL = '';
-		    break;
-		case 'off':
-		case 'neither':
-		    break;
-	    	default:
-		    $thisforceSSL = 'neither';
-	    };
-	    $this_opt = 'opt_forceSSL_'.$thisforceSSL;
-	    $$this_opt = ' selected="selected"';
-	    $editsurvey .= '<li><label for="forceSSL">'.$clang->gT('Force SSL:')."</label>\n"
-	    . "<span>\n"
-	    . "<select name=\"forceSSL\" id=\"forceSSL\">\n\t"
-            . '<option value="on" '.$opt_forceSSL_on.'>'.$clang->gT('On')."</option>\n\t"
-            . '<option value="off" '.$opt_forceSSL_off.'>'.$clang->gT('Off')."</option>\n\t"
-            . '<option value="neither" '.$opt_forceSSL_neither.'>'.$clang->gT('Don\'t force on or off')."</option>\n\t"
-	    . "</select>\n"
-	    . "$warning_forceSSL\n</span></li>\n";
-	    unset($thisforceSSL,$opt_forceSSL_on,$opt_forceSSL_off,$opt_forceSSL_neither,$warning_forceSSL,$this_opt);
-
-
             // End General TAB
 
             $editsurvey .= "\t</ul></div>\n";
@@ -375,6 +347,41 @@ function globalsettingsdisplay()
             if ( $thisusercontrolSameGroupPolicy == false) {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></li>\n";
+
+            $thisforcehttps = getGlobalSetting('forcehttps');
+	    $opt_forcehttps_on = $opt_forcehttps_off = $opt_forcehttps_neither = '';
+	    $warning_forcehttps = $clang->gT('Before turning on HTTPS, ')
+	    . '<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'"title="'
+	    . $clang->gT('Test if your server has HTTPS enabled by clicking on this link.').'">'
+	    . $clang->gT('See if this link works.').'</a> '
+	    . $clang->gT('If the link did not work and you turn on HTTPS, LimeSurvey will break and you won\'t be able to access it.');
+//	    $warning_forcehttps = ' Do <strong>NOT</strong> force "On" if you\'re <strong>not completely certain</strong> your server has a SSL enabled. <br />'
+//	    . 'Before turning on HTTPS, <a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'">See if this link works</a><br />'
+//	    . 'If not, <strong>LimeSurvey will break</strong> if SSL is forced on but your server does not have a valid secure certificate installed and enabled.<br />';
+	    switch($thisforcehttps)
+	    {
+	    	case 'on':
+		    $warning_forcehttps = '';
+		    break;
+		case 'off':
+		case 'neither':
+		    break;
+	    	default:
+		    $thisforcehttps = 'neither';
+	    };
+	    $this_opt = 'opt_forcehttps_'.$thisforcehttps;
+	    $$this_opt = ' selected="selected"';
+	    $editsurvey .= '<li><label for="forcehttps">'.$clang->gT('Force HTTPS:')."</label>\n"
+	    . "<span>\n"
+	    . "<select name=\"forcehttps\" id=\"forcehttps\">\n\t"
+            . '<option value="on" '.$opt_forcehttps_on.'>'.$clang->gT('On')."</option>\n\t"
+            . '<option value="off" '.$opt_forcehttps_off.'>'.$clang->gT('Off')."</option>\n\t"
+            . '<option value="neither" '.$opt_forcehttps_neither.'>'.$clang->gT('Don\'t force on or off')."</option>\n\t"
+	    . "</select>\n"
+	    . "$warning_forcehttps\n</span></li>\n";
+	    unset($thisforcehttps,$opt_forcehttps_on,$opt_forcehttps_off,$opt_forcehttps_neither,$warning_forcehttps,$this_opt);
+
+
             $editsurvey .= "\t</ul></div>\n";
 
             // Miscellaneous Settings
