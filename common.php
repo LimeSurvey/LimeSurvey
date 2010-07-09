@@ -3847,10 +3847,10 @@ function questionAttributes($returnByName=false)
  	'sortorder' =>	100,
  	'inputtype'	=> 'singleselect',
  	'options' =>	array(
- 	    0 =>	$clang->gT('none'),
- 	    1 =>	$clang->gT('Rows'),
- 	    2 =>	$clang->gT('Columns'),
- 	    3 =>	$clang->gT('Both rows and columns')
+ 	    'X' =>	$clang->gT('none'),
+ 	    'R' =>	$clang->gT('Rows'),
+ 	    'C' =>	$clang->gT('Columns'),
+ 	    'B' =>	$clang->gT('Both rows and columns')
  	),
  	'default' =>	0,                 
  	'help' =>	$clang->gT('Show totals either rows, columns or both rows and columns'),

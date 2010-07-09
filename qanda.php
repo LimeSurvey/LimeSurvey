@@ -5748,8 +5748,7 @@ function do_array_multitext($ia)
         $num_class = ' numbers-only';
 	switch ($qidattributes['show_totals'])
 	{
-	    case 1:
-	    case 'row':
+	    case 'R':
 	        $totals_class = $show_totals = 'row';
 		$row_total = '			<td class="total">
  				<label>
@@ -5769,8 +5768,7 @@ function do_array_multitext($ia)
  			</td>';
  		};
  		break;
- 	    case 2:
-	    case 'col':
+	    case 'C':
 	        $totals_class = $show_totals = 'col';
 		$col_total = '
  			<td>
@@ -5789,8 +5787,7 @@ function do_array_multitext($ia)
  			</td>';
  		};
  		break;
- 	    case 3:
-	    case 'both':
+ 	    case 'B':
 	        $totals_class = $show_totals = 'both';
 		$row_total = '			<td class="total">
  				<label>
