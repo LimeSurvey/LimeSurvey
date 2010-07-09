@@ -51,7 +51,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         }
     }
 
-
     //COMMIT CHANGES TO DATABASE
     if ($thissurvey['active'] != "Y")
     {

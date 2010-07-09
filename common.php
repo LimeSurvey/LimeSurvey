@@ -2987,7 +2987,6 @@ function templatereplace($line, $replacements=array())
         }
     }
     // <-- END NEW FEATURE - SAVE
-
     if (strpos($line, "{SAVE}") !== false)  {
         //Set up save/load feature
         if ($thissurvey['allowsave'] == "Y")
@@ -2998,19 +2997,19 @@ function templatereplace($line, $replacements=array())
             {
                 if($thissurvey['tokenanswerspersistence'] != 'Y')
                 {
-                    $saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>"
-                    ."<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
+                    $saveall = "\t\t\t<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>"
+                    ."\n\t\t\t<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
                 }
                 else
                 {
-                    $saveall= "<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
+                    $saveall= "\t\t\t<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
         	};
             }
             elseif (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
             {
                 if($thissurvey['tokenanswerspersistence'] != 'Y')
                 {
-                    $saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";
+                    $saveall = "\t\t\t<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";
                 }
 		else
 		{
@@ -3031,6 +3030,7 @@ function templatereplace($line, $replacements=array())
             $saveall="";
         }
         $line=str_replace("{SAVE}", $saveall, $line);
+debug('$line = '.$line);
     }
     if (strpos($line, "{TEMPLATEURL}") !== false) {
         $line=str_replace("{TEMPLATEURL}", $templateurl, $line);

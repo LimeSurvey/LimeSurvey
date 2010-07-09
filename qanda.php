@@ -5990,7 +5990,7 @@ function do_array_multitext($ia)
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
                 . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                 . FlattenText($labelans[$thiskey]).'" '
-                . 'size="'.$numbersonly.'" '
+                . 'size="'.$inputwidth.'" '
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
                 $inputnames[]=$myfname2;
                 $answer .= "\t\t\t\t</label>\n\t\t\t</td>\n";
@@ -6005,6 +6005,7 @@ function do_array_multitext($ia)
             {
                 $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
             }
+
             $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
 	    $answer .= "\n\t\t</tr>\n";
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
