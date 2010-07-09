@@ -3505,7 +3505,7 @@ function do_file_upload($ia)
 
                 <script type='text/javascript'>
                     $(function() {
-                        $('a').click(function(e) {
+                        $('#upload').click(function(e) {
                             e.preventDefault();
                             var \$this = $(this);
                             var horizontalPadding = 30;
@@ -3536,10 +3536,17 @@ function do_file_upload($ia)
                     }
                 </script>";
 
-    $answer .= "<a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."' >Open Uploader</a><br />";
+    $currentdir = getcwd();
+    $pos = stripos($currentdir, "admin");
+
+    if ($pos)
+        $answer .= "<a id='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."'&preview=1 >Upload files</a><br /><br /><br />";
+    else
+        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."'&preview=0 >Upload files</a></h2><br /><br /><br />";
+    
     $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
     $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
-    
+
     /*
     $answer = '<table border="0" cellpadding="10" cellspacing="10" align="center">
                     <tr>
@@ -3551,7 +3558,7 @@ function do_file_upload($ia)
                     </tr>
                     <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
                     <tbody>';
-
+    
     for ($i = 1; $i <= $maxfiles; $i++) {
          $answer .= '<tr>
                         <td>
@@ -3572,7 +3579,7 @@ function do_file_upload($ia)
                             .$clang->gT("Answer").'" ></input></td>
                         </tr>'
                         .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
-    }
+                        }
     */
     // --> END NEW FEATURE - SAVE
 

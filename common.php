@@ -4225,14 +4225,16 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Other'),
     'sortorder'=>124,
     "inputtype"=>"integer",
+    'default'=>10240,
 	"help"=>$clang->gT("The surveyee cannot upload a single file larger than this size"),
-	"caption"=>$clang->gT("Maximum file size allowed"));
+	"caption"=>$clang->gT("Maximum file size allowed (in KB)"));
 
     $qattributes["max_num_of_files"]=array(
 	"types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>126,
     "inputtype"=>"integer",
+    'default'=>1,
 	"help"=>$clang->gT("Maximum number of files that the surveyee can upload for this question"),
 	"caption"=>$clang->gT("Max number of files"));
 
@@ -4241,6 +4243,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Other'),
     'sortorder'=>128,
     "inputtype"=>"integer",
+    'default'=>0,
 	"help"=>$clang->gT("Minimum number of files that the surveyee must upload for this question"),
 	"caption"=>$clang->gT("Min number of files"));
 
@@ -4249,8 +4252,9 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
     "inputtype"=>"textarea",
+    'default'=>"png, gif, doc, odt",
 	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf, doc, odt"),
-	"caption"=>$clang->gT("Allowed file types"));
+	"caption"=>$clang->gT("Allowed file types (eg: pdf, doc, odt)"));
 
 
     //This builds a more useful array (don't modify)

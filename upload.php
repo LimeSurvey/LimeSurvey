@@ -5,6 +5,7 @@
     $size=$_FILES['uploadfile']['size'];
     $valid_extensions = $_POST['valid_extensions'];
     $maxfilesize = $_POST['maxfilesize'];
+    $preview = $_POST['preview'];
 
     $valid_extensions_array = explode(",", $valid_extensions);
 
@@ -45,6 +46,8 @@
                         "ext"     => $ext,
                         "msg"     => "The file has been successfuly uploaded"
                     );
+        if ($preview == 0)
+            unlink($_FILES['uploadfile']['tmp_name']);
         echo json_encode($return);
     }
     // if there was some error, report error message

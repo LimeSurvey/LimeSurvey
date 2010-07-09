@@ -117,7 +117,8 @@
                 name: 'uploadfile',
                 data: {
                     valid_extensions : $('#allowed_filetypes').val(),
-                    maxfilesize : $('#maxfilesize').val()
+                    maxfilesize : $('#maxfilesize').val(),
+                    preview : $('#preview').val()
                 },
                 onSubmit : function(file, ext){
 
@@ -312,11 +313,13 @@
         <input type="hidden" id="maxfiles"          value="<?php echo $_GET['maxfiles']           ?>" />
         <input type="hidden" id="maxfilesize"       value="<?php echo $_GET['maxfilesize']        ?>" />
         <input type="hidden" id="allowed_filetypes" value="<?php echo $_GET['allowed_filetypes']  ?>" />
+        <input type="hidden" id="preview"           value="<?php echo $_GET['preview']            ?>" />
         <input type="hidden" id="licount"           value="0" />
         <input type="hidden" id="filecount"         value="0" />
 
         <!-- The upload button -->
         <div id="button1" class="button" align="center">Upload</div>
+        <p>You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>
 
         <!-- The list of uploaded files -->
         <ul id="listfiles"></ul>
