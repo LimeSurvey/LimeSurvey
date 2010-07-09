@@ -504,7 +504,7 @@ require_once(dirname(__FILE__).'/config.php');
 
 if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 {
-    $rooturl = str_replace('http://','https://',$rooturl);
+    $rooturl='https'.substr($rooturl,4);
 };
 
 // === Advanced Setup
