@@ -2728,6 +2728,9 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     return $output;
 }
 
+$showXquestions = getGlobalSetting('showXquestions');
+$showgroupinfo = getGlobalSetting('showgroupinfo');
+$showqnumcode = getGlobalSetting('showqnumcode');
 /**
  * This function replaces keywords in a text and is mainly intended for templates
  * If you use this functions put your replacement strings into the $replacements variable
@@ -2752,7 +2755,7 @@ function templatereplace($line, $replacements=array())
     global $publicurl, $templatedir, $token;
     global $assessments, $s_lang;
     global $errormsg, $clang;
-	global $saved_id, $usertemplaterootdir;
+    global $saved_id, $usertemplaterootdir;
     global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;
     global $printoutput, $captchapath, $loadname;
