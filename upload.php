@@ -2,25 +2,24 @@
 
     $uploaddir = 'upload/tmp/';
     $file = $uploaddir . basename($_FILES['uploadfile']['name']);
-    $size=$_FILES['uploadfile']['size'];
-    $valid_extensions = $_POST['valid_extensions'];
+    $size = 0.001 * $_FILES['uploadfile']['size'];
+    $valid_extensions = strtolower($_POST['valid_extensions']);
     $maxfilesize = $_POST['maxfilesize'];
     $preview = $_POST['preview'];
 
     $valid_extensions_array = explode(",", $valid_extensions);
 
-    $pathinfo = pathinfo(basename($file));
-    $ext = $pathinfo['extension'];
+    $pathinfo = pathinfo($_FILES['uploadfile']['name']);
+    $ext = strtolower($pathinfo['extension']);
 
     // check to ensure that the file does not cross the maximum file size
     if($size > $maxfilesize)
     {
         $return = array(
                         "success" => false,
-                        "msg" => "Sorry, This file is too large. Only files upto ".$maxfilesize." KB are allowed"
+                        "msg" => "Sorry, This file (".$size.") is too large. Only files upto ".$maxfilesize." KB are allowed"
                     );
 
-        unlink($_FILES['uploadfile']['tmp_name']);
         echo json_encode($return);
     }
     // check to see that this file type is allowed
@@ -32,7 +31,6 @@
                         "msg" => "Sorry, This file extension (".$ext.") is not allowed !".$valid_extensions
                     );
 
-        unlink($_FILES['uploadfile']['tmp_name']);
         echo json_encode($return);
     }
     // if everything went fine and the file was uploaded successfuly,
@@ -47,7 +45,6 @@
                         "msg"     => "The file has been successfuly uploaded"
                     );
         if ($preview == 0)
-            unlink($_FILES['uploadfile']['tmp_name']);
         echo json_encode($return);
     }
     // if there was some error, report error message

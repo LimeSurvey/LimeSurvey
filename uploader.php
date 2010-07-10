@@ -83,7 +83,7 @@
 
                 for (i = 0; i <  filecount; i++)
                 {
-                    var previewblock =  "<li id='li_"+i+"'><div>"+
+                    var previewblock =  "<li id='li_"+i+"' class='previewblock'><div>"+
                             "<table align='center'><tr>"+
                                 "<td  align='center' width='50%'>";
                             
@@ -143,7 +143,7 @@
                     for (var i = 0; i < allowed_filetypes.length; i++)
                     {
                         //check to see if it's the proper extension
-                        if (allowed_filetypes[i] == ext)
+                        if (allowed_filetypes[i].toLowerCase() == ext.toLowerCase())
                         {
                             //it's the proper extension
                             allowSubmit = true;
@@ -188,7 +188,7 @@
                     $('body').prepend('<div class="notice">'+metadata.msg+'</div>');
                     setTimeout(function() {
                         $(".notice").remove();
-                    }, 2000);
+                    }, 5000);
                     var count = parseInt($('#licount').val());
 
                     var image_extensions = new Array("png", "jpg", "jpeg", "bmp", "gif");
@@ -228,7 +228,7 @@
                             $('body').prepend('<div class="notice">Maximum number of files have been uploaded<br />You may Save and Exit !</div>');
                             setTimeout(function() {
                                 $(".notice").remove();
-                            }, 2000);
+                            }, 5000);
                         }
                     }
                 }
@@ -300,7 +300,7 @@
             $('body').prepend('<div class="notice">'+notice+'</div>');
             setTimeout(function() {
                 $(".notice").remove();
-            }, 2000);
+            }, 5000);
         }
         
     </script>

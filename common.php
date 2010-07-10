@@ -3033,7 +3033,7 @@ function templatereplace($line, $replacements=array())
             $saveall="";
         }
         $line=str_replace("{SAVE}", $saveall, $line);
-debug('$line = '.$line);
+
     }
     if (strpos($line, "{TEMPLATEURL}") !== false) {
         $line=str_replace("{TEMPLATEURL}", $templateurl, $line);
@@ -4255,8 +4255,8 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
     "inputtype"=>"textarea",
-    'default'=>"png, gif, doc, odt",
-	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf, doc, odt"),
+    'default'=>"png,gif,doc,odt",
+	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
 	"caption"=>$clang->gT("Allowed file types (eg: pdf, doc, odt)"));
 
 

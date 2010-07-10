@@ -946,9 +946,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $metadata = json_decode($idrow[$fname['fieldname']], true);
                             for ($i = 0; $i < $idrow[$fname['fieldname']]['max_files'], isset($metadata[$i]); $i++)
                             {
-                                $dataentryoutput .= '<tr><td width="25%">Title   </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>'
-                                                    .'<tr><td>           Comment </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>'
-                                                    .'<tr><td>           Filename</td><td><input   readonly  class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_filename_'.$i.'" name="filename" size=50 value="'.htmlspecialchars($metadata[$i]["filename"]).'" /></td></tr>';
+                                $dataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>'
+                                                    .'<tr><td>           Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>'
+                                                    .'<tr><td>           File name</td><td><input   readonly  class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i    .'" name="filename" size=50 value="'.htmlspecialchars($metadata[$i]["name"])    .'" /></td></tr>'
+                                                    .'<tr><td>           File size</td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_size_'.$i    .'" name="size"     size=50 value="'.htmlspecialchars($metadata[$i]["size"])    .'" /></td></tr>'
+                                                    .'<tr><td>           Extension</td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_ext_'.$i     .'" name="ext"      size=50 value="'.htmlspecialchars($metadata[$i]["ext"])     .'" /></td></tr>';
                             }
                             $dataentryoutput .= '<tr><td>debug</td><td><input type="text" id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" size=50 value="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></tr>';
                             $dataentryoutput .= '</table>';
@@ -964,7 +966,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                                                     jsonstr += ",";
                                                                 jsonstr += \'{"title":"\'+$("#'.$fname['fieldname'].'_title_"+i).val()+\'",\';
                                                                 jsonstr += \'"comment":"\'+$("#'.$fname['fieldname'].'_comment_"+i).val()+\'",\';
-                                                                jsonstr += \'"filename":"\'+$("#'.$fname['fieldname'].'_filename_"+i).val()+\'"}\';;
+                                                                jsonstr += \'"size":"\'+$("#'.$fname['fieldname'].'_size_"+i).val()+\'",\';
+                                                                jsonstr += \'"ext":"\'+$("#'.$fname['fieldname'].'_ext_"+i).val()+\'",\';
+                                                                jsonstr += \'"name":"\'+$("#'.$fname['fieldname'].'_name_"+i).val()+\'"}\';
                                                             }
                                                             jsonstr += "]";
                                                             $("#'.$fname['fieldname'].'").val(jsonstr);
