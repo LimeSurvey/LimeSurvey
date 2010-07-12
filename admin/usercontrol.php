@@ -70,7 +70,7 @@ if (!isset($_SESSION['loginID']))
                 $body .= $clang->gT("Username") . ": " . $fields['users_name'] . "<br />\n";
                 $body .= $clang->gT("New Password") . ": " . $new_pass . "<br />\n";
 
-                $subject = $clang->gT("User data");
+                $subject = $clang->gT("User data","unescaped");
                 $to = $emailaddr;
                 $from = $siteadminemail;
                 $sitename = $siteadminname;
@@ -381,7 +381,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             $body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
             $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'),$siteadminemail)."<br />\n";
 
-            $subject = sprintf($clang->gT("User registration at '%s'"),$sitename);
+            $subject = sprintf($clang->gT("User registration at '%s'","unescaped"),$sitename);
             $to = $new_user." <$new_email>";
             $from = $siteadminname." <$siteadminemail>";
             $addsummary .="<div class='messagebox'>";
