@@ -380,7 +380,7 @@ class LsrcHelper {
 		. "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' AND remindercount < ".$reminderCount." "
                 . "ORDER BY tid asc LIMIT 1";
                  
-		$this->debugLsrc("Executing SQL: ".$sendOnlySQL) 
+		$this->debugLsrc("Executing SQL: ".$sendOnlySQL); 
                  
                 if($sendOnlyResult->RecordCount()>0)
                 {
