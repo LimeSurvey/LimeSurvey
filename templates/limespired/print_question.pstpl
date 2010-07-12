@@ -6,6 +6,7 @@
 						<p class="q-type-help">{QUESTION_TYPE_HELP}</p>
 						<p class="q-man-message">{QUESTION_MAN_MESSAGE}</p>
 						<p class="q-validation">{QUESTION_VALID_MESSAGE}</p>
+						<p class="q-fvalidation">{QUESTION_FILE_VALID_MESSAGE}</p>
 					</div>
 					<div class="q-answer">
 {ANSWER}

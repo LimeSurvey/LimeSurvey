@@ -54,6 +54,9 @@ $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalma
 //CHECK PREGS
 $notvalidated=checkpregs($move,$backok);
 
+// CHECK UPLOADED FILES
+$filenotvalidated = checkUploadedFileValidity();
+
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)
 {
@@ -153,7 +156,7 @@ else
 } // End of while conditionforthisquestion=="Y"
 
 //SUBMIT
-if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ))
+if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
     if ($thissurvey['refurl'] == "Y")
     {
@@ -365,6 +368,12 @@ if (isset($notvalidated))
     list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
 }
 
+// Display the "file not valid" popup if necessary
+if (isset($filenotvalidated))
+{
+    list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
+}
+
 //Get list of mandatory questions
 list($plusman, $pluscon)=create_mandatorylist($ia);
 if ($plusman !== null)
@@ -395,6 +404,7 @@ doHeader();
 
 if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
+if (isset($fpopup)) {echo $fpopup;}
 
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
@@ -473,6 +483,13 @@ else
     {
         echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
     }
+
+    // Display the File Validation message on page if necessary
+    if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true)
+    {
+        echo "<p><span class='errormandatory'>". $clang->gT("One or more uploaded files do not satisfy the criteria") . "</span></p>";
+    }
+
 
     echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
     if (is_array($qanda))

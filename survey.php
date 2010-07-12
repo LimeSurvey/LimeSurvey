@@ -36,8 +36,11 @@ $notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys
 //CHECK PREGS
 $notvalidated=checkpregs($move);
 
+//CHECK UPLOADED FILES
+$filenotvalidated = checkUploadedFileValidity();
+
 //SUBMIT
-if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) && !$filenotvalidated))
 {
     if ($thissurvey['private'] == "Y")
     {
@@ -217,7 +220,7 @@ if ($surveyexists <1)
 }
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if ((!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) && !$filenotvalidated))
 {
     $totalquestions = buildsurveysession();
     $_SESSION['step'] = 1;
@@ -284,6 +287,11 @@ foreach ($_SESSION['grouplist'] as $gl)
             if (isset($notvalidated))
             {
                 list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
+            }
+
+            if (isset($filenotvalidated))
+            {
+                list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
             }
 
             //Get list of mandatory questions
@@ -842,6 +850,12 @@ if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswere
 if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+}
+
+//Display the "file validation" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true)
+{
+    echo "<p><span class='errormandatory'>" . $clang->gT("One or more files are either not in the proper format or exceed the maximum file size limitation. You cannot proceed until these answers are valid.") . "</span></p>";
 }
 
 foreach ($_SESSION['grouplist'] as $gl)

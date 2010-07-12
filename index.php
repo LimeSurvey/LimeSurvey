@@ -1613,6 +1613,87 @@ function checkconditionalmandatorys($move, $backok=null)
     return $notanswered;
 }
 
+function checkUploadedFileValidity()
+{
+    global $connect, $thisstep;
+    if (!isset($backok) || $backok != "Y")
+    {
+        global $dbprefix;
+        $fieldmap = createFieldMap(returnglobal('sid'));
+
+        if (isset($_POST['fieldnames']))
+        {
+            $fields = explode("|", $_POST['fieldnames']);
+            foreach ($fields as $field)
+            {
+                if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount"))
+                {
+                    $validation = array();
+
+                    $query = "SELECT * FROM ".$dbprefix."question_attributes WHERE qid = ".$fieldmap[$field]['qid'];
+                    $result = db_execute_assoc($query);
+                    while ($row = $result->FetchRow())
+                        $validation[$row['attribute']] = $row['value'];
+                    //echo "Validation:";printarray($validation);
+
+                    $filecount = 0;
+                    for ($i = 1; $i <= $validation['max_num_of_files']; $i++)
+                    {
+                        if (!isset($_FILES[$field."_file_".$i]) || $_FILES[$field."_file_".$i]['name'] == '')
+                            continue;
+
+                        $filecount++;
+
+                        $file = $_FILES[$field."_file_".$i];
+
+                        // File size validation
+                        if ($file['size'] > $validation['max_filesize'])
+                        {
+                            $filenotvalidated = array();
+                            $filenotvalidated[$field."_file_".$i] = "Sorry, the uploaded file is larger than the allowed filesize of ".$validation['max_filesize']."<br />Please upload a smaller file.";
+                            $append = true;
+                        }
+
+                        // File extension validation
+                        $pathinfo = pathinfo(basename($file['name']));
+                        $ext = $pathinfo['extension'];
+
+                        $validExtensions = explode(", ", $validation['allowed_filetypes']);
+                        if (!(in_array($ext, $validExtensions)))
+                        {
+                            if (isset($append) && $append)
+                            {
+                                $filenotvalidated[$field."_file_".$i] .= "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed !";
+                                unset($append);
+                            }
+                            else
+                            {
+                                $filenotvalidated = array();
+                                $filenotvalidated[$field."_file_".$i] = "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed !";
+                            }
+                        }
+                    }
+                    if ($filecount < $validation['min_num_of_files'])
+                        $filenotvalidated[$field] = "The minimum number of files have not been uploaded";
+                }
+            }
+        }
+        if (isset($filenotvalidated) && is_array($filenotvalidated))
+        {
+            if (isset($move) && $move == "moveprev")
+                $_SESSION['step'] = $thisstep;
+            if (isset($move) && $move == "movenext")
+                $_SESSION['step'] = $thisstep;
+            return $filenotvalidated;
+        }
+    }
+    if (!isset($filenotvalidated))
+        return false;
+    else
+        return $filenotvalidated;
+}
+
+
 function checkpregs($move,$backok=null)
 {
     global $connect, $thisstep;

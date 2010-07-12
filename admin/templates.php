@@ -662,6 +662,7 @@ switch($screenname) {
                                                          'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
                                                          'QUESTION_MAN_MESSAGE' => '',        // (not sure if this is used) mandatory error
                                                          'QUESTION_VALID_MESSAGE' => '',        // (not sure if this is used) validation error
+                                                         'QUESTION_FILE_VALID_MESSAGE' => '',        // (not sure if this is used) file validation error
                                                          'QUESTION_TEXT'=>'This is a sample question text. The user was asked to pick an entry.',
                                                          'QUESTIONHELP'=>'This is some help text for this question.',
                                                          'ANSWER'=>'<ul>

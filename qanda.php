@@ -505,9 +505,10 @@ function setman_questionandcode_multiscale($ia)
  * @param mixed $ia
  * @param mixed $notanswered
  * @param mixed $notvalidated
+ * @param mixed $filenotvalidated
  * @return mixed
  */
-function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
+function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotvalidated=null)
 {
     //globalise required config variables
     global $dbprefix, $clang; //These are from the config-defaults.php file
@@ -555,6 +556,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     ,'mandatory' => ''
     ,'man_message' => ''
     ,'valid_message' => ''
+    ,'file_valid_message' => ''
     ,'class' => ''
     ,'man_class' => ''
     ,'input_error_class' => ''// provides a class.
@@ -769,10 +771,14 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
     $qtitle .= validation_message($ia);
     $question_text['valid_message'] = validation_message($ia);
-    if(!empty($question_text['man_message']) || !empty($question_text['valid_message']))
+    
+    $qtitle .= $ia[4] == "|" ? file_validation_message($ia) : "";
+    $question_text['file_valid_message'] = $ia[4] == "|" ? file_validation_message($ia) : "";
+    
+    if(!empty($question_text['man_message']) || !empty($question_text['valid_message']) || !empty($question_text['file_valid_message']))
     {
         $question_text['input_error_class'] = ' input-error';// provides a class to style question wrapper differently if there is some kind of user input error;
-    };
+    }
 
     // =====================================================
     // START: legacy question_start.pstpl code
@@ -835,6 +841,23 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
     $qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1] );
     //New Return
     return array($qanda, $inputnames);
+}
+
+function file_validation_message($ia)
+{
+    global $filenotvalidated, $clang;
+    $qtitle = "";
+    if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|")
+    {
+        global $filevalidationpopup, $popup;
+
+        foreach ($filenotvalidated as $k => $v)
+        {
+            if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1));
+                $qtitle .= '<br /><span class="errormandatory">'.$clang->gT($filenotvalidated[$k]).'</span><br />';
+        }
+    }
+    return $qtitle;
 }
 
 function validation_message($ia)
@@ -954,6 +977,28 @@ function mandatory_popup($ia, $notanswered=null)
     {
         return false;
     }
+}
+
+function file_validation_popup($ia, $filenotvalidated = null)
+{
+    global $showpopups;
+    if ($filenotvalidated === null) { unset($filenotvalidated); }
+    if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
+    {
+        global $filevalidationpopup, $fpopup, $clang;
+
+        if (!isset($filevalidationpopup))
+        {
+            $fpopup="<script type=\"text/javascript\">\n
+                    <!--\n $(document).ready(function(){
+                        alert(\"".$clang->gT("One or more file have either exceeded the filesize or are not in the right format. You cannot proceed until these have been completed", "js")."\");});\n //-->\n
+                    </script>\n";
+            $filevalidationpopup = "Y";
+        }
+        return array($filevalidationpopup, $fpopup);
+    }
+    else
+        return false;
 }
 
 function validation_popup($ia, $notvalidated=null)
@@ -3498,12 +3543,47 @@ function do_file_upload($ia)
     //TODO: use a javascript to ensure that the size of file
     // is not more than $max_filesize
 
-    // --> START NEW FEATURE - SAVE
+    $basic  = '<br /><br /><table border="0" cellpadding="10" cellspacing="10" align="center">'
+                    .'<tr>'
+                        .'<th align="center"><b>Title</b></th>'
+                        .'<th>&nbsp;&nbsp;</th>'
+                        .'<th align="center"><b>Comment</b></th>'
+                        .'<th>&nbsp;&nbsp;</th>'
+                        .'<th align="center"><b>Select file</b></th>'
+                    .'</tr>'
+                    .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>'
+                    .'<tbody>';
 
-    $answer =  "<script type='text/javascript' src='scripts/jquery.js'></script>
-                <script type='text/javascript' src='scripts/jquery-ui.js'></script>
+    for ($i = 1; $i <= $maxfiles; $i++) {
+         $basic .= '<tr>'
+                        .'<td>'
+                            .'<input class="basic_'.$ia[1].'" type="text" name="'.$ia[1].'_title_'.$i
+                            .'" id="'.$ia[1].'_title_'.$i.'" value="'.$_SESSION[$ia[1]]
+                            .'" maxlength="100" />'
+                        .'</td>'
+                        .'<td>&nbsp;&nbsp;</td>'
+                        .'<td>'
+                            .'<input class="basic_'.$ia[1].'" type="textarea" name="'.$ia[1].'_comment_'.$i
+                            .'" id="'.$ia[1].'_comment_'.$i.'" value="'.$_SESSION[$ia[1]]
+                            .'" maxlength="100" />'
+                        .'</td>'
+                        .'<td>&nbsp;&nbsp;</td>'
+                        .'<td>'
+                            .' <input class="basic_'.$ia[1].'" '
+                            .'type="file" name="'.$ia[1].'_file_'.$i.'" id="'.$ia[1].'_'.$i.'" alt="'
+                            .$clang->gT("Answer").'" ></input></td>'
+                        .'</tr>'
+                        .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
+    }
 
-                <script type='text/javascript'>
+    $basic .= '</tbody></table>';
+
+    $answer =  "<script type='text/javascript'>
+
+                    $(document).ready(function() {
+                        $('#basic').hide();
+                    });
+
                     $(function() {
                         $('#upload').click(function(e) {
                             e.preventDefault();
@@ -3533,7 +3613,12 @@ function do_file_upload($ia)
                         $('#".$ia[1]."').val(jsonstring);
                         $('#".$ia[1]."_filecount').val(filecount);
                         $('.externalSite').dialog('close');
-                    }
+                    };
+
+                    function showBasic() {
+                        $('#basic').show();
+                    };
+
                 </script>";
 
     $currentdir = getcwd();
@@ -3543,47 +3628,35 @@ function do_file_upload($ia)
         $answer .= "<a id='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."'&preview=1 >Upload files</a><br /><br /><br />";
     else
         $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."'&preview=0 >Upload files</a></h2><br /><br /><br />";
-    
+
     $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
     $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
 
-    /*
-    $answer = '<table border="0" cellpadding="10" cellspacing="10" align="center">
-                    <tr>
-                        <th align="center"><b>Title</b></th>
-                        <th>&nbsp;&nbsp;</th>
-                        <th align="center"><b>Comment</b></th>
-                        <th>&nbsp;&nbsp;</th>
-                        <th align="center"><b>Select file</b></th>
-                    </tr>
-                    <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                    <tbody>';
-    
-    for ($i = 1; $i <= $maxfiles; $i++) {
-         $answer .= '<tr>
-                        <td>
-                            <input class="text" type="text" size="30" name="'.$ia[1].'_title_'.$i
-                            .'" id="answer'.$ia[1].'_title_'.$i.'" value="'.$_SESSION[$ia[1]]
-                            .'" maxlength="100" />
-                        </td>
-                        <td>&nbsp;&nbsp;</td>
-                        <td>
-                            <input type="textarea" name="'.$ia[1].'_comment_'.$i
-                            .'" id="answer'.$ia[1].'_comment_'.$i.'" value="'.$_SESSION[$ia[1]]
-                            .'" maxlength="100" />
-                        </td>
-                        <td>&nbsp;&nbsp;</td>
-                        <td>'
-                            .' <input class="file" '
-                            .'type="file" name="the_file_'.$i.'" id="answer'.$ia[1].'_'.$i.'" size="25" alt="'
-                            .$clang->gT("Answer").'" ></input></td>
-                        </tr>'
-                        .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
-                        }
-    */
-    // --> END NEW FEATURE - SAVE
+    $answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
 
-    $answer .= '</tbody></table>';
+    $answer .= '<script type="text/javascript">
+                    $(".basic_'.$ia[1].'").change(function() {
+                        var i;
+                        var jsonstring = "[";
+
+                        for (i = 1, filecount = 0; i <= '.$maxfiles.'; i++)
+                        {
+                            if ($("#'.$ia[1].'_"+i).val() == "")
+                                continue;
+
+                            filecount++;
+                            if (i != 1)
+                                jsonstring += ", ";
+
+                            if ($("#answer'.$ia[1].'_"+i).val() != "")
+                                jsonstring += "{\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\"}";
+                        }
+                        jsonstring += "]";
+
+                        $("#'.$ia[1].'").val(jsonstring);
+                        $("#'.$ia[1].'_filecount").val(filecount);
+                    });
+                </script>';
 
     $inputnames[] = $ia[1];
     $inputnames[] = $ia[1]."_filecount";

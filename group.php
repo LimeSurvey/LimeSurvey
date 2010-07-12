@@ -52,6 +52,9 @@ $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalma
 //CHECK PREGS
 $notvalidated=checkpregs($move,$backok);
 
+// CHECK UPLOADED FILES
+$filenotvalidated = checkUploadedFileValidity();
+
 //SEE IF THIS GROUP SHOULD DISPLAY
 $show_empty_group = false;
 if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
@@ -86,7 +89,7 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 }
 
 //SUBMIT ###############################################################################
-if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ))
+if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
     if ($thissurvey['refurl'] == "Y")
     {
@@ -367,6 +370,12 @@ foreach ($_SESSION['fieldarray'] as $ia)
             list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
         }
 
+        // Display the "file validation" popup if necessary
+        if (isset($filenotvalidated))
+        {
+            list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
+        }
+
         //Get list of mandatory questions
         list($plusman, $pluscon)=create_mandatorylist($ia);
         if ($plusman !== null)
@@ -407,6 +416,8 @@ doHeader();
 
 if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
+if (isset($fpopup)) {echo $fpopup;}
+
 //foreach(file("$thistpl/startpage.pstpl") as $op)
 //{
 //  echo templatereplace($op);
@@ -1071,6 +1082,12 @@ if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswere
 if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+}
+
+//Display the "file validation" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true)
+{
+    echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
 
 echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";

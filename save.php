@@ -53,7 +53,6 @@
  2. saved table no longer exists.
  */
 
-
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 
@@ -97,7 +96,9 @@ if (isset($move) && $move == "movesubmit")
     $backok=null;
     $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
     $notvalidated=checkpregs($move,$backok);
-    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) )
+    $filenotvalidated = checkUploadedFileValidity();
+
+    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
     {
         $bFinalizeThisAnswer = true;
     }

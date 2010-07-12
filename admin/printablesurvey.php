@@ -709,6 +709,7 @@ while ($degrow = $degresult->FetchRow())
             ,'QUESTION_TYPE_HELP' => ''		// instructions on how to complete the question
             ,'QUESTION_MAN_MESSAGE' => ''		// (not sure if this is used) mandatory error
             ,'QUESTION_VALID_MESSAGE' => ''		// (not sure if this is used) validation error
+            ,'QUESTION_FILE_VALID_MESSAGE' => ''// (not sure if this is used) file validation error
             ,'QUESTIONHELP' => ''			// content of the question help field.
             ,'ANSWER' => ''				// contains formatted HTML answer
             );
