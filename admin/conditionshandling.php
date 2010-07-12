@@ -151,9 +151,23 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
         {
             foreach ($p_canswers as $ca)
             {
-                $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-                . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
-                $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
+                //First lets make sure there isn't already an exact replica of this condition
+                $query = "SELECT * FROM {$dbprefix}conditions\n"
+                ."WHERE qid='$qid'\n"
+                ."AND scenario='".$p_scenario."'\n"
+                ."AND cqid='".$p_cqid."'\n"
+                ."AND cfieldname='".$conditionCfieldname."'\n"
+                ."AND method='".$p_method."'\n"
+                ."AND value='".$ca."'";
+                $result = $connect->Execute($query) or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
+                $count_caseinsensitivedupes = $result->RecordCount();
+
+                if ($count_caseinsensitivedupes == 0)
+                {
+                    $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
+                        . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
+                    $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
+                }
             }
         }
 
@@ -317,7 +331,7 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
         {
             list($newsid, $newgid, $newqid)=explode("X", $copyc);
             foreach ($proformaconditions as $pfc)
-            {
+            { //TIBO
                 //First lets make sure there isn't already an exact replica of this condition
                 $query = "SELECT * FROM {$dbprefix}conditions\n"
                 ."WHERE qid='$newqid'\n"
