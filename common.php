@@ -4271,9 +4271,10 @@ function getAdminHeader($meta=false)
     }
     $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
     $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.checkgroup.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
 	
     if ($_SESSION['adminlang']!='en')
