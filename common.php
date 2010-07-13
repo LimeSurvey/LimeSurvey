@@ -728,7 +728,13 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
     {
         foreach($surveynames as $sv)
         {
-            $sv['surveyls_title']=htmlspecialchars(strip_tags($sv['surveyls_title']));
+			
+			$surveylstitle=FlattenText($sv['surveyls_title']);
+			if (strlen($surveylstitle)>45)
+			{
+				$surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
+			}
+			
             if($sv['active']!='Y')
             {
                 $inactivesurveys .= "<option ";
@@ -742,10 +748,10 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
-                    $inactivesurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
                 }
             } elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
@@ -760,10 +766,10 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
-                    $expiredsurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
                 }
             } else
             {
@@ -778,10 +784,10 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
-                    $activesurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
                 }
             }
         } // End Foreach
