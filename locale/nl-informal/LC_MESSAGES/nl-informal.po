@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Dutch-informal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-16 12:00+0200\n"
-"PO-Revision-Date: 2010-06-16 15:02+0100\n"
-"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"PO-Revision-Date: 2010-07-13 09:05+0100\n"
+"Last-Translator: Menno Dekker <menno.dekker@erasmusmc.nl>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -9843,7 +9843,7 @@ msgstr "Een of meer verplichte vragen zijn niet beantwoord. Je kan niet verder g
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:958
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "Een of meer vragen zijn onjuist beantwoord. U kunt niet verder gaan dit te herstellen"
+msgstr "Een of meer vragen zijn onjuist beantwoord. U kunt niet verder gaan zonder dit te herstellen"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1003
 msgid "Your time to answer this question has expired"
@@ -11052,254 +11052,352 @@ msgstr "Je bent al verwijderd uit deze vragenlijst."
 
 #~ msgid "OR between"
 #~ msgstr "OF tussen"
+
 #~ msgid "Edit/add answer options for this question"
 #~ msgstr "Bewerken/Toevoegen antwoordopties bij deze vraag"
+
 #~ msgid "Copy Answers?"
 #~ msgstr "Antwoorden kopieren?"
+
 #~ msgid "Copy Attributes?"
 #~ msgstr "Attributen kopieren?"
+
 #~ msgid "Field summary for"
 #~ msgstr "Samenvatting voor veld"
+
 #~ msgid "Non completed"
 #~ msgstr "Niet afgerond"
+
 #~ msgid "Survey ID"
 #~ msgstr "Nummer vragenlijst (SID)"
+
 #~ msgid "Full Responses"
 #~ msgstr "Volledig ingevuld"
+
 #~ msgid "Partial Responses"
 #~ msgstr "Gedeeltelijk ingevuld"
+
 #~ msgid "Total Responses"
 #~ msgstr "Alle respons"
+
 #~ msgid "Closed-access"
 #~ msgstr "Besloten-toegang"
+
 #~ msgid "Open-access"
 #~ msgstr "Vrije toegang"
+
 #~ msgid "Return to Labels Admin"
 #~ msgstr "Terug naar Labelbeheer"
+
 #~ msgid "Label Sets"
 #~ msgstr "Labelset"
+
 #~ msgid "Add new label set"
 #~ msgstr "Voeg nieuwe labelset toe"
+
 #~ msgid "Save label set"
 #~ msgstr "Labelset opslaan"
+
 #~ msgid "Select CSV File:"
 #~ msgstr "Selecteer CSV bestand:"
+
 #~ msgid "Check for duplicates?"
 #~ msgstr "Controleren op dubbele?"
+
 #~ msgid ""
 #~ "Couldn't Delete Label Set - There are questions that rely on this. You "
 #~ "must delete these questions first."
 #~ msgstr ""
 #~ "De labelset kon niet worden verwijderd - Er zijn vragen die deze set "
 #~ "gebruiken. U moet deze eerst verwijderen."
+
 #~ msgid "Insert of Label Set failed"
 #~ msgstr "Bijwerken van de labelset mislukt"
+
 #~ msgid "Preset"
 #~ msgstr "Voorkeur"
+
 #~ msgid "Quick-translation"
 #~ msgstr "Snelle vertaling"
+
 #~ msgid "Create, Import or Copy New Survey"
 #~ msgstr "Maken, importeren of kopiëren vragenlijst"
+
 #~ msgid "Create a new group inside your survey."
 #~ msgstr "Maak een nieuwe groep aan in je vragenlijst. "
+
 #~ msgid "Create one or more question inside the new group."
 #~ msgstr "Maak een of meer vragen aan binnen deze groep."
+
 #~ msgid "Question could not be deleted"
 #~ msgstr "Vraag kon niet worden gewist"
+
 #~ msgid "No LID has been provided. Cannot dump label set."
 #~ msgstr ""
 #~ "Er is geen LID opgegeven waardoor de labelset niet kan worden verwijderd."
+
 #~ msgid "Save Settings"
 #~ msgstr "Instellingen bewaren"
+
 #~ msgid "Reading file..."
 #~ msgstr "Bezig met lezen van het bestand.."
+
 #~ msgid "Import partially successful."
 #~ msgstr "Importeren gedeeltelijk geslaagd."
+
 #~ msgid ""
 #~ "The following languages in this group were not imported since the survey "
 #~ "does not contain such a language: "
 #~ msgstr ""
 #~ "De volgende talen in deze groep zijn niet geimporteerd omdat de "
 #~ "vragenlijst deze taal niet bevat:"
+
 #~ msgid "Group Import Summary"
 #~ msgstr "Samenvatting van import groep"
+
 #~ msgid "Groups:"
 #~ msgstr "Groepen:"
+
 #~ msgid "Question Attributes: "
 #~ msgstr "Vraagattributen:"
+
 #~ msgid "Import of group is completed."
 #~ msgstr "Import van de groep is voltooid."
+
 #~ msgid "Go to group"
 #~ msgstr "Ga naar groep"
+
 #~ msgid "This file is not a LimeSurvey group file. Import failed."
 #~ msgstr "Dit bestand is geen LimeSurvey groep bestand. Import mislukt"
+
 #~ msgid ""
 #~ "You can't import a group which doesn't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "Je kan geen groep importeren die niet de huidige standaardtaal van de "
 #~ "vragenlijst ondersteunt."
+
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
 #~ "base language."
 #~ msgstr ""
 #~ "Je kan geen vraag importeren die de huidige standaardtaal van de "
 #~ "vragenlijst niet ondersteunt."
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was NOT imported because the question type is "
 #~ "unknown."
 #~ msgstr ""
 #~ "Vraag \"%s - %s\"is NIET geimporteerd, omdat het vraagtype onbekend is."
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was imported but the type was set to '%s' because it "
 #~ "is the most similiar one."
 #~ msgstr ""
 #~ "Vraag \"%s - %s\" werd geimporteerd, maar het type is gewijzigd in '%s' "
 #~ "omdat dit de meest voorkomende is."
+
 #~ msgid "Condition for %d skipped (%d does not exist)"
 #~ msgstr "Voorwaarde voor %d overgeslagen (%d bestaat niet)"
+
 #~ msgid "No QID has been provided. Cannot dump question."
 #~ msgstr ""
 #~ "Er is geen QID opgegeven waardoor de vraag niet kan worden verwijderd."
+
 #~ msgid "Clear token invites"
 #~ msgstr "Verwijder alle uitnodigingen bij de toegangscodes"
+
 #~ msgid "Send reminder to Token ID:"
 #~ msgstr "Verstuur herinnering naar toegangscode ID:"
+
 #~ msgid "Save attribute descriptions"
 #~ msgstr "Bewaar attribuut beschrijvingen"
+
 #~ msgid "Added New Token"
 #~ msgstr "Nieuwe toegangscodes toegevoegd"
+
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
 #~ "base language"
 #~ msgstr "Je kan geen vraag importeren die de standaardtaal niet ondersteunt"
+
 #~ msgid "Select CSV/SQL File:"
 #~ msgstr "Selecteer CSV/SQL bestand:"
+
 #~ msgid "Select CSV File"
 #~ msgstr "Selecteer CSV bestand:"
+
 #~ msgid "No SID (Survey) has been provided. Cannot import group."
 #~ msgstr ""
 #~ "Er is geen SID (Vragenlijst) aangeleverd. Kan de groep niet importeren."
+
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Bewerken/toevoegen van labelsets"
+
 #~ msgid "There are four easy steps to create your own survey:"
 #~ msgstr "Er zijn vier eenvoudige stappen om een vragenlijst te maken:"
+
 #~ msgid "Delete Current Question"
 #~ msgstr "Verwijder huidige vraag"
+
 #~ msgid "User Control"
 #~ msgstr "Gebruikersbeheer"
+
 #~ msgid "Array (Flexible Labels) by Column"
 #~ msgstr "Array (opties rijgewijs)"
+
 #~ msgid "List (Flexible Labels) (Dropdown)"
 #~ msgstr "Lijst (eigen opties) (dropdown)"
+
 #~ msgid "List (Flexible Labels) (Radio)"
 #~ msgstr "Lijst eigen opties) (radioknoppen)"
+
 #~ msgid "Array (Multi Flexible) (Text)"
 #~ msgstr "Array (opties kolomsgewijs) (tekst)"
+
 #~ msgid "Message to display when time limit has expired"
 #~ msgstr "Te tonen boodschap na verstrijken tijd"
+
 #~ msgid "How long to display the time limit expiry message (in seconds)"
 #~ msgstr ""
 #~ "Na hoe lang moet de waarschuwing over de tijdslimiet getoond worden "
 #~ "(seconden)"
+
 #~ msgid ""
 #~ "Time until time limit expiry when time limit warning message is displayed "
 #~ "(in seconds)"
 #~ msgstr ""
 #~ "Tijd voor verlopen tijdslimiet als waarschuwing wordt getoond (in "
 #~ "seconden)"
+
 #~ msgid "How long the time limit warning message will display (in seconds)"
 #~ msgstr ""
 #~ "Hoe lang moet de waarschuwing over de tijdslimiet getoond worden "
 #~ "(seconden)"
+
 #~ msgid "Message to display warning that time limit is about to expire"
 #~ msgstr "Te tonen waarschuwing dat de tijdslimiet bijna verstreken is"
+
 #~ msgid "Survey Saved"
 #~ msgstr "Vragenlijst opgeslagen"
+
 #~ msgid "Survey Submitted"
 #~ msgstr "Vragenlijst verstuurd"
+
 #~ msgid "Other text"
 #~ msgstr "Anders opmerking"
+
 #~ msgid ""
 #~ "Error: The labelset used for this question is not available in this "
 #~ "language and/or does not exist."
 #~ msgstr ""
 #~ "Fout: De gebruikte labelset voor deze vraag is niet beschikbaar in deze "
 #~ "taal en/of bestaat niet."
+
 #~ msgid ""
 #~ "The labelset used in this question does not exists or is missing a "
 #~ "translation."
 #~ msgstr ""
 #~ "De labelset gebruikt in deze vraag bestaat niet of bevat geen vertaling."
+
 #~ msgid "Edit (change) your group names"
 #~ msgstr "Bewerk (wijzig) je groepsnamen"
+
 #~ msgid ""
 #~ "Add, Remove or Edit pre-defined question answers (except for Multi-answer "
 #~ "questions)"
 #~ msgstr ""
 #~ "Toevoegen, Verwijderen of Bewerken van voor-gedefinieerde antwoorden "
 #~ "(behalve voor Meerdere-antwoord vragen)"
+
 #~ msgid "1. scale"
 #~ msgstr "1. schaal"
+
 #~ msgid "2. scale"
 #~ msgstr "2. schaal"
+
 #~ msgid "Data View Control"
 #~ msgstr "Controle dataweergave"
+
 #~ msgid "Show start.."
 #~ msgstr "Toon begin.."
+
 #~ msgid "Completed Records Only"
 #~ msgstr "Enkel voltooide records"
+
 #~ msgid "All Records"
 #~ msgstr "Alle Records"
+
 #~ msgid "Incomplete Records Only"
 #~ msgstr "Enkel Onvolledige Records"
+
 #~ msgid "Condition"
 #~ msgstr "Voorwaarde"
+
 #~ msgid "Add new Answer"
 #~ msgstr "Nieuw Antwoord toevoegen"
+
 #~ msgid ""
 #~ "Error adding answer: You can't use the same answer code more than once."
 #~ msgstr ""
 #~ "Fout tijdens toevoegen antwoord: U kunt dezelfde antwoord code niet "
 #~ "meerdere malen gebruiken."
+
 #~ msgid "Failed to insert answer"
 #~ msgstr "Antwoord toevoegen mislukt"
+
 #~ msgid "Invalid or empty answer code supplied"
 #~ msgstr "Foutief of leeg antwoord code gegeven"
+
 #~ msgid "Failed to make answer not default"
 #~ msgstr "Niet gelukt om het antwoord niet standaard te maken"
+
 #~ msgid "Failed to make answer default"
 #~ msgstr "Niet gelukt om het antwoord standaard te maken"
+
 #~ msgid "Incomplete records only"
 #~ msgstr "Enkel onvolledige records"
+
 #~ msgid "All records"
 #~ msgstr "Alle records"
+
 #~ msgid "Deactivated surveys"
 #~ msgstr "Inactieve vragenlijsten"
+
 #~ msgid "Import Group"
 #~ msgstr "Importeer groep"
+
 #~ msgid "You need to add groups"
 #~ msgstr "Je moet nog groepen toevoegen"
+
 #~ msgid "You need to choose a label set for this question!"
 #~ msgstr "Je moet nog een labelset voor deze vraag selecteren!"
+
 #~ msgid "Second Label Set"
 #~ msgstr "Tweede Labelset"
+
 #~ msgid "You need to choose a second label set for this question!"
 #~ msgstr "Je moet nog een tweede labelset voor deze vraag selecteren!"
+
 #~ msgid "Edit/Add second Label Sets"
 #~ msgstr "Bewerken/toevoegen tweede labelsets"
+
 #~ msgid "Move answer option down"
 #~ msgstr "Verplaats optie omlaag"
+
 #~ msgid "New Answer"
 #~ msgstr "Nieuw Antwoord"
+
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(Dit is een verplicht veld)"
+
 #~ msgid ""
 #~ "You cannot change codes, add or delete entries in this label set because "
 #~ "it is being used by an active survey."
 #~ msgstr ""
 #~ "Je kan de codes niet veranderen, items toevoegen of verwijderen omdat "
 #~ "deze labelset in een actieve vragenlijst wordt gebruikt."
+
 #~ msgid ""
 #~ "Some surveys currently use this label set. Modifying the codes, adding or "
 #~ "deleting entries to this label set may produce undesired results in other "
@@ -11308,14 +11406,19 @@ msgstr "Je bent al verwijderd uit deze vragenlijst."
 #~ "Er zijn vragenlijsten actief die deze labelset gebruiken. Codes wijzigen, "
 #~ "toevoegen of verwijderen in deze labelset zou ongewenste gevolgen kunnen "
 #~ "hebben."
+
 #~ msgid "answers:"
 #~ msgstr "Antwoorden:"
+
 #~ msgid "Label set:"
 #~ msgstr "Labelset:"
+
 #~ msgid "Second Label Set:"
 #~ msgstr "Tweede Labelset:"
+
 #~ msgid "Don't consider NON completed responses"
 #~ msgstr "Houd geen rekening met NIET complete antwoorden"
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, not having been sent "
@@ -11325,38 +11428,51 @@ msgstr "Je bent al verwijderd uit deze vragenlijst."
 #~ "Er waren geen e-mails te versturen. De mogelijke oorzaken hiervan zijn - "
 #~ "het niet hebben van een e-mailadres, uitnodiging reeds verstuurd, de "
 #~ "vragenlijst is al ingevuld of heeft al een toegangscode."
+
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Start vanaf Token ID nr.: "
+
 #~ msgid "Your data:"
 #~ msgstr "Je gegevens:"
+
 #~ msgid "Logging in..."
 #~ msgstr "Inloggen..."
+
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Welkom {NAME}:"
+
 #~ msgid "(Sent by email)"
 #~ msgstr "(Verstuurd per e-mail)"
 
 #, fuzzy
 #~ msgid "Only users with tokens may enter the survey?"
 #~ msgstr "Alleen deelnemers met toegangscode mogen de vragenlijst invullen?"
+
 #~ msgid "Export results to an SPSS command file"
 #~ msgstr "Exporteer resultaat naar SPSS/PASW bestand"
+
 #~ msgid "Export result to a R data file"
 #~ msgstr "Exporteer resultaat naar R data bestand"
+
 #~ msgid "This is not an anonymous survey. A token table must also be created."
 #~ msgstr ""
 #~ "Deze vragenlijst is niet anoniem. Er moet ook een toegangscodetabel "
 #~ "worden aangemaakt."
+
 #~ msgid "Attribute 1"
 #~ msgstr "Attribuut 1"
+
 #~ msgid "Attribute 2"
 #~ msgstr "Attribuut 2"
+
 #~ msgid "Only answer this question %s"
 #~ msgstr "Beantwoord alleen deze vraag %s"
+
 #~ msgid "Delete exported tokens"
 #~ msgstr "Verwijder geexporteerde toegangscodes"
+
 #~ msgid "saved at"
 #~ msgstr "opgeslagen op"
+
 #~ msgid "containing %d record(s)"
 #~ msgstr "met %d record(s)"
-
