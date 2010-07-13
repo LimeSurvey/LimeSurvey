@@ -13,7 +13,6 @@
  * $Id$
  *
  */
-
 // include the lsrc.config.php
 include_once("lsrc.config.php");
 
@@ -1017,7 +1016,7 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
     // check if the Survey exists, else -> Fault
     if(!$lsrcHelper->surveyExists($iVid))
     {
-        throw new SoapFault("Database: ", "Survey $iVid does not exists");
+        throw new SoapFault("Database: ", "Survey $iVid does not exist");
         exit;
     }
 
