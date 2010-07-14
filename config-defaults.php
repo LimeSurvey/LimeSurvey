@@ -429,7 +429,7 @@ $updatecheckperiod=7;
 require_once(dirname(__FILE__).'/config.php');
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
 {
-       $rooturl='https'.substr($rooturl,4);
+       $rooturl=str_replace('http://', 'https://', $rooturl);
 }  
 //-----------------------------------------------------
 
