@@ -462,41 +462,60 @@ function createinsertquery()
                     // therefore if no date was chosen in a date question the insert value has to be NULL
                     $values[]='NULL';
                 }
-/*
-                else if ($fieldexists['type']=='|')
+
+                else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
                 {
-                    $i = substr(strrchr($value, "_"), 1);
+                    $fieldname = $fieldexists['fieldname'];
+                    $target = "upload/files/";
+
+                    $json = $_SESSION[$value];
+                    $phparray = json_decode($json);
+                    $count = 0;
                     
-                    if ($_FILES['the_file_'.$i]['tmp_name'] != '')
+                    $query = "SELECT attribute, value FROM ".db_table_name("question_attributes")." WHERE qid = ".$fieldexists['qid'];
+                    $result = db_execute_assoc($query) or safe_die("Failed to fetch question attributes");
+                    while ($row = $result->FetchRow())
+                        $validation[$row['attribute']] = $row['value'];
+
+                    $validExtensions = explode(",", $validation['allowed_filetypes']);
+                    
+                    for ($i = 1; $i <= $validation['max_num_of_files']; $i++)
                     {
-                        if (!isset($values))       // if this is the first file to be uploaded
-                            $values[0] = '\'{[';
-                        else if ((strrpos($values[0], ",") == strlen($values[0]) - 1) || (strpos($values[0], "]") == strlen($values[0]) - 1))    // last char is a comma or sq brkt
-                            ;                       // do nothing
-                        else                        // remove the braces '}' and add a ',['
-                            $values[0] = substr($values[0], 0, strlen($values[0]) - 1).',[';
-
-                        if (strpos($value, "title")  != false)
-                            $values[0] .= '"title": "'.$_SESSION[$value].'",';
-                        else if (strpos($value, "comment") != false)
+                        if (($_FILES[$fieldname."_file_".$i]['size'] != 0))
                         {
-                            $values[0] .= '"comment": "'.$_SESSION[$value].'",';
+                            $basic = true;
+                            $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
 
-                            $random_file_name = randomkey(20);
+                            if (!in_array($pathinfo['extension'], $validExtensions))
+                                continue;
+                            
+                            $phparray[$count]->name = $_FILES[$fieldname."_file_".$i]['name'];
+                            $phparray[$count]->size = $_FILES[$fieldname."_file_".$i]['size'];
+                            $phparray[$count]->ext  = $pathinfo['extension'];
 
-                            //TODO: remove the hardcoded path
-                            $uploads_dir = "/opt/lampp/htdocs/gsocls/upload/files";
-
-                            $the_full_file_path = $uploads_dir."/".$random_file_name;//.strrchr($_FILES['the_file_'.$i]['tmp_name'], ".");
-
-                            if (!@move_uploaded_file($_FILES['the_file_'.$i]['tmp_name'], $the_full_file_path))
-                                    echo "error uploading";
+                            if (!@move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target.$_FILES[$fieldname."_file_".$i]['name']))
+                                echo "error uploading";
                             else
-                                $values[0] .= '"filename": "'.$random_file_name.'"]}\'';
+                                $count++;
                         }
                     }
+
+                    if (!isset($basic) || !$basic)
+                    { // ajax, move files from temp to files directory
+                        $tmp = "upload/tmp/";
+                        $target = "upload/files/";
+                        
+                        for ($i = 0; $i < count($phparray); $i++)
+                        {
+                            if (!copy($tmp.$phparray[$i]->name, $target.$phparray[$i]->name)){
+                                echo "Error Moving file to its destination";die();}
+                            else
+                                unlink($tmp.$phparray[$i]->name);
+                        }
+                    }
+                    $values[] = $connect->qstr(json_encode($phparray), get_magic_quotes_gpc());
                 }
-*/
+
                 else
                 {
                     if ($fieldexists['type']=='N') //sanitize numerical fields
@@ -512,7 +531,6 @@ function createinsertquery()
                     }
                     $values[]=$connect->qstr($_SESSION[$value],get_magic_quotes_gpc());
                 }
-
             }
         }
                 

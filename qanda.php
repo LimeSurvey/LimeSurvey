@@ -3503,7 +3503,7 @@ function do_multiplechoice_withcomments($ia)
 // ---------------------------------------------------------------
 function do_file_upload($ia)
 {
-    global $clang, $js_header_includes;
+    global $clang, $js_header_includes, $thissurvey;
 
     if ($ia[8] == 'Y')
         $checkconditionFunction = "checkconditions";
@@ -3540,8 +3540,9 @@ function do_file_upload($ia)
         //TODO: use the global settings for allowed file types
     }
 
-    //TODO: use a javascript to ensure that the size of file
-    // is not more than $max_filesize
+    /* TODO:
+     * 1. On returning to the survey page after error, the title/comments input contain "[{"
+     */
 
     $basic  = '<br /><br /><table border="0" cellpadding="10" cellspacing="10" align="center">'
                     .'<tr>'
@@ -3577,6 +3578,7 @@ function do_file_upload($ia)
     }
 
     $basic .= '</tbody></table>';
+    $basic .= '<br /><br /><a href="#" onclick="hideBasic()">Hide Simple Uploader</a>';
 
     $answer =  "<script type='text/javascript'>
 
@@ -3610,13 +3612,32 @@ function do_file_upload($ia)
                     });
 
                     function copyJSON(jsonstring, filecount) {
+                        var display = '<table style=\"padding: 10px 10px 5px 5px\" >';
+                        var jsonobj = eval('(' + jsonstring + ')');
+                        var i;
+
                         $('#".$ia[1]."').val(jsonstring);
                         $('#".$ia[1]."_filecount').val(filecount);
+
+                        for (i = 0; i < filecount; i++)
+                        {
+                            display += '<tr><td align=\"center\"><img src=\"upload/tmp/'+jsonobj[i].name+'\" height=100px  align=\"center\"/></td><td align=\"center\">'+jsonobj[i].title+'</td><td align=\"center\">'+jsonobj[i].comment+'</td><td align=\"center\">'+jsonobj[i].name+'</td></tr><tr><td>&nbsp;</td></tr>';
+                        }
+                        display += '</table>';
+                        $('#uploadedfiles').html(display);
+
                         $('.externalSite').dialog('close');
+                    };
+
+                    function displayUploadedFiles(jsonstring, filecount) {
                     };
 
                     function showBasic() {
                         $('#basic').show();
+                    };
+
+                    function hideBasic() {
+                        $('#basic').hide();
                     };
 
                 </script>";
@@ -3625,12 +3646,15 @@ function do_file_upload($ia)
     $pos = stripos($currentdir, "admin");
 
     if ($pos)
-        $answer .= "<a id='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."'&preview=1 >Upload files</a><br /><br /><br />";
+        $answer .= "<h2><a id='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1' >Upload files</a></h2><br /><br />";
+    else if ($thissurvey['active'] != "Y")
+        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1' >Upload files</a></h2><br /><br />";
     else
-        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."'&preview=0 >Upload files</a></h2><br /><br /><br />";
+        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=0' >Upload files</a></h2><br /><br />";
 
     $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
     $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
+    $answer .= "<div id='uploadedfiles'></div>";
 
     $answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
 
@@ -3649,7 +3673,7 @@ function do_file_upload($ia)
                                 jsonstring += ", ";
 
                             if ($("#answer'.$ia[1].'_"+i).val() != "")
-                                jsonstring += "{\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\"}";
+                                jsonstring += "{\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",\"size\":\"\",\"name\":\"\",\"ext\":\"\"}";
                         }
                         jsonstring += "]";
 

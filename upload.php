@@ -33,26 +33,41 @@
 
         echo json_encode($return);
     }
-    // if everything went fine and the file was uploaded successfuly,
-    // send the file related info back to the client
-    else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file)) {
-        $size     = filesize($file);
+
+    // If this is just a preview, don't save the file
+    if ($preview)
+    {
         $return = array(
+                        "success" => true,
+                        "size"    => $size,
+                        "name"    => basename($file),
+                        "ext"     => $ext,
+                        "msg"     => "The file has been successfuly uploaded. The file has not been saved into the filesystem since this is just a preview."
+                    );
+        echo json_encode($return);
+    }
+    else 
+    {    // if everything went fine and the file was uploaded successfuly,
+         // send the file related info back to the client
+        if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file))
+        {
+            $return = array(
                         "success" => true,
                         "size"    => $size,
                         "name"    => basename($file),
                         "ext"     => $ext,
                         "msg"     => "The file has been successfuly uploaded"
                     );
-        if ($preview == 0)
-        echo json_encode($return);
-    }
-    // if there was some error, report error message
-    else {
-        $return = array(
+            echo json_encode($return);
+        }
+        // if there was some error, report error message
+        else
+        {
+            $return = array(
                         "success" => false,
                         "msg" => "Unknown error"
                     );
-        echo json_encode($return);
+            echo json_encode($return);
+        }
     }
 ?>
