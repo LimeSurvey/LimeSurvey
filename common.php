@@ -5544,7 +5544,7 @@ function CSVEscape($str)
 
 function convertCSVRowToArray($string, $seperator, $quotechar)
 {
-    $fields=preg_split('/,(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
+	$fields=preg_split('/' . $seperator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
     $fields=array_map('CSVUnquote',$fields);
     return $fields;
 }
