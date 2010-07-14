@@ -918,7 +918,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
     // Import group table ===================================================================================
 
     $tablename=$dbprefix.'groups';
-    $newgrouporder=$connect->GetOne("SELECT MAX(group_order) AS maxqo FROM ".db_table_name('group')." WHERE sid=$newsid")+1;
+
+    $newgrouporder=$connect->GetOne("SELECT MAX(group_order) AS maxqo FROM ".db_table_name('groups')." WHERE sid=$newsid");
     if (is_null($newgrouporder)) 
     {
         $newgrouporder=0;
