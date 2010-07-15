@@ -131,8 +131,7 @@ function getXMLStructure($xml,$gid)
 
     //Question attributes
     $query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
-          FROM {$dbprefix}question_attributes 
-          WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where gid=$gid group by qid)";
+          FROM {$dbprefix}question_attributes JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}question_attributes.qid AND {$dbprefix}questions.gid=$gid";
     BuildXMLFromQuery($xml,$query,'question_attributes');
     
     // Default values
