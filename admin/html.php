@@ -1341,7 +1341,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             $questionsummary .= ($qrrow['other'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
             $questionsummary .= "</td></tr>\n";
         }
-        if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X"))
+        if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X") and ($qrrow['type'] != "|"))
         {
             $questionsummary .= "<tr>"
             . "<td align='right' valign='top'><strong>"

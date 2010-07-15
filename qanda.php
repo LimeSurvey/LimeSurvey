@@ -16,6 +16,7 @@
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+global $thissurvey;
 
 /*
  * Let's explain what this strange $ia var means
@@ -3512,64 +3513,57 @@ function do_file_upload($ia)
 
    	$qidattributes=getQuestionAttributes($ia[0]);
 
+    // Fetch question attributes
     if (trim($qidattributes['max_num_of_files'])!='')
         $maxfiles=$qidattributes['max_num_of_files'];
-    else
-    {
-        //TODO: use the global settings for maximum no. of files
-    }
 
     if (trim($qidattributes['min_num_of_files'])!='')
         $minfiles=$qidattributes['min_num_of_files'];
-    else
-    {
-        //TODO: use the global settings for minimum no. of files
-    }
 
     if (trim($qidattributes['max_filesize'])!='')
         $maxfilesize=$qidattributes['max_filesize'];
-    else
-    {
-        //TODO: use the global settings for maximum size of file
-    }
 
     if (trim($qidattributes['allowed_filetypes'])!='')
         $allowed_filetypes=$qidattributes['allowed_filetypes'];
-    else
-    {
-        //TODO: use the global settings for allowed file types
-    }
+
+    if (trim($qidattributes['show_title'])!='')
+        $show_title = $qidattributes['show_title'];
+
+    if (trim($qidattributes['show_comment'])!='')
+        $show_comment = $qidattributes['show_comment'];
 
     /* TODO:
      * 1. On returning to the survey page after error, the title/comments input contain "[{"
      */
 
+    // Basic uploader
     $basic  = '<br /><br /><table border="0" cellpadding="10" cellspacing="10" align="center">'
-                    .'<tr>'
-                        .'<th align="center"><b>Title</b></th>'
-                        .'<th>&nbsp;&nbsp;</th>'
-                        .'<th align="center"><b>Comment</b></th>'
-                        .'<th>&nbsp;&nbsp;</th>'
-                        .'<th align="center"><b>Select file</b></th>'
+                    .'<tr>';
+    if ($show_title) { $basic .= '<th align="center"><b>Title</b></th><th>&nbsp;&nbsp;</th>'; }
+    if ($show_comment) { $basic .= '<th align="center"><b>Comment</b></th><th>&nbsp;&nbsp;</th>'; }
+    $basic .=           '<th align="center"><b>Select file</b></th>'
                     .'</tr>'
                     .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>'
                     .'<tbody>';
 
     for ($i = 1; $i <= $maxfiles; $i++) {
          $basic .= '<tr>'
-                        .'<td>'
-                            .'<input class="basic_'.$ia[1].'" type="text" name="'.$ia[1].'_title_'.$i
+                        .'<td>';
+         if ($show_title)
+             $basic .=      '<input class="basic_'.$ia[1].'" type="text" name="'.$ia[1].'_title_'.$i
                             .'" id="'.$ia[1].'_title_'.$i.'" value="'.$_SESSION[$ia[1]]
                             .'" maxlength="100" />'
                         .'</td>'
-                        .'<td>&nbsp;&nbsp;</td>'
-                        .'<td>'
+                        .'<td>&nbsp;&nbsp;</td>';
+         if ($show_comment)
+             $basic .=  '<td>'
                             .'<input class="basic_'.$ia[1].'" type="textarea" name="'.$ia[1].'_comment_'.$i
                             .'" id="'.$ia[1].'_comment_'.$i.'" value="'.$_SESSION[$ia[1]]
                             .'" maxlength="100" />'
                         .'</td>'
-                        .'<td>&nbsp;&nbsp;</td>'
-                        .'<td>'
+                        .'<td>&nbsp;&nbsp;</td>';
+
+         $basic .=      '<td>'
                             .' <input class="basic_'.$ia[1].'" '
                             .'type="file" name="'.$ia[1].'_file_'.$i.'" id="'.$ia[1].'_'.$i.'" alt="'
                             .$clang->gT("Answer").'" ></input></td>'
@@ -3580,6 +3574,9 @@ function do_file_upload($ia)
     $basic .= '</tbody></table>';
     $basic .= '<br /><br /><a href="#" onclick="hideBasic()">Hide Simple Uploader</a>';
 
+    $currentdir = getcwd();
+    $pos = stripos($currentdir, "admin");
+    // Modal dialog
     $answer =  "<script type='text/javascript'>
 
                     $(document).ready(function() {
@@ -3610,6 +3607,15 @@ function do_file_upload($ia)
                             }).width(1084 - horizontalPadding).height(500 - verticalPadding);
                         });
                     });
+                    
+                    function isValueInArray(arr, val) {
+                        inArray = false;
+                        for (i = 0; i < arr.length; i++)
+                            if (val == arr[i])
+                                inArray = true;
+
+                        return inArray;
+                    }
 
                     function copyJSON(jsonstring, filecount) {
                         var display = '<table style=\"padding: 10px 10px 5px 5px\" >';
@@ -3619,9 +3625,32 @@ function do_file_upload($ia)
                         $('#".$ia[1]."').val(jsonstring);
                         $('#".$ia[1]."_filecount').val(filecount);
 
+                        var image_extensions = new Array('gif', 'jpeg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+                            
                         for (i = 0; i < filecount; i++)
-                        {
-                            display += '<tr><td align=\"center\"><img src=\"upload/tmp/'+jsonobj[i].name+'\" height=100px  align=\"center\"/></td><td align=\"center\">'+jsonobj[i].title+'</td><td align=\"center\">'+jsonobj[i].comment+'</td><td align=\"center\">'+jsonobj[i].name+'</td></tr><tr><td>&nbsp;</td></tr>';
+                        {";
+
+    if ($pos || $thissurvey['active'] != "Y")
+    {
+        $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
+                        display += '<tr><td align=\"center\"><img src=\"../upload/tmp/'+jsonobj[i].name+'\" height=100px  align=\"center\"/></td>';
+                    else
+                        display += '<tr><td align=\"center\"><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
+    }
+    else
+    {
+        $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
+                        display += '<tr><td align=\"center\"><img src=\"upload/tmp/'+jsonobj[i].name+'\" height=100px  align=\"center\"/></td>';
+                    else
+                        display += '<tr><td align=\"center\"><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
+    }
+
+    $answer .= "            if ($(\"#show_title\").val() == 1)
+                                display += '<td align=\"center\">'+jsonobj[i].title+'</td>';
+                            if ($(\"#show_comment\").val() == 1)
+                                display += '<td align=\"center\">'+jsonobj[i].comment+'</td>';
+
+                            display += '<td align=\"center\">'+jsonobj[i].name+'</td></tr><tr><td>&nbsp;</td></tr>';
                         }
                         display += '</table>';
                         $('#uploadedfiles').html(display);
@@ -3642,18 +3671,16 @@ function do_file_upload($ia)
 
                 </script>";
 
-    $currentdir = getcwd();
-    $pos = stripos($currentdir, "admin");
-
+    
     if ($pos)
-        $answer .= "<h2><a id='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1' >Upload files</a></h2><br /><br />";
+        $answer .= "<h2><a id='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
     else if ($thissurvey['active'] != "Y")
-        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1' >Upload files</a></h2><br /><br />";
+        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
     else
-        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=0' >Upload files</a></h2><br /><br />";
+        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=0&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
 
-    $answer .= "<input type='text' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
-    $answer .= "<input type='text' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
+    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
+    $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
     $answer .= "<div id='uploadedfiles'></div>";
 
     $answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
@@ -3673,7 +3700,19 @@ function do_file_upload($ia)
                                 jsonstring += ", ";
 
                             if ($("#answer'.$ia[1].'_"+i).val() != "")
-                                jsonstring += "{\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",\"size\":\"\",\"name\":\"\",\"ext\":\"\"}";
+                                jsonstring += "{';
+    
+    if ($show_title)
+        $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
+    else
+        $answer .= '\"title\":\"\",';
+    
+    if ($show_comment)
+        $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
+    else
+        $answer .= '\"comment\":\"\",';
+
+    $answer .= '\"size\":\"\",\"name\":\"\",\"ext\":\"\"}";
                         }
                         jsonstring += "]";
 

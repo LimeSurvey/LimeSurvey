@@ -2606,7 +2606,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['question']=$arow['question'];
                     $fieldmap[$fieldname]['max_files']=$abrow['value'];
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 }
@@ -2624,7 +2623,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
                     //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 }
@@ -4224,10 +4222,33 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
 	"caption"=>$clang->gT("2nd Time Limit Warning CSS Style"));
 
+    $qattributes["show_title"]=array(
+	"types"=>"|",
+    'category'=>$clang->gT('File Metadata'),
+    'sortorder'=>124,
+    "inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+	"help"=>$clang->gT("Is the participant required to give a title to the uploaded file?"),
+	"caption"=>$clang->gT("Show Title"));
+
+    $qattributes["show_comment"]=array(
+	"types"=>"|",
+    'category'=>$clang->gT('File Metadata'),
+    'sortorder'=>126,
+    "inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+	"help"=>$clang->gT("Is the participant required to give a comment to the uploaded file?"),
+	"caption"=>$clang->gT("Show Comment"));
+
+
     $qattributes["max_filesize"]=array(
 	"types"=>"|",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>124,
+    'sortorder'=>128,
     "inputtype"=>"integer",
     'default'=>10240,
 	"help"=>$clang->gT("The surveyee cannot upload a single file larger than this size"),
@@ -4236,7 +4257,7 @@ function questionAttributes($returnByName=false)
     $qattributes["max_num_of_files"]=array(
 	"types"=>"|",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>126,
+    'sortorder'=>130,
     "inputtype"=>"integer",
     'default'=>1,
 	"help"=>$clang->gT("Maximum number of files that the surveyee can upload for this question"),
@@ -4245,7 +4266,7 @@ function questionAttributes($returnByName=false)
     $qattributes["min_num_of_files"]=array(
 	"types"=>"|",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>128,
+    'sortorder'=>132,
     "inputtype"=>"integer",
     'default'=>0,
 	"help"=>$clang->gT("Minimum number of files that the surveyee must upload for this question"),
@@ -4254,9 +4275,9 @@ function questionAttributes($returnByName=false)
     $qattributes["allowed_filetypes"]=array(
 	"types"=>"|",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>130,
+    'sortorder'=>134,
     "inputtype"=>"textarea",
-    'default'=>"png,gif,doc,odt",
+    'default'=>"png, gif, doc, odt",
 	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
 	"caption"=>$clang->gT("Allowed file types (eg: pdf, doc, odt)"));
 

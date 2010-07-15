@@ -85,24 +85,28 @@
                 {
                     var previewblock =  "<li id='li_"+i+"' class='previewblock'><div>"+
                             "<table align='center'><tr>"+
-                                "<td  align='center' width='50%'>";
+                                "<td  align='center' width='50%' padding='20px' >";
                             
                     if (isValueInArray(image_extensions, json[i].ext))
                         previewblock += "<img src='upload/tmp/"+json[i].name+"' height='100px' />";
                     else
-                        previewblock += "<img src='images/placeholder.png' height='100px' />";
+                        previewblock += "<img src='images/placeholder.png' height='100px' /><br />"+json[i].name;
 
-                    previewblock += "</td>"+
-                                "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
-                                "<td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /><br /><br />"+
-                                "<input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>"+
-                                /* If the file is not an image, use a placeholder */
-                                "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+i+")' /></td>"+
-                            "</tr></table>"+
-                            "<input type='hidden' id='size_"+i+"' value="+json[i].size+" />"+
-                            "<input type='hidden' id='name_"+i+"' value="+json[i].name+" />"+
-                            "<input type='hidden' id='ext_" +i+"' value="+json[i].ext+"  />"+
-                        "</div></li>";
+                    previewblock += "</td>";
+
+                    if ($('#show_title').val() == 1 && $('#show_comment').val() == 1)
+                        previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /><br /><br /><input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>";
+                    else if ($('#show_title').val() == 1)
+                        previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /></td>";
+                    else if ($('#show_comment').val() == 1)
+                        previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>";
+
+                    previewblock += "<td align='center' width='20%' ><img src='images/trash.png' onclick='deletefile("+i+")' /></td></tr></table>"+
+                            "<input type='hidden' id='size_"    +i+"' value="+json[i].size+" />"+
+                            "<input type='hidden' id='name_"    +i+"' value="+json[i].name+" />"+
+                            "<input type='hidden' id='filename_"+i+"' value="+json[i].filename+" />"+
+                            "<input type='hidden' id='ext_"     +i+"' value="+json[i].ext+"  />"+
+                            "</div></li>";
 
                     // add file to the list
                     $('#listfiles').append(previewblock);
@@ -130,10 +134,7 @@
                      * do not upload the file and display an error message ! */
                     if (filecount >= maxfiles)
                     {
-                        $('body').prepend('<div class="notice">Sorry, No more files can be uploaded !</div>');
-                        setTimeout(function() {
-                            $(".notice").remove();
-                        }, 10000);
+                        $('#notice').html('<p class="notice">Sorry, No more files can be uploaded !</p>');
                         return false;
                     }
 
@@ -143,7 +144,7 @@
                     for (var i = 0; i < allowed_filetypes.length; i++)
                     {
                         //check to see if it's the proper extension
-                        if (allowed_filetypes[i].toLowerCase() == ext.toLowerCase())
+                        if (jQuery.trim(allowed_filetypes[i].toLowerCase()) == jQuery.trim(ext.toLowerCase()) )
                         {
                             //it's the proper extension
                             allowSubmit = true;
@@ -152,10 +153,7 @@
                     }
                     if (allowSubmit == false)
                     {
-                        $('body').prepend('<div class="notice">Sorry, Only "'+ $('#allowed_filetypes').val()+'" files can be uploaded for this question !</div>');
-                        setTimeout(function() {
-                            $(".notice").remove();
-                        }, 5000);
+                        $('#notice').html('<p class="notice">Sorry, Only "'+ $('#allowed_filetypes').val()+'" files can be uploaded for this question !</p>');
                         return false;
                     }
                     
@@ -185,13 +183,10 @@
                     // Once the file has been uploaded via AJAX,
                     // the preview is appended to the list of files
                     var metadata = eval('(' + response + ')');
-                    $('body').prepend('<div class="notice">'+metadata.msg+'</div>');
-                    setTimeout(function() {
-                        $(".notice").remove();
-                    }, 5000);
+                    $('#notice').html('<p class="notice">'+metadata.msg+'</p>');
                     var count = parseInt($('#licount').val());
 
-                    var image_extensions = new Array("png", "jpg", "jpeg", "bmp", "gif");
+                    var image_extensions = new Array("gif", "jpeg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
 
                     if (metadata.success)
                     {
@@ -205,14 +200,19 @@
                         else
                             previewblock += "<img src='images/placeholder.png' height='100px' />";
 
-                        previewblock += "</td>"+
-                                                    "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td>"+
-                                                    "<td align='center'><input type='text' value='' id='title_"+count+"' /><br /><br />"+
-                                                    "<input type='text' value='' id='comment_"+count+"' /></td>"+
-                                                    "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+count+")'/></td>"+
+                        previewblock += "<br />"+metadata.name+"</td>";
+                        if ($("#show_title").val() == 1 && $("#show_comment").val() == 1)
+                            previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='' id='title_"+count+"' /><br /><br /><input type='text' value='' id='comment_"+count+"' /></td>";
+                        else if ($("#show_title").val() == 1)
+                            previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='' id='title_"+count+"' /></td>";
+                        else if ($("#show_comment").val() == 1)
+                            previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='' id='comment_"+count+"' /></td>";
+
+                        previewblock += "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+count+")'/></td>"+
                                                 "</tr></table>"+
                                                 "<input type='hidden' id='size_"+count+"' value="+metadata.size+" />"+
                                                 "<input type='hidden' id='name_"+count+"' value="+metadata.name+" />"+
+                                                "<input type='hidden' id='filename_"+count+"' value="+metadata.filename+" />"+
                                                 "<input type='hidden' id='ext_" +count+"' value="+metadata.ext+"  />"+
                                             "</div></li>";
 
@@ -224,12 +224,8 @@
                         filecount++;
                         $('#filecount').val(filecount);
                         var maxfiles = $('#maxfiles').val();
-                        if (filecount >= maxfiles) {
-                            $('body').prepend('<div class="notice">Maximum number of files have been uploaded<br />You may Save and Exit !</div>');
-                            setTimeout(function() {
-                                $(".notice").remove();
-                            }, 5000);
-                        }
+                        if (filecount >= maxfiles)
+                            $('#notice').html('<p class="notice">Maximum number of files have been uploaded<br />You may Save and Exit !</p>');
                     }
                 }
             });
@@ -262,10 +258,15 @@
                 }
                 else
                 {
-                    json += '{"title":"' +$("#title_"  +i).val()+'",'+
-                            '"comment":"'+$("#comment_"+i).val()+'",'+
-                            '"size":"'   +$("#size_"   +i).val()+'",'+
+                    json += '{';
+
+                    if ($("#show_title").val() == 1)
+                        json += '"title":"' +$("#title_"  +i).val()+'",';
+                    if ($("#show_comment").val() == 1)
+                        json += '"comment":"'+$("#comment_"+i).val()+'",';
+                    json += '"size":"'   +$("#size_"   +i).val()+'",'+
                             '"name":"'   +$("#name_"   +i).val()+'",'+
+                            '"filename":"'   +$("#filename_"   +i).val()+'",'+
                             '"ext":"'    +$("#ext_"    +i).val()+'"}';
 
                     filecount += 1;
@@ -285,7 +286,12 @@
             xmlhttp.onreadystatechange=function()
             {
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                    addNotice(xmlhttp.responseText);
+                {
+                    $('#notice').html('<p class="notice">'+xmlhttp.responseText+'</p>');
+                    setTimeout(function() {
+                        $(".notice").remove();
+                    }, 5000);
+                }
             }
             xmlhttp.open('GET','delete.php?file='+$("#name_"+i).val(),true);
             xmlhttp.send();
@@ -295,25 +301,21 @@
             filecount--;
             $('#filecount').val(filecount);
         }
-
-        function addNotice(notice) {
-            $('body').prepend('<div class="notice">'+notice+'</div>');
-            setTimeout(function() {
-                $(".notice").remove();
-            }, 5000);
-        }
         
     </script>
 
     </head>
 
     <body>
+        <div id="notice"></div>
         <input type="hidden" id="ia"                value="<?php echo $_GET['ia']                 ?>" />
         <input type="hidden" id="minfiles"          value="<?php echo $_GET['minfiles']           ?>" />
         <input type="hidden" id="maxfiles"          value="<?php echo $_GET['maxfiles']           ?>" />
         <input type="hidden" id="maxfilesize"       value="<?php echo $_GET['maxfilesize']        ?>" />
         <input type="hidden" id="allowed_filetypes" value="<?php echo $_GET['allowed_filetypes']  ?>" />
         <input type="hidden" id="preview"           value="<?php echo $_GET['preview']            ?>" />
+        <input type="hidden" id="show_comment"      value="<?php echo $_GET['show_comment']       ?>" />
+        <input type="hidden" id="show_title"        value="<?php echo $_GET['show_title']         ?>" />
         <input type="hidden" id="licount"           value="0" />
         <input type="hidden" id="filecount"         value="0" />
 

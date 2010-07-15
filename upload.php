@@ -9,6 +9,9 @@
 
     $valid_extensions_array = explode(",", $valid_extensions);
 
+    for ($i = 0; $i < count($valid_extensions_array); $i++)
+        $valid_extensions_array[$i] = trim($valid_extensions_array[$i]);
+    
     $pathinfo = pathinfo($_FILES['uploadfile']['name']);
     $ext = strtolower($pathinfo['extension']);
 
@@ -28,7 +31,7 @@
     {
         $return = array(
                         "success" => false,
-                        "msg" => "Sorry, This file extension (".$ext.") is not allowed !".$valid_extensions
+                        "msg" => "Sorry, This file extension (".$ext.") is not allowed !"
                     );
 
         echo json_encode($return);
@@ -37,14 +40,19 @@
     // If this is just a preview, don't save the file
     if ($preview)
     {
-        $return = array(
+
+        if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file))
+        {
+            $return = array(
                         "success" => true,
                         "size"    => $size,
                         "name"    => basename($file),
                         "ext"     => $ext,
-                        "msg"     => "The file has been successfuly uploaded. The file has not been saved into the filesystem since this is just a preview."
+                        "msg"     => "The file has been successfuly uploaded."
                     );
-        echo json_encode($return);
+            echo json_encode($return);
+
+        }
     }
     else 
     {    // if everything went fine and the file was uploaded successfuly,
