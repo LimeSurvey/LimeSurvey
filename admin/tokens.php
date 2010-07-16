@@ -2373,6 +2373,13 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         {
             $tokenoutput .= "<div class='warningheader'>".$clang->gT("Failed to open the uploaded file!")."</div><br />\n";
         }
+        if (!isset($_POST['filterduplicatefields']) || (isset($_POST['filterduplicatefields']) && count($_POST['filterduplicatefields'])==0))
+        {
+            $filterduplicatefields=array('firstname','lastname','email');
+        } else {
+            $filterduplicatefields=$_POST['filterduplicatefields'];
+        }
+        $separator = returnglobal('separator');
         foreach ($tokenlistarray as $buffer)
         {
             $buffer=@mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
@@ -2383,7 +2390,20 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                 $buffer=removeBOM($buffer);
                 $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','language', 'validfrom', 'validuntil');
                 $allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
-                $firstline = convertCSVRowToArray($buffer,',','"');
+                
+                switch ($separator) {
+                    case 'comma':
+                        $separator = ',';
+                        break;
+                    case 'semicolon':
+                        $separator = ';';
+                        break;
+                    default:
+                        $comma = substr_count($buffer,',');
+                        $semicolon = substr_count($buffer,';');
+                        if ($semicolon>$comma) $separator = ';'; else $separator = ',';
+                }
+                $firstline = convertCSVRowToArray($buffer,$separator,'"');
                 $firstline=array_map('trim',$firstline);
                 $ignoredcolumns=array();
                 //now check the first line for invalid fields
@@ -2407,7 +2427,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             else
             {
 
-                $line = convertCSVRowToArray($buffer,',','"');
+                $line = convertCSVRowToArray($buffer,$separator,'"');
 
                 if (count($firstline)!=count($line))
                 {
@@ -2427,14 +2447,6 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
                 if ($filterduplicatetoken!=false)
                 {
-                    if (!isset($_POST['filterduplicatefields']) || (isset($_POST['filterduplicatefields']) && count($_POST['filterduplicatefields'])==0))
-                    {
-                        $filterduplicatefields=array('firstname','lastname','email');
-                    }
-                    else
-                    {
-                        $filterduplicatefields=$_POST['filterduplicatefields'];
-                    }
                     $dupquery = "SELECT tid from ".db_table_name("tokens_$surveyid")." where 1=1";
                     foreach($filterduplicatefields as $field)
                     {
@@ -2802,9 +2814,19 @@ function form_csv_upload($error=false)
         if ($charset=='auto') {$charsetsout.=" selected ='selected'";}
         $charsetsout.=">$title ($charset)</option>";
     }
+    $separator = returnglobal('separator');
+    if (empty($separator) || $separator == 'auto') $selected = " selected = 'selected'"; else $selected = ''; 
+    $separatorout = "<option value='auto'$selected>".$clang->gT("Auto detect")."</option>";
+    if ($separator == 'comma') $selected = " selected = 'selected'"; else $selected = ''; 
+    $separatorout .= "<option value='comma'$selected>".$clang->gT("Comma")."</option>";
+    if ($separator == 'semicolon') $selected = " selected = 'selected'"; else $selected = ''; 
+    $separatorout .= "<option value='semicolon'$selected>".$clang->gT("Semicolon")."</option>";
     $tokenoutput .= "<form id='tokenimport' enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'><ul>\n"
     . "<li><label for='the_file'>".$clang->gT("Choose the CSV file to upload:")."</label><input type='file' id='the_file' name='the_file' size='35' /></li>\n"
     . "<li><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select id='csvcharset' name='csvcharset' size='1'>$charsetsout</select></li>\n"
+    . "<li><label for='separator'>".$clang->gT("Separator used:")."</label><select id='separator' name='separator' size='1'>"
+    . $separatorout
+    . "</select></li>\n"
     . "<li><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' /></li>\n"
     . "<li><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' /></li>"
     . "<li id='lifilterduplicatefields'><label for='filterduplicatefields[]'>".$clang->gT("Duplicates are determined by:")."</label>"

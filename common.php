@@ -5353,7 +5353,7 @@ function CSVEscape($str)
 
 function convertCSVRowToArray($string, $seperator, $quotechar)
 {
-    $fields=preg_split('/,(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
+    $fields=preg_split('/' . $seperator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
     $fields=array_map('CSVUnquote',$fields);
     return $fields;
 }
@@ -7505,5 +7505,18 @@ function getSubQuestions($sid, $qid) {
     }
     if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
     return array();
+}
+
+/**
+ * Wrapper function to retrieve an xmlwriter object and do error handling if it is not compiled
+ * into PHP
+ */
+function getXMLWriter() {
+    try {
+        $xmlwriter = new XMLWriter();
+    } catch (Exception $e) {
+        safe_die('XMLWriter class not compiled into PHP, please contact your system administrator');   
+    }
+    return $xmlwriter;    
 }
 // Closing PHP tag intentionally left out - yes, it is okay

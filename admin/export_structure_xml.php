@@ -162,7 +162,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
 function getXMLData($exclude = array())
 {
     global $dbversionnumber,$surveyid;
-    $xml =new XMLWriter();
+    $xml = getXMLWriter();
     $xml->openMemory();
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');

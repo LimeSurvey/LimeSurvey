@@ -37,7 +37,7 @@ if (!$qid)
 }
 
 $fn = "limesurvey_question_$qid.lsq";      
-$xml = new XMLWriter();  
+$xml = getXMLWriter();  
 
 if($action=='exportstructureLsrcCsvQuestion')
 {
