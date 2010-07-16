@@ -45,7 +45,7 @@ if (!$gid)
 }
 
 $fn = "limesurvey_group_$gid.lsg";
-$xml = new XMLWriter();    
+$xml = getXMLWriter();    
 
 
 
