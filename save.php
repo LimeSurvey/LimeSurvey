@@ -466,51 +466,60 @@ function createinsertquery()
                 else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
                 {
                     $fieldname = $fieldexists['fieldname'];
-                    $target = "upload/files/";
+                    $target = "upload/surveys/". $thissurvey['sid'] ."/files/";
 
                     $json = $_SESSION[$value];
                     $phparray = json_decode($json);
-                    $count = 0;
-                    
-                    $query = "SELECT attribute, value FROM ".db_table_name("question_attributes")." WHERE qid = ".$fieldexists['qid'];
-                    $result = db_execute_assoc($query) or safe_die("Failed to fetch question attributes");
-                    while ($row = $result->FetchRow())
-                        $validation[$row['attribute']] = $row['value'];
-
-                    $validExtensions = explode(",", $validation['allowed_filetypes']);
-                    
-                    for ($i = 1; $i <= $validation['max_num_of_files']; $i++)
+                    if (isset($phparray[0]->filename))
+                        ; // get out of here as this has already been saved into the filesystem
+                    else
                     {
-                        if (($_FILES[$fieldname."_file_".$i]['size'] != 0))
+                        $count = 0;
+
+                        $query = "SELECT attribute, value FROM ".db_table_name("question_attributes")." WHERE qid = ".$fieldexists['qid'];
+                        $result = db_execute_assoc($query) or safe_die("Failed to fetch question attributes");
+                        while ($row = $result->FetchRow())
+                            $qAttributes[$row['attribute']] = $row['value'];
+
+                        $validExtensions = explode(",", $qAttributes['allowed_filetypes']);
+
+                        // for the HTML form version
+                        for ($i = 1; $i <= $qAttributes['max_num_of_files']; $i++)
                         {
-                            $basic = true;
-                            $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
+                            if (isset($_FILES[$fieldname."_file_".$i]) && $_FILES[$fieldname."_file_".$i]['size'] != 0)
+                            {
+                                $basic = true;
+                                $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
 
-                            if (!in_array($pathinfo['extension'], $validExtensions))
-                                continue;
-                            
-                            $phparray[$count]->name = $_FILES[$fieldname."_file_".$i]['name'];
-                            $phparray[$count]->size = $_FILES[$fieldname."_file_".$i]['size'];
-                            $phparray[$count]->ext  = $pathinfo['extension'];
+                                if (!in_array($pathinfo['extension'], $validExtensions))
+                                    continue;
 
-                            if (!@move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target.$_FILES[$fieldname."_file_".$i]['name']))
-                                echo "error uploading";
-                            else
-                                $count++;
+                                $phparray[$count]->name = $_FILES[$fieldname."_file_".$i]['name'];
+                                $phparray[$count]->filename = randomkey(20);
+                                $phparray[$count]->size = $_FILES[$fieldname."_file_".$i]['size'];
+                                $phparray[$count]->ext  = $pathinfo['extension'];
+
+                                if (!@move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target . $phparray[$count]->filename))
+                                    echo "error uploading";
+                                else
+                                    $count++;
+                            }
                         }
-                    }
 
-                    if (!isset($basic) || !$basic)
-                    { // ajax, move files from temp to files directory
-                        $tmp = "upload/tmp/";
-                        $target = "upload/files/";
-                        
-                        for ($i = 0; $i < count($phparray); $i++)
-                        {
-                            if (!copy($tmp.$phparray[$i]->name, $target.$phparray[$i]->name)){
-                                echo "Error Moving file to its destination";die();}
-                            else
-                                unlink($tmp.$phparray[$i]->name);
+                        // for the AJAX version
+                        if (!isset($basic) || !$basic)
+                        { // ajax, move files from temp to files directory
+                            $tmp = "upload/tmp/";
+                            $target = "upload/surveys/". $thissurvey['sid'] . "/files/";
+
+                            for ($i = 0; $i < count($phparray); $i++)
+                            {
+                                $phparray[$count]->filename = randomkey(20);
+                                if (!copy($tmp . rawurldecode($phparray[$i]->name), $target . $phparray[$i]->filename)){
+                                    echo "Error Moving file to its destination";die();}
+                                else
+                                    unlink($tmp . rawurldecode($phparray[$i]->name));
+                            }
                         }
                     }
                     $values[] = $connect->qstr(json_encode($phparray), get_magic_quotes_gpc());

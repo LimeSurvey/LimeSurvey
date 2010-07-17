@@ -2606,6 +2606,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['question']=$arow['question'];
                     $fieldmap[$fieldname]['max_files']=$abrow['value'];
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 }
@@ -2623,6 +2624,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
                     //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 }

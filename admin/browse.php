@@ -394,13 +394,17 @@ elseif ($subaction == "all")
                     foreach ($metadata as $data)
                     {
                         $phparray = json_decode($data, true);
-                        for ($i = 0; isset($phparray[$i]); $i++)
-                            $filelist[] = $phparray[$i]['name'];
+                        for ($i = 0; $i < count($phparray); $i++)
+                        {
+                            $filelist[$i]['filename'] = $phparray[$i]['filename'];
+                            $filelist[$i]['name'] = $phparray[$i]['name'];
+                        }
+
                     }
                 }
             }
             // Now, zip all the files in the filelist
-            $tmpdir = getcwd()."/../upload/tmp";
+            $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
 
             $zip = new ZipArchive();
             $zipfilename = "uploadedfiles.zip";
@@ -413,7 +417,7 @@ elseif ($subaction == "all")
             }
 
             foreach ($filelist as $file)
-                $zip->addFile($tmpdir."/".$file, basename($file));
+                $zip->addFile($tmpdir . "/" . $file['filename'], $file['name']);
 
             $zip->close();
 
@@ -468,26 +472,27 @@ elseif ($subaction == "all")
                 $phparray = json_decode($data, true);
                 for ($i = 0; isset($phparray[$i]); $i++)
                 {
-                    $filelist[] = $phparray[$i]['name'];
+                    $filelist[$i]['filename'] = $phparray[$i]['filename'];
+                    $filelist[$i]['name'] = $phparray[$i]['name'];
                 }
             }
         }
 
         // Now, zip all the files in the filelist
-        $tmpdir = getcwd()."/../upload/tmp";
+        $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
         
         $zip = new ZipArchive();
         $zipfilename = "uploadedfiles.zip";
-        if (file_exists($tmpdir."/".$zipfilename))
-            unlink($tmpdir."/".$zipfilename);
+        if (file_exists($tmpdir ."/". $zipfilename))
+            unlink($tmpdir . "/" . $zipfilename);
 
-        if ($zip->open($tmpdir."/".$zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
+        if ($zip->open($tmpdir . "/" . $zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
         {
             exit("Cannot Open <$zipfilename>\n");
         }
 
         foreach ($filelist as $file)
-            $zip->addFile($tmpdir."/".$file, basename($file));
+            $zip->addFile($tmpdir . "/" . $file['filename'], $file['name']);
         
         $zip->close();
         if (file_exists($tmpdir."/".$zipfilename)) {
@@ -501,8 +506,8 @@ elseif ($subaction == "all")
             header('Content-Length: ' . filesize($tmpdir."/".$zipfilename));
             ob_clean();
             flush();
-            readfile($tmpdir."/".$zipfilename);
-            //unlink($tmpdir."/".$zipfilename);
+            readfile($tmpdir . "/" . $zipfilename);
+            //unlink($tmpdir . "/" . $zipfilename);
             exit;
         }
     }

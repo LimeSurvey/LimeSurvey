@@ -282,103 +282,95 @@ else
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
 
-    $fuqtQuestions[] = "";
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
-        if ($arow['type'] != '|')
+       if ($createsurvey!='') {$createsurvey .= ",\n";}
+        $createsurvey .= " `{$arow['fieldname']}`";
+        switch($arow['type'])
         {
-           if ($createsurvey!='') {$createsurvey .= ",\n";}
-            $createsurvey .= " `{$arow['fieldname']}`";
-            switch($arow['type'])
-            {
-                case 'startlanguage':
-                    $createsurvey .= " C(20) NOTNULL";
-                    break;
-                case 'id':
-                    $createsurvey .= " I NOTNULL AUTO PRIMARY";
-                    break;
-                case "startdate":
-                case "datestamp":
-                    $createsurvey .= " T NOTNULL";
-                    break;
-                case "submitdate":
-                    $createsurvey .= " T";
-                    break;
-                case "lastpage":
-                    $createsurvey .= " I";
-                    break;
-                case "N":  //NUMERICAL
-                    $createsurvey .= " F";
-                    break;
-                case "S":  //SHORT TEXT
-                    if ($databasetype=='mysql' || $databasetype=='mysqli')	{$createsurvey .= " X";}
-                    else  {$createsurvey .= " C(255)";}
-                    break;
-                case "L":  //LIST (RADIO)
-                case "!":  //LIST (DROPDOWN)
-                case "M":  //Multiple options
-                case "P":  //Multiple options with comment
-                case "O":  //DROPDOWN LIST WITH COMMENT
-                    if ($arow['aid'] != 'other' && $arow['aid'] != 'comment' && $arow['aid'] != 'othercomment')
-                    {
-                        $createsurvey .= " C(5)";
-                    }
-                    else
-                    {
-                        $createsurvey .= " X";
-                    }
-                    break;
-                case "K":  // Multiple Numerical
-                    $createsurvey .= " F";
-                    break;
-                case "U":  //Huge text
-                case "Q":  //Multiple short text
-                case "T":  //LONG TEXT
-                case ";":  //Multi Flexi
-                case ":":  //Multi Flexi
-                    $createsurvey .= " X";
-                    break;
-                case "D":  //DATE
-                    $createsurvey .= " D";
-                    break;
-                case "5":  //5 Point Choice
-                case "G":  //Gender
-                case "Y":  //YesNo
-                case "X":  //Boilerplate
-                    $createsurvey .= " C(1)";
-                    break;
-                case "I":  //Language switch
-                    $createsurvey .= " C(20)";
-                    break;
-                case "ipaddress":
-                    if ($prow['ipaddr'] == "Y")
-                        $createsurvey .= " X";
-                    break;
-                case "url":
-                    if ($prow['refurl'] == "Y")
-                        $createsurvey .= " X";
-                    break;
-                case "token":
-                    if ($prow['private'] == "N")
-                    {
-                        $createsurvey .= " C(36)";
-                        $surveynotprivate="TRUE";
-                    }
-                    break;
-                default:
+            case 'startlanguage':
+                $createsurvey .= " C(20) NOTNULL";
+                break;
+            case 'id':
+                $createsurvey .= " I NOTNULL AUTO PRIMARY";
+                break;
+            case "startdate":
+            case "datestamp":
+                $createsurvey .= " T NOTNULL";
+                break;
+            case "submitdate":
+                $createsurvey .= " T";
+                break;
+            case "lastpage":
+                $createsurvey .= " I";
+                break;
+            case "N":  //NUMERICAL
+                $createsurvey .= " F";
+                break;
+            case "S":  //SHORT TEXT
+                if ($databasetype=='mysql' || $databasetype=='mysqli')	{$createsurvey .= " X";}
+                else  {$createsurvey .= " C(255)";}
+                break;
+            case "L":  //LIST (RADIO)
+            case "!":  //LIST (DROPDOWN)
+            case "M":  //Multiple options
+            case "P":  //Multiple options with comment
+            case "O":  //DROPDOWN LIST WITH COMMENT
+                if ($arow['aid'] != 'other' && $arow['aid'] != 'comment' && $arow['aid'] != 'othercomment')
+                {
                     $createsurvey .= " C(5)";
-            }
-        }
-        else
-        {
-            $question = strstr($arow['fieldname'], "_", true);
-            if (!in_array($question, $fuqtQuestions))
-            {
-                $createsurvey .= ",\n";
-                $createsurvey .= " `".$question."` X, \n";
-                $createsurvey .= " `".$question."_filecount` I1";
-                $fuqtQuestions[] = $question;
-            }
+                }
+                else
+                {
+                    $createsurvey .= " X";
+                }
+                break;
+            case "K":  // Multiple Numerical
+                $createsurvey .= " F";
+                break;
+            case "U":  //Huge text
+            case "Q":  //Multiple short text
+            case "T":  //LONG TEXT
+            case ";":  //Multi Flexi
+            case ":":  //Multi Flexi
+                $createsurvey .= " X";
+                break;
+            case "D":  //DATE
+                $createsurvey .= " D";
+                break;
+            case "5":  //5 Point Choice
+            case "G":  //Gender
+            case "Y":  //YesNo
+            case "X":  //Boilerplate
+                $createsurvey .= " C(1)";
+                break;
+            case "I":  //Language switch
+                $createsurvey .= " C(20)";
+                break;
+            case "|":
+                $createsurveydirectory = true;
+                if (strpos($arow['fieldname'], "_"))
+                    $createsurvey .= " I1";
+                else
+                    $createsurvey .= " X";
+                break;
+            case "ipaddress":
+                if ($prow['ipaddr'] == "Y")
+                    $createsurvey .= " X";
+                break;
+            case "url":
+                if ($prow['refurl'] == "Y")
+                    $createsurvey .= " X";
+                break;
+            case "token":
+                if ($prow['private'] == "N")
+                {
+                    $createsurvey .= " C(36)";
+                    $surveynotprivate="TRUE";
+                }
+                break;
+            default:
+                $createsurvey .= " C(5)";
         }
     }
 
@@ -427,6 +419,12 @@ else
         $activateoutput .= "<br />\n<div class='messagebox'>\n";
         $activateoutput .= "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
         $activateoutput .= "<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
+
+        // create the survey directory where the uploaded files can be saved
+        if ($createsurveydirectory)
+            if (!(mkdir("../upload/surveys/" . $postsid . "/files", 0777, true)))
+                $activateoutput .= "<div class='warningheader'>".
+                    $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory.") . "</div>";
 
         $acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".returnglobal('sid');
         $acresult = $connect->Execute($acquery);

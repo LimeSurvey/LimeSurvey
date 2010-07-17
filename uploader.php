@@ -71,7 +71,7 @@
             var filecount = window.parent.window.$('#'+ia+'_filecount').val();
             $('#filecount').val(filecount);
 
-            var image_extensions = new Array("png", "jpg", "jpeg", "bmp", "gif");
+            var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
 
             if (filecount > 0)
             {
@@ -88,12 +88,12 @@
                                 "<td  align='center' width='50%' padding='20px' >";
                             
                     if (isValueInArray(image_extensions, json[i].ext))
-                        previewblock += "<img src='upload/tmp/"+json[i].name+"' height='100px' />";
+                        previewblock += "<img src='upload/tmp/"+decodeURIComponent(json[i].name)+"' height='100px' />";
                     else
-                        previewblock += "<img src='images/placeholder.png' height='100px' /><br />"+json[i].name;
+                        previewblock += "<img src='images/placeholder.png' height='100px' /><br />"+decodeURIComponent(json[i].name);
 
                     previewblock += "</td>";
-
+                    
                     if ($('#show_title').val() == 1 && $('#show_comment').val() == 1)
                         previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='"+json[i].title+"' id='title_"+i+"' /><br /><br /><input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>";
                     else if ($('#show_title').val() == 1)
@@ -186,7 +186,7 @@
                     $('#notice').html('<p class="notice">'+metadata.msg+'</p>');
                     var count = parseInt($('#licount').val());
 
-                    var image_extensions = new Array("gif", "jpeg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
+                    var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
 
                     if (metadata.success)
                     {
@@ -196,11 +196,11 @@
 
                         // If the file is not an image, use a placeholder
                         if (isValueInArray(image_extensions, metadata.ext))
-                            previewblock += "<img src='upload/tmp/"+metadata.name+"' height='100px' />";
+                            previewblock += "<img src='upload/tmp/"+decodeURIComponent(metadata.name)+"' height='100px' />";
                         else
                             previewblock += "<img src='images/placeholder.png' height='100px' />";
 
-                        previewblock += "<br />"+metadata.name+"</td>";
+                        previewblock += "<br />"+decodeURIComponent(metadata.name)+"</td>";
                         if ($("#show_title").val() == 1 && $("#show_comment").val() == 1)
                             previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='' id='title_"+count+"' /><br /><br /><input type='text' value='' id='comment_"+count+"' /></td>";
                         else if ($("#show_title").val() == 1)
@@ -234,7 +234,7 @@
         function isValueInArray(arr, val) {
             inArray = false;
             for (i = 0; i < arr.length; i++)
-                if (val == arr[i])
+                if (val.toLowerCase() == arr[i].toLowerCase())
                     inArray = true;
             
             return inArray;

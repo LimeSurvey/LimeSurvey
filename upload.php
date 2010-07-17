@@ -15,12 +15,22 @@
     $pathinfo = pathinfo($_FILES['uploadfile']['name']);
     $ext = strtolower($pathinfo['extension']);
 
-    // check to ensure that the file does not cross the maximum file size
-    if($size > $maxfilesize)
+    // check for upload error
+    if ($_FILES['uploadfile']['error'] > 2)
     {
         $return = array(
                         "success" => false,
-                        "msg" => "Sorry, This file (".$size.") is too large. Only files upto ".$maxfilesize." KB are allowed"
+                        "msg" => "Sorry, there was an error uplodaing your file"
+                    );
+
+        echo json_encode($return);
+    }
+    // check to ensure that the file does not cross the maximum file size
+    else if ( $_FILES['uploadfile']['error'] == 1 ||  $_FILES['uploadfile']['error'] == 2 || $size > $maxfilesize)
+    {
+        $return = array(
+                        "success" => false,
+                        "msg" => "Sorry, This file is too large. Only files upto ".$maxfilesize." KB are allowed"
                     );
 
         echo json_encode($return);
@@ -46,7 +56,7 @@
             $return = array(
                         "success" => true,
                         "size"    => $size,
-                        "name"    => basename($file),
+                        "name"    => rawurlencode(basename($file)),
                         "ext"     => $ext,
                         "msg"     => "The file has been successfuly uploaded."
                     );
@@ -62,7 +72,7 @@
             $return = array(
                         "success" => true,
                         "size"    => $size,
-                        "name"    => basename($file),
+                        "name"    => rawurlencode(basename($file)),
                         "ext"     => $ext,
                         "msg"     => "The file has been successfuly uploaded"
                     );

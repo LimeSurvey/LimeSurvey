@@ -3592,7 +3592,7 @@ function do_file_upload($ia)
                             $('<iframe id=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
                                 title: 'Upload your files',
                                 autoOpen: true,
-                                width: 1084,
+                                width: 984,
                                 height: 500,
                                 modal: true,
                                 resizable: false,
@@ -3604,7 +3604,7 @@ function do_file_upload($ia)
                                     opacity: 0.85,
                                     background: 'black'
                                 }
-                            }).width(1084 - horizontalPadding).height(500 - verticalPadding);
+                            }).width(984 - horizontalPadding).height(500 - verticalPadding);
                         });
                     });
                     
@@ -3625,32 +3625,32 @@ function do_file_upload($ia)
                         $('#".$ia[1]."').val(jsonstring);
                         $('#".$ia[1]."_filecount').val(filecount);
 
-                        var image_extensions = new Array('gif', 'jpeg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+                        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
                             
                         for (i = 0; i < filecount; i++)
                         {";
 
-    if ($pos || $thissurvey['active'] != "Y")
+    if ($pos)
     {
         $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                        display += '<tr><td align=\"center\"><img src=\"../upload/tmp/'+jsonobj[i].name+'\" height=100px  align=\"center\"/></td>';
+                        display += '<tr><td align=\"center\"><img src=\"../upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
                     else
                         display += '<tr><td align=\"center\"><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
     }
     else
     {
         $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                        display += '<tr><td align=\"center\"><img src=\"upload/tmp/'+jsonobj[i].name+'\" height=100px  align=\"center\"/></td>';
+                        display += '<tr><td align=\"center\"><img src=\"upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
                     else
                         display += '<tr><td align=\"center\"><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
     }
 
-    $answer .= "            if ($(\"#show_title\").val() == 1)
-                                display += '<td align=\"center\">'+jsonobj[i].title+'</td>';
-                            if ($(\"#show_comment\").val() == 1)
-                                display += '<td align=\"center\">'+jsonobj[i].comment+'</td>';
+    if ($show_title)
+        $answer .= "display += '<td align=\"center\">'+jsonobj[i].title+'</td>';";
+    if ($show_comment)
+        $answer .= "display += '<td align=\"center\">'+jsonobj[i].comment+'</td>';";
 
-                            display += '<td align=\"center\">'+jsonobj[i].name+'</td></tr><tr><td>&nbsp;</td></tr>';
+    $answer .= "            display += '<td align=\"center\">'+decodeURIComponent(jsonobj[i].name)+'</td></tr><tr><td>&nbsp;</td></tr>';
                         }
                         display += '</table>';
                         $('#uploadedfiles').html(display);
