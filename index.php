@@ -1936,173 +1936,150 @@ function submittokens($quotaexit=false)
 
 function sendsubmitnotification($sendnotification)
 {
-    global $thissurvey, $debug;
-    global $dbprefix, $clang, $emailcharset;
-    global $sitename, $homeurl, $surveyid, $publicurl, $maildebug, $tokensexist;
+	global $thissurvey, $debug;
+	global $dbprefix, $clang, $emailcharset;
+	global $sitename, $homeurl, $surveyid, $publicurl, $maildebug, $tokensexist;
 
-    $subject = sprintf($clang->gT("Response submission for survey %s","unescaped"), $thissurvey['name']);
+	$subject = sprintf($clang->gT("Response submission for survey %s","unescaped"), $thissurvey['name']);
 
-    $message = $clang->gT("Hello!","unescaped")."\n"
-    . $clang->gT("A new response was submitted for your survey.","unescaped")."\n\n";
-    if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
-    {
-        $message .= $clang->gT("Click the following link to reload the survey:","unescaped")."\n";
-        $message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\n\n";
-    }
+	$message = "<div id='submitnotification'>".$clang->gT("Hello!","unescaped")."\n"
+	. $clang->gT("A new response was submitted for your survey.","unescaped")."<br/>";
+	if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
+	{
+		$message .= $clang->gT("Click the following link to reload the survey:","unescaped")."<br/>";
+		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."<br/>";
+	}
 
-    $message .= $clang->gT("Click the following link to see the individual response:","unescaped")."\n"
-    . "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."\n\n"
-    // Add link to edit individual responses from notification email
-    . $clang->gT("Click the following link to edit the individual response:","unescaped")."\n"
+	$message .= $clang->gT("Click the following link to see the individual response:","unescaped")."<br/>"
+	. "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."<br/>"
+	// Add link to edit individual responses from notification email
+	. $clang->gT("Click the following link to edit the individual response:","unescaped")."<br/>"
+	. "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."<br/>"
+	. $clang->gT("View statistics by clicking here:","unescaped")."<br/>"
+	. "  $homeurl/admin.php?action=statistics&sid=$surveyid<br/></div>";
 
-    . "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\n\n"
-    . $clang->gT("View statistics by clicking here:","unescaped")."\n"
-    . "  $homeurl/admin.php?action=statistics&sid=$surveyid\n\n";
-
-    $emailresponseto=null;
-    if (!empty($thissurvey['emailresponseto']))
-    {
-        if (isset($_SESSION['token']) && $_SESSION['token'] != '')
-        {
-            //Gather token data for tokenised surveys
-            $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
-        }
+	$emailresponseto=null;
+	if (!empty($thissurvey['emailresponseto']))
+	{
+		if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+		{
+			//Gather token data for tokenised surveys
+			$_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+		}
         // there was no token used so lets remove the token field from insertarray
         elseif ($_SESSION['insertarray'][0]=='token')
         {
             unset($_SESSION['insertarray'][0]);
         }
-        //Make an array of email addresses to send to
-        if($erts=explode(";", $thissurvey['emailresponseto']))
-        {
-            foreach($erts as $ert)
-            {
-                $ert=insertansReplace($ert);
-                $ert=tokenReplace($ert);
-                $emailresponsetos[]=$ert;
-            }
-        }
-        else
-        {
-            $ert=$thissurvey['emailresponseto'];
-            $ert=insertansReplace($ert);
-            $ert=tokenReplace($ert);
-            $emailresponsetos[]=$ert;
-        }
+		//Make an array of email addresses to send to
+	    if($erts=explode(";", $thissurvey['emailresponseto']))
+		{
+			foreach($erts as $ert)
+			{
+				$ert=insertansReplace($ert);
+				$ert=tokenReplace($ert);
+				$emailresponsetos[]=$ert;
+			}
+		}
+		else
+		{
+			$ert=$thissurvey['emailresponseto'];
+			$ert=insertansReplace($ert);
+			$ert=tokenReplace($ert);
+			$emailresponsetos[]=$ert;
+		}
 
-        //Now check each of the email addresses that they are valid before creating/adding to the $emailresponseto array
-        foreach($emailresponsetos as $ert)
-        {
-            if(validate_email($ert))
-            {
-                $emailresponseto[]=$ert;
-            }
-        }
-    }
+		//Now check each of the email addresses that they are valid before creating/adding to the $emailresponseto array
+		foreach($emailresponsetos as $ert)
+		{
+			if(validate_email($ert))
+			{
+				$emailresponseto[]=$ert;
+			}
+		}
+	}
 
-    $results="";
-    if ($sendnotification > 1 || $emailresponseto)
-    { 
-        // Send results
-        $results = "----------------------------\n";
+	$results="";
+	if ($sendnotification > 1 || $emailresponseto)
+	{ //Send results as well. Currently just bare-bones - will be extended in later release
+		$results = "<div style='border-collapse:separate;border-spacing:1px;margin:20px auto 40px auto;border:1px solid #BBC6CC;'> 
+		<table align='center' width='100%'>
+		<tr>
+		<td bgcolor='#eef6ff' align='center'>
+		<h2 style='font-size:18px;font-weight:bold;color:#328639;padding-top:5px'><img src='".$publicurl."/images/limecursor-handle.png'/>LimeSurvey-Respones for your survey </h2>
+		</td>
+		</tr>
+		</table>
+		<div style='background-color:#d2e0f2'><div id='responses'><table>";
         $prevquestion='';
-        $fieldmap=createFieldMap($surveyid,'full');
-        foreach ($_SESSION['insertarray'] as $value)
-        {
-            $squestion = strip_tags($fieldmap[$value]['question']);
-            if (isset($fieldmap[$value]['subquestion2']))
+		foreach ($_SESSION['insertarray'] as $value)
+		{
+            $qaarray=returnquestiontitlefromfieldcode($value);
+            if ($prevquestion!=$qaarray[0])
             {
-                $ssubquestion = "[".strip_tags($fieldmap[$value]['subquestion1'])."] [".strip_tags($fieldmap[$value]['subquestion2'])."]";     
-            } elseif (isset($fieldmap[$value]['subquestion']))
-            {
-                $ssubquestion = strip_tags($fieldmap[$value]['subquestion']);    
-            } else
-            {
-                // Nothing, there are no subquestions, just answers in db.
+                $prevquestion=$qaarray[0];
+                $questiontitle=FlattenText(html_entity_decode($prevquestion, ENT_QUOTES, $emailcharset));
+				$results .= "</table><br/></div><div id='question'><table id='ques' align='center' style='font-family:verdana;font-size:12px;font-weight:bold;background-color:#eef6ff;text-align:left;padding:0.5em 1em;width:700px;'>
+					<tr><td >".$questiontitle."</td></tr></table>
+					<table id='ans' align='center' style='font-family:verdana;font-size:12px;font-weight:normal;background-color:#ffffff;text-align:left;padding:0.5em 1em;width:700px'>";
             }
+            if ($qaarray[1]!='')
+            {
+			    $answeroption=FlattenText(html_entity_decode($qaarray[1], ENT_QUOTES, $emailcharset));
+				$results .= "<tr><td>[".$answeroption."]";
+			}
 
-            if ($prevquestion!=$squestion)
+			if (isset($_SESSION[$value]))
+			{
+				if($qaarray[1]=='') $results.="<tr><td>";
+				$results .= FlattenText(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset))." </td></tr>";
+			}
+		}
+		$results .= "</div>
+					<table align='center' width='100%'>
+					<tr>
+					<td bgcolor='#eef6ff' align='center'>
+					<img src='".$publicurl."/templates/default/poweredby.png'/>
+					</td>
+					</tr>
+					</table>
+					</div>";
+	}
+	$message .= $results;
+	if ($recips=explode(";", $thissurvey['adminemail']))
+	{
+		$from = $thissurvey['adminname'].' <'.$recips[0].'>';
+		foreach ($recips as $rc)
+		{                                        
+			if (!SendEmailMessage($message, $subject, trim($rc), $from, $sitename, true, getBounceEmail($surveyid)))
             {
-                $prevquestion=$squestion;
-                $questiontitle=FlattenText(html_entity_decode($squestion, ENT_QUOTES, $emailcharset));
-                $results .= "\n$questiontitle: ";
-                if ($ssubquestion!='')
-                {
-                    $results .= "\n";
-                }
-            }
-            if ($ssubquestion!='')
-            {
-                $answeroption=FlattenText(html_entity_decode($ssubquestion, ENT_QUOTES, $emailcharset));
-                $results .= "[$answeroption]:   ";
-            }
-
-            if ( $fieldmap[$value]['type'] == "T" || $fieldmap[$value]['type'] == "U")
-            {
-                $results .= "\r\n";
-                if (isset($_SESSION[$value]))
-                {
-                    foreach (explode("\n",$_SESSION[$value]) as $line)
-                    {
-                        $results .= "\t" . FlattenText(html_entity_decode($line, ENT_QUOTES, $emailcharset));
-                        $results .= "\n";
-                    }
-                }
-            }
-            elseif (isset($_SESSION[$value]))
-            {
-                $results .= FlattenText(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
-                $results .= "\n";
+                if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
             }
         }
-        $results .= "\n\n----------------------------\n\n";
-    }
-    $message .= $results;
-    $message.= "LimeSurvey";
- 
-    if ($recips=explode(";", $thissurvey['adminemail']))
-    {
-        $from = $thissurvey['adminname'].' <'.$recips[0].'>';
-        foreach ($recips as $rc)
+	}
+	else
+	{
+		$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+		if (!SendEmailMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename, true, getBounceEmail($surveyid)))
         {
-            if (!SendEmailMessage($message, $subject, trim($rc), $from, $sitename, false, getBounceEmail($surveyid)))
-            {
-                if ($debug>0)
-                {
-                    echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
-                }
-            }
+            if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
         }
-    }
-    else
-    {
-        $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-        if (!SendEmailMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename, false, getBounceEmail($surveyid)))
-        {
-            if ($debug>0)
-            {
-                echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+	}
+	
+	if($emailresponseto)
+	{
+		$ertmessage  = $clang->gT("This email contains confirmation of the responses you made to the survey")." ".$thissurvey['name']."\n";
+		$ertmessage .= $results;
+		$ertsubject  = $clang->gT("Survey submission confirmation");
+		
+		foreach($emailresponseto as $ert)
+		{
+			if(!SendEmailMessage($ertmessage, $ertsubject, $ert, $from, $sitename, false, getBounceEmail($surveyid)))
+			{
+				if ($debug>0) {echo '<br />Email could not be sent to EmailReponseTo field. Reason: '.$maildebug.'<br />';}
             }
-        }
-    }
-
-    if($emailresponseto)
-    {
-        $ertmessage  = $clang->gT("This email contains confirmation of the responses you made to the survey")." ".$thissurvey['name']."\n";
-        $ertmessage .= $results;
-        $ertsubject  = $clang->gT("Survey submission confirmation");
-
-        foreach($emailresponseto as $ert)
-        {
-            if(!SendEmailMessage($ertmessage, $ertsubject, $ert, $from, $sitename, false, getBounceEmail($surveyid)))
-            {
-                if ($debug>0)
-                {
-                    echo '<br />Email could not be sent to EmailReponseTo field. Reason: '.$maildebug.'<br />';
-                }
-            }
-        }
-    }
+		}
+	}
 }
 
 function submitfailed($errormsg='')

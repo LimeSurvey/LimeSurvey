@@ -4625,87 +4625,89 @@ function ReplaceFields ($text,$fieldsarray)
  */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null)
 {
+// This function mails a text $body to the recipient $to. You can use more than one 
+// recipient when using a semikolon separated string with recipients.
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
 
-    if ($demoModeOnly==true)
-    {
-        $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
-        $maildebugbody='';
-        return false;
-    }
+     if ($demoModeOnly==true)
+     {
+         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
+         $maildebugbody='';
+         return false;
+     }    
+    
+	if (is_null($bouncemail) )
+	{
+		$sender=$from;
+	}
+	else
+	{
+		$sender=$bouncemail;
+	}
 
-    if (is_null($bouncemail) )
-    {
-        $sender=$from;
-    }
-    else
-    {
-        $sender=$bouncemail;
-    }
-
-    $mail = new PHPMailer;
-    if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/'))
+	$mail = new PHPMailer;
+    if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/')) 
     {
         $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
     }
-    $mail->CharSet = $emailcharset;
-    if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
+	$mail->CharSet = $emailcharset;
+	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
         if ($emailsmtpssl===1) {$mail->SMTPSecure = "ssl";}
-        else {$mail->SMTPSecure = $emailsmtpssl;}
-    }
+    	 else {$mail->SMTPSecure = $emailsmtpssl;}
+	 }
 
-    $fromname='';
-    $fromemail=$from;
-    if (strpos($from,'<'))
-    {
-        $fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
-        $fromname=trim(substr($from,0, strpos($from,'<')-1));
-    }
+	$fromname='';
+	$fromemail=$from;
+	if (strpos($from,'<'))
+	{
+		$fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
+		$fromname=trim(substr($from,0, strpos($from,'<')-1));
+	}
 
-    $sendername='';
-    $senderemail=$sender;
-    if (strpos($sender,'<'))
-    {
-        $senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
-        $sendername=trim(substr($sender,0, strpos($sender,'<')-1));
-    }
+	$sendername='';
+	$senderemail=$sender;
+	if (strpos($sender,'<'))
+	{
+		$senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
+		$sendername=trim(substr($sender,0, strpos($sender,'<')-1));
+	}
 
-    switch ($emailmethod) {
-        case "qmail":
-            $mail->IsQmail();
-            break;
-        case "smtp":
-            $mail->IsSMTP();
-            if ($emailsmtpdebug>0)
-            {
-                $mail->SMTPDebug = true;
-            }
-            if (strpos($emailsmtphost,':')>0)
-            {
-                $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
-                $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
-            }
-            else {
-                $mail->Host = $emailsmtphost;
-            }
-            $mail->Username =$emailsmtpuser;
-            $mail->Password =$emailsmtppassword;
-            if ($emailsmtpuser!="")
-            {
-                $mail->SMTPAuth = true;
-            }
-            break;
-        case "sendmail":
-            $mail->IsSendmail();
-            break;
-        default:
-            //Set to the default value to rule out incorrect settings.
-            $emailmethod="mail";
-            $mail->IsMail();
-    }
-
+	switch ($emailmethod) {
+    	case "qmail":
+			$mail->IsQmail();
+			break;
+    	case "smtp":
+    		$mail->IsSMTP();
+			if ($emailsmtpdebug>0)
+		        {
+		            $mail->SMTPDebug = true;
+		        }
+	        if (strpos($emailsmtphost,':')>0)
+	        {
+	            $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
+	            $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
+	        }
+	        else {
+	            $mail->Host = $emailsmtphost;
+	        }
+		    $mail->Username =$emailsmtpuser;
+		    $mail->Password =$emailsmtppassword;
+		    if ($emailsmtpuser!="")
+		    {
+	            $mail->SMTPAuth = true;
+	        }
+    		break;
+    	case "sendmail":
+    		$mail->IsSendmail();
+    		break;
+    	default:
+    	   	//Set to the default value to rule out incorrect settings.
+    		$emailmethod="mail";
+    		$mail->IsMail();
+	}    
+    
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     $toemails = explode(";", $to);
@@ -4713,35 +4715,36 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     {
         if (strpos($singletoemail, '<') )
         {
-            $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
-            $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
-            $mail->AddAddress($toemail,$toname);
+	       $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
+           $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
+           $mail->AddAddress($toemail,$toname);
         }
         else
         {
             $mail->AddAddress($singletoemail);
         }
-    }
+    }	
 
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
-    if (get_magic_quotes_gpc() != "0")  {$body = stripcslashes($body);}
-    $textbody = strip_tags($body);
-    $textbody = str_replace("&quot;", '"', $textbody);
-    if ($ishtml) {
+	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
+	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
+	//make a general function to convert HTML body to textbody
+	$textbody=HtmlToText($body);
+	
+    if ($ishtml) { 
         $mail->IsHTML(true);
-        $mail->Body = $body;
-        $mail->AltBody = strip_tags(br2nl(html_entity_decode($textbody,ENT_QUOTES,'UTF-8')));
+    	$mail->Body = $body;
+    	$mail->AltBody =$textbody;
     } else
-    {
+       {
         $mail->IsHTML(false);
-        $mail->Body = $textbody;
-    }
+    	$mail->Body = $textbody;
+       }
 
     // add the attachment if there is one
     if($attachment!=null)
     $mail->AddAttachment($attachment);
-
-    if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
+    
+	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     if ($emailsmtpdebug>0) {
         ob_start();
     }
@@ -4752,9 +4755,49 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
-    return $sent;
+	return $sent;
 }
 
+/**
+This is a function to change HTML body to Text body
+It can be forced to return a particular modified text body by parsing through HTML DOM.
+Currently it is used to modify submit notification.
+*/
+function HtmlToText($htmlbody)
+{
+$html = str_get_html($htmlbody);
+$textbody="";
+$defaultconversion="false";
+    if($html->find('div#submitnotification'))
+	{
+		foreach($html->find('div#submitnotification') as $submitnotification )
+		{
+			$textbody.=br2nl($submitnotification->innertext);
+		}  
+	}
+	if($html->find('div#responses'))
+	{
+		$textbody.="\n\n...........Responses For Survey..................\n\n";
+		foreach($html->find('div#question') as $question)
+		{ 
+			$questiontext=$question->outertext;
+			foreach(str_get_html($questiontext)->find('table#ques td') as $ques) 
+			$textbody.="\n\n".$ques->innertext."\n";
+			foreach(str_get_html($questiontext)->find('table#ans td') as $answer)
+			{
+				 $textbody.=$answer->innertext."\n";
+			}	
+		}
+		$textbody.="\nLimeSurvey";
+	}
+	else
+	{
+		$textbody = strip_tags($htmlbody);
+		$textbody = str_replace("&quot;", '"', $textbody);
+		$textbody =	strip_tags(br2nl(html_entity_decode($textbody,ENT_QUOTES,'UTF-8')));
+	}
+return $textbody;
+}
 /**
  *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
  *
