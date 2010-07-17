@@ -51,7 +51,6 @@ if (!$exportstyle)
 
     //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
     $excesscols=createFieldMap($surveyid);
-    unset($excesscols['submitdate']);
     $excesscols=array_keys($excesscols);
 
 

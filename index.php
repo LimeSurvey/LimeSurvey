@@ -153,7 +153,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
 if ($surveyid &&
 $issurveyactive===false && $surveyexists &&
 isset ($surveyPreview_require_Auth) &&
-$surveyPreview_require_Auth === true)
+$surveyPreview_require_Auth == true)
 {
     // admin session and permission have not already been imported
     // for this particular survey
