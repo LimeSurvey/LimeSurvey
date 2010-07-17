@@ -876,14 +876,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if(substr($rt, 0, 1) == "K")
                     {
                         //get answer data
-                        $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND scale_id=0 AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
-                        $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
-
-                        //handle answer
-                        while ($qrow=$qresult->FetchRow())
-                        {
-                            $atext=FlattenText($qrow[1]);
-                        }
+                        $atext=$connect->GetOne("SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$qiqid}' AND scale_id=0 AND title='{$qaid}' AND language='{$language}'");
                         //put single items in brackets at output
                         $qtitle .= " [$atext]";
                     }
