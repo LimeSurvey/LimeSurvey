@@ -70,14 +70,14 @@ if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents(validate_templatedir("default")."/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
     ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
     ."</center><br />\n";
 
-    echo templatereplace(file_get_contents(validate_templatedir("default")."/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/endpage.pstpl"));
     doFooter();
     exit;
 };
@@ -496,9 +496,9 @@ if(!isset($_POST['printableexport']))
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("templates/$thistpl/startpage.pstpl"));
-    echo templatereplace(file_get_contents("templates/$thistpl/printanswers.pstpl"));
-    echo templatereplace(file_get_contents("templates/$thistpl/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
     echo "</body></html>";
 }
 ?>
