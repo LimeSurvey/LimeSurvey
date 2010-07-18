@@ -128,9 +128,10 @@ function addinput()
                 $(this).val('');
             }
         });
-        tablerow.next().fadeIn(800);
         tablerow.next().find('.code').blur(updatecodes);
     }
+    $('.row_'+newposition).fadeIn('slow');     
+    $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
                                                                  
     if(languagecount>1)
     {
