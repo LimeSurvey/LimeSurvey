@@ -4478,7 +4478,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             }
             $mail->Username =$emailsmtpuser;
             $mail->Password =$emailsmtppassword;
-            if ($emailsmtpuser!="")
+            if (trim($emailsmtpuser)!="")
             {
                 $mail->SMTPAuth = true;
             }
