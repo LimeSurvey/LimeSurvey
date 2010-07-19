@@ -321,7 +321,7 @@ elseif ($subaction == "all")
     }
     
     
-    $fields=createFieldMap($surveyid,'full');
+    $fields=createFieldMap($surveyid, 'full', false, false, $language);
 
     //add token to top of list if survey is not private
     if ($surveyinfo['private'] == "N")

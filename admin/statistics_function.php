@@ -121,12 +121,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     $surveylanguagecodes[] = GetBaseLanguageFromSurveyID($surveyid);
 
     // Set language for questions and answers to base language of this survey
-    $language='en';
-    //$surveyid=sanitize_int($surveyid);
-    $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-    $result = db_execute_num($query); //Checked
-    while ($result && ($row=$result->FetchRow())) {$language = $row[0];}
-
+    $language=$statlangcode;
 
     if ($usegraph==1)
     {
