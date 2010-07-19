@@ -37,7 +37,7 @@ $notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys
 $notvalidated=checkpregs($move);
 
 //CHECK UPLOADED FILES
-$filenotvalidated = checkUploadedFileValidity();
+$filenotvalidated = checkUploadedFileValidity($move);
 
 //SUBMIT
 if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) && !$filenotvalidated))

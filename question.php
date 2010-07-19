@@ -55,7 +55,7 @@ $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalma
 $notvalidated=checkpregs($move,$backok);
 
 // CHECK UPLOADED FILES
-$filenotvalidated = checkUploadedFileValidity();
+$filenotvalidated = checkUploadedFileValidity($move, $backok);
 
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)

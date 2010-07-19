@@ -547,12 +547,13 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
     // this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
+    $number = isset($ia[9]) ? $ia[9] : '';
 
     $question_text = array(
 				 'all' => '' // All has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
     ,'text' => $qtitle
     ,'code' => $ia[2]
-    ,'number' => $ia[9]
+    ,'number' => $number
     ,'help' => ''
     ,'mandatory' => ''
     ,'man_message' => ''
@@ -694,6 +695,15 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case '|': //File Upload
             $values=do_file_upload($ia);
+            if ($qidattributes['min_num_of_files'] != 0)
+            {
+                if (trim($qidattributes['min_num_of_files']) != 0)
+                {
+                    $qtitle .= "<br />\n<span class = \"questionhelp\">"
+                    .sprintf($clang->gT("Please upload at least %d files"), $qidattributes['min_num_of_files'])."<span>";
+                    $question_text['help'] .= ' '.sprintf($clang->gT("Please upload at least %d files"), $qidattributes['min_num_of_files']);
+                }
+            }
             break;
         case 'Q': //MULTIPLE SHORT TEXT
             $values=do_multipleshorttext($ia);
@@ -844,51 +854,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     return array($qanda, $inputnames);
 }
 
-function file_validation_message($ia)
-{
-    global $filenotvalidated, $clang;
-    $qtitle = "";
-    if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|")
-    {
-        global $filevalidationpopup, $popup;
-
-        foreach ($filenotvalidated as $k => $v)
-        {
-            if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1));
-                $qtitle .= '<br /><span class="errormandatory">'.$clang->gT($filenotvalidated[$k]).'</span><br />';
-        }
-    }
-    return $qtitle;
-}
-
-function validation_message($ia)
-{
-    //This function checks to see if this question requires validation and
-    //that validation has not been met.
-    global $notvalidated, $dbprefix, $connect, $clang;
-    $qtitle="";
-    if (isset($notvalidated) && is_array($notvalidated)) //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
-    {
-        global $validationpopup, $popup;
-        if (in_array($ia[1], $notvalidated))
-        {
-            $help='';
-            $helpselect="SELECT help\n"
-            ."FROM {$dbprefix}questions\n"
-            ."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
-            $helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
-            while ($helprow=$helpresult->FetchRow())
-            {
-                $help=' <span class="questionhelp">'.$helprow['help'].'</span>';
-            }
-            $qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly').'.'.$help.'</span><br />
-';
-        }
-    }
-
-    return $qtitle;
-}
-
 function mandatory_message($ia)
 {
     //This function checks to see if this question is mandatory and
@@ -947,6 +912,51 @@ function mandatory_message($ia)
     return $qtitle;
 }
 
+function validation_message($ia)
+{
+    //This function checks to see if this question requires validation and
+    //that validation has not been met.
+    global $notvalidated, $dbprefix, $connect, $clang;
+    $qtitle="";
+    if (isset($notvalidated) && is_array($notvalidated)) //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+    {
+        global $validationpopup, $popup;
+        if (in_array($ia[1], $notvalidated))
+        {
+            $help='';
+            $helpselect="SELECT help\n"
+            ."FROM {$dbprefix}questions\n"
+            ."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
+            $helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
+            while ($helprow=$helpresult->FetchRow())
+            {
+                $help=' <span class="questionhelp">'.$helprow['help'].'</span>';
+            }
+            $qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly').'.'.$help.'</span><br />
+';
+        }
+    }
+
+    return $qtitle;
+}
+
+function file_validation_message($ia)
+{
+    global $filenotvalidated, $clang;
+    $qtitle = "";
+    if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|")
+    {
+        global $filevalidationpopup, $popup;
+
+        foreach ($filenotvalidated as $k => $v)
+        {
+            if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1));
+                $qtitle .= '<br /><span class="errormandatory">'.$clang->gT($filenotvalidated[$k]).'</span><br />';
+        }
+    }
+    return $qtitle;
+}
+
 function mandatory_popup($ia, $notanswered=null)
 {
     global $showpopups;
@@ -980,28 +990,6 @@ function mandatory_popup($ia, $notanswered=null)
     }
 }
 
-function file_validation_popup($ia, $filenotvalidated = null)
-{
-    global $showpopups;
-    if ($filenotvalidated === null) { unset($filenotvalidated); }
-    if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
-    {
-        global $filevalidationpopup, $fpopup, $clang;
-
-        if (!isset($filevalidationpopup))
-        {
-            $fpopup="<script type=\"text/javascript\">\n
-                    <!--\n $(document).ready(function(){
-                        alert(\"".$clang->gT("One or more file have either exceeded the filesize or are not in the right format. You cannot proceed until these have been completed", "js")."\");});\n //-->\n
-                    </script>\n";
-            $filevalidationpopup = "Y";
-        }
-        return array($filevalidationpopup, $fpopup);
-    }
-    else
-        return false;
-}
-
 function validation_popup($ia, $notvalidated=null)
 {
     global $showpopups;
@@ -1027,6 +1015,28 @@ function validation_popup($ia, $notvalidated=null)
     {
         return false;
     }
+}
+
+function file_validation_popup($ia, $filenotvalidated = null)
+{
+    global $showpopups;
+    if ($filenotvalidated === null) { unset($filenotvalidated); }
+    if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
+    {
+        global $filevalidationpopup, $fpopup, $clang;
+
+        if (!isset($filevalidationpopup))
+        {
+            $fpopup="<script type=\"text/javascript\">\n
+                    <!--\n $(document).ready(function(){
+                        alert(\"".$clang->gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed", "js")."\");});\n //-->\n
+                    </script>\n";
+            $filevalidationpopup = "Y";
+        }
+        return array($filevalidationpopup, $fpopup);
+    }
+    else
+        return false;
 }
 
 function return_timer_script($qidattributes, $ia, $disable=null) {
@@ -3581,6 +3591,9 @@ function do_file_upload($ia)
 
                     $(document).ready(function() {
                         $('#basic').hide();
+                        var jsonstring = $('#".$ia[1]."').val();
+                        var filecount = $('#".$ia[1]."_filecount').val();
+                        displayUploadedFiles(jsonstring, filecount);
                     });
 
                     $(function() {
@@ -3618,47 +3631,57 @@ function do_file_upload($ia)
                     }
 
                     function copyJSON(jsonstring, filecount) {
-                        var display = '<table style=\"padding: 10px 10px 5px 5px\" >';
-                        var jsonobj = eval('(' + jsonstring + ')');
-                        var i;
-
                         $('#".$ia[1]."').val(jsonstring);
                         $('#".$ia[1]."_filecount').val(filecount);
 
-                        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
-                            
-                        for (i = 0; i < filecount; i++)
-                        {";
-
-    if ($pos)
-    {
-        $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                        display += '<tr><td align=\"center\"><img src=\"../upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
-                    else
-                        display += '<tr><td align=\"center\"><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
-    }
-    else
-    {
-        $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                        display += '<tr><td align=\"center\"><img src=\"upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
-                    else
-                        display += '<tr><td align=\"center\"><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
-    }
-
-    if ($show_title)
-        $answer .= "display += '<td align=\"center\">'+jsonobj[i].title+'</td>';";
-    if ($show_comment)
-        $answer .= "display += '<td align=\"center\">'+jsonobj[i].comment+'</td>';";
-
-    $answer .= "            display += '<td align=\"center\">'+decodeURIComponent(jsonobj[i].name)+'</td></tr><tr><td>&nbsp;</td></tr>';
-                        }
-                        display += '</table>';
-                        $('#uploadedfiles').html(display);
+                        displayUploadedFiles(jsonstring, filecount);
 
                         $('.externalSite').dialog('close');
+
                     };
 
                     function displayUploadedFiles(jsonstring, filecount) {
+                        var jsonobj;
+                        var i;
+                        
+                        if (jsonstring != '')
+                        {
+                            jsonobj = eval('(' + jsonstring + ')');
+                            var display = '<table width=\"100%\"><tr><th align=\"center\" width=\"20%\">&nbsp;</th>";
+                            if ($show_title) { $answer .= "<th align=\"center\"><b>Title</b></th>"; }
+                            if ($show_comment) { $answer .= "<th align=\"center\"><b>Comment</b></th>"; }
+                            $answer .= "<th align=\"center\"><b>Name</b></th></tr>';";
+
+                $answer .= "var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+
+                            for (i = 0; i < filecount; i++)
+                            {
+                            ";
+                                if ($pos)
+                                {
+                                    $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
+                                                    display += '<tr><td><img src=\"../upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
+                                                else
+                                                    display += '<tr><td><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
+                                }
+                                else
+                                {
+                                    $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
+                                                    display += '<tr><td><img src=\"upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
+                                                else
+                                                    display += '<tr><td><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
+                                }
+
+                                if ($show_title)
+                                    $answer .= "display += '<td>'+jsonobj[i].title+'</td>';";
+                                if ($show_comment)
+                                    $answer .= "display += '<td>'+jsonobj[i].comment+'</td>';";
+
+        $answer .= "            display += '<td>'+decodeURIComponent(jsonobj[i].name)+'</td></tr><tr><td>&nbsp;</td></tr>';
+                            }
+                            display += '</table>';
+                            $('#uploadedfiles').html(display);
+                        }
                     };
 
                     function showBasic() {
@@ -3680,7 +3703,12 @@ function do_file_upload($ia)
         $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=0&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
 
     $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
-    $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value='0' />";
+    $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
+    if (array_key_exists($ia[1]."_filecount", $_SESSION))
+        $answer .= $_SESSION[$ia[1]."_filecount"]." />";
+    else
+        $answer .= "0 />";
+
     $answer .= "<div id='uploadedfiles'></div>";
 
     $answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';

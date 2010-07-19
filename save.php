@@ -96,7 +96,7 @@ if (isset($move) && $move == "movesubmit")
     $backok=null;
     $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
     $notvalidated=checkpregs($move,$backok);
-    $filenotvalidated = checkUploadedFileValidity();
+    $filenotvalidated = checkUploadedFileValidity($move, $backok);
 
     if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
     {

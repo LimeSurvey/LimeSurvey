@@ -53,7 +53,7 @@ $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalma
 $notvalidated=checkpregs($move,$backok);
 
 // CHECK UPLOADED FILES
-$filenotvalidated = checkUploadedFileValidity();
+$filenotvalidated = checkUploadedFileValidity($move, $backok);
 
 //SEE IF THIS GROUP SHOULD DISPLAY
 $show_empty_group = false;
@@ -774,7 +774,7 @@ END;
                         else
                         { // note that source of condition is not a TokenAttr because this case is processed
                             // earlier
-                            // get previous question answer value: $cd[2]
+                            // get previous qecho "<pre>";print_r($_SESSION);echo "</pre>";die();uestion answer value: $cd[2]
                             if (isset($_SESSION[$cd[2]]))
                             {
                                 $prevanswerToCompare=$_SESSION[$cd[2]];

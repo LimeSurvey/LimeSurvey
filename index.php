@@ -1613,7 +1613,7 @@ function checkconditionalmandatorys($move, $backok=null)
     return $notanswered;
 }
 
-function checkUploadedFileValidity()
+function checkUploadedFileValidity($move, $backok=null)
 {
     global $connect, $thisstep;
     if (!isset($backok) || $backok != "Y")
@@ -1694,7 +1694,7 @@ function checkUploadedFileValidity()
                 }
             }
         }
-        if (isset($filenotvalidated) && is_array($filenotvalidated))
+        if (isset($filenotvalidated))
         {
             if (isset($move) && $move == "moveprev")
                 $_SESSION['step'] = $thisstep;
