@@ -470,7 +470,7 @@ function createinsertquery()
 
                     $json = $_SESSION[$value];
                     $phparray = json_decode($json);
-                    if (isset($phparray[0]->filename))
+                    if (isset($phparray[0]->filename) && $phparray[0]->filename != "undefined")
                         ; // get out of here as this has already been saved into the filesystem
                     else
                     {
@@ -515,10 +515,8 @@ function createinsertquery()
                             for ($i = 0; $i < count($phparray); $i++)
                             {
                                 $phparray[$count]->filename = randomkey(20);
-                                if (!copy($tmp . rawurldecode($phparray[$i]->name), $target . $phparray[$i]->filename)){
-                                    echo "Error Moving file to its destination";die();}
-                                else
-                                    unlink($tmp . rawurldecode($phparray[$i]->name));
+                                if (!rename($tmp . rawurldecode($phparray[$i]->name), $target . $phparray[$i]->filename)){
+                                    echo "Error Moving file to its destination";}
                             }
                         }
                     }

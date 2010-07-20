@@ -290,7 +290,7 @@ if ($subaction == "id")
                     if (isset($phparray[$index]))
                     {
                         if ($metadata === "size")
-                            $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]/1000))." KB";
+                            $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]))." KB";
 
                         $browseoutput .= htmlspecialchars($phparray[$index][$metadata]);
                     }
@@ -547,13 +547,19 @@ elseif ($subaction == "all")
         {
             if (!isset($fielddetails['aid']))
             {
+                $qidattributes=getQuestionAttributes($fielddetails['qid']);
+                
                 for ($i = 0; $i < $fielddetails['max_files']; $i++)
                 {
-                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
-                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
+                    if ($qidattributes['show_title'] == 1)
+                        $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
+                        
+                    if ($qidattributes['show_comment'] == 1)
+                        $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
+
                     $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File name)", "type"=>"|", "metadata"=>"name",    "index"=>$i);
                     $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File size)", "type"=>"|", "metadata"=>"size",    "index"=>$i);
-                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                    //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                 }
             }
             else
@@ -817,7 +823,7 @@ elseif ($subaction == "all")
                 if (isset($phparray[$index]))
                 {
                     if ($metadata === "size")
-                        $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]/1000))." KB";
+                        $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]))." KB";
                     
                     $browseoutput .= "<td align='center'>".$phparray[$index][$metadata]."</td>\n";
                 }

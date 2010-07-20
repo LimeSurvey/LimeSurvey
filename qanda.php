@@ -3610,6 +3610,8 @@ function do_file_upload($ia)
                                 modal: true,
                                 resizable: false,
                                 autoResize: true,
+                                closeOnEscape: false,
+                                open: function(event, ui) { $(\".ui-dialog-titlebar-close\").hide(); },
                                 beforeclose: function() {
                                     $('#uploader').contents().find('#saveandexit').click();
                                 },

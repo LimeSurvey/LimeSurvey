@@ -64,7 +64,13 @@
             var ia = $('#ia').val();
 
             $('#saveandexit').click(function() {
-                passJSON();
+                var filecount = $("#filecount").val();
+                var minfiles  = $("#minfiles").val();
+                
+                if (filecount < minfiles)
+                    alert("Please upload " + (minfiles-filecount) + " more files");
+                else
+                    passJSON();
             });
 
             /* Load the previously uploaded files */

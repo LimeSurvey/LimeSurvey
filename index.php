@@ -1641,50 +1641,55 @@ function checkUploadedFileValidity($move, $backok=null)
                     // if name is blank, its basic, hence check
                     // else, its ajax, don't check, bypass it.
 
-                    $phparray = json_decode($json);
-                    if ($phparray[0]->size != "")
-                    { // ajax
-                        $filecount = count($phparray);
-                    }
-                    else
-                    { // basic
-                        for ($i = 1; $i <= $validation['max_num_of_files']; $i++)
-                        {
-                            if (!isset($_FILES[$field."_file_".$i]) || $_FILES[$field."_file_".$i]['name'] == '')
-                                continue;
-
-                            $filecount++;
-
-                            $file = $_FILES[$field."_file_".$i];
-
-                            // File size validation
-                            if ($file['size'] > $validation['max_filesize'] * 1000)
+                    if ($json != "")
+                    {
+                        $phparray = json_decode($json);
+                        if ($phparray[0]->size != "")
+                        { // ajax
+                            $filecount = count($phparray);
+                        }
+                        else
+                        { // basic
+                            for ($i = 1; $i <= $validation['max_num_of_files']; $i++)
                             {
-                                $filenotvalidated = array();
-                                $filenotvalidated[$field."_file_".$i] = "Sorry, the uploaded file (".$file['size'].") is larger than the allowed filesize of ".$validation['max_filesize']." KB.";
-                                $append = true;
-                            }
+                                if (!isset($_FILES[$field."_file_".$i]) || $_FILES[$field."_file_".$i]['name'] == '')
+                                    continue;
 
-                            // File extension validation
-                            $pathinfo = pathinfo(basename($file['name']));
-                            $ext = $pathinfo['extension'];
+                                $filecount++;
 
-                            $validExtensions = explode(",", $validation['allowed_filetypes']);
-                            if (!(in_array($ext, $validExtensions)))
-                            {
-                                if (isset($append) && $append)
-                                {
-                                    $filenotvalidated[$field."_file_".$i] .= "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
-                                    unset($append);
-                                }
-                                else
+                                $file = $_FILES[$field."_file_".$i];
+
+                                // File size validation
+                                if ($file['size'] > $validation['max_filesize'] * 1000)
                                 {
                                     $filenotvalidated = array();
-                                    $filenotvalidated[$field."_file_".$i] = "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
+                                    $filenotvalidated[$field."_file_".$i] = "Sorry, the uploaded file (".$file['size'].") is larger than the allowed filesize of ".$validation['max_filesize']." KB.";
+                                    $append = true;
+                                }
+
+                                // File extension validation
+                                $pathinfo = pathinfo(basename($file['name']));
+                                $ext = $pathinfo['extension'];
+
+                                $validExtensions = explode(",", $validation['allowed_filetypes']);
+                                if (!(in_array($ext, $validExtensions)))
+                                {
+                                    if (isset($append) && $append)
+                                    {
+                                        $filenotvalidated[$field."_file_".$i] .= "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
+                                        unset($append);
+                                    }
+                                    else
+                                    {
+                                        $filenotvalidated = array();
+                                        $filenotvalidated[$field."_file_".$i] = "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
+                                    }
                                 }
                             }
                         }
                     }
+                    else
+                        $filecount = 0;
 
                     if ($filecount < $validation['min_num_of_files'])
                     {
