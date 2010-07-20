@@ -469,7 +469,7 @@ function createinsertquery()
                     $target = "upload/surveys/". $thissurvey['sid'] ."/files/";
 
                     $json = $_SESSION[$value];
-                    $phparray = json_decode($json);
+                    $phparray = json_decode(stripslashes($json));
                     if (isset($phparray[0]->filename) && $phparray[0]->filename != "undefined")
                         ; // get out of here as this has already been saved into the filesystem
                     else

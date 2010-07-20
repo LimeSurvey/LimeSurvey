@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Advanced File Uploader</title>
-
+  
         <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
         <script type="text/javascript" src="scripts/ajaxupload.js"></script>
 
@@ -11,6 +11,7 @@
         <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
         
     <style type="text/css">
+        
         body {font-family: verdana, arial, helvetica, sans-serif;font-size: 12px;color: black; direction: ltr;}
         h1 {color: #C7D92C;	font-size: 18px; font-weight: 400;}
         a {	color: white;}
@@ -18,37 +19,12 @@
         ul { list-style: none; }
         #dialog-confirm { padding: 0 20px; float: left; width: 750px; }
 
-		div.button {
-			height: 29px;
-			width: 133px;
-			background: url(images/button.png) 0 0;
-            margin: 50px auto;
-			font-size: 14px; color: #C7D92C; text-align: center; padding-top: 15px;
-		}
-		/*
-		We can't use ":hover" preudo-class because we have
-		invisible file input above, so we have to simulate
-		hover effect with JavaScript.
-		 */
-		div.button.hover {
-			background: url(images/button.png) 0 56px;
-			color: #95A226;
-		}
-
-        .notice {
-            background: #FFF6BF;
-            border: 2px solid #FFD324;
-            text-align: center;
-            margin: 10px auto;
-            padding: 5px 20px;
-            color: red;
-        }
-
         .previewblock {
             background-color: #99CCFF;
             margin: 10px auto;
             padding: 5px 20px;
         }
+
         img {
             display: block;
             margin: 5px;
@@ -56,22 +32,66 @@
             border-style: solid;
         }
 
+        .uploadmsg {
+            text-align: center;
+        }
+
+        .upload-button {
+            cursor: pointer;
+            border: 1px solid #79B7E7;
+            background: url("../images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
+            color: #5670A1;
+            font-weight: bold;
+            outline: medium none;
+            -moz-border-radius: 5px 5px 5px 5px;
+            font-family: Verdana,Arial,sans-serif;
+            font-size: 1em;
+            float: none;
+            line-height: 1.4em;
+            margin: 0.5em 0.4em 0.5em 0;
+            overflow: visible;
+            padding: 0.6em 0.6em 0.6em 0.6em;
+            width: 100px;
+            text-align: center;
+        }
+
+        .upload-div button {
+            cursor: pointer;
+        }
+
+        .upload-div button hover {
+            cursor: pointer;
+        }
+
+        .success, .error {
+            border: 1px solid;
+            margin: 15px 200px 20px 200px;
+            padding:15px 50px 15px 50px;
+            background-repeat: no-repeat;
+            background-position: 20px center;
+        }
+
+        .success {
+            color: #4F8A10;
+            background-color: #DFF2BF;
+            background-image:url('images/success_notice.png');
+            text-indent: 1.5em;
+        }
+        
+        .error {
+            color: #D8000C;
+            background-color: #FFBABA;
+            background-image: url('images/error_notice.png');
+            text-indent: 1.5em;
+        }
+
+
 	</style>
 
  	<script type="text/javascript">
         $(document).ready(function(){
             
             var ia = $('#ia').val();
-
-            $('#saveandexit').click(function() {
-                var filecount = $("#filecount").val();
-                var minfiles  = $("#minfiles").val();
-                
-                if (filecount < minfiles)
-                    alert("Please upload " + (minfiles-filecount) + " more files");
-                else
-                    passJSON();
-            });
 
             /* Load the previously uploaded files */
             var filecount = window.parent.window.$('#'+ia+'_filecount').val();
@@ -94,9 +114,9 @@
                                 "<td  align='center' width='50%' padding='20px' >";
                             
                     if (isValueInArray(image_extensions, json[i].ext))
-                        previewblock += "<img src='upload/tmp/"+decodeURIComponent(json[i].name)+"' height='100px' />";
+                        previewblock += "<img src='upload/tmp/"+decodeURIComponent(json[i].name)+"' height='60px' />";
                     else
-                        previewblock += "<img src='images/placeholder.png' height='100px' /><br />"+decodeURIComponent(json[i].name);
+                        previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i].name);
 
                     previewblock += "</td>";
                     
@@ -140,7 +160,7 @@
                      * do not upload the file and display an error message ! */
                     if (filecount >= maxfiles)
                     {
-                        $('#notice').html('<p class="notice">Sorry, No more files can be uploaded !</p>');
+                        $('#notice').html('<p class="error">Sorry, No more files can be uploaded !</p>');
                         return false;
                     }
 
@@ -159,7 +179,7 @@
                     }
                     if (allowSubmit == false)
                     {
-                        $('#notice').html('<p class="notice">Sorry, Only "'+ $('#allowed_filetypes').val()+'" files can be uploaded for this question !</p>');
+                        $('#notice').html('<p class="error">Sorry, Only "'+ $('#allowed_filetypes').val()+'" files can be uploaded for this question !</p>');
                         return false;
                     }
                     
@@ -189,7 +209,7 @@
                     // Once the file has been uploaded via AJAX,
                     // the preview is appended to the list of files
                     var metadata = eval('(' + response + ')');
-                    $('#notice').html('<p class="notice">'+metadata.msg+'</p>');
+                    $('#notice').html('<p class="success">'+metadata.msg+'</p>');
                     var count = parseInt($('#licount').val());
 
                     var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
@@ -202,9 +222,9 @@
 
                         // If the file is not an image, use a placeholder
                         if (isValueInArray(image_extensions, metadata.ext))
-                            previewblock += "<img src='upload/tmp/"+decodeURIComponent(metadata.name)+"' height='100px' />";
+                            previewblock += "<img src='upload/tmp/"+decodeURIComponent(metadata.name)+"' height='60px' />";
                         else
-                            previewblock += "<img src='images/placeholder.png' height='100px' />";
+                            previewblock += "<img src='images/placeholder.png' height='60px' />";
 
                         previewblock += "<br />"+decodeURIComponent(metadata.name)+"</td>";
                         if ($("#show_title").val() == 1 && $("#show_comment").val() == 1)
@@ -231,7 +251,7 @@
                         $('#filecount').val(filecount);
                         var maxfiles = $('#maxfiles').val();
                         if (filecount >= maxfiles)
-                            $('#notice').html('<p class="notice">Maximum number of files have been uploaded<br />You may Save and Exit !</p>');
+                            $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may Save and Exit !</p>');
                     }
                 }
             });
@@ -283,6 +303,16 @@
             window.parent.window.copyJSON(json, filecount);
         }
 
+        function saveAndExit() {
+            var filecount = $("#filecount").val();
+            var minfiles  = $("#minfiles").val();
+
+            if (filecount < minfiles)
+                alert("Please upload " + (minfiles-filecount) + " more files");
+            else
+                passJSON();
+        }
+
         function deletefile(i) {
         	if (window.XMLHttpRequest)
                 xmlhttp=new XMLHttpRequest();
@@ -293,9 +323,9 @@
             {
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
                 {
-                    $('#notice').html('<p class="notice">'+xmlhttp.responseText+'</p>');
+                    $('#notice').html('<p class="success">'+xmlhttp.responseText+'</p>');
                     setTimeout(function() {
-                        $(".notice").remove();
+                        $(".success").remove();
                     }, 5000);
                 }
             }
@@ -326,13 +356,14 @@
         <input type="hidden" id="filecount"         value="0" />
 
         <!-- The upload button -->
-        <div id="button1" class="button" align="center">Upload</div>
-        <p>You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>
+        <div align="center" class="upload-div">
+            <button id="button1" class="upload-button" type="button">Upload</button>
+        </div>
+        
+        <p class="uploadmsg">You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>
 
         <!-- The list of uploaded files -->
         <ul id="listfiles"></ul>
-
-        <div  id="saveandexit" class="button" align="center">Save and Exit</div>
 
     </body>
 </html>

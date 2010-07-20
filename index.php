@@ -1643,7 +1643,7 @@ function checkUploadedFileValidity($move, $backok=null)
 
                     if ($json != "")
                     {
-                        $phparray = json_decode($json);
+                        $phparray = json_decode(stripslashes($json));
                         if ($phparray[0]->size != "")
                         { // ajax
                             $filecount = count($phparray);

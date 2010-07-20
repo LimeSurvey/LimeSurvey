@@ -700,8 +700,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
                 if (trim($qidattributes['min_num_of_files']) != 0)
                 {
                     $qtitle .= "<br />\n<span class = \"questionhelp\">"
-                    .sprintf($clang->gT("Please upload at least %d files"), $qidattributes['min_num_of_files'])."<span>";
-                    $question_text['help'] .= ' '.sprintf($clang->gT("Please upload at least %d files"), $qidattributes['min_num_of_files']);
+                    .sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files'])."<span>";
+                    $question_text['help'] .= ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files']);
                 }
             }
             break;
@@ -3601,15 +3601,16 @@ function do_file_upload($ia)
                             e.preventDefault();
                             var \$this = $(this);
                             var horizontalPadding = 30;
-                            var verticalPadding = 30;
-                            $('<iframe id=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
+                            var verticalPadding = 20;
+                            $('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
                                 title: 'Upload your files',
                                 autoOpen: true,
                                 width: 984,
-                                height: 500,
+                                height: 440,
                                 modal: true,
                                 resizable: false,
                                 autoResize: true,
+                                draggable: false,
                                 closeOnEscape: false,
                                 open: function(event, ui) { $(\".ui-dialog-titlebar-close\").hide(); },
                                 beforeclose: function() {
@@ -3618,8 +3619,14 @@ function do_file_upload($ia)
                                 overlay: {
                                     opacity: 0.85,
                                     background: 'black'
+                                },
+                                buttons: {
+                                    'Save and Exit': function() {
+                                        window.frames.uploader.saveAndExit();
+                                        $(this).dialog('close');
+                                    }
                                 }
-                            }).width(984 - horizontalPadding).height(500 - verticalPadding);
+                            }).width(984 - horizontalPadding).height(440 - verticalPadding);
                         });
                     });
                     
@@ -3713,7 +3720,7 @@ function do_file_upload($ia)
 
     $answer .= "<div id='uploadedfiles'></div>";
 
-    $answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
+    //$answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
 
     $answer .= '<script type="text/javascript">
                     $(".basic_'.$ia[1].'").change(function() {
