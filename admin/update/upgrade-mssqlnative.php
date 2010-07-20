@@ -401,13 +401,20 @@ function db_upgrade($oldversion) {
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
-    if ($oldversion < 144) //Modify surveys table
+    if ($oldversion < 145) //Modify surveys table
     {
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showXquestions CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showgroupinfo CHAR(1) NULL default 'B' "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD shownoanswer CHAR(1) NULL default 'Y' "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showqnumcode CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();
-        modify_database("", "UPDATE [prefix_settings_global] SET stg_value='144' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD timestamp BIGINT(20) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceprocessing VARCHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounttype VARCHAR(4) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounthost VARCHAR(20) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountpass VARCHAR(20) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountencryption VARCHAR(4) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountuser VARCHAR(320) NULL "); echo $modifyoutput; flush();
+        modify_database("", "UPDATE [prefix_settings_global] SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
   	return true;

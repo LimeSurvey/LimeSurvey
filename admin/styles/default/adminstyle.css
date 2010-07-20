@@ -1036,7 +1036,7 @@ textarea.updater-changelog {
     max-width:200px;
 }
    
-.form44 li label:first-child,   
+.form44 li label:first-child, 
 #exportspss li label:first-child,
 #importtemplate li label:first-child,            
 #tokenimport li label:first-child,            
@@ -1045,6 +1045,9 @@ textarea.updater-changelog {
 #importlabels li label:first-child,
 #exportdialog li label:first-child, 
 #frmeditquestion li label:first-child, 
+#importquestion li label:first-child,
+#bouncesettings li label:first-child,
+#frmglobalsettings li label:first-child 
 #importquestion li label:first-child {
     width: 44%;
     text-align: right;
@@ -1067,14 +1070,17 @@ textarea.updater-changelog {
     font-weight: bold;
     color: #1d2d45;
 }
-#frmglobalsettings li input, #frmglobalsettings li select, #frmglobalsettings li span {
+#frmglobalsettings li input, 
+#frmglobalsettings li select,
+#frmglobalsettings li span {
     display:block;
     margin-left: 44.5%;
     padding-left: 0%;
     text-align: left;
 }
 #frmglobalsettings li span { padding-left: 1em; position:relative;left:-1em; }
-#frmglobalsettings li span input, #frmglobalsettings li span select {
+#frmglobalsettings li span input, 
+#frmglobalsettings li span select {
     display:inline;
     margin-left: 0%;
 }
@@ -1129,11 +1135,15 @@ textarea.updater-changelog {
 #assessmentsform li,
 #importsurveyresources li,
 #labelsetform li,
+#bouncesettings li,
+#frmglobalsettings li,
 #exportspss li{  
     list-style-type: none;
     clear:left;
     padding-bottom:5px;
 }
+
+
 
 #frmeditquestion li,
 #importquestion li {

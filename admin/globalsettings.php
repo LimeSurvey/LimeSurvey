@@ -64,6 +64,15 @@ function globalsettingssave()
             {
                 setGlobalSetting('emailsmtppassword',strip_tags(returnglobal('emailsmtppassword')));
             }
+            setGlobalSetting('bounceaccounthost',strip_tags(returnglobal('bounceaccounthost')));
+      	    setGlobalSetting('bounceaccounttype',strip_tags(returnglobal('bounceaccounttype')));
+            setGlobalSetting('bounceencryption',strip_tags(returnglobal('bounceencryption')));
+            setGlobalSetting('bounceaccountuser',strip_tags(returnglobal('bounceaccountuser')));
+       
+	    if (returnglobal('bounceaccountpass')!='enteredpassword')
+            {
+                setGlobalSetting('bounceaccountpass',strip_tags(returnglobal('bounceaccountpass')));
+            }
             setGlobalSetting('emailsmtpssl',sanitize_paranoid_string(returnglobal('emailsmtpssl')));
             setGlobalSetting('emailsmtpdebug',sanitize_int(returnglobal('emailsmtpdebug')));
             setGlobalSetting('emailsmtpuser',strip_tags(returnglobal('emailsmtpuser')));
@@ -116,8 +125,6 @@ function globalsettingsdisplay()
             $js_admin_includes[]='scripts/globalsettings.js';
             // header
             $editsurvey = "<div class='header'>".$clang->gT("Global settings")."</div>\n";
-
-
             // beginning TABs section
             $editsurvey .= "\t<div class='tab-pane' id='tab-pane-globalsettings'>\n";
             $editsurvey .= "<form id='frmglobalsettings' name='frmglobalsettings' action='$scriptname' method='post'>\n";
@@ -249,12 +256,10 @@ function globalsettingsdisplay()
 
             // Email TAB
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Email settings")."</h2><ul>\n";
-
-            //Format
+			 //Format
             $editsurvey.= "\t<li><label for='siteadminemail'>".$clang->gT("Default site admin email:")."</label>\n"
             . "\t\t<input type='text' size='50' id='siteadminemail' name='siteadminemail' value=\"".htmlspecialchars(getGlobalSetting('siteadminemail'))."\" /></li>\n"
-            . "\t<li><label for='siteadminbounce'>".$clang->gT("Default site bounce email:")."</label>\n"
-            . "\t\t<input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
+ 
             . "\t<li><label for='siteadminname'>".$clang->gT("Administrator name:")."</label>\n"
             . "\t\t<input type='text' size='50' id='siteadminname' name='siteadminname' value=\"".htmlspecialchars(getGlobalSetting('siteadminname'))."\" /><br /><br /></li>\n"
             . "\t<li><label for='emailmethod'>".$clang->gT("Email method:")."</label>\n"
@@ -305,14 +310,46 @@ function globalsettingsdisplay()
             . "\t<li><label for='maxemails'>".$clang->gT("Email batch size:")."</label>\n"
             . "\t\t<input type='text' size='5' id='maxemails' name='maxemails' value=\"".htmlspecialchars(getGlobalSetting('maxemails'))."\" /></li>\n"
             . "\t</ul>\n";
-
             // End Email TAB
             $editsurvey .= "\t</div>\n";
+            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Bounce Settings")."</h2><ul>\n"
+            . "\t<li><label for='siteadminbounce'>".$clang->gT("Default site bounce email:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
+            . "\t<li><label for='bounceaccounttype'>".$clang->gT("Bounce account type:")."</label>\n"
+	    . "\t\t<select id='bounceaccounttype' name='bounceaccounttype'>\n"
+  	    . "\t\t\t<option value='off'";
+            if (getGlobalSetting('bounceaccounttype')=='off') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Off")."</option>\n"
+            . "\t\t\t<option value='IMAP'";
+            if (getGlobalSetting('bounceaccounttype')=='IMAP') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("IMAP")."</option>\n"
+            . "\t\t\t<option value='POP'";
+            if (getGlobalSetting('bounceaccounttype')=='POP') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("POP")."</option>\n"
+            ."\t\t</select></li>\n"
 
+            . "\t<li><label for='bounceaccounthost'>".$clang->gT("Bounce account host:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value=\"".htmlspecialchars(getGlobalSetting('bounceaccounthost'))."\" />\n"."<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: imap.gmail.com:995")."</font>\n"
+
+            . "\t<li><label for='bounceaccountuser'>".$clang->gT("Bounce account user:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser' value=\"".htmlspecialchars(getGlobalSetting('bounceaccountuser'))."\" /></li>\n"
+            . "\t<li><label for='bounceaccountpass'>".$clang->gT("Bounce account password:")."</label>\n"
+            . "\t\t<input type='password' size='50' id='bounceaccountpass' name='bounceaccountpass' value='enteredpassword' /></li>\n";
+	    $editsurvey.= "\t<li><label for='bounceencryption'>".$clang->gT("Bounce account encryption type")."</label>\n"
+	    . "\t\t<select id='bounceencryption' name='bounceencryption'>\n"
+  	    . "\t\t\t<option value='off'";
+            if (getGlobalSetting('bounceencryption')=='off') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Off")."</option>\n"
+            . "\t\t\t<option value='SSL'";
+            if (getGlobalSetting('bounceencryption')=='SSL') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("SSL")."</option>\n"
+            . "\t\t\t<option value='TLS'";
+            if (getGlobalSetting('bounceencryption')=='TLS') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("TLS")."</option>\n"
+            ."\t\t</select></li>\n<br>";
+            $editsurvey .= "\t</div>\n";
             // Security Settings
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Security")."</h2><ul>\n";
-
-
             // Expiration
             $thissurveyPreview_require_Auth=getGlobalSetting('surveyPreview_require_Auth');
             $editsurvey .= "\t<li><label for='surveyPreview_require_Auth'>".$clang->gT("Survey preview only for administration users")."</label>\n"
@@ -419,6 +456,11 @@ function globalsettingsdisplay()
             . "\t\t</select></li>\n";
 	    unset($set_xq,$sel_xq);
 
+
+
+
+
+
 	    // showgroupinfo
             $set_gri=getGlobalSetting('showgroupinfo');
 	    $sel_gri = array( 'both' => '' , 'choose' =>'' , 'description' => '' , 'name' => '' , 'none' => '' );
@@ -468,6 +510,8 @@ function globalsettingsdisplay()
             {
                 $editsurvey .= '<p>'.$clang->gT("Note: Demo mode is activated. Marked (*) settings won't be saved.").'</p>\n';
             }
+
+
 
 
         }

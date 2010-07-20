@@ -33,7 +33,6 @@ if (get_magic_quotes_gpc())
 function db_rename_table($oldtable, $newtable)
 {
     global $connect;
-
     $dict = NewDataDictionary($connect);
     $result=$dict->RenameTableSQL($oldtable, $newtable);
     return $result[0];

@@ -279,7 +279,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'tokens')
     {
-        if(bHasRight($surveyid,'activate_survey'))    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php');}
+        if(bHasRight($surveyid,'activate_survey'))    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php'); include('bounceprocessing.php');}
         else { include('access_denied.php'); }
     }
     elseif ($action == 'iteratesurvey')
@@ -582,8 +582,10 @@ if(isset($_SESSION['loginID']))
     if (!isset($printablesurveyoutput) && $subaction!='export' && (substr($action,0,4)!= 'ajax'))
     {
         if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-
+		if($subaction != 'bounceprocessing')
+		{
         $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
+	}
         unset($_SESSION['metaHeader']);
         $adminoutput.= "</div>\n";
         if(!isset($_SESSION['checksessionpost']))
@@ -627,20 +629,22 @@ if(isset($_SESSION['loginID']))
         . "\n"
         . "//-->\n"
         . "</script>\n";
-
-        $adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
+		if($subaction != 'bounceprocessing')
+		{
+			$adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
+		}
     }
 
 }
 else
 { //not logged in
+
 sendcacheheaders();
 if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
 $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput.$loginsummary;  // All future output is written into this and then outputted at the end of file
 unset($_SESSION['metaHeader']);
 $adminoutput.= "</div>\n".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
 }
-
 if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1))
 {
     phpinfo();

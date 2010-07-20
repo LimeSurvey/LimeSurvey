@@ -1723,8 +1723,6 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
         }
     }
 }
-
-
 function returnglobal($stringname)
 {
     global $useWebserverAuth;
@@ -4623,14 +4621,13 @@ function ReplaceFields ($text,$fieldsarray)
  * @param mixed $attachment
  * @return bool If successful returns true
  */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null)
+function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null,$customheaders="")
 {
 // This function mails a text $body to the recipient $to. You can use more than one 
 // recipient when using a semikolon separated string with recipients.
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
-
      if ($demoModeOnly==true)
      {
          $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
@@ -4724,7 +4721,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddAddress($singletoemail);
         }
     }	
-
+while (list($key, $val) = each($customheaders)) {
+$mail->AddCustomHeader($val);
+}
 	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
 	//make a general function to convert HTML body to textbody

@@ -1,4 +1,7 @@
 
+
+
+
 CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
@@ -348,7 +351,7 @@ create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 
 
 -- data
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '144');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '145');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
