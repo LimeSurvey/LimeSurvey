@@ -24,38 +24,38 @@
 
 // Basic Setup
 
-$databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, mysqli, odbc_mssql, mssql_n, odbtp or postgres
-// mysql: Recommended driver for mysql
-// mysqli: Slightly faster driver for mysql - not on all server systems available
-// odbc_mssql: MSSQL driver using ODBC with MS SQL Server
-// mssqlnative: Native SQL Server driver for SQL Server 2005+
-// mssql_n: Experimental driver for MS SQL Server which handles UTF-8 charsets
-// odbtp: ODBTP driver to access MSSQL-Server is needed for this one - we also recommend to activate $databasepersistent for decent speed
-// postgres: Standard postgres driver
+$databasetype       =   'mysql';        // ADOdb database driver - valid values are mysql, mysqli, odbc_mssql, mssql_n, odbtp or postgres
+                                        // mysql: Recommended driver for mysql
+                                        // mysqli: Slightly faster driver for mysql - not on all server systems available
+                                        // odbc_mssql: MSSQL driver using ODBC with MS SQL Server
+                                        // mssqlnative: Native SQL Server driver for SQL Server 2005+
+                                        // mssql_n: Experimental driver for MS SQL Server which handles UTF-8 charsets
+                                        // odbtp: ODBTP driver to access MSSQL-Server is needed for this one - we also recommend to activate $databasepersistent for decent speed
+                                        // postgres: Standard postgres driver
 
 $databaselocation   =   'localhost';   // Network location of your Database - for odbc_mssql or mssqlnative use the mssql servername, not localhost or IP
 $databasename       =   'limesurvey';  // The name of the database that we will create
 $databaseuser       =   'root';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   '';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
-// a database with other applications. Suggested prefix is 'lime_'
+                                       // a database with other applications. Suggested prefix is 'lime_'
 
 // File Locations
 $rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; // The root web url for your limesurvey installation (without a trailing slash).
 // The double quotes (") are important.
 
-$rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this
-// setting. If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir='C:\Inetpub\wwwroot\limesurvey'!
-// Some IIS and OS/2 installations also require to use forward slashes
-// instead of backslashes, e.g.  $rootDir='C:/Inetpub/wwwroot/limesurvey'!
+$rootdir            =   dirname(__FILE__);  // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this
+                                            // setting. If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir='C:\Inetpub\wwwroot\limesurvey'!
+                                            // Some IIS and OS/2 installations also require to use forward slashes
+                                            // instead of backslashes, e.g.  $rootDir='C:/Inetpub/wwwroot/limesurvey'!
 
 // Installation Setup
 $defaultuser        =   'admin';           // This is the username when LimeSurvey is installed and the administration user is created on installation
 $defaultpass        =   'password';        // This is the password for the administration user when LimeSurvey is installed
 
 // Debug Settings
-$debug              =   0;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
-// then please check your error-logs - either in your hosting provider admin panel or in some /logs dir
-// on your webspace.
-// LimeSurvey developers: Set this to 2 to circumvent the restriction to remove the installation directory
-// or to change the password. If you set it to 3 then PHP STRICT warnings will be shown additionally.
+$debug              =   0;                  // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+                                            // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir
+                                            // on your webspace.
+                                            // LimeSurvey developers: Set this to 2 to circumvent the restriction to remove the installation directory
+                                            // or to change the password. If you set it to 3 then PHP STRICT warnings will be shown additionally.

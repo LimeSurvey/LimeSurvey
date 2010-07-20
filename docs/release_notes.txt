@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.90RC2!
+Welcome to LimeSurvey v1.90RC3!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,32 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.90RC2 (build 8906) to 1.90RC3 (build 8963) Legend: +new feature, # updated feature, - bug fix 
+#Updated language: Bulgarian (bg) thanks to Vladislav Zaimov (gandalfar)
+#Updated language: French (b00z00)
+#Updated language: Spanish (Mexico) (es-MX) thanks to Roberto Gonzalez (gandalfar)
+-Fixed issue #4413: Not all question groups not displayed in dropdown menu (tpartner)
+-Fixed issue #4396: Unable to change order of groups after import (mennodekker)
+-Fixed issue #4415: Import of survey times out with mysqli driver (c_schmitz)
+-Fixed issue #4481: exporting or copying surveys takes a very long time (mennodekker)
+-Fixed issue #4453: Refreshing a page in Internet Explorer will cause conditional fields to not be displayed (in group-per-page surveys). (lemeur)
+-Fixed issue #4449: conditions are broken on importing or copying a survey (lemeur)
+-Fixed issue #4468: Inserting a user with malicious script tag can break user administration (c_schmitz)
+-Fixed issue #4469: For some question types the answers are lost after upgrade (c_schmitz)
+-Fixed issue #4472: Response export does not include Completed field (c_schmitz)
+-Fixed issue #4473: Statistics: "Undefined variable: atext" notice (with mutiple numerical question type) (c_schmitz)
+-Fixed issue #4475: Token table is not set to completed when finishing a reloaded survey (and not using the direct link provided in the saved-confirmation email) (lemeur)
+-Fixed issue #4478: Print survey results results in errors when using a user-made template (c_schmitz)
+-Fixed issue #4488: Unable to add answer/subquestions in IE8 (c_schmitz)
+-Fixed issue #4493: Problem when copying label sets with HTML tags (c_schmitz)
+-Fixed issue #4446: Error in dutch (and Dutch-informal) translation - thanks to DoubleA (mennodekker)
+-Fixed issue #4420 group.php will strip out {QUESTION_ESSENTIALS} if it appears at the very first part of the template (eric_t_cruiser)
+-Fixed issue: HTTPS setting causing session problems (c_schmitz)
+-Fixed issue: Statistics and browsing only using survey base language (c_schmitz)
+-Fixed unreported issue: duplicate conditions can be added in the condition editor GUI (lemeur)
+-Fixed unreported issue: in the conditions-copy screen, the scenario checkbox doesn't select all conditions in the scenario. (lemeur)
+-Fixed unreported issue: when creating a survey admin user, the sent email subject is HTML encoded (lemeur)
 
 Changes from 1.90RC1 (build 8819) to 1.90RC2 (build 8906) Legend: +new feature, # updated feature, - bug fix 
 +New feature: Very basic HTTPS support (c_schmitz) - allows dynamic switching between https and http
