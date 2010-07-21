@@ -884,7 +884,7 @@ $templatesoutput.="\t<a href='#' onclick='javascript:window.open(\"admin.php?act
 }
 elseif(is_writable($usertemplaterootdir))
 {
-$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder in order to enable this option")."' /></a>\n"
+$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder in order to enable this option")."' />\n"
     ."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder in order to enable this option")."' title='' />\n"
 ."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
     ."<a href='#' title=\"".$clang->gTview("Copy Template")."\" " 
@@ -894,10 +894,10 @@ $templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt=
 else
 {
 
-$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' /></a>\n"
+$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' />\n"
 	."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' title='' />\n"
 	."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-	."<img name='MakeCopy' src='$imagefiles/copy_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' /></a>";}
+	."<img name='MakeCopy' src='$imagefiles/copy_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' />";}
 				$templatesoutput.= "</div>\n<div class='menubar-right'>\n"
                                ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
                                . "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+escape(this.value), \"_top\")'>\n"
