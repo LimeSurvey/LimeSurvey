@@ -306,30 +306,16 @@ foreach ($filters as $flt)
             $allfields[] = $myfield;
             break;
         case ";":  //ARRAY (Multi Flex) (Text)
+        case ":":  //ARRAY (Multi Flex) (Numbers)
             $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-            while ($row=$result->FetchRow())
-            {
-                $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' ORDER BY sortorder, code";
-                $fresult = db_execute_assoc($fquery);
-                while ($frow = $fresult->FetchRow())
-                {
-                    $myfield2 = "T".$myfield . $row[0] . "_" . $frow['code'];
-                    $allfields[] = $myfield2;
-                }
-            }
-            break;
-        case ":":  //ARRAY (Multi Flex) (Numbers)
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}'  AND scale_id=0 ORDER BY question_order";
-            $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-
             while ($row=$result->FetchRow())
             {
                 $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$flt[0]} AND language='{$language}' AND scale_id=1 ORDER BY question_order, title";
                 $fresult = db_execute_assoc($fquery);
                 while ($frow = $fresult->FetchRow())
                 {
-                    $myfield2 = $myfield . $row[0] . "_" . $frow['title'];
+                    $myfield2 = "T".$myfield . $row[0] . "_" . $frow['title'];
                     $allfields[] = $myfield2;
                 }
             }

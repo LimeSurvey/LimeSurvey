@@ -1027,16 +1027,16 @@ foreach ($filters as $flt)
 
         case ";":  //ARRAY (Multi Flex) (Text)
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
+            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id=0 ORDER BY question_order";
             $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             while ($row=$result->FetchRow())
             {
-                $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' ORDER BY sortorder, code";
+                $fquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id=1 ORDER BY question_order";
                 $fresult = db_execute_assoc($fquery);
                 while ($frow = $fresult->FetchRow())
                 {
-                    $myfield2 = "T".$myfield . $row[0] . "_" . $frow['code'];
+                    $myfield2 = "T".$myfield . $row[0] . "_" . $frow['title'];
                     $statisticsoutput .= "<!-- $myfield2 - ";
                     if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
                     $statisticsoutput .= " -->\n";
@@ -1045,7 +1045,7 @@ foreach ($filters as $flt)
                     ."<input type='checkbox'  name='summary[]' value='$myfield2'";
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
                     $statisticsoutput .= " />&nbsp;<strong>"
-                    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['answer']."]")." - ".$row[0]."/".$frow['code'])
+                    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
                     ."</strong><br />\n";
                     //$statisticsoutput .= $fquery;
                     $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n";
