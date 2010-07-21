@@ -298,7 +298,7 @@ if ($subaction == "id")
                         if ($metadata === "size")
                             $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]))." KB";
 
-                        $browseoutput .= htmlspecialchars($phparray[$index][$metadata]);
+                        $browseoutput .= rawurldecode($phparray[$index][$metadata]);
                     }
                     else
                         $browseoutput .= "";
@@ -403,7 +403,7 @@ elseif ($subaction == "all")
                         for ($i = 0; $i < count($phparray); $i++)
                         {
                             $filelist[$i]['filename'] = $phparray[$i]['filename'];
-                            $filelist[$i]['name'] = $phparray[$i]['name'];
+                            $filelist[$i]['name'] = rawurldecode($phparray[$i]['name']);
                         }
 
                     }
@@ -479,7 +479,7 @@ elseif ($subaction == "all")
                 for ($i = 0; isset($phparray[$i]); $i++)
                 {
                     $filelist[$i]['filename'] = $phparray[$i]['filename'];
-                    $filelist[$i]['name'] = $phparray[$i]['name'];
+                    $filelist[$i]['name'] = rawurldecode($phparray[$i]['name']);
                 }
             }
         }
@@ -831,7 +831,7 @@ elseif ($subaction == "all")
                     if ($metadata === "size")
                         $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]))." KB";
                     
-                    $browseoutput .= "<td align='center'>".$phparray[$index][$metadata]."</td>\n";
+                    $browseoutput .= "<td align='center'>".rawurldecode($phparray[$index][$metadata])."</td>\n";
                 }
                 else
                     $browseoutput .= "<td align='center'>&nbsp;</td>\n";

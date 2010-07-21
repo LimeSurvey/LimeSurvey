@@ -3612,17 +3612,16 @@ function do_file_upload($ia)
                                 autoResize: true,
                                 draggable: false,
                                 closeOnEscape: false,
-                                open: function(event, ui) { $(\".ui-dialog-titlebar-close\").hide(); },
                                 beforeclose: function() {
-                                    $('#uploader').contents().find('#saveandexit').click();
-                                },
+                                        var pass = window.frames.uploader.saveAndExit();
+                                        return pass;
+                                    },
                                 overlay: {
                                     opacity: 0.85,
                                     background: 'black'
                                 },
                                 buttons: {
                                     'Save and Exit': function() {
-                                        window.frames.uploader.saveAndExit();
                                         $(this).dialog('close');
                                     }
                                 }
@@ -3644,8 +3643,6 @@ function do_file_upload($ia)
                         $('#".$ia[1]."_filecount').val(filecount);
 
                         displayUploadedFiles(jsonstring, filecount);
-
-                        $('.externalSite').dialog('close');
 
                     };
 

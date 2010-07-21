@@ -482,7 +482,7 @@ function createinsertquery()
                             $qAttributes[$row['attribute']] = $row['value'];
 
                         $validExtensions = explode(",", $qAttributes['allowed_filetypes']);
-
+/*
                         // for the HTML form version
                         for ($i = 1; $i <= $qAttributes['max_num_of_files']; $i++)
                         {
@@ -505,7 +505,7 @@ function createinsertquery()
                                     $count++;
                             }
                         }
-
+*/
                         // for the AJAX version
                         if (!isset($basic) || !$basic)
                         { // ajax, move files from temp to files directory

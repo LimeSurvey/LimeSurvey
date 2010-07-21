@@ -307,10 +307,22 @@
             var filecount = $("#filecount").val();
             var minfiles  = $("#minfiles").val();
 
-            if (filecount < minfiles)
+            if (minfiles != 0 && filecount < minfiles)
+            {
                 alert("Please upload " + (minfiles-filecount) + " more files");
+                return false;
+            }
             else
-                passJSON();
+            {
+                pass = confirm ('Would you like to exit?');
+                if (pass)
+                {
+                    passJSON();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
         function deletefile(i) {

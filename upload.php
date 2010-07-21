@@ -13,7 +13,7 @@
         $valid_extensions_array[$i] = trim($valid_extensions_array[$i]);
     
     $pathinfo = pathinfo($_FILES['uploadfile']['name']);
-    $ext = strtolower($pathinfo['extension']);
+    $ext = $pathinfo['extension'];
 
     // check for upload error
     if ($_FILES['uploadfile']['error'] > 2)
@@ -37,7 +37,7 @@
     }
     // check to see that this file type is allowed
     // it is also  checked at the client side, but jst double checking
-    else if (!in_array($ext, $valid_extensions_array))
+    else if (!in_array(strtolower($ext), $valid_extensions_array))
     {
         $return = array(
                         "success" => false,
