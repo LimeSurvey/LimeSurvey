@@ -650,7 +650,7 @@ if($subaction=="surveysettingsave")
 }
 
 if ($subaction=='bouncesettings'){
-	$settings=getSurveyInfo($surveyid);
+$settings=getSurveyInfo($surveyid);
 $tokenoutput .= "\t<div class='header'>".$clang->gT("Bounce settings")."</div>\n";
 $tokenoutput .= "<div id='bouncesettings'>\n"
 			."<form id='bouncesettings' name='bouncesettings' action='$scriptname?action=tokens&sid=$surveyid&subaction=surveysettingsave' method='post'>"
@@ -1193,7 +1193,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                .$clang->gT("Send invitation email to this entry")
 	                ."' alt='"
 	                .$clang->gT("Send invitation email to this entry")
-                ."' onclick=\"window.open('{$$scriptname}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
+                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
 	            }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            {
