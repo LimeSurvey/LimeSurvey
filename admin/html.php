@@ -1637,41 +1637,47 @@ if ($action=='editsubquestions')
     $js_admin_includes[]='../scripts/jquery/jquery.blockUI.js';
     $js_admin_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
 
-
-
-    $_SESSION['FileManagerContext']="edit:answer:$surveyid";
+    $_SESSION['FileManagerContext']="edit:answer:{$surveyid}";
     // Get languages select on survey.
     $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-    $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
-    $subquestiondata=$connect->GetArray($qquery);
-    if (count($subquestiondata)==0)
+    $sQuery = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$qid} AND language='{$baselang}'";
+    $sQuestiontype=$connect->GetOne($sQuery);
+    $aQuestiontypeInfo=getqtypelist($sQuestiontype,'array');
+    $iScaleCount=$aQuestiontypeInfo[$sQuestiontype]['subquestions'];
+    
+    for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
     {
-        $qquery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language)
-                   VALUES($surveyid,$gid,$qid,'SQ001',".db_quoteall($clang->gT('Some example subquestion')).",1,".db_quoteall($baselang).")";
-        $connect->Execute($qquery); //Checked
-
-        $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
-        $subquestiondata=$connect->GetArray($qquery);
-    }
-    // check that there are subquestions for every language supported by the survey
-    foreach ($anslangs as $language)
-    {
-        foreach ($subquestiondata as $row)
+        $sQuery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid={$qid} AND language='{$baselang}' and scale_id={$iScale}";
+        $subquestiondata=$connect->GetArray($sQuery);
+        if (count($subquestiondata)==0)
         {
-            $qquery = "SELECT count(*) FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$language."' AND qid=".$row['qid'];
-            $qrow = $connect->GetOne($qquery); //Checked
-            if ($qrow == 0)   // means that no record for the language exists in the questions table
-            {
-                db_switchIDInsert('questions',true);
-                $qquery = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,parent_qid,title,question,question_order,language)
-                           VALUES({$row['qid']},$surveyid,{$row['gid']},$qid,".db_quoteall($row['title']).",".db_quoteall($row['question']).",{$row['question_order']},".db_quoteall($language).")";
-                $connect->Execute($qquery); //Checked
-                db_switchIDInsert('questions',false);
-            }
+            $sQuery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language,scale_id)
+                       VALUES($surveyid,$gid,$qid,'SQ001',".db_quoteall($clang->gT('Some example subquestion')).",1,".db_quoteall($baselang).",{$iScale})";
+            $connect->Execute($sQuery); //Checked
+            $sQuery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid={$qid} AND language='{$baselang}' and scale_id={$iScale}"; 
+            $subquestiondata=$connect->GetArray($sQuery);
         }
+        // check that there are subquestions for every language supported by the survey
+        foreach ($anslangs as $language)
+        {
+            foreach ($subquestiondata as $row)
+            {
+                $sQuery = "SELECT count(*) FROM ".db_table_name('questions')." WHERE parent_qid={$qid} AND language='{$language}' AND qid={$row['qid']} and scale_id={$iScale}";  
+                $qrow = $connect->GetOne($sQuery); //Checked
+                if ($qrow == 0)   // means that no record for the language exists in the questions table
+                {
+                    db_switchIDInsert('questions',true);
+                    $sQuery = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,parent_qid,title,question,question_order,language, scale_id)
+                               VALUES({$row['qid']},$surveyid,{$row['gid']},$qid,".db_quoteall($row['title']).",".db_quoteall($row['question']).",{$row['question_order']},".db_quoteall($language).",{$iScale})";
+                    $connect->Execute($sQuery); //Checked
+                    db_switchIDInsert('questions',false);
+                }
+            }
+        }        
     }
+
 
     array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
 
