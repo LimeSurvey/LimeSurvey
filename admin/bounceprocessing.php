@@ -1,5 +1,4 @@
 <?php
-//require_once(dirname(__FILE__).'/../config.php');
 include_once('globalsettings.php');
 include_once('database.php');
 if($subaction=='bounceprocessing')
@@ -9,8 +8,7 @@ function bounceprocessing()
 	{global $connect,$scriptname;
 	$surveyidoriginal = $_GET['sid'];
 	$settings=getSurveyInfo($surveyidoriginal);
-		
-		   if ($settings['bounceprocessing']=='N')
+		                     if ($settings['bounceprocessing']=='N')
 				{	
 				}
 		else
@@ -45,7 +43,7 @@ function bounceprocessing()
 			   {
 				$finalhostname='{'.$hostname.'/imap/tls}INBOX';
 			   }
-			else
+			else                 
 			   {	
 				$finalhostname='{'.$hostname.'/imap}INBOX';
 			   }
@@ -55,7 +53,10 @@ function bounceprocessing()
 			$lasthinfo=imap_headerinfo($mbox,$count);
 			$datelc=$lasthinfo->date;
 			$datelcu = strtotime($datelc);
-			$gettimestamp = "select timestamp from ".db_table_name("surveys")." where sid='$surveyidoriginal';";
+            echo $datelc;
+            echo "<br>";
+            echo $datelcu;
+			$gettimestamp = "select bouncetime from ".db_table_name("surveys")." where sid='$surveyidoriginal';";
 		    $datelcufiles = $connect->Execute($gettimestamp);
 			$datelcufile = substr($datelcufiles,11);
 			while($datelcu > $datelcufile)
@@ -91,7 +92,7 @@ function bounceprocessing()
 		$lastcheckedinfo=imap_headerinfo($mbox,$count);
 		$datelcfinal=$lastcheckedinfo->date;
 		$datelcfinalu = strtotime($datelcfinal);
-		$entertimestamp = "update ".db_table_name("surveys")." set timestamp='$datelcfinalu' where sid='$surveyidoriginal';";
+		$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcfinalu' where sid='$surveyidoriginal';";
 			$executetimestamp = $connect->Execute($entertimestamp);
 		}
 	else

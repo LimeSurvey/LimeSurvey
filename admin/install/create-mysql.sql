@@ -210,7 +210,15 @@ CREATE TABLE `prefix_surveys` (
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
   `refurl` char(1) default 'N',
-  `datecreated` date default NULL,
+  `datecreated` date default NULL, 
+  `bouncetime` BIGINT(20),	
+  `bounceprocessing` varchar(1) default 'N',
+  `bounceaccounttype` VARCHAR(4),
+  `bounceaccounthost` VARCHAR(320),
+  `bounceaccountuser` VARCHAR(320),
+  `bounceaccountpass` VARCHAR(320),
+  `bounceaccountencryption` VARCHAR(3),
+
   `publicstatistics` char(1) default 'N',
   `publicgraphs` char(1) default 'N',
   `listpublic` char(1) default 'N',
@@ -223,7 +231,7 @@ CREATE TABLE `prefix_surveys` (
   `attributedescriptions` text,
   `emailresponseto` text default NULL,
   `tokenlength` tinyint(2) default '15',
-  PRIMARY KEY  (`sid`)
+   PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 

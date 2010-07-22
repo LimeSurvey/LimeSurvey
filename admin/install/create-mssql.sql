@@ -264,7 +264,7 @@ CREATE TABLE [prefix_surveys] (
   [attributedescriptions] text NULL,
   [emailresponseto] text NULL,
   [tokenlength] tinyint default '15',
-  [timestamp] BIGINT(20) NOT NULL,
+  [bouncetime] BIGINT(20) NOT NULL,
   [bounceprocessing] varchar(1) default 'N',
   [bounceaccounttype] VARCHAR(4) default NULL,
   [bounceaccounthost] VARCHAR(320) default NULL,

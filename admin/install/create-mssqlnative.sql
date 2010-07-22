@@ -264,7 +264,13 @@ CREATE TABLE [prefix_surveys] (
   [attributedescriptions] varchar(max),
   [emailresponseto] varchar(max),
   [tokenlength] tinyint default '15',
-  
+  [bouncetime] BIGINT(20) NOT NULL,
+  [bounceprocessing] varchar(1) default 'N',
+  [bounceaccounttype] VARCHAR(4) default NULL,
+  [bounceaccounthost] VARCHAR(320) default NULL,
+  [bounceaccountuser] VARCHAR(320) default NULL,
+  [bounceaccountpass] VARCHAR(320) default NULL,
+  [bounceaccountencryption] VARCHAR(3) default NULL,
   PRIMARY KEY  ([sid])
 ) 
 ;

@@ -286,11 +286,19 @@ CREATE TABLE prefix_surveys (
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
     assessments character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,
+    bouncetime bigint(20),
+    bounceprocessing character(1) default 'N'::bpchar,
+    bounceaccounttype character(4),
+    bounceaccounthost character(320),
+    bounceaccountuser character(320),
+    bounceaccountpass character(320),
+    bounceaccountencryption character(320)
     usetokens character(1) DEFAULT 'N'::bpchar,
     "bounce_email" character varying(320) NOT NULL,
-    attributedescriptions text,
+     attributedescriptions text,
 	emailresponseto text,
 	tokenlength smallint DEFAULT '15'
+
 );
 
 

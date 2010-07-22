@@ -4754,6 +4754,12 @@ $mail->AddCustomHeader($val);
     return $sent;
 }
 
+function str_get_html($htmlbody)
+{
+    return $htmlbody;
+    
+}
+
 /**
  *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
  *
