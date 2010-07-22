@@ -90,7 +90,7 @@
 
  	<script type="text/javascript">
         $(document).ready(function(){
-            
+
             var ia = $('#ia').val();
 
             /* Load the previously uploaded files */
@@ -198,7 +198,7 @@
                         } else {
                             button.text('Uploading');
                         }
-                    }, 200);
+                    }, 400);
                 },
                 onComplete: function(file, response){
                     button.text('Upload');
@@ -278,11 +278,7 @@
                 if (filecount > 0)
                     json += ",";
 
-                if (!$("#li_"+i).is(":visible"))
-                {
-                    i += 1;
-                }
-                else
+                if ($("#li_"+i).is(':visible'))
                 {
                     json += '{';
 
@@ -296,6 +292,10 @@
                             '"ext":"'    +$("#ext_"    +i).val()+'"}';
 
                     filecount += 1;
+                    i += 1;
+                }
+                else
+                {
                     i += 1;
                 }
             }
@@ -314,7 +314,7 @@
             }
             else
             {
-                pass = confirm ('Would you like to exit?');
+                var pass = confirm ('Would you like to exit?');
                 if (pass)
                 {
                     passJSON();
@@ -327,9 +327,9 @@
 
         function deletefile(i) {
         	if (window.XMLHttpRequest)
-                xmlhttp=new XMLHttpRequest();
+                var xmlhttp=new XMLHttpRequest();
             else
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 
             xmlhttp.onreadystatechange=function()
             {
@@ -369,7 +369,7 @@
 
         <!-- The upload button -->
         <div align="center" class="upload-div">
-            <button id="button1" class="upload-button" type="button">Upload</button>
+            <button id="button1" class="upload-button" type="button">Select file to upload</button>
         </div>
         
         <p class="uploadmsg">You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>

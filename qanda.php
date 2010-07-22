@@ -3602,30 +3602,63 @@ function do_file_upload($ia)
                             var \$this = $(this);
                             var horizontalPadding = 30;
                             var verticalPadding = 20;
-                            $('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-                                title: 'Upload your files',
-                                autoOpen: true,
-                                width: 984,
-                                height: 440,
-                                modal: true,
-                                resizable: false,
-                                autoResize: true,
-                                draggable: false,
-                                closeOnEscape: false,
-                                beforeclose: function() {
+                            $('#uploader').dialog('destroy');
+                            
+                            if ($('#uploader').length > 0)
+                            {
+
+                                $('iframe#uploader', parent.document).dialog({
+                                    title: 'Upload your files',
+                                    autoOpen: true,
+                                    width: 984,
+                                    height: 440,
+                                    modal: true,
+                                    resizable: false,
+                                    autoResize: true,
+                                    draggable: false,
+                                    closeOnEscape: false,
+                                    beforeclose: function() {
+                                        var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit();
+                                        return pass;
+                                    },
+                                    overlay: {
+                                        opacity: 0.85,
+                                        background: 'black'
+                                    },
+                                    buttons: {
+                                        'Save and exit': function() {
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                }).width(984 - horizontalPadding).height(440 - verticalPadding);
+                            }
+                            else
+                            {
+                                $('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
+                                    title: 'Upload your files',
+                                    autoOpen: true,
+                                    width: 984,
+                                    height: 440,
+                                    modal: true,
+                                    resizable: false,
+                                    autoResize: true,
+                                    draggable: false,
+                                    closeOnEscape: false,
+                                    beforeclose: function() {
                                         var pass = window.frames.uploader.saveAndExit();
                                         return pass;
                                     },
-                                overlay: {
-                                    opacity: 0.85,
-                                    background: 'black'
-                                },
-                                buttons: {
-                                    'Save and Exit': function() {
-                                        $(this).dialog('close');
+                                    overlay: {
+                                        opacity: 0.85,
+                                        background: 'black'
+                                    },
+                                    buttons: {
+                                        'Save and exit': function() {
+                                            $(this).dialog('close');
+                                        }
                                     }
-                                }
-                            }).width(984 - horizontalPadding).height(440 - verticalPadding);
+                                }).width(984 - horizontalPadding).height(440 - verticalPadding);
+                            }
                         });
                     });
                     
@@ -3644,7 +3677,7 @@ function do_file_upload($ia)
 
                         displayUploadedFiles(jsonstring, filecount);
 
-                    };
+                    }
 
                     function displayUploadedFiles(jsonstring, filecount) {
                         var jsonobj;
@@ -3688,15 +3721,15 @@ function do_file_upload($ia)
                             display += '</table>';
                             $('#uploadedfiles').html(display);
                         }
-                    };
+                    }
 
                     function showBasic() {
                         $('#basic').show();
-                    };
+                    }
 
                     function hideBasic() {
                         $('#basic').hide();
-                    };
+                    }
 
                 </script>";
 

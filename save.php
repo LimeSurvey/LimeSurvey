@@ -474,7 +474,7 @@ function createinsertquery()
                         ; // get out of here as this has already been saved into the filesystem
                     else
                     {
-                        $count = 0;
+/*                        $count = 0;
 
                         $query = "SELECT attribute, value FROM ".db_table_name("question_attributes")." WHERE qid = ".$fieldexists['qid'];
                         $result = db_execute_assoc($query) or safe_die("Failed to fetch question attributes");
@@ -482,7 +482,7 @@ function createinsertquery()
                             $qAttributes[$row['attribute']] = $row['value'];
 
                         $validExtensions = explode(",", $qAttributes['allowed_filetypes']);
-/*
+
                         // for the HTML form version
                         for ($i = 1; $i <= $qAttributes['max_num_of_files']; $i++)
                         {
@@ -514,13 +514,15 @@ function createinsertquery()
 
                             for ($i = 0; $i < count($phparray); $i++)
                             {
-                                $phparray[$count]->filename = randomkey(20);
-                                if (!rename($tmp . rawurldecode($phparray[$i]->name), $target . $phparray[$i]->filename)){
-                                    echo "Error Moving file to its destination";}
+                                $phparray[$i]->filename = randomkey(20);
+                                if (!rename($tmp . rawurldecode($phparray[$i]->name), $target . $phparray[$i]->filename))
+                                    echo "Error Moving file to its destination";
+
+                                $_SESSION[$value] = json_encode($phparray);
                             }
                         }
                     }
-                    $values[] = $connect->qstr(json_encode($phparray), get_magic_quotes_gpc());
+                    $values[] = $connect->qstr($_SESSION[$value], get_magic_quotes_gpc());
                 }
 
                 else

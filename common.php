@@ -4279,7 +4279,7 @@ function questionAttributes($returnByName=false)
     "inputtype"=>"textarea",
     'default'=>"png, gif, doc, odt",
 	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
-	"caption"=>$clang->gT("Allowed file types (eg: pdf, doc, odt)"));
+	"caption"=>$clang->gT("Allowed file types"));
 
 
     //This builds a more useful array (don't modify)
