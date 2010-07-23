@@ -309,19 +309,16 @@
 
             if (minfiles != 0 && filecount < minfiles)
             {
-                alert("Please upload " + (minfiles-filecount) + " more files");
-                return false;
+                var confirmans = confirm("You need to upload " + (minfiles - filecount) + " more files for this question.\n\Are you sure you want to exit ?")
+                if (confirmans)
+                    return true
+                else
+                    return false;
             }
             else
             {
-                var pass = confirm ('Would you like to exit?');
-                if (pass)
-                {
-                    passJSON();
-                    return true;
-                }
-                else
-                    return false;
+                passJSON();
+                return true;
             }
         }
 
@@ -369,7 +366,7 @@
 
         <!-- The upload button -->
         <div align="center" class="upload-div">
-            <button id="button1" class="upload-button" type="button">Select file to upload</button>
+            <button id="button1" class="upload-button" type="button">Select file</button>
         </div>
         
         <p class="uploadmsg">You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>

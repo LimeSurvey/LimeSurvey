@@ -252,6 +252,9 @@ if ($subaction == "id")
     {
         $browseoutput .=  "<img align='left' hspace='0' border='0' src='$imagefiles/delete_disabled.png' alt='".$clang->gT("You don't have permission to delete this entry.")."'/>";
     }
+        $browseoutput .= "<a href='#' title='".$clang->gTview("Download files for this entry")."' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadfile='.$id.'&amp;sid='.$surveyid)."\" >"
+                ."<img align='left' hspace='0' border='0' src='$imagefiles/download.png' alt='".$clang->gT("Download files for this entry")."' /></a>\n";
+    
     //Export this response
     $browseoutput .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
             "title='".$clang->gTview("Export this Response")."' >" .
@@ -296,9 +299,11 @@ if ($subaction == "id")
                     if (isset($phparray[$index]))
                     {
                         if ($metadata === "size")
-                            $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]))." KB";
-
-                        $browseoutput .= rawurldecode($phparray[$index][$metadata]);
+                            $browseoutput .= rawurldecode(((int)($phparray[$index][$metadata]))." KB");
+                        else if ($metadata === "name")
+                            $browseoutput .= "<a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile='.$phparray[$index][$metadata].'&amp;fieldname='.$fnames[$i][0].'&amp;id='.$id.'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a>";
+                        else
+                            $browseoutput .= rawurldecode($phparray[$index][$metadata]);
                     }
                     else
                         $browseoutput .= "";
@@ -362,7 +367,7 @@ elseif ($subaction == "all")
                 $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked
             }
         }
-        // Download all the marked file bundles - checked
+        // Download all files for all marked responses  - checked
         else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
         {
             $fieldmap = createFieldMap($surveyid, 'full');
@@ -397,15 +402,16 @@ elseif ($subaction == "all")
                 $metadata = array();
                 while ($metadata = $filearray->FetchRow())
                 {
+                    $filecount = 0;
                     foreach ($metadata as $data)
                     {
                         $phparray = json_decode($data, true);
                         for ($i = 0; $i < count($phparray); $i++)
                         {
-                            $filelist[$i]['filename'] = $phparray[$i]['filename'];
-                            $filelist[$i]['name'] = rawurldecode($phparray[$i]['name']);
+                            $filelist[$filecount]['filename'] = $phparray[$i]['filename'];
+                            $filelist[$filecount]['name'] = rawurldecode($phparray[$i]['name']);
+                            $filecount++;
                         }
-
                     }
                 }
             }
@@ -413,7 +419,7 @@ elseif ($subaction == "all")
             $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
 
             $zip = new ZipArchive();
-            $zipfilename = "uploadedfiles.zip";
+            $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
             if (file_exists($tmpdir."/".$zipfilename))
                 unlink($tmpdir."/".$zipfilename);
 
@@ -444,7 +450,7 @@ elseif ($subaction == "all")
             }
         }
     }
-    // Download individual file bundle via the row download icon - checked
+    // Download all files for this entry - checked
     else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] != '' && $_POST['downloadfile'] !== true)
     {
         $_POST['downloadfile'] = (int) $_POST['downloadfile'];
@@ -473,13 +479,15 @@ elseif ($subaction == "all")
         $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
         while ($metadata = $filearray->FetchRow())
         {
+            $filecount = 0;
             foreach ($metadata as $data)
             {
                 $phparray = json_decode($data, true);
                 for ($i = 0; isset($phparray[$i]); $i++)
                 {
-                    $filelist[$i]['filename'] = $phparray[$i]['filename'];
-                    $filelist[$i]['name'] = rawurldecode($phparray[$i]['name']);
+                    $filelist[$filecount]['filename'] = $phparray[$i]['filename'];
+                    $filelist[$filecount]['name'] = rawurldecode($phparray[$i]['name']);
+                    $filecount++;
                 }
             }
         }
@@ -488,7 +496,7 @@ elseif ($subaction == "all")
         $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
         
         $zip = new ZipArchive();
-        $zipfilename = "uploadedfiles.zip";
+        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
         if (file_exists($tmpdir ."/". $zipfilename))
             unlink($tmpdir . "/" . $zipfilename);
 
@@ -515,6 +523,43 @@ elseif ($subaction == "all")
             readfile($tmpdir . "/" . $zipfilename);
             //unlink($tmpdir . "/" . $zipfilename);
             exit;
+        }
+    }
+    else if (isset($_POST['downloadindividualfile']) && $_POST['downloadindividualfile'] != '')
+    {
+        $id = (int)$_POST['id'];
+        $downloadindividualfile = $_POST['downloadindividualfile'];
+        $fieldname = $_POST['fieldname'];
+
+        $query = "SELECT $fieldname FROM $surveytable WHERE id={$id}";
+        $result=db_execute_num($query);
+        $row=$result->FetchRow();
+        $phparray = json_decode($row[0]);
+
+        for ($i = 0; $i < count($phparray); $i++)
+        {
+            if ($phparray[$i]->name == $downloadindividualfile)
+            {
+                $dir = dirname(getcwd());
+                $file = $dir."/upload/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
+
+                if (file_exists($file)) {
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename=' . $phparray[$i]->name);
+                    header('Content-Transfer-Encoding: binary');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($file));
+                    ob_clean();
+                    flush();
+                    readfile($file);
+                    //unlink($file);
+                    exit;
+                }
+                break;
+            }
         }
     }
     
@@ -785,7 +830,7 @@ elseif ($subaction == "all")
                 ."<td align='center'>
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
-        <a><img id='downloadfile_{$dtrow['id']}' src='$imagefiles/down.png' alt='".$clang->gT('Download these files')."' class='downloadfile'/></a>
+        <a><img id='downloadfile_{$dtrow['id']}' src='$imagefiles/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
 
         $i = 0;
@@ -829,9 +874,11 @@ elseif ($subaction == "all")
                 if (isset($phparray[$index]))
                 {
                     if ($metadata === "size")
-                        $phparray[$index][$metadata] = ((int)($phparray[$index][$metadata]))." KB";
-                    
-                    $browseoutput .= "<td align='center'>".rawurldecode($phparray[$index][$metadata])."</td>\n";
+                        $browseoutput .= "<td align='center'>".rawurldecode(((int)($phparray[$index][$metadata]))." KB")."</td>\n";
+                    else if ($metadata === "name")
+                        $browseoutput .= "<td align='center'><a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile='.$phparray[$index][$metadata].'&amp;fieldname='.$fnames[$i][0].'&amp;id='.$dtrow['id'].'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a></td>\n";
+                    else
+                        $browseoutput .= "<td align='center'>".rawurldecode($phparray[$index][$metadata])."</td>\n";
                 }
                 else
                     $browseoutput .= "<td align='center'>&nbsp;</td>\n";

@@ -4251,7 +4251,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>128,
     "inputtype"=>"integer",
     'default'=>10240,
-	"help"=>$clang->gT("The surveyee cannot upload a single file larger than this size"),
+	"help"=>$clang->gT("The participant cannot upload a single file larger than this size"),
 	"caption"=>$clang->gT("Maximum file size allowed (in KB)"));
 
     $qattributes["max_num_of_files"]=array(
@@ -4260,7 +4260,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>130,
     "inputtype"=>"integer",
     'default'=>1,
-	"help"=>$clang->gT("Maximum number of files that the surveyee can upload for this question"),
+	"help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
 	"caption"=>$clang->gT("Max number of files"));
 
     $qattributes["min_num_of_files"]=array(
@@ -4269,7 +4269,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>132,
     "inputtype"=>"integer",
     'default'=>0,
-	"help"=>$clang->gT("Minimum number of files that the surveyee must upload for this question"),
+	"help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
 	"caption"=>$clang->gT("Min number of files"));
 
     $qattributes["allowed_filetypes"]=array(
