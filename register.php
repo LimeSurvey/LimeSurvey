@@ -177,11 +177,11 @@ else
 //PRINT COMPLETED PAGE
 if (!$thissurvey['template'])
 {
-    $thistpl=getTemplatePath(validate_templatedir('default'));
+    $thistpl=sGetTemplatePath(validate_templatedir('default'));
 } 
 else 
 {
-    $thistpl=getTemplatePath(validate_templatedir($thissurvey['template']));
+    $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
 }
 
 sendcacheheaders();
