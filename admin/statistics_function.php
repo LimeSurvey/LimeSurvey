@@ -1742,7 +1742,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if (isset($al[2]) && $al[2])
                     {
                         //handling for "other" option
-                        if ($al[1] == $statlang->gT("Other"))
+                        if ($al[0] == $statlang->gT("Other"))
                         {
                             //get data
                             $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
@@ -2170,7 +2170,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //output
                         if ((incompleteAnsFilterstate() != "filter"))
                         {
-                            $fname=$statlang->gT("Non completed or Not displayed");
+                            $fname=$statlang->gT("Not completed or Not displayed");
                         }
                         else
                         {
@@ -2202,7 +2202,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //edit labels and put them into antoher array
                         if ((incompleteAnsFilterstate() != "filter"))
                         {
-                            $lbl[] = wordwrap(FlattenText($statlang->gT("Non completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                            $lbl[] = wordwrap(FlattenText($statlang->gT("Not completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
                         }
                         else
                         {
