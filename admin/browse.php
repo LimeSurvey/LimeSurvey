@@ -324,7 +324,7 @@ elseif ($subaction == "all")
     $fields=createFieldMap($surveyid, 'full', false, false, $language);
 
     //add token to top of list if survey is not private
-    if ($surveyinfo['private'] == "N")
+    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
     {
         $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
         $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);

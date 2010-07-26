@@ -553,7 +553,7 @@ function quickaddlabels()
             if (thisrow.length==1)
             {
                 thisrow[1]=thisrow[0];
-                thisrow[0]=k+1;
+                thisrow[0]=parseInt(k)+1;
             }
              
             if (x==0) {
