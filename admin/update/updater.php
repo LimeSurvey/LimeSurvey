@@ -10,9 +10,9 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: updater.php 8987 2010-07-27 12:59:34Z c_schmitz $
  */
-$updaterversion='$Id:';
+$updaterversion='$Rev$';
  
 if (isset($_REQUEST['update'])) die();
 
