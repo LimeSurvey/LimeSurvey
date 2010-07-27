@@ -1,5 +1,20 @@
 <?php
-
+/*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id$
+ */
+$updaterversion='$Id:';
+ 
+if (isset($_REQUEST['update'])) die();
 
 if ($action=='update'){
     if ($subaction=='step4')
@@ -14,9 +29,57 @@ if ($action=='update'){
     {
         $adminoutput=UpdateStep2();
     }
-    else $adminoutput=UpdateStep1();
+    else 
+    {
+       // $adminoutput=RunUpdaterUpdate();
+        $adminoutput=UpdateStep1();    
+    }
 }
 
+
+function RunUpdaterUpdate()
+{
+    if (!is_writable($tempdir))
+    {
+        $output.= "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
+        $error=true;
+    }
+    if (!is_writable($rootdir.DIRECTORY_SEPARATOR.'version.php'))
+    {
+        $output.= "<li class='errortitle'>".sprintf($clang->gT("Version file is not writable (%s). Please set according file permissions."),$rootdir.DIRECTORY_SEPARATOR.'version.php')."</li>";
+        $error=true;
+    }
+    $output.='</ul><h3>'.$clang->gT('Change log').'</h3>';
+    require_once($homedir."/classes/http/http.php");
+    $updatekey=getGlobalSetting('updatekey');
+
+    $http=new http_class;
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+    $http->GetRequestArguments("http://update.limesurvey.org/updates/changelog/$buildnumber/$updatebuild/$updatekey",$arguments);
+
+    $updateinfo=false;
+    $httperror=$http->Open($arguments);
+    $httperror=$http->SendRequest($arguments);
+
+    if($httperror=="") {
+        $body=''; $full_body='';
+        for(;;){
+            $httperror = $http->ReadReplyBody($body,10000);
+            if($httperror != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }
+        $changelog=json_decode($full_body,true);
+        $output.='<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
+    }
+    else
+    {
+        print( $httperror );
+    }    
+}
 
 function UpdateStep1()
 {
