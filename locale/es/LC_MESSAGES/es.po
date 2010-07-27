@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-26 12:00+0200\n"
-"PO-Revision-Date: 2010-07-26 13:10-0600\n"
+"POT-Creation-Date: 2010-07-27 23:00+0200\n"
+"PO-Revision-Date: 2010-07-27 16:34-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <k@martinperez.es>\n"
 "Language-Team: Español <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -1566,8 +1566,6 @@ msgstr "Registro Borrado"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:896
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:897
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2092
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1722
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1846
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2164
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2307
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2309
@@ -8958,6 +8956,11 @@ msgstr "Escenario"
 msgid "Previous questions"
 msgstr "Preguntas anteriores"
 
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1722
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1846
+msgid "Token fields"
+msgstr "Campos del encuestado/a"
+
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1779
 msgid "Comparison operator"
 msgstr "Operador de comparación"
@@ -9128,11 +9131,31 @@ msgstr "Sus datos deberían ser importados ahora."
 msgid "Not Selected"
 msgstr "No seleccionado"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:31
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:44
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:112
+#, php-format
+msgid "Tempdir %s is not writable"
+msgstr "No se tiene permiso de escritura sobre el directorio temporal %s"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:49
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:117
+#, php-format
+msgid ""
+"Version file is not writable (%s). Please set according file permissions."
+msgstr ""
+"El fichero de la versión no puede ser escrito (%s). Por favor establezca los "
+"permisos adecuados para ese fichero."
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:52
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:120
+msgid "Change log"
+msgstr "Bitácora de cambios"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
 msgid "Welcome to the ComfortUpdate"
 msgstr "Bienvenido al Asistente de Actualización"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:32
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:95
 msgid ""
 "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the "
 "latest version of LimeSurvey."
@@ -9140,11 +9163,11 @@ msgstr ""
 "El asistente de actualización de LimeSurvey es un procedimiento sencillo "
 "para actualizar rápidamente a la última versión de LimeSurvey."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:33
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:96
 msgid "The following steps will be done by this update:"
 msgstr "Se realizarán los siguientes pasos en esta actualización:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:34
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:97
 msgid ""
 "Your LimeSurvey installation is checked if the update can be run "
 "successfully."
@@ -9152,25 +9175,25 @@ msgstr ""
 "Se revisará que su instalación de LimeSurvey pueda ser actualizada sin "
 "inconvenientes."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:35
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:98
 msgid "Your DB and any changed files will be backed up."
 msgstr ""
 "Su base de datos y cualquier archivo que haya sido modificado será "
 "respaldado."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:36
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:99
 msgid "New files will be downloaded and installed."
 msgstr "Se descargarán e instalarán nuevos archivos."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:37
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:100
 msgid "If necessary the database will be updated."
 msgstr "Si fuese necesario, la base de datos será actualizada."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:38
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:101
 msgid "Checking basic requirements..."
 msgstr "Comprobando requisitos básicos..."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:40
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:103
 msgid ""
 "You need an update key to run the comfort update. During the beta test of "
 "this update feature the key \"LIMESURVEYUPDATE\" can be used."
@@ -9179,36 +9202,19 @@ msgstr ""
 "actualización. Durante las pruebas de esta nueva característica puede "
 "utilizar la clave \"LIMESURVEYUPDATE\"."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:41
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:104
 msgid "Please enter a valid update-key:"
 msgstr "Por favor, introduzca una clave de actualización válida:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:42
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:105
 msgid "Save update key"
 msgstr "Guardar la clave de actualización"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:45
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:108
 msgid "Update key: Valid"
 msgstr "Clave de actualización válida"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:49
-#, php-format
-msgid "Tempdir %s is not writable"
-msgstr "No se tiene permiso de escritura sobre el directorio temporal %s"
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:54
-#, php-format
-msgid ""
-"Version file is not writable (%s). Please set according file permissions."
-msgstr ""
-"El fichero de la versión no puede ser escrito (%s). Por favor establezca los "
-"permisos adecuados para ese fichero."
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:57
-msgid "Change log"
-msgstr "Bitácora de cambios"
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:92
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:155
 msgid ""
 "When checking your installation we found one or more problems. Please check "
 "for any error messages above and fix these before you can proceed."
@@ -9217,34 +9223,34 @@ msgstr ""
 "favor compruebe los mensajes de error arriba indicados y corríjalos para "
 "poder proseguir."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:256
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:157
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:319
 msgid "Check again"
 msgstr "Compruebe nuevamente"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:98
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:161
 msgid "Everything looks alright. Please proceed to the next step."
 msgstr ""
 "Todo parece cumplir los requisitos adecuadamente. Por favor proceda al "
 "siguiente paso."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:101
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:262
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:349
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:164
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:325
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:412
 #, php-format
 msgid "Proceed to step %s"
 msgstr "Proceder al paso %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:117
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:180
 msgid "ComfortUpdate Step 2"
 msgstr "Paso 2 del Asistente de Actualización"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:148
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:156
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:280
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:288
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:362
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:370
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:211
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:219
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:343
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:351
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:425
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:433
 msgid ""
 "On requesting the update information from limesurvey.org there has been an "
 "error:"
@@ -9252,17 +9258,17 @@ msgstr ""
 "Ha sucedido un error cuando se estaba solicitando la información de "
 "actualización de LimeSurvey.org:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:153
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:285
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:367
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:216
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:348
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:430
 msgid "Your update key is invalid and was removed. "
 msgstr "Su clave de actualización es inválida y fue eliminada."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:166
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:229
 msgid "Update server busy"
 msgstr "El servidor de actualizaciones está saturado"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:167
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:230
 msgid ""
 "The update server seems to be currently busy. This happens most likely if "
 "the necessary update files for a new version are prepared."
@@ -9271,19 +9277,19 @@ msgstr ""
 "podría estar sucediendo porque se están preparando los ficheros de "
 "actualización necesarios para una nueva versión."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:168
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:231
 msgid "Please be patient and try again in about 10 minutes."
 msgstr "Por favor, inténtelo nuevamente en unos 10 minutos."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:169
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:232
 msgid "Back to global settings"
 msgstr "Volver a las opciones generales"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:212
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:275
 msgid "Checking existing LimeSurvey files..."
 msgstr "Comprobando los archivos existentes de LimeSurvey..."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:215
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:278
 msgid ""
 "Warning: The following files/directories need to be updated but their "
 "permissions are set to read-only."
@@ -9291,7 +9297,7 @@ msgstr ""
 "Advertencia: Los siguientes ficheros/directorios necesitan ser actualizados, "
 "pero sólo tienen permiso de lectura."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:216
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:279
 msgid ""
 "You must set according write permissions on these filese before you can "
 "proceed. If you are unsure what to do please contact your system "
@@ -9301,7 +9307,7 @@ msgstr ""
 "para poder continuar. Si no está seguro/a de cómo hacerlo, contacte con el "
 "administrador técnico de su sistema para pedirle consejo."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:228
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:291
 msgid ""
 "The following files would be added by the update but already exist. This is "
 "very unusual and may be co-incidental."
@@ -9309,15 +9315,15 @@ msgstr ""
 "Los siguientes archivos serán añadidos por la actualización, pero ya "
 "existen. Esto es muy inusual y puede ser una coincidencia."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:229
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:242
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:292
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:305
 msgid ""
 "We recommend that these files should be replaced by the update procedure."
 msgstr ""
 "Le recomendamos que esos ficheros sean reemplazados por el procedimiento de "
 "actualización."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:241
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:304
 msgid ""
 "The following files will be modified or deleted but were already modified by "
 "someone else."
@@ -9325,7 +9331,7 @@ msgstr ""
 "Los siguientes ficheros serán modificados o eliminados, sin embargo ya han "
 "sido modificados anteriormente."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:254
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:317
 msgid ""
 "When checking your file permissions we found one or more problems. Please "
 "check for any error messages above and fix these before you can proceed."
@@ -9334,41 +9340,41 @@ msgstr ""
 "o más problemas. Por favor revise los mensajes de error anteriores y "
 "repárelos para poder continuar."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:260
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:323
 msgid "Please check any problems above and then proceed to the next step."
 msgstr ""
 "Por favor, compruebe cualquiera de los problemas mostrados anteriormente y "
 "proceda al paso siguiente."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:276
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:339
 msgid "ComfortUpdate Step 3"
 msgstr "Paso 3 del Asistente de Actualización"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:277
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:340
 msgid "Creating DB & file backup"
 msgstr "Creación de respaldo de Base de Datos y archivos"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:320
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:383
 msgid "Creating file backup... "
 msgstr "Creando respaldo de archivos..."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:327
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:390
 msgid "File backup created:"
 msgstr "Respaldo de archivos creado:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:335
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:398
 msgid "Creating database backup... "
 msgstr "Creando respaldo de base de datos..."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:339
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:402
 msgid "DB backup created:"
 msgstr "Respaldo de Base de Datos creado:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:344
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:407
 msgid "No DB backup created:"
 msgstr "No se pudo crear un respaldo de la Base de Datos:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:344
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:407
 msgid ""
 "Database backup functionality is currently not available for your database "
 "type. Before proceeding please backup your database using a backup tool!"
@@ -9378,26 +9384,26 @@ msgstr ""
 "base de datos utilizando la herramienta recomendada por los/as "
 "desarrolladores/as de dicho sistema gestor de bases de datos."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:347
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:410
 msgid "Please check any problems above and then proceed to the final step."
 msgstr ""
 "Por favor compruebe cualquiera de los problemas mostrados anteriormente y "
 "proceda al paso siguiente."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:359
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:422
 msgid "ComfortUpdate Step 4"
 msgstr "Paso 4 del Asistente de Actualización"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:432
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:495
 #, php-format
 msgid "File deleted: %s"
 msgstr "Fichero eliminado: %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:444
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:507
 msgid "New files were successfully installed."
 msgstr "Se instalaron correctamente nuevos archivos."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:450
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:513
 msgid ""
 "There was a problem downloading the update file. Please try to restart the "
 "update process."
@@ -9405,23 +9411,23 @@ msgstr ""
 "Hubo un problema descargando el fichero de actualización. Por favor intente "
 "reiniciar el proceso de actualización."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:470
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:533
 #, php-format
 msgid "Buildnumber was successfully updated to %s."
 msgstr "La versión del sistema ha sido actualizada correctamente a %s."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:471
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:534
 msgid "Please check any problems above - update was done."
 msgstr ""
 "Por favor compruebe cualquiera de los problemas mostrados anteriormente - la "
 "actualización ha concluido."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:475
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:538
 #: /var/lib/limesurvey-svn/subversion1x/common.php:250
 msgid "Back to main menu"
 msgstr "Volver al menú principal"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:502
+#: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:565
 #, php-format
 msgid "Database has been successfully upgraded to version %s"
 msgstr "La Base de Datos se ha actualizado exitosamente a la versión %s"
@@ -9586,8 +9592,8 @@ msgstr "Porcentaje"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2173
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2205
-msgid "Non completed or Not displayed"
-msgstr "No completada o no mostrada"
+msgid "Not completed or Not displayed"
+msgstr "No completada o No mostrada"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2177
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2209
