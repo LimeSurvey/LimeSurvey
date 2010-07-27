@@ -3037,7 +3037,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $pdf->AddPage('P','A4');
 
                             $pdf->titleintopdf($pdfTitle,$titleDesc);
-                            $pdf->Image($tempdir."/".$cachefilename, 5, 70, 200, 200, '', $rooturl."/admin/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true);
+                            $pdf->Image($tempdir."/".$cachefilename, 5, 70, 200, 200, '', $homeurl."/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true);
 
                             break;
                         case 'html':

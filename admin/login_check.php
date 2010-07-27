@@ -150,7 +150,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
     if($action == "forgotpassword")
     {
         $loginsummary = '
-			<form name="forgot" id="forgot" method="post" action="'.$rooturl.'/admin/admin.php" >
+			<form name="forgot" id="forgot" method="post" action="'.$homeurl.'/admin.php" >
 				<p><strong>'.$clang->gT('You have to enter user name and email.').'</strong></p>
 
 				<table>
@@ -189,11 +189,11 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 
         if (!isset($logoutsummary))
         {
-            $loginsummary = "<form name='loginform' id='loginform' method='post' action='$rooturl/admin/admin.php' ><p><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
+            $loginsummary = "<form name='loginform' id='loginform' method='post' action='$homeurl/admin.php' ><p><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
         }
         else
         {
-            $loginsummary = "<form name='loginform' id='loginform' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
+            $loginsummary = "<form name='loginform' id='loginform' method='post' action='$homeurl/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
         }
 
         $loginsummary .= "

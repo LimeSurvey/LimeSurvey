@@ -25,7 +25,7 @@ $clang = new limesurvey_lang($defaultlang);
 
 // to generate statistics
 include_once($rootdir."/classes/core/sanitize.php");
-include_once($rootdir.'/admin/statistics_function.php');
+include_once($homedir.'/statistics_function.php');
 
 /**
  * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting

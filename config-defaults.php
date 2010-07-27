@@ -468,7 +468,7 @@ $tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical 
 // example: "x:/limesurvey/tmp". We don't know why.
 $fckeditordir   =   "$homeurl/scripts/fckeditor.266";
 $fckeditexpandtoolbar   =   true; // defines if the FCKeditor toolbar should be opened by default
-$pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
+$pdfexportdir   = "$homedir/classes/tcpdf";  //Directory with the tcpdf.php extensiontcpdf.php
 $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts
 
 // Computing relative url
