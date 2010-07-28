@@ -460,7 +460,7 @@ for ($i=0; $i<$fieldcount; $i++)
         if ($type == "csv") {$firstline .= "\"".$elang->gT("Date Started")."\"$separator";}
         else {$firstline .= $elang->gT("Date Started")."$separator";}
     }
-    elseif ($fieldinfo == "completed")
+    elseif ($fieldinfo == "submitdate")
     {
         if ($type == "csv") {$firstline .= "\"".$elang->gT("Completed")."\"$separator";}
         else {$firstline .= $elang->gT("Completed")."$separator";}
