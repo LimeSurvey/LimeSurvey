@@ -37,7 +37,6 @@
         }
 
         .upload-button {
-            cursor: pointer;
             border: 1px solid #79B7E7;
             background: url("../images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
             color: #5670A1;
@@ -54,15 +53,7 @@
             width: 100px;
             text-align: center;
         }
-
-        .upload-div button {
-            cursor: pointer;
-        }
-
-        .upload-div button hover {
-            cursor: pointer;
-        }
-
+        
         .success, .error {
             border: 1px solid;
             margin: 15px 200px 20px 200px;
@@ -84,8 +75,6 @@
             background-image: url('images/error_notice.png');
             text-indent: 1.5em;
         }
-
-
 	</style>
 
  	<script type="text/javascript">
@@ -114,7 +103,7 @@
                                 "<td  align='center' width='50%' padding='20px' >";
                             
                     if (isValueInArray(image_extensions, json[i].ext))
-                        previewblock += "<img src='upload/tmp/"+decodeURIComponent(json[i].name)+"' height='60px' />";
+                        previewblock += "<img src='upload/tmp/"+decodeURIComponent(json[i].name)+"' height='60px' />"+decodeURIComponent(json[i].name);
                     else
                         previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i].name);
 
@@ -127,7 +116,7 @@
                     else if ($('#show_comment').val() == 1)
                         previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='"+json[i].comment+"' id='comment_"+i+"' /></td>";
 
-                    previewblock += "<td align='center' width='20%' ><img src='images/trash.png' onclick='deletefile("+i+")' /></td></tr></table>"+
+                    previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='images/delete.png' onclick='deletefile("+i+")' /></td></tr></table>"+
                             "<input type='hidden' id='size_"    +i+"' value="+json[i].size+" />"+
                             "<input type='hidden' id='name_"    +i+"' value="+json[i].name+" />"+
                             "<input type='hidden' id='filename_"+i+"' value="+json[i].filename+" />"+
@@ -201,7 +190,7 @@
                     }, 400);
                 },
                 onComplete: function(file, response){
-                    button.text('Upload');
+                    button.text('Select file');
                     window.clearInterval(interval);
                     // enable upload button
                     this.enable();
@@ -234,7 +223,7 @@
                         else if ($("#show_comment").val() == 1)
                             previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='' id='comment_"+count+"' /></td>";
 
-                        previewblock += "<td  align='center' width='20%'><img src='images/trash.png' onclick='deletefile("+count+")'/></td>"+
+                        previewblock += "<td  align='center' width='20%'><img src='images/delete.png' onclick='deletefile("+count+")'/></td>"+
                                                 "</tr></table>"+
                                                 "<input type='hidden' id='size_"+count+"' value="+metadata.size+" />"+
                                                 "<input type='hidden' id='name_"+count+"' value="+metadata.name+" />"+
@@ -366,7 +355,7 @@
 
         <!-- The upload button -->
         <div align="center" class="upload-div">
-            <button id="button1" class="upload-button" type="button">Select file</button>
+            <button id="button1" class="upload-button" type="button" >Select file</button>
         </div>
         
         <p class="uploadmsg">You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>

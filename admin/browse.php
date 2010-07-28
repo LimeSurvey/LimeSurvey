@@ -350,7 +350,37 @@ elseif ($subaction == "all")
     //Delete Individual answer using inrow delete buttons/links - checked
     if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked')
     {
-        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value     
+        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value
+
+        // delete the files as well if its a fuqt
+
+        $fieldmap = createFieldMap($surveyid);
+        $fuqtquestions = array();
+        // find all fuqt questions
+        foreach ($fieldmap as $field)
+        {
+            if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
+                $fuqtquestions[] = $field['fieldname'];
+        }
+
+        // find all responses (filenames) to the fuqt questions
+        $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
+        $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+
+        while($json = $responses->FetchRow())
+        {
+            foreach ($fuqtquestions as $fieldname)
+            {
+                $phparray = json_decode($json[$fieldname]);
+                foreach($phparray as $metadata)
+                {
+                    $path = dirname(getcwd())."/upload/surveys/".$surveyid."/files/";
+                    unlink($path.$metadata->filename); // delete the file
+                }
+            }
+        }
+
+        // delete the row
         $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
         $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }

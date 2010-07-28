@@ -3586,6 +3586,24 @@ function do_file_upload($ia)
 
     $currentdir = getcwd();
     $pos = stripos($currentdir, "admin");
+    
+    if ($pos)
+    {
+        $uploadbutton = "<h2><a class='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
+        $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
+    }
+    else if ($thissurvey['active'] != "Y")
+    {
+        $uploadbutton = "<h2><a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
+        $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
+    }
+    else
+    {
+        $uploadbutton = "<h2><a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=0&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
+        $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
+    }
+
+
     // Modal dialog
     $answer =  "<script type='text/javascript'>
 
@@ -3597,7 +3615,7 @@ function do_file_upload($ia)
                     });
 
                     $(function() {
-                        $('#upload').click(function(e) {
+                        $('.upload').click(function(e) {
                             e.preventDefault();
                             var \$this = $(this);
                             var horizontalPadding = 30;
@@ -3716,7 +3734,7 @@ function do_file_upload($ia)
                                 if ($show_comment)
                                     $answer .= "display += '<td>'+jsonobj[i].comment+'</td>';";
 
-        $answer .= "            display += '<td>'+decodeURIComponent(jsonobj[i].name)+'</td></tr><tr><td>&nbsp;</td></tr>';
+        $answer .= "            display += '<td>'+decodeURIComponent(jsonobj[i].name)+'</td><td>" . $editbutton . "</td></tr>';
                             }
                             display += '</table>';
                             $('#uploadedfiles').html(display);
@@ -3733,16 +3751,11 @@ function do_file_upload($ia)
 
                 </script>";
 
-    
-    if ($pos)
-        $answer .= "<h2><a id='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
-    else if ($thissurvey['active'] != "Y")
-        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
-    else
-        $answer .= "<h2><a id='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=0&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
+    $answer .= $uploadbutton;
 
     $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
     $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
+
     if (array_key_exists($ia[1]."_filecount", $_SESSION))
         $answer .= $_SESSION[$ia[1]."_filecount"]." />";
     else
