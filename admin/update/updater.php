@@ -12,7 +12,8 @@
  *
  * $Id: updater.php 8987 2010-07-27 12:59:34Z c_schmitz $
  */
-$updaterversion='$Rev$';
+$updaterversion=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
+$updaterversion=$updaterversion[1];
  
 if (isset($_REQUEST['update'])) die();
 
@@ -31,7 +32,7 @@ if ($action=='update'){
     }
     else 
     {
-       // $adminoutput=RunUpdaterUpdate();
+        $adminoutput=RunUpdaterUpdate();
         $adminoutput=UpdateStep1();    
     }
 }
@@ -39,46 +40,124 @@ if ($action=='update'){
 
 function RunUpdaterUpdate()
 {
-    if (!is_writable($tempdir))
-    {
-        $output.= "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
-        $error=true;
-    }
-    if (!is_writable($rootdir.DIRECTORY_SEPARATOR.'version.php'))
-    {
-        $output.= "<li class='errortitle'>".sprintf($clang->gT("Version file is not writable (%s). Please set according file permissions."),$rootdir.DIRECTORY_SEPARATOR.'version.php')."</li>";
-        $error=true;
-    }
-    $output.='</ul><h3>'.$clang->gT('Change log').'</h3>';
+    global $homedir, $debug, $updaterversion, $versionnumber;
     require_once($homedir."/classes/http/http.php");
-    $updatekey=getGlobalSetting('updatekey');
 
     $http=new http_class;
+
     /* Connection timeout */
     $http->timeout=0;
     /* Data transfer timeout */
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-    $http->GetRequestArguments("http://update.limesurvey.org/updates/changelog/$buildnumber/$updatebuild/$updatekey",$arguments);
+    $http->GetRequestArguments("http://update.limesurvey.org?updaterbuild=$updaterversion",$arguments);
 
     $updateinfo=false;
-    $httperror=$http->Open($arguments);
-    $httperror=$http->SendRequest($arguments);
+    $error=$http->Open($arguments);
+    $error=$http->SendRequest($arguments);
 
-    if($httperror=="") {
+    $http->ReadReplyHeaders($headers);
+
+
+    if($error=="") {
         $body=''; $full_body='';
         for(;;){
-            $httperror = $http->ReadReplyBody($body,10000);
-            if($httperror != "" || strlen($body)==0) break;
+            $error = $http->ReadReplyBody($body,10000);
+            if($error != "" || strlen($body)==0) break;
             $full_body .= $body;
         }
-        $changelog=json_decode($full_body,true);
-        $output.='<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
+        $updateinfo=json_decode($full_body,true);
+        if ($http->response_status!='200')
+        {
+            $updateinfo['errorcode']=$http->response_status;
+            $updateinfo['errorhtml']=$full_body;
+        }
     }
     else
     {
-        print( $httperror );
-    }    
+        $updateinfo['errorcode']=$error;
+        $updateinfo['errorhtml']=$error;
+    }
+    unset( $http );
+    if ((int)$updateinfo['UpdaterRevision']<=$updaterversion)
+    {
+        return true;
+    }
+    
+    if (!is_writable($tempdir))
+    {
+        $output.= "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
+        $error=true;
+    }
+    if (!is_writable($homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php'))
+    {
+        $output.= "<li class='errortitle'>".sprintf($clang->gT("Updater file is not writable (%s). Please set according file permissions."),$homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php')."</li>";
+        $error=true;
+    }
+ 
+    //  Download the zip file, unpack it and replace the updater file accordingly
+    // Create DB and file backups now
+    require_once("classes/pclzip/pclzip.lib.php");
+
+    //   require_once('classes/pclzip/pcltrace.lib.php');
+    //   require_once('classes/pclzip/pclzip-trace.lib.php');
+    // PclTraceOn(2);
+
+    require_once($homedir."/classes/http/http.php");
+
+    $downloaderror=false;
+    $http=new http_class;
+
+    // Allow redirects
+    $http->follow_redirect=1;
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+    $http->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/$updaterversion",$arguments);
+    $http->RestoreCookies($_SESSION['updatesession']);
+
+    $error=$http->Open($arguments);
+    $error=$http->SendRequest($arguments);
+    $http->ReadReplyHeaders($headers);
+    if ($headers['content-type']=='text/html')
+    {
+        @unlink($tempdir.'/updater.zip');
+    }
+    elseif($error=='') {
+        $body=''; $full_body='';
+        for(;;){
+            $error = $http->ReadReplyBody($body,100000);
+            if($error != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }
+        file_put_contents($tempdir.'/updater.zip',$full_body);
+    }
+    else
+    {
+        print( $error );
+    }
+
+    //Now unzip the new updater over the existing ones.
+    if (file_exists($tempdir.'/update.zip')){
+        $archive = new PclZip($tempdir.'/update.zip');
+        if ($archive->extract(PCLZIP_OPT_PATH, $homedir.'/updater/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
+            die("Error : ".$archive->errorInfo(true));
+        }
+        else
+        {
+            $output.=$clang->gT('New updater was successfully installed.').'<br />';
+            unlink($tempdir.'/updater.zip');
+        }
+    }
+    else
+    {
+        $output.=$clang->gT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
+        $downloaderror=true;
+    }
+ 
+ 
 }
 
 function UpdateStep1()
