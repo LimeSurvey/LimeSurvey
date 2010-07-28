@@ -40,7 +40,7 @@ if ($action=='update'){
 
 function RunUpdaterUpdate()
 {
-    global $homedir, $debug, $updaterversion, $versionnumber;
+    global $homedir, $debug, $updaterversion, $versionnumber, $tempdir, $clang;
     require_once($homedir."/classes/http/http.php");
 
     $http=new http_class;
@@ -116,45 +116,43 @@ function RunUpdaterUpdate()
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
     $http->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/$updaterversion",$arguments);
-    $http->RestoreCookies($_SESSION['updatesession']);
 
-    $error=$http->Open($arguments);
-    $error=$http->SendRequest($arguments);
+    $httperror=$http->Open($arguments);
+    $httperror=$http->SendRequest($arguments);
     $http->ReadReplyHeaders($headers);
     if ($headers['content-type']=='text/html')
     {
         @unlink($tempdir.'/updater.zip');
     }
-    elseif($error=='') {
+    elseif($httperror=='') {
         $body=''; $full_body='';
         for(;;){
-            $error = $http->ReadReplyBody($body,100000);
-            if($error != "" || strlen($body)==0) break;
+            $httperror = $http->ReadReplyBody($body,100000);
+            if($httperror != "" || strlen($body)==0) break;
             $full_body .= $body;
         }
         file_put_contents($tempdir.'/updater.zip',$full_body);
     }
     else
     {
-        print( $error );
+        print( $httperror );
     }
 
     //Now unzip the new updater over the existing ones.
-    if (file_exists($tempdir.'/update.zip')){
-        $archive = new PclZip($tempdir.'/update.zip');
-        if ($archive->extract(PCLZIP_OPT_PATH, $homedir.'/updater/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
+    if (file_exists($tempdir.'/updater.zip')){
+        $archive = new PclZip($tempdir.'/updater.zip');
+        if ($archive->extract(PCLZIP_OPT_PATH, $homedir.'/update/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
             die("Error : ".$archive->errorInfo(true));
         }
         else
         {
-            $output.=$clang->gT('New updater was successfully installed.').'<br />';
             unlink($tempdir.'/updater.zip');
         }
     }
     else
     {
-        $output.=$clang->gT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
-        $downloaderror=true;
+        echo $clang->gT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
+        $error=true;
     }
  
  
