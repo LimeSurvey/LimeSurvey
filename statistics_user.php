@@ -32,10 +32,11 @@
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
 
-require_once($homedir.'/classes/core/class.progressbar.php');
+
 require_once(dirname(__FILE__).'/classes/core/startup.php');
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
+require_once($homedir.'/classes/core/class.progressbar.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
 require_once($homedir.'/statistics_function.php');
 
