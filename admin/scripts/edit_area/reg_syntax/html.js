@@ -3,7 +3,8 @@
 */
 
 editAreaLoader.load_syntax["html"] = {
-	'COMMENT_SINGLE' : {}
+	'DISPLAY_NAME' : 'HTML'
+	,'COMMENT_SINGLE' : {}
 	,'COMMENT_MULTI' : {'<!--' : '-->'}
 	,'QUOTEMARKS' : {1: "'", 2: '"'}
 	,'KEYWORD_CASE_SENSITIVE' : false

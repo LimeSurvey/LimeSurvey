@@ -441,7 +441,9 @@ else
 
 echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
-echo "<input type='hidden' id='runonce' value='0' />
+// the runonce element has been changed from a hidden to a text/display:none one
+// in order to workaround an not-reproduced issue #4453 (lemeur)
+echo "<input type='text' id='runonce' value='0' style='display: none;'/>
     <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
     <script type='text/javascript'>
     <!--\n";

@@ -742,10 +742,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             $values=do_array_increasesamedecrease($ia);
             break;
         case 'F': //ARRAY (Flexible) - Row Format
-            $values=do_array_flexible($ia);
+            $values=do_array($ia);
             break;
         case 'H': //ARRAY (Flexible) - Column Format
-            $values=do_array_flexiblecolumns($ia);
+            $values=do_arraycolumns($ia);
             break;
         case ':': //ARRAY (Multi Flexi) 1 to 10
             $values=do_array_multiflexi($ia);
@@ -754,7 +754,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             $values=do_array_multitext($ia);  //It's like the "5th element" movie, come to life
             break;
         case '1': //Array (Flexible Labels) dual scale
-            $values=do_array_flexible_dual($ia);
+            $values=do_array_dual($ia);
             break;
 
     } //End Switch
@@ -2954,7 +2954,7 @@ function do_multiplechoice($ia)
             . "if (doconditioncheck == 'yes') {\n"
             . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
             . "}\n}\n";
-            $excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
+            $excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['title']}').disabled='';\n";
         }
         elseif (count($excludeallothers)>0)
         {
@@ -4791,7 +4791,7 @@ function do_hugefreetext($ia)
     // --> START ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer .= '<textarea class="display" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
 
@@ -5571,7 +5571,7 @@ function do_array_increasesamedecrease($ia)
 }
 
 // ---------------------------------------------------------------
-function do_array_flexible($ia)
+function do_array($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
     global $repeatheadings;
@@ -6555,7 +6555,7 @@ function do_array_multiflexi($ia)
 
 
 // ---------------------------------------------------------------
-function do_array_flexiblecolumns($ia)
+function do_arraycolumns($ia)
 {
     global $dbprefix;
     global $notanswered, $clang;
@@ -6707,7 +6707,7 @@ function do_array_flexiblecolumns($ia)
 
 
 // ---------------------------------------------------------------
-function do_array_flexible_dual($ia)
+function do_array_dual($ia)
 {
     global $dbprefix, $connect, $thissurvey, $clang;
     global $repeatheadings;

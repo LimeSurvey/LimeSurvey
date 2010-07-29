@@ -48,8 +48,8 @@ if ($debug>2) {//For debug purposes - switch on in config.php
     error_reporting(E_ALL | E_STRICT);
 }
 
-if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
-@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
+if (ini_get("max_execution_time")<1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
+//@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
 
 $maildebug='';
 
@@ -734,7 +734,13 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
     {
         foreach($surveynames as $sv)
         {
-            $sv['surveyls_title']=htmlspecialchars(strip_tags($sv['surveyls_title']));
+			
+			$surveylstitle=FlattenText($sv['surveyls_title']);
+			if (strlen($surveylstitle)>45)
+			{
+				$surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
+			}
+			
             if($sv['active']!='Y')
             {
                 $inactivesurveys .= "<option ";
@@ -748,10 +754,10 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
-                    $inactivesurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
                 }
             } elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
@@ -766,10 +772,10 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
-                    $expiredsurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
                 }
             } else
             {
@@ -784,10 +790,10 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
-                    $activesurveys .=" value='{$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+                    $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
                 }
             }
         } // End Foreach
@@ -835,7 +841,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
  */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-    global $dbprefix, $scriptname, $connect, $clang;
+    global $scriptname, $clang;
 
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
@@ -1866,7 +1872,7 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
         if (isset($fieldmap[$fieldcode])) 
             $fields = $fieldmap[$fieldcode]; 
         else
-            safe_die ("Couldn't get question type - getextendedanswer() in common.php for field $fieldcode<br />");
+            return false;
         //Find out the question type
         $this_type = $fields['type'];
         switch($this_type)
@@ -2251,7 +2257,7 @@ function validate_templatedir($templatename)
  * @param int $questionid Limit to a certain qid only (for question preview)
  * @return array
  */
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false) {
+function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
     global $dbprefix, $connect, $globalfieldmap, $clang;
     $surveyid=sanitize_int($surveyid);
@@ -2260,20 +2266,20 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return $globalfieldmap[$surveyid][$style][$clang->langcode];
     }
 
-    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
-	if ($style == "full")
-    {
-        $fieldmap["submitdate"]['title']="";
-        $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
-        $fieldmap["submitdate"]['group_name']="";
-    }
-
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
         $fieldmap["id"]['title']="";
         $fieldmap["id"]['question']=$clang->gT("Response ID");
         $fieldmap["id"]['group_name']="";
+    }
+
+    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+    if ($style == "full")
+    {
+        $fieldmap["submitdate"]['title']="";
+        $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
+        $fieldmap["submitdate"]['group_name']="";
     }
 
     $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, 'type'=>"lastpage", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2365,7 +2371,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     }
     //Get list of questions
+    if (is_null($sQuestionLanguage))
+    {
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    }
+    else
+    {
+        $s_lang = $sQuestionLanguage;
+    }
     $qtypes=getqtypelist('','array');
     $aquery = "SELECT *, "
         ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
@@ -2516,7 +2529,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     }
                 }
             }
-            unset($lset);
+            unset($answerset);
         }
         elseif ($arow['type'] == "1")
         {
@@ -2556,14 +2569,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "R")
         {
             //MULTI ENTRY
-            $abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM "
-            .db_table_name('answers').", ".db_table_name('questions')." WHERE "
-            .db_table_name('answers').".qid=".db_table_name('questions').".qid AND sid=$surveyid AND "
-            .db_table_name('answers').".language='".$s_lang."' AND "
-            .db_table_name('questions').".language='".$s_lang."' AND"
-            .db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers')
-            .".sortorder, ".db_table_name('answers').".answer";
-            $abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
             $slots=$connect->GetOne("select value from ".db_table_name('question_attributes')." where qid={$arow['qid']} and attribute='ranking_slots'");
             for ($i=1; $i<=$slots; $i++)
             {
@@ -2745,8 +2750,7 @@ function templatereplace($line, $replacements=array())
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
     global $question;
-    global $showXquestions, $showgroupinfo, $showqnumcode;
-    global $answer, $navigator;
+    global $questioncode, $answer, $navigator;
     global $help, $totalquestions, $surveyformat;
     global $completed, $register_errormsg;
     global $notanswered, $privacy, $surveyid;
@@ -2832,11 +2836,6 @@ function templatereplace($line, $replacements=array())
     )
     {
         if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
-    }
-    else
-    {
-        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", '' , $line);
-    };
 
     if (is_array($question))
     {
@@ -2886,12 +2885,6 @@ function templatereplace($line, $replacements=array())
     )
     {
     if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
-    }
-    else
-    {
-        if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", '' , $line);
-    };
-
     if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
     $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
     if(
@@ -2911,12 +2904,7 @@ function templatereplace($line, $replacements=array())
         else
         {
              if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
-	};
     }
-    else
-    {
-    	if (strpos($line, '{THEREAREXQUESTIONS}') !== false) $line=str_replace('{THEREAREXQUESTIONS}' , '' , $line); 
-    };
     if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestionsAsked, $line);
 
     if (strpos($line, "{TOKEN}") !== false) {
@@ -3039,15 +3027,15 @@ function templatereplace($line, $replacements=array())
     }
 
     if (strpos($line, "{TEMPLATECSS}") !== false) {
-        $templatecss="<link rel='stylesheet' type='text/css' href='{$templateurl}/template.css' />\n";
+        $templatecss="<link rel='stylesheet' type='text/css' href='{$templateurl}template.css' />\n";
         if (getLanguageRTL($clang->langcode))
         {
-            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}/template-rtl.css' />\n";
+            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}template-rtl.css' />\n";
         }
         $line=str_replace("{TEMPLATECSS}", $templatecss, $line);
     }
 
-    if ($help) {
+    if (FlattenText($help,true)!='') {
         if (strpos($line, "{QUESTIONHELP}") !== false)
         {
             If (!isset($helpicon))
@@ -3055,12 +3043,12 @@ function templatereplace($line, $replacements=array())
                 if (file_exists($templatedir.'/help.gif'))
                 {
 
-                    $helpicon=$templateurl.'/help.gif';
+                    $helpicon=$templateurl.'help.gif';
                 }
                 elseif (file_exists($templatedir.'/help.png'))
                 {
 
-                    $helpicon=$templateurl.'/help.png';
+                    $helpicon=$templateurl.'help.png';
                 }
                 else
                 {
@@ -4489,11 +4477,7 @@ function getAdminHeader($meta=false)
     {
         $strAdminHeader.=" dir=\"rtl\" ";
     }
-    $strAdminHeader.=">\n<head>\n"
-    . "<!--[if lt IE 7]>\n"
-    . "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
-    . "<![endif]-->\n"
-    . "<title>$sitename</title>\n";
+    $strAdminHeader.=">\n<head>\n";
 
     if ($meta)
     {
@@ -4501,9 +4485,10 @@ function getAdminHeader($meta=false)
     }
     $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
     $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.checkgroup.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
 
     if ($_SESSION['adminlang']!='en')
@@ -4511,6 +4496,14 @@ function getAdminHeader($meta=false)
         $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
     }
 
+    $strAdminHeader.= "<!--[if lt IE 7]>\n"
+    . "<script type=\"text/javascript\" src=\"scripts/DD_belatedPNG_0.0.8a-min.js\"></script>\n"
+    ."<script>
+  DD_belatedPNG.fix('img');
+</script>\n"
+    . "<![endif]-->"
+    . "<title>$sitename</title>\n";
+    
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"
@@ -4561,7 +4554,10 @@ function getPrintableHeader()
             <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
 
     <!--[if lt IE 7]>
-            <script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
+            <script type="text/javascript" src="'.$rooturl.'/scripts/DD_belatedPNG_0.0.8a-min.js"></script>
+            <script>
+  DD_belatedPNG.fix("img");
+</script>
     <![endif]-->
     '; 
     return $headelements;
@@ -4626,83 +4622,83 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
-    if ($demoModeOnly==true)
-    {
-        $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
-        $maildebugbody='';
-        return false;
-    }
+     if ($demoModeOnly==true)
+     {
+         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
+         $maildebugbody='';
+         return false;
+     }    
+    
+	if (is_null($bouncemail) )
+	{
+		$sender=$from;
+	}
+	else
+	{
+		$sender=$bouncemail;
+	}
 
-    if (is_null($bouncemail) )
-    {
-        $sender=$from;
-    }
-    else
-    {
-        $sender=$bouncemail;
-    }
-
-    $mail = new PHPMailer;
-    if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/'))
+	$mail = new PHPMailer;
+    if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/')) 
     {
         $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
     }
-    $mail->CharSet = $emailcharset;
-    if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
+	$mail->CharSet = $emailcharset;
+	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
         if ($emailsmtpssl===1) {$mail->SMTPSecure = "ssl";}
-        else {$mail->SMTPSecure = $emailsmtpssl;}
-    }
+    	 else {$mail->SMTPSecure = $emailsmtpssl;}
+	 }
 
-    $fromname='';
-    $fromemail=$from;
-    if (strpos($from,'<'))
-    {
-        $fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
-        $fromname=trim(substr($from,0, strpos($from,'<')-1));
-    }
+	$fromname='';
+	$fromemail=$from;
+	if (strpos($from,'<'))
+	{
+		$fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
+		$fromname=trim(substr($from,0, strpos($from,'<')-1));
+	}
 
-    $sendername='';
-    $senderemail=$sender;
-    if (strpos($sender,'<'))
-    {
-        $senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
-        $sendername=trim(substr($sender,0, strpos($sender,'<')-1));
-    }
+	$sendername='';
+	$senderemail=$sender;
+	if (strpos($sender,'<'))
+	{
+		$senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
+		$sendername=trim(substr($sender,0, strpos($sender,'<')-1));
+	}
 
-    switch ($emailmethod) {
-        case "qmail":
-            $mail->IsQmail();
-            break;
-        case "smtp":
-            $mail->IsSMTP();
-            if ($emailsmtpdebug>0)
-            {
-                $mail->SMTPDebug = true;
-            }
-            if (strpos($emailsmtphost,':')>0)
-            {
-                $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
-                $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
-            }
-            else {
-                $mail->Host = $emailsmtphost;
-            }
-            $mail->Username =$emailsmtpuser;
-            $mail->Password =$emailsmtppassword;
-            if ($emailsmtpuser!="")
-            {
-                $mail->SMTPAuth = true;
-            }
-            break;
-        case "sendmail":
-            $mail->IsSendmail();
-            break;
-        default:
-            //Set to the default value to rule out incorrect settings.
-            $emailmethod="mail";
-            $mail->IsMail();
-    }
-
+	switch ($emailmethod) {
+    	case "qmail":
+			$mail->IsQmail();
+			break;
+    	case "smtp":
+    		$mail->IsSMTP();
+			if ($emailsmtpdebug>0)
+		        {
+		            $mail->SMTPDebug = true;
+		        }
+	        if (strpos($emailsmtphost,':')>0)
+	        {
+	            $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
+	            $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
+	        }
+	        else {
+	            $mail->Host = $emailsmtphost;
+	        }
+		    $mail->Username =$emailsmtpuser;
+		    $mail->Password =$emailsmtppassword;
+            if (trim($emailsmtpuser)!="")
+		    {
+	            $mail->SMTPAuth = true;
+	        }
+    		break;
+    	case "sendmail":
+    		$mail->IsSendmail();
+    		break;
+    	default:
+    	   	//Set to the default value to rule out incorrect settings.
+    		$emailmethod="mail";
+    		$mail->IsMail();
+	}    
+    
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     $toemails = explode(";", $to);
@@ -4710,37 +4706,37 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     {
         if (strpos($singletoemail, '<') )
         {
-            $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
-            $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
-            $mail->AddAddress($toemail,$toname);
+	       $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
+           $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
+           $mail->AddAddress($toemail,$toname);
         }
         else
         {
             $mail->AddAddress($singletoemail);
         }
-    }
+    }	
 while (list($key, $val) = each($customheaders)) {
 $mail->AddCustomHeader($val);
 }
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
-    if (get_magic_quotes_gpc() != "0")  {$body = stripcslashes($body);}
+	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
+	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
     $textbody = strip_tags($body);
     $textbody = str_replace("&quot;", '"', $textbody);
-    if ($ishtml) {
+    if ($ishtml) { 
         $mail->IsHTML(true);
-        $mail->Body = $body;
+    	$mail->Body = $body;
         $mail->AltBody = strip_tags(br2nl(html_entity_decode($textbody,ENT_QUOTES,'UTF-8')));
     } else
-    {
+       {
         $mail->IsHTML(false);
-        $mail->Body = $textbody;
-    }
+    	$mail->Body = $textbody;
+       }
 
     // add the attachment if there is one
     if($attachment!=null)
     $mail->AddAttachment($attachment);
-
-    if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
+    
+	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     if ($emailsmtpdebug>0) {
         ob_start();
     }
@@ -4751,14 +4747,14 @@ $mail->AddCustomHeader($val);
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
-    return $sent;
+	return $sent;
 }
 
 function str_get_html($htmlbody)
 {
     return $htmlbody;
     
-}
+		}  
 
 /**
  *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
@@ -4772,11 +4768,11 @@ function FlattenText($texttoflatten, $decodeUTF8Entities=false)
     $nicetext = strip_javascript($texttoflatten);
     $nicetext = strip_tags($nicetext);
     $nicetext = str_replace(array("\n","\r"),array('',''), $nicetext);
-    $nicetext = trim($nicetext);
     if ($decodeUTF8Entities==true)
     {
         $nicetext=html_entity_decode($nicetext,ENT_QUOTES,'UTF-8');
     }
+    $nicetext = trim($nicetext);
     return  $nicetext;
 }
 
@@ -5261,7 +5257,7 @@ function modify_database($sqlfile='', $sqlstring='')
                 else
                 {
                     $command=htmlspecialchars($command);
-                    $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#00FF00'>...".$clang->gT("Success!")."</font>";
+                    $modifyoutput .=". ";
                 }
 
                 $command = '';
@@ -5572,7 +5568,7 @@ function CSVEscape($str)
 
 function convertCSVRowToArray($string, $seperator, $quotechar)
 {
-	$fields=preg_split('/' . $seperator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
+    $fields=preg_split('/' . $seperator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
     $fields=array_map('CSVUnquote',$fields);
     return $fields;
 }
@@ -7434,65 +7430,6 @@ function strip_javascript($content){
 
 
 /**
- *
- * formats a datestring (YY-MM-DD or YYYY-MM-DD or YY-M-D... to whatever)
- * @param $date Datestring, that should be formated normally it is in YYYY-MM-DD, but we take also YY-MM-DD or YY-M-D
- * @param $format Format you want your date in (DD.MM.YYYY or MM.DD.YYYY or MM/YY ? everything possible )
- * @return formated datestring
-
- function dateFormat($date, $format="DD.MM.YYYY")
- {
- if(preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/",$date))
- {
- $pieces = explode("-",$date);
- $yy = $pieces[0];
- $mm = $pieces[1];
- $dd = $pieces[2];
- }
- elseif(preg_match("/^([0-9]{2})-([0-9]{1,2})-([0-9]{1,2})/",$date))
- {
- $pieces = explode("-",$date);
- $yy = $pieces[0];
- $mm = $pieces[1];
- $dd = $pieces[2];
- }
- else
- {
- return "No valid Date";
- }
- // Format check
- $c['Y'] = substr_count($format,"Y" );
- $c['M'] = substr_count($format,"M" );
- $c['D'] = substr_count($format,"D" );
-
- foreach($c as $key => $value)
- {
- for($n=0;$n<$value;++$n)
- {
- $dFormat[$key] .= "".$key;
- }
- }
-
- if(strlen($yy)>$c['Y'])
- {$yy = substr($yy,-2,2);}
- if(strlen($yy)<4 && strlen($yy)<$c['Y'])
- {$yy = "20".$yy;}
- if(strlen($mm)<2 && strlen($mm)<$c['M'])
- {$mm = "0".$mm;}
- if(strlen($dd)>2 )
- {$dd = substr($dd,0,2);}
- if(strlen($dd)<2 && strlen($dd)<$c['D'])
- {$dd = "0".$dd;}
-
- $return = str_replace($dFormat['Y'],substr($yy,-$c['Y'], $c['Y']), $format);
- $return = str_replace($dFormat['M'],substr($mm,-$c['M'], $c['M']), $return);
- $return = str_replace($dFormat['D'],substr($dd,-$c['D'], $c['D']), $return);
-
- return $return;
- }
- */
-
-/**
  * This function cleans files from the temporary directory being older than 1 day
  * @todo Make the days configurable
  */
@@ -7502,7 +7439,7 @@ function cleanTempDirectory()
     $dir=  $tempdir.'/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if ((filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
             unlink($dir.$file);
         }
     }
@@ -7782,7 +7719,20 @@ function getSubQuestions($sid, $qid) {
 	    $subquestions[$sid] = $resultset;
     }
     if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
-    return false;
+    return array();
+}
+
+/**
+ * Wrapper function to retrieve an xmlwriter object and do error handling if it is not compiled
+ * into PHP
+ */
+function getXMLWriter() {
+    try {
+        $xmlwriter = new XMLWriter();
+    } catch (Exception $e) {
+        safe_die('XMLWriter class not compiled into PHP, please contact your system administrator');   
+    }
+    return $xmlwriter;    
 }
 
 /**

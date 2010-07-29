@@ -358,18 +358,29 @@ class LsrcHelper {
                 . "FROM ".db_table_name("tokens_{$surveyid}")." "
                 . "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' "
                 . "ORDER BY remindercount desc LIMIT 1";
+
+		$this->debugLsrc("Executing SQL: ".$remSQL);
+
                 $remResult = db_execute_assoc($remSQL);
                 $remRow = $remResult->FetchRow();
                  
-                $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$remRow['tid']."; ".$remRow['remindercount']." ");
+		/* Get the reminder count from the row, if we have a row.  If 
+		 * we don't have a row then we set reminderCount to 0 to prevent
+		 * queries down below from bombing out. */
+		$reminderCount = $remRow['remindercount'];
+		if(empty($reminderCount)) {
+			$this->debugLsrc("There are no reminders to send.");
+			$reminderCount = 0;
+		}
                  
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$remRow['tid']."; ".$reminderCount." ");
+		
                 $sendOnlySQL = "SELECT tid, remindercount "
                 . "FROM ".db_table_name("tokens_{$surveyid}")." "
-                . "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' AND remindercount < ".$remRow['remindercount']." "
+		. "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' AND remindercount < ".$reminderCount." "
                 . "ORDER BY tid asc LIMIT 1";
-                $sendOnlyResult = db_execute_assoc($sendOnlySQL);
                  
-                 
+		$this->debugLsrc("Executing SQL: ".$sendOnlySQL);
                  
                 if($sendOnlyResult->RecordCount()>0)
                 {

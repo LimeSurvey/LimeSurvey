@@ -151,10 +151,24 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
         {
             foreach ($p_canswers as $ca)
             {
+                //First lets make sure there isn't already an exact replica of this condition
+                $query = "SELECT * FROM {$dbprefix}conditions\n"
+                ."WHERE qid='$qid'\n"
+                ."AND scenario='".$p_scenario."'\n"
+                ."AND cqid='".$p_cqid."'\n"
+                ."AND cfieldname='".$conditionCfieldname."'\n"
+                ."AND method='".$p_method."'\n"
+                ."AND value='".$ca."'";
+                $result = $connect->Execute($query) or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
+                $count_caseinsensitivedupes = $result->RecordCount();
+
+                if ($count_caseinsensitivedupes == 0)
+                {
                 $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
                 . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
                 $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
             }
+        }
         }
 
         unset($posted_condition_value);
@@ -317,7 +331,7 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
         {
             list($newsid, $newgid, $newqid)=explode("X", $copyc);
             foreach ($proformaconditions as $pfc)
-            {
+            { //TIBO
                 //First lets make sure there isn't already an exact replica of this condition
                 $query = "SELECT * FROM {$dbprefix}conditions\n"
                 ."WHERE qid='$newqid'\n"
@@ -1705,7 +1719,7 @@ $subaction == "editthiscondition" || $subaction == "delete")
     ."\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
     ."\t<ul>\n"
     ."\t<li><a href=\"#SRCPREVQUEST\"><span>".$clang->gT("Previous questions")."</span></a></li>\n"
-    ."\t<li><a href=\"#SRCTOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
+    ."\t<li><a href=\"#SRCTOKENATTRS\"><span>".$clang->gT("Token fields")."</span></a></li>\n"
     ."\t</ul>\n";
 
     // Previous question tab
@@ -1829,7 +1843,7 @@ $subaction == "editthiscondition" || $subaction == "delete")
     ."\t\t<li><a href=\"#CANSWERSTAB\"><span>".$clang->gT("Predefined")."</span></a></li>\n"
     ."\t\t<li><a href=\"#CONST\"><span>".$clang->gT("Constant")."</span></a></li>\n"
     ."\t\t<li><a href=\"#PREVQUESTIONS\"><span>".$clang->gT("Questions")."</span></a></li>\n"
-    ."\t\t<li><a href=\"#TOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
+    ."\t\t<li><a href=\"#TOKENATTRS\"><span>".$clang->gT("Token fields")."</span></a></li>\n"
     ."\t\t<li><a href=\"#REGEXP\"><span>".$clang->gT("RegExp")."</span></a></li>\n"
     ."\t</ul>\n";
 

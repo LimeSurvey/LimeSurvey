@@ -77,8 +77,8 @@ function PrepareEditorPopupScript()
 
 function PrepareEditorInlineScript()
 {
-    global $homeurl, $fckeditordir;
-    $script ="<script type=\"text/javascript\" src=\"".$fckeditordir."/fckeditor.js\"></script>\n"
+    global $homeurl, $sFCKEditorURL;
+    $script ="<script type=\"text/javascript\" src=\"".$sFCKEditorURL."/fckeditor.js\"></script>\n"
     . "<script type=\"text/javascript\">\n"
     . "<!--\n"
     . "function updateFCKeditor(fieldname,value)\n"
@@ -226,7 +226,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    global $clang, $imagefiles, $homeurl, $rooturl, $fckeditordir, $fckeditexpandtoolbar;
+    global $clang, $imagefiles, $homeurl, $rooturl, $sFCKEditorURL, $fckeditexpandtoolbar;
 
     $htmlcode = '';
     $imgopts = '';
@@ -266,8 +266,8 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     $htmlcode .= ""
     . "<script type=\"text/javascript\">\n"
     . "var $oFCKeditorVarName = new FCKeditor('$fieldname');\n"
-    . "$oFCKeditorVarName.BasePath     = '".$fckeditordir."/';\n"
-    . "$oFCKeditorVarName.Config[\"CustomConfigurationsPath\"] = \"".$fckeditordir."/limesurvey-config.js\";\n"
+    . "$oFCKeditorVarName.BasePath     = '".$sFCKEditorURL."/';\n"
+    . "$oFCKeditorVarName.Config[\"CustomConfigurationsPath\"] = \"".$sFCKEditorURL."/limesurvey-config.js\";\n"
     . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
     . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
     . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"

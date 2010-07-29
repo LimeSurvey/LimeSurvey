@@ -70,7 +70,7 @@ if (!isset($_SESSION['loginID']))
                 $body .= $clang->gT("Username") . ": " . $fields['users_name'] . "<br />\n";
                 $body .= $clang->gT("New Password") . ": " . $new_pass . "<br />\n";
 
-                $subject = $clang->gT("User data");
+                $subject = $clang->gT("User data","unescaped");
                 $to = $emailaddr;
                 $from = $siteadminemail;
                 $sitename = $siteadminname;
@@ -324,14 +324,11 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
     $addsummary = "<div class='header'>".$clang->gT("Add User")."</div>\n";
 
-    $new_user = html_entity_decode($postnew_user,ENT_QUOTES,'UTF-8');
-    $new_email = html_entity_decode($postnew_email,ENT_QUOTES,'UTF-8');
-    $new_full_name = html_entity_decode($postnew_full_name,ENT_QUOTES,'UTF-8');
-    $new_user = $postnew_user; // TODO: check if html decode should be used here
-    $new_email = $postnew_email; // TODO: check if html decode should be used here
-    $new_full_name = html_entity_decode($postnew_full_name,ENT_QUOTES,'UTF-8');
-    $valid_email = true;
+    $new_user = FlattenText($postnew_user,true);
+    $new_email = FlattenText($postnew_email,true);
+    $new_full_name = FlattenText($postnew_full_name,true);
 
+    $valid_email = true;
     if(!validate_email($new_email))
     {
         $valid_email = false;
@@ -340,7 +337,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
     if(empty($new_user))
     {
         if($valid_email) $addsummary .= "<br /><strong>".$clang->gT("Failed to add user")."</strong><br />\n" . " ";
-        $addsummary .= $clang->gT("A username was not supplied.")."<br />\n";
+        $addsummary .= $clang->gT("A username was not supplied or the username is invalid.")."<br />\n";
     }
     elseif($valid_email)
     {
@@ -381,7 +378,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             $body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
             $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'),$siteadminemail)."<br />\n";
 
-            $subject = sprintf($clang->gT("User registration at '%s'"),$sitename);
+            $subject = sprintf($clang->gT("User registration at '%s'","unescaped"),$sitename);
             $to = $new_user." <$new_email>";
             $from = $siteadminname." <$siteadminemail>";
             $addsummary .="<div class='messagebox'>";

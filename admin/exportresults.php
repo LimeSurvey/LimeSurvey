@@ -51,7 +51,6 @@ if (!$exportstyle)
 
     //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
     $excesscols=createFieldMap($surveyid);
-    unset($excesscols['submitdate']);
     $excesscols=array_keys($excesscols);
 
 
@@ -224,7 +223,7 @@ if (!$exportstyle)
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
         //OPTIONAL EXTRAS (FROM TOKENS TABLE)
     // Find out if survey results are anonymous
-    if ($thissurvey['private'] == "N" && tableExists("{$dbprefix}tokens_$surveyid"))
+    if ($thissurvey['private'] == "N" && tableExists("tokens_$surveyid"))
         {
             $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
             .$clang->gT("Choose Token Fields").":"
@@ -269,7 +268,6 @@ if ($tokenTableExists)
     $attributeFields=array_keys($attributeFieldAndNames);
 }
 
-//sendcacheheaders();             // sending "cache headers" before this permit us to send something else than a "text/html" content-type
 switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
     case "doc":
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".doc");
@@ -462,7 +460,7 @@ for ($i=0; $i<$fieldcount; $i++)
         if ($type == "csv") {$firstline .= "\"".$elang->gT("Date Started")."\"$separator";}
         else {$firstline .= $elang->gT("Date Started")."$separator";}
     }
-    elseif ($fieldinfo == "completed")
+    elseif ($fieldinfo == "submitdate")
     {
         if ($type == "csv") {$firstline .= "\"".$elang->gT("Completed")."\"$separator";}
         else {$firstline .= $elang->gT("Completed")."$separator";}
@@ -1265,7 +1263,7 @@ if ($type=='xls')
 }
 else if($type=='pdf')
 {
-    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
+    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","DD");
 }
 else
 {

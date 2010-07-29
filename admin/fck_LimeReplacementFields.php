@@ -37,7 +37,7 @@ $limereplacementoutput="<html>\n"
 . "\t\t<title>LimeReplacementFields</title>\n"
 . "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
 . "\t\t<meta content=\"noindex, nofollow\" name=\"robots\">\n"
-. "\t\t<script src=\"$fckeditordir/editor/dialog/common/fck_dialog_common.js\" type=\"text/javascript\"></script>\n"
+. "\t\t<script src=\"$sFCKEditorURL/editor/dialog/common/fck_dialog_common.js\" type=\"text/javascript\"></script>\n"
 . "\t\t<script src=\"$rooturl/scripts/jquery/jquery.js\" type=\"text/javascript\"></script>\n"
 . "\t\t<script language=\"javascript\">\n"
 . "\t\t\tvar mydialog = window.parent ;\n"
@@ -91,7 +91,6 @@ $limereplacementoutput .= ""
 . "else\n"
 . "\teSelected == null ;\n"
 . "\t}\n";
-
 
 $limereplacementoutput .= ""
 . "\tfunction Ok()\n"
@@ -205,30 +204,12 @@ switch ($fieldtype)
         break;
 }
 
-
 if ($isInstertansEnabled===true)
 {
     if (empty($surveyid)) {die("No SID provided.");}
 
     //2: Get all other questions that occur before this question that are pre-determined answer types
-
-    //TO AVOID NATURAL SORT ORDER ISSUES,
-    //FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER
-    //, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qquery = "SELECT * "
-    ."FROM {$dbprefix}questions, "
-    ."{$dbprefix}groups "
-    ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
-    ."AND {$dbprefix}questions.sid=$surveyid "
-    ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-    ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
-
-    $qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
-    $qrows = $qresult->GetRows();
-    // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
-    usort($qrows, 'GroupOrderThenQuestionOrder');
-
-
+    $fieldmap = createFieldMap($surveyid, 'full');
 
     $surveyInfo = getSurveyInfo($surveyid);
     $surveyformat = $surveyInfo['format'];// S, G, A
@@ -236,8 +217,9 @@ if ($isInstertansEnabled===true)
     $previouspagequestion = true;
     //Go through each question until we reach the current one
     //error_log(print_r($qrows,true));
-    foreach ($qrows as $qrow)
+    foreach ($fieldmap as $field)
     {
+        if (empty($field['qid'])) continue;
         $AddQuestion=True;
         switch ($action)
         {
@@ -248,7 +230,7 @@ if ($isInstertansEnabled===true)
             case 'editgroup':
                 if (empty($gid)) {die("No GID provided.");}
 
-                if ($qrow['gid'] == $gid)
+                if ($field['gid'] == $gid)
                 {
                     $AddQuestion=False;
                 }
@@ -259,7 +241,7 @@ if ($isInstertansEnabled===true)
 
                 if ( !is_null($prevquestion) &&
                 $prevquestion['gid'] == $gid &&
-                $qrow['gid'] != $gid)
+                $field['gid'] != $gid)
                 {
                     $AddQuestion=False;
                 }
@@ -271,8 +253,8 @@ if ($isInstertansEnabled===true)
                 if (empty($gid)) {die("No GID provided.");}
                 if (empty($qid)) {die("No QID provided.");}
 
-                if ($qrow['gid'] == $gid &&
-                $qrow['qid'] == $qid)
+                if ($field['gid'] == $gid &&
+                $field['qid'] == $qid)
                 {
                     $AddQuestion=False;
                 }
@@ -285,7 +267,6 @@ if ($isInstertansEnabled===true)
                 die("No Action provided.");
                 break;
         }
-
         if ( $AddQuestion===True)
         {
             if ($surveyformat == "S")
@@ -296,7 +277,7 @@ if ($isInstertansEnabled===true)
             {
                 if ($previouspagequestion === true)
                 { // Last question was on a previous page
-                    if ($qrow["gid"] == $gid)
+                    if ($field["gid"] == $gid)
                     { // This question is on same page
                         $previouspagequestion = false;
                     }
@@ -311,8 +292,8 @@ if ($isInstertansEnabled===true)
                 $previouspagequestion = true;
             }
 
-            $questionlist[]=Array( "qid" => $qrow["qid"], "previouspage" => $previouspagequestion);
-            $prevquestion=$qrow;
+            $questionlist[]=array_merge($field,Array( "previouspage" => $previouspagequestion));
+            $prevquestion=$field;
         }
         else
         {
@@ -320,209 +301,28 @@ if ($isInstertansEnabled===true)
         }
     }
 
-    //		if ($qrow["qid"] != $qid)
-    //		{
-    //			if (!in_array($qrow['type'],$InsertansUnsupportedtypes)
-    //			{ //remember the questions of this type
-    //				$questionlist[]=$qrow["qid"];
-    //			}
-    //		}
-
-    $theserows=array();
-
-    if (isset($questionlist) && is_array($questionlist))
-    {
-        foreach ($questionlist as $ql)
-        {
-            $query = "SELECT {$dbprefix}questions.qid, "
-            ."{$dbprefix}questions.sid, "
-            ."{$dbprefix}questions.gid, "
-            ."{$dbprefix}questions.question, "
-            ."{$dbprefix}questions.type, "
-            ."{$dbprefix}questions.lid, "
-            ."{$dbprefix}questions.lid1, "
-            ."{$dbprefix}questions.title "
-            ."FROM {$dbprefix}questions, "
-            ."{$dbprefix}groups "
-            ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
-            ."AND {$dbprefix}questions.qid=".$ql['qid']." "
-            ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
-
-            $result=db_execute_assoc($query) or die("Couldn't get question $qid");
-
-            $thiscount=$result->RecordCount();
-
-            // And store ¿again? these questions in this array...
-            while ($myrows=$result->FetchRow())
-            {                   //key => value
-                $theserows[]=array("qid"=>$myrows['qid'],
-	                         "sid"=>$myrows['sid'],
-	                         "gid"=>$myrows['gid'],
-	                         "previouspage"=>$ql['previouspage'],
-	                         "question"=>$myrows['question'],
-	                         "type"=>$myrows['type'],
-	                         "lid"=>$myrows['lid'],
-                             "lid1"=>$myrows['lid1'],     
-	                         "title"=>$myrows['title']);
-            }
-        }
-    }
-
-
-    $questionscount=count($theserows);
+    $questionscount=count($questionlist);
 
     if ($questionscount > 0)
     {
-        $X="X";
-        // Will detect if the questions are type D to use latter
-
-        $dquestions=array();
-
-        foreach($theserows as $rows)
+        foreach($questionlist as $rows)
         {
-            $shortquestion=$rows['title'].": ".FlattenText($rows['question']);
+            $question = $rows['question'];
 
-            if ($rows['type'] == "A" ||
-            $rows['type'] == "B" ||
-            $rows['type'] == "C" ||
-            $rows['type'] == "E" ||
-            $rows['type'] == "F" ||
-            $rows['type'] == "H" ||
-            $rows['type'] == "Q" ||
-            $rows['type'] == "K") // K added by lemeur
-            {
-                $aquery="SELECT * "
-                ."FROM {$dbprefix}answers "
-                ."WHERE qid={$rows['qid']} "
-                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, "
-                ."answer";
+            if (isset($rows['subquestion'])) $question = "[{$rows['subquestion']}] " . $question;
+            if (isset($rows['subquestion1'])) $question = "[{$rows['subquestion1']}] " . $question;
+            if (isset($rows['subquestion2'])) $question = "[{$rows['subquestion2']}] " . $question;
 
-                $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-
-                while ($arows = $aresult->FetchRow())
-                {
-                    $shortanswer = strip_tags($arows['answer']);
-
-                    $shortanswer .= " [{$arows['code']}]";
-                    $cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'],$rows['previouspage']);
-
-                } //while
-            } //if A,B,C,E,F,H
-            elseif ($rows['type'] == ":" || $rows['type'] == ";") // Multiflexi
-            {
-                //Get the LIDs
-                $fquery = "SELECT * "
-                ."FROM {$dbprefix}labels "
-                ."WHERE lid={$rows['lid']} "
-                ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, code ";
-                $fresult = db_execute_assoc($fquery);
-                while ($frow=$fresult->FetchRow())
-                {
-                    $lids[$frow['code']]=$frow['title'];
-                }
-                //Now cycle through the answers
-                $aquery="SELECT * "
-                ."FROM {$dbprefix}answers "
-                ."WHERE qid={$rows['qid']} "
-                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, "
-                ."answer";
-                $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-
-                while ($arows = $aresult->FetchRow())
-                {
-                    $shortanswer = strip_tags($arows['answer']);
-
-                    $shortanswer .= " [{$arows['code']}]";
-                    foreach($lids as $key=>$val)
-                    {
-                        $cquestions[]=array("$shortquestion [$shortanswer [$val]] ", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key,$rows['previouspage']);
-                    }
-                }
-
-            } //TIBO
-            elseif ($rows['type'] == "R") //Answer Ranking
-            {
-                $aquery="SELECT * "
-                ."FROM {$dbprefix}answers "
-                ."WHERE qid={$rows['qid']} "
-                ."AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, answer";
-                $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
-                $acount=$aresult->RecordCount();
-                while ($arow=$aresult->FetchRow())
-                {
-                    $theanswer = addcslashes($arow['answer'], "'");
-                    $quicky[]=array($arow['code'], $theanswer);
-                }
-                for ($i=1; $i<=$acount; $i++)
-                {
-                    $cquestions[]=array("$shortquestion [RANK $i]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i,$rows['previouspage']);
-                }
-                unset($quicky);
-            } // for type R
-            elseif ($rows['type'] == "1") //Answer multi scale
-            {
-                $aquery="SELECT * "
-                ."FROM {$dbprefix}answers "
-                ."WHERE qid={$rows['qid']} "
-                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, "
-                ."answer";
-                $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to multi scale question<br />$aquery<br />".$connect->ErrorMsg());
-                $acount=$aresult->RecordCount();
-                while ($arow=$aresult->FetchRow())
-                {
-                    $theanswer = addcslashes($arow['code'], "'");
-                    $quicky[]=array($arow['code'], $theanswer);
-
-                    $lquery="SELECT * "
-                    ."FROM {$dbprefix}labels "
-                    ."WHERE lid={$rows['lid']} "
-                    ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                    ."ORDER BY sortorder, "
-                    ."lid";
-                    $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
-                    while ($lrows = $lresult->FetchRow())
-                    {
-                        $cquestions[]=array($rows['title']." ".$arow['code']." [Label ".$lrows['code']."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arow['code']."#0",$rows['previouspage']);
-                    }
-                    $lquery="SELECT * "
-                    ."FROM {$dbprefix}labels "
-                    ."WHERE lid={$rows['lid1']} "
-                    ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                    ."ORDER BY sortorder, "
-                    ."lid";
-                    $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
-                    while ($lrows = $lresult->FetchRow())
-                    {
-                        $cquestions[]=array($rows['title']." ".$arow['code']." [Label ".$lrows['code']."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arow['code']."#1",$rows['previouspage']);
-                    }
-
-                }
-                unset($quicky);
-
-
-            }   //Answer multi scale
-            else
-            {
-                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'],$rows['previouspage']);
-            } //else
-        } //foreach theserows
+            $shortquestion=$rows['title'].": ".FlattenText($question);
+            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['fieldname'],$rows['previouspage']);
+        } //foreach questionlist
     } //if questionscount > 0
 
     // Now I´ll add a hack to add the questions before as option
     // if they are date type
 
-
     //$limereplacementoutput .="\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px;'>\n"
-
-
 }
-
 
 if (count($replFields) > 0 || isset($cquestions) )
 {
@@ -532,10 +332,7 @@ if (count($replFields) > 0 || isset($cquestions) )
 else
 {
     $limereplacementoutput .= $clang->gT("No replacement variable available for this field");
-    //echo $limereplacementoutput;
-    //return;
     $noselection = true;
-
 }
 
 if (count($replFields) > 0)
@@ -570,7 +367,6 @@ if (isset($cquestions))
     }
     $limereplacementoutput .= "</optgroup>\n";
 }
-
 
 if ($noselection === false)
 {

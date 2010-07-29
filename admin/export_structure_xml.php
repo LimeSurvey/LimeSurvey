@@ -92,8 +92,8 @@ function getXMLStructure($xmlwriter, $exclude=array())
 
     //Default values
     $query = "SELECT {$dbprefix}defaultvalues.*
-          FROM {$dbprefix}defaultvalues 
-          WHERE qid in (select qid from {$dbprefix}questions where sid=$surveyid group by qid)";
+          FROM {$dbprefix}defaultvalues JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}defaultvalues.qid AND {$dbprefix}questions.sid=$surveyid"; 
+    
     BuildXMLFromQuery($xmlwriter,$query);
     
     // Groups 
@@ -117,11 +117,9 @@ function getXMLStructure($xmlwriter, $exclude=array())
            ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
 
-    
     //Question attributes
     $query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
-          FROM {$dbprefix}question_attributes 
-		  WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where sid=$surveyid group by qid)";
+          FROM {$dbprefix}question_attributes JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}question_attributes.qid AND {$dbprefix}questions.sid=$surveyid";
     BuildXMLFromQuery($xmlwriter,$query,'question_attributes');
 
     if ((!isset($exclude) && $exclude['quotas'] !== true) || empty($exclude))
@@ -164,7 +162,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
 function getXMLData($exclude = array())
 {
     global $dbversionnumber,$surveyid;
-    $xml =new XMLWriter();
+    $xml = getXMLWriter();
     $xml->openMemory();
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');

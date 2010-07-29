@@ -70,14 +70,14 @@ if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents(validate_templatedir("default")."/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
     ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
     ."</center><br />\n";
 
-    echo templatereplace(file_get_contents(validate_templatedir("default")."/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/endpage.pstpl"));
     doFooter();
     exit;
 };
@@ -169,227 +169,18 @@ if(isset($_POST['printableexport']))
     $pdf = new PDF($pdforientation);
     $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
     $pdf->AddPage();
-    $pdf->titleintopdf("Survey Name: ".$surveyname,"SurveyID: ".$surveyid);
+        $pdf->titleintopdf($clang->gT("Survey Name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
 }
 $printoutput .= "\t<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)").":</strong> $surveyname ($surveyid)</span><br />\n";
 
-//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
-	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
-	AND ".db_table_name("questions").".sid='$surveyid' AND
-	".db_table_name("questions").".language='{$language}' AND ".db_table_name("groups").".language='{$language}' ORDER BY ".db_table_name("groups").".group_order, ".db_table_name("questions").".title";
-$fnresult = db_execute_assoc($fnquery);  //Checked
-$fncount = 0;
+//Get the fieldmap @TODO: do we need to filter out some fields?
+$fnames = createFieldMap($surveyid,'full',false,false,$language);
+unset ($fnames['id']);
+unset ($fnames['lastpage']);
+unset ($fnames['startlanguage']);
+unset ($fnames['datestamp']);
+unset ($fnames['startdate']);
 
-$fnrows = array(); //Create an empty array in case fetch_array does not return any rows
-while ($fnrow = $fnresult->FetchRow()) {++$fncount; $fnrows[] = $fnrow; $private = $fnrow['private']; $datestamp=$fnrow['datestamp']; $ipaddr=$fnrow['ipaddr']; $refurl=$fnrow['refurl'];} // Get table output into array
-
-// Perform a case insensitive natural sort on group name then question title of a multidimensional array
-usort($fnrows, 'GroupOrderThenQuestionOrder');
-
-$fnames[] = array("id", "id", "id");
-
-if ($private == "N") //add token to top ofl ist is survey is not private
-{
-    $fnames[] = array("token", "token", $clang->gT("Token ID"));
-}
-//The "submitdate" field shouldn't show. If there is a datestamp being recorded, that's covered in "datestamp".
-//The submitdate field is an internal field and always filled out, but sometimes is not actually the date the
-//survey is submitted (in anonymous surveys, the datestamp is always unix epoch)
-//$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
-if ($datestamp == "Y") //add datetime to list if survey is datestamped
-{
-    $fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp"));
-}
-if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
-{
-    $fnames[] = array("ipaddr", "ipaddr", $clang->gT("IP Address"));
-}
-if ($refurl == "Y") //add refer_URL  to list if survey should save referring URL
-{
-    $fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"));
-}
-
-foreach ($fnrows as $fnrow)
-{
-    $field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
-    $ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
-    $fquestion = $fnrow['question'];
-    if ($printanswershonorsconditions == 1 && checkquestionfordisplay($fnrow['qid'],null))
-    {
-
-
-        if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" ||
-        $fnrow['type'] == "A" || $fnrow['type'] == "B" ||
-        $fnrow['type'] == "C" || $fnrow['type'] == "E" ||
-        $fnrow['type'] == "F" || $fnrow['type'] == "H" ||
-        $fnrow['type'] == "J" || $fnrow['type'] == "K" ||
-        $fnrow['type'] == "P" || $fnrow['type'] == "^")
-        {
-
-            $fnrquery="SELECT * "
-            ."FROM {$dbprefix}questions "
-            ."WHERE parent_qid={$fnrow['qid']} "
-            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
-            
-            //$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
-            $fnrresult = db_execute_assoc($fnrquery);  //Checked
-            while ($fnrrow = $fnrresult->FetchRow())
-            {
-                $fnames[] = array($field.$fnrrow['title'], "$ftitle ({$fnrrow['title']})", "{$fnrow['question']} ({$fnrrow['question']})");
-                if ($fnrow['type'] == "P")
-                {
-                    $fnames[] = array($field.$fnrrow['title']."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");
-            }
-            }
-            if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
-            {
-                $fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
-                if ($fnrow['type'] == "P" and $fnrow['other'] == "Y")
-                {
-                    $fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)");
-                }
-            }
-        }
-        elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
-        {
-            // Get the Y-Axis
-            $fquery = "SELECT sq.*, q.other"
-            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
-            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
-            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-            ." AND q.qid={$fnrow['qid']}
-               AND sq.scale_id=0
-               ORDER BY sq.question_order";            
-            $y_axis_db = db_execute_assoc($fquery);           
-             // Get the X-Axis   
-             $aquery = "SELECT sq.*
-                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
-                         WHERE q.sid=$surveyid 
-                         AND sq.parent_qid=q.qid
-                         AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                         AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                         AND q.qid=".$fnrow['qid']."
-                         AND sq.scale_id=1
-                         ORDER BY sq.question_order";            
-            $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-            while ($frow=$x_axis_db->FetchRow())
-            {
-                $x_axis[$frow['title']]=$frow['question'];
-            }
-            while ($arows = $y_axis_db->FetchRow())
-            {
-                foreach($x_axis as $key=>$val)
-                {
-                   
-                    $fnames[] = array($field.$arows['title']."_".$key, "$ftitle ({$frow['title']})", "{$arows['question']} ({$arows['title']}: {$key})"); 
-                                       
-                    //$shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
-                    
-                    //$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
-
-                    if ($frow['type'] == ":")
-                    {
-                        for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
-                        {
-                            //$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $ii, $ii);
-                }
-            }
-        }
-            }       
-        }
-        elseif ($fnrow['type'] == "R")
-        {
-            $fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND
-						language='{$language}'
-						ORDER BY sortorder, answer";
-            $fnrresult = $connect->Execute($fnrquery); //Checked
-            $fnrcount = $fnrresult->RecordCount();
-            for ($i=1; $i<=$fnrcount; $i++)
-            {
-                $fnames[] = array("$field$i", "$ftitle ($i)", "{$fnrow['question']} ($i)");
-            }
-        }
-        elseif ($fnrow['type'] == "1") //Dual Scale
-        {
-            $qidattributes=getQuestionAttributes($fnrow['qid']);
-            $field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
-            $ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
-            $fquestion = $fnrow['question'];
-
-            $aquery="SELECT * "
-            ."FROM {$dbprefix}questions "
-            ."WHERE parent_qid={$fnrow['qid']} "
-            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-            ."ORDER BY question_order, "
-            ."question";
-            
-            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked
-            $header1=$clang->gT('First Scale');
-            $header2=$clang->gT('Second Scale');
-            if (isset($qidattributes['dualscale_headerA']) && trim($qidattributes['dualscale_headerA']) != '')
-            {
-                $header1=$clang->gT($qidattributes['dualscale_headerA']);
-            }
-            if (isset($qidattributes['dualscale_headerB']) && trim($qidattributes['dualscale_headerB'])!= '')
-            {
-                $header2=$clang->gT($qidattributes['dualscale_headerB']);
-            }
-            while ($arows = $aresult->FetchRow())
-            {
-                // first label
-                $lquery="SELECT * "
-                ."FROM {$dbprefix}answers "
-                ."WHERE qid={$fnrow['qid']} "
-                ."AND scale_id=0 "
-                ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, answer";
-                $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
-                while ($lrows = $lresult->FetchRow())
-                {
-                    $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['title']}#0", "$ftitle ", "{$fnrow['question']} {$arows['question']} - ".$header1);
-                }
-                
-                // second label
-                $lquery="SELECT * "
-                ."FROM {$dbprefix}answers "
-                ."WHERE qid={$fnrow['qid']} "
-                ."AND scale_id=1 "
-                ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, answer";
-                $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
-                while ($lrows = $lresult->FetchRow())
-                {
-                   
-                    $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['title']}#0", "$ftitle ", "{$fnrow['question']} {$arows['question']} - ".$header2);
-                }
-            } //while
-        }
-
-        elseif ($fnrow['type'] == "O")
-        {
-            $fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
-            $field2 = $field."comment";
-            $ftitle2 = $ftitle."[Comment]";
-            $longtitle = "{$fnrow['question']}<br />[Comment]";
-            $fnames[] = array("$field2", "$ftitle2", "$longtitle");
-        }
-        else
-        {
-            $fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
-            if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y")
-            {
-                $fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
-            }
-        }
-    } // End If checkquestionfordisplay
-
-}
-
-$nfncount = count($fnames)-1;
 //SHOW INDIVIDUAL RECORD
 $idquery = "SELECT * FROM $surveytable WHERE id=$id";
 $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked
@@ -399,24 +190,48 @@ $last=$id-1;
 $printoutput .= "<table class='printouttable' >\n";
 if(isset($_POST['printableexport']))
 {
-    $pdf->intopdf($clang->gT("Question").": ".$clang->gT("Your Answer"));
+        $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your Answer",'unescaped'));
 }
 $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>\n";
 $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked
 while ($idrow = $idresult->FetchRow())
 {
-    $i=0;
-    for ($i; $i<$nfncount+1; $i++)
+    $oldgid = 0;
+    $oldqid = 0;
+    foreach ($fnames as $fname)
     {
+        $question = $fname['question'];
+        if (isset($fname['gid']) && !empty($fname['gid'])) {
+            //Check to see if gid is the same as before. if not show group name
+            if ($oldgid !== $fname['gid']) {
+                $oldgid = $fname['gid'];
+                $printoutput .= "\t<tr><td colspan='2'>{$fname['group_name']}</td></tr>\n";
+            }
+        }
+        if (isset($fname['qid']) && !empty($fname['qid'])) {
+            //Check to see if gid is the same as before. if not show group name
+            if ($oldqid !== $fname['qid']) {
+                $oldqid = $fname['qid'];
+                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
+                    $printoutput .= "\t<tr><td>{$fname['question']}</td></tr>\n";                    
+                }
+            }
+        }
+        if (isset($fname['subquestion']))  $question = "{$fname['subquestion']}";
+        if (isset($fname['subquestion1'])) $question = "{$fname['subquestion1']}";
+        if (isset($fname['subquestion2'])) $question .= "[{$fname['subquestion2']}]";
         $printoutput .= "\t<tr>\n"
-        ."<td>{$fnames[$i][2]}</td>\n"
+        ."<td>$question</td>\n"
         ."<td>"
-        .getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])
+        .getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']])
         ."</td>\n"
         ."\t</tr>\n";
         if(isset($_POST['printableexport']))
         {
-            $pdf->intopdf(FlattenText($fnames[$i][2]).": ".FlattenText(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
+            if (isset($fname['subquestion']))  $question .= " [{$fname['subquestion']}]";
+            if (isset($fname['subquestion1'])) $question .= " [{$fname['subquestion1']}]";
+            if (isset($fname['subquestion2'])) $question .= " [{$fname['subquestion2']}]";      
+            $pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true));
             $pdf->ln(2);
         }
     }
@@ -470,17 +285,8 @@ if(isset($_POST['printableexport']))
     }
     else
     {
-         
-        header("Content-Type: application/pdf");
-        //header("Content-Length: ". $size);
-        $pdf->write_out($clang->gT($surveyname)."-".$surveyid.".pdf");
+			$pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf","DD");
     }
-
-
-
-
-
-
 }
 
 
@@ -490,9 +296,9 @@ if(!isset($_POST['printableexport']))
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("templates/$thistpl/startpage.pstpl"));
-    echo templatereplace(file_get_contents("templates/$thistpl/printanswers.pstpl"));
-    echo templatereplace(file_get_contents("templates/$thistpl/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
     echo "</body></html>";
 }
 ?>

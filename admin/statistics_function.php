@@ -88,7 +88,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //$allfields ="";
     global $connect, $dbprefix, $clang,
     $rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname,
-    $chartfontfile, $chartfontsize, $admintheme;
+    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
 
     if (is_null($statlangcode))
     {
@@ -121,12 +121,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     $surveylanguagecodes[] = GetBaseLanguageFromSurveyID($surveyid);
 
     // Set language for questions and answers to base language of this survey
-    $language='en';
-    //$surveyid=sanitize_int($surveyid);
-    $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-    $result = db_execute_num($query); //Checked
-    while ($result && ($row=$result->FetchRow())) {$language = $row[0];}
-
+    $language=$statlangcode;
 
     if ($usegraph==1)
     {
@@ -222,6 +217,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
         // create new PDF document
         $pdf = new MyPDF();
+        $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
+        
         $surveyInfo = getSurveyInfo($surveyid,$language);
 
         // set document information
@@ -874,14 +871,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if(substr($rt, 0, 1) == "K")
                     {
                         //get answer data
-                        $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND scale_id=0 AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
-                        $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
-
-                        //handle answer
-                        while ($qrow=$qresult->FetchRow())
-                        {
-                            $atext=FlattenText($qrow[1]);
-                        }
+                        $atext=$connect->GetOne("SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$qiqid}' AND scale_id=0 AND title='{$qaid}' AND language='{$language}'");
                         //put single items in brackets at output
                         $qtitle .= " [$atext]";
                     }
@@ -1752,7 +1742,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if (isset($al[2]) && $al[2])
                     {
                         //handling for "other" option
-                        if ($al[1] == $statlang->gT("Other"))
+                        if ($al[0] == $statlang->gT("Other"))
                         {
                             //get data
                             $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
@@ -2180,7 +2170,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //output
                         if ((incompleteAnsFilterstate() != "filter"))
                         {
-                            $fname=$statlang->gT("Non completed or Not displayed");
+                            $fname=$statlang->gT("Not completed or Not displayed");
                         }
                         else
                         {
@@ -2212,7 +2202,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //edit labels and put them into antoher array
                         if ((incompleteAnsFilterstate() != "filter"))
                         {
-                            $lbl[] = wordwrap(FlattenText($statlang->gT("Non completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                            $lbl[] = wordwrap(FlattenText($statlang->gT("Not completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
                         }
                         else
                         {
@@ -3047,7 +3037,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $pdf->AddPage('P','A4');
 
                             $pdf->titleintopdf($pdfTitle,$titleDesc);
-                            $pdf->Image($tempdir."/".$cachefilename, 5, 70, 200, 200, '', $rooturl."/admin/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true);
+                            $pdf->Image($tempdir."/".$cachefilename, 5, 70, 200, 200, '', $homeurl."/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true);
 
                             break;
                         case 'html':

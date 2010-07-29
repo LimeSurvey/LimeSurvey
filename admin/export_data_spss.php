@@ -160,6 +160,7 @@ if  ($subaction=='dldata') {
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: public");
 
+    if ($spssver == 2) echo "\xEF\xBB\xBF";
     $na = "";
     spss_export_data($na);
 
@@ -210,6 +211,7 @@ if  ($subaction=='dlstructure') {
      * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
      * be sent to the client.
      */
+    if ($spssver == 2) echo "\xEF\xBB\xBF";
     echo $headerComment;
     if ($spssver == 2) echo "SET UNICODE=ON.\n";
     echo "GET DATA\n"

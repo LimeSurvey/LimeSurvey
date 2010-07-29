@@ -147,8 +147,9 @@ if (! defined("_ADODB_MYSQLI_LAYER")) {
             $ret = false;
             $rs = $this->Execute($sql,$inputarr);
             if ($rs) {
-                if (!$rs->EOF) $ret = reset($rs->fields);
                 $rs->Close();
+                if ($rs->EOF) return $ADODB_GETONE_EOF;
+                return reset($rs->fields);
             }
             return $ret;
         }

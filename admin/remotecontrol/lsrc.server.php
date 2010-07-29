@@ -13,7 +13,6 @@
  * $Id$
  *
  */
-
 // include the lsrc.config.php
 include_once("lsrc.config.php");
 
@@ -26,7 +25,7 @@ $clang = new limesurvey_lang($defaultlang);
 
 // to generate statistics
 include_once($rootdir."/classes/core/sanitize.php");
-include_once($rootdir.'/admin/statistics_function.php');
+include_once($homedir.'/statistics_function.php');
 
 /**
  * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting
@@ -1017,7 +1016,7 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
     // check if the Survey exists, else -> Fault
     if(!$lsrcHelper->surveyExists($iVid))
     {
-        throw new SoapFault("Database: ", "Survey $iVid does not exists");
+        throw new SoapFault("Database: ", "Survey $iVid does not exist");
         exit;
     }
 

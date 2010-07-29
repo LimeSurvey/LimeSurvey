@@ -646,7 +646,7 @@
 				t.scroll_to_view();
 				t.focus();
 			}else{
-				setTimeout("p.editAreaLoader.execCommand('"+ t.id +"', 'update_size();');editArea.focus();", 10);
+				setTimeout("parent.editAreaLoader.execCommand('"+ t.id +"', 'update_size();');editArea.focus();", 10);
 			}	
 			
 	
@@ -795,8 +795,7 @@
 	// open a new tab for the given file
 	EditArea.prototype.set_word_wrap= function(to){
 		var t=this, a= t.textarea;
-		
-		if( t.isOpera )
+		if( t.isOpera && t.isOpera < 9.8 )
 		{
 			this.settings['word_wrap']= false;
 			t.switchClassSticky( _$("word_wrap"), 'editAreaButtonDisabled', true );
@@ -1072,7 +1071,7 @@
 		t.set_font(new_file['font_family'], new_file['font_size']);
 		
 		// restore selection and scroll
-		t.area_select(new_file['last_selection']['selection_start'], new_file['last_selection']['selection_end'] - new_file['last_selection']['selection_start']);
+		t.area_select(new_file['selection_start'], new_file['selection_end'] - new_file['selection_start']);
 		t.manage_size(true);
 		t.result.scrollTop= new_file['scroll_top'];
 		t.result.scrollLeft= new_file['scroll_left'];

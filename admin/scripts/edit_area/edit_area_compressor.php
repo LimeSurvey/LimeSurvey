@@ -151,6 +151,26 @@ class Compressor{
         , "\$this->replace_scripts('sub_script_list', '\\1', '\\2')"
         , $loader);
 
+			// replace languages names
+			$reg_path= $this->path."reg_syntax/";
+			$a_displayName	= array();
+			if (($dir = @opendir($reg_path)) !== false)
+			{
+				while (($file = readdir($dir)) !== false)
+				{
+					if( $file !== "." && $file !== ".." && ( $pos = strpos( $file, '.js' ) ) !== false )
+					{
+						$jsContent	= $this->file_get_contents( $reg_path.$file );
+						if( preg_match( '@(\'|")DISPLAY_NAME\1\s*:\s*(\'|")(.*)\2@', $jsContent, $match ) )
+						{
+							$a_displayName[] = "'". substr( $file, 0, $pos ) ."':'". htmlspecialchars( $match[3], ENT_QUOTES ) ."'";
+						}
+					}
+				}
+				closedir($dir);
+			}
+			$loader	= str_replace( '/*syntax_display_name_AUTO-FILL-BY-COMPRESSOR*/', implode( ",", $a_displayName ), $loader );
+						
         $this->datas= $loader;
         $this->compress_javascript($this->datas);
          

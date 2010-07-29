@@ -158,6 +158,7 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
     $upgradedbtype=$databasetype;
     if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
     if ($upgradedbtype=='mssqnlative') $upgradedbtype='mssqlnative';   
+    include ('upgrade-all.php');
     include ('upgrade-'.$upgradedbtype.'.php');
 
     $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";
@@ -166,6 +167,7 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
     if (intval($usrow['stg_value'])<$dbversionnumber)
     {
         print("Upgrading db to $dbversionnumber\n");
+        db_upgrade_all(intval($usrow['stg_value']));
         db_upgrade(intval($usrow['stg_value']));
     } else {
         print("Already at db version $dbversionnumber\n");

@@ -1112,9 +1112,15 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 {
     // TODO: check that surveyid is set and that so is $baselang
     //Show Question Details
+	//Count answer-options for this question
     $qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."' ORDER BY sortorder, answer";
     $qrr = $connect->Execute($qrq); //Checked
     $qct = $qrr->RecordCount();
+	//Count sub-questions for this question
+	$sqrq= "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
+	$sqrr= $connect->Execute($sqrq); //Checked
+	$sqct = $sqrr->RecordCount();
+	
     $qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
     $qrresult = db_execute_assoc($qrquery) or safe_die($qrquery."<br />".$connect->ErrorMsg()); //Checked
     $questionsummary = "<div class='menubar'>\n";
@@ -1328,9 +1334,18 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             . "<font face='verdana' size='1' color='red'>"
             . $clang->gT("Warning").": ". $clang->gT("You need to add answer options to this question")." "
             . "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
-            . $clang->gT("Edit/add answer options for this question")."' name='EditThisQuestionAnswers'"
+            . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'"
             . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editansweroptions', '_top')\" /></font></td></tr>\n";
         }
+		if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
+		{
+           $questionsummary .= "<tr ><td></td><td align='left'>"
+            . "<font face='verdana' size='1' color='red'>"
+            . $clang->gT("Warning").": ". $clang->gT("You need to add subquestions to this question")." "
+            . "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
+            . $clang->gT("Edit subquestions for this question")."' name='EditThisQuestionAnswers'"
+            . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editsubquestions', '_top')\" /></font></td></tr>\n";
+		}
 
         if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
         {
@@ -1400,12 +1415,10 @@ if ($action=='editansweroptions')
     {
         foreach ($anslangs as $language)
         {
-            $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$language."'";
-            $qresult = db_execute_assoc($qquery); //Checked
-            $qrow = $qresult->FetchRow();
-            if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
+            $iAnswerCount = $connect->GetOne("SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$language."'");
+            if ($iAnswerCount == 0)   // means that no record for the language exists in the answers table
             {
-                $qquery = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language,scale_id, assessment_value) (SELECT qid,code,answer,default_value,sortorder, '".$language."','$i', assessment_value FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$baselang."')";
+                $qquery = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,scale_id, assessment_value) (SELECT qid,code,answer,sortorder, '".$language."','$i', assessment_value FROM ".db_table_name('answers')." WHERE qid=$qid AND scale_id=$i AND language='".$baselang."')";
                 $connect->Execute($qquery); //Checked
             }
         }
@@ -1624,39 +1637,47 @@ if ($action=='editsubquestions')
     $js_admin_includes[]='../scripts/jquery/jquery.blockUI.js';
     $js_admin_includes[]='../scripts/jquery/jquery.selectboxes.min.js';
 
-
-
-    $_SESSION['FileManagerContext']="edit:answer:$surveyid";
+    $_SESSION['FileManagerContext']="edit:answer:{$surveyid}";
     // Get languages select on survey.
     $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-    $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
-    $subquestiondata=$connect->GetArray($qquery);
+    $sQuery = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$qid} AND language='{$baselang}'";
+    $sQuestiontype=$connect->GetOne($sQuery);
+    $aQuestiontypeInfo=getqtypelist($sQuestiontype,'array');
+    $iScaleCount=$aQuestiontypeInfo[$sQuestiontype]['subquestions'];
+    
+    for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
+    {
+        $sQuery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid={$qid} AND language='{$baselang}' and scale_id={$iScale}";
+        $subquestiondata=$connect->GetArray($sQuery);
     if (count($subquestiondata)==0)
     {
-        $qquery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language)
-                   VALUES($surveyid,$gid,$qid,'SQ001',".db_quoteall($clang->gT('Some example subquestion')).",1,".db_quoteall($baselang).")";
-        $connect->Execute($qquery); //Checked
-
-        $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
-        $subquestiondata=$connect->GetArray($qquery);
+            $sQuery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language,scale_id)
+                       VALUES($surveyid,$gid,$qid,'SQ001',".db_quoteall($clang->gT('Some example subquestion')).",1,".db_quoteall($baselang).",{$iScale})";
+            $connect->Execute($sQuery); //Checked
+            $sQuery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid={$qid} AND language='{$baselang}' and scale_id={$iScale}"; 
+            $subquestiondata=$connect->GetArray($sQuery);
     }
     // check that there are subquestions for every language supported by the survey
     foreach ($anslangs as $language)
     {
         foreach ($subquestiondata as $row)
         {
-            $qquery = "SELECT count(*) FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$language."' AND title=".db_quoteall($row['title']);
-            $qrow = $connect->GetOne($qquery); //Checked
+                $sQuery = "SELECT count(*) FROM ".db_table_name('questions')." WHERE parent_qid={$qid} AND language='{$language}' AND qid={$row['qid']} and scale_id={$iScale}";  
+                $qrow = $connect->GetOne($sQuery); //Checked
             if ($qrow == 0)   // means that no record for the language exists in the questions table
             {
-                $qquery = "INSERT INTO ".db_table_name('questions')." (sid,gid,parent_qid,title,question,question_order,language)
-                           VALUES($surveyid,{$row['gid']},$qid,".db_quoteall($row['title']).",".db_quoteall($row['question']).",{$row['question_order']},".db_quoteall($language).")";
-                $connect->Execute($qquery); //Checked
+                    db_switchIDInsert('questions',true);
+                    $sQuery = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,parent_qid,title,question,question_order,language, scale_id)
+                               VALUES({$row['qid']},$surveyid,{$row['gid']},$qid,".db_quoteall($row['title']).",".db_quoteall($row['question']).",{$row['question_order']},".db_quoteall($language).",{$iScale})";
+                    $connect->Execute($sQuery); //Checked
+                    db_switchIDInsert('questions',false);
             }
         }
     }
+    }
+
 
     array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
 
@@ -3148,7 +3169,7 @@ if ($action == "editsurvey")
             . "<input type='hidden' name='action' value='importsurveyresources' />\n"
             . "<ul>\n"
             . "<li><label>&nbsp;</label>\n"
-            . "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
+            . "<input type='button' onclick='window.open(\"$sFCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
             . "<li><label>&nbsp;</label>\n"
             . "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li>\n"
             . "<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"

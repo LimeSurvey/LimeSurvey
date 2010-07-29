@@ -47,15 +47,15 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
         $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-        $query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
+        $query = "SELECT title,question FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}'";
         $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
         $answerlist = array();
 
         while ($dbanslist = $ansresult->FetchRow())
         {
-            $tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['answer'],0,40), 'code' => $dbanslist['code']);
-            $answerlist[$dbanslist['code']]	= $tmparrayans;
+            $tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['question'],0,40), 'code' => $dbanslist['title']);
+            $answerlist[$dbanslist['title']]	= $tmparrayans;
         }
 
         if ($result->RecordCount() > 0)

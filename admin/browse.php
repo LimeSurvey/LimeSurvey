@@ -412,6 +412,7 @@ elseif ($subaction == "all")
                 }
             }
 
+    $fields=createFieldMap($surveyid, 'full', false, false, $language);
             $initquery = "SELECT ";
             $count = 0;
             foreach ($filequestion as $question)
@@ -593,10 +594,9 @@ elseif ($subaction == "all")
         }
     }
     
-    $fields=createFieldMap($surveyid,'full');
 
     //add token to top of list if survey is not private
-    if ($surveyinfo['private'] == "N")
+    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
     {
         $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
         $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
@@ -621,7 +621,7 @@ elseif ($subaction == "all")
             if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
                 $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
             if (isset($fielddetails['scale_id']))
-                $question .='['.$field['scale'].']';
+            $question .='['.$fielddetails['scale'].']';
             $fnames[]=array($fielddetails['fieldname'],$question);
         }
         else

@@ -67,6 +67,7 @@ body,html,table,form,textarea {
   overflow: visible;
 }
 
+
 #selection_field,#selection_field_text {
   margin: 0;
   background-color: #E1F2F9;
@@ -82,6 +83,7 @@ body,html,table,form,textarea {
 #selection_field.show_colors {
   z-index: 3;
   background-color: #EDF9FC;
+	
 }
 
 #selection_field strong {
@@ -103,8 +105,10 @@ body,html,table,form,textarea {
   visibility: visible;
 }
 
-#container.word_wrap #content_highlight,#container.word_wrap #selection_field,#container.word_wrap #selection_field_text,#container.word_wrap #test_font_size
-  {
+#container.word_wrap #content_highlight,
+#container.word_wrap #selection_field,
+#container.word_wrap #selection_field_text,
+#container.word_wrap #test_font_size{
   white-space: pre-wrap; /* css-3 */
   white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
   white-space: -pre-wrap; /* Opera 4-6 */
@@ -155,6 +159,7 @@ pre {
   background-color: #996600;
 }
 
+
 /* area popup */
 .editarea_popup {
   border: solid 1px #888888;
@@ -183,8 +188,7 @@ pre {
   padding: 0;
 }
 
-.editarea_popup h1,.editarea_popup h2,.editarea_popup h3,.editarea_popup h4,.editarea_popup h5,.editarea_popup h6
-  {
+.editarea_popup h1,.editarea_popup h2,.editarea_popup h3,.editarea_popup h4,.editarea_popup h5,.editarea_popup h6{
   margin: 0;
   padding: 0;
 }
@@ -194,8 +198,8 @@ pre {
 }
 
 /* Area_search */
-div#area_search_replace { /*width: 250px;*/
-  
+div#area_search_replace{
+	/*width: 250px;*/
 }
 
 div#area_search_replace img {
@@ -217,7 +221,8 @@ div#area_search_replace .button a {
   white-space: nowrap;
 }
 
-div#area_search_replace a:hover { /*border: solid 1px #888888;*/
+div#area_search_replace a:hover{	
+	/*border: solid 1px #888888;*/
   background-color: #EDEDED;
 }
 
@@ -249,7 +254,8 @@ div#area_search_replace  #area_search_msg {
 }
 
 /* area_toolbar */
-.area_toolbar { /*font: 11px sans-serif;*/
+.area_toolbar{
+	/*font: 11px sans-serif;*/
   width: 100%;
   /*height: 21px; */
   margin: 0;
@@ -303,25 +309,21 @@ table.statusbar {
 .area_toolbar td.resize {
   text-align: right;
 }
-
 /*
 .area_toolbar span{
 	line-height: 1px;
 	padding: 0;
 	margin: 0;
 }*/
+
 .area_toolbar span#resize_area {
   cursor: nw-resize;
   visibility: hidden;
 }
 
 /* toolbar buttons */
-.editAreaButtonNormal,.editAreaButtonOver,.editAreaButtonDown,.editAreaSeparator,.editAreaSeparatorLine,.editAreaButtonDisabled,.editAreaButtonSelected
-  {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  background: transparent;
+.editAreaButtonNormal, .editAreaButtonOver, .editAreaButtonDown, .editAreaSeparator, .editAreaSeparatorLine, .editAreaButtonDisabled, .editAreaButtonSelected {
+	border: 0; margin: 0; padding: 0; background: transparent;
   margin-top: 0;
   margin-left: 1px;
   padding: 0;
@@ -351,9 +353,7 @@ table.statusbar {
 }
 
 .editAreaButtonDisabled {
-  filter: progid :           DXImageTransform.Microsoft.Alpha (         
-     opacity =   
-           30 );
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=30);
   -moz-opacity: 0.3;
   opacity: 0.3;
   border: 1px solid #F0F0EE !important;
@@ -391,8 +391,10 @@ table.statusbar {
   margin-top: -10px;
   text-align: center;
 }
+/* end */
 
-/* end */ /**** tab browsing area ****/
+
+/**** tab browsing area ****/
 #tab_browsing_area {
   display: none;
   background-color: #CCC9A8;
@@ -407,12 +409,10 @@ table.statusbar {
   list-style-type: none;
   white-space: nowrap;
 }
-
 #tab_browsing_list li {
   float: left;
   margin: -1px;
 }
-
 #tab_browsing_list a {
   position: relative;
   display: block;
@@ -464,6 +464,7 @@ table.statusbar {
   color: #FFF;
 }
 
+
 #no_file_selected {
   height: 100%;
   width: 150%; /* Opera need more than 100% */
@@ -473,17 +474,21 @@ table.statusbar {
   position: absolute;
 }
 
+
 /*** Non-editable mode ***/
-.non_editable #editor {
+.non_editable #editor
+{
   border-width: 0 1px;
 }
 
-.non_editable .area_toolbar {
+.non_editable .area_toolbar
+{
   display: none;
 }
 
 /*** Auto completion ***/
-#auto_completion_area {
+#auto_completion_area
+{
   background: #FFF;
   border: solid 1px #888;
   position: absolute;
@@ -494,7 +499,8 @@ table.statusbar {
   display: none;
 }
 
-#auto_completion_area a,#auto_completion_area a:visited {
+#auto_completion_area a, #auto_completion_area a:visited
+{
   display: block;
   padding: 0 2px 1px;
   color: #000;
@@ -507,17 +513,18 @@ table.statusbar {
   text-decoration: none;
 }
 
-#auto_completion_area ul {
+#auto_completion_area ul
+{
   margin: 0;
   padding: 0;
   list-style: none inside;
 }
-
-#auto_completion_area li {
+#auto_completion_area li
+{
   padding: 0;
 }
-
-#auto_completion_area .prefix {
+#auto_completion_area .prefix
+{
   font-style: italic;
   padding: 0 3px;
 }

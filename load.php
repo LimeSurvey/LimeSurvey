@@ -45,6 +45,10 @@ foreach(file("$thistpl/load.pstpl") as $op)
 //echo "<input type='hidden' name='PHPSESSID' value='".session_id()."'>\n";
 echo "<input type='hidden' name='sid' value='$surveyid' />\n";
 echo "<input type='hidden' name='loadall' value='reload' />\n";
+if (isset($clienttoken) && $clienttoken != "")
+{
+    echo "<input type='hidden' name='token' value='$clienttoken' />\n";
+}
 echo "</form>";
 
 foreach(file("$thistpl/endpage.pstpl") as $op)

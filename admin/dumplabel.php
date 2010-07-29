@@ -34,7 +34,7 @@ if ($lid)
 $lids=array_map('sanitize_int',$lids);
                         
 $fn = "limesurvey_labelset_".implode('_',$lids).".lsl";
-$xml = new XMLWriter();             
+$xml = getXMLWriter();             
 
 header("Content-Type: text/html/force-download");
 header("Content-Disposition: attachment; filename=$fn");

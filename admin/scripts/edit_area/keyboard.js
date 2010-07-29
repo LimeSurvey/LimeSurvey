@@ -27,10 +27,10 @@ function keyDown(e){
 	
 	var low_letter= letter.toLowerCase();
 			
-	if(letter=="Page up" && !editArea.isOpera){
+	if(letter=="Page up" && !AltPressed(e) && !editArea.isOpera){
 		editArea.execCommand("scroll_page", {"dir": "up", "shift": ShiftPressed(e)});
 		use=true;
-	}else if(letter=="Page down" && !editArea.isOpera){
+	}else if(letter=="Page down" && !AltPressed(e) && !editArea.isOpera){
 		editArea.execCommand("scroll_page", {"dir": "down", "shift": ShiftPressed(e)});
 		use=true;
 	}else if(editArea.is_editable==false){

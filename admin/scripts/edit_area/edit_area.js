@@ -118,7 +118,8 @@
 				option.value= syntax;
 				if(syntax==s['syntax'])
 					option.selected= "selected";
-				option.innerHTML= t.get_translation("syntax_" + syntax, "word");
+				dispSyntax	= parent.editAreaLoader.syntax_display_name[ syntax ];
+				option.innerHTML= typeof( dispSyntax ) == 'undefined' ? syntax.substring( 0, 1 ).toUpperCase() + syntax.substring( 1 ) : dispSyntax;//t.get_translation("syntax_" + syntax, "word");
 				syntax_selec.appendChild(option);
 			}
 		}
@@ -226,6 +227,7 @@
 		
 		if( t.isSafari ){
 			t.editor_area.style.position	= "absolute";
+			if( t.isSafari < 5)
 			a.style.marginLeft		="-3px";
 			if( t.isSafari < 3.2 ) // Safari 3.0 (3.1?)
 				a.style.marginTop	="1px";
@@ -381,8 +383,9 @@
 					this.line_number++;
 				}
 				destDiv.innerHTML= destDiv.innerHTML + newLines;
-				
+				if(this.settings['word_wrap']){
 				this.fixLinesHeight( this.textarea.value, start, -1 );
+			}
 			}
 		
 			//4) be sure the text is well displayed
@@ -523,3 +526,5 @@
 	function init(){		
 		setTimeout("editArea.init();  ", 10);
 	};
+
+ 	  	 

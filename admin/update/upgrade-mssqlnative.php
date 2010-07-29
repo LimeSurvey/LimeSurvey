@@ -21,7 +21,6 @@ function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade
 /// older versions to match current functionality
     global $modifyoutput, $dbprefix;
-    echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
     if ($oldversion < 111) {
     
     // Language upgrades from version 110 to 111 since the language names did change
@@ -595,6 +594,7 @@ function upgrade_tables143()
             if (isset($aQIDReplacements[$row['qid'].'_'.$row['code']]))
             {
                 $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+                db_switchIDInsert('questions',true);                
             }
             $insertarray['sid']=$row['sid'];
             $insertarray['gid']=$row['gid'];
@@ -614,6 +614,7 @@ function upgrade_tables143()
             else
             {
                $iSaveSQID=$insertarray['qid'];
+                db_switchIDInsert('questions',false);                
             }
             if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
             {
@@ -621,7 +622,7 @@ function upgrade_tables143()
             }
         }
     }
-    modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','A','B','C','E','F','H',';',':')"); echo $modifyoutput; flush();
+    modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','F','H','M','P','W','Z')"); echo $modifyoutput; flush();
 
     // Convert labels to answers
     $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
@@ -672,6 +673,8 @@ function upgrade_tables143()
                 if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']))
                 {
                     $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1'];
+                    db_switchIDInsert('questions',true);                
+                    
                 }
                 $insertarray['sid']=$row['sid'];
                 $insertarray['gid']=$row['gid'];
@@ -687,6 +690,8 @@ function upgrade_tables143()
                 if (isset($insertarray['qid']))
                 {
                    $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+                   db_switchIDInsert('questions',false);                
+
                 }                
             }
         }

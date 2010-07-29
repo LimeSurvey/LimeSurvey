@@ -230,7 +230,7 @@
 		start	= Math.max(0, Math.min(t.value.length, start));
 		end		= Math.max(start, Math.min(t.value.length, end));
 	
-		if( this.isOpera && this.isOpera < 9.6 ){	// Opera bug when moving selection start and selection end
+		if( nav.isOpera && nav.isOpera < 9.6 ){	// Opera bug when moving selection start and selection end
 			t.selectionEnd = 1;	
 			t.selectionStart = 0;			
 			t.selectionEnd = 1;	
@@ -240,7 +240,7 @@
 		t.selectionEnd		= end;		
 		//textarea.setSelectionRange(start, end);
 		
-		if(isIE)
+		if(nav.isIE)
 			set_IE_selection(t);
 	};
 
@@ -299,7 +299,10 @@
 			}
 			catch(e){}
 		}
+		if( t && t.id )
+		{
 		setTimeout("get_IE_selection(document.getElementById('"+ t.id +"'));", 50);
+		}
 	};
 	
 	function IE_textarea_focus(){

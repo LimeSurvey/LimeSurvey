@@ -299,6 +299,12 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['id']['rtl'] = false;
     $supportedLanguages['id']['dateformat'] = 5;
 
+    // Irish
+    $supportedLanguages['ie']['description'] = $clang->gT('Irish');
+    $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
+    $supportedLanguages['ie']['rtl'] = false;    
+    $supportedLanguages['id']['dateformat'] = 2;
+
     // Italian
     $supportedLanguages['it']['description'] = $clang->gT('Italian');
     $supportedLanguages['it']['nativedescription'] = 'Italiano';

@@ -1,5 +1,21 @@
 <?php
+/*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id: updater.php 8987 2010-07-27 12:59:34Z c_schmitz $
+ */
+$updaterversion=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
+$updaterversion=$updaterversion[1];
 
+if (isset($_REQUEST['update'])) die();
 
 if ($action=='update'){
     if ($subaction=='step4')
@@ -14,9 +30,133 @@ if ($action=='update'){
     {
         $adminoutput=UpdateStep2();
     }
-    else $adminoutput=UpdateStep1();
+    else 
+    {
+        $adminoutput=RunUpdaterUpdate();
+        $adminoutput=UpdateStep1();    
+}
 }
 
+
+function RunUpdaterUpdate()
+{
+    global $homedir, $debug, $updaterversion, $versionnumber, $tempdir, $clang;
+    require_once($homedir."/classes/http/http.php");
+
+    $http=new http_class;
+
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+    $http->GetRequestArguments("http://update.limesurvey.org?updaterbuild=$updaterversion",$arguments);
+
+    $updateinfo=false;
+    $error=$http->Open($arguments);
+    $error=$http->SendRequest($arguments);
+
+    $http->ReadReplyHeaders($headers);
+
+
+    if($error=="") {
+        $body=''; $full_body='';
+        for(;;){
+            $error = $http->ReadReplyBody($body,10000);
+            if($error != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }
+        $updateinfo=json_decode($full_body,true);
+        if ($http->response_status!='200')
+        {
+            $updateinfo['errorcode']=$http->response_status;
+            $updateinfo['errorhtml']=$full_body;
+        }
+    }
+    else
+    {
+        $updateinfo['errorcode']=$error;
+        $updateinfo['errorhtml']=$error;
+    }
+    unset( $http );
+    if ((int)$updateinfo['UpdaterRevision']<=$updaterversion)
+    {
+        return true;
+    }
+    
+    if (!is_writable($tempdir))
+    {
+        $output.= "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
+        $error=true;
+    }
+    if (!is_writable($homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php'))
+    {
+        $output.= "<li class='errortitle'>".sprintf($clang->gT("Updater file is not writable (%s). Please set according file permissions."),$homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php')."</li>";
+        $error=true;
+    }
+ 
+    //  Download the zip file, unpack it and replace the updater file accordingly
+    // Create DB and file backups now
+    require_once("classes/pclzip/pclzip.lib.php");
+
+    //   require_once('classes/pclzip/pcltrace.lib.php');
+    //   require_once('classes/pclzip/pclzip-trace.lib.php');
+    // PclTraceOn(2);
+
+    require_once($homedir."/classes/http/http.php");
+
+    $downloaderror=false;
+    $http=new http_class;
+
+    // Allow redirects
+    $http->follow_redirect=1;
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+    $http->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/$updaterversion",$arguments);
+
+    $httperror=$http->Open($arguments);
+    $httperror=$http->SendRequest($arguments);
+    $http->ReadReplyHeaders($headers);
+    if ($headers['content-type']=='text/html')
+    {
+        @unlink($tempdir.'/updater.zip');
+    }
+    elseif($httperror=='') {
+        $body=''; $full_body='';
+        for(;;){
+            $httperror = $http->ReadReplyBody($body,100000);
+            if($httperror != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }
+        file_put_contents($tempdir.'/updater.zip',$full_body);
+    }
+    else
+    {
+        print( $httperror );
+    }
+
+    //Now unzip the new updater over the existing ones.
+    if (file_exists($tempdir.'/updater.zip')){
+        $archive = new PclZip($tempdir.'/updater.zip');
+        if ($archive->extract(PCLZIP_OPT_PATH, $homedir.'/update/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
+            die("Error : ".$archive->errorInfo(true));
+        }
+        else
+        {
+            unlink($tempdir.'/updater.zip');
+        }
+    }
+    else
+    {
+        echo $clang->gT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
+        $error=true;
+    }
+ 
+ 
+}
 
 function UpdateStep1()
 {
@@ -495,7 +635,9 @@ function CheckForDBUpgrades()
         if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
         if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
         include ('upgrade-'.$upgradedbtype.'.php');
+        include ('upgrade-all.php');
         $tables = $connect->MetaTables();
+        db_upgrade_all(intval($currentDBVersion));
         db_upgrade(intval($currentDBVersion));
         $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
     }

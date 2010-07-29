@@ -81,11 +81,11 @@ $admintheme         =  'default';         // This setting specifys the directory
 
 $defaulttemplate    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
-$allowedtemplateuploads = 'gif,jpg,png';  // File types allowed to be uploaded in the templates section.
+$allowedtemplateuploads = 'gif,ico,jpg,png';  // File types allowed to be uploaded in the templates section.
 
 $allowedresourcesuploads = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
-$memorylimit        =  '32M';   // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
+$memorylimit        =  '32M';   // This sets how much memory LimeSurvey can access. 32M is the minimum (M=mb) recommended - if you are using PDF functions up to 64M may be needed
 
 $showpopups         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
@@ -365,7 +365,7 @@ $standard_templates_readonly =  true;
  */
 
 $usepdfexport   = 0;                       //Set 0 to disable; 1 to enable
-$pdfdefaultfont = 'freemono';              //Default font for the pdf Export
+$pdfdefaultfont = 'unifont';              //Default font for the pdf Export
 $pdffontsize    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $pdforientation = 'P';                     // Set L for Landscape or P for portrait format
@@ -500,6 +500,10 @@ $https_emergency_override = false;
 
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
+{
+       $rooturl=str_replace('http://', 'https://', $rooturl);
+}  
 //-----------------------------------------------------
 
 if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
@@ -540,9 +544,9 @@ $publicdir      =   "$rootdir";                                 // The physical 
 $tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical location where LimeSurvey can store temporary files
 // Note: For OS/2 the $tempdir may need to be defined as an actual directory
 // example: "x:/limesurvey/tmp". We don't know why.
-$fckeditordir   =   "$homeurl/scripts/fckeditor.266";
+$sFCKEditorURL   =   "$homeurl/scripts/fckeditor.266";
 $fckeditexpandtoolbar   =   true; // defines if the FCKeditor toolbar should be opened by default
-$pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
+$pdfexportdir   = "$homedir/classes/tcpdf";  //Directory with the tcpdf.php extensiontcpdf.php
 $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts
 
 // Computing relative url
