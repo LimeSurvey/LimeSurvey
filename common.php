@@ -2836,6 +2836,11 @@ function templatereplace($line, $replacements=array())
     )
     {
         if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
+    }
+    else
+    {
+        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", '' , $line);
+    };
 
     if (is_array($question))
     {
@@ -2885,6 +2890,12 @@ function templatereplace($line, $replacements=array())
     )
     {
     if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
+    }
+    else
+    {
+        if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", '' , $line);
+    };
+
     if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
     $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
     if(
@@ -2904,7 +2915,12 @@ function templatereplace($line, $replacements=array())
         else
         {
              if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+	};
     }
+    else
+    {
+    	if (strpos($line, '{THEREAREXQUESTIONS}') !== false) $line=str_replace('{THEREAREXQUESTIONS}' , '' , $line); 
+    };
     if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestionsAsked, $line);
 
     if (strpos($line, "{TOKEN}") !== false) {
