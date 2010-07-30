@@ -1228,7 +1228,9 @@ elseif ($answers == "long")        //chose complete answers
                     if ($type == "csv")
                     {$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", strip_tags_full($drow[$i])));}
                     else if ($type == "pdf")
-                    {$pdf->intopdf(str_replace("\r\n", " ", strip_tags_full($drow[$i])));}
+                    {$pdf->intopdf(trim(strip_tags($drow[$i])));}
+                    else if ($type == "doc")
+                    {$pdf->intopdf(trim(strip_tags($drow[$i])));}
                     else
                     {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
                 }
