@@ -2055,7 +2055,8 @@ function sendsubmitnotification($sendnotification)
                     }
                 }
             }
-            }
+       }
+    }
     $message .= $results;
     $message.= "LimeSurvey";
  

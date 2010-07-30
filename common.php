@@ -2750,6 +2750,7 @@ function templatereplace($line, $replacements=array())
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
     global $question;
+    global $showXquestions, $showgroupinfo, $showqnumcode;
     global $questioncode, $answer, $navigator;
     global $help, $totalquestions, $surveyformat;
     global $completed, $register_errormsg;
@@ -2815,10 +2816,10 @@ function templatereplace($line, $replacements=array())
 
     if(
         $showgroupinfo == 'both' ||
-	$showgroupinfo == 'name' ||
-	($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
+	    $showgroupinfo == 'name' ||
+	    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
     )
     {
         if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
@@ -2829,10 +2830,10 @@ function templatereplace($line, $replacements=array())
     };
     if(
         $showgroupinfo == 'both' ||
-	$showgroupinfo == 'description' ||
-	($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-	($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
+	    $showgroupinfo == 'description' ||
+	    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
     )
     {
         if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
@@ -2869,10 +2870,10 @@ function templatereplace($line, $replacements=array())
 
     if(
         $showqnumcode == 'both' ||
-	$showqnumcode == 'number' ||
-	($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
+	    $showqnumcode == 'number' ||
+	    ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
     )
     {
         if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", $question['number'], $line);
@@ -2883,10 +2884,10 @@ function templatereplace($line, $replacements=array())
     };
     if(
         $showqnumcode == 'both' ||
-	$showqnumcode == 'code' ||
-	($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-	($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
+	    $showqnumcode == 'code' ||
+	    ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
     )
     {
     if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
