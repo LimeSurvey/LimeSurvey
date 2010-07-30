@@ -301,7 +301,7 @@ if ($subaction == "id")
                         if ($metadata === "size")
                             $browseoutput .= rawurldecode(((int)($phparray[$index][$metadata]))." KB");
                         else if ($metadata === "name")
-                            $browseoutput .= "<a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile='.$phparray[$index][$metadata].'&amp;fieldname='.$fnames[$i][0].'&amp;id='.$id.'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a>";
+                            $browseoutput .= "<a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile=' . $phparray[$index][$metadata] . '&amp;fieldname='.$fnames[$i][0].'&amp;id='.$id.'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a>";
                         else
                             $browseoutput .= rawurldecode($phparray[$index][$metadata]);
                     }
@@ -412,7 +412,7 @@ elseif ($subaction == "all")
                 }
             }
 
-    $fields=createFieldMap($surveyid, 'full', false, false, $language);
+            $fields = createFieldMap($surveyid, 'full', false, false, $language);
             $initquery = "SELECT ";
             $count = 0;
             foreach ($filequestion as $question)
@@ -424,6 +424,7 @@ elseif ($subaction == "all")
                 $count++;
             }
 
+            $filecount = 0;
             foreach ($_POST['markedresponses'] as $iResponseID)
             {
                 $iResponseID=(int)$iResponseID; // sanitize the value
@@ -433,7 +434,6 @@ elseif ($subaction == "all")
                 $metadata = array();
                 while ($metadata = $filearray->FetchRow())
                 {
-                    $filecount = 0;
                     foreach ($metadata as $data)
                     {
                         $phparray = json_decode($data, true);
@@ -577,7 +577,7 @@ elseif ($subaction == "all")
                 if (file_exists($file)) {
                     header('Content-Description: File Transfer');
                     header('Content-Type: application/octet-stream');
-                    header('Content-Disposition: attachment; filename=' . $phparray[$i]->name);
+                    header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]->name) . '"');
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -604,6 +604,7 @@ elseif ($subaction == "all")
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
     $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
+    $fields = createFieldMap($surveyid, 'full', false, false, $language);
 
     foreach ($fields as $fielddetails)
     {

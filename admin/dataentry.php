@@ -229,45 +229,44 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                 {
                     if ($_POST[$fieldname] == "" && ($irow['type'] == 'D' || $irow['type'] == 'N' || $irow['type'] == 'K'))
                     { // can't add '' in Date column
-                        // Do nothing
+                      // Do nothing
                     }
-                    else if ($irow['type'] == "|")
+                    else if ($irow['type'] == '|')
                     {
-                        $metadata = array();
-                        $maxfiles = $connect->GetOne("SELECT value FROM ".db_table_name('question_attributes')." WHERE qid={$irow['qid']} AND attribute='max_num_of_files'");
-
-                        $destination_path = getcwd().DIRECTORY_SEPARATOR."../upload/tmp/";
-
-                        for ($i = 0; $i < $maxfiles; $i++)
+                        if (!strpos($irow['fieldname'], "_filecount"))
                         {
-                            $myfile = $fieldname."_myfile_".$i;
-                            $title  = $fieldname."_title_".$i;
-                            $comment= $fieldname."_comment_".$i;
+                            $json = $_POST[$fieldname];
+                            $phparray = json_decode(stripslashes($json));
+                            $filecount = 0;
 
-                            if ($_FILES[$myfile]['tmp_name'] == NULL)
-                                continue;
-
-                            $target_path = $destination_path . basename( $_FILES[$myfile]['name']);
-
-                            if (move_uploaded_file($_FILES[$myfile]['tmp_name'], $target_path))
+                            for ($i = 0; $filecount < count($phparray); $i++)
                             {
-                                $filename = $_FILES[$myfile]['name'];
-                                $pathinfo = pathinfo(basename($filename));
-                                $size     = filesize($target_path);
-                                $metadata[]   = array(
-                                    "title"   => "$_POST[$title]",
-                                    "comment" => "$_POST[$comment]",
-                                    "name"    => "$filename",
-                                    "size"    => "$size",
-                                    "ext"     => $pathinfo['extension']
-                                );
-                            }
-                        }
-                        $columns[] .= db_quote_id($fieldname);
-                        $values[] .= db_quoteall(json_encode($metadata), true);
+                                if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
+                                {
+                                    $target = dirname(getcwd())."/upload/surveys/". $thissurvey['sid'] ."/files/".randomkey(20);
+                                    $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
+                                    $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
 
-                        $columns[] .= db_quote_id($fieldname."_filecount");
-                        $values[] .= db_quoteall(count($metadata), true);
+                                    if (move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target))
+                                    {
+                                        $phparray[$filecount]->filename = basename($target);
+                                        $phparray[$filecount]->name = $name;
+                                        $phparray[$filecount]->size = $size;
+                                        $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
+                                        $phparray[$filecount]->ext = $pathinfo['extension'];
+                                        $filecount++;
+                                    }
+                                }
+                            }
+
+                            $columns[] .= db_quote_id($fieldname);
+                            $values[] .= db_quoteall(json_encode($phparray), true);
+                        }
+                        else
+                        {
+                            $columns[] .= db_quote_id($fieldname);
+                            $values[] .= db_quoteall(count($phparray), true);
+                        }
                     }
                     else
                     {
@@ -276,7 +275,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     }
                 }
             }
-
+            
             $SQL = "INSERT INTO $surveytable
 					(".implode(',',$columns).")
 					VALUES 
@@ -2180,19 +2179,76 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "|":
+                        $qidattributes = getQuestionAttributes($deqrow['qid']);
+
+                        // JS to update the json string
+                        $dataentryoutput .= "<script type='text/javascript'>
+
+                            function updateJSON".$fieldname."() {
+
+                                var jsonstr = '[';
+                                var i;
+                                var filecount = 0;
+
+                                for (i = 0; i < " . $qidattributes['max_num_of_files'] . "; i++)
+                                {
+                                    if ($('#".$fieldname."_file_'+i).val() != '')
+                                    {";
+
+                        if ($qidattributes['show_title'])
+                            $dataentryoutput .= "jsonstr += '{\"title\":\"'+$('#".$fieldname."_title_'+i).val()+'\",';";
+                        else
+                            $dataentryoutput .= "jsonstr += '{\"title\":\"\",';";
+
+                        
+                        if ($qidattributes['show_comment'])
+                            $dataentryoutput .= "jsonstr += '\"comment\":\"'+$('#".$fieldname."_comment_'+i).val()+'\",';";
+                        else
+                            $dataentryoutput .= "jsonstr += '\"comment\":\"\",';";
+
+                        $dataentryoutput .= "jsonstr += '\"name\":\"'+$('#".$fieldname."_file_'+i).val()+'\"}';";
+
+                        $dataentryoutput .= "jsonstr += ',';\n
+                            filecount++;
+                                    }
+                                }
+                                // strip trailing comma
+                                if (jsonstr.charAt(jsonstr.length - 1) == ',')
+                                jsonstr = jsonstr.substring(0, jsonstr.length - 1);
+                                
+                                jsonstr += ']';
+                                $('#" . $fieldname . "').val(jsonstr);
+                                $('#" . $fieldname . "_filecount').val(filecount);
+                            }
+                        </script>\n";
+
                         $dataentryoutput .= "<table border='0'>\n";
 
-                        $maxfiles = $connect->GetOne("SELECT value FROM ".db_table_name('question_attributes')." WHERE qid={$deqrow['qid']} AND attribute='max_num_of_files'");
+
+                        if ($qidattributes['show_title'] && $qidattributes['show_title'])
+                            $dataentryoutput .= "<tr><th>Title</th><th>Comment</th>";
+                        else if ($qidattributes['show_title'])
+                            $dataentryoutput .= "<tr><th>Title</th>";
+                        else if ($qidattributes['show_comment'])
+                            $dataentryoutput .= "<tr><th>Comment</th>";
+
+                        $dataentryoutput .= "<th>Select file</th></tr>\n";
+
+                        $maxfiles = $qidattributes['max_num_of_files'];
                         for ($i = 0; $i < $maxfiles; $i++)
                         {
-                            $dataentryoutput .= '<tr>
-                                                    <td align="center"><input type="text" name="'.$fieldname.'_title_'.$i  .'" id="title_'.$i  .'" maxlength="100" /></td>
-                                                    <td align="center"><input type="text" name="'.$fieldname.'_comment_'.$i.'" id="comment_'.$i.'" maxlength="100" /></td>
-                                                    <td align="center"><input type="file" name="'.$fieldname.'_myfile_'.$i .'" id="file_'.$i.'" />          </input></td>
-                                                 </tr>';
+                            $dataentryoutput .= "<tr>\n";
+                            if ($qidattributes['show_title'])
+                                $dataentryoutput .= "<td align='center'><input type='text' id='".$fieldname."_title_".$i  ."' maxlength='100' onChange='updateJSON".$fieldname."()' /></td>\n";
+
+                            if ($qidattributes['show_comment'])
+                                $dataentryoutput .= "<td align='center'><input type='text' id='".$fieldname."_comment_".$i."' maxlength='100' onChange='updateJSON".$fieldname."()' /></td>\n";
+
+                            $dataentryoutput .= "<td align='center'><input type='file' name='".$fieldname."_file_".$i."' id='".$fieldname."_file_".$i."' onChange='updateJSON".$fieldname."()' /></td>\n</tr>\n";
                         }
-                        $dataentryoutput .= '<td align="center"><input type="hidden" name="'.$fieldname.'" value=""/></input></td>';
-                        $dataentryoutput .= "</table>";
+                        $dataentryoutput .= "<tr><td align='center'><input type='hidden' name='".$fieldname."' id='".$fieldname."' value='' /></td>\n</tr>\n";
+                        $dataentryoutput .= "<tr><td align='center'><input type='hidden' name='".$fieldname."_filecount' id='".$fieldname."_filecount' value='' /></td>\n</tr>\n";
+                        $dataentryoutput .= "</table>\n";
                         break;
                     case "N": //NUMERICAL TEXT
                         $dataentryoutput .= "\t<input type='text' name='$fieldname' onkeypress=\"return goodchars(event,'0123456789.,')\" />";

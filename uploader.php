@@ -223,7 +223,7 @@
                         else if ($("#show_comment").val() == 1)
                             previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='' id='comment_"+count+"' /></td>";
 
-                        previewblock += "<td  align='center' width='20%'><img src='images/delete.png' onclick='deletefile("+count+")'/></td>"+
+                        previewblock += "<td  align='center' width='20%'><img style='cursor:pointer' src='images/delete.png' onclick='deletefile("+count+")'/></td>"+
                                                 "</tr></table>"+
                                                 "<input type='hidden' id='size_"+count+"' value="+metadata.size+" />"+
                                                 "<input type='hidden' id='name_"+count+"' value="+metadata.name+" />"+
