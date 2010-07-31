@@ -3,10 +3,10 @@ include_once('globalsettings.php');
 include_once('database.php');
 if($subaction=='bounceprocessing')
 {
-	
-function bounceprocessing()
-	{global $connect,$scriptname;
+	if(empty($cron))
+	{
 	$surveyidoriginal = $_GET['sid'];
+}
 	$settings=getSurveyInfo($surveyidoriginal);
 		                     if ($settings['bounceprocessing']=='N')
 				{	
@@ -53,10 +53,7 @@ function bounceprocessing()
 			$lasthinfo=imap_headerinfo($mbox,$count);
 			$datelc=$lasthinfo->date;
 			$datelcu = strtotime($datelc);
-            echo $datelc;
-            echo "<br>";
-            echo $datelcu;
-			$gettimestamp = "select bouncetime from ".db_table_name("surveys")." where sid='$surveyidoriginal';";
+            $gettimestamp = "select bouncetime from ".db_table_name("surveys")." where sid='$surveyidoriginal';";
 		    $datelcufiles = $connect->Execute($gettimestamp);
 			$datelcufile = substr($datelcufiles,11);
 			while($datelcu > $datelcufile)
@@ -89,7 +86,7 @@ function bounceprocessing()
 				$checktotal++;
 			}
 			@$count=imap_num_msg($mbox);
-		$lastcheckedinfo=imap_headerinfo($mbox,$count);
+		@$lastcheckedinfo=imap_headerinfo($mbox,$count);
 		$datelcfinal=$lastcheckedinfo->date;
 		$datelcfinalu = strtotime($datelcfinal);
 		$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcfinalu' where sid='$surveyidoriginal';";
@@ -158,8 +155,7 @@ echo "<div id ='dialog-modal'>$checktotal messages were scanned out of which $bo
 
 	}
 }
-}
-bounceprocessing();
+
 }
 
 ?>
