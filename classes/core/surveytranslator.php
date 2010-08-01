@@ -353,6 +353,12 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['ms']['rtl'] = false;
     $supportedLanguages['ms']['dateformat'] = 1;
 
+    // Maltese
+    $supportedLanguages['mt']['description'] = $clang->gT('Maltese');
+    $supportedLanguages['mt']['nativedescription'] = 'Malti';
+    $supportedLanguages['mt']['rtl'] = false;
+    $supportedLanguages['mt']['dateformat'] = 1;
+
     // Norwegian Bokmal
     $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
     $supportedLanguages['nb']['nativedescription'] = 'Norsk Bokm&#229;l';
