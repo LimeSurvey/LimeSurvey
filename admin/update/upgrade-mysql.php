@@ -397,7 +397,10 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountpass` VARCHAR(20) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountencryption` VARCHAR(4) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountuser` VARCHAR(320) NULL"); echo $modifyoutput; flush();
-              
+		
+        //Now add an index to the questions table to speed up subquestions
+        modify_database("", "create INDEX parent_qid on prefix_questions( parent_qid );"); echo $modifyoutput; flush();              
+        
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
