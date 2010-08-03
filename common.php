@@ -4555,6 +4555,7 @@ function FlattenText($texttoflatten, $decodeUTF8Entities=false)
     $nicetext = str_replace(array("\n","\r"),array('',''), $nicetext);
     if ($decodeUTF8Entities==true)
     {
+        $nicetext = str_replace('&nbsp;',' ', $nicetext); // html_entity_decode does not properly convert &nbsp; to spaces
         $nicetext=html_entity_decode($nicetext,ENT_QUOTES,'UTF-8');
     }
     $nicetext = trim($nicetext);
