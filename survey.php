@@ -688,19 +688,33 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
-                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
+                    if($OrigQuestion['type']=="1") {
+                        //for a dual scale array question type we have to massage the system
+                        $dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
+                        $dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
+                    } else {
+                        $dtbody = "tbdisp".$qbase.$fansrows['title'];
+                    }
                     $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
                     $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
                     $appendj .= "\t{\n";
-                    $appendj .= "document.getElementById('$tbody').style.display='';\n";
-                    $appendj .= "document.getElementById('$dtbody').value='on';\n";
+                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+                    if($OrigQuestion['type']=="1") {
+                        //for a dual scale array question type we have to massage the system
+                        $appendj .= "\t\tdocument.getElementById('$dtbody).value='on';\n";
+                    }
                     $appendj .= "\t}\n";
                     $appendj .= "\telse\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                    $appendj .= "\t\t$('#$dtbody').val('off');\n";
-                    // This line resets the text fields in the hidden row
+                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+                    if($OrigQuestion['type']=="1") {
+                        //for a dual scale array question type we have to massage the system
+                        $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+                    }
+                     // This line resets the text fields in the hidden row
                     $appendj .= "\t\t$('#$tbody input').val('');\n";
                     // This line resets any radio group in the hidden row
                     $appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
@@ -717,12 +731,12 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 $appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
                 $appendj .= "\t{\n";
                 $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                $appendj .= "\t\t$('#$dtbody').val('on');\n";
+                $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
                 $appendj .= "\t}\n";
                 $appendj .= "\telse\n";
                 $appendj .= "\t{\n";
                 $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                $appendj .= "\t\t$('#$dtbody').val('off');\n";
+                $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
                 // This line resets the text fields in the hidden row
                 $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
                 // This line resets any radio group in the hidden row
@@ -757,7 +771,13 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
-                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
+  					if($OrigQuestion['type']=="1") {
+					    //for a dual scale array question type we have to massage the system
+						$dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
+						$dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
+					} else {
+						$dtbody = "tbdisp".$qbase.$fansrows['title'];
+					}
                     $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
                     $appendj .= "\tif (\n";
@@ -778,16 +798,24 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     $appendj .= "\t)\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                    $appendj .= "\t\t$('#$dtbody').val('off');\n";
+                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+                    if($OrigQuestion['type']=="1") {
+                        //for a dual scale array question type we have to massage the system
+                        $appendj .= "\t\tdocument.getElementById('$dtbody2').value='off';\n";
+                    }
+                    // This line resets the text fields in the hidden row
+                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
+                    // This line resets any radio group in the hidden row
+                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false);\n";
                     $appendj .= "\t}\n";
                     $appendj .= "\telse\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                    $appendj .= "\t\t$('#$dtbody').val('on');\n";
-                    // This line resets the text fields in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
-                    // This line resets any radio group in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+                    if($OrigQuestion['type']=="1") {
+                        //for a dual scale array question type we have to massage the system
+                        $appendj .= "\t\tdocument.getElementById('$dtbody2').value='on';\n";
+                    }
                     $appendj .= "\t}\n";
                 }
             }
@@ -800,12 +828,12 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 $appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
                 $appendj .= "\t{\n";
                 $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                $appendj .= "\t\t$('#$dtbody').val('on');\n";
+                $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
                 $appendj .= "\t}\n";
                 $appendj .= "\telse\n";
                 $appendj .= "\t{\n";
                 $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                $appendj .= "\t\t$('#$dtbody').val('off');\n";
+                $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
                 // This line resets the text fields in the hidden row
                 $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
                 // This line resets any radio group in the hidden row
