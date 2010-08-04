@@ -700,6 +700,45 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
     $s_lang = $_SESSION['s_lang'];
     if (isset($_SESSION['srid']))
     {
+        // find out if there are any fuqt questions - checked
+        $fieldmap = createFieldMap($surveyid);
+        foreach ($fieldmap as $field)
+        {
+            if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
+            {
+                if (!isset($qid)) { $qid = array(); }
+                $qid[] = $field['fieldname'];
+            }
+        }
+
+        // if yes, extract the response json to those questions
+        if (isset($qid))
+        {
+            $query = "SELECT * FROM ".db_table_name("survey_".$surveyid)." WHERE id=".$_SESSION['srid'];
+            $result = db_execute_assoc($query);
+            while ($row = $result->FetchRow())
+            {
+                foreach ($qid as $question)
+                {
+                    $json = $row[$question];
+                    if ($json == "" || $json == NULL)
+                        continue;
+                    
+                    // decode them
+                    $phparray = json_decode($json);
+                    
+                    foreach ($phparray as $metadata)
+                    {
+                        $target = "upload/surveys/".$surveyid."/files/";
+                        // delete those files
+                        unlink($target.$metadata->filename);
+                    }
+                }
+            }
+        }
+        // done deleting uploaded files
+        
+
         // delete the response but only if not already completed
         $connect->query('delete from '.db_table_name('survey_'.$surveyid).' where srid='.$_SESSION['srid']."and completed='N'");
     }
