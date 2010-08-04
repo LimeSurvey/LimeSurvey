@@ -988,21 +988,6 @@ while ($degrow = $degresult->FetchRow())
                     //				}
                     break;
 
-                    /*
-                     // ==================================================================
-                     case "I": //Language Switch  in a printable survey does not make sense
-                     $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-                     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-
-                     foreach ($answerlangs as $ansrow)
-                     {
-                     $printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$ansrow}' />".getLanguageNameFromCode($ansrow, true)."<br />\n";
-                     }
-                     break;
-                     */
-
-
                     // ==================================================================
                 case "P":  //MULTIPLE OPTIONS WITH COMMENTS
                     if (trim($qidattributes['max_answers'])=='') {
