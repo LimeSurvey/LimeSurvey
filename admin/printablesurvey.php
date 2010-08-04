@@ -1504,16 +1504,23 @@ while ($degrow = $degresult->FetchRow())
                     {
                         $column_headings[] = $frow['answer'];
                     }
+                    if (trim($qidattributes['answer_width'])!='')
+                    {
+                        $iAnswerWidth=100-$qidattributes['answer_width'];
+                    }
+                    else
+                    {
+                        $iAnswerWidth=80;
+                    }
                     if (count($column_headings)>0)
                     {
-                        $col_width = round(80 / count($column_headings));
+                        $col_width = round($iAnswerWidth / count($column_headings));
 
                     }
                     else
                     {
                         $heading='';
                     }
-
                     $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n";
                     $question['ANSWER'] .= "\t\t\t<td>&nbsp;</td>\n";
                     foreach($column_headings as $heading)
@@ -1533,7 +1540,15 @@ while ($degrow = $degresult->FetchRow())
                         $answertext=$mearow['question'];
                         if (trim($answertext)=='') $answertext='&nbsp;';
                         if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
-                        $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
+                        if (trim($qidattributes['answer_width'])!='')
+                        {
+                            $sInsertStyle=' style="width:'.$qidattributes['answer_width'].'%" ';
+                        }
+                        else
+                        {
+                            $sInsertStyle='';
+                        }
+                        $question['ANSWER'] .= "\t\t\t<th $sInsertStyle class=\"answertext\">$answertext</th>\n";
                         //$printablesurveyoutput .="\t\t\t\t\t<td>";
                         $pdfoutput[$counter][0]=$answertext;
                         for ($i=1; $i<=$fcount; $i++)
