@@ -1332,6 +1332,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
         $emquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
 
         if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
+        if (isset($tokenids)) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
         $tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
         $emresult = db_select_limit_assoc($emquery,$maxemails) or safe_die ("Couldn't do query.<br />\n$emquery<br />\n".$connect->ErrorMsg());
         $emcount = $emresult->RecordCount();
