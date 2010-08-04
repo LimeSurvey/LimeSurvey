@@ -1078,6 +1078,11 @@ while ($degrow = $degresult->FetchRow())
                     while ($mearow = $mearesult->FetchRow())
                     {
                         $longest_string = longest_string($mearow['question'] , $longest_string );
+                        if ($qidattributes['slider_layout']==1)
+                        {
+                          $mearow['question']=explode(':',$mearow['question']);
+                          $mearow['question']=$mearow['question'][0];  
+                        }
                         $question['ANSWER'] .=  "\t<li>\n\t\t<span>".$mearow['question']."</span>\n\t\t".input_type_image('text',$mearow['question'],$width)."\n\t</li>\n";
                         if(isset($_POST['printableexport'])){$pdf->intopdf($mearow['question'].": ____________________");}
                     }
