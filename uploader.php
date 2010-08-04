@@ -36,6 +36,10 @@
             text-align: center;
         }
 
+        .uploadstatus {
+            text-align: center;
+        }
+
         .upload-button {
             border: 1px solid #79B7E7;
             background: url("../images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
@@ -236,9 +240,16 @@
                         count++;
                         $('#licount').val(count);
                         var filecount = $('#filecount').val();
+                        var minfiles = $('#minfiles').val();
                         filecount++;
-                        $('#filecount').val(filecount);
                         var maxfiles = $('#maxfiles').val();
+                        $('#filecount').val(filecount);
+
+                        if (filecount < minfiles)
+                            $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
+                        else if (filecount < maxfiles)
+                            $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may Save and exit');
+
                         if (filecount >= maxfiles)
                             $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may Save and Exit !</p>');
                     }
@@ -359,6 +370,7 @@
         </div>
         
         <p class="uploadmsg">You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>
+        <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->
         <ul id="listfiles"></ul>
