@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.90RC3!
+Welcome to LimeSurvey v1.90!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,37 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.90RC3 (build 8963) to 1.90 (build 9028) Legend: +new feature, # updated feature, - bug fix 
+#Updated feature: Allow .ico files to be uploaded at the template editor so that users can upload their own favicons. (maziminke)
+#Updated translation: French (b00z00)
+#Updated translation: Bulgarian (bg), thanks to Vladimir (gandalfar)
+#Updated translation: Dutch (nl), thanks to Han Velthuis (gandalfar)
+#Updated translation: Dutch informal (nl-informal), thanks to Han Velthuis (gandalfar)
+#Updated translation: Norwegian Bokmål (nb), thanks to Pål Monstad (gandalfar)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
++New translation: Maltese kindly provided by Richard Pullicino - richard (dot) pullicino (at) me (dot) com (c_schmitz)
+-Fix: public statistics errors "Warning: require_once(/classes/core/class.progressbar.php) [function.require-once]: failed to open stream: No such file or directory ...\statistics_user.php  on line 35 (maziminke)
+-Fixed issue #4499: Print results after survey is broken (mennodekker)
+-Fixed issue #04460: Problem when try to invite selected participants (jcleeland)
+-Fixed issue #04510: Problem with array filter and mandatory option - it was an issue with dual-scale questions and the array_filter which had been badly implemented.  (jcleeland)
+-Fixed issue: Where the array_filter javascript was deleting answers when reloading a page.  (jcleeland)
+-Fixed issue #4454: Default Help text not hidden if no text entered (c_schmitz)
+-Fixed issue #4489: Wrong code numbering when using quick-add in subquestions or answer (c_schmitz)
+-Fixed issue #4500: Undefined offset error when adding or editing array text or numbers (c_schmitz)
+-Fixed issue #4502: "Other" used in ranking will cause stat to show statistics for 'Other' (c_schmitz)
+-Fixed issue #4503: Template error on registration screen (c_schmitz)
+-Fixed issue #4509: Cannot export surevey results as xls/pdf (c_schmitz)
+-Fixed issue #4511: Slider left/right text should not be displayed at printable survey (c_schmitz)
+-Fixed issue #4514: Printable version of survey doesn't reflect subquestion width attribute (c_schmitz)
+-Fixed issue: Ordered dual-scale header options so they are together and in a sensible order in the advanced questions page. (jcleeland)
+-Fixed issue: In statistics Array (texts and numbers) did not work (mennodekker)
+-Fixed issue: Fatal error: require_once() [function.require]: Failed opening required '/classes/core/class.progressbar.php' in ...statistics_user.php on line 35" (maziminke)
+
 
 Changes from 1.90RC2 (build 8906) to 1.90RC3 (build 8963) Legend: +new feature, # updated feature, - bug fix 
 #Updated language: Bulgarian (bg) thanks to Vladislav Zaimov (gandalfar)
