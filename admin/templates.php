@@ -885,8 +885,8 @@ $templatesoutput.="\t<a href='#' onclick='javascript:window.open(\"admin.php?act
 }
 elseif(is_writable($usertemplaterootdir))
 {
-$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder in order to enable this option")."' />\n"
-    ."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Please change the directory permissions of tmp folder in order to enable this option")."' title='' />\n"
+    $templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Export template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir)."' />\n"
+    ."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Import template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir)."' title='' />\n"
 ."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
     ."<a href='#' title=\"".$clang->gTview("Copy Template")."\" " 
     ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
@@ -895,10 +895,10 @@ $templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt=
 else
 {
 
-$templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' />\n"
-	."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' title='' />\n"
+    $templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt='".$clang->gT("Export template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option.")."' />\n"
+	."<img name='ImportTemplate' src='$imagefiles/import_disabled.png' alt='".$clang->gT("Import template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option.")."' />\n"
 	."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-	."<img name='MakeCopy' src='$imagefiles/copy_disabled.png' alt='".$clang->gT("Please change the directory permissions of /tmp and /templates folder in order to enable this option.")."' />";}
+	."<img name='MakeCopy' src='$imagefiles/copy_disabled.png' alt='".$clang->gT("Copy template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option.")."' />";}
 				$templatesoutput.= "</div>\n<div class='menubar-right'>\n"
                                ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
                                . "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+escape(this.value), \"_top\")'>\n"
@@ -936,7 +936,6 @@ $templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt=
                                }
                                else
                                {
-
 
                                    //FILE CONTROL DETAILS
                                    if (is_template_editable($templatename)==true)
@@ -1042,9 +1041,8 @@ $templatesoutput.="<img name='Export' src='$imagefiles/export_disabled.png' alt=
                            @$fnew=fopen("$tempdir/template_temp_$time.html", "w+");
 if(!$fnew)
 {
-$templatesoutput.= "<p>\n"."<span class ='errortitle'>".$clang->gT(" Please change the directory permission of /tmp folder in order to preview templates.")."</span>"
+            $templatesoutput.= "<p>\n"."<span class ='errortitle'>".sprintf($clang->gT("Please change the directory permissions of the folder %s in order to preview templates."), $tempdir)."</span>"
 ."</div>\n";
-
 }
 else
 {

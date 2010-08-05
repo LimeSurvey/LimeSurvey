@@ -1153,18 +1153,18 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                    .$clang->gT("Do Survey")
 	                    ."' alt='"
 	                    .$clang->gT("Do Survey")
-	                    ."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$toklang."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";
+	                    ."' onclick=\"window.open('{$publicurl}/index.php?sid={$surveyid}&amp;lang={$toklang}&amp;token=".trim($brow['token'])."', '_blank')\" />\n";
 	                }
 	                else
 	                {
-	                    $tokenoutput .= "<img src='$imagefiles/blank.gif' height='16' width='16'/>";
+	                    $tokenoutput .= "<img src='{$imagefiles}/blank.gif' height='16' width='16'/>";
 	                }
-	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
+	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_edit.png' title='"
 	                .$clang->gT("Edit token entry")
 	                ."' alt='"
 	                .$clang->gT("Edit token entry")
-	                ."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
-	                ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
+	                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start={$start}&amp;limit={$limit}&amp;order={$order}', '_top')\" />"
+	                ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_delete.png' title='"
 	                .$clang->gT("Delete token entry")
 	                ."' alt='"
 	                .$clang->gT("Delete token entry")
@@ -1173,14 +1173,14 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	            if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
 	            {
 	                // Get response Id
-	                $query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."' ORDER BY id desc";
+	                $query="SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE token='{$brow['token']}' ORDER BY id desc";
 	                $result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
 	                list($id) = $result->FetchRow();
 
 	                // UPDATE button to the tokens display in the MPID Actions column
 	                if  ($id)
 	                {
-	                    $tokenoutput .= "<input type='image' src='$imagefiles/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
+	                    $tokenoutput .= "<input type='image' src='{$imagefiles}/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
 	                    .$clang->gT("View/Update response")
 	                    ."' alt='"
 	                    .$clang->gT("View/Update response")
@@ -1189,19 +1189,19 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	            }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='')
 	            {
-	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
+	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_invite.png' title='"
 	                .$clang->gT("Send invitation email to this entry")
 	                ."' alt='"
 	                .$clang->gT("Send invitation email to this entry")
-                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
+	                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
 	            }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            {
-	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
+	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_remind.png' title='"
 	                .$clang->gT("Send reminder email to this entry")
 	                ."' alt='"
 	                .$clang->gT("Send reminder email to this entry")
-	                ."' onclick=\"window.open('{$scriptname}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />";
+	                ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tid={$brow['tid']}', '_top')\" />";
 	            }
 	            $tokenoutput .= "\n</td>\n";
 	        }
@@ -1211,28 +1211,28 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 
 	// Multiple item actions
 	if ($bresult->rowCount() > 0) {
-	    $tokenoutput .= "<tr class='$bgc'>\n"
+	    $tokenoutput .= "<tr class='{$bgc}'>\n"
 	    . "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)+1)."'>"
-	    . "<img src='$imagefiles/blank.gif' height='16' width='16'/>"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
+	    . "<img src='{$imagefiles}/blank.gif' height='16' width='16'/>"
+	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_delete.png' title='"
 	    .$clang->gT("Delete the selected entries")
 	    ."' alt='"
 	    .$clang->gT("Delete the selected entries")
 	    ."' onclick=\"if (confirm('"
 	    .$clang->gT("Are you sure you want to delete the selected entries?","js")
-	    ."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />"
+	    ."')) {".get2post("{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}")."}\"  />"
 	    . "&nbsp;"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
+	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_invite.png' title='"
 	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
 	    ."' alt='"
 	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-	    ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+	    ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
 	    . "&nbsp;"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
+	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_remind.png' title='"
 	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
 	    ."' alt='"
 	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-	    ."' onclick=\"window.open('{$scriptname}/?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+	    ."' onclick=\"window.open('{$scriptname}/?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
 	    . "</td>\n"
 	    . "</tr>\n";
 	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
@@ -1436,6 +1436,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
         $emquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
 
         if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
+        if (isset($tokenids)) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
         $tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
         $emresult = db_select_limit_assoc($emquery,$maxemails) or safe_die ("Couldn't do query.<br />\n$emquery<br />\n".$connect->ErrorMsg());
         $emcount = $emresult->RecordCount();
@@ -3030,4 +3031,3 @@ function getLine($file)
 }
 
 ?>
-

@@ -1379,7 +1379,13 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
         $htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'";
         $htmltbody2 .= ($class !== null) ? " class='$class'": "";
         $htmltbody2 .= ">\n";
+        if($ia[4]=="1") {
+        //This is an array dual scale question and we have to massage the tbidpslay rowname
+            $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='off' />\n";
+            $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='off' />\n";
+        } else {
         $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />\n";
+        }
     } else if
     (
     (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
@@ -1398,7 +1404,13 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'";
             $htmltbody2 .= ($class !== null) ? " class='$class'": "";
             $htmltbody2 .= ">\n";
-            $hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
+            if($ia[4]=="1") {
+            //This is an array dual scale question and we have to massage the tbidpslay rowname
+                $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='off' />\n";
+                $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='off' />\n";
+            } else {
+                $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />\n";
+            }
             $_SESSION[$valuename] = ''; //Remove any saved results for this since it is no longer being displayed
         }
         else
@@ -1406,15 +1418,27 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
             $htmltbody2 .= ($class !== null) ? " class='$class'": "";
             $htmltbody2 .= ">";
-            $hiddenfield="\n<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
+            if($ia[4]=="1") {
+            //This is an array dual scale question and we have to massage the tbidpslay rowname
+                $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";
+                $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
+            } else {
+                $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />\n";
         }
+    }
     }
     else
     {
         $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
         $htmltbody2 .= ($class !== null) ? " class='$class'": "";
         $htmltbody2 .= ">\n";
-        $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
+        if($ia[4]=="1") {
+        //This is an array dual scale question and we have to massage the tbidpslay rowname
+            $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";
+            $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
+        } else {
+            $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />\n";
+    }
     }
 
     //End of array_filter attribute
@@ -1442,7 +1466,13 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
     )
     {
         $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
+        if($ia[4]=="1") {
+            //This is an array dual scale question and we have to massage the tbidpslay rowname
+            $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";
+            $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
+        } else {
         $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />\n";
+        }
     } else if
     (
     (trim($qidattributes['array_filter_exclude'])!='' &&
@@ -1459,21 +1489,38 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
         if (!empty($selected) && !in_array($ansrow['title'],$selected))
         {
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
+            if($ia[4]=="1") {
+                //This is an array dual scale question and we have to massage the tbidpslay rowname
+                $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";
+                $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
+            } else {
             $hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
+        }
         }
         else
         {
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'>";
+            if($ia[4]=="1") {
+                //This is an array dual scale question and we have to massage the tbidpslay rowname
+                $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='off' />\n";
+                $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='off' />\n";
+            } else {
             $hiddenfield="\n<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
+            }
             $_SESSION[$valuename]=''; //Remove any saved results for this since it is no longer being displayed
         }
     }
     else
     {
         $htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'>\n";
+        if($ia[4]=="1") {
+            //This is an array dual scale question and we have to massage the tbidpslay rowname
+            $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='off' />\n";
+            $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='off' />\n";
+        } else {
         $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
     }
-
+    }
     //End of array_filter attribute
 
     return array($htmltbody2, $hiddenfield);

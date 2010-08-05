@@ -989,22 +989,7 @@ while ($degrow = $degresult->FetchRow())
                     //				}
                     break;
 
-                    /*
                      // ==================================================================
-                     case "I": //Language Switch  in a printable survey does not make sense
-                     $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-                     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-
-                     foreach ($answerlangs as $ansrow)
-                     {
-                     $printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$ansrow}' />".getLanguageNameFromCode($ansrow, true)."<br />\n";
-                     }
-                     break;
-                     */
-
-
-                    // ==================================================================
                 case "P":  //MULTIPLE OPTIONS WITH COMMENTS
                     if (trim($qidattributes['max_answers'])=='') {
                         $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
@@ -1079,6 +1064,11 @@ while ($degrow = $degresult->FetchRow())
                     while ($mearow = $mearesult->FetchRow())
                     {
                         $longest_string = longest_string($mearow['question'] , $longest_string );
+                        if ($qidattributes['slider_layout']==1)
+                        {
+                          $mearow['question']=explode(':',$mearow['question']);
+                          $mearow['question']=$mearow['question'][0];  
+                        }
                         $question['ANSWER'] .=  "\t<li>\n\t\t<span>".$mearow['question']."</span>\n\t\t".input_type_image('text',$mearow['question'],$width)."\n\t</li>\n";
                         if(isset($_POST['printableexport'])){$pdf->intopdf($mearow['question'].": ____________________");}
                     }
@@ -1505,16 +1495,23 @@ while ($degrow = $degresult->FetchRow())
                     {
                         $column_headings[] = $frow['answer'];
                     }
+                    if (trim($qidattributes['answer_width'])!='')
+                    {
+                        $iAnswerWidth=100-$qidattributes['answer_width'];
+                    }
+                    else
+                    {
+                        $iAnswerWidth=80;
+                    }
                     if (count($column_headings)>0)
                     {
-                        $col_width = round(80 / count($column_headings));
+                        $col_width = round($iAnswerWidth / count($column_headings));
 
                     }
                     else
                     {
                         $heading='';
                     }
-
                     $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n";
                     $question['ANSWER'] .= "\t\t\t<td>&nbsp;</td>\n";
                     foreach($column_headings as $heading)
@@ -1534,7 +1531,15 @@ while ($degrow = $degresult->FetchRow())
                         $answertext=$mearow['question'];
                         if (trim($answertext)=='') $answertext='&nbsp;';
                         if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
-                        $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
+                        if (trim($qidattributes['answer_width'])!='')
+                        {
+                            $sInsertStyle=' style="width:'.$qidattributes['answer_width'].'%" ';
+                        }
+                        else
+                        {
+                            $sInsertStyle='';
+                        }
+                        $question['ANSWER'] .= "\t\t\t<th $sInsertStyle class=\"answertext\">$answertext</th>\n";
                         //$printablesurveyoutput .="\t\t\t\t\t<td>";
                         $pdfoutput[$counter][0]=$answertext;
                         for ($i=1; $i<=$fcount; $i++)

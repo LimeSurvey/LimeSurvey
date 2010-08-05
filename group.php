@@ -929,20 +929,34 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
+					if($OrigQuestion['type']=="1") {
+					    //for a dual scale array question type we have to massage the system
+						$dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
+						$dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
+					} else {
                     $dtbody = "tbdisp".$qbase.$fansrows['title'];
+					}
                     $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
                     $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                    $appendj .= "\t\t$('#$dtbody').val('on');\n";
+					$appendj .= "\t\tdocument.getElementById('$dtbody').value = 'on';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('on')" - the hash in dual scale breaks the javascript
+                    if($OrigQuestion['type']=="1") {
+					    //for a dual scale array question type we have to massage the system
+						$appendj .= "\t\tdocument.getElementById('$dtbody2').value = 'on';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('on')" - the hash in dual scale breaks the javascript
+					}
                     $appendj .= "\t}\n";
                     $appendj .= "\telse\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                    $appendj .= "\t\t$('#$dtbody').val('off');\n";
+					$appendj .= "\t\tdocument.getElementById('$dtbody').value = 'off';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
+                    if($OrigQuestion['type']=="1") {
+					    //for a dual scale array question type we have to massage the system
+						$appendj .= "\t\tdocument.getElementById('$dtbody2').value = 'off';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
+					}
                     // This line resets the text fields in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
                     // This line resets any radio group in the hidden row
                     $appendj .= "\t\t$('#$tbody input[type=checkbox]').attr('checked', false); ";
                     $appendj .= "\t}\n";
@@ -963,7 +977,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 $appendj .= "\telse\n";
                 $appendj .= "\t{\n";
                 $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                $appendj .= "\t\t$('#$dtbody').val('off');\n";
+				$appendj .= "\t\tdocument.getElementById('$dtbody').value = 'off';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
                 // This line resets the text fields in the hidden row
                 $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
                 // This line resets any radio group in the hidden row
@@ -998,7 +1012,13 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
+					if($OrigQuestion['type']=="1") {
+					    //for a dual scale array question type we have to massage the system
+						$dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
+						$dtbody2 = "tbdisp".$qbase.$fansrows['title']."#1";
+					} else {
                     $dtbody = "tbdisp".$qbase.$fansrows['title'];
+					}
                     $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
                     $appendj .= "\tif (\n";
@@ -1019,16 +1039,22 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     $appendj .= "\t)\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                    $appendj .= "\t\t$('#$dtbody').val('off');\n";
+					$appendj .= "\t\tdocument.getElementById('$dtbody').value = 'off';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
+					if($OrigQuestion['type'] == "1") {
+						$appendj .= "\t\tdocument.getElementById('$dtbody2').value = 'off';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
+					}
+                    // This line resets the text fields in the hidden row
+                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
+                    // This line resets any radio group in the hidden row
+                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false);\n";
                     $appendj .= "\t}\n";
                     $appendj .= "\telse\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                    $appendj .= "\t\t$('#$dtbody').val('on');\n";
-                    // This line resets the text fields in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
-                    // This line resets any radio group in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
+					if($OrigQuestion['type'] == "1") {
+					    $appendj .= "\t\tdocument.getElementById('$dtbody2').value='on';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
+					}
                     $appendj .= "\t}\n";
                 }
             }

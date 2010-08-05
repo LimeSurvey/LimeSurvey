@@ -3685,7 +3685,7 @@ function questionAttributes($returnByName=false)
     $qattributes["dualscale_headerA"]=array(
     "types"=>"1",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'sortorder'=>110,
     'inputtype'=>'text',
     "help"=>$clang->gT('Enter a header text for scale A'),
     "caption"=>$clang->gT('Header scale A'));
@@ -3693,7 +3693,7 @@ function questionAttributes($returnByName=false)
     $qattributes["dualscale_headerB"]=array(
     "types"=>"1",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'sortorder'=>111,
     'inputtype'=>'text',
     "help"=>$clang->gT('Enter a header text for scale B'),
     "caption"=>$clang->gT('Header scale B'));
@@ -4062,7 +4062,7 @@ function questionAttributes($returnByName=false)
     $qattributes["use_dropdown"]=array(
     "types"=>"1F",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'sortorder'=>112,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
@@ -4787,6 +4787,7 @@ function FlattenText($texttoflatten, $decodeUTF8Entities=false)
     $nicetext = str_replace(array("\n","\r"),array('',''), $nicetext);
     if ($decodeUTF8Entities==true)
     {
+        $nicetext = str_replace('&nbsp;',' ', $nicetext); // html_entity_decode does not properly convert &nbsp; to spaces
         $nicetext=html_entity_decode($nicetext,ENT_QUOTES,'UTF-8');
     }
     $nicetext = trim($nicetext);
@@ -7457,7 +7458,7 @@ function cleanTempDirectory()
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
-            unlink($dir.$file);
+            @unlink($dir.$file);
         }
     }
     closedir($dp);

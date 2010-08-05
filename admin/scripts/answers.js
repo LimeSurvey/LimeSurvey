@@ -6,7 +6,6 @@ $(document).ready(function(){
                                             distance:3});
        $('.btnaddanswer').click(addinput);
        $('.btndelanswer').click(deleteinput); 
-       $('.btneditanswer').click(popupeditor);
        $('#editanswersform').submit(code_duplicates_check)
        $('#labelsetbrowser').dialog({ autoOpen: false,
                                         modal: true,
@@ -112,15 +111,14 @@ function addinput()
             assessment_type='hidden';
         }
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+htmlspecialchars(getNextCode($(this).parent().parent().find('.code').val()))+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+htmlspecialchars(getNextCode($(this).parent().parent().find('.code').val()))+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         else
         {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         tablerow.after(inserthtml);
         tablerow.next().find('.btnaddanswer').click(addinput);
-        tablerow.next().find('.btneditanswer').click(popupeditor);
         tablerow.next().find('.btndelanswer').click(deleteinput);
         tablerow.next().find('.answer').focus(function(){
             if ($(this).val()==newansweroption_text)
@@ -183,7 +181,9 @@ function aftermove(event,ui)
 // if the list has really changed
 function updaterowproperties()
 {
-  
+  var sID=$('input[name=sid]').val();
+  var gID=$('input[name=gid]').val();
+  var qID=$('input[name=qid]').val();
     
   $('.answertable tbody').each(function(){
       info=$(this).closest('table').attr('id').split("_"); 
@@ -204,6 +204,14 @@ function updaterowproperties()
          $(this).find('.answer').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id);
          $(this).find('.assessment').attr('id','assessment_'+rownumber+'_'+scale_id);
          $(this).find('.assessment').attr('name','assessment_'+rownumber+'_'+scale_id);
+         
+		 // Newly inserted row editor button
+		 $(this).find('.editorLink').attr('href','javascript:start_popup_editor(\'answer_'+language+'_'+rownumber+'_'+scale_id+'\',\'[Answer:]('+language+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')');
+         $(this).find('.editorLink').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_ctrl');
+         $(this).find('.btneditanswerena').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
+         $(this).find('.btneditanswerena').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
+         $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
+         $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
          highlight=!highlight;
          rownumber++;
       })
@@ -250,7 +258,7 @@ function is_numeric (mixed_var) {
 
 function popupeditor()
 {
-    input_id=$(this).parent().find('.answer').attr('id');
+	input_id=$(this).parent().find('.answer').attr('id');
     start_popup_editor(input_id);
 }
 
@@ -461,11 +469,11 @@ function transferlabels()
                             for (k in lsrows)
                             {
                                 if (x==0) {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                             }
                         }
@@ -476,7 +484,7 @@ function transferlabels()
                         var k=0;
                         for (k in lsrows)
                         {
-                            tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                            tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                         }
                     }
                     if (lsreplace) {
@@ -485,11 +493,9 @@ function transferlabels()
                     $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
                     // Unbind any previous events
                     $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
                     $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
                     $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
                     $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-                    $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
                     $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
                     $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
                         if ($(this).val()==newansweroption_text)
@@ -557,11 +563,11 @@ function quickaddlabels()
             }
              
             if (x==0) {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btneditanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
             }
             else
             {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><img src="../images/edithtmlpopup.png" class="btnaddanswer" /></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
 
             }
         }
@@ -571,11 +577,9 @@ function quickaddlabels()
         $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
         // Unbind any previous events
         $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').unbind('click');
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
         $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
         $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-        $('#answers_'+languages[x]+'_'+scale_id+' .btneditanswer').click(popupeditor);
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
         $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
             if ($(this).val()==newansweroption_text)
