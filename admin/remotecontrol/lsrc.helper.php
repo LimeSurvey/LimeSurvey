@@ -694,14 +694,13 @@ class LsrcHelper {
     }
 
     /**
-     * function to import surveys, based on new importsurvey.php 6979 2009-05-30 11:59:03Z c_schmitz $
+     * function to import surveys
      *
-     * @param unknown_type $iVid
-     * @param unknown_type $sVtit
-     * @param unknown_type $sVbes
+     * @param  $iVid - desired survey id
+     * @param $importFile - name of the file to import in core(survey) dir
      * @return boolean
      */
-    function importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp) //XXX
+    function importSurvey($iVid, $importFile)
     {
         global $connect ;
         global $dbprefix ;
@@ -712,7 +711,7 @@ class LsrcHelper {
         $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
         // HINT FOR IMPORTERS: go to Line 714 to manipulate the Survey, while it's imported
 
-        $the_full_file_path = $coreDir.$sVtyp;
+        $the_full_file_path = $coreDir.$importFile;
 
         $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",the_full_file_path ='$the_full_file_path' OK ");
         

@@ -367,7 +367,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $s
     $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",vor import OK ");
 
 
-    $iNewSid = $lsrcHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp);
+    $iNewSid = $lsrcHelper->importSurvey($iVid, $sVtyp);
     if(!is_int($iNewSid))
     {
         throw new SoapFault("Server: ", "Import went wrong somehow");
@@ -387,8 +387,16 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $s
     $lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iNewSid'");
     if($sUrl!='')
     $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iNewSid'");
+    if($sUbes!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_urldescription", $sUbes, "surveyls_survey_id='$iNewSid'");
     if($autoRd=='Y')
     $lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iNewSid'");
+     if($sVtit!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_title", $sVtit, "surveyls_survey_id='$iNewSid'");
+     if($sVbes!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_description", $sVbes, "surveyls_survey_id='$iNewSid'");
+     if($sVwel!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_welcometext", $sVwel, "surveyls_survey_id='$iNewSid'"); 
     if($sVend!='')
     $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "surveyls_survey_id='$iNewSid'");
 
