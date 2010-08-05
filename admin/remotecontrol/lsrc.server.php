@@ -367,34 +367,34 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $s
     $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",vor import OK ");
 
 
-    if($lsrcHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp))
-    {// if import of survey went ok it returns true, else nothing
-        $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",surveyid=$iVid nach import OK ");
-
-        //get the optional data into db
-        if($sMail!='')
-        {
-            $lsrcHelper->changeTable("surveys", "adminemail", $sMail, "sid='$iVid'");
-            $lsrcHelper->changeTable("surveys", "bounce_email", $sMail, "sid='$iVid'");
-        }
-        if($sName!='')
-        $lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
-        if($sUrl!='')
-        $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iVid'");
-        if($autoRd=='Y')
-        $lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
-        if($sVend!='')
-        $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "surveyls_survey_id='$iVid'");
-         
-        $lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
-
-        return $iVid;
-    }
-    else
+    $iNewSid = $lsrcHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp);
+    if(!is_int($iNewSid))
     {
         throw new SoapFault("Server: ", "Import went wrong somehow");
         exit;
     }
+
+// if import of survey went ok it returns true, else nothing
+    $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",surveyid=$iNewSid nach import OK ");
+
+    //get the optional data into db
+    if($sMail!='')
+    {
+        $lsrcHelper->changeTable("surveys", "adminemail", $sMail, "sid='$iNewSid'");
+        $lsrcHelper->changeTable("surveys", "bounce_email", $sMail, "sid='$iNewSid'");
+    }
+    if($sName!='')
+    $lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iNewSid'");
+    if($sUrl!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iNewSid'");
+    if($autoRd=='Y')
+    $lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iNewSid'");
+    if($sVend!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "surveyls_survey_id='$iNewSid'");
+
+    $lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iNewSid'");
+
+    return $iNewSid;
 
 }//end of function sCreateSurvey
 

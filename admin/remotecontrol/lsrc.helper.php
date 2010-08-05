@@ -727,14 +727,14 @@ class LsrcHelper {
 
         if (isset($sExtension) && strtolower($sExtension)=='csv')
         {
-            $aImportResults=CSVImportSurvey($sFullFilepath);
+            $aImportResults=CSVImportSurvey($sFullFilepath,$iVid);
         }
         elseif (isset($sExtension) && strtolower($sExtension)=='lss')
         {
-            $aImportResults=XMLImportSurvey($sFullFilepath);
+            $aImportResults=XMLImportSurvey($sFullFilepath,NULL,NULL,$iVid);
         } elseif (isset($copyfunction))
         {
-            $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
+            $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName,$iVid);
         }
 
 
@@ -744,7 +744,7 @@ class LsrcHelper {
             transInsertAns($aImportResults['newsid'],$aImportResults['oldsid'],$aImportResults['fieldnames']);
         }
 
-        return true;
+        return $aImportResults['newsid'];
     }
 
     /**

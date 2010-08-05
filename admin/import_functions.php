@@ -20,7 +20,7 @@
 * @param array $sFullFilepath
 * @returns array Information of imported questions/answers/etc.
 */
-function CSVImportSurvey($sFullFilepath)
+function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 {
     global $dbprefix, $connect, $timeadjust, $clang;
 
@@ -391,6 +391,8 @@ function CSVImportSurvey($sFullFilepath)
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
     $oldsid=$surveyrowdata["sid"];
 
+    if($iDesiredSurveyId!=NULL)
+        $oldsid = $iDesiredSurveyId;
 
     if (!$oldsid)
     {
@@ -1089,7 +1091,7 @@ function CSVImportSurvey($sFullFilepath)
 *
 * @param mixed $sFullFilepath  The full filepath of the uploaded file
 */
-function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
+function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL)
 {
     global $connect, $dbprefix, $clang, $timeadjust;
 
@@ -1147,8 +1149,14 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
             $insertdata[(string)$key]=(string)$value;
         }
         $oldsid=$insertdata['sid'];
-        $newsid=GetNewSurveyID($oldsid);
-
+        if($iDesiredSurveyId!=NULL)
+        {
+            $newsid=GetNewSurveyID($iDesiredSurveyId);
+        }
+        else
+        {
+            $newsid=GetNewSurveyID($oldsid);
+        }
         //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
         //Make sure it is not set active
