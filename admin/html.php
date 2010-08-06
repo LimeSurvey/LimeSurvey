@@ -2684,19 +2684,7 @@ if ($action == "editsurvey")
             . "</select>\n"
             . "</li>\n";
 
-            //Public Surveys
-            $editsurvey .= "<li><label for='public'>".$clang->gT("List survey publicly:")."</label>\n"
-            . "<select id='public' name='public'>\n"
-            . "<option value='Y'";
-            if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (isset($esrow['listpublic']) && $esrow['listpublic'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select>\n"
-            . "</li>\n";
-
-
+           
             // End URL block
             $editsurvey .= "<li><label for='autoredirect'>".$clang->gT("Automatically load URL when survey complete?")."</label>\n"
             . "<select id='autoredirect' name='autoredirect'>";
@@ -2877,6 +2865,22 @@ if ($action == "editsurvey")
              if ($esrow['usetokens'] != "Y") {$editsurvey .= " selected='selected'";}
              $editsurvey .= ">".$clang->gT("No")."</option>\n"
              . "</select></li>\n"; */
+
+
+             //Public Surveys
+            $editsurvey .= "<li><label for='public'>".$clang->gT("List survey publicly:")."</label>\n"
+            . "<select id='public' name='public'>\n"
+            . "<option value='Y'";
+            if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+            if (isset($esrow['listpublic']) && $esrow['listpublic'] == "N") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "</select>\n"
+            . "</li>\n";
+
+
+
 
             //Set token length
             $editsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
