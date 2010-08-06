@@ -458,6 +458,8 @@ $printoutput="<span class='printouttitle'><strong>".$clang->gT("Survey name (ID)
     </tr>
 </table>";
 $addbr=false;
+$templaterootdir=sGetTemplatePath($templatename);
+$templaterooturl=sGetTemplateURL($templatename);
 switch($screenname) {
     case 'surveylist':
         unset($files);
@@ -548,7 +550,6 @@ switch($screenname) {
         foreach($Register as $qs) {
            $files[]=array("name"=>$qs);
         }
-        $templaterootdir=sGetTemplatePath($templatename);
         foreach(file("$templaterootdir/startpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
@@ -573,7 +574,6 @@ switch($screenname) {
         foreach($Save as $qs) {
            $files[]=array("name"=>$qs);
         }
-        $templaterootdir=sGetTemplatePath($templatename);
 
         foreach(file("$templaterootdir/startpage.pstpl") as $op)
         {
@@ -595,7 +595,6 @@ switch($screenname) {
         foreach($Load as $qs) {
            $files[]=array("name"=>$qs);
         }
-        $templaterootdir=sGetTemplatePath($templatename);
 
         foreach(file("$templaterootdir/startpage.pstpl") as $op)
         {
@@ -617,7 +616,6 @@ switch($screenname) {
         foreach ($Clearall as $qs) {
            $files[]=array("name"=>$qs);
         }
-        $templaterootdir=sGetTemplatePath($templatename);
 
         foreach(file("$templaterootdir/startpage.pstpl") as $op)
         {
@@ -643,112 +641,110 @@ switch($screenname) {
         }
         break;
 
-                                   case 'printablesurvey':
-                                       unset($files);
-                                       foreach ($printablesurveytemplate as $qs) {
-                                           $files[]=array("name"=>$qs);
-                                       }
-        $templaterootdir=sGetTemplatePath($templatename);
+    case 'printablesurvey':
+        unset($files);
+        foreach ($printablesurveytemplate as $qs) {
+            $files[]=array("name"=>$qs);
+        }
 
-                                       $questionoutput=array();
+        $questionoutput=array();
         foreach(file("$templaterootdir/print_question.pstpl") as $op)
-                                       { // echo '<pre>line '.__LINE__.'$op = '.htmlspecialchars(print_r($op)).'</pre>';
-                                           $questionoutput[]=templatereplace($op, array(
-                                                         'QUESTION_NUMBER'=>'1',
-                                                         'QUESTION_CODE'=>'Q1',
-                                                         'QUESTION_MANDATORY' => $clang->gT('*'),
-                                                         'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',    // if there are conditions on a question, list the conditions.
-                                                         'QUESTION_CLASS' => ' mandatory list-radio',
-                                                         'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
-                                                         'QUESTION_MAN_MESSAGE' => '',        // (not sure if this is used) mandatory error
-                                                         'QUESTION_VALID_MESSAGE' => '',        // (not sure if this is used) validation error
-                                                         'QUESTION_TEXT'=>'This is a sample question text. The user was asked to pick an entry.',
-                                                         'QUESTIONHELP'=>'This is some help text for this question.',
-                                                         'ANSWER'=>'<ul>
-                                                                                <li>
-                                                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="First choice" class="input-radio" height="14" width="14">
-                                                                                    First choice
-                                                                            </li>
+        { // echo '<pre>line '.__LINE__.'$op = '.htmlspecialchars(print_r($op)).'</pre>';
+           $questionoutput[]=templatereplace($op, array(
+                         'QUESTION_NUMBER'=>'1',
+                         'QUESTION_CODE'=>'Q1',
+                         'QUESTION_MANDATORY' => $clang->gT('*'),
+                         'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',    // if there are conditions on a question, list the conditions.
+                         'QUESTION_CLASS' => ' mandatory list-radio',
+                         'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
+                         'QUESTION_MAN_MESSAGE' => '',        // (not sure if this is used) mandatory error
+                         'QUESTION_VALID_MESSAGE' => '',        // (not sure if this is used) validation error
+                         'QUESTION_TEXT'=>'This is a sample question text. The user was asked to pick an entry.',
+                         'QUESTIONHELP'=>'This is some help text for this question.',
+                         'ANSWER'=>'<ul>
+                                                <li>
+                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="First choice" class="input-radio" height="14" width="14">
+                                                    First choice
+                                            </li>
 
-                                                                                <li>
-                                                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Second choice" class="input-radio" height="14" width="14">
-                                                                                    Second choice
-                                                                            </li>
-                                                                                <li>
-                                                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">
-                                                                                    Third choice
-                                                                            </li>
-                                                                        </ul>'
-                                                                        ));
-                                       }
-                                       $groupoutput=array();
+                                                <li>
+                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Second choice" class="input-radio" height="14" width="14">
+                                                    Second choice
+                                            </li>
+                                                <li>
+                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">
+                                                    Third choice
+                                            </li>
+                                        </ul>'
+                                        ));
+        }
+        $groupoutput=array();
         foreach(file("$templaterootdir/print_group.pstpl") as $op)
-                                       {
-                                           $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)));
-                                       }
+        {
+           $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)));
+        }
         foreach(file("$templaterootdir/print_survey.pstpl") as $op)
-                                       {
-                                           $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
-                                                   'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
-                                                   'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
-                                                   'HEADELEMENTS'=>getPrintableHeader(),
-                                                   'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
-                                                   'THANKS'=>$clang->gT('Thank you for completing this survey.'),
-                                                   'END'=>$clang->gT('This is the survey end message.')
-                                           ));
-                                       }
-                                       break;
+        {
+           $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
+                   'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
+                   'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
+                   'HEADELEMENTS'=>getPrintableHeader(),
+                   'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
+                   'THANKS'=>$clang->gT('Thank you for completing this survey.'),
+                   'END'=>$clang->gT('This is the survey end message.')
+           ));
+        }
+        break;
 
-                                   case 'printanswers':
-                                       unset($files);
-                                       foreach ($printtemplate as $qs) {
-                                           $files[]=array("name"=>$qs);
-                                       }
-    $templaterootdir=sGetTemplatePath($templatename);
-    foreach(file("$templaterootdir/startpage.pstpl") as $op)
-                                       {
-                                           $myoutput[]=templatereplace($op);
-                                       }
-    foreach(file("$templaterootdir/printanswers.pstpl") as $op)
-                                       {
-                                           $myoutput[]=templatereplace($op);
-                                       }
-    foreach(file("$templaterootdir/endpage.pstpl") as $op)
-                                       {
-                                           $myoutput[]=templatereplace($op);
-                                       }
-                                       $myoutput[]= "\n";
-                                       break;
-                               }
-                               $myoutput[]="</html>";
+    case 'printanswers':
+        unset($files);
+        foreach ($printtemplate as $qs) {
+            $files[]=array("name"=>$qs);
+        }
+        foreach(file("$templaterootdir/startpage.pstpl") as $op)
+        {
+           $myoutput[]=templatereplace($op);
+        }
+        foreach(file("$templaterootdir/printanswers.pstpl") as $op)
+        {
+           $myoutput[]=templatereplace($op);
+        }
+        foreach(file("$templaterootdir/endpage.pstpl") as $op)
+        {
+           $myoutput[]=templatereplace($op);
+        }
+        $myoutput[]= "\n";
+        break;
+}
+$myoutput[]="</html>";
 
-                               if (is_array($files)) {
-                                   $match=0;
-                                   foreach ($files as $f) {
-                                       if ($editfile == $f["name"]) {
-                                           $match=1;
-                                       }
-                                   }
-                                   foreach ($cssfiles as $f) {
-                                       if ($editfile == $f["name"]) {
-                                           $match=1;
-                                       }
-                                   }
-                                   if ($match == 0) {
-                                       if (count($files) > 0) {
-                                           $editfile=$files[0]["name"];
-                                       } else {
-                                           $editfile="";
-                                       }
-                                   }
-                               }
-                               //Get list of 'otherfiles'
-                               $otherfiles=array();
-$dirloc=sGetTemplatePath($templatename);
-if ($handle = opendir($dirloc)) {
+if (is_array($files)) {
+   $match=0;
+   foreach ($files as $f) {
+       if ($editfile == $f["name"]) {
+           $match=1;
+       }
+   }
+   foreach ($cssfiles as $f) {
+       if ($editfile == $f["name"]) {
+           $match=1;
+       }
+   }
+   if ($match == 0) {
+       if (count($files) > 0) {
+           $editfile=$files[0]["name"];
+       } else {
+           $editfile="";
+       }
+   }
+}
+
+//Get list of 'otherfiles'
+$otherfiles=array();
+if ($handle = opendir($templaterootdir)) {
    while(false !== ($file = readdir($handle))) {
        if (!array_search($file, $normalfiles)) {
-           if (!is_dir("$dirloc/$file")) {
+           if (!is_dir($templaterootdir.DIRECTORY_SEPARATOR.$file)) {
                $otherfiles[]=array("name"=>$file);
            }
        }
