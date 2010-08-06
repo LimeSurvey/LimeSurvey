@@ -292,10 +292,10 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
         throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
         exit;
     }
-
-    if(!$lsrcHelper->activateSurvey($iVid))
+    $activateResult = $lsrcHelper->activateSurvey($iVid);
+    if($activateResult!=true)
     {
-        throw new SoapFault("Server: ", "Activation went wrong somehow");
+        throw new SoapFault("Server: ", "Import went wrong. Check lsrc.log.");
         exit;
     }
 
@@ -368,7 +368,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $s
 
 
     $iNewSid = $lsrcHelper->importSurvey($iVid, $sVtyp);
-    if(!is_int($iNewSid))
+    if($iNewSid==NULL)
     {
         throw new SoapFault("Server: ", "Import went wrong somehow");
         exit;
