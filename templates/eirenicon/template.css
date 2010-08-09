@@ -540,18 +540,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
-  padding: 0 1em 0 0;
+  width: auto !important;
+  padding: 0 1em 0.7em 0;
   margin-top: 1.4em;
   vertical-align: middle;
 }
 
-.ui-slider-handle {
-  position: absolute;
-  height: 23px;
-  width: 12px;
-  top: 0px;
-  left: 0px;
-  background-image: url(slider-handle.gif);
+.multinum-slider .ui-state-default {
+	background: none #042455;
+	border:1px solid #666666;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none #EDEDED;
+	border:1px solid #666666;
 }
 
 .ui-slider-1 {

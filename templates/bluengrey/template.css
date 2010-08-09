@@ -764,20 +764,31 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
-  padding: 0 1em 0 0;
+  width: auto !important;
+  padding: 0.2em 1em 0 0;
   margin-top: 1.3em;
   vertical-align: middle;
 }
 
 .ui-slider-disabled .ui-slider-handle {
   opacity: 0.5;
-  filter: alpha(opacity =           50);
+  filter: alpha(opacity = 50);
 }
 
 .ui-slider-1 {
   width: 200px;
   position: relative;
   height: 10px;
+}
+
+.multinum-slider .ui-state-default {
+	background: none #2F5376;
+	border:1px solid #2F5376;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none;
+	border:1px solid #2F5376;
 }
 
 .slider_callout {

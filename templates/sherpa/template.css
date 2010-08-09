@@ -716,18 +716,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
+  width: auto !important;
   padding: 0 1em 0 0;
   margin-top: 1.4em;
   vertical-align: middle;
 }
 
-.ui-slider-handle {
-  position: absolute;
-  height: 23px;
-  width: 12px;
-  top: 0px;
-  left: 0px;
-  background-image: url(slider-handle.gif);
+.multinum-slider .ui-state-default {
+	background: none #AACCEE;
+	border:1px solid #999999;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none #F9F9F9;
+	border:1px solid #999999;
 }
 
 .ui-slider-1 {

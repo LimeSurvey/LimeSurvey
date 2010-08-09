@@ -544,17 +544,28 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /************** Slider ********************/
 .numeric-multi label.slider-label {
   display: table-cell;
+  width: auto !important;
   padding: 0 1em 0.2em 0 !important;
   margin-top: 1.4em;
   vertical-align: middle;
 }
 
 .ui-slider-handle {
-  position: absolute;
-  height: 21px !important;
-  width: 10px !important;
-  top: -7px !important;
-  left: 0px;
+    position: absolute;
+    height: 21px !important;
+    width: 10px !important;
+    top: -7px !important;
+    left: 0px;
+}
+
+.multinum-slider .ui-state-default {
+	background: none #8FE0DD;
+	border:1px solid #999999;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none;
+	border:1px solid #999999;
 }
 
 .ui-slider-1 {

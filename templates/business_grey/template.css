@@ -570,9 +570,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /************** Slider ********************/
 .numeric-multi label.slider-label {
   display: table-cell;
+  width: auto !important;
   padding: 0 1em 0 0;
   margin-top: 1.4em;
   vertical-align: middle;
+}
+
+.multinum-slider .ui-state-default {
+	background: none #B7B7B7;
+	border:1px solid #666666;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none #F8F8FF;
+	border:1px solid #666666;
 }
 
 .ui-slider-disabled .ui-slider-handle {
