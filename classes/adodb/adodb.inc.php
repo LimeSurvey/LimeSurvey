@@ -278,7 +278,7 @@ if (!defined('_ADODB_LAYER')) {
         function getdirname($hash)
         {
             global $ADODB_CACHE_DIR;
-            if (!isset($this->notSafeMode)) $this->notSafeMode = !ini_get('safe_mode');
+            if (!isset($this->notSafeMode)) $this->notSafeMode = !@ini_get('safe_mode');
             return ($this->notSafeMode) ? $ADODB_CACHE_DIR.'/'.substr($hash,0,2) : $ADODB_CACHE_DIR;
         }
 
@@ -2608,7 +2608,7 @@ if (!defined('_ADODB_LAYER')) {
             // undo magic quotes for "
             $s = str_replace('\\"','"',$s);
 
-            if ($this->replaceQuote == "\\'" || ini_get('magic_quotes_sybase'))  // ' already quoted, no need to change anything
+            if ($this->replaceQuote == "\\'" || @ini_get('magic_quotes_sybase'))  // ' already quoted, no need to change anything
             return $s;
             else {// change \' to '' for sybase/mssql
                 $s = str_replace('\\\\','\\',$s);
@@ -2642,7 +2642,7 @@ if (!defined('_ADODB_LAYER')) {
             // undo magic quotes for "
             $s = str_replace('\\"','"',$s);
 
-            if ($this->replaceQuote == "\\'" || ini_get('magic_quotes_sybase'))  // ' already quoted, no need to change anything
+            if ($this->replaceQuote == "\\'" || @ini_get('magic_quotes_sybase'))  // ' already quoted, no need to change anything
             return "'$s'";
             else {// change \' to '' for sybase/mssql
                 $s = str_replace('\\\\','\\',$s);

@@ -268,7 +268,7 @@ if ($tokenTableExists)
     $attributeFields=array_keys($attributeFieldAndNames);
 }
 
-switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
+switch ( $_POST["type"] ) {    
     case "doc":
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".doc");
         header("Content-type: application/vnd.ms-word");

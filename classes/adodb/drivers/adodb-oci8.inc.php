@@ -1296,7 +1296,7 @@ SELECT /*+ RULE */ distinct b.column_name
         }
 
         // undo magic quotes for " unless sybase is on
-        if (!ini_get('magic_quotes_sybase')) {
+        if (!@ini_get('magic_quotes_sybase')) {
             $s = str_replace('\\"','"',$s);
             $s = str_replace('\\\\','\\',$s);
             return "'".str_replace("\\'",$this->replaceQuote,$s)."'";

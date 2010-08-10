@@ -171,7 +171,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         $_SESSION['sid']=$surveyid;
 
         sendcacheheaders();
-        if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
+        if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
 
             $url = insertansReplace($thissurvey['surveyls_url']);

@@ -153,27 +153,21 @@ $clang = SetSurveyLanguage($surveyid, $language);
 //Create header (fixes bug #3097)
 $surveylanguage= $language;
 sendcacheheaders();
-if ( !$embedded )
+
+$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
+if (getLanguageRTL($surveylanguage))
 {
-    $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-    . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
-    if (getLanguageRTL($surveylanguage))
-    {
-        $header.=" dir=\"rtl\" ";
-    }
-    $header.= ">\n\t<head>\n"
-    . "<title>$sitename</title>\n"
-    . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
-    . "<link href=\"templates/".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
-    . "</head>\n<body>\n";
-
-    echo $header;
+    $header.=" dir=\"rtl\" ";
 }
+$header.= ">\n\t<head>\n"
+. "<title>$sitename</title>\n"
+. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+. "<link href=\"templates/".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
+. "</head>\n<body>\n";
 
-global $embedded_headerfunc;
+echo $header;
 
-if ( function_exists( $embedded_headerfunc ) )
-echo $embedded_headerfunc();
 
 
 /*

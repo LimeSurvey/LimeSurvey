@@ -74,12 +74,8 @@ define("FLOAT", 32);
 define("LDAP", 64);
 define("UTF8", 128);
 
-// get register_globals ini setting - jp
-$register_globals = (bool) ini_get('register_globals');
-if ($register_globals == TRUE) { define("REGISTER_GLOBALS", 1); } else { define("REGISTER_GLOBALS", 0); }
-
 // get magic_quotes_gpc ini setting - jp
-$magic_quotes = (bool) ini_get('magic_quotes_gpc');
+$magic_quotes = (bool) @ini_get('magic_quotes_gpc');
 if ($magic_quotes == TRUE) { define("MAGIC_QUOTES", 1); } else { define("MAGIC_QUOTES", 0); }
 
 // addslashes wrapper to check for gpc_magic_quotes - gz

@@ -146,14 +146,7 @@ $emailcharset       = "utf-8";          // You can change this to change the cha
 // If you don't know what this is better leave this setting alone.
 $modrewrite         =   0;
 
-// CMS Integration Settings
-// Set $embedded to true and specify the header and footer functions - for example if the survey is to be displayed embedded in a CMS
-$embedded = false;
-$embedded_inc = '';             // path to a php file to include
-$embedded_headerfunc = '';      // e.g. COM_siteHeader for geeklog
-$embedded_footerfunc = '';      // e.g. COM_siteFooter for geeklog
-
-// Enable or Disable Ldap feature
+// Enable or Disable LDAP feature
 $enableLdap = false;
 
 // Experimental parameters, only change if you know what you're doing
