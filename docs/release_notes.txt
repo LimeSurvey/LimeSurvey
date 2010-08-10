@@ -78,6 +78,16 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
+
+Changes from 1.90 (build 9028) to 1.90+ (build 9045) Legend: # updated feature, - bug fix 
+#Updated language: French (b00z00)
+#Updated language: Simplified Chinese (yooyooh)
+-Fix issue 03796: Sliders don't behave in IE (tpartner)
+-Fixed #4524: Javascript error when running the "Array (Number)" with Text inputs enabled - Thanks to CarbonaCat (mennodekker)
+-Fixed #4525: Multiple short text has a problem saving answers while display rows attribute is set (mennodekker)
+-Fixed issue #4518: Template editor notices if you view Printable Survey Page (c_schmitz)
+-Fixed issue #4523: Possible Javascript error when executing a survey in English language (c_schmitz)
+
 Changes from 1.90RC3 (build 8963) to 1.90 (build 9028) Legend: +new feature, # updated feature, - bug fix 
 #Updated feature: Allow .ico files to be uploaded at the template editor so that users can upload their own favicons. (maziminke)
 #Updated translation: French (b00z00)
