@@ -82,7 +82,7 @@ if(isset($_SESSION['loginID']))
     if (
     preg_match
     (
-			'/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertnewgroup|insertCSV|insertnewquestion|updatesurvey|updatesurvey2|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
+			'/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertnewgroup|insertCSV|insertnewquestion|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatesurveylocalesettings|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
     $action
     )
 
@@ -333,7 +333,8 @@ if(isset($_SESSION['loginID']))
                     include('access_denied.php');
                 }
                 break;
-            case 'updatesurvey':
+            case 'editsurveylocalesettings':
+			case 'updatesurveysettingsandeditlocalesettings':
                 if (bHasRight($surveyid,'edit_survey_property'))
                 {
                     $_SESSION['FileManagerContext']="edit:survey:$surveyid";
@@ -408,9 +409,9 @@ if(isset($_SESSION['loginID']))
         !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
         !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&
         !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
-        (isset($surveyid) || $action == "" || preg_match('/^(listsurveys|personalsettings|statistics|copysurvey|importsurvey|editsurvey|updatesurvey|updatedefaultvalues|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
+        (isset($surveyid) || $action == "" || preg_match('/^(listsurveys|personalsettings|statistics|copysurvey|importsurvey|editsurveysettings|editsurveylocalesettings|updatesurveysettingsandeditlocalesettings|updatedefaultvalues|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
     {
-        if ($action=='editsurvey' || $action=='updatesurvey')
+        if ($action=='editsurveysettings' || $action=='editsurveylocalesettings')
         {
             $_SESSION['FileManagerContext']="edit:survey:$surveyid";
         }

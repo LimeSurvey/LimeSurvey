@@ -448,40 +448,30 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-
-        if($activated == "Y" && bHasRight($surveyid,'browse_response'))
+        if(bHasRight($surveyid,'edit_survey_property'))
         {
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Dataentry Screen for Survey")."\" >"
-            . "<img src='$imagefiles/dataentry.png' alt='".$clang->gT("Dataentry Screen for Survey")."' name='DoDataentry' />"
-            . "</a>\n";
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurveysettings&amp;sid=$surveyid', '_top')\""
+            . " title=\"".$clang->gTview("Edit survey settings")."\" >"
+            . "<img src='$imagefiles/token_manage.png' name='EditSurveySettings' alt='".$clang->gT("Edit survey settings")."' /></a>\n";
         }
-        else if (!bHasRight($surveyid,'browse_response'))
+        else
         {
-            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
-        } else {
-            $surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("This survey is not active, data entry is not allowed","js")."')\""
-            . " title=\"".$clang->gTview("Dataentry Screen for Survey")."\">"
-            . "<img src='$imagefiles/dataentry_disabled.png'  alt='".$clang->gT("Dataentry Screen for Survey")."' name='DoDataentry' />"
-            . "</a>\n";
+            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='80' />\n";
         }
-
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
 
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid', '_blank')\""
             . " title=\"".$clang->gTview("Printable Version of Survey")."\" >"
-            . "<img src='$imagefiles/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' />"
-            . "</a><img src='$imagefiles/seperator.gif' alt='' />\n";
+            . "<img src='$imagefiles/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' />";
 
         } else {
 
             $surveysummary .= "<a href=\"#\" onclick=\"document.getElementById('printpopup').style.visibility='visible'; "
             . "document.getElementById('langpopup2').style.visibility='hidden';\""
             . " title=\"".$clang->gTview("Printable Version of Survey")."\" >"
-            . "<img src='$imagefiles/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' />\n"
-            . "</a><img src='$imagefiles/seperator.gif' alt='' />\n";
-
+            . "<img src='$imagefiles/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' />\n";
+            
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $tmp_survlangs[] = $baselang;
@@ -496,19 +486,18 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 
             $surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>\n";
-
-
         }
-
+        
+        $surveysummary .= "</a><img src='$imagefiles/seperator.gif' alt='' />\n";
         if(bHasRight($surveyid,'edit_survey_property'))
         {
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Edit survey settings")."\" >"
-            . "<img src='$imagefiles/edit.png' name='EditSurveySettings' alt='".$clang->gT("Edit survey settings")."' /></a>\n";
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurveylocalesettings&amp;sid=$surveyid', '_top')\""
+            . " title=\"".$clang->gTview("Edit survey properties")."\" >"
+            . "<img src='$imagefiles/edit.png' name='EditSurveyProperties' alt='".$clang->gT("Edit survey text elements")."' /></a>\n";
         }
         else
         {
-            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='80' />\n";
         }
 
 
@@ -657,6 +646,23 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
+        if($activated == "Y" && bHasRight($surveyid,'browse_response'))
+        {
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_top')\""
+            . " title=\"".$clang->gTview("Data entry screen for survey")."\" >"
+            . "<img src='$imagefiles/dataentry.png' alt='".$clang->gT("Data entry screen for survey")."' name='DoDataentry' />"
+            . "</a>\n";
+        }
+        else if (!bHasRight($surveyid,'browse_response'))
+        {
+            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+        } else {
+            $surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("This survey is not active, data entry is not allowed","js")."')\""
+            . " title=\"".$clang->gTview("Data entry screen for survey")."\">"
+            . "<img src='$imagefiles/dataentry_disabled.png'  alt='".$clang->gT("Data entry screen for survey")."' name='DoDataentry' />"
+            . "</a>\n";
+        }        
+        
         if (bHasRight($surveyid,'edit_survey_property'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=assessments&amp;sid=$surveyid', '_top')\" "
@@ -766,8 +772,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if ($gid || $qid || $action=="deactivate"|| $action=="activate" || $action=="surveysecurity"
         || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
-        || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
-        || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey" || $action=="resetsurveylogic"
+        || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
+        || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
         || $action=="importsurveyresources"
         || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";}
@@ -2504,7 +2510,7 @@ elseif ($action == "surveyrights")
 
 
 // Editing the survey
-if ($action == "editsurvey")
+if ($action == "editsurveysettings")
 {
     if(bHasRight($surveyid,'edit_survey_property'))
     {
@@ -2516,7 +2522,7 @@ if ($action == "editsurvey")
             $esrow = array_map('htmlspecialchars', $esrow);
 
             // header
-            $editsurvey = "<div class='header'>".$clang->gT("Edit survey settings - Step 1 of 2")."</div>\n";
+            $editsurvey = "<div class='header'>".$clang->gT("Edit survey settings")."</div>\n";
 
             // beginning TABs section - create tab pane
             $editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
@@ -3146,7 +3152,7 @@ if ($action == "editsurvey")
 
             // Ending First TABs Form
             $editsurvey .= ""
-            . "<input type='hidden' name='action' value='updatesurvey' />\n"
+            . "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
             . "<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
             . "<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
             . "<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
@@ -3190,7 +3196,8 @@ if ($action == "editsurvey")
 
 
             // The external button to sumbit Survey edit changes
-            $editsurvey .= "<p><button onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >".$clang->gT("Save and Continue")." >></button></p>\n";
+            $editsurvey .= "<p><button onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >".$clang->gT("Save")."</button></p>\n";
+            $editsurvey .= "<p><button onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"surveysettingsaction\").value = \"updatesurveysettingsandeditlocalesettings\"; document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >".$clang->gT("Save & edit survey text elements")." >></button></p>\n";
         }
 
     }
@@ -3201,8 +3208,7 @@ if ($action == "editsurvey")
 
 }
 
-
-if ($action == "updatesurvey")  // Edit survey step 2  - editing language dependent settings
+if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsurveylocalesettings")  // Edit survey step 2  - editing language dependent settings
 {
     if(bHasRight($surveyid,'edit_survey_property'))
     {
@@ -3223,7 +3229,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
         . "}\n"
         . "}\n"
         . "--></script>\n"
-        . "<div class='header'>".$clang->gT("Edit survey settings - Step 2 of 2")."</div>\n";
+        . "<div class='header'>".$clang->gT("Edit survey text elements")."</div>\n";
         $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='$scriptname' method='post'>\n"
         . '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
         foreach ($grplangs as $grouplang)
@@ -3237,7 +3243,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
             if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$editsurvey .= '('.$clang->gT("Base Language").')';}
             $editsurvey .= '</h2><ul>';
             $esrow = array_map('htmlspecialchars', $esrow);
-            $editsurvey .= "<li><label for=''>".$clang->gT("Title").":</label>\n"
+            $editsurvey .= "<li><label for=''>".$clang->gT("Survey title").":</label>\n"
             . "<input type='text' size='80' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></li>\n"
             . "<li><label for=''>".$clang->gT("Description:")."</label>\n"
             . "<textarea cols='80' rows='15' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea>\n"
@@ -3272,7 +3278,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
         }
         $editsurvey .= '</div>';
         $editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
-        . "<input type='hidden' name='action' value='updatesurvey2' />\n"
+        . "<input type='hidden' name='action' value='updatesurveylocalesettings' />\n"
         . "<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
         . "<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
         . "</p>\n"

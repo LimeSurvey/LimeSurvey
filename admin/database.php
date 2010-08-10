@@ -1026,7 +1026,7 @@ if(isset($surveyid))
     }
 
 
-    elseif ($action == "updatesurvey" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
+    elseif (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
     {
 
         $formatdata=getDateFormatData($_SESSION['dateformat']);
@@ -1193,7 +1193,7 @@ if(isset($surveyid))
 
 
     // Save the 2nd page from the survey-properties
-    elseif ($action == "updatesurvey2" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
+    elseif (($action == "updatesurveylocalesettings") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
     {
         $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
         $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
