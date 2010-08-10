@@ -1791,7 +1791,7 @@ function getsidgidqidaidtype($fieldcode)
 {
     // use simple parsing to get {sid}, {gid}
     // and what may be {qid} or {qid}{aid} combination
-    list($fsid, $fgid, $fqid) = split("X", $fieldcode);
+    list($fsid, $fgid, $fqid) = explode('X', $fieldcode);
     $fsid=sanitize_int($fsid);
     $fgid=sanitize_int($fgid);
     if (!$fqid) {$fqid=0;}
