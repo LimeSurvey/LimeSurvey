@@ -5919,7 +5919,7 @@ function do_array_multiflexi($ia)
                     {
                         $answer .= "\t<input type='text' class=\"multiflexitext\" name=\"$myfname2\" id=\"answer{$myfname2}\" size=5 title=\""
                         . html_escape($labelans[$thiskey]).'"'
-                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type\" onkeypress=\"return goodchars(event,'0123456789.')\""
+                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'0123456789.')\""
                         . " value=\"";
                         if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
                             $answer .= $_SESSION[$myfname2];
