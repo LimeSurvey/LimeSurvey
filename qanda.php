@@ -3593,7 +3593,7 @@ function do_multipleshorttext($ia)
 
             while ($ansrow = $ansresult->FetchRow())
             {
-                $myfname = $ia[1].$ansrow['code'];
+                $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "")
                 {
                     $ansrow['question'] = "&nbsp;";
