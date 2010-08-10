@@ -2652,8 +2652,15 @@ function buildsurveysession()
             $_SESSION['passthrulabel']=$_GET['passthru'];
             $_SESSION['passthruvalue']=$_GET[$_GET['passthru']];
         }
+        
     }
-
+    // New: If no passthru variable is explicitely set, save the whole query_string - above method is obsolete and the new way should only be used
+    else
+    {
+        $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
+    }
+    // END NEW
+    
     return $totalquestions;
 }
 

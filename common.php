@@ -306,3 +306,4 @@ if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false
 $setfont = "<font size='2' face='verdana'>";
 $singleborderstyle = "style='border: 1px solid #111111'";
 
+// Closing PHP tag intentionally left out - yes, it is okay
