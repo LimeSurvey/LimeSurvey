@@ -870,7 +870,6 @@ while ($degrow = $degresult->FetchRow())
                     }
                     if ($deqrow['other'] == 'Y')
                     {
-                        $qidattributes = getQuestionAttributes($deqrow['qid'],$deqrow['type']);
                         if(trim($qidattributes["other_replace_text"])=='')
                         {$qidattributes["other_replace_text"]="Other";}
                         //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
@@ -1063,7 +1062,7 @@ while ($degrow = $degresult->FetchRow())
                     while ($mearow = $mearesult->FetchRow())
                     {
                         $longest_string = longest_string($mearow['question'] , $longest_string );
-                        if ($qidattributes['slider_layout']==1)
+                        if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
                         {
                           $mearow['question']=explode(':',$mearow['question']);
                           $mearow['question']=$mearow['question'][0];  
