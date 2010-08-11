@@ -1230,7 +1230,7 @@ elseif ($answers == "long")        //chose complete answers
                     else if ($type == "pdf")
                     {$pdf->intopdf(trim(strip_tags($drow[$i])));}
                     else if ($type == "doc")
-                    {$pdf->intopdf(trim(strip_tags($drow[$i])));}
+                    {$exportoutput .= trim(strip_tags($drow[$i]));}
                     else
                     {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
                 }
