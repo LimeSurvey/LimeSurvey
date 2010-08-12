@@ -810,7 +810,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
     }
     if (!isset($svexist))
     {
-        $surveyselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
+        $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
     } else
     {
         if ($returnwithouturl===false)

@@ -3153,6 +3153,8 @@ if ($action == "newsurvey")
         . "".$clang->gT("Create, import or copy survey")."</div>\n";
 
         $newsurvey .="<script type=\"text/javascript\">
+                        sSelectASurveyMessage='".$clang->gT('Error: You have to select a survey to copy.','js')."';
+                        sSelectASurveyName='".$clang->gT('Error: You have to enter a title for this survey.','js')."';
                         standardtemplaterooturl='$standardtemplaterooturl';
                         templaterooturl='$usertemplaterooturl'; \n";
         $newsurvey .= "</script>\n";
