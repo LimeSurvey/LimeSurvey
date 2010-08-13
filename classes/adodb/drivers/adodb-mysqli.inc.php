@@ -144,6 +144,7 @@ if (! defined("_ADODB_MYSQLI_LAYER")) {
         // do not use $ADODB_COUNTRECS
         function GetOne($sql,$inputarr=false)
         {
+            global $ADODB_GETONE_EOF;
             $ret = false;
             $rs = $this->Execute($sql,$inputarr);
             if ($rs) {
