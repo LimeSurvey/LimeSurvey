@@ -421,7 +421,7 @@ function createinsertquery()
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
                     }
-                    elseif ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                    elseif ($fieldexists['type']=='D' && in_array($value,$postedfieldnames))  // convert the date to the right DB Format but only if it was posted
                     {
                         $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                         $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
