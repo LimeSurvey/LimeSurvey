@@ -1083,3 +1083,20 @@ td.statsImageholder {
 #listingList a.surveytitle {
   margin-left: 0px;
 }
+
+table.assessments{
+ width: 100%;
+}
+
+table.assessments td{
+ padding: 0 10px;
+}
+
+table.assessments{
+ width: 100%;
+}
+
+table.assessments th{
+ font-weight:bold;
+ padding: 0 10px;
+}
