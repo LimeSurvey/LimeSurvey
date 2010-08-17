@@ -2395,7 +2395,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
-
         if ($arow['hasconditions']>0)
         {
             $conditions = "Y";
@@ -2511,7 +2510,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                     "qid"=>$arow['qid'], 
                                     "aid"=>$abrow['title']."_".$answer['title'],
                                     "sqid"=>$abrow['qid']);
-                    if ($abrow['other']=="Y") {$alsoother="Y";}
                     if ($style == "full")
                     {
                         $fieldmap[$fieldname]['title']=$arow['title'];
@@ -2590,7 +2588,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
-                if ($abrow['other']=="Y") {$alsoother="Y";}
                 if ($style == "full")
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
@@ -2618,7 +2615,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     }
                 }
             }
-            if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
+            if ($arow['other']=="Y" && ($arow['type']=="M" || $arow['type']=="P"))
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
