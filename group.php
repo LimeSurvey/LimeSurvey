@@ -26,7 +26,7 @@ if (isset($move) && $move == "movenext") {
     if ($_SESSION['step']==$thisstep)
     $_SESSION['step'] = $thisstep+1;
 }
-
+include_once 'common.php';
 // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
 // Previously we used to keep the session and redirect the user to the
 // submit page.

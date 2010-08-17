@@ -43,6 +43,7 @@
  *  ! - List (Dropdown)
  *  : - Array multiple drop down
  *  ; - Array multiple texts
+ *  | - File Upload
 
 
  Debugging help:
@@ -146,6 +147,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
         }
     }
+
     if($q2show=='all' )
     {
         $summarySql=" SELECT gid, parent_qid, qid, type "
@@ -163,6 +165,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             if ($field['type'] == "P") {$myField = "P$myField";}
             //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
             if ($field['type'] == "N") {$myField = "N$myField";}
+            
+            if ($field['type'] == "|") {$myField = "|$myField";}
 
             if ($field['type'] == "Q") {$myField = "Q$myField";}
             // textfields get special treatment
@@ -306,10 +310,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
              * Q - Multiple Short Text
              * D - Date
              * N - Numerical Input
+             * | - File Upload
              * K - Multiple Numerical Input
              */
             if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
-            $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" &&
+            $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
             $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
             {
                 //put together some SQL here
@@ -354,6 +359,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
             }
 
+            
             //N - Numerical Input
             //K - Multiple Numerical Input
             elseif ($firstletter == "N" || $firstletter == "K")
@@ -369,6 +375,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 {
                     $selects[]=db_quote_id(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
                 }
+            }
+
+            //| - File Upload Question Type
+            else if ($firstletter == "|")
+            {
+                // no. of files greater than
+                if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
+                    $selects[]=db_quote_id(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
+
+                // no. of files less than
+                if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
+                    $selects[]=db_quote_id(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
             }
 
             //"id" is a built in field, the unique database id key of each response row
@@ -803,6 +821,148 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //create an array containing answer code, answer and fieldname(??)
                     $mfield=substr($rt, 1, strpos($rt, "-")-1);
                     $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
+                }
+            }
+
+            else if ($firstletter == "|") // File UPload
+            {
+                
+                //get SGQ data
+                list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+
+                //select details for this question
+                $nquery = "SELECT title, type, question, parent_qid, other FROM ".db_table_name("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
+                $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+
+                //loop through question data
+                while ($nrow=$nresult->FetchRow())
+                {
+                    $qtitle=$nrow[0];
+                    $qtype=$nrow[1];
+                    $qquestion=FlattenText($nrow[2]);
+                    $qlid=$nrow[3];
+                    $qother=$nrow[4];
+                }
+
+                 /*
+                    4)      Average size of file per respondent
+                    5)      Average no. of files
+                    5)      Summary/count of file types (ie: 37 jpg, 65 gif, 12 png)
+                    6)      Total size of all files (useful if you’re about to download them all)
+                    7)      You could also add things like “smallest file size”, “largest file size”, “median file size”
+                    8)      no. of files corresponding to each extension
+                    9)      max file size
+                    10)     min file size
+                 */
+
+                // 1) Total number of files uploaded
+                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn’t upload any)
+                $fieldname=substr($rt, 1, strlen($rt));
+                $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".db_table_name("survey_$surveyid");
+                $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
+
+                $showem = array();
+
+                while ($row = $result->FetchRow())
+                {
+                    $showem[]=array($statlang->gT("Total number of files"), $row['sum']);
+                    $showem[]=array($statlang->gT("Average no. of files per respondent"), $row['avg']);
+                }
+
+                
+                $query = "SELECT ". $fieldname ." as json FROM ".db_table_name("survey_$surveyid");
+                $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
+
+                $responsecount = 0;
+                $filecount = 0;
+                $size = 0;
+                    
+                while ($row = $result->FetchRow())
+                {
+                    
+                    $json = $row['json'];
+                    $phparray = json_decode($json);
+
+                    foreach ($phparray as $metadata)
+                    {
+                        $size += (int) $metadata->size;
+                        $filecount++;
+                    }
+                    $responsecount++;
+                }
+                $showem[] = array($statlang->gT("Total size of files"), $size." KB");
+                $showem[] = array($statlang->gT("Average File size"), $size/$filecount . " KB");
+                $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
+                
+/*              $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
+                $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
+
+                //loop through multiple answers
+                while ($row=$result->FetchRow())
+                {
+                    $mfield=substr($rt, 1, strlen($rt))."$row[0]";
+
+                    //create an array containing answer code, answer and fieldname(??)
+                    $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
+                }
+
+*/
+                //outputting
+                switch($outputType)
+                {
+                    case 'xls':
+
+                        $headXLS = array();
+                        $tableXLS = array();
+                        $footXLS = array();
+
+                        $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+                        $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
+                        ++$xlsRow;
+                        ++$xlsRow;
+
+                        ++$xlsRow;
+                        $sheet->write($xlsRow, 0,$xlsTitle);
+                        ++$xlsRow;
+                        $sheet->write($xlsRow, 0,$xlsDesc);
+
+                        $headXLS[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
+                        ++$xlsRow;
+                        $sheet->write($xlsRow, 0,$statlang->gT("Calculation"));
+                        $sheet->write($xlsRow, 1,$statlang->gT("Result"));
+
+                        break;
+                    case 'pdf':
+
+                        $headPDF = array();
+                        $tablePDF = array();
+                        $footPDF = array();
+
+                        $pdfTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+                        $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
+
+                        $headPDF[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
+
+                        break;
+
+                    case 'html':
+
+                        $statisticsoutput .= "\n<table class='statisticstable' >\n"
+                        ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($statlang->gT("Field summary for %s"),$qtitle).":</strong>"
+                        ."</th></tr>\n"
+                        ."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
+                        ."\t<tr>\n\t\t<th width='50%' align='center' ><strong>"
+                        .$statlang->gT("Calculation")."</strong></th>\n"
+                        ."\t\t<th width='50%' align='center' ><strong>"
+                        .$statlang->gT("Result")."</strong></th>\n"
+                        ."\t</tr></thead>\n";
+
+                        foreach ($showem as $res)
+                            $statisticsoutput .= "<tr><td>".$res[0]."</td><td>".$res[1]."</td></tr>";
+                        break;
+
+                    default:
+                        break;
                 }
             }
 

@@ -249,12 +249,17 @@
                             $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
                         else if (filecount < maxfiles)
                             $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may Save and exit');
+                        else
+                            $('#uploadstatus').html('The maximum number of files have been uploaded. You may save and exit');
 
                         if (filecount >= maxfiles)
                             $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may Save and Exit !</p>');
                     }
                 }
             });
+
+            // if it has been jst opened, the upload button should be automatically clicked !
+            // TODO: auto open using click() not working at all ! :(
         });
 
         function isValueInArray(arr, val) {

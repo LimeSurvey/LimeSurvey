@@ -204,7 +204,6 @@ $rows = $result->GetRows();
 usort($rows, 'GroupOrderThenQuestionOrder');
 
 //put the question information into the filter array
-$filters = array();
 foreach ($rows as $row)
 {
     //store some column names in $filters array

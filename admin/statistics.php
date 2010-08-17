@@ -43,6 +43,7 @@
  *  ! - List (Dropdown)
  *  : - Array (Flexible Labels) multiple drop down
  *  ; - Array (Flexible Labels) multiple texts
+ *  | - File Upload
 
 
  Debugging help:
@@ -455,6 +456,7 @@ foreach ($filters as $flt)
      L - List (Radio)
      M - Multiple Options
      N - Numerical Input
+     | - File Upload
      O - List With Comment
      P - Multiple Options With Comments
      Y - Yes/No
@@ -472,6 +474,9 @@ foreach ($filters as $flt)
         if ($flt[2] == "M") {$myfield = "M$myfield";}
         if ($flt[2] == "P") {$myfield = "P$myfield";}
 
+        // File Upload will need special filters in future, hence the special treatment
+        if ($flt[2] == "|") {$myfield = "|$myfield";}
+        
         //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
         if ($flt[2] == "N") {$myfield = "N$myfield";}
         $statisticsoutput .= "<input type='checkbox'  id='filter$myfield' name='summary[]' value='$myfield'";
@@ -496,14 +501,14 @@ foreach ($filters as $flt)
 
         //numerical question type -> add some HTML to the output
         //if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
-        if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
+        if ($flt[2] != "N" && $flt[2] != "|") {$statisticsoutput .= "\t\t\t\t<select name='";}
 
         //multiple options ("M"/"P") -> add "M" to output
         if ($flt[2] == "M" ) {$statisticsoutput .= "M";}
         if ($flt[2] == "P" ) {$statisticsoutput .= "P";}
 
         //numerical -> add SGQ to output
-        if ($flt[2] != "N") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
+        if ($flt[2] != "N" && $flt[2] != "|") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
 
     }	//end if -> filter certain question types
 
@@ -674,6 +679,30 @@ foreach ($filters as $flt)
 
             $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
             ."\t\t\t\t\t<font size='1'>".$clang->gT("Number less than").":</font><br />\n"
+            ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
+
+            if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
+
+            //only numeriacl input allowed -> check using JS
+            $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
+
+            //put field names into array
+
+            break;
+
+
+        case "|": // File Upload
+
+            // Number of files uploaded for greater and less than X
+            $myfield2 = "{$myfield}G";
+            $myfield3 = "{$myfield}L";
+            $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number of files greater than").":</font><br />\n"
+            ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
+
+            if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
+
+            $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
+            ."\t\t\t\t\t<font size='1'>".$clang->gT("Number of files less than").":</font><br />\n"
             ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 
             if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
