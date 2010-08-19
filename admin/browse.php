@@ -331,7 +331,7 @@ elseif ($subaction == "all")
         $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
-    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
+    $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
 
     foreach ($fields as $fielddetails)
     {
@@ -357,7 +357,7 @@ elseif ($subaction == "all")
     else {$tableheader .= "<table class='browsetable'>\n";}
     $tableheader .= "\t<thead><tr valign='top'>\n"
             . "<th><input type='checkbox' id='selectall'></th>\n"
-            . "<th>Actions</th>\n";
+            . "<th>".$clang->gT('Actions')."</th>\n";
     foreach ($fnames as $fn)
     {
         if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}
