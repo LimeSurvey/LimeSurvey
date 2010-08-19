@@ -1480,6 +1480,7 @@ if ($action=='editansweroptions')
                           var newansweroption_text='".$clang->gT('New answer option','js')."'; 
                           var strcode='".$clang->gT('Code','js')."'; 
                           var strlabel='".$clang->gT('Label','js')."'; 
+                          var strCantDeleteLastAnswer='".$clang->gT('You cannot delete the last answer option.','js')."'; 
                           var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
                           var quickaddtitle='".$clang->gT('Quick-add subquestions','js')."'; 
                           var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."'; 
@@ -1686,6 +1687,7 @@ if ($action=='editsubquestions')
                       var newansweroption_text='".$clang->gT('New answer option','js')."'; 
                       var strcode='".$clang->gT('Code','js')."'; 
                       var strlabel='".$clang->gT('Label','js')."'; 
+                      var strCantDeleteLastAnswer='".$clang->gT('You cannot delete the last subquestion.','js')."'; 
                       var lsbrowsertitle='".$clang->gT('Label set browser','js')."'; 
                       var quickaddtitle='".$clang->gT('Quick-add subquestions','js')."'; 
                       var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate subquestion codes.','js')."'; 

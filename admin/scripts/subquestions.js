@@ -69,7 +69,7 @@ function deleteinput()
     }
     else
     {
-       $.blockUI({message:"<p><br/>You cannot delete the last answer.</p>"});
+       $.blockUI({message:"<p><br/>"+strCantDeleteLastAnswer+"</p>"});
        setTimeout(jQuery.unblockUI,1000);   
     }
     updaterowproperties();     
@@ -325,10 +325,10 @@ function lspreview()
    }
    else
    {
-                    $("#labelsetpreview").tabs('destroy');
-                    $("#labelsetpreview").empty();
-                    $("#labelsetpreview").append(labelcache[lsid]);
-                    $("#labelsetpreview").tabs();
+        $("#labelsetpreview").tabs('destroy');
+        $("#labelsetpreview").empty();
+        $("#labelsetpreview").append(labelcache[lsid]);
+        $("#labelsetpreview").tabs();
    }
 
     
@@ -514,6 +514,10 @@ function quickaddlabels()
             {
                 thisrow[1]=thisrow[0];
                 thisrow[0]=parseInt(k)+1;
+            }
+            else
+            {
+                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "");
             }
             var randomid='new'+Math.floor(Math.random()*111111)
              
