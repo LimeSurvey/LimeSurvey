@@ -147,7 +147,7 @@ function get_length($qid,$attribute,$default)
     $QueryResult = db_execute_assoc($Query);
 
     $Row = $QueryResult->FetchRow();
-    if ($Row)
+    if ($Row && !empty($Row['value']))
     return $Row['value'];
     else
     return $default;
@@ -155,36 +155,45 @@ function get_length($qid,$attribute,$default)
 }
 
 
-function create_multi(&$question,$qid,$varname)
+function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false)
 {
     global $dom;
     global $dbprefix;
     global $connect ;
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
-    $Query = "SELECT * FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
+    $Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid ";
+    if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
+    $Query .= " ORDER BY question_order ASC";
     //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
     $QueryResult = db_execute_assoc($Query);
 
     while ($Row = $QueryResult->FetchRow())
     {
         $response = $dom->create_element("response");
-        $fixed = $dom->create_element("fixed");
-        $category = $dom->create_element("category");
-         
-        $label = $dom->create_element("label");
-        $label->set_content(cleanup($Row['answer']));
+	if ($free == false)
+	{
+	        $fixed = $dom->create_element("fixed");
+	        $category = $dom->create_element("category");
+	         
+	        $label = $dom->create_element("label");
+	        $label->set_content(cleanup($Row['question']));
+	
+	        $value= $dom->create_element("value");
+	        //$value->set_content(cleanup($Row['title']));
+		$value->set_content("1");
+	         
+	        $category->append_child($label);
+	        $category->append_child($value);
+	
+	        $fixed->append_child($category);
+	         
+	        $response->append_child($fixed);
+	}
+	else
+		$response->append_child(create_free($free['f'],$free['len'],$Row['question']));
 
-        $value= $dom->create_element("value");
-        $value->set_content(cleanup($Row['code']));
-         
-        $category->append_child($label);
-        $category->append_child($value);
-
-        $fixed->append_child($category);
-         
-        $response->append_child($fixed);
-        $response->set_attribute("varName",$varname . "_" . cleanup($Row['code']));
+        $response->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
          
         $question->append_child($response);
     }
@@ -193,13 +202,16 @@ function create_multi(&$question,$qid,$varname)
 
 }
 
-function create_subQuestions(&$question,$qid,$varname)
+function create_subQuestions(&$question,$qid,$varname,$use_answers = false)
 {
     global $dom;
     global $dbprefix;
     global $connect ;
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid ORDER BY question_order ASC";
+    if ($use_answers)
+	$Query = "SELECT answer as question, code as title FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
+    else
+	$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid and scale_id = 0 ORDER BY question_order ASC";
     $QueryResult = db_execute_assoc($Query);
     while ($Row = $QueryResult->FetchRow())
     {
@@ -319,7 +331,6 @@ while ($Row = $QueryResult->FetchRow())
         $question = $dom->create_element("question");
         $type = $RowQ['type'];
         $qid = $RowQ['qid'];
-        $lid = $RowQ['lid'];
 
         $text = $dom->create_element("text");
         $text->set_content(cleanup($RowQ['question']));
@@ -373,13 +384,13 @@ while ($Row = $QueryResult->FetchRow())
                 //no comment - this should be a separate question
                 break;
             case "R": //RANKING STYLE
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $Query = "SELECT LENGTH(COUNT(*)) as sc FROM {$dbprefix}labels WHERE lid = $lid";
+                create_subQuestions(&$question,$qid,$RowQ['title'],true);
+                $Query = "SELECT COUNT(*) as sc FROM {$dbprefix}answers WHERE qid = $qid";
                 $QRE = db_execute_assoc($Query);
                 //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
                 //$QROW = mysql_fetch_assoc($QRE);
                 $QROW = $QRE->FetchRow();
-                $response->append_child(create_free("integer",$QROW['sc'],""));
+                $response->append_child(create_free("integer",strlen($QROW['sc']),""));
                 $question->append_child($response);
                 break;
             case "M": //MULTIPLE OPTIONS checkbox
@@ -409,11 +420,11 @@ while ($Row = $QueryResult->FetchRow())
                 $question->append_child($response);
                 break;
             case "T": //LONG FREE TEXT
-                $response->append_child(create_free("longtext",get_length($qid,"display_rows","1024"),""));
+                $response->append_child(create_free("longtext",get_length($qid,"display_rows","4"),""));
                 $question->append_child($response);
                 break;
             case "U": //HUGE FREE TEXT
-                $response->append_child(create_free("longtext",get_length($qid,"display_rows","2048"),""));
+                $response->append_child(create_free("longtext",get_length($qid,"display_rows","8"),""));
                 $question->append_child($response);
                 break;
             case "Y": //YES/NO radio-buttons
@@ -467,10 +478,26 @@ while ($Row = $QueryResult->FetchRow())
                 $question->append_child($response);
                 $question->append_child($response2);  
                 break;
-            case "^": //SLIDER CONTROL
-            case ":": //multi-flexi array numbers - not supported
-            case ";": //multi-flexi array text - not supported
-                $response->append_child(fixed_array(array("NOT SUPPORTED" => 1)));
+            case ":": //multi-flexi array numbers
+		create_subQuestions(&$question,$qid,$RowQ['title']);
+                //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
+		$mcb  = get_length($qid,'multiflexible_checkbox',-1);
+		if ($mcb != -1)
+			create_multi(&$question,$qid,$RowQ['title'],1);
+		else
+		{
+			//get multiflexible_max - if set then make boxes of max this width
+			$mcm = strlen(get_length($qid,'multiflexible_max',1));
+		 	create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+ 		}
+		break;
+            case ";": //multi-flexi array text
+		create_subQuestions(&$question,$qid,$RowQ['title']);
+		//foreach question where scale_id = 1 this is a textbox
+		create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+		break;
+            case "^": //SLIDER CONTROL - not supported
+                $response->append_child(fixed_array(array("NOT SUPPORTED:$type" => 1)));
                 $question->append_child($response);
                 break;
         } //End Switch
