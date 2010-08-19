@@ -289,12 +289,12 @@ function lsbrowser()
     scale_id=removechars($(this).attr('id'));
     $('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
-    match=0;
+/*    match=0;
     if ($('#languagefilter').attr('checked')==true)
     {
         match=1;
-    }
-    $.getJSON('admin.php?action=ajaxlabelsetpicker',{sid:surveyid, match:match},function(json){
+    }*/
+    $.getJSON('admin.php?action=ajaxlabelsetpicker',{sid:surveyid, match:1},function(json){
         var x=0;    
         $("#labelsets").removeOption(/.*/); 
         for (x in json)

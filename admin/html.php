@@ -1604,10 +1604,10 @@ if ($action=='editansweroptions')
         $vasummary .= "</div>";
     }
     // Label set browser
+//                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
     $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;width:260px;'>
                       <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
-                      <br /><select id='labelsets' size='10' style='width:250px;'><option>A label set</option></select>
-                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
+                      <br /><select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
                       <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
@@ -1856,10 +1856,10 @@ if ($action=='editsubquestions')
     }
 
     // Label set browser
+//                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
     $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left; width:260px;'>
                       <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
-                      <br /><select id='labelsets' size='10' style='width:250px;'><option>A label set</option></select>
-                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
+                      <br /><select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
                       <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>

@@ -256,7 +256,6 @@ input, select, button {
 input[disabled], textarea[disabled], select[disabled], button[disabled] {
     color: #999;
     background: #EEE;
-    font: 10px verdana, arial, sans-serif;
     border:1px solid #ccc;
 }
 
