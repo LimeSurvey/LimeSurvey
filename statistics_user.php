@@ -78,7 +78,7 @@ if ($surveyid)
         // CHANGE JSW_NZ - let's get the survey title for display
         $thisSurveyTitle = $surveyinfo["name"];
         // CHANGE JSW_NZ - let's get css from individual template.css - so define path
-        $thisSurveyCssPath = getTemplateURL($surveyinfo["template"]);
+        $thisSurveyCssPath = sGetTemplateURL($surveyinfo["template"]);
         if ($surveyinfo['publicstatistics']!='Y')
         {
             safe_die('The public statistics for this survey are deactivated.');
