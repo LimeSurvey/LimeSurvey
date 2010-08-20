@@ -2797,7 +2797,8 @@ function do_multiplechoice($ia)
         $excludeallothers=array();
     }
 
-    if (trim($qidattributes['max_answers'])!='') {
+    if ((int)$qidattributes['max_answers']>0) 
+    {
         $maxansw=$qidattributes['max_answers'];
         $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
         $callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
@@ -2816,7 +2817,7 @@ function do_multiplechoice($ia)
     $minanswscript = "";
 
 
-    if (trim($qidattributes["min_answers"])!='')
+    if ((int)$qidattributes['min_answers']>0) 
     {
         $minansw=trim($qidattributes["min_answers"]);
         $minanswscript = "<script type='text/javascript'>\n"
