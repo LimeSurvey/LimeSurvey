@@ -776,7 +776,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
         };
         if(!defined('QUESTION_START'))
         {
-            define('QUESTION_START' , file_get_contents('templates/'.validate_templatedir($thissurvey['template']).'/question_start.pstpl' , true));
+            define('QUESTION_START' , file_get_contents(sGetTemplatePath($thissurvey['template']).'/question_start.pstpl' , true));
         };
         $qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 
@@ -3509,7 +3509,7 @@ function do_multipleshorttext($ia)
 
     if ($qidattributes['numbers_only']==1)
     {
-        $numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+		$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
     }
     else
     {
