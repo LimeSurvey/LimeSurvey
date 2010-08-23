@@ -2630,13 +2630,13 @@ function doAssessment($surveyid, $returndataonly=false)
             {
                 if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
                 {
-                    $fieldmap[$i]['assessment_value']=0;
+                    $fieldmap[$field['fieldname']]['assessment_value']=0;
                     if (isset($_SESSION[$field['fieldname']]))
                     {
                         if ($field['type']==':') //Multiflexi numbers  - result is the assessment value
 
                         {
-                            $fieldmap[$i]['assessment_value']=$_SESSION[$field['fieldname']];
+                            $fieldmap[$field['fieldname']]['assessment_value']=$_SESSION[$field['fieldname']];
                             $total=$total+$_SESSION[$field['fieldname']];
                         }
                         else
@@ -2678,14 +2678,14 @@ function doAssessment($surveyid, $returndataonly=false)
                                     if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple Options type questions
 
                                     {
-                                        $fieldmap[$i]['assessment_value']=$usrow['assessment_value'];
+                                        $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
                                         $total=$total+$usrow['assessment_value'];
                                     }
                                 }
                                 else     // any other type of question
 
                                 {
-                                    $fieldmap[$i]['assessment_value']=$usrow['assessment_value'];
+                                    $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
                                     $total=$total+$usrow['assessment_value'];
                                 }
                             }
