@@ -2563,7 +2563,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "R")
         {
             //MULTI ENTRY
-            $slots=$connect->GetOne("select value from ".db_table_name('question_attributes')." where qid={$arow['qid']} and attribute='ranking_slots'");
+            $slots=$connect->GetOne("select count(code) from ".db_table_name('answers')." where qid={$arow['qid']} and language='{$s_lang}'");
             for ($i=1; $i<=$slots; $i++)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
@@ -3789,16 +3789,6 @@ function questionAttributes($returnByName=false)
     'default'=>0,                 
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
-
-    $qattributes["ranking_slots"]=array(
-    "types"=>"R",
-    'category'=>$clang->gT('Other'),
-    'sortorder'=>10,
-    'inputtype'=>'integer',
-    'default'=>0,
-    'readonly_when_active'=>true,
-    "help"=>$clang->gT("Set the number of slots available to rank the available answers. Note: This settings can't be changed after survey activation."),
-    "caption"=>$clang->gT('Ranking slots'));
 
     $qattributes["slider_layout"]=array(
     "types"=>"K",
