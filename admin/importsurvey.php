@@ -1006,15 +1006,7 @@ function CSVImportSurvey($sFullFilepath)
         }
     }
 
-    // Fix up the slots for ranking questions
-    $sQuery = "SELECT qid FROM {$dbprefix}questions where sid=$newsid and type='R' and parent_qid=0"; //Get last question added (finds new qid)
-    $gres = db_execute_assoc($sQuery);
-    while ($aRow = $gres->FetchRow())
-    {
-        $iSlots=$connect->GetOne("select count(code) from {$dbprefix}answers where qid={$aRow['qid']} and language='{$sBaseLanguage}'");
-        setQuestionAttribute($aRow['qid'],'ranking_slots',$iSlots);
-    }
-    
+
     
     //... and for the questions inside the groups
     // get all group ids and fix questions inside each group

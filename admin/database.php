@@ -913,17 +913,6 @@ if(isset($surveyid))
         $sortorderid--;
         $action='editansweroptions';
 
-        // Special treatment for ranking questions
-        $surveyinfo=getSurveyInfo($surveyid);
-        if ($questiontype=='R' && $surveyinfo['active']=='N')
-        {
-            $query="update ".db_table_name('question_attributes')." set value='$sortorderid' where attribute='ranking_slots' and qid=$qid";
-            if (!$result = $connect->Execute($query)) // Checked
-            {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-            }
-        }
-
     }
 
     elseif ($action == "updatesubquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))

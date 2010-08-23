@@ -2483,10 +2483,6 @@ function do_ranking($ia)
         $max_answers = false;
     }
     $ansresult = db_execute_assoc($ansquery);   //Checked
-    $anscount = $qidattributes["ranking_slots"];
-    if(!$max_answers) {
-        $max_answers=$anscount;
-    }
     $finished=$anscount-$max_answers;
     $answer .= "\t<script type='text/javascript'>\n"
     . "\t<!--\n"
