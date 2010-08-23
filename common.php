@@ -3466,6 +3466,16 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Enter the code of a Multiple options question to exclude the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter exclusion'));
 
+    
+    $qattributes["assessment_value"]=array(
+    "types"=>"MP",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>100,
+    'default'=>'1',
+    'inputtype'=>'integer',
+    "help"=>$clang->gT("If one of the subquestions is marked then for each marked subquestion this value is added as assessment."),
+    "caption"=>$clang->gT('Assessment value'));    
+    
     $qattributes["category_separator"]=array(
     "types"=>"!",
     'category'=>$clang->gT('Display'),

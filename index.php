@@ -2641,33 +2641,8 @@ function doAssessment($surveyid, $returndataonly=false)
                         }
                         else
                         {
-                            // for questions which are using label sets
-                            if (in_array($field['type'],array('Z','1','F','H','W','Z')))
-                            {
-                                if ($field['type']=='1') //special treatment for Dual scale
 
-                                {
-                                    $x=substr($field['fieldname'],-1,1);
-                                    if ($x==0) $x='';
-                                }
-                                else
-                                {
-                                    $x='';
-                                }
-                                $usquery = "SELECT assessment_value FROM ".db_table_name("labels")." where lid=(select lid$x from ".db_table_name("questions")." where qid=".$field['qid']." and language='$baselang') and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
-                            }
-                            else  // for normal answers
-
-                            {
-                                if (($field['type'] == "M") || ($field['type'] == "P"))
-                                {
-                                    $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where language='$baselang' and code=".db_quoteall($field['aid'])." and qid=".$field['qid'];
-                                }
-                                else
-                                {
-                                    $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
-                                }
-                            }
+                            $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
                             $usresult = db_execute_assoc($usquery);          //Checked
                             if ($usresult)
                             {
@@ -2676,9 +2651,9 @@ function doAssessment($surveyid, $returndataonly=false)
                                 if (($field['type'] == "M") || ($field['type'] == "P"))
                                 {
                                     if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple Options type questions
-
                                     {
-                                        $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
+                                        $aAttributes=getQuestionAttributes($field['qid'],$field['type']);
+                                        $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                         $total=$total+$usrow['assessment_value'];
                                     }
                                 }
