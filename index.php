@@ -637,7 +637,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 // this check is done in buildsurveysession and error message
 // could be more interresting there (takes into accound captcha if used)
 if ($tokensexist == 1 && isset($token) && $token &&
-isset($_SESSION['step']) && $_SESSION['step']>0)
+	isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
 {
     //check if token actually does exist
 
@@ -664,7 +664,7 @@ isset($_SESSION['step']) && $_SESSION['step']>0)
         exit;
     }
 }
-if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
+if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'tokens_'.$surveyid)) //check if token is in a valid time frame
 
 {
     $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
@@ -1865,7 +1865,7 @@ function sendsubmitnotification($sendnotification)
     $emailresponseto=null;
     if (!empty($thissurvey['emailresponseto']))
     {
-        if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+		if (isset($_SESSION['token']) && $_SESSION['token'] != '' && db_tables_exist($dbprefix.'tokens_'.$surveyid))
         {
             //Gather token data for tokenised surveys
             $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
@@ -2356,7 +2356,7 @@ function buildsurveysession()
 
     //RL: multilingual support
 
-    if (isset($_GET['token']))
+	if (isset($_GET['token']) && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
         //get language from token (if one exists)
         $tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
@@ -2458,7 +2458,7 @@ function buildsurveysession()
         $_SESSION['insertarray'][]= "token";
     }
 
-    if ($tokensexist == 1 && $thissurvey['private'] == "N")
+	if ($tokensexist == 1 && $thissurvey['private'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
