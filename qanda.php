@@ -2476,13 +2476,14 @@ function do_ranking($ia)
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
+    $ansresult = db_execute_assoc($ansquery);   //Checked
+    $anscount= $ansresult->RecordCount();
     if (trim($qidattributes["max_answers"])!='')
     {
         $max_answers=trim($qidattributes["max_answers"]);
     } else {
-        $max_answers = false;
+        $max_answers = $anscount;
     }
-    $ansresult = db_execute_assoc($ansquery);   //Checked
     $finished=$anscount-$max_answers;
     $answer .= "\t<script type='text/javascript'>\n"
     . "\t<!--\n"
