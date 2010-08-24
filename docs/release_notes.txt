@@ -77,6 +77,27 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.90+ (build 9071) to 1.90+ (build 9089) Legend: # updated feature, - bug fix 
+#Updated support for exporting to queXML for 1.9.0 (azammitdcarf)
+#Updated translation: German (c_schmitz)
+#Updated translation: German informal (c_schmitz)
+#Updated translation: Japanese (ja), thanks to Hisashi Nomoto (gandalfar)
+-Fixed issue #4541: Result export misses details on multiple choice subquestions in header (c_schmitz)
+-Fixed issue #4545: Quick-add functions allows to insert invalid characters into the code label (c_schmitz)
+-Fixed issue #4549: Can't display statistics after survey (c_schmitz)
+-Fixed issue #4551: Assessments not returning proper scores (c_schmitz)
+-Fixed issue: If minimum/maximum answers on a multiple choice question are set to 0 then it would not display properly (c_schmitz)
+-Fixed issue: Multiple choice not having assessment values - Multiple choice question generally use 1 for a marked question - you can change the general assessment value for multiple choice question in the advanced question setting now (c_schmitz)
+-Fixed issue: Negative numbers were not allowed in multiple short text with Numbers only property activated (c_schmitz)
+-Fixed issue: Notice at question importquestion.php (c_schmitz)
+-Fixed issue: Path error while printing answers (c_schmitz)
+-Fixed issue: Templates using old QUESTION_START template were not working properly (c_schmitz)
+-Fixed issue: Two non-translatable strings when browsing responses (thanks to Pal Monstad) (c_schmitz)
+-Fixed issue #4266: SQL error while exporting a survey to XML file (azammitdcarf) and added support for exporting multi-flexi array text and numbers to queXML (azammitdcarf)
+-Removed feature #4539: In the label set browser the 'Match language' option did not make much sense - removed for now. (c_schmitz)
+-Removed feature: Ranking slots setting was obsolete in ranking question type ( it is covered by max slots) (c_schmitz)
+
 Changes from 1.90+ (build 9045) to 1.90+ (build 9071) Legend: # updated feature, - bug fix 
 #Updated translation: Chinese Traditional (Hong Kong) (zh-Hant-HK), thanks to andrew xiang (gandalfar)
 #Updated translation: Italian (it), thanks to Giuliano (gandalfar)
