@@ -624,7 +624,7 @@ function upgrade_tables143()
             $labelresult = db_execute_assoc($labelquery);
             while ( $lrow = $labelresult->FetchRow() )
             {
-                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).")"); echo $modifyoutput; flush();
+                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",{$lrow['assessment_value']}"); echo $modifyoutput; flush();
                 //$labelids[]
             }
             if ($row['type']=='1')
@@ -633,7 +633,7 @@ function upgrade_tables143()
                 $labelresult = db_execute_assoc($labelquery);
                 while ( $lrow = $labelresult->FetchRow() )
                 {
-                    modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
+                    modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1,{$lrow['assessment_value']})"); echo $modifyoutput; flush();
                 }
             }
         }
