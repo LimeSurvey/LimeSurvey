@@ -644,7 +644,7 @@ function upgrade_tables143()
             $labelresult = db_execute_assoc($labelquery);
             while ( $lrow = $labelresult->FetchRow() )
             {
-                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",{$lrow['assessment_value']}"); echo $modifyoutput; flush();
+                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",{$lrow['assessment_value']})"); echo $modifyoutput; flush();
                 //$labelids[]
             }
             if ($row['type']=='1')
