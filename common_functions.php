@@ -3051,7 +3051,7 @@ function tokenReplace($line)
  * @return string This string is returned containing the substituted responses
  *
  */
-function sPassthruReplace($line, $thissurvey)
+function PassthruReplace($line, $thissurvey)
 {
     $line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
     $line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
