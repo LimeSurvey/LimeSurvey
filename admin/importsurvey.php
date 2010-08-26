@@ -943,7 +943,8 @@ function CSVImportSurvey($sFullFilepath)
                 $insertdata['qid']=$newqid;
                 $insertdata['language']=$answerrowdata['language'];
                 $insertdata['defaultvalue']=$answerrowdata['answer']; 
-                $query=$connect->GetInsertSQL($dbprefix.'defaultvalues',$insertdata);  
+                $tablename=$dbprefix.'defaultvalues';    
+                $query=$connect->GetInsertSQL($tablename,$insertdata);  
                 $qres = $connect->Execute($query) or safe_die ("Error: Failed to insert defaultvalue <br />{$query}<br />\n".$connect->ErrorMsg());
 
             }
