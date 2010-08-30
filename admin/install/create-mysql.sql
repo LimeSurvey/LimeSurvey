@@ -242,8 +242,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1, 
   
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
-)
-TYPE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 
