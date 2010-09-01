@@ -2510,47 +2510,179 @@ elseif ($action == "surveyrights")
 
 
 // Editing the survey
-if ($action == "editsurveysettings")
+if ($action == "editsurveysettings" || $action == "newsurvey")
 {
-    if(bHasRight($surveyid,'edit_survey_property'))
+    if (($action == "newsurvey" &&  !$_SESSION['USER_RIGHT_CREATE_SURVEY']) ||
+        ($action == "editsurveysettings" && !bHasRight($surveyid,'edit_survey_property')))
     {
-        $js_admin_includes[]='scripts/surveysettings.js';
-        $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-        $esresult = db_execute_assoc($esquery); //Checked
-        while ($esrow = $esresult->FetchRow())
-        {
-            $esrow = array_map('htmlspecialchars', $esrow);
+        include("access_denied.php");
+    }
+    else
+    {
+        $js_admin_includes[] = 'scripts/surveysettings.js';
+
+        if ($action == "newsurvey") {
+            //New survey, set the defaults
+            $esrow = array();
+            $esrow['active']                    = 'N';
+            $esrow['format']                    = 'G'; //Group-by-group mode
+            $esrow['template']                  = $defaulttemplate;
+            $esrow['allowsave']                 = 'Y';
+            $esrow['allowprev']                 = 'N';
+            $esrow['printanswers']              = 'N';
+            $esrow['publicstatistics']          = 'N';
+            $esrow['publicgraphs']              = 'N';
+            $esrow['public']                    = 'Y';
+            $esrow['autoredirect']              = 'N';
+            $esrow['tokenlength']               = 15;
+            $esrow['allowregister']             = 'N';
+            $esrow['usecookie']                 = 'N';
+            $esrow['usecaptcha']                = 'D';
+            $esrow['htmlemail']                 = 'Y';
+            $esrow['notification']              = 0; //No notification
+            $esrow['private']                   = 'Y';
+            $esrow['datestamp']                 = 'N';
+            $esrow['ipaddr']                    = 'N';
+            $esrow['refurl']                    = 'N';
+            $esrow['tokenanswerspersistence']   = 'N';
+            $esrow['assesments']                = 'N';
+            $esrow['startdate']                 = '';
+            $esrow['expires']                   = '';
+            $esrow['showwelcome']               = 'Y';
+            $esrow['emailresponseto']           = '';
+            $esrow['assessments']               = 'Y';
+
+            $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+
+            $editsurvey = PrepareEditorScript();
+
+            $editsurvey .="<script type=\"text/javascript\">
+                        standardtemplaterooturl='$standardtemplaterooturl';
+                        templaterooturl='$usertemplaterooturl'; \n";
+            $editsurvey .= "</script>\n";
 
             // header
-            $editsurvey = "<div class='header'>".$clang->gT("Edit survey settings")."</div>\n";
+            $editsurvey .= "<div class='header'>" . $clang->gT("Create, import or copy survey") . "</div>\n";
+        } elseif ($action == "editsurveysettings") {
+            //Fetch survey info
+            $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
+            $esresult = db_execute_assoc($esquery); //Checked
+            while ($esrow = $esresult->FetchRow()) {
+                $esrow = array_map('htmlspecialchars', $esrow);
+            }
 
-            // beginning TABs section - create tab pane
-            $editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
-            $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='$scriptname' method='post'>\n";
+            // header
+            $editsurvey = "<div class='header'>" . $clang->gT("Edit survey settings") . "</div>\n";
+        }
+
+        // beginning TABs section - create tab pane
+        if ($action == "newsurvey") {
+            $editsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
+            $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
+
             // General & Contact TAB
-            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2><ul>\n";
+            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("General") . "</h2>\n";
+
+            // Survey Language
+            $editsurvey .= "<ul><li><label for='language' title='" . $clang->gT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey.") . "'><span class='annotationasterisk'>*</span>" . $clang->gT("Base Language:") . "</label>\n"
+                    . "<select id='language' name='language'>\n";
+
+            foreach (getLanguageData () as $langkey2 => $langname) {
+                $editsurvey .= "<option value='" . $langkey2 . "'";
+                if ($defaultlang == $langkey2) {
+                    $editsurvey .= " selected='selected'";
+                }
+                $editsurvey .= ">" . $langname['description'] . "</option>\n";
+            }
+            $editsurvey .= "<select>\n";
+            
+            //Use the current user details for the default administrator name and email for this survey
+            $query = "SELECT full_name, email FROM " . db_table_name('users') . " WHERE users_name = " . db_quoteall($_SESSION['user']);
+            $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+            $owner = $result->FetchRow();
+            //Degrade gracefully to $siteadmin details if anything is missing.
+            if (empty($owner['full_name']))
+                $owner['full_name'] = $siteadminname;
+            if (empty($owner['email']))
+                $owner['email'] = $siteadminemail;
+
+            $editsurvey .= "<span class='annotation'> " . $clang->gT("*This setting cannot be changed later!") . "</span></li>\n";
+
+            $editsurvey .= ""
+                    . "<li><label for='surveyls_title'><span class='annotationasterisk'>*</span>" . $clang->gT("Title") . ":</label>\n"
+                    . "<input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /> <span class='annotation'>" . $clang->gT("*Required") . "</span></li>\n"
+                    . "<li><label for='description'>" . $clang->gT("Description:") . "</label>\n"
+                    . "<textarea cols='80' rows='10' id='description' name='description'></textarea>"
+                    . getEditor("survey-desc", "description", "[" . $clang->gT("Description:", "js") . "]", '', '', '', $action)
+                    . "</li>\n"
+                    . "<li><label for='welcome'>" . $clang->gT("Welcome message:") . "</label>\n"
+                    . "<textarea cols='80' rows='10' id='welcome' name='welcome'></textarea>"
+                    . getEditor("survey-welc", "welcome", "[" . $clang->gT("Welcome message:", "js") . "]", '', '', '', $action)
+                    . "</li>\n"
+                    . "<li><label for='endtext'>" . $clang->gT("End message:") . "</label>\n"
+                    . "<textarea cols='80' id='endtext' rows='10' name='endtext'></textarea>"
+                    . getEditor("survey-endtext", "endtext", "[" . $clang->gT("End message:", "js") . "]", '', '', '', $action)
+                    . "</li>\n";
+
+            // End URL
+            $editsurvey .= "<li><label for='url'>" . $clang->gT("End URL:") . "</label>\n"
+                    . "<input type='text' size='50' id='url' name='url' value='http://";
+            $editsurvey .= "' /></li>\n";
+
+            // URL description
+            $editsurvey.= "<li><label for='urldescrip'>" . $clang->gT("URL description:") . "</label>\n"
+                    . "<input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value='";
+            $editsurvey .= "' /></li>\n"
+
+                    //Default date format
+                    . "<li><label for='dateformat'>" . $clang->gT("Date format:") . "</label>\n"
+                    . "<select size='1' id='dateformat' name='dateformat'>\n";
+            foreach (getDateFormatData () as $index => $dateformatdata) {
+                $editsurvey.= "<option value='{$index}'";
+                $editsurvey.= ">" . $dateformatdata['dateformat'] . '</option>';
+            }
+            $editsurvey.= "</select></li>"
+            
+                    . "<li><label for='admin'>" . $clang->gT("Administrator:") . "</label>\n"
+                    . "<input type='text' size='50' id='admin' name='admin' value='" . $owner['full_name'] . "' /></li>\n"
+                    . "<li><label for='adminemail'>" . $clang->gT("Admin Email:") . "</label>\n"
+                    . "<input type='text' size='50' id='adminemail' name='adminemail' value='" . $owner['email'] . "' /></li>\n"
+                    . "<li><label for='bounce_email'>" . $clang->gT("Bounce Email:") . "</label>\n"
+                    . "<input type='text' size='50' id='bounce_email' name='bounce_email' value='" . $owner['email'] . "' /></li>\n"
+                    . "<li><label for='faxto'>" . $clang->gT("Fax To:") . "</label>\n"
+                    . "<input type='text' size='50' id='faxto' name='faxto' /></li>\n";
+
+            $editsurvey.= "</ul>";
+
+
+            // End General TAB
+            $editsurvey .= "</div>\n";
+        } elseif ($action == "editsurveysettings") {
+            $editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
+            $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
+
+            // General & Contact TAB
+            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("General") . "</h2>\n";
 
             // Base Language
-            $editsurvey .= "<li><label>".$clang->gT("Base Language:")."</label>\n"
-            .GetLanguageNameFromCode($esrow['language'])
-            . "</li>\n"
+            $editsurvey .= "<ul><li><label>" . $clang->gT("Base Language:") . "</label>\n"
+                    . GetLanguageNameFromCode($esrow['language'])
+                    . "</li>\n"
 
-            // Additional languages listbox
-            . "<li><label for='additional_languages'>".$clang->gT("Additional Languages").":</label>\n"
-            . "<table><tr><td align='left'><select style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>";
-            $jsX=0;
-            $jsRemLang ="<script type=\"text/javascript\">
+                    // Additional languages listbox
+                    . "<li><label for='additional_languages'>" . $clang->gT("Additional Languages") . ":</label>\n"
+                    . "<table><tr><td align='left'><select style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>";
+            $jsX = 0;
+            $jsRemLang = "<script type=\"text/javascript\">
                             var mylangs = new Array();
                             standardtemplaterooturl='$standardtemplaterooturl';
                             templaterooturl='$usertemplaterooturl'; \n";
 
-            foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
-            {
-                if ($langname && $langname!=$esrow['language']) // base languag must not be shown here
-                {
+            foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname) {
+                if ($langname && $langname != $esrow['language']) { // base languag must not be shown here
                     $jsRemLang .="mylangs[$jsX] = \"$langname\"\n";
-                    $editsurvey .= "<option id='".$langname."' value='".$langname."'";
-                    $editsurvey .= ">".getLanguageNameFromCode($langname,false)."</option>\n";
+                    $editsurvey .= "<option id='" . $langname . "' value='" . $langname . "'";
+                    $editsurvey .= ">" . getLanguageNameFromCode($langname, false) . "</option>\n";
                     $jsX++;
                 }
             }
@@ -2558,654 +2690,747 @@ if ($action == "editsurveysettings")
             $editsurvey .= $jsRemLang;
             //  Add/Remove Buttons
             $editsurvey .= "</select></td>"
-            . "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(0,'')\" id=\"RemoveBtn\"  /></td>\n"
+                    . "<td align='left'><input type=\"button\" value=\"<< " . $clang->gT("Add") . "\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"" . $clang->gT("Remove") . " >>\" onclick=\"DoRemove(0,'')\" id=\"RemoveBtn\"  /></td>\n"
 
-            // Available languages listbox
-            . "<td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>";
-            $tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
-            foreach (getLanguageData() as  $langkey2=>$langname)
-            {
-                if ($langkey2!=$esrow['language'] && in_array($langkey2,$tempLang)==false)  // base languag must not be shown here
-                {
-                    $editsurvey .= "<option id='".$langkey2."' value='".$langkey2."'";
-                    $editsurvey .= ">".$langname['description']."</option>\n";
+                    // Available languages listbox
+                    . "<td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>";
+            $tempLang = GetAdditionalLanguagesFromSurveyID($surveyid);
+            foreach (getLanguageData () as $langkey2 => $langname) {
+                if ($langkey2 != $esrow['language'] && in_array($langkey2, $tempLang) == false) {  // base languag must not be shown here
+                    $editsurvey .= "<option id='" . $langkey2 . "' value='" . $langkey2 . "'";
+                    $editsurvey .= ">" . $langname['description'] . "</option>\n";
                 }
             }
             $editsurvey .= "</select></td>"
-            . " </tr></table></li>\n";
-
-            $editsurvey .= "";
-
-
+                    . " </tr></table></li>\n";
             // Administrator...
             $editsurvey .= ""
-            . "<li><label for='admin'>".$clang->gT("Administrator:")."</label>\n"
-            . "<input type='text' size='50' id='admin' name='admin' value=\"{$esrow['admin']}\" /></li>\n"
-            . "<li><label for='adminemail'>".$clang->gT("Admin Email:")."</label>\n"
-            . "<input type='text' size='50' id='adminemail' name='adminemail' value=\"{$esrow['adminemail']}\" /></li>\n"
-            . "<li><label for='bounce_email'>".$clang->gT("Bounce Email:")."</label>\n"
-            . "<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"{$esrow['bounce_email']}\" /></li>\n"
-            . "<li><label for='faxto'>".$clang->gT("Fax To:")."</label>\n"
-            . "<input type='text' size='50' id='faxto' name='faxto' value=\"{$esrow['faxto']}\" /></li>\n";
+                    . "<li><label for='admin'>" . $clang->gT("Administrator:") . "</label>\n"
+                    . "<input type='text' size='50' id='admin' name='admin' value=\"{$esrow['admin']}\" /></li>\n"
+                    . "<li><label for='adminemail'>" . $clang->gT("Admin Email:") . "</label>\n"
+                    . "<input type='text' size='50' id='adminemail' name='adminemail' value=\"{$esrow['adminemail']}\" /></li>\n"
+                    . "<li><label for='bounce_email'>" . $clang->gT("Bounce Email:") . "</label>\n"
+                    . "<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"{$esrow['bounce_email']}\" /></li>\n"
+                    . "<li><label for='faxto'>" . $clang->gT("Fax To:") . "</label>\n"
+                    . "<input type='text' size='50' id='faxto' name='faxto' value=\"{$esrow['faxto']}\" /></li></ul>\n";
 
             // End General TAB
-            // Create Survey Button
-            $editsurvey .= "</ul></div>\n";
+            $editsurvey .= "</div>\n";
+        }
 
-            // Presentation and navigation TAB
-            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Presentation & Navigation")."</h2><ul>\n";
+        // Presentation and navigation TAB
+        $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("Presentation & Navigation") . "</h2><ul>\n";
 
-            //Format
-            $editsurvey .= "<li><label for='format'>".$clang->gT("Format:")."</label>\n"
-            . "<select id='format' name='format'>\n"
-            . "<option value='S'";
-            if ($esrow['format'] == "S" || !$esrow['format']) {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Question by Question")."</option>\n"
-            . "<option value='G'";
-            if ($esrow['format'] == "G") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Group by Group")."</option>\n"
-            . "<option value='A'";
-            if ($esrow['format'] == "A") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("All in one")."</option>\n"
-            . "</select>\n"
-            . "</li>\n";
+        //Format
+        $editsurvey .= "<li><label for='format'>" . $clang->gT("Format:") . "</label>\n"
+                . "<select id='format' name='format'>\n"
+                . "<option value='S'";
+        if ($esrow['format'] == "S" || !$esrow['format']) {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Question by Question") . "</option>\n"
+                . "<option value='G'";
+        if ($esrow['format'] == "G") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Group by Group") . "</option>\n"
+                . "<option value='A'";
+        if ($esrow['format'] == "A") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("All in one") . "</option>\n"
+                . "</select>\n"
+                . "</li>\n";
 
-            //TEMPLATES
-            $editsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
-            . "<select id='template' name='template'>\n";
-			foreach (array_keys(gettemplatelist()) as $tname)
-            {
+        //TEMPLATES
+        $editsurvey .= "<li><label for='template'>" . $clang->gT("Template:") . "</label>\n"
+                . "<select id='template' name='template'>\n";
+        foreach (array_keys(gettemplatelist()) as $tname) {
 
-                if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )
-                {
-                    $editsurvey .= "<option value='$tname'";
-                    if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {$editsurvey .= " selected='selected'";}
-                    elseif (!$esrow['template'] && $tname == "default") {$editsurvey .= " selected='selected'";}
-                    $editsurvey .= ">$tname</option>\n";
+            if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1) {
+                $editsurvey .= "<option value='$tname'";
+                if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {
+                    $editsurvey .= " selected='selected'";
+                } elseif (!$esrow['template'] && $tname == "default") {
+                    $editsurvey .= " selected='selected'";
                 }
-
+                $editsurvey .= ">$tname</option>\n";
             }
-            $editsurvey .= "</select>\n"
-            . "</li>\n";
+        }
+        $editsurvey .= "</select>\n"
+                . "</li>\n";
 
-            $editsurvey .= "<li><label for='preview'>".$clang->gT("Template Preview:")."</label>\n"
-            . "<img alt='".$clang->gT("Template preview image")."' id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
-            . "</li>\n" ;
+        $editsurvey .= "<li><label for='preview'>" . $clang->gT("Template Preview:") . "</label>\n"
+                . "<img alt='" . $clang->gT("Template preview image") . "' id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
+                . "</li>\n";
 
-            //ALLOW SAVES
-            $editsurvey .= "<li><label for='allowsave'>".$clang->gT("Allow Saves?")."</label>\n"
-            . "<select id='allowsave' name='allowsave'>\n"
-            . "<option value='Y'";
-            if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['allowsave'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
-
-            //Show Prev Button
-            $editsurvey .= "<li><label for='allowprev'>".$clang->gT("Show [<< Prev] button")."</label>\n"
-            . "<select id='allowprev' name='allowprev'>\n"
-            . "<option value='Y'";
-            if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
-
-            //Result printing
-            $editsurvey .= "<li><label for='printanswers'>".$clang->gT("Participants may print answers?")."</label>\n"
-            . "<select id='printanswers' name='printanswers'>\n"
-            . "<option value='Y'";
-            if (!isset($esrow['printanswers']) || !$esrow['printanswers'] || $esrow['printanswers'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (isset($esrow['printanswers']) && $esrow['printanswers'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select>\n"
-            . "</li>\n";
-
-            //Public statistics
-            $editsurvey .= "<li><label for='publicstatistics'>".$clang->gT("Public statistics?")."</label>\n"
-            . "<select id='publicstatistics' name='publicstatistics'>\n"
-            . "<option value='Y'";
-            if (!isset($esrow['publicstatistics']) || !$esrow['publicstatistics'] || $esrow['publicstatistics'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (isset($esrow['publicstatistics']) && $esrow['publicstatistics'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select>\n"
-            . "</li>\n";
-
-            //Public statistics
-            $editsurvey .= "<li><label for='publicgraphs'>".$clang->gT("Show graphs in public statistics?")."</label>\n"
-            . "<select id='publicgraphs' name='publicgraphs'>\n"
-            . "<option value='Y'";
-            if (!isset($esrow['publicgraphs']) || !$esrow['publicgraphs'] || $esrow['publicgraphs'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (isset($esrow['publicgraphs']) && $esrow['publicgraphs'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select>\n"
-            . "</li>\n";
-
-           
-            // End URL block
-            $editsurvey .= "<li><label for='autoredirect'>".$clang->gT("Automatically load URL when survey complete?")."</label>\n"
-            . "<select id='autoredirect' name='autoredirect'>";
-            $editsurvey .= "<option value='Y'";
-            if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n";
-            $editsurvey .= "<option value='N'";
-            if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>";
-
- 
-            // Show {THEREAREXQUESTIONS} block
-	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t".'<input type="hidden" name="showXquestions" id="" value="';
-	    $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="';
-	    $show_dis_post = "\" size=\"70\" />\n\t</li>\n";
-	    switch($showXquestions)
-	    {
-		case 'show':
-		    $editsurvey .= $show_dis_pre.'Y'.$show_dis_mid.$clang->gT('Yes (Forced by the system administrator)').$show_dis_post;
-		    break;
-		case 'hide':
-		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('No (Forced by the system administrator)').$show_dis_post;
-		    break;
-	    	case 'choose':
-		default:
-		    $sel_showxq = array( 'Y' => '' , 'N' => '' );
-		    if(isset($esrow['showXquestions']))
-		    {
-		    	$set_showxq = $esrow['showXquestions'];
-			$sel_showxq[$set_showxq] = ' selected="selected"';
-		    }
-		    if(empty($sel_showxq['Y']) && empty($sel_showxq['N']))
-		    {
-		    	$sel_showxq['Y'] = ' selected="selected"';
-		    };
-		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t"
-		    . "<select id=\"showXquestions\" name=\"showXquestions\">\n\t\t\t"
-		    . '<option value="Y"'.$sel_showxq['Y'].'>'.$clang->gT('Yes')."</option>\n\t\t\t"
-		    . '<option value="N"'.$sel_showxq['N'].'>'.$clang->gT('No')."</option>\n\t\t"
-		    . "</select>\n\t</li>\n";
-		    unset($sel_showxq,$set_showxq);
-		    break;
-	    };
-
-
-            // Show {GROUPNAME} and/or {GROUPDESCRIPTION} block
-	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n\t\t".'<input type="hidden" name="showgroupinfo" id="showgroupinfo" value="';
-            $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="';
-	    switch($showgroupinfo)
-	    {
-		case 'both':
-		    $editsurvey .= $show_dis_pre.'B'.$show_dis_mid.$clang->gT('Show both (Forced by the system administrator)').$show_dis_post;
-		    break;
-		case 'name':
-		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('Show group name only (Forced by the system administrator)').$show_dis_post;
-		    break;
-		case 'description':
-		    $editsurvey .= $show_dis_pre.'D'.$show_dis_mid.$clang->gT('Show group description only (Forced by the system administrator)').$show_dis_post;
-		    break;
-		case 'none':
-		    $editsurvey .= $show_dis_pre.'X'.$show_dis_mid.$clang->gT('Hide both (Forced by the system administrator)').$show_dis_post;
-		    break;
-	    	case 'choose':
-		default:
-		    $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
-		    if(isset($esrow['showgroupinfo']))
-		    {
-		    	$set_showgri = $esrow['showgroupinfo'];
-			$sel_showgri[$set_showgri] = ' selected="selected"';
-		    }
-		    if(empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']) )
-		    {
-		    	$sel_showgri['C'] = ' selected="selected"';
-		    };
-		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n\t\t"
-		    . "<select id=\"showgroupinfo\" name=\"showgroupinfo\">\n\t\t\t"
-		    . '<option value="B"'.$sel_showgri['B'].'>'.$clang->gT('Show both')."</option>\n\t\t\t"
-		    . '<option value="N"'.$sel_showgri['N'].'>'.$clang->gT('Show group name only')."</option>\n\t\t\t"
-		    . '<option value="D"'.$sel_showgri['D'].'>'.$clang->gT('Show group description only')."</option>\n\t\t\t"
-		    . '<option value="X"'.$sel_showgri['X'].'>'.$clang->gT('Hide both')."</option>\n\t\t"
-		    . "</select>\n\t</li>\n";
-		    unset($sel_showgri,$set_showgri);
-		    break;
-	    };
-
-
-
-            // Show {QUESTION_CODE} and/or {QUESTION_NUMBER} block
-	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n\t\t".'<input type="hidden" name="showqnumcode" id="showqnumcode" value="';
-            $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="';
-	    switch($showqnumcode)
-	    {
-		case 'none':
-		    $editsurvey .= $show_dis_pre.'X'.$show_dis_mid.$clang->gT('Hide both (Forced by the system administrator)').$show_dis_post;
-		    break;
-		case 'number':
-		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('Show question number only (Forced by the system administrator)').$show_dis_post;
-		    break;
-		case 'code':
-		    $editsurvey .= $show_dis_pre.'C'.$show_dis_mid.$clang->gT('Show question code only (Forced by the system administrator)').$show_dis_post;
-		    break;
-		case 'both':
-		    $editsurvey .= $show_dis_pre.'B'.$show_dis_mid.$clang->gT('Show both (Forced by the system administrator)').$show_dis_post;
-		    break;
-	    	case 'choose':
-		default:
-		    $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' );
-		    if(isset($esrow['showqnumcode']))
-		    {
-		    	$set_showqnc = $esrow['showqnumcode'];
-			$sel_showqnc[$set_showqnc] = ' selected="selected"';
-		    }
-		    if(empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X']) )
-		    {
-		    	$sel_showqnc['C'] = ' selected="selected"';
-		    };
-		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n\t\t"
-		    . "<select id=\"showqnumcode\" name=\"showqnumcode\">\n\t\t\t"
-		    . '<option value="B"'.$sel_showqnc['B'].'>'.$clang->gT('Show both')."</option>\n\t\t\t"
-		    . '<option value="N"'.$sel_showqnc['N'].'>'.$clang->gT('Show question number only')."</option>\n\t\t\t"
-		    . '<option value="C"'.$sel_showqnc['C'].'>'.$clang->gT('Show question Code only')."</option>\n\t\t\t"
-		    . '<option value="X"'.$sel_showqnc['X'].'>'.$clang->gT('Hide both')."</option>\n\t\t"
-		    . "</select>\n\t</li>\n";
-		    unset($sel_showqnc,$set_showqnc);
-		    break;
-	    };
-
-
-            // Show "No Answer" block
-	    $shownoanswer = isset($shownoanswer)?$shownoanswer:'Y';
-	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_shownoanswer\">".$clang->gT('Show no answer')."</label>\n\t\t".'<input type="hidden" name="shownoanswer" id="shownoanswer" value="';
-            $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="';
-	    switch($shownoanswer)
-	    {
-	    	case 0:
-		    $editsurvey .= $show_dis_pre.'N'.$show_dis_mid.$clang->gT('Off (Forced by the system administrator)').$show_dis_post;
-		    break;
-	        case 2:
-		    $sel_showno = array( 'Y' => '' , 'N' => '' );
-		    if(isset($esrow['shownoanswer']))
-		    {
-		    	$set_showno = $esrow['shownoanswer'];
-			$sel_showno[$set_showno] = ' selected="selected"';
-		    };
-		    if(empty($sel_showno))
-		    {
-		    	$sel_showno['Y'] = ' selected="selected"';
-		    };
-	    	    $editsurvey .= "\n\t<li>\n\t\t<label for=\"shownoanswer\">".$clang->gT('Show No Answer')."</label>\n\t\t"
-		    . "<select id=\"shownoanswer\" name=\"shownoanswer\">\n\t\t\t"
-		    . '<option value="Y"'.$sel_showno['Y'].'>'.$clang->gT('Yes')."</option>\n\t\t\t"
-		    . '<option value="N"'.$sel_showno['N'].'>'.$clang->gT('No')."</option>\n\t\t"
-		    . "</select>\n\t</li>\n";
-		    break;
-		default:
-		    $editsurvey .= $show_dis_pre.'Y'.$show_dis_mid.$clang->gT('On (Forced by the system administrator)').$show_dis_post;
-		    break;
-	    };
-
-
-
-            // End Presention and navigation TAB
-            $editsurvey .= "</ul></div>\n";
-
-            // Publication and access control TAB
-            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Publication & Access control")."</h2><ul>\n";
-
-
-
-            /* Token access
-             $editsurvey .= "<li><label for='usetokens'>".$clang->gT("Only users with tokens may enter the survey?")."</label>\n"
-             . "<select id='usetokens' name='usetokens'>\n"
-             . "<option value='Y'";
-             if ($esrow['usetokens'] == "Y") {$editsurvey .= " selected='selected'";}
-             $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-             . "<option value='N'";
-             if ($esrow['usetokens'] != "Y") {$editsurvey .= " selected='selected'";}
-             $editsurvey .= ">".$clang->gT("No")."</option>\n"
-             . "</select></li>\n"; */
-
-
-             //Public Surveys
-            $editsurvey .= "<li><label for='public'>".$clang->gT("List survey publicly:")."</label>\n"
-            . "<select id='public' name='public'>\n"
-            . "<option value='Y'";
-            if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (isset($esrow['listpublic']) && $esrow['listpublic'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select>\n"
-            . "</li>\n";
-
-
-
-
-            //Set token length
-            $editsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
-            . "<input type='text' value=\"{$esrow['tokenlength']}\" name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />\n"
-            . "</li>\n";
-
-            // Self registration
-            $editsurvey .= "<li><label for='allowregister'>".$clang->gT("Allow public registration?")."</label>\n"
-            . "<select id='allowregister' name='allowregister'>\n"
-            . "<option value='Y'";
-            if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
-
-
-
-            // Start date
-            $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-            $startdate='';
-            if (trim($esrow['startdate'])!= '')
-            {
-                $datetimeobj = new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-                $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-            }
-
-            $editsurvey .= "<li><label for='startdate'>".$clang->gT("Start date/time:")."</label>\n"
-            . "<input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
-
-            // Expiration date
-            $expires='';
-            if (trim($esrow['expires'])!= '')
-            {
-                $datetimeobj = new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
-                $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-            }
-            $editsurvey .="<li><label for='expires'>".$clang->gT("Expiry date/time:")."</label>\n"
-            . "<input type='text' class='popupdatetime' id='expires' size='20' name='expires' value=\"{$expires}\" /></li>\n";
-            //COOKIES
-            $editsurvey .= "<li><label for=''>".$clang->gT("Set cookie to prevent repeated participation?")."</label>\n"
-            . "<select name='usecookie'>\n"
-            . "<option value='Y'";
-            if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['usecookie'] != "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select>\n"
-            . "</li>\n";
-
-
-            // Use Captcha
-            $editsurvey .= "<li><label for=''>".$clang->gT("Use CAPTCHA for").":</label>\n"
-            . "<select name='usecaptcha'>\n"
-            . "<option value='A'";
-            if ($esrow['usecaptcha'] == "A") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Survey Access")." / ".$clang->gT("Registration")." / ".$clang->gT("Save & Load")."</option>\n"
-            . "<option value='B'";
-            if ($esrow['usecaptcha'] == "B") {$editsurvey .= " selected='selected'";}
-
-            $editsurvey .= ">".$clang->gT("Survey Access")." / ".$clang->gT("Registration")." / ---------</option>\n"
-            . "<option value='C'";
-            if ($esrow['usecaptcha'] == "C") {$editsurvey .= " selected='selected'";}
-
-            $editsurvey .= ">".$clang->gT("Survey Access")." / ------------ / ".$clang->gT("Save & Load")."</option>\n"
-            . "<option value='D'";
-            if ($esrow['usecaptcha'] == "D") {$editsurvey .= " selected='selected'";}
-
-            $editsurvey .= ">------------- / ".$clang->gT("Registration")." / ".$clang->gT("Save & Load")."</option>\n"
-            . "<option value='X'";
-
-            if ($esrow['usecaptcha'] == "X") {$editsurvey .= " selected='selected'";}
-
-            $editsurvey .= ">".$clang->gT("Survey Access")." / ------------ / ---------</option>\n"
-            . "<option value='R'";
-            if ($esrow['usecaptcha'] == "R") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">------------- / ".$clang->gT("Registration")." / ---------</option>\n"
-            . "<option value='S'";
-            if ($esrow['usecaptcha'] == "S") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">------------- / ------------ / ".$clang->gT("Save & Load")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['usecaptcha'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">------------- / ------------ / ---------</option>\n"
-
-            . "</select>\n</li>\n";
-
-            // Email format
-            $editsurvey .= "<li><label for=''>".$clang->gT("Use HTML format for token emails?")."</label>\n"
-            . "<select name='htmlemail' onchange=\"alert('".$clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js")."');\">\n"
-            . "<option value='Y'";
-            if ($esrow['htmlemail'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['htmlemail'] == "N") {$editsurvey .= " selected='selected'";}
-
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
-
-            // End Publication and access control TAB
-            $editsurvey .= "</ul></div>\n";
-
-            // Notification and Data management TAB
-            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Notification & Data Management")."</h2><ul>\n";
-
-
-            //NOTIFICATION
-            $editsurvey .= "<li><label for=''>".$clang->gT("Admin Notification:")."</label>\n"
-            . "<select name='notification'>\n"
-            . getNotificationlist($esrow['notification'])
-            . "</select>\n"
-            . "</li>\n";
-
-            //EMAIL SURVEY RESPONSES TO
-            $editsurvey .= "<li><label for=''>".$clang->gT("Email responses to:")."</label>\n"
-            . "<input type='text' value=\"{$esrow['emailresponseto']}\" name='emailresponseto' />\n"
-            . "</li>\n";
-
-            //ANONYMOUS
-            $editsurvey .= "<li><label for=''>".$clang->gT("Anonymous answers?")."\n";
-            // warning message if anonymous + tokens used
-            $editsurvey .= "\n"
-            . "<script type=\"text/javascript\"><!-- \n"
-            . "function alertPrivacy()\n"
-            . "{\n"
-            . "if (document.getElementById('tokenanswerspersistence').value == 'Y')\n"
-            . "{\n"
-            . "alert('".$clang->gT("You can't use Anonymous answers when Token-based answers persistence is enabled.","js")."');\n"
-            . "document.getElementById('private').value = 'N';\n"
-            . "}\n"
-            . "else if (document.getElementById('private').value == 'Y')\n"
-            . "{\n"
-            . "alert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
-            . "}\n"
-            . "}"
-            . "//--></script></label>\n";
-
-            if ($esrow['active'] == "Y")
-            {
-                $editsurvey .= "\n";
-                if ($esrow['private'] == "N") {$editsurvey .= " ".$clang->gT("This survey is NOT anonymous.");}
-                else {$editsurvey .= $clang->gT("Answers to this survey are anonymized.");}
-                $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
-                . "</font>\n";
-                $editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\" />\n";
-            }
-            else
-            {
-                $editsurvey .= "<select id='private' name='private' onchange='alertPrivacy();'>\n"
+        /*//SHOW WELCOMESCRN
+        $editsurvey .= "<li><label for='showwelcome'>" . $clang->gT("Show welcome screen?") . "</label>\n"
+                . "<select id='showwelcome' name='showwelcome'>\n"
                 . "<option value='Y'";
-                if ($esrow['private'] == "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+        if (!$esrow['showwelcome'] || $esrow['showwelcome'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
                 . "<option value='N'";
-                if ($esrow['private'] != "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("No")."</option>\n"
-                . "</select>\n";
-            }
-            $editsurvey .= "</li>\n";
+        if ($esrow['showwelcome'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>\n";
+        */
 
-            // date stamp
-            $editsurvey .= "<li><label for=''>".$clang->gT("Date Stamp?")."</label>\n";
-            if ($esrow['active'] == "Y")
-            {
-                $editsurvey .= "\n";
-                if ($esrow['datestamp'] != "Y") {$editsurvey .= " ".$clang->gT("Responses will not be date stamped.");}
-                else {$editsurvey .= $clang->gT("Responses will be date stamped.");}
-                $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
-                . "</font>\n";
-                $editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\" />\n";
-            }
-            else
-            {
-                $editsurvey .= "<select id='datestamp' name='datestamp' onchange='alertPrivacy();'>\n"
+        //ALLOW SAVES
+        $editsurvey .= "<li><label for='allowsave'>" . $clang->gT("Allow Saves?") . "</label>\n"
+                . "<select id='allowsave' name='allowsave'>\n"
                 . "<option value='Y'";
-                if ($esrow['datestamp'] == "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+        if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
                 . "<option value='N'";
-                if ($esrow['datestamp'] != "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("No")."</option>\n"
-                . "</select>\n";
-            }
-            $editsurvey .= "</li>\n";
+        if ($esrow['allowsave'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>\n";
 
-            // Ip Addr
-            $editsurvey .= "<li><label for=''>".$clang->gT("Save IP Address?")."</label>\n";
-
-            if ($esrow['active'] == "Y")
-            {
-                $editsurvey .= "\n";
-                if ($esrow['ipaddr'] != "Y") {$editsurvey .= " ".$clang->gT("Responses will not have the IP address logged.");}
-                else {$editsurvey .= $clang->gT("Responses will have the IP address logged");}
-                $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
-                . "</font>\n";
-                $editsurvey .= "<input type='hidden' name='ipaddr' value='".$esrow['ipaddr']."' />\n";
-            }
-            else
-            {
-                $editsurvey .= "<select name='ipaddr'>\n"
+        //Show Prev Button
+        $editsurvey .= "<li><label for='allowprev'>" . $clang->gT("Show [<< Prev] button") . "</label>\n"
+                . "<select id='allowprev' name='allowprev'>\n"
                 . "<option value='Y'";
-                if ($esrow['ipaddr'] == "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+        if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
                 . "<option value='N'";
-                if ($esrow['ipaddr'] != "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("No")."</option>\n"
-                . "</select>\n";
-            }
+        if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>\n";
 
-            $editsurvey .= "</li>\n";
-
-            // begin REF URL Block
-            $editsurvey .= "<li><label for=''>".$clang->gT("Save Referring URL?")."</label>\n";
-
-            if ($esrow['active'] == "Y")
-            {
-                $editsurvey .= "\n";
-                if ($esrow['refurl'] != "Y") {$editsurvey .= " ".$clang->gT("Responses will not have their referring URL logged.");}
-                else {$editsurvey .= $clang->gT("Responses will have their referring URL logged.");}
-                $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
-                . "</font>\n";
-                $editsurvey .= "<input type='hidden' name='refurl' value='".$esrow['refurl']."' />\n";
-            }
-            else
-            {
-                $editsurvey .= "<select name='refurl'>\n"
+        //Result printing
+        $editsurvey .= "<li><label for='printanswers'>" . $clang->gT("Participants may print answers?") . "</label>\n"
+                . "<select id='printanswers' name='printanswers'>\n"
                 . "<option value='Y'";
-                if ($esrow['refurl'] == "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+        if (!isset($esrow['printanswers']) || !$esrow['printanswers'] || $esrow['printanswers'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
                 . "<option value='N'";
-                if ($esrow['refurl'] != "Y") {$editsurvey .= " selected='selected'";}
-                $editsurvey .= ">".$clang->gT("No")."</option>\n"
-                . "</select>\n";
+        if (isset($esrow['printanswers']) && $esrow['printanswers'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select>\n"
+                . "</li>\n";
+
+        //Public statistics
+        $editsurvey .= "<li><label for='publicstatistics'>" . $clang->gT("Public statistics?") . "</label>\n"
+                . "<select id='publicstatistics' name='publicstatistics'>\n"
+                . "<option value='Y'";
+        if (!isset($esrow['publicstatistics']) || !$esrow['publicstatistics'] || $esrow['publicstatistics'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if (isset($esrow['publicstatistics']) && $esrow['publicstatistics'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select>\n"
+                . "</li>\n";
+
+        //Public statistics
+        $editsurvey .= "<li><label for='publicgraphs'>" . $clang->gT("Show graphs in public statistics?") . "</label>\n"
+                . "<select id='publicgraphs' name='publicgraphs'>\n"
+                . "<option value='Y'";
+        if (!isset($esrow['publicgraphs']) || !$esrow['publicgraphs'] || $esrow['publicgraphs'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if (isset($esrow['publicgraphs']) && $esrow['publicgraphs'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select>\n"
+                . "</li>\n";
+
+
+        // End URL block
+        $editsurvey .= "<li><label for='autoredirect'>" . $clang->gT("Automatically load URL when survey complete?") . "</label>\n"
+                . "<select id='autoredirect' name='autoredirect'>";
+        $editsurvey .= "<option value='Y'";
+        if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n";
+        $editsurvey .= "<option value='N'";
+        if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>";
+
+        // Show {THEREAREXQUESTIONS} block
+        $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showXquestions\">" . $clang->gT('Show "There are X questions in this survey"') . "</label>\n\t\t" . '<input type="hidden" name="showXquestions" id="" value="';
+        $show_dis_mid = "\" />\n\t\t" . '<input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="';
+        $show_dis_post = "\" size=\"70\" />\n\t</li>\n";
+        switch ($showXquestions) {
+            case 'show':
+                $editsurvey .= $show_dis_pre . 'Y' . $show_dis_mid . $clang->gT('Yes (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'hide':
+                $editsurvey .= $show_dis_pre . 'N' . $show_dis_mid . $clang->gT('No (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'choose':
+            default:
+                $sel_showxq = array('Y' => '', 'N' => '');
+                if (isset($esrow['showXquestions'])) {
+                    $set_showxq = $esrow['showXquestions'];
+                    $sel_showxq[$set_showxq] = ' selected="selected"';
+                }
+                if (empty($sel_showxq['Y']) && empty($sel_showxq['N'])) {
+                    $sel_showxq['Y'] = ' selected="selected"';
+                };
+                $editsurvey .= "\n\t<li>\n\t\t<label for=\"showXquestions\">" . $clang->gT('Show "There are X questions in this survey"') . "</label>\n\t\t"
+                        . "<select id=\"showXquestions\" name=\"showXquestions\">\n\t\t\t"
+                        . '<option value="Y"' . $sel_showxq['Y'] . '>' . $clang->gT('Yes') . "</option>\n\t\t\t"
+                        . '<option value="N"' . $sel_showxq['N'] . '>' . $clang->gT('No') . "</option>\n\t\t"
+                        . "</select>\n\t</li>\n";
+                unset($sel_showxq, $set_showxq);
+                break;
+        };
+
+        // Show {GROUPNAME} and/or {GROUPDESCRIPTION} block
+        $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showgroupinfo\">" . $clang->gT('Show Group Name and/or Group Description') . "</label>\n\t\t" . '<input type="hidden" name="showgroupinfo" id="showgroupinfo" value="';
+        $show_dis_mid = "\" />\n\t\t" . '<input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="';
+        switch ($showgroupinfo) {
+            case 'both':
+                $editsurvey .= $show_dis_pre . 'B' . $show_dis_mid . $clang->gT('Show both (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'name':
+                $editsurvey .= $show_dis_pre . 'N' . $show_dis_mid . $clang->gT('Show group name only (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'description':
+                $editsurvey .= $show_dis_pre . 'D' . $show_dis_mid . $clang->gT('Show group description only (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'none':
+                $editsurvey .= $show_dis_pre . 'X' . $show_dis_mid . $clang->gT('Hide both (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'choose':
+            default:
+                $sel_showgri = array('B' => '', 'D' => '', 'N' => '', 'X' => '');
+                if (isset($esrow['showgroupinfo'])) {
+                    $set_showgri = $esrow['showgroupinfo'];
+                    $sel_showgri[$set_showgri] = ' selected="selected"';
+                }
+                if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X'])) {
+                    $sel_showgri['C'] = ' selected="selected"';
+                };
+                $editsurvey .= "\n\t<li>\n\t\t<label for=\"showgroupinfo\">" . $clang->gT('Show Group Name and/or Group Description') . "</label>\n\t\t"
+                        . "<select id=\"showgroupinfo\" name=\"showgroupinfo\">\n\t\t\t"
+                        . '<option value="B"' . $sel_showgri['B'] . '>' . $clang->gT('Show both') . "</option>\n\t\t\t"
+                        . '<option value="N"' . $sel_showgri['N'] . '>' . $clang->gT('Show group name only') . "</option>\n\t\t\t"
+                        . '<option value="D"' . $sel_showgri['D'] . '>' . $clang->gT('Show group description only') . "</option>\n\t\t\t"
+                        . '<option value="X"' . $sel_showgri['X'] . '>' . $clang->gT('Hide both') . "</option>\n\t\t"
+                        . "</select>\n\t</li>\n";
+                unset($sel_showgri, $set_showgri);
+                break;
+        };
+
+        // Show {QUESTION_CODE} and/or {QUESTION_NUMBER} block
+        $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showqnumcode\">" . $clang->gT('Show Question Number and/or Question Code') . "</label>\n\t\t" . '<input type="hidden" name="showqnumcode" id="showqnumcode" value="';
+        $show_dis_mid = "\" />\n\t\t" . '<input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="';
+        switch ($showqnumcode) {
+            case 'none':
+                $editsurvey .= $show_dis_pre . 'X' . $show_dis_mid . $clang->gT('Hide both (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'number':
+                $editsurvey .= $show_dis_pre . 'N' . $show_dis_mid . $clang->gT('Show question number only (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'code':
+                $editsurvey .= $show_dis_pre . 'C' . $show_dis_mid . $clang->gT('Show question code only (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'both':
+                $editsurvey .= $show_dis_pre . 'B' . $show_dis_mid . $clang->gT('Show both (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 'choose':
+            default:
+                $sel_showqnc = array('B' => '', 'C' => '', 'N' => '', 'X' => '');
+                if (isset($esrow['showqnumcode'])) {
+                    $set_showqnc = $esrow['showqnumcode'];
+                    $sel_showqnc[$set_showqnc] = ' selected="selected"';
+                }
+                if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
+                    $sel_showqnc['C'] = ' selected="selected"';
+                };
+                $editsurvey .= "\n\t<li>\n\t\t<label for=\"showqnumcode\">" . $clang->gT('Show Question Number and/or Question Code') . "</label>\n\t\t"
+                        . "<select id=\"showqnumcode\" name=\"showqnumcode\">\n\t\t\t"
+                        . '<option value="B"' . $sel_showqnc['B'] . '>' . $clang->gT('Show both') . "</option>\n\t\t\t"
+                        . '<option value="N"' . $sel_showqnc['N'] . '>' . $clang->gT('Show question number only') . "</option>\n\t\t\t"
+                        . '<option value="C"' . $sel_showqnc['C'] . '>' . $clang->gT('Show question Code only') . "</option>\n\t\t\t"
+                        . '<option value="X"' . $sel_showqnc['X'] . '>' . $clang->gT('Hide both') . "</option>\n\t\t"
+                        . "</select>\n\t</li>\n";
+                unset($sel_showqnc, $set_showqnc);
+                break;
+        };
+
+        // Show "No Answer" block
+        $shownoanswer = isset($shownoanswer) ? $shownoanswer : 'Y';
+        $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_shownoanswer\">" . $clang->gT('Show no answer') . "</label>\n\t\t" . '<input type="hidden" name="shownoanswer" id="shownoanswer" value="';
+        $show_dis_mid = "\" />\n\t\t" . '<input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="';
+        switch ($shownoanswer) {
+            case 0:
+                $editsurvey .= $show_dis_pre . 'N' . $show_dis_mid . $clang->gT('Off (Forced by the system administrator)') . $show_dis_post;
+                break;
+            case 2:
+                $sel_showno = array('Y' => '', 'N' => '');
+                if (isset($esrow['shownoanswer'])) {
+                    $set_showno = $esrow['shownoanswer'];
+                    $sel_showno[$set_showno] = ' selected="selected"';
+                };
+                if (empty($sel_showno)) {
+                    $sel_showno['Y'] = ' selected="selected"';
+                };
+                $editsurvey .= "\n\t<li>\n\t\t<label for=\"shownoanswer\">" . $clang->gT('Show No Answer') . "</label>\n\t\t"
+                        . "<select id=\"shownoanswer\" name=\"shownoanswer\">\n\t\t\t"
+                        . '<option value="Y"' . $sel_showno['Y'] . '>' . $clang->gT('Yes') . "</option>\n\t\t\t"
+                        . '<option value="N"' . $sel_showno['N'] . '>' . $clang->gT('No') . "</option>\n\t\t"
+                        . "</select>\n\t</li>\n";
+                break;
+            default:
+                $editsurvey .= $show_dis_pre . 'Y' . $show_dis_mid . $clang->gT('On (Forced by the system administrator)') . $show_dis_post;
+                break;
+        };
+
+        // End Presention and navigation TAB
+        $editsurvey .= "</ul></div>\n";
+
+        // Publication and access control TAB
+        $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("Publication & Access control") . "</h2><ul>\n";
+
+        //Public Surveys
+        $editsurvey .= "<li><label for='public'>" . $clang->gT("List survey publicly:") . "</label>\n"
+                . "<select id='public' name='public'>\n"
+                . "<option value='Y'";
+        if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if (isset($esrow['listpublic']) && $esrow['listpublic'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select>\n"
+                . "</li>\n";
+
+        //Set token length
+        $editsurvey .= "<li><label for='tokenlength'>" . $clang->gT("Set token length to:") . "</label>\n"
+                . "<input type='text' value=\"{$esrow['tokenlength']}\" name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />\n"
+                . "</li>\n";
+
+        // Self registration
+        $editsurvey .= "<li><label for='allowregister'>" . $clang->gT("Allow public registration?") . "</label>\n"
+                . "<select id='allowregister' name='allowregister'>\n"
+                . "<option value='Y'";
+        if ($esrow['allowregister'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if ($esrow['allowregister'] != "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>\n";
+
+        // Start date
+        $dateformatdetails = getDateFormatData($_SESSION['dateformat']);
+        $startdate = '';
+        if (trim($esrow['startdate']) != '') {
+            $datetimeobj = new Date_Time_Converter($esrow['startdate'], "Y-m-d H:i:s");
+            $startdate = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+        }
+
+        $editsurvey .= "<li><label for='startdate'>" . $clang->gT("Start date/time:") . "</label>\n"
+                . "<input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
+
+        // Expiration date
+        $expires = '';
+        if (trim($esrow['expires']) != '') {
+            $datetimeobj = new Date_Time_Converter($esrow['expires'], "Y-m-d H:i:s");
+            $expires = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+        }
+        $editsurvey .="<li><label for='expires'>" . $clang->gT("Expiry date/time:") . "</label>\n"
+                . "<input type='text' class='popupdatetime' id='expires' size='20' name='expires' value=\"{$expires}\" /></li>\n";
+
+        //COOKIES
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Set cookie to prevent repeated participation?") . "</label>\n"
+                . "<select name='usecookie'>\n"
+                . "<option value='Y'";
+        if ($esrow['usecookie'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if ($esrow['usecookie'] != "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select>\n"
+                . "</li>\n";
+
+        // Use Captcha
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Use CAPTCHA for") . ":</label>\n"
+                . "<select name='usecaptcha'>\n"
+                . "<option value='A'";
+        if ($esrow['usecaptcha'] == "A") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Survey Access") . " / " . $clang->gT("Registration") . " / " . $clang->gT("Save & Load") . "</option>\n"
+                . "<option value='B'";
+        if ($esrow['usecaptcha'] == "B") {
+            $editsurvey .= " selected='selected'";
+        }
+
+        $editsurvey .= ">" . $clang->gT("Survey Access") . " / " . $clang->gT("Registration") . " / ---------</option>\n"
+                . "<option value='C'";
+        if ($esrow['usecaptcha'] == "C") {
+            $editsurvey .= " selected='selected'";
+        }
+
+        $editsurvey .= ">" . $clang->gT("Survey Access") . " / ------------ / " . $clang->gT("Save & Load") . "</option>\n"
+                . "<option value='D'";
+        if ($esrow['usecaptcha'] == "D") {
+            $editsurvey .= " selected='selected'";
+        }
+
+        $editsurvey .= ">------------- / " . $clang->gT("Registration") . " / " . $clang->gT("Save & Load") . "</option>\n"
+                . "<option value='X'";
+
+        if ($esrow['usecaptcha'] == "X") {
+            $editsurvey .= " selected='selected'";
+        }
+
+        $editsurvey .= ">" . $clang->gT("Survey Access") . " / ------------ / ---------</option>\n"
+                . "<option value='R'";
+        if ($esrow['usecaptcha'] == "R") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">------------- / " . $clang->gT("Registration") . " / ---------</option>\n"
+                . "<option value='S'";
+        if ($esrow['usecaptcha'] == "S") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">------------- / ------------ / " . $clang->gT("Save & Load") . "</option>\n"
+                . "<option value='N'";
+        if ($esrow['usecaptcha'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">------------- / ------------ / ---------</option>\n"
+                . "</select>\n</li>\n";
+
+        // Email format
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Use HTML format for token emails?") . "</label>\n"
+                . "<select name='htmlemail' onchange=\"alert('" . $clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format", "js") . "');\">\n"
+                . "<option value='Y'";
+        if ($esrow['htmlemail'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if ($esrow['htmlemail'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>\n";
+
+        // End Publication and access control TAB
+        $editsurvey .= "</ul></div>\n";
+
+        // Notification and Data management TAB
+        $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("Notification & Data Management") . "</h2><ul>\n";
+
+
+        //NOTIFICATION
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Admin Notification:") . "</label>\n"
+                . "<select name='notification'>\n"
+                . getNotificationlist($esrow['notification'])
+                . "</select>\n"
+                . "</li>\n";
+
+        //EMAIL SURVEY RESPONSES TO
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Email responses to:") . "</label>\n"
+                . "<input type='text' value=\"{$esrow['emailresponseto']}\" name='emailresponseto' />\n"
+                . "</li>\n";
+
+        //ANONYMOUS
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Anonymous answers?") . "\n";
+        // warning message if anonymous + tokens used
+        $editsurvey .= "\n"
+                . "<script type=\"text/javascript\"><!-- \n"
+                . "function alertPrivacy()\n"
+                . "{\n"
+                . "if (document.getElementById('tokenanswerspersistence').value == 'Y')\n"
+                . "{\n"
+                . "alert('" . $clang->gT("You can't use Anonymous answers when Token-based answers persistence is enabled.", "js") . "');\n"
+                . "document.getElementById('private').value = 'N';\n"
+                . "}\n"
+                . "else if (document.getElementById('private').value == 'Y')\n"
+                . "{\n"
+                . "alert('" . $clang->gT("Warning") . ": " . $clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.", "js") . "');\n"
+                . "}\n"
+                . "}"
+                . "//--></script></label>\n";
+
+        if ($esrow['active'] == "Y") {
+            $editsurvey .= "\n";
+            if ($esrow['private'] == "N") {
+                $editsurvey .= " " . $clang->gT("This survey is NOT anonymous.");
+            } else {
+                $editsurvey .= $clang->gT("Answers to this survey are anonymized.");
             }
-            $editsurvey .= "</li>\n";
-            // BENBUN - END REF URL Block
+            $editsurvey .= "<font size='1' color='red'>&nbsp;(" . $clang->gT("Cannot be changed") . ")\n"
+                    . "</font>\n";
+            $editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\" />\n";
+        } else {
+            $editsurvey .= "<select id='private' name='private' onchange='alertPrivacy();'>\n"
+                    . "<option value='Y'";
+            if ($esrow['private'] == "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                    . "<option value='N'";
+            if ($esrow['private'] != "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                    . "</select>\n";
+        }
+        $editsurvey .= "</li>\n";
 
-            // Token answers persistence
-            $editsurvey .= "<li><label for=''>".$clang->gT("Enable token-based response persistence?")."</label>\n"
-            . "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n"
-            . "<option value='Y'";
-            if ($esrow['tokenanswerspersistence'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['tokenanswerspersistence'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
+        // date stamp
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Date Stamp?") . "</label>\n";
+        if ($esrow['active'] == "Y") {
+            $editsurvey .= "\n";
+            if ($esrow['datestamp'] != "Y") {
+                $editsurvey .= " " . $clang->gT("Responses will not be date stamped.");
+            } else {
+                $editsurvey .= $clang->gT("Responses will be date stamped.");
+            }
+            $editsurvey .= "<font size='1' color='red'>&nbsp;(" . $clang->gT("Cannot be changed") . ")\n"
+                    . "</font>\n";
+            $editsurvey .= "<input type='hidden' name='datestamp' value=\"{$esrow['datestamp']}\" />\n";
+        } else {
+            $editsurvey .= "<select id='datestamp' name='datestamp' onchange='alertPrivacy();'>\n"
+                    . "<option value='Y'";
+            if ($esrow['datestamp'] == "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                    . "<option value='N'";
+            if ($esrow['datestamp'] != "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                    . "</select>\n";
+        }
+        $editsurvey .= "</li>\n";
 
-            // Enable assessments
-            $editsurvey .= "<li><label for=''>".$clang->gT("Enable assessment mode?")."</label>\n"
-            . "<select id='assessments' name='assessments'>\n"
-            . "<option value='Y'";
-            if ($esrow['assessments'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['assessments'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
+        // Ip Addr
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Save IP Address?") . "</label>\n";
 
+        if ($esrow['active'] == "Y") {
+            $editsurvey .= "\n";
+            if ($esrow['ipaddr'] != "Y") {
+                $editsurvey .= " " . $clang->gT("Responses will not have the IP address logged.");
+            } else {
+                $editsurvey .= $clang->gT("Responses will have the IP address logged");
+            }
+            $editsurvey .= "<font size='1' color='red'>&nbsp;(" . $clang->gT("Cannot be changed") . ")\n"
+                    . "</font>\n";
+            $editsurvey .= "<input type='hidden' name='ipaddr' value='" . $esrow['ipaddr'] . "' />\n";
+        } else {
+            $editsurvey .= "<select name='ipaddr'>\n"
+                    . "<option value='Y'";
+            if ($esrow['ipaddr'] == "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                    . "<option value='N'";
+            if ($esrow['ipaddr'] != "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                    . "</select>\n";
+        }
 
+        $editsurvey .= "</li>\n";
 
-            // End Notification and Data management TAB
-            $editsurvey .= "</ul></div>\n";
+        // begin REF URL Block
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Save Referring URL?") . "</label>\n";
 
-            // Ending First TABs Form
-            $editsurvey .= ""
-            . "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
-            . "<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
-            . "<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
-            . "<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
-            ."</form>";
+        if ($esrow['active'] == "Y") {
+            $editsurvey .= "\n";
+            if ($esrow['refurl'] != "Y") {
+                $editsurvey .= " " . $clang->gT("Responses will not have their referring URL logged.");
+            } else {
+                $editsurvey .= $clang->gT("Responses will have their referring URL logged.");
+            }
+            $editsurvey .= "<font size='1' color='red'>&nbsp;(" . $clang->gT("Cannot be changed") . ")\n"
+                    . "</font>\n";
+            $editsurvey .= "<input type='hidden' name='refurl' value='" . $esrow['refurl'] . "' />\n";
+        } else {
+            $editsurvey .= "<select name='refurl'>\n"
+                    . "<option value='Y'";
+            if ($esrow['refurl'] == "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                    . "<option value='N'";
+            if ($esrow['refurl'] != "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+            $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                    . "</select>\n";
+        }
+        $editsurvey .= "</li>\n";
+        // BENBUN - END REF URL Block
+        // Token answers persistence
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Enable token-based response persistence?") . "</label>\n"
+                . "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('" . $clang->gT("This option can't be set if Anonymous answers are used", "js") . "'); this.value='N';}\">\n"
+                . "<option value='Y'";
+        if ($esrow['tokenanswerspersistence'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if ($esrow['tokenanswerspersistence'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>\n";
 
+        // Enable assessments
+        $editsurvey .= "<li><label for=''>" . $clang->gT("Enable assessment mode?") . "</label>\n"
+                . "<select id='assessments' name='assessments'>\n"
+                . "<option value='Y'";
+        if ($esrow['assessments'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("Yes") . "</option>\n"
+                . "<option value='N'";
+        if ($esrow['assessments'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
+                . "</select></li>\n";
 
+        // End Notification and Data management TAB
+        $editsurvey .= "</ul></div>\n";
+
+        // Ending First TABs Form
+        if ($action == "newsurvey") {
+            $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='insertnewsurvey' />\n";
+        } elseif ($action == "editsurveysettings") {
+        $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
+                ."<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
+                . "<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
+                . "<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n";
+        }
+        $editsurvey .= "</form>";
+
+        if ($action == "newsurvey" ) {
+            // Import TAB
+            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("Import survey") . "</h2>\n";
+
+            // Import Survey
+            $editsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"" . $clang->gT('Please select a file to import!', 'js') . "\");'>\n"
+                    . "<ul>\n"
+                    . "<li><label for='the_file'>" . $clang->gT("Select survey structure file (*.lss, *.csv):") . "</label>\n"
+                    . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"
+                    . "<li><label for='translinksfields'>" . $clang->gT("Convert resource links and INSERTANS fields?") . "</label>\n"
+                    . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked='checked'/></li></ul>\n"
+                    . "<p><input type='submit' value='" . $clang->gT("Import survey") . "' />\n"
+                    . "<input type='hidden' name='action' value='importsurvey' /></p></form>\n";
+
+            // End Import TAB
+            $editsurvey .= "</div>\n";
+
+            // Copy survey TAB
+            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("Copy survey") . "</h2>\n";
+
+            // Copy survey
+            $editsurvey .= "<form class='form30' action='$scriptname' id='copysurveyform' method='post'>\n"
+                    . "<ul>\n"
+                    . "<li><label for='copysurveylist'><span class='annotationasterisk'>*</span>" . $clang->gT("Select survey to copy:") . "</label>\n"
+                    . "<select id='copysurveylist' name='copysurveylist'>\n"
+                    . getsurveylist(false, true) . "</select> <span class='annotation'>" . $clang->gT("*Required") . "</span></li>\n"
+                    . "<li><label for='copysurveyname'><span class='annotationasterisk'>*</span>" . $clang->gT("New survey title:") . "</label>\n"
+                    . "<input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' />"
+                    . "<span class='annotation'>" . $clang->gT("*Required") . "</span></li>\n"
+                    . "<li><label for='copysurveytranslinksfields'>" . $clang->gT("Convert resource links and INSERTANS fields?") . "</label>\n"
+                    . "<input id='copysurveytranslinksfields' name=\"copysurveytranslinksfields\" type=\"checkbox\" checked='checked'/></li>\n"
+                    . "<li><label for='copysurveyexcludequotas'>" . $clang->gT("Exclude quotas?") . "</label>\n"
+                    . "<input id='copysurveyexcludequotas' name=\"copysurveyexcludequotas\" type=\"checkbox\" /></li>\n"
+                    . "<li><label for='copysurveyexcludeanswers'>" . $clang->gT("Exclude answers?") . "</label>\n"
+                    . "<input id='copysurveyexcludeanswers' name=\"copysurveyexcludeanswers\" type=\"checkbox\" /></li>\n"
+                    . "<li><label for='copysurveyresetconditions'>" . $clang->gT("Reset conditions?") . "</label>\n"
+                    . "<input id='copysurveyresetconditions' name=\"copysurveyresetconditions\" type=\"checkbox\" /></li></ul>\n"
+                    . "<p><input type='submit' value='" . $clang->gT("Copy survey") . "' />\n"
+                    . "<input type='hidden' name='action' value='copysurvey' /></p></form>\n";
+
+            // End Copy survey TAB
+            $editsurvey .= "</div>\n";
+        } elseif ($action = "editsurveysettings") {
             // TAB Uploaded Resources Management
-
-            $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
-            if (!function_exists("zip_open"))
-            {
-                $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
+            $ZIPimportAction = " onclick='if (validatefilename(this.form,\"" . $clang->gT('Please select a file to import!', 'js') . "\")) {this.form.submit();}'";
+            if (!function_exists("zip_open")) {
+                $ZIPimportAction = " onclick='alert(\"" . $clang->gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'";
             }
 
             $disabledIfNoResources = '';
-            if (hasResources($surveyid,'survey') === false)
-            {
+            if (hasResources($surveyid, 'survey') === false) {
                 $disabledIfNoResources = " disabled='disabled'";
             }
 
-            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-            . "<form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-            . "<input type='hidden' name='sid' value='$surveyid' />\n"
-            . "<input type='hidden' name='action' value='importsurveyresources' />\n"
-            . "<ul>\n"
-            . "<li><label>&nbsp;</label>\n"
-            . "<input type='button' onclick='window.open(\"$sFCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
-            . "<li><label>&nbsp;</label>\n"
-            . "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li>\n"
-            . "<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
-            . "<input id='the_file' name='the_file' type='file' size='50' /></li>\n"
-            . "<li><label>&nbsp;</label>\n"
-            . "<input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></li>\n"
-            . "</ul></form>\n";
+            $editsurvey .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT("Uploaded Resources Management") . "</h2>\n"
+                    . "<form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"" . $clang->gT('Please select a file to import!', 'js') . "\");'>\n"
+                    . "<input type='hidden' name='sid' value='$surveyid' />\n"
+                    . "<input type='hidden' name='action' value='importsurveyresources' />\n"
+                    . "<ul>\n"
+                    . "<li><label>&nbsp;</label>\n"
+                    . "<input type='button' onclick='window.open(\"$sFCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"" . $clang->gT("Browse Uploaded Resources") . "\" $disabledIfNoResources /></li>\n"
+                    . "<li><label>&nbsp;</label>\n"
+                    . "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"" . $clang->gT("Export Resources As ZIP Archive") . "\" $disabledIfNoResources /></li>\n"
+                    . "<li><label for='the_file'>" . $clang->gT("Select ZIP File:") . "</label>\n"
+                    . "<input id='the_file' name='the_file' type='file' size='50' /></li>\n"
+                    . "<li><label>&nbsp;</label>\n"
+                    . "<input type='button' value='" . $clang->gT("Import Resources ZIP Archive") . "' $ZIPimportAction /></li>\n"
+                    . "</ul></form>\n";
 
             // End TAB Uploaded Resources Management
             $editsurvey .= "</div>\n";
-
-            // End TAB pane
-            $editsurvey .= "</div>\n";
-
-
-            // The external button to sumbit Survey edit changes
-            $editsurvey .= "<p><button onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >".$clang->gT("Save")."</button></p>\n";
-            $editsurvey .= "<p><button onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"surveysettingsaction\").value = \"updatesurveysettingsandeditlocalesettings\"; document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >".$clang->gT("Save & edit survey text elements")." >></button></p>\n";
         }
 
-    }
-    else
-    {
-        include("access_denied.php");
-    }
+        // End TAB pane
+        $editsurvey .= "</div>\n";
 
+        // The external button to sumbit Survey edit changes
+        if ($action == "newsurvey") {
+            $cond = "if (isEmpty(document.getElementById(\"surveyls_title\"), \"" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "\"))";
+            $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
+        } elseif ($action == "editsurveysettings") {
+            $cond = "if (UpdateLanguageIDs(mylangs,\"" . $clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js") . "\"))";
+            $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
+            $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"surveysettingsaction\").value = \"updatesurveysettingsandeditlocalesettings\"; document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
+        }
+    }
 }
 
 if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsurveylocalesettings")  // Edit survey step 2  - editing language dependent settings
@@ -3297,392 +3522,6 @@ if($action == "quotas")
     include("quota.php");
 }
 
-// Show the screen to order groups
-
-if ($action == "newsurvey")
-{
-    if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
-    {
-        $js_admin_includes[]='scripts/surveysettings.js';
-        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-
-        $newsurvey = PrepareEditorScript();
-
-        // header
-        $newsurvey .= "<div class='header'>"
-        . "".$clang->gT("Create, import or copy survey")."</div>\n";
-
-        $newsurvey .="<script type=\"text/javascript\">
-                        standardtemplaterooturl='$standardtemplaterooturl';
-                        templaterooturl='$usertemplaterooturl'; \n";
-        $newsurvey .= "</script>\n";
-
-        // begin Tabs section
-        $newsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
-        $newsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
-
-        // General and Contact TAB
-        $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
-
-        // * Survey Language
-        $newsurvey .= "<ul><li><label for='language' title='".$clang->gT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey.")."'><span class='annotationasterisk'>*</span>".$clang->gT("Base Language:")."</label>\n"
-        . "<select id='language' name='language'>\n";
-
-
-        foreach (getLanguageData() as  $langkey2=>$langname)
-        {
-            $newsurvey .= "<option value='".$langkey2."'";
-            if ($defaultlang == $langkey2) {$newsurvey .= " selected='selected'";}
-            $newsurvey .= ">".$langname['description']."</option>\n";
-        }
-
-        //Use the current user details for the default administrator name and email for this survey
-        $query = "SELECT full_name, email FROM ".db_table_name('users')." WHERE users_name = ".db_quoteall($_SESSION['user']);
-        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-        $owner=$result->FetchRow();
-        //Degrade gracefully to $siteadmin details if anything is missing.
-        if(empty($owner['full_name'])) $owner['full_name']=$siteadminname;
-        if(empty($owner['email'])) $owner['email'] = $siteadminemail;
-
-        $newsurvey .= "</select><span class='annotation'> ".$clang->gT("*This setting cannot be changed later!")."</span></li>\n";
-
-        $newsurvey .= ""
-        . "<li><label for='surveyls_title'><span class='annotationasterisk'>*</span>".$clang->gT("Title").":</label>\n"
-        . "<input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /> <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
-        . "<li><label for='description'>".$clang->gT("Description:")."</label>\n"
-        . "<textarea cols='80' rows='10' id='description' name='description'></textarea>"
-        . getEditor("survey-desc","description", "[".$clang->gT("Description:", "js")."]",'','','',$action)
-        . "</li>\n"
-        . "<li><label for='welcome'>".$clang->gT("Welcome message:")."</label>\n"
-        . "<textarea cols='80' rows='10' id='welcome' name='welcome'></textarea>"
-        . getEditor("survey-welc","welcome", "[".$clang->gT("Welcome message:", "js")."]",'','','',$action)
-        . "</li>\n"
-        . "<li><label for='endtext'>".$clang->gT("End message:")."</label>\n"
-        . "<textarea cols='80' id='endtext' rows='10' name='endtext'></textarea>"
-        . getEditor("survey-endtext","endtext", "[".$clang->gT("End message:", "js")."]",'','','',$action)
-        . "</li>\n"
-        . "<li><label for='admin'>".$clang->gT("Administrator:")."</label>\n"
-        . "<input type='text' size='50' id='admin' name='admin' value='".$owner['full_name']."' /></li>\n"
-        . "<li><label for='adminemail'>".$clang->gT("Admin Email:")."</label>\n"
-        . "<input type='text' size='50' id='adminemail' name='adminemail' value='".$owner['email']."' /></li>\n"
-        . "<li><label for='bounce_email'>".$clang->gT("Bounce Email:")."</label>\n"
-        . "<input type='text' size='50' id='bounce_email' name='bounce_email' value='".$owner['email']."' /></li>\n";
-        $newsurvey .= "<li><label for='faxto'>".$clang->gT("Fax To:")."</label>\n"
-        . "<input type='text' size='50' id='faxto' name='faxto' /></li></ul>\n";
-
-        // End General TAB
-        // Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
-
-        $newsurvey .= "</div>\n";
-
-        // Presentation and navigation TAB
-        $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Presentation & Navigation")."</h2>\n";
-
-
-        $newsurvey .= "<ul><li><label for='format'>".$clang->gT("Format:")."</label>\n"
-        . "<select name='format' id='format'>\n"
-        . "<option value='S'>".$clang->gT("Question by Question")."</option>\n"
-        . "<option value='G' selected='selected'>".$clang->gT("Group by Group")."</option>\n"
-        . "<option value='A'>".$clang->gT("All in one")."</option>\n"
-        . "</select>\n"
-        . "</li>\n";
-        $newsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
-        . "<select id='template' name='template'>\n";
-		foreach (array_keys(gettemplatelist()) as $tname)
-        {
-
-            if ($_SESSION["loginID"] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )  {
-                $newsurvey .= "<option value='$tname'";
-                if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected='selected'";}
-                elseif ((!isset($esrow) || !$esrow['template']) && $tname == $defaulttemplate) {$newsurvey .= " selected='selected'";}
-                $newsurvey .= ">$tname</option>\n";
-            }
-
-        }
-        $newsurvey .= "</select>\n"
-        . "</li>\n"
-        . "<li><label for='preview'>".$clang->gT("Template Preview:")."</label>\n"
-        . "<img alt='".$clang->gT("Template Preview:")."' id='preview' src='$publicurl/templates/{$defaulttemplate}/preview.png' />\n"
-        . "</li>\n";
-
-        //ALLOW SAVES
-        $newsurvey .= "<li><label for='allowsave'>".$clang->gT("Allow Saves?")."</label>\n"
-        . "<select id='allowsave' name='allowsave'>\n"
-        . "<option value='Y'";
-        if (!isset($esrow['allowsave']) || !$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$newsurvey .= " selected='selected'";}
-        $newsurvey .= ">".$clang->gT("Yes")."</option>\n"
-        . "<option value='N'";
-        if (isset($esrow['allowsave']) && $esrow['allowsave'] == "N") {$newsurvey .= " selected='selected'";}
-        $newsurvey .= ">".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        //ALLOW PREV
-        $newsurvey .= "<li><label for='allowprev'>".$clang->gT("Show [<< Prev] button")."</label>\n"
-        . "<select id='allowprev' name='allowprev'>\n"
-        . "<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        //Result printing
-        $newsurvey .= "<li><label for='printanswers'>".$clang->gT("Participants may print answers?")."</label>\n"
-        . "<select id='printanswers' name='printanswers'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        //Public statistics
-        $newsurvey .= "<li><label for='publicstatistics'>".$clang->gT("Public statistics?")."</label>\n"
-        . "<select id='publicstatistics' name='publicstatistics'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        //Public statistics graphs
-        $newsurvey .= "<li><label for='publicgraphs'>".$clang->gT("Show graphs in public statistics?")."</label>\n"
-        . "<select id='publicgraphs' name='publicgraphs'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        //List survey publicly
-        $newsurvey .= "<li><label for='public'>".$clang->gT("List survey publicly:")."</label>\n"
-        . "<select id='public' name='public'>\n"
-        . "<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        // End URL
-        $newsurvey .= "<li><label for='url'>".$clang->gT("End URL:")."</label>\n"
-        . "<input type='text' size='50' id='url' name='url' value='http://";
-        $newsurvey .= "' /></li>\n";
-
-        // URL description
-        $newsurvey.= "<li><label for='urldescrip'>".$clang->gT("URL description:")."</label>\n"
-        . "<input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value='";
-        if (isset($esrow)) {$newsurvey .= $esrow['surveyls_urldescription'];}
-        $newsurvey .= "' /></li>\n";
-        $newsurvey .= "<li><label for='autoredirect'>".$clang->gT("Automatically load URL when survey complete?")."</label>\n"
-        . "<select name='autoredirect' id='autoredirect'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>"
-
-        //Default date format
-        . "<li><label for='dateformat'>".$clang->gT("Date format:")."</label>\n"
-        . "<select size='1' id='dateformat' name='dateformat'>\n";
-        foreach (getDateFormatData() as $index=>$dateformatdata)
-        {
-            $newsurvey.= "<option value='{$index}'";
-            $newsurvey.= ">".$dateformatdata['dateformat'].'</option>';
-        }
-        $newsurvey.= "</select></li></ul>";
-
-
-        // End Presention and navigation TAB
-        // Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
-        $newsurvey .= "</div>\n";
-
-        // Publication and access control TAB
-        $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Publication & Access control")."</h2><ul>\n";
-
-
-        // Use tokens
-        /*    $newsurvey .= "<li><label for='usetokens'>".$clang->gT("Only users with tokens may enter the survey?")."</label>\n"
-        . "<select id='usetokens' name='usetokens'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n"; */
-
-        // Set token length
-        $newsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
-        . "<input value='15' type='text' name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />"
-        . "</li>\n";
-
-        // Public registration
-        $newsurvey .= "<li><label for='allowregister'>".$clang->gT("Allow public registration?")."</label>\n"
-        . "<select id='allowregister' name='allowregister'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        // Timed Start
-        $newsurvey .= "<li><label for='startdate'>".$clang->gT("Start date:")."</label>\n"
-        . "<input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value='' />"
-        . "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'].' hh:nn')."</font></li>\n";
-
-        // Expiration
-        $newsurvey .= "<li><label for='enddate'>".$clang->gT("Expiry Date:")."</label>\n"
-        . "<input type='text' class='popupdatetime' id='enddate' size='20' name='expires' value='' />"
-        . "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'].' hh:nn')."</font></li>\n";
-
-        //COOKIES
-        $newsurvey .= "<li><label for='usecookie'>".$clang->gT("Set cookie to prevent repeated participation?")."</label>\n"
-        . "<select id='usecookie' name='usecookie'>\n"
-        . "<option value='Y'";
-        if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected='selected'";}
-        $newsurvey .= ">".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'";
-        $newsurvey .= ">".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-
-        // Use Captcha
-        $newsurvey .= "<li><label for='usecaptcha'>".$clang->gT("Use CAPTCHA for").":</label>\n"
-        . "<select id='usecaptcha' name='usecaptcha'>\n"
-        . "<option value='A'>".$clang->gT("Survey Access")." / ".$clang->gT("Registration")." / ".$clang->gT("Save & Load")."</option>\n"
-        . "<option value='B'>".$clang->gT("Survey Access")." / ".$clang->gT("Registration")." / ---------</option>\n"
-        . "<option value='C'>".$clang->gT("Survey Access")." / ------------ / ".$clang->gT("Save & Load")."</option>\n"
-        . "<option value='D' selected='selected'>------------- / ".$clang->gT("Registration")." / ".$clang->gT("Save & Load")."</option>\n"
-        . "<option value='X'>".$clang->gT("Survey Access")." / ------------ / ---------</option>\n"
-        . "<option value='R'>------------- / ".$clang->gT("Registration")." / ---------</option>\n"
-        . "<option value='S'>------------- / ------------ / ".$clang->gT("Save & Load")."</option>\n"
-        . "<option value='N'>------------- / ------------ / ---------</option>\n"
-        . "</select></li>\n";
-
-        // Email format
-        $newsurvey .= "<li><label for='htmlemail'>".$clang->gT("Use HTML format for token emails?")."</label>\n"
-        . "<select id='htmlemail' name='htmlemail'>\n"
-        . "<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N'>".$clang->gT("No")."</option>\n"
-        . "</select></li></ul>\n";
-
-        // End Publication and access control TAB
-        // Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
-        $newsurvey .= "</div>\n";
-
-        // Notification and Data management TAB
-        $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Notification & Data Management")."</h2><ul>\n";
-
-        //NOTIFICATIONS
-        $newsurvey .= "<li><label for='notification'>".$clang->gT("Admin Notification:")."</label>\n"
-        . "<select id='notification' name='notification'>\n"
-        . getNotificationlist(0)
-        . "</select></li>\n";
-
-        //EMAIL SURVEY RESPONSES TO
-        $newsurvey .= "<li><label for='emailresponseto'>".$clang->gT("Email responses to:")."</label>\n"
-        . "<input type='text' id='emailresponseto' name='emailresponseto' />\n"
-        . "</li>\n";
-
-        // ANONYMOUS
-        $newsurvey .= "<li><label for='private'>".$clang->gT("Anonymous answers?")."\n";
-        // warning message if anonymous + datestamped anwsers
-        $newsurvey .= "\n"
-        . "<script type=\"text/javascript\"><!-- \n"
-        . "function alertPrivacy()\n"
-        . "{"
-        . "if (document.getElementById('private').value == 'Y')\n"
-        . "{\n"
-        . "alert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
-        . "}\n"
-        . "}"
-        . "//--></script></label>\n";
-        $newsurvey .= "<select id='private' name='private' onchange='alertPrivacy();'>\n"
-        . "<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        // Datestamp
-        $newsurvey .= "<li><label for='datestamp'>".$clang->gT("Date Stamp?")."</label>\n"
-        . "<select id='datestamp' name='datestamp' onchange='alertPrivacy();'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        // IP Address
-        $newsurvey .= "<li><label for='ipaddr'>".$clang->gT("Save IP Address?")."</label>\n"
-        . "<select id='ipaddr' name='ipaddr'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        // Referring URL
-        $newsurvey .= "<li><label for='refurl'>".$clang->gT("Save Referring URL?")."</label>\n"
-        . "<select id='refurl' name='refurl'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        // Token answers persistence
-        $newsurvey .= "<li><label for='tokenanswerspersistence'>".$clang->gT("Enable token-based response persistence?")."</label>\n"
-        . "<select id='tokenanswerspersistence' name='tokenanswerspersistence'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
-
-        // enable assessment mote
-        $newsurvey .= "<li><label for='assessments'>".$clang->gT("Enable assessment mode?")."</label>\n"
-        . "<select id='assessments' name='assessments'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li></ul>\n";
-
-
-        // end of addnewsurvey form
-        $newsurvey .= "<input type='hidden' name='action' value='insertnewsurvey' />\n";
-
-        // End Notification and Data management TAB
-        // Create Survey Button
-        $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Save survey")."' /></p>\n";
-        $newsurvey .= "</div>\n";
-        $newsurvey .= "</form>\n";
-
-        // Import TAB
-        $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import survey")."</h2>\n";
-
-        // Import Survey
-        $newsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-        . "<ul>\n"
-        . "<li><label for='the_file'>".$clang->gT("Select survey structure file (*.lss, *.csv):")."</label>\n"
-        . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"
-        . "<li><label for='translinksfields'>".$clang->gT("Convert resource links and INSERTANS fields?")."</label>\n"
-        . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked='checked'/></li></ul>\n"
-        . "<p><input type='submit' value='".$clang->gT("Import survey")."' />\n"
-        . "<input type='hidden' name='action' value='importsurvey' /></p></form>\n";
-
-        // End Import TAB
-        $newsurvey .= "</div>\n";
-
-        // Copy survey TAB
-        $newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Copy survey")."</h2>\n";
-
-        // Copy survey
-        $newsurvey .= "<form class='form30' action='$scriptname' id='copysurveyform' method='post'>\n"
-        . "<ul>\n"
-        . "<li><label for='copysurveylist'><span class='annotationasterisk'>*</span>".$clang->gT("Select survey to copy:")."</label>\n"
-        . "<select id='copysurveylist' name='copysurveylist'>\n"
-        . getsurveylist(false,true)."</select> <span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
-        . "<li><label for='copysurveyname'><span class='annotationasterisk'>*</span>".$clang->gT("New survey title:")."</label>\n"
-        . "<input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' />"
-        . "<span class='annotation'>".$clang->gT("*Required")."</span></li>\n"
-        . "<li><label for='copysurveytranslinksfields'>".$clang->gT("Convert resource links and INSERTANS fields?")."</label>\n"
-        . "<input id='copysurveytranslinksfields' name=\"copysurveytranslinksfields\" type=\"checkbox\" checked='checked'/></li>\n"
-        . "<li><label for='copysurveyexcludequotas'>".$clang->gT("Exclude quotas?")."</label>\n"
-        . "<input id='copysurveyexcludequotas' name=\"copysurveyexcludequotas\" type=\"checkbox\" /></li>\n"
-        . "<li><label for='copysurveyexcludeanswers'>".$clang->gT("Exclude answers?")."</label>\n"
-        . "<input id='copysurveyexcludeanswers' name=\"copysurveyexcludeanswers\" type=\"checkbox\" /></li>\n"
-        . "<li><label for='copysurveyresetconditions'>".$clang->gT("Reset conditions?")."</label>\n"
-        . "<input id='copysurveyresetconditions' name=\"copysurveyresetconditions\" type=\"checkbox\" /></li></ul>\n"
-        . "<p><input type='submit' value='".$clang->gT("Copy survey")."' />\n"
-        . "<input type='hidden' name='action' value='copysurvey' /></p></form>\n";
-
-        // End Copy survey TAB
-        $newsurvey .= "</div>\n";
-        
-        // End TAB pane
-        $newsurvey .= "</div>\n";
-
-    }
-    else
-    {
-        include("access_denied.php");
-    }
-}
-
-
 function replacenewline ($texttoreplace)
 {
     $texttoreplace = str_replace( "\n", '<br />', $texttoreplace);
@@ -3695,7 +3534,6 @@ function replacenewline ($texttoreplace)
 
     return $new_str;
 }
-
 
 /**
  * showadminmenu() function returns html text for the administration button bar
@@ -3838,5 +3676,3 @@ function showadminmenu()
     }
     return $adminmenu;
 }
-
-
