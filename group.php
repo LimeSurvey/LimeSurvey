@@ -275,28 +275,7 @@ if ($surveyexists <1)
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
 {
     $totalquestions = buildsurveysession();
-    sendcacheheaders();
-    doHeader();
-    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
-    echo "\n\n<!-- START THE SURVEY -->\n";
-    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
-    if ($thissurvey['private'] == "Y")
-    {
-        echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
-    }
-    $navigator = surveymover();
-    echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
-
-    if ($thissurvey['active'] != "Y")
-    {
-        echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
-    }
-    echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-    echo "\n</form>\n";
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-    doFooter();
+    display_first_page();
     exit;
 }
 

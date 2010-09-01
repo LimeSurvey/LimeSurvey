@@ -640,33 +640,4 @@ function checkIfNewGroup($ia)
     }
     return array($newgroup, $gid, $groupname, $groupdescription, $gl);
 }
-
-function display_first_page() {
-    global $clang, $thistpl, $token, $surveyid, $thissurvey, $navigator,$publicurl;
-    sendcacheheaders();
-    doHeader();
-
-    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
-
-    echo "\n\n<!-- START THE SURVEY -->\n";
-
-    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
-    if ($thissurvey['private'] == "Y")
-    {
-        echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
-    }
-    $navigator = surveymover();
-    echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
-    if ($thissurvey['active'] != "Y")
-    {
-        echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
-    }
-    echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-    echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
-    echo "\n</form>\n";
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-    doFooter();
-}
 ?>
