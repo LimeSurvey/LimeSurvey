@@ -275,7 +275,6 @@ switch ( $_POST["type"] ) {
         $separator="\t";
         break;
     case "xls":
-
         $workbook = new Spreadsheet_Excel_Writer();
         $workbook->setVersion(8);
         // Inform the module that our data will arrive as UTF-8.
@@ -1230,7 +1229,7 @@ elseif ($answers == "long")        //chose complete answers
                     else if ($type == "pdf")
                     {$pdf->intopdf(trim(strip_tags($drow[$i])));}
                     else if ($type == "doc")
-                    {$pdf->intopdf(trim(strip_tags($drow[$i])));}
+                    {$exportoutput .= trim(strip_tags($drow[$i]));}
                     else
                     {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
                 }
@@ -1283,5 +1282,3 @@ function strip_tags_full($string) {
     }
     return strip_tags($string);
 }
-
-?>

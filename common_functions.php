@@ -2311,7 +2311,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     'type'=>$arow['type'],
                     'sid'=>$surveyid,
                     "gid"=>$arow['gid'],
-                    "qid"=>$arow['qid']
+                    "qid"=>$arow['qid'],
+                    "aid"=>''
                     );
                 if ($style == "full")
                 {
