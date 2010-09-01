@@ -1064,7 +1064,7 @@ while ($degrow = $degresult->FetchRow())
                     while ($mearow = $mearesult->FetchRow())
                     {
                         $longest_string = longest_string($mearow['question'] , $longest_string );
-                        if ($qidattributes['slider_layout']==1)
+                        if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
                         {
                           $mearow['question']=explode(':',$mearow['question']);
                           $mearow['question']=$mearow['question'][0];  
