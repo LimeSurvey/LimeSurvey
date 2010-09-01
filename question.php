@@ -75,8 +75,13 @@ if ($surveyexists <1)
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
 {
     $totalquestions = buildsurveysession();
-    display_first_page();
-    exit;
+    if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
+        //If explicitply set, hide the welcome screen
+        $_SESSION['step'] = 1;
+    } else {
+        display_first_page();
+        exit;
+    }
 }
 //******************************************************************************************************
 //PRESENT SURVEY

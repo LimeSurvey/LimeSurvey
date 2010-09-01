@@ -2567,7 +2567,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
             //Fetch survey info
             $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
             $esresult = db_execute_assoc($esquery); //Checked
-            while ($esrow = $esresult->FetchRow()) {
+            if ($esrow = $esresult->FetchRow()) {
                 $esrow = array_map('htmlspecialchars', $esrow);
             }
 
@@ -2764,7 +2764,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
                 . "<img alt='" . $clang->gT("Template preview image") . "' id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
                 . "</li>\n";
 
-        /*//SHOW WELCOMESCRN
+        //SHOW WELCOMESCRN
         $editsurvey .= "<li><label for='showwelcome'>" . $clang->gT("Show welcome screen?") . "</label>\n"
                 . "<select id='showwelcome' name='showwelcome'>\n"
                 . "<option value='Y'";
@@ -2778,7 +2778,6 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
         }
         $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
                 . "</select></li>\n";
-        */
 
         //ALLOW SAVES
         $editsurvey .= "<li><label for='allowsave'>" . $clang->gT("Allow Saves?") . "</label>\n"

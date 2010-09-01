@@ -275,6 +275,7 @@ CREATE TABLE prefix_surveys (
     showgroupinfo character(1) DEFAULT 'B'::bpchar,
     shownoanswer character(1) DEFAULT 'Y'::bpchar,
     showqnumcode character(1) DEFAULT 'X'::bpchar,
+    showwelcome character(1) DEFAULT 'Y'::bpchar,
     allowprev character(1) DEFAULT 'Y'::bpchar,
     ipaddr character(1) DEFAULT 'N'::bpchar,
     refurl character(1) DEFAULT 'N'::bpchar,

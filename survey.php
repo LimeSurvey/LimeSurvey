@@ -338,7 +338,11 @@ echo "\n<!-- INPUT NAMES -->\n"
 
 // <-- END FEATURE - SAVE
 
-echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
+    //Hide the welcome screen if explicitly set
+} else {
+    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+}
 
 if ($thissurvey['private'] == "Y")
 {

@@ -206,6 +206,7 @@ CREATE TABLE `prefix_surveys` (
   `showgroupinfo` char(1) default 'B',
   `shownoanswer` char(1) default 'Y',
   `showqnumcode` char(1) default 'X',
+  `showwelcome` char(1) default 'Y',
   `allowprev` char(1) default 'Y',
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
