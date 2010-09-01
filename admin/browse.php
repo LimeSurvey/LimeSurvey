@@ -182,7 +182,7 @@ if ($subaction == "id")
         }
         else
         {
-            if (!isset($field['aid']))
+            if ($field['aid']!=='filecount')
             {
                 $qidattributes=getQuestionAttributes($field['qid']);
 
@@ -406,7 +406,7 @@ elseif ($subaction == "all")
             $filelist = array();
             foreach ($fieldmap as $field)
             {
-                if ($field['type'] == "|" && !isset($field['aid']))
+                if ($field['type'] == "|" && $field['aid']!=='filecount')
                 {
                     $filequestion[] = $field['fieldname'];
                 }
@@ -491,7 +491,7 @@ elseif ($subaction == "all")
         $filelist = array();
         foreach ($fieldmap as $field)
         {
-            if ($field['type'] == "|" && !isset($field['aid']))
+            if ($field['type'] == "|" && $field['aid']!=='filecount')
             {
                 $filequestion[] = $field['fieldname'];
             }
@@ -627,7 +627,7 @@ elseif ($subaction == "all")
         }
         else
         {
-            if (!isset($fielddetails['aid']))
+            if ($fielddetails['aid']!=='filecount')
             {
                 $qidattributes=getQuestionAttributes($fielddetails['qid']);
                 
