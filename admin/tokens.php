@@ -2586,14 +2586,15 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                     $invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
                 }
 
+                if (!isset($writearray['token'])) {
+                    $writearray['token'] = '';
+                } else {
+                    $writearray['token']=sanitize_token($writearray['token']);
+                }
+
                 if (!$dupfound && !$invalidemail)
                 {
                     if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
-                    if (!isset($writearray['token'])) {
-                        $writearray['token'] = '';
-                    }else{
-                        $writearray['token']=sanitize_token($writearray['token']);
-                    }
                     if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
                     if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
                     if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
