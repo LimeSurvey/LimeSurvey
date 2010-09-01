@@ -17,7 +17,6 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
-
 if (!isset($imagefiles)) {$imagefiles="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($exportstyle)) {$exportstyle=returnglobal('exportstyle');}
@@ -36,7 +35,6 @@ if ($sumrows5['export'] != "1" && $_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
     exit;
 }
 
-include_once("login_check.php");
 include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
 include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
 
