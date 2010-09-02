@@ -347,7 +347,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         array_walk( $_POST, 'db_quote', true);
         $query = "INSERT INTO ".db_table_name('quota_members')." (sid,qid,quota_id,code) VALUES ('$surveyid','{$_POST['quota_qid']}','{$_POST['quota_id']}','{$_POST['quota_anscode']}')";
         $connect->Execute($query) or safe_die($connect->ErrorMsg());
-		if($_POST['createanother'] == "on") {
+		if(isset($_POST['createanother']) && $_POST['createanother'] == "on") {
 			$_POST['action']="quotas";
 			$_POST['subaction']="new_answer";
 			$subaction="new_answer";
