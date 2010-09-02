@@ -940,7 +940,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "|": //FILE UPLOAD
                         $dataentryoutput .= "<table>\n";
-                        if (!isset($fname['aid']))
+                        if ($fname['aid']!=='filecount')
                         {//file metadata
                             $metadata = json_decode($idrow[$fname['fieldname']], true);
                             $qAttributes = getQuestionAttributes($fname['qid']);
