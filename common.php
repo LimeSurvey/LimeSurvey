@@ -7510,10 +7510,10 @@ function getSubQuestions($sid, $qid) {
  * into PHP
  */
 function getXMLWriter() {
-    try {
+    if (!extension_loaded('xmlwriter')) {
+        safe_die('XMLWriter class not compiled into PHP, please contact your system administrator');
+    } else {
         $xmlwriter = new XMLWriter();
-    } catch (Exception $e) {
-        safe_die('XMLWriter class not compiled into PHP, please contact your system administrator');   
     }
     return $xmlwriter;    
 }
