@@ -7,9 +7,9 @@ jQuery(function($){
 		nextText: '&#x3e;', 
 		currentText: 'Danas', 
 		monthNames: ['Januar','Februar','Mart','April','Maj','Juni',
-		'Juli','August','Septembar','Oktobar','Novembar','Decembar'],
+					 'Juli','August','Septembar','Oktobar','Novembar','Decembar'],
 		monthNamesShort: ['Jan','Feb','Mar','Apr','Maj','Jun',
-		'Jul','Aug','Sep','Okt','Nov','Dec'],
+						  'Jul','Aug','Sep','Okt','Nov','Dec'],
 		dayNames: ['Nedelja','Ponedeljak','Utorak','Srijeda','Četvrtak','Petak','Subota'],
 		dayNamesShort: ['Ned','Pon','Uto','Sri','Čet','Pet','Sub'],
 		dayNamesMin: ['Ne','Po','Ut','Sr','Če','Pe','Su'],
@@ -19,4 +19,5 @@ jQuery(function($){
 		isRTL: false,
 		showMonthAfterYear: false,
 		yearSuffix: ''};
+	$.datepicker.setDefaults($.datepicker.regional['bs']);
 });

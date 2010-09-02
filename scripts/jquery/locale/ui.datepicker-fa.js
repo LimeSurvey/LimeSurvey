@@ -14,6 +14,6 @@ jQuery(function($) {
 		dayNamesShort: ['ي','د','س','چ','پ','ج', 'ش'],
 		dayNamesMin: ['ي','د','س','چ','پ','ج', 'ش'],
 		dateFormat: 'yy/mm/dd', firstDay: 6,
-  isRTL: true};
+		isRTL: true};
 	$.datepicker.setDefaults($.datepicker.regional['fa']);
 });
