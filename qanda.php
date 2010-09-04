@@ -2965,6 +2965,11 @@ function do_multiplechoice($ia)
         {
             $answer .= $_SESSION[$myfname];
         }
+        // Or if the question is marked as a default selection, check the checkbox
+        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
+        {
+            $answer .= 'Y';
+        }            
         $answer .= "\" />\n{$wrapper['item-end']}";
 
         $inputnames[]=$myfname;
@@ -3336,7 +3341,14 @@ function do_multiplechoice_withcomments($ia)
         if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if (isset($_SESSION[$myfname])) {$answer_main .= $_SESSION[$myfname];}
+        if (isset($_SESSION[$myfname]))
+        {
+            $answer_main .= $_SESSION[$myfname];
+        }
+        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
+        {
+            $answer_main .= 'Y';
+        }
         $answer_main .= "' />\n";
         $fn++;
         $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment\">\n"
