@@ -6072,15 +6072,20 @@ function retrieve_Answer($code, $phpdateformat=null)
         if ($questiondetails['type'] == "M" ||
         $questiondetails['type'] == "P")
         {
-            $query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
+            $query="SELECT * FROM {$dbprefix}questions WHERE parent_qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
             $result=db_execute_assoc($query) or safe_die("Error getting answer<br />$query<br />".$connect->ErrorMsg());  //Checked
             while($row=$result->FetchRow())
             {
-                if (isset($_SESSION[$code.$row['code']]) && $_SESSION[$code.$row['code']] == "Y")
+                if (isset($_SESSION[$code.$row['title']]) && $_SESSION[$code.$row['title']] == "Y")
                 {
-                    $returns[] = $row['answer'];
+                    $returns[] = $row['question'];
+                }
+                elseif (isset($_SESSION[$code]) && $_SESSION[$code] == "Y" && $questiondetails['aid']==$row['title'])
+                {
+                    return $row['question'];
                 }
             }
+
             if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
             {
                 $returns[]=$_SESSION[$code."other"];
