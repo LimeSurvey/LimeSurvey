@@ -1120,7 +1120,6 @@ if (isset($qanda) && is_array($qanda))
         //===================================================================
         $answer=$qa[1];
         $help=$qa[2];
-        $questioncode=$qa[5];
 
         $question_template = file_get_contents($thistpl.'/question.pstpl');
 

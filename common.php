@@ -2693,7 +2693,7 @@ function templatereplace($line, $replacements=array())
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
     global $question;
-    global $questioncode, $answer, $navigator;
+    global $answer, $navigator;
     global $help, $totalquestions, $surveyformat;
     global $completed, $register_errormsg;
     global $notanswered, $privacy, $surveyid;

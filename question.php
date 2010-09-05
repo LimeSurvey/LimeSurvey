@@ -505,10 +505,10 @@ else
             $question['essentials'] = 'id="question'.$qa[4].'"'.$n_q_display;
             $question['class'] = $q_class;
             $question['man_class'] = $man_class;
+            $question['code'] = $qa[5];
             //===================================================================
             $answer=$qa[1];
             $help=$qa[2];
-            $questioncode=$qa[5];
 
             $question_template = file_get_contents($thistpl.'/question.pstpl');
 
