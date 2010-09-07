@@ -3548,15 +3548,15 @@ function questionAttributes($returnByName=false)
 
     $qattributes["dropdown_separators"]=array(
     "types"=>"1",
-    'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>120,
     'inputtype'=>'text',
     "help"=>$clang->gT('Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists'),
     "caption"=>$clang->gT('Dropdown separators'));
 
     $qattributes["dualscale_headerA"]=array(
     "types"=>"1",
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Display'),
     'sortorder'=>110,
     'inputtype'=>'text',
     "help"=>$clang->gT('Enter a header text for scale A'),
@@ -3564,7 +3564,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["dualscale_headerB"]=array(
     "types"=>"1",
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Display'),
     'sortorder'=>111,
     'inputtype'=>'text',
     "help"=>$clang->gT('Enter a header text for scale B'),
@@ -3891,7 +3891,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["use_dropdown"]=array(
     "types"=>"1",
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
