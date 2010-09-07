@@ -2625,7 +2625,7 @@ if ($action == "editsurvey")
             . "</li>\n";
 
             $editsurvey .= "<li><label for='preview'>".$clang->gT("Template Preview:")."</label>\n"
-            . "<img alt='".$clang->gT("Template preview image")."' id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
+            . "<img alt='".$clang->gT("Template preview image")."' id='preview' src='".sGetTemplateURL($esrow['template'])."/preview.png' />\n"
             . "</li>\n" ;
 
             //ALLOW SAVES
@@ -3247,7 +3247,7 @@ if ($action == "newsurvey")
         $newsurvey .= "</select>\n"
         . "</li>\n"
         . "<li><label for='preview'>".$clang->gT("Template Preview:")."</label>\n"
-        . "<img alt='".$clang->gT("Template Preview:")."' id='preview' src='$publicurl/templates/{$defaulttemplate}/preview.png' />\n"
+        . "<img alt='".$clang->gT("Template Preview:")."' id='preview' src='".sGetTemplateURL($defaulttemplate)."/preview.png' />\n"
         . "</li>\n";
 
         //ALLOW SAVES
