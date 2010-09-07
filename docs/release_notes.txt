@@ -78,6 +78,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.90+ (build 9089) to 1.90+ (build 9118) Legend: # updated feature, - bug fix 
+#Updated language : French (b00z00)
+-Fixed issue #4480: Now give proper error when XMLWriter class not available (mennodekker)
+-Fixed issue #4532: new default answer handling bypasses array_filter and conditions. (lemeur)
+-Fixed issue #4562: Datepicker definition for some languages being are outdated - patch kindly provided by ronvdburg (c_schmitz)
+-Fixed issue #4563: When using dates and manual input not all needed date chars were permitted - patch kindly provided by ronvdburg (c_schmitz)
+-Fixed issue #4565: QUESTION_CODE is no longer displayed in question-by-question or all-in-one survey mode (c_schmitz)
+-Fixed issue #4567: INSERTANS for multiple choice questions not working (c_schmitz)
+-Fixed issue #4579: Template preview url for personal template is bad (c_schmitz)
+-Fixed issue #4581: Typo's in dateformat variable in printablesurvey (c_schmitz)
+-Fixed issue: Assessments values not being properly converted on upgrade from 1.87 (c_schmitz)
+-Fixed issue: Faulty engine type on table creation (c_schmitz)
+-Fixed issue: Import structure is broken when trying to import survey with default values set (c_schmitz)
+-Fixed issue: Several inconsistencies with date picker language files - patch kindly provided by ronvdburg (c_schmitz)
+
 Changes from 1.90+ (build 9071) to 1.90+ (build 9089) Legend: # updated feature, - bug fix 
 #Updated support for exporting to queXML for 1.9.0 (azammitdcarf)
 #Updated translation: German (c_schmitz)
