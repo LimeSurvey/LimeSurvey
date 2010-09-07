@@ -82,9 +82,9 @@ $dummy_js = '
 
 $answer=$answers[0][1];
 $help=$answers[0][2];
-$questioncode=$answers[0][5];
 
 $question = $answers[0][0];
+$question['code']=$answers[0][5];
 $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
 if ($qrows['mandatory'] == 'Y')

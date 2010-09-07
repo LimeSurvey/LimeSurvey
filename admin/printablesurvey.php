@@ -70,35 +70,10 @@ while ($desrow = $desresult->FetchRow())
 }
 if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
-switch($dateformattype)
-{
-    case 1: $dformat = 'd.m.Y'; // dd.mm.yyyy
-    break;
-    case 2: $dformat = 'd-m-Y'; // dd-mm-yyyy
-    break;
-    case 5: $dformat = 'd/m/Y'; // dd/mm/yyyy
-    break;
-    case 3: $dformat = 'Y.m.d'; // yyyy.mm.dd
-    break;
-    case 7: $dformat = 'Y/m/d'; // yyyy/mm/dd
-    break;
-    case 6: $dbformat = 'Y-m-d'; // yyyy-mm-dd
-    break;
-    case 4: $dformat = 'j.n.Y'; // d.m.yyyy
-    break;
-    case 8: $dformat = 'j/n/y'; // d/m/yyyy
-    break;
-    case 12: $dbformat = 'j-n-Y'; // d-m-yyyy
-    break;
-    case 9: $dformat = 'm-d-Y'; // mm-dd-yyyy
-    break;
-    case 10: $dbformat = 'm.d.Y'; // mm.dd.yyyy
-    break;
-    case 11: $dbformat = 'm/d/Y'; // mm/dd/yyyy
-    break;
-    default: $dformat = 'Y-m-d'; // yyyy-mm-dd
-    break;
-};
+
+$dformat=getDateFormatData($dateformattype);
+$dformat=$dformat['phpdate'];
+
 $expirytimestamp = strtotime($surveyexpirydate);
 $expirytimeofday_h = date('H',$expirytimestamp);
 $expirytimeofday_m = date('i',$expirytimestamp);

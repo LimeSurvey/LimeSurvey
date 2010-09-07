@@ -510,12 +510,10 @@ switch($screenname) {
 		         ,'input_error_class' => ''
 		         );
 
-		//	$questioncode="1a";
 		$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
         $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl"));
 
 	    //	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
-	    //	$questioncode="2";
         $answer="<textarea class='textarea' rows='5' cols='40'>Some text in this answer</textarea>";
 	    $question = array(
 		  'all' => '<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:")
