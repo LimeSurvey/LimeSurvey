@@ -101,7 +101,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
         $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-        $query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
+        $query = "SELECT title,question FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}'";
         $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
         $answerlist = array();
@@ -110,8 +110,8 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
         {
             for ($x=1; $x<6; $x++)
             {
-                $tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['answer'],0,40).' ['.$x.']', 'code' => $dbanslist['code']);
-                $answerlist[$dbanslist['code']."-".$x]	= $tmparrayans;
+                $tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['question'],0,40).' ['.$x.']', 'code' => $dbanslist['title']);
+                $answerlist[$dbanslist['title']."-".$x]	= $tmparrayans;
             }
         }
 
@@ -627,24 +627,24 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                     {
                         $question_answers = getQuotaAnswers($quota_questions['qid'],$surveyid,$quotalisting['id']);
                         $quotasoutput .='
-				<tr class="evenrow">
-            		<td align="center">&nbsp;</td>
-            		<td align="center">'.$question_answers[$quota_questions['code']]['Title'].'</td>
-            		<td align="center">'.$question_answers[$quota_questions['code']]['Display'].'</td>
-            		<td align="center">&nbsp;</td>
-            		<td align="center">&nbsp;</td>
-            		<td style="padding: 3px;" align="center">
-            			<form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
-            				<input type="hidden" name="sid" value="'.$surveyid.'" />
-            				<input type="hidden" name="action" value="quotas" />
-            				<input type="hidden" name="quota_member_id" value="'.$quota_questions['id'].'" />
-            				<input type="hidden" name="quota_qid" value="'.$quota_questions['qid'].'" />
-            				<input type="hidden" name="quota_anscode" value="'.$quota_questions['code'].'" />
-            				<input type="hidden" name="subaction" value="quota_delans" />
-            			</form>
-            		</td>
-          		</tr>';
+				            <tr class="evenrow">
+            		            <td align="center">&nbsp;</td>
+            		            <td align="center">'.$question_answers[$quota_questions['code']]['Title'].'</td>
+            		            <td align="center">'.$question_answers[$quota_questions['code']]['Display'].'</td>
+            		            <td align="center">&nbsp;</td>
+            		            <td align="center">&nbsp;</td>
+            		            <td style="padding: 3px;" align="center">
+            			            <form action="'.$scriptname.'" method="post">
+            				            <input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
+            				            <input type="hidden" name="sid" value="'.$surveyid.'" />
+            				            <input type="hidden" name="action" value="quotas" />
+            				            <input type="hidden" name="quota_member_id" value="'.$quota_questions['id'].'" />
+            				            <input type="hidden" name="quota_qid" value="'.$quota_questions['qid'].'" />
+            				            <input type="hidden" name="quota_anscode" value="'.$quota_questions['code'].'" />
+            				            <input type="hidden" name="subaction" value="quota_delans" />
+            			            </form>
+            		            </td>
+          		            </tr>';
                     }
                 }
 

@@ -1101,21 +1101,11 @@ function CSVImportSurvey($sFullFilepath)
 
             $asrowdata=array_combine($fieldorders,$fieldcontents);
 
-            $oldsid=$asrowdata["sid"];
-            $newqid="";
-            $newquotaid="";
-            $oldqid=$asrowdata['qid'];
-            $oldquotaid=$asrowdata['quota_id'];
-
-            foreach ($substitutions as $subs) {
-                if ($oldsid==$subs[0]) {$newsid=$subs[3];}
-                if ($oldqid==$subs[2]) {$newqid=$subs[5];}
-            }
-
-            $newquotaid=$aQuotaReplacements[$oldquotaid];
+            $newquotaid=$aQuotaReplacements[$asrowdata['quota_id']];
 
             $asrowdata["sid"]=$newsid;
-            $asrowdata["qid"]=$newqid;
+            $asrowdata["qid"]=$aQIDReplacements[$asrowdata['qid']];
+           
             $asrowdata["quota_id"]=$newquotaid;
             unset($asrowdata["id"]);
 
@@ -1155,6 +1145,7 @@ function CSVImportSurvey($sFullFilepath)
     if ($importresults['quota'] > 0 && (!isset($importresults['quotals']) || $importresults['quotals'] == 0)) {
         $i=0;
         $defaultsurveylanguage=isset($defaultsurveylanguage) ? $defaultsurveylanguage : "en";
+        $tablename=$dbprefix.'quota_languagesettings';
         foreach($aQuotaReplacements as $oldquotaid=>$newquotaid) {
             $asrowdata=array("quotals_quota_id" => $newquotaid,
                              "quotals_language" => $defaultsurveylanguage,
@@ -1162,11 +1153,10 @@ function CSVImportSurvey($sFullFilepath)
                              "quotals_message" => $clang->gT("Sorry your responses have exceeded a quota on this survey."),
                              "quotals_url" => "",
                              "quotals_urldescrip" => "");
+            $asinsert = $connect->getInsertSQL($tablename,$asrowdata);
+            $result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
             $i++;
         }
-        $tablename=$dbprefix.'quota_languagesettings';
-        $asinsert = $connect->getInsertSQL($tablename,$asrowdata);
-        $result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
         $countquotals=$i;
     }
 
