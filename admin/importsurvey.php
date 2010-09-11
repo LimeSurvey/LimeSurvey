@@ -453,8 +453,7 @@ function CSVImportSurvey($sFullFilepath)
     }
     for ($i=0; $i<=$stoppoint+1; $i++)
     {
-        //    if ($i<$stoppoint-2 || $i==count($bigarray)-1)
-        if ($i<$stoppoint-2)
+        if ($i<$stoppoint-2 || count($bigarray)==3)
         {
             $quotaarray[] = $bigarray[$i];
         }
@@ -477,8 +476,7 @@ function CSVImportSurvey($sFullFilepath)
     }
     for ($i=0; $i<=$stoppoint+1; $i++)
     {
-        //    if ($i<$stoppoint-2 || $i==count($bigarray)-1)
-        if ($i<$stoppoint-2)
+        if ($i<$stoppoint-2 || count($bigarray)==3)
         {
             $quotamembersarray[] = $bigarray[$i];
         }
