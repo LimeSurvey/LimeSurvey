@@ -1,3 +1,19 @@
+/*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * $Id$
+ */
+
+
+
 // This file will auto convert slider divs to sliders
 $(document).ready(function(){
 	// call the init slider routine for each element of the .multinum-slider class
@@ -60,7 +76,7 @@ $(document).ready(function(){
 		if (slider_startvalue != 'NULL' && $('#slider-modifiedstate-'+basename).val() !=0)
 		{
 				var thevalue = slider_startvalue / slider_divisor;
-				$('#slider-callout-'+basename).css('left', $('#slider-handle-'+basename).css('left')).text(slider_prefix + thevalue + slider_suffix);
-		}
+                $('#slider-callout-'+basename).css('left', $('.ui-slider-handle:first').css('left')).text(slider_prefix + thevalue + slider_suffix);
+        }
 	})
 });
