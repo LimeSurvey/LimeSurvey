@@ -378,6 +378,23 @@ if(isset($surveyid))
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($questlangs,$baselang);
 
+        // same_default value on/off for question
+        $uqquery = "UPDATE ".db_table_name('questions');
+        if (isset($_POST['samedefault']))
+        {
+            $uqquery .= "SET same_default = '1' ";
+        }
+        else
+        {
+            $uqquery .= "SET same_default = '0' ";
+        }
+        $uqquery .= "WHERE sid='".$postsid."' AND qid='".$postqid."'";
+        $uqresult = $connect->Execute($uqquery) or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());
+        if (!$uqresult)
+        {
+            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        }
+        
         $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE qid=$postqid");
         $qtproperties=getqtypelist('','array');
         if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subquestions']==0)
