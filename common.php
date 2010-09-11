@@ -2250,7 +2250,7 @@ function validate_templatedir($templatename)
  * @param string $surveyid The Survey ID
  * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values 
  * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
- * @param int $questionid Limit to a certain qid only (for question preview)
+ * @param int $questionid Limit to a certain qid only (for question preview) - default is false
  * @return array
  */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
@@ -2501,7 +2501,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($qtypes[$arow['type']]['subquestions']==2 && $qtypes[$arow['type']]['answerscales']==0)
         {
             //MULTI FLEXI
-            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             //Now first process scale=1
             foreach ($abrows as $key=>$abrow)
             {
@@ -2540,7 +2540,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "1")
         {
-            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
@@ -2596,7 +2596,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
             //MULTI ENTRY
-            $abrows = getSubQuestions($surveyid,$arow['qid']);
+            $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
@@ -7505,18 +7505,18 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
  * 
  * @param int $sid
  * @param int $qid
+ * @param $sLanguage Language of the subquestion text
  */
-function getSubQuestions($sid, $qid) {
+function getSubQuestions($sid, $qid, $sLanguage) {
     global $dbprefix, $connect, $clang;
     static $subquestions;
     
     if (!isset($subquestions[$sid])) {
 	    $sid = sanitize_int($sid);
-	    $s_lang = GetBaseLanguageFromSurveyID($sid);
 	    $query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
 	            ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
-	            ." AND sq.language='".$s_lang. "' "
-	            ." AND q.language='".$s_lang. "' "
+	            ." AND sq.language='".$sLanguage. "' "
+	            ." AND q.language='".$sLanguage. "' "
 	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
 	    $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
 	    
