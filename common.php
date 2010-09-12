@@ -3548,7 +3548,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>100,
     'inputtype'=>'text',      
     "help"=>$clang->gT('Minimum year value in calendar'),
-    "caption"=>$clang->gT('Minimum dropdown year'));
+    "caption"=>$clang->gT('Minimum year'));
 
     $qattributes["dropdown_dates_year_max"]=array(
     "types"=>"D",
@@ -3556,7 +3556,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>100,
     'inputtype'=>'text',      
     "help"=>$clang->gT('Maximum year value for calendar'),
-    "caption"=>$clang->gT('Maximum dropdown year'));
+    "caption"=>$clang->gT('Maximum year'));
 
     $qattributes["dropdown_prepostfix"]=array(
     "types"=>"1",
