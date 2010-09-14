@@ -78,6 +78,15 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.90+ (build 9118) to 1.90+ (build 9130) Legend: # updated feature, - bug fix 
+#Updated translation: French (b00z00)
+#Updated translation: Traditional Chinese ( Hong Kong), thanks to Mark Yeung (gandalfar)
+-Fixed issue #4442: LimeSurvey sliders don't support keyboard input - patch by jdalegonzalez (c_schmitz)
+-Fixed issue #4471: Chosen language when browsing multi-language survey responses was not used when editing the response or in detail view (c_schmitz)
+-Fixed issue #4592: Correct the use of default value for multilingal survey (Shnoulle)
+-Fixed unreported issue: Can't import an multilang survey with defaut value (shnoulle)
+-Fixed unreported issue: Quotas from older survey structure formats were not correctly imported (c_schmitz)
+
 Changes from 1.90+ (build 9089) to 1.90+ (build 9118) Legend: # updated feature, - bug fix 
 #Updated language : French (b00z00)
 -Fixed issue #4480: Now give proper error when XMLWriter class not available (mennodekker)
