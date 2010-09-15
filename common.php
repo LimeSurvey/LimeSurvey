@@ -4306,7 +4306,7 @@ function getAdminHeader($meta=false)
     }
 
     $strAdminHeader.= "<!--[if lt IE 7]>\n"
-    . "<script type=\"text/javascript\" src=\"".$homeurl."scripts/DD_belatedPNG_0.0.8a-min.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$homeurl."/scripts/DD_belatedPNG_0.0.8a-min.js\"></script>\n"
     ."<script>
   DD_belatedPNG.fix('img');
 </script>\n"
