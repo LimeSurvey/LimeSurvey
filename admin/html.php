@@ -1778,7 +1778,7 @@ if ($action=='editsubquestions')
             ."<thead>"
             ."<tr><th>&nbsp;</th>\n"
             ."<th align='right'>".$clang->gT("Code")."</th>\n"
-            ."</th><th align='center'>".$clang->gT("Subquestion")."</th>\n";
+            ."<th align='center'>".$clang->gT("Subquestion")."</th>\n";
             if ($activated != 'Y' && $first)
             {
                 $vasummary .="<th align='center'>".$clang->gT("Action")."</th>\n";
