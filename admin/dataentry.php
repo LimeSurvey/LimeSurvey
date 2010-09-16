@@ -220,7 +220,18 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             $columns=array();
             $values=array();
             $_POST['startlanguage']=$baselang;
-            $_POST['startdate']=$_POST['datestamp'];
+            if ($thissurvey['datestamp'] == "Y") {$_POST['startdate']=$_POST['datestamp'];}
+            if (isset($_POST['closerecord']))
+            {
+                if ($thissurvey['datestamp'] == "Y") 
+                {
+                    $_POST['submitdate']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+                }
+                else
+                {
+                    $_POST['submitdate']=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                }
+            }
             foreach ($fieldmap as $irow)
             {
                 $fieldname = $irow['fieldname'];
