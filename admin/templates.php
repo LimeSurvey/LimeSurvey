@@ -458,8 +458,8 @@ $printoutput="<span class='printouttitle'><strong>".$clang->gT("Survey name (ID)
     </tr>
 </table>";
 $addbr=false;
-$templaterootdir=sGetTemplatePath($templatename);
-$templaterooturl=sGetTemplateURL($templatename);
+$templatedir=sGetTemplatePath($templatename);
+$templateurl=sGetTemplateURL($templatename);
 switch($screenname) {
     case 'surveylist':
         unset($files);
@@ -548,19 +548,19 @@ switch($screenname) {
         foreach($Register as $qs) {
            $files[]=array("name"=>$qs);
         }
-        foreach(file("$templaterootdir/startpage.pstpl") as $op)
+        foreach(file("$templatedir/startpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/survey.pstpl") as $op)
+        foreach(file("$templatedir/survey.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/register.pstpl") as $op)
+        foreach(file("$templatedir/register.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/endpage.pstpl") as $op)
+        foreach(file("$templatedir/endpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
@@ -573,15 +573,15 @@ switch($screenname) {
            $files[]=array("name"=>$qs);
         }
 
-        foreach(file("$templaterootdir/startpage.pstpl") as $op)
+        foreach(file("$templatedir/startpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/save.pstpl") as $op)
+        foreach(file("$templatedir/save.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/endpage.pstpl") as $op)
+        foreach(file("$templatedir/endpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
@@ -594,15 +594,15 @@ switch($screenname) {
            $files[]=array("name"=>$qs);
         }
 
-        foreach(file("$templaterootdir/startpage.pstpl") as $op)
+        foreach(file("$templatedir/startpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/load.pstpl") as $op)
+        foreach(file("$templatedir/load.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/endpage.pstpl") as $op)
+        foreach(file("$templatedir/endpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
@@ -615,15 +615,15 @@ switch($screenname) {
            $files[]=array("name"=>$qs);
         }
 
-        foreach(file("$templaterootdir/startpage.pstpl") as $op)
+        foreach(file("$templatedir/startpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/clearall.pstpl") as $op)
+        foreach(file("$templatedir/clearall.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/endpage.pstpl") as $op)
+        foreach(file("$templatedir/endpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
@@ -646,7 +646,7 @@ switch($screenname) {
         }
 
         $questionoutput=array();
-        foreach(file("$templaterootdir/print_question.pstpl") as $op)
+        foreach(file("$templatedir/print_question.pstpl") as $op)
         { // echo '<pre>line '.__LINE__.'$op = '.htmlspecialchars(print_r($op)).'</pre>';
            $questionoutput[]=templatereplace($op, array(
                          'QUESTION_NUMBER'=>'1',
@@ -661,27 +661,27 @@ switch($screenname) {
                          'QUESTIONHELP'=>'This is some help text for this question.',
                          'ANSWER'=>'<ul>
                                                 <li>
-                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="First choice" class="input-radio" height="14" width="14">
+                                                <img src="'.$templateurl.'/print_img_radio.png" alt="First choice" class="input-radio" height="14" width="14">
                                                     First choice
                                             </li>
 
                                                 <li>
-                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Second choice" class="input-radio" height="14" width="14">
+                                                <img src="'.$templateurl.'/print_img_radio.png" alt="Second choice" class="input-radio" height="14" width="14">
                                                     Second choice
                                             </li>
                                                 <li>
-                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">
+                                                <img src="'.$templateurl.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">
                                                     Third choice
                                             </li>
                                         </ul>'
                                         ));
         }
         $groupoutput=array();
-        foreach(file("$templaterootdir/print_group.pstpl") as $op)
+        foreach(file("$templatedir/print_group.pstpl") as $op)
         {
            $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)));
         }
-        foreach(file("$templaterootdir/print_survey.pstpl") as $op)
+        foreach(file("$templatedir/print_survey.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
                    'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
@@ -699,15 +699,15 @@ switch($screenname) {
         foreach ($printtemplate as $qs) {
             $files[]=array("name"=>$qs);
         }
-        foreach(file("$templaterootdir/startpage.pstpl") as $op)
+        foreach(file("$templatedir/startpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/printanswers.pstpl") as $op)
+        foreach(file("$templatedir/printanswers.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
-        foreach(file("$templaterootdir/endpage.pstpl") as $op)
+        foreach(file("$templatedir/endpage.pstpl") as $op)
         {
            $myoutput[]=templatereplace($op);
         }
@@ -739,10 +739,10 @@ if (is_array($files)) {
 
 //Get list of 'otherfiles'
 $otherfiles=array();
-if ($handle = opendir($templaterootdir)) {
+if ($handle = opendir($templatedir)) {
    while(false !== ($file = readdir($handle))) {
        if (!array_search($file, $normalfiles)) {
-           if (!is_dir($templaterootdir.DIRECTORY_SEPARATOR.$file)) {
+           if (!is_dir($templatedir.DIRECTORY_SEPARATOR.$file)) {
                $otherfiles[]=array("name"=>$file);
            }
        }
