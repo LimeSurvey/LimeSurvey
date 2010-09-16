@@ -765,7 +765,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 $ranklist .= " value='".$thistext."'";
                             }
                             $ranklist .= " onFocus=\"this.blur()\"  />\n"
-                            . "<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
+                            . "<input type='hidden' id='d$myfname$j' name='$myfname$j' value='";
                             if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
                             {
                                 $ranklist .= $thiscode;
@@ -1932,7 +1932,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 $ranklist .= "'";
                             }
                             $ranklist .= " onFocus=\"this.blur()\"  />\n";
-                            $ranklist .= "<input type='hidden' id='d$fieldname$i' name='d$fieldname$i' value='";
+                            $ranklist .= "<input type='hidden' id='d$fieldname$i' name='$fieldname$i' value='";
                             $chosen[]=""; //create array
                             if (isset($myfname) && $_SESSION[$myfname])
                             {
