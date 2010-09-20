@@ -7460,7 +7460,7 @@ function sGetTemplatePath($sTemplateName)
 */               
 function sGetTemplateURL($sTemplateName)
 {
-    global $standardtemplaterooturl, $usertemplaterooturl, $usertemplaterootdir, $defaulttemplate;      
+    global $standardtemplaterooturl, $standardtemplaterootdir, $usertemplaterooturl, $usertemplaterootdir, $defaulttemplate;      
     if (isStandardTemplate($sTemplateName))
     {
         return $standardtemplaterooturl.'/'.$sTemplateName;
