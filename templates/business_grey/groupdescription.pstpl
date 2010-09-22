@@ -1,1 +1,3 @@
-			<br /><font face="arial" size="1" color="#777777">{GROUPDESCRIPTION}</font><br /><br />
+			
+			<div class="groupDescription">{GROUPDESCRIPTION}</div>
+			

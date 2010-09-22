@@ -1,35 +1,28 @@
-<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
-	<table width="97%" align="center" border="1" style="border-collapse: collapse;border-color:#EEEEEE" bgcolor="#E1E1E1">
-		<tr>
-			<td>
-				<table width="100%" cellspacing="0">
+			<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
+				<table class="questionTable">
 					<tr>
 						<td>
-							<font size="2" color="#666666">
-								<b>{QUESTION_CODE}:</b> <span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
-								<span class="questionhelp">{QUESTION_HELP}</span>
-								{QUESTION_MAN_MESSAGE}
-								{QUESTION_VALID_MESSAGE}
-							</font>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<font color="#777777">{ANSWER}</font>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="survey-question-help">{QUESTIONHELP}</span>
+							<table width="100%" cellspacing="0">
+								<tr class="questionText">
+									<td>
+										<span class="questionCode">{QUESTION_CODE}:</span> <span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
+										<span class="questionhelp">{QUESTION_HELP}</span>
+										{QUESTION_MAN_MESSAGE}
+										{QUESTION_VALID_MESSAGE}
+									</td>
+								</tr>
+								<tr class="questionAnswer">
+									<td>
+										{ANSWER}
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="survey-question-help">{QUESTIONHELP}</span>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 				</table>
-			</td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<td height="1"></td>
-		</tr>
-	</table>
-</div>
+			</div>
