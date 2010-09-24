@@ -5,15 +5,15 @@ msgstr ""
 "Project-Id-Version: LimeSurvey  Portuguese language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 18:00+0200\n"
-"PO-Revision-Date: 2010-06-05 01:33-0000\n"
-"Last-Translator: António Correia <pardalpc@gmail.com>\n"
-"Language-Team: fedora-trans-pt@redhat.com\n"
+"PO-Revision-Date: 2010-09-24 17:05+0100\n"
+"Last-Translator: Rui Gouveia <rui.gouveia@gmail.com>\n"
+"Language-Team: trans-pt@lists.fedoraproject.org\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.5.2\n"
+"X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Language: portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\limesurvey\n"
@@ -10692,9 +10692,8 @@ msgid "Survey Administrator"
 msgstr "Administrador do inquérito"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:341
-#, fuzzy
 msgid "Array Dual Scale"
-msgstr "Grelha (Etiquetas Flexíveis) Escala Dupla"
+msgstr "Matriz de dupla escala"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:346
 msgid "5 Point Choice"
@@ -10702,28 +10701,27 @@ msgstr "Escolher entre 5 Pontos"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:351
 msgid "Array (5 Point Choice)"
-msgstr "Grelha (Escolher entre 5 Pontos)"
+msgstr "Matriz (Escolher entre 5 Pontos)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:356
 msgid "Array (10 Point Choice)"
-msgstr "Grelha (Escolher entre 10 Pontos)"
+msgstr "Matriz (Escolher entre 10 Pontos)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:361
 msgid "Array (Yes/No/Uncertain)"
-msgstr "Grelha (Sim/Não/Incerto)"
+msgstr "Matriz (Sim/Não/Incerto)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:366
 msgid "Date"
 msgstr "Data"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:371
-#, fuzzy
 msgid "Array (Increase/Same/Decrease)"
-msgstr "Grelha (Aumentar, Manter, Reduzir)"
+msgstr "Matriz (Aumentar/Manter/Reduzir)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:376
 msgid "Array"
-msgstr "Grelha"
+msgstr "Matriz"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:381
 msgid "Gender"
@@ -10792,14 +10790,12 @@ msgid "List (Dropdown)"
 msgstr "Lista de Selecção ('Dropdown')"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:466
-#, fuzzy
 msgid "Array (Numbers)"
-msgstr "Grelha (Etiquetas Flexíveis) (Números)"
+msgstr "Matriz (Números)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:471
-#, fuzzy
 msgid "Array (Texts)"
-msgstr "Grelha (Etiquetas Flexíveis)"
+msgstr "Matriz (Textos)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2271
 #, fuzzy
@@ -11756,22 +11752,31 @@ msgstr "Você já completou este inquérito."
 
 #~ msgid "All records"
 #~ msgstr "Todos os registos"
+
 #~ msgid "Incomplete records only"
 #~ msgstr "Apenas registos incompletos"
+
 #~ msgid "OR between"
 #~ msgstr "OU entre"
+
 #~ msgid "Select CSV File:"
 #~ msgstr "Seleccionar ficheiro CSV:"
+
 #~ msgid "1. scale"
 #~ msgstr "1. escala"
+
 #~ msgid "2. scale"
 #~ msgstr "2. escala"
+
 #~ msgid "Data View Control"
 #~ msgstr "Controle de dados"
+
 #~ msgid "Completed Records Only"
 #~ msgstr "Apenas registos completos"
+
 #~ msgid "All Records"
 #~ msgstr "Todos os registos"
+
 #~ msgid "Incomplete Records Only"
 #~ msgstr "Apenas registos incompletos"
 
@@ -11782,90 +11787,125 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "Não pode importar uma pergunta que não suporte o actual idioma base do "
 #~ "inquérito"
+
 #~ msgid "Label Sets"
 #~ msgstr "Conjunto de etiquetas"
+
 #~ msgid "Survey ID"
 #~ msgstr "ID do inquérito"
+
 #~ msgid "Full Responses"
 #~ msgstr "Respostas completas"
+
 #~ msgid "Partial Responses"
 #~ msgstr "Respostas parciais"
+
 #~ msgid "Total Responses"
 #~ msgstr "Total de respostas"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:73
 #~ msgid "Closed-access"
 #~ msgstr "Acesso restrito"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:77
 #~ msgid "Open-access"
 #~ msgstr "Acesso livre"
+
 #~ msgid "You need to choose a label set for this question!"
 #~ msgstr "Precisa de seleccionar um conjunto de etiquetas para esta pergunta!"
+
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Editar/Adicionar conjuntos de etiquetas"
+
 #~ msgid "Second Label Set"
 #~ msgstr "Conjuntos de Etiquetas Secundário"
+
 #~ msgid "You need to choose a second label set for this question!"
 #~ msgstr ""
 #~ "Precisa de seleccionar um conjunto de etiquetas secundário para esta "
 #~ "pergunta!"
+
 #~ msgid "Edit/Add second Label Sets"
 #~ msgstr "Editar/Adicionar segundo conjunto de etiquetas"
+
 #~ msgid "Move answer option up"
 #~ msgstr "Mover opção da resposta para cima"
+
 #~ msgid "Move answer option down"
 #~ msgstr "Mover opção da resposta para baixo"
+
 #~ msgid "Select CSV/SQL File:"
 #~ msgstr "Seleccione ficheiro CSV/SQL:"
+
 #~ msgid "Question could not be deleted"
 #~ msgstr "Não foi possível apagar a pergunta"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:649
 #~ msgid ""
 #~ "Error adding answer: You can't use the same answer code more than once."
 #~ msgstr ""
 #~ "Erro ao adicionar resposta: Não pode utilizar o mesmo código de resposta "
 #~ "mais de uma vez."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:580
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:588
 #~ msgid "Failed to insert answer"
 #~ msgstr "Inserção de resposta falhou"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:592
 #~ msgid "Invalid or empty answer code supplied"
 #~ msgstr "Código de resposta fornecido inválido ou vazio"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:707
 #~ msgid "Failed to make answer not default"
 #~ msgstr "Tornar resposta como não sendo por omissão falhou"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:721
 #~ msgid "Failed to make answer default"
 #~ msgstr "Tornar resposta por omissão falhou"
+
 #~ msgid "No LID has been provided. Cannot dump label set."
 #~ msgstr ""
 #~ "Não foi indicado o LID. Não é possível exportar o conjunto de etiquetas."
+
 #~ msgid "Return to Labels Admin"
 #~ msgstr "Voltar para a administração de etiquetas"
+
 #~ msgid "Label set:"
 #~ msgstr "Conjunto de etiquetas:"
+
 #~ msgid "Second Label Set:"
 #~ msgstr "Conjunto de etiquetas secundárias:"
+
 #~ msgid "Copy Answers?"
 #~ msgstr "Copiar respostas?"
+
 #~ msgid "Copy Attributes?"
 #~ msgstr "Copiar atributos?"
+
 #~ msgid "Select CSV File"
 #~ msgstr "Seleccione ficheiro CSV"
+
 #~ msgid "Save Settings"
 #~ msgstr "Gravar configurações"
+
 #~ msgid "(Sent by email)"
 #~ msgstr "(Enviado por email)"
+
 #~ msgid "No SID (Survey) has been provided. Cannot import group."
 #~ msgstr ""
 #~ "Não foi indicado um SID (inquérito). Não foi possível importar o grupo."
+
 #~ msgid "Reading file..."
 #~ msgstr "A ler ficheiro..."
+
 #~ msgid "This file is not a LimeSurvey group file. Import failed."
 #~ msgstr "Este ficheiro não é de um grupo LimeSurvey. A importação falhou."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:566
 #~ msgid "Import partially successful."
 #~ msgstr "Importação parcialmente bem sucedida."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:567
 #~ msgid ""
 #~ "The following languages in this group were not imported since the survey "
@@ -11873,16 +11913,22 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "Os seguintes idiomas neste grupo não foram importados, porque o inquérito "
 #~ "não contém estes idiomas: "
+
 #~ msgid "Group Import Summary"
 #~ msgstr "Resumo da importação do grupo"
+
 #~ msgid "Groups:"
 #~ msgstr "Grupos:"
+
 #~ msgid "Question Attributes: "
 #~ msgstr "Atributos da pergunta: "
+
 #~ msgid "Import of group is completed."
 #~ msgstr "Importação do grupo concluída."
+
 #~ msgid "Go to group"
 #~ msgstr "Ir para o grupo"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:742
 #~ msgid ""
 #~ "Question \"%s - %s\" was NOT imported because the question type is "
@@ -11890,6 +11936,7 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "A pergunta \"%s - %s\" NÃO foi importada porque o tipo da pergunta é "
 #~ "desconhecido."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:748
 #~ msgid ""
 #~ "Question \"%s - %s\" was imported but the type was set to '%s' because it "
@@ -11897,10 +11944,13 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "A pergunta \"%s - %s\" foi importada, mas o tipo foi alterado para '%s' "
 #~ "porque é o mais semelhante."
+
 #~ msgid "Condition for %d skipped (%d does not exist)"
 #~ msgstr "A condição para %d foi ignorada (%d não existe)"
+
 #~ msgid "No QID has been provided. Cannot dump question."
 #~ msgstr "Não foi indicado um QID. Não é possível exportar a pergunta."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:143
 #~ msgid ""
 #~ "The labelset used in this question does not exists or is missing a "
@@ -11908,11 +11958,14 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "O conjunto de etiquetas utilizado nesta pergunta não existe ou não está "
 #~ "traduzido."
+
 #~ msgid "Add or remove answers to Multiple Answer questions"
 #~ msgstr "Adicionar ou remover respostas a perguntas de Resposta Múltipla"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:242
 #~ msgid "Edit (change) your group names"
 #~ msgstr "Editar (alterar) os nomes dos grupos"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:242
 #~ msgid ""
 #~ "Add, Remove or Edit pre-defined question answers (except for Multi-answer "
@@ -11920,14 +11973,17 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "Adicionar, remover ou editar as respostas a perguntas pré-definidas "
 #~ "(excepto para perguntas de resposta múltipla)"
+
 #~ msgid "Add new label set"
 #~ msgstr "Adicionar novo conjunto de etiquetas"
+
 #~ msgid ""
 #~ "You cannot change codes, add or delete entries in this label set because "
 #~ "it is being used by an active survey."
 #~ msgstr ""
 #~ "Não pode mudar os códigos, adicionar ou apagar entradas neste conjunto de "
 #~ "etiquetas porque estão a ser utilizadas por um inquérito activo."
+
 #~ msgid ""
 #~ "Some surveys currently use this label set. Modifying the codes, adding or "
 #~ "deleting entries to this label set may produce undesired results in other "
@@ -11936,16 +11992,20 @@ msgstr "Você já completou este inquérito."
 #~ "Alguns inquéritos estão a utilizar este conjunto de etiquetas. Modificar "
 #~ "os códigos, adicionar ou apagar entradas neste conjunto de etiquetas "
 #~ "poderá produzir resultados indesejados."
+
 #~ msgid ""
 #~ "Couldn't Delete Label Set - There are questions that rely on this. You "
 #~ "must delete these questions first."
 #~ msgstr ""
 #~ "Não foi possível apagar o conjunto de etiquetas - Existem perguntas que "
 #~ "dependem delas. Deve apagar estas perguntas primeiro."
+
 #~ msgid "Insert of Label Set failed"
 #~ msgstr "Falha na inserção de conjunto de etiquetas"
+
 #~ msgid "Clear token invites"
 #~ msgstr "Limpar códigos de convites"
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, not having been sent "
@@ -11955,16 +12015,22 @@ msgstr "Você já completou este inquérito."
 #~ "Não houve emails ilegíveis para enviar. Isto deve-se ao facto de nenhum "
 #~ "satisfazer os critérios de - ter um endereço de email, ainda não ter sido "
 #~ "enviado um convite, tendo já completado o inquérito e possuindo um código."
+
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Terminar no código ID:"
+
 #~ msgid "Delete token"
 #~ msgstr "Apagar código"
+
 #~ msgid "Save attribute descriptions"
 #~ msgstr "Gravar descrições dos atributos"
+
 #~ msgid "Added New Token"
 #~ msgstr "Novo Código Adicionado"
+
 #~ msgid "Other text"
 #~ msgstr "Outro texto"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:2585
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:2692
 #~ msgid ""
@@ -11973,168 +12039,236 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "Erro: o conjunto de etiquetas utilizado nesta pergunta não está "
 #~ "disponível neste idioma e/ou não existe."
+
 #~ msgid "Create or Import New Survey"
 #~ msgstr "Criar ou importar novo inquérito"
+
 #~ msgid "Array (Flexible Labels) by Column"
 #~ msgstr "Grelha (Etiquetas Flexíveis) por Coluna"
+
 #~ msgid "List (Flexible Labels) (Dropdown)"
 #~ msgstr "Lista de Selecção (Etiquetas Flexíveis) (´Dropdown´)"
+
 #~ msgid "List (Flexible Labels) (Radio)"
 #~ msgstr "Lista (Etiquetas Flexíveis) (Rádio)"
+
 #~ msgid "Array (Multi Flexible) (Text)"
 #~ msgstr "Grelha (Etiquetas Flexíveis) (Texto)"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:140
 #~ msgid "Preset"
 #~ msgstr "Definição prévia"
+
 #~ msgid "Message to display when time limit has expired"
 #~ msgstr "Mensagem a mostrar quando expira o tempo limite"
+
 #~ msgid "How long to display the time limit expiry message (in seconds)"
 #~ msgstr ""
 #~ "Durante quanto tempo mostrar a mensagem de expiração de tempo (em "
 #~ "segundos)"
+
 #~ msgid ""
 #~ "Time until time limit expiry when time limit warning message is displayed "
 #~ "(in seconds)"
 #~ msgstr ""
 #~ "Tempo até ao termo do tempo limite quando a mensagem de aviso do tempo "
 #~ "limite é exibida (em segundos)"
+
 #~ msgid "How long the time limit warning message will display (in seconds)"
 #~ msgstr ""
 #~ "Durante quanto tempo será exibida a mensagem de aviso do tempo limite (em "
 #~ "segundos)"
+
 #~ msgid "Message to display warning that time limit is about to expire"
 #~ msgstr ""
 #~ "Mensagem para apresentar o aviso de que o tempo limite está prestes a "
 #~ "expirar "
+
 #~ msgid "Field summary for"
 #~ msgstr "Campo de sumário para"
+
 #~ msgid "Non completed"
 #~ msgstr "Não completo"
+
 #~ msgid "Import Group"
 #~ msgstr "Importar grupo"
+
 #~ msgid "You need to add groups"
 #~ msgstr "Tem de adicionar grupos"
+
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(Este campo é obrigatório.)"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:94
 #~ msgid "Logging in..."
 #~ msgstr "A iniciar sessão..."
+
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Bem-vindo(a) {NAME}"
+
 #~ msgid "Survey Submitted"
 #~ msgstr "Inquérito submetido"
+
 #~ msgid "Condition"
 #~ msgstr "Condição"
+
 #~ msgid "Export result to a SPSS/PASW command file"
 #~ msgstr "Exportar resultado para um ficheiro de comandos SPSS/PASW"
+
 #~ msgid ""
 #~ "Excludes all other options if a certain answer is selected - just enter "
 #~ "the answer code."
 #~ msgstr ""
 #~ "Exclui todas as outras opções se uma determinada resposta é seleccionada "
 #~ "- basta digitar o código de resposta."
+
 #~ msgid "Survey Saved"
 #~ msgstr "Inquérito gravado"
+
 #~ msgid ""
 #~ "You've selected the \"other\" answer for question \"%s\". Please also "
 #~ "fill in the accompanying \"other comment\" field."
 #~ msgstr ""
 #~ "Você seleccionou a \"outra\" resposta para a pergunta \"%s\". Por favor, "
 #~ "preencha também o campo \"outro comentário\"."
+
 #~ msgid "Don't consider NON completed responses"
 #~ msgstr "Não considerar respostas incompletas"
+
 #~ msgid "Show start.."
 #~ msgstr "Mostrar início..."
+
 #~ msgid "to question {QUESTION}, you answered {ANSWER}"
 #~ msgstr "para a pergunta {QUESTION}, a sua resposta foi {ANSWER}"
+
 #~ msgid "Delete this user group"
 #~ msgstr "Apagar este grupo do utilizador"
+
 #~ msgid "You can update manually or use the %s"
 #~ msgstr "Pode actualizar manualmente ou utilizar o %s"
+
 #~ msgid "Deactivated surveys"
 #~ msgstr "Inquéritos desactivados"
+
 #~ msgid "You need to add answers to this question"
 #~ msgstr "Precisa de adicionar respostas a esta pergunta"
+
 #~ msgid "Edit Answers"
 #~ msgstr "Editar respostas"
+
 #~ msgid "New Answer"
 #~ msgstr "Nova resposta"
+
 #~ msgid "Add new Answer"
 #~ msgstr "Adicionar uma resposta nova"
+
 #~ msgid "answers:"
 #~ msgstr "respostas:"
+
 #~ msgid "Predefined answers for this question"
 #~ msgstr "Respostas pré-definidas para esta pergunta"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:65
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:194
 #~ msgid "Your data:"
 #~ msgstr "Os seus dados:"
+
 #~ msgid "Show System Summary"
 #~ msgstr "Mostrar Resumo do Sistema "
+
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr ""
 #~ "Aparentemente faltam algumas tabelas ou campos na sua base de dados."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Verifique Campos da Base de Dados"
+
 #~ msgid "Return to Survey Administration"
 #~ msgstr "Voltar à Administração do inquérito"
+
 #~ msgid "Export results to a SPSS command file"
 #~ msgstr "Exportar resultado para um ficheiro de comandos SPSS"
+
 #~ msgid "Filter an array's answers from a Multiple Options Question"
 #~ msgstr "Filtrar uma matriz de respostas de perguntas de Resposta Múltipla"
+
 #~ msgid "Number of columns to display"
 #~ msgstr "Número de colunas a mostrar"
+
 #~ msgid "Step value for array (multi-flexible) question type"
 #~ msgstr ""
 #~ "Valor de intervalo para o tipo de pergunta de Grelha (Etiquetas Flexíveis)"
+
 #~ msgid "\"Other\" caption"
 #~ msgstr "Etiqueta \"Outro\""
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:164
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:322
 #~ msgid "Date is not valid!"
 #~ msgstr "A data não é valida!"
+
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Favor completar todos os campos da data"
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Formato: AAAA-MM-DD"
+
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(p.ex: 2005-12-25 para Dia de Natal)"
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "Escolha uma das seguintes opções"
+
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Clique num item da lista da esquerda, começando pelo"
+
 #~ msgid "%d responses for this survey"
 #~ msgstr "%d respostas a este inquérito"
+
 #~ msgid "%d full responses"
 #~ msgstr "%d respostas completas"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:654
 #~ msgid "%d responses not completely filled out"
 #~ msgstr "%d respostas não estão totalmente preenchidas"
+
 #~ msgid "Always display this condition"
 #~ msgstr "Mostrar sempre esta condição"
+
 #~ msgid "Advanced"
 #~ msgstr "Avançado"
+
 #~ msgid "Save All"
 #~ msgstr "Guardar Tudo"
+
 #~ msgid "Export responses"
 #~ msgstr "Exportar respostas"
+
 #~ msgid "Columns"
 #~ msgstr "Colunas"
+
 #~ msgid "Include"
 #~ msgstr "Incluir"
+
 #~ msgid "from"
 #~ msgstr "de"
+
 #~ msgid "Attribute 2"
 #~ msgstr "Atributo_2"
+
 #~ msgid "Export SPSS syntax file"
 #~ msgstr "Exportar ficheiro de sintaxe SPSS"
+
 #~ msgid "Export SPSS data file"
 #~ msgstr "Exportar ficheiro de dados SPSS"
+
 #~ msgid "Attribute_1 from token"
 #~ msgstr "Atributo_1 do código 'Token'"
+
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Atributo_2 do código 'Token'"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/access_denied.php:108
 #, fuzzy
 #~ msgid "Total score for this assessment rule"
@@ -12143,51 +12277,69 @@ msgstr "Você já completou este inquérito."
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1659
 #~ msgid "Answer Privacy"
 #~ msgstr "Privacidade de resposta"
+
 #~ msgid "Anonymous"
 #~ msgstr "Anónimo"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "Não Anónimo"
+
 #~ msgid "This survey is active but expired"
 #~ msgstr "Este inquérito está activo mas expirou"
+
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "Resumo do Sistema do LimeSurvey"
+
 #~ msgid "Current Language"
 #~ msgstr "Idioma Actual"
+
 #~ msgid "Preferred HTML editor mode"
 #~ msgstr "Mode de editor HTML preferido"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:881
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1041
 #~ msgid "disabled"
 #~ msgstr "desactivado"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Activar/Editar Códigos para este inquérito"
+
 #~ msgid ""
 #~ "Adding/editing tokens is not possible because this survey is not "
 #~ "activated."
 #~ msgstr ""
 #~ "Não é possivel acrescentar ou editar códigos Token porque o inquérito não "
 #~ "se encontra activo."
+
 #~ msgid "Edit Current Group"
 #~ msgstr "Modificar grupo selecionado"
+
 #~ msgid "Delete Current Group"
 #~ msgstr "Eliminar grupo selecionado"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:881
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1041
 #~ msgid "Disabled"
 #~ msgstr "Desactivado"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1035
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "Não é possível copiar a pergunta num inquérito Activo"
+
 #~ msgid "Timed start?"
 #~ msgstr "Inicio programado?"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1884
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2125
 #~ msgid "Expires?"
 #~ msgstr "Expira?"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "Utilizar cookies?"
+
 #~ msgid "URL Description:"
 #~ msgstr "Descrição do URL:"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importlabel.php:212
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
@@ -12195,85 +12347,117 @@ msgstr "Você já completou este inquérito."
 #~ msgstr ""
 #~ "Há uma etiqueta em duplicado e por isso este conjunto não pôde ser "
 #~ "importado. Será utilizado o duplicado. "
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
 #~ msgstr ""
 #~ "Importar respostas de um antigo (desactivado)  para um novo inquérito. "
+
 #~ msgid "Fix Order"
 #~ msgstr "Ordem de correcção"
+
 #~ msgid "Fix Sort"
 #~ msgstr "Corrigir Ordem"
+
 #~ msgid "if you answered"
 #~ msgstr "Se respondeu"
+
 #~ msgid "if you have NOT answered"
 #~ msgstr "Se NÃO respondeu"
+
 #~ msgid "Only answer this question %s"
 #~ msgstr "Apenas responda a esta pergunta %s"
+
 #~ msgid "Group:"
 #~ msgstr "Grupo:"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:857
 #~ msgid "Getting result count ..."
 #~ msgstr "A obter a contagem de resultados..."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:529
 #~ msgid "This template can be modified"
 #~ msgstr "Este modelo pode ser modificado"
+
 #~ msgid "This template cannot be modified"
 #~ msgstr "Este modelo não pode ser modificado"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:549
 #~ msgid "Make a copy of this template"
 #~ msgstr "Fazer uma cópia deste modelo"
+
 #~ msgid "File Control:"
 #~ msgstr "Controle de Ficheiro:"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:587
 #~ msgid "Now editing:"
 #~ msgstr "Em edição:"
+
 #~ msgid "%s %% complete"
 #~ msgstr "%s %% completo"
+
 #~ msgid "Email Invitation"
 #~ msgstr "Enviar e-mail (E-mail)"
+
 #~ msgid "Email Reminder"
 #~ msgstr "Reenviar e-mail (E-mail)"
+
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Adiccionar ou Editar Código Token"
+
 #~ msgid "Update Token"
 #~ msgstr "Actualizar Código"
+
 #~ msgid "Add Token"
 #~ msgstr "Adicionar Código"
+
 #~ msgid "Updated Token"
 #~ msgstr "Código Actualizado"
+
 #~ msgid "Importing CSV File"
 #~ msgstr "Importando Archivo CSV"
+
 #~ msgid "Creating Token Entries"
 #~ msgstr "Criando Entradas de Códigos"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:102
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Já existe o nome de utilizador e/ou o endereço e-mail."
+
 #~ msgid "Modifying User"
 #~ msgstr "Modificando o Usuário"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:397
 #~ msgid "Update user rights successful."
 #~ msgstr "Actualização de direitos de utilizador bem sucedida."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:692
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Filtrar respostas incompletas"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:572
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/exportresults.php:160
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:655
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:73
 #~ msgid "Enable"
 #~ msgstr "Permitir"
+
 #~ msgid "Export Responses"
 #~ msgstr "Exportar respostas"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:69
 #~ msgid "Ignore the new record."
 #~ msgstr "Ignorar o novo registo. "
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Adicionar Novo Conjunto de Etiquetas"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:692
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Filtrar respostas incompletas:"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:572
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/exportresults.php:160
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:655
@@ -12281,17 +12465,20 @@ msgstr "Você já completou este inquérito."
 #, fuzzy
 #~ msgid "Enabled"
 #~ msgstr "Permitir"
+
 #~ msgid ""
 #~ "Don't consider NON completed responses (only works when Filter incomplete "
 #~ "answers is Disable)"
 #~ msgstr ""
 #~ "Não considerar respostas NÃO completas (só funciona quando 'Filtrar "
 #~ "respostas incompletas' está desactivado)"
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr ""
 #~ "Desculpe, mas o função de importar perguntas só pode ser usada em versões "
 #~ "iguais. Importação falhada."
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Editar o inquérito Corrente"
 
@@ -12301,6 +12488,7 @@ msgstr "Você já completou este inquérito."
 #, fuzzy
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Modifique a Ordem dos Grupos"
+
 #~ msgid "Participiants may print answers?"
 #~ msgstr "Participantes podem imprimir as respostas?"
 
@@ -12313,16 +12501,18 @@ msgstr "Você já completou este inquérito."
 #~ "Se criou alguma avaliação nesta página, para o actual inquérito, a "
 #~ "avaliação será feita no final do inquérito, depois de submeter as suas "
 #~ "respostas. "
+
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
 #~ msgstr ""
 #~ "Não foi possível adicionar a resposta. Deve inserir um código no campo "
 #~ "obrigatório (%s)"
+
 #~ msgid "Record ID"
 #~ msgstr "ID de registo"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:193
 #, fuzzy
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Esteve conectado ao site"
-
