@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey  Portuguese language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 18:00+0200\n"
-"PO-Revision-Date: 2010-09-24 17:05+0100\n"
+"PO-Revision-Date: 2010-09-24 18:59+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@gmail.com>\n"
 "Language-Team: trans-pt@lists.fedoraproject.org\n"
 "Language: pt\n"
@@ -909,18 +909,16 @@ msgstr "Todas as respostas"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:99
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:63
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:120
-#, fuzzy
 msgid "Completed responses only"
-msgstr "Apenas registos completos"
+msgstr "Apenas respostas completas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:261
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:538
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:101
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:122
-#, fuzzy
 msgid "Incomplete responses only"
-msgstr "Respostas incompletas:"
+msgstr "Apenas respostas incompletas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:264
 msgid "View summary of all available fields"
@@ -1029,9 +1027,8 @@ msgid "Date (YYYY-MM-DD) equals"
 msgstr "Data (AAAA-MM-DD) é igual a"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:727
-#, fuzzy
 msgid "Date is"
-msgstr "Data"
+msgstr "A data é"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:733
 msgid "AND/OR Date is"
@@ -2251,7 +2248,6 @@ msgid "Reading file.."
 msgstr "A ler ficheiro..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:87
-#, fuzzy
 msgid "Question import summary"
 msgstr "Resumo da importação da pergunta"
 
@@ -2267,13 +2263,11 @@ msgstr "Perguntas secundárias"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:85
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:79
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:138
-#, fuzzy
 msgid "Label sets"
 msgstr "Conjuntos de etiquetas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:95
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:87
-#, fuzzy
 msgid "Question attributes:"
 msgstr "Atributos da pergunta:"
 
@@ -2299,16 +2293,18 @@ msgstr "Este ficheiro é demasiado antigo. Apenas ficheiros do LimeSurvey versã
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:271
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:279
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:322
-#, fuzzy
 msgid "You can't import a question which doesn't support at least the survey base language."
-msgstr "Não pode importar uma pergunta que não suporte o idioma-base do inquérito actual."
+msgstr ""
+"Não pode importar uma pergunta que não suporte pelo menos o idioma base do "
+"inquérito."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:293
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:336
-#, fuzzy
 msgid "You can't import answers which doesn't support at least the survey base language."
-msgstr "Não pode importar um grupo que não suporte o idioma-base do inquérito actual."
+msgstr ""
+"Não pode importar respostas que não suportem pelo menos o idioma base do "
+"inquérito."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importquestion.php:253
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:308
@@ -2550,7 +2546,6 @@ msgstr "Última página vista"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:517
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:518
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2295
-#, fuzzy
 msgid "Start language"
 msgstr "Idioma inicial"
 
@@ -2605,9 +2600,8 @@ msgid "Tokens problem - token table missing"
 msgstr "Problemas com códigos - falta a tabela dos códigos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:45
-#, fuzzy
 msgid "Responses"
-msgstr "ID da resposta"
+msgstr "Respostas"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/exportresults.php:833
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:152
@@ -2627,7 +2621,6 @@ msgid "Survey"
 msgstr "Inquérito"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:52
-#, fuzzy
 msgid "Date created"
 msgstr "Data de criação"
 
@@ -2644,9 +2637,8 @@ msgid "Anonymous answers"
 msgstr "Respostas anónimas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:56
-#, fuzzy
 msgid "Full"
-msgstr "Nome completo"
+msgstr "Completo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:57
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:160
@@ -2676,9 +2668,8 @@ msgid "Closed"
 msgstr "Fechado"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:84
-#, fuzzy
 msgid "Open"
-msgstr "Ligado"
+msgstr "Aberto"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1884
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2125
@@ -2987,7 +2978,6 @@ msgstr "Notificação por email detalhada com códigos do resultado"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:489
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:806
-#, fuzzy
 msgid "Regenerate question codes:"
 msgstr "Recriar os códigos da pergunta:"
 
@@ -3011,7 +3001,6 @@ msgstr "URL do inquérito"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:823
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:830
-#, fuzzy
 msgid "Survey URL for language:"
 msgstr "URL do inquérito para o idioma:"
 
@@ -3136,9 +3125,8 @@ msgid "Impossible to delete this group because there is at least one question ha
 msgstr "Não é possível apagar este grupo porque existe pelo menos uma pergunta contendo uma condição no seu conteúdo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1022
-#, fuzzy
 msgid "Export this question group"
-msgstr "Exportar grupo de perguntas actual"
+msgstr "Exportar este grupo de perguntas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1034
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:611
@@ -3175,12 +3163,12 @@ msgid "Edit Current Question"
 msgstr "Editar pergunta actual"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1187
-#, fuzzy
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
-msgstr "Ao apagar esta pergunta também apagará qualquer resposta que contenha. Tem a certeza que quer continuar?"
+msgstr ""
+"Ao apagar esta pergunta também apagará qualquer resposta que contenha assim "
+"como perguntas secundárias. Tem a certeza que quer continuar?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1188
-#, fuzzy
 msgid "Delete current question"
 msgstr "Apagar pergunta actual"
 
@@ -3190,7 +3178,6 @@ msgid "It's impossible to delete this question because there is at least one que
 msgstr "É impossível apagar esta pergunta porque existe pelo menos uma pergunta contendo uma condição sobre ela."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1196
-#, fuzzy
 msgid "Disabled - Delete current question"
 msgstr "Desactivado - Eliminar pergunta actual"
 
@@ -3212,19 +3199,16 @@ msgid "Set Conditions for this Question"
 msgstr "Definir condições para esta pergunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1253
-#, fuzzy
 msgid "Edit subquestions for this question"
-msgstr "Editar/adicionar opções de resposta para essa pergunta"
+msgstr "Editar perguntas secundárias para essa pergunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1264
-#, fuzzy
 msgid "Edit answer options for this question"
-msgstr "Editar/adicionar opções de resposta para essa pergunta"
+msgstr "Editar opções de resposta para essa pergunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1274
-#, fuzzy
 msgid "Edit default answers for this question"
-msgstr "Editar/Adicionar respostas a esta pergunta"
+msgstr "Editar respostas por omissão para esta pergunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1279
 msgid "Hide Details of this Question"
@@ -3332,9 +3316,8 @@ msgid "Other questions having conditions on this question:"
 msgstr "Outras perguntas com condições nesta pergunta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1393
-#, fuzzy
 msgid "Some example answer option"
-msgstr "Nova opção de resposta"
+msgstr "Alguns exemplos de opções de resposta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1447
 msgid "Edit answer options"
@@ -3355,15 +3338,13 @@ msgstr "Código"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1471
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1669
-#, fuzzy
 msgid "Label set browser"
-msgstr "Conjuntos de etiquetas"
+msgstr "Navegador dos conjuntos de etiquetas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1472
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1670
-#, fuzzy
 msgid "Quick-add subquestions"
-msgstr "Adicionar pergunta"
+msgstr "Adicionar pergunta secundária (rápido)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1473
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1712
@@ -3371,9 +3352,9 @@ msgid "Error: You are trying to use duplicate answer codes."
 msgstr "Erro: Está a tentar utilizar códigos de resposta duplicados."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1489
-#, fuzzy, php-format
+#, php-format
 msgid "Answer scale %s"
-msgstr "Resposta era"
+msgstr "Escala da resposta %s"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:75
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:650
@@ -3407,9 +3388,8 @@ msgstr "Conjuntos de etiquetas disponiveis"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1597
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1840
-#, fuzzy
 msgid "Match language"
-msgstr "Idioma base"
+msgstr "Corresponder idioma"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1598
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1606
@@ -3435,23 +3415,21 @@ msgstr "Insira as questões secundárias"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1611
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1853
-#, fuzzy
 msgid "Save changes"
-msgstr "Guardar alterações"
+msgstr "Gravar alterações"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1640
 msgid "Some example subquestion"
 msgstr "Exemplos de perguntas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1671
-#, fuzzy
 msgid "Error: You are trying to use duplicate subquestion codes."
-msgstr "Erro: Está a tentar utilizar códigos de etiquetas duplicados."
+msgstr ""
+"Erro: Está a tentar utilizar códigos de perguntas secundárias duplicados."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1710
-#, fuzzy
 msgid "Edit subquestions"
-msgstr "Editar pergunta"
+msgstr "Editar perguntas secundárias"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1712
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:290
@@ -3459,28 +3437,26 @@ msgid "Error: 'other' is a reserved keyword."
 msgstr "Erro: 'Other'/'Outro' são palavras reservadas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1745
-#, fuzzy
 msgid "Y-Scale"
-msgstr "Escala"
+msgstr "Escala-Y"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1749
-#, fuzzy
 msgid "X-Scale"
-msgstr "Escala"
+msgstr "Escala-X"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1759
 msgid "Subquestion"
 msgstr "Pergunta secundária"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1807
-#, fuzzy
 msgid "Subquestion:"
-msgstr "Pergunta:"
+msgstr "Pergunta secundária:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1859
-#, fuzzy
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
-msgstr "Não pode adicionar respostas ou editar códigos para este tipo de pergunta porque o inquérito está activo."
+msgstr ""
+"Não pode adicionar/remover perguntas secundárias ou editar os respectivos "
+"códigos porque o inquérito está activo."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1877
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2302
@@ -3674,26 +3650,22 @@ msgid "Export To File"
 msgstr "Exportar para ficheiro"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2182
-#, fuzzy
 msgid "Export group structure"
 msgstr "Exportar estrutura do grupo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2188
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2235
-#, fuzzy
 msgid "LimeSurvey group file (*.csv)"
-msgstr "Ficheiro de grupos LimeSurvey (*.csv)"
+msgstr "Ficheiro de grupo LimeSurvey (*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2211
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2258
-#, fuzzy
 msgid "Export to file"
 msgstr "Exportar para ficheiro"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2229
-#, fuzzy
 msgid "Export question structure"
-msgstr "Exportar estrutura das perguntas"
+msgstr "Exportar estrutura de perguntas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2279
 msgid "Survey Security"
@@ -3795,9 +3767,8 @@ msgid "Template Preview:"
 msgstr "Pré-visualizar modelo:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2606
-#, fuzzy
 msgid "Template preview image"
-msgstr "Pré-visualizar modelo:"
+msgstr "Imagem de pré-visualização do modelo"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1672
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2032
@@ -4098,9 +4069,8 @@ msgid "Date format:"
 msgstr "Formato da data:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3133
-#, fuzzy
 msgid "Create, import or copy survey"
-msgstr "Criar ou importar inquérito"
+msgstr "Criar, importar ou copiar inquérito"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3142
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3195
@@ -4148,7 +4118,6 @@ msgstr "Data de expiração:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3454
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3463
-#, fuzzy
 msgid "Import survey"
 msgstr "Importar inquérito"
 
@@ -4158,7 +4127,6 @@ msgstr "Seleccione o ficheiro de saída do inquérito (*.lss, *.csv):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3461
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3481
-#, fuzzy
 msgid "Convert resource links and INSERTANS fields?"
 msgstr "Converter os endereços de recursos e campos INSERTANS?"
 
@@ -4178,20 +4146,17 @@ msgstr "Novo titulo do inquérito:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:64
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3483
-#, fuzzy
 msgid "Exclude quotas?"
-msgstr "Excluir IDs dos registos?"
+msgstr "Excluir quotas?"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:64
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3485
-#, fuzzy
 msgid "Exclude answers?"
-msgstr "Excluir IDs dos registos?"
+msgstr "Excluir respostas?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3487
-#, fuzzy
 msgid "Reset conditions?"
-msgstr "Ver condições:"
+msgstr "Redefinir condições?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3535
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
@@ -4248,7 +4213,6 @@ msgid "Backup Entire Database"
 msgstr "Efectuar uma cópia de segurança de toda a Base de Dados"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3604
-#, fuzzy
 msgid "Edit label sets"
 msgstr "Editar conjunto de etiquetas"
 
@@ -4271,9 +4235,8 @@ msgid "Surveys"
 msgstr "inquéritos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3626
-#, fuzzy
 msgid "Create, import, or copy a survey"
-msgstr "Criar ou importar inquérito"
+msgstr "Criar, importar ou copiar um inquérito"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:291
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:293
@@ -4311,7 +4274,6 @@ msgid "Create a new question group inside your survey."
 msgstr "Crie um novo grupo de perguntas dentro do seu inquérito."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3653
-#, fuzzy
 msgid "Create one or more questions inside the new question group."
 msgstr "Crie uma ou mais perguntas dentro do novo grupo de perguntas."
 
@@ -4365,7 +4327,11 @@ msgstr "Não foi possível criar a pergunta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:510
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr "Não foi possível actualizar a pergunta. Existem condições noutras perguntas que dependem das respostas dadas a esta pergunta e alterando o tipo pode causar problemas. Tem de apagar estas condições antes de poder mudar o tipo da pergunta."
+msgstr ""
+"Não foi possível actualizar a pergunta. Existem condições noutras perguntas "
+"que dependem das respostas dadas a esta pergunta e alterando o tipo pode "
+"causar problemas. Tem de apagar estas condições antes de poder mudar o tipo "
+"da pergunta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:593
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:660
@@ -4416,7 +4382,9 @@ msgstr "Actualização de respostas falhou"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:659
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:910
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
-msgstr "Não são permitidas e não serão gravadas respostas com código 0 (zero) ou em branco"
+msgstr ""
+"Não são permitidas e não serão gravadas respostas com código 0 (zero) ou em "
+"branco"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:660
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:911
@@ -4575,9 +4543,11 @@ msgid ""
 msgstr ""
 "Caro(a) {FIRSTNAME},\n"
 "\n"
-"Este email confirma que completou o inquérito intitulado {SURVEYNAME} e que as suas respostas foram gravadas. Agradecemos a sua participação.\n"
+"Este email confirma que completou o inquérito intitulado {SURVEYNAME} e que "
+"as suas respostas foram gravadas. Agradecemos a sua participação.\n"
 "\n"
-"Se tiver outras perguntas relacionadas com este email, por favor, contacte {ADMINNAME} através do endereço electrónico {ADMINEMAIL}.\n"
+"Se tiver outras perguntas relacionadas com este email, por favor, contacte "
+"{ADMINNAME} através do endereço electrónico {ADMINEMAIL}.\n"
 "\n"
 "Com os melhores cumprimentos,\n"
 "\n"
@@ -4663,7 +4633,6 @@ msgid "Warnings"
 msgstr "Avisos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:64
-#, fuzzy
 msgid "Label set import summary"
 msgstr "Resumo da importação do conjunto de etiquetas"
 
@@ -4673,9 +4642,8 @@ msgid "Labels"
 msgstr "Etiquetas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:67
-#, fuzzy
 msgid "Import of label set(s) is completed."
-msgstr "Está completa a importação do conjunto de etiquetas."
+msgstr "Importação do conjunto de etiquetas concluída."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:68
 msgid "Return to label set administration"
@@ -4689,7 +4657,9 @@ msgstr "Este ficheiro não é de um conjunto de etiquetas LimeSurvey. A importa�
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:337
 #, fuzzy
 msgid "Label set was not imported because the same label set already exists."
-msgstr "O conjunto de etiquetas não foi importado porque o mesmo conjunto de etiquetas já existe."
+msgstr ""
+"O conjunto de etiquetas não foi importado porque o mesmo conjunto de "
+"etiquetas já existe."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:232
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:337
@@ -5623,7 +5593,7 @@ msgstr "EUC-KR Coreano"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:74
 msgid "GB2312 Simplified Chinese"
-msgstr "GB2313 Chinês Simplificado"
+msgstr "GB2312 Chinês Simplificado"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1636
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:38
@@ -6470,7 +6440,9 @@ msgstr "Num modelo standard as alterações não podem ser gravadas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:971
 msgid "You can't save changes because the template directory is not writable."
-msgstr "Você não pode gravar as alterações, porque não tem permissão de escrita no directório de modelos."
+msgstr ""
+"Você não pode gravar as alterações, porque não tem permissão de escrita no "
+"directório de modelos."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:975
 msgid "Other Files:"
@@ -7570,7 +7542,9 @@ msgstr "Criar códigos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1826
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
-msgstr "Clicando em 'Sim' irá gerar códigos para todos nesta lista de códigos que ainda não tenham um. Está correcto?"
+msgstr ""
+"Clicando em 'Sim' irá gerar códigos para todos nesta lista de códigos que "
+"ainda não tenham um. Está correcto?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1875
 msgid "{TOKENCOUNT} tokens have been created"
@@ -11322,7 +11296,9 @@ msgstr "Etiqueta para a opção 'Outro:'"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3825
 msgid "Insert a page break before this question in printable view by setting this to Yes."
-msgstr "Inserir uma quebra de página antes desta pergunta no modo de vista de impressão definindo isto para Sim."
+msgstr ""
+"Inserir uma quebra de página antes desta pergunta no modo de vista de "
+"impressão definindo isto para Sim."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3826
 msgid "Insert page break in printable view"
