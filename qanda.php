@@ -1734,7 +1734,7 @@ function do_language($ia)
     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
     $answer = "\n\t<p class=\"question\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
-    if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose')."..</option>\n";}
+    if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
         $answer .= "\t<option value=\"{$ansrow}\"";
@@ -1901,7 +1901,7 @@ function do_list_dropdown($ia)
 
     if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
     {
-        $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose').'...</option>'."\n".$answer;
+        $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
     }
 
     if (isset($other) && $other=='Y')
@@ -5921,7 +5921,7 @@ function do_array_multiflexi($ia)
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                         . html_escape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
-                        . "<option value=\"\">...</option>\n";
+                        . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
                         for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
                             $answer .= "<option value=\"$ii\"";
@@ -6704,7 +6704,7 @@ function do_array_dual($ia)
 
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
                 {
-                    $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
+                    $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                 }
 
                 foreach ($labels0 as $lrow)
@@ -6758,7 +6758,7 @@ function do_array_dual($ia)
 
                 if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] =='')
                 {
-                    $answer .= "\t<option value=\"\"".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
+                    $answer .= "\t<option value=\"\"".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                 }
 
                 foreach ($labels1 as $lrow1)
