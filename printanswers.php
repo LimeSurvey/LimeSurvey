@@ -112,9 +112,20 @@ $clang = $_SESSION['s_lang'];
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run this script directly");}
 
-// Set language for questions and labels to base language of this survey
-$language = GetBaseLanguageFromSurveyID($surveyid);
-$thissurvey = getSurveyInfo($surveyid);
+// Set the language for dispay
+require_once($rootdir.'/classes/core/language.php');  // has been secured
+if (isset($_SESSION['s_lang']))
+{
+    $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+    $language = $_SESSION['s_lang'];
+} else {
+    $language = GetBaseLanguageFromSurveyID($surveyid);
+    $clang = SetSurveyLanguage( $surveyid, $language);
+}
+
+// Get the survey inforamtion
+$thissurvey = getSurveyInfo($surveyid,$language);
+
 //SET THE TEMPLATE DIRECTORY
 if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
 {
@@ -148,16 +159,6 @@ if ($actcount > 0)
 
 
 //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
-
-require_once($rootdir.'/classes/core/language.php');  // has been secured
-if (isset($_SESSION['s_lang']))
-{
-    $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
-    $language = $_SESSION['s_lang'];
-} else {
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $clang = SetSurveyLanguage( $surveyid, $baselang);
-}
 	//SHOW HEADER
     $printoutput = '';
     if(isset($usepdfexport) && $usepdfexport == 1)
