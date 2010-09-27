@@ -207,6 +207,8 @@ unset ($fnames['startdate']);
             if ($oldgid !== $fname['gid']) {
                 $oldgid = $fname['gid'];
                 $printoutput .= "\t<tr><td colspan='2'>{$fname['group_name']}</td></tr>\n";
+				$pdf->intopdf(FlattenText($fname['group_name'],true));
+                $pdf->ln(2);
             }
         }
         if (isset($fname['qid']) && !empty($fname['qid'])) {
@@ -214,7 +216,9 @@ unset ($fnames['startdate']);
             if ($oldqid !== $fname['qid']) {
                 $oldqid = $fname['qid'];
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
-                    $printoutput .= "\t<tr><td>{$fname['question']}</td></tr>\n";                    
+                    $printoutput .= "\t<tr><td>{$fname['question']}</td></tr>\n";
+				$pdf->intopdf(FlattenText($fname['question'],true));
+                $pdf->ln(2);
                 }
             }
         }
