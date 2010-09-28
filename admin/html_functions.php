@@ -53,7 +53,7 @@ function browsemenubar($title='')
         $browsemenubar .="<div class=\"langpopup\" id=\"browselangpopup\">".$clang->gT("Please select a language:")."<ul>";
         foreach ($tmp_survlangs as $tmp_lang)
         {
-            $browsemenubar .= "<li><a href=\"{$scriptname}?action=browse&amp;sid={$surveyid}&amp;subaction=all&amp;browselang={$tmp_lang}\" accesskey='b'>".getLanguageNameFromCode($tmp_lang,false)."</li>";
+            $browsemenubar .= "<li><a href=\"{$scriptname}?action=browse&amp;sid={$surveyid}&amp;subaction=all&amp;browselang={$tmp_lang}\" accesskey='b'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
         }
         $browsemenubar .= "</ul></div>";
     }

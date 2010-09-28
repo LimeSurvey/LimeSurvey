@@ -414,13 +414,13 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('"
             . $publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang', '_blank')\" title=\"".$icontext2."\" >"
-            . "<img src='$imagefiles/do.png' name='DoSurvey' alt='$icontext' />"
+            . "<img src='$imagefiles/do.png' alt='$icontext' />"
             . "</a>\n";
 
         } else {
             $surveysummary .= "<a href='#' id='dosurvey' class='dosurvey'"
             . "title=\"".$icontext2."\" accesskey='d'>"
-            . "<img  src='$imagefiles/do.png' name='DoSurvey' alt='$icontext' />"
+            . "<img  src='$imagefiles/do.png' alt='$icontext' />"
             . "</a>\n";
 
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -488,7 +488,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .="<div class=\"langpopup\" id=\"doprintablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_blank' onclick=\"$('#doprintable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</li>";
+                $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_blank' onclick=\"$('#doprintable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
             $surveysummary .= "</ul></div>";
 
@@ -634,7 +634,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         } else {
             $surveysummary .= "<a href=\"#\" class='dosurvey' "
             . "title=\"".$icontext2."\" accesskey='d'>"
-            . "<img  src='$imagefiles/do.png' name='DoSurvey2' alt='$icontext' />"
+            . "<img  src='$imagefiles/do.png' alt='$icontext' />"
             . "</a>\n";
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
@@ -1144,7 +1144,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
                 $surveysummary .="<div class=\"langpopup\" id=\"previewquestionpopup\">".$clang->gT("Please select a language:")."<ul>";
                 foreach ($tmp_survlangs as $tmp_lang)
                 {
-                    $surveysummary .= "<li><a target='_blank' onclick=\"$('#previewquestion').qtip('hide');\" href='{$scriptname}?action=previewquestion&amp;sid={$surveyid}&amp;qid={$qid}&amp;lang={$tmp_lang}' accesskey='d'>".getLanguageNameFromCode($tmp_lang,false)."</li>";
+                    $surveysummary .= "<li><a target='_blank' onclick=\"$('#previewquestion').qtip('hide');\" href='{$scriptname}?action=previewquestion&amp;sid={$surveyid}&amp;qid={$qid}&amp;lang={$tmp_lang}' accesskey='d'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
                 }
                 $surveysummary .= "</ul></div>";
             }
