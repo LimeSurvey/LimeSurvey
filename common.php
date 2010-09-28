@@ -7133,6 +7133,7 @@ function GetTokenConditionsFieldNames($surveyid)
  * Retrieves the attribute names from the related token table
  *
  * @param mixed $surveyid  The survey ID
+ * @param boolean $onlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
  * @return array The fieldnames as key and names as value in an Array
  */
 function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
