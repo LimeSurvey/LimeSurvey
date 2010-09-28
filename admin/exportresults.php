@@ -344,6 +344,7 @@ if (isset($_POST['colselect']))
     $selectfields="";
     foreach($_POST['colselect'] as $cs)
     {
+        if (!isset($fieldmap[$cs]) && $cs != 'completed') continue; // skip invalid field names to prevent SQL injection
         if ($tokenTableExists && $cs == 'token')
         {
             // We shouldnt include the token field when we are joining with the token field    
