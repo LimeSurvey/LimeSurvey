@@ -287,6 +287,10 @@ if(isset($_SESSION['loginID']))
         if(bHasRight($surveyid,'browse_response') && bHasRight($surveyid,'activate_survey'))    {include('iterate_survey.php');}
         else { include('access_denied.php');}
     }
+    elseif ($action=='showquexmlsurvey')
+    {
+        include('quexmlsurvey.php'); //Same rights as printable
+    }
     elseif ($action=='showprintablesurvey')
     {
         include('printablesurvey.php'); //No special right needed to show the printable survey

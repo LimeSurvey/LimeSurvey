@@ -1615,7 +1615,7 @@ if (isset($summary) && $summary)
             $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
             break;
         case 'pdf':
-            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
             break;
         case 'xls':
             generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);

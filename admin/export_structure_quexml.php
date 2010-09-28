@@ -21,6 +21,12 @@ include_once("login_check.php");
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
+if (isset($surveyprintlang) && !empty($surveyprintlang))
+	$quexmllang = $surveyprintlang;
+else
+	$quexmllang=GetBaseLanguageFromSurveyID($surveyid);
+
+
 if (!$surveyid)
 {
     echo $htmlheader
@@ -104,12 +110,13 @@ function create_fixed($qlid,$rotate=false,$labels=true,$scale=0)
 {
     global $dom;
     global $connect ;
-    global $dbprefix ;
+    global $dbprefix ; 
+    global $quexmllang;
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
     if ($labels)
-    $Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $qlid ORDER BY sortorder ASC";
+    $Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $qlid  AND language='$quexmllang' ORDER BY sortorder ASC";
     else
-    $Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid AND scale_id = $scale ORDER BY sortorder ASC";
+    $Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
     $QueryResult = db_execute_assoc($Query);
 
     $fixed = $dom->create_element("fixed");
@@ -147,7 +154,7 @@ function get_length($qid,$attribute,$default)
     $QueryResult = db_execute_assoc($Query);
 
     $Row = $QueryResult->FetchRow();
-    if ($Row)
+    if ($Row && !empty($Row['value']))
     return $Row['value'];
     else
     return $default;
@@ -155,36 +162,46 @@ function get_length($qid,$attribute,$default)
 }
 
 
-function create_multi(&$question,$qid,$varname)
+function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false)
 {
     global $dom;
     global $dbprefix;
     global $connect ;
+    global $quexmllang ;
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
-    $Query = "SELECT * FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
+    $Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid  AND language='$quexmllang' ";
+    if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
+    $Query .= " ORDER BY question_order ASC";
     //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
     $QueryResult = db_execute_assoc($Query);
 
     while ($Row = $QueryResult->FetchRow())
     {
         $response = $dom->create_element("response");
-        $fixed = $dom->create_element("fixed");
-        $category = $dom->create_element("category");
-         
-        $label = $dom->create_element("label");
-        $label->set_content(cleanup($Row['answer']));
+	if ($free == false)
+	{
+	        $fixed = $dom->create_element("fixed");
+	        $category = $dom->create_element("category");
+	         
+	        $label = $dom->create_element("label");
+	        $label->set_content(cleanup($Row['question']));
+	
+	        $value= $dom->create_element("value");
+	        //$value->set_content(cleanup($Row['title']));
+		$value->set_content("1");
+	         
+	        $category->append_child($label);
+	        $category->append_child($value);
+	
+	        $fixed->append_child($category);
+	         
+	        $response->append_child($fixed);
+	}
+	else
+		$response->append_child(create_free($free['f'],$free['len'],$Row['question']));
 
-        $value= $dom->create_element("value");
-        $value->set_content(cleanup($Row['code']));
-         
-        $category->append_child($label);
-        $category->append_child($value);
-
-        $fixed->append_child($category);
-         
-        $response->append_child($fixed);
-        $response->set_attribute("varName",$varname . "_" . cleanup($Row['code']));
+        $response->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
          
         $question->append_child($response);
     }
@@ -193,13 +210,17 @@ function create_multi(&$question,$qid,$varname)
 
 }
 
-function create_subQuestions(&$question,$qid,$varname)
+function create_subQuestions(&$question,$qid,$varname,$use_answers = false)
 {
     global $dom;
     global $dbprefix;
     global $connect ;
+    global $quexmllang ;
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid ORDER BY question_order ASC";
+    if ($use_answers)
+	$Query = "SELECT answer as question, code as title FROM {$dbprefix}answers WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
+    else
+	$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
     $QueryResult = db_execute_assoc($Query);
     while ($Row = $QueryResult->FetchRow())
     {
@@ -225,8 +246,7 @@ $dom = domxml_new_doc("1.0");
 $questionnaire = $dom->create_element("questionnaire");
 $title = $dom->create_element("title");
 
-$baselang=GetBaseLanguageFromSurveyID($surveyid);
-$Query = "SELECT * FROM {$dbprefix}surveys,{$dbprefix}surveys_languagesettings WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$baselang."'";
+$Query = "SELECT * FROM {$dbprefix}surveys,{$dbprefix}surveys_languagesettings WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$quexmllang."'";
 $QueryResult = db_execute_assoc($Query);
 $Row = $QueryResult->FetchRow();
 $questionnaire->set_attribute("id", $Row['sid']);
@@ -262,7 +282,7 @@ if (!empty($Row['surveyls_welcometext']))
 //section == group
 
 
-$Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order ASC";
+$Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND language='$quexmllang' order by group_order ASC";
 $QueryResult = db_execute_assoc($Query);
 
 //for each section
@@ -290,7 +310,7 @@ while ($Row = $QueryResult->FetchRow())
     $section->set_attribute("id", $gid);
 
     //boilerplate questions convert to sectionInfo elements
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X' ORDER BY question_order ASC";
+    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
     $QR = db_execute_assoc($Query);
     while ($RowQ = $QR->FetchRow())
     {
@@ -312,14 +332,13 @@ while ($Row = $QueryResult->FetchRow())
 
 
     //foreach question
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND type NOT LIKE 'X' ORDER BY question_order ASC";
+    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
     $QR = db_execute_assoc($Query);
     while ($RowQ = $QR->FetchRow())
     {
         $question = $dom->create_element("question");
         $type = $RowQ['type'];
         $qid = $RowQ['qid'];
-        $lid = $RowQ['lid'];
 
         $text = $dom->create_element("text");
         $text->set_content(cleanup($RowQ['question']));
@@ -373,13 +392,13 @@ while ($Row = $QueryResult->FetchRow())
                 //no comment - this should be a separate question
                 break;
             case "R": //RANKING STYLE
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $Query = "SELECT LENGTH(COUNT(*)) as sc FROM {$dbprefix}labels WHERE lid = $lid";
+                create_subQuestions(&$question,$qid,$RowQ['title'],true);
+                $Query = "SELECT COUNT(*) as sc FROM {$dbprefix}answers WHERE qid = $qid AND language='$quexmllang' ";
                 $QRE = db_execute_assoc($Query);
                 //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
                 //$QROW = mysql_fetch_assoc($QRE);
                 $QROW = $QRE->FetchRow();
-                $response->append_child(create_free("integer",$QROW['sc'],""));
+                $response->append_child(create_free("integer",strlen($QROW['sc']),""));
                 $question->append_child($response);
                 break;
             case "M": //MULTIPLE OPTIONS checkbox
@@ -409,11 +428,11 @@ while ($Row = $QueryResult->FetchRow())
                 $question->append_child($response);
                 break;
             case "T": //LONG FREE TEXT
-                $response->append_child(create_free("longtext",get_length($qid,"display_rows","1024"),""));
+                $response->append_child(create_free("longtext",get_length($qid,"display_rows","40"),""));
                 $question->append_child($response);
                 break;
             case "U": //HUGE FREE TEXT
-                $response->append_child(create_free("longtext",get_length($qid,"display_rows","2048"),""));
+                $response->append_child(create_free("longtext",get_length($qid,"display_rows","80"),""));
                 $question->append_child($response);
                 break;
             case "Y": //YES/NO radio-buttons
@@ -461,16 +480,32 @@ while ($Row = $QueryResult->FetchRow())
                 create_subQuestions(&$question,$qid,$RowQ['title']);
                 $response = $dom->create_element("response");
                 $response->append_child(create_fixed($qid,false,false)); 
-                $response2 = $dom->create_element("response");
+                $response2 = $dom->create_element("response");  
                 $response2->set_attribute("varName",cleanup($RowQ['title']) . "_2");
                 $response2->append_child(create_fixed($qid,false,false,1));   
                 $question->append_child($response);
-                $question->append_child($response2);
+                $question->append_child($response2);  
                 break;
-            case "^": //SLIDER CONTROL
-            case ":": //multi-flexi array numbers - not supported
-            case ";": //multi-flexi array text - not supported
-                $response->append_child(fixed_array(array("NOT SUPPORTED" => 1)));
+            case ":": //multi-flexi array numbers
+		create_subQuestions(&$question,$qid,$RowQ['title']);
+                //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
+		$mcb  = get_length($qid,'multiflexible_checkbox',-1);
+		if ($mcb != -1)
+			create_multi(&$question,$qid,$RowQ['title'],1);
+		else
+		{
+			//get multiflexible_max - if set then make boxes of max this width
+			$mcm = strlen(get_length($qid,'multiflexible_max',1));
+		 	create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+ 		}
+		break;
+            case ";": //multi-flexi array text
+		create_subQuestions(&$question,$qid,$RowQ['title']);
+		//foreach question where scale_id = 1 this is a textbox
+		create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+		break;
+            case "^": //SLIDER CONTROL - not supported
+                $response->append_child(fixed_array(array("NOT SUPPORTED:$type" => 1)));
                 $question->append_child($response);
                 break;
         } //End Switch
@@ -488,15 +523,19 @@ while ($Row = $QueryResult->FetchRow())
 
 $dom->append_child($questionnaire);
 
+$quexml =  $dom->dump_mem(true,'UTF-8');
 
-$fn = "survey_$surveyid.xml";
-header("Content-Type: application/download");
-header("Content-Disposition: attachment; filename=$fn");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-header("Pragma: no-cache");                          // HTTP/1.0
+if (!(isset($noheader) && $noheader == true))
+{
+	$fn = "survey_{$surveyid}_{$quexmllang}.xml";
+	header("Content-Type: application/download");
+	header("Content-Disposition: attachment; filename=$fn");
+	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Pragma: no-cache");                          // HTTP/1.0
 
-echo $dom->dump_mem(true,'UTF-8');
-exit;
+	echo $quexml;	
+	exit();
+}
 ?>

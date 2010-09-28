@@ -358,7 +358,7 @@ $standard_templates_readonly =  true;
  */
 
 $usepdfexport   = 0;                       //Set 0 to disable; 1 to enable
-$pdfdefaultfont = 'unifont';              //Default font for the pdf Export
+$pdfdefaultfont = 'freemono';              //Default font for the pdf Export
 $pdffontsize    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $pdforientation = 'P';                     // Set L for Landscape or P for portrait format
