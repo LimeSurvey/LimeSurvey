@@ -76,7 +76,6 @@ $dummy_js = '
 		}
         /* ]]> */
 		</script>
-		<form method="post" action="index.php" id="limesurvey" name="limesurvey">
         ';
 
 
@@ -97,24 +96,24 @@ else
 };
 
 $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">'; 
 $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 
 $question_template = file_get_contents("$thistpl/question.pstpl");
 if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
 {// LS 1.87 and newer templates
-$content .= '<form id="limesurvey">';
 $content .= "\n".templatereplace($question_template)."\n";
-$content .= '</form>';
 }
 else
 {// LS 1.86 and older templates
-$content .= '<form id="limesurvey">
-	<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
+$content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
 $content .= "\n".templatereplace($question_template)."\n";
-$content .= "\n\t</div>\n</form>";
+$content .= "\n\t</div>\n";
 };
 
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;
+$content .= '<p>&nbsp;</form>';
+$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 echo $content;
 echo "</html>\n";
