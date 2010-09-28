@@ -383,28 +383,16 @@ span.settingcaption {
     padding: 0.5em;
 }
 
-.langpopup2 {
-    position: absolute;
-    height: auto !important;
-    top: 151px;
-    left: 80px;
-    z-index: 10000;
-    visibility: hidden;
-    -khtml-opacity: 0.95px;
-    -moz-border-radius: 6px;
-    background: #FDFDF5;
-    font: 11px arial, verdana, sans-serif;
-    border-color: #000;
-    border-style: solid;
-    border-width: 1px;
-    padding: 8px;
+.langpopup {
+    display:none;
 }
 
-.langpopup2 ul {
-    font: 11px arial, verdana, sans-serif;
-     padding-left:1.2em;
-     line-height:1.5em;
-     margin-top:1em; 
+.langpopup ul {
+    font-size: 1em;
+    font-weight:bold;
+    padding-left:1.2em;
+    line-height:1.5em;
+    margin-top:0.5em; 
 }
 
 li.cancellink
@@ -415,40 +403,6 @@ li.cancellink
   text-align:center;
 }
 
-.langpopup1 {
-    position: absolute;
-    width: 100px;
-    top: 100px;
-    left: 80px;
-    z-index: 10000;
-    visibility: hidden;
-    -khtml-opacity: 0.95px;
-    -moz-border-radius: 6px;
-    background: #FDFDF5;
-    font: 11px arial, verdana, sans-serif;
-    border-color: #000;
-    border-style: solid;
-    border-width: 1px;
-    padding: 8px;
-}
-
-.previewpopup {
-    position: absolute;
-    width: 110px;
-    height: 125px;
-    top: 287px;
-    left: 473px;
-    z-index: 10000;
-    visibility: hidden;
-    -khtml-opacity: 0.95px;
-    -moz-border-radius: 6px;
-    background: #FDFDF5;
-    font: 11px arial, verdana, sans-serif;
-    border-color: #000;
-    border-style: solid;
-    border-width: 1px;
-    padding: 8px;
-}
 
 .oddrow {
     background-color: #EBF2FA;
@@ -524,15 +478,6 @@ a:link, a:visited {
 
 .checkboxbtn, .radiobtn {
     background-color: transparent;
-}
-
-.langpopup2td, .langpopup1td {
-    background: #FDFDF5;
-}
-
-.langpopup2td:first-child, .langpopup1td:first-child {
-    color: #000;
-    font-size: 10pt;
 }
 
 table.alertbox {

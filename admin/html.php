@@ -418,7 +418,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "</a>\n";
 
         } else {
-            $surveysummary .= "<a href=\"#\" onclick=\"$('#printpopup').css('visibility','hidden'); $('#langpopup2').css('visibility','visible');\" "
+            $surveysummary .= "<a href='#' id='dosurvey' class='dosurvey'"
             . "title=\"".$icontext2."\" accesskey='d'>"
             . "<img  src='$imagefiles/do.png' name='DoSurvey' alt='$icontext' />"
             . "</a>\n";
@@ -427,13 +427,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $tmp_survlangs[] = $baselang;
             rsort($tmp_survlangs);
             // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup2\" id=\"langpopup2\">".$clang->gT("Please select a language:")."<ul>";
+            $surveysummary .="<div class=\"langpopup\" id=\"dosurveylangpopup\">".$clang->gT("Please select a language:")."<ul>";
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<li><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></li>";
+                $surveysummary .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
-            $surveysummary .= "<li class='cancellink'><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden';\"><span style='color:#DF3030'>".$clang->gT("Cancel")."</span></a></li>"
-            ."</ul></div>";
+            $surveysummary .= "</ul></div>";
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
@@ -476,9 +475,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         } else {
 
-            $surveysummary .= "<a href=\"#\" onclick=\"document.getElementById('printpopup').style.visibility='visible'; "
-            . "document.getElementById('langpopup2').style.visibility='hidden';\""
-            . " title=\"".$clang->gTview("Printable Version of Survey")."\" >"
+            $surveysummary .= "<a href='#' id='doprintable' title=\"".$clang->gTview("Printable Version of Survey")."\" >"
             . "<img src='$imagefiles/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' />\n"
             . "</a><img src='$imagefiles/seperator.gif' alt='' />\n";
 
@@ -488,15 +485,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             rsort($tmp_survlangs);
 
             // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup2\" id=\"printpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+            $surveysummary .="<div class=\"langpopup\" id=\"doprintablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden'; window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+                $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_blank' onclick=\"$('#doprintable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</li>";
             }
-            $surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
-
-            $surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>\n";
-
+            $surveysummary .= "</ul></div>";
 
         }
 
@@ -638,22 +632,10 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "</a>\n";
 
         } else {
-            $surveysummary .= "<a href=\"#\" onclick=\"$('#printpopup').css('visibility','hidden'); $('#langpopup2').css('visibility','visible');\" "
+            $surveysummary .= "<a href=\"#\" class='dosurvey' "
             . "title=\"".$icontext2."\" accesskey='d'>"
             . "<img  src='$imagefiles/do.png' name='DoSurvey2' alt='$icontext' />"
             . "</a>\n";
-
-            $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $tmp_survlangs[] = $baselang;
-            rsort($tmp_survlangs);
-            // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup2\" id=\"langpopup2\">".$clang->gT("Please select a language:")."<ul>";
-            foreach ($tmp_survlangs as $tmp_lang)
-            {
-                $surveysummary .= "<li><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></li>";
-            }
-            $surveysummary .= "<li class='cancellink'><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden';\"><span style='color:#DF3030'>".$clang->gT("Cancel")."</span></a></li>"
-            ."</ul></div>";
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
@@ -1143,12 +1125,12 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
             {
-                $questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid', '_blank')\""
+                $questionsummary .= "<a href=\"#\" accesskey='q' onclick=\"window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid', '_blank')\""
                 . "title=\"".$clang->gTview("Preview This Question")."\">"
                 . "<img src='$imagefiles/preview.png' alt='".$clang->gT("Preview This Question")."' name='previewquestionimg' /></a>\n"
                 . "<img src='$imagefiles/seperator.gif' alt='' />\n";
             } else {
-                $questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('langpopup2').style.visibility='hidden'; document.getElementById('previewquestion').style.visibility='visible';\""
+                $questionsummary .= "<a href=\"#\" accesskey='q' id='previewquestion'"
                 . "title=\"".$clang->gTview("Preview This Question")."\">"
                 . "<img src='$imagefiles/preview.png' title='' alt='".$clang->gT("Preview This Question")."' name='previewquestionimg' /></a>\n"
                 . "<img src='$imagefiles/seperator.gif' alt=''  />\n";
@@ -1158,13 +1140,13 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
                 $tmp_survlangs[] = $baselang;
                 rsort($tmp_survlangs);
 
-                // Test Survey Language Selection Popup
-                $surveysummary .="<div class=\"previewpopup\" id=\"previewquestion\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+                // Test question Language Selection Popup
+                $surveysummary .="<div class=\"langpopup\" id=\"previewquestionpopup\">".$clang->gT("Please select a language:")."<ul>";
                 foreach ($tmp_survlangs as $tmp_lang)
                 {
-                    $surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden'; window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+                    $surveysummary .= "<li><a target='_blank' onclick=\"$('#previewquestion').qtip('hide');\" href='{$scriptname}?action=previewquestion&amp;sid={$surveyid}&amp;qid={$qid}&amp;lang={$tmp_lang}' accesskey='d'>".getLanguageNameFromCode($tmp_lang,false)."</li>";
                 }
-                $surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
+                $surveysummary .= "</ul></div>";
             }
         }
         else

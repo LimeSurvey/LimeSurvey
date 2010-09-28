@@ -38,7 +38,7 @@ $(document).ready(function(){
              $(this).qtip({
                style: { name: 'cream',
                         tip:true, 
-                        color:'#111111', 
+                        color:'#1D2D45', 
                         border: {
                              width: 1,
                              radius: 5,
@@ -63,7 +63,7 @@ $(document).ready(function(){
              $(this).qtip({
                style: { name: 'cream',
                         tip:true, 
-                        color:'#111111', 
+                        color:'#1D2D45', 
                         border: {
                              width: 1,
                              radius: 5,
@@ -79,7 +79,90 @@ $(document).ready(function(){
         }
     });    
     
+    $('.dosurvey').qtip({
+        content:{
+                text:$('#dosurveylangpopup'),
+        },
+        style: { name: 'cream',
+                        tip:true, 
+                color:'#1D2D45', 
+                border: {
+                     width: 1,
+                     radius: 5,
+                     color: '#EADF95'}
+               },  
+        position: { adjust: { 
+                screen: true, scroll:true },
+                corner: {
+                        target: 'bottomMiddle',
+                        tooltip: 'topMiddle'}
+                },
+        show: {effect: { length:50},
+               when: {
+                   event:'click'
+               }},
+        hide: {fixed:true,
+               when: {
+                   event:'unfocus'
+               }}
+    }); 
+    
+    $('#doprintable').qtip({
+        content:{
+                text:$('#doprintablelangpopup'),
+        },
+        style: { name: 'cream',
+                        tip:true, 
+                color:'#111111', 
+                border: {
+                     width: 1,
+                     radius: 5,
+                     color: '#EADF95'}
+               },  
+        position: { adjust: { 
+                screen: true, scroll:true },
+                corner: {
+                        target: 'bottomMiddle',
+                        tooltip: 'topMiddle'}
+                },
+        show: {effect: { length:50},
+               when: {
+                   event:'click'
+               }},
+        hide: {fixed:true,
+               when: {
+                   event:'unfocus'
+               }}
+    });     
 
+    $('#previewquestion').qtip({
+        content:{
+                text:$('#previewquestionpopup'),
+        },
+        style: { name: 'cream',
+                        tip:true, 
+                color:'#111111', 
+                border: {
+                     width: 1,
+                     radius: 5,
+                     color: '#EADF95'}
+               },  
+        position: { adjust: { 
+                screen: true, scroll:true },
+                corner: {
+                        target: 'bottomMiddle',
+                        tooltip: 'topMiddle'}
+                },
+        show: {effect: { length:50},
+               when: {
+                   event:'click'
+               }},
+        hide: {fixed:true,
+               when: {
+                   event:'unfocus'
+               }}
+    });         
+    
     $('.tipme').each(function() {
         if($(this).attr('alt') != '')
         {
