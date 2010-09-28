@@ -2869,7 +2869,7 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{CLEARALL}") !== false)  {
 
         $clearall = "<input type='button' name='clearallbtn' value='".$clang->gT("Exit and Clear Survey")."' class='clearall' "
-        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?")."')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
+        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
         if (returnglobal('token'))
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
