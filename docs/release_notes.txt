@@ -78,6 +78,27 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.90+ (build 9130) to 1.90+ (build 9160) Legend: # updated feature, - bug fix 
+#Updated translation: Portuguese-Brazilian sponsored by LimeService (c_schmitz)
+-Fixed issue #04621: Mix of languages in the printanswers of a survey including the answers (machaven)
+-Fixed unreported issue:  PDF export of printanswers is missing group and question text. (machaven)
+-Fixed issue #04606: mint_idea referring to an obsolete linearer_gradient_LimeSurvey2.gif (tpartner)
+-Fixed issue #04618: "business gray" template includes HTML errors (tpartner)
+-Fixed issue #4598: Wrong path to DD_belatedPNG_0.0.8a-min.js - Patch kindly provided by ronvdburg (mennodekker)
+-Fixed issue #4604: Iterate survey remembers lastpage whereas it should start again at the beginning ! (patch kindly provided by ronvdburg) (lemeur)
+-Fixed issue #4595 : unable to update ranking question in dataentry (shnoulle)
+-Fixed issue #4602 : bad url for print_img_radio.png in template editor (thanks to ronvdburg) (shnoulle)
+-Fixed issue #4603 : optout.php error (shnoulle)
+-Fixed issue #4611: Can't take a multilingual survey at "adanced survey options" screen (c_schmitz)
+-Fixed issue #4613: Javascript error when clicking the Clear & Exit button in Italian surveys (c_schmitz)
+-Fixed issue #4615: Missing xmlns argument in admin header - patch by sethwhite1 (c_schmitz)
+-Fixed issue #4617 : give the ability to user to modify ... in langage file (shnoulle)
+-Fixed issue #4626: Question preview problems with certain templates (c_schmitz)
+-Fixed unreported issue: unable to complete new survey in dataentry (shnoulle)
+-Fixed issue #4625: Possible SQL Injection in export results (c_schmitz)
+-Fixed unreported issue: "Notice: Undefined variable: standardtemplaterootdir" warning (maziminke)
+-Fixed issue #04605: Ugly bullets in survey taking startpage for controlled surveys (tpartner)
+
 Changes from 1.90+ (build 9118) to 1.90+ (build 9130) Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
 #Updated translation: Traditional Chinese ( Hong Kong), thanks to Mark Yeung (gandalfar)
