@@ -274,7 +274,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
     . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
     . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
-    . "$oFCKeditorVarName.Config[\"SmileyPath\"] = \"".$uploaddir."/images/smiley/msn/\";\n"
+    . "$oFCKeditorVarName.Config[\"SmileyPath\"] = \"".$uploadurl."/images/smiley/msn/\";\n"
     . $htmlformatoption
     . $toolbaroption;
 
