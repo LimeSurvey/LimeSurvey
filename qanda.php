@@ -5349,7 +5349,7 @@ function do_array($ia)
         {
             $answer_head .= "\t<th>".$clang->gT('No answer')."</th>\n";
         }
-        $answer_head .= "</tr>\n\t</thead>\n\n\t<tbody>\n";
+        $answer_head .= "</tr>\n\t</thead>\n\n\t\n";
 
         $answer = '';
         $trbc = '';
@@ -5447,7 +5447,7 @@ function do_array($ia)
                 // --> END NEW FEATURE - SAVE
             }
              
-            $answer .= "</tr>\n</tbody>";
+            $answer .= "</tr>\n";
             $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
@@ -5836,7 +5836,7 @@ function do_array_multiflexi($ia)
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n\t<tbody>\n";
+        $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n";
 
         while ($ansrow = $ansresult->FetchRow())
         {
@@ -6375,8 +6375,7 @@ function do_array_dual($ia)
         . "\n\t<thead>\n"
         . $myheader1
         . $myheader2
-        . "\n\t</thead>\n"
-        . "\n\t<tbody>\n";
+        . "\n\t</thead>\n";
 
         $trbc = '';
         while ($ansrow = $ansresult->FetchRow())
@@ -6617,7 +6616,7 @@ function do_array_dual($ia)
             $colspan_1 = '';
             $colspan_2 = '';
             $suffix_cell = '';
-            $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an duel array type question\">\n\n"
+            $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an dual array type question\">\n\n"
             . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
             if($ddprefix != '')
             {
@@ -6656,8 +6655,7 @@ function do_array_dual($ia)
             //			. "\t<td align='center' width='$columnswidth%'><span class='dsheader'>$rightheader</span></td>\n"
             . "\t<th>$rightheader</th>\n"
             . $suffix_cell."</tr>\n"
-            . "\t</thead>\n\n"
-            . "\t<tbody>\n";
+            . "\t</thead>\n\n";
 
             $trbc = '';
             while ($ansrow = $ansresult->FetchRow())
