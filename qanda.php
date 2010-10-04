@@ -5619,7 +5619,7 @@ function do_array_multitext($ia)
                     . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
                     {
-                        $answer .= "\t<th>".$ld."</td>\n";
+                        $answer .= "\t<th>".$ld."</th>\n";
                     }
                     $answer .= "</tr>\n";
                 }
