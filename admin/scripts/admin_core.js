@@ -81,7 +81,7 @@ $(document).ready(function(){
     
     $('.dosurvey').qtip({
         content:{
-                text:$('#dosurveylangpopup'),
+                text:$('#dosurveylangpopup')
         },
         style: { name: 'cream',
                         tip:true, 
@@ -109,7 +109,7 @@ $(document).ready(function(){
     
     $('#doprintable').qtip({
         content:{
-                text:$('#doprintablelangpopup'),
+                text:$('#doprintablelangpopup')
         },
         style: { name: 'cream',
                         tip:true, 
@@ -137,7 +137,7 @@ $(document).ready(function(){
 
     $('#previewquestion').qtip({
         content:{
-                text:$('#previewquestionpopup'),
+                text:$('#previewquestionpopup')
         },
         style: { name: 'cream',
                         tip:true, 
@@ -161,7 +161,7 @@ $(document).ready(function(){
                when: {
                    event:'unfocus'
                }}
-    });         
+    });            
     
     $('.tipme').each(function() {
         if($(this).attr('alt') != '')

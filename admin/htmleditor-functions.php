@@ -226,7 +226,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    global $clang, $imagefiles, $homeurl, $rooturl, $sFCKEditorURL, $fckeditexpandtoolbar, $uploaddir;
+    global $clang, $imagefiles, $homeurl, $rooturl, $sFCKEditorURL, $fckeditexpandtoolbar, $uploadurl;
 
     $htmlcode = '';
     $imgopts = '';
