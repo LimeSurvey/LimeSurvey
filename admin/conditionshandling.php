@@ -32,7 +32,11 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
-if (!isset($p_cqid)) {$p_cqid=returnglobal('cqid');}
+if (!isset($p_cqid)) 
+{
+    $p_cqid=returnglobal('cqid');
+    if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
+}
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
 if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
 if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
