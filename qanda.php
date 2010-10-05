@@ -6196,7 +6196,7 @@ function do_array_dual($ia)
     }
 
     if (trim($qidattributes['dualscale_headerA'])!='') {
-        $leftheader= $qidattributes['dualscale_headerA'];
+        $leftheader= $clang->gT($qidattributes['dualscale_headerA']);
     }
     else
     {
@@ -6205,7 +6205,7 @@ function do_array_dual($ia)
 
     if (trim($qidattributes['dualscale_headerB'])!='')
     {
-        $rightheader= $qidattributes['dualscale_headerB'];
+        $leftheader= $clang->gT($qidattributes['dualscale_headerB']);
     }
     else {
         $rightheader ='';
