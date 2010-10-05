@@ -156,6 +156,11 @@ function retrieveJSidname($cd,$currentgid=null)
 {
     global $dbprefix, $connect, $dropdownthreshold;
 
+    if (preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[2]) == 0)
+    { // This is not a true fieldname (for instance a {TOKEN:ATTR..}
+      // placeholder
+        return "NoJSidname";
+    }
     //preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[2],$matchFields);
     //^^^^^does not seem to work, explode below should
     $matchFields = explode('X', $cd[2], 3);
