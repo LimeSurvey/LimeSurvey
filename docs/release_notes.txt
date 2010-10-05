@@ -78,6 +78,14 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.90+ (build 9160) to 1.90+ (build 9169) Legend: # updated feature, - bug fix 
+#Updated translation: French (b00z00)
+-Fixed issue #4590 (partially) : sample survey for 1.90 with new option (shnoulle)
+-Fixed issue #4611: Can't take a multilingual survey at "adanced survey options" screen (c_schmitz)
+-Fixed issue #4636: Title apostrophe is escaped when copying a survey (c_schmitz)
+-Fixed issue #4637: Inline editor toolbar doesn't appears in textarea fields (c_schmitz)
+-Fixed unreported issue: <th> tag at text matrix questions (do_array_multitext()) was closed as </td> tag causing HTML errors. (maziminke)
+
 Changes from 1.90+ (build 9130) to 1.90+ (build 9160) Legend: # updated feature, - bug fix 
 #Updated translation: Portuguese-Brazilian sponsored by LimeService (c_schmitz)
 -Fixed issue #04621: Mix of languages in the printanswers of a survey including the answers (machaven)
