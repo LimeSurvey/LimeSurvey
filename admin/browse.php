@@ -425,9 +425,9 @@ elseif ($subaction == "all")
         else
         {
             if ($surveytable['private'] == "N" && db_tables_exist($tokentable))
-                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token WHERE ";
             else
-                $dtquery = "SELECT * FROM $surveytable ";
+                $dtquery = "SELECT * FROM $surveytable WHERE ";
             if (incompleteAnsFilterstate() == "inc")
             {
                 $dtquery .= "submitdate IS NULL ";
