@@ -5620,13 +5620,13 @@ function do_array_multitext($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $trbc = alternation($trbc , 'row');
-                    $answer .= "<tr class=\"$trbc repeat\">\n"
+                    $answer .= "<tbody>\n<tr class=\"$trbc repeat\">\n"
                     . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
                     {
                         $answer .= "\t<th>".$ld."</th>\n";
                     }
-                    $answer .= "</tr>\n";
+                    $answer .= "</tr>\n</tbody>\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -5851,13 +5851,13 @@ function do_array_multiflexi($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $trbc = alternation($trbc , 'row');
-                    $answer .= "<tr class=\"$trbc repeat\">\n"
+                    $answer .= "<tbody>\n<tr class=\"$trbc repeat\">\n"
                     . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
                     {
                         $answer .= "\t<th>".$ld."</th>\n";
                     }
-                    $answer .= "</tr>\n";
+                    $answer .= "</tr>\n</tbody>\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -6390,7 +6390,7 @@ function do_array_dual($ia)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $answer .= "<tr  class=\"repeat\">\n"
+                    $answer .= "<tbody>\n<tr  class=\"repeat\">\n"
                     . "\t<th>&nbsp;</th>\n";
                     foreach ($labelans as $ld)
                     {
@@ -6409,7 +6409,7 @@ function do_array_dual($ia)
                         $answer .= "\t<td>&nbsp;</td>\n";		// separator
                         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
                     }
-                    $answer .= "</tr>\n";
+                    $answer .= "</tr>\n</tbody>\n";
                 }
             }
 
