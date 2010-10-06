@@ -903,6 +903,12 @@ td.rank label,td.rank td strong {
   min-height: 60px;
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  font-style: italic;
+  padding-top: 5px;
+}
+
 li.other .answer-comment {
   margin-top: -1.65em;
 }

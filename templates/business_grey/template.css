@@ -460,6 +460,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   text-align: left;
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  color: #777777;
+  padding: 0.5em;
+}
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */

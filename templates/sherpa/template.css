@@ -549,6 +549,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   text-align: right;
 }
 
+table.rank td.helptext {
+	font-size:10px;
+	font-style:italic;
+	padding: 3px;
+}
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */

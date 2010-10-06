@@ -375,6 +375,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin: 0% 1em;
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  font-style: italic;
+  padding: 5px;
+}
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */

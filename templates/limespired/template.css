@@ -918,8 +918,14 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin-left: 0.5em;
 }
 
-.rank label,.rank td {
+.rank label,
+.rank td {
   font-size: 0.80em;
+}
+
+table.rank td.helptext {
+  font-size: 0.80em;
+  padding: 5px;
 }
 
 .text-long textarea,.text-huge textarea,.text-short textarea {
