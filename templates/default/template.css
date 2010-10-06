@@ -825,11 +825,8 @@ td.rank label,td.rank td strong {
 }
 
 #tokenform li {
-  list-style-type: none;
-}
-
-#tokenform li {
   padding-bottom: 5px;
+  list-style: none;
 }
 
 #tokenform img {

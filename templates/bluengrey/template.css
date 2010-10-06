@@ -937,6 +937,7 @@ form.captcha label {
 
 #tokenform li {
   padding-bottom: 5px;
+  list-style: none;
 }
 
 #tokenform img {
