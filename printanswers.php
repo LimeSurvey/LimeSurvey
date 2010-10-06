@@ -207,8 +207,11 @@ unset ($fnames['startdate']);
             if ($oldgid !== $fname['gid']) {
                 $oldgid = $fname['gid'];
                 $printoutput .= "\t<tr><td colspan='2'>{$fname['group_name']}</td></tr>\n";
-				$pdf->intopdf(FlattenText($fname['group_name'],true));
-                $pdf->ln(2);
+                if(isset($_POST['printableexport']))
+    			{
+	                $pdf->intopdf(FlattenText($fname['group_name'],true));
+	                $pdf->ln(2);
+    			}
             }
         }
         if (isset($fname['qid']) && !empty($fname['qid'])) {
@@ -217,8 +220,11 @@ unset ($fnames['startdate']);
                 $oldqid = $fname['qid'];
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
                     $printoutput .= "\t<tr><td>{$fname['question']}</td></tr>\n";
-				$pdf->intopdf(FlattenText($fname['question'],true));
-                $pdf->ln(2);
+                    if(isset($_POST['printableexport']))
+    				{
+                    	$pdf->intopdf(FlattenText($fname['question'],true));
+                		$pdf->ln(2);
+    				}
                 }
             }
         }
@@ -236,8 +242,11 @@ unset ($fnames['startdate']);
             if (isset($fname['subquestion']))  $question .= " [{$fname['subquestion']}]";
             if (isset($fname['subquestion1'])) $question .= " [{$fname['subquestion1']}]";
             if (isset($fname['subquestion2'])) $question .= " [{$fname['subquestion2']}]";      
-            $pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true));
-                $pdf->ln(2);
+	            if(isset($_POST['printableexport']))
+	    		{
+	            	$pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true));
+	                $pdf->ln(2);
+	    		}
             }
 		}
 	}
