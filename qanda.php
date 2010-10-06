@@ -2670,9 +2670,9 @@ function do_ranking($ia)
     . "\t</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "\t<td colspan='2' class='rank helptext'>\n"
+    . "\t<td colspan='2' class='rank helptext'><font size='1'>\n"
     . "".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list")
-    . "\t</td>\n"
+    . "\t</font size='1'></td>\n"
     . "</tr>\n"
     . "\t</table>\n";
 
@@ -5695,10 +5695,11 @@ function do_array_multitext($ia)
                 $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
             }
             $answer .= "</tr>\n";
+            $answer .= "</tbody>\n";
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-        $answer .= "\t</tbody>\n</table>\n";
+        $answer .= "\t</table>\n";
     }
     else
     {
