@@ -185,7 +185,11 @@ unset ($fnames['startdate']);
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked   
-	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
+	while ($idrow = $idresult->FetchRow()) 
+	{
+			$id=$idrow['id']; 
+			$rlangauge=$idrow['startlanguage'];
+	}
 	$next=$id+1;
 	$last=$id-1;
 	$printoutput .= "<table class='printouttable' >\n";
@@ -197,52 +201,69 @@ unset ($fnames['startdate']);
 	$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked   
 	while ($idrow = $idresult->FetchRow())
 	{
-    $oldgid = 0;
-    $oldqid = 0;
-    foreach ($fnames as $fname)
+    	$oldgid = 0;
+    	$oldqid = 0;
+    	foreach ($fnames as $fname)
 		{
-        $question = $fname['question'];
-        if (isset($fname['gid']) && !empty($fname['gid'])) {
-            //Check to see if gid is the same as before. if not show group name
-            if ($oldgid !== $fname['gid']) {
-                $oldgid = $fname['gid'];
-                $printoutput .= "\t<tr><td colspan='2'>{$fname['group_name']}</td></tr>\n";
-                if(isset($_POST['printableexport']))
-    			{
-	                $pdf->intopdf(FlattenText($fname['group_name'],true));
-	                $pdf->ln(2);
-    			}
-            }
-        }
-        if (isset($fname['qid']) && !empty($fname['qid'])) {
-            //Check to see if gid is the same as before. if not show group name
-            if ($oldqid !== $fname['qid']) {
-                $oldqid = $fname['qid'];
-                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
-                    $printoutput .= "\t<tr><td>{$fname['question']}</td></tr>\n";
-                    if(isset($_POST['printableexport']))
-    				{
-                    	$pdf->intopdf(FlattenText($fname['question'],true));
-                		$pdf->ln(2);
-    				}
-                }
-            }
-        }
-        if (isset($fname['subquestion']))  $question = "{$fname['subquestion']}";
-        if (isset($fname['subquestion1'])) $question = "{$fname['subquestion1']}";
-        if (isset($fname['subquestion2'])) $question .= "[{$fname['subquestion2']}]";
-			$printoutput .= "\t<tr>\n"
-        ."<td>$question</td>\n"
-			."<td>"
-        .getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']])
+	        $question = $fname['question'];
+	        if (isset($fname['gid']) && !empty($fname['gid'])) {
+	            //Check to see if gid is the same as before. if not show group name
+	            if ($oldgid !== $fname['gid']) 
+	            {
+	                $oldgid = $fname['gid'];
+	                $printoutput .= "\t<tr class='printanswersgroupname'><td colspan='2'>{$fname['group_name']}</td></tr>\n";
+	                
+	                if(isset($_POST['printableexport']))
+	    			{
+		                $pdf->intopdf(FlattenText($fname['group_name'],true));
+		                $pdf->ln(2);
+	    			}
+	            }
+	        }
+	        if (isset($fname['qid']) && !empty($fname['qid'])) 
+	        {
+	            //Check to see if gid is the same as before. if not show group name
+	            if ($oldqid !== $fname['qid']) 
+	            {
+	                $oldqid = $fname['qid'];
+	                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) 
+	                {
+	                    $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname['question']}</td></tr>\n";
+	                    if(isset($_POST['printableexport']))
+	    				{
+	                    	$pdf->intopdf(FlattenText($fname['question'],true));
+	                		$pdf->ln(2);
+	    				}
+	                }
+	            }
+	        }
+        	if (isset($fname['subquestion']))  
+        	$question = "{$fname['subquestion']}";
+       	 	
+        	if (isset($fname['subquestion1'])) 
+        	$question = "{$fname['subquestion1']}";
+        	
+        	if (isset($fname['subquestion2'])) 
+        	$question .= "[{$fname['subquestion2']}]";
+			
+        	$printoutput .= "\t<tr>\n"
+        	."<td  class='printanswersquestiontext'>$question</td>\n"
+			."<td class='printanswersanswertext'>"
+        	.getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']])
 			."</td>\n"
 			."\t</tr>\n";
             if(isset($_POST['printableexport']))
             {
-            if (isset($fname['subquestion']))  $question .= " [{$fname['subquestion']}]";
-            if (isset($fname['subquestion1'])) $question .= " [{$fname['subquestion1']}]";
-            if (isset($fname['subquestion2'])) $question .= " [{$fname['subquestion2']}]";      
-	            if(isset($_POST['printableexport']))
+            	if (isset($fname['subquestion']))  
+            	$question .= " [{$fname['subquestion']}]";
+            	
+            	if (isset($fname['subquestion1'])) 
+            	$question .= " [{$fname['subquestion1']}]";
+            	
+            	if (isset($fname['subquestion2'])) 
+            	$question .= " [{$fname['subquestion2']}]";      
+	            
+            	if(isset($_POST['printableexport']))
 	    		{
 	            	$pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true));
 	                $pdf->ln(2);
