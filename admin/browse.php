@@ -28,10 +28,6 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 if (tableExists('survey_'.$surveyid)==false) die("Your results table is missing!");
 
 $surveyinfo=getSurveyInfo($surveyid);
-$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-$sumresult5 = db_execute_assoc($sumquery5);
-$sumrows5 = $sumresult5->FetchRow();
-
 require_once(dirname(__FILE__).'/sessioncontrol.php');
 
 // Set language for questions and labels to base language of this survey
@@ -200,7 +196,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
     while ($idrow = $idresult->FetchRow())
     {
         $id=$idrow['id'];
-        $rlangauge=$idrow['startlanguage'];
+        $rlanguage=$idrow['startlanguage'];
     }
     $next=$id+1;
     $last=$id-1;
@@ -210,13 +206,13 @@ if ($subaction == "id") // Looking at a SINGLE entry
             ."\t</div><div class='menubar-main'>\n"
             ."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
             ."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
-    if (isset($rlangauge))
+    if (isset($rlanguage))
     {
-        $browseoutput .="<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlangauge' "
+        $browseoutput .="<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlanguage' "
                 ."title='".$clang->gTview("Edit this entry")."'>"
                 ."<img align='left' src='$imagefiles/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
     }
-    if (($sumrows5['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1) && isset($rlangauge))
+    if (bHasRight($surveyid,'delete_survey') && isset($rlanguage))
     {
 
         $browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" >"
@@ -381,93 +377,40 @@ elseif ($subaction == "all")
     $limit=returnglobal('limit');
     if (!isset($limit) || $limit== '') {$limit = 50;}
     if (!isset($start) || $start =='') {$start = 0;}
-    
-    //LETS COUNT THE DATA
+
+    //Create the query
     if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
     {
-        $dtquery = "SELECT count(*) FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
-    } else
-    {
-        $dtquery = "SELECT count(*) FROM $surveytable ";
+        $sql_from = "$surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token";
+    } else {
+        $sql_from = $surveytable;
     }
+    
+    $sql_where = "";
     if (incompleteAnsFilterstate() == "inc")
     {
-        $dtquery .= "WHERE submitdate IS NULL ";
+        $sql_where .= "submitdate IS NULL";
     }
     elseif (incompleteAnsFilterstate() == "filter")
     {
-        $dtquery .= " WHERE submitdate IS NOT NULL ";
+        $sql_where .= "submitdate IS NOT NULL";
     }
+    if (isset($_POST['sql']) && stripcslashes($_POST['sql']) !== "" && $_POST['sql'] !== "NULL")
+    {
+        if (!empty($sql_where)) $sql_where .= " AND ";
+        $sql_where .= stripcslashes($_POST['sql']);
+    }
+    if (!empty($sql_where)) $sql_where = " WHERE " . $sql_where;
+
+    //LETS COUNT THE DATA
+    $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
     if ($limit > $dtcount) {$limit=$dtcount;}
 
     //NOW LETS SHOW THE DATA
-    if (isset($_POST['sql']))
-    {
-        if ($_POST['sql'] == "NULL" )
-        {
-            if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
-                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
-            else
-                $dtquery = "SELECT * FROM $surveytable ";
-            if (incompleteAnsFilterstate() == "inc")
-            {
-                $dtquery .= "WHERE submitdate IS NULL";
-            }
-            elseif (incompleteAnsFilterstate() == "filter")
-            {
-                $dtquery .= " WHERE submitdate IS NOT NULL ";
-            }
-            $dtquery .= " ORDER BY id";
-        }
-        else
-        {
-            if ($surveytable['private'] == "N" && db_tables_exist($tokentable))
-                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token WHERE ";
-            else
-                $dtquery = "SELECT * FROM $surveytable WHERE ";
-            if (incompleteAnsFilterstate() == "inc")
-            {
-                $dtquery .= "submitdate IS NULL ";
-                if (stripcslashes($_POST['sql']) !== "")
-                {
-                    $dtquery .= " AND ";
-                }
-            }
-            elseif (incompleteAnsFilterstate() == "filter")
-            {
-                $dtquery .= " submitdate IS NOT NULL ";
-                if (stripcslashes($_POST['sql']) !== "")
-                {
-                    $dtquery .= " AND ";
-                }
-            }
-            if (stripcslashes($_POST['sql']) !== "")
-            {
-                $dtquery .= stripcslashes($_POST['sql'])." ";
-            }
-            $dtquery .= " ORDER BY id";
-        }
-    }
-    else
-    {
-        if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
-            $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
-        else
-            $dtquery = "SELECT * FROM $surveytable ";
-
-        if (incompleteAnsFilterstate() == "inc")
-        {
-            $dtquery .= " WHERE submitdate IS NULL ";
-        }
-        elseif (incompleteAnsFilterstate() == "filter")
-        {
-            $dtquery .= " WHERE submitdate IS NOT NULL ";
-        }
-        $dtquery .= " ORDER BY id";
-    }
+    $dtquery = "SELECT * FROM $sql_from $sql_where ORDER BY id";
     if ($order == "desc") {$dtquery .= " DESC";}
 
     if (isset($limit))
@@ -562,25 +505,21 @@ elseif ($subaction == "all")
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
 
         $i = 0;
+        //If not private, display the token info and link to the token screen
         if ($surveyinfo['private'] == "N" && $dtrow['token'] && db_tables_exist($tokentable))
         {
-            $SQL = "Select * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token=?";
-            if ( db_tables_exist(db_table_name_nq('tokens_'.$surveyid)) &&
-                    $SQLResult = db_execute_assoc($SQL, $dtrow['token']))
+            if (isset($dtrow['tid']) && !empty($dtrow['tid']))
             {
-                $TokenRow = $SQLResult->FetchRow();
+                //If we have a token, create a link to edit it
+                $browsedatafield = "<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$dtrow['tid']}' title='".$clang->gT("Edit this token")."'>";
+                $browsedatafield .= "{$dtrow['token']}";
+                $browsedatafield .= "</a>";
+            } else {
+                //No corresponding token in the token tabel, just display the token
+                $browsedatafield .= "{$dtrow['token']}";
             }
-            $browseoutput .= "<td align='center'>\n";
-            if (isset($TokenRow) && $TokenRow)
-            {
-                $browseoutput .= "<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$TokenRow['tid']}' title='".$clang->gT("Edit this token")."'>";
-            }
-            $browseoutput .= "{$dtrow['token']}";
-            if (isset($TokenRow) && $TokenRow)
-            {
-                $browseoutput .= "</a>\n";
-            }
-            $i++;
+            $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
+            $i++;   //We skip the first record (=token) as we just outputted that one
         }
 
         for ($i; $i<$fncount; $i++)
