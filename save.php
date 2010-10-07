@@ -112,7 +112,7 @@ else
 }
 
 // SAVE if on page with questions or on submit page
-if (isset($postedfieldnames))
+if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 {
     if ($thissurvey['active'] == "Y") 
     {
