@@ -6211,7 +6211,7 @@ function do_array_dual($ia)
 
     if (trim($qidattributes['dualscale_headerB'])!='')
     {
-        $leftheader= $clang->gT($qidattributes['dualscale_headerB']);
+        $rightheader= $clang->gT($qidattributes['dualscale_headerB']);
     }
     else {
         $rightheader ='';
