@@ -299,20 +299,20 @@ elseif ($subaction == "all")
 
     }
 
-    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
+    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='' && bHasRight($surveyid,'delete_survey'))
     {
-        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value     
-        $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
+        $iResponseID=(int) $_POST['deleteanswer']; // sanitize the value     
+        $query="delete FROM $surveytable where id={$iResponseID}";
         $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }
 
-    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0)
+    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasRight($surveyid,'delete_survey'))        
     {
         foreach ($_POST['markedresponses'] as $iResponseID)
         {
             $iResponseID=(int)$iResponseID; // sanitize the value
-            $query="delete FROM $surveytable where id={$iResponseID}";
-            $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked  
+            $query="delete FROM {$surveytable} where id={$iResponseID}";
+            $connect->execute($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked  
         }
     }
     
@@ -368,9 +368,12 @@ elseif ($subaction == "all")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
-    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
-                   ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
-                   ."\t</tr></tfoot>\n\n";
+    if (bHasRight($surveyid,'delete_survey'))
+    {
+        $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
+                       ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
+                       ."\t</tr></tfoot>\n\n";
+    }
 
 
     $start=returnglobal('start');
@@ -501,9 +504,13 @@ elseif ($subaction == "all")
                 ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
                 ."<td align='center'>
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
-        <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}&amp;lang={$language}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
-        <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
+        <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}&amp;lang={$language}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>";
 
+        if (bHasRight($surveyid,'delete_survey') && isset($rlanguage))
+        {
+            $browseoutput .= "<a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a>\n";
+        }
+        $browseoutput .= "</td>";
         $i = 0;
         //If not private, display the token info and link to the token screen
         if ($surveyinfo['private'] == "N" && $dtrow['token'] && db_tables_exist($tokentable))

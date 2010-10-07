@@ -1241,7 +1241,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
     {
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
         {
-            safe_die('You are not allowed to update an existing answer.');
+            safe_die('You are not allowed to update an existing response.');
         }
 
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1308,6 +1308,10 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
     elseif ($subaction == "delete")
     {
+        if (!bHasRight($surveyid,'delete_survey'))
+        {
+            safe_die('You are not allowed to delete a response.');
+        }        
         $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
         $dataentryoutput .= "<div class='messagebox'>\n";
 
