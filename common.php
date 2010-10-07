@@ -2622,7 +2622,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 if ($arow['type'] == "P")
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
-                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"comment");
+                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']."comment");
                     if ($style == "full")
                     {
                         $fieldmap[$fieldname]['title']=$arow['title'];
