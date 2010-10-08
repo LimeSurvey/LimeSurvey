@@ -27,24 +27,6 @@ if (get_magic_quotes_gpc())
 {$_POST  = array_map('recursive_stripslashes', $_POST);}
 
 
-/*
- * Return a sql statement for renaming a table
- */
-function db_rename_table($oldtable, $newtable)
-{
-    global $connect;
-
-    $dict = NewDataDictionary($connect);
-    $result=$dict->RenameTableSQL($oldtable, $newtable);
-    return $result[0];
-}
-
-
-/*
- * Gets the maximum question_order field value for a group
- * @gid: The id of the group
- */
-
 /**
  * Gets the maximum question_order field value for a group
  *

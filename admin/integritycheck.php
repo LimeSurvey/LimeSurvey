@@ -34,6 +34,74 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $connect->query("delete FROM {$dbprefix}surveys_rights where sid not in (select sid from {$dbprefix}surveys)");
         $connect->query("delete FROM {$dbprefix}surveys_rights where uid not in (select uid from {$dbprefix}users)");
         
+        /***** Check for activate survey tables with missing survey entry **/
+        
+        $sQuery = "show tables like '{$dbprefix}survey\_%'";
+        $aResult = db_execute_num($sQuery) or safe_die("Couldn't get list of conditions from database<br />$query<br />".$connect->ErrorMsg());
+        while ($aRow=$aResult->FetchRow())
+        {
+           $tablename=substr($aRow[0],strlen($dbprefix)); 
+           $iSurveyID=substr($tablename,strpos($tablename,'_')+1); 
+           $qquery="SELECT sid FROM {$dbprefix}surveys WHERE sid='{$iSurveyID}'";
+           $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
+           $qcount=$qresult->RecordCount();
+           if ($qcount==0)
+           {
+                $date = date('YmdHis').rand(1,1000);    
+                $sOldTable = "survey_{$iSurveyID}";
+                $sNewTable = "old_survey_{$iSurveyID}_$date";
+
+                $deactivatequery = db_rename_table(db_table_name_nq($sOldTable),db_table_name_nq($sNewTable));
+                $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br />");
+
+                if ($databasetype=='postgres')
+                {
+                    // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
+                    $deactivatequery = db_rename_table($sOldTable.'_id_seq',$sNewTable.'_id_seq');
+                    $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$postsid}'>".$clang->gT("Main Admin Screen")."</a>");
+                    $setsequence="ALTER TABLE $sNewTable ALTER COLUMN id SET DEFAULT nextval('{$sNewTable}_id_seq'::regclass);";
+                    $deactivateresult = $connect->Execute($setsequence) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$postsid}'>".$clang->gT("Main Admin Screen")."</a>");
+                }
+                   
+           }
+        }
+
+        /***** Check for activate token tables with missing survey entry **/
+        
+        $sQuery = "show tables like '{$dbprefix}tokens\_%'";
+        $aResult = db_execute_num($sQuery) or safe_die("Couldn't get list of token tables from database<br />$query<br />".$connect->ErrorMsg());
+        while ($aRow=$aResult->FetchRow())
+        {
+           $tablename=substr($aRow[0],strlen($dbprefix)); 
+           $iSurveyID=substr($tablename,strpos($tablename,'_')+1); 
+           $qquery="SELECT sid FROM {$dbprefix}surveys WHERE sid='{$iSurveyID}'";
+           $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check survey table for sid<br />$qquery<br />".$connect->ErrorMsg());
+           $qcount=$qresult->RecordCount();
+           if ($qcount==0)
+           {
+                $date = date('YmdHis').rand(1,1000);    
+                $sOldTable = "tokens_{$iSurveyID}";
+                $sNewTable = "old_tokens_{$iSurveyID}_$date";
+                $deactivatequery = db_rename_table( db_table_name_nq($sOldTable), db_table_name_nq($sNewTable));
+
+                if ($databasetype=='postgres')
+                {
+                    // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
+                    $sOldTableJur = db_table_name_nq($sOldTable);
+                    $deactivatequery = db_rename_table(db_table_name_nq($sOldTable),db_table_name_nq($sNewTable).'_tid_seq');
+                    $deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$sOldTable. " / oldtableJur : ". $sOldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+                    $setsequence="ALTER TABLE ".db_table_name_nq($sNewTable)."_tid_seq ALTER COLUMN tid SET DEFAULT nextval('".db_table_name_nq($sNewTable)."_tid_seq'::regclass);";
+                    $deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+                    $setidx="ALTER INDEX ".db_table_name_nq($sOldTable)."_idx RENAME TO ".db_table_name_nq($sNewTable)."_idx;";
+                    $deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+                } else {
+                    $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
+                }
+                   
+           }
+        }
+        
+        
         /**********************************************************************/
         /*     CHECK CONDITIONS                                               */
         /**********************************************************************/
@@ -87,25 +155,88 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}question_attributes ORDER BY qid";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+        $countQuestionAttributes=0;
         while($row = $result->FetchRow())
         {
             $aquery = "SELECT * FROM {$dbprefix}questions WHERE qid = {$row['qid']}";
             $aresult = $connect->Execute($aquery) or safe_die($connect->ErrorMsg());
             $qacount = $aresult->RecordCount();
             if (!$qacount) {
-                $qadelete[]=array("qaid"=>$row['qaid'], "attribute"=>$row['attribute'], "reason"=>$clang->gT("No matching qid"));
+                $countQuestionAttributes++;
             }
         } // while
         if (isset($qadelete) && $qadelete) {
-            $integritycheck .= "<li>".$clang->gT("The following question attributes should be deleted").":</li><br /><span style='font-size:7pt;'>\n";
-            foreach ($qadelete as $qad) {$integritycheck .= "QAID `{$qad['qaid']}` ATTRIBUTE `{$qad['attribute']}` ".$clang->gT("because")." `{$qad['reason']}`<br />\n";}
-            $integritycheck .= "</span><br />\n";
+            $integritycheck .= "<li>".sprintf($clang->gT("There are %s orphaned question attributes."),$countQuestionAttributes)."</li>";
         }
         else
         {
             $integritycheck .= "<li>".$clang->gT("All question attributes meet consistency standards")."</li>\n";
         }
 
+        /**********************************************************************/
+        /*     Check default values                                           */
+        /**********************************************************************/
+        $sQuery = "SELECT * FROM {$dbprefix}defaultvalues where qid not in (select qid from {$dbprefix}questions)";
+        $result = db_execute_assoc($sQuery) or safe_die($connect->ErrorMsg());
+        $iCountDefaultValues=$result->RecordCount();   
+
+        if ($iCountDefaultValues>0) {
+            $integritycheck .= "<li>".sprintf($clang->gT("There are %s orphaned default value entries which can be deleted."),$iCountDefaultValues)."</li>";
+        }
+        else
+        {
+            $integritycheck .= "<li>".$clang->gT("All default values meet consistency standards")."</li>\n";
+        }        
+
+        /**********************************************************************/
+        /*     Check quotas                                                   */
+        /**********************************************************************/
+        $sQuery = "SELECT * FROM {$dbprefix}quota where sid not in (select sid from {$dbprefix}surveys)";
+        $result = db_execute_assoc($sQuery) or safe_die($connect->ErrorMsg());
+        $iCountQuotas=$result->RecordCount();   
+
+        if ($iCountQuotas>0) {
+            $integritycheck .= "<li>".sprintf($clang->gT("There are %s orphaned quota entries which can be deleted."),$iCountQuotas)."</li>";
+        }
+        else
+        {
+            $integritycheck .= "<li>".$clang->gT("All quotas meet consistency standards")."</li>\n";
+        }        
+        
+
+        /**********************************************************************/
+        /*     Check quota languagesettings                                   */
+        /**********************************************************************/
+        $sQuery = "SELECT * FROM {$dbprefix}quota_languagesettings where quotals_quota_id not in (select id from {$dbprefix}quota)";
+        $result = db_execute_assoc($sQuery) or safe_die($connect->ErrorMsg());
+        $iCountQuotaLanguageSettings=$result->RecordCount();   
+
+        if ($iCountQuotaLanguageSettings>0) {
+            $integritycheck .= "<li>".sprintf($clang->gT("There are %s orphaned quota language settings which can be deleted."),$iCountQuotaLanguageSettings)."</li>";
+        }
+        else
+        {
+            $integritycheck .= "<li>".$clang->gT("All quota language settings meet consistency standards")."</li>\n";
+        }        
+
+        /**********************************************************************/
+        /*     Check quota members                                   */
+        /**********************************************************************/
+        $sQuery = "SELECT * FROM {$dbprefix}quota_members where quota_id not in (select id from {$dbprefix}quota) or qid not in (select qid from {$dbprefix}questions) or sid not in (select sid from {$dbprefix}surveys)";
+        $result = db_execute_assoc($sQuery) or safe_die($connect->ErrorMsg());
+        $iCountQuotaMembers=$result->RecordCount();   
+     
+        
+        if ($iCountQuotaMembers>0) {
+            $integritycheck .= "<li>".sprintf($clang->gT("There are %s orphaned quota members which can be deleted."),$iCountQuotaMembers)."</li>";
+        }
+        else
+        {
+            $integritycheck .= "<li>".$clang->gT("All quota members meet consistency standards")."</li>\n";
+        }        
+
+
+        
         /**********************************************************************/
         /*     CHECK ASSESSMENTS                                              */
         /**********************************************************************/
@@ -284,6 +415,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         //3: If it doesn't offer it for deletion
         $tables=$connect->MetaTables(false, false, "{$dbprefix}%old%survey%");
         $oldsids=array();
+        $sids=array();
         foreach($tables as $table)
         {
             list($one, $two, $three, $sid, $date)=explode("_", $table);
@@ -347,11 +479,12 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         //3: If it doesn't offer it for deletion
         $tables=$connect->MetaTables(false, false, "{$dbprefix}%old%token%");
         $oldtsids=array();
+        $tsids=array();
         $folloldtsids=array();
 
         foreach($tables as $table)
         {
-            list($one, $two, $three, $sid, $date)=explode("_", $table);
+            list($one, $two, $sid, $date)=explode("_", substr($table,strlen($dbprefix)));
             $oldtsids[]=$sid;
             $fulloldtsids[$sid][]=$table;
         }
@@ -415,12 +548,33 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) &&
         !isset($gdelete) && !isset($asgdelete) && !isset($sdelete) &&
         !isset($assdelete) && !isset($qadelete) && !isset($oldsdelete) &&
-        !isset($oldtdelete) && !isset($sldelete)) {
+        !isset($oldtdelete) && !isset($sldelete)&& $iCountDefaultValues==0 && 
+        $iCountQuotas==0 && $iCountQuotaLanguageSettings==0 && $iCountQuotaMembers==0) {
             $integritycheck .= "<br />".$clang->gT("No database action required");
         } else {
             $integritycheck .= "<br />".$clang->gT("Should we proceed with the delete?")."<br />\n";
             $integritycheck .= "<form action='{$scriptname}?action=checkintegrity' method='post'>\n";
+            
+            if ($iCountQuotaMembers>0)
+            {
+                    $integritycheck .= "<input type='hidden' name='quotamembers_delete'  value='1' />\n";
+            }
 
+            if ($iCountQuotaLanguageSettings>0)
+            {
+                    $integritycheck .= "<input type='hidden' name='quotalanguagesettings_delete'  value='1' />\n";
+            }
+            
+            if ($iCountQuotas>0)
+            {
+                    $integritycheck .= "<input type='hidden' name='quota_delete'  value='1' />\n";
+            }
+            
+            if ($iCountDefaultValues>0)
+            {
+                    $integritycheck .= "<input type='hidden' name='defaultvalue_delete'  value='1' />\n";
+            }
+            
             if (isset($oldsdelete)) {
                 foreach($oldsdelete as $olds) {
                     $integritycheck .= "<input type='hidden' name='oldsdelete[]' value='{$olds}' />\n";
@@ -558,8 +712,40 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $sldelete=returnglobal('sldelete');
         $oldsdelete=returnglobal('oldsdelete');
         $oldtdelete=returnglobal('oldtdelete');
+        $bDefaultValueDelete=returnglobal('defaultvalue_delete');
+        $bQuotaDelete=returnglobal('quota_delete');
+        $bQuotaLanguageSettingsDelete=returnglobal('quotalanguagesettings_delete');
+        $bQuotaMembersDelete=returnglobal('quotamembers_delete');
+        
+        if (isset($bDefaultValueDelete) && $bDefaultValueDelete==1)
+        {
+            $integritycheck .= $clang->gT("Deleting orphaned default values.")."<br />\n";
+            $sSQL = "delete FROM {$dbprefix}defaultvalues where qid not in (select qid from {$dbprefix}questions)";
+            $result = $connect->Execute($sSQL) or safe_die ("Couldn't delete default values ($sSQL)<br />".$connect->ErrorMsg());
+        }
 
+        if (isset($bQuotaMembersDelete) && $bQuotaMembersDelete==1)
+        {
+            $integritycheck .= $clang->gT("Deleting orphaned quotas.")."<br />\n";
+            $sSQL = "delete FROM {$dbprefix}quota_members where quota_id not in (select id from {$dbprefix}quota) or qid not in (select qid from {$dbprefix}questions) or sid not in (select sid from {$dbprefix}surveys)";
+            $result = $connect->Execute($sSQL) or safe_die ("Couldn't delete quota members ($sSQL)<br />".$connect->ErrorMsg());
+        }
 
+        if (isset($bQuotaDelete) && $bQuotaDelete==1)
+        {
+            $integritycheck .= $clang->gT("Deleting orphaned quotas.")."<br />\n";
+            $sSQL = "delete FROM {$dbprefix}quota where sid not in (select sid from {$dbprefix}surveys)";
+            $result = $connect->Execute($sSQL) or safe_die ("Couldn't delete quotas ($sSQL)<br />".$connect->ErrorMsg());
+        }
+        
+        
+        if (isset($bQuotaLanguageSettingsDelete) && $bQuotaLanguageSettingsDelete==1)
+        {
+            $integritycheck .= $clang->gT("Deleting orphaned language settings.")."<br />\n";
+            $sSQL = "delete FROM {$dbprefix}quota_languagesettings where quotals_quota_id not in (select id from {$dbprefix}quota)";
+            $result = $connect->Execute($sSQL) or safe_die ("Couldn't delete quotas ($sSQL)<br />".$connect->ErrorMsg());
+        }
+        
         if (isset($oldsdelete)) {
             $integritycheck .= $clang->gT("Deleting old survey result tables").":<br /><span style='font-size: 7pt;'>\n";
             foreach ($oldsdelete as $olds) {

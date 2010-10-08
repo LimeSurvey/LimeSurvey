@@ -7543,4 +7543,18 @@ function getXMLWriter() {
     }
     return $xmlwriter;    
 }
+
+/*
+ * Return a sql statement for renaming a table
+ */
+function db_rename_table($oldtable, $newtable)
+{
+    global $connect;
+
+    $dict = NewDataDictionary($connect);
+    $result=$dict->RenameTableSQL($oldtable, $newtable);
+    return $result[0];
+}
+
+
 // Closing PHP tag intentionally left out - yes, it is okay
