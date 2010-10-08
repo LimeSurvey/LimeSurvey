@@ -3156,6 +3156,7 @@ function templatereplace($line, $replacements=array())
  */
 function insertansReplace($line)
 {
+    if (!isset($_SESSION['dateformats']['phpdate'])) $_SESSION['dateformats']['phpdate']='';
     while (strpos($line, "{INSERTANS:") !== false)
     {
         $answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);

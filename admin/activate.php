@@ -396,14 +396,19 @@ else
             {
                 if ($row['autonumber_start'] > 0)
                 {
-                    $autonumberquery = "ALTER TABLE {$dbprefix}survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
-                    if ($result = $connect->Execute($autonumberquery))
-                    {
-                        //We're happy it worked!
+                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative') {
+                        mssql_drop_primary_index('survey_'.$postsid);                        
+                        mssql_drop_constraint('id','survey_'.$postsid);
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} drop column id "; 
+                        $connect->Execute($autonumberquery);  
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add column id int identity({$row['autonumber_start']},1)"; 
+                        $connect->Execute($autonumberquery);  
                     }
                     else
                     {
-                        //Continue regardless - it's not the end of the world
+                        $autonumberquery = "ALTER TABLE {$dbprefix}survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
+                        $result = @$connect->Execute($autonumberquery);  
+                         
                     }
                 }
             }
@@ -439,5 +444,40 @@ else
     }
 
 }
+
+function mssql_drop_constraint($fieldname, $tablename)
+{
+    global $dbprefix, $connect, $modifyoutput;
+    // find out the name of the default constraint
+    // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
+    $dfquery ="SELECT c_obj.name AS constraint_name
+                FROM  sys.sysobjects AS c_obj INNER JOIN
+                      sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
+                      sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
+                      sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
+                WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{$dbprefix}{$tablename}')";
+    $defaultname=$connect->GetRow($dfquery);
+    if ($defaultname!=false)
+    {
+        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
+    }
+}
+
+
+function mssql_drop_primary_index($tablename)
+{
+     global $dbprefix, $connect, $modifyoutput;
+    // find out the constraint name of the old primary key
+    $pkquery = "SELECT CONSTRAINT_NAME "
+              ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+              ."WHERE     (TABLE_NAME = '{$dbprefix}{$tablename}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+
+    $primarykey=$connect->GetOne($pkquery);
+    if ($primarykey!=false)
+    {
+        modify_database("","ALTER TABLE [prefix_{$tablename}] DROP CONSTRAINT {$primarykey}"); echo $modifyoutput; flush();
+    }
+}
+
 
 ?>
