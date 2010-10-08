@@ -68,11 +68,7 @@ if (!isset($sDataEntryLanguage))
 }
 $surveyinfo=getSurveyInfo($surveyid);
 
-$actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-$actsurresult = db_execute_assoc($actsurquery) or safe_die($connect->ErrorMsg());
-$actsurrows = $actsurresult->FetchRow();
-
-if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
+if (bHasRight($surveyid, 'browse_response'))
 {
 
     $surveyoptions = browsemenubar($clang->gT("Browse Responses"));

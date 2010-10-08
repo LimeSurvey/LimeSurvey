@@ -109,12 +109,7 @@ if ($subaction == "importldap" || $subaction == "uploadldap" )
 
 $tokenoutput = "";
 
-$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-$sumresult5 = db_execute_assoc($sumquery5);
-$sumrows5 = $sumresult5->FetchRow();
-
-
-if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
     header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -229,9 +224,7 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 }
 
 if ($subaction == "delete" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
@@ -291,9 +284,7 @@ $tokenexists=tableExists('tokens_'.$surveyid);
 if (!$tokenexists) //If no tokens table exists
 {
     if (isset($_POST['createtable']) && $_POST['createtable']=="Y" &&
-    ($sumrows5['edit_survey_property'] ||
-    $sumrows5['activate_survey'] ||
-    $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
     )
     {
         $createtokentable=
@@ -362,7 +353,7 @@ if (!$tokenexists) //If no tokens table exists
 		return;
     }
     elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') &&
-    ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+    (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
     {
         $query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("tokens_$surveyid"));
         $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
@@ -389,9 +380,7 @@ if (!$tokenexists) //If no tokens table exists
         $tokenoutput .= "\t</div><div class='messagebox'>\n"
         ."<div class='warningheader'>".$clang->gT("Warning")."</div>\n"
         ."<br /><strong>".$clang->gT("Tokens have not been initialised for this survey.")."</strong><br /><br />\n";
-        if ($sumrows5['edit_survey_property'] ||
-        $sumrows5['activate_survey'] ||
-        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+        if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
         {
             $tokenoutput .= "".$clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.")
             ."<br /><br />\n";
@@ -413,9 +402,7 @@ if (!$tokenexists) //If no tokens table exists
         .$clang->gT("No, thanks.")."' onclick=\"window.open('{$scriptname}?sid=$surveyid', '_top')\" /></div>\n";
         // Do not offer old postgres token tables for restore since these are having an issue with missing index
         if ($tcount>0 && $databasetype!='postgres' &&
-        ($sumrows5['edit_survey_property'] ||
-        $sumrows5['activate_survey'] ||
-        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+        (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
         )
         {
             $tokenoutput .= "<br /><div class='header'>".$clang->gT("Restore options")."</div>\n"
@@ -460,9 +447,7 @@ $tokenoutput .= "\t<div class='menubar-main'>\n"
 ."title='".$clang->gTview("Display tokens")."' >"
 ."<img name='ViewAllButton' src='$imagefiles/document.png' alt='".$clang->gT("Display tokens")."' /></a>\n";
 
-if ($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 {
     $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\""
     ."title='".$clang->gTview("Add new token entry")."' >"
@@ -479,15 +464,13 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     ."title='".$clang->gTview("Import tokens from LDAP query")."'> <img name='ImportLdapButton' src='$imagefiles/importldap.png' alt='".$clang->gT("Import tokens from LDAP query")."' /></a>";
 }
 
-if ($sumrows5['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+if (bHasRight($surveyid, 'export'))
 {
     $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')\" "
     ."title='".$clang->gTview("Export tokens to CSV file")."'>".
 	"<img name='ExportButton' src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export tokens to CSV file")."' /></a>\n";
 }
-if ($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 {
     $tokenoutput .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
     ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=emailsettings', '_top')\" "
@@ -565,7 +548,7 @@ else
     $ishtml=false;
 }
 
-if ($subaction == "exportdialog" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+if ($subaction == "exportdialog" && bHasRight($surveyid, 'export') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
     $langquery = "SELECT language FROM ".db_table_name("tokens_$surveyid")." group by language";
     $langresult = db_execute_assoc($langquery);
@@ -692,9 +675,7 @@ if ($subaction == "emailsettings")
 
 // Save the updated email settings
 if ($subaction == "updateemailsettings" &&
-($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+bHasRight($surveyid, 'activate_survey')
 )
 {
     $_POST  = array_map('db_quote', $_POST);
@@ -721,9 +702,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 if ($subaction == "deleteall" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $query="DELETE FROM ".db_table_name("tokens_$surveyid");
@@ -734,9 +713,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 if ($subaction == "clearinvites" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0";
@@ -747,9 +724,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 if ($subaction == "cleartokens" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
@@ -760,7 +735,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 
-if (!$subaction && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+if (!$subaction && (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Token database administration options")."</div>\n"
     ."<div style='width:30%; margin:0 auto;'><ul><li><a href='#' onclick=\"if( confirm('"
@@ -1038,9 +1013,7 @@ if ($subaction == "browse" || $subaction == "search")
 	        if ($tokenfieldname=='tid')
 	        {
 	            $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
-	            if ($sumrows5['edit_survey_property'] ||
-	            $sumrows5['activate_survey'] ||
-	            $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	            if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 	            {
 	                if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
 	                {
@@ -1139,9 +1112,7 @@ if ($subaction == "browse" || $subaction == "search")
 }
 
 if ($subaction == "kill" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $date = date('YmdHis');
@@ -1187,9 +1158,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 
 if ($subaction == "email" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     if (getEmailFormat($surveyid) == 'html')
     {
@@ -1477,9 +1446,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "remind" && //XXX
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     $tokenoutput .= PrepareEditorScript();
     $tokenoutput .= "\t<div class='header'>"
@@ -1818,9 +1785,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "tokenify" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     $tokenoutput .= "<div class='header'>".$clang->gT("Create tokens")."</div>\n";
     $tokenoutput .= "<div class='messagebox'>\n";
@@ -1882,9 +1847,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "delete" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     $tokenoutput .= "<div class='messagebox'>\n"
     ."\t<div class='header'>"
@@ -1909,9 +1872,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "managetokenattributes" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     $tokenoutput .= "<div class='header'>".$clang->gT("Manage token attribute fields")."</div>\n";
     $tokenfields=GetTokenFieldsAndNames($surveyid,true);
@@ -1964,9 +1925,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "updatetokenattributedescriptions" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     // find out the existing token attribute fieldnames
     $tokenattributefieldnames=GetAttributeFieldNames($surveyid);
@@ -1994,9 +1953,8 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "updatetokenattributes" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')
+))
 {
     $number2add=sanitize_int($_POST['addnumber'],1,100);
     // find out the existing token attribute fieldnames
@@ -2032,9 +1990,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 
 
 if (($subaction == "edit" || $subaction == "addnew") &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     if ($subaction == "edit")
     {
@@ -2175,9 +2131,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "updatetoken" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Edit token entry")."</div>\n"
     ."\t<div class='messagebox'>\n";
@@ -2244,9 +2198,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 }
 
 if ($subaction == "inserttoken" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     //Fix up dates and match to database format
@@ -2307,9 +2259,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 if ($subaction == "import" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload CSV File")."</div>\n";
@@ -2322,9 +2272,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 if ($subaction == "importldap" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload LDAP entries")."</div>\n";
@@ -2336,9 +2284,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 if ($subaction == "upload" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $attrfieldnames=GetAttributeFieldnames($surveyid);
@@ -2557,9 +2503,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 }
 
 if ($subaction == "uploadldap" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 )
 {
     $duplicatelist=array();
