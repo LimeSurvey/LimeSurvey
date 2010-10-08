@@ -1938,7 +1938,7 @@ function sendsubmitnotification($sendnotification)
             if ($ssubquestion!='')
             {
                 $answeroption=FlattenText(html_entity_decode($ssubquestion, ENT_QUOTES, $emailcharset));
-                $results .= "[$answeroption]:   ";
+                $results .= "\t[$answeroption]:   ";
             }
 
             if ( $fieldmap[$value]['type'] == "T" || $fieldmap[$value]['type'] == "U")
@@ -1956,6 +1956,7 @@ function sendsubmitnotification($sendnotification)
             elseif (isset($_SESSION[$value]))
             {
                 $results .= FlattenText(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
+                $results .= "\n";
             }
             else
             {

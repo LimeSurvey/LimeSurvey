@@ -175,30 +175,31 @@ function updatecodes()
 
 function getNextCode(sourcecode)
 {
-    i=1; 
+    i=1;
     found=true;
     foundnumber=-1;
-    while (i<=sourcecode.length && found)   
+    sclength = sourcecode.length;
+    while (i<=sclength && found == true)
     {
-        found=is_numeric(sourcecode.substr(-i));
-        if (found) 
+        found=is_numeric(sourcecode.substr(sclength-i,i));
+        if (found)
         {
-            foundnumber=sourcecode.substr(-i);
+            foundnumber=sourcecode.substr(sclength-i,i);
             i++;
-        }   
+        }
     }
-    if (foundnumber==-1) 
+    if (foundnumber==-1)
     {
         return(sourcecode);
     }
-    else 
+    else
     {
-       foundnumber++; 
+       foundnumber++;
        foundnumber=foundnumber+'';
-       result=sourcecode.substr(0,sourcecode.length-foundnumber.length)+foundnumber;
+       result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
        return(result);
     }
-    
+
 }
 
 function is_numeric (mixed_var) {

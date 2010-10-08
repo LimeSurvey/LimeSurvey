@@ -4305,13 +4305,16 @@ function getAdminHeader($meta=false)
         $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
     }
 
-    $strAdminHeader.= "<!--[if lt IE 7]>\n"
+    //PngFix for IE6/7 breaks subquestion handling in IE6 so we skip it
+    //Better an ugly admin than a not working one
+    /*$strAdminHeader.= "<!--[if lt IE 7]>\n"
     . "<script type=\"text/javascript\" src=\"".$homeurl."/scripts/DD_belatedPNG_0.0.8a-min.js\"></script>\n"
     ."<script>
   DD_belatedPNG.fix('img');
 </script>\n"
-    . "<![endif]-->"
-    . "<title>$sitename</title>\n";
+    . "<![endif]-->";
+    */
+    $strAdminHeader.= "<title>$sitename</title>\n";
     
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
