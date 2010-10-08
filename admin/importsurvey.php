@@ -938,7 +938,7 @@ function CSVImportSurvey($sFullFilepath)
             if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!'))
                             {
                 $insertdata=array();                      
-                $insertdata['qid']=$newqid;
+                $insertdata['qid']=$answerrowdata["qid"];  
                 $insertdata['language']=$answerrowdata['language'];
                 $insertdata['defaultvalue']=$answerrowdata['answer']; 
                 $tablename=$dbprefix.'defaultvalues';    
