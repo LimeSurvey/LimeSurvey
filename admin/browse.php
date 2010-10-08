@@ -506,7 +506,7 @@ elseif ($subaction == "all")
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}&amp;lang={$language}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>";
 
-        if (bHasRight($surveyid,'delete_survey') && isset($rlanguage))
+        if (bHasRight($surveyid,'delete_survey'))
         {
             $browseoutput .= "<a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a>\n";
         }
