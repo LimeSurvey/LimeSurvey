@@ -1421,6 +1421,7 @@ if ($subaction == "email" &&
                 ."<input type='hidden' name='ok' value=\"absolutely\" />\n"
                 ."<input type='hidden' name='subaction' value=\"email\" />\n"
                 ."<input type='hidden' name='action' value=\"tokens\" />\n"
+                ."<input type='hidden' name='bypassbademails' value=\"".$_POST['bypassbademails']."\" />\n"
                 ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
                 foreach ($surveylangs as $language)
                 {
