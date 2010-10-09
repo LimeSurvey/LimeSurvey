@@ -1794,7 +1794,7 @@ function do_list_dropdown($ia)
 
     $answer='';
 
-    if (isset($defexists)) {unset ($defexists);}
+
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);      //Checked
     while($row = $result->FetchRow()) {$other = $row['other'];}
@@ -1826,11 +1826,6 @@ function do_list_dropdown($ia)
             {
                 $opt_select = SELECTED;
             }
-            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-            {
-                $opt_select = SELECTED;
-                $defexists=true;
-            }
             $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$ansrow['answer']}</option>\n";
         }
     }
@@ -1845,11 +1840,11 @@ function do_list_dropdown($ia)
             // The blank category is left at the end outside optgroups
             if ($categorytext == '')
             {
-                $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $_SESSION['fieldmap'][$ia[1]]['defaultvalue']);
+                $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext);
             }
             else
             {
-                $optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $_SESSION['fieldmap'][$ia[1]]['defaultvalue']);
+                $optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext);
             }
 
 
@@ -1865,11 +1860,6 @@ function do_list_dropdown($ia)
                 if ($_SESSION[$ia[1]] == $optionarray['code'])
                 {
                     $opt_select = SELECTED;
-                }
-                elseif ($optionarray['default_value'] == 'Y')
-                {
-                    $opt_select = SELECTED;
-                    $defexists = 'Y';
                 }
                 else
                 {
@@ -1889,11 +1879,6 @@ function do_list_dropdown($ia)
             {
                 $opt_select = SELECTED;
             }
-            elseif ($optionarray['default_value'] == 'Y')
-            {
-                $opt_select = SELECTED;
-                $defexists = 'Y';
-            }
             else
             {
                 $opt_select = '';
@@ -1904,7 +1889,7 @@ function do_list_dropdown($ia)
         }
     }
 
-    if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
+    if (!$_SESSION[$ia[1]])
     {
         $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
     }
@@ -1922,7 +1907,7 @@ function do_list_dropdown($ia)
         $answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
     }
 
-    if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && $shownoanswer == 1)
+    if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '')  && $ia[6] != 'Y' && $shownoanswer == 1)
     {
         $answer .= '<option value="">'.$clang->gT('No answer')."</option>\n";
     }
@@ -2046,8 +2031,6 @@ function do_list_radio($ia)
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
-    unset ($defexists);
-
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);  //Checked
     while($row = $result->FetchRow())
@@ -2112,11 +2095,6 @@ function do_list_radio($ia)
         if ($_SESSION[$ia[1]] == $ansrow['code'])
         {
             $check_ans = CHECKED;
-        }
-        elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-        {
-            $check_ans = CHECKED;
-            $defexists=true;
         }
 
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
@@ -2220,9 +2198,9 @@ function do_list_radio($ia)
 
     if ($ia[6] != 'Y' && $shownoanswer == 1)
     {
-        if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+        if ((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') || ($_SESSION[$ia[1]] == ' ' ))
         {
-            $check_ans = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+            $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         }
         else
         {
@@ -2341,11 +2319,6 @@ function do_listwithcomment($ia)
             {
                 $check_ans = CHECKED;
             }
-            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-            {
-                $check_ans = CHECKED;
-                $defexists=true;
-            }
             $answer .= '		<li>
 			<input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 			<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
@@ -2355,11 +2328,11 @@ function do_listwithcomment($ia)
 
         if ($ia[6] != 'Y' && $shownoanswer == 1)
         {
-            if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+            if ((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') ||($_SESSION[$ia[1]] == ' ' ))
             {
                 $check_ans = CHECKED;
             }
-            elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists))
+            elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != ''))
             {
                 $check_ans = '';
             }
@@ -2411,11 +2384,6 @@ function do_listwithcomment($ia)
             {
                 $check_ans = SELECTED;
             }
-            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-            {
-                $check_ans = CHECKED;
-                $defexists=true;
-            }
             $answer .= '		<option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
 
             if (strlen($ansrow['answer']) > $maxoptionsize)
@@ -2425,11 +2393,11 @@ function do_listwithcomment($ia)
         }
         if ($ia[6] != 'Y' && $shownoanswer == 1)
         {
-            if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+            if ((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') ||($_SESSION[$ia[1]] == ' '))
             {
                 $check_ans = SELECTED;
             }
-            elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists))
+            elseif (isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '')
             {
                 $check_ans = '';
             }
@@ -2918,12 +2886,6 @@ function do_multiplechoice($ia)
                 }
             }
         }
-        // Or if the question is marked as a default selection, check the checkbox
-        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
-        {
-            $answer .= CHECKED;
-        }            
-
         $answer .= " onclick='cancelBubbleThis(event);";
         /* Exclude all others coding */
         if(in_array($ansrow['title'], $excludeallothers))
@@ -2970,11 +2932,6 @@ function do_multiplechoice($ia)
         {
             $answer .= $_SESSION[$myfname];
         }
-        // Or if the question is marked as a default selection, check the checkbox
-        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
-        {
-            $answer .= 'Y';
-        }            
         $answer .= "\" />\n{$wrapper['item-end']}";
 
         $inputnames[]=$myfname;
@@ -3334,10 +3291,6 @@ function do_multiplechoice_withcomments($ia)
                 $answer_main .= CHECKED;
             }
         }
-        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
-        {
-            $answer_main .= CHECKED;
-        }            
         $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
         . $ansrow['question']."</label>\n";
@@ -3349,10 +3302,6 @@ function do_multiplechoice_withcomments($ia)
         if (isset($_SESSION[$myfname]))
         {
             $answer_main .= $_SESSION[$myfname];
-        }
-        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
-        {
-            $answer_main .= 'Y';
         }
         $answer_main .= "' />\n";
         $fn++;

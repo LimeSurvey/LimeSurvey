@@ -2499,7 +2499,14 @@ function buildsurveysession()
 
     }
 
-
+    // Prefill question/answer from defaultvalues
+    foreach ($fieldmap as $field)
+    {
+        if (isset($field['defaultvalue']))
+        {
+            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
+        }
+    }
     // Prefill questions/answers from command line params
     if (isset($_SESSION['insertarray']))        
     {
