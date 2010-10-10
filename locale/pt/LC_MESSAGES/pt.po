@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey  Portuguese language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-09 12:00+0200\n"
-"PO-Revision-Date: 2010-10-09 17:34+0100\n"
+"PO-Revision-Date: 2010-10-10 01:04+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@gmail.com>\n"
 "Language-Team: trans-pt@lists.fedoraproject.org\n"
 "Language: pt\n"
@@ -8706,37 +8706,41 @@ msgstr "Todos os atributos da pergunta cumprem os standards de consistência"
 #, php-format
 msgid "There are %s orphaned default value entries which can be deleted."
 msgstr ""
+"Existem %s entradas de valores por omissão órfãs que podem ser apagadas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:188
 msgid "All default values meet consistency standards"
-msgstr ""
+msgstr "Todos os valores por omissão cumprem os standards de consistência"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:199
 #, php-format
 msgid "There are %s orphaned quota entries which can be deleted."
-msgstr ""
+msgstr "Existem %s entradas de quotas órfãs que podem ser apagadas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:203
 msgid "All quotas meet consistency standards"
-msgstr ""
+msgstr "Todas as quotas cumprem os standards de consistência"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:215
 #, php-format
 msgid "There are %s orphaned quota language settings which can be deleted."
 msgstr ""
+"Existem %s quotas de configurações de idiomas órfãs que podem ser apagadas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:219
 msgid "All quota language settings meet consistency standards"
 msgstr ""
+"Todas as quotas de configurações de idioma cumprem os standards de "
+"consistência"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:231
 #, php-format
 msgid "There are %s orphaned quota members which can be deleted."
-msgstr ""
+msgstr "Existem %s membros de quotas órfãos que podem ser apagados."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:235
 msgid "All quota members meet consistency standards"
-msgstr ""
+msgstr "Todos os membros das quotas cumprem os standards de consistência"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:251
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:378
@@ -8944,16 +8948,16 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:722
 msgid "Deleting orphaned default values."
-msgstr ""
+msgstr "A apagar os valores por omissão órfãos."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:729
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:736
 msgid "Deleting orphaned quotas."
-msgstr ""
+msgstr "A apagar quotas órfãs."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:744
 msgid "Deleting orphaned language settings."
-msgstr ""
+msgstr "A apagar configurações de idioma órfãs."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:750
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:760
@@ -11443,7 +11447,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:5930
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6157
 msgid "Error: There are no answers defined for this question."
@@ -11897,6 +11901,8 @@ msgid ""
 "If one of the subquestions is marked then for each marked subquestion this "
 "value is added as assessment."
 msgstr ""
+"Se uma das perguntas secundárias for marcada, então, para cada pergunta "
+"secundária este valor é adicionado como avaliação."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3505
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3506
@@ -11944,7 +11950,7 @@ msgstr "Valor mínimo do ano no calendário"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3552
 msgid "Minimum year"
-msgstr ""
+msgstr "Ano mínimo"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3559
 msgid "Maximum year value for calendar"
@@ -11952,7 +11958,7 @@ msgstr "Valor máximo do ano para o calendário"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3560
 msgid "Maximum year"
-msgstr ""
+msgstr "Ano máximo"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3567
 msgid "Prefix|Suffix for dropdown lists"
