@@ -2409,10 +2409,17 @@ if ($subaction == "upload" &&
                     $invalidemail=true;
                     $invalidemaillist[]=$line[0]." ".$line[1]." ( )";
                 }
-                if  ($writearray['email']!='' && !validate_email($writearray['email']))
+                if  ($writearray['email']!='')
                 {
-                    $invalidemail=true;
-                    $invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
+                    $aEmailAddresses=explode(';',$writearray['email']);
+                    foreach ($aEmailAddresses as $sEmailaddress)
+                    {
+                        if (!validate_email($sEmailaddress))
+                        {
+                            $invalidemail=true;
+                            $invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
+                        }
+                    }
                 }
 
                 if (!$dupfound && !$invalidemail)
