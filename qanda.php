@@ -1640,7 +1640,18 @@ function do_date($ia)
                     $yearmax = 2020;
                 }
 
-                for ($i=$yearmax; $i>=$yearmin; $i--) {
+                if ($yearmin > $yearmax)
+                {
+                    $step = 1;
+                    $reverse = true;
+                }
+                else
+                {
+                    $step = -1;
+                    $reverse = false;
+                }
+
+                for ($i=$yearmax; ($reverse? $i<=$yearmin: $i>=$yearmin); $i+=$step) {
                     if ($i == $currentyear)
                     {
                         $i_date_selected = SELECTED;
