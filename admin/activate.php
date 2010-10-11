@@ -401,7 +401,7 @@ else
                         mssql_drop_constraint('id','survey_'.$postsid);
                         $autonumberquery = "alter table {$dbprefix}survey_{$postsid} drop column id "; 
                         $connect->Execute($autonumberquery);  
-                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add column id int identity({$row['autonumber_start']},1)"; 
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)"; 
                         $connect->Execute($autonumberquery);  
                     }
                     else
@@ -478,6 +478,3 @@ function mssql_drop_primary_index($tablename)
         modify_database("","ALTER TABLE [prefix_{$tablename}] DROP CONSTRAINT {$primarykey}"); echo $modifyoutput; flush();
     }
 }
-
-
-?>
