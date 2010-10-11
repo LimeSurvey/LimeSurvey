@@ -117,7 +117,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
     if ($thissurvey['active'] == "Y") 
     {
         $aMatchedQuotas=check_quota('return',$surveyid);  
-        if (count($aMatchedQuotas)>0) $bFinalizeThisAnswer=false;         
+        if ($aMatchedQuotas!=false && count($aMatchedQuotas)>0) $bFinalizeThisAnswer=false;         
     }
     
     if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
@@ -144,7 +144,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
                 echo submitfailed($connect->ErrorMsg());
             }
         }
-        if (count($aMatchedQuotas)>0) 
+        if ($aMatchedQuotas!=false && count($aMatchedQuotas)>0) 
         {
             check_quota('enforce',$surveyid);                    
         }
