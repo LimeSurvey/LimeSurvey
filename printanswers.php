@@ -188,16 +188,15 @@ unset ($fnames['startdate']);
 	while ($idrow = $idresult->FetchRow()) 
 	{
 			$id=$idrow['id']; 
-			$rlangauge=$idrow['startlanguage'];
 	}
 	$next=$id+1;
 	$last=$id-1;
 	$printoutput .= "<table class='printouttable' >\n";
     if(isset($_POST['printableexport']))
     {
-        $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your Answer",'unescaped'));
+        $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
     }
-    $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>\n";
+    $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your answer")."</th></tr>\n";
 	$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked   
 	while ($idrow = $idresult->FetchRow())
 	{
