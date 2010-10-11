@@ -374,6 +374,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  font-style: italic;
+  text-align: left;
+}
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
@@ -543,18 +549,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
-  padding: 0 1em 0.2em 0;
+  width: auto !important;
+  padding: 0 1em 0.8em 0;
   margin-top: 1.3em;
   vertical-align: middle;
 }
 
-.ui-slider-handle {
-  position: absolute;
-  height: 23px;
-  width: 12px;
-  top: 0px;
-  left: 0px;
-  background-image: url(slider-handle.gif);
+.multinum-slider .ui-state-default {
+	background: none #17479E;
+	border:1px solid #666666;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none #EDEDED;
+	border:1px solid #666666;
 }
 
 .ui-slider-1 {
@@ -642,6 +650,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 #tokenform li {
   padding-bottom: 5px;
+  list-style: none;
 }
 
 #tokenform img {

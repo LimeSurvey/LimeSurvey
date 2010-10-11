@@ -1,10 +1,14 @@
-<table width="100%" align="center" bgcolor="#E1E1E1">
 	<tr>
+		<td>
+			<table class="navigatorTable">
+				<tr>
 		<td align="center">
 			{NAVIGATOR}<br />
 			{CLEARALL}
 			{SAVE}
-
+		</td>
+	</tr>
+			</table>
 		</td>
 	</tr>
 </table>

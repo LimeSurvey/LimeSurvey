@@ -92,7 +92,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
 
     //Default values
     $query = "SELECT {$dbprefix}defaultvalues.*
-          FROM {$dbprefix}defaultvalues JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}defaultvalues.qid AND {$dbprefix}questions.sid=$surveyid"; 
+          FROM {$dbprefix}defaultvalues JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}defaultvalues.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.language={$dbprefix}defaultvalues.language "; 
     
     BuildXMLFromQuery($xmlwriter,$query);
     

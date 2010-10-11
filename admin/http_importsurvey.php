@@ -51,13 +51,18 @@ $importingfrom = "http";	// "http" for the web version and "cmdline" for the com
     $importsurvey .= "<div class='messagebox'><br />\n";
     $surveyid = sanitize_int($_POST['copysurveylist']);
     $exclude = array();
+    if (get_magic_quotes_gpc()) {$sNewSurveyName = stripslashes($_POST['copysurveyname']);}
+    else{
+        $sNewSurveyName=$_POST['copysurveyname'];
+    }
+
     require_once("../classes/inputfilter/class.inputfilter_clean.php");
     $myFilter = new InputFilter('','',1,1,1);
     if ($filterxsshtml)
     {
-        $sNewSurveyName = $myFilter->process($_POST['copysurveyname']);
+        $sNewSurveyName = $myFilter->process($sNewSurveyName);
     } else {
-        $sNewSurveyName = html_entity_decode($_POST['copysurveyname'], ENT_QUOTES, "UTF-8");
+        $sNewSurveyName = html_entity_decode($sNewSurveyName, ENT_QUOTES, "UTF-8");
     }
     if (isset($_POST['copysurveyexcludequotas']) && $_POST['copysurveyexcludequotas'] == "on")
     {

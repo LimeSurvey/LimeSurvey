@@ -634,7 +634,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 // this check is done in buildsurveysession and error message
 // could be more interresting there (takes into accound captcha if used)
 if ($tokensexist == 1 && isset($token) && $token &&
-isset($_SESSION['step']) && $_SESSION['step']>0)
+	isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
 {
     //check if token actually does exist
 
@@ -661,7 +661,7 @@ isset($_SESSION['step']) && $_SESSION['step']>0)
         exit;
 }
 }
-if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
+if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'tokens_'.$surveyid)) //check if token is in a valid time frame
 
 {
     $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
@@ -2003,7 +2003,7 @@ function sendsubmitnotification($sendnotification)
     $emailresponseto=null;
     if (!empty($thissurvey['emailresponseto']))
     {
-        if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+		if (isset($_SESSION['token']) && $_SESSION['token'] != '' && db_tables_exist($dbprefix.'tokens_'.$surveyid))
         {
             //Gather token data for tokenised surveys
             $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
@@ -2076,7 +2076,7 @@ function sendsubmitnotification($sendnotification)
             if ($ssubquestion!='')
             {
                 $answeroption=FlattenText(html_entity_decode($ssubquestion, ENT_QUOTES, $emailcharset));
-                $results .= "[$answeroption]:   ";
+                $results .= "\t[$answeroption]:   ";
             }
 
             if ( $fieldmap[$value]['type'] == "T" || $fieldmap[$value]['type'] == "U")
@@ -2091,6 +2091,7 @@ function sendsubmitnotification($sendnotification)
                     }
                 }
             }
+                $results .= "\n";
        }
     }
     $message .= $results;
@@ -2485,7 +2486,7 @@ function buildsurveysession()
 
     //RL: multilingual support
 
-    if (isset($_GET['token']))
+	if (isset($_GET['token']) && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
         //get language from token (if one exists)
         $tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
@@ -2587,13 +2588,13 @@ function buildsurveysession()
         $_SESSION['insertarray'][]= "token";
     }
 
-    if ($tokensexist == 1 && $thissurvey['private'] == "N")
+	if ($tokensexist == 1 && $thissurvey['private'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
     }
     $qtypes=getqtypelist('','array');
-    $fieldmap=createFieldMap($surveyid,'full','short',false,$_SESSION['s_lang']);
+    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['s_lang']);
     $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
@@ -2627,7 +2628,14 @@ function buildsurveysession()
 
     }
 
-
+    // Prefill question/answer from defaultvalues
+    foreach ($fieldmap as $field)
+    {
+        if (isset($field['defaultvalue']))
+        {
+            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
+        }
+    }
     // Prefill questions/answers from command line params
     if (isset($_SESSION['insertarray']))        
     {
@@ -2688,7 +2696,7 @@ function surveymover()
 
     if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
     {
-        $surveymover .= "<input class='submit' accesskey='p' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; "
+        $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value=' &lt;&lt; "
         . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' />\n";
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
@@ -2766,44 +2774,19 @@ function doAssessment($surveyid, $returndataonly=false)
             {
                 if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
                 {
-                    $fieldmap[$i]['assessment_value']=0;
+                    $fieldmap[$field['fieldname']]['assessment_value']=0;
                     if (isset($_SESSION[$field['fieldname']]))
                     {
                         if ($field['type']==':') //Multiflexi numbers  - result is the assessment value
 
                         {
-                            $fieldmap[$i]['assessment_value']=$_SESSION[$field['fieldname']];
+                            $fieldmap[$field['fieldname']]['assessment_value']=$_SESSION[$field['fieldname']];
                             $total=$total+$_SESSION[$field['fieldname']];
                         }
                         else
                         {
-                            // for questions which are using label sets
-                            if (in_array($field['type'],array('Z','1','F','H','W','Z')))
-                            {
-                                if ($field['type']=='1') //special treatment for Dual scale
 
-                                {
-                                    $x=substr($field['fieldname'],-1,1);
-                                    if ($x==0) $x='';
-                                }
-                                else
-                                {
-                                    $x='';
-                                }
-                                $usquery = "SELECT assessment_value FROM ".db_table_name("labels")." where lid=(select lid$x from ".db_table_name("questions")." where qid=".$field['qid']." and language='$baselang') and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
-                            }
-                            else  // for normal answers
-
-                            {
-                                if (($field['type'] == "M") || ($field['type'] == "P"))
-                                {
-                                    $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where language='$baselang' and code=".db_quoteall($field['aid'])." and qid=".$field['qid'];
-                                }
-                                else
-                                {
                                     $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
-                                }
-                            }
                             $usresult = db_execute_assoc($usquery);          //Checked
                             if ($usresult)
                             {
@@ -2812,16 +2795,16 @@ function doAssessment($surveyid, $returndataonly=false)
                                 if (($field['type'] == "M") || ($field['type'] == "P"))
                                 {
                                     if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple Options type questions
-
                                     {
-                                        $fieldmap[$i]['assessment_value']=$usrow['assessment_value'];
+                                        $aAttributes=getQuestionAttributes($field['qid'],$field['type']);
+                                        $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                         $total=$total+$usrow['assessment_value'];
                                     }
                                 }
                                 else     // any other type of question
 
                                 {
-                                    $fieldmap[$i]['assessment_value']=$usrow['assessment_value'];
+                                    $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
                                     $total=$total+$usrow['assessment_value'];
                                 }
                             }

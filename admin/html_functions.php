@@ -41,7 +41,7 @@ function browsemenubar($title='')
     }
     else
     {
-        $browsemenubar .= "<a href=\"#\" accesskey='b' onclick=\"document.getElementById('browsepopup').style.visibility='visible';\""
+        $browsemenubar .= "<a href=\"#\" accesskey='b' id='browseresponses'"
         . "title=\"".$clang->gTview("Display Responses")."\" >"
         ."<img src='$imagefiles/document.png' alt='".$clang->gT("Display Responses")."' name='ViewAll' /></a>";
 
@@ -50,12 +50,12 @@ function browsemenubar($title='')
         $tmp_survlangs[] = $baselang;
         rsort($tmp_survlangs);
 
-        $browsemenubar .="<div class=\"langpopup1\" id=\"browsepopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+        $browsemenubar .="<div class=\"langpopup\" id=\"browselangpopup\">".$clang->gT("Please select a language:")."<ul>";
         foreach ($tmp_survlangs as $tmp_lang)
         {
-            $browsemenubar .= "<tr><td><a href=\"$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;browselang=".$tmp_lang."\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+            $browsemenubar .= "<li><a href=\"{$scriptname}?action=browse&amp;sid={$surveyid}&amp;subaction=all&amp;browselang={$tmp_lang}\" accesskey='b'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
         }
-        $browsemenubar .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
+        $browsemenubar .= "</ul></div>";
     }
 
     // Display last 50 responses

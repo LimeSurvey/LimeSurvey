@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Norwegian Bokmål language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-31 12:00+0200\n"
+"POT-Creation-Date: 2010-08-02 23:00+0200\n"
 "PO-Revision-Date: 2010-08-01 18:37+0100\n"
 "Last-Translator: Pål Monstad <pal.monstad@hkskole.no>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
@@ -1708,6 +1708,7 @@ msgstr "Svar matchet (regulært søkeuttrykk)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:638
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:645
+#, php-format
 msgid "Label %s"
 msgstr "Etikett %s"
 
@@ -1773,6 +1774,7 @@ msgstr "Vennligst velg alle som passer:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:942
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:943
+#, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "Vennligst velg *minst* %s svar:"
 
@@ -1883,12 +1885,14 @@ msgid "Please fax your completed survey to: %s"
 msgstr "Vennligst faks den utfylte besvarelsen til: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1818
+#, php-format
 msgid ""
 "Only answer this question for the items you selected in question %d ('%s')"
 msgstr ""
 "Svar kun på dette spørsmålet på punktene du valgte i spørsmål %d ('%s')"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1827
+#, php-format
 msgid ""
 "Only answer this question for the items you did not select in question %d ('%"
 "s')"
@@ -2266,15 +2270,16 @@ msgid ""
 "This file is too old. Only files from LimeSurvey version 1.50 (DBVersion "
 "112) and newer are supported."
 msgstr ""
-"Denne filen er for gammel. Bare filer fra LimeSurvey versjon 1.50 (DB versjon "
-"112) eller nyere støttes."
+"Denne filen er for gammel. Bare filer fra LimeSurvey versjon 1.50 (DB "
+"versjon 112) eller nyere støttes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:279
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:322
 msgid ""
 "You can't import a question which doesn't support at least the survey base "
 "language."
-msgstr "Du kan ikke importere et spørsmål som ikke støttes av minimum standardspråk."
+msgstr ""
+"Du kan ikke importere et spørsmål som ikke støttes av minimum standardspråk."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:293
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:336
@@ -3336,6 +3341,7 @@ msgid "Error: You are trying to use duplicate answer codes."
 msgstr "FEIL: Du prøver å bruker duplikate svarkoder."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1501
+#, php-format
 msgid "Answer scale %s"
 msgstr "Svarskala %s"
 
@@ -3394,6 +3400,14 @@ msgstr "Legg til"
 msgid "Enter your subquestions:"
 msgstr "Angi underspørsmål:"
 
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1617
+msgid ""
+"Enter one answer per line. You can provide a code by separating code and "
+"answer text with a semikolon or tab."
+msgstr ""
+"Angi ett svar per linje. Du kan angi en kode ved å skille kode og svartekst "
+"med et semikolon eller tab."
+
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1623
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1873
 msgid "Save changes"
@@ -3431,6 +3445,14 @@ msgstr "Underspørsmål"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1827
 msgid "Subquestion:"
 msgstr "Underspørsmål:"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1867
+msgid ""
+"Enter one subquestion per line. You can provide a code by separating code "
+"and subquestion text with a semikolon or tab."
+msgstr ""
+"Angi ett underspørsmål per linje. Du kan angi en kode ved å skille kode og "
+"underspørsmål med et semikolon eller tab."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1879
 msgid ""
@@ -4038,8 +4060,8 @@ msgid ""
 "This is the base language of your survey and it can't be changed later. You "
 "can add more languages after you have created the survey."
 msgstr ""
-"Dette er standardspråk i undersøkelsen og kan ikke endres senere. Du "
-"kan legge til flere språk etter at undersøkelsen er laget."
+"Dette er standardspråk i undersøkelsen og kan ikke endres senere. Du kan "
+"legge til flere språk etter at undersøkelsen er laget."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3187
 msgid "*This setting cannot be changed later!"
@@ -4266,6 +4288,7 @@ msgstr ""
 "Kunne ikke legge til spørsmål. Du må i hvertfall legge inn en spørsmålskode."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:308
+#, php-format
 msgid "Question in language %s could not be created."
 msgstr "Spørsmål med språk %s kunne ikke opprettes."
 
@@ -4621,11 +4644,11 @@ msgstr "Denne filen er ikke en etikettfil. Importen bli ikke gjennomført."
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:232
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:337
 msgid "Label set was not imported because the same label set already exists."
-msgstr ""
-"Etikettene ble ikke importert fordi disse allerede finnes."
+msgstr "Etikettene ble ikke importert fordi disse allerede finnes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:232
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:337
+#, php-format
 msgid "Existing LID: %s"
 msgstr "Eksisterendse  LID: %s"
 
@@ -4853,6 +4876,7 @@ msgstr "Logget inn"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:161
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:302
+#, php-format
 msgid "Welcome %s!"
 msgstr "Velkommen %s!"
 
@@ -5843,15 +5867,16 @@ msgstr "Gå til spørsmålsgruppe"
 msgid ""
 "You can't import a group which doesn't support at least the survey base "
 "language."
-msgstr "Du kan ikke importere en gruppe som ikke støtter minimum standardspråk."
+msgstr ""
+"Du kan ikke importere en gruppe som ikke støtter minimum standardspråk."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:906
 msgid ""
 "The languages of the imported group file must at least include the base "
 "language of this survey."
 msgstr ""
-"Språket i importert gruppefil må minimum inneholde standardspråk"
-" for undersøkelsen."
+"Språket i importert gruppefil må minimum inneholde standardspråk for "
+"undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:55
 msgid "Survey copy summary"
@@ -6278,8 +6303,7 @@ msgstr "Importer mal"
 msgid ""
 "Please change the directory permissions of tmp folder in order to enable "
 "this option"
-msgstr ""
-"Endre rettighetene til katalogen 'tmp' for å bruke denne muligheten."
+msgstr "Endre rettighetene til katalogen 'tmp' for å bruke denne muligheten."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:897
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:898
@@ -6364,8 +6388,7 @@ msgstr "Forhåndsvis:"
 msgid ""
 " Please change the directory permission of /tmp folder in order to preview "
 "templates."
-msgstr ""
-" Endre rettighetene til katalogen '/tmp' for å forhåndsvise maler."
+msgstr " Endre rettighetene til katalogen '/tmp' for å forhåndsvise maler."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:1129
 #: /var/lib/limesurvey-svn/subversion1x/index.php:954
@@ -7293,8 +7316,8 @@ msgid ""
 "This survey is not yet activated and so your participants won't be able to "
 "fill out the survey."
 msgstr ""
-"Denne undersøkelsen er ikke aktiv og deltakerne kan derfor ikke"
-" foreta besvarelser enda."
+"Denne undersøkelsen er ikke aktiv og deltakerne kan derfor ikke foreta "
+"besvarelser enda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1260
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1513
@@ -8124,8 +8147,8 @@ msgid ""
 "questions in your active survey."
 msgstr ""
 "Du kan importere alle gamle svar som inneholder samme antall kolonner som "
-"din aktive undersøkelse. Du MÅ være sikker på at svarene "
-"korresponderer med spørsmålene."
+"din aktive undersøkelse. Du MÅ være sikker på at svarene korresponderer med "
+"spørsmålene."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:45
@@ -8262,7 +8285,8 @@ msgstr "SLID `%s` fordi relatert undersøkelse mangler."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:226
 msgid "All survey language settings meet consistency standards"
-msgstr "Alle språkinnstillinger for undersøkelsen oppfyller konsistensstandardene"
+msgstr ""
+"Alle språkinnstillinger for undersøkelsen oppfyller konsistensstandardene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:252
 msgid "The following questions should be deleted"
@@ -8277,6 +8301,7 @@ msgid "The following groups should be deleted"
 msgstr "Følgende grupper må slettes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:272
+#, php-format
 msgid "GID `%s` because there is no matching survey."
 msgstr "GID `%s` fordi det ikke finnes passende undersøkelser."
 
@@ -8343,8 +8368,8 @@ msgid ""
 "You can delete these if you no longer require them."
 msgstr ""
 "Redundans-kontrollen ser etter tabeller som har blitt igjen etter at "
-"undersøkelser er blitt deaktivert. Du kan slette disse hvis du ikke "
-"trenger dem lenger."
+"undersøkelser er blitt deaktivert. Du kan slette disse hvis du ikke trenger "
+"dem lenger."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:497
 msgid ""
@@ -8896,8 +8921,8 @@ msgid ""
 "Delete all incomplete answers that correspond to a token for which a "
 "completed answers is already recorded"
 msgstr ""
-"Slett alle ufullstendige besvarelser som knytter seg til en nøkkel som allerede "
-"har en fullført besvarelse."
+"Slett alle ufullstendige besvarelser som knytter seg til en nøkkel som "
+"allerede har en fullført besvarelse."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:34
 msgid "Reset the completed answers to the incomplete state"
@@ -8987,6 +9012,7 @@ msgid "Tempdir %s is not writable"
 msgstr "Kan ikke skrive til mellomlagringskatalogen %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
+#, php-format
 msgid ""
 "Updater file is not writable (%s). Please set according file permissions."
 msgstr ""
@@ -9127,7 +9153,8 @@ msgid ""
 "the necessary update files for a new version are prepared."
 msgstr ""
 "Oppdateringstjeneren ser ut til å være travelt opptatt. Dette skjer "
-"vanligvis når oppdateringsfilene for en ny versjon er i ferd med å bli klargjort."
+"vanligvis når oppdateringsfilene for en ny versjon er i ferd med å bli "
+"klargjort."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:308
 msgid "Please be patient and try again in about 10 minutes."
@@ -9227,8 +9254,9 @@ msgid ""
 "Database backup functionality is currently not available for your database "
 "type. Before proceeding please backup your database using a backup tool!"
 msgstr ""
-"Sikkerhetskopi av databasen er for tiden ikke tilgjengelig for din databasetype."
-" Før du fortsetter bør du ta en sikkerhetskopi ved bruk av et passende verktøy!"
+"Sikkerhetskopi av databasen er for tiden ikke tilgjengelig for din "
+"databasetype. Før du fortsetter bør du ta en sikkerhetskopi ved bruk av et "
+"passende verktøy!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:487
 msgid "Please check any problems above and then proceed to the final step."
@@ -9511,6 +9539,7 @@ msgid "There is a LimeSurvey update available: Version %s"
 msgstr "Det finnes en oppdatert versjon av LimeSurvey: Versjon %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:146
+#, php-format
 msgid "You can update %smanually%s or use the %s"
 msgstr "Du kan oppdatere %smanuelt%s eller bruke %s"
 
@@ -9934,74 +9963,78 @@ msgid "Malay"
 msgstr "malayisk"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:357
+msgid "Maltese"
+msgstr "maltesisk"
+
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:363
 msgid "Norwegian (Bokmal)"
 msgstr "norsk (bokmål)"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:363
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:369
 msgid "Norwegian (Nynorsk)"
 msgstr "norsk (nynorsk)"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:369
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:375
 msgid "Persian"
 msgstr "persisk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:375
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:381
 msgid "Polish"
 msgstr "polsk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:381
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:387
 msgid "Portuguese"
 msgstr "portugisisk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:387
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:393
 msgid "Portuguese (Brazilian)"
 msgstr "portugisisk (Brasil)"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:393
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:399
 msgid "Russian"
 msgstr "russisk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:399
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:405
 msgid "Romanian"
 msgstr "rumensk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:405
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:411
 msgid "Slovak"
 msgstr "slovakisk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:411
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:417
 msgid "Sinhala"
 msgstr "singalesisk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:417
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:423
 msgid "Slovenian"
 msgstr "slovensk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:423
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:429
 msgid "Serbian"
 msgstr "serbisk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:429
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:435
 msgid "Spanish"
 msgstr "spansk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:435
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:441
 msgid "Spanish (Mexico)"
 msgstr "spansk (Mexico)"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:441
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:447
 msgid "Swedish"
 msgstr "svensk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:447
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:453
 msgid "Turkish"
 msgstr "tyrkisk"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:453
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:459
 msgid "Thai"
 msgstr "thai"
 
-#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:460
+#: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:466
 msgid "Vietnamese"
 msgstr "vietnamesisk"
 
@@ -10277,6 +10310,7 @@ msgid "There is no matching saved survey"
 msgstr "Kunne ikke finne en undersøkelse med det oppgitte navn"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1846
+#, php-format
 msgid "Response submission for survey %s"
 msgstr "Innsendt besvarelse for undersøkelse %s"
 
@@ -10308,8 +10342,7 @@ msgstr "Vis statistikken ved å klikke her:"
 msgid ""
 "This email contains confirmation of the responses you made to the survey"
 msgstr ""
-"Denne e-posten inneholder en bekreftelse på svarene du oppga i "
-"undersøkelsen"
+"Denne e-posten inneholder en bekreftelse på svarene du oppga i undersøkelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2000
 msgid "Survey submission confirmation"
@@ -10625,6 +10658,7 @@ msgstr "Annet svar"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1947
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2212
+#, php-format
 msgid ""
 "You've selected the \"%s\" answer for question \"%s\". Please also fill in "
 "the accompanying \"other comment\" field."
@@ -10716,8 +10750,9 @@ msgstr "Dette feltet kan kun inneholde tallverdier"
 msgid ""
 "Error: There are no answer options for this question and/or they don't exist "
 "in this language."
-msgstr "Feil: Det finnes ingen svarinnstillinger for dette spørsmålet og/eller "
-"på dette språket."
+msgstr ""
+"Feil: Det finnes ingen svarinnstillinger for dette spørsmålet og/eller på "
+"dette språket."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6088
 msgid "Error: There are no answers defined for this question."
@@ -11455,8 +11490,8 @@ msgid ""
 "Set the number of slots available to rank the available answers. Note: This "
 "settings can't be changed after survey activation."
 msgstr ""
-"Angi antall spor til å rangere tilgjengelige svar. Merk at "
-"denne innstillingen ikke kan endres etter at undersøkelsen er aktiv."
+"Angi antall spor til å rangere tilgjengelige svar. Merk at denne "
+"innstillingen ikke kan endres etter at undersøkelsen er aktiv."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3804
 msgid "Ranking slots"
@@ -11520,7 +11555,8 @@ msgstr "Vis min og maks for skyvekontrollen"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3876
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
-msgstr "Separatortegn for svar|venstre-skyvekontroll-tekst|høyre-skyvekontroll-tekst"
+msgstr ""
+"Separatortegn for svar|venstre-skyvekontroll-tekst|høyre-skyvekontroll-tekst"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3877
 msgid "Slider left/right text separator"
@@ -11641,13 +11677,13 @@ msgstr "Meldingen som vises under nedtellingen"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3965
 msgid "Time limit countdown message"
-msgstr "Melding om nedtelling mot tidsgrense"
+msgstr "Melding om nedtelling mot tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3972
 msgid ""
 "CSS Style for the message that displays in the countdown timer during the "
 "countdown"
-msgstr "CSS-stil for meldingen som vises under nedtellingen"
+msgstr "CSS-stil for meldingen som vises under nedtellingen for tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3973
 msgid "Time limit timer CSS style"
@@ -11668,8 +11704,8 @@ msgid ""
 "The message to display when the time limit has expired (a default message "
 "will display if this setting is left blank)"
 msgstr ""
-"Melding som vises når tiden har løpt ut (en standardmelding "
-"vil vises hvis denne innstillingen er tom)"
+"Melding som vises når tiden har løpt ut (en standardmelding vil vises hvis "
+"denne innstillingen er tom)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3989
 msgid "Time limit expiry message"
@@ -11688,83 +11724,88 @@ msgid ""
 "Display a 'time limit warning' when there are this many seconds remaining in "
 "the countdown (warning will not display if left blank)"
 msgstr ""
+"Vis en advarsel om tidsutløp når det gjenstår angitt antall sekunder "
+"i nedtellingen (advarsel vises ikke hvis det ikke angis noe her)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4005
 msgid "1st Time limit warning message timer"
-msgstr "Første advarsel om utløpsvarsel"
+msgstr "Første advarseltekst om utløpsvarsel"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4012
 msgid ""
 "The 'time limit warning' will stay visible for this many seconds (will not "
 "turn off if this setting is left blank)"
 msgstr ""
+"Varsel om tidsutløp vil være synlig i angitt antall sekunder (vil ikke "
+"forsvinne hvis ikke noe angies her)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4013
 msgid "1st Time limit warning message display time"
-msgstr "Første advarsel ved utløpsvarsel"
+msgstr "Første advarselstekst ved utløpsvarsel"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4020
 msgid ""
 "The message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
 msgstr ""
+"Melding som vises ved tidsutløp (en standardmelding vises hvis det ikke "
+"blir angitt noe her)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4021
 msgid "1st Time limit warning message"
-msgstr "Første gangs advarsel"
+msgstr "Første gangs advarsel om tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4028
-#, fuzzy
 msgid "CSS style used when the 'time limit warning' message is displayed"
-msgstr "CSS-stil for utløpsadvarselet"
+msgstr "CSS-stil brukt når advarsel om tidsutløp vises"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4029
-#, fuzzy
 msgid "1st Time limit warning CSS style"
-msgstr "CSS-stil for utløpsadvarselet"
+msgstr "CSS-stil for første varsel om tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4036
 msgid ""
 "Display the 2nd 'time limit warning' when there are this many seconds "
 "remaining in the countdown (warning will not display if left blank)"
 msgstr ""
+"Vis advarsel nummer 2 ved tidsutløp når angitt antall sekunder gjenstår "
+"(advarsel vises ikke hvis det ikke angis noe)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4037
-#, fuzzy
 msgid "2nd Time limit warning message timer"
-msgstr "Tid igjen til utløp mens utløpsadvarselet vises (i sekunder)"
+msgstr "Andre gangs advarseltekst ved tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4044
 msgid ""
 "The 2nd 'time limit warning' will stay visible for this many seconds (will "
 "not turn off if this setting is left blank)"
 msgstr ""
+"Andre gangs advarseltekst ved tidsutløp vil være synlig i oppgitt antall "
+"sekunder (vil ikke forsvinne hvis ikke noe angitt her)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4045
-#, fuzzy
 msgid "2nd Time limit display time"
-msgstr "Visningstid for utløpsadvarselet"
+msgstr "Andre gangs visning ved tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4052
 msgid ""
 "The 2nd message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
 msgstr ""
+"Andre gangs advarseltekst som vises ved tidsutløp (en standartdmelding vises "
+"hvis det ikke angis noe her)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4053
-#, fuzzy
 msgid "2nd Time limit warning message"
-msgstr "Utløpsadvarsel"
+msgstr "Andre gangs advarseltekst ved tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4060
-#, fuzzy
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
-msgstr "CSS-stil for utløpsadvarselet"
+msgstr "CSS-stil brukt på andre gangs advarseltekst ved tidsutløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4061
-#, fuzzy
 msgid "2nd Time Limit Warning CSS Style"
-msgstr "CSS-stil for utløpsadvarselet"
+msgstr "CSS-stil for andre gangs varsel om tidsutløputløp"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4228
 msgid "Version"
@@ -11854,22 +11895,6 @@ msgstr "Du er fjernet fra denne undersøkelsen."
 #: /var/lib/limesurvey-svn/subversion1x/optout.php:66
 msgid "You have been already removed from this survey."
 msgstr "Du er allerede fjernet fra denne undersøkelsen."
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1617
-msgid ""
-"Enter one answer per line. You can provide a code by separating code and "
-"answer text with a semikolon or tab."
-msgstr ""
-"Angi ett svar per linje. Du kan angi en kode ved å skille kode og "
-"svartekst med et semikolon eller tab."
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1867
-msgid ""
-"Enter one subquestion per line. You can provide a code by separating code "
-"and subquestion text with a semikolon or tab."
-msgstr ""
-"Angi ett underspørsmål per linje. Du kan angi en kode ved å skille kode og "
-"underspørsmål med et semikolon eller tab."
 
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Rediger/Legg til etiketter"

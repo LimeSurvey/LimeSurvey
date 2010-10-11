@@ -167,6 +167,11 @@ function retrieveJSidname($cd,$currentgid=null)
 {
     global $dbprefix, $connect, $dropdownthreshold;
 
+    if (preg_match("/^\+{0,1}[0-9]+X([0-9]+)X(.*)$/",$cd[2]) == 0)
+    { // This is not a true fieldname (for instance a {TOKEN:ATTR..}
+      // placeholder
+        return "NoJSidname";
+    }
     //preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[2],$matchFields);
     //^^^^^does not seem to work, explode below should
     $matchFields = explode('X', $cd[2], 3);
@@ -809,7 +814,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
         };
         if(!defined('QUESTION_START'))
         {
-            define('QUESTION_START' , file_get_contents('templates/'.validate_templatedir($thissurvey['template']).'/question_start.pstpl' , true));
+            define('QUESTION_START' , file_get_contents(sGetTemplatePath($thissurvey['template']).'/question_start.pstpl' , true));
         };
         $qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 
@@ -1707,7 +1712,18 @@ function do_date($ia)
                     $yearmax = 2020;
                 }
 
-                for ($i=$yearmax; $i>=$yearmin; $i--) {
+                if ($yearmin > $yearmax)
+                {
+                    $step = 1;
+                    $reverse = true;
+                }
+                else
+                {
+                    $step = -1;
+                    $reverse = false;
+                }
+
+                for ($i=$yearmax; ($reverse? $i<=$yearmin: $i>=$yearmin); $i+=$step) {
                     if ($i == $currentyear)
                     {
                         $i_date_selected = SELECTED;
@@ -1734,7 +1750,10 @@ function do_date($ia)
     }
     else
     {
+        if ($clang->langcode !== 'en')
+        {
         $js_header_includes[] = '/scripts/jquery/locale/ui.datepicker-'.$clang->langcode.'.js';
+        }
         $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
 
         // Format the date  for output
@@ -1764,8 +1783,11 @@ function do_date($ia)
             $maxyear='2020';
         }
 
+        $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
+        $goodchars = "0123456789".$goodchars[0];
+
         $answer ="<p class=\"question\">
-				        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+                        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
                         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
                         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
                         <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
@@ -1800,7 +1822,7 @@ function do_language($ia)
     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
     $answer = "\n\t<p class=\"question\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
-    if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose')."..</option>\n";}
+    if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
         $answer .= "\t<option value=\"{$ansrow}\"";
@@ -1855,7 +1877,7 @@ function do_list_dropdown($ia)
 
     $answer='';
 
-    if (isset($defexists)) {unset ($defexists);}
+
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);      //Checked
     while($row = $result->FetchRow()) {$other = $row['other'];}
@@ -1887,11 +1909,6 @@ function do_list_dropdown($ia)
             {
                 $opt_select = SELECTED;
             }
-            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-            {
-                $opt_select = SELECTED;
-                $defexists=true;
-            }
             $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$ansrow['answer']}</option>\n";
         }
     }
@@ -1906,11 +1923,11 @@ function do_list_dropdown($ia)
             // The blank category is left at the end outside optgroups
             if ($categorytext == '')
             {
-                $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $_SESSION['fieldmap'][$ia[1]]['defaultvalue']);
+                $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext);
             }
             else
             {
-                $optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $_SESSION['fieldmap'][$ia[1]]['defaultvalue']);
+                $optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext);
             }
 
 
@@ -1926,11 +1943,6 @@ function do_list_dropdown($ia)
                 if ($_SESSION[$ia[1]] == $optionarray['code'])
                 {
                     $opt_select = SELECTED;
-                }
-                elseif ($optionarray['default_value'] == 'Y')
-                {
-                    $opt_select = SELECTED;
-                    $defexists = 'Y';
                 }
                 else
                 {
@@ -1950,11 +1962,6 @@ function do_list_dropdown($ia)
             {
                 $opt_select = SELECTED;
             }
-            elseif ($optionarray['default_value'] == 'Y')
-            {
-                $opt_select = SELECTED;
-                $defexists = 'Y';
-            }
             else
             {
                 $opt_select = '';
@@ -1965,9 +1972,9 @@ function do_list_dropdown($ia)
         }
     }
 
-    if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
+    if (!$_SESSION[$ia[1]])
     {
-        $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose').'...</option>'."\n".$answer;
+        $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
     }
 
     if (isset($other) && $other=='Y')
@@ -1983,7 +1990,7 @@ function do_list_dropdown($ia)
         $answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
     }
 
-    if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $answer .= '<option value="">'.$clang->gT('No answer')."</option>\n";
     }
@@ -2107,8 +2114,6 @@ function do_list_radio($ia)
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
-    unset ($defexists);
-
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);  //Checked
     while($row = $result->FetchRow())
@@ -2173,11 +2178,6 @@ function do_list_radio($ia)
         if ($_SESSION[$ia[1]] == $ansrow['code'])
         {
             $check_ans = CHECKED;
-        }
-        elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-        {
-            $check_ans = CHECKED;
-            $defexists=true;
         }
 
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
@@ -2281,9 +2281,9 @@ function do_list_radio($ia)
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+        if ((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') || ($_SESSION[$ia[1]] == ' ' ))
         {
-            $check_ans = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+            $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         }
         else
         {
@@ -2402,11 +2402,6 @@ function do_listwithcomment($ia)
             {
                 $check_ans = CHECKED;
             }
-            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-            {
-                $check_ans = CHECKED;
-                $defexists=true;
-            }
             $answer .= '		<li>
 			<input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 			<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
@@ -2416,11 +2411,11 @@ function do_listwithcomment($ia)
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+            if ((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') ||($_SESSION[$ia[1]] == ' ' ))
             {
                 $check_ans = CHECKED;
             }
-            elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists))
+            elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != ''))
             {
                 $check_ans = '';
             }
@@ -2472,11 +2467,6 @@ function do_listwithcomment($ia)
             {
                 $check_ans = SELECTED;
             }
-            elseif ($ansrow['code']==$_SESSION['fieldmap'][$ia[1]]['defaultvalue'])
-            {
-                $check_ans = CHECKED;
-                $defexists=true;
-            }
             $answer .= '		<option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
 
             if (strlen($ansrow['answer']) > $maxoptionsize)
@@ -2486,11 +2476,11 @@ function do_listwithcomment($ia)
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+            if ((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') ||($_SESSION[$ia[1]] == ' '))
             {
                 $check_ans = SELECTED;
             }
-            elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists))
+            elseif (isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '')
             {
                 $check_ans = '';
             }
@@ -2545,15 +2535,12 @@ function do_ranking($ia)
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
+    $ansresult = db_execute_assoc($ansquery);   //Checked
+    $anscount= $ansresult->RecordCount();
     if (trim($qidattributes["max_answers"])!='')
     {
         $max_answers=trim($qidattributes["max_answers"]);
     } else {
-        $max_answers = false;
-    }
-    $ansresult = db_execute_assoc($ansquery);   //Checked
-    $anscount = $qidattributes["ranking_slots"];
-    if(!$max_answers) {
         $max_answers=$anscount;
     }
     $finished=$anscount-$max_answers;
@@ -2734,9 +2721,9 @@ function do_ranking($ia)
     . "\t</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "\t<td colspan='2' class='rank'><font size='1'>\n"
+    . "\t<td colspan='2' class='rank helptext'><font size='1'>\n"
     . "".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list")
-    . "\t</font></td>\n"
+    . "\t</font size='1'></td>\n"
     . "</tr>\n"
     . "\t</table>\n";
 
@@ -2866,7 +2853,8 @@ function do_multiplechoice($ia)
         $excludeallothers=array();
     }
 
-    if (trim($qidattributes['max_answers'])!='') {
+    if ((int)$qidattributes['max_answers']>0) 
+    {
         $maxansw=$qidattributes['max_answers'];
         $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
         $callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
@@ -2885,7 +2873,7 @@ function do_multiplechoice($ia)
     $minanswscript = "";
 
 
-    if (trim($qidattributes["min_answers"])!='')
+    if ((int)$qidattributes['min_answers']>0) 
     {
         $minansw=trim($qidattributes["min_answers"]);
         $minanswscript = "<script type='text/javascript'>\n"
@@ -2981,12 +2969,6 @@ function do_multiplechoice($ia)
                 }
             }
         }
-        // Or if the question is marked as a default selection, check the checkbox
-        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
-        {
-            $answer .= CHECKED;
-        }            
-
         $answer .= " onclick='cancelBubbleThis(event);";
         /* Exclude all others coding */
         if(in_array($ansrow['title'], $excludeallothers))
@@ -3261,7 +3243,7 @@ function do_multiplechoice_withcomments($ia)
     global $dbprefix, $clang, $thissurvey;
 
     $attribute_ref=false;
-    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value='".strtolower($ia[2])."'";
+    $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = db_execute_assoc($qaquery);     //Checked
     $attribute_ref=false;
     while($qarow = $qaresult->FetchRow())
@@ -3392,10 +3374,6 @@ function do_multiplechoice_withcomments($ia)
                 $answer_main .= CHECKED;
             }
         }
-        elseif ($_SESSION['fieldmap'][$ia[1].$ansrow['title']]['defaultvalue']=='Y')
-        {
-            $answer_main .= CHECKED;
-        }            
         $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
         . $ansrow['question']."</label>\n";
@@ -3404,7 +3382,10 @@ function do_multiplechoice_withcomments($ia)
         if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if (isset($_SESSION[$myfname])) {$answer_main .= $_SESSION[$myfname];}
+        if (isset($_SESSION[$myfname]))
+        {
+            $answer_main .= $_SESSION[$myfname];
+        }
         $answer_main .= "' />\n";
         $fn++;
         $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment\">\n"
@@ -3874,7 +3855,7 @@ function do_multipleshorttext($ia)
 
     if ($qidattributes['numbers_only']==1)
     {
-        $numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+		$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
     }
     else
     {
@@ -3962,7 +3943,7 @@ function do_multipleshorttext($ia)
 
             while ($ansrow = $ansresult->FetchRow())
             {
-                $myfname = $ia[1].$ansrow['code'];
+                $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "")
                 {
                     $ansrow['question'] = "&nbsp;";
@@ -4567,7 +4548,7 @@ function do_numerical($ia)
     }
     // --> START NEW FEATURE - SAVE
     $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
+    . "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789.')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
     . "maxlength=\"$maxsize\" />\n\t$suffix\n</p>\n";
     if ($qidattributes['hide_tip']==0)
     {
@@ -5709,7 +5690,7 @@ function do_array($ia)
         {
             $answer_head .= "\t<th>".$clang->gT('No answer')."</th>\n";
         }
-        $answer_head .= "</tr>\n\t</thead>\n\n\t<tbody>\n";
+        $answer_head .= "</tr>\n\t</thead>\n\n\t\n";
 
         $answer = '';
         $trbc = '';
@@ -5807,7 +5788,7 @@ function do_array($ia)
                 // --> END NEW FEATURE - SAVE
             }
              
-            $answer .= "</tr>\n</tbody>";
+            $answer .= "</tr>\n";
             $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
@@ -6194,14 +6175,13 @@ function do_array_multitext($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $trbc = alternation($trbc , 'row');
-                    $answer .= "\t\t<tr class=\"$trbc repeat\">\n"
-                    . "\t\t\t<td>&nbsp;</td>\n";
-
+                    $answer .= "<tbody>\n<tr class=\"$trbc repeat\">\n"
+                    . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
                     {
-                        $answer .= "\t\t\t<th>".$ld."</td>\n";
+                        $answer .= "\t<th>".$ld."</th>\n";
                     }
-                    $answer .= "\t\t</tr>\n";
+                    $answer .= "</tr>\n</tbody>\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -6271,6 +6251,7 @@ function do_array_multitext($ia)
 
             $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
 	    $answer .= "\n\t\t</tr>\n";
+            $answer .= "</tbody>\n";
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
@@ -6429,7 +6410,7 @@ function do_array_multiflexi($ia)
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n\t<tbody>\n";
+        $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n";
 
         while ($ansrow = $ansresult->FetchRow())
         {
@@ -6438,13 +6419,13 @@ function do_array_multiflexi($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $trbc = alternation($trbc , 'row');
-                    $answer .= "<tr class=\"$trbc repeat\">\n"
+                    $answer .= "<tbody>\n<tr class=\"$trbc repeat\">\n"
                     . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
                     {
                         $answer .= "\t<th>".$ld."</th>\n";
                     }
-                    $answer .= "</tr>\n";
+                    $answer .= "</tr>\n</tbody>\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -6514,7 +6495,7 @@ function do_array_multiflexi($ia)
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                         . html_escape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
-                        . "<option value=\"\">...</option>\n";
+                        . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
                         for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
                             $answer .= "<option value=\"$ii\"";
@@ -6528,7 +6509,7 @@ function do_array_multiflexi($ia)
                     {
                         $answer .= "\t<input type='text' class=\"multiflexitext\" name=\"$myfname2\" id=\"answer{$myfname2}\" size=5 title=\""
                         . html_escape($labelans[$thiskey]).'"'
-                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type\" onkeypress=\"return goodchars(event,'0123456789.')\""
+                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'0123456789.')\""
                         . " value=\"";
                         if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
                             $answer .= $_SESSION[$myfname2];
@@ -6787,7 +6768,7 @@ function do_array_dual($ia)
     }
 
     if (trim($qidattributes['dualscale_headerA'])!='') {
-        $leftheader= $qidattributes['dualscale_headerA'];
+        $leftheader= $clang->gT($qidattributes['dualscale_headerA']);
     }
     else
     {
@@ -6796,7 +6777,7 @@ function do_array_dual($ia)
 
     if (trim($qidattributes['dualscale_headerB'])!='')
     {
-        $rightheader= $qidattributes['dualscale_headerB'];
+        $rightheader= $clang->gT($qidattributes['dualscale_headerB']);
     }
     else {
         $rightheader ='';
@@ -6966,8 +6947,7 @@ function do_array_dual($ia)
         . "\n\t<thead>\n"
         . $myheader1
         . $myheader2
-        . "\n\t</thead>\n"
-        . "\n\t<tbody>\n";
+        . "\n\t</thead>\n";
 
         $trbc = '';
         while ($ansrow = $ansresult->FetchRow())
@@ -6976,7 +6956,7 @@ function do_array_dual($ia)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $answer .= "<tr  class=\"repeat\">\n"
+                    $answer .= "<tbody>\n<tr  class=\"repeat\">\n"
                     . "\t<th>&nbsp;</th>\n";
                     foreach ($labelans as $ld)
                     {
@@ -6995,7 +6975,7 @@ function do_array_dual($ia)
                         $answer .= "\t<td>&nbsp;</td>\n";		// separator
                         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
                     }
-                    $answer .= "</tr>\n";
+                    $answer .= "</tr>\n</tbody>\n";
                 }
             }
 
@@ -7208,7 +7188,7 @@ function do_array_dual($ia)
             $colspan_1 = '';
             $colspan_2 = '';
             $suffix_cell = '';
-            $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an duel array type question\">\n\n"
+            $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an dual array type question\">\n\n"
             . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
             if($ddprefix != '')
             {
@@ -7247,8 +7227,7 @@ function do_array_dual($ia)
             //			. "\t<td align='center' width='$columnswidth%'><span class='dsheader'>$rightheader</span></td>\n"
             . "\t<th>$rightheader</th>\n"
             . $suffix_cell."</tr>\n"
-            . "\t</thead>\n\n"
-            . "\t<tbody>\n";
+            . "\t</thead>\n\n";
 
             $trbc = '';
             while ($ansrow = $ansresult->FetchRow())
@@ -7295,7 +7274,7 @@ function do_array_dual($ia)
 
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
                 {
-                    $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
+                    $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                 }
 
                 foreach ($labels0 as $lrow)
@@ -7349,7 +7328,7 @@ function do_array_dual($ia)
 
                 if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] =='')
                 {
-                    $answer .= "\t<option value=\"\"".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
+                    $answer .= "\t<option value=\"\"".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                 }
 
                 foreach ($labels1 as $lrow1)

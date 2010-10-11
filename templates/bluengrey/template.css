@@ -764,7 +764,8 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
-  padding: 0 1em 0 0;
+  width: auto !important;
+  padding: 0.2em 1em 0 0;
   margin-top: 1.3em;
   vertical-align: middle;
 }
@@ -778,6 +779,16 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   width: 200px;
   position: relative;
   height: 10px;
+}
+
+.multinum-slider .ui-state-default {
+	background: none #2F5376;
+	border:1px solid #2F5376;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none;
+	border:1px solid #2F5376;
 }
 
 .slider_callout {
@@ -892,6 +903,12 @@ td.rank label,td.rank td strong {
   min-height: 60px;
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  font-style: italic;
+  padding-top: 5px;
+}
+
 li.other .answer-comment {
   margin-top: -1.65em;
 }
@@ -926,6 +943,7 @@ form.captcha label {
 
 #tokenform li {
   padding-bottom: 5px;
+  list-style: none;
 }
 
 #tokenform img {
@@ -1071,4 +1089,21 @@ td.statsImageholder {
 
 #listingList a.surveytitle {
   margin-left: 0px;
+}
+
+table.assessments{
+ width: 100%;
+}
+
+table.assessments td{
+ padding: 0 10px;
+}
+
+table.assessments{
+ width: 100%;
+}
+
+table.assessments th{
+ font-weight:bold;
+ padding: 0 10px;
 }

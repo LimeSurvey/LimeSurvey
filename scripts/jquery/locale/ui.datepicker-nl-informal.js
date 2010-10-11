@@ -1,7 +1,7 @@
 ﻿/* Dutch (UTF-8) initialisation for the jQuery UI date picker plugin. */
 /* Written by Mathias Bynens <http://mathiasbynens.be/> */
 jQuery(function($){
-	$.datepicker.regional.nl = {
+	$.datepicker.regional['nl-informal'] = {
 		closeText: 'Sluiten',
 		prevText: '←',
 		nextText: '→',
@@ -15,5 +15,5 @@ jQuery(function($){
 		dayNamesMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
 		dateFormat: 'dd/mm/yy', firstDay: 1,
 		isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional.nl);
+	$.datepicker.setDefaults($.datepicker.regional['nl-informal']);
 });

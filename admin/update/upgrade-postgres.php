@@ -401,7 +401,7 @@ function upgrade_tables143()
             $labelresult = db_execute_assoc($labelquery);
             while ( $lrow = $labelresult->FetchRow() )
             {
-                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).")"); echo $modifyoutput; flush();
+                modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",{$lrow['assessment_value']})"); echo $modifyoutput; flush();
                 //$labelids[]
             }
             if ($row['type']=='1')
@@ -410,7 +410,7 @@ function upgrade_tables143()
                 $labelresult = db_execute_assoc($labelquery);
                 while ( $lrow = $labelresult->FetchRow() )
                 {
-                    modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1)"); echo $modifyoutput; flush();
+                    modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1,{$lrow['assessment_value']})"); echo $modifyoutput; flush();
                 }
             }
         }
@@ -455,21 +455,6 @@ function upgrade_tables143()
         }
     }
 
-    // convert Ranking question type
-
-    $query="SELECT a.qid, count(a.qid) as answercount FROM {$dbprefix}answers a, {$dbprefix}questions q where a.qid=q.qid and q.type='R' group by a.qid";
-    $queryresult = db_execute_assoc($query);
-    if (!$queryresult)
-    {
-        return "Database Error";
-    }
-    else
-    {
-        while ( $row = $queryresult->FetchRow() )
-        {
-            modify_database("","INSERT INTO {$dbprefix}question_attributes (qid, attribute, value) VALUES ({$row['qid']},'ranking_slots',".db_quoteall($row['answercount']).")"); echo $modifyoutput; flush();
-        }
-    }
 
 
 

@@ -48,12 +48,13 @@
  */
 
 include_once("login_check.php");
-$language = $_SESSION['adminlang'];
+$sDataEntryLanguage = $_SESSION['adminlang'];
 //RL: set language for questions and labels to current admin language for browsing responses
 
 $action = returnglobal('action');
 $surveyid = returnglobal('sid');
 $id = returnglobal('id');
+$sDataEntryLanguage = returnglobal('lang');    
 $saver['scid']=returnglobal('save_scid');
 $surveytable = db_table_name("survey_".$surveyid);
 $dataentryoutput ='';
@@ -61,14 +62,14 @@ $dataentryoutput ='';
 include_once("login_check.php");
 
 $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-$language = GetBaseLanguageFromSurveyID($surveyid);
+
+if (!isset($sDataEntryLanguage))
+{
+    $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
+}
 $surveyinfo=getSurveyInfo($surveyid);
 
-$actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-$actsurresult = db_execute_assoc($actsurquery) or safe_die($connect->ErrorMsg());
-$actsurrows = $actsurresult->FetchRow();
-
-if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
+if (bHasRight($surveyid, 'browse_response'))
 {
 
     $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
@@ -81,11 +82,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
         ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
         ."</div>\n";
         return;
-    }
-
-    if ($subaction == "edit" || $subaction == "" || $subaction == "editsaved" || $subaction == "insert")
-    {
-        $language = GetBaseLanguageFromSurveyID($surveyid);
     }
 
     if ($subaction == "insert")
@@ -221,7 +217,18 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             $columns=array();
             $values=array();
             $_POST['startlanguage']=$baselang;
-            $_POST['startdate']=$_POST['datestamp'];
+            if ($thissurvey['datestamp'] == "Y") {$_POST['startdate']=$_POST['datestamp'];}
+            if (isset($_POST['closerecord']))
+            {
+                if ($thissurvey['datestamp'] == "Y") 
+                {
+                    $_POST['submitdate']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+                }
+                else
+                {
+                    $_POST['submitdate']=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                }
+            }
             foreach ($fieldmap as $irow)
             {
                 $fieldname = $irow['fieldname'];
@@ -389,13 +396,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
     {
         $dataentryoutput .= $surveyoptions;
 
-        if (!isset($_GET['language'])) $_GET['language'] = GetBaseLanguageFromSurveyID($surveyid);
-
         //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-        $fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")." WHERE
-		".db_table_name("questions").".gid=".db_table_name("groups").".gid AND 
-		".db_table_name("questions").".language = '{$language}' AND ".db_table_name("groups").".language = '{$language}' AND
-		".db_table_name("questions").".sid=".db_table_name("surveys").".sid AND ".db_table_name("questions").".sid='$surveyid'";
+        $fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." g, ".db_table_name("surveys")." WHERE
+		".db_table_name("questions").".gid=g.gid AND 
+		".db_table_name("questions").".language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
+		".db_table_name("questions").".sid=".db_table_name("surveys").".sid AND ".db_table_name("questions").".sid='$surveyid'
+        order by group_order, question_order";
         $fnresult = db_execute_assoc($fnquery);
         $fncount = $fnresult->RecordCount();
         //$dataentryoutput .= "$fnquery<br /><br />\n";
@@ -408,12 +414,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             $ipaddr=$fnrow['ipaddr'];
         } // Get table output into array
         // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-        usort($fnrows, 'GroupOrderThenQuestionOrder');
         // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
 
         $fnames['completed'] = array('fieldname'=>"completed", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
 
-        $fnames=array_merge($fnames,createFieldMap($surveyid,'full'));
+        $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
         $nfncount = count($fnames)-1;
 
         //SHOW INDIVIDUAL RECORD
@@ -487,7 +492,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 
         $dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
-        ."<table id='responsedetail' width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+        ."<table id='responsedetail' width='99%' align='center' cellpadding='1' cellspacing='0'>\n";
         $highlight=false;
         unset($fnames['lastpage']);
         foreach ($results as $idrow)
@@ -594,7 +599,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         }
                         else
                         {
-                            $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
+                            $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                             $lresult = db_execute_assoc($lquery);
                             $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                             ."<option value=''";
@@ -647,7 +652,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
                             }
 
-                            $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fname['qid']} AND ".db_table_name("questions").".language = '{$language}'";
+                            $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fname['qid']} AND ".db_table_name("questions").".language = '{$sDataEntryLanguage}'";
                             $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
                             while($orow = $oresult->FetchRow())
                             {
@@ -663,7 +668,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         }
                         break;
                     case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
+                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                         $lresult = db_execute_assoc($lquery);
                         $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                         ."<option value=''";
@@ -694,7 +699,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             }
                             $fname=next($fnames);
                         }
-                        $ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE language = '{$language}' AND qid=$thisqid ORDER BY sortorder, answer";
+                        $ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE language = '{$sDataEntryLanguage}' AND qid=$thisqid ORDER BY sortorder, answer";
                         $ansresult = db_execute_assoc($ansquery);
                         $anscount = $ansresult->RecordCount();
                         $dataentryoutput .= "\t<script type='text/javascript'>\n"
@@ -794,7 +799,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 $ranklist .= " value='".$thistext."'";
                             }
                             $ranklist .= " onFocus=\"this.blur()\"  />\n"
-                            . "<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
+                            . "<input type='hidden' id='d$myfname$j' name='$myfname$j' value='";
                             if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
                             {
                                 $ranklist .= $thiscode;
@@ -879,7 +884,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 break;
 
                     case "I": //Language Switch
-                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$language}' ORDER BY sortorder, answer";
+                        $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                         $lresult = db_execute_assoc($lquery);
 
 
@@ -1127,7 +1132,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $dataentryoutput .="</td>\n";
                             $scale_id=0;
                             if (isset($fname['scale_id'])) $scale_id=$fname['scale_id'];
-                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$fname['qid']}' and scale_id={$scale_id} and language='$language' order by sortorder, answer";
+                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$fname['qid']}' and scale_id={$scale_id} and language='$sDataEntryLanguage' order by sortorder, answer";
                             $fresult = db_execute_assoc($fquery);
                             $dataentryoutput .= "<td>\n";
                             while ($frow=$fresult->FetchRow())
@@ -1243,26 +1248,19 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             } while ($fname=next($fnames));
             }
         $dataentryoutput .= "</table>\n"
-        ."<table class='data-entry-tbl' cellspacing='0'>\n";
+        ."<p>\n";
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
         { // if you are not survey owner or super admin you cannot modify responses
-            $dataentryoutput .= "    <tr>
-                        <td align='center'>
-                         <input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>
-                        </td>
-                    </tr>\n";
+            $dataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
         }
         elseif ($subaction == "edit")
         {
-            $dataentryoutput .= "	<tr>
-						<td align='center'>
+            $dataentryoutput .= "
 						 <input type='submit' value='".$clang->gT("Update Entry")."' />
 						 <input type='hidden' name='id' value='$id' />
 						 <input type='hidden' name='sid' value='$surveyid' />
 						 <input type='hidden' name='subaction' value='update' />
-						 <input type='hidden' name='language' value='".$_GET['language']."' />
-						</td>
-					</tr>\n";
+						 <input type='hidden' name='language' value='".$sDataEntryLanguage."' />";
         }
         elseif ($subaction == "editsaved")
         {
@@ -1286,8 +1284,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
 				  //-->
 				  </script>\n";
-            $dataentryoutput .= "\t<tr>\n";
-            $dataentryoutput .= "<td colspan='3' align='center'>\n";
             $dataentryoutput .= "<table><tr><td align='left'>\n";
             $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
             $dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
@@ -1316,13 +1312,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					 <input type='submit' value='".$clang->gT("Submit")."' />
 					 <input type='hidden' name='sid' value='$surveyid' />
 					 <input type='hidden' name='subaction' value='insert' />
-					 <input type='hidden' name='language' value='".$datalang."' />
+					 <input type='hidden' name='language' value='".$sDataEntryLanguage."' />
 					</td>
 				</tr>\n";
         }
 
-        $dataentryoutput .=  "</table>\n"
-        ."</form>\n";
+        $dataentryoutput .= "</form>\n";
     }
 
 
@@ -1330,7 +1325,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
     {
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
         {
-            safe_die('You are not allowed to update an existing answer.');
+            safe_die('You are not allowed to update an existing response.');
         }
 
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1401,6 +1396,10 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
     elseif ($subaction == "delete")
     {
+        if (!bHasRight($surveyid,'delete_survey'))
+        {
+            safe_die('You are not allowed to delete a response.');
+        }        
         $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
         $dataentryoutput .= "<div class='messagebox'>\n";
 
@@ -1422,14 +1421,14 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
         if(!isset($_GET['language']) || !in_array($_GET['language'],$slangs))
         {
-            $language = $baselang;
+            $sDataEntryLanguage = $baselang;
             $blang = $clang;
         } else {
             $blang = new limesurvey_lang($_GET['language']);
-            $language = $_GET['language'];
+            $sDataEntryLanguage = $_GET['language'];
         }
 
-        $langlistbox = languageDropdown($surveyid,$language);
+        $langlistbox = languageDropdown($surveyid,$sDataEntryLanguage);
         $thissurvey=getSurveyInfo($surveyid);
         //This is the default, presenting a blank dataentry form
         $fieldmap=createFieldMap($surveyid);
@@ -1519,12 +1518,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
         }
 
         // SURVEY NAME AND DESCRIPTION TO GO HERE
-        $degquery = "SELECT * FROM ".db_table_name("groups")." WHERE sid=$surveyid AND language='{$language}' ORDER BY ".db_table_name("groups").".group_order";
+        $degquery = "SELECT * FROM ".db_table_name("groups")." WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY ".db_table_name("groups").".group_order";
         $degresult = db_execute_assoc($degquery);
         // GROUP NAME
         while ($degrow = $degresult->FetchRow())
         {
-            $deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$language}'";
+            $deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
             $deqresult = db_execute_assoc($deqquery);
             $dataentryoutput .= "\t<tr>\n"
             ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'])."</strong></td>\n"
@@ -1594,7 +1593,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 case "1":
                                     $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
                                     $fquery = "SELECT * FROM ".db_table_name("labels")."\n"
-                                    . "WHERE lid='{$conrow['lid']}'\n and language='$language' "
+                                    . "WHERE lid='{$conrow['lid']}'\n and language='$sDataEntryLanguage' "
                                     . "AND code='{$conrow['value']}'";
                                     $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
                                     while($frow=$fresult->FetchRow())
@@ -1617,7 +1616,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 default:
                                     $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
                                     $fquery = "SELECT * FROM ".db_table_name("questions")."\n"
-                                    . "WHERE qid='{$conrow['cqid']}'\n and language='$language' "
+                                    . "WHERE qid='{$conrow['cqid']}'\n and language='$sDataEntryLanguage' "
                                     . "AND title='{$conrow['title']}' and scale_id=0";
                                     $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
                                     if ($fresult->RecordCount() <= 0) die($fquery);
@@ -1652,7 +1651,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 case ":":
                                 case ";":
                                     $thiscquestion=$fieldmap[$conrow['cfieldname']];
-                                    $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion['aid']}' AND language='{$language}'";
+                                    $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion['aid']}' AND language='{$sDataEntryLanguage}'";
                                     $ansresult=db_execute_assoc($ansquery);
                                     $i=0;
                                     while ($ansrow=$ansresult->FetchRow())
@@ -1665,7 +1664,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                     $operator=$blang->gT("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
                                     break;
                                 default:
-                                    $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$language}'";
+                                    $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sDataEntryLanguage}'";
                                     $ansresult=db_execute_assoc($ansquery);
                                     while ($ansrow=$ansresult->FetchRow())
                                     {
@@ -1750,7 +1749,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "Q": //MULTIPLE SHORT TEXT
                     case "K":
-                        $deaquery = "SELECT question,title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
+                        $deaquery = "SELECT question,title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $dearesult = db_execute_assoc($deaquery);
                         $dataentryoutput .= "\t<table>\n";
                         while ($dearow = $dearesult->FetchRow())
@@ -1772,7 +1771,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         while ($dearow = $dearesult->FetchRow())
                         {
                             // first scale
-                            $delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' and scale_id=0 ORDER BY sortorder, code";
+                            $delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
                             $delresult = db_execute_assoc($delquery);
                             $dataentryoutput .= "<tr><td>{$dearow['question']}</td><td>";
                             $dataentryoutput .= "<select name='$fieldname{$dearow['title']}#0'>\n";
@@ -1784,7 +1783,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             }
                             // second scale
                             $dataentryoutput .= "</select></td>\n";
-                            $delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' and scale_id=1 ORDER BY sortorder, code";
+                            $delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
                             $delresult = db_execute_assoc($delquery);
                             $dataentryoutput .= "<td>";
                             $dataentryoutput .="<select name='$fieldname{$dearow['title']}#1'>\n";
@@ -1828,7 +1827,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             unset($optCategorySeparator);
                         }
                         $defexists="";
-                        $deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+                        $deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                         $dearesult = db_execute_assoc($deaquery);
                         $dataentryoutput .= "\t<select name='$fieldname'>\n";
                         $datatemp='';
@@ -1879,7 +1878,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
                         else {$dataentryoutput .=$datatemp;}
 
-                        $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$language}'";
+                        $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
                         $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
                         while($orow = $oresult->FetchRow())
                         {
@@ -1899,7 +1898,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
                         $defexists="";
-                        $deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
+                        $deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                         $dearesult = db_execute_assoc($deaquery);
                         $dataentryoutput .= "\t<select name='$fieldname'>\n";
                         $datatemp='';
@@ -1918,7 +1917,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "R": //RANKING TYPE QUESTION
                         $thisqid=$deqrow['qid'];
-                        $ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid=$thisqid AND language='{$language}' ORDER BY sortorder, answer";
+                        $ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                         $ansresult = db_execute_assoc($ansquery);
                         $anscount = $ansresult->RecordCount();
                         $dataentryoutput .= "\t<script type='text/javascript'>\n"
@@ -2025,7 +2024,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                                 $ranklist .= "'";
                             }
                             $ranklist .= " onFocus=\"this.blur()\"  />\n";
-                            $ranklist .= "<input type='hidden' id='d$fieldname$i' name='d$fieldname$i' value='";
+                            $ranklist .= "<input type='hidden' id='d$fieldname$i' name='$fieldname$i' value='";
                             $chosen[]=""; //create array
                             if (isset($myfname) && $_SESSION[$myfname])
                             {
@@ -2094,7 +2093,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         {
                             $dcols=0;
                         }
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         $meacount = $mearesult->RecordCount();
                         if ($deqrow['other'] == "Y") {$meacount++;}
@@ -2160,7 +2159,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
                         $dataentryoutput .= "<table border='0'>\n";
-                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order, question";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
                         $mearesult = db_execute_assoc($meaquery);
                         while ($mearow = $mearesult->FetchRow())
                         {
@@ -2281,7 +2280,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "\t</select>\n";
                         break;
                     case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2302,7 +2301,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2323,7 +2322,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery);
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2343,7 +2342,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$language}' ORDER BY question_order";
+                        $meaquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2398,7 +2397,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         $dataentryoutput .= "<table>\n";
                         $dataentryoutput .= "  <tr><td></td>\n";
                         $labelcodes=array();
-                        $lquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='$language' ORDER BY question_order";
+                        $lquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         while ($data=$lresult->FetchRow())
                         {
@@ -2408,7 +2407,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                          
                         $dataentryoutput .= "  </tr>\n";
                          
-                        $meaquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='$language' ORDER BY question_order";
+                        $meaquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $i=0;
                         while ($mearow=$mearesult->FetchRow())
@@ -2451,7 +2450,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     case ";": //ARRAY (Multi Flexi)
                         $dataentryoutput .= "<table>\n";
                         $dataentryoutput .= "  <tr><td></td>\n";
-                        $lquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order";
+                        $lquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $labelcodes=array();
                         while ($data=$lresult->FetchRow())
@@ -2462,7 +2461,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                          
                         $dataentryoutput .= "  </tr>\n";
                          
-                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $i=0;
                         while ($mearow=$mearesult->FetchRow())
@@ -2493,7 +2492,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                         break;
                     case "F": //ARRAY (Flexible Labels)
                     case "H":
-                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and language='$language' ORDER BY question_order";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
                         $dataentryoutput .= "<table>\n";
                         while ($mearow = $mearesult->FetchRow())
@@ -2513,7 +2512,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $dataentryoutput .= "<td>\n";
                             $dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}'>\n";
                             $dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
-                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
                             $fresult = db_execute_assoc($fquery);
                             while ($frow = $fresult->FetchRow())
                             {
@@ -2629,17 +2628,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
             $dataentryoutput .= "</table>";
             return;
         }
-        if (!isset($_GET['language']))
-        {
-            $datalang = GetBaseLanguageFromSurveyID($surveyid);
-        } else {
-            $datalang = $_GET['language'];
-        }
         $dataentryoutput .= "\t<tr>\n";
         $dataentryoutput .= "\t<td>\n";
         $dataentryoutput .= "\t<input type='hidden' name='subaction' value='insert' />\n";
         $dataentryoutput .= "\t<input type='hidden' name='sid' value='$surveyid' />\n";
-        $dataentryoutput .= "\t<input type='hidden' name='language' value='$datalang' />\n";
+        $dataentryoutput .= "\t<input type='hidden' name='language' value='$sDataEntryLanguage' />\n";
         $dataentryoutput .= "\t</td>\n";
         $dataentryoutput .= "\t</tr>\n";
         $dataentryoutput .= "</table>\n";

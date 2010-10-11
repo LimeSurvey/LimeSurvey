@@ -783,6 +783,9 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     }
 
     // Import subquestions --------------------------------------------------------------
+    if (isset($xml->subquestions))
+    {
+        
     foreach ($xml->subquestions->rows->row as $row)
     {
         $insertdata=array(); 
@@ -837,6 +840,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['answers']++;
         }            
+    }
     }
 
     // Import questionattributes --------------------------------------------------------------

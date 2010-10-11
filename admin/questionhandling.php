@@ -119,7 +119,7 @@ if ($action == "editdefaultvalues")
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     array_unshift($questlangs,$baselang);
 
-    $questionrow=$connect->GetRow("SELECT type, other, title, question FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
+    $questionrow=$connect->GetRow("SELECT type, other, title, question, same_default FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
     $qtproperties=getqtypelist('','array');
 
     $editdefvalues="<div class='header'>".$clang->gT('Edit default answer values')."</div> "   
@@ -128,11 +128,10 @@ if ($action == "editdefaultvalues")
     foreach ($questlangs as $language)
     {
         $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false).'</h2>';
-        
+        $editdefvalues.="<ul> ";
         // If there are answerscales
         if ($qtproperties[$questionrow['type']]['answerscales']>0)
         {
-            $editdefvalues.="<ul> ";
             for ($scale_id=0;$scale_id<$qtproperties[$questionrow['type']]['answerscales'];$scale_id++)
             {
                 $editdefvalues.=" <li><label for='defaultanswerscale_{$scale_id}_{$language}'>";
@@ -183,7 +182,7 @@ if ($action == "editdefaultvalues")
                 $sqrows = $sqresult->GetRows();
                 if ($qtproperties[$questionrow['type']]['subquestions']>1)
                 {
-                    $editdefvalues.=" <div class='header'>".sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</div<";
+                    $editdefvalues.=" <div class='header'>".sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</div>";
                 }
                 if ($questionrow['type']=='M' || $questionrow['type']=='P')
                 {
@@ -208,15 +207,19 @@ if ($action == "editdefaultvalues")
                     $editdefvalues.="</select></li> ";
                 }
             }
-            
+        }
             if ($language==$baselang && count($questlangs)>1)
             {
-                $editdefvalues.="<li><label for='samedefault'>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox' name='samedefault' id='samedefault'></li>";
+            $editdefvalues.="<li><label for='samedefault'>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox' name='samedefault' id='samedefault'";
+            if ($questionrow['same_default'])
+            {
+                $editdefvalues.=" checked='checked'";
             }
+            $editdefvalues.="></li>";
+        }
             $editdefvalues.="</ul> ";
             $editdefvalues.="</div> "; // Closing page
         }       
-    }
     $editdefvalues.="</div> "; // Closing pane
     $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
         . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"

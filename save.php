@@ -113,11 +113,12 @@ else
 }
 
 // SAVE if on page with questions or on submit page
-if (isset($postedfieldnames))
+if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 {
     if ($thissurvey['active'] == "Y") 
     {
-    check_quota('enforce',$surveyid);   
+        $aMatchedQuotas=check_quota('return',$surveyid);  
+        if (count($aMatchedQuotas)>0) $bFinalizeThisAnswer=false;         
     }
     
     if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
@@ -144,6 +145,10 @@ if (isset($postedfieldnames))
                 echo submitfailed($connect->ErrorMsg());
             }
         }
+        if (count($aMatchedQuotas)>0) 
+        {
+            check_quota('enforce',$surveyid);                    
+    }
     }
     elseif (isset($move) && $move!='moveprev')
     {
@@ -502,7 +507,7 @@ function createinsertquery()
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
                     }
-                    elseif ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                    elseif ($fieldexists['type']=='D' && in_array($value,$postedfieldnames))  // convert the date to the right DB Format but only if it was posted
                     {
                         $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                         $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);

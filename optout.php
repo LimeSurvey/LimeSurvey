@@ -41,10 +41,11 @@ if (!isset($postlang) || $postlang == "")
     $clang = new limesurvey_lang($postlang);
     $baselang = $postlang;
 }
-
 $thissurvey=getSurveyInfo($surveyid,$baselang);
+
+$html='<div id="wrapper"><p id="optoutmessage">';
 if ($thissurvey==false || !tableExists("tokens_{$surveyid}")){
-    $html='<p>'.$clang->gT('This survey does not seem to exist.');
+    $html .= $clang->gT('This survey does not seem to exist.');
 }
 else
 {
@@ -53,47 +54,39 @@ else
 
     if ($usresult==false)
     {
-        $html='<p>'.$clang->gT('You are not a participant in this survey.');
+        $html .= $clang->gT('You are not a participant in this survey.');
     }
     elseif ($usresult=='OK')
     {
         $usquery = "Update ".db_table_name("tokens_{$surveyid}")." set emailstatus='OptOut' where token=".db_quoteall($token,true);
         $usresult = $connect->Execute($usquery);
-        $html='<p>'.$clang->gT('You have been successfully removed from this survey.');
+        $html .= $clang->gT('You have been successfully removed from this survey.');
     }
     else
     {
-        $html='<p>'.$clang->gT('You have been already removed from this survey.');
+        $html .= $clang->gT('You have been already removed from this survey.');
     }
 }
-
+$html .= '</p></div>';
 
 //PRINT COMPLETED PAGE
-if (!isset($thissurvey['template']) || !$thissurvey['template'])
+if (!$thissurvey['templatedir'])
 {
-    $thistpl=validate_templatedir("default");
+    $thistpl=sGetTemplatePath($defaulttemplate);
 }
 else
 {
-    $thistpl=validate_templatedir($thissurvey['template']);
+    $thistpl=sGetTemplatePath($thissurvey['templatedir']);
 }
 
 sendcacheheaders();
 doHeader();
 
-foreach(file("templates/$thistpl/startpage.pstpl") as $op)
-{
-    echo templatereplace($op);
-}
-foreach(file("templates/$thistpl/survey.pstpl") as $op)
-{
-    echo "\t".templatereplace($op);
-}
+echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 echo $html;
-foreach(file("templates/$thistpl/endpage.pstpl") as $op)
-{
-    echo templatereplace($op);
-}
+echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+
 doFooter();
 
 // Closing PHP tag is intentially left out (yes, it's fine!)

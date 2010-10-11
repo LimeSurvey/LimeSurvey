@@ -27,11 +27,6 @@
             </td>
       </tr>
 </table>
-<style type="text/css">
-body {
-    background-image: url({TEMPLATEURL}linearer_gradient_LimeSurvey2.gif);
-}
-</style>
 <!--[if lt IE 7]>
 <script language="JavaScript">
 function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.

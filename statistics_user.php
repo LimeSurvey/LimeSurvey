@@ -78,7 +78,7 @@ if ($surveyid)
         // CHANGE JSW_NZ - let's get the survey title for display
         $thisSurveyTitle = $surveyinfo["name"];
         // CHANGE JSW_NZ - let's get css from individual template.css - so define path
-        $thisSurveyCssPath = $surveyinfo["template"];
+        $thisSurveyCssPath = sGetTemplateURL($surveyinfo["template"]);
         if ($surveyinfo['publicstatistics']!='Y')
         {
             safe_die('The public statistics for this survey are deactivated.');
@@ -163,7 +163,7 @@ if (getLanguageRTL($surveylanguage))
 $header.= ">\n\t<head>\n"
 . "<title>$sitename</title>\n"
 . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
-. "<link href=\"templates/".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
+    . "<link href=\"".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
 . "</head>\n<body>\n";
 
 echo $header;

@@ -69,7 +69,7 @@ function deleteinput()
     }
     else
     {
-       $.blockUI({message:"<p><br/>You cannot delete the last answer.</p>"});
+       $.blockUI({message:"<p><br/>"+strCantDeleteLastAnswer+"</p>"});
        setTimeout(jQuery.unblockUI,1000);   
     }
     updaterowproperties();     
@@ -178,12 +178,13 @@ function getNextCode(sourcecode)
     i=1; 
     found=true;
     foundnumber=-1;
-    while (i<=sourcecode.length && found)   
+    sclength = sourcecode.length;
+    while (i<=sclength && found == true)
     {
-        found=is_numeric(sourcecode.substr(-i));
+        found=is_numeric(sourcecode.substr(sclength-i,i));
         if (found) 
         {
-            foundnumber=sourcecode.substr(-i);
+            foundnumber=sourcecode.substr(sclength-i,i);
             i++;
         }   
     }
@@ -195,7 +196,7 @@ function getNextCode(sourcecode)
     {
        foundnumber++; 
        foundnumber=foundnumber+'';
-       result=sourcecode.substr(0,sourcecode.length-foundnumber.length)+foundnumber;
+       result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
        return(result);
     }
     
@@ -238,12 +239,13 @@ function lsbrowser()
     scale_id=removechars($(this).attr('id'));      
     $('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
+    /* 
     match=0;
     if ($('#languagefilter').attr('checked')==true)
     {
         match=1;
-    }
-    $.getJSON('admin.php?action=ajaxlabelsetpicker',{sid:surveyid, match:match},function(json){
+    }*/
+    $.getJSON('admin.php?action=ajaxlabelsetpicker',{sid:surveyid, match:1},function(json){
         var x=0;    
         $("#labelsets").removeOption(/.*/); 
         for (x in json)
@@ -257,11 +259,17 @@ function lsbrowser()
         {
             $('#labelsets').selectOptions(remind); 
             lspreview();           
+            $('#btnlsreplace').removeClass('ui-state-disabled');
+            $('#btnlsinsert').removeClass('ui-state-disabled');
+            $('#btnlsreplace').attr('disabled','');
+            $('#btnlsinsert').attr('disabled','');
         } 
         else
         {
             $('#btnlsreplace').addClass('ui-state-disabled');
             $('#btnlsinsert').addClass('ui-state-disabled');
+            $('#btnlsreplace').attr('disabled','disabled');
+            $('#btnlsinsert').attr('disabled','disabled');
         }
     });
     
@@ -514,6 +522,10 @@ function quickaddlabels()
             {
                 thisrow[1]=thisrow[0];
                 thisrow[0]=parseInt(k)+1;
+            }
+            else
+            {
+                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "");
             }
             var randomid='new'+Math.floor(Math.random()*111111)
              

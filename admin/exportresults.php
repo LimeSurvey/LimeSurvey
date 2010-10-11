@@ -26,11 +26,7 @@ if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
 if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
 if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
-$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-$sumresult5 = db_execute_assoc($sumquery5);
-$sumrows5 = $sumresult5->FetchRow();
-
-if ($sumrows5['export'] != "1" && $_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+if (!bHasRight($surveyid, 'export'))
 {
     exit;
 }
@@ -259,9 +255,11 @@ if (!$exportstyle)
 // ======================================================================
 
 $tokenTableExists=tableExists('tokens_'.$surveyid);
+$aTokenFieldNames=array();
 
 if ($tokenTableExists)
 {
+    $aTokenFieldNames=GetTokenFieldsAndNames($surveyid);
     $attributeFieldAndNames=GetTokenFieldsAndNames($surveyid,true);
     $attributeFields=array_keys($attributeFieldAndNames);
 }
@@ -341,6 +339,7 @@ if (isset($_POST['colselect']))
     $selectfields="";
     foreach($_POST['colselect'] as $cs)
     {
+        if (!isset($fieldmap[$cs]) && !isset($aTokenFieldNames[$cs]) && $cs != 'completed') continue; // skip invalid field names to prevent SQL injection
         if ($tokenTableExists && $cs == 'token')
         {
             // We shouldnt include the token field when we are joining with the token field    
@@ -550,14 +549,11 @@ for ($i=0; $i<$fieldcount; $i++)
                         }
                         else
                         {
-                            $lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
-                            $lr = db_execute_assoc($lq);
-                            while ($lrow = $lr->FetchRow())
-                            {
-                                $fquest .= " [".strip_tags_full($lrow['answer'])."]";
+                            $sQuery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=$fqid AND title = '$faid' AND language = '$explang' and scale_id=0";
+                            $sSubquestion = $connect->getOne($sQuery);
+                            $fquest .= " [".strip_tags_full($sSubquestion)."]";
                             }
                         }
-                    }
                     break;
                 case "P": //Multiple option with comment
                     if (mb_substr($faid, -7, 7) == "comment")
@@ -576,14 +572,11 @@ for ($i=0; $i<$fieldcount; $i++)
                         }
                         else
                         {
-                            $lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
-                            $lr = db_execute_assoc($lq);
-                            while ($lrow = $lr->FetchRow())
-                            {
-                                $fquest .= " [".strip_tags_full($lrow['answer'])."]";
+                            $sQuery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=$fqid AND title = '$faid' AND language = '$explang' and scale_id=0";
+                            $sSubquestion = $connect->getOne($sQuery);
+                            $fquest .= " [".strip_tags_full($sSubquestion)."]";
                             }
                         }
-                    }
                     if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
                     break;
                 case "A":

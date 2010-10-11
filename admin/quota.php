@@ -101,7 +101,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
         $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-        $query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
+        $query = "SELECT title,question FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}'";
         $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
         $answerlist = array();
@@ -110,8 +110,8 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
         {
             for ($x=1; $x<6; $x++)
             {
-                $tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['answer'],0,40).' ['.$x.']', 'code' => $dbanslist['code']);
-                $answerlist[$dbanslist['code']."-".$x]	= $tmparrayans;
+                $tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['question'],0,40).' ['.$x.']', 'code' => $dbanslist['title']);
+                $answerlist[$dbanslist['title']."-".$x]	= $tmparrayans;
             }
         }
 
@@ -211,12 +211,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
 $js_admin_includes[]='scripts/quotas.js';
 
-//get survey rights
-$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-$sumresult5 = db_execute_assoc($sumquery5);
-$sumrows5 = $sumresult5->FetchRow();
-
-if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+if(bHasRight($surveyid, 'edit_survey_property'))
 {
     if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
     if (!isset($action)) $action=returnglobal('action');
@@ -347,7 +342,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         array_walk( $_POST, 'db_quote', true);
         $query = "INSERT INTO ".db_table_name('quota_members')." (sid,qid,quota_id,code) VALUES ('$surveyid','{$_POST['quota_qid']}','{$_POST['quota_id']}','{$_POST['quota_anscode']}')";
         $connect->Execute($query) or safe_die($connect->ErrorMsg());
-		if($_POST['createanother'] == "on") {
+		if(isset($_POST['createanother']) && $_POST['createanother'] == "on") {
 			$_POST['action']="quotas";
 			$_POST['subaction']="new_answer";
 			$subaction="new_answer";

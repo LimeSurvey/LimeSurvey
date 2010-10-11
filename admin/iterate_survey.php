@@ -51,7 +51,7 @@ if  ($subaction=='unfinalizeanswers')
     //error_log("TIBO query = $updateqr");
     $updateres = $connect->Execute($updateqr) or safe_die("Delete incomplete answers with duplicate tokens failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
     // Then set all remaining answers to incomplete state
-    $updateqr = "UPDATE $surveytable SET submitdate=NULL;\n";
+    $updateqr = "UPDATE $surveytable SET submitdate=NULL, lastpage=NULL;\n";
     $updateres = $connect->Execute($updateqr) or safe_die("UnFinilize answers failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
     // Finally, reset the token completed and sent status
     $updateqr="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0, completed='N'";

@@ -1,10 +1,7 @@
-<table width="100%" cellspacing="0">
+<table class="surveyWrapper">
 	<tr>
-		<td bgcolor="#E1E1E1">
-			<font color="#666666" size="3"><b>{SURVEYNAME}</b></font><br />
-			<font size="2" color="#777777">{SURVEYDESCRIPTION}
-		</font></td>
-	</tr>
+		<td>
+<table width="100%" cellspacing="0">
 	<tr>
     <td class="graph">
       {PERCENTCOMPLETE}

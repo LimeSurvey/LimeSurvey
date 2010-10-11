@@ -590,6 +590,11 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   padding-bottom: 1px;
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  padding: 5px;
+}
+
 .choice-5-pt-radio li {
   display: inline;
   margin-left: 0.5em;
@@ -618,6 +623,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
+  width: auto !important;
   padding: 0 1em 0.2em 0;
   margin-top: 1.3em;
   vertical-align: middle;
@@ -824,11 +830,8 @@ td.rank label,td.rank td strong {
 }
 
 #tokenform li {
-  list-style-type: none;
-}
-
-#tokenform li {
   padding-bottom: 5px;
+  list-style: none;
 }
 
 #tokenform img {

@@ -505,6 +505,11 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   text-align: left;
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  font-style: italic;
+}
+
 .array-flexible-column col.odd {
   background-color: #eee;
 }
@@ -522,6 +527,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
+  width: auto !important;
   padding: 0 1em 0.2em 0;
   margin-top: 1.3em;
   vertical-align: middle;
@@ -534,13 +540,14 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin-bottom: 0.2em;
 }
 
-.ui-slider-handle {
-  position: absolute;
-  height: 23px;
-  width: 12px;
-  top: 0px;
-  left: 0px;
-  background-image: url(../../images/slider-handle.gif);
+.multinum-slider .ui-state-default {
+	background: none #CCCCCC;
+	border:1px solid #666666;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none;
+	border:1px solid #666666;
 }
 
 .ui-slider-disabled .ui-slider-handle {
@@ -632,7 +639,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 #tokenform li {
   padding-bottom: 5px;
-  list-style-type: none;
+  list-style: none;
 }
 
 #tokenform img {

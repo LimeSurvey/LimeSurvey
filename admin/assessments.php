@@ -25,18 +25,12 @@ $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
 $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 //                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
 
-
-$actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-$actsurresult = $connect->Execute($actsurquery) or safe_die($connect->ErrorMsg());
-$actsurrows = $actsurresult->FetchRow();
-
-
 $assessmentlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 $baselang = GetBaseLanguageFromSurveyID($surveyid);
 array_unshift($assessmentlangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
 
-if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']){
+if(bHasRight($surveyid, 'edit_survey_property')){
 
     if ($action == "assessmentadd") {
         $inserttable=$dbprefix."assessments";

@@ -13,6 +13,7 @@ body {
   background-color: #CCF;
   font-size: 9pt;
   font-family: arial;
+  margin-bottom: 3px;
 }
 
 .saveall,.clearall {
@@ -61,15 +62,79 @@ textarea {
   color: #777;
 }
 
+.surveyBorder {
+	width: 492px;
+	margin: 0 auto 0 auto;
+	background-color: #CACACA;
+	border: 2px solid #000000;
+	padding: 2px;	
+}
+
+#limesurvey {
+	background-color: #E1E1E1;
+}
+
+.surveyWrapper {
+	width: 100%;
+	margin: 0;
+	border-collapse: collapse;
+	background-color: #E1E1E1;
+}
+
+.separator {
+	height: 4px;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000000;
+	background-color: #FFFFFF;
+}
+
+.groupName {
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #666666;
+	margin-bottom: 10px;
+}
+
+.groupDescription {
+	font-size: 0.8em;
+	font-family: Arial;
+	color: #777777;
+	margin-bottom: 10px;
+	margin-top: -8px;
+}
+
+.questionTable {
+	width: 97%;
+	margin: 0 auto 6px auto;
+	border: 1px solid #EEE;
+	border-collapse: collapse;
+	background-color: #E1E1E1;
+}
+
 .questionhelp {
   font-size: 10px;
   font-style: italic;
 }
 
-.questiontext {
-  font-family: verdana;
-  font-size: 12px;
+.questionCode {
   font-weight: bold;
+}
+
+.questionText {
+  	font-size: 110%;
+    color: #666;
+}
+
+.questionAnswer {
+    color: #777;
+}
+
+.navigatorTable {
+	width: 100%;
+}
+
+.navigatorTable td {
+	text-align: center;
 }
 
 .warningjs {
@@ -96,8 +161,7 @@ textarea {
 }
 
 td.graph {
-  background-color: #e1e1e1;
-  padding: 0.2em 0%;
+  padding: 0.2em 0;
 }
 
 #progress-graph {
@@ -396,6 +460,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   text-align: left;
 }
 
+table.rank td.helptext {
+  font-size: 10px;
+  color: #777777;
+  padding: 0.5em;
+}
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
@@ -570,9 +640,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /************** Slider ********************/
 .numeric-multi label.slider-label {
   display: table-cell;
+  width: auto !important;
   padding: 0 1em 0 0;
   margin-top: 1.4em;
   vertical-align: middle;
+}
+
+.multinum-slider .ui-state-default {
+	background: none #B7B7B7;
+	border:1px solid #666666;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none #F8F8FF;
+	border:1px solid #666666;
 }
 
 .ui-slider-disabled .ui-slider-handle {
@@ -655,6 +736,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 #tokenform li {
   padding-bottom: 5px;
+  list-style: none;
 }
 
 #tokenform img {

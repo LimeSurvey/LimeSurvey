@@ -1,12 +1,11 @@
 <div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
-	<table width="97%" align="center" border="1" style="border-collapse: collapse;border-color:#EEEEEE" bgcolor="#E1E1E1">
+				<table class="questionTable">
 		<tr>
 			<td>
 				<table width="100%" cellspacing="0">
-					<tr>
+								<tr class="questionText">
 						<td>
-							<font size="2" color="#666666">
-								<b>{QUESTION_CODE}:</b> <span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
+										<span class="questionCode">{QUESTION_CODE}:</span> <span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
 								<span class="questionhelp">{QUESTION_HELP}</span>
 								{QUESTION_MAN_MESSAGE}
 								{QUESTION_VALID_MESSAGE}
@@ -14,9 +13,9 @@
 							</font>
 						</td>
 					</tr>
-					<tr>
+								<tr class="questionAnswer">
 						<td>
-							<font color="#777777">{ANSWER}</font>
+										{ANSWER}
 						</td>
 					</tr>
 					<tr>
@@ -26,11 +25,6 @@
 					</tr>
 				</table>
 			</td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<td height="1"></td>
 		</tr>
 	</table>
 </div>

@@ -135,9 +135,11 @@ function getXMLStructure($xml,$gid)
     BuildXMLFromQuery($xml,$query,'question_attributes');
     
     // Default values
-    $query = "SELECT DISTINCT dv.*
-              FROM {$dbprefix}defaultvalues dv, {$dbprefix}questions q  
-              WHERE dv.qid=q.qid 
-              AND q.gid=$gid order by dv.language, dv.scale_id";
+    $query = "SELECT dv.*
+                FROM {$dbprefix}defaultvalues dv
+                JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = dv.qid 
+                AND {$dbprefix}questions.language=dv.language 
+                AND {$dbprefix}questions.gid=$gid 
+                order by dv.language, dv.scale_id"; 
     BuildXMLFromQuery($xml,$query,'defaultvalues');                 
 }
