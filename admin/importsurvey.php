@@ -1524,6 +1524,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
             else continue; // a problem with this answer record -> don't consider
             if (isset($aQIDReplacements[$insertdata['cqid']]))
             {
+                $oldcqid=$insertdata['cqid'];
                 $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
             }
             else continue; // a problem with this answer record -> don't consider
@@ -1539,11 +1540,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
             // recreate the cfieldname with the new IDs
             if (preg_match("/^\+/",$oldcsid))
             {
-                $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
             }
             else
             {
-                $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
             }
 
             $insertdata["cfieldname"] = $newcfieldname;
