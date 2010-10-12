@@ -92,6 +92,16 @@ CREATE TABLE [prefix_conditions] (
 ) 
 ;
 
+CREATE TABLE [prefix_extendedconditions] (
+  [qid] INT NOT NULL default '0',
+  [gid] INT NOT NULL default '0',
+  [sid] INT NOT NULL default '0',
+  [condition] text ,
+  PRIMARY KEY ([qid],[gid],[sid])
+)
+;
+
+
 
 CREATE TABLE [prefix_defaultvalues] (
   [qid] integer NOT NULL default '0',
@@ -233,6 +243,7 @@ CREATE TABLE [prefix_surveys] (
   [private] char(1) default NULL,
   [faxto] VARCHAR(20) default NULL,
   [format] char(1) default NULL,
+  [savetimings] char(1) default 'N',
   [template] VARCHAR(100) default 'default',
   [language] VARCHAR(50) default NULL,
   [additional_languages] VARCHAR(255) default NULL,

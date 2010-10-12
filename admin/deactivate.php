@@ -56,6 +56,51 @@ else
             $deactivateresult = $connect->Execute($setidx) or die ("Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 
         }
+        
+        if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid))
+		{
+			// deactivate grouptokens table
+			$oldtable = "grouptokens_$surveyid";
+			$newtable = "old_grouptokens_{$surveyid}_$date";
+			$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
+
+			if ($databasetype=='postgres')
+			{
+                // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
+                $oldTableJur = db_table_name_nq($oldtable);
+                $deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_gtid_seq');
+                $deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+                $setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_gtid_seq ALTER COLUMN gtid SET DEFAULT nextval('".db_table_name_nq($newtable)."_gtid_seq'::regclass);";
+                $deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+                $setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
+                $deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+    }
+			else
+			{
+                $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
+			}
+
+			// deactivate usedtokens table
+			$oldtable = "usedtokens_$surveyid";
+			$newtable = "old_usedtokens_{$surveyid}_$date";
+			$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
+
+			if ($databasetype=='postgres')
+			{
+                // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
+                $oldTableJur = db_table_name_nq($oldtable);
+                $deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_id_seq');
+                $deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+                $setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_id_seq ALTER COLUMN gtid SET DEFAULT nextval('".db_table_name_nq($newtable)."_gtid_seq'::regclass);";
+                $deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+                $setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
+                $deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+			}
+			else
+			{
+                $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
+			}
+		}
     }
 
     // IF there are any records in the saved_control table related to this survey, they have to be deleted
@@ -121,6 +166,19 @@ else
     }
     $deactivateoutput .= "\t<p>".$clang->gT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details")."</p>";
     $deactivateoutput .= "</div><br/>&nbsp;\n";
+    
+    $pquery = "SELECT savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
+    $presult=db_execute_assoc($pquery);
+    $prow=$presult->FetchRow(); //fetch savetimings value
+    if ($prow['savetimings'] == "Y")
+    {
+		$oldtable="{$dbprefix}survey_{$postsid}_timings";
+		$newtable="{$dbprefix}old_survey_{$postsid}_timings_{$date}";
+
+		$deactivatequery = db_rename_table($oldtable,$newtable);
+		$deactivateresult2 = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey timings table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was deactivated.<br /><br /><a href='$scriptname?sid={$postsid}'>".$clang->gT("Main Admin Screen")."</a>");
+		$deactivateresult=($deactivateresult && $deactivateresult2);
+}
 }
 
 ?>

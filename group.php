@@ -88,6 +88,54 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
     }
 }
 
+
+if (!$show_empty_group && IsSet($_SESSION['fieldarray'])) {
+
+    $grouparrayno=$_SESSION['step']-1;
+    $gid=$_SESSION['grouplist'][$grouparrayno][0];
+    
+    while(true){
+    	//get extendedconditions
+	    $query = "SELECT * FROM {$dbprefix}extendedconditions WHERE gid='{$gid}' AND sid='{$surveyid}'";
+	    $result = db_execute_assoc($query);
+	    $conditions=array();
+	    $hideQuestion=array();
+	    while($row=$result->FetchRow()){
+	    	$conditions[$row['qid']]=$row['condition'];
+	    }   
+	    $i=0;
+		foreach ($_SESSION['fieldarray'] as $ia)
+		{
+			if($ia[5]==$gid){
+				$qidattributes=getQuestionAttributes($ia[0]);
+	        	if ($qidattributes['hidden']!=1) {
+		        	if((trim($conditions[$ia[0]]!='')) && !checkExtendedCondition($conditions[$ia[0]])){
+		        		$hideQuestion[$ia[0]]=true;
+		        	}else{
+						$i++;
+		        	}
+				}
+			}
+		}
+		if($i>0) break;
+		
+		if($move=="moveprev"){
+			$gid--;
+		}else{
+			$gid++;
+		}
+		if($gid>$_SESSION['totalsteps']){
+			$move = "movesubmit";
+            submitanswer(); // complete this answer (submitdate)
+			break;
+		}
+		if($gid<=0){
+			break;
+		}
+    }
+}
+$_SESSION['step'] = $gid;
+
 //SUBMIT ###############################################################################
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
@@ -143,7 +191,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 
         //Before doing the "templatereplace()" function, check the $thissurvey['url']
         //field for limereplace stuff, and do transformations!
-        $thissurvey['surveyls_url']=insertansReplace($thissurvey['surveyls_url']);
+        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
         $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
         $content='';
@@ -228,10 +276,11 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
             //Automatically redirect the page to the "url" setting for the survey
 
             $url = $thissurvey['surveyls_url'];
-            $url = insertansReplace($thissurvey['surveyls_url']);
+            $url = dTexts::run($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
+            $url=str_replace("{GROUPTOKEN}",$clientgrouptoken, $url);          // to activate the GROUP TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
             $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
 
@@ -283,6 +332,14 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
         exit;
     }
 }
+    echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+    echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+    echo "\n<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
+    echo "\n</form>\n";
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+    doFooter();
+    exit;
+}
 
 //******************************************************************************************************
 //PRESENT SURVEY
@@ -295,7 +352,7 @@ if ($show_empty_group) {
     $groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
 } else
 {
-    $grouparrayno=$_SESSION['step']-1;
+    $grouparrayno=$gid-1;
     $gid=$_SESSION['grouplist'][$grouparrayno][0];
     $groupname=$_SESSION['grouplist'][$grouparrayno][1];
     $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
@@ -315,7 +372,7 @@ $qtypesarray = array();
 
 $qnumber = 0;
 
-foreach ($_SESSION['fieldarray'] as $ia)
+foreach ($_SESSION['fieldarray'] as $key=>$ia)
 {
     $qtypesarray[$ia[1]] = $ia[4];
     ++$qnumber;
@@ -323,11 +380,16 @@ foreach ($_SESSION['fieldarray'] as $ia)
 
     if ($ia[5] == $gid)
     {
+        if(IsSet($hideQuestion[$ia[0]]) && $hideQuestion[$ia[0]]==true){
+        	continue;
+        }
+    	
         $qidattributes=getQuestionAttributes($ia[0]);
         if ($qidattributes['hidden']==1) {
             // Should we really skip the question here, maybe the result won't be stored if we do that
             continue;
         }
+        $_SESSION['fieldarray'][$key][7]='N';
 
         //Get the answers/inputnames
         list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
@@ -1107,6 +1169,9 @@ if (isset($qanda) && is_array($qanda))
 {
     foreach ($qanda as $qa)
     {
+		$lastgrouparray = explode("X",$qa[7]);
+		$lastgroup = $lastgrouparray[0]."X".$lastgrouparray[1]; // id of the last group, derived from question id
+		
         $q_class = question_class($qa[8]); // render question class (see common.php)
 
         if ($qa[9] == 'Y')
@@ -1117,7 +1182,6 @@ if (isset($qanda) && is_array($qanda))
         {
             $man_class = '';
         }
-
         if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
         $question= $qa[0];
@@ -1154,6 +1218,7 @@ if (isset($qanda) && is_array($qanda))
             echo templatereplace($question_template);
         };
     }
+	echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
 }
 echo "\n\n<!-- END THE GROUP -->\n";
 echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
@@ -1209,7 +1274,9 @@ if (remove_nulls_from_array($conmandatoryfns))
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+echo "<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n";
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
+echo "<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
 echo "</form>\n";
 
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));

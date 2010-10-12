@@ -1264,6 +1264,10 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             $questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;subaction=editconditionsform', '_top')\""
             . " title=\"".$clang->gTview("Set Conditions for this Question")."\">"
             . "<img src='$imagefiles/conditions.png' alt='".$clang->gT("Set Conditions for this Question")."'  name='SetQuestionConditions' /></a>\n"
+            . "<img src='$imagefiles/seperator.gif' alt='' />\n"
+			. "<a href='#' onclick=\"window.open('$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;question=$qid', '_top')\""
+            . " title=\"".$clang->gTview("Set Extended Conditions for this Question")."\">"
+            . "<img src='$imagefiles/extendedconditions.png' alt='".$clang->gT("Set Extended Conditions for this Question")."'  name='SetQuestionExtendedConditions' /></a>\n"
             . "<img src='$imagefiles/seperator.gif' alt='' />\n";
         }
         else
@@ -3348,6 +3352,32 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
         $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
                 . "</select></li>\n";
 
+
+            // Save timings
+            $editsurvey .= "<li><label for='savetimings'>".$clang->gT("Save timings?")."</label>\n";
+            if ($esrow['active']=="Y")
+            {
+                $editsurvey .= "\n";
+                if ($esrow['savetimings'] != "Y") {$editsurvey .= " ".$clang->gT("Timings will not be saved.");}
+                else {$editsurvey .= $clang->gT("Timings will be saved.");}
+                $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
+                . "</font>\n";
+                $editsurvey .= "<input type='hidden' name='savetimings' value='".$esrow['savetimings']."' />\n";
+			}
+			else
+            {
+				$editsurvey .= "<select id='savetimings' name='savetimings'>\n"
+				. "<option value='Y'";
+				if (!isset($esrow['savetimings']) || !$esrow['savetimings'] || $esrow['savetimings'] == "Y") {$editsurvey .= " selected='selected'";}
+				$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+				. "<option value='N'";
+				if (isset($esrow['savetimings']) && $esrow['savetimings'] == "N") {$editsurvey .= " selected='selected'";}
+				$editsurvey .= ">".$clang->gT("No")."</option>\n"
+				. "</select>\n"
+				. "</li>\n";
+			}
+
+
         // End Notification and Data management TAB
         $editsurvey .= "</ul></div>\n";
 
@@ -3693,3 +3723,4 @@ function showadminmenu()
     }
     return $adminmenu;
 }
+*/

@@ -529,13 +529,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 
     $qtitle=$ia[3];
     //Replace INSERTANS statements with previously provided answers;
-    while (strpos($qtitle, "{INSERTANS:") !== false)
-    {
-        $replace=substr($qtitle, strpos($qtitle, "{INSERTANS:"), strpos($qtitle, "}", strpos($qtitle, "{INSERTANS:"))-strpos($qtitle, "{INSERTANS:")+1);
-        $replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
-        $replace3=retrieve_Answer($replace2, $_SESSION['dateformats']['phpdate']);
-        $qtitle=str_replace($replace, $replace3, $qtitle);
-    } //while
+    $qtitle=dTexts::run($qtitle);
+
 
     //GET HELP
     $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
@@ -1560,6 +1555,7 @@ function do_boilerplate($ia)
 function do_5pointchoice($ia)
 {
     global $clang;
+	global $js_header_includes, $css_header_includes;	
 
     if ($ia[8] == 'Y')
     {
@@ -1569,8 +1565,10 @@ function do_5pointchoice($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-
-    $answer = "\n<ul>\n";
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
+    //print_r($qidattributes);
+	$id = 'slider'.time().rand(0,100);
+    $answer = "\n<ul id=\"{$id}\">\n";
     for ($fp=1; $fp<=5; $fp++)
     {
         $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
@@ -1593,6 +1591,86 @@ function do_5pointchoice($ia)
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
     $inputnames[]=$ia[1];
+    if($qidattributes['slider_rating']==1){
+    	$css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
+    	$js_header_includes[]='/admin/scripts/rating/jquery.rating.js';
+    	$answer.='<br/><center><div id="'.$id.'div"><input type="radio" id="stars1" name="stars" class="'.$id.'st" value="1"/><input type="radio" id="stars2" name="stars" class="'.$id.'st" value="2"/><input type="radio" name="stars" id="stars3" class="'.$id.'st" value="3"/><input type="radio" id="stars4" name="stars" class="'.$id.'st" value="4"/><input type="radio" name="stars" id="stars5" class="'.$id.'st" value="5"/></div></center><br/>';
+	    $answer.="
+			<script type=\"text/javascript\">
+				$('#$id').hide();
+				var checked = $('#$id input:checked').attr('value');
+				if(checked!=''){
+					$('#stars'+checked).attr('checked','checked');
+    			}
+				$('.{$id}st').rating({
+    				callback: function(value,link){
+    					if(value==undefined || value==''){
+    						$('#$id input').each(function(){ $(this).removeAttr('checked');});
+    						$('#{$id} #NoAnswer').attr('checked','checked');
+    					}
+    					else{
+    						$('#$id input').each(function(){ $(this).removeAttr('checked');});
+    						$('#answer$ia[1]'+value).attr('checked','checked');
+    					}
+    				}
+    					
+    			});
+			</script>
+			";
+    }
+    
+    if($qidattributes['slider_rating']==2){
+	    if(!IsSet($_SESSION[$ia[1]]) OR $_SESSION[$ia[1]]==''){
+	    	$value=1;
+	    }else{
+	    	$value=$_SESSION[$ia[1]];
+	    }
+    	$answer.="
+    		<div style=\"float:left;\">
+    		<div style=\"text-align:center; margin-bottom:6px; width:370px;\"><div style=\"width:2%; float:left;\">1</div><div style=\"width:46%;float:left;\">2</div><div style=\"width:4%;float:left;\">3</div><div style=\"width:46%;float:left;\">4</div><div style=\"width:2%;float:left;\">5</div></div><br/>
+    	 	<div id=\"{$id}sliderBg\" style=\"background-image:url('./images/sliderBg.png'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\">
+    	 	<center>
+    		<div id=\"{$id}slider\" style=\"width:365px;\"></div>
+    		</center>
+    		</div></div>
+    	 	<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\"./images/emoticons/{$value}.png\"/><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"./images/emoticons/{$value}.png\" /></div>
+			<script type=\"text/javascript\">
+				$('#$id').hide();
+				var value=$value;
+				var checked = $('#$id input:checked').attr('value');
+				if(checked!=''){
+					value=checked;
+    			}
+    			var time=200;
+    			var old=value;
+				$('#{$id}slider').slider({
+				value: value,
+				min: 1,
+				max: 5,
+				step: 1,
+				slide: function(event,ui){
+						$('#{$id}img2').attr('src','./images/emoticons/'+ui.value+'.png');
+						$('#{$id}img2').fadeIn(time);
+						$('#$id input').each(function(){ $(this).removeAttr('checked');});
+    					$('#answer$ia[1]'+ui.value).attr('checked','checked');
+						$('#{$id}img1').fadeOut(time,function(){
+    						$('#{$id}img1').attr('src',$('#{$id}img2').attr('src'));
+    						$('#{$id}img1').show();
+    						$('#{$id}img2').hide();
+    					});
+    				}
+				});
+				$('#{$id}slider a').css('background-image', 'url(\'./images/slider.png\')');
+				$('#{$id}slider a').css('width', '11px');
+				$('#{$id}slider a').css('height', '28px');
+				$('#{$id}slider a').css('border', 'none');
+				//$('#{$id}slider').css('background-image', 'url(\'./images/sliderBg.png\')');
+				$('#{$id}slider').css('visibility','hidden');
+				$('#{$id}slider a').css('visibility', 'visible');
+			</script>
+			";
+    
+    }
     return array($answer, $inputnames);
 }
 
@@ -5061,7 +5139,7 @@ function do_array_5point($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
 
-        $answertext=answer_replace($ansrow['question']);
+        $answertext=dTexts::run($ansrow['question']);
         if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
 
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -5098,7 +5176,7 @@ function do_array_5point($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
         }
 
-        $answertext2=answer_replace($ansrow['question']);
+        $answertext2=dTexts::run($ansrow['question']);
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -5216,7 +5294,7 @@ function do_array_10point($ia)
     while ($ansrow = $ansresult->FetchRow())
     {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext=answer_replace($ansrow['question']);
+        $answertext=dTexts::run($ansrow['question']);
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
          and there must be no answer available for the item in this session. */
@@ -5355,7 +5433,7 @@ function do_array_yesnouncertain($ia)
         while ($ansrow = $ansresult->FetchRow())
         {
             $myfname = $ia[1].$ansrow['title'];
-            $answertext=answer_replace($ansrow['question']);
+            $answertext=dTexts::run($ansrow['question']);
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
              and there must be no answer available for the item in this session. */
@@ -5511,7 +5589,7 @@ function do_array_increasesamedecrease($ia)
     while ($ansrow = $ansresult->FetchRow())
     {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext=answer_replace($ansrow['question']);
+        $answertext=dTexts::run($ansrow['question']);
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
          and there must be no answer available for the item in this session. */
@@ -5717,7 +5795,7 @@ function do_array($ia)
             }
             $myfname = $ia[1].$ansrow['title'];
             $trbc = alternation($trbc , 'row');
-            $answertext=answer_replace($ansrow['question']);
+            $answertext=dTexts::run($ansrow['question']);
             $answertextsave=$answertext;
             if (strpos($answertext,'|'))
             {
@@ -6185,7 +6263,7 @@ function do_array_multitext($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext=answer_replace($ansrow['question']);
+            $answertext=dTexts::run($ansrow['question']);
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
@@ -6429,7 +6507,7 @@ function do_array_multiflexi($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext=answer_replace($ansrow['question']);
+            $answertext=dTexts::run($ansrow['question']);
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
@@ -6647,7 +6725,7 @@ function do_arraycolumns($ia)
             while ($ansrow = $ansresult->FetchRow())
             {
                 $anscode[]=$ansrow['title'];
-                $answers[]=answer_replace($ansrow['question']);
+                $answers[]=dTexts::run($ansrow['question']);
             }
             $trbc = '';
             $odd_even = '';
@@ -6980,7 +7058,7 @@ function do_array_dual($ia)
             }
 
             $trbc = alternation($trbc , 'row');
-            $answertext=answer_replace($ansrow['question']);
+            $answertext=dTexts::run($ansrow['question']);
             $answertextsave=$answertext;
 
             $dualgroup=0;
@@ -7240,11 +7318,11 @@ function do_array_dual($ia)
 
                 if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "" || $_SESSION[$myfname1] == "") )
                 {
-                    $answertext="<span class='errormandatory'>".answer_replace($ansrow['question'])."</span>";
+                    $answertext="<span class='errormandatory'>".dTexts::run($ansrow['question'])."</span>";
                 }
                 else
                 {
-                    $answertext=answer_replace($ansrow['question']);
+                    $answertext=dTexts::run($ansrow['question']);
                 }
 
                 $trbc = alternation($trbc , 'row');

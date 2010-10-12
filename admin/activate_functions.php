@@ -268,6 +268,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     
      $createsurvey='';
      $activateoutput='';
+     $createsurveytimings='';
      $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";
@@ -277,16 +278,26 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     {
         $surveyallowsregistration="TRUE";
     }
+    if ($prow['savetimings'] == "Y")
+    {
+        $savetimings="TRUE";
+    }
+    //strip trailing comma and new line feed (if any)
+    $createsurvey = rtrim($createsurvey, ",\n");
     //strip trailing comma and new line feed (if any)
     $createsurvey = rtrim($createsurvey, ",\n");
 
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
-
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
-       if ($createsurvey!='') {$createsurvey .= ",\n";}
-        $createsurvey .= " `{$arow['fieldname']}`";
+        // don't include time fields
+        if ($arow['type'] != "answer_time" && $arow['type'] != "page_time" && $arow['type'] != "interview_time")
+        {
+            if ($createsurvey!='') {$createsurvey .= ",\n";}
+            $createsurvey .= " `{$arow['fieldname']}`";
+        }
+        
         switch($arow['type'])
         {
             case 'startlanguage':
@@ -294,6 +305,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                 break;
             case 'id':
                 $createsurvey .= " I NOTNULL AUTO PRIMARY";
+                $createsurveytimings .= " `{$arow['fieldname']}` I NOTNULL AUTO PRIMARY,\n";
                 break;
             case "startdate":
             case "datestamp":
@@ -309,7 +321,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                 $createsurvey .= " F";
                 break;
             case "S":  //SHORT TEXT
-                if ($databasetype=='mysql' || $databasetype=='mysqli')	{$createsurvey .= " X";}
+                if ($databasetype=='mysql' || $databasetype=='mysqli')    {$createsurvey .= " X";}
                 else  {$createsurvey .= " C(255)";}
                 break;
             case "L":  //LIST (RADIO)
@@ -370,30 +382,47 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                     $surveynotprivate="TRUE";
                 }
                 break;
+            case "grouptoken":
+                $createsurvey .= " C(36)";
+                break;
+            case "page_time":
+            case "answer_time":
+            case "interview_time":
+                $createsurveytimings .= " `{$arow['fieldname']}` I(11) DEFAULT '0',\n";
+                break;
             default:
                 $createsurvey .= " C(5)";
         }
     }
-
+    
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     $createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
+    $createsurveytimings = rtrim($createsurveytimings, ",\n")."\n"; // Does nothing if not ending with a comma
+
     $tabname = "{$dbprefix}survey_{$postsid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 
     $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
                          'mysqli'=> 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
+    
+    if (isset($savetimings) && $savetimings=="TRUE")
+    {
+        $tabnametimings = $tabname .'_timings';
+        $dicttimings = NewDataDictionary($connect);
+        $sqlarraytimings = $dicttimings->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
+    }
+    
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
     if ($execresult==0 || $execresult==1)
     {
         $activateoutput .= "<br />\n<div class='messagebox'>\n" .
-	    "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
-	    "<div class='warningheader'>".$clang->gT("Survey could not be actived.")."</div>\n" .
-	    "<p>" .
+        "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
+        "<div class='warningheader'>".$clang->gT("Survey could not be actived.")."</div>\n" .
+        "<p>" .
         $clang->gT("Database error:")."\n <font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
-	    "<pre>$createsurvey</pre>\n
+        "<pre>$createsurvey</pre>\n
         <a href='$scriptname?sid={$postsid}'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
-        $lsrcOutput = false;
     }
     if ($execresult != 0 && $execresult !=1)
     {
@@ -405,16 +434,25 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
             {
                 if ($row['autonumber_start'] > 0)
                 {
-                    $autonumberquery = "ALTER TABLE {$dbprefix}survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
-                    if ($result = $connect->Execute($autonumberquery))
-                    {
-                        //We're happy it worked!
+                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative') {
+                        mssql_drop_primary_index('survey_'.$postsid);                        
+                        mssql_drop_constraint('id','survey_'.$postsid);
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} drop column id "; 
+                        $connect->Execute($autonumberquery);  
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)"; 
+                        $connect->Execute($autonumberquery);  
                     }
                     else
                     {
-                        //Continue regardless - it's not the end of the world
+                        $autonumberquery = "ALTER TABLE {$dbprefix}survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
+                        $result = @$connect->Execute($autonumberquery);  
+                         
                     }
                 }
+            }
+            if (isset($savetimings) && $savetimings=="TRUE")
+            {
+                $dicttimings->ExecuteSQLArray($sqlarraytimings,1);    // create a timings table for this survey
             }
         }
 
@@ -432,12 +470,12 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
         $acresult = $connect->Execute($acquery);
 
         // Private means data privacy, not closed access survey
-        //		if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
-        //		{
-        //			$activateoutput .= $clang->gT("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
-        //			$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
-        //		}
-        //		elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
+        //        if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
+        //        {
+        //            $activateoutput .= $clang->gT("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
+        //            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+        //        }
+        //        elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
@@ -453,6 +491,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
         $activateoutput .= "</div><br />&nbsp;\n";
         $lsrcOutput = true;
     }
+
     if($scriptname=='lsrc')
     {
         if($lsrcOutput==true)
@@ -463,5 +502,39 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     else
     {
         return $activateoutput;
+    }
+}
+
+function mssql_drop_constraint($fieldname, $tablename)
+{
+    global $dbprefix, $connect, $modifyoutput;
+    // find out the name of the default constraint
+    // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
+    $dfquery ="SELECT c_obj.name AS constraint_name
+                FROM  sys.sysobjects AS c_obj INNER JOIN
+                      sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
+                      sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
+                      sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
+                WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{$dbprefix}{$tablename}')";
+    $defaultname=$connect->GetRow($dfquery);
+    if ($defaultname!=false)
+    {
+        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
+    }
+}
+
+
+function mssql_drop_primary_index($tablename)
+{
+     global $dbprefix, $connect, $modifyoutput;
+    // find out the constraint name of the old primary key
+    $pkquery = "SELECT CONSTRAINT_NAME "
+              ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+              ."WHERE     (TABLE_NAME = '{$dbprefix}{$tablename}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+
+    $primarykey=$connect->GetOne($pkquery);
+    if ($primarykey!=false)
+    {
+        modify_database("","ALTER TABLE [prefix_{$tablename}] DROP CONSTRAINT {$primarykey}"); echo $modifyoutput; flush();
     }
 }

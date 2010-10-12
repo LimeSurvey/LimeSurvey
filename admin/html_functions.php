@@ -71,6 +71,15 @@ function browsemenubar($title='')
     ."title=\"".$clang->gTview("Get statistics from these responses")."\" >"
     ."<img name='Statistics' src='$imagefiles/statistics.png' alt='".$clang->gT("Get statistics from these responses")."' /></a>\n";
 
+    // Time Statistics
+    if ($thissurvey['savetimings']=="Y")
+    {
+		$browsemenubar .= "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=time' "
+		."title=\"".$clang->gTview("Get time statistics from these responses")."\" >"
+		."<img name='timeStatistics' src='$imagefiles/timeStatistics.png' alt='".$clang->gT("Get time statistics from these responses")."' /></a>\n";
+	}
+	
+    
     $browsemenubar .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
     if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)

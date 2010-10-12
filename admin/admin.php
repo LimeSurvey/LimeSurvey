@@ -177,6 +177,11 @@ if(isset($_SESSION['loginID']))
         if(bHasRight($surveyid,'define_questions'))    {include('conditionshandling.php');}
         else { include('access_denied.php');}
     }
+    elseif ($action == 'extendedconditions')
+    {
+        if(bHasRight($surveyid,'define_questions'))    {include('extendedconditionshandling.php');}
+        else { include('access_denied.php');}
+    }
     elseif ($action == 'importsurveyresources')
     {
         if (bHasRight($surveyid,'define_questions'))	{$_SESSION['FileManagerContext']="edit:survey:$surveyid";include('import_resources_zip.php');}
@@ -409,7 +414,7 @@ if(isset($_SESSION['loginID']))
         }
     }
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) &&
-        !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) &&
+        !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) && !isset($extendedconditionsoutput) &&
         !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
         !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&
         !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
@@ -516,7 +521,7 @@ if(isset($_SESSION['loginID']))
     if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) &&
     !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&  !isset($exportroutput) &&
     !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
-    !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
+    !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) && !isset($extendedconditionsoutput) &&
     !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) &&
     (substr($action,0,4)!= 'ajax') && $action!='update' && $action!='showphpinfo')
     {
@@ -575,6 +580,7 @@ if(isset($_SESSION['loginID']))
     if (isset($savedsurveyoutput)) {$adminoutput.= $savedsurveyoutput;}
     if (isset($importoldresponsesoutput)) {$adminoutput.= $importoldresponsesoutput;}
     if (isset($conditionsoutput)) {$adminoutput.= $conditionsoutput;}
+    if (isset($extendedconditionsoutput)) {$adminoutput.= $extendedconditionsoutput;}
     if (isset($deletesurveyoutput)) {$adminoutput.= $deletesurveyoutput;}
     if (isset($resetsurveylogicoutput)) {$adminoutput.= $resetsurveylogicoutput;}
     if (isset($vvoutput)) {$adminoutput.= $vvoutput;}

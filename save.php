@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -117,8 +118,13 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 {
     if ($thissurvey['active'] == "Y") 
     {
-        $aMatchedQuotas=check_quota('return',$surveyid);  
-        if (count($aMatchedQuotas)>0) $bFinalizeThisAnswer=false;         
+        $bQuotaMatched=false;
+        $aQuotas=check_quota('return',$surveyid);  
+        foreach ($aQuotas as $aQuota)
+        {
+            if (isset($aQuota['status']) && $aQuota['status']=='matched') $bQuotaMatched=true;
+    }
+        if ($bQuotaMatched) $bFinalizeThisAnswer=false;         
     }
     
     if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
@@ -131,6 +137,10 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             {
                 if (substr($subquery,0,6)=='INSERT')
                 {
+                    if (tableExists('grouptokens_'.$thissurvey['sid']) && tableExists('usedtokens_'.$thissurvey['sid']))
+                    {
+                        $_SESSION['insertedId'] = $connect->Insert_ID($thissurvey['tablename'],"id");
+                    }
                     $tempID=$connect->Insert_ID($thissurvey['tablename'],"id"); // Find out id immediately if inserted
                     $_SESSION['srid'] = $tempID;
                     $saved_id = $tempID;
@@ -145,7 +155,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
                 echo submitfailed($connect->ErrorMsg());
             }
         }
-        if (count($aMatchedQuotas)>0) 
+        if ($bQuotaMatched) 
         {
             check_quota('enforce',$surveyid);                    
     }
@@ -176,7 +186,12 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 
 
     }
+    if ($thissurvey['savetimings']=="Y")
+    {
+		set_answer_time();
 }
+}
+
 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
 if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
 {
@@ -618,7 +633,6 @@ function createinsertquery()
                 {
                     $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
                 }
-
                 // Resets fields hidden due to conditions
                 if ($deletenonvalues == 1)
                 {
@@ -761,5 +775,46 @@ function array_remval($val, &$arr)
     return $array_remval;
 }
 
+/**
+ * This functions saves the answer time for question/group and whole survey.
+ * [ It compares current time with the time in $_POST['_starttime'] ]
+ * The times are saved in table: {prefix}{surveytable}_timings
+ * @return void
+ */
+function set_answer_time()
+{
+	global $connect, $thissurvey;
+	$setField = $_POST['lastanswer'];
+	$passedTime = time() - $_POST['_starttime'];
 
+	if(!isset($setField))
+		$setField = $_POST['lastgroup'];
+	if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
+		if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
+			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
+				 ."id, interviewTime)"			 
+				 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
+		}else{	// UPDATE
+			$query = "UPDATE {$thissurvey['tablename']}_timings SET "
+				."interviewTime = interviewTime" ." + " .$passedTime
+				." WHERE id = " .$_SESSION['srid'];
+		}
+		$connect->execute($query);
+		return;
+	}
+	
+	$setField .= "time";
+	//saving the times
+	if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
+		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
+			 ."id, interviewTime, " .db_quote_id($setField) .")"			 
+			 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
+	}else{	// UPDATE
+		$query = "UPDATE {$thissurvey['tablename']}_timings SET "
+			."interviewTime = interviewTime" ." + " .$passedTime .","
+			.db_quote_id($setField) ." = " .db_quote_id($setField) ." + " .$passedTime 
+			." WHERE id = " .$_SESSION['srid'];
+	}
+	$connect->execute($query);
+}
 ?>

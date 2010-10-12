@@ -21,6 +21,9 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 // Include version information
 require($rootdir.'/version.php');
 require($rootdir."/common_functions.php");
+// Include dTexts
+require_once(dirname(__FILE__).'/classes/dTexts/dTexts.php');
+
 // Check for most necessary requirements
 // Now check for PHP & db version
 // Do not localize/translate this!
@@ -305,5 +308,108 @@ if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false
 // SITE STYLES
 $setfont = "<font size='2' face='verdana'>";
 $singleborderstyle = "style='border: 1px solid #111111'";
+
+function checkExtendedCondition($expression)
+{
+	$priorities = array('(' => 0, ')' => 0, '!' => 1, '&&' => 2, '||' => 3);
+	$pattern = '/([\(\)!]) |
+							(&&) |
+							(\|\|) |
+							(true) |
+							(false) |
+							(\{.+\})/ix';
+	//$exampleExpression = '{IF:45345X2X3:someAnswer}|| !{IF:45345X2X4:someOtherAnswer}';
+	preg_match_all($pattern, $expression, $matches);	
+	$input = $matches[0];
+	$stack = array();
+	$output = array();
+	
+	// convert infix notation to reversed polish notation
+	foreach($input as $item)
+	{
+		switch($item)
+		{
+			case '!':
+			case '&&':
+			case '||':
+				if(empty($stack) || $priorities[$item] < $priorities[end($stack)])
+					array_push($stack, $item);
+				else
+				{
+					while($priorities[$item] >= $priorities[end($stack)] && !empty($stack) && end($stack) != '(')
+					{
+						array_push($output, array_pop($stack));
+					}
+					array_push($stack, $item);
+				}
+				break;
+			case '(':
+				array_push($stack, $item);
+				break;
+			case ')':
+				while(($op = array_pop($stack)) != '(')
+					array_push($output, $op);
+				break;				
+			default:
+				array_push($output, $item);
+				break;				
+		}		
+	}
+	while(!empty($stack))
+		array_push($output, array_pop($stack));
+  
+	// computing reversted polish notation expression
+	$stack = array();
+	foreach($output as $item)
+	{
+		if($item{0} == '{')
+			$item=dTexts::run($item);
+		$item=strtolower($item);
+		switch($item)
+		{
+			case '!':
+				$result = !(bool) array_pop($stack);
+				array_push($stack, $result);
+				break;
+			case '&&':
+				$var1 = (bool) array_pop($stack);
+				$var2 = (bool) array_pop($stack);
+				$result = $var1 && $var2;
+				array_push($stack, $result);
+				break;
+			case '||':
+				$var1 = (bool) array_pop($stack);
+				$var2 = (bool) array_pop($stack);
+				$result = $var1 || $var2;
+				array_push($stack, $result);
+				break;
+			case 'true':
+				array_push($stack, true);
+				break;
+			case 'false':
+				array_push($stack, false);
+				break;
+			default:                    
+				print "Invalid operator or data:<b> " .$item ."</b></br>";
+				break;               
+		}
+	}
+	return $stack[0];
+}
+
+function checkExtendedConditionForQuestion($qid)
+{
+	global $connect, $dbprefix, $surveyid;	
+	$query = "SELECT " .db_quote_id('condition') ." FROM {$dbprefix}extendedconditions WHERE qid='{$qid}' AND sid='{$surveyid}'";
+	$extendedCondition = $connect->getOne($query);
+	if($extendedCondition)
+	{
+		return checkExtendedCondition($extendedCondition);
+	}
+	else
+	{
+		return null;
+	}
+}
 
 // Closing PHP tag intentionally left out - yes, it is okay

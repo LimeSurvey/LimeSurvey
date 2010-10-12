@@ -103,8 +103,11 @@ $qidattributes=getQuestionAttributes($ia[0]);
 $conditionforthisquestion=$ia[7];
 $questionsSkipped=0;
 
+$extendedConditionResult = checkExtendedConditionForQuestion($ia[0]);
+
 while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
-{ // this is a while, not an IF because if we skip the question we loop on the next question, see below
+{
+ // this is a while, not an IF because if we skip the question we loop on the next question, see below
 if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
 { // question will be displayed
 // we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
@@ -157,6 +160,7 @@ else
     //  with the new question (we have overwritten $ia)
     $conditionforthisquestion=$ia[7];
     $qidattributes=getQuestionAttributes($ia[0]);
+		$extendedConditionResult = checkExtendedConditionForQuestion($ia[0]);
 }
 } // End of while conditionforthisquestion=="Y"
 
@@ -219,7 +223,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 
         //Before doing the "templatereplace()" function, check the $thissurvey['url']
         //field for limereplace stuff, and do transformations!
-        $thissurvey['surveyls_url']=insertansReplace($thissurvey['surveyls_url']);
+        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
         $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
         $content='';
@@ -287,10 +291,11 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
             //Automatically redirect the page to the "url" setting for the survey
-            $url = insertansReplace($thissurvey['surveyls_url']);
+            $url = dTexts::run($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
+						$url=str_replace("{GROUPTOKEN}",$clientgrouptoken, $url);          // to activate the GROUPTOKEN in the END URL            
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
             $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
 
@@ -394,6 +399,7 @@ if ($pluscon !== null)
     $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
 }
 //Build an array containing the conditions that apply for this page
+if(!$extendedConditionResult)	// we don't retrieve conditions while there are extended conditions for this page
 $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 if ($plus_conditions)
 {
@@ -501,6 +507,7 @@ else
     {
         foreach ($qanda as $qa)
         {
+						echo "<input type='hidden' name='lastanswer' value='$qa[7]' id='lastanswer' />\n";
             $q_class = question_class($qa[8]); // render question class (see common.php)
 
             if ($qa[9] == 'Y')
@@ -613,7 +620,9 @@ if (remove_nulls_from_array($conmandatoryfns))
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+echo "<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n";    
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
+echo "<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
 echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars(strip_tags($groupname),ENT_QUOTES,'UTF-8')."' id='lastgroupname' />\n";
 echo "</form>\n";
 //foreach(file("$thistpl/endpage.pstpl") as $op)
@@ -644,5 +653,35 @@ function checkIfNewGroup($ia)
         }
     }
     return array($newgroup, $gid, $groupname, $groupdescription, $gl);
+}
+
+function display_first_page() {
+    global $clang, $thistpl, $token, $grouptoken, $surveyid, $thissurvey, $navigator,$publicurl;
+    sendcacheheaders();
+    doHeader();
+
+    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+    echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+
+    echo "\n\n<!-- START THE SURVEY -->\n";
+
+    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+    if ($thissurvey['private'] == "Y")
+    {
+        echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
+    }
+    $navigator = surveymover();
+    echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
+    if ($thissurvey['active'] != "Y")
+    {
+        echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+    }
+    echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+		echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+		echo "\n<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
+    echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
+    echo "\n</form>\n";
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+    doFooter();
 }
 ?>
