@@ -3589,7 +3589,7 @@ function showadminmenu()
 
     // list surveys
     $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" >\n"
-    ."<img src='$imagefiles/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
+    ."<img src='$imagefiles/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' \" />"
     ."</a>" ;
 
     // db backup & label editor
