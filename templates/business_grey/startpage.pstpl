@@ -1,6 +1,6 @@
 
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<title>A SURVEY: {SURVEYNAME}</title>
+		<title>{SITENAME}: {SURVEYNAME}</title>
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
 		<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
@@ -23,5 +23,5 @@
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
 	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />   
 </head>
-<body>
+<body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
 <div class="surveyBorder">

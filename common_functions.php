@@ -2494,7 +2494,37 @@ function templatereplace($line, $replacements=array())
         .use_firebug()
         ."\t</head>", $line);
     }
-
+    // Get some vars : move elsewhere ?
+    // surveyformat
+    if (isset($thissurvey['format']))
+    {
+        $surveyformat = str_replace(array("A","S","G"),array("allinone","questionbyquestion","groupbygroup"),$thissurvey['format']);
+    }
+    else
+    {
+        $surveyformat = "";
+    }
+    // real survey contact
+    if (isset($surveylist['contact']))
+    {
+        $surveycontact = $surveylist['contact'];
+    }
+    elseif (isset($thissurvey['admin']) && $thissurvey['admin']!="")
+    {
+        $surveycontact=sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['admin'],$thissurvey['adminemail']);
+    }
+    else
+    {
+        $surveycontact="";
+    }
+    
+    if (stripos ($line,"</head>"))
+    {
+        $line=str_ireplace("</head>",
+            "<script type=\"text/javascript\" src=\"$rooturl/scripts/survey_runtime.js\"></script>\n"
+        .use_firebug()
+        ."\t</head>", $line);
+    }
 
     // If there are non-bracketed replacements to be made do so above this line.
     // Only continue in this routine if there are bracketed items to replace {}
@@ -2510,16 +2540,20 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{SURVEYLISTHEADING}") !== false) $line=str_replace("{SURVEYLISTHEADING}", $surveylist['listheading'], $line);
     if (strpos($line, "{SURVEYLIST}") !== false) $line=str_replace("{SURVEYLIST}", $surveylist['list'], $line);
     if (strpos($line, "{NOSURVEYID}") !== false) $line=str_replace("{NOSURVEYID}", $surveylist['nosid'], $line);
-    if (strpos($line, "{SURVEYCONTACT}") !== false) $line=str_replace("{SURVEYCONTACT}", $surveylist['contact'], $line);
+
 
     if (strpos($line, "{SITENAME}") !== false) $line=str_replace("{SITENAME}", $sitename, $line);
 
     if (strpos($line, "{SURVEYLIST}") !== false) $line=str_replace("{SURVEYLIST}", $surveylist, $line);
     if (strpos($line, "{CHECKJAVASCRIPT}") !== false) $line=str_replace("{CHECKJAVASCRIPT}", "<noscript><span class='warningjs'>".$clang->gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>", $line);
     if (strpos($line, "{ANSWERTABLE}") !== false) $line=str_replace("{ANSWERTABLE}", $printoutput, $line);
+
+    if (strpos($line, "{SURVEYLANGAGE}") !== false) $line=str_replace("{SURVEYLANGAGE}", $clang->langcode, $line);
+    if (strpos($line, "{SURVEYCONTACT}") !== false) $line=str_replace("{SURVEYCONTACT}", $surveycontact, $line);
     if (strpos($line, "{SURVEYNAME}") !== false) $line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
     if (strpos($line, "{SURVEYDESCRIPTION}") !== false) $line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
-    if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
+    if (strpos($line, "{SURVEYFORMAT}") !== false) $line=str_replace("{SURVEYFORMAT}", $surveyformat, $line);
+        if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
     if (strpos($line, "{LANGUAGECHANGER}") !== false) $line=str_replace("{LANGUAGECHANGER}", $languagechanger, $line);
     if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
 

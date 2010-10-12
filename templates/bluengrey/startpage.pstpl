@@ -25,6 +25,6 @@
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
     <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 	</head>
-	<body>
+	<body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
 		<br/>
 		<div id="container">
