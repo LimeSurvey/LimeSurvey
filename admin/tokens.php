@@ -30,23 +30,13 @@ if (!isset($start)) {$start=(int)returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
 if (!isset($tokenids)) {$tokenids=returnglobal('tids');}
-if (!isset($gtokenid)) {$gtokenid=returnglobal('gtid');}
-if (!isset($gtokenids)) {$gtokenids=returnglobal('gtids');}
 if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
-if (!isset($usertoken)) {$usertoken=returnglobal('usertoken');}
 
 if(isset($tokenids)) {
     $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
     unset($tokenids);
     foreach($tokenidsarray as $tokenitem) {
         if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
-    }
-}
-if(isset($gtokenids)) {
-    $gtokenidsarray=explode("|", substr($gtokenids, 1)); //Make the gtids string into an array, and exclude the first character
-    unset($gtokenids);
-    foreach($gtokenidsarray as $gtokenitem) {
-        if($gtokenitem != "") $gtokenids[]=sanitize_int($gtokenitem);
     }
 }
 
@@ -185,7 +175,7 @@ if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATUR
     $bfieldcount=$bresult->FieldCount();
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
-    $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
+    $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed";
     $attrfieldnames = GetAttributeFieldnames($surveyid);
     $attrfielddescr = GetTokenFieldsAndNames($surveyid, true);
     foreach ($attrfieldnames as $attr_name)
@@ -222,7 +212,6 @@ if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATUR
         $tokenoutput .= '"'.trim($brow['remindersent']).'",';
         $tokenoutput .= '"'.trim($brow['remindercount']).'",';
         $tokenoutput .= '"'.trim($brow['completed']).'",';
-        $tokenoutput .= '"'.trim($brow['usesleft']).'",';
         foreach ($attrfieldnames as $attr_name)
         {
             $tokenoutput .='"'.trim($brow[$attr_name]).'",';
@@ -239,15 +228,6 @@ if ($subaction == "delete" &&
 )
 {
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
-}
-
-if ($subaction == "deletegroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-)
-{
-    $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browsegroup&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
 
 $tokenoutput .= "<script type='text/javascript'>\n"
@@ -329,7 +309,6 @@ if (!$tokenexists) //If no tokens table exists
 		. "remindersent C(17) DEFAULT 'N',\n "
 		. "remindercount int I DEFAULT 0,\n "
 		. "completed C(17) DEFAULT 'N',\n "
-		. "usesleft I DEFAULT 1,\n"
 		. "validfrom T ,\n "
 		. "validuntil T ,\n "
 		. "mpid I ";
@@ -363,10 +342,11 @@ if (!$tokenexists) //If no tokens table exists
 		        $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';
 		        $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
 		    }
-		    
-		    
+
+
+
 		    $tokenoutput .= "\t</div><p>\n"
-		    .$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
+		    ."".$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
 		    ."<input type='submit' value='"
 		    .$clang->gT("Continue")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n";
 		}
@@ -377,8 +357,7 @@ if (!$tokenexists) //If no tokens table exists
     {
         $query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("tokens_$surveyid"));
         $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
-		
-		$tokenoutput .= "\t</div><div class='messagebox'>\n"
+        $tokenoutput .= "\t</div><div class='messagebox'>\n"
         ."<div class='header'>".$clang->gT("Import old tokens")."</div>"
         ."<br />".$clang->gT("A token table has been created for this survey and the old tokens were imported.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
         ."<input type='submit' value='"
@@ -446,7 +425,6 @@ if (!$tokenexists) //If no tokens table exists
     }
 }
 
-
 #Lookup the names of the attributes
 /*$query = "SELECT attribute1, attribute2 FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
  $result = db_execute_assoc($query) or safe_die("Couldn't execute query: <br />$query<br />".$connect->ErrorMsg());
@@ -512,36 +490,6 @@ if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activa
     ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" "
     ."title='".$clang->gTview("Drop tokens table")."' >"
     ."<img name='DeleteTokensButton' src='$imagefiles/delete.png' alt='".$clang->gT("Drop tokens table")."' /></a>\n";
-    if (!tableExists('grouptokens_'.$surveyid) || !tableExists('usedtokens_'.$surveyid))
-    {
-	$tokenoutput .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=usegrouptokens")."\" "
-	."title='".$clang->gTview("Use group tokens")."' >"
-	."<img name='UseGroupTokensButton' src='$imagefiles/tokens.png' alt='".$clang->gT("Use group tokens")."' /></a>\n";
-    }
-}
-
-if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid))
-{
-	$tokenoutput .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
-	."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup', '_top')\" "
-	."title='".$clang->gTview("Display group tokens")."' >"
-	."<img name='ViewGroupTokensButton' src='$imagefiles/grouptokens.png' alt='".$clang->gT("Display group tokens")."' /></a>\n";
-	
-	if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-	{
-		$tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnewgroup', '_top')\""
-		."title='".$clang->gTview("Add new group token entry")."' >"
-		."<img name='AddNewGroupTokenButton' src='$imagefiles/addgrouptoken.png' title='' alt='".$clang->gT("Add new group token entry")."' /></a>\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenifygroup")."\" "
-    ." title='".$clang->gTview("Generate group tokens")."'>"
-    ."<img name='TokenifyGroupButton' src='$imagefiles/tokenifygroup.png' alt='".$clang->gT("Generate group tokens")."' /></a>\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=killgroup")."\" "
-    ."title='".$clang->gTview("Drop group tokens table")."' >"
-    ."<img name='DeleteGroupTokensButton' src='$imagefiles/deletegroup.png' alt='".$clang->gT("Drop group tokens table")."' /></a>\n";
-	}
 }
 
 $tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" "
@@ -558,8 +506,7 @@ $tkr = $tksr->FetchRow();
 $tkcount = $tkr[0];
 
 // GIVE SOME INFORMATION ABOUT THE TOKENS
-if ($subaction=='')
-{
+if ($subaction==''){
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Token summary")."</div>\n"
     ."<br /><table align='center' class='statisticssummary'>\n"
     ."\t<tr>\n"
@@ -574,44 +521,19 @@ if ($subaction=='')
     {$tokenoutput .= "<th>".$clang->gT("Total with no unique Token")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
 
     $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!='N' and sent<>'')";
+
     $tksr = db_execute_num($tksq);
     while ($tkr = $tksr->FetchRow())
+
     {$tokenoutput .= "<th>".$clang->gT("Total invitations sent")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
-    
     $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
+
     $tksr = db_execute_num($tksq) or safe_die ("Couldn't execute token selection query<br />$abquery<br />".$connect->ErrorMsg());
     while ($tkr = $tksr->FetchRow())
     {$tokenoutput .= "<th>".$clang->gT("Total surveys completed")."</th><td> $tkr[0] / $tkcount\n";}
     $tokenoutput .= "</td>\n"
     ."\t</tr>\n"
     ."</table><br />\n";
-    
-    // Group token information
-    if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid))
-    {
-		$gtksq = "SELECT count(gtid) FROM ".db_table_name("grouptokens_$surveyid");
-		$gtksr = db_execute_num($gtksq);
-		$gtkr = $gtksr->FetchRow();
-		$gtkcount = $gtkr[0];
-		
-		$tokenoutput .= "\t<div class='header'>".$clang->gT("Group token summary")."</div>\n"
-		."<br /><table align='center' class='statisticssummary'>\n"
-		."\t<tr>\n"
-		."<th>\n"
-		.$clang->gT("Total records in group token table")."</th><td> $gtkcount</td></tr><tr>\n";
-		
-		$gtksq = "SELECT count(*) FROM ".db_table_name("grouptokens_$surveyid")." WHERE token IS NULL OR token=''";
-		$gtksr = db_execute_num($gtksq);
-		while ($gtkr = $gtksr->FetchRow())
-		{$tokenoutput .= "<th>".$clang->gT("Total with no unique Token")."</th><td> $gtkr[0] / $gtkcount</td></tr><tr>\n";}
-		
-		$gtksq = "SELECT sum(completedsurveys) FROM ".db_table_name("grouptokens_$surveyid")."";
-		$gtksr = db_execute_num($gtksq);
-		while ($gtkr = $gtksr->FetchRow())
-		{$tokenoutput .= "<th>".$clang->gT("Total surveys completed")."</th><td> $gtkr[0]</td></tr>\n";}
-		
-		$tokenoutput .= "</table><br />\n";
-	}
 }
 
 #############################################################################################
@@ -825,146 +747,6 @@ if (!$subaction && (bHasRight($surveyid, 'edit_survey_property') || bHasRight($s
     $tokenoutput .= "<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul></div>\n";
 }
 
-if ($subaction == "usegrouptokens" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
-{
-	if (isset($_POST['creategrouptable']) && $_POST['creategrouptable']=="Y"
-	// make sure there are no group token tables
-	 && !tableExists('grouptokens_'.$surveyid) && !tableExists('usedtokens_'.$surveyid))
-	{
-		$creategrouptokentable=
-	    "gtid int I NOTNULL AUTO PRIMARY,\n "
-	    . "name C(40),\n "
-	    . "description C(200),\n"
-	    . "token C(36) ,\n "
-	    . "language C(25) ,\n "
-	    . "completedsurveys I DEFAULT 0,\n "
-	    . "validfrom T ,\n "
-	    . "validuntil T ";
-
-	    $tabname = "{$dbprefix}grouptokens_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-	    $taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
-						     'mysqli' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
-	    $dict = NewDataDictionary($connect);
-	    $sqlarray = $dict->CreateTableSQL($tabname, $creategrouptokentable, $taboptarray);
-	    $execresult=$dict->ExecuteSQLArray($sqlarray, false);
-
-	    if ($execresult==0 || $execresult==1)
-	    {
-
-		    $tokenoutput .= "\t</div><div class='messagebox'>\n"
-		    ."<font size='1'><strong><center>".$clang->gT("Group token table could not be created.")."</center></strong></font>\n"
-		    .$clang->gT("Error").": \n<font color='red'>" . $connect->ErrorMsg() . "</font>\n"
-		    ."<pre>".htmlspecialchars(implode(" ",$sqlarray))."</pre>\n"
-		    ."<br />"
-		    ."<input type='submit' value='"
-		    .$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" />\n"
-		    ."</div>\n"
-		    ."</div>\n";
-
-	    }
-	    else
-	    {
-		    $tokenoutput .= "\t<br><p>\n"
-		    ."".$clang->gT("A group token table has been created for this survey.")." (\"".$dbprefix."grouptokens_$surveyid\")<br /><br />\n";
-		    
-		    // create table of pairs of used tokens (association table token-grouptoken)
-		    $createusedtokens=
-		    "id I NOTNULL PRIMARY,\n "
-		    . "tid I NOTNULL,\n"
-		    . "gtid I NOTNULL";
-
-		    $tabname = "{$dbprefix}usedtokens_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-		    $taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
-							     'mysqli' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
-		    $dict = NewDataDictionary($connect);
-		    $sqlarray = $dict->CreateTableSQL($tabname, $createusedtokens, $taboptarray);
-		    $execresult = $dict->ExecuteSQLArray($sqlarray, false);
-							    
-		    if ($execresult==0 || $execresult==1)
-		    {
-			    $tokenoutput .= "\t</div><div class='messagebox'>\n"
-			    ."<font size='1'><strong><center>".$clang->gT("Used token table could not be created.")."</center></strong></font>\n"
-			    .$clang->gT("Error").": \n<font color='red'>" . $connect->ErrorMsg() . "</font>\n"
-			    ."<pre>".htmlspecialchars(implode(" ",$sqlarray))."</pre>\n"
-			    ."<br />"
-			    ."<input type='submit' value='"
-			    .$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" />\n"
-			    ."</div>\n"
-			    ."</div>\n";
-		    }
-		    else
-		    {
-			    // set unique index on fields 'tid' and 'gtid'
-			    $sqlarray = $dict->CreateIndexSQL("unique_{$tabname}", $tabname, array('tid', 'gtid'), array('unique'));
-			    $execresult = $dict->ExecuteSQLArray($sqlarray, false);
-			    
-			    $tokenoutput .= "\t<br><p>\n"
-			    ."".$clang->gT("A used tokens table has been created for this survey.")." (\"".$tabname."\")<br /><br /><br />\n"
-			    ."<input type='submit' value='"
-			    .$clang->gT("Continue")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n";
-		    }
-	    }
-	}
-	elseif (returnglobal('restoregrouptable') == "Y" && returnglobal('oldtable'))
-    {
-        $query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("grouptokens_$surveyid"));
-        $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
-		
-		$oldusedtable = str_replace('grouptokens', 'usedtokens', returnglobal('oldtable'));
-		$query = db_rename_table($oldusedtable , db_table_name_nq("usedtokens_$surveyid"));
-		$result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
-		
-		$tokenoutput .= "\t<div class='messagebox'>\n"
-        ."<div class='header'>".$clang->gT("Import old group tokens")."</div>"
-        ."<br />".$clang->gT("A group token table has been created for this survey and the old group tokens were imported.")." (\"".$dbprefix."grouptokens_$surveyid\")<br /><br />\n"
-        ."<input type='submit' value='"
-        .$clang->gT("Continue")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n"
-        ."</div>\n";
-        return;
-    }
-	else
-    {
-        $query=db_select_tables_like("{$dbprefix}old_grouptokens_".$surveyid."_%");
-        $result=db_execute_num($query) or safe_die("Couldn't get old table list<br />".$query."<br />".$connect->ErrorMsg());
-        $tcount=$result->RecordCount();
-        if ($tcount > 0)
-        {
-            while($rows=$result->FetchRow())
-            {
-                $oldlist[]=$rows[0];
-            }
-        }
-        $tokenoutput .= "\t<div class='messagebox'>\n"
-        ."<div class='warningheader'>".$clang->gT("Warning")."</div>\n"
-        ."<br /><strong>".$clang->gT("Group tokens have not been initialised for this survey.")."</strong><br /><br />\n"
-		.$clang->gT("If you initialise group tokens for this survey then this survey will only be accessible to users who provide a group token either manually or by URL.")
-        ."<br /><br />\n"
-		.$clang->gT("Do you want to create a group token table for this survey?")."<br /><br />\n"
-		."<input type='submit' value='".$clang->gT("Initialise group tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=usegrouptokens&amp;creategrouptable=Y")."\" />\n"
-        ."<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid=$surveyid', '_top')\" /></div>\n";
-		
-        // Do not offer old postgres token tables for restore since these are having an issue with missing index
-        if ($tcount>0 && $databasetype!='postgres')
-        {
-            $tokenoutput .= "<br /><div class='header'>".$clang->gT("Restore options")."</div>\n"
-            ."<div class='messagebox'>\n"
-            ."<form method='post' action='$scriptname?action=tokens&amp;subaction=usegrouptokens'>\n"
-            .$clang->gT("The following old group token tables could be restored:")."<br /><br />\n"
-            ."<select size='4' name='oldtable' style='width:250px;'>\n";
-            foreach($oldlist as $ol)
-            {
-                $tokenoutput .= "<option>".$ol."</option>\n";
-            }
-            $tokenoutput .= "</select><br /><br />\n"
-            ."<input type='submit' value='".$clang->gT("Restore")."' />\n"
-            ."<input type='hidden' name='restoregrouptable' value='Y' />\n"
-            ."<input type='hidden' name='sid' value='$surveyid' />\n"
-            ."</form></div>\n";
-        }
-        return;
-    }
-}
-
 if ($subaction == "browse" || $subaction == "search")
 {
     if (!isset($limit)) {$limit = 100;}
@@ -1135,15 +917,6 @@ if ($subaction == "browse" || $subaction == "search")
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Completed?")
 	."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
-	."<th align='left'>"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=usesleft%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Uses left")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Uses left")
-	."' border='0' align='left' /></a><span>".$clang->gT("Uses left")."</span></th>\n"
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' title='"
@@ -1184,7 +957,6 @@ if ($subaction == "browse" || $subaction == "search")
                            'remindersent',
                            'remindercount',
                            'completed',
-                           'usesleft',
                            'validfrom',
                            'validuntil');
 	foreach ($attrfieldnames as $attr_name=>$attr_translation)
@@ -1243,7 +1015,7 @@ if ($subaction == "browse" || $subaction == "search")
 	            $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
 	            if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
 	            {
-	                if (($brow['completed'] == "N" || $brow['completed'] == "") && $brow['token'])
+	                if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
 	                {
 	                    $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
 	                    $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_do.png' title='"
@@ -1278,9 +1050,9 @@ if ($subaction == "browse" || $subaction == "search")
 	                if  ($id)
 	                {
 	                    $tokenoutput .= "<input type='image' src='{$imagefiles}/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
-	                    .$clang->gT("View/Update last response")
+	                    .$clang->gT("View/Update response")
 	                    ."' alt='"
-	                    .$clang->gT("View/Update last response")
+	                    .$clang->gT("View/Update response")
 	                    ."' />\n";
 	                }
 	            }
@@ -1300,15 +1072,6 @@ if ($subaction == "browse" || $subaction == "search")
 	                .$clang->gT("Send reminder email to this entry")
 	                ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tid={$brow['tid']}', '_top')\" />";
 	            }
-				// link to used group tokens
-				if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid))
-				{
-					$tokenoutput .= "<input type='image' src='$imagefiles/tokens.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;usertoken={$brow['tid']}','_top')\" type='submit' title='"
-					.$clang->gT("View used groups")
-					."' alt='"
-					.$clang->gT("View used groups")
-					."' />\n";
-				}
 	            $tokenoutput .= "\n</td>\n";
 	        }
 	    }
@@ -1342,289 +1105,6 @@ if ($subaction == "browse" || $subaction == "search")
 	    . "</td>\n"
 	    . "</tr>\n";
 	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
-	}
-	//End multiple item actions
-
-	$tokenoutput .= "</table>\n<br />\n";
-}
-
-if ($subaction == "browsegroup" || $subaction == "searchgroup")
-{
-	// count group tokens
-	$gtksq = "SELECT count(gtid) FROM ".db_table_name("grouptokens_$surveyid");
-	$gtksr = db_execute_num($gtksq);
-	$gtkr = $gtksr->FetchRow();
-	$gtkcount = $gtkr[0];
-
-    if (!isset($limit)) {$limit = 100;}
-    if (!isset($start)) {$start = 0;}
-
-    if ($limit > $gtkcount) {$limit=$gtkcount;}
-    $next=$start+$limit;
-    $last=$start-$limit;
-    $end=$gtkcount-$limit;
-    if ($end < 0) {$end=0;}
-    if ($last <0) {$last=0;}
-    if ($next >= $gtkcount) {$next=$gtkcount-$limit;}
-    if ($end < 0) {$end=0;}
-    $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
-
-    //ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
-    $tokenoutput .= "\t<div class='menubar'><div class='menubar-title'><span style='font-weight:bold;'>"
-    .$clang->gT("Data view control")."</span></div>\n"
-    ."<div class='menubar-main'>\n"
-    ."<div class='menubar-left'>\n"
-    ."<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left' />\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-    ."<a href='$scriptname?action=tokens&amp;subaction=browsegroup&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'"
-    ." title='".$clang->gTview("Show start...")."'>"
-    ."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
-    ."<a href='$scriptname?action=tokens&amp;subaction=browsegroup&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
-	" title='".$clang->gTview("Show previous...")."'>" .
-	"<img name='DBackButton' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
-	."<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
-	."<a href='$scriptname?action=tokens&amp;subaction=browsegroup&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
-	"title='".$clang->gTview("Show next...")."'>" .
-	"<img name='DForwardButton' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
-	."<a href='$scriptname?action=tokens&amp;subaction=browsegroup&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
-	"title='".$clang->gTview("Show last...")."'>".
-	"<img name='DEndButton' align='left'  src='$imagefiles/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-	."\t<form id='tokensearch' method='post' action='$scriptname?action=tokens'>\n"
-	."<input type='text' name='searchstring' value='$searchstring' />\n"
-	."<input type='submit' value='".$clang->gT("Search")."' />\n"
-	."\t<input type='hidden' name='order' value='$order' />\n"
-	."\t<input type='hidden' name='subaction' value='searchgroup' />\n"
-	."\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	."\t</form>\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-	."<form id='tokenrange' action='{$scriptname}'>\n"
-	."<font size='1' face='verdana'>"
-	."&nbsp;<label for='limit'>".$clang->gT("Records displayed:")."</label> <input type='text' size='4' value='$limit' id='limit' name='limit' />"
-	."&nbsp;&nbsp;<label for='start'>".$clang->gT("Starting from:")."</label> <input type='text' size='4' value='$start'  id='start' name='start' />"
-	."&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-	."&nbsp;<label for='usertoken'>".$clang->gT("User:")."</label>";
-	$selectall = "selected='selected'";
-	if (!$usertoken) {
-		$selectall = "";
-	}
-	$tokenoutput .= "&nbsp;&nbsp;\n"
-	."<select name='usertoken' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
-	."\t<option value='' $selectall>".$clang->gT("All users")."</option>\n";
-	
-	$gtquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
-	$gtresult = db_execute_assoc($gtquery) or safe_die("Couldn't get tokens:<br />$gtquery<br />".$connect->ErrorMsg());
-	while ($gtrow = $gtresult->FetchRow())
-	{
-		$tokenoutput .= "\t<option value='{$gtrow['tid']}'";
-		if ($usertoken == $gtrow['tid'])
-			$tokenoutput .= "selected='selected'";
-		$tokenoutput .= ">{$gtrow['firstname']} {$gtrow['lastname']} ({$gtrow['email']})</option>\n";
-	}
-	$tokenoutput .= "</select>\n"
-	."<input type='hidden' name='sid' value='$surveyid' />\n"
-	."<input type='hidden' name='action' value='tokens' />\n"
-	."<input type='hidden' name='subaction' value='browsegroup' />\n"
-	."<input type='hidden' name='order' value='$order' />\n"
-	."<input type='hidden' name='searchstring' value='$searchstring' />\n"
-	."</font>\n</form>\n";
-	
-	if ($usertoken) {
-		$bquery = "SELECT * FROM ".db_table_name("grouptokens_$surveyid")." NATURAL JOIN ".db_table_name("usedtokens_$surveyid");
-	}
-	else {
-		$bquery = "SELECT * FROM ".db_table_name("grouptokens_$surveyid");
-	}
-	if ($searchstring)
-	{
-	    $bquery .= " WHERE (name LIKE '%$searchstring%' "
-	    . "OR description LIKE '%$searchstring%' "
-	    . "OR token LIKE '%$searchstring%')";
-		if ($usertoken) {
-			$bquery .= " AND tid='$usertoken'";
-		}
-	}
-	elseif ($usertoken) {
-		$bquery .= " WHERE tid='$usertoken'";
-	}
-	if (!isset($order) || !$order) {$bquery .= " ORDER BY gtid";}
-	else {$bquery .= " ORDER BY $order"; }
-
-	$bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());
-	$bgc="";
-
-	$tokenoutput .= "</div></div></div>\n";
-
-	$tokenoutput .= "<table class='browsetokens' id='browsetokens' cellpadding='1' cellspacing='1'>\n";
-	//COLUMN HEADINGS
-	$tokenoutput .= "\t<tr>\n"
-	."<th><input type='checkbox' id='tokencheckboxtoggle'></th>\n"   //Checkbox
-	."<th align='left' >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=gtid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	."ID' alt='"
-	.$clang->gT("Sort by: ")
-	."ID' border='0' align='left' hspace='0' /></a>"."ID</th>\n" // ID
-	."<th align='left'  >".$clang->gT("Actions")."</th>\n"  //Actions
-	."<th align='left'  >"
-	
-	//name
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=name&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Name")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Name")
-	."' border='0' align='left' /></a>".$clang->gT("Name")."</th>\n"
-	
-	//description
-	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=description&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Description")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Description")
-	."' border='0' align='left' /></a>".$clang->gT("Description")."</th>\n"
-	
-	//token
-	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Token")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Token")
-	."' border='0' align='left' /></a>".$clang->gT("Token")."</th>\n"
-
-	//language
-	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=language&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Language")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Language")
-	."' border='0' align='left' /></a>".$clang->gT("Language")."</th>\n"
-
-	//completedsurveys
-	."<th align='left'>"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=completedsurveys%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Completed surveys")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Completed surveys")
-	."' border='0' align='left' /></a><span>".$clang->gT("Completed surveys")."</span></th>\n"
-	
-	//validfrom
-	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Valid from")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Valid from")
-	."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
-	
-	//validuntil
-	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;usertoken=$usertoken'>"
-	."<img src='$imagefiles/downarrow.png' title='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Valid until")
-	."' alt='"
-	.$clang->gT("Sort by: ")
-	.$clang->gT("Valid until")
-	."' border='0' align='left' /></a>".$clang->gT("Valid until")."</th>\n";
-
-	$tokenoutput .="\t</tr>\n";
-
-
-	$tokenfieldorder=array('gtid',
-                           'name',
-                           'description',
-                           'token',
-                           'language',
-                           'completedsurveys',
-                           'validfrom',
-                           'validuntil');
-
-	while ($brow = $bresult->FetchRow())
-	{
-	    $brow['token'] = trim($brow['token']);
-	    if (trim($brow['validfrom'])!=''){
-	        $datetimeobj = new Date_Time_Converter($brow['validfrom'] , "Y-m-d H:i:s");
-	        $brow['validfrom']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-	    };
-	    if (trim($brow['validuntil'])!=''){
-	        $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
-	        $brow['validuntil']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-	    };
-
-	    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
-	    $tokenoutput .= "\t<tr class='$bgc'>\n";
-
-	    $tokenoutput .= "<td><input type='checkbox' name='".$brow['gtid']."'></td>\n";
-
-	    foreach ($tokenfieldorder as $tokenfieldname)
-	    {	        
-			if  ($tokenfieldname=='gtid')
-			{
-				$tokenoutput.="<td><span style='font-weight:bold'>".$brow[$tokenfieldname]."</span></td>";
-			}
-			else
-			{
-				$tokenoutput .= "<td>$brow[$tokenfieldname]</td>\n";
-			}
-			
-	        if ($tokenfieldname=='gtid')
-	        {
-	            $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
-	            if ($sumrows5['edit_survey_property'] ||
-	            $sumrows5['activate_survey'] ||
-	            $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-	            {
-	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
-	                .$clang->gT("Edit token entry")
-	                ."' alt='"
-	                .$clang->gT("Edit token entry")
-	                ."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=editgroup&amp;gtid=".$brow['gtid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
-	                ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
-	                .$clang->gT("Delete token entry")
-	                ."' alt='"
-	                .$clang->gT("Delete token entry")
-	                ."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")." (".$brow['gtid'].")')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deletegroup&amp;gtid=".$brow['gtid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
-	            }
-	            // here maybe add viewing responses connected to token
-	            $tokenoutput .= "\n</td>\n";
-	        }
-	    }
-	    $tokenoutput .= "\t</tr>\n";
-	}
-
-	// Multiple item actions - NOT WORKING
-	if ($bresult->rowCount() > 0) {
-	    $tokenoutput .= "<tr class='$bgc'>\n"
-	    . "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)+2)."'>"
-	    . "<img src='$imagefiles/blank.gif' height='16' width='16'/>"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
-	    .$clang->gT("Delete the selected entries")
-	    ."' alt='"
-	    .$clang->gT("Delete the selected entries")
-	    ."' onclick=\"if (confirm('"
-	    .$clang->gT("Are you sure you want to delete the selected entries?","js")
-	    ."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deletegroup&amp;gtids=document.getElementById('grouptokenboxeschecked').value&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />"
-	    . "</tr>\n";
-	    $tokenoutput .= "<input type='hidden' id='grouptokenboxeschecked' value='' onChange='alert(this.value)'>\n";
 	}
 	//End multiple item actions
 
@@ -1668,129 +1148,10 @@ if ($subaction == "kill" &&
         } else {
             $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
         }
-		
-		if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid))
-		{
-			// deactivate grouptokens table
-			$oldtable = "grouptokens_$surveyid";
-			$newtable = "old_grouptokens_{$surveyid}_$date";
-			$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
-
-			if ($databasetype=='postgres')
-			{
-				// If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
-				$oldTableJur = db_table_name_nq($oldtable);
-				$deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_gtid_seq');
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_gtid_seq ALTER COLUMN gtid SET DEFAULT nextval('".db_table_name_nq($newtable)."_gtid_seq'::regclass);";
-				$deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
-				$deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-			}
-			else
-			{
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
-			}
-			
-			// deactivate usedtokens table
-			$oldtable = "usedtokens_$surveyid";
-			$newtable = "old_usedtokens_{$surveyid}_$date";
-			$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
-
-			if ($databasetype=='postgres')
-			{
-				// If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
-				$oldTableJur = db_table_name_nq($oldtable);
-				$deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_id_seq');
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_id_seq ALTER COLUMN gtid SET DEFAULT nextval('".db_table_name_nq($newtable)."_gtid_seq'::regclass);";
-				$deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
-				$deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-			}
-			else
-			{
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
-			}
-		}
-		
         $tokenoutput .= '<br />'.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
         ."(\"{$dbprefix}old_tokens_{$surveyid}_$date\")"."<br /><br />\n"
         ."<input type='submit' value='"
         .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid={$surveyid}', '_top')\" />\n";
-    }
-    $tokenoutput .= "</div>\n";
-}
-
-
-if ($subaction == "killgroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-)
-{
-    $date = date('YmdHis');
-    $tokenoutput .= "<div class='header'>".$clang->gT("Delete Group Tokens Table")."</div>\n"
-    ."<div class='messagebox'>\n";
-    // ToDo: Just delete it if there is no token in the table
-    if (!isset($_POST['ok']) || !$_POST['ok'])
-    {
-        $tokenoutput .= "<div class='warningheader'>".$clang->gT("Warning")."</div><br />\n"
-        .$clang->gT("If you delete this table, group tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
-        ."( \"old_grouptokens_{$surveyid}_$date\" )<br /><br />\n"
-        ."<input type='submit' value='"
-        .$clang->gT("Delete Group Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=killgroup&amp;ok=surething")."\" />\n"
-        ."<input type='submit' value='"
-        .$clang->gT("Cancel")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n";
-    }
-    elseif (isset($_POST['ok']) && $_POST['ok'] == "surething")
-	{
-		// deactivate grouptokens table
-		$oldtable = "grouptokens_$surveyid";
-		$newtable = "old_grouptokens_{$surveyid}_$date";
-		$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
-
-		if ($databasetype=='postgres')
-		{
-				// If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
-				$oldTableJur = db_table_name_nq($oldtable);
-				$deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_gtid_seq');
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_gtid_seq ALTER COLUMN gtid SET DEFAULT nextval('".db_table_name_nq($newtable)."_gtid_seq'::regclass);";
-				$deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
-				$deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-		}
-		else
-		{
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
-		}
-		
-		// deactivate usedtokens table
-		$oldtable = "usedtokens_$surveyid";
-		$newtable = "old_usedtokens_{$surveyid}_$date";
-		$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
-
-		if ($databasetype=='postgres')
-		{
-				// If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
-				$oldTableJur = db_table_name_nq($oldtable);
-				$deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_id_seq');
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_id_seq ALTER COLUMN gtid SET DEFAULT nextval('".db_table_name_nq($newtable)."_gtid_seq'::regclass);";
-				$deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-				$setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
-				$deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-		}
-		else
-		{
-				$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
-		}
-				
-        $tokenoutput .= '<br />'.$clang->gT("The group tokens table has now been removed and group tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
-        ."(\"{$dbprefix}old_grouptokens_{$surveyid}_$date\")"."<br /><br />\n"
-        ."<input type='submit' value='"
-        .$clang->gT("Return")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$surveyid}', '_top')\" />\n";
     }
     $tokenoutput .= "</div>\n";
 }
@@ -2486,69 +1847,6 @@ if ($subaction == "tokenify" &&
     $tokenoutput .= "</div>\n";
 }
 
-if ($subaction == "tokenifygroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
-{
-    $tokenoutput .= "<div class='header'>".$clang->gT("Create group tokens")."</div>\n";
-    $tokenoutput .= "<div class='messagebox'>\n";
-    if (!isset($_POST['ok']) || !$_POST['ok'])
-    {
-        $tokenoutput .= "".$clang->gT("Clicking yes will generate tokens for all those in this group token list that have not been issued one. Is this OK?")."<br /><br />\n"
-        ."<input type='submit' value='"
-        .$clang->gT("Yes")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenifygroup&amp;ok=Y")."\" />\n"
-        ."<input type='submit' value='"
-        .$clang->gT("No")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n"
-        ."<br />\n";
-    }
-    else
-    {
-        //get token length from survey settings
-        $tlquery = "SELECT tokenlength FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
-        $tlresult = db_execute_assoc($tlquery);
-        while ($tlrow = $tlresult->FetchRow())
-        {
-            $tokenlength = $tlrow['tokenlength'];
-        }
-
-        //if tokenlength is not set or there are other problems use the default value (15)
-        if(!isset($tokenlength) || $tokenlength == '')
-        {
-            $tokenlength = 15;
-        }
-
-        // select all existing tokens
-        $ntquery = "SELECT token FROM ".db_table_name("grouptokens_$surveyid")." group by token";
-        $ntresult = db_execute_assoc($ntquery);
-        while ($tkrow = $ntresult->FetchRow())
-        {
-            $existingtokens[$tkrow['token']]=null;
-        }
-        $newtokencount = 0;
-        $tkquery = "SELECT gtid FROM ".db_table_name("grouptokens_$surveyid")." WHERE token IS NULL OR token=''";
-        $tkresult = db_execute_assoc($tkquery) or safe_die ("Mucked up!<br />$tkquery<br />".$connect->ErrorMsg());
-        while ($tkrow = $tkresult->FetchRow())
-        {
-            $isvalidtoken = false;
-            while ($isvalidtoken == false)
-            {
-                $newtoken = randomkey($tokenlength);
-                if (!isset($existingtokens[$newtoken])) {
-                    $isvalidtoken = true;
-                    $existingtokens[$newtoken]=null;
-                }
-            }
-            $itquery = "UPDATE ".db_table_name("grouptokens_$surveyid")." SET token='$newtoken' WHERE gtid={$tkrow['gtid']}";
-            $itresult = $connect->Execute($itquery);
-            $newtokencount++;
-        }
-        $message=str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"));
-        $tokenoutput .= "<div class='successheader'>$message</div>\n";
-    }
-    $tokenoutput .= "</div>\n";
-}
-
 if ($subaction == "delete" &&
 (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
@@ -2568,33 +1866,6 @@ if ($subaction == "delete" &&
     } elseif (isset($tokenid)) {
         $dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
         $dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
-        $tokenoutput .= $clang->gT("Token has been deleted.");
-    }
-    $tokenoutput .= "</strong><br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
-    ."</p>\n</div>\n";
-}
-
-if ($subaction == "deletegroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
-{
-    $tokenoutput .= "<div class='messagebox'>\n"
-    ."\t<div class='header'>"
-    .$clang->gT("Delete")
-    ."\t</div>\n"
-    ."\t<p><br /><strong>";
-    if(isset($gtokenids) && count($gtokenids)>0) {
-        if(implode(", ", $gtokenids) != "") {
-            $dlquery = "DELETE FROM ".db_table_name("grouptokens_$surveyid")." WHERE gtid IN (".implode(", ", $gtokenids).")";
-            $dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$gtokenid}<br />".$connect->ErrorMsg()."\n\n$dlquery");
-            $tokenoutput .= $clang->gT("Marked tokens have been deleted.");
-        } else {
-            $tokenoutput .= $clang->gT("No tokens were selected for deletion");
-        }
-    } elseif (isset($gtokenid)) {
-        $dlquery = "DELETE FROM ".db_table_name("grouptokens_$surveyid")." WHERE gtid={$gtokenid}";
-        $dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$gtokenid}<br />".$connect->ErrorMsg());
         $tokenoutput .= $clang->gT("Token has been deleted.");
     }
     $tokenoutput .= "</strong><br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
@@ -2784,7 +2055,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     $tokenoutput .= "\" />\n";
     if ($subaction == "addnew")
     {
-        $tokenoutput .= "<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'")."</font>\n";
+        $tokenoutput .= "<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Create Tokens'")."</font>\n";
     }
     $tokenoutput .= "\t</li>\n"
     ."<li><label for='language'>".$clang->gT("Language").":</label>\n";
@@ -2815,11 +2086,6 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     $tokenoutput.="\t<li><label for='completed'>".$clang->gT("Completed?")."</label>\n"
     ."\t<input type='text' size='20' id='completed' name='completed' value=\"";
     if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
-    $tokenoutput .= "\" /></li>\n"
-
-    ."\t<li><label for='usesleft'>".$clang->gT("Uses left:")."</label>\n"
-    ."\t<input type='text' size='20' id='usesleft' name='usesleft' value=\"";
-    if (isset($usesleft)) {$tokenoutput .= $usesleft;} else {$tokenoutput .= "1";}
     $tokenoutput .= "\" /></li>\n"
 
     ."\t<li><label for='validfrom'>".$clang->gT("Valid from").":</label>\n"
@@ -2865,108 +2131,6 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     ."</form>\n";
 }
 
-if (($subaction == "editgroup" || $subaction == "addnewgroup") &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
-{
-    if ($subaction == "editgroup")
-    {
-        $edquery = "SELECT * FROM ".db_table_name("grouptokens_$surveyid")." WHERE gtid={$gtokenid}";
-        $edresult = db_execute_assoc($edquery);
-        $edfieldcount = $edresult->FieldCount();
-        while($edrow = $edresult->FetchRow())
-        {
-            //Create variables with the same names as the database column names and fill in the value
-            foreach ($edrow as $Key=>$Value) {$$Key = $Value;}
-        }
-    }
-    if ($subaction != "editgroup")
-    {
-        $edquery = "SELECT * FROM ".db_table_name("grouptokens_$surveyid");
-        $edresult = db_select_limit_assoc($edquery, 1);
-        $edfieldcount = $edresult->FieldCount();
-    }
-
-    $tokenoutput .= "<div class='header'>";
-    if ($subaction == "editgroup")
-    {
-        $tokenoutput .=$clang->gT("Edit group token entry");
-    }
-    else
-    {
-        $tokenoutput .=$clang->gT("Add group token entry");
-    }
-
-    $tokenoutput .="</div>"
-    ."<form id='editgrouptoken' class='form30' method='post' action='$scriptname?action=tokens'>\n"
-    ."<ul>\n"
-    ."\t<li><label>ID:</label>\n";
-    if ($subaction == "editgroup")
-    {$tokenoutput .= $gtokenid;} else {$tokenoutput .=$clang->gT("Auto");}
-    $tokenoutput .= "</li>\n"
-    ."<li><label for='name'>".$clang->gT("Name").":</label>\n"
-    ."<input type='text' size='30' id='name' name='name' value=\"";
-    if (isset($name)) {$tokenoutput .= $name;}
-    $tokenoutput .= "\" /></li>\n"
-    ."<li><label for='description'>".$clang->gT("Description").":</label>\n"
-    ."<input type='text' size='30'  id='description' name='description' value=\"";
-    if (isset($description)) {$tokenoutput .= $description;}
-    $tokenoutput .= "\" /></li>\n"
-    ."<li><label for='token'>".$clang->gT("Token").":</label>\n"
-    ."<input type='text' size='20' name='token' id='token' value=\"";
-    if (isset($token)) {$tokenoutput .= $token;}
-    $tokenoutput .= "\" />\n";
-    if ($subaction == "addnewgroup")
-    {
-        $tokenoutput .= "<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Generate group tokens'")."</font>\n";
-    }
-    $tokenoutput .= "\t</li>\n"
-    ."<li><label for='language'>".$clang->gT("Language").":</label>\n";
-    if (isset($language)) {$tokenoutput .= languageDropdownClean($surveyid,$language);}
-    else {
-        $tokenoutput .= languageDropdownClean($surveyid,GetBaseLanguageFromSurveyID($surveyid));
-    }
-    $tokenoutput .= "</li>\n"
-
-	// Editing the 'completedsurveys' value by hand is not intended, but let's leave it.
-    ."\t<li><label for='completedsurveys'>".$clang->gT("Completed surveys").":</label>\n"
-    ."\t<input type='text' size='20' id='completedsurveys' name='completedsurveys' value=\"";
-    if (isset($completedsurveys)) {$tokenoutput .= $completedsurveys;} else {$tokenoutput .= "0";}
-    $tokenoutput .= "\" /></li>\n"
-
-    ."\t<li><label for='validfrom'>".$clang->gT("Valid from").":</label>\n"
-    ."\t<input type='text' class='popupdatetime' size='20' id='validfrom' name='validfrom' value=\"";
-    if (isset($validfrom)){
-        $datetimeobj = new Date_Time_Converter($validfrom , "Y-m-d H:i:s");
-        $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-    }
-    $tokenoutput .= "\" />\n <label for='validuntil'>".$clang->gT('until')
-    ."\t</label><input type='text' size='20' id='validuntil' name='validuntil' class='popupdatetime' value=\"";
-    if (isset($validuntil)){
-        $datetimeobj = new Date_Time_Converter($validuntil , "Y-m-d H:i:s");
-        $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-    }
-    $tokenoutput .= "\" /> <span class='annotation'>".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'].' '.$clang->gT('hh:mm')).'</span>'
-    ."</li>\n";
-
-    $tokenoutput .="\t</ul><p>";
-    switch($subaction)
-    {
-        case "editgroup":
-            $tokenoutput .= "<input type='submit' value='".$clang->gT("Update group token entry")."' />\n"
-            ."<input type='hidden' name='subaction' value='updategrouptoken' />\n"
-            ."<input type='hidden' name='gtid' value='{$gtokenid}' />\n";
-            break;
-        case "addnewgroup":
-            $tokenoutput .= "<input type='submit' value='".$clang->gT("Add group token entry")."' />\n"
-            ."<input type='hidden' name='subaction' value='insertgrouptoken' />\n";
-            break;
-    }
-    $tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' /></p>\n"
-    ."</form>\n";
-}
-
 if ($subaction == "updatetoken" &&
 (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
 {
@@ -2996,7 +2160,6 @@ if ($subaction == "updatetoken" &&
     $data[] = sanitize_languagecode($_POST['language']);
     $data[] = $_POST['sent'];
     $data[] = $_POST['completed'];
-    $data[] = $_POST['usesleft'];
     //    $db->DBTimeStamp("$year-$month-$day $hr:$min:$secs");
     $data[] = $_POST['validfrom'];
     $data[] = $_POST['validuntil'];
@@ -3012,7 +2175,7 @@ if ($subaction == "updatetoken" &&
         // Using adodb Execute with blinding method so auto-dbquote is done
         $udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
         . "lastname=?, email=?, emailstatus=?, "
-        . "token=?, language=?, sent=?, completed=?, usesleft=?, validfrom=?, validuntil=?, remindersent=?, remindercount=?";
+        . "token=?, language=?, sent=?, completed=?, validfrom=?, validuntil=?, remindersent=?, remindercount=?";
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
         {
@@ -3031,58 +2194,6 @@ if ($subaction == "updatetoken" &&
         $tokenoutput .=  "\t\t<div class='warningheader'>".$clang->gT("Failed")."</div>\n"
         ."\t\t<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
         ."\t\t<input type='button' value='".$clang->gT("Show this token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$tokenid}', '_top')\" />\n";
-    }
-    $tokenoutput .= "\t</div>";
-}
-
-if ($subaction == "updategrouptoken" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
-{
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Edit group token entry")."</div>\n"
-    ."\t<div class='messagebox'>\n";
-    if (trim($_POST['validfrom'])=='') {
-        $_POST['validfrom']=null;
-    }
-    else
-    {
-        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
-        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
-    }
-    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
-    else
-    {
-        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
-        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
-    }
-    $data = array();
-    $data[] = $_POST['name'];
-    $data[] = $_POST['description'];
-    $santitizedtoken=sanitize_token($_POST['token']);
-    $data[] = $santitizedtoken;
-    $data[] = sanitize_languagecode($_POST['language']);
-    $data[] = $_POST['completedsurveys'];
-    $data[] = $_POST['validfrom'];
-    $data[] = $_POST['validuntil'];
-
-    $udresult = $connect->Execute("Select * from ".db_table_name("grouptokens_$surveyid")." where gtid<>{$gtokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$gtokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
-    if ($udresult->RecordCount()==0)
-    {
-        // Using adodb Execute with blinding method so auto-dbquote is done
-        $udquery = "UPDATE ".db_table_name("grouptokens_$surveyid")." SET name=?, "
-        . "description=?, token=?, language=?, completedsurveys=?, validfrom=?, validuntil=?"
-        . " WHERE gtid={$gtokenid}";
-        $udresult = $connect->Execute($udquery, $data) or safe_die ("Update record {$gtokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
-        $tokenoutput .=  "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
-        ."\t\t<br />".$clang->gT("The group token entry was successfully updated.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Display Group Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup', '_top')\" />\n";
-    }
-    else
-    {
-        $tokenoutput .=  "\t\t<div class='warningheader'>".$clang->gT("Failed")."</div>\n"
-        ."\t\t<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Show this token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=editgroup&amp;gtid={$gtokenid}', '_top')\" />\n";
     }
     $tokenoutput .= "\t</div>";
 }
@@ -3119,7 +2230,6 @@ if ($subaction == "inserttoken" &&
     'sent' => $_POST['sent'],
 	'remindersent' => $_POST['remindersent'],
 	'completed' => $_POST['completed'],
-	'usesleft' => $_POST['usesleft'],
 	'validfrom' => $_POST['validfrom'],
 	'validuntil' => $_POST['validuntil']);
     // add attributes
@@ -3145,59 +2255,6 @@ if ($subaction == "inserttoken" &&
         ."\t\t<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
         ."\t\t<input type='button' value='".$clang->gT("Display Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n"
         ."\t\t<input type='button' value='".$clang->gT("Add new token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" /><br />\n";
-    }
-    $tokenoutput .= "\t</div>";
-}
-
-if ($subaction == "insertgrouptoken" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-)
-{
-    //Fix up dates and match to database format
-    if (trim($_POST['validfrom'])=='') {
-        $_POST['validfrom']=null;
-    }
-    else
-    {
-        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
-        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
-    }
-    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
-    else
-    {
-        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
-        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
-    }
-
-    $santitizedtoken=sanitize_token($_POST['token']);
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Add group token entry")."</div>\n"
-    ."\t<div class='messagebox'>\n";
-    $data = array('name' => $_POST['name'],
-	'description' => $_POST['description'],
-	'token' => $santitizedtoken,
-	'language' => sanitize_languagecode($_POST['language']),
-	'completedsurveys' => $_POST['completedsurveys'],
-	'validfrom' => $_POST['validfrom'],
-	'validuntil' => $_POST['validuntil']);
-    $tblInsert=db_table_name('grouptokens_'.$surveyid);
-    $udresult = $connect->Execute("Select * from ".db_table_name("grouptokens_$surveyid")." where  token<>'' and token='{$santitizedtoken}'");
-    if ($udresult->RecordCount()==0)
-    {
-        // AutoExecute
-        $inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
-        $tokenoutput .= "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
-        ."\t\t<br />".$clang->gT("New group token was added.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Display Group Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup', '_top')\" /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Add another group token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnewgroup', '_top')\" /><br />\n";
-    }
-    else
-    {
-        $tokenoutput .=  "\t\t<div class='warningheader'>".$clang->gT("Failed")."</div>\n"
-        ."\t\t<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Display Group Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup', '_top')\" /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Add new group token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnewgroup', '_top')\" /><br />\n";
     }
     $tokenoutput .= "\t</div>";
 }
@@ -3250,7 +2307,7 @@ if ($subaction == "upload" &&
     $the_full_file_path = $the_path."/".$the_file_name;
     if (!@move_uploaded_file($the_file, $the_full_file_path))
     {
-        $errormessage="<div class='warningheader'>".$clang->gT("Error")."</div><p>".$clang->gT("Upload file not found. Check your permissions and path ({$the_full_file_path}) for the upload directory")."</p>\n";
+        $errormessage="<div class='warningheader'>".$clang->gT("Error")."</div><p>".$clang->gT("Upload file not found. Check your permissions and path for the upload directory")."</p>\n";
         form_csv_upload($errormessage);
     }
     else
@@ -3359,9 +2416,9 @@ if ($subaction == "upload" &&
                     {
                         if (!validate_email($sEmailaddress))
                         {
-                    $invalidemail=true;
-                    $invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
-                }
+                            $invalidemail=true;
+                            $invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
+                        }
                     }
                 }
 

@@ -64,14 +64,6 @@ CREATE TABLE prefix_conditions (
     value character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
-CREATE TABLE prefix_extendedconditions (
-  qid integer DEFAULT 0 NOT NULL,
-  gid integer DEFAULT 0 NOT NULL,
-  sid integer DEFAULT 0 NOT NULL,
-  condition text);
-
-ALTER TABLE prefix_extendedconditions ADD CONSTRAINT prefix_extendedconditions_pkey PRIMARY KEY (qid,gid,sid);
-
 
 CREATE TABLE prefix_defaultvalues (
       qid integer NOT NULL default '0',
@@ -268,7 +260,6 @@ CREATE TABLE prefix_surveys (
     private character(1),
     faxto character varying(20),
     format character(1),
-    savetimings character(1) DEFAULT 'N'::bpchar,
     "template" character varying(100) DEFAULT 'default'::character varying,
     "language" character varying(50),
     additional_languages character varying(255),

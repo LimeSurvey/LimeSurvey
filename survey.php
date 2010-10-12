@@ -95,7 +95,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 
         //Before doing the "templatereplace()" function, check the $thissurvey['url']
         //field for limereplace stuff, and do transformations!
-        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+        $thissurvey['surveyls_url']=insertansReplace($thissurvey['surveyls_url']);
         $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
         $content='';
@@ -172,11 +172,10 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
 
-            $url = dTexts::run($thissurvey['surveyls_url']);
+            $url = insertansReplace($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
-            $url=str_replace("{GROUPTOKEN}",$clientgrouptoken, $url);          // to activate the GROUP TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
             $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
             //Automatically redirect the page to the "url" setting for the survey
@@ -1005,9 +1004,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
-."<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n"
 ."<input type='hidden' name='token' value='$token' id='token' />\n"
-."<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n"
 ."</form>\n";
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 echo "\n";

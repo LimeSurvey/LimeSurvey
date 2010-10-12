@@ -387,8 +387,6 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE [prefix_questions] DROP COLUMN lid"); echo $modifyoutput; flush();
         mssql_drop_constraint('lid1','questions');
         modify_database("", "ALTER TABLE [prefix_questions] DROP COLUMN lid1"); echo $modifyoutput; flush();
-        // add field for timings and table for extended conditions
-        modify_database("", "ALTER TABLE [prefix_surveys] ADD savetimings char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_sessions(
                               sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
                               expiry DATETIME NOT NULL ,
@@ -400,12 +398,6 @@ function db_upgrade($oldversion) {
         modify_database("", "create index [idx_expiry] on [prefix_sessions] ([expiry])"); echo $modifyoutput;
         modify_database("", "create index [idx_expireref] on [prefix_sessions] ([expireref])"); echo $modifyoutput;
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-        modify_database("","CREATE TABLE [prefix_extendedconditions] (
-							  [qid] INT NOT NULL default '0',
-							  [gid] INT NOT NULL default '0',
-							  [sid] INT NOT NULL default '0',
-							  [condition] varchar(max) ,
-							  PRIMARY KEY ([qid],[gid],[sid]));"); echo $modifyoutput; flush();
     }
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
