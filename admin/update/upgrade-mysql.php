@@ -371,6 +371,8 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_answers` DROP COLUMN `default_value`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid1`"); echo $modifyoutput; flush();
+        // add field for timings and table for extended conditions
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `savetimings` char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_sessions(
                               sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
                               expiry DATETIME NOT NULL ,
@@ -380,8 +382,15 @@ function db_upgrade($oldversion) {
                               sessdata LONGTEXT,
                               PRIMARY KEY ( sesskey ) ,
                               INDEX sess2_expiry( expiry ),
-                              INDEX sess2_expireref( expireref ))"); echo $modifyoutput; flush();          
+                              INDEX sess2_expireref( expireref ))"); echo $modifyoutput; flush();  
+        modify_database("","CREATE TABLE `prefix_extendedconditions` (
+							  `qid` int(11) NOT NULL,
+							  `gid` int(11) NOT NULL,
+							  `sid` int(11) NOT NULL,
+							  `condition` text COLLATE utf8_unicode_ci NOT NULL,
+							  PRIMARY KEY (`qid`,`gid`,`sid`));"); echo $modifyoutput; flush();        
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+        
     }
 
 

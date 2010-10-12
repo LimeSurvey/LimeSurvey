@@ -39,6 +39,16 @@ CREATE TABLE `prefix_conditions` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+CREATE TABLE `prefix_extendedconditions` (
+  `qid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  `sid` int(11) NOT NULL,
+  `condition` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`qid`,`gid`,`sid`)
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE utf8_unicode_ci;
+
+
+
 CREATE TABLE `prefix_defaultvalues` (
   `qid` int(11) NOT NULL default '0',
   `specialtype` varchar(20) NOT NULL default '',
@@ -189,6 +199,7 @@ CREATE TABLE `prefix_surveys` (
   `private` char(1) default NULL,
   `faxto` varchar(20) default NULL,
   `format` char(1) default NULL,
+  `savetimings` char(1) default 'N',
   `template` varchar(100) default 'default',
   `language` varchar(50) default NULL,
   `additional_languages` varchar(255) default NULL,

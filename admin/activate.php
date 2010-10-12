@@ -268,14 +268,19 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 else
 {
     $createsurvey='';
+    $createsurveytimings='';
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";
+    $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl, savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
     $presult=db_execute_assoc($pquery);
     $prow=$presult->FetchRow();
     if ($prow['allowregister'] == "Y")
     {
         $surveyallowsregistration="TRUE";
     }
+    if ($prow['savetimings'] == "Y")
+    {
+		$savetimings="TRUE";
+	}
     //strip trailing comma and new line feed (if any)
     $createsurvey = rtrim($createsurvey, ",\n");
 
@@ -283,9 +288,13 @@ else
     $fieldmap=createFieldMap($surveyid);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
-        if ($createsurvey!='') {$createsurvey .= ",\n";}
-
-        $createsurvey .= " `{$arow['fieldname']}`";
+		// don't include time fields
+        if ($arow['type'] != "answer_time" && $arow['type'] != "page_time" && $arow['type'] != "interview_time")
+        {
+			if ($createsurvey!='') {$createsurvey .= ",\n";}
+            $createsurvey .= " `{$arow['fieldname']}`";
+		}
+		
         switch($arow['type'])
         {
             case 'startlanguage':
@@ -293,6 +302,7 @@ else
                 break;
             case 'id':
                 $createsurvey .= " I NOTNULL AUTO PRIMARY";
+                $createsurveytimings .= " `{$arow['fieldname']}` I NOTNULL AUTO PRIMARY,\n";
                 break;
             case "startdate":
             case "datestamp":
@@ -362,19 +372,37 @@ else
                     $surveynotprivate="TRUE";
                 }
                 break;
+            case "grouptoken":
+                $createsurvey .= " C(36)";
+                break;
+            case "page_time":
+            case "answer_time":
+            case "interview_time":
+                $createsurveytimings .= " `{$arow['fieldname']}` I(11) DEFAULT '0',\n";
+                break;
             default:
                 $createsurvey .= " C(5)";
         }
     }
-
+	
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     $createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
+    $createsurveytimings = rtrim($createsurveytimings, ",\n")."\n"; // Does nothing if not ending with a comma
+
     $tabname = "{$dbprefix}survey_{$postsid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 
     $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
                          'mysqli'=> 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
+    
+    if (isset($savetimings) && $savetimings=="TRUE")
+    {
+		$tabnametimings = $tabname .'_timings';
+		$dicttimings = NewDataDictionary($connect);
+		$sqlarraytimings = $dicttimings->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
+	}
+    
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
     if ($execresult==0 || $execresult==1)
     {
@@ -412,6 +440,10 @@ else
                     }
                 }
             }
+			if (isset($savetimings) && $savetimings=="TRUE")
+			{
+				$dicttimings->ExecuteSQLArray($sqlarraytimings,1);	// create a timings table for this survey
+			}
         }
 
         $activateoutput .= "<br />\n<div class='messagebox'>\n";
@@ -437,7 +469,7 @@ else
         {
             $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
             $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}")."\" />\n";
             $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".get2post("$scriptname?sid={$postsid}")."\" />\n";
         }
         $activateoutput .= "</div><br />&nbsp;\n";

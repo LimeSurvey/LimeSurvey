@@ -21,6 +21,9 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 // Include version information
 require($rootdir.'/version.php');
 
+// Include dTexts
+require_once(dirname(__FILE__).'/classes/dTexts/dTexts.php');
+
 // Check for most necessary requirements
 // Now check for PHP & db version
 // Do not localize/translate this!
@@ -2271,7 +2274,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
-    if ($style == "full")
+	if ($style == "full")
     {
         $fieldmap["submitdate"]['title']="";
         $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
@@ -2310,6 +2313,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap["token"]['group_name']="";
             }
         }
+		$fieldmap["grouptoken"]=array("fieldname"=>"grouptoken", 'sid'=>$surveyid, 'type'=>"grouptoken", "gid"=>"", "qid"=>"", "aid"=>"");
+		if ($style == "full")
+		{
+			$fieldmap["grouptoken"]['title']="";
+			$fieldmap["grouptoken"]['question']=$clang->gT("Group token");
+			$fieldmap["grouptoken"]['group_name']="";
+		}
+        
         if ($prow['datestamp'] == "Y")
         {
             $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
@@ -2376,25 +2387,47 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $s_lang = $sQuestionLanguage;
     }
     $qtypes=getqtypelist('','array');
-    $aquery = "SELECT *, "
-        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-        ." WHERE questions.qid = c.qid) AS hasconditions,\n"
-        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-        ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
-        ." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
-        ." WHERE questions.gid=groups.gid AND "
-        ." questions.sid=$surveyid AND "
-        ." questions.language='{$s_lang}' AND "
-        ." questions.parent_qid=0 AND "
-        ." groups.language='{$s_lang}' ";
+
+		$aquery = "SELECT *, "
+		." (SELECT\n"
+		." (SELECT count(1)\n"
+		."  FROM ".db_table_name('conditions')." c\n"
+		."  WHERE questions.qid = c.qid)\n"
+		."+\n"
+		."  (SELECT count(1) FROM ".db_table_name('extendedconditions')." ec\n"
+		."  WHERE questions.qid = ec.qid)) AS hasconditions,\n"
+		." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
+		." WHERE questions.qid = c.cqid) AS usedinconditions\n"
+		." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
+		." WHERE questions.gid=groups.gid AND "
+		." questions.sid=$surveyid AND "
+		." questions.language='{$s_lang}' AND "
+		." questions.parent_qid=0 AND "
+		." groups.language='{$s_lang}' ";
     if ($questionid!==false)
     {
         $aquery.=" and questions.qid={$questionid} ";
     }
     $aquery.=" ORDER BY group_order, question_order"; 
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
+    $fieldname='interviewTime';
+    $fieldmap[$fieldname]=array('fieldname'=>$fieldname,'type'=>'interview_time','sid'=>$surveyid, 'question'=>'');
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
+		// field for time spent on page
+		$fieldname="{$arow['sid']}X{$arow['gid']}time";
+		if (!isset($fieldmap[$fieldname]))
+		{
+			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$arow['gid'], 'question'=>'');
+		}
+		
+		// field for time spent on answering a question
+		$fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}time";
+		if (!isset($fieldmap[$fieldname]))
+		{
+			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$arow['gid']);
+		}
+
         if ($arow['hasconditions']>0)
         {
             $conditions = "Y";
@@ -2438,8 +2471,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 }
                 else
                 {
-                    $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
-                }
+                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+            }
             }
             switch($arow['type'])
             {
@@ -2467,11 +2500,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             if ($arow['same_default'])
                             {
                                 $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                            }
+                        }
                             else
                             {
                                 $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
-                            }
+                    }
                         }
                     }
                     break;
@@ -2613,7 +2646,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     if ($arow['same_default'])
                     {
                         $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                    }
+                }
                     else
                     {
                         $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
@@ -2708,7 +2741,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
  */
 function templatereplace($line, $replacements=array())
 {
-    global $surveylist, $sitename, $clienttoken, $rooturl;
+    global $surveylist, $sitename, $clienttoken, $clientgrouptoken, $rooturl;
     global $thissurvey, $imagefiles, $defaulttemplate;
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
@@ -2717,7 +2750,7 @@ function templatereplace($line, $replacements=array())
     global $help, $totalquestions, $surveyformat;
     global $completed, $register_errormsg;
     global $notanswered, $privacy, $surveyid;
-    global $publicurl, $templatedir, $token;
+    global $publicurl, $templatedir, $token, $grouptoken;
     global $assessments, $s_lang;
     global $errormsg, $clang;
 	global $saved_id, $usertemplaterootdir;
@@ -2831,6 +2864,18 @@ function templatereplace($line, $replacements=array())
         }
     }
 
+    if (strpos($line, "{GROUPTOKEN}") !== false) {
+        if (isset($grouptoken)) {
+            $line=str_replace("{GROUPTOKEN}", $grouptoken, $line);
+        }
+        elseif (isset($clientgrouptoken)) {
+            $line=str_replace("{GROUPTOKEN}", htmlentities($clientgrouptoken,ENT_QUOTES,'UTF-8'), $line);
+        }
+        else {
+            $line=str_replace("{GROUPTOKEN}",'', $line);
+        }
+    }
+
     if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
 
     if (strpos($line, "{EXPIRY}") !== false) $line=str_replace("{EXPIRY}", $thissurvey['expiry'], $line);
@@ -2856,6 +2901,7 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL
         if (isset($clienttoken)) {$token=$clienttoken;} else {$token='';}
         $line=str_replace("{TOKEN}",urlencode($token), $line);          // to activate the TOKEN in the END URL
+        $line=str_replace("{GROUPTOKEN}",urlencode($grouptoken), $line);          // to activate the GROUP TOKEN in the END URL
         $line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
     }
     if (strpos($line, "{PRIVACY}") !== false)
@@ -2873,6 +2919,10 @@ function templatereplace($line, $replacements=array())
         if (returnglobal('token'))
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
+        }
+        if (returnglobal('grouptoken'))
+        {
+            $clearall .= "&amp;grouptoken=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('grouptoken')))));
         }
         $clearall .= "', '_top')}\" />";
 
@@ -2965,7 +3015,7 @@ function templatereplace($line, $replacements=array())
         if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
     }
 
-    $line=insertansReplace($line);
+    $line=dTexts::run($line);
 
     if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank You!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
     if (strpos($line, "{SUBMITREVIEW}") !== false) {
@@ -2977,8 +3027,6 @@ function templatereplace($line, $replacements=array())
         }
         $line=str_replace("{SUBMITREVIEW}", $strreview, $line);
     }
-
-    $line=tokenReplace($line);
 
     if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
     if (strpos($line, "{RESTART}") !== false)
@@ -2993,6 +3041,8 @@ function templatereplace($line, $replacements=array())
             $restart_extra = "";
             $restart_token = returnglobal('token');
             if (!empty($restart_token)) $restart_extra .= "&amp;token=".urlencode($restart_token);
+            $restart_group_token = returnglobal('grouptoken');
+            if (!empty($restart_group_token)) $restart_extra .= "&amp;grouptoken=".urlencode($restart_group_token);
             else $restart_extra = "&amp;newtest=Y";
             if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".returnglobal('lang');
             $line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
@@ -3008,6 +3058,10 @@ function templatereplace($line, $replacements=array())
         if (returnglobal('token'))
         {
             $savereturn.= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
+        }
+        if (returnglobal('grouptoken'))
+        {
+            $savereturn.= "&amp;grouptoken=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('grouptoken')))));
         }
         $savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
         $line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
@@ -3156,64 +3210,7 @@ function templatereplace($line, $replacements=array())
  */
 function insertansReplace($line)
 {
-    if (!isset($_SESSION['dateformats']['phpdate'])) $_SESSION['dateformats']['phpdate']='';
-    while (strpos($line, "{INSERTANS:") !== false)
-    {
-        $answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
-        $answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-        $answreplace3=strip_tags(retrieve_Answer($answreplace2, $_SESSION['dateformats']['phpdate']));
-        $line=str_replace($answreplace, $answreplace3, $line);
-    }
-    return $line;
-}
-
-/**
- * tokenReplace() takes a string and looks for any {TOKEN:xxxx} variables
- *  which it then, one by one, substitutes the TOKEN code with the relevant token
- *  from the session array containing token information
- *
- *  The operations of this function were previously in the templatereplace function
- *  but have been moved to a function of their own to make it available
- *  to other areas of the script.
- *
- * @param mixed $line   string - the string to iterate, and then return
- *
- * @return string This string is returned containing the substituted responses
- *
- */
-function tokenReplace($line)
-{
-    global $surveyid;
-
-    if (isset($_SESSION['token']) && $_SESSION['token'] != '')
-    {
-        //Gather survey data for tokenised surveys, for use in presenting questions
-        $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
-    }
-
-    if (isset($_SESSION['thistoken']))
-    {
-        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-        if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-    }
-    else
-    {
-        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
-        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
-        if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
-    }
-
-    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false)
-    {
-        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
-        $templine=substr($templine,0,strpos($templine, "}")+1);
-        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
-        $replacestr='';
-        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
-        $line=str_replace($templine, $replacestr, $line);
-    }
-    return $line;
+    return dTexts::run($line);
 }
 
 /**
@@ -4078,8 +4075,22 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
 	"caption"=>$clang->gT("2nd Time Limit Warning CSS Style"));
 
-
-
+	//nk-lime rating sliders
+	$qattributes["slider_rating"]=array(
+    "types"=>"5",
+    'category'=>$clang->gT('Slider'),
+    'sortorder'=>1,
+    'inputtype'=>'singleselect',
+    'options'=>array(
+		0=>$clang->gT('No'),
+    	1=>$clang->gT('Yes - stars'),
+    	2=>$clang->gT('Yes - slider with Emoticon'),
+    	),
+    'default'=>0,                 
+    "help"=>$clang->gT('Use slider layout'),
+    "caption"=>$clang->gT('Use slider layout'));
+    
+    
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
     {
@@ -6107,7 +6118,7 @@ function retrieve_Answer($code, $phpdateformat=null)
                 elseif (isset($_SESSION[$code]) && $_SESSION[$code] == "Y" && $questiondetails['aid']==$row['title'])
                 {
                     return $row['question'];
-                }
+            }
             }
 
             if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
@@ -6606,7 +6617,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
                                          'Limit' => $survey_quotas['qlimit'],
                                          'Action' => $survey_quotas['action'],
                                          'Message' => $survey_quotas['quotals_message'],
-                                         'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), $surveyinfo),
+                                         'Url' => passthruReplace(dTexts::run($survey_quotas['quotals_url']), $surveyinfo),
                                          'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
                                          'AutoloadUrl' => $survey_quotas['autoload_url']));
             $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
@@ -6768,7 +6779,14 @@ function checkquestionfordisplay($qid, $gid=null)
     {
         $local_thissurvey=$thissurvey;
     }
-
+		
+		// extended condition
+		// (it is assumed that extended conditions have higher priority than ordinary conditions, if extended condition exists ordinary condition is not considered
+		$extendedConditionResult = checkExtendedConditionForQuestion($qid);
+		if($extendedConditionResult !== null)
+			return $extendedConditionResult;
+		// end of extended condition
+		
     $scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
     ." WHERE ".db_table_name("conditions").".qid=$qid ORDER BY scenario";
     $scenarioresult=db_execute_assoc($scenarioquery);
@@ -7560,5 +7578,122 @@ function db_rename_table($oldtable, $newtable)
     return $result[0];
 }
 
+/**
+* Checks if a pair of tokens (token and grouptoken) has been already used
+* @param mixed $tid Token
+* @param mixed $gtid Group Token
+*/
+function usedTokens($token, $grouptoken)
+{
+	global $connect, $dbprefix, $surveyid;
+	$tid = $connect->getOne("SELECT tid from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token));
+	$gtid = $connect->getOne("SELECT gtid from {$dbprefix}grouptokens_$surveyid WHERE token=".db_quoteall($grouptoken));
+	$utquery = "SELECT COUNT(*) FROM ".db_table_name('usedtokens_'.$surveyid)." WHERE tid=".db_quoteall($tid)." AND gtid=".db_quoteall($gtid);
+	$utresult = $connect->getOne($utquery);
+	return $utresult;
+}
+
+function checkExtendedCondition($expression)
+{
+	$priorities = array('(' => 0, ')' => 0, '!' => 1, '&&' => 2, '||' => 3);
+	$pattern = '/([\(\)!]) |
+							(&&) |
+							(\|\|) |
+							(true) |
+							(false) |
+							(\{.+\})/ix';
+	//$exampleExpression = '{IF:45345X2X3:someAnswer}|| !{IF:45345X2X4:someOtherAnswer}';
+	preg_match_all($pattern, $expression, $matches);	
+	$input = $matches[0];
+	$stack = array();
+	$output = array();
+	
+	// convert infix notation to reversed polish notation
+	foreach($input as $item)
+	{
+		switch($item)
+		{
+			case '!':
+			case '&&':
+			case '||':
+				if(empty($stack) || $priorities[$item] < $priorities[end($stack)])
+					array_push($stack, $item);
+				else
+				{
+					while($priorities[$item] >= $priorities[end($stack)] && !empty($stack) && end($stack) != '(')
+					{
+						array_push($output, array_pop($stack));
+					}
+					array_push($stack, $item);
+				}
+				break;
+			case '(':
+				array_push($stack, $item);
+				break;
+			case ')':
+				while(($op = array_pop($stack)) != '(')
+					array_push($output, $op);
+				break;				
+			default:
+				array_push($output, $item);
+				break;				
+		}		
+	}
+	while(!empty($stack))
+		array_push($output, array_pop($stack));
+  
+	// computing reversted polish notation expression
+	$stack = array();
+	foreach($output as $item)
+	{
+		if($item{0} == '{')
+			$item=dTexts::run($item);
+		$item=strtolower($item);
+		switch($item)
+		{
+			case '!':
+				$result = !(bool) array_pop($stack);
+				array_push($stack, $result);
+				break;
+			case '&&':
+				$var1 = (bool) array_pop($stack);
+				$var2 = (bool) array_pop($stack);
+				$result = $var1 && $var2;
+				array_push($stack, $result);
+				break;
+			case '||':
+				$var1 = (bool) array_pop($stack);
+				$var2 = (bool) array_pop($stack);
+				$result = $var1 || $var2;
+				array_push($stack, $result);
+				break;
+			case 'true':
+				array_push($stack, true);
+				break;
+			case 'false':
+				array_push($stack, false);
+				break;
+			default:                    
+				print "Invalid operator or data:<b> " .$item ."</b></br>";
+				break;               
+		}
+	}
+	return $stack[0];
+}
+
+function checkExtendedConditionForQuestion($qid)
+{
+	global $connect, $dbprefix, $surveyid;	
+	$query = "SELECT " .db_quote_id('condition') ." FROM {$dbprefix}extendedconditions WHERE qid='{$qid}' AND sid='{$surveyid}'";
+	$extendedCondition = $connect->getOne($query);
+	if($extendedCondition)
+	{
+		return checkExtendedCondition($extendedCondition);
+	}
+	else
+	{
+		return null;
+	}
+}
 
 // Closing PHP tag intentionally left out - yes, it is okay

@@ -92,7 +92,10 @@ if ($actcount > 0)
     while ($actrow = $actresult->FetchRow())
     {
         $surveytable = db_table_name("survey_".$actrow['sid']);
+        $surveytimingstable = db_table_name("survey_".$actrow['sid']."_timings");
         $tokentable = $dbprefix."tokens_".$actrow['sid'];
+        $grouptokentable = $dbprefix."grouptokens_".$actrow['sid'];
+        $usedtokenstable = $dbprefix."usedtokens_".$actrow['sid'];
         /*
          * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
          * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
@@ -327,13 +330,27 @@ elseif ($subaction == "all")
         $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
-    $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
+    if (db_tables_exist($grouptokentable)) {
+        $fnames[] = array("grouptoken", "Group Token", $clang->gT("Group Token"), 0);
+    }
+    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
 
     foreach ($fields as $fielddetails)
     {
         if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
             continue;
         $question=$fielddetails['question'];
+        
+        // no headers for time data and group tokens
+        if ($fielddetails['type']=='interview_time')
+			continue;
+        if ($fielddetails['type']=='page_time')
+			continue;
+		if ($fielddetails['type']=='answer_time')
+			continue;
+		if ($fielddetails['type']=='grouptoken')
+            continue;
+			
         if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
             $question .=' ('.$fielddetails['subquestion'].')';
         if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
@@ -368,19 +385,19 @@ elseif ($subaction == "all")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
+    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+3).">"
     if (bHasRight($surveyid,'delete_survey'))
     {
         $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
-                       ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
-                       ."\t</tr></tfoot>\n\n";
+                   ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
+                   ."\t</tr></tfoot>\n\n";
     }
-
 
     $start=returnglobal('start');
     $limit=returnglobal('limit');
     if (!isset($limit) || $limit== '') {$limit = 50;}
     if (!isset($start) || $start =='') {$start = 0;}
-
+    
     //Create the query
     if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
     {
@@ -389,15 +406,30 @@ elseif ($subaction == "all")
         $sql_from = $surveytable;
     }
     
+    $selectedgroup = returnglobal('selectgroup'); // group token id
+    
     $sql_where = "";
     if (incompleteAnsFilterstate() == "inc")
     {
         $sql_where .= "submitdate IS NULL";
+        
+        // filter group token
+        if (db_tables_exist($tokentable) && $selectedgroup != "")
+        {
+            $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+            $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+        }
     }
     elseif (incompleteAnsFilterstate() == "filter")
     {
         $sql_where .= "submitdate IS NOT NULL";
-    }
+        
+        // filter group token
+        if (db_tables_exist($tokentable) && $selectedgroup != "")
+        {
+            $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+            $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+        }
     if (isset($_POST['sql']) && stripcslashes($_POST['sql']) !== "" && $_POST['sql'] !== "NULL")
     {
         if (!empty($sql_where)) $sql_where .= " AND ";
@@ -407,13 +439,140 @@ elseif ($subaction == "all")
 
     //LETS COUNT THE DATA
     $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
+    }
+    // filter group token
+    elseif (db_tables_exist($tokentable) && $selectedgroup != "")
+    {
+        $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+        $dtquery .= " WHERE grouptoken='{$selectedgrouptoken}'";
+    }
+    
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
     if ($limit > $dtcount) {$limit=$dtcount;}
 
     //NOW LETS SHOW THE DATA
-    $dtquery = "SELECT * FROM $sql_from $sql_where ORDER BY id";
+    if (isset($_POST['sql']))
+    {
+        if ($_POST['sql'] == "NULL" )
+        {
+            if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
+            else
+                $dtquery = "SELECT * FROM $surveytable ";
+            // group token id
+            $selectedgroup = returnglobal('selectgroup');
+            if (incompleteAnsFilterstate() == "inc")
+            {
+                $dtquery .= "WHERE submitdate IS NULL ";
+                // filter group token
+                if (db_tables_exist($tokentable) && $selectedgroup != "")
+                {
+                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+                }
+            }
+            elseif (incompleteAnsFilterstate() == "filter")
+            {
+                $dtquery .= " WHERE submitdate IS NOT NULL ";
+                // filter group token
+                if (db_tables_exist($tokentable) && $selectedgroup != "")
+                {
+                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+                }
+            }
+            // filter group token
+            elseif (db_tables_exist($tokentable) && $selectedgroup != "")
+            {
+                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                $dtquery .= " WHERE grouptoken='{$selectedgrouptoken}'";
+            }
+            $dtquery .= " ORDER BY {$surveytable}.id";
+        }
+        else
+        {
+            if ($surveytable['private'] == "N" && db_tables_exist($tokentable))
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
+            else
+                $dtquery = "SELECT * FROM $surveytable ";
+            $selectedgroup = returnglobal('selectgroup');
+            if (incompleteAnsFilterstate() == "inc")
+            {
+                $dtquery .= "submitdate IS NULL ";
+                // filter group token
+                if (db_tables_exist($tokentable) && $selectedgroup != "")
+                {
+                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+                }
+                if (stripcslashes($_POST['sql']) !== "")
+                {
+                    $dtquery .= " AND ";
+                }
+            }
+            elseif (incompleteAnsFilterstate() == "filter")
+            {
+                $dtquery .= " submitdate IS NOT NULL ";
+                // filter group token
+                if (db_tables_exist($tokentable) && $selectedgroup != "")
+                {
+                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+                }
+                if (stripcslashes($_POST['sql']) !== "")
+                {
+                    $dtquery .= " AND ";
+                }
+            }
+            // filter group token
+            elseif (db_tables_exist($tokentable) && $selectedgroup != "")
+            {
+                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                $dtquery .= " grouptoken='{$selectedgrouptoken}'";
+            }
+            if (stripcslashes($_POST['sql']) !== "")
+            {
+                $dtquery .= stripcslashes($_POST['sql'])." ";
+            }
+            $dtquery .= " ORDER BY {$surveytable}.id";
+        }
+    }
+    else
+    {
+        if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+            $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
+        else
+            $dtquery = "SELECT * FROM $surveytable ";
+        if (incompleteAnsFilterstate() == "inc")
+        {
+            $dtquery .= " WHERE submitdate IS NULL ";
+            // filter group token
+            if (db_tables_exist($tokentable) && $selectedgroup != "")
+            {
+                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+            }
+        }
+        elseif (incompleteAnsFilterstate() == "filter")
+        {
+            $dtquery .= " WHERE submitdate IS NOT NULL ";
+            // filter group token
+            if (db_tables_exist($tokentable) && $selectedgroup != "")
+            {
+                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+                $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+            }
+        }
+        // filter group token
+        elseif (db_tables_exist($tokentable) && $selectedgroup != "")
+        {
+            $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+            $dtquery .= " WHERE grouptoken='{$selectedgrouptoken}'";
+        }
+        $dtquery .= " ORDER BY {$surveytable}.id";
+    }
     if ($order == "desc") {$dtquery .= " DESC";}
 
     if (isset($limit))
@@ -472,16 +631,44 @@ elseif ($subaction == "all")
             ."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
             ."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
             ."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."&nbsp;&nbsp; <input type='submit' value='".$clang->gT("Show")."' />\n"
             ."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
             ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
             ."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
             ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
-            ."</select>\n"
-            ."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
-            ."</font>\n"
-            ."<input type='hidden' name='sid' value='$surveyid' />\n"
-            ."<input type='hidden' name='action' value='browse' />\n"
-            ."<input type='hidden' name='subaction' value='all' />\n";
+            ."</select>\n";
+
+    // a dropdown for group selection (group tokens)
+    if (db_tables_exist($grouptokentable))
+    {
+        $selectall = "selected='selected'";
+        $gtid = returnglobal('selectgroup');
+        if (!$gtid) {
+            $selectall = "";
+        }
+        
+        $browseoutput .= "&nbsp;&nbsp; <font size='1' face='verdana'>\n"
+        .$clang->gT("Group:")."<select name='selectgroup' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
+        ."\t<option value='' $selectall>".$clang->gT("All groups")."</option>\n";
+        
+        // get groups from table
+        $gtquery = "SELECT * FROM $grouptokentable";
+        $gtresult = db_execute_assoc($gtquery) or safe_die("Couldn't get group tokens:<br />$dtquery<br />".$connect->ErrorMsg());
+        while ($gtrow = $gtresult->FetchRow())
+        {
+            $browseoutput .= "\t<option value='{$gtrow['gtid']}'";
+            if ($gtid == $gtrow['gtid'])
+                $browseoutput .= "selected='selected'";
+            $browseoutput .= ">{$gtrow['name']}</option>\n";
+        }
+        $browseoutput .= "</select>\n";
+    }
+    
+    $browseoutput .= "</font>\n"
+                    ."<input type='hidden' name='sid' value='$surveyid' />\n"
+                    ."<input type='hidden' name='action' value='browse' />\n"
+                    ."<input type='hidden' name='subaction' value='all' />\n";
+
     if (isset($_POST['sql']))
     {
         $browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
@@ -505,7 +692,7 @@ elseif ($subaction == "all")
                 ."<td align='center'>
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}&amp;lang={$language}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>";
-
+		
         if (bHasRight($surveyid,'delete_survey'))
         {
             $browseoutput .= "<a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a>\n";
@@ -527,18 +714,38 @@ elseif ($subaction == "all")
             }
             $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
             $i++;   //We skip the first record (=token) as we just outputted that one
-        }
-
+            }
+        
         for ($i; $i<$fncount; $i++)
         {
             $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
-
+            
             if ( isset($fnames[$i][4]) && $fnames[$i][4] == 'D' && $fnames[$i][0] != '')
             {
                 if ($dtrow[$fnames[$i][0]] == NULL)
                     $browsedatafield = "N";
                 else
                     $browsedatafield = "Y";
+            }
+            // display group token as hyperlink
+            if ($fnames[$i][0] == 'grouptoken' && db_tables_exist($grouptokentable))
+            {
+                $browsedatafield = "";
+                $SQL = "Select * FROM ".db_table_name('grouptokens_'.$surveyid)." WHERE token='{$dtrow['grouptoken']}'";
+                if (db_tables_exist(db_table_name_nq('grouptokens_'.$surveyid)) &&
+                        $SQLResult = db_execute_assoc($SQL))
+                {
+                    $TokenRow = $SQLResult->FetchRow();
+                }
+                if (isset($TokenRow) && $TokenRow)
+                {
+                    $browsedatafield .= "<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=editgroup&amp;gtid={$TokenRow['gtid']}' title='".$clang->gT("Edit this group token")."'>";
+                }
+                $browsedatafield .= "{$dtrow['grouptoken']}";
+                if (isset($TokenRow) && $TokenRow)
+                {
+                    $browsedatafield .= "</a>";
+                }
             }
             $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
         }
@@ -549,6 +756,254 @@ elseif ($subaction == "all")
     <input type='hidden' name='subaction' value='all' />
     <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
     </form>\n<br />\n";
+}
+elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
+	$browseoutput .= $surveyoptions;
+	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Time statistics').'</div>';
+	
+	// table of time statistics - only display completed surveys
+    $browseoutput .= "\n<script type='text/javascript'>
+                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
+                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."'; 
+                        </script>\n";
+
+    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
+    {
+        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value     
+        $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
+        $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
+    }
+
+    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0)
+    {
+        foreach ($_POST['markedresponses'] as $iResponseID)
+        {
+            $iResponseID=(int)$iResponseID; // sanitize the value
+            $query="delete FROM $surveytable where id={$iResponseID}";
+            $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked  
+        }
+    }
+    
+    $fields=createFieldMap($surveyid,'full');
+
+    foreach ($fields as $fielddetails)
+    {
+        // headers for answer id and time data
+		if ($fielddetails['type']=='id')
+			$fnames[]=array($fielddetails['fieldname'],$fielddetails['question']);
+        if ($fielddetails['type']=='interview_time')
+			$fnames[]=array($fielddetails['fieldname'],"Interview time");
+        if ($fielddetails['type']=='page_time')
+			$fnames[]=array($fielddetails['fieldname'],"Page ".$fielddetails['gid']." time");
+		if ($fielddetails['type']=='answer_time')
+			$fnames[]=array($fielddetails['fieldname'],"Question ".$fielddetails['qid']." time");
+    }
+    $fncount = count($fnames);
+
+    //NOW LETS CREATE A TABLE WITH THOSE HEADINGS
+    $tableheader = "<!-- DATA TABLE -->";
+    if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
+    else {$tableheader .= "<table class='browsetable'>\n";}
+    $tableheader .= "\t<thead><tr valign='top'>\n"
+            . "<th><input type='checkbox' id='selectall'></th>\n"
+            . "<th>Actions</th>\n";
+    foreach ($fnames as $fn)
+    {
+        if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}
+        if ($currentgroup != $fn[1])
+        {
+            $currentgroup = $fn[1];
+            if ($gbc == "oddrow") {$gbc = "evenrow";}
+            else {$gbc = "oddrow";}
+            }
+        $tableheader .= "<th class='$gbc'><strong>"
+                . strip_javascript("$fn[1]")
+                . "</strong></th>\n";
+    }
+    $tableheader .= "\t</tr></thead>\n\n";
+    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
+                   ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
+                   ."\t</tr></tfoot>\n\n";
+
+    $start=returnglobal('start');
+    $limit=returnglobal('limit');
+    if (!isset($limit) || $limit== '') {$limit = 50;}
+    if (!isset($start) || $start =='') {$start = 0;}
+    
+    //LETS COUNT THE DATA
+    $dtquery = "SELECT count(*) FROM $surveytimingstable NATURAL JOIN $surveytable WHERE submitdate IS NOT NULL ";
+    
+    $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
+    while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
+
+    if ($limit > $dtcount) {$limit=$dtcount;}
+
+    //NOW LETS SHOW THE DATA
+    $dtquery = "SELECT * FROM $surveytimingstable NATURAL JOIN $surveytable WHERE submitdate IS NOT NULL ORDER BY $surveytable.id";
+    
+    if ($order == "desc") {$dtquery .= " DESC";}
+
+    if (isset($limit))
+    {
+        if (!isset($start)) {$start = 0;}
+        $dtresult = db_select_limit_assoc($dtquery, $limit, $start) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+    }
+    else
+    {
+        $dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+    }
+    $dtcount2 = $dtresult->RecordCount();
+    $cells = $fncount+1;
+
+    //CONTROL MENUBAR
+    $last=$start-$limit;
+    $next=$start+$limit;
+    $end=$dtcount-$limit;
+    if ($end < 0) {$end=0;}
+    if ($last <0) {$last=0;}
+    if ($next >= $dtcount) {$next=$dtcount-$limit;}
+    if ($end < 0) {$end=0;}
+
+    $browseoutput .= "<div class='menubar'>\n"
+            . "\t<div class='menubar-title'>\n"
+            . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
+            . "\t<div class='menubar-main'>\n";
+    if (!isset($_POST['sql']))
+    {
+        $browseoutput .= "<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' "
+                ."title='".$clang->gTview("Show start...")."' >"
+                ."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
+                ."title='".$clang->gTview("Show previous..")."' >"
+                ."<img name='DataBack' align='left'  src='$imagefiles/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
+                ."<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+
+                ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
+                "title='".$clang->gT("Show next...")."' >".
+                "<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
+                "title='".$clang->gT("Show last...")."' >" .
+                "<img name='DataEnd' align='left' src='$imagefiles/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
+                ."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+    }
+    $selectshow='';
+    $selectinc='';
+    $selecthide='';
+
+    if(incompleteAnsFilterstate() == "inc") { $selectinc="selected='selected'"; }
+    elseif (incompleteAnsFilterstate() == "filter") { $selecthide="selected='selected'"; }
+    else { $selectshow="selected='selected'"; }
+
+    $browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
+            ."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
+            ."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
+            ."</font>\n"
+            ."<input type='hidden' name='sid' value='$surveyid' />\n"
+            ."<input type='hidden' name='action' value='browse' />\n"
+            ."<input type='hidden' name='subaction' value='time' />\n";
+    if (isset($_POST['sql']))
+    {
+        $browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
+    }
+    $browseoutput .= 	 "</form></div>\n"
+            ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
+
+    $browseoutput .= $tableheader;
+    $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+
+    while ($dtrow = $dtresult->FetchRow())
+    {
+        if (!isset($bgcc)) {$bgcc="evenrow";}
+        else
+        {
+            if ($bgcc == "evenrow") {$bgcc = "oddrow";}
+            else {$bgcc = "evenrow";}
+            }
+        $browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
+                ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
+                ."<td align='center'>
+        <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
+        <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
+        <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
+		
+        for ($i = 0; $i<$fncount; $i++)
+        {
+            $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
+            
+            // seconds -> minutes & seconds
+			if (strtolower(substr($fnames[$i][0],-4)) == "time")
+			{
+                $minutes = (int)($browsedatafield/60);
+                $seconds = $browsedatafield%60;
+                $browsedatafield = '';
+                if ($minutes > 0)
+				    $browsedatafield .= "$minutes min ";
+                $browsedatafield .= "$seconds s";
+            }
+            $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
+        }
+        $browseoutput .= "\t</tr>\n";
+    }
+    $browseoutput .= "</table>
+    <input type='hidden' name='sid' value='$surveyid' />
+    <input type='hidden' name='subaction' value='time' />
+    <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
+    </form>\n<br />\n";
+	
+	// Interview time
+	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Interview Time').'</div>';
+	
+	//interview Time statistics
+	$count=false;
+	//$survstats=substr($surveytableNq);
+	$queryAvg="SELECT AVG(timings.interviewTime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
+	$queryAll="SELECT timings.interviewTime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewTime";
+	$browseoutput .= '<table class="statisticssummary">';
+	if($result=db_execute_assoc($queryAvg)){
+
+		$row=$result->FetchRow();
+		$min = (int)($row['avg']/60);
+		$sec = $row['avg']%60;
+		$count=$row['count'];
+		$browseoutput .= '<tr><Th>'.$clang->gT('Average interview time: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
+	}
+	
+	if($count && $result=db_execute_assoc($queryAll)){
+		
+		$middleval = floor(($count-1)/2);
+		$i=0;
+		if($count%2){
+			while($row=$result->FetchRow()){
+				
+				if($i==$middleval){
+					$median=$row['interviewTime'];
+					break;
+				}
+				$i++;		
+			}
+		}else{
+			while($row=$result->FetchRow()){
+				if($i==$middleval){
+					$nextrow=$result->FetchRow();
+					$median=($row['interviewTime']+$nextrow['interviewTime'])/2;
+					break;
+				}
+				$i++;		
+			}
+		}
+		$min = (int)($median/60);
+		$sec = $median%60;
+		$browseoutput.='<tr><Th>'.$clang->gT('Median: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
+	}
+	$browseoutput .= '</table>';
+}
+elseif ($subaction=="time")
+{
+    $browseoutput .= $surveyoptions;
+    $browseoutput .= "<div class='header'>".$clang->gT("Timings")."</div>";
+	$browseoutput .= "Timing saving is disabled or the timing table does not exist. Try to reactivate survey.\n";
 }
 else
 {

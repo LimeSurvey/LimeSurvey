@@ -212,6 +212,8 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_answers DROP COLUMN default_value"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid1"); echo $modifyoutput; flush();
+        // add field for timings and table for extended conditions
+        modify_database("", "ALTER TABLE prefix_surveys ADD savetimings char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_sessions(
                              sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
                              expiry TIMESTAMP NOT NULL ,
@@ -225,6 +227,12 @@ function db_upgrade($oldversion) {
         modify_database("", "create INDEX sess_expireref on prefix_sessions ( expireref );"); echo $modifyoutput; flush();
                                   
         modify_database("", "UPDATE prefix_settings_global SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE prefix_extendedconditions (
+  qid integer DEFAULT 0 NOT NULL,
+  gid integer DEFAULT 0 NOT NULL,
+  sid integer DEFAULT 0 NOT NULL,
+  condition text,
+  PRIMARY KEY (qid,gid,sid));"); echo $modifyoutput; flush();
     }
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
