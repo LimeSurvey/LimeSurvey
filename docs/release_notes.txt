@@ -78,6 +78,40 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.90+ (build 9169) to 1.90+ (build 9224) Legend: # updated feature, - bug fix 
+#Updated translation: Galician by Carlos Neira Cortizas (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Portuguese (ruigouveia)
+#Updated translation: Simplified Chinese (yooyooh)
++New feature: CSS class names for question/answer cells so you can better style the look and feel of the overview. (maziminke)
+-Fixed issue #4605: Ugly bullets in survey taking startpage for controlled surveys (tpartner)
+-Fixed issue #4646: Special help text at ranking questions can't be styled easily (tpartner)
+-Fixed issue #4647: <tbody> tags at text matrix questions are not closed correctly (tpartner)
+-Fixed issue #4600: IE6 can not add subquestions due to PNGfix (mennodekker)
+-Fixed issue #4644: Errors in Export R syntax file - patch provided by apdevries (mennodekker)
+-Fixed issue #4627: (anishseth)
+-Fixed issue #4609: Conditions don't work after having imported a survey from a LSS file structure. (lemeur)
+-Fixed issue #4651: SQL syntax error when running statistics report (idobraca)
+-Fixed issue #4622: Data browsing and export show different column headings and data for question type 'Multiple choice with comments' (c_schmitz)
+-Fixed issue #4624: Checking database integrity does not find all orphans (c_schmitz)
+-Fixed issue #4628: with debug mode enabled, conditions using tokens as source operands can be broken due to a PHP warning breaking Javascript evaluation (lemeur)
+-Fixed issue #4632: Submitdate not saved if submitting via empty group - patch by ronvdburg (c_schmitz)
+-Fixed issue #4633: Admin users with 'Browse responses' permission can delete survey responses (c_schmitz)
+-Fixed issue #4645: Return-Key returns user to previous page (c_schmitz)
+-Fixed issue #4649: Default values are not properly converted when importing .csv survey structure file (c_schmitz)
+-Fixed issue #4653: MS SQL Server not using autonumber_start when reactivatin survey (c_schmitz)
+-Fixed issue #4655: bypassbademails not set for batches of invitations (c_schmitz)
+-Fixed issue #4659 : default answer apply under any condition (shnoulle)
+-Fixed issue #4663: SQL error when copying/importing a survey with subquestions on MSSQL (c_schmitz)
+-Fixed issue #4664: Exporting a group structure on MS SQL server generates a corrupted XML file (c_schmitz)
+-Fixed issue #4666: If a quota is met the last submitted page is not saved (c_schmitz)
+-Fixed issue: Conditions based on multiple choice questions were not properly shown in printable survey (c_schmitz)
+-Fixed issue: Import of multiple emails within one token entry not possible (c_schmitz)
+-Fixed issue: Error messages at printanswer.php: (maziminke)
+-Fixed issue: in DB with strict mode editing a condition with token element as left operands can cause SQL error (lemeur)
+
+
 Changes from 1.90+ (build 9160) to 1.90+ (build 9169) Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
 -Fixed issue #4590 (partially) : sample survey for 1.90 with new option (shnoulle)
