@@ -1,8 +1,10 @@
 <center>
-<font color="red">{SAVEERROR}</font>
-<strong><font size="+1">{SAVEHEADING}</font></strong><br /><br />
-{SAVEMESSAGE}<br /><br />
-{SAVEFORM}<br />
+<span class="save-error">{SAVEERROR}</span>
+<span class="save-heading">{SAVEHEADING}</font></span>
+<br /><br />
+{SAVEMESSAGE}
+<br /><br />
+{SAVEFORM}
+<br />
 {RETURNTOSURVEY}
 </center>
-<table  width="0%" align="center"><tr><td><table align="center"  width="0%" border="0"><tr><td>

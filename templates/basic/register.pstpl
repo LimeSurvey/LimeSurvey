@@ -1,6 +1,6 @@
 <br />
 <center>
-<font color="red"><strong>{REGISTERERROR}</strong></font>
+<span class="warning-text">{REGISTERERROR}</span>
 <p><strong>{REGISTERMESSAGE1}</strong></p>
 <p>{REGISTERMESSAGE2}</p>
 {REGISTERFORM}<br />

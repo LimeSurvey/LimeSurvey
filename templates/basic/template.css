@@ -156,6 +156,136 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   background-color: #A7A9D1;
 }
 
+.assessment-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+}
+
+.assessment-heading {
+	background-color: #CCCCCC;
+	text-align: center;
+	font-size: small;
+	font-weight: bold;
+	border-bottom: 1px solid #000000;
+}
+
+.assessments {
+}
+
+.clearall-result {
+	font-size: small;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align: center;
+	background-color: #FFFFFF;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.completed-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+}
+
+.completed-table td {
+	text-align: center;
+	font-size: small;
+}
+
+.group-description {
+	font-size: small;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
+.load-error {
+	color:#FF0000;
+}
+
+.load-heading {
+	font-weight: bold;
+	font-size: large;
+}
+
+.navigator-table {
+	width: 100%;
+	background-color: #CCCCCC;
+	border: 0 none;
+	border-collapse: collapse;
+}
+
+.navigator-table td {
+	margin: 0;
+	padding: 8px;
+}
+
+.privacy-table {
+	margin: 0 auto;
+	width: 75%;
+	background-color: #EEEEEE;
+	margin-bottom: 10px;
+}
+
+.privacy-table td {
+	text-align: center;
+	font-size: x-small;
+}
+
+.save-error{
+	color: #FF0000;
+}
+
+.save-heading{
+	font-weight: bold;
+	font-size: large;
+}
+
+.group-name {
+	font-size: small;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color: #666666;
+	font-weight: bold;
+}
+
+.survey-name {
+	font-weight: bold;
+	text-align: center;
+}
+
+.survey-list-table {
+	width: 100%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+}
+
+.survey-list-table td {
+	text-align: center;
+}
+
+.survey-list-table .site-name {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: large;
+	color: #328639;
+}
+
+.survey-list-table .survey-list-heading {
+	font-weight: bold;
+}
+
+.survey-list-table .survey-list {
+}
+
+.survey-list-table .survey-contact {
+}
+
+.survey-list-table .language-changer {
+}
+
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
   /* =====================================
