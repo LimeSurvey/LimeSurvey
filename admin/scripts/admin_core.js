@@ -107,6 +107,35 @@ $(document).ready(function(){
                }}
     }); 
 
+    $('#doprintablescanable').qtip({
+        content:{
+                text:$('#doprintablescanablelangpopup')
+        },
+        style: { name: 'cream',
+                        tip:true, 
+                color:'#111111', 
+                border: {
+                     width: 1,
+                     radius: 5,
+                     color: '#EADF95'}
+               },  
+        position: { adjust: { 
+                screen: true, scroll:true },
+                corner: {
+                        target: 'bottomMiddle',
+                        tooltip: 'topMiddle'}
+                },
+        show: {effect: { length:50},
+               when: {
+                   event:'click'
+               }},
+        hide: {fixed:true,
+               when: {
+                   event:'unfocus'
+               }}
+    });     
+
+ 
     $('#doprintable').qtip({
         content:{
                 text:$('#doprintablelangpopup')

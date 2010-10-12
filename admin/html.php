@@ -462,15 +462,13 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
 
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Printable and scannable Version of Survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintablescannableSurvey' alt='".$clang->gT("Printable and scannable Version of Survey")."' />";
+            . " title=\"".$clang->gTview("Printable and Scanable Version of Survey")."\" >"
+            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScanableSurvey' alt='".$clang->gT("Printable and Scanable Version of Survey")."' />";
 
         } else {
 
-            $surveysummary .= "<a href=\"#\" onclick=\"document.getElementById('printpopupquexml').style.visibility='visible'; "
-            . "document.getElementById('langpopup2').style.visibility='hidden';\""
-            . " title=\"".$clang->gTview("Printable and scannable Version of Survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintablescannableSurvey' alt='".$clang->gT("Printable and scannable Version of Survey")."' />\n";
+            $surveysummary .= "<a href='#' id='doprintablescanable' title=\"".$clang->gTview("Printable and Scanable Version of Survey")."\" >"
+            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScanableSurvey' alt='".$clang->gT("Printable and Scanable Version of Survey")."' />\n";
             
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -478,16 +476,15 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             rsort($tmp_survlangs);
 
             // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup2\" id=\"printpopupquexml\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+            $surveysummary .="<div class=\"langpopup\" id=\"doprintablescanablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopupquexml').style.visibility='hidden'; window.open('$scriptname?action=showquexmlsurvey&amp;sid=$surveyid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+                $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintablescanable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
-            $surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopupquexml').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
-
-            $surveysummary .= "<script type='text/javascript'>document.getElementById('printpopupquexml').style.left='152px';</script>\n";
+            $surveysummary .= "</ul></div>";
         }
         
+ 
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
 
