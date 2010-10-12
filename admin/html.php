@@ -462,15 +462,15 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
 
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Printable and scanable Version of Survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScanableSurvey' alt='".$clang->gT("Printable and scanable Version of Survey")."' />";
+            . " title=\"".$clang->gTview("Printable and scannable Version of Survey")."\" >"
+            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintablescannableSurvey' alt='".$clang->gT("Printable and scannable Version of Survey")."' />";
 
         } else {
 
             $surveysummary .= "<a href=\"#\" onclick=\"document.getElementById('printpopupquexml').style.visibility='visible'; "
             . "document.getElementById('langpopup2').style.visibility='hidden';\""
-            . " title=\"".$clang->gTview("Printable and scanable Version of Survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScanableSurvey' alt='".$clang->gT("Printable and scanable Version of Survey")."' />\n";
+            . " title=\"".$clang->gTview("Printable and scannable Version of Survey")."\" >"
+            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintablescannableSurvey' alt='".$clang->gT("Printable and scannable Version of Survey")."' />\n";
             
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -3723,4 +3723,3 @@ function showadminmenu()
     }
     return $adminmenu;
 }
-*/
