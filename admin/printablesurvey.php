@@ -551,14 +551,22 @@ while ($degrow = $degresult->FetchRow())
                             case "L":
                             case "!":
                             case "O":
-                            case "M":
-                            case "P":
                             case "R":
                                 $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
                                 while ($ansrow=$ansresult->FetchRow())
                                 {
                                     $conditions[]=$ansrow['answer'];
+                                }
+                                $conditions = array_unique($conditions);
+                                break;
+                            case "M":
+                            case "P":
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$surveyprintlang}'";
+                                $ansresult=db_execute_assoc($ansquery);
+                                while ($ansrow=$ansresult->FetchRow())
+                                {
+                                    $conditions[]=$ansrow['question'];
                                 }
                                 $conditions = array_unique($conditions);
                                 break;
