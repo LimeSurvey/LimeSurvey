@@ -375,7 +375,8 @@ function setman_multiflex($ia)
 
     global $dbprefix, $connect;
 
-
+    $mandatorys=array();
+    $mandatoryfns=array();
     $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order, title";
     $ansresult = db_execute_assoc($ansquery);
     $ans2query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order, title";
@@ -412,7 +413,7 @@ function setman_multiflex($ia)
         {
             //This particular one may not be mandatory if it's hidden
             $selected = getArrayFilterExcludesForQuestion($ia[0]);
-            if (in_array($ansrow['title'],$selected))
+            if ($selected!=false && in_array($ansrow['title'],$selected))
             {
                 //This one's hidden, so don't add it to the mandatory list
             }
