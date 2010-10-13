@@ -1,11 +1,9 @@
 {CHECKJAVASCRIPT}
 <div id="welcome">
-   <font style="font-family: Verdana; font-size: 14px;">
-   <b>{SURVEYNAME}</b>
-   </font><br />
- {SURVEYDESCRIPTION}
+   <span class="survey-name">{SURVEYNAME}</span>
+   <p class="survey-description">{SURVEYDESCRIPTION}</p>
 </div>
 <div id="welcometext">
-			<p>{WELCOME}</p>
-			<span style='font-color:#333; font-size:0.8em;'>{THEREAREXQUESTIONS}</span>
+	<p>{WELCOME}</p>
+	<span class="x-questions">{THEREAREXQUESTIONS}</span>
 </div>

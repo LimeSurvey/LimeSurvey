@@ -2,9 +2,9 @@
 <span class="load-error">{LOADERROR}</span>
 <span class="load-heading">{LOADHEADING}</span>
 <br /><br />
-{LOADMESSAGE}
+<span class="load-message">{LOADMESSAGE}</span>
 <br />
-{LOADFORM}
+<div class="load-form">{LOADFORM}</div>
 <br />
-{RETURNTOSURVEY}
+<span class="return-to-survey">{RETURNTOSURVEY}</span>
 </center>

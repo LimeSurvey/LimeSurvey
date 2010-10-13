@@ -1,7 +1,7 @@
 <br />
 <center>
-<span class="warning-text">{REGISTERERROR}</span>
-<p><strong>{REGISTERMESSAGE1}</strong></p>
-<p>{REGISTERMESSAGE2}</p>
+<p class="warning-text">{REGISTERERROR}</p>
+<p class="register-message-1">{REGISTERMESSAGE1}</p>
+<p class="register-message-2">{REGISTERMESSAGE2}</p>
 {REGISTERFORM}<br />
 </center>

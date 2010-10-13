@@ -1,10 +1,10 @@
 <center>
 <span class="save-error">{SAVEERROR}</span>
-<span class="save-heading">{SAVEHEADING}</font></span>
+<span class="save-heading">{SAVEHEADING}</span>
 <br /><br />
-{SAVEMESSAGE}
+<span class="save-message">{SAVEMESSAGE</span>}
 <br /><br />
-{SAVEFORM}
+<div class="save-form">{SAVEFORM}</div>
 <br />
-{RETURNTOSURVEY}
+<span class="return-to-survey">{RETURNTOSURVEY}</span>
 </center>

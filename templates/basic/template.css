@@ -210,6 +210,15 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 	font-size: large;
 }
 
+.load-message {
+}
+
+.load-form {
+}
+
+.return-to-survey {
+}
+
 .navigator-table {
 	width: 100%;
 	background-color: #CCCCCC;
@@ -241,6 +250,12 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 .save-heading{
 	font-weight: bold;
 	font-size: large;
+}
+
+.save-message{
+}
+
+.save-form{
 }
 
 .group-name {
@@ -284,6 +299,13 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 }
 
 .survey-list-table .language-changer {
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
 }
 
 /* -------------------------------------------------
