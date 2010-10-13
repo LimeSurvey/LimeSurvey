@@ -394,7 +394,7 @@ function setman_multiflex($ia)
         {
             //This particular one may not be mandatory if it's hidden
             $selected = getArrayFiltersForQuestion($ia[0]);
-            if (!in_array($ansrow['code'],$selected))
+            if (!in_array($ansrow['title'],$selected))
             {
                 //This one's hidden, so don't add it to the mandatory list
             }
@@ -403,7 +403,25 @@ function setman_multiflex($ia)
                 //This one's not hidden. so add it to the mandatory list
                 foreach($lset as $ls)
                 {
-                    $mandatorys[]=$ia[1].$ansrow['code']."_".$ls['code'];
+                    $mandatorys[]=$ia[1].$ansrow['title']."_".$ls['title'];
+                    $mandatoryfns[]=$ia[1];
+                }
+            }
+        } 
+        elseif (trim($qidattributes['array_filter_exclude'])!='')
+        {
+            //This particular one may not be mandatory if it's hidden
+            $selected = getArrayFilterExcludesForQuestion($ia[0]);
+            if (in_array($ansrow['title'],$selected))
+            {
+                //This one's hidden, so don't add it to the mandatory list
+            }
+            else
+            {
+                //This one's not hidden. so add it to the mandatory list
+                foreach($lset as $ls)
+                {
+                    $mandatorys[]=$ia[1].$ansrow['title']."_".$ls['title'];
                     $mandatoryfns[]=$ia[1];
                 }
             }
