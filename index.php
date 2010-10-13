@@ -1928,7 +1928,7 @@ function sendsubmitnotification($sendnotification)
             if ($prevquestion!=$sQuestion)
             {
                 $prevquestion=$sQuestion;
-                $questiontitle=FlattenText(html_entity_decode($sQuestion, ENT_QUOTES, $emailcharset));
+                $questiontitle=FlattenText($sQuestion, true, $emailcharset);
                 $results .= "\n$questiontitle: ";
                 if ($ssubquestion!='')
                 {
@@ -1937,7 +1937,7 @@ function sendsubmitnotification($sendnotification)
             }
             if ($ssubquestion!='')
             {
-                $answeroption=FlattenText(html_entity_decode($ssubquestion, ENT_QUOTES, $emailcharset));
+                $answeroption=FlattenText($ssubquestion, true, $emailcharset);
                 $results .= "\t[$answeroption]:   ";
             }
 
@@ -1948,14 +1948,14 @@ function sendsubmitnotification($sendnotification)
                 {
                     foreach (explode("\n",$_SESSION[$value]) as $line)
                     {
-                        $results .= "\t" . FlattenText(html_entity_decode($line, ENT_QUOTES, $emailcharset));
+                        $results .= "\t" . FlattenText($line, true, $emailcharset);
                         $results .= "\n";
                     }
                 }
             }
             elseif (isset($_SESSION[$value]))
             {
-                $results .= FlattenText(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
+                $results .= FlattenText(getextendedanswer($value, $_SESSION[$value]),true, $emailcharset);
                 $results .= "\n";
             }
             else

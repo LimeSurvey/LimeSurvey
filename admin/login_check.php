@@ -81,7 +81,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
                 if($pw != $otpw)
                 {
                     //no match -> warning
-                    $loginsummary = "<br />".sprintf($clang->gT("Passed one time password doesn't match one time password for user %s")," <em>".htmlspecialchars($user)."</em>")."<br />";
+                    $loginsummary = "<p>".$clang->gT("Passed single-use password was wrong or user doesn't exist")."<br />";
                     $loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                 }
                 //both passwords match

@@ -264,7 +264,7 @@ unset ($fnames['startdate']);
 	            
             	if(isset($_POST['printableexport']))
 	    		{
-	            	$pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true));
+	            	$pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true),'',false);
 	                $pdf->ln(2);
 	    		}
             }

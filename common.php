@@ -4532,16 +4532,14 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
     if (get_magic_quotes_gpc() != "0")  {$body = stripcslashes($body);}
-    $textbody = strip_tags($body);
-    $textbody = str_replace("&quot;", '"', $textbody);
     if ($ishtml) {
         $mail->IsHTML(true);
         $mail->Body = $body;
-        $mail->AltBody = strip_tags(br2nl(html_entity_decode($textbody,ENT_QUOTES,'UTF-8')));
+        $mail->AltBody = strip_tags(br2nl(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
     } else
     {
         $mail->IsHTML(false);
-        $mail->Body = $textbody;
+        $mail->Body = $body;
     }
 
     // add the attachment if there is one
@@ -4565,22 +4563,24 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 /**
  *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
  *
- * @param string $texttoflatten  Text you want to clean
- * @param boolan $decodeUTF8Entities If set to true then all HTML entities will be decoded to UTF-8. Default: false
+ * @param string $sTextToFlatten  Text you want to clean
+ * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
+ * @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true
+ * 
  * @return string  Cleaned text
  */
-function FlattenText($texttoflatten, $decodeUTF8Entities=false)
+function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8')
 {
-    $nicetext = strip_javascript($texttoflatten);
-    $nicetext = strip_tags($nicetext);
-    $nicetext = str_replace(array("\n","\r"),array('',''), $nicetext);
-    if ($decodeUTF8Entities==true)
+    $sNicetext = strip_javascript($sTextToFlatten);
+    $sNicetext = strip_tags($sNicetext);
+    $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    if ($bDecodeHTMLEntities==true)
     {
-        $nicetext = str_replace('&nbsp;',' ', $nicetext); // html_entity_decode does not properly convert &nbsp; to spaces
-        $nicetext=html_entity_decode($nicetext,ENT_QUOTES,'UTF-8');
+        $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
+        $sNicetext = html_entity_decode($sNicetext, ENT_QUOTES, $sCharset);
     }
-    $nicetext = trim($nicetext);
-    return  $nicetext;
+    $sNicetext = trim($sNicetext);
+    return  $sNicetext;
 }
 
 function getRandomID()
