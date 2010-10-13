@@ -2579,7 +2579,7 @@ function surveymover()
         $surveymover .=  "\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
         . $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
     }
-    if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
+    if ($_SESSION['step'] && ($_SESSION['step'] >= $_SESSION['totalsteps']) && !$presentinggroupdescription)
     {
         $surveymover .= "\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
         . $clang->gT("Submit")." ' name='move2' />\n";
