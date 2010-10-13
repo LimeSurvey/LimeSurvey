@@ -219,8 +219,9 @@ unset ($fnames['startdate']);
 	    			}
 	            }
 	        }
-	        if (isset($fname['qid']) && !empty($fname['qid'])) 
-	        {
+            if ((isset($fname['qid']) && !empty($fname['qid'])) && ($printanswershonorsconditions == 1 && checkquestionfordisplay($fname['qid'],null)) || $printanswershonorsconditions!=1)
+            {
+                
 	            //Check to see if gid is the same as before. if not show group name
 	            if ($oldqid !== $fname['qid']) 
 	            {
@@ -235,38 +236,45 @@ unset ($fnames['startdate']);
 	    				}
 	                }
 	            }
-	        }
-        	if (isset($fname['subquestion']))  
-        	$question = "{$fname['subquestion']}";
-       	 	
-        	if (isset($fname['subquestion1'])) 
-        	$question = "{$fname['subquestion1']}";
-        	
-        	if (isset($fname['subquestion2'])) 
-        	$question .= "[{$fname['subquestion2']}]";
-			
-        	$printoutput .= "\t<tr>\n"
-        	."<td  class='printanswersquestiontext'>$question</td>\n"
-			."<td class='printanswersanswertext'>"
-        	.getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']])
-			."</td>\n"
-			."\t</tr>\n";
-            if(isset($_POST['printableexport']))
+        	    if (isset($fname['subquestion']))  
+        	    $question = "{$fname['subquestion']}";
+       	 	    
+        	    if (isset($fname['subquestion1'])) 
+        	    $question = "{$fname['subquestion1']}";
+        	    
+        	    if (isset($fname['subquestion2'])) 
+        	    $question .= "[{$fname['subquestion2']}]";
+			    
+        	    $printoutput .= "\t<tr>\n"
+        	    ."<td  class='printanswersquestiontext'>$question</td>\n"
+			    ."<td class='printanswersanswertext'>"
+        	    .getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']])
+			    ."</td>\n"
+			    ."\t</tr>\n";
+                if(isset($_POST['printableexport']))
+                {
+            	    if (isset($fname['subquestion']))  
+            	    $question .= " [{$fname['subquestion']}]";
+            	    
+            	    if (isset($fname['subquestion1'])) 
+            	    $question .= " [{$fname['subquestion1']}]";
+            	    
+            	    if (isset($fname['subquestion2'])) 
+            	    $question .= " [{$fname['subquestion2']}]";      
+	                
+            	    if(isset($_POST['printableexport']))
+	    		    {
+	            	    $pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true),'',false);
+	                    $pdf->ln(2);
+	    		    }
+                }
+            }
+            else
             {
-            	if (isset($fname['subquestion']))  
-            	$question .= " [{$fname['subquestion']}]";
-            	
-            	if (isset($fname['subquestion1'])) 
-            	$question .= " [{$fname['subquestion1']}]";
-            	
-            	if (isset($fname['subquestion2'])) 
-            	$question .= " [{$fname['subquestion2']}]";      
-	            
-            	if(isset($_POST['printableexport']))
-	    		{
-	            	$pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true),'',false);
-	                $pdf->ln(2);
-	    		}
+                if ($oldqid !== $fname['qid']) 
+                {
+                    $oldqid = $fname['qid'];
+                }
             }
 		}
 	}
