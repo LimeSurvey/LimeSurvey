@@ -78,6 +78,11 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.90+ (build 9224) to 1.90+ (build 9229) Legend: # updated feature, - bug fix 
+-Fix issue 03613: bgcolor entered into HTML and thus not editable via CSS in templates (tpartner)
+-Fixed issue #4668: Answers with "<" character disappear in mail response submission and in pdf print (c_schmitz)
+-Fixed issue: Notice on survey page submit when not using quotas (c_schmitz)
+
 Changes from 1.90+ (build 9169) to 1.90+ (build 9224) Legend: # updated feature, - bug fix 
 #Updated translation: Galician by Carlos Neira Cortizas (c_schmitz)
 #Updated translation: German (c_schmitz)
