@@ -52,8 +52,6 @@ if(isset($gtokenids)) {
 include_once("login_check.php");
 include_once("database.php");
 $js_admin_includes[]='scripts/tokens.js';
-
-
 $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 $thissurvey=getSurveyInfo($surveyid);
 
@@ -243,8 +241,8 @@ if ($subaction == "delete" &&
 }
 
 if ($subaction == "deletegroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
+(bHasRight($surveyid,'edit_survey_property') ||
+bHasRight($surveyid,'activate_survey') ||
 $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 )
 {
@@ -538,8 +536,8 @@ if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid
 	."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browsegroup', '_top')\" "
 	."title='".$clang->gTview("Display group tokens")."' >"
 	."<img name='ViewGroupTokensButton' src='$imagefiles/grouptokens.png' alt='".$clang->gT("Display group tokens")."' /></a>\n";
-	
-	if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+
+	if (bHasRight($surveyid,'edit_survey_property')|| bHasRight($surveyid,'activate_survey') || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnewgroup', '_top')\""
 		."title='".$clang->gTview("Add new group token entry")."' >"
@@ -547,7 +545,8 @@ if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid
     ."<img src='$imagefiles/seperator.gif' alt='' />\n"
     ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenifygroup")."\" "
     ." title='".$clang->gTview("Generate group tokens")."'>"
-    ."<img name='TokenifyGroupButton' src='$imagefiles/tokenifygroup.png' alt='".$clang->gT("Generate group tokens")."' /></a>\n"
+    ."<img name='TokenifyGroupButton' src='$imagefiles/tokenifygroup.png' alt='".$clang->gT("G
+    enerate group tokens")."' /></a>\n"
     ."<img src='$imagefiles/seperator.gif' alt='' />\n"
     ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=killgroup")."\" "
     ."title='".$clang->gTview("Drop group tokens table")."' >"
@@ -915,7 +914,7 @@ if (!$subaction && (bHasRight($surveyid, 'edit_survey_property') || bHasRight($s
     $tokenoutput .= "<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul></div>\n";
 }
 
-if ($subaction == "usegrouptokens" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+if ($subaction == "usegrouptokens" && (bHasRight($surveyid,'edit_survey_property') || bHasRight($surveyid,'activate_survey') || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
 	if (isset($_POST['creategrouptable']) && $_POST['creategrouptable']=="Y"
 	// make sure there are no group token tables
@@ -1692,8 +1691,8 @@ if ($subaction == "browsegroup" || $subaction == "searchgroup")
 	        if ($tokenfieldname=='gtid')
 	        {
 	            $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
-	            if ($sumrows5['edit_survey_property'] ||
-	            $sumrows5['activate_survey'] ||
+	            if (bHasRight($surveyid,'edit_survey_property') ||
+	            bHasRight($surveyid,'activate_survey') ||
 	            $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	            {
 	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
@@ -1827,8 +1826,8 @@ if ($subaction == "kill" &&
 
 
 if ($subaction == "killgroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
+(bHasRight($surveyid,'edit_survey_property') ||
+bHasRight($surveyid,'activate_survey') ||
 $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 )
 {
@@ -2594,9 +2593,9 @@ if ($subaction == "tokenify" &&
 }
 
 if ($subaction == "tokenifygroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+(bHasRight($surveyid,'edit_survey_property') ||
+bHasRight($surveyid,'activate_survey') ||
+bHasRight($surveyid,'USER_RIGHT_SUPERADMIN') == 1))
 {
     $tokenoutput .= "<div class='header'>".$clang->gT("Create group tokens")."</div>\n";
     $tokenoutput .= "<div class='messagebox'>\n";
@@ -2682,8 +2681,8 @@ if ($subaction == "delete" &&
 }
 
 if ($subaction == "deletegroup" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
+(bHasRight($surveyid,'edit_survey_property') ||
+bHasRight($surveyid,'activate_survey') ||
 $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
     $tokenoutput .= "<div class='messagebox'>\n"
@@ -2973,8 +2972,8 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 }
 
 if (($subaction == "editgroup" || $subaction == "addnewgroup") &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
+(bHasRight($surveyid,'edit_survey_property') ||
+bHasRight($surveyid,'activate_survey') ||
 $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
     if ($subaction == "editgroup")
@@ -3143,8 +3142,8 @@ if ($subaction == "updatetoken" &&
 }
 
 if ($subaction == "updategrouptoken" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
+(bHasRight($surveyid,'edit_survey_property') ||
+bHasRight($surveyid,'activate_survey')||
 $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Edit group token entry")."</div>\n"
@@ -3257,8 +3256,8 @@ if ($subaction == "inserttoken" &&
 }
 
 if ($subaction == "insertgrouptoken" &&
-($sumrows5['edit_survey_property'] ||
-$sumrows5['activate_survey'] ||
+(bHasRight($surveyid,'edit_survey_property') ||
+bHasRight($surveyid,'activate_survey') ||
 $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 )
 {
