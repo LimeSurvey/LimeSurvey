@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-09 22:52+0100\n"
-"PO-Revision-Date: 2010-10-09 22:57+0100\n"
+"POT-Creation-Date: 2010-10-13 21:04+0100\n"
+"PO-Revision-Date: 2010-10-13 21:05+0100\n"
 "Last-Translator: b00z00 <b00z00@b00z00.org>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -55,35 +55,35 @@ msgstr "Exporter en PDF"
 msgid "Survey Name (ID)"
 msgstr "Nom du questionnaire (ID)"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:198
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:200
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:197
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:199
 msgid "Question"
 msgstr "Question"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:198
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:200
-msgid "Your Answer"
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:197
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/printanswers.php:199
+msgid "Your answer"
 msgstr "Votre réponse"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:229
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:242
 msgid "Please try again."
 msgstr "SVP, veuillez réessayer."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:271
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:284
 msgid "You must supply a name for this saved session."
 msgstr "Vous devez fournir un nom pour sauvegarder cette session."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:272
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:285
 msgid "You must supply a password for this saved session."
 msgstr "Vous devez fournir un mot de passe pour sauvegarder cette session."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:274
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:287
 msgid "Your passwords do not match."
 msgstr "Vos mots de passe ne correspondent pas."
 
 # D:\www\limesurvey/index.php:231
 # D:\www\limesurvey/save.php:215
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:282
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:295
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/register.php:72
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/index.php:605
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/index.php:2096
@@ -91,54 +91,54 @@ msgstr "Vos mots de passe ne correspondent pas."
 msgid "The answer to the security question is incorrect."
 msgstr "La réponse à la question de sécurité est incorrecte"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:298
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:311
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "Ce nom a déjà été utilisé pour ce questionnaire. Vous devez en choisir un autre."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:354
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:367
 msgid "Saved Survey Details"
 msgstr "Détails sur le questionnaire sauvegardé"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:355
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:368
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr "Merci d'avoir sauvegardé votre questionnaire incomplet. Les détails suivants peuvent être utilisés pour revenir à celui-ci et le poursuivre là où vous l'avez laissé. S'il vous plait, gardez ce courriel comme pense-bête - nous ne pouvons pas retrouver votre mot de passe pour vous."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:357
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:370
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/common.php:3017
 msgid "Name"
 msgstr "Nom "
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:358
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:371
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/common.php:3020
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/common.php:3046
 msgid "Password"
 msgstr "Mot de passe "
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:359
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:372
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr "Rechargez votre questionnaire en cliquant sur le lien suivant (ou coller le dans votre navigateur) :"
 
 # E:\www\limesurvey/admin/usercontrol.php:120
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:374
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:387
 msgid "Your survey was successfully saved."
 msgstr "Votre questionnaire a été sauvegardé avec succès."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:618
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:631
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/index.php:530
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/common.php:6141
 msgid "Error"
 msgstr "Erreur"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:619
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:632
 msgid "Cannot submit results - there are none to submit."
 msgstr "Impossible d'envoyer les réponses car il n'y en a aucune."
 
 # D:\www\limesurvey/save.php:452
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:620
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:633
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Cette erreur peut survenir si vous avez déjà envoyé vos réponses et que vous pressez sur le bouton 'Rafraîchir' de votre navigateur. Dans ce cas, vos réponses sont déjà sauvegardées."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:620
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/save.php:633
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Si vous obtenez ce message au milieu du remplissage d'un questionnaire, vous devriez choisir '<- Précédent' dans votre navigateur et rafraîchir la page obtenue. Bien que vous perdiez vos réponses de la dernière page, toutes les autres sont conservées. Ce problème peut se produire si le serveur est surchargé ou énormément utilisé. Nous vous présentons nos excuses pour ce problème."
 
@@ -1668,7 +1668,7 @@ msgstr "Visiter notre site web !"
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Le courriel n'a pas été envoyé car le mode démo est activé."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/common.php:4558
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/common.php:4556
 msgid "SMTP debug output:"
 msgstr "Sortie du debug SMTP :"
 
@@ -6319,9 +6319,8 @@ msgid "No one-time password found for user %s"
 msgstr "Pas de mot de passe à usage unique trouvé pour l'utilisateur %s"
 
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/login_check.php:84
-#, php-format
-msgid "Passed one time password doesn't match one time password for user %s"
-msgstr "Le mot de passe à usage unique saisi ne correspond pas à celui défini pour l'utilisateur %s"
+msgid "Passed single-use password was wrong or user doesn't exist"
+msgstr "Le mot de passe à usage unique fourni n'est pas correct ou l'utilisateur n'existe pas"
 
 # E:\www\limesurvey/admin/html.php:1028
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/login_check.php:154
@@ -6353,35 +6352,47 @@ msgstr "Connexion"
 msgid "Forgot Your Password?"
 msgstr "Mot de passe oublié ?"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:78
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:86
 msgid "Export result data to R"
 msgstr "Exporter les données de résultat vers R"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:79
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:103
+msgid "Data selection:"
+msgstr "Sélection de données :"
+
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:111
+msgid "Step 1:"
+msgstr "Étape 1 :"
+
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:111
 msgid "Export R syntax file"
 msgstr "Exporter le fichier de syntaxe R"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:80
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:112
+msgid "Step 2:"
+msgstr "Étape 2 :"
+
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:112
 msgid "Export .csv data file"
 msgstr "Exporter le fichier de données CSV"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:81
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:115
 msgid "Instructions for the impatient"
 msgstr "Instructions pour les impatients"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:83
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:117
 msgid "Download the data and the syntax file."
 msgstr "Télécharger le fichier de données et de syntaxe."
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:84
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:118
 msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
 msgstr "Sauvegarder les deux dans le dossier de travail de R (utilisez getwd() et setwd() dans la fenêtre de commande de R pour les récupérer et les voir)"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:85
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:119
 msgid "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window"
 msgstr "chiffre :       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        dans la fenêtre de commande de R"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:87
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_r.php:121
 msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
 msgstr "Vos données devraient maintenant être importées. Le data.frame est appelé \"data\". Les éléments de la forme variable.labels sont des attributs des données (\"attributes(data)$variable.labels\"), comme pour foreign:read.spss."
 
@@ -7970,7 +7981,7 @@ msgstr "Afficher les invitations"
 
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2194
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2254
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2705
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2712
 msgid "Failed"
 msgstr "Échec"
 
@@ -8047,131 +8058,131 @@ msgstr "Échec de l'ouverture du fichier envoyé !"
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Erreur : le fichier envoyé ne contient pas une ou plusieurs colonnes obligatoires : 'prénom', 'nom' ou 'courriel'"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2452
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2459
 msgid "Successfully created token entries"
 msgstr "Invitation créée avec succès"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2454
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2461
 msgid "Failed to create token entries"
 msgstr "Échec à la création de l'invitation"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2456
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2463
 #, php-format
 msgid "%s records in CSV"
 msgstr "%s enregistrement(s) dans le CSV"
 
 # D:\www\limesurvey/admin/tokens.php:1381
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2457
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2464
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s enregistrement(s) remplisse(nt) les conditions minimums"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2458
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2465
 #, php-format
 msgid "%s records imported"
 msgstr "%s enregistrement(s) importé(s)"
 
 # D:\www\limesurvey/admin/tokens.php:1383
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2467
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2474
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s enregistrement(s) en double supprimé(s)"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2468
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2480
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2490
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2711
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2719
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2475
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2487
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2497
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2718
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2726
 msgid "List"
 msgstr "Liste"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2479
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2486
 #, php-format
 msgid "%s lines had a mismatching number of fields."
 msgstr "%s lignes ont un nombre de champs incohérents."
 
 # D:\www\limesurvey/admin/tokens.php:1384
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2489
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2718
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2496
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2725
 #, php-format
 msgid "%s records with invalid email address removed"
 msgstr "%s enregistrements avec une adresse de courriel invalide supprimés"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2513
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2520
 msgid "Uploading LDAP Query"
 msgstr "Envoi en cours d'une requête LDAP"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2707
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2714
 msgid "Results from LDAP Query"
 msgstr "Résultats de la requête LDAP"
 
 # D:\www\limesurvey/admin/tokens.php:1381
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2708
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2715
 msgid "Records met minumum requirements"
 msgstr "Les enregistrements remplissent les conditions minimums"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2709
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2716
 msgid "Records imported"
 msgstr "Enregistrement(s) importé(s)"
 
 # D:\www\limesurvey/admin/tokens.php:1383
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2710
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2717
 msgid "Duplicate records removed"
 msgstr "Enregistrements en double supprimés"
 
 # C:\wamp\www\limesurvey/admin/tokens.php:1414
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2729
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2736
 msgid "Can't bind to the LDAP directory"
 msgstr "Impossible d'obtenir la liaison à l'annuaire LDAP"
 
 # C:\wamp\www\limesurvey/admin/tokens.php:1420
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2735
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2742
 msgid "Can't connect to the LDAP directory"
 msgstr "Ne peut se connecter à l'annuaire LDAP"
 
 # D:\www\limesurvey/admin/tokens.php:1547
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2754
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2761
 msgid "Choose the CSV file to upload:"
 msgstr "Choisir le fichier CSV à envoyer :"
 
 # D:\www\limesurvey/admin/tokens.php:1549
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2755
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2762
 msgid "Character set of the file:"
 msgstr "Jeux de caractères du fichier :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2756
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2807
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2763
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2814
 msgid "Filter blank email addresses:"
 msgstr "Filtrer les adresses de courriel vides :"
 
 # D:\www\limesurvey/admin/tokens.php:1383
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2757
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2808
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2764
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2815
 msgid "Filter duplicate records:"
 msgstr "Filtrer les enregistrements en double :"
 
 # D:\www\limesurvey/admin/tokens.php:1383
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2758
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2765
 msgid "Duplicates are determined by:"
 msgstr "Les doublons sont déterminés par :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2773
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2780
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/templates.php:1001
 msgid "Upload"
 msgstr "Envoyer"
 
 # D:\www\limesurvey/admin/tokens.php:1567
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2788
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2795
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Désolé, mais le module LDAP est absent dans votre configuration PHP"
 
 # C:\wamp\www\limesurvey/admin/tokens.php:1464
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2794
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2801
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP désactivé ou aucune requête LDAP définie."
 
 # C:\wamp\www\limesurvey/admin/tokens.php:1471
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2800
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/tokens.php:2807
 msgid "Select the LDAP query you want to run:"
 msgstr "Choisissez la requête LDAP que vous voulez exécuter :"
 
@@ -8340,10 +8351,6 @@ msgstr "Remarque : Cette section d'évaluation ne sera dévoilée que si les rè
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/templates.php:435
 msgid "Survey name (ID)"
 msgstr "Nom du questionnaire (ID)"
-
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/templates.php:437
-msgid "Your answer"
-msgstr "Votre réponse"
 
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/templates.php:519
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/templates.php:520
@@ -8945,7 +8952,7 @@ msgid "AND/OR Date is"
 msgstr "ET/OU la date est"
 
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:133
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1780
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1788
 msgid "Submit Your Survey."
 msgstr "Envoyer votre questionnaire."
 
@@ -8978,124 +8985,124 @@ msgstr "La réponse était supérieure à"
 msgid "Answer matched (regexp)"
 msgstr "La réponse est de la forme (regexp)"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:613
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:620
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:621
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:628
 #, php-format
 msgid "Label %s"
 msgstr "Étiquette %s"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:645
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:653
 msgid "RANK"
 msgstr "CLASSEMENT"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:663
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:671
 msgid "at question"
 msgstr "à la question"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:671
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:679
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Répondre à cette question seulement si les conditions suivantes sont réunies :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:756
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:758
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:764
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:766
 msgid "Please enter a date:"
 msgstr "Veuillez entrer une date :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:887
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:895
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Numérotez chaque case dans l'ordre de vos préférences de 1 à"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:888
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:896
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Numérotez chaque case dans l'ordre de vos préférences de 1 à"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:910
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:911
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:918
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:919
 msgid "Please choose *all* that apply:"
 msgstr "Choisissez *toutes* les réponses qui conviennent :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:916
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:917
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:924
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:925
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "Veuillez choisir *au plus* %s réponses :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:968
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:969
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:976
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:977
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Veuillez choisir toutes les réponses qui conviennent et laissez un commentaire :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:974
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:975
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:982
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:983
 msgid "Please choose *at most* "
 msgstr "Veuillez choisir *au plus*"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:974
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:975
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:982
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:983
 msgid "answers and provide a comment:"
 msgstr "réponses et laissez un commentaire :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1014
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1032
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1022
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1040
 msgid "Please write your answer(s) here:"
 msgstr "Veuillez écrire votre(vos) réponse(s) ici :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1054
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1056
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1063
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1066
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1076
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1079
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1089
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1092
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1062
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1064
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1071
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1074
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1084
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1087
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1097
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1100
 msgid "Please write your answer here:"
 msgstr "Veuillez écrire votre réponse ici :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1113
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1131
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1168
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1177
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1204
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1219
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1245
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1260
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1455
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1465
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1550
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1553
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1645
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1646
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1121
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1139
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1176
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1185
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1212
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1227
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1253
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1268
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1463
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1473
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1558
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1561
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1653
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1654
 msgid "Please choose the appropriate response for each item:"
 msgstr "Choisissez la réponse appropriée pour chaque élément :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1321
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1322
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1329
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1330
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr "Veuillez saisir un multiple de %d compris entre %d et %d pour chaque élément :"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1325
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1326
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1333
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1334
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "Veuillez saisir une nombre compris entre %d et %d pour chaque élément :"
 
 # E:\www\limesurvey/common.php:1528
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1697
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1705
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Il y a {NUMBEROFQUESTIONS} questions dans ce questionnaire"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1778
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1786
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Veuillez faxer ce questionnaire rempli à : %s"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1797
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1805
 #, php-format
 msgid "Only answer this question for the items you selected in question %d ('%s')"
 msgstr "Répondre à cette question seulement pour les éléments choisis à la question %d ('%s')"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1806
+#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/printablesurvey.php:1814
 #, php-format
 msgid "Only answer this question for the items you did not select in question %d ('%s')"
 msgstr "Répondre à cette question seulement pour les éléments non choisis à la question %d ('%s')"
@@ -9281,10 +9288,6 @@ msgstr "Nombre total d'enregistrement(s) importé(s) :"
 msgid "Export result data to SPSS"
 msgstr "Exporter les données de résultat vers SPSS"
 
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_spss.php:119
-msgid "Data selection:"
-msgstr "Sélection de données :"
-
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_spss.php:125
 msgid "SPSS version:"
 msgstr "Version de SPSS :"
@@ -9298,16 +9301,8 @@ msgid "16 or up"
 msgstr "16 ou plus"
 
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_spss.php:133
-msgid "Step 1:"
-msgstr "Étape 1 :"
-
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_spss.php:133
 msgid "Export syntax"
 msgstr "Syntaxe de l'export"
-
-#: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_spss.php:134
-msgid "Step 2:"
-msgstr "Étape 2 :"
 
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/export_data_spss.php:134
 #: /home/b00z00/__SVN/limesurvey/source/limesurvey/admin/exportresults.php:247
@@ -10460,6 +10455,12 @@ msgstr "Veuillez cliquer ci-dessous pour structurer la base de données"
 msgid "Could not create database"
 msgstr "Impossible de créer la base de données"
 
+#~ msgid "Your Answer"
+#~ msgstr "Votre réponse"
+#~ msgid "Passed one time password doesn't match one time password for user %s"
+#~ msgstr ""
+#~ "Le mot de passe à usage unique saisi ne correspond pas à celui défini "
+#~ "pour l'utilisateur %s"
 #~ msgid "No matching qid"
 #~ msgstr "Pas d'ID de question (qid) correspondant"
 #~ msgid "The following question attributes should be deleted"
