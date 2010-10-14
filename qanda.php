@@ -611,9 +611,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
                 if (trim($qidattributes['min_answers'])!='')
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . sprintf($clang->gT("Rank at least %d items"), $qidattributes['min_answers'])."</span>";
-                    $question_text['help'] .=' '.sprintf($clang->gT("Rank at least %d items"), $qidattributes['min_answers']);
-
+                    . sprintf($clang->ngT("Check at least %d item","Check at least %d items",$minansw['value']),$qidattributes['min_answers'])."</span>";
+                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item","Check at least %d items",$minansw['value']),$qidattributes['min_answers']);
                 }
             }
             break;
@@ -644,8 +643,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
                     } else
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw['value']);
+                        . sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value'])."</span>";
+                        $question_text['help'] = sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value']);
                     }
                 }
             }
@@ -698,7 +697,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             if ($qidattributes['min_num_of_files'] != 0)
             {
                 if (trim($qidattributes['min_num_of_files']) != 0)
-                {
+                {                                         
                     $qtitle .= "<br />\n<span class = \"questionhelp\">"
                     .sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files'])."<span>";
                     $question_text['help'] .= ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files']);
@@ -2810,8 +2809,8 @@ function do_ranking($ia)
         $minansw=trim($qidattributes["min_answers"]);
         if(!isset($showpopups) || $showpopups == 0)
         {
-            $answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\"."),
-            $minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
+            $answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>"
+                       .sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\".",$minansw),$minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
         }
         $minanswscript = "<script type='text/javascript'>\n"
         . "  <!--\n"
@@ -2826,8 +2825,7 @@ function do_ranking($ia)
 			document.getElementById('rankingminanswarning{$ia[0]}').style.display='';\n";
         } else {
             $minanswscript .="
-			        alert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
-            $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
+                    alert('".sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\"",$minansw,'js'),$minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
         }
         $minanswscript .= ""
         . "     return false;\n"
