@@ -824,12 +824,14 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<td align='left'> {$surveyinfo['surveyls_welcometext']}</td></tr>\n"
         . "<tr ><td align='right' valign='top'><strong>"
         . $clang->gT("Administrator:")."</strong></td>\n"
-        . "<td align='left'> {$surveyinfo['admin']} ({$surveyinfo['adminemail']})</td></tr>\n"
-        . "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Fax To:")."</strong></td>\n<td align='left'>";
-        if (trim($surveyinfo['faxto'])!='') {$surveysummary .= " {$surveyinfo['faxto']}";}
-        $surveysummary .= "</td></tr>\n"
-        . "<tr><td align='right' valign='top'><strong>"
+        . "<td align='left'> {$surveyinfo['admin']} ({$surveyinfo['adminemail']})</td></tr>\n";
+        if (trim($surveyinfo['faxto'])!='')
+        {
+            $surveysummary="<tr><td align='right' valign='top'><strong>"
+            . $clang->gT("Fax To:")."</strong></td>\n<td align='left'>{$surveyinfo['faxto']}";
+            $surveysummary .= "</td></tr>\n";
+        }
+        $surveysummary .= "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Start date/time:")."</strong></td>\n";
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
         if (trim($surveyinfo['startdate'])!= '')
@@ -866,18 +868,23 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         // get the rowspan of the Additionnal languages row
         // is at least 1 even if no additionnal language is present
         $additionnalLanguagesCount = count($aAdditionalLanguages);
-        if ($additionnalLanguagesCount == 0) $additionnalLanguagesCount = 1;
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Additional Languages").":</strong></td>\n";
-
         $first=true;
-        foreach ($aAdditionalLanguages as $langname)
+        if ($additionnalLanguagesCount == 0)
         {
-            if ($langname)
+                    $surveysummary .= "<td align='left'>-</td>\n";
+        }
+        else
+        {
+            foreach ($aAdditionalLanguages as $langname)
             {
-                if (!$first) {$surveysummary .= "<tr><td>&nbsp;</td>";}
-                $first=false;
-                $surveysummary .= "<td align='left'>".getLanguageNameFromCode($langname,false)."</td></tr>\n";
+                if ($langname)
+                {
+                    if (!$first) {$surveysummary .= "<tr><td>&nbsp;</td>";}
+                    $first=false;
+                    $surveysummary .= "<td align='left'>".getLanguageNameFromCode($langname,false)."</td></tr>\n";
+                }
             }
         }
         if ($first) $surveysummary .= "</tr>";
@@ -886,7 +893,14 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Exit Link").":</strong></td>\n"
         . "<td align='left'>";                                             
-        if ($surveyinfo['surveyls_url']!="") {$surveysummary .=" <a href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";}
+        if ($surveyinfo['surveyls_url']!="") 
+        {
+            $surveysummary .=" <a href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";
+        }
+        else
+        {
+            $surveysummary .="-";
+        }
         $surveysummary .="</td></tr>\n";
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Number of questions/groups").":</strong></td><td>$sumcount3/$sumcount2</td></tr>\n";

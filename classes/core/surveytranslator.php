@@ -253,7 +253,7 @@ function getLanguageData($orderbynative=false) {
 
     // German
     $supportedLanguages['de']['description'] = $clang->gT('German');
-    $supportedLanguages['de']['nativedescription'] = 'Deutsch (Sie)';
+    $supportedLanguages['de']['nativedescription'] = 'Deutsch';
     $supportedLanguages['de']['rtl'] = false;
     $supportedLanguages['de']['dateformat'] = 1;
 

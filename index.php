@@ -2168,7 +2168,12 @@ function buildsurveysession()
                     <label for='token'>".$clang->gT("Token")."</label><input class='text' id='token' type='text' name='token' />
                 <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
-
+            if (isset($_GET['newtest']) && $_GET['newtest'] = "Y")
+            {
+                  echo "  <input type='hidden' name='newtest' value='Y' id='newtest' />";
+                
+            } 
+                
             // If this is a direct Reload previous answers URL, then add hidden fields
             if (isset($_GET['loadall']) && isset($_GET['scid'])
             && isset($_GET['loadname']) && isset($_GET['loadpass']))
