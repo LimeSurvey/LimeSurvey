@@ -58,55 +58,6 @@ class limesurvey_lang {
     }
 
     /**
-    * This function translates plural strings to their according language
-    * 
-    * @param $single $string The single form of the string to translate
-    * @param $plural $string The plural form to translate
-    * @param $number $integer Depending on the number of items the right plural form is taken
-    * @param mixed $escapemode Different uses require the string to be escaped accordinlgy. Possible values are 'html'(default),'js' and 'unescaped'
-    * @return string Translated string
-    */
-    function ngT($single, $plural, $number, $escapemode = 'html')
-    {
-        if ($this->gettextclass)
-        {
-            $basestring=str_replace('&lsquo;','\'',$this->gettextclass->ngettext($single, $plural, $number));
-            switch ($escapemode)
-            {
-                case 'html':
-                    return html_escape($basestring);
-                    break;
-                case 'js':
-                    return javascript_escape($basestring);
-                    break;
-                case 'unescaped':
-                    return $basestring;
-                    break;
-                default:
-                    return "Unsupported EscapeMode in gT method";
-                    break;
-            }
-        } else {
-            switch ($escapemode)
-            {
-                case 'html':
-                    return html_escape($string);
-                    break;
-                case 'js':
-                    return javascript_escape($string);
-                    break;
-                case 'unescaped':
-                    return $string;
-                    break;
-                default:
-                    return "Unsupported EscapeMode in gT method";
-                    break;
-            }
-        }
-    }
-    
-
-    /**
     * This function translates strings to their according language
     * 
     * @param string $string The string to translate

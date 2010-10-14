@@ -619,8 +619,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
                 if (trim($qidattributes['min_answers'])!='')
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . sprintf($clang->ngT("Check at least %d item","Check at least %d items",$minansw['value']),$qidattributes['min_answers'])."</span>";
-                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item","Check at least %d items",$minansw['value']),$qidattributes['min_answers']);
+                    . sprintf($clang->gT("Rank at least %d items"), $qidattributes['min_answers'])."</span>";
+                    $question_text['help'] .=' '.sprintf($clang->gT("Rank at least %d items"), $qidattributes['min_answers']);
+
                 }
             }
             break;
@@ -651,8 +652,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
                     } else
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value']);
+                        . sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw['value']);
                     }
                 }
             }
@@ -694,8 +695,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
                     } else
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value']);                        
+                        . sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw['value']);
                     }
                 }
             }
@@ -2666,9 +2667,9 @@ function do_ranking($ia)
     {
         $minansw=trim($qidattributes["min_answers"]);
         if(!isset($showpopups) || $showpopups == 0)
-        {                                                                                                            
-            $answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>"
-                       .sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\".",$minansw),$minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
+        {
+            $answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\"."),
+            $minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
         }
         $minanswscript = "<script type='text/javascript'>\n"
         . "  <!--\n"
@@ -2683,7 +2684,7 @@ function do_ranking($ia)
 			document.getElementById('rankingminanswarning{$ia[0]}').style.display='';\n";
         } else {
             $minanswscript .="
-			        alert('".sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\"",$minansw,'js'),  
+			        alert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
             $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
         }
         $minanswscript .= ""
