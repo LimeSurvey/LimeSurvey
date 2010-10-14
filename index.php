@@ -701,7 +701,10 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
     if (isset($_SESSION['srid']))
     {
         // delete the response but only if not already completed
-        $connect->query('delete from '.db_table_name('survey_'.$surveyid).' where id='.$_SESSION['srid']." and submitdate IS NULL");
+        $connect->query('DELETE FROM '.db_table_name('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
+
+        // also delete a record from saved_control when there is one
+        $connect->query('DELETE FROM '.db_table_name('saved_control'). ' WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
     }
     session_unset();
     session_destroy();
