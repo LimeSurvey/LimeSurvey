@@ -389,7 +389,7 @@ function transferlabels()
    
     if (lsreplace)
     {
-       $('.answertable:first tbody tr').each(function(){
+       $('.answertable:eq('+scale_id+') tbody tr').each(function(){
           aRowInfo=this.id.split('_');  
           $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
        }); 
@@ -495,7 +495,7 @@ function quickaddlabels()
 
     if (lsreplace)
     {
-       $('.answertable:first tbody tr').each(function(){
+       $('.answertable:eq('+scale_id+') tbody tr').each(function(){
           aRowInfo=this.id.split('_');  
           $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
        }); 
