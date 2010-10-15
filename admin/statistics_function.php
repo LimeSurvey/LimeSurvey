@@ -59,36 +59,28 @@
 //don't call this script directly!
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
-//some includes, the progressbar is used to show a progressbar while generating the graphs
-//if($casEnabled)
-//{
-//	include_once("login_check_cas.php");
-//}
-//else
-//{
 
-//}
-
-//require_once('classes/core/class.progressbar.php');
-
-
-
-
-//	// LimeSurvey translation Object
-//	require_once($rootdir.'/classes/core/language.php');
-//	$clang = new limesurvey_lang($defaultlang);
-
-
-
-
-//generate_statistics('999','all',0,'pdf','F');
-
+/**
+* Generates statistics
+* 
+* @param int $surveyid The survey id
+* @param mixed $allfields
+* @param mixed $q2show
+* @param mixed $usegraph
+* @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
+* @param string $pdfOutput Sets the target for the PDF output: DD=File download , F=Save file to local disk
+* @param string $statlangcode Lamguage for statistics
+* @param mixed $browse  Show browse buttons
+* @return buffer
+*/
 function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='DD',$statlangcode=null, $browse = true)
 {
     //$allfields ="";
     global $connect, $dbprefix, $clang,
     $rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname,
     $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
+
+    $fieldmap=createFieldMap($surveyid, "full");
 
     if (is_null($statlangcode))
     {
@@ -286,6 +278,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     // creates array of post variable names
     for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;}
 
+    $aQuestionMap=array();
+    foreach ($fieldmap as $field)
+    {
+        if(isset($field['qid']) && $field['qid']!='')
+        $aQuestionMap[]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+    }
+
     /*
      * Iterate through postvars to create "nice" data for SQL later.
      *
@@ -296,7 +295,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     foreach ($postvars as $pv)
     {
         //Only do this if there is actually a value for the $pv
-        if (in_array($pv, $allfields) || in_array(substr($pv,0,-1), $allfields))
+        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap))
         {
             $firstletter=substr($pv,0,1);
             /*
@@ -331,10 +330,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             //P - Multiple Options with comments
             elseif ($firstletter == "M"  || $firstletter == "P")
             {
+                $mselects=array();
                 //create a list out of the $pv array
                 list($lsid, $lgid, $lqid) = explode("X", $pv);
 
-                $aquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid=$lqid AND language='{$language}' ORDER BY question_order";
+                $aquery="SELECT title FROM ".db_table_name("questions")." WHERE parent_qid=$lqid AND language='{$language}' and scale_id=0 ORDER BY question_order";
                 $aresult=db_execute_num($aquery) or safe_die ("Couldn't get subquestions<br />$aquery<br />".$connect->ErrorMsg());
 
                 // go through every possible answer
@@ -647,7 +647,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
 
                 //1. Get list of answers
-                $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
+                $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' and scale_id=0 ORDER BY question_order";
                 $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
                  
                 //loop through multiple answers
@@ -674,8 +674,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             //T - Long Free Text
             elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
             {
-                $fieldmap=createFieldMap($surveyid, "full");
-                 
+                
                 //search for key
                 $fld = substr($rt, 1, strlen($rt));
                 $fielddata=$fieldmap[$fld];
@@ -1327,9 +1326,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             // NICE SIMPLE SINGLE OPTION ANSWERS
             else
             {
-                //get database fields for this survey
-                $fieldmap=createFieldMap($surveyid, "full");
-                //print_r($fieldmap);
                 //search for key
                 $fld = 
                 $fielddata=$fieldmap[$rt];

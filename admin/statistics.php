@@ -460,10 +460,8 @@ foreach ($filters as $flt)
      Y - Yes/No
      ! - List (Dropdown) )
      */
-    if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" &&
-    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" &&
-    $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" &&
-    $flt[2] != "X" && $flt[2] != "K" &&	$flt[2] != ":" && $flt[2] != ";") //Have to make an exception for these types!
+    if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L'
+     || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!') //Have to make an exception for these types!
     {
 
         $statisticsoutput .= "\t\t\t\t<td align='center'>";
@@ -487,7 +485,10 @@ foreach ($filters as $flt)
          *
          * Auto-check the question types mentioned above
          */
-        if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+        if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  
+            || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE 
+            || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE 
+            || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
         {$statisticsoutput .= " checked='checked'";}
 
         //show speaker symbol which contains full question text
