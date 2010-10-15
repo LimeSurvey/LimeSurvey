@@ -562,20 +562,6 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             }
         }
 
-//<AdV>
-        if(bHasRight($surveyid,'edit_survey_property'))
-        {
-            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=translate&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Translate survey")."\" >"
-            . "<img src='$imagefiles/translate_survey.png' name='translate' alt='".$clang->gT("Translate survey")."' /></a>\n";
-        }
-        else
-        {
-            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
-            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='80' />\n";
-        }
-//</AdV>
 
         if (bHasRight($surveyid,'export') || bHasRight($surveyid,'activate_survey'))
         {
@@ -713,6 +699,19 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
         }
 
+        if(bHasRight($surveyid,'edit_survey_property'))
+        {
+            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=translate&amp;sid=$surveyid', '_top')\""
+            . " title=\"".$clang->gTview("Translate survey")."\" >"
+            . "<img src='$imagefiles/translate.png' name='translate' alt='".$clang->gT("Translate survey")."' /></a>\n";
+        }
+        else
+        {
+            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
+            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='80' />\n";
+        }
+
         if (bHasRight($surveyid,'define_questions'))
         {
             if ($sumcount6 > 0) {
@@ -802,7 +801,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
         || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
-        || $action=="importsurveyresources" || $action=="translate"  // <AdV>
+        || $action=="importsurveyresources" || $action=="translate"  
         || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";}
         $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -3576,7 +3575,6 @@ if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsu
 
 }
 
-//<AdV>
 if ($action == "translate")  // Translate survey
 {
     if(bHasRight($surveyid,'edit_survey_property'))
@@ -3590,9 +3588,6 @@ if ($action == "translate")  // Translate survey
     }
 
 }
-
-//</AdV>
-
 
 if($action == "quotas")
 {
