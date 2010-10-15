@@ -1327,7 +1327,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             else
             {
                 //search for key
-                $fld = 
                 $fielddata=$fieldmap[$rt];
                 //print_r($fielddata);
                 //get SGQA IDs
@@ -1575,6 +1574,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                          
                     case "1":	//array (dual scale)
                          
+                        $sSubquestionQuery = "SELECT  question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $sSubquestion=FlattenText($connect->GetOne($sSubquestionQuery));
+                         
                         //get question attributes
                         $qidattributes=getQuestionAttributes($qqid);
 
@@ -1632,7 +1634,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
 
                         //adapt title and question
-                        $qtitle = $qtitle." [".$qanswer."][".$labelno."]";
+                        $qtitle = $qtitle." [".$sSubquestion."][".$labelno."]";
                         $qquestion  = $qastring .$labelheader;
                         break;
 
