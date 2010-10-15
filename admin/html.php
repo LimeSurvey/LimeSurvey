@@ -45,24 +45,24 @@ if ($action == "listsurveys")
                     <th colspan='3'>".$clang->gT("Responses")."</th>
                     <th colspan='2'>&nbsp;</th>
                   </tr>
-				  <tr>
-				    <th>".$clang->gT("Status")."</th>
+          <tr>
+            <th>".$clang->gT("Status")."</th>
                     <th>".$clang->gT("SID")."</th>
-				    <th>".$clang->gT("Survey")."</th>
-				    <th>".$clang->gT("Date created")."</th>
-				    <th>".$clang->gT("Owner") ."</th>
-				    <th>".$clang->gT("Access")."</th>
-				    <th>".$clang->gT("Anonymous answers")."</th>
-				    <th>".$clang->gT("Full")."</th>
+            <th>".$clang->gT("Survey")."</th>
+            <th>".$clang->gT("Date created")."</th>
+            <th>".$clang->gT("Owner") ."</th>
+            <th>".$clang->gT("Access")."</th>
+            <th>".$clang->gT("Anonymous answers")."</th>
+            <th>".$clang->gT("Full")."</th>
                     <th>".$clang->gT("Partial")."</th>
                     <th>".$clang->gT("Total")."</th>
                     <th>".$clang->gT("Tokens available")."</th>
                     <th>".$clang->gT("Response rate")."</th>
-				  </tr></thead>
-				  <tfoot><tr class='header'>
-		<td colspan=\"12\">&nbsp;</td>".
-		"</tr></tfoot>
-		<tbody>";
+          </tr></thead>
+          <tfoot><tr class='header'>
+    <td colspan=\"12\">&nbsp;</td>".
+    "</tr></tfoot>
+    <tbody>";
         $gbc = "evenrow";
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
@@ -172,10 +172,10 @@ if ($action == "listsurveys")
 
             $listsurveys.="<td align='center'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['sid']}</a></td>";
             $listsurveys.="<td align='left'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['surveyls_title']}</a></td>".
-					    "<td>".$datecreated."</td>".
-					    "<td>".$ownername."</td>".
-					    "<td>".$visibility."</td>" .
-					    "<td>".$privacy."</td>";
+              "<td>".$datecreated."</td>".
+              "<td>".$ownername."</td>".
+              "<td>".$visibility."</td>" .
+              "<td>".$privacy."</td>";
 
             if ($rows['active']=="Y")
             {
@@ -190,17 +190,17 @@ if ($action == "listsurveys")
             }
             
             if ($rows['active']=="Y" && tableExists("tokens_".$rows['sid']))
-		    {
-		    	//get the number of tokens for each survey
-		    	$tokencountquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid']);
+        {
+          //get the number of tokens for each survey
+          $tokencountquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid']);
                             $tokencountresult = db_execute_num($tokencountquery); //Checked
                             while ($tokenrow = $tokencountresult->FetchRow())
                             {
                                 $tokencount = $tokenrow[0];
                             }
                             
-		    	//get the number of COMLETED tokens for each survey
-		    	$tokencompletedquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid'])." WHERE completed!='N'";
+          //get the number of COMLETED tokens for each survey
+          $tokencompletedquery = "SELECT count(tid) FROM ".db_table_name("tokens_".$rows['sid'])." WHERE completed!='N'";
                             $tokencompletedresult = db_execute_num($tokencompletedquery); //Checked
                             while ($tokencompletedrow = $tokencompletedresult->FetchRow())
                             {
@@ -221,18 +221,18 @@ if ($action == "listsurveys")
                             
                             $listsurveys .= "<td>".$tokencount."</td>";
                             $listsurveys .= "<td>".$tokenpercentage."%</td>";
-		    }
-		    else
-		    {
-				$listsurveys .= "<td>&nbsp;</td>";
-				$listsurveys .= "<td>&nbsp;</td>";
-		    }
-		    
-		    $listsurveys .= "</tr>" ;
+        }
+        else
+        {
+        $listsurveys .= "<td>&nbsp;</td>";
+        $listsurveys .= "<td>&nbsp;</td>";
+        }
+        
+        $listsurveys .= "</tr>" ;
         }
 
-		$listsurveys.="</tbody>";
-		$listsurveys.="</table><br />" ;
+    $listsurveys.="</tbody>";
+    $listsurveys.="</table><br />" ;
     }
     else $listsurveys="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
 }
@@ -525,10 +525,9 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='80' />\n";
         }
 
-
         if (bHasRight($surveyid,'delete_survey'))
         {
-            //			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid', '_top')\""
+            //      $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid', '_top')\""
             $surveysummary .= "<a href=\"#\" onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid")."\""
             . " title=\"".$clang->gTview("Delete Current Survey")."\" >"
             . "<img src='$imagefiles/delete.png' name='DeleteWholeSurvey' alt='".$clang->gT("Delete Current Survey")."' /></a>\n" ;
@@ -562,6 +561,22 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 . "<img src='$imagefiles/saved.png' name='BrowseSaved' alt='".$clang->gT("View Saved but not submitted Responses")."' /></a>\n";
             }
         }
+
+//<AdV>
+        if(bHasRight($surveyid,'edit_survey_property'))
+        {
+            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=translate&amp;sid=$surveyid', '_top')\""
+            . " title=\"".$clang->gTview("Translate survey")."\" >"
+            . "<img src='$imagefiles/translate_survey.png' name='translate' alt='".$clang->gT("Translate survey")."' /></a>\n";
+        }
+        else
+        {
+            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
+            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='80' />\n";
+        }
+//</AdV>
+
         if (bHasRight($surveyid,'export') || bHasRight($surveyid,'activate_survey'))
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
@@ -787,7 +802,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
         || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
-        || $action=="importsurveyresources"
+        || $action=="importsurveyresources" || $action=="translate"  // <AdV>
         || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";}
         $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -973,11 +988,11 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
 {
     // TODO: check that surveyid and thus baselang are always set here
     $sumquery4 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND
-	gid=$gid AND language='".$baselang."'"; //Getting a count of questions for this survey
+  gid=$gid AND language='".$baselang."'"; //Getting a count of questions for this survey
     $sumresult4 = $connect->Execute($sumquery4); //Checked
     $sumcount4 = $sumresult4->RecordCount();
     $grpquery ="SELECT * FROM ".db_table_name('groups')." WHERE gid=$gid AND
-	language='".$baselang."' ORDER BY ".db_table_name('groups').".group_order";
+  language='".$baselang."' ORDER BY ".db_table_name('groups').".group_order";
     $grpresult = db_execute_assoc($grpquery); //Checked
 
     // Check if other questions/groups are dependent upon this group
@@ -1015,7 +1030,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
             if (is_null($condarray))
             {
-                //				$groupsummary .= "<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')\""
+                //        $groupsummary .= "<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')\""
                 $groupsummary .= "<a href='#' onclick=\"if (confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid")."}\""
                 . " title=\"".$clang->gTview("Delete current question group")."\">"
                 . "<img src='$imagefiles/delete.png' alt='".$clang->gT("Delete current question group")."' name='DeleteWholeGroup' title=''  /></a>\n";
@@ -1096,7 +1111,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         //  $groupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
 
         if ($qid || $action=='editgroup'|| $action=='addquestion') {$gshowstyle="style='display: none'";}
-        else	  {$gshowstyle="";}
+        else    {$gshowstyle="";}
 
         $groupsummary .= "<table id='groupdetails' $gshowstyle ><tr ><td width='20%' align='right'><strong>"
         . $clang->gT("Title").":</strong></td>\n"
@@ -1131,15 +1146,15 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 {
     // TODO: check that surveyid is set and that so is $baselang
     //Show Question Details
-	//Count answer-options for this question
+  //Count answer-options for this question
     $qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."' ORDER BY sortorder, answer";
     $qrr = $connect->Execute($qrq); //Checked
     $qct = $qrr->RecordCount();
-	//Count sub-questions for this question
-	$sqrq= "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
-	$sqrr= $connect->Execute($sqrq); //Checked
-	$sqct = $sqrr->RecordCount();
-	
+  //Count sub-questions for this question
+  $sqrq= "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$qid AND language='".$baselang."'";
+  $sqrr= $connect->Execute($sqrq); //Checked
+  $sqct = $sqrr->RecordCount();
+  
     $qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
     $qrresult = db_execute_assoc($qrquery) or safe_die($qrquery."<br />".$connect->ErrorMsg()); //Checked
     $questionsummary = "<div class='menubar'>\n";
@@ -1209,16 +1224,16 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             if (is_null($condarray))
             {
                 $questionsummary .= "<a href='#'" .
-				"onclick=\"if (confirm('".$clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."}\">"
-				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt='".$clang->gT("Delete current question")."' "
-				. "border='0' hspace='0' /></a>\n";
+        "onclick=\"if (confirm('".$clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."}\">"
+        . "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt='".$clang->gT("Delete current question")."' "
+        . "border='0' hspace='0' /></a>\n";
             }
             else
             {
                 $questionsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-				"onclick=\"alert('".$clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js")."')\""
-				. "title=\"".$clang->gTview("Disabled - Delete current question")."\">"
-				. "<img src='$imagefiles/delete_disabled.png' name='DeleteWholeQuestion' alt='".$clang->gT("Disabled - Delete current question")."' /></a>\n";
+        "onclick=\"alert('".$clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js")."')\""
+        . "title=\"".$clang->gTview("Disabled - Delete current question")."\">"
+        . "<img src='$imagefiles/delete_disabled.png' name='DeleteWholeQuestion' alt='".$clang->gT("Disabled - Delete current question")."' /></a>\n";
             }
         }
         else {$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";}
@@ -1360,15 +1375,15 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'"
             . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editansweroptions', '_top')\" /></font></td></tr>\n";
         }
-		if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
-		{
+    if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
+    {
            $questionsummary .= "<tr ><td></td><td align='left'>"
             . "<font face='verdana' size='1' color='red'>"
             . $clang->gT("Warning").": ". $clang->gT("You need to add subquestions to this question")." "
             . "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
             . $clang->gT("Edit subquestions for this question")."' name='EditThisQuestionAnswers'"
             . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editsubquestions', '_top')\" /></font></td></tr>\n";
-		}
+    }
 
         if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
         {
@@ -1914,7 +1929,7 @@ if ($action=='editsubquestions')
 
 
 // *************************************************
-// Survey Rights Start	****************************
+// Survey Rights Start  ****************************
 // *************************************************
 
 if($action == "addsurveysecurity")
@@ -2037,7 +2052,7 @@ if($action == "delsurveysecurity")
     {
         if (isset($postuserid))
         {
-            $dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
+            $dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$postuserid} AND sid={$surveyid}";  //  added by Dennis
             $dresult=$connect->Execute($dquery); //Checked
 
             $addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
@@ -2191,30 +2206,30 @@ if($action == "exportstructure")
         ."<label for='surveycsv'>"
         .$clang->gT("LimeSurvey XML survey file (*.lss)")."</label></li>\n";
 
-	    $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructurequexml'  id='queXML'"
-	    ."<label for='queXML'>"
-	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
-	    ."</label></li>\n";
+      $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructurequexml'  id='queXML'"
+      ."<label for='queXML'>"
+      .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
+      ."</label></li>\n";
 
-	    // XXX
-	    //include("../config.php");
+      // XXX
+      //include("../config.php");
 
-	    //echo $export4lsrc;
-	    if($export4lsrc)
-	    {
-	        $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv'
-		    onclick=\"this.form.action.value='exportstructureLsrcCsv'\" />"
-		    ."<label for='LsrcCsv'>"
-		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label></li>";
-	    }
-	    $exportstructure.="</ul>\n";
+      //echo $export4lsrc;
+      if($export4lsrc)
+      {
+          $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv'
+        onclick=\"this.form.action.value='exportstructureLsrcCsv'\" />"
+        ."<label for='LsrcCsv'>"
+        .$clang->gT("Save for Lsrc (*.csv)")." "
+        ."</label></li>";
+      }
+      $exportstructure.="</ul>\n";
 
-	    $exportstructure.="<p>\n"
-	    ."<input type='submit' value='"
-	    .$clang->gT("Export To File")."' />\n"
-	    ."<input type='hidden' name='sid' value='$surveyid' />\n";
-	    $exportstructure.="</form>\n";
+      $exportstructure.="<p>\n"
+      ."<input type='submit' value='"
+      .$clang->gT("Export To File")."' />\n"
+      ."<input type='hidden' name='sid' value='$surveyid' />\n";
+      $exportstructure.="</form>\n";
     }
 }
 
@@ -2228,36 +2243,36 @@ if($action == "exportstructureGroup")
         ."<ul>\n"
         ."<li>\n";
         $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv'
-	    onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>"
-	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey group file (*.csv)")."</label></li>\n";
+      onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>"
+      ."<label for='surveycsv'>"
+      .$clang->gT("LimeSurvey group file (*.csv)")."</label></li>\n";
 
-	    //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
-	    //	    ."<label for='queXML'>"
-	    //	    .$clang->gT("queXML Survey XML Format (*.xml)")." "
-	    //	    ."</label>\n";
+      //      $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
+      //      ."<label for='queXML'>"
+      //      .$clang->gT("queXML Survey XML Format (*.xml)")." "
+      //      ."</label>\n";
 
-	    // XXX
-	    //include("../config.php");
+      // XXX
+      //include("../config.php");
 
-	    //echo $export4lsrc;
-	    if($export4lsrc)
-	    {
-	        $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv'
-		    onclick=\"this.form.action.value='exportstructureLsrcCsvGroup'\" />"
-		    ."<label for='LsrcCsv'>"
-		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label></li>\n";
-	    }
+      //echo $export4lsrc;
+      if($export4lsrc)
+      {
+          $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv'
+        onclick=\"this.form.action.value='exportstructureLsrcCsvGroup'\" />"
+        ."<label for='LsrcCsv'>"
+        .$clang->gT("Save for Lsrc (*.csv)")." "
+        ."</label></li>\n";
+      }
 
-	    $exportstructure.="</ul>\n"
-	    ."<p>\n"
-	    ."<input type='submit' value='"
-	    .$clang->gT("Export to file")."' />\n"
-	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-	    ."<input type='hidden' name='gid' value='$gid' />\n"
-	    ."<input type='hidden' name='action' value='exportstructurecsvGroup' />\n";
-	    $exportstructure.="</form>\n";
+      $exportstructure.="</ul>\n"
+      ."<p>\n"
+      ."<input type='submit' value='"
+      .$clang->gT("Export to file")."' />\n"
+      ."<input type='hidden' name='sid' value='$surveyid' />\n"
+      ."<input type='hidden' name='gid' value='$gid' />\n"
+      ."<input type='hidden' name='action' value='exportstructurecsvGroup' />\n";
+      $exportstructure.="</form>\n";
     }
     else
     {
@@ -2275,37 +2290,37 @@ if($action == "exportstructureQuestion")
         ."<ul>\n"
         ."<li>\n";
         $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv'
-	    onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
-	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey group file (*.csv)")."</label></li>\n";
+      onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
+      ."<label for='surveycsv'>"
+      .$clang->gT("LimeSurvey group file (*.csv)")."</label></li>\n";
 
-	    //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
-	    //	    ."<label for='queXML'>"
-	    //	    .$clang->gT("queXML Survey XML Format (*.xml)")." "
-	    //	    ."</label>\n";
+      //      $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
+      //      ."<label for='queXML'>"
+      //      .$clang->gT("queXML Survey XML Format (*.xml)")." "
+      //      ."</label>\n";
 
-	    // XXX
-	    //include("../config.php");
+      // XXX
+      //include("../config.php");
 
-	    //echo $export4lsrc;
-	    if($export4lsrc)
-	    {
-	        $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv'
-		    onclick=\"this.form.action.value='exportstructureLsrcCsvQuestion'\" />"
-		    ."<label for='LsrcCsv'>"
-		    .$clang->gT("Save for Lsrc (*.csv)")." "
-		    ."</label></li>\n";
-	    }
+      //echo $export4lsrc;
+      if($export4lsrc)
+      {
+          $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv'
+        onclick=\"this.form.action.value='exportstructureLsrcCsvQuestion'\" />"
+        ."<label for='LsrcCsv'>"
+        .$clang->gT("Save for Lsrc (*.csv)")." "
+        ."</label></li>\n";
+      }
 
-	    $exportstructure.="</ul>\n"
-	    ."<p>\n"
-	    ."<input type='submit' value='"
-	    .$clang->gT("Export to file")."' />\n"
-	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-	    ."<input type='hidden' name='gid' value='$gid' />\n"
-	    ."<input type='hidden' name='qid' value='$qid' />\n"
-	    ."<input type='hidden' name='action' value='exportstructurecsvQuestion' />\n";
-	    $exportstructure.="</form>\n";
+      $exportstructure.="</ul>\n"
+      ."<p>\n"
+      ."<input type='submit' value='"
+      .$clang->gT("Export to file")."' />\n"
+      ."<input type='hidden' name='sid' value='$surveyid' />\n"
+      ."<input type='hidden' name='gid' value='$gid' />\n"
+      ."<input type='hidden' name='qid' value='$qid' />\n"
+      ."<input type='hidden' name='action' value='exportstructurecsvQuestion' />\n";
+      $exportstructure.="</form>\n";
     }
     else
     {
@@ -2375,7 +2390,7 @@ if($action == "surveysecurity")
         $surveysecurity .= "<tbody>\n";
         if($result2->RecordCount() > 0)
         {
-            //	output users
+            //  output users
             $row = 0;
             while ($resul2row = $result2->FetchRow())
             {
@@ -2491,12 +2506,12 @@ elseif ($action == "surveyrights")
     {
         $rights = array();
 
-        if(isset($_POST['edit_survey_property']))$rights['edit_survey_property']=1;	else $rights['edit_survey_property']=0;
-        if(isset($_POST['define_questions']))$rights['define_questions']=1;			else $rights['define_questions']=0;
-        if(isset($_POST['browse_response']))$rights['browse_response']=1;			else $rights['browse_response']=0;
-        if(isset($_POST['export']))$rights['export']=1;								else $rights['export']=0;
-        if(isset($_POST['delete_survey']))$rights['delete_survey']=1;				else $rights['delete_survey']=0;
-        if(isset($_POST['activate_survey']))$rights['activate_survey']=1;			else $rights['activate_survey']=0;
+        if(isset($_POST['edit_survey_property']))$rights['edit_survey_property']=1; else $rights['edit_survey_property']=0;
+        if(isset($_POST['define_questions']))$rights['define_questions']=1;     else $rights['define_questions']=0;
+        if(isset($_POST['browse_response']))$rights['browse_response']=1;     else $rights['browse_response']=0;
+        if(isset($_POST['export']))$rights['export']=1;               else $rights['export']=0;
+        if(isset($_POST['delete_survey']))$rights['delete_survey']=1;       else $rights['delete_survey']=0;
+        if(isset($_POST['activate_survey']))$rights['activate_survey']=1;     else $rights['activate_survey']=0;
 
         if(isset($postuserid)){
             $uids[] = $postuserid;
@@ -2524,7 +2539,7 @@ elseif ($action == "surveyrights")
 }
 
 // *************************************************
-// Survey Rights End	****************************
+// Survey Rights End  ****************************
 // *************************************************
 
 
@@ -3560,6 +3575,24 @@ if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsu
     }
 
 }
+
+//<AdV>
+if ($action == "translate")  // Translate survey
+{
+    if(bHasRight($surveyid,'edit_survey_property'))
+    {
+        $translateoutput .="<div class='header'>".$clang->gT("Translate Survey")."</div>\n";
+        $translateoutput .= "This is the survey translation feature";
+    }
+    else
+    {
+        include("access_denied.php");
+    }
+
+}
+
+//</AdV>
+
 
 if($action == "quotas")
 {

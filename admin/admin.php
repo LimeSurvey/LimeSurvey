@@ -82,7 +82,7 @@ if(isset($_SESSION['loginID']))
     if (
     preg_match
     (
-			'/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertnewgroup|insertCSV|insertnewquestion|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatesurveylocalesettings|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
+      '/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertnewgroup|insertCSV|insertnewquestion|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatesurveylocalesettings|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
     $action
     )
 
@@ -106,7 +106,7 @@ if(isset($_SESSION['loginID']))
 
     if ($action == 'importsurvey' || $action == 'copysurvey')
     {
-        if ($_SESSION['USER_RIGHT_CREATE_SURVEY']==1)	{include('http_importsurvey.php');}
+        if ($_SESSION['USER_RIGHT_CREATE_SURVEY']==1) {include('http_importsurvey.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'dumpdb')
@@ -184,7 +184,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'importsurveyresources')
     {
-        if (bHasRight($surveyid,'define_questions'))	{$_SESSION['FileManagerContext']="edit:survey:$surveyid";include('import_resources_zip.php');}
+        if (bHasRight($surveyid,'define_questions'))  {$_SESSION['FileManagerContext']="edit:survey:$surveyid";include('import_resources_zip.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'exportstructureLsrcCsv')
@@ -282,6 +282,13 @@ if(isset($_SESSION['loginID']))
         if(bHasRight($surveyid,'browse_response'))    {include('saved.php');}
         else { include('access_denied.php');}
     }
+//<AdV>
+    elseif ($action == 'translate')
+    {
+        if(bHasRight($surveyid,'edit_survey_property'))    {$_SESSION['FileManagerContext']="edit:translate:$surveyid"; include('translate.php');}
+        else { include('access_denied.php'); }
+    }
+//</AdV>    
     elseif ($action == 'tokens')
     {
         if(bHasRight($surveyid,'activate_survey'))    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php'); include('bounceprocessing.php');}
@@ -343,7 +350,7 @@ if(isset($_SESSION['loginID']))
                 }
                 break;
             case 'editsurveylocalesettings':
-			case 'updatesurveysettingsandeditlocalesettings':
+      case 'updatesurveysettingsandeditlocalesettings':
                 if (bHasRight($surveyid,'edit_survey_property'))
                 {
                     $_SESSION['FileManagerContext']="edit:survey:$surveyid";
@@ -416,7 +423,7 @@ if(isset($_SESSION['loginID']))
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) &&
         !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) && !isset($extendedconditionsoutput) &&
         !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
-        !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&
+        !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) && !isset($translateoutput) && //<AdV>
         !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
         (isset($surveyid) || $action == "" || preg_match('/^(listsurveys|personalsettings|statistics|copysurvey|importsurvey|editsurveysettings|editsurveylocalesettings|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatedefaultvalues|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
     {
@@ -520,7 +527,7 @@ if(isset($_SESSION['loginID']))
     // For some output we dont want to have the standard admin menu bar
     if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) &&
     !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&  !isset($exportroutput) &&
-    !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
+    !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput)  && !isset($translateoutput) && //<AdV>
     !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) && !isset($extendedconditionsoutput) &&
     !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) &&
     (substr($action,0,4)!= 'ajax') && $action!='update' && $action!='showphpinfo')
@@ -549,6 +556,7 @@ if(isset($_SESSION['loginID']))
     if (isset($editquestion)) {$adminoutput.= $editquestion;}
     if (isset($editdefvalues)) {$adminoutput.= $editdefvalues;}
     if (isset($editsurvey)) {$adminoutput.= $editsurvey;}
+    if (isset($translateoutput)) {$adminoutput.= $translateoutput;}  //<AdV>
     if (isset($quotasoutput)) {$adminoutput.= $quotasoutput;}
     if (isset($labelsoutput)) {$adminoutput.= $labelsoutput;}
     if (isset($listsurveys)) {$adminoutput.= $listsurveys; }
@@ -593,10 +601,10 @@ if(isset($_SESSION['loginID']))
     if (!isset($printablesurveyoutput) && $subaction!='export' && (substr($action,0,4)!= 'ajax'))
     {
         if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-		if($subaction != 'bounceprocessing')
-		{
+    if($subaction != 'bounceprocessing')
+    {
         $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
-	}
+  }
         unset($_SESSION['metaHeader']);
         $adminoutput.= "</div>\n";
         if(!isset($_SESSION['checksessionpost']))
@@ -640,10 +648,10 @@ if(isset($_SESSION['loginID']))
         . "\n"
         . "//-->\n"
         . "</script>\n";
-		if($subaction != 'bounceprocessing')
-		{
-			$adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
-		}
+    if($subaction != 'bounceprocessing')
+    {
+      $adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
+    }
     }
 
 }
