@@ -73,7 +73,7 @@ function browsemenubar($title='')
 
     $browsemenubar .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
-    if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    if(bHasRight($surveyid,'export'))
     {
         // Export to application
         $browsemenubar .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export Results to Application")."\" >"
@@ -105,7 +105,7 @@ function browsemenubar($title='')
     . "<img src='$imagefiles/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
 
     //Export VV
-    if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    if(bHasRight($surveyid,'export'))
     {
         $browsemenubar .= "<a href='$scriptname?action=vvexport&amp;sid=$surveyid' title=\"".$clang->gTview("Export a VV survey file")."\" >"
         ."<img src='$imagefiles/exportvv.png' title='' alt='".$clang->gT("Export a VV survey file")."' /></a>\n";
