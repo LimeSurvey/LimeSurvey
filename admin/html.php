@@ -827,8 +827,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<td align='left'> {$surveyinfo['admin']} ({$surveyinfo['adminemail']})</td></tr>\n";
         if (trim($surveyinfo['faxto'])!='')
         {
-            $surveysummary="<tr><td align='right' valign='top'><strong>"
-            . $clang->gT("Fax To:")."</strong></td>\n<td align='left'>{$surveyinfo['faxto']}";
+            $surveysummary .="<tr><td align='right' valign='top'><strong>"
+            . $clang->gT("Fax to:")."</strong></td>\n<td align='left'>{$surveyinfo['faxto']}";
             $surveysummary .= "</td></tr>\n";
         }
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
@@ -3603,7 +3603,7 @@ function showadminmenu()
 
     // list surveys
     $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" >\n"
-    ."<img src='$imagefiles/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' \" />"
+    ."<img src='$imagefiles/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' />"
     ."</a>" ;
 
     // db backup & label editor

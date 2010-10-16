@@ -2638,20 +2638,16 @@ function do_ranking($ia)
     . "<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>".$clang->gT("Your Choices").":</label></strong><br />\n"
     . "&nbsp;".$choicelist
     . "\t&nbsp;</td>\n";
-    if (isset($maxselectlength) && $maxselectlength > 60)
+    $maxselectlength=$maxselectlength+2;
+    if ($maxselectlength > 60)
     {
-        $ranklist = str_replace("<input class=\"text\"", "<input size='60' class='text'", $ranklist);
-        $answer .= "</tr>\n<tr>\n"
-        . "\t<td align='left' class='output'>\n"
-        . "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
-        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
+        $maxselectlength=60;
     }
-    else
-    {
-        $answer .= "\t<td style=\"text-align:left; white-space:nowrap;\" class=\"rank output\">\n"
-        . "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
-        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
-    }
+    $ranklist = str_replace("<input class=\"text\"", "<input size='{$maxselectlength}' class='text'", $ranklist);
+    $answer .= "\t<td style=\"text-align:left; white-space:nowrap;\" class='rank output'>\n"
+    . "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
+    . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
+    
     $answer .= $ranklist
     . "\t</table>\n"
     . "\t</td>\n"
