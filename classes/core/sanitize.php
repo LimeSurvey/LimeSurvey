@@ -288,8 +288,7 @@ function sanitize_labelname($string)
 // make float float! but with .0
 function sanitize_float($float, $min='', $max='')
 {
-    //$float = floatval($float);
-    $float = preg_replace("#[^0-9\.-]#", "", $float);
+    $float = floatval($float);
     if((($min != '') && ($float < $min)) || (($max != '') && ($float > $max)))
     return FALSE;
     return $float;
