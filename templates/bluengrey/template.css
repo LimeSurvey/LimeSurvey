@@ -357,6 +357,9 @@ td.answertext {
 	margin:6px auto;
 }
 
+.welcome-text {
+}
+
 .x-questions {
 	color: #333333;
 	font-size: 0.8em;
@@ -366,6 +369,9 @@ td.answertext {
 }
 
 .clear-all {
+}
+
+.save-all {
 }
 
 .assessment-table {

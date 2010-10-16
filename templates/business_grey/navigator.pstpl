@@ -1,11 +1,12 @@
+
 	<tr>
 		<td>
 			<table class="navigatorTable">
 				<tr>
 					<td align="center">
-						{NAVIGATOR}<br />
-						{CLEARALL}
-						{SAVE}
+						<span class="submit-buttons">{NAVIGATOR}</span><br />
+						<span class="clear-all">{CLEARALL}</span>
+						 <span class="save-all">{SAVE}</span>
 					</td>
 				</tr>
 			</table>

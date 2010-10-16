@@ -255,6 +255,133 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   background-color: #A7A9D1;
 }
 
+.survey-name {
+	font-size: large;
+	font-weight: bold;
+	color: #666666;
+}
+
+.survey-description {
+	font-size: small;
+	color: #777777;
+}
+
+.welcome-text {
+	font-size: small;
+	color: #666666;
+}
+
+.x-questions {
+	color: #999999;
+	font-size: x-small;
+	width: 95%;
+	margin: 0 auto;
+}
+
+.privacy-message {
+	width: 75%;
+	background-color: #EEEEEE;
+	margin: 0 auto;
+}
+
+.privacy-message td {
+	font-size: x-small;
+	text-align: center;
+}
+
+.submit-buttons {
+}
+
+.clear-all {
+}
+
+.save-all {
+}
+
+.assessment-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #111111;
+}
+
+.assessment-heading {
+	background-color: #CCCCCC;
+	text-align: center;
+	font-size: small;
+	font-weight: bold;
+	border-bottom: 1px solid #111111;
+}
+
+.assessments {
+}
+
+.completed-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #111111;
+	background-color: #FFFFFF;
+}
+
+.completed-table td {
+	font-size: small;
+}
+
+td.clearall-result {
+	text-align: center;
+	background-color: #FFFFFF;
+	font-size: small;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.register-message-1 {
+	font-weight: bold;
+	padding: 0 5px 0 5px;
+}
+
+.register-message-2 {
+	padding: 0 5px 0 5px;
+}
+
+.load-error {
+	color:#FF0000;
+}
+
+.load-heading {
+	font-size: large;
+}
+
+.load-message {
+}
+
+.load-form {
+}
+
+.return-to-survey {
+}
+
+.save-error{
+	color: #FF0000;
+}
+
+.save-heading{
+	font-weight: bold;
+	font-size: large;
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
+
+
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
   /* =====================================

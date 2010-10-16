@@ -1,7 +1,10 @@
 <center>
-<font color="red">{SAVEERROR}</font>
-<strong><font size="+1">{SAVEHEADING}</font></strong><br /><br />
-{SAVEMESSAGE}<br /><br />
-{SAVEFORM}<br />
-{RETURNTOSURVEY}
+	<span class="save-error">{SAVEERROR}</span>
+	<span class="save-heading">{SAVEHEADING}</span>
+	<br /><br />
+	<span class="save-message">{SAVEMESSAGE}</span>
+	<br /><br />
+	<div class="save-form">{SAVEFORM}</div>
+	<br />
+	<span class="return-to-survey">{RETURNTOSURVEY}</span>
 </center>
