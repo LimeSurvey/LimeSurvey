@@ -62,6 +62,7 @@
 // 20070213 lemeur - marked sanitize_sql_string as obsolete, should use db_quote instead
 // 20071025 c_schmitz - added sanitize_email
 // 20071032 lemeur - added sanitize_user and sanitize_userfullname
+// 20101016 shnoulle - modify sanitize_float to keep n.0
 //
 /////////////////////////////////////////
 
@@ -284,10 +285,11 @@ function sanitize_labelname($string)
     return $string;
 }
 
-// make float float!
+// make float float! but with .0
 function sanitize_float($float, $min='', $max='')
 {
-    $float = floatval($float);
+    //$float = floatval($float);
+    $float = filter_var($float, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     if((($min != '') && ($float < $min)) || (($max != '') && ($float > $max)))
     return FALSE;
     return $float;
