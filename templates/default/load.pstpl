@@ -1,11 +1,19 @@
-<table id='loadtable' width="100%" align="center" cellspacing="0" bgcolor="#FFFFFF">
+<table id="loadtable">
 	<tr>
-		<td align="center" bgcolor="#eef6ff">
-<h3>{LOADHEADING}</h3></td></tr>
-<tr><td align="center"><br /><font color="red">{LOADERROR}</font>
-{LOADMESSAGE}<br />
-{LOADFORM}<br />
-{RETURNTOSURVEY}<br />
-</td>
-</tr>
+		<td class="load-heading">
+			<h3>{LOADHEADING}</h3>
+		</td>
+	</tr>
+	<tr>
+		<td align="center">
+			<br />
+			<p class="load-error">{LOADERROR}</p>
+			<p class="load-message">{LOADMESSAGE}</p>
+			<br />
+			<div class="load-form">{LOADFORM}</div>
+			<br />
+			<span class="return-to-survey">{RETURNTOSURVEY}</span>
+			<br /><br />
+		</td>
+	</tr>
 </table>

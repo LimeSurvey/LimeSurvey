@@ -1,7 +1,7 @@
 <center>
-<font color="red">{LOADERROR}</font>
-<p><strong><font size="+1">{LOADHEADING}</font></strong></p>
-<p>{LOADMESSAGE}</p>
-<p>{LOADFORM}</p>
-{RETURNTOSURVEY}
+<span class="load-error">{LOADERROR}</span>
+<p class="load-heading">{LOADHEADING}</p>
+<p class="load-message">{LOADMESSAGE}</p>
+<p class="load-form">{LOADFORM}</p>
+<span class="return-to-survey">{RETURNTOSURVEY}</span>
 </center>

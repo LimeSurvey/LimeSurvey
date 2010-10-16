@@ -187,7 +187,7 @@ td.questiontext {
   font-family: verdana;
   font-size: 12px;
   font-weight: bold;
-  background-color: #eef6ff;
+  background-color: #EEF6FF;
   text-align: left;
   padding: 0.5em 1em;
 }
@@ -198,7 +198,7 @@ td.answer {
 
 td.survey-question-help {
   font-size: 10px;
-  background-color: #eef6ff;
+  background-color: #EEF6FF;
   padding-left: 1em;
 }
 
@@ -223,6 +223,269 @@ table.question {
 table.question tr.array1:hover,table.question tr.array2:hover {
   background-color: #A7A9D1;
 }
+
+.welcome-table {
+  margin: 0 auto;
+  width: 100%;
+  border: 0 none;
+  border-collapse: collapse;
+}
+
+.welcome-table td {
+}
+
+td.survey-description {
+	text-align: center;
+	background-color: #EEF6FF;
+}
+
+td.survey-welcome {
+	text-align: center;
+}
+
+.x-questions {
+	font-style: italic;
+}
+
+.navigator-table {
+	width: 100%;
+	margin: 0;
+	background-color: #EEF6FF;
+	border: 0 none;
+	border-collapse: collapse;
+}
+
+.clear-all {
+	text-align: right;
+	width: 30%;
+}
+
+.save-all {
+	text-align: left;
+	width: 30%;
+}
+
+.submit-buttons {
+	text-align: center;
+	width: 40%;
+}
+
+.survey-header-table {
+	width: 100%;
+	margin: 0;
+	border: 0 none;
+	border-collapse: collapse;
+	margin-bottom: 2px;
+}
+
+.survey-header-table td.survey-description p {
+	font-size: 10px;
+}
+
+.graph {
+	background-color: #D2E0F2;
+}
+
+.language-changer {
+	text-align: center;
+}
+
+table.group {
+	width: 100%;
+	margin: 0 0 2px 0;
+	border: 0 none;
+	border-collapse: collapse;
+	background-color: #D2E0F2;
+}
+
+.group-name {
+	font-size: small;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+
+.group-description {
+	font-size: small;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
+.
+
+.group-description {
+	font-size: small;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
+.question-wrapper {
+	width: 75%;
+	margin: 0 auto 10px auto;
+	border: 0 none;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+}
+
+.assessment-table {
+	margin: 0 auto;
+	width: 90%;
+	border-collapse: collapse;
+	border: 1px solid #EEEEEE;
+}
+
+.assessment-table td {
+	padding: 3px;
+}
+
+.assessment-heading {
+	background-color: #EEF6FF;
+	text-align: center;
+	font-size:small;
+	font-weight: bold;
+	border-bottom: 1px solid #EEEEEE;
+}
+
+.assessments {
+}
+
+.completed-table {
+	margin: 0 auto;
+	width: 90%;
+	border-collapse: collapse;
+	border: 1px solid #EEEEEE;
+	background-color: #EEF6FF;
+}
+
+.completed-table td {
+}
+
+.completed-text {
+	text-align: center;
+	font-size:small;
+	
+}
+
+table.clearall-result {
+	margin: 0 auto;
+	width: 60%;
+}
+
+table.clearall-result td {
+	text-align: center;
+	font-size:small;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.register-table {
+	margin: 0 auto;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.register-table td {
+	text-align: center;
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
+}
+
+#loadtable,
+#savetable {
+	margin: 0 auto;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#loadtable td,#savetable td {
+    padding-top: 5px;
+    padding-left: 3px;
+}
+
+#loadbutton,#savebutton {
+    padding: 0 10px;
+}
+
+.load-error,
+.save-error {
+	color:#FF0000;
+}
+
+.load-heading,
+.save-heading {
+	background-color: #EEF6FF;
+	text-align: center
+}
+
+.load-message {
+}
+
+.load-form {
+}
+
+.return-to-survey {
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
+.survey-list-table {
+	width: 100%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+}
+
+.survey-list-table td {
+	text-align: center;
+}
+
+.survey-list-table .site-name {
+}
+
+.survey-list-table .survey-list-heading {
+	font-weight: bold;
+	padding-top: 20px;
+}
+
+.survey-list-table .survey-list {
+	padding:20px 0;
+}
+
+.survey-list-table .survey-list ul {
+	padding: 0;
+}
+
+.survey-list-table .survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
+.survey-list-table .survey-contact {
+}
+
+.survey-list-table .language-changer {
+	padding-bottom: 10px;
+	height: 100px;
+}
+
+.survey-list-table .language-changer p {
+	padding:20px 0;
+}
+
+.survey-list-table .language-changer a {
+	color: #000000;
+}
+
 
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
@@ -710,6 +973,7 @@ table.outerframe {
   border-spacing: 1px;
   margin: 20px auto 40px auto;
   border: 1px solid #BBC6CC;
+  width: 75%;
 }
 
 p.surveydescription {
@@ -726,7 +990,7 @@ table.privacy {
 
 td.privacynote {
   text-align: center;
-  background-color: #eef6ff;
+  background-color: #EEF6FF;
   font-size: 10px;
   padding: 5px;
 }
@@ -803,15 +1067,6 @@ td.rank label,td.rank td strong {
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 10px;
-}
-
-#loadtable td,#savetable td {
-  padding-top: 5px;
-  padding-left: 3px;
-}
-
-#loadbutton,#savebutton {
-  padding: 0 10px;
 }
 
 #tokenform {

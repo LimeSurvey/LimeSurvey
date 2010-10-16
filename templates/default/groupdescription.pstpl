@@ -1,1 +1,3 @@
-			<br /><font face="verdana" size="2">{GROUPDESCRIPTION}</font><br /><br />
+			<br />
+			<span class="group-description">{GROUPDESCRIPTION}</span>
+			<br /><br />

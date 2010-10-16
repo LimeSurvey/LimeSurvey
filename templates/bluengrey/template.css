@@ -450,6 +450,25 @@ td.clearall-result .warning-text {
 .save-form{
 }
 
+#listingContent .survey-contact {
+}
+
+#listingContent .language-changer {
+}
+
+#listingContent .language-changer a {
+	color: #000000;
+}
+
+#listingList ul {
+	padding: 0;
+}
+
+#listingList li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
 
 /* -------------------------------------------------
    START: Question styles  ------------------------- */

@@ -1,13 +1,13 @@
 <br />
-<table align="center" width="75%" border="1" style="border-collapse: collapse" bordercolor="#111111">
- <tr>
-  <td bgcolor="#8fe0dd" align="center"><font size="2">
-   <strong>{ASSESSMENT_HEADING}</strong></font>
-  </td>
- </tr>
- <tr>
-  <td>
-   {ASSESSMENTS}
-  </td>
- </tr>
+<table class="assessment-table">
+	<tr>
+		<td class="assessment-heading">
+			{ASSESSMENT_HEADING}
+		</td>
+	</tr>
+	<tr>
+		<td class="assessments">
+			{ASSESSMENTS}
+		</td>
+	</tr>
 </table>

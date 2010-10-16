@@ -92,6 +92,10 @@ td.graph {
   left: -9999px;
 }
 
+#progress-wrapper {
+	font-weight: normal;
+}
+
 #progress-graph div.zero {
   width: 2.6em;
   margin-right: 0%;
@@ -182,6 +186,208 @@ table,img {
 table.question tr.array1:hover,table.question tr.array2:hover {
   background-color: #A7A9D1;
 }
+
+.survey-name {
+	font-weight: bold;
+	text-align: right;
+	vertical-align: bottom;
+}
+
+.survey-description {
+}
+
+.welcome-text {
+}
+
+.x-questions {
+}
+
+.privacy-message {
+	width: 75%;
+	margin: 0 auto;
+	background-color: #EFE5CA;
+}
+
+.privacy-message td {
+	text-align: center;
+	font-size:x-small;
+}
+
+.navigator-table {
+	width: 100%;
+	margin: 0 auto;
+	background-color: #EFE5CA;
+	border: 0 none;
+	border-collapse: collapse;
+}
+
+.navigator-table td {
+	width: 33%;
+	padding: 8px;
+}
+
+.clear-all {
+	text-align: left;
+}
+
+.save-all {
+	text-align: center;
+}
+
+.submit-buttons {
+	text-align: right;
+}
+
+.group-name {
+	text-align: center;
+	font-size: small;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #666666;
+}
+
+.group-description {
+	font-size: small;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
+.assessment-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #111111;
+	border-bottom: 0 none;
+}
+
+.assessment-heading {
+	background-color: #8fe0dd;
+	text-align: center;
+	font-size:small;
+	font-weight: bold;
+}
+
+.assessments {
+}
+
+.completed-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #111111;
+}
+
+.completed-table td {
+	padding: 10px;
+}
+
+.completed-text {
+}
+
+td.clearall-result {
+	text-align: center;
+	background-color: #efe5ca;
+	border: 1px solid #111111;
+}
+
+td.clearall-result .warning-text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+	color: #FF0000;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
+}
+
+.load-error {
+	color:#FF0000;
+}
+
+.load-heading {
+	font-size: large;
+	font-weight: bold;
+}
+
+.load-message {
+}
+
+.load-form {
+}
+
+.return-to-survey {
+}
+
+.save-error{
+	color: #FF0000;
+}
+
+.save-heading{
+	font-size: large;
+	font-weight: bold;
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
+.survey-list-table {
+	width: 75%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+}
+
+.survey-list-table td {
+	text-align: center;
+}
+
+.survey-list-table .site-name {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: large;
+	color: #328639;
+}
+
+.survey-list-table .survey-list-heading {
+	font-weight: bold;
+}
+
+.survey-list-table .survey-list {
+}
+
+.survey-list-table .survey-list ul {
+	padding: 0;
+}
+
+.survey-list-table .survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
+.survey-list-table .survey-contact {
+}
+
+.survey-list-table .language-changer {
+	padding-bottom: 10px;
+}
+
+.survey-list-table .language-changer a {
+	color: #000000;
+}
+
+
+
+
 
 /* -------------------------------------------------
    START: Question styles  ------------------------- */

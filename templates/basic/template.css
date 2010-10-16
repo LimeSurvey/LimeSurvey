@@ -310,10 +310,23 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 .survey-list-table .survey-list {
 }
 
+.survey-list-table .survey-list ul {
+	padding: 0;
+}
+
+.survey-list-table .survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
 .survey-list-table .survey-contact {
 }
 
 .survey-list-table .language-changer {
+}
+
+.survey-list-table .language-changer a {
+	color: #000000;
 }
 
 .register-message-1 {

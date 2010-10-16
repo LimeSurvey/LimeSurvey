@@ -1,5 +1,7 @@
-<table align="center" bgcolor="#efe5ca" width="75%">
-	<tr>
-		<td align="center"><font size="1">{PRIVACYMESSAGE}</font></td>
-	</tr>
-</table>
+						<table class="privacy-message">
+							<tr>
+								<td>
+									{PRIVACYMESSAGE}
+								</td>
+							</tr>
+						</table>

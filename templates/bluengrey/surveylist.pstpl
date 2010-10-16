@@ -12,13 +12,13 @@
 				{SURVEYLIST}
 			</ul>
 		</div>
-    	<p>
+    	<p class="survey-contact">
 			{SURVEYCONTACT}
 		</p>
     	<p>
 			{LANGUAGECHANGER}
 		</p>
-    	<p>
+    	<p class="language-changer">
 			<a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey" /></a><br />
 			<a href="http://www.limesurvey.org" target="_blank"><font color="#000000">The Online Survey Tool</font></a> - Free & Open Source<br />
 		</p>

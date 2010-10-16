@@ -1,16 +1,16 @@
-<table width="100%" align="center" cellspacing="0">
+<table class="survey-list-table">
     <tr>
-            <td align="center" bgcolor="#FFFFFF">
-             <p><font face="verdana" size="4" color="#328639"><strong>{SITENAME}</strong></font></p>
-            </td>
+		<td class="site-name">
+			 <p>{SITENAME}</p>
+		</td>
     </tr>
 	<tr>
-		<td align="center" bgcolor="#FFFFFF">
-             <strong>{SURVEYLISTHEADING}</strong>
+		<td class="survey-list-heading">
+             {SURVEYLISTHEADING}
          </td>
     </tr>
 	<tr>
-		<td align="center" bgcolor="#FFFFFF">
+		<td class="survey-list">
              <table align="center">
                <tr>
                 <td>
@@ -21,15 +21,15 @@
 		</td>
 	</tr>
       <tr>
-            <td align="center" bgcolor="#FFFFFF">
-             {SURVEYCONTACT}
-            </td>
+		<td class="survey-contact">
+		 {SURVEYCONTACT}
+		</td>
       </tr>
       <tr>
-            <td align="center" height="100px" bgcolor="#FFFFFF" valign="bottom">
+          <td class="language-changer">
              <p>{LANGUAGECHANGER}</p>
              <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey" /></a><br />
-             <a href="http://www.limesurvey.org" target="_blank"><font color="#000000">The Online Survey Tool</font></a> - Free & Open Source<br />
-            </td>
+             <a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free & Open Source<br />
+          </td>
       </tr>
 </table>

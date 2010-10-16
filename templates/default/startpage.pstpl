@@ -23,6 +23,6 @@
 <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />		
 </head>
 <body class="default">
-<table width="75%" align="center" class="outerframe">
+<table class="outerframe">
 	<tr>
 		<td>

@@ -380,6 +380,53 @@ td.clearall-result {
 .save-form{
 }
 
+.survey-list-table {
+	width: 100%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+}
+
+.survey-list-table td {
+	text-align: center;
+}
+
+.survey-list-table .site-name {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: large;
+	color: #328639;
+}
+
+.survey-list-table .survey-list-heading {
+	font-weight: bold;
+}
+
+.survey-list-table .survey-list {
+}
+
+.survey-list-table .survey-list ul {
+	padding: 0;
+}
+
+.survey-list-table .survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
+.survey-list-table .survey-contact {
+}
+
+.survey-list-table .language-changer {
+	height: 100px;
+	vertical-align: bottom;
+	padding-bottom: 10px;
+}
+
+.survey-list-table .language-changer a {
+	color: #000000;
+}
+
 
 
 /* -------------------------------------------------

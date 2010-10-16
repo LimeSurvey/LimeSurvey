@@ -29,7 +29,7 @@
 		<td class="language-changer">
 			<p>{LANGUAGECHANGER}</p>
 			<a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey" /></a><br /><br />
-			<a href="http://www.limesurvey.org" target="_blank"><font color="#000000">The Online Survey Tool</font></a> - Free & Open Source<br />
+			<a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free & Open Source<br />
 		</td>
 	</tr>
 </table>

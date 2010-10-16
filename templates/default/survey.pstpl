@@ -1,18 +1,18 @@
-<table width="100%" align="center" cellspacing="0">
+<table class="survey-header-table">
 	<tr>
-		<td align="center" bgcolor="#EEF6FF">
+		<td class="survey-description">
 			<h2>{SURVEYNAME}</h2><br />
-			<span style='font-size:10px;' >{SURVEYDESCRIPTION}</span>
+			<p>{SURVEYDESCRIPTION}</p>
 		</td>
 	</tr>
 	<tr>
-		<td class="graph" bgcolor="#d2e0f2">
+		<td class="graph">
 			{PERCENTCOMPLETE}
 		</td>
 	</tr>
 	<tr>
-    <td  align="center">
-      {LANGUAGECHANGER}
-    </td>
-  </tr>
+		<td class="language-changer">
+		  {LANGUAGECHANGER}
+		</td>
+    </tr>
 </table>

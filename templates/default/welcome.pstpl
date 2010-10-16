@@ -1,15 +1,15 @@
-<table align="center" width="100%" cellpadding="25" cellspacing="0" border="0" style="border-color: #111111">
+<table class="welcome-table">
 	<tr>
-		<td align="center" bgcolor="#eef6ff">
+		<td class="survey-description">
         	{CHECKJAVASCRIPT}
 			<h1>{SURVEYNAME}</h1><br />
 			<p class='surveydescription'>{SURVEYDESCRIPTION}</p>
 		</td>
 	</tr>
 	<tr>
-		<td align="center" bgcolor="#FFFFFF">
+		<td class="survey-welcome">
 			<p class='surveywelcome'>{WELCOME}</p><br />
-			<i>{THEREAREXQUESTIONS}</i>
+			<span class="x-questions">{THEREAREXQUESTIONS}</span>
 		</td>
 	</tr>
 </table>
