@@ -587,13 +587,17 @@ function createinsertquery()
                         {
                             if ($fieldinfo['type']=='N') //sanitize numerical fields
                             {
-                                $_POST[$field]=sanitize_float($_POST[$field]);
+                                $qfield=db_quoteall(sanitize_float($_POST[$field]));
                             }
                             elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
                             {
                                 $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
-                                $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
+                                $qfield=db_quoteall($connect->BindDate($datetimeobj->convert("Y-m-d")));
+                            }
+                            else
+                            {
+                                $qfield = db_quoteall($_POST[$field],true);
                             }
                             $query .= db_quote_id($field)." = ".db_quoteall($_POST[$field],true).",";
                         }
