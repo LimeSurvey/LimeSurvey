@@ -289,7 +289,7 @@ function sanitize_labelname($string)
 function sanitize_float($float, $min='', $max='')
 {
     //$float = floatval($float);
-    $float = filter_var($float, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $float = preg_replace("#[^0-9\.-]#", "", $float);
     if((($min != '') && ($float < $min)) || (($max != '') && ($float > $max)))
     return FALSE;
     return $float;
