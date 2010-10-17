@@ -1,11 +1,11 @@
 <br />
- <table align="center" cellpadding="30">
-  <tr>
-   <td align="center" bgcolor="FFFFFF" style="background-color: #fff; font-family: arial, helvetica, sans-serif; font-size: 90%; text-align: center;">
-    <p style="font-weight: bold; color: #f00;">{ANSWERSCLEARED}</p>
-    <p>{RESTART}<br />
-    {CLOSEWINDOW}</p>
-   </td>
-  </tr>
- </table>
+<table class="clearall-result">
+	<tr>
+		<td align="center">
+			<p class="warning-text">{ANSWERSCLEARED}</p>
+			<p>{RESTART}</p>
+			<p>{CLOSEWINDOW}</p>
+		</td>
+	</tr>
+</table>
 <br />

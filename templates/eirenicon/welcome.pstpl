@@ -1,15 +1,16 @@
-<table align="center" width="100%" cellpadding="25" cellspacing="0" border="1" style="border-collapse: collapse;border-color:#111111">
+
 {CHECKJAVASCRIPT}
+<table class="welcome-table">
 	<tr>
-		<td align="center" bgcolor="#042455">
-			<span style="font-size: 110%; color: #E5E5E5; font-weight: bold;">{SURVEYNAME}</span><br />
-			<span style="font-size: 90%; color: #ccc;">{SURVEYDESCRIPTION}</span>
+		<td class="welcome-header">
+			<h2 class="survey-name">{SURVEYNAME}</h2>
+			<span class="survey-description-text">{SURVEYDESCRIPTION}</span>
 		</td>
 	</tr>
 	<tr>
-		<td style="font-size: 90%; text-align: center; background-color: #E5E5E5;">
-			<p>{WELCOME}<p>
-			<em>{THEREAREXQUESTIONS}</em>
+		<td class="welcome-content">
+			<span class="survey-welcome">{WELCOME}</span>
+			<span class="x-questions">{THEREAREXQUESTIONS}</span>
 		</td>
 	</tr>
 </table>

@@ -1,7 +1,4 @@
-<table><tr><td height="2"></td></tr></table>
-<table width="98%" align="center" border="0">
+<table class="group"">
 	<tr>
 		<td align="center">
-			<span style="font-family: verdana, arial, helvetica, sans-serif; font-size: 120%; font-weight: bold; color: #000080;">
-			{GROUPNAME}
-			</span>
+			<span class="group-name">{GROUPNAME}</span>

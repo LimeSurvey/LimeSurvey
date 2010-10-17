@@ -237,10 +237,18 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 td.survey-description {
 	text-align: center;
 	background-color: #EEF6FF;
+	padding-bottom: 20px;
+}
+
+span.surveydescription {
 }
 
 td.survey-welcome {
 	text-align: center;
+	padding-top: 20px;
+}
+
+span.surveywelcome {
 }
 
 .x-questions {
@@ -309,13 +317,6 @@ table.group {
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 }
 
-.
-
-.group-description {
-	font-size: small;
-	font-family:Verdana, Arial, Helvetica, sans-serif;
-}
-
 .question-wrapper {
 	width: 75%;
 	margin: 0 auto 10px auto;
@@ -360,7 +361,6 @@ table.group {
 .completed-text {
 	text-align: center;
 	font-size:small;
-	
 }
 
 table.clearall-result {
@@ -396,6 +396,14 @@ table.clearall-result td {
 .register-message-2 {
 }
 
+.register-form {
+	margin: 10px 0 10px 0;
+}
+
+.register-form table.register {
+	margin: 0 auto 0 auto;
+}
+
 #loadtable,
 #savetable {
 	margin: 0 auto;
@@ -420,7 +428,7 @@ table.clearall-result td {
 .load-heading,
 .save-heading {
 	background-color: #EEF6FF;
-	text-align: center
+	text-align: center;
 }
 
 .load-message {
@@ -974,14 +982,6 @@ table.outerframe {
   margin: 20px auto 40px auto;
   border: 1px solid #BBC6CC;
   width: 75%;
-}
-
-p.surveydescription {
-  margin-bottom: 20px;
-}
-
-p.surveywelcome {
-  margin-top: 20px;
 }
 
 table.privacy {

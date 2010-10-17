@@ -2,7 +2,7 @@
 <table class="clearall-result">
 	<tr>
 		<td align="center">
-			<span class="warning-text">{ANSWERSCLEARED}</strong></span>
+			<span class="warning-text">{ANSWERSCLEARED}</span>
 			<br /><br />
 			{RESTART}<br />
 			{CLOSEWINDOW}

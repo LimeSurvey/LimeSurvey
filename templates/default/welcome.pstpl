@@ -8,7 +8,7 @@
 	</tr>
 	<tr>
 		<td class="survey-welcome">
-			<p class='surveywelcome'>{WELCOME}</p><br />
+			<span class='surveywelcome'>{WELCOME}</span><br />
 			<span class="x-questions">{THEREAREXQUESTIONS}</span>
 		</td>
 	</tr>

@@ -1,9 +1,9 @@
-<table width="100%" align="center" bgcolor="#042455">
+<table class="navigator-table">
 	<tr>
-		<td align="center">
-			{NAVIGATOR}<br />
-			{CLEARALL}
-			{SAVE}
+		<td>
+			 <span class="submit-buttons">{NAVIGATOR}</span><br />
+			 <span class="clear-all">{CLEARALL}</span>
+			 <span class="save-all">{SAVE}</span>
 
 		</td>
 	</tr>

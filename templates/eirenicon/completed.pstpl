@@ -1,9 +1,9 @@
 <br />
-<table width="75%" align="center" border="1" style="border-collapse: collapse; border-color:#111111" bgcolor="white">
+<table class="completed-table">
 	<tr>
-		<td style="font-size: 90%; text-align: center;">
-			{COMPLETED}<br /><br />
-
+		<td class="completed-text">
+			{COMPLETED}
+			<br /><br />
 			<p>{URL}</p>
 		</td>
 	</tr>
