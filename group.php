@@ -133,8 +133,8 @@ if (!$show_empty_group && IsSet($_SESSION['fieldarray'])) {
 			break;
 		}
     }
+    $_SESSION['step'] = $gid;
 }
-$_SESSION['step'] = $gid;
 
 //SUBMIT ###############################################################################
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
@@ -331,7 +331,6 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
         display_first_page();
         exit;
     }
-}
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     echo "\n<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
