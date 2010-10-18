@@ -175,7 +175,7 @@ class MyPDF extends TCPDF
 
         $this->SetFillColor(220, 220, 220);
         for($a=0;$a<sizeof($array);$a++)
-        {
+        {       
             if($modulo){
                 if($a%2 === 0){$fill=0;}
                 else{$fill=1;}
@@ -190,7 +190,7 @@ class MyPDF extends TCPDF
                     
                     if ($maxwidth[$b] > 130) $maxwidth[$b]=130;
                     if ($maxwidth[$b] < 30) $maxwidth[$b]=30;
-                    $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),1,'L',0,0);
+                    $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',1,0);
                     
                     $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
                 }
@@ -200,7 +200,14 @@ class MyPDF extends TCPDF
 
                     if ($maxwidth[$b] > 130) $maxwidth[$b]=130;
                     if ($maxwidth[$b] < 30) $maxwidth[$b]=30;
-                    $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),1,'L',0,0);
+                    if ($b==0)
+                    {
+                        $return=$this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',$fill,0);  
+                    }
+                    else
+                    {
+                       $this->MultiCell($maxwidth[$b],($return)*4.3,$this->delete_html($array[$a][$b]),0,'L',$fill,0);  
+                    }
 
                 }
             }
