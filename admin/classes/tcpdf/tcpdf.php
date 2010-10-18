@@ -3792,7 +3792,7 @@ if (!class_exists('TCPDF', false)) {
                 $this->y = $y;
                 $this->SetX($x + $w);
             }
-            return $nl;
+            return $currentY-$this->y;
         }
 
         /**

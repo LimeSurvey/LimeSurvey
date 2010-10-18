@@ -177,8 +177,8 @@ class MyPDF extends TCPDF
         for($a=0;$a<sizeof($array);$a++)
         {       
             if($modulo){
-                if($a%2 === 0){$fill=0;}
-                else{$fill=1;}
+                if($a%2 === 0){$fill=1;}
+                else{$fill=0;}
             }
             else{$fill=0;}
             for($b=0;$b<sizeof($array[$a]);$b++)
@@ -188,25 +188,28 @@ class MyPDF extends TCPDF
                     $oldStyle = $this->FontStyle;
                     $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
                     
-                    if ($maxwidth[$b] > 130) $maxwidth[$b]=130;
-                    if ($maxwidth[$b] < 30) $maxwidth[$b]=30;
+                    if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
+                    if ($maxwidth[$b] < 20) $maxwidth[$b]=20;
                     $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',1,0);
                     
                     $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
                 }
                 else
                 {
+                    if ($a==1)
+                    {
+                        $this->SetFillColor(250, 250, 250);
+                    }
                     //echo $maxwidth[$b]." max $b.Spalte<br/>";
 
-                    if ($maxwidth[$b] > 130) $maxwidth[$b]=130;
-                    if ($maxwidth[$b] < 30) $maxwidth[$b]=30;
+                    if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
                     if ($b==0)
                     {
-                        $return=$this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',$fill,0);  
+                        $iLines=$this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',$fill,0); 
                     }
                     else
                     {
-                       $this->MultiCell($maxwidth[$b],($return)*4.3,$this->delete_html($array[$a][$b]),0,'L',$fill,0);  
+                       $this->MultiCell($maxwidth[$b],$iLines,$this->delete_html($array[$a][$b]),0,'L',$fill,0);   
                     }
 
                 }
