@@ -6321,21 +6321,33 @@ function translink($type, $oldid, $newid, $text)
 }
 
 
+function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements)
+{
+    $aGIDReplacements=array_flip($aGIDReplacements);
+    $aQIDReplacements=array_flip($aQIDReplacements);
+    $aFieldMap=createFieldMap($iNewSID);
+    $aFieldMappings=array();
+    foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
+    {
+      if ($aFieldinfo['qid']!=null)
+      {
+          $aFieldMappings[$sFieldname]=$iNewSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
+      }
+    }
+    return $aFieldMappings;
+}
+
+
 /**
- * put your comment there...
+ * This function replaces the old insertans tags with new ones across a survey
  *
- * @param string $newsid
- * @param string $oldsid
- * @param mixed $fieldnames
+ * @param string $newsid  Old SID
+ * @param string $oldsid  New SID
+ * @param mixed $fieldnames Array  array('oldfieldname'=>'newfieldname')
  */
-function transInsertAns($newsid,$oldsid,$fieldnames)
+function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 {
     global $connect, $dbprefix;
-
-    if (!isset($_POST['translinksfields']))
-    {
-        return;
-    }
 
     $newsid=sanitize_int($newsid);
     $oldsid=sanitize_int($oldsid);
@@ -6351,10 +6363,10 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
         $endurl  = $qentry['surveyls_url'];
         $language = $qentry['surveyls_language'];
 
-        foreach ($fieldnames as $fnrow)
+        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
-            $replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
+            $pattern = "{INSERTANS:".$sOldFieldname."}";
+            $replacement = "{INSERTANS:".$sNewFieldname."}";
             $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
             $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
         }
@@ -6378,10 +6390,10 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
         $gid = $qentry['gid'];
         $language = $qentry['language'];
 
-        foreach ($fieldnames as $fnrow)
+        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
-            $replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
+            $pattern = "{INSERTANS:".$sOldFieldname."}";
+            $replacement = "{INSERTANS:".$sNewFieldname."}";
             $description=preg_replace('/'.$pattern.'/', $replacement, $description);
         }
 
@@ -6404,10 +6416,10 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
         $qid = $qentry['qid'];
         $language = $qentry['language'];
 
-        foreach ($fieldnames as $fnrow)
+        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
-            $replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
+            $pattern = "{INSERTANS:".$sOldFieldname."}";
+            $replacement = "{INSERTANS:".$sNewFieldname."}";
             $question=preg_replace('/'.$pattern.'/', $replacement, $question);
             $help=preg_replace('/'.$pattern.'/', $replacement, $help);
         }
@@ -6433,10 +6445,10 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
         $qid = $qentry['qid'];
         $language = $qentry['language'];
 
-        foreach ($fieldnames as $fnrow)
+        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
-            $replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
+            $pattern = "{INSERTANS:".$sOldFieldname."}";
+            $replacement = "{INSERTANS:".$sNewFieldname."}";
             $answer=preg_replace('/'.$pattern.'/', $replacement, $answer);
         }
 

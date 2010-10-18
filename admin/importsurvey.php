@@ -33,20 +33,16 @@ if (isset($sExtension) && strtolower($sExtension)=='csv')
 }
 elseif (isset($sExtension) && strtolower($sExtension)=='lss')
 {
-    $aImportResults=XMLImportSurvey($sFullFilepath);
+    $aImportResults=XMLImportSurvey($sFullFilepath,null,null,(isset($_POST['translinksfields'])));
 } elseif (isset($copyfunction))
 {
     $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
 }
 
 
-// Translate INSERTANS codes if chosen
-if (isset($aImportResults['fieldnames']) && $sTransLinks === true)
-{
-    transInsertAns($aImportResults['newsid'],$aImportResults['oldsid'],$aImportResults['fieldnames']);
-}
+// Create old fieldnames
 
-                 
+                
 if ((isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
@@ -1202,8 +1198,11 @@ function CSVImportSurvey($sFullFilepath)
 * This function imports a LimeSurvey .lss survey XML file
 * 
 * @param mixed $sFullFilepath  The full filepath of the uploaded file
+* @param string $sXMLdata  Alternatively you can specify XML data to import in this variable - $sFullFilepath is then ignored - default NULL
+* @param string $sNewSurveyName  Name of the to be imported survey (optional) - default NULL
+* @param boolean $bTranslateInsertansTags If INSERTANS tags should be translated - defaults to true
 */
-function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
+function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bTranslateInsertansTags=true)
 {
     global $connect, $dbprefix, $clang, $timeadjust;
     
@@ -1656,6 +1655,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL)
     // Set survey rights
     $sQuery = "INSERT INTO {$dbprefix}surveys_rights (sid, uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey) VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
     $connect->Execute($sQuery);
+    
+    if ($bTranslateInsertansTags)
+    {
+        $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
+        TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);            
+    }
         
     
     return $results;

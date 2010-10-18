@@ -1972,7 +1972,7 @@ class LsrcHelper {
         // Translate INSERTANS codes
         if (isset($fieldnames))
         {
-            transInsertAns($newsid,$oldsid,$fieldnames);
+            TranslateInsertansTags($newsid,$oldsid,$fieldnames);
         }
         $surveyid=$newsid;
 
