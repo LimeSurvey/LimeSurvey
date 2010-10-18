@@ -23,7 +23,9 @@
 
    global $tolang;
 
-  $fromlang = GetBaseLanguageFromSurveyID($surveyid);
+   global $activated, $publicurl;
+
+  $baselang = GetBaseLanguageFromSurveyID($surveyid);
   $supportedLanguages = getLanguageData(false);
   $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
 
@@ -82,10 +84,13 @@
       $tmp_survlangs[] = $baselang;
       rsort($tmp_survlangs);
       // Test Survey Language Selection Popup
-      $adminmenu .="<div class=\"langpopup\" id=\"dosurveylangpopup\">".$clang->gT("Please select a language:")."<ul>";
+      $adminmenu .="<div class=\"langpopup\" id=\"dosurveylangpopup\">"
+        .$clang->gT("Please select a language:")."<ul>";
       foreach ($tmp_survlangs as $tmp_lang)
       {
-          $adminmenu .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+          $adminmenu .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');"
+            ."\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp; "
+            ."newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
       }
       $adminmenu .= "</ul></div>";
   }
@@ -132,246 +137,246 @@
 
 function setupTranslateFields($type)
 {
-  global $dbprefix, $tolang, $fromlang, $surveyid, $new, $id1, $id2;
+  global $dbprefix, $tolang, $baselang, $surveyid, $new, $id1, $id2;
   
   switch ( $type )
   {
     case 'title':
       $transarray = array(
-        "queryfrom" => "SELECT * "
+        "querybase" => "SELECT * "
                                     ."FROM ".db_table_name('surveys_languagesettings')
                                     ." WHERE surveyls_survey_id=".db_quoteall($surveyid)
-                                      ." AND surveyls_language=".db_quoteall($fromlang),
+                                      ." AND surveyls_language=".db_quoteall($baselang),
         "queryto"   => "SELECT * "
                                     ."FROM ".db_table_name('surveys_languagesettings')
                                     ." WHERE surveyls_survey_id=".db_quoteall($surveyid)
                                       ." AND surveyls_language=".db_quoteall($tolang),
-        "query" => "UPDATE ".db_table_name('surveys_languagesettings')
-                         ." SET surveyls_title = ".db_quoteall($new, TRUE)
+        "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
+                         ." SET surveyls_title = ".db_quoteall($new)
                          ." WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ." AND surveyls_language=".db_quoteall($tolang)." LIMIT 1",
         "id1"  => '',
         "id2"  => '',
         "what" => 'surveyls_title',
-        "desc" => 'Survey title',
+        "desc" => "Survey title",
         "formname" => 'init_update'
       );
       break;
 
     case 'description':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                    ."FROM {$dbprefix}surveys_languagesettings "
-                                    ."WHERE surveyls_survey_id='{$surveyid}' "
-                                      ."AND surveyls_language='{$fromlang}'  ",
+        "querybase" => "SELECT * "
+                                    ."FROM ".db_table_name('surveys_languagesettings')
+                                    ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
+                                      ."AND surveyls_language='{$baselang}'  ",
         "queryto"   => "SELECT * "
-                                     ."FROM {$dbprefix}surveys_languagesettings "
-                                     ."WHERE surveyls_survey_id='{$surveyid}' "
+                                    ."FROM ".db_table_name('surveys_languagesettings')
+                                     ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                                        ."AND surveyls_language='{$tolang}'  ",
-        "query" => "UPDATE {$dbprefix}surveys_languagesettings "
-                         ."SET surveyls_description = '{$new}' "
-                         ."WHERE surveyls_survey_id='{$surveyid}' "
+        "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
+                         ."SET surveyls_description = ".db_quoteall($new)
+                         ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
         "id1"  => '',
         "id2"  => '',
         "what" => 'surveyls_decription',
-        "desc" => 'Survey description',
+        "desc" => "Description",
         "formname" => 'init_update'
       );
       break;
 
     case 'welcome':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                    ."FROM {$dbprefix}surveys_languagesettings "
-                                    ."WHERE surveyls_survey_id='{$surveyid}' "
-                                      ."AND surveyls_language='{$fromlang}'  ",
+        "querybase" => "SELECT * "
+                                    ."FROM ".db_table_name('surveys_languagesettings')
+                                    ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
+                                      ."AND surveyls_language='{$baselang}'  ",
         "queryto"   => "SELECT * "
-                                     ."FROM {$dbprefix}surveys_languagesettings "
-                                     ."WHERE surveyls_survey_id='{$surveyid}' "
+                                    ."FROM ".db_table_name('surveys_languagesettings')
+                                     ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                                        ."AND surveyls_language='{$tolang}'  ",
-        "query" => "UPDATE {$dbprefix}surveys_languagesettings "
-                         ."SET surveyls_welcometext = '{$new}' "
-                         ."WHERE surveyls_survey_id='{$surveyid}' "
+        "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
+                         ."SET surveyls_welcometext = ".db_quoteall($new)
+                         ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
         "id1"  => '',
         "id2"  => '',
         "what" => 'surveyls_welcometext',
-        "desc" => 'Survey welcome text',
+        "desc" => "Welcome message",
         "formname" => 'init_update',
       );
       break;
 
     case 'end':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                    ."FROM {$dbprefix}surveys_languagesettings "
-                                    ."WHERE surveyls_survey_id='{$surveyid}' "
-                                      ."AND surveyls_language='{$fromlang}'  ",
+        "querybase" => "SELECT * "
+                                    ."FROM ".db_table_name('surveys_languagesettings')
+                                    ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
+                                      ."AND surveyls_language='{$baselang}'  ",
         "queryto"   => "SELECT * "
-                                     ."FROM {$dbprefix}surveys_languagesettings "
-                                     ."WHERE surveyls_survey_id='{$surveyid}' "
+                                    ."FROM ".db_table_name('surveys_languagesettings')
+                                     ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                                        ."AND surveyls_language='{$tolang}'  ",
-        "query" => "UPDATE {$dbprefix}surveys_languagesettings "
-                         ."SET surveyls_endtext = '{$new}' "
-                         ."WHERE surveyls_survey_id='{$surveyid}' "
+        "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
+                         ."SET surveyls_endtext = ".db_quoteall($new)
+                         ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
         "id1"  => '',
         "id2"  => '',
         "what" => 'surveyls_endtext',
-        "desc" => 'Survey end text',
+        "desc" => "End message",
         "formname" => 'init_update'
       );
       break;
 
     case 'group':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                     ."FROM {$dbprefix}groups "
-                                     ."WHERE sid='{$surveyid}' "
-                                       ."AND language='{$fromlang}' "
+        "querybase" => "SELECT * "
+                                     ."FROM ".db_table_name('groups')
+                                     ."WHERE sid=".db_quoteall($surveyid)
+                                       ."AND language='{$baselang}' "
                                      ."ORDER BY gid ",
         "queryto"   => "SELECT * "
-                                     ."FROM {$dbprefix}groups "
-                                     ."WHERE sid='{$surveyid}' "
-                                       ."AND language='{$tolang}' "
+                                     ."FROM ".db_table_name('groups')
+                                     ."WHERE sid=".db_quoteall($surveyid)
+                                       ."AND language=".db_quoteall($tolang)
                                      ."ORDER BY gid ",
-        "query" => "UPDATE {$dbprefix}groups "
-                         ."SET group_name = '{$new}' "
+        "queryupdate" => "UPDATE ".db_table_name('groups')
+                         ."SET group_name = ".db_quoteall($new)
                          ."WHERE gid = '{$id1}' "
-                           ."AND sid='{$surveyid}' "
+                           ."AND sid=".db_quoteall($surveyid)
                            ."AND language='{$tolang}' LIMIT 1",
         "id1"  => 'gid',
         "id2"  => '',
         "what" => 'group_name',
-        "desc" => 'Survey group headings',
+        "desc" => "Question groups",
         "formname" => 'group_update'
       );
       break;
 
     case 'group_desc':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                     ."FROM {$dbprefix}groups "
-                                     ."WHERE sid='{$surveyid}' "
-                                       ."AND language='{$fromlang}' "
+        "querybase" => "SELECT * "
+                                     ."FROM ".db_table_name('groups')
+                                     ."WHERE sid=".db_quoteall($surveyid)
+                                       ."AND language='{$baselang}' "
                                      ."ORDER BY gid ",
         "queryto"   => "SELECT *"
-                                     ."FROM {$dbprefix}groups "
-                                     ."WHERE sid='{$surveyid}' "
-                                       ."AND language='{$tolang}' "
+                                     ."FROM ".db_table_name('groups')
+                                     ."WHERE sid=".db_quoteall($surveyid)
+                                       ."AND language=".db_quoteall($tolang)
                                      ."ORDER BY gid ",
-        "query" => "UPDATE {$dbprefix}groups "
-                         ."SET description = '{$new}' "
+        "queryupdate" => "UPDATE ".db_table_name('groups')
+                         ."SET description = ".db_quoteall($new)
                          ."WHERE gid = '{$id1}' "
-                           ."AND sid='{$surveyid}' "
+                           ."AND sid=".db_quoteall($surveyid)
                            ."AND language='{$tolang}' LIMIT 1",
         "id1"  => 'gid',
         "id2"  => '',
         "what" => 'description',
-        "desc" => 'Survey group decriptions',
+        "desc" => "Description",
         "formname" => 'group_update'
       );
       break;
 
-    case'label':
+    case 'label':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                   ."FROM {$dbprefix}labels "
-                                   ."WHERE language='{$fromlang}' "
+        "querybase" => "SELECT * "
+                                   ."FROM ".db_table_name('labels')
+                                   ."WHERE language='{$baselang}' "
                                    .  "AND lid='$code' ",
         "queryto"   => "SELECT * "
-                                    ."FROM {$dbprefix}labels "
-                                    ."WHERE language='{$tolang}' "
+                                    ."FROM ".db_table_name('labels')
+                                    ."WHERE language=".db_quoteall($tolang)
                                     .  "AND lid='$code' ",
-        "query" => "UPDATE {$dbprefix}labels "
-                   ."SET title = '{$new}' "
+        "queryupdate" => "UPDATE ".db_table_name('labels')
+                   ."SET title = ".db_quoteall($new)
                          ."WHERE lid = '{$id1}' "
                            ."AND code='{$id2}' "
                            ."AND language='{$tolang}' LIMIT 1",
         "what" => 'title',
         "id1"  => 'lid',
         "id2"  => 'code',
-        "desc" => 'labels',
+        "desc" => "Label sets",
         "formname" => 'labels_update'
       );
       break;
 
     case 'question':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                   ."FROM {$dbprefix}questions "
-                                   ."WHERE sid='{$surveyid}' "
-                                     ."AND language='{$fromlang}' "
+        "querybase" => "SELECT * "
+                                   ."FROM ".db_table_name('questions')
+                                   ."WHERE sid=".db_quoteall($surveyid)
+                                     ."AND language='{$baselang}' "
                                    ."ORDER BY qid ",
         "queryto"   => "SELECT * "
-                                    ."FROM {$dbprefix}questions "
-                                    ."WHERE sid='{$surveyid}' "
-                                      ."AND language='{$tolang}' "
+                                    ."FROM ".db_table_name('questions')
+                                    ."WHERE sid=".db_quoteall($surveyid)
+                                      ."AND language=".db_quoteall($tolang)
                                     ."ORDER BY qid ",
-        "query" => "UPDATE {$dbprefix}questions "
-                         ."SET question = '{$new}' "
+        "queryupdate" => "UPDATE ".db_table_name('questions')
+                         ."SET question = ".db_quoteall($new)
                          ."WHERE qid = '{$id1}' "
-                           ."AND sid='{$surveyid}' "
+                           ."AND sid=".db_quoteall($surveyid)
                            ."AND language='{$tolang}' LIMIT 1",
         "what" => 'question',
         "id1"  => 'qid',
         "id2"  => '',
-        "desc" => 'questions',
+        "desc" => "Questions",
         "formname" => 'question_update'
       );
       break;
 
     case 'question_help':
       $transarray = array(
-        "queryfrom" => "SELECT * "
-                                     ."FROM {$dbprefix}questions "
-                                     ."WHERE sid='{$surveyid}' "
-                                       ."AND language='{$fromlang}' "
+        "querybase" => "SELECT * "
+                                     ."FROM ".db_table_name('questions')
+                                     ."WHERE sid=".db_quoteall($surveyid)
+                                       ."AND language='{$baselang}' "
                                      ."ORDER BY qid ",
         "queryto"   => "SELECT * "
-                                    ."FROM {$dbprefix}questions "
-                                    ."WHERE sid='{$surveyid}' "
-                                      ."AND language='{$tolang}' "
+                                    ."FROM ".db_table_name('questions')
+                                    ."WHERE sid=".db_quoteall($surveyid)
+                                      ."AND language=".db_quoteall($tolang)
                                     ."ORDER BY qid ",
-        "query" => "UPDATE {$dbprefix}questions "
-                   ."SET help = '{$new}' "
+        "queryupdate" => "UPDATE ".db_table_name('questions')
+                   ."SET help = ".db_quoteall($new)
                    ."WHERE qid = '{$id1}' "
-                   ."AND sid='{$surveyid}' "
+                   ."AND sid=".db_quoteall($surveyid)
                    ."AND language='{$tolang}' LIMIT 1",
         "what" => 'help',
         "id1"  => 'qid',
         "id2"  => '',
-        "desc" => 'question help',
+        "desc" => "Help",
         "formname" => 'question_update'
       );
       break;
 
     case 'answer':
       $transarray = array(
-        "queryfrom" => "SELECT {$dbprefix}answers.* "
+        "querybase" => "SELECT {$dbprefix}answers.* "
                                      ."FROM {$dbprefix}answers,{$dbprefix}questions "
                                     ."WHERE {$dbprefix}questions.sid =' $surveyid' "
                                       ."AND {$dbprefix}questions.qid = {$dbprefix}answers.qid "
                                       ."AND {$dbprefix}questions.language = {$dbprefix}answers.language "
-                                      ."AND {$dbprefix}questions.language='{$fromlang}' "
+                                      ."AND {$dbprefix}questions.language='{$baselang}' "
                                     ."ORDER BY qid,code,sortorder" ,
         "queryto" => "SELECT {$dbprefix}answers.* "
                                    ."FROM {$dbprefix}answers,{$dbprefix}questions "
                                   ."WHERE {$dbprefix}questions.sid =' $surveyid' "
                                     ."AND {$dbprefix}questions.qid = {$dbprefix}answers.qid "
                                     ."AND {$dbprefix}questions.language = {$dbprefix}answers.language "
-                                    ."AND {$dbprefix}questions.language='{$tolang}' "
+                                    ."AND {$dbprefix}questions.language=".db_quoteall($tolang)
                                   ."ORDER BY qid,code,sortorder" ,
-        "query" => "UPDATE {$dbprefix}answers "
-                         ."SET answer = '{$new}' "
+        "queryupdate" => "UPDATE {$dbprefix}answers "
+                         ."SET answer = ".db_quoteall($new)
                          ."WHERE qid = '{$id1}' "
                            ."AND code='{$id2}' "
                            ."AND language='{$tolang}' LIMIT 1",
         "what" => 'answer',
         "id1"  => 'qid',
         "id2"  => 'code',
-        "desc" => 'sub-questions',
+        "desc" => "Subquestions",
         "formname" => 'answers_update'
       );
       break;
@@ -419,7 +424,7 @@ function calc_nrows( $subject )
   // A proxy for box sixe is string length divided by 80
   $pattern = "(<br..?>)";
   //$pattern = "/\n/";
-  $pattern = '[(<br..?>)(/\n/)]';
+  $pattern = '[(<br..?>)|(/\n/)]';
   $nrows_newline = preg_match_all($pattern, $subject, $matches);
 
   $nrows_char = ceil(strlen((string)$subject)/80);
