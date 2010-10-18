@@ -157,7 +157,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             check_quota('enforce',$surveyid);                    
         }
     }
-    elseif (isset($move) && $move!='moveprev')
+    elseif (isset($move))
     {
         // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
         $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
