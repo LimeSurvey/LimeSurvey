@@ -187,13 +187,21 @@ class MyPDF extends TCPDF
                 {
                     $oldStyle = $this->FontStyle;
                     $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
-                    $this->Cell($maxwidth[$b],4,$this->delete_html($array[$a][$b]),0,0,'L',0);
+                    
+                    if ($maxwidth[$b] > 130) $maxwidth[$b]=130;
+                    if ($maxwidth[$b] < 30) $maxwidth[$b]=30;
+                    $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),1,'L',0,0);
+                    
                     $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
                 }
                 else
                 {
                     //echo $maxwidth[$b]." max $b.Spalte<br/>";
-                    $this->Cell($maxwidth[$b],4,$this->delete_html($array[$a][$b]),0,0,'L',$fill);
+
+                    if ($maxwidth[$b] > 130) $maxwidth[$b]=130;
+                    if ($maxwidth[$b] < 30) $maxwidth[$b]=30;
+                    $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),1,'L',0,0);
+
                 }
             }
             $this->ln();
@@ -309,5 +317,6 @@ class MyPDF extends TCPDF
         $text = html_entity_decode($text);
         return strip_tags($text);
     }
+    
 }
 ?>
