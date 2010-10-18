@@ -686,7 +686,6 @@ elseif ($subaction == "all")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
-    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+3).">"
     if (bHasRight($surveyid,'delete_survey'))
     {
     $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
