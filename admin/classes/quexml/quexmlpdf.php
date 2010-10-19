@@ -4,9 +4,8 @@
  * Modify these two lines to point to your TCPDF installation
  * Tested with TCPDF 5.8.008 - see http://www.tcpdf.org/
  */
-include_once(dirname(__FILE__).'/../tcpdf/config/lang/eng.php');
-require_once(dirname(__FILE__).'/../tcpdf/tcpdf.php');
-
+require_once($homedir .'/classes/tcpdf/config/lang/eng.php');
+require_once($homedir .'/classes/tcpdf/tcpdf.php');
 
 /**
  * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
