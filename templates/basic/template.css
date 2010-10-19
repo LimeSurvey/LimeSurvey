@@ -8,6 +8,8 @@ body {
 table.question {
   border: 1px;
   border-color: #aaa;
+  border: 1px solid #AAAAAA;
+  border-collapse: collapse;
   width: 100%;
 }
 
