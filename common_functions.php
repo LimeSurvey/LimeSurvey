@@ -3695,7 +3695,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
     $qattributes["page_break"]=array(
-    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;",
+    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
