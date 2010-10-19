@@ -1164,10 +1164,10 @@ if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 {
     //if conditions exist, create hidden inputs for 'previously' answered questions
     // Note that due to move 'back' possibility, there may be answers from next pages
-    // However we make sure that no answer from this page are inserted here
+    // However we make sure that no answer from this page are inserted here and only valid fieldnames (important for conditions based on tokens)
     foreach ($conditions as $aCondition)
     {
-        if (!in_array($aCondition[2], $inputnames))
+        if (!in_array($aCondition[2], $inputnames) && isset($_SESSION[$aCondition[2]]))
         {
             echo "<input type='hidden' name='java{$aCondition[2]}' id='java{$aCondition[2]}' value='" . htmlspecialchars($_SESSION[$aCondition[2]],ENT_QUOTES). "' />\n";
         }
