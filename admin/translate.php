@@ -94,6 +94,7 @@
       $translateoutput .= "<div class='tab-pane' id='tab-pane-$type'>\n";
       $translateoutput .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT($transarray["desc"]) . "</h2>\n";
       
+      $translateoutput .= PrepareEditorScript("editlabel");
       // Setup form
       $translateoutput .= "<form name='{$transarray["formname"]}' method='POST' "
         ."action='$scriptname' id='{$transarray["formname"]}' />\n"
