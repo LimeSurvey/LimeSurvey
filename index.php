@@ -3289,8 +3289,8 @@ function GetReferringUrl()
 /**
  * Shows the welcome page, used in group by group and question by question mode
  */
-function display_first_page() {
-    global $clang, $thistpl, $token, $surveyid, $thissurvey, $navigator,$publicurl;
+ function display_first_page() {
+    global $clang, $thistpl, $token, $grouptoken, $surveyid, $thissurvey, $navigator,$publicurl;
     sendcacheheaders();
     doHeader();
 
@@ -3311,7 +3311,8 @@ function display_first_page() {
         echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
     }
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+        echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+        echo "\n<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
     echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
