@@ -669,7 +669,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
     $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
     $tkresult = db_execute_num($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
-    if ($tkresult->RecordCount()==0 || $areTokensUsed || $gtkresult->RecordCount()==0)
+    if ($tkresult->RecordCount()==0 || $areTokensUsed)
     {
         sendcacheheaders();
         doHeader();

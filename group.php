@@ -89,7 +89,7 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 }
 
 
-if (!$show_empty_group && IsSet($_SESSION['fieldarray'])) {
+if (!$show_empty_group && IsSet($_SESSION['fieldarray']) && $_SESSION['step']>0) {
 
     $grouparrayno=$_SESSION['step']-1;
     $gid=$_SESSION['grouplist'][$grouparrayno][0];
@@ -109,7 +109,7 @@ if (!$show_empty_group && IsSet($_SESSION['fieldarray'])) {
 			if($ia[5]==$gid){
 				$qidattributes=getQuestionAttributes($ia[0]);
 	        	if ($qidattributes['hidden']!=1) {
-		        	if((trim($conditions[$ia[0]]!='')) && !checkExtendedCondition($conditions[$ia[0]])){
+		        	if(isset($conditions[$ia[0]]) && (trim($conditions[$ia[0]]!='')) && !checkExtendedCondition($conditions[$ia[0]])){
 		        		$hideQuestion[$ia[0]]=true;
 		        	}else{
 						$i++;
@@ -1275,7 +1275,10 @@ echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thiss
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 echo "<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n";
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
-echo "<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
+if (isset($grouptoken))
+{
+    echo "<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";   
+}
 echo "</form>\n";
 
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
