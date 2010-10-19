@@ -271,7 +271,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
      $createsurveytimings='';
      $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";
+    $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl, savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
     $presult=db_execute_assoc($pquery);
     $prow=$presult->FetchRow();
     if ($prow['allowregister'] == "Y")
