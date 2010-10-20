@@ -155,8 +155,8 @@ function setupTranslateFields($type)
                          ." SET surveyls_title = ".db_quoteall($new)
                          ." WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ." AND surveyls_language=".db_quoteall($tolang)." LIMIT 1",
-        "id1"  => '',
-        "id2"  => '',
+        "id1"  => "",
+        "id2"  => "",
         "what" => 'surveyls_title',
         "desc" => "Survey title",
         "formname" => 'init_update'
@@ -177,9 +177,9 @@ function setupTranslateFields($type)
                          ."SET surveyls_description = ".db_quoteall($new)
                          ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
-        "id1"  => '',
-        "id2"  => '',
-        "what" => 'surveyls_decription',
+        "id1"  => "",
+        "id2"  => "",
+        "what" => 'surveyls_description',
         "desc" => "Description",
         "formname" => 'init_update'
       );
@@ -199,8 +199,8 @@ function setupTranslateFields($type)
                          ."SET surveyls_welcometext = ".db_quoteall($new)
                          ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
-        "id1"  => '',
-        "id2"  => '',
+        "id1"  => "",
+        "id2"  => "",
         "what" => 'surveyls_welcometext',
         "desc" => "Welcome message",
         "formname" => 'init_update',
@@ -221,8 +221,8 @@ function setupTranslateFields($type)
                          ."SET surveyls_endtext = ".db_quoteall($new)
                          ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
-        "id1"  => '',
-        "id2"  => '',
+        "id1"  => "",
+        "id2"  => "",
         "what" => 'surveyls_endtext',
         "desc" => "End message",
         "formname" => 'init_update'
@@ -246,11 +246,11 @@ function setupTranslateFields($type)
                          ."WHERE gid = '{$id1}' "
                            ."AND sid=".db_quoteall($surveyid)
                            ."AND language='{$tolang}' LIMIT 1",
-        "id1"  => 'gid',
-        "id2"  => '',
-        "what" => 'group_name',
+        "id1"  => "gid",
+        "id2"  => "",
+        "what" => "group_name",
         "desc" => "Question groups",
-        "formname" => 'group_update'
+        "formname" => "group_update"
       );
       break;
 
@@ -271,36 +271,36 @@ function setupTranslateFields($type)
                          ."WHERE gid = '{$id1}' "
                            ."AND sid=".db_quoteall($surveyid)
                            ."AND language='{$tolang}' LIMIT 1",
-        "id1"  => 'gid',
-        "id2"  => '',
-        "what" => 'description',
+        "id1"  => "gid",
+        "id2"  => "",
+        "what" => "description",
         "desc" => "Description",
         "formname" => 'group_update'
       );
       break;
 
-    case 'label':
-      $transarray = array(
-        "querybase" => "SELECT * "
-                                   ."FROM ".db_table_name('labels')
-                                   ."WHERE language='{$baselang}' "
-                                   .  "AND lid='$code' ",
-        "queryto"   => "SELECT * "
-                                    ."FROM ".db_table_name('labels')
-                                    ."WHERE language=".db_quoteall($tolang)
-                                    .  "AND lid='$code' ",
-        "queryupdate" => "UPDATE ".db_table_name('labels')
-                   ."SET title = ".db_quoteall($new)
-                         ."WHERE lid = '{$id1}' "
-                           ."AND code='{$id2}' "
-                           ."AND language='{$tolang}' LIMIT 1",
-        "what" => 'title',
-        "id1"  => 'lid',
-        "id2"  => 'code',
-        "desc" => "Label sets",
-        "formname" => 'labels_update'
-      );
-      break;
+//    case 'label':
+//      $transarray = array(
+//        "querybase" => "SELECT * "
+//                                   ."FROM ".db_table_name('labels')
+//                                   ."WHERE language='{$baselang}' "
+//                                   .  "AND lid='$code' ",
+//        "queryto"   => "SELECT * "
+//                                    ."FROM ".db_table_name('labels')
+//                                    ."WHERE language=".db_quoteall($tolang)
+//                                    .  "AND lid='$code' ",
+//        "queryupdate" => "UPDATE ".db_table_name('labels')
+//                   ."SET title = ".db_quoteall($new)
+//                         ."WHERE lid = '{$id1}' "
+//                           ."AND code='{$id2}' "
+//                           ."AND language='{$tolang}' LIMIT 1",
+//        "what" => 'title',
+//        "id1"  => 'lid',
+//        "id2"  => 'code',
+//        "desc" => "Label sets",
+//        "formname" => 'labels_update'
+//      );
+//      break;
 
     case 'question':
       $transarray = array(
@@ -321,7 +321,7 @@ function setupTranslateFields($type)
                            ."AND language='{$tolang}' LIMIT 1",
         "what" => 'question',
         "id1"  => 'qid',
-        "id2"  => '',
+        "id2"  => "",
         "desc" => "Questions",
         "formname" => 'question_update'
       );
@@ -346,7 +346,7 @@ function setupTranslateFields($type)
                    ."AND language='{$tolang}' LIMIT 1",
         "what" => 'help',
         "id1"  => 'qid',
-        "id2"  => '',
+        "id2"  => "",
         "desc" => "Help",
         "formname" => 'question_update'
       );

@@ -15,6 +15,16 @@
 *
 */
 
+//TODO use javascript to create tabs, in style of conditions editor.  Create translation.js file
+// TODO http://jqueryui.com/demos/tabs/
+// TODO look at tokens.php for example code (Search for tokens.js to load)
+
+//TODO For database save, don't use getUpdateSQL, but block saves
+//TODO coding guidelines: http://docs.limesurvey.org/tiki-index.php?page=Coding+Rules&structure=LimeSurvey+development
+//TODO coding guidelines: http://docs.limesurvey.org/tiki-index.php?page=How+to+document+your+source+code
+//TODO modify code to prevent two users from saving across each other's work, with hidden $_POST fields
+
+//TODO create explicit $gid and $qid variables in foreach(), for use by fckEditor, then contact lemeur
 
   include_once("login_check.php");  //Login Check dies also if the script is started directly
   if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -45,8 +55,12 @@
   $baselang = GetBaseLanguageFromSurveyID($surveyid);
   $supportedLanguages = getLanguageData(false);
   $baselangdesc = $supportedLanguages[$baselang]['description'];
-  $tolangdesc = $supportedLanguages[$tolang]['description'];
+  if(isset($tolang))
+  {  
+    $tolangdesc = $supportedLanguages[$tolang]['description'];
+  }
 
+  $translateoutput = "";
   $translateoutput .= "<form name='translateform' id='translateform' "
                    ."action='$scriptname' method='POST' />";
   $translateoutput .= showTranslateAdminmenu();
@@ -57,31 +71,36 @@
   $translateoutput .= "<div class='header'>".$clang->gT("Translate survey")."</div>\n";
   $translateoutput .= "<div class='tab-page'>\n";
 
-  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "label", "question", "question_help", "answer");
+  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 
   if (isset($tolang) && $actionvalue=="translateSave")
   // Saves translated values to database
   {
     foreach($tab_names as $type)
     {
-      $size = $_POST["{$type}_size"];
+      $size = 0;
+      if(isset($_POST["{$type}_size"]))
+      {
+        $size = $_POST["{$type}_size"];
+      }
       // start a loop in order to update each record
       $i = 0;
-
       while ($i < $size)
       {
         // define each variable
-        $new = $_POST["{$type}_newvalue_{$i}"];
-        $id1 = $_POST["{$type}_id1"][$i];
-        $id2 = $_POST["{$type}_id2"][$i];
-        $transarray = setupTranslateFields($type);
-        $query = $transarray["queryupdate"];
-        $connect->execute($query);
+        if (isset($_POST["{$type}_newvalue_{$i}"]))
+        {
+          $new = $_POST["{$type}_newvalue_{$i}"];
+          $id1 = $_POST["{$type}_id1_{$i}"];
+          $id2 = $_POST["{$type}_id2_{$i}"];
+          $transarray = setupTranslateFields($type);
+          $query = $transarray["queryupdate"];
+          $connect->execute($query);
+        }
         ++$i;
       } // end while
     } // end foreach
     $actionvalue = "";
-
   } // end if
 
   if (isset($tolang))
@@ -125,9 +144,19 @@
           if (strlen(trim((string)$textfrom)) > 0)
           {
             $all_fields_empty = FALSE;
-            $translateoutput .= "<input type='hidden' name='{$type}_id1[{$i}]' value='{$rowfrom[$transarray["id1"]]}' />\n";
-            $translateoutput .= "<input type='hidden' name='{$type}_id2[{$i}]' value='{$rowfrom[$transarray["id2"]]}' />\n";
-
+            $value1 = "NA";
+            if ($transarray["id1"] != "")
+            {
+              $value1 = $rowfrom[$transarray["id1"]];
+            }
+            $value2 = "NA";
+            if ($transarray["id2"] != "")
+            {
+              $value2 = $rowfrom[$transarray["id2"]];
+            }
+            $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
+            $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
+          
             $translateoutput .= "<div style=\"margin:10px 10%; border-top:1px solid #0000ff;\">\n"
                . '<table cellpadding="5px" cellspacing="0" align="center" width="100%" >'
                 . '<colgroup valign="top" width="25%">'
@@ -147,7 +176,6 @@
                     $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
                     $translateoutput .= "<textarea cols='80' rows='$nrows+1' "
                       ."name='{$type}_newvalue_{$i}'>$textto</textarea>\n"
-                      //getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
                       .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, '', '', $action);
                   $translateoutput .= "</td>\n"
                 . "</tr>\n"
