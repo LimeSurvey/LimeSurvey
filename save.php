@@ -599,7 +599,7 @@ function createinsertquery()
                             {
                                 $qfield = db_quoteall($_POST[$field],true);
                             }
-                            $query .= db_quote_id($field)." = ".db_quoteall($_POST[$field],true).",";
+                            $query .= db_quote_id($field)." = ".$qfield.",";
                         }
                     }
                 }
