@@ -319,10 +319,10 @@ unset ($fnames['startdate']);
 			
 			header("Content-Disposition: Attachment; filename=\"". $clang->gT($surveyname)."-".$surveyid.".pdf\"");
 			
-			$pdf->Output("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
-			header("Content-Length: ". filesize("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf"));
-			readfile("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf");
-			unlink("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf");
+			$pdf->Output($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
+			header("Content-Length: ". filesize($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf"));
+			readfile($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf");
+			unlink($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf");
 			//$pdf->write_out($clang->gT($surveyname)."-".$surveyid.".pdf");
 		}
 		else
