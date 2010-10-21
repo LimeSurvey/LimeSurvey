@@ -15,15 +15,16 @@
 */
 
 
+/**
+ * showTranslateAdminmenu() creates the main menu options for the survey translation page
+ * @global string $tolang
+ * @return string
+ */
+
   function showTranslateAdminmenu()
 {
-   global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action,
-          $updateavailable, $updatebuild, $updateversion, $updatelastcheck,
-          $databaselocation, $databaseuser, $databasepass;
-
-   global $tolang;
-
-   global $activated, $publicurl;
+   global $scriptname, $surveyid, $imagefiles, $clang, $action, 
+           $tolang, $activated, $publicurl;
 
   $baselang = GetBaseLanguageFromSurveyID($surveyid);
   $supportedLanguages = getLanguageData(false);
@@ -57,6 +58,13 @@
   
   // Test / execute survey button
 
+  $sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
+  $sumresult1 = db_select_limit_assoc($sumquery1, 1) ; //Checked
+  $surveyinfo = $sumresult1->FetchRow();
+
+  $surveyinfo = array_map('FlattenText', $surveyinfo);
+  $activated = $surveyinfo['active'];
+
   if ($activated == "N")
   {
       $icontext=$clang->gT("Test This Survey");
@@ -66,7 +74,7 @@
       $icontext=$clang->gT("Execute This Survey");
       $icontext2=$clang->gTview("Execute This Survey");
   }
-  $baselang = GetBaseLanguageFromSurveyID($surveyid);
+  //$baselang = GetBaseLanguageFromSurveyID($surveyid);
   if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
   {
       $adminmenu .= "<a href=\"#\" accesskey='d' onclick=\"window.open('"
@@ -134,6 +142,18 @@
   return($adminmenu);
 }
 
+
+/**
+ * setupTranslateFields() creates a customised array with database query information
+ * for use by survey translation
+ * @global string $baselang The source translation language
+ * @global string $tolang The target translation language
+ * @global string $new The new value of the translated string
+ * @global string $id1 An index variable used in the database select and update query
+ * @global string $id2 An index variable used in the database select and update query
+ * @param  string $type Type of database field that is being translated, e.g. title, question, etc.
+ * @return array
+ */
 
 function setupTranslateFields($type)
 {
@@ -384,38 +404,12 @@ function setupTranslateFields($type)
   return($transarray);
 }
 
-
-function strip_html_tags( $text )
-{
-    $text = preg_replace(
-        array(
-          // Remove invisible content
-            '@<head[^>]*?>.*?</head>@siu',
-            '@<style[^>]*?>.*?</style>@siu',
-            '@<script[^>]*?.*?</script>@siu',
-            '@<object[^>]*?.*?</object>@siu',
-            '@<embed[^>]*?.*?</embed>@siu',
-            '@<applet[^>]*?.*?</applet>@siu',
-            '@<noframes[^>]*?.*?</noframes>@siu',
-            '@<noscript[^>]*?.*?</noscript>@siu',
-            '@<noembed[^>]*?.*?</noembed>@siu',
-          // Add line breaks before and after blocks
-            '@</?((address)|(blockquote)|(center)|(del))@iu',
-            '@</?((div)|(h[1-9])|(ins)|(isindex)|(p)|(pre))@iu',
-            '@</?((dir)|(dl)|(dt)|(dd)|(li)|(menu)|(ol)|(ul))@iu',
-            '@</?((table)|(th)|(td)|(caption))@iu',
-            '@</?((form)|(button)|(fieldset)|(legend)|(input))@iu',
-            '@</?((label)|(select)|(optgroup)|(option)|(textarea))@iu',
-            '@</?((frameset)|(frame)|(iframe))@iu',
-        ),
-        array(
-            ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-            "\n\$0", "\n\$0", "\n\$0", "\n\$0", "\n\$0", "\n\$0",
-            "\n\$0", "\n\$0",
-        ),
-        $text );
-    return strip_tags( $text );
-}
+/**
+ * calc_nrows($subject) calculates the vertical size of textbox for survey translation.
+ * The function adds the number of line breaks <br /> to the number of times a string wrap occurs.
+ * @param string $subject The text string that is being translated
+ * @return integer
+ */
 
 
 function calc_nrows( $subject )

@@ -15,18 +15,17 @@
 *
 */
 
-//TODO use javascript to create tabs, in style of conditions editor.  Create translation.js file
-// TODO http://jqueryui.com/demos/tabs/
-// TODO look at tokens.php for example code (Search for tokens.js to load)
+//TODO Use javascript to create tabs, in style of conditions editor.  Create translation.js file
+//TODO http://jqueryui.com/demos/tabs/
+//TODO Look at tokens.php for example code (Search for tokens.js to load)
 
 //TODO For database save, don't use getUpdateSQL, but block saves
-//TODO coding guidelines: http://docs.limesurvey.org/tiki-index.php?page=Coding+Rules&structure=LimeSurvey+development
-//TODO coding guidelines: http://docs.limesurvey.org/tiki-index.php?page=How+to+document+your+source+code
 //TODO modify code to prevent two users from saving across each other's work, with hidden $_POST fields
 
 //TODO create explicit $gid and $qid variables in foreach(), for use by fckEditor, then contact lemeur
 
   include_once("login_check.php");  //Login Check dies also if the script is started directly
+
   if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
   if (!isset($action)) {$action=returnglobal('action');}
   include_once('translate_functions.php');
@@ -62,7 +61,7 @@
 
   $translateoutput = "";
   $translateoutput .= "<form name='translateform' id='translateform' "
-                   ."action='$scriptname' method='POST' />";
+                   ."action='$scriptname' method='GET' />";
   $translateoutput .= showTranslateAdminmenu();
   $translateoutput .= "</form>";
 
@@ -106,6 +105,15 @@
   if (isset($tolang))
   // Display tabs with fields to translate, as well as input fields for translated values
   {
+//      $translateoutput .= "<form name='{$transarray["formname"]}' method='POST' "
+//        ."action='$scriptname' id='{$transarray["formname"]}' />\n"
+      $translateoutput .= "<form name='translateform' method='POST' "
+        ."action='$scriptname' id='translateform' />\n"
+        ."<input type='hidden' name='sid' value='$surveyid' />\n"
+        ."<input type='hidden' name='action' value='translate' />\n"
+        ."<input type='hidden' name='actionvalue' value='translateSave' />\n"
+        ."<input type='hidden' name='tolang' value='$tolang' />\n";
+
     foreach($tab_names as $type)
     {
       $transarray = setupTranslateFields($type);
@@ -115,13 +123,6 @@
       
       $translateoutput .= PrepareEditorScript("editlabel");
       // Setup form
-      $translateoutput .= "<form name='{$transarray["formname"]}' method='POST' "
-        ."action='$scriptname' id='{$transarray["formname"]}' />\n"
-        ."<input type='hidden' name='sid' value='$surveyid' />\n"
-        ."<input type='hidden' name='action' value='translate' />\n"
-        ."<input type='hidden' name='actionvalue' value='translateSave' />\n"
-        ."<input type='hidden' name='tolang' value='$tolang' />\n";
-
         // start a counter in order to number the input fields for each record
         $i = 0;
         $all_fields_empty = TRUE;
@@ -137,19 +138,17 @@
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$transarray["what"]]);
           $rowto = $resultto->FetchRow();
-          // TODO Decide whether to strip HTML tags or not
-  //        $textto   = strip_tags(htmlspecialchars_decode($rowto[$transarray["what"]]));
           $textto   = htmlspecialchars_decode($rowto[$transarray["what"]]);
 
           if (strlen(trim((string)$textfrom)) > 0)
           {
             $all_fields_empty = FALSE;
-            $value1 = "NA";
+            $value1 = "";
             if ($transarray["id1"] != "")
             {
               $value1 = $rowfrom[$transarray["id1"]];
             }
-            $value2 = "NA";
+            $value2 = "";
             if ($transarray["id2"] != "")
             {
               $value2 = $rowfrom[$transarray["id2"]];
@@ -166,13 +165,10 @@
                   . "<td>$baselangdesc</td>\n"
                   . "<td>$textfrom</td>\n"
                 . "</tr>\n";
-
                 $translateoutput .= "<tr>\n"
                     // Display text in foreign language
                   . "<td>$tolangdesc</td>\n"
                   . '<td>';
-
-                    // TODO Modify code to use HTML FCKeditor - this still doesn't work properly
                     $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
                     $translateoutput .= "<textarea cols='80' rows='$nrows+1' "
                       ."name='{$type}_newvalue_{$i}'>$textto</textarea>\n"
@@ -197,9 +193,6 @@
 
       } // end foreach
 
-  } // end if
-
-
     $translateoutput .= "</div>\n";  // tab-pane
     $translateoutput .= '</div>'; // div class='tab-page'
 
@@ -211,5 +204,8 @@
 
     $translateoutput .= '</div>';
     $translateoutput .= "</form>";
+  } // end if
+
+
 
 ?>
