@@ -322,7 +322,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 {
     if(bHasRight($surveyid))
     {
-        $js_admin_includes[]='../scripts/jquery/jquery.cookie.js';
+        $js_admin_includes[]='../scripts/jquery/jquery.coookie.js';
         $js_admin_includes[]='scripts/surveytoolbar.js';
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey

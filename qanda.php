@@ -4303,7 +4303,7 @@ function do_shortfreetext($ia)
     }
     if (trim($qidattributes['time_limit'])!='')
     {
-		$js_header_includes[] = '/scripts/cookies.js';
+		$js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
@@ -4384,7 +4384,7 @@ function do_longfreetext($ia)
 
     if (trim($qidattributes['time_limit'])!='')
     {
-		$js_header_includes[] = '/scripts/cookies.js';
+		$js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
@@ -4467,7 +4467,7 @@ function do_hugefreetext($ia)
 
     if (trim($qidattributes['time_limit']) != '')
     {
-		$js_header_includes[] = '/scripts/cookies.js';
+		$js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
