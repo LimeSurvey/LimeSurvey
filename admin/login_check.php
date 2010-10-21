@@ -150,6 +150,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
     if($action == "forgotpassword")
     {
         $loginsummary = '
+        <center>
 			<form name="forgot" id="forgot" method="post" action="'.$homeurl.'/admin.php" >
 				<p><strong>'.$clang->gT('You have to enter user name and email.').'</strong></p>
 
@@ -174,6 +175,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 					</tr>
 				</table>
 			</form>
+            </center><p>&nbsp;</p>
 ';
     }
     elseif (!isset($loginsummary))
