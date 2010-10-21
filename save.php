@@ -171,7 +171,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             if (isset($_SESSION[$value]) && isset($fieldexists) && $_SESSION[$value]!='')
             {
 
-                if ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                if ($fieldexists['type']=='D' && isset($_POST[$value]))  // convert the date to the right DB Format
                 {
                     $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                     $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
