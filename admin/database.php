@@ -1011,7 +1011,7 @@ if(isset($surveyid))
     }
 
 
-    elseif (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasSurveyPermission($surveyid,'delete_survey'))
+    elseif (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasSurveyPermission($surveyid,'surveysettings','update'))
     {
 
         $formatdata=getDateFormatData($_SESSION['dateformat']);
@@ -1055,7 +1055,6 @@ if(isset($surveyid))
                             'adminemail'=>$_POST['adminemail'],
                             'startdate'=>$_POST['startdate'],
                             'bounce_email'=>$_POST['bounce_email'],
-        //                            'usetokens'=>$_POST['usetokens'],
                             'private'=>$_POST['private'],
                             'faxto'=>$_POST['faxto'],
                             'format'=>$_POST['format'],
@@ -1162,7 +1161,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "delsurvey" && bHasSurveyPermission($surveyid, 'delete_survey')) //can only happen if there are no groups, no questions, no answers etc.
+    elseif ($action == "delsurvey" && bHasSurveyPermission($surveyid,'survey','delete')) //can only happen if there are no groups, no questions, no answers etc.
     {
         $query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
         $result = $connect->Execute($query);  // Checked
@@ -1180,7 +1179,7 @@ if(isset($surveyid))
 
 
     // Save the 2nd page from the survey-properties
-    elseif (($action == "updatesurveylocalesettings") && bHasSurveyPermission($surveyid,'delete_survey'))
+    elseif (($action == "updatesurveylocalesettings") && bHasSurveyPermission($surveyid,'surveylocale','update'))
     {
         $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
         $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);

@@ -447,7 +447,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        if(bHasSurveyPermission($surveyid,'edit_survey_property','update'))
+        if(bHasSurveyPermission($surveyid,'surveysettings','read'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurveysettings&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Edit survey settings")."\" >"
@@ -455,35 +455,37 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
         else
         {
-            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='80' />\n";
+            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
 
-        if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+        if(bHasSurveyPermission($surveyid,'exportstructure','read'))
         {
-
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Printable and scannable Version of survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />";
-
-        } else {
-
-            $surveysummary .= "<a href='#' id='doprintableScannable' title=\"".$clang->gTview("Printable and scannable version of survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />\n";
-            
-            $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
-            $tmp_survlangs[] = $baselang;
-            rsort($tmp_survlangs);
-
-            // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup\" id=\"doprintableScannablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
-            foreach ($tmp_survlangs as $tmp_lang)
+            if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
             {
-                $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintableScannable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+
+                $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
+                . " title=\"".$clang->gTview("Printable and scannable Version of survey")."\" >"
+                . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />";
+
+            } else {
+
+                $surveysummary .= "<a href='#' id='doprintableScannable' title=\"".$clang->gTview("Printable and scannable version of survey")."\" >"
+                . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />\n";
+                
+                $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                $tmp_survlangs[] = $baselang;
+                rsort($tmp_survlangs);
+
+                // Test Survey Language Selection Popup
+                $surveysummary .="<div class=\"langpopup\" id=\"doprintableScannablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
+                foreach ($tmp_survlangs as $tmp_lang)
+                {
+                    $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintableScannable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                }
+                $surveysummary .= "</ul></div>";
             }
-            $surveysummary .= "</ul></div>";
-        }
-        
+        }        
  
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
@@ -514,7 +516,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
         
         $surveysummary .= "</a><img src='$imagefiles/seperator.gif' alt='' />\n";
-        if(bHasSurveyPermission($surveyid,'edit_survey_property','read'))
+        if(bHasSurveyPermission($surveyid,'surveylocale','read'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurveylocalesettings&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Edit survey properties")."\" >"
@@ -3500,8 +3502,14 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
             $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
         } elseif ($action == "editsurveysettings") {
             $cond = "if (UpdateLanguageIDs(mylangs,\"" . $clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js") . "\"))";
-            $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
-            $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"surveysettingsaction\").value = \"updatesurveysettingsandeditlocalesettings\"; document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
+            if (bHasSurveyPermission($surveyid,'surveysettings','update'))
+            {
+                $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
+            }
+            if (bHasSurveyPermission($surveyid,'surveylocale','read'))
+            {
+                $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"surveysettingsaction\").value = \"updatesurveysettingsandeditlocalesettings\"; document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
+            }
         }
     }
     }
@@ -3575,12 +3583,15 @@ if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsu
             . "</div>";
         }
         $editsurvey .= '</div>';
-        $editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
-        . "<input type='hidden' name='action' value='updatesurveylocalesettings' />\n"
-        . "<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
-        . "<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
-        . "</p>\n"
-        . "</form>\n";
+        if(bHasSurveyPermission($surveyid,'surveylocale','update'))
+        {
+            $editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
+            . "<input type='hidden' name='action' value='updatesurveylocalesettings' />\n"
+            . "<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
+            . "<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
+            . "</p>\n"
+            . "</form>\n";
+        }
 
     }
     else
@@ -3592,17 +3603,16 @@ if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsu
 
 if ($action == "translate")  // Translate survey
 {
-    if(bHasSurveyPermission($surveyid,'edit_survey_property'))
-{
-        $translateoutput .="<div class='header'>".$clang->gT("Translate Survey")."</div>\n";
-        $translateoutput .= "This is the survey translation feature";
-        }
+    if(bHasSurveyPermission($surveyid,'translation','read'))
+    {
+        $translateoutput .="<div class='header'>".$clang->gT("Quick-translate survey")."</div>\n";
+    }
     else
-        {
+    {
         include("access_denied.php");
-            }
+    }
 
-        }
+}
 
 if($action == "quotas")
         {

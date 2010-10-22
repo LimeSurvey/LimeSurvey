@@ -275,7 +275,7 @@ if(isset($_SESSION['loginID']))
 //<AdV>
     elseif ($action == 'translate')
     {
-        if(bHasSurveyPermission($surveyid,'edit_survey_property'))    {$_SESSION['FileManagerContext']="edit:translate:$surveyid"; include('translate.php');}
+        if(bHasSurveyPermission($surveyid,'translation','read'))    {$_SESSION['FileManagerContext']="edit:translate:$surveyid"; include('translate.php');}
         else { include('access_denied.php'); }
     }
 //</AdV>    
@@ -308,7 +308,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action=='assessments' || $action=='assessmentdelete' || $action=='assessmentedit' || $action=='assessmentadd' || $action=='assessmentupdate')
     {
-        if(bHasSurveyPermission($surveyid,'define_questions'))    {
+        if(bHasSurveyPermission($surveyid,'assessments','read'))    {
             $_SESSION['FileManagerContext']="edit:assessments:$surveyid";
             include('assessments.php');
         }
