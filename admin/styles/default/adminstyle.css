@@ -1332,5 +1332,8 @@ table.limetable tbody tr.highlight {
 thead th 
 {
     background-color:#E1E7EF;
-    padding:0 2em;
+}
+
+.usersurveypermissions th{
+     padding:0 2em;
 }

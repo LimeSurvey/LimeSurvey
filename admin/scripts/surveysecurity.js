@@ -17,5 +17,11 @@ $(document).ready(function(){
                   }
  });
  
+ $(".markrow").click(
+     function(){
+            $(this).closest('tr').find('input').attr('checked',$(this).attr('checked'));
+     }
+ )
+ 
 });
 

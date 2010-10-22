@@ -130,6 +130,39 @@ function bHasGlobalPermission($sPermission)
 
 }
 
+/**
+* Set the survey permissions for a user. Beware that all survey permissions for the particual survey are removed before the new ones are written.
+* 
+* @param int $iUserID The User ID
+* @param int $iSurveyID The Survey ID 
+* @param array $aPermissions  Array with permissions in format <permissionname>=>array('create'=>0/1,'read'=>0/1,'update'=>0/1,'delete'=>0/1)
+*/
+function SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
+{
+    global $connect, $surveyid;
+    $iUserID=sanitize_int($iUserID);
+    $sQuery = "delete from ".db_table_name('survey_permissions')." WHERE sid = {$iSurveyID} AND uid = {$iUserID}";
+    $connect->Execute($sQuery);
+    $bResult=true;
+    
+    foreach($aPermissions as $sPermissionname=>$aPermissions)
+    {
+        if (!isset($aPermissions['create'])) {$aPermissions['create']=0;}
+        if (!isset($aPermissions['read'])) {$aPermissions['read']=0;}
+        if (!isset($aPermissions['update'])) {$aPermissions['update']=0;}
+        if (!isset($aPermissions['delete'])) {$aPermissions['delete']=0;}
+        if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1)
+        {
+            $sQuery = "INSERT INTO ".db_table_name('survey_permissions')." (sid, uid, permission, create_p, read_p, update_p, delete_p)
+                       VALUES ({$iSurveyID},{$iUserID},'{$sPermissionname}',{$aPermissions['create']},{$aPermissions['read']},{$aPermissions['update']},{$aPermissions['delete']})";
+            $bResult=$connect->Execute($sQuery);
+        }
+    }
+    return $bResult;
+}
+
+
+
 function gettemplatelist()
 {
     global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;

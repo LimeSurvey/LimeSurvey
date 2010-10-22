@@ -107,9 +107,9 @@ $(document).ready(function(){
                }}
     }); 
 
-    $('#doprintablescanable').qtip({
+    $('#doprintableScannable').qtip({
         content:{
-                text:$('#doprintablescanablelangpopup')
+                text:$('#doprintableScannablelangpopup')
         },
         style: { name: 'cream',
                         tip:true, 

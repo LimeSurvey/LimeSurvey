@@ -462,13 +462,13 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
 
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Printable and Scanable Version of Survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScanableSurvey' alt='".$clang->gT("Printable and Scanable Version of Survey")."' />";
+            . " title=\"".$clang->gTview("Printable and scannable Version of survey")."\" >"
+            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />";
 
         } else {
 
-            $surveysummary .= "<a href='#' id='doprintablescanable' title=\"".$clang->gTview("Printable and Scanable Version of Survey")."\" >"
-            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScanableSurvey' alt='".$clang->gT("Printable and Scanable Version of Survey")."' />\n";
+            $surveysummary .= "<a href='#' id='doprintableScannable' title=\"".$clang->gTview("Printable and scannable version of survey")."\" >"
+            . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />\n";
             
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -476,10 +476,10 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             rsort($tmp_survlangs);
 
             // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup\" id=\"doprintablescanablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
+            $surveysummary .="<div class=\"langpopup\" id=\"doprintableScannablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintablescanable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintableScannable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
             $surveysummary .= "</ul></div>";
         }
@@ -561,7 +561,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 . "<img src='$imagefiles/saved.png' name='BrowseSaved' alt='".$clang->gT("View Saved but not submitted Responses")."' /></a>\n";
             }
         }
-        if (bHasSurveyPermission($surveyid,'surveysettings','update') || bHasSurveyPermission($surveyid,'tokens','view'))
+        if (bHasSurveyPermission($surveyid,'surveysettings','update') || bHasSurveyPermission($surveyid,'tokens','read'))
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
@@ -675,7 +675,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "</a>\n";
         }        
         
-        if (bHasSurveyPermission($surveyid,'assessments','view'))
+        if (bHasSurveyPermission($surveyid,'assessments','read'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=assessments&amp;sid=$surveyid', '_top')\" "
             . "title=\"".$clang->gTview("Set Assessment Rules")."\" >"
@@ -686,7 +686,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
         }
 
-        if (bHasSurveyPermission($surveyid,'quotas','view'))
+        if (bHasSurveyPermission($surveyid,'quotas','read'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=quotas&amp;sid=$surveyid', '_top')\" "
             . "title=\"".$clang->gTview("Set Survey Quotas")."\" >"
@@ -1012,7 +1012,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         . "<img src='$imagefiles/blank.gif' alt='' width='180' height='20'  />"
         . "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
-        if(bHasSurveyPermission($surveyid,'questions','view'))
+        if(bHasSurveyPermission($surveyid,'questions','read'))
         {
             $groupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
             . " title=\"".$clang->gTview("Edit current question group")."\">"
@@ -2083,7 +2083,7 @@ if($action == "setsurveysecurity")
 
         $usersummary .= ""
         . "<tr><th align='center'>".$clang->gT("Permission")."</th>\n"
-        . "<th align='center'>&nbsp;</th>\n"
+        . "<th align='center'></th>\n"
         . "<th align='center'>".$clang->gT("Create")."</th>\n"
         . "<th align='center'>".$clang->gT("View/read")."</th>\n"
         . "<th align='center'>".$clang->gT("Update")."</th>\n"
@@ -2106,11 +2106,14 @@ if($action == "setsurveysecurity")
                 
                 if ($CRUDValue)
                 {
-                    $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
-                    if(bHasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
-                        $usersummary .= ' checked="checked" ';
+                    if (!($sPermissionKey=='survey' && $sCRUDKey=='read')) 
+                    {
+                        $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
+                        if(bHasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
+                            $usersummary .= ' checked="checked" ';
+                        }
+                        $usersummary .=" />";                    
                     }
-                    $usersummary .=" />";                    
                 }
                 $usersummary .= "</td>";
             }
@@ -2120,6 +2123,7 @@ if($action == "setsurveysecurity")
 
         $usersummary .= "\n</tr></table>"
         ."<p><input type='submit' value='".$clang->gT("Save Now")."' />"
+        ."<input type='hidden' name='perm_survey_read' value='1' />"
         ."<input type='hidden' name='action' value='surveyrights' />"
         ."<input type='hidden' name='uid' value='{$postuserid}' />"
         . "</form>\n";
@@ -2451,7 +2455,7 @@ if($action == "surveysecurity")
                     $iPermissionCount=0;
                     foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
                     {
-                        if ($sPDetailValue && bHasSurveyPermission($surveyid,$sPKey,$sPDetailKey,$PermissionRow['uid'])) $iCount++;
+                        if ($sPDetailValue && bHasSurveyPermission($surveyid,$sPKey,$sPDetailKey,$PermissionRow['uid']) && !($sPKey=='survey' && $sPDetailKey=='read')) $iCount++;
                         if ($sPDetailValue) $iPermissionCount++; 
                     }
                     if ($sPKey=='survey')  $iPermissionCount--;
@@ -2503,8 +2507,8 @@ if($action == "surveysecurity")
 
 elseif ($action == "surveyrights")
 {
-    $addsummary = "<div class=\"header\">".$clang->gT("Set Survey Rights")."</div>\n";
-    $addsummary .= "<div class=\"messagebox\">\n";
+    $addsummary = "<div class='header'>".$clang->gT("Edit survey permissions")."</div>\n";
+    $addsummary .= "<div class='messagebox'>\n";
 
     if(isset($postuserid)){
         $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} ";
@@ -2516,41 +2520,36 @@ elseif ($action == "surveyrights")
     else{
         $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
     }
-    $result = db_execute_assoc($query); //Checked
-    if($result->RecordCount() > 0)
+    
+    $aBaseSurveyPermissions=aGetBaseSurveyPermissions();
+    $aPermissions=array();
+    foreach ($aBaseSurveyPermissions as $sPermissionKey=>$aCRUDPermissions)
     {
-        $rights = array();
-
-        if(isset($_POST['edit_survey_property']))$rights['edit_survey_property']=1;	else $rights['edit_survey_property']=0;
-        if(isset($_POST['define_questions']))$rights['define_questions']=1;			else $rights['define_questions']=0;
-        if(isset($_POST['browse_response']))$rights['browse_response']=1;			else $rights['browse_response']=0;
-        if(isset($_POST['export']))$rights['export']=1;								else $rights['export']=0;
-        if(isset($_POST['delete_survey']))$rights['delete_survey']=1;				else $rights['delete_survey']=0;
-        if(isset($_POST['activate_survey']))$rights['activate_survey']=1;			else $rights['activate_survey']=0;
-        if(isset($_POST['translate_survey']))$rights['translate_survey']=1;     else $rights['translate_survey']=0;
-
-        if(isset($postuserid)){
-            $uids[] = $postuserid;
-        }
-        else{
-            $uids = $_SESSION['uids'];
-            unset($_SESSION['uids']);
-        }
-
-        if(setsurveyrights($uids, $rights))
+        foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
         {
-            $addsummary .= "<div class=\"successheader\">".$clang->gT("Update survey rights successful.")."</div>\n";
-        }
-        else
-        {
-            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update survey rights!")."</div>\n";
-        }
-        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+            if (!in_array($sCRUDKey,array('create','read','update','delete'))) continue;
+            
+            if ($CRUDValue)
+            {
+                if(isset($_POST["perm_{$sPermissionKey}_{$sCRUDKey}"])){
+                    $aPermissions[$sPermissionKey][$sCRUDKey]=1;
+                }
+                else
+                {
+                    $aPermissions[$sPermissionKey][$sCRUDKey]=0;
+                }
+            }
+        }        
+    }
+    if(SetSurveyPermissions($postuserid, $surveyid, $aPermissions))
+    {
+        $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions successfully updated.")."</div>\n";
     }
     else
     {
-        include("access_denied.php");
+        $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update survey permissions!")."</div>\n";
     }
+    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
     $addsummary .= "</div>\n";
 }
 
@@ -3509,7 +3508,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
 
 if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsurveylocalesettings")  // Edit survey step 2  - editing language dependent settings
 {
-    if(bHasSurveyPermission($surveyid,'edit_survey_property'))
+    if(bHasSurveyPermission($surveyid,'surveylocale','read'))
     {
 
         $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);

@@ -174,12 +174,12 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'conditions')
     {
-        if(bHasSurveyPermission($surveyid,'questions','view'))    {include('conditionshandling.php');}
+        if(bHasSurveyPermission($surveyid,'questions','read'))    {include('conditionshandling.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'extendedconditions')
     {
-        if(bHasSurveyPermission($surveyid,'questions','view'))    {include('extendedconditionshandling.php');}
+        if(bHasSurveyPermission($surveyid,'questions','read'))    {include('extendedconditionshandling.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'importsurveyresources')

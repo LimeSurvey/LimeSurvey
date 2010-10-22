@@ -5150,25 +5150,7 @@ function setuserrights($uid, $rights)
     return $connect->Execute($uquery);     //Checked
 }
 
-// set the rights for a survey
-function setsurveyrights($uids, $rights)
-{
-    global $connect, $surveyid;
-    $uids=array_map('sanitize_int',$uids);
-    $uids_implode = implode(" OR uid = ", $uids);
-
-    $updates = "edit_survey_property=".$rights['edit_survey_property']
-    . ", define_questions=".$rights['define_questions']
-    . ", browse_response=".$rights['browse_response']
-    . ", export=".$rights['export']
-    . ", delete_survey=".$rights['delete_survey']
-    . ", activate_survey=".$rights['activate_survey']
-    . ", translate_survey=".$rights['translate_survey'];
-    $uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
-    // TODO
-    return $connect->Execute($uquery);   //Checked
-}
-
+    
 function createPassword()
 {
     $pwchars = "abcdefhjmnpqrstuvwxyz23456789";
