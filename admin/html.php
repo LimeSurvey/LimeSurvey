@@ -1944,7 +1944,7 @@ if($action == "addsurveysecurity")
 
         if($postuserid > 0){
 
-            $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $postuserid.",0,0,0,0,0,0)";
+            $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $postuserid.",0,0,0,0,0,0,0)";
             $isrresult = $connect->Execute($isrquery); //Checked
 
             if($isrresult)
@@ -1997,7 +1997,7 @@ if($action == "addusergroupsurveysecurity")
                 while ($row2 = $result2->FetchRow())
                 {
                     $uid_arr[] = $row2['uid'];
-                    $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ($surveyid, {$row2['uid']},0,0,0,0,0,0) ";
+                    $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ($surveyid, {$row2['uid']},0,0,0,0,0,0,0) ";
                     $isrresult = $connect->Execute($isrquery); //Checked
                     if (!$isrresult) break;
                 }
@@ -2076,7 +2076,7 @@ if($action == "setsurveysecurity")
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
-        $query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$postuserid;
+        $query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey, translate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$postuserid;
         $result2 = db_execute_assoc($query2); //Checked
 
         if($result2->RecordCount() > 0)
@@ -2084,19 +2084,22 @@ if($action == "setsurveysecurity")
             $resul2row = $result2->FetchRow();
 
             $usersummary = "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
-            . "<table width='100%' border='0'>\n<tr><td colspan='6' class='header'>\n"
+            . "<table width='100%' border='0'>\n<tr><td colspan='7' class='header'>\n"
             . "".$clang->gT("Set Survey Rights")."</td></tr>\n";
 
-            $usersummary .= "<tr><th align='center'>".$clang->gT("Edit Survey Properties")."</th>\n"
+            $usersummary .= ""
+            . "<tr><th align='center'>".$clang->gT("Edit Survey Properties")."</th>\n"
             . "<th align='center'>".$clang->gT("Define Questions")."</th>\n"
             . "<th align='center'>".$clang->gT("Browse Responses")."</th>\n"
             . "<th align='center'>".$clang->gT("Export")."</th>\n"
             . "<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
             . "<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
+            . "<th align='center'>".$clang->gT("Translate Survey")."</th>\n"
             . "</tr>\n";
 
             //content
-            $usersummary .= "<tr><td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
+            $usersummary .= "<tr>";
+            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
             if($resul2row['edit_survey_property']) {
                 $usersummary .= ' checked="checked" ';
             }
@@ -2125,9 +2128,14 @@ if($action == "setsurveysecurity")
             if($resul2row['activate_survey']) {
                 $usersummary .= ' checked="checked" ';
             }
+            $usersummary .=" /></td>\n";
+            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"translate_survey\" value=\"translate_survey\"";
+            if($resul2row['translate_survey']) {
+                $usersummary .= ' checked="checked" ';
+            }
             $usersummary .=" /></td></tr>\n";
 
-            $usersummary .= "\n<tr><td colspan='6' align='center'>"
+            $usersummary .= "\n<tr><td colspan='7' align='center'>"
             ."<input type='submit' value='".$clang->gT("Save Now")."' />"
             ."<input type='hidden' name='action' value='surveyrights' />"
             ."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
@@ -2147,15 +2155,17 @@ if($action == "setusergroupsurveysecurity")
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
-        $usersummary = "<table width='100%' border='0'>\n<tr><td colspan='6'>\n"
+        $usersummary = "<table width='100%' border='0'>\n<tr><td colspan='7'>\n"
         . "".$clang->gT("Set Survey Rights")."</td></tr>\n";
 
-        $usersummary .= "<th align='center'>".$clang->gT("Edit Survey Property")."</th>\n"
+        $usersummary .= ""
+        . "<th align='center'>".$clang->gT("Edit Survey Property")."</th>\n"
         . "<th align='center'>".$clang->gT("Define Questions")."</th>\n"
         . "<th align='center'>".$clang->gT("Browse Response")."</th>\n"
         . "<th align='center'>".$clang->gT("Export")."</th>\n"
         . "<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
         . "<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
+        . "<th align='center'>".$clang->gT("Translate Survey")."</th>\n"
         . "</tr>\n"
         . "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
 
@@ -2178,8 +2188,11 @@ if($action == "setusergroupsurveysecurity")
         $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"activate_survey\" value=\"activate_survey\"";
 
         $usersummary .=" /></td>\n";
+        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"translate_survey\" value=\"translate_survey\"";
 
-        $usersummary .= "\n<tr><td colspan='6' align='center'>"
+        $usersummary .=" /></td>\n";
+
+        $usersummary .= "\n<tr><td colspan='7' align='center'>"
         ."<input type='submit' value='".$clang->gT("Save Now")."' />"
         ."<input type='hidden' name='action' value='surveyrights' />"
         ."<input type='hidden' name='ugid' value='{$postusergroupid}' /></td></tr>"
@@ -2347,6 +2360,7 @@ if($action == "surveysecurity")
         . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Export")."\"></th>\n"
         . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Delete Survey")."\"></th>\n"
         . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Activate Survey")."\"></th>\n"
+        . "<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"".$clang->gT("Translate Survey")."\"></th>\n"
         . "<th>".$clang->gT("Action")."</th>\n"
         . "</tr></thead>\n";
 
@@ -2443,7 +2457,7 @@ if($action == "surveysecurity")
                 . "<td>\n{$resul2row['full_name']}</td>\n";
 
                 //Now insert the rights
-                $rightsarr = array('edit_survey_property','define_questions','browse_response','export','delete_survey','activate_survey');
+                $rightsarr = array('edit_survey_property','define_questions','browse_response','export','delete_survey','activate_survey','translate_survey');
                 foreach ($rightsarr as $right) {
                     if ($resul2row[$right]==1) {
                         $insert = "<div class=\"ui-icon ui-icon-check\"></div>";
@@ -2511,6 +2525,7 @@ elseif ($action == "surveyrights")
         if(isset($_POST['export']))$rights['export']=1;               else $rights['export']=0;
         if(isset($_POST['delete_survey']))$rights['delete_survey']=1;       else $rights['delete_survey']=0;
         if(isset($_POST['activate_survey']))$rights['activate_survey']=1;     else $rights['activate_survey']=0;
+        if(isset($_POST['translate_survey']))$rights['translate_survey']=1;     else $rights['translate_survey']=0;
 
         if(isset($postuserid)){
             $uids[] = $postuserid;

@@ -5123,7 +5123,8 @@ function setsurveyrights($uids, $rights)
     . ", browse_response=".$rights['browse_response']
     . ", export=".$rights['export']
     . ", delete_survey=".$rights['delete_survey']
-    . ", activate_survey=".$rights['activate_survey'];
+    . ", activate_survey=".$rights['activate_survey']
+    . ", translate_survey=".$rights['translate_survey'];
     $uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
     // TODO
     return $connect->Execute($uquery);   //Checked
