@@ -49,7 +49,7 @@ $databaseoutput ='';
 
 if(isset($surveyid))
 {
-    if ($action == "insertnewgroup" && bHasRight($surveyid, 'define_questions'))
+    if ($action == "insertnewgroup" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
         $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -117,7 +117,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "updategroup" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updategroup" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
         $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -161,7 +161,7 @@ if(isset($surveyid))
 
     }
 
-    elseif ($action == "delgroupnone" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "delgroupnone" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         if (!isset($gid)) $gid=returnglobal('gid');
 
@@ -183,7 +183,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "delgroup" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "delgroup" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         if (!isset($gid)) $gid=returnglobal('gid');
         $query = "SELECT qid FROM ".db_table_name('groups')." g, ".db_table_name('questions')." q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
@@ -215,7 +215,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "insertnewquestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "insertnewquestion" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         $baselang = GetBaseLanguageFromSurveyID($postsid);
         if (strlen($_POST['title']) < 1)
@@ -316,7 +316,7 @@ if(isset($surveyid))
             //surveyFixColumns($surveyid);
         }
     }
-    elseif ($action == "renumberquestions" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         //Automatically renumbers the "question codes" so that they follow
         //a methodical numbering method
@@ -349,7 +349,7 @@ if(isset($surveyid))
     }
 
     
-    elseif ($action == "updatedefaultvalues" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         
         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -422,7 +422,7 @@ if(isset($surveyid))
     }
 
     
-    elseif ($action == "updatequestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'question','update'))
     {
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
         $cqresult=db_execute_assoc($cqquery) or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
@@ -657,7 +657,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "copynewquestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
 
         if (!$_POST['title'])
@@ -806,7 +806,7 @@ if(isset($surveyid))
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
         }
     }
-    elseif ($action == "delquestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
         if (!isset($qid)) {$qid=returnglobal('qid');}
         //check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -837,7 +837,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "updateansweroptions" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -910,7 +910,7 @@ if(isset($surveyid))
 
             }
 
-    elseif ($action == "updatesubquestions" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'define_questions'))
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1011,7 +1011,7 @@ if(isset($surveyid))
     }
 
 
-    elseif (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasRight($surveyid,'delete_survey'))
+    elseif (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasSurveyPermission($surveyid,'delete_survey'))
     {
 
         $formatdata=getDateFormatData($_SESSION['dateformat']);
@@ -1162,7 +1162,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "delsurvey" && bHasRight($surveyid, 'delete_survey')) //can only happen if there are no groups, no questions, no answers etc.
+    elseif ($action == "delsurvey" && bHasSurveyPermission($surveyid, 'delete_survey')) //can only happen if there are no groups, no questions, no answers etc.
     {
         $query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
         $result = $connect->Execute($query);  // Checked
@@ -1180,7 +1180,7 @@ if(isset($surveyid))
 
 
     // Save the 2nd page from the survey-properties
-    elseif (($action == "updatesurveylocalesettings") && bHasRight($surveyid,'delete_survey'))
+    elseif (($action == "updatesurveylocalesettings") && bHasSurveyPermission($surveyid,'delete_survey'))
     {
         $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
         $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);

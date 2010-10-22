@@ -60,36 +60,40 @@ function db_switchIDInsert($table,$state)
 }
 
 /**
- * Returns true if a user has a given right in the particular survey
+ * Returns true if a user has permissions in the particular survey
  *
- * @param $sid
- * @param $right
+ * @param $iSID The survey ID
+ * @param $sPermission
+ * @param $sCRUD
+ * @param $iUID User ID - if not given the one of the current user is used
  * @return bool
  */
-function bHasRight($sid, $right = null)
+function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 {
     global $dbprefix, $connect;
-
-    static $cache = array();
-
-    if (isset($_SESSION['loginID'])) $uid = $_SESSION['loginID']; else return false;
-
-    if ($_SESSION['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
-
-    if (!isset($cache[$sid][$uid]))
+    if (!in_array($sCRUD,array('create','read','update','delete'))) return false;
+    $sCRUD=$sCRUD.'_p';
+    $iSID = (int)$iSID;
+    global $aSurveyPermissionCache;
+    
+    if (is_null($iUID))
     {
-        $sql = "SELECT * FROM " . db_table_name('surveys_rights') . " WHERE sid=".db_quote($sid)." AND uid = ".db_quote($uid); //Getting rights for this survey
-        $result = db_execute_assoc($sql);
-        $rights = $result->FetchRow();
-        if ($rights===false)
-        {
-            return false;
-        } else {
-            $cache[$sid][$uid]=$rights;
-        }
+      if (isset($_SESSION['loginID'])) $iUID = $_SESSION['loginID']; 
+       else return false;
+      if ($_SESSION['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
     }
-    if (empty($right)) return true;
-    if (isset($cache[$sid][$uid][$right]) && $cache[$sid][$uid][$right] == 1) return true; else return false;
+
+    if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
+    {
+        $sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . " 
+                WHERE sid={$iSID} AND uid = {$iUID}
+                and permission=".db_quote($sPermission)." "; //Getting rights for this survey
+        $bPermission = $connect->GetOne($sSQL);
+        if ($bPermission==0 || is_null($bPermission)) $bPermission=false;
+        if ($bPermission==1) $bPermission=true;
+        $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]=$bPermission;
+    }
+    return $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD];
 }
 
 

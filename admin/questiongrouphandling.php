@@ -172,7 +172,7 @@ if ($action == "editgroup")
 
 if ($action == "ordergroups")
 {
-    if(bHasRight($surveyid,'edit_survey_property'))
+    if(bHasSurveyPermission($surveyid,'edit_survey_property'))
     {
         // Check if one of the up/down buttons have been clicked
         if (isset($_POST['groupordermethod']) && isset($_POST['sortorder']))

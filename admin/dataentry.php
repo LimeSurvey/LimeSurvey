@@ -69,7 +69,7 @@ if (!isset($sDataEntryLanguage))
 }
 $surveyinfo=getSurveyInfo($surveyid);
 
-if (bHasRight($surveyid, 'browse_response'))
+if (bHasSurveyPermission($surveyid, 'browse_response'))
 {
 
     $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
@@ -1501,7 +1501,7 @@ if (bHasRight($surveyid, 'browse_response'))
 
     elseif ($subaction == "delete")
     {
-        if (!bHasRight($surveyid,'delete_survey'))
+        if (!bHasSurveyPermission($surveyid,'delete_survey'))
         {
             safe_die('You are not allowed to delete a response.');
         }        

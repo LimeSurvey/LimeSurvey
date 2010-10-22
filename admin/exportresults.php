@@ -26,7 +26,7 @@ if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
 if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
 if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
-if (!bHasRight($surveyid, 'export'))
+if (!bHasSurveyPermission($surveyid, 'export'))
 {
     exit;
 }

@@ -412,6 +412,7 @@ $thissurvey['description']=$clang->gT('This is a sample survey description. It c
 $thissurvey['welcome']=$clang->gT('Welcome to this sample survey').'<br />'.$clang->gT('You should have a great time doing this').'<br />';
 $thissurvey['allowsave']="Y";
 $thissurvey['active']="Y";
+$thissurvey['tokenanswerspersistence']="Y";
 $thissurvey['templatedir']=$templatename;
 $thissurvey['format']="G";
 $thissurvey['surveyls_url']="http://www.limesurvey.org/";

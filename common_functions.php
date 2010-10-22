@@ -14,6 +14,37 @@
  *	Files Purpose: lots of common functions
  */
 
+ 
+
+/**
+* This function gives back an array that defines which survey permissions and what part of the CRUD subpermissions is available.
+* - for example it would not make sense to have  a 'create' permissions for survey locale settings as they exist with every survey
+*  so the editor for survey permission should not show a checkbox here, therfore the create element of that permission is set to 'false'
+*  If you want to generally add a new permission just add here.
+* 
+*/
+function aGetBaseSurveyPermissions()
+{
+    global $clang;
+    return array(
+                'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey")), 
+                'dataentry'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Data entry"),'description'=>$clang->gT("Permission to enter/view/update/delete responses using the data entry")), 
+                'exportresponse'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Response export"),'description'=>$clang->gT("Permission to export responses")), 
+                'exportstructure'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Structure & resource export"),'description'=>$clang->gT("Permission to export survey/groups/question structures & resources")), 
+                'labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create/view/update/delete label sets")), 
+                'questions'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Survey content"),'description'=>$clang->gT("Permission to create/view/update/delete the questions, groups, answers & conditions of a survey")), 
+                'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey")), 
+                'responses'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to view/update/delete responses")), 
+                'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Statistics"),'description'=>$clang->gT("Permission to view/export statistics")), 
+                'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'title'=>$clang->gT("Survey deletion"),'description'=>$clang->gT("Permission to delete a survey")), 
+                'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey activation"),'description'=>$clang->gT("Permission to activate/deactivate a survey")), 
+                'surveylocale'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey locale settings"),'description'=>$clang->gT("Permission to view/update the survey locale settings")), 
+                'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings")), 
+                'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation")), 
+                'token'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create & import/view & export/update/delete token entries")), 
+                'translation'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature")), );
+}
+ 
 /**
  * getqtypelist() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
  *    question type
@@ -4409,17 +4440,22 @@ function ReplaceFields ($text,$fieldsarray)
  * @param mixed $attachment
  * @return bool If successful returns true
  */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null,$customheaders="")
+function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null, $customheaders="")
 {
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
-     if ($demoModeOnly==true)
-     {
-         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
-         $maildebugbody='';
-         return false;
-     }
+    
+    if ($customheaders='')
+    {
+        $customheaders=array();
+    }
+    if ($demoModeOnly==true)
+    {
+        $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
+        $maildebugbody='';
+        return false;
+    }
 
 	if (is_null($bouncemail) )
 	{
@@ -4507,9 +4543,12 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddAddress($singletoemail);
         }
     }
-while (list($key, $val) = each($customheaders)) {
-$mail->AddCustomHeader($val);
-}
+    if ($customheaders!=='')
+    {
+        while (list($key, $val) = each($customheaders)) {
+            $mail->AddCustomHeader($val);
+        }
+    }
 	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
     $textbody = strip_tags($body);
@@ -5166,13 +5205,28 @@ function getgroupuserlist()
     return $surveyselecter;
 }
 
-function getsurveyuserlist()
+/**
+* Retrieve a HTML <OPTION> list of survey admin users
+* 
+* @param mixed $bIncludeOwner If the survey owner should be included
+* @param mixed $bIncludeSuperAdmins If Super admins should be included
+* @return string
+*/
+function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true)
 {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
     $surveyid=sanitize_int($surveyid);
-    $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+    
+    $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM ".db_table_name('users')." AS a 
+                      LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('survey_permissions')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id 
+                      WHERE id IS NULL ";
+    if (!$bIncludeSuperAdmins)                      
+    {
+        $sSurveyIDQuery.='and superadmin=0 ';
+    }
+    $sSurveyIDQuery.= 'ORDER BY a.users_name';
+    $surveyidresult = db_execute_assoc($sSurveyIDQuery);  //Checked
 
-    $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
     $surveynames = $surveyidresult->GetRows();
@@ -5209,7 +5263,7 @@ function getsurveyusergrouplist($outputformat='htmloptions')
     //$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".db_table_name('user_groups')." AS a LEFT JOIN (SELECT b.ugid FROM ".db_table_name('user_in_groups')." AS b LEFT JOIN (SELECT * FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING da IS NOT NULL";
     //n.b: the original query (above) uses 'da' in the HAVING clause. MS SQL Server doesn't like that, and forces you to redeclare the expression used in the select. Stupid, stupid, SQL Server.
     //     I'm hoping this will not bork MySQL. If it does, we'll need to drop a switch in here.
-    $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".db_table_name('user_groups')." AS a LEFT JOIN (SELECT b.ugid FROM ".db_table_name('user_in_groups')." AS b LEFT JOIN (SELECT * FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
+    $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".db_table_name('user_groups')." AS a LEFT JOIN (SELECT b.ugid FROM ".db_table_name('user_in_groups')." AS b LEFT JOIN (SELECT * FROM ".db_table_name('survey_permissions')." WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";

@@ -1,7 +1,4 @@
 
-
-
-
 CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
@@ -273,15 +270,14 @@ CREATE TABLE `prefix_surveys_languagesettings` (
 
 
 
-CREATE TABLE `prefix_surveys_rights` (
+CREATE TABLE `prefix_survey_permissions` (
 	`sid` int(10) unsigned NOT NULL default '0',
 	`uid` int(10) unsigned NOT NULL default '0',
-	`edit_survey_property` tinyint(1) NOT NULL default '0',
-	`define_questions` tinyint(1) NOT NULL default '0',
-	`browse_response` tinyint(1) NOT NULL default '0',
-	`export` tinyint(1) NOT NULL default '0',
-	`delete_survey` tinyint(1) NOT NULL default '0',
-	`activate_survey` tinyint(1) NOT NULL default '0',
+	`permission` varchar(20) NOT NULL default '',
+	`create_p` tinyint(1) NOT NULL default '0',
+    `read_p` tinyint(1) NOT NULL default '0',
+	`update_p` tinyint(1) NOT NULL default '0',
+	`delete_p` tinyint(1) NOT NULL default '0',
 	PRIMARY KEY (sid, uid)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

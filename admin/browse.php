@@ -241,7 +241,7 @@ if ($subaction == "id")
                 ."title='".$clang->gTview("Edit this entry")."'>"
                 ."<img align='left' src='$imagefiles/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
     }
-    if (bHasRight($surveyid,'delete_survey') && isset($rlanguage))
+    if (bHasSurveyPermission($surveyid,'delete_survey') && isset($rlanguage))
     {
 
         $browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" >"
@@ -347,7 +347,7 @@ elseif ($subaction == "all")
     }
 
     //Delete Individual answer using inrow delete buttons/links - checked
-    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked' && bHasRight($surveyid,'delete_survey'))
+    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked' && bHasSurveyPermission($surveyid,'delete_survey'))
     {
         $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value
 
@@ -384,7 +384,7 @@ elseif ($subaction == "all")
         $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }
     // Marked responses -> deal with the whole batch of marked responses
-    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasRight($surveyid,'delete_survey'))        
+    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'delete_survey'))        
     {
         // Delete the marked responses - checked
         if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
@@ -686,7 +686,7 @@ elseif ($subaction == "all")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
-    if (bHasRight($surveyid,'delete_survey'))
+    if (bHasSurveyPermission($surveyid,'delete_survey'))
     {
     $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
                    ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
@@ -996,7 +996,7 @@ elseif ($subaction == "all")
         <a><img id='downloadfile_{$dtrow['id']}' src='$imagefiles/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
 
-        if (bHasRight($surveyid,'delete_survey'))
+        if (bHasSurveyPermission($surveyid,'delete_survey'))
         {
             $browseoutput .= "<a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a>\n";
         }

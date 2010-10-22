@@ -211,7 +211,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
 $js_admin_includes[]='scripts/quotas.js';
 
-if(bHasRight($surveyid, 'edit_survey_property'))
+if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
 {
     if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
     if (!isset($action)) $action=returnglobal('action');

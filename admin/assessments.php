@@ -30,7 +30,7 @@ $baselang = GetBaseLanguageFromSurveyID($surveyid);
 array_unshift($assessmentlangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
 
-if(bHasRight($surveyid, 'edit_survey_property')){
+if(bHasSurveyPermission($surveyid, 'edit_survey_property')){
 
     if ($action == "assessmentadd") {
         $inserttable=$dbprefix."assessments";
