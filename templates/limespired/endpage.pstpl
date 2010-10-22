@@ -1,13 +1,14 @@
 	</div>
-<div id="prefooter1"></div>
-<!-- <div id="prefooter2"></div> -->
-<div id="prefooter3"><a  href="http://www.limesurvey.org/" title="Go to the LimeSurvey Website" class="imglink"><img src="{TEMPLATEURL}poweredby.png" class="kullogo" /></a>
-<br /><span class="credits">LimeSurvey is Free software<br /><a href="http://www.donate.limesurvey.org">Donate</a></span>
-</div>
-<div id="footer">
-	<div class="rk-1">
-		<div class="rk-2"></div>
+	<div id="prefooter1"></div>
+	<!-- <div id="prefooter2"></div> -->
+	<div id="prefooter3">
+		<a  href="http://www.limesurvey.org/" title="Go to the LimeSurvey Website" class="imglink"><img src="{TEMPLATEURL}poweredby.png" class="kullogo" /></a>
+		<br /><span class="credits">LimeSurvey is Free software<br /><a href="http://www.donate.limesurvey.org">Donate</a></span>
+	</div>
+	<div id="footer">
+		<div class="rk-1">
+			<div class="rk-2"></div>
+		</div>
 	</div>
 </div>
-	</div>
-	</div>
+</div>

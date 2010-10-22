@@ -1,5 +1,5 @@
 <br />
-<div class="survey-assessment"><strong>{ASSESSMENT_HEADING}</strong></div>
-<div>
+<div class="survey-assessment">{ASSESSMENT_HEADING}</div>
+<div class="assessments">
 	{ASSESSMENTS}
 </div>
