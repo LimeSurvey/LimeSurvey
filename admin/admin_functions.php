@@ -87,7 +87,7 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
     {
         $sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . " 
                 WHERE sid={$iSID} AND uid = {$iUID}
-                and permission=".db_quote($sPermission)." "; //Getting rights for this survey
+                and permission=".db_quoteall($sPermission); //Getting rights for this survey
         $bPermission = $connect->GetOne($sSQL);
         if ($bPermission==0 || is_null($bPermission)) $bPermission=false;
         if ($bPermission==1) $bPermission=true;

@@ -404,7 +404,7 @@ li.cancellink
 }
 
 
-.oddrow {
+.odd,.oddrow {
     background-color: #EBF2FA;
 }
 
@@ -1327,4 +1327,10 @@ table.limetable tbody tr.highlight {
 .users td:first-child,.users th:first-child
 {
     width:10%;
+}
+
+thead th 
+{
+    background-color:#E1E7EF;
+    padding:0 2em;
 }

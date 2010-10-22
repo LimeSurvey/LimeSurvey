@@ -2074,71 +2074,55 @@ if($action == "setsurveysecurity")
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
-        $query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey, translate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$postuserid;
-        $result2 = db_execute_assoc($query2); //Checked
+        $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+        $js_admin_includes[]='scripts/surveysecurity.js';
+        $sUsername=$connect->GetOne("select users_name from ".db_table_name('users')." where uid={$postuserid}");
+        $usersummary = "<div class='header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div><p>
+        <form action='$scriptname?sid={$surveyid}' method='post'>\n"
+        . "<table style='margin:0 auto;' border='0' class='usersurveypermissions'><thead>\n";
 
-        if($result2->RecordCount() > 0)
+        $usersummary .= ""
+        . "<tr><th align='center'>".$clang->gT("Permission")."</th>\n"
+        . "<th align='center'>&nbsp;</th>\n"
+        . "<th align='center'>".$clang->gT("Create")."</th>\n"
+        . "<th align='center'>".$clang->gT("View/read")."</th>\n"
+        . "<th align='center'>".$clang->gT("Update")."</th>\n"
+        . "<th align='center'>".$clang->gT("Delete")."</th>\n"
+        . "</tr></thead>\n";
+
+        //content
+
+        $aBasePermissions=aGetBaseSurveyPermissions();
+        $oddcolumn=false;
+        foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
         {
-            $resul2row = $result2->FetchRow();
-
-            $usersummary = "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
-            . "<table width='100%' border='0'>\n<tr><td colspan='7' class='header'>\n"
-            . "".$clang->gT("Edit user permissions for current survey")."</td></tr>\n";
-
-            $usersummary .= ""
-            . "<tr><th align='center'>".$clang->gT("Edit Survey Properties")."</th>\n"
-            . "<th align='center'>".$clang->gT("Define Questions")."</th>\n"
-            . "<th align='center'>".$clang->gT("Browse Responses")."</th>\n"
-            . "<th align='center'>".$clang->gT("Export")."</th>\n"
-            . "<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
-            . "<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
-            . "<th align='center'>".$clang->gT("Translate Survey")."</th>\n"
-            . "</tr>\n";
-
-            //content
-            $usersummary .= "<tr>";
-            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
-            if($resul2row['edit_survey_property']) {
-                $usersummary .= ' checked="checked" ';
+            $oddcolumn=!$oddcolumn;
+            $usersummary .= "<tr><td align='right'>{$aCRUDPermissions['title']}</td>";
+            $usersummary .= "<td  align='center'><input type=\"checkbox\"  class=\"markrow\" name='all_{$sPermissionKey}' /></td>";
+            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
+            {
+                if (!in_array($sCRUDKey,array('create','read','update','delete'))) continue;
+                $usersummary .= "<td align='center'>";
+                
+                if ($CRUDValue)
+                {
+                    $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
+                    if(bHasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
+                        $usersummary .= ' checked="checked" ';
+                    }
+                    $usersummary .=" />";                    
+                }
+                $usersummary .= "</td>";
             }
-            $usersummary .=" /></td>\n";
-            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"define_questions\" value=\"define_questions\"";
-            if($resul2row['define_questions']) {
-                $usersummary .= ' checked="checked" ';
-            }
-            $usersummary .=" /></td>\n";
-            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"browse_response\" value=\"browse_response\"";
-            if($resul2row['browse_response']) {
-                $usersummary .= ' checked="checked" ';
-            }
-            $usersummary .=" /></td>\n";
-            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"export\" value=\"export\"";
-            if($resul2row['export']) {
-                $usersummary .= ' checked="checked" ';
-            }
-            $usersummary .=" /></td>\n";
-            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_survey\" value=\"delete_survey\"";
-            if($resul2row['delete_survey']) {
-                $usersummary .= ' checked="checked" ';
-            }
-            $usersummary .=" /></td>\n";
-            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"activate_survey\" value=\"activate_survey\"";
-            if($resul2row['activate_survey']) {
-                $usersummary .= ' checked="checked" ';
-            }
-            $usersummary .=" /></td>\n";
-            $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"translate_survey\" value=\"translate_survey\"";
-            if($resul2row['translate_survey']) {
-                $usersummary .= ' checked="checked" ';
-            }
-            $usersummary .=" /></td></tr>\n";
-
-            $usersummary .= "\n<tr><td colspan='7' align='center'>"
-            ."<input type='submit' value='".$clang->gT("Save Now")."' />"
-            ."<input type='hidden' name='action' value='surveyrights' />"
-            ."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
-            . "</table></form>\n";
+            $usersummary .= "</tr>";
         }
+        $usersummary .= "<td align='center'></td>\n"; 
+
+        $usersummary .= "\n</tr></table>"
+        ."<p><input type='submit' value='".$clang->gT("Save Now")."' />"
+        ."<input type='hidden' name='action' value='surveyrights' />"
+        ."<input type='hidden' name='uid' value='{$postuserid}' />"
+        . "</form>\n";
     }
     else
     {
@@ -2360,7 +2344,7 @@ if($action == "surveysecurity")
         . "<th>".$clang->gT("Full name")."</th>\n";
         foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
         {
-            $surveysecurity.="<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"<h4>".$aSubPermissions['title']."</h4>".$aSubPermissions['description']."\"></th>\n";
+            $surveysecurity.="<th align=\"center\"><img src=\"$imagefiles/help.gif\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\"></th>\n";
         }
         $surveysecurity.= "<th>".$clang->gT("Action")."</th>\n"
         . "</tr></thead>\n";
@@ -2463,12 +2447,14 @@ if($action == "surveysecurity")
                 foreach ($aBaseSurveyPermissions as $sPKey=>$aPDetails) {
                     unset($aPDetails['description']);
                     unset($aPDetails['title']);
-                    $iPermissionCount=count($aPDetails);
                     $iCount=0;
+                    $iPermissionCount=0;
                     foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
                     {
                         if ($sPDetailValue && bHasSurveyPermission($surveyid,$sPKey,$sPDetailKey,$PermissionRow['uid'])) $iCount++;
+                        if ($sPDetailValue) $iPermissionCount++; 
                     }
+                    if ($sPKey=='survey')  $iPermissionCount--;
                     if ($iCount==$iPermissionCount) {
                         $insert = "<div class=\"ui-icon ui-icon-check\"></div>";
                     } 
