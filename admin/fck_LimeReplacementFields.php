@@ -269,7 +269,12 @@ if ($isInstertansEnabled===true)
         }
         if ( $AddQuestion===True )
         {
-            if ($surveyformat == "S")
+            if ($action == 'tokens' && $fieldtype == 'email-conf')
+            {
+                //For confirmation email all fields are valid
+                $previouspagequestion = true;
+            }
+            elseif ($surveyformat == "S")
             {
                 $previouspagequestion = true;
             }
@@ -286,10 +291,6 @@ if ($isInstertansEnabled===true)
             elseif ($surveyformat == "A")
             {
                 $previouspagequestion = false;
-            }
-            elseif ($action == 'tokens' && $fieldtype == 'email-conf')
-            {
-                $previouspagequestion = true;
             }
 
             $questionlist[]=array_merge($field,Array( "previouspage" => $previouspagequestion));
