@@ -6320,7 +6320,14 @@ function translink($type, $oldid, $newid, $text)
     }
 }
 
-
+/**
+* This function creates the old fieldnames for survey import
+* 
+* @param mixed $iOldSID  The old survey id
+* @param mixed $iNewSID  The new survey id
+* @param array $aGIDReplacements An array with group ids (oldgid=>newgid)
+* @param array $aQIDReplacements An array with question ids (oldqid=>newqid)
+*/
 function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements)
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
