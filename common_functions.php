@@ -42,7 +42,7 @@ function aGetBaseSurveyPermissions()
                 'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings")), 
                 'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation")), 
                 'token'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create & import/view & export/update/delete token entries")), 
-                'translation'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature")), );
+                'translation'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature")), );
 }
  
 /**
@@ -452,7 +452,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
         ." FROM ".db_table_name('surveys')." AS a "
         . "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
 
-        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+        if (!bHasGlobalPermission('USER_RIGHT_SUPERADMIN'))
         {
             $surveyidquery .= " INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid ";
             $surveyidquery .= "WHERE b.uid =".$_SESSION['loginID'];

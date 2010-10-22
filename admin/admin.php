@@ -234,7 +234,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'deletesurvey')
     {
-        if(bHasSurveyPermission($surveyid,'delete_survey'))    {include('deletesurvey.php');}
+        if(bHasSurveyPermission($surveyid,'survey','delete'))    {include('deletesurvey.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'resetsurveylogic')

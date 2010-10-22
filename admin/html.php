@@ -2576,7 +2576,7 @@ elseif ($action == "surveyrights")
 // Editing the survey
 if ($action == "editsurveysettings" || $action == "newsurvey")
 {
-    if(bHasSurveyPermission($surveyid,'edit_survey_property'))
+    if(!bHasSurveyPermission($surveyid,'surveysettings','read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
     {
         include("access_denied.php");
     }

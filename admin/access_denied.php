@@ -39,7 +39,7 @@ if (isset($_SESSION['loginID']))
     }
     elseif($action == "newsurvey")
     {
-        $accesssummary .= "<p>".$clang->gT("You are not allowed to create new surveys!")."</p>";
+        $accesssummary .= "<p>".$clang->gT("You are not allowed to create new surveys!")."<br />";
         $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
     }
     elseif($action == "deletesurvey")

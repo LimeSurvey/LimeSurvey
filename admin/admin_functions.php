@@ -97,6 +97,39 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 }
 
 
+/**
+ * Returns true if a user has global permission for a certain action. Available permissions are
+ * 
+ * USER_RIGHT_CREATE_SURVEY
+ * USER_RIGHT_CONFIGURATOR
+ * USER_RIGHT_CREATE_USER
+ * USER_RIGHT_DELETE_USER
+ * USER_RIGHT_SUPERADMIN
+ * USER_RIGHT_MANAGE_TEMPLATE
+ * USER_RIGHT_MANAGE_LABEL
+ *
+ * @param $sPermission
+ * @return bool
+ */
+function bHasGlobalPermission($sPermission)
+{
+    global $dbprefix, $connect;
+    global $aSurveyGlobalPermissionCache;
+
+    if (isset($_SESSION['loginID'])) $iUID = $_SESSION['loginID']; 
+        else return false;
+    if ($_SESSION['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
+    if ($_SESSION[$sPermission]==1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+
 function gettemplatelist()
 {
     global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;

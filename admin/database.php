@@ -49,7 +49,7 @@ $databaseoutput ='';
 
 if(isset($surveyid))
 {
-    if ($action == "insertnewgroup" && bHasSurveyPermission($surveyid, 'define_questions'))
+    if ($action == "insertnewgroup" && bHasSurveyPermission($surveyid, 'question','create'))
     {
         $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
         $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -215,7 +215,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "insertnewquestion" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "insertnewquestion" && bHasSurveyPermission($surveyid, 'question','create'))
     {
         $baselang = GetBaseLanguageFromSurveyID($postsid);
         if (strlen($_POST['title']) < 1)
@@ -316,7 +316,7 @@ if(isset($surveyid))
             //surveyFixColumns($surveyid);
         }
     }
-    elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'question','update'))
     {
         //Automatically renumbers the "question codes" so that they follow
         //a methodical numbering method
@@ -349,7 +349,7 @@ if(isset($surveyid))
     }
 
     
-    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'question','update'))     
     {
         
         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -657,7 +657,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'question','create'))     
     {
 
         if (!$_POST['title'])
@@ -806,7 +806,7 @@ if(isset($surveyid))
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
         }
     }
-    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'question','delete'))     
     {
         if (!isset($qid)) {$qid=returnglobal('qid');}
         //check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -837,7 +837,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'question','update'))     
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -910,7 +910,7 @@ if(isset($surveyid))
 
             }
 
-    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'question','update'))     
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1388,18 +1388,17 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         unset($bplang);
 
         // Update survey_rights
-        $isrquery = "INSERT INTO {$dbprefix}surveys_rights (sid,uid,edit_survey_property,define_questions,browse_response,export,delete_survey,activate_survey) VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
-        $isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
-        if ($isresult)
+        $aPermissions=aGetBaseSurveyPermissions();
+        foreach ($aPermissions as $sPermissionKey=>$aPermissionValues)
         {
-            $surveyselect = getsurveylist();
+            
+            $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,create_p,read_p,update_p,delete_p) 
+                         VALUES($surveyid,". $_SESSION['loginID'].",'{$sPermissionKey}',1,1,1,1)"; //inserts survey rights for owner
+            $isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
+            
         }
-        else
-        {
-            $errormsg=$clang->gT("Survey could not be created","js")." - ".$connect->ErrorMsg();
-            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-            $databaseoutput .= htmlspecialchars($isquery);
-        }
+
+        $surveyselect = getsurveylist();
         
         // Create initial Survey table
         //include("surveytable_functions.php");
