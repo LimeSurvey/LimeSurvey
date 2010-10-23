@@ -280,7 +280,7 @@ else
     $createsurvey = rtrim($createsurvey, ",\n");
 
     //Get list of questions for the base language
-    $fieldmap=createFieldMap($surveyid);
+    $fieldmap=createFieldMap($surveyid,'full');
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
         if ($createsurvey!='') {$createsurvey .= ",\n";}
@@ -316,7 +316,7 @@ else
             case "M":  //Multiple options
             case "P":  //Multiple options with comment
             case "O":  //DROPDOWN LIST WITH COMMENT
-                if ($arow['aid'] != 'other' && $arow['aid'] != 'comment' && $arow['aid'] != 'othercomment')
+                if ($arow['aid'] != 'other' && strpos($arow['aid'],'comment')===false && $arow['aid'] != 'othercomment')
                 {
                     $createsurvey .= " C(5)";
                 }
