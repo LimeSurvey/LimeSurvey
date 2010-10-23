@@ -280,7 +280,7 @@ else
     $createsurvey = rtrim($createsurvey, ",\n");
 
     //Get list of questions for the base language
-    $fieldmap=createFieldMap($surveyid,'full');
+    $fieldmap=createFieldMap($surveyid);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
         if ($createsurvey!='') {$createsurvey .= ",\n";}
