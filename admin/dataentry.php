@@ -69,10 +69,10 @@ if (!isset($sDataEntryLanguage))
 }
 $surveyinfo=getSurveyInfo($surveyid);
 
-if (bHasSurveyPermission($surveyid, 'browse_response'))
+if (bHasSurveyPermission($surveyid, 'responses','create'))
 {
 
-    $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
+    $surveyoptions = browsemenubar($clang->gT("Data entry"));
     if (!$surveyid && !$subaction)
     {
         $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
@@ -160,7 +160,7 @@ if (bHasSurveyPermission($surveyid, 'browse_response'))
         }
         elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken == 'UnknownToken')
         {
-            $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The token you have provided is not valid or has already been used.")."</strong>\n";
+            $errormsg="<div class='warningheader'>".$clang->gT("Error")."</div> ".$clang->gT("The token you have provided is not valid or has already been used.")."<p>\n";
         }
         elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken != '')
         {

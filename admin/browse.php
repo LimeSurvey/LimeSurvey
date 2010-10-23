@@ -347,7 +347,7 @@ elseif ($subaction == "all")
     }
 
     //Delete Individual answer using inrow delete buttons/links - checked
-    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked' && bHasSurveyPermission($surveyid,'delete_survey'))
+    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked' && bHasSurveyPermission($surveyid,'responses','delete'))
     {
         $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value
 
@@ -384,7 +384,7 @@ elseif ($subaction == "all")
         $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }
     // Marked responses -> deal with the whole batch of marked responses
-    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'delete_survey'))        
+    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'responses','delete'))        
     {
         // Delete the marked responses - checked
         if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
@@ -686,12 +686,12 @@ elseif ($subaction == "all")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
-    if (bHasSurveyPermission($surveyid,'delete_survey'))
+    if (bHasSurveyPermission($surveyid,'responses','delete'))
     {
-    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
-                   ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
-                   ."<img id='imgDownloadMarkedFiles' src='$imagefiles/down.png' alt='".$clang->gT('Download Marked Files')."' />"
-                   ."</td></tr></tfoot>\n\n";
+        $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
+                       ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
+                       ."<img id='imgDownloadMarkedFiles' src='$imagefiles/down.png' alt='".$clang->gT('Download Marked Files')."' />"
+                       ."</td></tr></tfoot>\n\n";
     }
 
     $start=returnglobal('start');
@@ -730,23 +730,17 @@ elseif ($subaction == "all")
         {
             $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
             $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
+        }
     }
-    if (isset($_POST['sql']) && stripcslashes($_POST['sql']) !== "" && $_POST['sql'] !== "NULL")
-    {
-        if (!empty($sql_where)) $sql_where .= " AND ";
-        $sql_where .= stripcslashes($_POST['sql']);
-    }
-    if (!empty($sql_where)) $sql_where = " WHERE " . $sql_where;
-
-    //LETS COUNT THE DATA
-    $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
-    }
+    
     // filter group token
     elseif (db_tables_exist($tokentable) && $selectedgroup != "")
     {
         $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
         $dtquery .= " WHERE grouptoken='{$selectedgrouptoken}'";
     }
+    //LETS COUNT THE DATA
+    $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
     
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
@@ -996,7 +990,7 @@ elseif ($subaction == "all")
         <a><img id='downloadfile_{$dtrow['id']}' src='$imagefiles/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
 
-        if (bHasSurveyPermission($surveyid,'delete_survey'))
+        if (bHasSurveyPermission($surveyid,'responses','delete'))
         {
             $browseoutput .= "<a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a>\n";
         }

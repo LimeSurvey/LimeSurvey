@@ -28,13 +28,11 @@ function aGetBaseSurveyPermissions()
     global $clang;
     return array(
                 'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey")), 
-                'dataentry'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Data entry"),'description'=>$clang->gT("Permission to enter/view/update/delete responses using the data entry")), 
-                'exportresponse'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Response export"),'description'=>$clang->gT("Permission to export responses")), 
+                'exportresponses'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Response export"),'description'=>$clang->gT("Permission to export responses")), 
                 'exportstructure'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Structure & resource export"),'description'=>$clang->gT("Permission to export survey/groups/question structures & resources")), 
-                'labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create/view/update/delete label sets")), 
                 'questions'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Survey content"),'description'=>$clang->gT("Permission to create/view/update/delete the questions, groups, answers & conditions of a survey")), 
                 'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey")), 
-                'responses'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to view/update/delete responses")), 
+                'responses'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to create(by data entry)/view/update/delete responses")), 
                 'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Statistics"),'description'=>$clang->gT("Permission to view/export statistics")), 
                 'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'title'=>$clang->gT("Survey deletion"),'description'=>$clang->gT("Permission to delete a survey")), 
                 'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey activation"),'description'=>$clang->gT("Permission to activate/deactivate a survey")), 

@@ -356,7 +356,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary .= "<img src='$imagefiles/inactive.png' "
             . "alt='".$clang->gT("This survey is not currently active")."' />\n";
-            if($sumcount3>0 && bHasSurveyPermission($surveyid,'activate_survey','update'))
+            if($sumcount3>0 && bHasSurveyPermission($surveyid,'surveyactivation','update'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
                 . " title=\"".$clang->gTview("Activate this Survey")."\" >"
@@ -385,7 +385,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 $surveysummary .= "<img src='$imagefiles/active.png' title='' "
                 . "alt='".$clang->gT("This survey is currently active")."' />\n";
             }
-            if(bHasSurveyPermission($surveyid,'activate_survey','update'))
+            if(bHasSurveyPermission($surveyid,'surveyactivation','update'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
                 . " title=\"".$clang->gTview("Deactivate this Survey")."\" >"

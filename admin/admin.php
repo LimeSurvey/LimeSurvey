@@ -427,7 +427,7 @@ if(isset($_SESSION['loginID']))
 
     if ($action == 'dataentry')
     {
-        if(bHasSurveyPermission($surveyid,'browse_response'))
+        if(bHasSurveyPermission($surveyid,'responses','create'))
         {
             include('dataentry.php');
         }
@@ -464,7 +464,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'browse')
     {
-        if(bHasSurveyPermission($surveyid,'browse_response'))
+        if(bHasSurveyPermission($surveyid,'responses','read'))
         {
             include('browse.php');
         }

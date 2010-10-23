@@ -233,18 +233,12 @@ if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'updat
 }
 
 
-if ($subaction == "delete" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "delete" && bHasSurveyPermission($surveyid, 'tokens','delete'))
 {
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
 
-if ($subaction == "deletegroup" &&
-(bHasSurveyPermission($surveyid,'edit_survey_property') ||
-bHasSurveyPermission($surveyid,'activate_survey') ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-)
+if ($subaction == "deletegroup" && bHasSurveyPermission($surveyid, 'tokens','delete'))       
 {
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browsegroup&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
@@ -305,9 +299,7 @@ else        // A survey DOES exist
 $tokenexists=tableExists('tokens_'.$surveyid);
 if (!$tokenexists) //If no tokens table exists
 {
-    if (isset($_POST['createtable']) && $_POST['createtable']=="Y" &&
-    (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
-    )
+    if (isset($_POST['createtable']) && $_POST['createtable']=="Y" && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
     {
         $createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
@@ -374,8 +366,7 @@ if (!$tokenexists) //If no tokens table exists
 		}
 		return;
     }
-    elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') &&
-    (bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey')))
+    elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
     {
         $query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("tokens_$surveyid"));
         $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
@@ -554,7 +545,7 @@ if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid
 	."title='".$clang->gTview("Display group tokens")."' >"
 	."<img name='ViewGroupTokensButton' src='$imagefiles/grouptokens.png' alt='".$clang->gT("Display group tokens")."' /></a>\n";
 
-	if (bHasSurveyPermission($surveyid,'edit_survey_property')|| bHasSurveyPermission($surveyid,'activate_survey') || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	if (bHasSurveyPermission($surveyid,'tokens','update'))
 	{
 		$tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnewgroup', '_top')\""
 		."title='".$clang->gTview("Add new group token entry")."' >"
@@ -884,10 +875,7 @@ if ($subaction == "updateemailsettings" && bHasSurveyPermission($surveyid, 'toke
     ."</div>";
 }
 
-if ($subaction == "deleteall" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
-{
+if ($subaction == "deleteall" && bHasSurveyPermission($surveyid, 'tokens', 'delete')){
     $query="DELETE FROM ".db_table_name("tokens_$surveyid");
     $result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
     $tokenoutput .= "<div class='header'>".$clang->gT("Delete all token entries")."</div>\n"
@@ -895,9 +883,7 @@ if ($subaction == "deleteall" &&
     $subaction="";
 }
 
-if ($subaction == "clearinvites" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "clearinvites" && bHasSurveyPermission($surveyid, 'tokens', 'update'))
 {
     $query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0";
     $result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
@@ -906,9 +892,7 @@ if ($subaction == "clearinvites" &&
     $subaction="";
 }
 
-if ($subaction == "cleartokens" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "cleartokens" && bHasSurveyPermission($surveyid, 'tokens', 'update'))    
 {
     $query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
     $result=$connect->Execute($query) or safe_die("Couldn't reset the tokens field<br />$query<br />".$connect->ErrorMsg());
@@ -918,19 +902,28 @@ if ($subaction == "cleartokens" &&
 }
 
 
-if (!$subaction && (bHasSurveyPermission($surveyid, 'tokens', 'update')))
+if (!$subaction && (bHasSurveyPermission($surveyid, 'tokens', 'update') || bHasSurveyPermission($surveyid, 'tokens', 'delete')))
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Token database administration options")."</div>\n"
-    ."<div style='width:30%; margin:0 auto;'><ul><li><a href='#' onclick=\"if( confirm('"
-    .$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
-    ."<li><a href='#' onclick=\"if ( confirm('"
-    .$clang->gT("Are you sure you want to delete all unique token strings?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token strings")."</a></li>\n"
-    ."<li><a href='#' onclick=\" if (confirm('"
-    .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
-    $tokenoutput .= "<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul></div>\n";
+    ."<div style='width:30%; margin:0 auto;'>";
+
+    if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+    {
+        $tokenoutput .="<ul><li><a href='#' onclick=\"if( confirm('"
+        .$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
+        ."<li><a href='#' onclick=\"if ( confirm('"
+        .$clang->gT("Are you sure you want to delete all unique token strings?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token strings")."</a></li>\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens', 'delete'))
+    {
+        
+        $tokenoutput .="<li><a href='#' onclick=\" if (confirm('"
+        .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
+    }
+    $tokenoutput .= "</ul></div>\n";
 }
 
-if ($subaction == "usegrouptokens" && (bHasSurveyPermission($surveyid,'edit_survey_property') || bHasSurveyPermission($surveyid,'activate_survey') || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+if ($subaction == "usegrouptokens" && bHasSurveyPermission($surveyid,'tokens','update'))
 {
 	if (isset($_POST['creategrouptable']) && $_POST['creategrouptable']=="Y"
 	// make sure there are no group token tables
@@ -1378,7 +1371,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                .$clang->gT("Edit token entry")
 	                ."' alt='"
 	                .$clang->gT("Edit token entry")
-	                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start={$start}&amp;limit={$limit}&amp;order={$order}', '_top')\" />";
+	                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start={$start}&amp;limit={$limit}&amp;order={$order}', '_top')\" /> ";
 	            }
                 if (bHasSurveyPermission($surveyid, 'tokens','delete'))
                 {
@@ -1406,7 +1399,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                    ."' />\n";
 	                }
 	            }
-	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='')
+	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='' && bHasSurveyPermission($surveyid, 'tokens','update'))
 	            {
 	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_invite.png' title='"
 	                .$clang->gT("Send invitation email to this entry")
@@ -1455,19 +1448,22 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
             
         }
         
-	    $tokenoutput .= "&nbsp;"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_invite.png' title='"
-	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-	    ."' alt='"
-	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-	    ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
-	    . "&nbsp;"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_remind.png' title='"
-	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-	    ."' alt='"
-	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-	    ."' onclick=\"window.open('{$scriptname}/?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
-	    . "</td>\n"
+        if (bHasSurveyPermission($surveyid, 'tokens','delete'))         
+        {
+            $tokenoutput .= "&nbsp;"
+            . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_invite.png' title='"
+            .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+            ."' alt='"
+            .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+            ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+            . "&nbsp;"
+            . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_remind.png' title='"
+            .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+            ."' alt='"
+            .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+            ."' onclick=\"window.open('{$scriptname}/?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />";
+        }
+	    $tokenoutput .= "</td>\n"
 	    . "</tr>\n";
 	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
 	}
@@ -1717,9 +1713,7 @@ if ($subaction == "browsegroup" || $subaction == "searchgroup")
 	        if ($tokenfieldname=='gtid')
 	        {
 	            $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
-	            if (bHasSurveyPermission($surveyid,'edit_survey_property') ||
-	            bHasSurveyPermission($surveyid,'activate_survey') ||
-	            $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	            if (bHasSurveyPermission($surveyid,'tokens','update'))
 	            {
 	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
 	                .$clang->gT("Edit token entry")
@@ -1759,9 +1753,7 @@ if ($subaction == "browsegroup" || $subaction == "searchgroup")
 	$tokenoutput .= "</table>\n<br />\n";
 }
 
-if ($subaction == "kill" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "kill" && bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
 {
     $date = date('YmdHis');
     $tokenoutput .= "<div class='header'>".$clang->gT("Delete Tokens Table")."</div>\n"
@@ -1851,11 +1843,7 @@ if ($subaction == "kill" &&
 }
 
 
-if ($subaction == "killgroup" &&
-(bHasSurveyPermission($surveyid,'edit_survey_property') ||
-bHasSurveyPermission($surveyid,'activate_survey') ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-)
+if ($subaction == "killgroup" && bHasSurveyPermission($surveyid,'surveyactivation','update'))
 {
     $date = date('YmdHis');
     $tokenoutput .= "<div class='header'>".$clang->gT("Delete Group Tokens Table")."</div>\n"
@@ -2617,10 +2605,7 @@ if ($subaction == "tokenify" && bHasSurveyPermission($surveyid, 'tokens', 'updat
     $tokenoutput .= "</div>\n";
 }
 
-if ($subaction == "tokenifygroup" &&
-(bHasSurveyPermission($surveyid,'edit_survey_property') ||
-bHasSurveyPermission($surveyid,'activate_survey') ||
-bHasSurveyPermission($surveyid,'USER_RIGHT_SUPERADMIN') == 1))
+if ($subaction == "tokenifygroup" && bHasSurveyPermission($surveyid,'tokens','update'))
 {
     $tokenoutput .= "<div class='header'>".$clang->gT("Create group tokens")."</div>\n";
     $tokenoutput .= "<div class='messagebox'>\n";
@@ -2680,8 +2665,7 @@ bHasSurveyPermission($surveyid,'USER_RIGHT_SUPERADMIN') == 1))
     $tokenoutput .= "</div>\n";
 }
 
-if ($subaction == "delete" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey')))
+if ($subaction == "delete" && bHasSurveyPermission($surveyid, 'tokens','delete'))
 {
     $tokenoutput .= "<div class='messagebox'>\n"
     ."\t<div class='header'>"
@@ -2705,10 +2689,7 @@ if ($subaction == "delete" &&
     ."</p>\n</div>\n";
 }
 
-if ($subaction == "deletegroup" &&
-(bHasSurveyPermission($surveyid,'edit_survey_property') ||
-bHasSurveyPermission($surveyid,'activate_survey') ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+if ($subaction == "deletegroup" && bHasSurveyPermission($surveyid,'tokens','delete'))
 {
     $tokenoutput .= "<div class='messagebox'>\n"
     ."\t<div class='header'>"
@@ -2992,10 +2973,7 @@ if (($subaction == "edit" &&  bHasSurveyPermission($surveyid, 'tokens','update')
     ."</form>\n";
 }
 
-if (($subaction == "editgroup" || $subaction == "addnewgroup") &&
-(bHasSurveyPermission($surveyid,'edit_survey_property') ||
-bHasSurveyPermission($surveyid,'activate_survey') ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+if (($subaction == "editgroup" || $subaction == "addnewgroup") && bHasSurveyPermission($surveyid,'tokens','add'))
 {
     if ($subaction == "editgroup")
     {
@@ -3161,10 +3139,7 @@ if ($subaction == "updatetoken" && bHasSurveyPermission($surveyid, 'tokens','upd
     $tokenoutput .= "\t</div>";
 }
 
-if ($subaction == "updategrouptoken" &&
-(bHasSurveyPermission($surveyid,'edit_survey_property') ||
-bHasSurveyPermission($surveyid,'activate_survey')||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+if ($subaction == "updategrouptoken" && bHasSurveyPermission($surveyid,'tokens','update'))
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Edit group token entry")."</div>\n"
     ."\t<div class='messagebox'>\n";
@@ -3273,11 +3248,7 @@ if ($subaction == "inserttoken" && (bHasSurveyPermission($surveyid, 'tokens','cr
     $tokenoutput .= "\t</div>";
 }
 
-if ($subaction == "insertgrouptoken" &&
-(bHasSurveyPermission($surveyid,'edit_survey_property') ||
-bHasSurveyPermission($surveyid,'activate_survey') ||
-$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-)
+if ($subaction == "insertgrouptoken" && bHasSurveyPermission($surveyid,'tokens','create'))
 {
     //Fix up dates and match to database format
     if (trim($_POST['validfrom'])=='') {
@@ -3326,9 +3297,7 @@ $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     $tokenoutput .= "\t</div>";
 }
 
-if ($subaction == "import" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "import" && bHasSurveyPermission($surveyid, 'tokens','create'))
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload CSV File")."</div>\n";
     form_csv_upload();
@@ -3339,9 +3308,7 @@ if ($subaction == "import" &&
     ."</div>\n";
 }
 
-if ($subaction == "importldap" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "importldap" && bHasSurveyPermission($surveyid, 'tokens','create'))   
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload LDAP entries")."</div>\n";
     formldap();
@@ -3351,9 +3318,7 @@ if ($subaction == "importldap" &&
     ."</div>\n";
 }
 
-if ($subaction == "upload" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "upload" && bHasSurveyPermission($surveyid, 'tokens','create'))      
 {
     $attrfieldnames=GetAttributeFieldnames($surveyid);
     $duplicatelist=array();
@@ -3590,9 +3555,7 @@ if ($subaction == "upload" &&
     $tokenoutput .= "</div>\n";
 }
 
-if ($subaction == "uploadldap" &&
-(bHasSurveyPermission($surveyid, 'edit_survey_property') || bHasSurveyPermission($surveyid, 'activate_survey'))
-)
+if ($subaction == "uploadldap" && bHasSurveyPermission($surveyid, 'tokens','create'))      
 {
     $duplicatelist=array();
     $invalidemaillist=array();

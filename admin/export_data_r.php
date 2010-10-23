@@ -73,7 +73,7 @@ $typeMap = array(
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 $filterstate = incompleteAnsFilterstate();
 
-$headerComment = '#$Rev: 9213 $' . " $filterstate.\n";
+$headerComment = '#$Rev$' . " $filterstate.\n";
 
 if (isset($_GET['dldata'])) $subaction = "dldata";
 if (isset($_GET['dlstructure'])) $subaction = "dlstructure";
