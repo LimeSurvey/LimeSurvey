@@ -77,6 +77,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9290) to 1.90+ (build 9321) Legend: # updated feature, - bug fix 
+#Updated translation: Chinese Traditional (Taiwan) (zh-Hant-TW), thanks to Ricky (gandalfar)
+#Updated translation: Dutch (nl), thanks to Han Velthuis (gandalfar)
+#Updated translation: Dutch informal (nl)-informal, thanks to Han Velthuis (gandalfar)
+#Updated translation: Norwegian BokmÃ¥l (nb), thanks to PÃ¥l Monstad (gandalfar)
+#Updated translation: Slovak (sk), thanks to jozef (gandalfar)
+#Updated translation: Turkish (tr), thanks to Kaya Zeren (gandalfar)
+#Updated translation: Portuguese (ruigouveia)
+#Updated translation: Russian by Валерий Крувялис (c_schmitz)
+#Updated translation: Spanish (Mexican) sponsored by LimeService (c_schmitz)
+-Fixed issue #3613: bgcolor entered into HTML and thus not editable via CSS in templates (tpartner)
+-Fixed issue #4672: Date field behaving erratic with inactive survey (c_schmitz)
+-Fixed issue #4690: Multiple options with comments - Comment field of 5 characters max. (c_schmitz)
+-Fixed issue: Some date formats were giving double year displays on selecting a value (c_schmitz)
+-Fixed issue #4691: Insertans not working for confirmation email in all-in-one mode (mennodekker)
 
 Changes from 1.90+ (build 9284) to 1.90+ (build 9290) Legend: # updated feature, - bug fix 
 -Fixed issue: Date question records erroneous dates in DB (lemeur)
@@ -261,7 +276,7 @@ Changes from 1.90RC3 (build 8963) to 1.90 (build 9028) Legend: +new feature, # u
 #Updated translation: Bulgarian (bg), thanks to Vladimir (gandalfar)
 #Updated translation: Dutch (nl), thanks to Han Velthuis (gandalfar)
 #Updated translation: Dutch informal (nl-informal), thanks to Han Velthuis (gandalfar)
-#Updated translation: Norwegian Bokmål (nb), thanks to Pål Monstad (gandalfar)
+#Updated translation: Norwegian BokmÃ¥l (nb), thanks to PÃ¥l Monstad (gandalfar)
 #Updated translation: Spanish (es) (kadejo)
 #Updated translation: Polish (elisa-ls)
 #Updated translation: German (c_schmitz)
@@ -314,12 +329,12 @@ Changes from 1.90RC2 (build 8906) to 1.90RC3 (build 8963) Legend: +new feature, 
 Changes from 1.90RC1 (build 8819) to 1.90RC2 (build 8906) Legend: +new feature, # updated feature, - bug fix 
 +New feature: Very basic HTTPS support (c_schmitz) - allows dynamic switching between https and http
 +New feature: Irish Translation - kindly contributed by Karin Whooley, National Centre for Technology in Education, Dublin (c_schmitz)
-#Updated language: Czech (cs), thanks to Vladim�r Braun (gandalfar)
+#Updated language: Czech (cs), thanks to Vladimír Braun (gandalfar)
 #Updated language: Dutch (nl), thanks to Han Velthuis (gandalfar)
 #Updated language: Dutch informal (nl-informal), thanks to Han Velthuis (gandalfar)
 #Updated language: French (b00z00)
-#Updated language: Lithuanian (lt), thanks to Antas Ker�ulis (gandalfar)
-#Updated language: Portuguese (pt), thanks to Ant�nio Correia (gandalfar)
+#Updated language: Lithuanian (lt), thanks to Antas Keršulis (gandalfar)
+#Updated language: Portuguese (pt), thanks to António Correia (gandalfar)
 #Updated language: Spanish (es) (kadejo)
 #Updated language: Swedish (sv), thanks to Alexander Wireen and Jonas Norlinder (gandalfar)
 -Fixed issue #4433: "Exclusive option" setting for multiple options questions causes PHP errors (tpartner)
@@ -335,7 +350,7 @@ Changes from 1.90RC1 (build 8819) to 1.90RC2 (build 8906) Legend: +new feature, 
 -Fixed issue #04431: small error in Polish translation (idobraca)
 -Fixed issue #04432: An extra slash is put into the template css line in the survey html (idobraca)
 -Fixed issue #04434: Unable to call template in optout.php (idobraca)
--Fixed issue #04445: Une classe diff�rente assign�e � un textarea (idobraca)
+-Fixed issue #04445: Une classe différente assignée à un textarea (idobraca)
 -Fixed issue #4270: LSRC returns Internal Server Error when attempting to send reminder emails for a survey that has no reminders to send - patch by elameno (c_schmitz)
 -Fixed issue #4391: Errors during database upgrade (c_schmitz)
 -Fixed issue #4406: Hidden questions appear in survey print view (c_schmitz)
@@ -448,7 +463,7 @@ Changes from 1.90beta2 (build 8708) to 1.90beta3 (build 8745) Legend: # updated 
 
 Changes from 1.90beta (build 8691) to 1.90beta2 (build 8708) Legend: # updated feature, - bug fix 
 #Updated translation: French (b00z00)
-#Updated translation: Spanish (Mexico) (es-MX), thanks to Roberto Gonz�lez (ganalfar)
+#Updated translation: Spanish (Mexico) (es-MX), thanks to Roberto González (ganalfar)
 #Updated translation: Polish (elisa-ls)
 -Fixed issue #4314: Unable to display five options in one row (tpartner)
 -Fixed issue #4290: Statistics: when using multiple questions to filter, all but the first are ignored; thanks to jeboyd for bugreport and the patch (texens)
@@ -596,7 +611,7 @@ Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated featu
 #Updated language: Croatian (idobraca)
 #Updated language: French (b00z00)
 #Updated language: Italian (thanks to Cristina Fiorentini ) (gandalfar)
-#Updated language: Portuguese, thanks to Rui Gouveia and Marco Mendonça (gandalfar)
+#Updated language: Portuguese, thanks to Rui Gouveia and Marco MendonÃ§a (gandalfar)
 #Updated language: Spanish (es) (kadejo)
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
@@ -785,8 +800,8 @@ Changes from 1.87RC4 (build 8002) [29-11-2009] to 1.87RC5 (build 8151) - Legend:
 +New feature: Start/Expiry is now date and time (previously only date) (c_schmitz)
 #Updated feature: SPSS export now configurable for SPSS version - patch by Menno Dekker (c_schmitz)
 #Updated translation: Croatian (idobraca)
-#Updated translation: Norwegian Bokmål (reidarok)
-#Updated translation: Czech by Vladimír Braun (c_schmitz)
+#Updated translation: Norwegian BokmÃ¥l (reidarok)
+#Updated translation: Czech by VladimÃ­r Braun (c_schmitz)
 #Updated translation: Dutch by Fred Dekkers & Han Velthuis (c_schmitz)
 #Updated translation: Dutch by Fred Dekkers (c_schmitz)
 #Updated translation: Dutch Informal by Han Velthuis (c_schmitz)
@@ -865,7 +880,7 @@ Changes from 1.87RC2 (build 7886) to 1.87RC3 (build 7996) [27-11-2009] - Legend:
 #Updated translation: Finnish by Tapio Nurminen <tapio dot nurminen at tietokannat dot fi> 
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
-#Updated translation: Norwegian Bokmål. By Reidar Øksnevad <reidar dot oksnevad at freecode dot no> 
+#Updated translation: Norwegian BokmÃ¥l. By Reidar Ã˜ksnevad <reidar dot oksnevad at freecode dot no> 
 #Updated translation: Portuguese Brazilian by Yoshitake <yoshitake at pucsp dot br> 
 #Updated translation: Slovakian by Pavel Cerny  <pcerny at gmail dot com>
 #Updated translation: Spanish (kadejo)
@@ -1146,7 +1161,7 @@ Changes from 1.85+ (build 7337) to 1.85+ (build 7393) [03-08-2009] - Legend: + n
 #Updated translation: Italian. (idobraca)
 #Updated translation: French. (b00z00)
 #Updated translation: Polish(elisa-ls)
-#Updated translation: Slovak by Marek Hallér. (jaycburton)
+#Updated translation: Slovak by Marek HallÃ©r. (jaycburton)
 #Updated translation: Spanish (es) (kadejo)
 +New feature: CSS class for cells within array (flexible label) question type. This way cells within the table can have a background color assigned using CSS. (maziminke)
 -Fixed bug #03459: Using a "lower than" > character as code within label set leads to a save error in the end user survey form (jcleeland)
@@ -1343,7 +1358,7 @@ Changes from 1.81 to 1.82 (build 6757) [2009/04/29] - Legend: + new feature, # u
 +New feature in group order - detects faulty group_order numbering and fixes before displaying groups (jcleeland)
 +New language translation: Sinhalese translation by Janaka Padukka (c_schmitz)
 #Updated Language: Czech (macduy)
-#Updated Language: Hungarian - kindly provided by Mikl�s Kriv�n (c_schmitz)
+#Updated Language: Hungarian - kindly provided by Miklós Kriván (c_schmitz)
 #Updated Language: Polish - kindly provided by Ela Lesinska (elisa) (c_schmitz)
 #Updated language: German & German (informal) (c_schmitz)
 #Updated language: German translation (c_schmitz)
@@ -1541,10 +1556,10 @@ Updated translations:
     Updated Language: Galician language updated. By Carlos Neira Cortizas. (kadejo)
     Updated Language: Greek language updated. By Yiannos Katsirintakis. (kadejo)
     Updated Language: Italian. By Giovanni Chiozza. (kadejo)
-    Updated Language: Norwegian Bokm�l. By Reidar �ksnevad. (kadejo)
+    Updated Language: Norwegian Bokmål. By Reidar Øksnevad. (kadejo)
     Updated Language: Polish (xqleg)
-    Updated Language: Portuguese Brazilian by Andr�a Sim�es (c_schmitz)
-    Updated Language: Portuguese Brazilian by Fl�vio Veras (c_schmitz)
+    Updated Language: Portuguese Brazilian by Andréa Simões (c_schmitz)
+    Updated Language: Portuguese Brazilian by Flávio Veras (c_schmitz)
     Updated Language: Russian. By Pavel Tokarev. (kadejo)
     Updated Language: Serbian language updated. By Miroslav Jovanovic. (first in Cyrillic alphabet). (kadejo)
     Updated Language: Slovenian language update (gasper_koren)
@@ -1765,7 +1780,7 @@ Feature Changes:
 -Applied changes to originals texts for better i18n compatibility by Hooman Mesgary (c_schmitz)
 
 Languages:
--Added Icelandic translation kindly provided by J�hann Fri�riksson ( johannfr -i-t- arskoli -d-i-t- is )
+-Added Icelandic translation kindly provided by Jóhann Friðriksson ( johannfr -i-t- arskoli -d-i-t- is )
 -Updated Albanian Language file by Eniel Ninka (e -d-o-t- ninka -a-t- univpm -d-o-t- it )
 -Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu
 -Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg
@@ -1775,7 +1790,7 @@ Languages:
 -Updated Dutch translation by Hans Delva, Gerton Poot
 -Updated Estonian Translation by Villem Vannas (villem -dot- vannas(a) mail (dot) ee)
 -Renamed Farsi to Persian (c_schmitz)
--Updated Finnish Translation by Juuso Heinisuo, P�ivi Tyni  (c_schmitz)
+-Updated Finnish Translation by Juuso Heinisuo, Päivi Tyni  (c_schmitz)
 -Updated French translation (b00z00 and el Almoman walmoman -a-t- hemisa -d-o-z- com)
 -Updated German translations (c_schmitz)
 -Updated Greek translation by Christos Rodosthenous and Yiannos Katsirintakis
@@ -2131,7 +2146,7 @@ New Features / Feature Changes - Release Date: 2008/02/25
 [Survey Design] Adding new questions to very large surveys, and question sorts (jasebo)
 [Survey Design] Question Attribute "display_columns" for Gender Question--Type (jasebo)
 [Survey Design] Implemented dropdown layout for Dual Scale Question Type (lemeur)
-[Language] Added Slovak translation provided by Juraj Zub�n aka D4v1dZ ( d4v1dz -a-t- gmail -d-o-t- com)
+[Language] Added Slovak translation provided by Juraj Zubán aka D4v1dZ ( d4v1dz -a-t- gmail -d-o-t- com)
 
 
 
@@ -2144,7 +2159,7 @@ Features
 -Lots of security fixes regarding internal security - upgrade is highly recommended. (c_schmitz)
 -Hint is now shown if database exist (c_schmitz)
 -Added a warning message when the user did not change the 'password' Password (c_schmitz)
--Updated and now complete SPanish Translation by Luis M. Mart�nez
+-Updated and now complete SPanish Translation by Luis M. Martínez
 -Updated and now complete Polish Translation by Damian Kubiak
 
 
@@ -2156,7 +2171,7 @@ Fixes:
 -Fixed problem with mandatory questions in all-in-one mode (leochaton)	
 -Fixed "Load unfinished survey" and "Save survey and return" buttons active even when the survey is not active (leochaton)	
 -Fixed question marks being shown instead if Cyrillic/chinese/greek/... characters when installing LImeSurvey into a non-UTF8 database (c_schmitz)
--Fixed $accesscontrol isn�t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
+-Fixed $accesscontrol isn´t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
 -Fixed error clicking Browse button to view text box responses (leochaton)
 -Fixed Locale nl point to wrong images-directory (el-matador-69)
 -Fixed The saved control records were not deleted when the survey was deactivated. (leochaton)
@@ -2209,14 +2224,14 @@ New General Features
 
 New Languages
 
-    * Brazilian Portuguese by Anderson La�cio Galindo Trindade
+    * Brazilian Portuguese by Anderson La‚cio Galindo Trindade
     * Chinese Traditional (Area Hong Kong) by Mark Yeung
     * Finnish by Matti Lassila
     * Galician translation by Carlos Neira Cortizas
     * Japanese translation by Hiroki Yoshino
     * Polish by Maciej Zawado
     * Serbian by Ivan Recevic
-    * Spanish by Carlos Juan Mart�n P�rez
+    * Spanish by Carlos Juan Martín Pérez
     * Vietnamese by Vinh Ngo 
 
 
