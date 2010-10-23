@@ -177,6 +177,8 @@ function setupTranslateFields($type)
                            ." AND surveyls_language=".db_quoteall($tolang)." LIMIT 1",
         "id1"  => "",
         "id2"  => "",
+        "gid"  => FALSE,
+        "qid"  => FALSE,
         "what" => 'surveyls_title',
         "desc" => "Survey title",
         "formname" => 'init_update'
@@ -199,6 +201,8 @@ function setupTranslateFields($type)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
         "id1"  => "",
         "id2"  => "",
+        "gid"  => FALSE,
+        "qid"  => FALSE,
         "what" => 'surveyls_description',
         "desc" => "Description",
         "formname" => 'init_update'
@@ -221,6 +225,8 @@ function setupTranslateFields($type)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
         "id1"  => "",
         "id2"  => "",
+        "gid"  => FALSE,
+        "qid"  => FALSE,
         "what" => 'surveyls_welcometext',
         "desc" => "Welcome message",
         "formname" => 'init_update',
@@ -243,6 +249,8 @@ function setupTranslateFields($type)
                            ."AND surveyls_language='{$tolang}' LIMIT 1",
         "id1"  => "",
         "id2"  => "",
+        "gid"  => FALSE,
+        "qid"  => FALSE,
         "what" => 'surveyls_endtext',
         "desc" => "End message",
         "formname" => 'init_update'
@@ -268,6 +276,8 @@ function setupTranslateFields($type)
                            ."AND language='{$tolang}' LIMIT 1",
         "id1"  => "gid",
         "id2"  => "",
+        "gid"  => TRUE,
+        "qid"  => FALSE,
         "what" => "group_name",
         "desc" => "Question groups",
         "formname" => "group_update"
@@ -293,6 +303,8 @@ function setupTranslateFields($type)
                            ."AND language='{$tolang}' LIMIT 1",
         "id1"  => "gid",
         "id2"  => "",
+        "gid"  => TRUE,
+        "qid"  => FALSE,
         "what" => "description",
         "desc" => "Description",
         "formname" => 'group_update'
@@ -342,6 +354,8 @@ function setupTranslateFields($type)
         "what" => 'question',
         "id1"  => 'qid',
         "id2"  => "",
+        "gid"  => TRUE,
+        "qid"  => TRUE,
         "desc" => "Questions",
         "formname" => 'question_update'
       );
@@ -367,6 +381,8 @@ function setupTranslateFields($type)
         "what" => 'help',
         "id1"  => 'qid',
         "id2"  => "",
+        "gid"  => TRUE,
+        "qid"  => TRUE,
         "desc" => "Help",
         "formname" => 'question_update'
       );
@@ -396,6 +412,8 @@ function setupTranslateFields($type)
         "what" => 'answer',
         "id1"  => 'qid',
         "id2"  => 'code',
+        "gid"  => FALSE,
+        "qid"  => TRUE,
         "desc" => "Subquestions",
         "formname" => 'answers_update'
       );

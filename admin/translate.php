@@ -137,6 +137,16 @@
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$transarray["what"]]);
+          $gid = NULL;
+          if($transarray["gid"]==TRUE)
+          {  
+            $gid = $rowfrom['gid'];
+          }
+          $qid = NULL;
+          if($transarray["qid"]==TRUE)
+          {
+            $qid = $rowfrom['qid'];
+          }
           $rowto = $resultto->FetchRow();
           $textto   = htmlspecialchars_decode($rowto[$transarray["what"]]);
 
@@ -172,7 +182,7 @@
                     $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
                     $translateoutput .= "<textarea cols='80' rows='$nrows+1' "
                       ."name='{$type}_newvalue_{$i}'>$textto</textarea>\n"
-                      .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, '', '', $action);
+                      .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, $action);
                   $translateoutput .= "</td>\n"
                 . "</tr>\n"
               . "</table>\n"
