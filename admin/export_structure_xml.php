@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: export_structure_csv.php 8592 2010-04-14 12:23:25Z machaven $
+ * $Id$
  */
 
 

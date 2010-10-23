@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: html_functions.php 8672 2010-05-03 14:02:14Z lemeur $
+ * $Id$
  */
 function browsemenubar($title='')
 {

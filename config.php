@@ -10,7 +10,7 @@
  * free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: config-defaults.php 4334 2008-02-25 13:21:10Z c_schmitz $
+ * $Id$
  */
 
 /* IMPORTANT NOTICE

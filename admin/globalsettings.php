@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: common.php 7566 2009-09-04 14:04:56Z c_schmitz $
+ * $Id$
  */
 require_once('classes/core/settingsstorage.php');
 

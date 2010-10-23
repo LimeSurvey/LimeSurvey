@@ -254,7 +254,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'listcolumn')
     {
-        if(bHasSurveyPermission($surveyid,'browse_response'))    {include('listcolumn.php');}
+        if(bHasSurveyPermission($surveyid,'statistics','read'))    {include('listcolumn.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'previewquestion')
@@ -269,7 +269,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'saved')
     {
-        if(bHasSurveyPermission($surveyid,'browse_response'))    {include('saved.php');}
+        if(bHasSurveyPermission($surveyid,'responses','read'))    {include('saved.php');}
         else { include('access_denied.php');}
     }
 //<AdV>
@@ -281,12 +281,12 @@ if(isset($_SESSION['loginID']))
 //</AdV>    
     elseif ($action == 'tokens')
     {
-        if(bHasSurveyPermission($surveyid,'activate_survey'))    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php'); include('bounceprocessing.php');}
+        if(bHasSurveyPermission($surveyid,'tokens','read'))    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php'); include('bounceprocessing.php');}
         else { include('access_denied.php'); }
     }
     elseif ($action == 'iteratesurvey')
     {
-        if(bHasSurveyPermission($surveyid,'browse_response') && bHasSurveyPermission($surveyid,'activate_survey'))    {include('iterate_survey.php');}
+        if(bHasSurveyPermission($surveyid,'surveyactivation','update'))    {include('iterate_survey.php');}
         else { include('access_denied.php');}
     }
     elseif ($action=='showquexmlsurvey')

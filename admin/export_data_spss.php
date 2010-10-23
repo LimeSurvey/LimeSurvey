@@ -92,7 +92,7 @@ switch ($spssver) {
 
 }
 
-$headerComment = '*$Rev$' . " $filterstate $spssver.\n";
+$headerComment = '*$Rev: 9218 $' . " $filterstate $spssver.\n";
 
 if (isset($_GET['dldata'])) $subaction = "dldata";
 if (isset($_GET['dlstructure'])) $subaction = "dlstructure";

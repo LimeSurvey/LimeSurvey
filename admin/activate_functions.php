@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id:$
+ *	$Id$
  *	Files Purpose: holds functions to activate a survey and precheck the consistency of the survey
  */
 

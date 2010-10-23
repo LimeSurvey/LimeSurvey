@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: exportquexml.php 3659 2007-11-18 12:41:21Z c_schmitz $
+ * $Id$
  */
 
 

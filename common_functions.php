@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id:$
+ *	$Id$
  *	Files Purpose: lots of common functions
  */
 
@@ -42,7 +42,7 @@ function aGetBaseSurveyPermissions()
                 'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings")), 
                 'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation")), 
                 'token'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create & import/view & export/update/delete token entries")), 
-                'translation'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature")), );
+                'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature")), );
 }
  
 /**
@@ -454,8 +454,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
 
         if (!bHasGlobalPermission('USER_RIGHT_SUPERADMIN'))
         {
-            $surveyidquery .= " INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid ";
-            $surveyidquery .= "WHERE b.uid =".$_SESSION['loginID'];
+            $surveyidquery .= "WHERE a.sid in (select sid from ".db_table_name('survey_permissions')." where uid={$_SESSION['loginID']} and permission='survey' and read_p=1) ";
         }
 
         $surveyidquery .= " order by active DESC, surveyls_title";
