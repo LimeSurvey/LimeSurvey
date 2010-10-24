@@ -628,7 +628,6 @@ a.optoutemail {
     margin:0 auto;
 }
 
-#responsedetail tr.highlight,
 .answertable tr.highlight {
     background-color:#EAF2FF;
 }
@@ -1340,4 +1339,8 @@ thead th
 
 .usersurveypermissions th{
      padding:0 2em;
+}
+
+#responsedetail td{
+   padding:3px 5px;
 }

@@ -435,7 +435,7 @@ if(isset($_SESSION['loginID']))
 
     if ($action == 'dataentry')
     {
-        if(bHasSurveyPermission($surveyid,'responses','create'))
+        if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission($surveyid, 'responses','create')  || bHasSurveyPermission($surveyid, 'responses','update'))
         {
             include('dataentry.php');
         }

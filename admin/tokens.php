@@ -1087,14 +1087,14 @@ if($subaction != 'bounceprocessing')
     $tokenoutput .="<div class='menubar-left'>\n";
     if (bHasSurveyPermission($surveyid,'tokens','update'))
     {
-         if($thissurvey['bounceprocessing']=='N')
-            {
-                $tokenoutput .="<image src='$imagefiles/bounce_greyed.png'  alt='".$clang->gT("You have selected not to use any bounce settings")."'>";
-            }
+        if($thissurvey['bounceprocessing']=='N')
+        {
+            $tokenoutput .="<image src='$imagefiles/bounce_disabled.png'  alt='".$clang->gT("You have selected not to use any bounce settings")."'>";
+        }
         else
-            {
-                $tokenoutput .="<image src='$imagefiles/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce Processing")."'>";
-            }
+        {
+            $tokenoutput .="<image src='$imagefiles/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce Processing")."'>";
+        }
         $tokenoutput .= "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
     }
     

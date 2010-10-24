@@ -205,7 +205,7 @@ $surveyPreview_require_Auth == true)
         $savesessionvars=Array();
         if (isset($_SESSION['loginID']))
         {
-            $rightquery="SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']);
+            $rightquery="SELECT uid FROM {$dbprefix}survey_permissions WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID'].' group by uid');
             $rightresult = db_execute_assoc($rightquery);      //Checked
 
             // Currently it is enough to be listed in the survey

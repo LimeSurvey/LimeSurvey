@@ -1,7 +1,9 @@
 // $Id$
 
 $(document).ready(function(){
-    $("#users").tablesorter({sortList: [[1,0]] });
+    $("#users").tablesorter({
+                            widgets: ['zebra'],            
+                            sortList: [[1,0]] });
 	var tog=false;
 	$("#checkall").click(function() {
 	    $("input[type=checkbox]").attr("checked",!tog);

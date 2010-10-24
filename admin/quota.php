@@ -211,14 +211,14 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
 $js_admin_includes[]='scripts/quotas.js';
 
-if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
+if(bHasSurveyPermission($surveyid, 'quotas','read'))
 {
     if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
     if (!isset($action)) $action=returnglobal('action');
     if (!isset($subaction)) $subaction=returnglobal('subaction');
     if (!isset($quotasoutput)) $quotasoutput = "";
     if (!isset($_POST['autoload_url']) || empty($_POST['autoload_url'])) {$_POST['autoload_url']=0;}
-    if($subaction == "insertquota")
+    if($subaction == "insertquota" && bHasSurveyPermission($surveyid, 'quotas','create'))
     {
         if(!isset($_POST['quota_limit']) || $_POST['quota_limit'] < 1)
         {
@@ -276,7 +276,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
 
     } //End foreach $lang
 
-    if($subaction == "modifyquota")
+    if($subaction == "modifyquota" && bHasSurveyPermission($surveyid, 'quotas','update'))
     {
         $query = "UPDATE ".db_table_name('quota')."
 			      SET name=".db_quoteall($_POST['quota_name'],true).",
@@ -337,7 +337,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
         $viewquota = "1";
     }
 
-    if($subaction == "insertquotaanswer")
+    if($subaction == "insertquotaanswer" && bHasSurveyPermission($surveyid, 'quotas','create'))
     {
         array_walk( $_POST, 'db_quote', true);
         $query = "INSERT INTO ".db_table_name('quota_members')." (sid,qid,quota_id,code) VALUES ('$surveyid','{$_POST['quota_qid']}','{$_POST['quota_id']}','{$_POST['quota_anscode']}')";
@@ -351,7 +351,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
 		}
     }
 
-    if($subaction == "quota_delans")
+    if($subaction == "quota_delans" && bHasSurveyPermission($surveyid, 'quotas','delete'))
     {
         array_walk( $_POST, 'db_quote', true);
         $query = "DELETE FROM ".db_table_name('quota_members')."
@@ -362,7 +362,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
 
     }
 
-    if($subaction == "quota_delquota")
+    if($subaction == "quota_delquota" && bHasSurveyPermission($surveyid, 'quotas','delete'))
     {
         array_walk( $_POST, 'db_quote', true);
         $query = "DELETE FROM ".db_table_name('quota')." WHERE id='{$_POST['quota_id']}'";
@@ -376,7 +376,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
         $viewquota = "1";
     }
 
-    if ($subaction == "quota_editquota")
+    if ($subaction == "quota_editquota" && bHasSurveyPermission($surveyid, 'quotas','update'))
     {
         array_walk( $_POST, 'db_quote', true);
         $query = "SELECT * FROM ".db_table_name('quota')."
@@ -391,7 +391,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
 								<table width="100%" border="0">
         							<tbody>
           								<tr>
-            								<td colspan="2" class="header">'.$clang->gT("Modify Quota").'</td>
+            								<td colspan="2" class="header">'.$clang->gT("Edit quota").'</td>
           								</tr>
           								<tr class="evenrow">
             								<td align="right"><blockquote>
@@ -484,13 +484,13 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
 				</div>';
         };
         $quotasoutput .= '
-					<p><input name="submit" type="submit" value="'.$clang->gT("Update Quota").'" />
+					<p><input name="submit" type="submit" value="'.$clang->gT("Save quota").'" />
             		<input type="hidden" name="sid" value="'.$surveyid.'" />
             		<input type="hidden" name="action" value="quotas" />
             		<input type="hidden" name="subaction" value="modifyquota" />
             		<input type="hidden" name="quota_id" value="'.$quotainfo['id'].'" />
-            		<button type="button" onclick="window.open(\''.$scriptname.'?action=quotas&sid='.$surveyid.'\', \'_top\')">'.$clang->gT("Cancel").'</button>
-            		</form>';
+            		<button type="button" onclick="window.open(\''.$scriptname.'?action=quotas&amp;sid='.$surveyid.'\', \'_top\')">'.$clang->gT("Cancel").'</button>
+            		</div></form>';
     }
 
     $totalquotas=0;
@@ -574,22 +574,28 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
 					</td>
             		<td align="center">'.$quotalisting['qlimit'].'</td>
             		<td align="center" '.$highlight.'>'.$completed.'</td>
-            		<td align="center" style="padding: 3px;">
-						<form action="'.$scriptname.'" method="post">
-							<input name="submit" type="submit" class="submit" value="'.$clang->gT("Modify").'" />
-							<input type="hidden" name="sid" value="'.$surveyid.'" />
-							<input type="hidden" name="action" value="quotas" />
-							<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
-							<input type="hidden" name="subaction" value="quota_editquota" />
-						</form>
-						<form action="'.$scriptname.'" method="post">
-							<input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
-							<input type="hidden" name="sid" value="'.$surveyid.'" />
-							<input type="hidden" name="action" value="quotas" />
-							<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
-							<input type="hidden" name="subaction" value="quota_delquota" />
-						</form>
-            		</td>
+            		<td align="center" style="padding: 3px;">';
+                if (bHasSurveyPermission($surveyid, 'quotas','update'))
+                {
+                    $quotasoutput .='<form action="'.$scriptname.'" method="post">
+                                        <input name="submit" type="submit" class="submit" value="'.$clang->gT("Edit").'" />
+                                        <input type="hidden" name="sid" value="'.$surveyid.'" />
+                                        <input type="hidden" name="action" value="quotas" />
+                                        <input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
+                                        <input type="hidden" name="subaction" value="quota_editquota" />
+                                    </form>';
+                }
+                if (bHasSurveyPermission($surveyid, 'quotas','delete'))
+                {
+                    $quotasoutput .='<form action="'.$scriptname.'" method="post">
+							            <input name="submit" type="submit" class="submit" value="'.$clang->gT("Remove").'" />
+							            <input type="hidden" name="sid" value="'.$surveyid.'" />
+							            <input type="hidden" name="action" value="quotas" />
+							            <input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
+							            <input type="hidden" name="subaction" value="quota_delquota" />
+						            </form>';
+                }
+            	$quotasoutput .='</td>
           		</tr>';
 
                 //headline for quota sub-parts
@@ -600,15 +606,18 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
             		<td align="center"><strong>'.$clang->gT("Answers").'</strong></td>
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
-            		<td style="padding: 3px;" align="center">
-						<form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add Answer").'" />
-            				<input type="hidden" name="sid" value="'.$surveyid.'" />
-            				<input type="hidden" name="action" value="quotas" />
-            				<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
-            				<input type="hidden" name="subaction" value="new_answer" />
-						</form>
-					</td>
+            		<td style="padding: 3px;" align="center">';
+                if (bHasSurveyPermission($surveyid, 'quotas','update'))
+                {
+                    $quotasoutput .='<form action="'.$scriptname.'" method="post">
+                                        <input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add Answer").'" />
+                                        <input type="hidden" name="sid" value="'.$surveyid.'" />
+                                        <input type="hidden" name="action" value="quotas" />
+                                        <input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
+                                        <input type="hidden" name="subaction" value="new_answer" />
+                                    </form>';
+                }
+                $quotasoutput .='</td>
           		</tr>';
 
                 //check how many sub-elements exist for a certain quota
@@ -661,14 +670,18 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
             		<td align="center">&nbsp;</td>
             		<td align="center">'.$totalquotas.'</td>
             		<td align="center">'.$totalcompleted.'</td>
-            		<td align="center" style="padding: 3px;">
-						<form action="'.$scriptname.'" method="post">
-							<input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add New Quota").'" />
-							<input type="hidden" name="sid" value="'.$surveyid.'" />
-							<input type="hidden" name="action" value="quotas" />
-            				<input type="hidden" name="subaction" value="new_quota" />
-						</form>
-					</td>
+            		<td align="center" style="padding: 3px;">';
+        if (bHasSurveyPermission($surveyid, 'quotas','create'))
+        {
+            $quotasoutput .='<form action="'.$scriptname.'" method="post">
+                            <input name="submit" type="submit" class="quota_new" value="'.$clang->gT("Add New Quota").'" />
+                            <input type="hidden" name="sid" value="'.$surveyid.'" />
+                            <input type="hidden" name="action" value="quotas" />
+                            <input type="hidden" name="subaction" value="new_quota" />
+                        </form>';
+            
+        }
+        $quotasoutput .='</td>
             	</tr>
 			</tbody>
       	</table>';
@@ -686,7 +699,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
         }
         die;
     }
-    if($subaction == "new_answer" || ($subaction == "new_answer_two" && !isset($_POST['quota_qid'])))
+    if(($subaction == "new_answer" || ($subaction == "new_answer_two" && !isset($_POST['quota_qid']))) && bHasSurveyPermission($surveyid,'quotas','create'))
     {
         if ($subaction == "new_answer_two") $_POST['quota_id'] = $_POST['quota_id'];
 
@@ -758,7 +771,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
         }
     }
 
-    if($subaction == "new_answer_two" && isset($_POST['quota_qid']))
+    if($subaction == "new_answer_two" && isset($_POST['quota_qid']) && bHasSurveyPermission($surveyid, 'quotas','create'))
     {
         array_walk( $_POST, 'db_quote', true);
 
@@ -842,7 +855,7 @@ if(bHasSurveyPermission($surveyid, 'edit_survey_property'))
         }
     }
 
-    if ($subaction == "new_quota")
+    if ($subaction == "new_quota" && bHasSurveyPermission($surveyid, 'quotas','create'))
     {
         $quotasoutput.="<div class='header'>".$clang->gT("New quota").'</div>';
         $quotasoutput.='<form class="form30" action="'.$scriptname.'" method="post" id="addnewquotaform" name="addnewquotaform">';

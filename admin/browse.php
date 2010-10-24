@@ -674,26 +674,26 @@ elseif ($subaction == "all")
             . "<th>".$clang->gT('Actions')."</th>\n";
     foreach ($fnames as $fn)
     {
-        if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}
+        if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "odd";}
         if ($currentgroup != $fn[1])
         {
             $currentgroup = $fn[1];
-            if ($gbc == "oddrow") {$gbc = "evenrow";}
-            else {$gbc = "oddrow";}
+            if ($gbc == "odd") {$gbc = "even";}
+            else {$gbc = "odd";}
             }
         $tableheader .= "<th class='$gbc'><strong>"
                 . strip_javascript("$fn[1]")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
+    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">";
     if (bHasSurveyPermission($surveyid,'responses','delete'))
     {
-        $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
-                       ."<img id='imgDeleteMarkedResponses' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
-                       ."<img id='imgDownloadMarkedFiles' src='$imagefiles/down.png' alt='".$clang->gT('Download Marked Files')."' />"
-                       ."</td></tr></tfoot>\n\n";
+        $tableheader .= "<img id='imgDeleteMarkedResponses' src='{$imagefiles}/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />";
     }
-
+    $tableheader .="<img id='imgDownloadMarkedFiles' src='{$imagefiles}/down_all.png' alt='".$clang->gT('Download marked files')."' />"
+                  ."</td></tr></tfoot>\n\n";
+    
     $start=returnglobal('start');
     $limit=returnglobal('limit');
     if (!isset($limit) || $limit== '') {$limit = 50;}
@@ -702,7 +702,7 @@ elseif ($subaction == "all")
     //Create the query
     if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
     {
-        $sql_from = "$surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token";
+        $sql_from = "{$surveytable} LEFT JOIN {$tokentable} ON {$surveytable}.token = {$tokentable}.token";
     } else {
         $sql_from = $surveytable;
     }
@@ -717,7 +717,7 @@ elseif ($subaction == "all")
         // filter group token
         if (db_tables_exist($tokentable) && $selectedgroup != "")
         {
-            $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
+            $selectedgrouptoken = $connect->getOne("SELECT token FROM {$grouptokentable} WHERE gtid='{$selectedgroup}'");
             $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
     }
     }
@@ -976,23 +976,27 @@ elseif ($subaction == "all")
 
     while ($dtrow = $dtresult->FetchRow())
     {
-        if (!isset($bgcc)) {$bgcc="evenrow";}
+        if (!isset($bgcc)) {$bgcc="even";}
         else
         {
-            if ($bgcc == "evenrow") {$bgcc = "oddrow";}
-            else {$bgcc = "evenrow";}
+            if ($bgcc == "even") {$bgcc = "odd";}
+            else {$bgcc = "even";}
             }
-        $browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
+        $browseoutput .= "\t<tr class='{$bgcc}' valign='top'>\n"
                 ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
                 ."<td align='center'>
-        <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
-        <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
-        <a><img id='downloadfile_{$dtrow['id']}' src='$imagefiles/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>
-        <a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
+        <a href='{$scriptname}?action=browse&amp;sid={$surveyid}&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imagefiles/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>";
+        
+        if (bHasSurveyPermission($surveyid,'responses','update'))
+        {
+            $browseoutput .= " <a href='{$scriptname}?action=dataentry&amp;sid={$surveyid}&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>";
+        }
+
+        $browseoutput .=" <a><img id='downloadfile_{$dtrow['id']}' src='{$imagefiles}/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>";
 
         if (bHasSurveyPermission($surveyid,'responses','delete'))
         {
-            $browseoutput .= "<a><img id='deleteresponse_{$dtrow['id']}' src='$imagefiles/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a>\n";
+            $browseoutput .= "<a><img id='deleteresponse_{$dtrow['id']}' src='{$imagefiles}/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a>\n";
         }
         $browseoutput .= "</td>";
         $i = 0;

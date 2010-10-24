@@ -119,7 +119,7 @@ else //delete the survey
     $slsdel = "DELETE FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
     $slsres = $connect->Execute($slsdel);
 
-    $srdel = "DELETE FROM {$dbprefix}surveys_rights WHERE sid=$surveyid";
+    $srdel = "DELETE FROM {$dbprefix}survey_permissions WHERE sid=$surveyid";
     $srres = $connect->Execute($srdel);
 
     $srdel = "DELETE FROM {$dbprefix}saved_control WHERE sid=$surveyid";

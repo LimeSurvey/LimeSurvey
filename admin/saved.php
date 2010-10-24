@@ -86,23 +86,19 @@ function showSavedList($surveyid)
 				<td>".$row['scid']."</td>
 				<td align='center'>";
 
-            if (($surrows['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+            if (bHasSurveyPermission($surveyid,'responses','update'))
             {
                 $savedsurveyoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
-                .$clang->gT("Edit entry")."' onclick=\"window.open('$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$row['srid']}', '_top')\" />"
-                ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
-                .$clang->gT("Delete entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid={$row['scid']}&amp;srid={$row['srid']}")."}\"  />";
-
-
-                /*                    $savedsurveyoutput .=  "[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid={$row['scid']}&amp;srid={$row['srid']}'"
-                 ." onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")'"
-                 .">".$clang->gT("Delete")."</a>]";
-                 $savedsurveyoutput .=  "[<a href='".$scriptname."?action=dataentry&amp;subaction=edit&amp;id=".$row['srid']."&amp;sid={$surveyid}&amp;surveytable={$surveytable}'>".$clang->gT("Edit")."</a>]";
-                 */
+                .$clang->gT("Edit entry")."' onclick=\"window.open('{$scriptname}?action=dataentry&amp;subaction=edit&amp;id={$row['srid']}&amp;sid={$surveyid}', '_top')\" />";
+            }
+            if (bHasSurveyPermission($surveyid,'responses','delete'))
+            {
+                $savedsurveyoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_delete.png' title='"
+                .$clang->gT("Delete entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("{$scriptname}?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid={$row['scid']}&amp;srid={$row['srid']}")."}\"  />";
             }
             else
             {
-                $savedsurveyoutput .=  "[<a href='".$scriptname."?action=dataentry&amp;subaction=edit&amp;id=".$row['srid']."&amp;sid={$surveyid}'>".$clang->gT("View")."</a>]";
+              //  $savedsurveyoutput .=  "[<a href='{$scriptname}?action=dataentry&amp;subaction=edit&amp;id={$row['srid']}&amp;sid={$surveyid}'>".$clang->gT("View")."</a>]";
 
             }
 

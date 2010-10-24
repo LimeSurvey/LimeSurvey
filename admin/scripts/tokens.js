@@ -1,31 +1,29 @@
 // $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz 
 $(document).ready(function(){
-	$("#bounceprocessing").change(turnoff);
-   turnoff();	
-	
-	
-     	  $('img[id=bounceprocessing]').bind('click',function(){
-	  $("#dialog-modal").dialog({
-	          title: "Summary",
-		  modal: true,
-		  autoOpen: false,
-		  height: 200,
-		  width: 400,
-		   show: 'blind',
-        hide: 'blind',
-	      }); 	  
- 	 checkbounces(surveyid);
-      }); 
-   $("#filterduplicatetoken").change(function(){
-    if ($("#filterduplicatetoken").attr('checked')==true)
-    {
-        $("#lifilterduplicatefields").slideDown(); 
-    }
-    else
-    {
-        $("#lifilterduplicatefields").slideUp(); 
-    }
-   }) 
+    $("#bounceprocessing").change(turnoff);
+    turnoff();	
+    $('img[id=bounceprocessing]').bind('click',function(){
+        $("#dialog-modal").dialog({
+                                    title: "Summary",
+                                    modal: true,
+                                    autoOpen: false,
+                                    height: 200,
+                                    width: 400,
+                                    show: 'blind',
+                                    hide: 'blind',
+	                                }); 	  
+ 	    checkbounces(surveyid);
+    }); 
+    $("#filterduplicatetoken").change(function(){
+        if ($("#filterduplicatetoken").attr('checked')==true)
+        {
+            $("#lifilterduplicatefields").slideDown(); 
+        }
+        else
+        {
+            $("#lifilterduplicatefields").slideUp(); 
+        }
+    }) 
 	//Token checkbox toggles
 	var tog=false;
 	$('#tokencheckboxtoggle').click(function() {
@@ -38,7 +36,7 @@ $(document).ready(function(){
 				$('#tokenboxeschecked').val(selecteditems);
 				/* alert(selecteditems); */
 			}
-	});
+	    });
 		tog=!tog;
 	});
 	$('input[type=checkbox]').click(function() {
@@ -53,6 +51,7 @@ $(document).ready(function(){
 		});	    
 	});
 });
+
 function checkbounces(surveyid) {
 $("#dialog-modal").dialog('open');
  var url = 'admin.php?action=tokens&subaction=bounceprocessing&sid='+surveyid

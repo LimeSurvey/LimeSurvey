@@ -420,10 +420,10 @@ if ($action == "editusers")
 
     //	output users
     // output admin user only if the user logged in has user management rights
-    $usersummary .= "<tr class='oddrow'>\n";
+    $usersummary .= "<tr >\n";
 
     // Action colum first
-    $usersummary .= "<td class='oddrow' align='center' style='padding:3px;'>\n";
+    $usersummary .= "<td align='center' style='padding:3px;'>\n";
 
 
     $usersummary .= "<form method='post' action='$scriptname'>"
@@ -443,24 +443,24 @@ if ($action == "editusers")
 
     $usersummary .= "</td>\n";
 
-    $usersummary .= "<td class='oddrow' align='center'><strong>{$usrhimself['user']}</strong></td>\n"
-    . "<td class='oddrow' align='center'><strong>{$usrhimself['email']}</strong></td>\n"
-    . "<td class='oddrow' align='center'><strong>{$usrhimself['full_name']}</strong></td>\n";
+    $usersummary .= "<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
+    . "<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
+    . "<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n";
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         $noofsurveys=$connect->GetOne('Select count(*) from '.db_table_name('surveys').' where owner_id='.$usrhimself['uid']);
-        $usersummary .= "<td class='oddrow' align='center'><strong>{$noofsurveys}</strong></td>\n";
+        $usersummary .= "<td align='center'><strong>{$noofsurveys}</strong></td>\n";
     }
 
     if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) {
         $uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usrhimself['parent_id'];
         $uresult = db_execute_assoc($uquery); //Checked
         $srow = $uresult->FetchRow();
-        $usersummary .= "<td class='oddrow' align='center'><strong>{$srow['users_name']}</strong></td>\n";
+        $usersummary .= "<td align='center'><strong>{$srow['users_name']}</strong></td>\n";
     }
     else
     {
-        $usersummary .= "<td class='oddrow' align='center'><strong>---</strong></td>\n";
+        $usersummary .= "<td align='center'><strong>---</strong></td>\n";
     }
 
     $usersummary.="</tr>\n";
@@ -478,16 +478,11 @@ if ($action == "editusers")
 
     for($i=1; $i<=count($usr_arr); $i++)
     {
-        if (!isset($bgcc)) {$bgcc="evenrow";}
-        else
-        {
-            if ($bgcc == "evenrow") {$bgcc = "oddrow";}
-            else {$bgcc = "evenrow";}
-        }
-        $usr = $usr_arr[$i];
-        $usersummary .= "<tr class='$bgcc'>\n";
 
-        $usersummary .= "<td class='$bgcc' align='center' style='padding:3px;'>\n";
+        $usr = $usr_arr[$i];
+        $usersummary .= "<tr>\n";
+
+        $usersummary .= "<td align='center' style='padding:3px;'>\n";
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
         {
             $usersummary .= "<form method='post' action='$scriptname'>"
@@ -541,11 +536,11 @@ if ($action == "editusers")
 
 
         $usersummary .= "</td>\n";
-        $usersummary .= "<td class='$bgcc' align='center'>{$usr['user']}</td>\n"
-        . "<td class='$bgcc' align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
-        . "<td class='$bgcc' align='center'>{$usr['full_name']}</td>\n";
+        $usersummary .= "<td align='center'>{$usr['user']}</td>\n"
+        . "<td align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
+        . "<td align='center'>{$usr['full_name']}</td>\n";
 
-        $usersummary .= "<td class='$bgcc' align='center'>{$noofsurveyslist[$i]}</td>\n";
+        $usersummary .= "<td align='center'>{$noofsurveyslist[$i]}</td>\n";
 
         // Get Parent's User Name
         $uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usr['parent_id'];
@@ -558,10 +553,10 @@ if ($action == "editusers")
         // ==> because it is parent_id ;-)
         if (isset($usr['parent_id']))
         {
-            $usersummary .= "<td class='$bgcc' align='center'>{$usr['parent']}</td>\n";
+            $usersummary .= "<td align='center'>{$usr['parent']}</td>\n";
         } else
         {
-            $usersummary .= "<td class='$bgcc' align='center'>-----</td>\n";
+            $usersummary .= "<td align='center'>-----</td>\n";
         }
 
 

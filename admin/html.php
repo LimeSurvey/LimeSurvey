@@ -262,7 +262,7 @@ if ($action == "personalsettings")
     . "<strong>".$clang->gT("Your personal settings")."</strong>\n"
     . "</div>\n"
     . "<div>\n"
-    . "<form action='$scriptname' id='personalsettings' method='post'>"
+    . "<form action='{$scriptname}' id='personalsettings' method='post'>"
     . "<ul>\n";
 
     // Current language
@@ -282,10 +282,10 @@ if ($action == "personalsettings")
     $cssummary .=  "<li>\n"
     . "<label for='htmleditormode'>".$clang->gT("HTML editor mode").":</label>\n"
     . "<select id='htmleditormode' name='htmleditormode'>\n"
-    . "<option value='default' $edmod1>".$clang->gT("Default")."</option>\n"
-    . "<option value='inline' $edmod3>".$clang->gT("Inline HTML editor")."</option>\n"
-    . "<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n"
-    . "<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n";
+    . "<option value='default' {$edmod1}>".$clang->gT("Default")."</option>\n"
+    . "<option value='inline' {$edmod3}>".$clang->gT("Inline HTML editor")."</option>\n"
+    . "<option value='popup' {$edmod4}>".$clang->gT("Popup HTML editor")."</option>\n"
+    . "<option value='none' {$edmod2}>".$clang->gT("No HTML editor")."</option>\n";
     $cssummary .= "</select>\n"
     . "</li>\n";
 
@@ -322,12 +322,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $js_admin_includes[]='../scripts/jquery/jquery.cookie.js';
         $js_admin_includes[]='scripts/surveytoolbar.js';
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
+        $sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid={$surveyid} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
         $sumresult3 = $connect->Execute($sumquery3); //Checked
         $sumcount3 = $sumresult3->RecordCount();
         $sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
         $sumcount6 = $connect->GetOne($sumquery6); //Checked
-        $sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of groups for this survey
+        $sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid={$surveyid} AND language='".$baselang."'"; //Getting a count of groups for this survey
         $sumresult2 = $connect->Execute($sumquery2); //Checked
         $sumcount2 = $sumresult2->RecordCount();
         $sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
@@ -346,22 +346,22 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<div class='menubar'>\n"
         . "<div class='menubar-title'>\n"
         . "<strong>".$clang->gT("Survey")."</strong> "
-        . "<span class='basic'>{$surveyinfo['surveyls_title']} (".$clang->gT("ID").":$surveyid)</span></div>\n"
+        . "<span class='basic'>{$surveyinfo['surveyls_title']} (".$clang->gT("ID").":{$surveyid})</span></div>\n"
         . "<div class='menubar-main'>\n"
         . "<div class='menubar-left' id='basicsurveybar'>\n";
         if ($activated == "N" )
         {
-            $surveysummary .= "<img src='$imagefiles/inactive.png' "
+            $surveysummary .= "<img src='{$imagefiles}/inactive.png' "
             . "alt='".$clang->gT("This survey is not currently active")."' />\n";
             if($sumcount3>0 && bHasSurveyPermission($surveyid,'surveyactivation','update'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
                 . " title=\"".$clang->gTview("Activate this Survey")."\" >"
-                . "<img src='$imagefiles/activate.png' name='ActivateSurvey' alt='".$clang->gT("Activate this Survey")."'/></a>\n" ;
+                . "<img src='{$imagefiles}/activate.png' name='ActivateSurvey' alt='".$clang->gT("Activate this Survey")."'/></a>\n" ;
             }
             else
             {
-                $surveysummary .= "<img src='$imagefiles/activate_disabled.png' alt='"
+                $surveysummary .= "<img src='{$imagefiles}/activate_disabled.png' alt='"
                 . $clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.")."' />\n" ;
             }
         }
@@ -369,32 +369,32 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             if ($surveyinfo['expires']!='' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust)))
             {
-                $surveysummary .= "<img src='$imagefiles/expired.png' "
+                $surveysummary .= "<img src='{$imagefiles}/expired.png' "
                 . "alt='".$clang->gT("This survey is active but expired.")."' />\n";
             }
             elseif (($surveyinfo['startdate']!='') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust)))
             {
-                $surveysummary .= "<img src='$imagefiles/notyetstarted.png' "
+                $surveysummary .= "<img src='{$imagefiles}/notyetstarted.png' "
                 . "alt='".$clang->gT("This survey is active but has a start date.")."' />\n";
             }
             else
             {
-                $surveysummary .= "<img src='$imagefiles/active.png' title='' "
+                $surveysummary .= "<img src='{$imagefiles}/active.png' title='' "
                 . "alt='".$clang->gT("This survey is currently active")."' />\n";
             }
             if(bHasSurveyPermission($surveyid,'surveyactivation','update'))
             {
-                $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
+                $surveysummary .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=deactivate&amp;sid=$surveyid', '_top')\""
                 . " title=\"".$clang->gTview("Deactivate this Survey")."\" >"
-                . "<img src='$imagefiles/deactivate.png' alt='".$clang->gT("Deactivate this Survey")."' /></a>\n" ;
+                . "<img src='{$imagefiles}/deactivate.png' alt='".$clang->gT("Deactivate this Survey")."' /></a>\n" ;
             }
             else
             {
-                $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='14' />\n";
+                $surveysummary .= "<img src='{$imagefiles}/blank.gif' alt='' width='14' />\n";
             }
         }
 
-        $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
+        $surveysummary .= "<img src='{$imagefiles}/seperator.gif' alt=''  />\n";
         // survey rights
 
         if ($activated == "N")
@@ -409,15 +409,15 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
-            $surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('"
-            . $publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang', '_blank')\" title=\"".$icontext2."\" >"
-            . "<img src='$imagefiles/do.png' alt='$icontext' />"
+            $surveysummary .= "<a href='#' accesskey='d' onclick=\"window.open('"
+            . $publicurl."/index.php?sid={$surveyid}&amp;newtest=Y&amp;lang={$baselang}', '_blank')\" title=\"{$icontext2}\" >"
+            . "<img src='{$imagefiles}/do.png' alt='{$icontext}' />"
             . "</a>\n";
 
         } else {
             $surveysummary .= "<a href='#' id='dosurvey' class='dosurvey'"
-            . "title=\"".$icontext2."\" accesskey='d'>"
-            . "<img  src='$imagefiles/do.png' alt='$icontext' />"
+            . "title=\"{$icontext2}\" accesskey='d'>"
+            . "<img  src='{$imagefiles}/do.png' alt='{$icontext}' />"
             . "</a>\n";
 
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -431,21 +431,21 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             }
             $surveysummary .= "</ul></div>";
         }
-        $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
+        $surveysummary .= "<img src='{$imagefiles}/seperator.gif' alt=''  />\n";
 
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surveyinfo['owner_id'] == $_SESSION['loginID'])
         {
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=surveysecurity&amp;sid=$surveyid', '_top')\""
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=surveysecurity&amp;sid=$surveyid', '_top')\""
             . " title='".$clang->gTview("Survey Security Settings")."'>"
-            . "<img src='$imagefiles/survey_security.png' name='SurveySecurity' alt='".$clang->gT("Survey Security Settings")."' />"
+            . "<img src='{$imagefiles}/survey_security.png' name='SurveySecurity' alt='".$clang->gT("Survey Security Settings")."' />"
             . "</a>\n";
         }
 
         if(bHasSurveyPermission($surveyid,'surveysettings','read'))
         {
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurveysettings&amp;sid=$surveyid', '_top')\""
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=editsurveysettings&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Edit survey settings")."\" >"
-            . "<img src='$imagefiles/token_manage.png' name='EditSurveySettings' alt='".$clang->gT("Edit survey settings")."' /></a>\n";
+            . "<img src='{$imagefiles}/token_manage.png' name='EditSurveySettings' alt='".$clang->gT("Edit survey settings")."' /></a>\n";
         }
  
         if(bHasSurveyPermission($surveyid,'surveycontent','export'))
@@ -453,14 +453,14 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
             {
 
-                $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
+                $surveysummary .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
                 . " title=\"".$clang->gTview("Printable and scannable Version of survey")."\" >"
-                . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />";
+                . "<img src='{$imagefiles}/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />";
 
             } else {
 
                 $surveysummary .= "<a href='#' id='doprintableScannable' title=\"".$clang->gTview("Printable and scannable version of survey")."\" >"
-                . "<img src='$imagefiles/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />\n";
+                . "<img src='{$imagefiles}/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' />\n";
                 
                 $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -480,14 +480,14 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
 
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid', '_blank')\""
+            $surveysummary .= "<a href='#' onclick=\"window.open('{$scriptname}?action=showprintablesurvey&amp;sid=$surveyid', '_blank')\""
             . " title=\"".$clang->gTview("Printable Version of Survey")."\" >"
-            . "<img src='$imagefiles/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' />";
+            . "<img src='{$imagefiles}/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' /></a>";
 
         } else {
 
             $surveysummary .= "<a href='#' id='doprintable' title=\"".$clang->gTview("Printable Version of Survey")."\" >"
-            . "<img src='$imagefiles/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' />\n";
+            . "<img src='{$imagefiles}/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' /></a>\n";
             
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -532,8 +532,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if ($activated == "Y" && bHasSurveyPermission($surveyid,'responses','read'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Browse Responses For This Survey")."\" >"
-            . "<img src='$imagefiles/browse.png' name='BrowseSurveyResults' alt='".$clang->gT("Browse Responses For This Survey")."' /></a>\n";
+            . " title=\"".$clang->gTview("Browse responses")."\" >"
+            . "<img src='$imagefiles/browse.png' name='BrowseSurveyResults' alt='".$clang->gT("Browse responses")."' /></a>\n";
             if ($surveyinfo['allowsave'] == "Y")
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=saved&amp;sid=$surveyid', '_top')\""
@@ -638,22 +638,22 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
-        if($activated == "Y" && bHasSurveyPermission($surveyid,'responses','create'))
+        if (bHasSurveyPermission($surveyid,'responses','create'))
         {
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Data entry screen for survey")."\" >"
-            . "<img src='$imagefiles/dataentry.png' alt='".$clang->gT("Data entry screen for survey")."' name='DoDataentry' />"
-            . "</a>\n";
+            if($activated == "Y")
+            {
+                $surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_top')\""
+                . " title=\"".$clang->gTview("Data entry screen for survey")."\" >"
+                . "<img src='$imagefiles/dataentry.png' alt='".$clang->gT("Data entry screen for survey")."' name='DoDataentry' />"
+                . "</a>\n";
+            }
+            else {
+                $surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("This survey is not active, data entry is not allowed","js")."')\""
+                . " title=\"".$clang->gTview("Data entry screen for survey")."\">"
+                . "<img src='$imagefiles/dataentry_disabled.png'  alt='".$clang->gT("Data entry screen for survey")."' name='DoDataentry' />"
+                . "</a>\n";
+            }        
         }
-        else if (!bHasSurveyPermission($surveyid,'responses','create'))
-        {
-            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
-        } else {
-            $surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("This survey is not active, data entry is not allowed","js")."')\""
-            . " title=\"".$clang->gTview("Data entry screen for survey")."\">"
-            . "<img src='$imagefiles/dataentry_disabled.png'  alt='".$clang->gT("Data entry screen for survey")."' name='DoDataentry' />"
-            . "</a>\n";
-        }        
         
         if (bHasSurveyPermission($surveyid,'assessments','read'))
         {
@@ -661,11 +661,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "title=\"".$clang->gTview("Set Assessment Rules")."\" >"
             . "<img src='$imagefiles/assessments.png' alt='". $clang->gT("Set Assessment Rules")."' name='SurveyAssessment' /></a>\n";
         }
-        else
-        {
-            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
-        }
-
+   
         if (bHasSurveyPermission($surveyid,'quotas','read'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=quotas&amp;sid=$surveyid', '_top')\" "
@@ -738,17 +734,20 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $qid=null;
         }
             
-        if ($activated == "Y")
+        if(bHasSurveyPermission($surveyid,'surveycontent','create'))
         {
-            $surveysummary .= "<a href='#'"
-            ."<img src='$imagefiles/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
-            " name='AddNewGroup' /></a>\n";
-        }
-        elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
-        {
-            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
-            . " title=\"".$clang->gTview("Add new group to survey")."\">"
-            . "<img src='$imagefiles/add.png' alt='".$clang->gT("Add new group to survey")."' name='AddNewGroup' /></a>\n";
+            if ($activated == "Y")
+            {
+                $surveysummary .= "<a href='#'"
+                ."<img src='$imagefiles/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
+                " name='AddNewGroup' /></a>\n";
+            }
+            else
+            {
+                $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
+                . " title=\"".$clang->gTview("Add new group to survey")."\">"
+                . "<img src='$imagefiles/add.png' alt='".$clang->gT("Add new group to survey")."' name='AddNewGroup' /></a>\n";
+            }
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
         . "<img src='$imagefiles/blank.gif' width='15' alt='' />"
@@ -1951,7 +1950,7 @@ if($action == "addsurveysecurity")
 
 if($action == "addusergroupsurveysecurity")
 {
-    $addsummary = "<div class=\"header\">".$clang->gT("Add User Group")."</div>\n";
+    $addsummary = "<div class=\"header\">".$clang->gT("Add user group")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];

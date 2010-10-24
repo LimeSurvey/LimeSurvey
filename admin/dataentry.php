@@ -69,7 +69,7 @@ if (!isset($sDataEntryLanguage))
 }
 $surveyinfo=getSurveyInfo($surveyid);
 
-if (bHasSurveyPermission($surveyid, 'responses','create'))
+if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission($surveyid, 'responses','create')  || bHasSurveyPermission($surveyid, 'responses','update'))
 {
 
     $surveyoptions = browsemenubar($clang->gT("Data entry"));
@@ -84,7 +84,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
         return;
     }
 
-    if ($subaction == "insert")
+    if ($subaction == "insert" && bHasSurveyPermission($surveyid,'responses','create'))
     {
         $thissurvey=getSurveyInfo($surveyid);
         $errormsg="";
@@ -477,7 +477,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
 
     }
 
-    elseif ($subaction == "edit" || $subaction == "editsaved")
+    elseif (($subaction == "edit" || $subaction == "editsaved") && bHasSurveyPermission($surveyid,'responses','update'))
     {
         $dataentryoutput .= $surveyoptions;
 
@@ -508,7 +508,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
 
         //SHOW INDIVIDUAL RECORD
 
-        if ($subaction == "edit")
+        if ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
         {
             $idquery = "SELECT * FROM $surveytable WHERE id=$id";
             $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get individual record<br />$idquery<br />".$connect->ErrorMsg());
@@ -517,7 +517,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
                 $results[]=$idrow;
             }
         }
-        elseif ($subaction == "editsaved")
+        elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
         {
             if (isset($_GET['public']) && $_GET['public']=="true")
             {
@@ -565,7 +565,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
 
         $dataentryoutput.="<div class='header'>".$clang->gT("Data Entry")."</div>\n"
         ."\t<div class='header'>";
-        if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $surveyinfo['owner_id'] == $_SESSION['loginID'])
+        if ($subaction=='edit')
         {
             $dataentryoutput .= sprintf($clang->gT("Editing response (ID %s)"),$id);
         }
@@ -576,8 +576,8 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
         $dataentryoutput .="</div>\n";
 
 
-        $dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
-        ."<table id='responsedetail' width='99%' align='center' cellpadding='1' cellspacing='0'>\n";
+        $dataentryoutput .= "<form method='post' action='{$scriptname}?action=dataentry' name='editresponse' id='editresponse'>\n"
+        ."<table id='responsedetail' width='99%' align='center' cellpadding='0' cellspacing='0'>\n";
         $highlight=false;
         unset($fnames['lastpage']);
         
@@ -602,7 +602,9 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
                 if (isset($idrow[$fname['fieldname']])) $answer = $idrow[$fname['fieldname']];
                 $question=$fname['question'];
                 $dataentryoutput .= "\t<tr";
-                if ($highlight) $dataentryoutput .=" class='highlight'";
+                if ($highlight) $dataentryoutput .=" class='odd'";
+                   else $dataentryoutput .=" class='even'";
+                 
                 $highlight=!$highlight;
                 $dataentryoutput .=">\n"
                 ."<td valign='top' align='right' width='25%'>"
@@ -648,7 +650,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
                         .$idrow[$fname['fieldname']] . "' />\n";
                         break;
                     case "id":
-                        $dataentryoutput .= "\t&nbsp;{$idrow[$fname['fieldname']]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
+                        $dataentryoutput .= "<span style='font-weight:bold;'>&nbsp;{$idrow[$fname['fieldname']]}</span>";
                         break;
                     case "5": //5 POINT CHOICE radio-buttons
                         for ($x=1; $x<=5; $x++)
@@ -1336,29 +1338,25 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
                 }
 
                 $dataentryoutput .= "		</td>
-							</tr>
-							<tr>
-								<td colspan='2' height='1'>
-								</td>
 							</tr>\n";
             } while ($fname=next($fnames));
             }
         $dataentryoutput .= "</table>\n"
         ."<p>\n";
-        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
+        if (!bHasSurveyPermission($surveyid, 'responses','update'))
         { // if you are not survey owner or super admin you cannot modify responses
             $dataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
         }
-        elseif ($subaction == "edit")
+        elseif ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
         {
             $dataentryoutput .= "
-						 <input type='submit' value='".$clang->gT("Update Entry")."' />
+						 <input type='submit' value='".$clang->gT("Save")."' />
 						 <input type='hidden' name='id' value='$id' />
 						 <input type='hidden' name='sid' value='$surveyid' />
 						 <input type='hidden' name='subaction' value='update' />
 						 <input type='hidden' name='language' value='".$sDataEntryLanguage."' />";
         }
-        elseif ($subaction == "editsaved")
+        elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
         {
 
 
@@ -1417,7 +1415,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
     }
 
 
-    elseif ($subaction == "update")
+    elseif ($subaction == "update"  && bHasSurveyPermission($surveyid,'responses','update'))
     {
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
         {
@@ -1499,7 +1497,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
         ."</div>\n";
     }
 
-    elseif ($subaction == "delete")
+    elseif ($subaction == "delete"  && bHasSurveyPermission($surveyid,'responses','delete'))
     {
         if (!bHasSurveyPermission($surveyid,'delete_survey'))
         {
@@ -1814,7 +1812,7 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
                 }
                 if ($explanation)
                 {
-                    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";} //Do no alternate on explanation row
+                    if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
                     $explanation = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
                     $dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
                 }
@@ -1822,9 +1820,9 @@ if (bHasSurveyPermission($surveyid, 'responses','create'))
                 //END OF GETTING CONDITIONS
 
                 //Alternate bgcolor for different groups
-                if (!isset($bgc)) {$bgc = "evenrow";}
-                if ($bgc == "evenrow") {$bgc = "oddrow";}
-                else {$bgc = "evenrow";}
+                if (!isset($bgc)) {$bgc = "even";}
+                if ($bgc == "even") {$bgc = "odd";}
+                else {$bgc = "even";}
 
                 $qid = $deqrow['qid'];
                 $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
