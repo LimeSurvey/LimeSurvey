@@ -26,7 +26,7 @@ if (isset($move) && $move == "movenext") {
     if ($_SESSION['step']==$thisstep)
     $_SESSION['step'] = $thisstep+1;
 }
-include_once 'common.php';
+
 // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
 // Previously we used to keep the session and redirect the user to the
 // submit page.
@@ -88,7 +88,7 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
     }
 }
 
-
+/**
 if (!$show_empty_group && IsSet($_SESSION['fieldarray']) && $_SESSION['step']>0) {
 
     $grouparrayno=$_SESSION['step']-1;
@@ -135,7 +135,7 @@ if (!$show_empty_group && IsSet($_SESSION['fieldarray']) && $_SESSION['step']>0)
     }
     $_SESSION['step'] = $gid;
 }
-
+**/
 //SUBMIT ###############################################################################
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
@@ -351,7 +351,7 @@ if ($show_empty_group) {
     $groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
 } else
 {
-    $grouparrayno=$gid-1;
+    $grouparrayno=$_SESSION['step']-1;
     $gid=$_SESSION['grouplist'][$grouparrayno][0];
     $groupname=$_SESSION['grouplist'][$grouparrayno][1];
     $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
