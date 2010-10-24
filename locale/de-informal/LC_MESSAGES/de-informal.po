@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-18 18:03+0100\n"
-"PO-Revision-Date: 2010-10-18 18:03+0100\n"
+"PO-Revision-Date: 2010-10-24 18:27+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1644,7 +1644,7 @@ msgstr "Deine Antwort"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:610
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:611
 msgid "Choose one of the following answers"
-msgstr "Bitte wähle eine der folgenden Antworten."
+msgstr "Bitte wähle eine der folgenden Antworten:"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:618
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
