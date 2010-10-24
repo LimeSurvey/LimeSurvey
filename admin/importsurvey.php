@@ -1365,6 +1365,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
             }
             $oldsid=$insertdata['sid'];
             $insertdata['sid']=$newsid;
+        if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
             $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
             $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
@@ -1407,6 +1408,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['sid']=$newsid;
+            if (!isset($aGIDReplacements[$insertdata['gid']])) continue; // Skip questions with invalid group id
             $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
             $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
@@ -1447,6 +1449,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
             {
                 $insertdata[(string)$key]=(string)$value;
             }
+            if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue; // Skip questions with invalid group id
+            
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
@@ -1469,7 +1473,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
                 $insertdata[(string)$key]=(string)$value;
             }
             unset($insertdata['qaid']);
-            $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the parent_qid
+            if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue; // Skip questions with invalid group id
+            $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
