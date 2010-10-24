@@ -56,38 +56,34 @@ if ($action == "addgroup")
         . "</div>\n";
     }
 
-    $newgroupoutput.= "<input type='hidden' name='action' value='insertnewgroup' />\n"
+    $newgroupoutput.= "<input type='hidden' name='action' value='insertquestiongroup' />\n"
     . "<input type='hidden' name='sid' value='$surveyid' />\n"
     . "</form>\n";
 
 
     // Import TAB
-    $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.$clang->gT("Import question group")."</h2>\n";
-    $newgroupoutput.= ""
-    . "<form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-    . "<ul>\n"
-    . "<li>\n"
-    . "<label for='the_file'>".$clang->gT("Select question group file (*.lsg/*.csv):")."</label>\n"
-    . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"35\" /></li>\n"
-    . "<li><label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
-    . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></li></ul>\n"
-    . "\t<p><input type='submit' value='".$clang->gT("Import question group")."' />\n"
-    . "\t<input type='hidden' name='action' value='importgroup' />\n"
-    . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-    . "\t</form>\n";
+    if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+    {
+        $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.$clang->gT("Import question group")."</h2>\n"
+        . "<form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        . "<ul>\n"
+        . "<li>\n"
+        . "<label for='the_file'>".$clang->gT("Select question group file (*.lsg/*.csv):")."</label>\n"
+        . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"35\" /></li>\n"
+        . "<li><label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
+        . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></li></ul>\n"
+        . "\t<p><input type='submit' value='".$clang->gT("Import question group")."' />\n"
+        . "\t<input type='hidden' name='action' value='importgroup' />\n"
+        . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+        . "\t</form>\n";
+        // End Import TABS
+        $newgroupoutput.= "</div>";
+    }
 
-    // End Import TABS
-    $newgroupoutput.= "</div>";
 
     // End of TABS
     $newgroupoutput.= "</div>";
 
-    $newgroupoutput.= ""
-    ."<script type='text/javascript'>\n"
-    ."<!--\n"
-    ."document.getElementById('group_name_$grouplang').focus();\n"
-    ."//-->\n"
-    ."</script>\n";
 }
 
 

@@ -26,7 +26,7 @@
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 include_once("login_check.php");
 require_once("export_data_functions.php");      
-if(!bHasSurveyPermission($surveyid,'exportstructure','read')) safe_die("You are not allowed to export questions.");
+if(!bHasSurveyPermission($surveyid,'surveycontent','export')) safe_die("You are not allowed to export questions.");
  
 
 $qid = returnglobal('qid');

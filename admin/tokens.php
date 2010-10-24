@@ -117,7 +117,7 @@ if ($subaction == "importldap" || $subaction == "uploadldap" )
 }
 $tokenoutput = "";
 
-if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'update')) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'export')) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
     header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -482,7 +482,7 @@ if (bHasSurveyPermission($surveyid, 'tokens','update'))
     ."title='".$clang->gTview("Manage additional attribute fields")."'>"
     ."<img name='ManageAttributesButton' src='$imagefiles/token_manage.png' title='' alt='".$clang->gT("Manage additional attribute fields")."' /></a>\n";
 }
-if (bHasSurveyPermission($surveyid, 'tokens','create'))
+if (bHasSurveyPermission($surveyid, 'tokens','import'))
 {
     $tokenoutput .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
     ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" "
@@ -492,7 +492,7 @@ if (bHasSurveyPermission($surveyid, 'tokens','create'))
     ."title='".$clang->gTview("Import tokens from LDAP query")."'> <img name='ImportLdapButton' src='$imagefiles/importldap.png' alt='".$clang->gT("Import tokens from LDAP query")."' /></a>";
 }
 
-if (bHasSurveyPermission($surveyid, 'tokens','update'))
+if (bHasSurveyPermission($surveyid, 'tokens','export'))
 {
     $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')\" "
     ."title='".$clang->gTview("Export tokens to CSV file")."'>".
@@ -644,7 +644,7 @@ else
     $ishtml=false;
 }
 
-if ($subaction == "exportdialog" && bHasSurveyPermission($surveyid, 'tokens','update') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+if ($subaction == "exportdialog" && bHasSurveyPermission($surveyid, 'tokens','export') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
     $langquery = "SELECT language FROM ".db_table_name("tokens_$surveyid")." group by language";
     $langresult = db_execute_assoc($langquery);
@@ -1084,21 +1084,24 @@ if($subaction != 'bounceprocessing')
 	$tokenoutput .="\t<div class='menubar'><div class='menubar-title'><span style='font-weight:bold;'>"
     .$clang->gT("Data view control")."</span></div>\n"
 	."<div class='menubar-main'>\n";
-	 if($thissurvey['bounceprocessing']=='N')
-		{
-			$tokenoutput .="<image src='$imagefiles/bounce_greyed.png'  alt='".$clang->gT("You have selected not to use any bounce settings")."'>";
-		}
-    else
-		{
-			$tokenoutput .="<image src='$imagefiles/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce Processing")."'>";
-		}
-    $tokenoutput .="<div class='menubar-left'>\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-    ."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'"
+    $tokenoutput .="<div class='menubar-left'>\n";
+    if (bHasSurveyPermission($surveyid,'tokens','update'))
+    {
+         if($thissurvey['bounceprocessing']=='N')
+            {
+                $tokenoutput .="<image src='$imagefiles/bounce_greyed.png'  alt='".$clang->gT("You have selected not to use any bounce settings")."'>";
+            }
+        else
+            {
+                $tokenoutput .="<image src='$imagefiles/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce Processing")."'>";
+            }
+        $tokenoutput .= "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+    }
+    
+    $tokenoutput .= "<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'"
     ." title='".$clang->gTview("Show start...")."'>"
     ."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
-    ."<a href='$scriptname?action=toknens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=
-$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+    ."<a href='$scriptname?action=toknens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
 	" title='".$clang->gTview("Show previous...")."'>" 
 	."<img name='DBackButton' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
 	."<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
@@ -3297,7 +3300,7 @@ if ($subaction == "insertgrouptoken" && bHasSurveyPermission($surveyid,'tokens',
     $tokenoutput .= "\t</div>";
 }
 
-if ($subaction == "import" && bHasSurveyPermission($surveyid, 'tokens','create'))
+if ($subaction == "import" && bHasSurveyPermission($surveyid, 'tokens','import'))
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload CSV File")."</div>\n";
     form_csv_upload();
@@ -3308,7 +3311,7 @@ if ($subaction == "import" && bHasSurveyPermission($surveyid, 'tokens','create')
     ."</div>\n";
 }
 
-if ($subaction == "importldap" && bHasSurveyPermission($surveyid, 'tokens','create'))   
+if ($subaction == "importldap" && bHasSurveyPermission($surveyid, 'tokens','import'))   
 {
     $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload LDAP entries")."</div>\n";
     formldap();
@@ -3318,7 +3321,7 @@ if ($subaction == "importldap" && bHasSurveyPermission($surveyid, 'tokens','crea
     ."</div>\n";
 }
 
-if ($subaction == "upload" && bHasSurveyPermission($surveyid, 'tokens','create'))      
+if ($subaction == "upload" && bHasSurveyPermission($surveyid, 'tokens','import'))      
 {
     $attrfieldnames=GetAttributeFieldnames($surveyid);
     $duplicatelist=array();

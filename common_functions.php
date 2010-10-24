@@ -26,21 +26,20 @@
 function aGetBaseSurveyPermissions()
 {
     global $clang;
-    return array(
-                'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey")), 
-                'exportresponses'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Response export"),'description'=>$clang->gT("Permission to export responses")), 
-                'exportstructure'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Structure & resource export"),'description'=>$clang->gT("Permission to export survey/groups/question structures & resources")), 
-                'questions'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Survey content"),'description'=>$clang->gT("Permission to create/view/update/delete the questions, groups, answers & conditions of a survey")), 
-                'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey")), 
-                'responses'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to create(by data entry)/view/update/delete responses")), 
-                'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'title'=>$clang->gT("Statistics"),'description'=>$clang->gT("Permission to view/export statistics")), 
-                'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'title'=>$clang->gT("Survey deletion"),'description'=>$clang->gT("Permission to delete a survey")), 
-                'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey activation"),'description'=>$clang->gT("Permission to activate/deactivate a survey")), 
-                'surveylocale'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey locale settings"),'description'=>$clang->gT("Permission to view/update the survey locale settings")), 
-                'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings")), 
-                'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation")), 
-                'token'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create & import/view & export/update/delete token entries")), 
-                'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature")), );
+    return array(                                                
+                'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey")), 
+                'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey")), 
+                'responses'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to create(data entry)/view/update/delete/import/export responses")), 
+                'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Statistics"),'description'=>$clang->gT("Permission to view/export statistics")), 
+                'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey deletion"),'description'=>$clang->gT("Permission to delete a survey")), 
+                'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey activation"),'description'=>$clang->gT("Permission to activate/deactivate a survey")), 
+                'surveycontent'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Survey content"),'description'=>$clang->gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey")), 
+                'surveylocale'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey locale settings"),'description'=>$clang->gT("Permission to view/update the survey locale settings")), 
+                'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings")), 
+                'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation")), 
+                'tokens'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create/update/delete/import/export token entries")), 
+                'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature"))
+                );
 }
  
 /**

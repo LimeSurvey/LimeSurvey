@@ -488,17 +488,16 @@ if ($action == "editquestion" || $action=="addquestion")
     .'<div id="advancedquestionsettingswrapper" style="display:none;">'
     .'<div class="loader">'.$clang->gT("Loading...").'</div>'
     .'<div id="advancedquestionsettings"></div>'
-    .'</div>';
+    .'</div>'
+    ."<p><input type='submit' value='".$clang->gT("Save")."' />";
 
     if ($adding)
     {
-        $editquestion .="<p><input type='submit' value='".$clang->gT("Save question")."' />\n"
-        . "\t<input type='hidden' name='action' value='insertnewquestion' />\n";
+        $editquestion .="\t<input type='hidden' name='action' value='insertquestion' />\n";
     }
     else
     {
-        $editquestion .= "\t<p><input type='submit' value='".$clang->gT("Update Question")."' />\n"
-        . "\t<input type='hidden' name='action' value='updatequestion' />\n"
+        $editquestion .= "\t<input type='hidden' name='action' value='updatequestion' />\n"
         . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
     }
     $editquestion .= "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
@@ -510,29 +509,30 @@ if ($action == "editquestion" || $action=="addquestion")
     {
         // Import dialogue
 
-        $editquestion .= "<br /><div class='header'>";
-        $editquestion .=$clang->gT("...or import a question");
-        $editquestion .= "</div>\n"
-        . "\t<form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-        
-        . "<ul>\n"
-        . "\t<li>\n"
-        . "\t<label for='the_file'>".$clang->gT("Select LimeSurvey question file (*.lsq/*.csv)").":</label>\n"
-        . "\t<input name='the_file' id='the_file' type=\"file\" size=\"50\" />\n"
-        . "\t</li>\n"
-        . "\t<li>\n"
-        . "\t<label for='translinksfields'>".$clang->gT("Convert resource links?")."</label>\n"
-        . "\t<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked'/>\n"
-        . "\t</li>\n"
-        . "</ul>\n"
-        . "<p>\n"
-        . "<input type='submit' value='".$clang->gT("Import Question")."' />\n"
-        . "<input type='hidden' name='action' value='importquestion' />\n"
-        . "<input type='hidden' name='sid' value='$surveyid' />\n"
-        . "<input type='hidden' name='gid' value='$gid' />\n"
+        if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+        {
+            $editquestion .= "<br /><div class='header'>".$clang->gT("...or import a question")."</div>\n"
+            . "\t<form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+            . "<ul>\n"
+            . "\t<li>\n"
+            . "\t<label for='the_file'>".$clang->gT("Select LimeSurvey question file (*.lsq/*.csv)").":</label>\n"
+            . "\t<input name='the_file' id='the_file' type=\"file\" size=\"50\" />\n"
+            . "\t</li>\n"
+            . "\t<li>\n"
+            . "\t<label for='translinksfields'>".$clang->gT("Convert resource links?")."</label>\n"
+            . "\t<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked'/>\n"
+            . "\t</li>\n"
+            . "</ul>\n"
+            . "<p>\n"
+            . "<input type='submit' value='".$clang->gT("Import Question")."' />\n"
+            . "<input type='hidden' name='action' value='importquestion' />\n"
+            . "<input type='hidden' name='sid' value='$surveyid' />\n"
+            . "<input type='hidden' name='gid' value='$gid' />\n"
+            ."</form>\n\n";
+            
+        }
 
-        ."</form>\n\n"
-        ."<script type='text/javascript'>\n"
+        $editquestion .= "<script type='text/javascript'>\n"
         ."<!--\n"
         ."document.getElementById('title').focus();\n"
         ."//-->\n"

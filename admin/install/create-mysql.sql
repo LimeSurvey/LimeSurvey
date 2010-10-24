@@ -278,6 +278,8 @@ CREATE TABLE `prefix_survey_permissions` (
     `read_p` tinyint(1) NOT NULL default '0',
 	`update_p` tinyint(1) NOT NULL default '0',
 	`delete_p` tinyint(1) NOT NULL default '0',
+    `import_p` tinyint(1) NOT NULL default '0',
+    `export_p` tinyint(1) NOT NULL default '0',
 	PRIMARY KEY (sid, uid, permission)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

@@ -49,7 +49,7 @@ $databaseoutput ='';
 
 if(isset($surveyid))
 {
-    if ($action == "insertnewgroup" && bHasSurveyPermission($surveyid, 'question','create'))
+    if ($action == "insertquestiongroup" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
     {
         $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
         $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -183,7 +183,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "delgroup" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
     {
         if (!isset($gid)) $gid=returnglobal('gid');
         $query = "SELECT qid FROM ".db_table_name('groups')." g, ".db_table_name('questions')." q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
@@ -215,7 +215,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "insertnewquestion" && bHasSurveyPermission($surveyid, 'question','create'))
+    elseif ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
     {
         $baselang = GetBaseLanguageFromSurveyID($postsid);
         if (strlen($_POST['title']) < 1)
@@ -316,7 +316,7 @@ if(isset($surveyid))
             //surveyFixColumns($surveyid);
         }
     }
-    elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'question','update'))
+    elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         //Automatically renumbers the "question codes" so that they follow
         //a methodical numbering method
@@ -349,7 +349,7 @@ if(isset($surveyid))
     }
 
     
-    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'question','update'))     
+    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
     {
         
         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -422,7 +422,7 @@ if(isset($surveyid))
     }
 
     
-    elseif ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'question','update'))
+    elseif ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
         $cqresult=db_execute_assoc($cqquery) or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
@@ -657,7 +657,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'question','create'))     
+    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))     
     {
 
         if (!$_POST['title'])
@@ -806,7 +806,7 @@ if(isset($surveyid))
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
         }
     }
-    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'question','delete'))     
+    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))     
     {
         if (!isset($qid)) {$qid=returnglobal('qid');}
         //check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -837,7 +837,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'question','update'))     
+    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -910,7 +910,7 @@ if(isset($surveyid))
 
             }
 
-    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'question','update'))     
+    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);

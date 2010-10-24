@@ -404,8 +404,12 @@ li.cancellink
 }
 
 
-.odd,.oddrow {
-    background-color: #EBF2FA;
+tr.even
+{
+    background-color: #EFF4F9;
+}
+tr.odd,.oddrow {
+    background-color: #E3ECF5;
 }
 
 .choicelist {

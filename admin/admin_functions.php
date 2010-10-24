@@ -71,7 +71,7 @@ function db_switchIDInsert($table,$state)
 function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 {
     global $dbprefix, $connect;
-    if (!in_array($sCRUD,array('create','read','update','delete'))) return false;
+    if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
     $sCRUD=$sCRUD.'_p';
     $iSID = (int)$iSID;
     global $aSurveyPermissionCache;
@@ -151,10 +151,12 @@ function SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
         if (!isset($aPermissions['read'])) {$aPermissions['read']=0;}
         if (!isset($aPermissions['update'])) {$aPermissions['update']=0;}
         if (!isset($aPermissions['delete'])) {$aPermissions['delete']=0;}
-        if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1)
+        if (!isset($aPermissions['import'])) {$aPermissions['import']=0;}
+        if (!isset($aPermissions['export'])) {$aPermissions['export']=0;}
+        if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1  || $aPermissions['import']==1  || $aPermissions['export']==1)
         {
-            $sQuery = "INSERT INTO ".db_table_name('survey_permissions')." (sid, uid, permission, create_p, read_p, update_p, delete_p)
-                       VALUES ({$iSurveyID},{$iUserID},'{$sPermissionname}',{$aPermissions['create']},{$aPermissions['read']},{$aPermissions['update']},{$aPermissions['delete']})";
+            $sQuery = "INSERT INTO ".db_table_name('survey_permissions')." (sid, uid, permission, create_p, read_p, update_p, delete_p, import_p, export_p)
+                       VALUES ({$iSurveyID},{$iUserID},'{$sPermissionname}',{$aPermissions['create']},{$aPermissions['read']},{$aPermissions['update']},{$aPermissions['delete']},{$aPermissions['import']},{$aPermissions['export']})";
             $bResult=$connect->Execute($sQuery);
         }
     }
