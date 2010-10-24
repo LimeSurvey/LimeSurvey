@@ -1507,6 +1507,13 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
         }             
     }
 
+
+    // At this point we know the new/old SID, GIDs, QIDs and we are able to build
+    // the aray mapping old and new fieldnames
+    // this will be usefull in order to translate conditions cfieldname and @SGQA@ codes, as well as INSERTANS links. 
+    $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
+
+
     // Import conditions --------------------------------------------------------------
     if(isset($xml->conditions))
     {
@@ -1533,31 +1540,47 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
             }
             else continue; // a problem with this answer record -> don't consider
 
-            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
 
-            // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
-            if (!isset($aGIDReplacements[$oldcgid]))
-                continue;
-
-            unset($insertdata["cid"]);
-
-            // recreate the cfieldname with the new IDs
-            if (preg_match("/^\+/",$oldcsid))
+            // replace the old cfieldname by the new one
+            if (isset($aOldNewFieldmap[$insertdata["cfieldname"]]))
             {
-                $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
+                if (preg_match("/^\+/",$insertdata["cfieldname"]))
+                {
+                    $newcfieldname = '+'.$aOldNewFieldmap[$insertdata["cfieldname"]];
+                }
+                else
+                {
+                    $newcfieldname = $aOldNewFieldmap[$insertdata["cfieldname"]];
+                }
+                $insertdata["cfieldname"] = $newcfieldname;
             }
             else
             {
-                $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
+                //error_log("TIBO: oldcfieldname={$insertdata["cfieldname"]} can't be found in aOldNewFieldmap");
+                continue; // a problem with cfieldname mapping -> don't consider
             }
 
-            $insertdata["cfieldname"] = $newcfieldname;
+            if (preg_match("/^@(.*)@$/",$insertdata["value"],$cfieldnameInCondValue))
+            {
+                if (isset($aOldNewFieldmap[$cfieldnameInCondValue[1]]))
+                {
+                        $newvalue = '@'.$aOldNewFieldmap[$cfieldnameInCondValue[1]].'@';
+                        $insertdata["value"] = $newvalue;
+                }
+                else
+                {
+                    //error_log("TIBO2: oldvalue=@..{$cfieldnameInCondValue[1]}..@ can't be found in aOldNewFieldmap");
+                    continue; // a problem with cfieldname mapping -> don't consider
+                }
+            }
+
             if (trim($insertdata["method"])=='')
             {
                 $insertdata["method"]='==';
             }            
 
-            // now translate any links
+            unset($insertdata["cid"]);
+
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
             $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
             $results['conditions']++;
@@ -1663,8 +1686,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
     
     if ($bTranslateInsertansTags)
     {
-        $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
-        TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);            
+        if (isset($aOldNewFieldmap))
+        { // It should be set anyway !
+            TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);            
+        }
     }
         
     

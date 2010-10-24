@@ -6338,10 +6338,10 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
     {
       if ($aFieldinfo['qid']!=null)
       {
-          $aFieldMappings[$sFieldname]=$iNewSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
+          $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
       }
     }
-    return $aFieldMappings;
+    return array_flip($aFieldMappings);
 }
 
 
