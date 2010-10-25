@@ -45,10 +45,9 @@
   }
 
   $actionvalue = "";
-  if(isset($_POST['actionvalue']))
-  {
-    $actionvalue = $_POST['actionvalue'];
-  }
+  if(isset($_POST['actionvalue'])) {$actionvalue = $_POST['actionvalue'];}
+  if(isset($_GET['actionvalue'])) {$actionvalue = $_GET['actionvalue'];}
+
 
   $survey_title = $surveyinfo['name'];
   $baselang = GetBaseLanguageFromSurveyID($surveyid);

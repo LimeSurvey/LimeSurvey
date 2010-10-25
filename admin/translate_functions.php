@@ -390,21 +390,22 @@ function setupTranslateFields($type)
 
     case 'answer':
       $transarray = array(
-        "querybase" => "SELECT {$dbprefix}answers.* "
-                                     ."FROM {$dbprefix}answers,{$dbprefix}questions "
-                                    ."WHERE {$dbprefix}questions.sid =' $surveyid' "
-                                      ."AND {$dbprefix}questions.qid = {$dbprefix}answers.qid "
-                                      ."AND {$dbprefix}questions.language = {$dbprefix}answers.language "
-                                      ."AND {$dbprefix}questions.language='{$baselang}' "
-                                    ."ORDER BY qid,code,sortorder" ,
-        "queryto" => "SELECT {$dbprefix}answers.* "
-                                   ."FROM {$dbprefix}answers,{$dbprefix}questions "
-                                  ."WHERE {$dbprefix}questions.sid =' $surveyid' "
-                                    ."AND {$dbprefix}questions.qid = {$dbprefix}answers.qid "
-                                    ."AND {$dbprefix}questions.language = {$dbprefix}answers.language "
-                                    ."AND {$dbprefix}questions.language=".db_quoteall($tolang)
+//        "querybase" => "SELECT {$dbprefix}answers.* "
+        "querybase" => "SELECT".db_table_name('answers').".*, ".db_table_name('questions').".gid "
+                                     ." FROM ".db_table_name('answers').", ".db_table_name('questions')
+                                    ." WHERE ".db_table_name('questions').".sid ='{$surveyid}' "
+                                      ." AND ".db_table_name('questions').".qid = ".db_table_name('answers').".qid "
+                                      ." AND ".db_table_name('questions').".language = ".db_table_name('answers').".language "
+                                      ." AND ".db_table_name('questions').".language='{$baselang}' "
+                                    ." ORDER BY qid,code,sortorder" ,
+        "queryto" => "SELECT".db_table_name('answers').".*, ".db_table_name('questions').".gid "
+                                     ." FROM ".db_table_name('answers').", ".db_table_name('questions')
+                                    ." WHERE ".db_table_name('questions').".sid ='{$surveyid}' "
+                                      ." AND ".db_table_name('questions').".qid = ".db_table_name('answers').".qid "
+                                      ." AND ".db_table_name('questions').".language = ".db_table_name('answers').".language "
+                                      ." AND ".db_table_name('questions').".language=".db_quoteall($tolang)
                                   ."ORDER BY qid,code,sortorder" ,
-        "queryupdate" => "UPDATE {$dbprefix}answers "
+        "queryupdate" => "UPDATE ".db_table_name('answers')
                          ."SET answer = ".db_quoteall($new)
                          ."WHERE qid = '{$id1}' "
                            ."AND code='{$id2}' "
@@ -412,7 +413,7 @@ function setupTranslateFields($type)
         "what" => 'answer',
         "id1"  => 'qid',
         "id2"  => 'code',
-        "gid"  => FALSE,
+        "gid"  => TRUE,
         "qid"  => TRUE,
         "desc" => "Subquestions",
         "formname" => 'answers_update'
