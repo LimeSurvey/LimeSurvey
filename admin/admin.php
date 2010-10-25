@@ -275,7 +275,7 @@ if(isset($_SESSION['loginID']))
 //<AdV>
     elseif ($action == 'translate')
     {
-        if(bHasSurveyPermission($surveyid,'translation','read'))    {$_SESSION['FileManagerContext']="edit:translate:$surveyid"; include('translate.php');}
+        if(bHasSurveyPermission($surveyid,'translations','read'))    {$_SESSION['FileManagerContext']="edit:translate:$surveyid"; include('translate.php');}
         else { include('access_denied.php'); }
     }
 //</AdV>    

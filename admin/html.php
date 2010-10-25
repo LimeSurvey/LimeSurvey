@@ -669,7 +669,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "<img src='$imagefiles/quota.png' alt='". $clang->gT("Set Survey Quotas")."' name='SurveyQuotas' /></a>\n" ;
         }
     
-        if (bHasSurveyPermission($surveyid,'translation','read'))
+        if (bHasSurveyPermission($surveyid,'translations','read'))
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=translate&amp;sid=$surveyid', '_top')\""
