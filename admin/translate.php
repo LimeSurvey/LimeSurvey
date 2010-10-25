@@ -46,7 +46,7 @@
 
   $actionvalue = "";
   if(isset($_POST['actionvalue'])) {$actionvalue = $_POST['actionvalue'];}
-  if(isset($_GET['actionvalue'])) {$actionvalue = $_GET['actionvalue'];}
+//  if(isset($_GET['actionvalue'])) {$actionvalue = $_GET['actionvalue'];}
 
 
   $survey_title = $surveyinfo['name'];
@@ -111,7 +111,8 @@
         ."<input type='hidden' name='sid' value='$surveyid' />\n"
         ."<input type='hidden' name='action' value='translate' />\n"
         ."<input type='hidden' name='actionvalue' value='translateSave' />\n"
-        ."<input type='hidden' name='tolang' value='$tolang' />\n";
+        ."<input type='hidden' name='tolang' value='$tolang' />\n"
+        ."<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."' />\n";
 
     foreach($tab_names as $type)
     {
