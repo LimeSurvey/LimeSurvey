@@ -455,7 +455,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
                 $dresult=$connect->Execute($dquery);  //Checked
 
                 // Delete user rights
-                $dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".$postuserid;
+                $dquery="DELETE FROM {$dbprefix}survey_permissions WHERE uid=".$postuserid;
                 $dresult=$connect->Execute($dquery); //Checked
 
                 if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself

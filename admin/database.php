@@ -1386,16 +1386,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked
         unset($bplang);
 
-        // Update survey_rights
-        $aPermissions=aGetBaseSurveyPermissions();
-        foreach ($aPermissions as $sPermissionKey=>$aPermissionValues)
-        {
-            
-            $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,create_p,read_p,update_p,delete_p) 
-                         VALUES($surveyid,". $_SESSION['loginID'].",'{$sPermissionKey}',1,1,1,1)"; //inserts survey rights for owner
-            $isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
-            
-        }
+        // Update survey permissions
+        GiveAllSurveyPermissions($_SESSION['loginID'],$surveyid);
 
         $surveyselect = getsurveylist();
         

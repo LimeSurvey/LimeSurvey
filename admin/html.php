@@ -1964,14 +1964,14 @@ if($action == "addusergroupsurveysecurity")
     $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         if($postusergroupid > 0){
-            $query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
+            $query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('survey_permissions')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
             $result2 = db_execute_assoc($query2); //Checked
             if($result2->RecordCount() > 0)
             {
                 while ($row2 = $result2->FetchRow())
                 {
                     $uid_arr[] = $row2['uid'];
-                    $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ($surveyid, {$row2['uid']},0,0,0,0,0,0,0) ";
+                    $isrquery = "INSERT INTO {$dbprefix}surveys_permissions (sid,uid,permission,read_p) VALUES ({$surveyid}, {$row2['uid']},'survey',1) ";
                     $isrresult = $connect->Execute($isrquery); //Checked
                     if (!$isrresult) break;
                 }

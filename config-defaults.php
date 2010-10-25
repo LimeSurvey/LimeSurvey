@@ -510,27 +510,24 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
 
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
-$homeurl        =   "$rooturl/admin";                           // The website location (url) of the admin scripts
-$publicurl      =   "$rooturl";                                 // The public website location (url) of the public survey script
-$tempurl        =   "$rooturl/tmp";
-$imageurl       =   "$rooturl/images";                          // Location of button bar files for admin script
-    
-//Location of the user directory
-$uploaddir      =     "$rootdir".DIRECTORY_SEPARATOR."upload";
-$uploadurl      =     "$rooturl/upload";
 
-// Location of the user templates
-$usertemplaterootdir= "$uploaddir".DIRECTORY_SEPARATOR."templates"; // Location of the templates
-$usertemplaterooturl= "$uploadurl/templates"; // Location of the templates
+$homeurl                 = "$rooturl/admin";         // The website location (url) of the admin scripts
+$publicurl               = "$rooturl";               // The public website location (url) of the public survey script
+$tempurl                 = "$rooturl/tmp";
+$imageurl                = "$rooturl/images";        // Location of button bar files for admin script
+$uploadurl               = "$rooturl/upload";
+$standardtemplaterooturl = "$rooturl/templates";     // Location of the standard templates
+$usertemplaterooturl     = "$uploadurl/templates";   // Location of the user templates
 
-// Location of the standard tempaltes
-$standardtemplaterootdir= "$rootdir".DIRECTORY_SEPARATOR."templates";               // Location of the templates
-$standardtemplaterooturl= "$rooturl/templates"; // Location of the templates
 
-$homedir        =   "$rootdir".DIRECTORY_SEPARATOR."admin";     // The physical disk location of the admin scripts
-$publicdir      =   "$rootdir";                                 // The physical disk location of the public scripts
-$tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical location where LimeSurvey can store temporary files
-$imagedir        =  "$rootdir".DIRECTORY_SEPARATOR."images";    // Image directory
+$homedir                 = "$rootdir".DIRECTORY_SEPARATOR."admin";       // The directory path of the admin scripts
+$publicdir               = "$rootdir";                                   // The directory path of the public scripts
+$tempdir                 = "$rootdir".DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
+$imagedir                = "$rootdir".DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
+$uploaddir               = "$rootdir".DIRECTORY_SEPARATOR."upload";
+$standardtemplaterootdir = "$rootdir".DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
+$usertemplaterootdir     = "$uploaddir".DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates           
+
 // Note: For OS/2 the $tempdir may need to be defined as an actual directory
 // example: "x:/limesurvey/tmp". We don't know why.
 $sFCKEditorURL   =   "$homeurl/scripts/fckeditor.266";

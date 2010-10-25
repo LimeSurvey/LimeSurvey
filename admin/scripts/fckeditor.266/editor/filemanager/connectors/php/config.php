@@ -28,6 +28,7 @@ global $Config ;
 // read LimeSurvey config files and standard library
 require_once(dirname(__FILE__).'/../../../../../../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../../../../../../common.php');
+require_once(dirname(__FILE__).'/../../../../../../admin_functions.php');
 
 $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
 $usresult = db_execute_assoc($usquery,'',true);
@@ -66,12 +67,9 @@ isset($_SESSION['FileManagerContext']))
         $contextarray=split(':',$_SESSION['FileManagerContext'],3);
         $surveyid=$contextarray[2];
 
-        // now check if the user has survey design rights
-        $surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']); //Getting rights for this survey
-        $surresult = db_execute_assoc($surquery);
-        $surrows = $surresult->FetchRow();
 
-        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 ||$surrows['define_questions'])
+
+        if(bHasSurveyPermission($surveyid,'surveycontent','update'))
         {
             $Config['Enabled'] = true ;
             $Config['UserFilesPath'] = "$relativeurl/upload/surveys/$surveyid/" ;

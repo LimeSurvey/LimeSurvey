@@ -178,7 +178,29 @@ function SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
     return $bResult;
 }
 
-
+/**
+* Gives all available survey permissions for a certain survey to a user 
+* 
+* @param mixed $iUserID  The User ID
+* @param mixed $iSurveyID The Survey ID
+*/
+function GiveAllSurveyPermissions($iUserID, $iSurveyID)
+{
+     $aPermissions=aGetBaseSurveyPermissions();
+     $aPermissionsToSet=array();
+     foreach ($aPermissions as $sPermissionName=>$aPermissionDetails)
+     {
+         foreach ($aPermissionDetails as $sPermissionDetailKey=>$sPermissionDetailValue)
+         {
+           if (in_array($sPermissionDetailKey,array('create','read','update','delete','import','export')) && $sPermissionDetailValue==true)
+           {
+               $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey]=1;    
+           }
+             
+         }
+     }
+     SetSurveyPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
+}
 
 function gettemplatelist()
 {

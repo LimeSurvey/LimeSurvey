@@ -31,8 +31,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         
         /****** Plainly delete survey permissions if the survey or user does not exist ***/
         
-        $connect->query("delete FROM {$dbprefix}surveys_rights where sid not in (select sid from {$dbprefix}surveys)");
-        $connect->query("delete FROM {$dbprefix}surveys_rights where uid not in (select uid from {$dbprefix}users)");
+        $connect->query("delete FROM {$dbprefix}survey_permissions where sid not in (select sid from {$dbprefix}surveys)");
+        $connect->query("delete FROM {$dbprefix}survey_permissions where uid not in (select uid from {$dbprefix}users)");
         
         /***** Check for activate survey tables with missing survey entry **/
         

@@ -481,8 +481,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
 
     // DO SURVEY_RIGHTS
-    $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
-    @$isrresult = $connect->Execute($isrquery);
+    GiveAllSurveyPermissions($_SESSION['loginID'],$newsid);
     $importresults['deniedcountls'] =0;
 
 
@@ -1542,9 +1541,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
 
     // Set survey rights
-    $sQuery = "INSERT INTO {$dbprefix}surveys_rights (sid, uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey) VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
-    $connect->Execute($sQuery);
-
+    GiveAllSurveyPermissions($_SESSION['loginID'],$newsid);
 
     return $results;
 }

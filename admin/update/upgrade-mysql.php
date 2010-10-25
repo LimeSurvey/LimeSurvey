@@ -415,6 +415,8 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_survey_permissions` ADD `read_p` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_survey_permissions` ADD `update_p` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_survey_permissions` ADD `delete_p` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_survey_permissions` ADD `import_p` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_survey_permissions` ADD `export_p` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
 		upgrade_surveypermissions_table145();
         
         modify_database("", "ALTER TABLE `prefix_survey_permissions` DROP COLUMN `edit_survey_property`"); echo $modifyoutput; flush();
