@@ -96,6 +96,21 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
     return $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD];
 }
 
+/**
+ * Returns true if the given survey has a File Upload Question Type
+ * @param $surveyid The survey ID
+ * @return bool
+ */
+function bHasFileUploadQuestion($surveyid) {
+    $fieldmap = createFieldMap($surveyid);
+
+    foreach ($fieldmap as $field) {
+        foreach ($field as $key => $value) {
+            if ($value == "|")
+                return true;
+        }
+    }
+}
 
 /**
  * Returns true if a user has global permission for a certain action. Available permissions are

@@ -691,8 +691,10 @@ elseif ($subaction == "all")
     {
         $tableheader .= "<img id='imgDeleteMarkedResponses' src='{$imagefiles}/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />";
     }
-    $tableheader .="<img id='imgDownloadMarkedFiles' src='{$imagefiles}/down_all.png' alt='".$clang->gT('Download marked files')."' />"
-                  ."</td></tr></tfoot>\n\n";
+    if (bHasFileUploadQuestion($surveyid))
+        $tableheader .="<img id='imgDownloadMarkedFiles' src='{$imagefiles}/down_all.png' alt='".$clang->gT('Download marked files')."' />";
+
+    $tableheader .="</td></tr></tfoot>\n\n";
     
     $start=returnglobal('start');
     $limit=returnglobal('limit');
@@ -992,7 +994,9 @@ elseif ($subaction == "all")
             $browseoutput .= " <a href='{$scriptname}?action=dataentry&amp;sid={$surveyid}&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imagefiles/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>";
         }
 
-        $browseoutput .=" <a><img id='downloadfile_{$dtrow['id']}' src='{$imagefiles}/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>";
+        // Do not show the download image if the question doesn't contain the File Upload Question Type
+        if (bHasFileUploadQuestion($surveyid))
+            $browseoutput .=" <a><img id='downloadfile_{$dtrow['id']}' src='{$imagefiles}/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>";
 
         if (bHasSurveyPermission($surveyid,'responses','delete'))
         {
