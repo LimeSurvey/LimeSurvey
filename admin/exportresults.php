@@ -17,7 +17,7 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
-if (!isset($imagefiles)) {$imagefiles="./images";}
+if (!isset($imageurl)) {$imageurl="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($exportstyle)) {$exportstyle=returnglobal('exportstyle');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
@@ -184,13 +184,13 @@ if (!$exportstyle)
 
     if ($afieldcount > 255)
     {
-        $exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
+        $exportoutput .= "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
         .$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.","js")
         ."\")' />";
     }
     else
     {
-        $exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
+        $exportoutput .= "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
         .$clang->gT("Choose the columns you wish to export.","js")
         ."\")' />";
     }
@@ -221,7 +221,7 @@ if (!$exportstyle)
         {
             $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
             .$clang->gT("Choose Token Fields").":"
-            ."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+            ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
             .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
             ."\")' /><ul><li>\n"
             ."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name' />"

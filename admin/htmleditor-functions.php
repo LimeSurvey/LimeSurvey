@@ -18,7 +18,7 @@
 
 function PrepareEditorPopupScript()
 {
-    global $clang,$imagefiles,$homeurl;
+    global $clang,$imageurl,$homeurl;
 
     $script = "<script type='text/javascript'>\n"
     . "<!--\n"
@@ -48,7 +48,7 @@ function PrepareEditorPopupScript()
     . "{\n"
     . "\tdocument.getElementsByName(fieldname)[0].readOnly=true;\n"
     . "\tdocument.getElementsByName(fieldname)[0].className='readonly';\n"
-    //	. "\tdocument.getElementById(controlid).src='".$imagefiles."/edithtmlpopup_disabled.png';\n"
+    //	. "\tdocument.getElementById(controlid).src='".$imageurl."/edithtmlpopup_disabled.png';\n"
     . "\tdocument.getElementById(controlidena).style.display='none';\n"
     . "\tdocument.getElementById(controliddis).style.display='';\n"
     . "\tpopup = window.open('".$homeurl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
@@ -204,7 +204,7 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 
 function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    global $clang, $imagefiles, $homeurl;
+    global $clang, $imageurl, $homeurl;
 
     $htmlcode = '';
     $imgopts = '';
@@ -219,14 +219,14 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
     }
 
     $htmlcode .= ""
-    . "<a href=\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' title=\"".$clang->gTview("Start HTML Editor in a Popup Window")."\"><img alt=\"".$clang->gT("Start HTML Editor in a Popup Window")."\" id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png'  $imgopts /><img alt=\"".$clang->gT("Give focus to the HTML Editor Popup Window")."\" id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none'  $imgopts align='top'/></a>";
+    . "<a href=\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' title=\"".$clang->gTview("Start HTML Editor in a Popup Window")."\"><img alt=\"".$clang->gT("Start HTML Editor in a Popup Window")."\" id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imageurl."/edithtmlpopup.png'  $imgopts /><img alt=\"".$clang->gT("Give focus to the HTML Editor Popup Window")."\" id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imageurl."/edithtmlpopup_disabled.png' style='display: none'  $imgopts align='top'/></a>";
 
     return $htmlcode;
 }
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    global $clang, $imagefiles, $homeurl, $rooturl, $sFCKEditorURL, $fckeditexpandtoolbar, $uploadurl;
+    global $clang, $imageurl, $homeurl, $rooturl, $sFCKEditorURL, $fckeditexpandtoolbar, $uploadurl;
 
     $htmlcode = '';
     $imgopts = '';

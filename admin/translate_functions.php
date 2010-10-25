@@ -23,7 +23,7 @@
 
   function showTranslateAdminmenu()
 {
-   global $scriptname, $surveyid, $imagefiles, $clang, $action, 
+   global $scriptname, $surveyid, $imageurl, $clang, $action, 
            $tolang, $activated, $publicurl;
 
   $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -46,14 +46,14 @@
   $adminmenu .= ""
       ."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\"
           .title='".$clang->gTview("Return to survey administration")."'>"
-          ."<img name='Administration' src='$imagefiles/home.png' alt='"
+          ."<img name='Administration' src='$imageurl/home.png' alt='"
           .$clang->gT("Return to survey administration")."' /></a>\n"
-      ."<img src='$imagefiles/blank.gif' alt='' width='11'  />\n";
+      ."<img src='$imageurl/blank.gif' alt='' width='11'  />\n";
 
 
   // Test / execute survey button
   $adminmenu .= ""
-    ."<img src='$imagefiles/seperator.gif' alt='' />\n";
+    ."<img src='$imageurl/seperator.gif' alt='' />\n";
 
   
   // Test / execute survey button
@@ -79,13 +79,13 @@
   {
       $adminmenu .= "<a href=\"#\" accesskey='d' onclick=\"window.open('"
       . $publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang', '_blank')\" title=\"".$icontext2."\" >"
-      . "<img src='$imagefiles/do.png' alt='$icontext' />"
+      . "<img src='$imageurl/do.png' alt='$icontext' />"
       . "</a>\n";
 
   } else {
       $adminmenu .= "<a href='#' id='dosurvey' class='dosurvey'"
       . "title=\"".$icontext2."\" accesskey='d'>"
-      . "<img  src='$imagefiles/do.png' alt='$icontext' />"
+      . "<img  src='$imageurl/do.png' alt='$icontext' />"
       . "</a>\n";
 
       $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);

@@ -78,16 +78,16 @@ $extendedconditionsoutput .= "\t<div class='menubar-main'>\n"
 . "<div class='menubar-left'>\n"
 . "<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\" "
 . "title='".$clang->gTview("Return to survey administration")."'>"
-. "<img name='HomeButton' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
-. "<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
-. "<img src='$imagefiles/seperator.gif' alt='' />\n"
-. "<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
+. "<img name='HomeButton' src='$imageurl/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+. "<img src='$imageurl/blank.gif' alt='' width='11' />\n"
+. "<img src='$imageurl/seperator.gif' alt='' />\n"
+. "<img src='$imageurl/blank.gif' alt='' width='11' />\n"
 . "<a href=\"#\" onclick=\"window.open('$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=browse', '_top')\" "
 . "title='".$clang->gTview("Display conditions")."' >"
-. "<img name='BrowseButton' src='$imagefiles/conditions_copy.png' alt='".$clang->gT("Display extended conditions")."' /></a>\n"
+. "<img name='BrowseButton' src='$imageurl/conditions_copy.png' alt='".$clang->gT("Display extended conditions")."' /></a>\n"
 . "<a href=\"#\" onclick=\"window.open('$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=addnew', '_top')\" "
 . "title='".$clang->gTview("Add new condition")."' >"
-. "<img name='AddNewButton' src='$imagefiles/conditions_add.png' alt='".$clang->gT("Add new condition")."' /></a>\n"
+. "<img name='AddNewButton' src='$imageurl/conditions_add.png' alt='".$clang->gT("Add new condition")."' /></a>\n"
 . "\t</div></div></div>\n";
 
 // CONTENTS
@@ -118,18 +118,18 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
     ."<div class='menubar-left'>\n"
     ."<a href='$scriptname?action=extendedconditions&amp;subaction=browse&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'"
     ." title='".$clang->gTview("Show start...")."'>"
-    ."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
+    ."<img name='DBeginButton' align='left' src='$imageurl/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
     ."<a href='$scriptname?action=extendedconditions&amp;subaction=browsegroup&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
 	" title='".$clang->gTview("Show previous...")."'>" .
-	"<img name='DBackButton' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
-	."<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
+	"<img name='DBackButton' align='left' src='$imageurl/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
+	."<img src='$imageurl/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
 	."<a href='$scriptname?action=extendedconditions&amp;subaction=browsegroup&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
 	"title='".$clang->gTview("Show next...")."'>" .
-	"<img name='DForwardButton' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
+	"<img name='DForwardButton' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
 	."<a href='$scriptname?action=extendedconditions&amp;subaction=browsegroup&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
 	"title='".$clang->gTview("Show last...")."'>".
-	"<img name='DEndButton' align='left'  src='$imagefiles/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+	"<img name='DEndButton' align='left'  src='$imageurl/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
+	."<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."\t<form id='tokensearch' method='post' action='$scriptname?action=extendedconditions'>\n"
 	."<input type='text' name='searchstring' value='$searchstring' />\n"
 	."<input type='submit' value='".$clang->gT("Search")."' />\n"
@@ -140,13 +140,13 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
 	."\t<input type='hidden' name='qid' value='$qid' />\n"
 	."\t<input type='hidden' name='question' value='$question' />\n"
 	."\t</form>\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+	."<img src='$imageurl/seperator.gif' alt='' border='0' />\n"
 	."<form id='tokenrange' action='{$scriptname}'>\n"
 	."<font size='1' face='verdana'>"
 	."&nbsp;<label for='limit'>".$clang->gT("Records displayed:")."</label> <input type='text' size='4' value='$limit' id='limit' name='limit' />"
 	."&nbsp;&nbsp;<label for='start'>".$clang->gT("Starting from:")."</label> <input type='text' size='4' value='$start'  id='start' name='start' />"
 	."&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+	."<img src='$imageurl/seperator.gif' alt='' border='0' />\n"
 	."&nbsp;<label for='question'>".$clang->gT("Question:")."</label>";
 	$selectall = "selected='selected'";
 	if (!$question) {
@@ -206,7 +206,7 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
     // question
 	."<th align='left' >"
 	."<a href='$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=browse&amp;order=qid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;question=$question'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Question")
 	."' alt='"
@@ -217,7 +217,7 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
 	//group
 	."<th align='left'  >"
 	."<a href='$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=browse&amp;order=gid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;question=$question'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Group")
 	."' alt='"
@@ -228,7 +228,7 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
 	//survey
 	."<th align='left'  >"
 	."<a href='$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=browse&amp;order=sid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;question=$question'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Survey")
 	."' alt='"
@@ -239,7 +239,7 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
 	//condition
 	."<th align='left'  >"
 	."<a href='$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=browsegroup&amp;order=condition&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring&amp;question=$question'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Condition")
 	."' alt='"
@@ -255,12 +255,12 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
 	    $extendedconditionsoutput .= "\t<tr class='$bgc'>\n"
         
         // actions
-        ."<td><input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/conditions_edit.png' title='"
+        ."<td><input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/conditions_edit.png' title='"
         .$clang->gT("Edit condition")
         ."' alt='"
         .$clang->gT("Edit condition")
         ."' onclick=\"window.open('$scriptname?action=extendedconditions&amp;sid=".$brow['sid']."&amp;gid=".$brow['gid']."&amp;qid=".$brow['qid']."&amp;subaction=edit', '_top')\" />"
-        ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/conditions_delete.png' title='"
+        ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/conditions_delete.png' title='"
         .$clang->gT("Delete condition")
         ."' alt='"
         .$clang->gT("Delete condition")

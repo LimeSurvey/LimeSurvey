@@ -354,7 +354,7 @@ $statisticsoutput .= "</ul></fieldset></div><p>"
 
 //second row below options -> filter settings headline
 $statisticsoutput.="<div class='header header_statistics'>"
-."<img src='$imagefiles/plus.gif' align='right' id='showfilter' /><img src='$imagefiles/minus.gif' align='right' id='hidefilter' />"
+."<img src='$imageurl/plus.gif' align='right' id='showfilter' /><img src='$imageurl/minus.gif' align='right' id='hidefilter' />"
 .$clang->gT("Response filters")
 ."</div>\n";
 
@@ -1632,7 +1632,7 @@ if (isset($summary) && $summary)
 
 function showSpeaker($hinttext)
 {
-    global $clang, $imagefiles, $maxchars;
+    global $clang, $imageurl, $maxchars;
 
     if(!isset($maxchars))
     {
@@ -1651,7 +1651,7 @@ function showSpeaker($hinttext)
         $reshtml= "<span style='cursor: hand' title='".$htmlhinttext."' "
         ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\">"
         ." \"$shortstring...\" </span>"
-        ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+        ."<img style='cursor: hand' src='$imageurl/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
         ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
     }
     else

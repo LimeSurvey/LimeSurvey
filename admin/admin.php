@@ -229,7 +229,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'deactivate')
     {
-        if(bHasSurveyPermission($surveyid,'surveyactivation','export'))    {include('deactivate.php');}
+        if(bHasSurveyPermission($surveyid,'surveyactivation','update'))    {include('deactivate.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'deletesurvey')
@@ -472,7 +472,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'browse')
     {
-        if(bHasSurveyPermission($surveyid,'responses','read'))
+        if(bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read'))
         {
             include('browse.php');
         }

@@ -904,7 +904,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                                 $chosen[]=array($thiscode, $thistext);
                             }
                             $ranklist .= "' />\n"
-                            . "<img src='$imagefiles/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
+                            . "<img src='$imageurl/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
                             if ($j != $existing)
                             {
                                 $ranklist .= "style='display:none'";
@@ -1841,7 +1841,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 {
                     $hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                     $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-                    $dataentryoutput .= "\t<img src='$imagefiles/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+                    $dataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
                 }
                 switch($deqrow['type'])
                 {
@@ -2151,7 +2151,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                                 $chosen[]=array($thiscode, $thistext);
                             }
                             $ranklist .= "' /></font>\n";
-                            $ranklist .= "<img src='$imagefiles/cut.gif' alt='".$blang->gT("Remove this item")."' title='".$blang->gT("Remove this item")."' ";
+                            $ranklist .= "<img src='$imageurl/cut.gif' alt='".$blang->gT("Remove this item")."' title='".$blang->gT("Remove this item")."' ";
                             if (!isset($existing) || $i != $existing)
                             {
                                 $ranklist .= "style='display:none'";

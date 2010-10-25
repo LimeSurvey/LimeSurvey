@@ -117,9 +117,9 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
     . "\t<div class='menubar-main'>\n"
     . "<div class='menubar-left'>\n"
     . "\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" title='".$clang->gTview("Return to survey administration")."'>" 
-    . "<img name='Administration' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
-	. "\t<img src='$imagefiles/blank.gif' alt='' width='11'  />\n"
-	. "\t<img src='$imagefiles/seperator.gif' alt='' />\n";
+    . "<img name='Administration' src='$imageurl/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+	. "\t<img src='$imageurl/blank.gif' alt='' width='11'  />\n"
+	. "\t<img src='$imageurl/seperator.gif' alt='' />\n";
 
 	if ($surveyinfo['assessments']!='Y')
 	{
@@ -183,7 +183,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
         if (bHasSurveyPermission($surveyid, 'assessments','update'))
         {
             $assessmentsoutput.="<form method='post' action='$scriptname?sid=$surveyid'>
-                <input type='image' src='$imagefiles/token_edit.png' alt='".$clang->gT("Edit")."' />
+                <input type='image' src='$imageurl/token_edit.png' alt='".$clang->gT("Edit")."' />
                 <input type='hidden' name='action' value='assessmentedit' />
                 <input type='hidden' name='id' value='".$assess['id']."' />
                 </form>";            
@@ -192,7 +192,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
         if (bHasSurveyPermission($surveyid, 'assessments','delete'))
         {
             $assessmentsoutput.="<form method='post' action='$scriptname?sid=$surveyid'>
-             <input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />
+             <input type='image' src='$imageurl/token_delete.png' alt='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />
              <input type='hidden' name='action' value='assessmentdelete' />
              <input type='hidden' name='id' value='".$assess['id']."' />
              </form>";

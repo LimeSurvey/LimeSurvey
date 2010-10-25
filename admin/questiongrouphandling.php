@@ -377,12 +377,12 @@ if ($action == "ordergroups")
             $ordergroups.= "<input style='float:right;";
 
             if ($i == 0){$ordergroups.="visibility:hidden;";}
-            $ordergroups.="' type='image' src='$imagefiles/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('up')\" ".$updisabled."/>\n";
+            $ordergroups.="' type='image' src='$imageurl/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('up')\" ".$updisabled."/>\n";
 
             if ($i < $groupcount-1)
             {
                 // Fill the hidden field 'sortorder' so we know what field is moved down
-                $ordergroups.= "<input type='image' src='$imagefiles/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('down')\" ".$downdisabled."/>\n";
+                $ordergroups.= "<input type='image' src='$imageurl/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('down')\" ".$downdisabled."/>\n";
             }
             $ordergroups.=$ogarray[$i]['group_name']."</li>\n" ;
 

@@ -47,32 +47,32 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
     $usergroupsummary .= "</div>\n"
     . "<div class='menubar-main'>\n"
     . "<div class='menubar-left'>\n"
-    . "<img src='$imagefiles/blank.gif' alt='' width='55' height='20' />\n"
-    . "<img src='$imagefiles/seperator.gif' alt='' />\n";
+    . "<img src='$imageurl/blank.gif' alt='' width='55' height='20' />\n"
+    . "<img src='$imageurl/seperator.gif' alt='' />\n";
 
     if($ugid && $grpresultcount > 0)
     {
         $usergroupsummary .= "<a href=\"#\" onclick=\"window.location='$scriptname?action=mailusergroup&amp;ugid=$ugid'\""
         ." title='".$clang->gTview("Mail to all Members")."'> "
-        ."<img src='$imagefiles/invite.png' alt='".$clang->gT("Mail to all Members")."' name='MailUserGroup' /></a>\n" ;
+        ."<img src='$imageurl/invite.png' alt='".$clang->gT("Mail to all Members")."' name='MailUserGroup' /></a>\n" ;
     }
     else
     {
-        $usergroupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' height='20' />\n";
+        $usergroupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' height='20' />\n";
     }
-    $usergroupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='78' height='20' />\n"
-    . "<img src='$imagefiles/seperator.gif' alt='' />\n";
+    $usergroupsummary .= "<img src='$imageurl/blank.gif' alt='' width='78' height='20' />\n"
+    . "<img src='$imageurl/seperator.gif' alt='' />\n";
 
     if($ugid && $grpresultcount > 0 &&
     $_SESSION['loginID'] == $grow['owner_id'])
     {
         $usergroupsummary .=  "<a href=\"#\" onclick=\"window.location='$scriptname?action=editusergroup&amp;ugid=$ugid'\""
         . " title='".$clang->gTview("Edit Current User Group")."'>"
-        . "<img src='$imagefiles/edit.png' alt='".$clang->gT("Edit Current User Group")."' name='EditUserGroup' /></a>\n" ;
+        . "<img src='$imageurl/edit.png' alt='".$clang->gT("Edit Current User Group")."' name='EditUserGroup' /></a>\n" ;
     }
     else
     {
-        $usergroupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' height='20' />\n";
+        $usergroupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' height='20' />\n";
     }
 
     if($ugid && $grpresultcount > 0 &&
@@ -81,14 +81,14 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
         //		$usergroupsummary .= "<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')\""
         $usergroupsummary .= "<a href='#' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=delusergroup&amp;ugid=$ugid")."}\" "
         . "title='".$clang->gTview("Delete Current User Group")."'>"
-        . "<img src='$imagefiles/delete.png' alt='".$clang->gT("Delete Current User Group")."' name='DeleteUserGroup'  /></a>\n";
+        . "<img src='$imageurl/delete.png' alt='".$clang->gT("Delete Current User Group")."' name='DeleteUserGroup'  /></a>\n";
     }
     else
     {
-        $usergroupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' height='20' />\n";
+        $usergroupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' height='20' />\n";
     }
-    $usergroupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='92' height='20' />\n"
-    . "<img src='$imagefiles/seperator.gif' alt='' />\n"
+    $usergroupsummary .= "<img src='$imageurl/blank.gif' alt='' width='92' height='20' />\n"
+    . "<img src='$imageurl/seperator.gif' alt='' />\n"
     . "</div>\n"
     . "<div class='menubar-right'>\n"
     . "<font class=\"boxcaption\">".$clang->gT("User Groups").":</font>&nbsp;<select name='ugid' "
@@ -99,11 +99,11 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
     {
         $usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
         ." title='".$clang->gTview("Add New User Group")."'>"
-        ."<img src='$imagefiles/add.png' alt='".$clang->gT("Add New User Group")."' "
+        ."<img src='$imageurl/add.png' alt='".$clang->gT("Add New User Group")."' "
         ."name='AddNewUserGroup' onclick=\"window.location=''\" /></a>\n";
     }
-    $usergroupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
-    . "<img src='$imagefiles/blank.gif' alt='' width='82' height='20' />\n"
+    $usergroupsummary .= "<img src='$imageurl/seperator.gif' alt='' />\n"
+    . "<img src='$imageurl/blank.gif' alt='' width='82' height='20' />\n"
     . "</div></div>\n"
     . "</div>\n";
     $usergroupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
@@ -427,7 +427,7 @@ if ($action == "editusers")
 
 
     $usersummary .= "<form method='post' action='$scriptname'>"
-    ."<input type='image' src='$imagefiles/token_edit.png' value='".$clang->gT("Edit user")."' />"
+    ."<input type='image' src='$imageurl/token_edit.png' value='".$clang->gT("Edit user")."' />"
     ."<input type='hidden' name='action' value='modifyuser' />"
     ."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
     ."</form>";
@@ -486,7 +486,7 @@ if ($action == "editusers")
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
         {
             $usersummary .= "<form method='post' action='$scriptname'>"
-            ."<input type='image' src='$imagefiles/token_edit.png' alt='".$clang->gT("Edit this user")."' />"
+            ."<input type='image' src='$imageurl/token_edit.png' alt='".$clang->gT("Edit this user")."' />"
             ."<input type='hidden' name='action' value='modifyuser' />"
             ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
             ."</form>";
@@ -498,7 +498,7 @@ if ($action == "editusers")
         $usr['parent_id'] == $_SESSION['loginID'])) && $usr['uid']!=1)
         {
             $usersummary .= "<form method='post' action='$scriptname'>"
-            ."<input type='image' src='$imagefiles/security_small.png' alt='".$clang->gT("Set global permissions for this user")."' />"
+            ."<input type='image' src='$imageurl/security_small.png' alt='".$clang->gT("Set global permissions for this user")."' />"
             ."<input type='hidden' name='action' value='setuserrights' />"
             ."<input type='hidden' name='user' value='{$usr['user']}' />"
             ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
@@ -516,7 +516,7 @@ if ($action == "editusers")
         if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)  && $usr['uid']!=1)
         {
             $usersummary .= "<form method='post' action='$scriptname'>"
-            ."<input type='image' src='$imagefiles/templatepermissions_small.png' alt='".$clang->gT("Set template permissions for this user")."' />"
+            ."<input type='image' src='$imageurl/templatepermissions_small.png' alt='".$clang->gT("Set template permissions for this user")."' />"
             ."<input type='hidden' name='action' value='setusertemplates' />"
             ."<input type='hidden' name='user' value='{$usr['user']}' />"
             ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
@@ -527,7 +527,7 @@ if ($action == "editusers")
         if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))&& $usr['uid']!=1)
         {
             $usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
-            ."<input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete this user")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+            ."<input type='image' src='$imageurl/token_delete.png' alt='".$clang->gT("Delete this user")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
             ."<input type='hidden' name='action' value='deluser' />"
             ."<input type='hidden' name='user' value='{$usr['user']}' />"
             ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
@@ -915,7 +915,7 @@ if ($action == "editusergroups" )
                     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                     {
                         $usergroupentries .= "<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
-                        ." <input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete this user from group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                        ." <input type='image' src='$imageurl/token_delete.png' alt='".$clang->gT("Delete this user from group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                         ." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
                         ." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
                         ." <input name='ugid' type='hidden' value='{$ugid}' />";

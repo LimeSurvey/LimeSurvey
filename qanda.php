@@ -2594,7 +2594,7 @@ function do_listwithcomment($ia)
 // ---------------------------------------------------------------
 function do_ranking($ia)
 {
-    global $dbprefix, $imagefiles, $clang, $thissurvey, $showpopups;
+    global $dbprefix, $imageurl, $clang, $thissurvey, $showpopups;
 
     if ($ia[8] == 'Y')
     {
@@ -2734,7 +2734,7 @@ function do_ranking($ia)
             $chosen[]=array($thiscode, $thistext);
         }
         $ranklist .= "' />\n";
-        $ranklist .= "<img src=\"$imagefiles/cut.gif\" alt=\"".$clang->gT("Remove this item")."\" title=\"".$clang->gT("Remove this item")."\" ";
+        $ranklist .= "<img src=\"$imageurl/cut.gif\" alt=\"".$clang->gT("Remove this item")."\" title=\"".$clang->gT("Remove this item")."\" ";
         if ($i != $existing)
         {
             $ranklist .= "style=\"display:none\"";

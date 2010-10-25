@@ -513,7 +513,7 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
 $homeurl        =   "$rooturl/admin";                           // The website location (url) of the admin scripts
 $publicurl      =   "$rooturl";                                 // The public website location (url) of the public survey script
 $tempurl        =   "$rooturl/tmp";
-$imagefiles     =   "$rooturl/images";                          // Location of button bar files for admin script
+$imageurl       =   "$rooturl/images";                          // Location of button bar files for admin script
     
 //Location of the user directory
 $uploaddir      =     "$rootdir".DIRECTORY_SEPARATOR."upload";
@@ -530,6 +530,7 @@ $standardtemplaterooturl= "$rooturl/templates"; // Location of the templates
 $homedir        =   "$rootdir".DIRECTORY_SEPARATOR."admin";     // The physical disk location of the admin scripts
 $publicdir      =   "$rootdir";                                 // The physical disk location of the public scripts
 $tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical location where LimeSurvey can store temporary files
+$imagedir        =  "$rootdir".DIRECTORY_SEPARATOR."images";    // Image directory
 // Note: For OS/2 the $tempdir may need to be defined as an actual directory
 // example: "x:/limesurvey/tmp". We don't know why.
 $sFCKEditorURL   =   "$homeurl/scripts/fckeditor.266";
