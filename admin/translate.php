@@ -17,7 +17,6 @@
 
 //TODO Use javascript to create tabs, in style of conditions editor.  Create translation.js file (http://jqueryui.com/demos/tabs/)
 //TODO For database save, don't use getUpdateSQL, but block saves
-//TODO modify code to prevent two users from saving across each other's work, with hidden $_POST fields
 
   include_once("login_check.php");  //Login Check dies also if the script is started directly
 
@@ -83,12 +82,17 @@
         // define each variable
         if (isset($_POST["{$type}_newvalue_{$i}"]))
         {
+          $old = $_POST["{$type}_oldvalue_{$i}"];
           $new = $_POST["{$type}_newvalue_{$i}"];
-          $id1 = $_POST["{$type}_id1_{$i}"];
-          $id2 = $_POST["{$type}_id2_{$i}"];
-          $transarray = setupTranslateFields($type);
-          $query = $transarray["queryupdate"];
-          $connect->execute($query);
+          // check if the new value is different from old, and then update database
+          if ($new != $old)
+          {
+            $id1 = $_POST["{$type}_id1_{$i}"];
+            $id2 = $_POST["{$type}_id2_{$i}"];
+            $transarray = setupTranslateFields($type);
+            $query = $transarray["queryupdate"];
+            $connect->execute($query);
+          }
         }
         ++$i;
       } // end while
@@ -132,7 +136,6 @@
         $queryto = $transarray["queryto"];
         $resultto = db_execute_assoc($queryto);
 
-
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$transarray["what"]]);
@@ -175,14 +178,15 @@
                   . "<td>$textfrom</td>\n"
                 . "</tr>\n";
                 $translateoutput .= "<tr>\n"
-                    // Display text in foreign language
+                    // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
                   . "<td>$tolangdesc</td>\n"
                   . '<td>';
                     $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
+                    $translateoutput .= "<input type='hidden' name='".$type."_oldvalue_".$i."' value='{$textto}'";
                     $translateoutput .= "<textarea cols='80' rows='$nrows+1' "
                       ."name='{$type}_newvalue_{$i}'>$textto</textarea>\n"
                       .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, $action);
-                  $translateoutput .= "</td>\n"
+                    $translateoutput .= "</td>\n"
                 . "</tr>\n"
               . "</table>\n"
             . "</div>\n";
