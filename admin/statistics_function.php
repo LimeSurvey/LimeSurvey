@@ -221,7 +221,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
         $pdf->SetDisplayMode('fullpage', 'two');
         // set default header data
-        $pdf->SetHeaderData("statistics.png", 10, "LimeSurvey ".$statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
+        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
 
         // set header and footer fonts
         $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
