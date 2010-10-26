@@ -77,6 +77,16 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9321) to 1.90+ (build 9343) Legend: # updated feature, - bug fix 
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Portuguese (ruigouveia)
+#Updated translation: Polish (elisa-ls)
+-Fixed importing surveys with INSERTANS tags on questions, conditions using comparizons between questions (bug id #4689) (lemeur)
+-Fixed issue #4692: Test if all question code are clean before importing (c_schmitz)
+-Fixed issue #4693: Ranking text box size is reduced when re-entered via the Previous/Next button and all items were ranked (c_schmitz)
+-Fixed issue #4697: PHP Warning at submit with show-empty-group - patch by ronvdburg (c_schmitz)
+
 Changes from 1.90+ (build 9290) to 1.90+ (build 9321) Legend: # updated feature, - bug fix 
 #Updated translation: Chinese Traditional (Taiwan) (zh-Hant-TW), thanks to Ricky (gandalfar)
 #Updated translation: Dutch (nl), thanks to Han Velthuis (gandalfar)
