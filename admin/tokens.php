@@ -709,14 +709,19 @@ if($subaction=="surveysettingsave")
 							$fieldvalue['bounceaccountpass']=$_POST['bounceaccountpass'];
 							$fieldvalue['bounceaccounttype']=$_POST['bounceaccounttype'];
 							$fieldvalue['bounceaccounthost']=$_POST['bounceaccounthost'];
-						
 						}
 						
 	$connect->AutoExecute("{$dbprefix}surveys", $fieldvalue,
                         2,"sid=$surveyid");
+    $tokenoutput .= "<div class='header'>".$clang->gT("Bounce settings")."</div>\n"
+    ."<div class='messagebox'>"
+    ."\t<div class='successheader'>".$clang->gT("Bounce settings have been saved.")."</div>\n"
+    ."</div>";
+                        
 }
 
-if ($subaction=='bouncesettings'){
+if ($subaction=='bouncesettings'){           
+    
 $settings=getSurveyInfo($surveyid);
 $tokenoutput .= "\t<div class='header'>".$clang->gT("Bounce settings")."</div>\n";
 $tokenoutput .= "<div id='bouncesettings'>\n"
