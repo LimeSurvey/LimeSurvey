@@ -50,8 +50,7 @@
           .$clang->gT("Return to survey administration")."' /></a>\n"
       ."<img src='$imageurl/blank.gif' alt='' width='11'  />\n";
 
-
-  // Test / execute survey button
+  // Separator
   $adminmenu .= ""
     ."<img src='$imageurl/seperator.gif' alt='' />\n";
 
@@ -119,7 +118,7 @@
           ."<li>"
             ."<label for='language'>" . $clang->gT("Translate to: ") . "</label>\n"
               ."<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-              ."<option {$selected} value='$scriptname?action=translate&sid={$surveyid}'>None</option>\n";
+              ."<option {$selected} value='$scriptname?action=translate&sid={$surveyid}'>".$clang->gT("Please choose...")."</option>\n";
             foreach($langs as $lang)
             {
               $selected="";

@@ -15,22 +15,18 @@
 *
 */
 
-//TODO Use javascript to create tabs, in style of conditions editor.  Create translation.js file
-//TODO http://jqueryui.com/demos/tabs/
-//TODO Look at tokens.php for example code (Search for tokens.js to load)
-
+//TODO Use javascript to create tabs, in style of conditions editor.  Create translation.js file (http://jqueryui.com/demos/tabs/)
 //TODO For database save, don't use getUpdateSQL, but block saves
 //TODO modify code to prevent two users from saving across each other's work, with hidden $_POST fields
-
-//TODO create explicit $gid and $qid variables in foreach(), for use by fckEditor, then contact lemeur
 
   include_once("login_check.php");  //Login Check dies also if the script is started directly
 
   if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
   if (!isset($action)) {$action=returnglobal('action');}
   include_once('translate_functions.php');
-//  include_once(dirname(__FILE__).'/../common_functions.php');
 
+//  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
+//  $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 
   // TODO need to do some validation here on surveyid
 
@@ -67,8 +63,7 @@
   $translateoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>\n"; //CSS Firefox 2 transition fix
 
   $translateoutput .= "<div class='header'>".$clang->gT("Translate survey")."</div>\n";
-  $translateoutput .= "<div class='tab-page'>\n";
-
+  
   $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 
   if (isset($tolang) && $actionvalue=="translateSave")
@@ -104,22 +99,26 @@
   if (isset($tolang))
   // Display tabs with fields to translate, as well as input fields for translated values
   {
-//      $translateoutput .= "<form name='{$transarray["formname"]}' method='POST' "
-//        ."action='$scriptname' id='{$transarray["formname"]}' />\n"
-      $translateoutput .= "<form name='translateform' method='POST' "
-        ."action='$scriptname' id='translateform' />\n"
-        ."<input type='hidden' name='sid' value='$surveyid' />\n"
-        ."<input type='hidden' name='action' value='translate' />\n"
-        ."<input type='hidden' name='actionvalue' value='translateSave' />\n"
-        ."<input type='hidden' name='tolang' value='$tolang' />\n"
-        ."<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."' />\n";
+ //   $translateoutput .= "<div class='tab-page'>\n";
+    $translateoutput .= "<div id='tab-page'>\n";
 
-    foreach($tab_names as $type)
+    $translateoutput .= "<form name='translateform' method='POST' "
+      ."action='$scriptname' id='translateform' />\n"
+      ."<input type='hidden' name='sid' value='$surveyid' />\n"
+      ."<input type='hidden' name='action' value='translate' />\n"
+      ."<input type='hidden' name='actionvalue' value='translateSave' />\n"
+      ."<input type='hidden' name='tolang' value='$tolang' />\n"
+      ."<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."' />\n";
+
+//      $translateoutput .= "<div id='translation-tab'>\n";
+      $translateoutput .= "<div class='tab-pane'>\n";
+
+      foreach($tab_names as $type)
     {
       $transarray = setupTranslateFields($type);
       // Create tab names and heading
-      $translateoutput .= "<div class='tab-pane' id='tab-pane-$type'>\n";
       $translateoutput .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT($transarray["desc"]) . "</h2>\n";
+//      $translateoutput .= "<div id='tab-{$type}'> <h2 class='tab'>" . $clang->gT($transarray["desc"]) . "</h2>\n";
       
       $translateoutput .= PrepareEditorScript("editlabel");
       // Setup form
