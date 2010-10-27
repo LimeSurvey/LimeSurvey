@@ -23,6 +23,8 @@
   if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
   if (!isset($action)) {$action=returnglobal('action');}
   include_once('translate_functions.php');
+  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
+
 
 //  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
 //  $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
@@ -104,7 +106,7 @@
   // Display tabs with fields to translate, as well as input fields for translated values
   {
  //   $translateoutput .= "<div class='tab-page'>\n";
-    $translateoutput .= "<div id='tab-page'>\n";
+//    $translateoutput .= "<div id='tab-page'>\n";
 
     $translateoutput .= "<form name='translateform' method='POST' "
       ."action='$scriptname' id='translateform' />\n"
@@ -114,16 +116,26 @@
       ."<input type='hidden' name='tolang' value='$tolang' />\n"
       ."<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."' />\n";
 
-//      $translateoutput .= "<div id='translation-tab'>\n";
-      $translateoutput .= "<div class='tab-pane'>\n";
+    // set up tabs
+    $translateoutput .= ""
+      ."<div class='condition-tbl-right'>\n"
+      ."<div id=\"translationtabs\" class=\"tabs-nav\">\n"
+      ."\t<ul>\n";
+    foreach($tab_names as $type)
+    {
+      $transarray = setupTranslateFields($type);
+      $translateoutput .= ""
+        ."\t\t<li><a href=\"#tab-".$type."\"><span>".$clang->gT($transarray["desc"])."</span></a></li>\n";
+    }
 
-      foreach($tab_names as $type)
+//      $translateoutput .= "<div class='tab-pane'>\n";
+
+    // Define content of each tab
+    foreach($tab_names as $type)
     {
       $transarray = setupTranslateFields($type);
       // Create tab names and heading
-      $translateoutput .= "<div class='tab-page'> <h2 class='tab'>" . $clang->gT($transarray["desc"]) . "</h2>\n";
-//      $translateoutput .= "<div id='tab-{$type}'> <h2 class='tab'>" . $clang->gT($transarray["desc"]) . "</h2>\n";
-      
+      $translateoutput .= "\t<div id='tab-".$type."'>\n"      ;    //TODO continue here !!!!
       $translateoutput .= PrepareEditorScript("editlabel");
       // Setup form
         // start a counter in order to number the input fields for each record
