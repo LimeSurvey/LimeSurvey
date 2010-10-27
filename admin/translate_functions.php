@@ -96,7 +96,7 @@
       foreach ($tmp_survlangs as $tmp_lang)
       {
           $adminmenu .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');"
-            ."\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp; "
+            ."\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;"
             ."newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
       }
       $adminmenu .= "</ul></div>";
@@ -118,7 +118,7 @@
           ."<li>"
             ."<label for='language'>" . $clang->gT("Translate to: ") . "</label>\n"
               ."<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-              ."<option {$selected} value='$scriptname?action=translate&sid={$surveyid}'>".$clang->gT("Please choose...")."</option>\n";
+              ."<option {$selected} value='$scriptname?action=translate&amp;sid={$surveyid}'>".$clang->gT("Please choose...")."</option>\n";
             foreach($langs as $lang)
             {
               $selected="";
@@ -127,14 +127,16 @@
                 $selected = " selected='selected' ";
               }
               $tolangtext   = $supportedLanguages[$lang]['description'];
-              $adminmenu .= "<option {$selected} value='$scriptname?action=translate&sid={$surveyid}&tolang={$lang}'> " . $tolangtext ." </option>\n";
+              $adminmenu .= "<option {$selected} value='$scriptname?action=translate&amp;sid={$surveyid}&amp;tolang={$lang}'> " . $tolangtext ." </option>\n";
             }
             $adminmenu .= ""
             ."</select>\n"
           ."</li>\n"
         ."</ul>\n"
-      ."</div>\n";
+      ."</div>\n"; // End of menubar-right
 
+  $adminmenu .= ""
+    ."</div>\n";
   $adminmenu .= ""
     ."</div>\n";
 

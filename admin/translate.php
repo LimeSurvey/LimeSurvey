@@ -57,7 +57,7 @@
 
   $translateoutput = "";
   $translateoutput .= "<form name='translateform' id='translateform' "
-                   ."action='$scriptname' method='GET' />";
+                   ."action='$scriptname' method='get' >";
   $translateoutput .= showTranslateAdminmenu();
   $translateoutput .= "</form>";
 
@@ -127,6 +127,8 @@
       $translateoutput .= ""
         ."\t\t<li><a href=\"#tab-".$type."\"><span>".$clang->gT($transarray["desc"])."</span></a></li>\n";
     }
+    $translateoutput .= ""
+      ."\t</ul>\n";
 
 //      $translateoutput .= "<div class='tab-pane'>\n";
 
@@ -180,8 +182,8 @@
             $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
             $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
           
-            $translateoutput .= "<div style=\"margin:10px 10%; border-top:1px solid #0000ff;\">\n"
-               . '<table cellpadding="5px" cellspacing="0" align="center" width="100%" >'
+            $translateoutput .= "<div style=\"margin:10 10%; border-top:1px solid #0000ff;\">\n"
+               . '<table cellpadding="5" cellspacing="0" align="center" width="100%" >'
                 . '<colgroup valign="top" width="25%">'
                 . '<colgroup valign="top" width="75%">'
                 // Display text in original language
@@ -189,14 +191,14 @@
                   . "<td>$baselangdesc</td>\n"
                   . "<td>$textfrom</td>\n"
                 . "</tr>\n";
-                $translateoutput .= "<tr>\n"
+                $translateoutput .= "<tr>"
                     // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
                   . "<td>$tolangdesc</td>\n"
-                  . '<td>';
+                  . "<td>\n";
                     $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
-                    $translateoutput .= "<input type='hidden' name='".$type."_oldvalue_".$i."' value='{$textto}'";
-                    $translateoutput .= "<textarea cols='80' rows='$nrows+1' "
-                      ."name='{$type}_newvalue_{$i}'>$textto</textarea>\n"
+                    $translateoutput .= "<input type='hidden' name='".$type."_oldvalue_".$i."' value='".htmlspecialchars(addslashes($textto))."' />\n";
+                    $translateoutput .= "<textarea cols='80' rows='".($nrows+1)."' "
+                      ." name='{$type}_newvalue_{$i}' >".htmlspecialchars(addslashes($textto))."</textarea>\n"
                       .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, $action);
                     $translateoutput .= "</td>\n"
                 . "</tr>\n"
