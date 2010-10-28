@@ -457,6 +457,7 @@ if (bHasRight($surveyid, 'browse_response'))
         ."<table id='responsedetail' width='99%' align='center' cellpadding='1' cellspacing='0'>\n";
         $highlight=false;
         unset($fnames['lastpage']);
+        unset($fnames['submitdate']);
         foreach ($results as $idrow)
         {
             //$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
@@ -481,7 +482,7 @@ if (bHasRight($surveyid, 'browse_response'))
                 {
                     case "completed":
                         // First compute the submitdate
-                        if ($private == "Y" && $datestamp == "N")
+                        if ($private == "Y")
                         {
                             // In case of anonymous answers survey with no datestamp
                             // then the the answer submutdate gets a conventional timestamp
@@ -496,11 +497,11 @@ if (bHasRight($surveyid, 'browse_response'))
 
                         $dataentryoutput .= "                <select name='submitdate'>\n";
                         $dataentryoutput .= "                    <option value=";
-                        if(empty($idrow[$fname['fieldname']])) { $dataentryoutput .= "'' selected"; }
+                        if(empty($idrow['submitdate'])) { $dataentryoutput .= "'' selected"; }
                         else    { $dataentryoutput .= "'N'"; }
                         $dataentryoutput .= ">".$clang->gT("No")."</option>\n";
                         $dataentryoutput .= "                    <option value=";
-                        if(!empty($idrow[$fname['fieldname']])) { $dataentryoutput .= "'' selected"; }
+                        if(!empty($idrow['submitdate'])) { $dataentryoutput .= "'' selected"; }
                         else     { $dataentryoutput .= "'$completedate'"; }
                         $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n";
                         $dataentryoutput .= "                </select>\n";
