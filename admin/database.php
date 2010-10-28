@@ -470,8 +470,8 @@ if(isset($surveyid))
 
         $qtypes=getqtypelist('','array');
         // These are the questions types that have no answers and therefore we delete the answer in that case
-        $keepansweroptions = ($qtypes[$_POST['type']]['answerscales']>0);
-        $keepsubquestions = ($qtypes[$_POST['type']]['subquestions']>0);
+        $iAnswerScales = $qtypes[$_POST['type']]['answerscales'];
+        $iSubquestionScales = $qtypes[$_POST['type']]['subquestions'];
 
         // These are the questions types that have the other option therefore we set everything else to 'No Other'
         if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M"))
@@ -597,25 +597,14 @@ if(isset($surveyid))
                         // then change the cfieldname accordingly
                         fixmovedquestionConditions($postqid, $oldgid, $postgid);
                     }
-                    if (!$keepansweroptions)
-                    {
-                        $query = "DELETE FROM ".db_table_name('answers')." WHERE qid=".$postqid;
-                        $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
-                        if (!$result)
-                        {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-                        }
-                    }
-                    if (!$keepsubquestions)
-                    {
-                        $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid=".$postqid;
-                        $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
-                        if (!$result)
-                        {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-                        }
-                    }
 
+                    $query = "DELETE FROM ".db_table_name('answers')." WHERE qid= {$postqid} and scale_id>={$iAnswerScales}";
+                    $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+
+                    // Remove old subquestion scales
+                    $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid={$postqid} and scale_id>={$iSubquestionScales}";
+                    $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+    
                 }
                 else
                 {
