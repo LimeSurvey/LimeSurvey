@@ -1158,18 +1158,18 @@ if ($thissurvey['active'] != "Y")
     echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 }
 
-echo "<!-- group2 -->\n"; // Debug orientation marker
+echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
 
 if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 {
     //if conditions exist, create hidden inputs for 'previously' answered questions
     // Note that due to move 'back' possibility, there may be answers from next pages
-    // However we make sure that no answer from this page are inserted here and only valid fieldnames (important for conditions based on tokens)
-    foreach ($conditions as $aCondition)
+    // However we make sure that no answer from this page are inserted here
+    foreach (array_keys($_SESSION) as $SESak)
     {
-        if (!in_array($aCondition[2], $inputnames) && isset($_SESSION[$aCondition[2]]))
+        if (in_array($SESak, $_SESSION['insertarray'])  && !in_array($SESak, $inputnames))
         {
-            echo "<input type='hidden' name='java{$aCondition[2]}' id='java{$aCondition[2]}' value='" . htmlspecialchars($_SESSION[$aCondition[2]],ENT_QUOTES). "' />\n";
+            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES). "' />\n";
         }
     }
 }
