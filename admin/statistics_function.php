@@ -1740,11 +1740,21 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if (isset($al[2]) && $al[2])
                     {
                         //handling for "other" option
+                        
                         if ($al[0] == $statlang->gT("Other"))
                         {
-                            //get data
-                            $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
-                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                            if($qtype=='!')
+                            {
+                                // It is better for single choice question types to filter on the number of '-oth-' entries, than to 
+                                // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
+                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
+                            }
+                            else
+                            {
+                                //get data
+                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                                $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                            }
                         }
                          
                         /*

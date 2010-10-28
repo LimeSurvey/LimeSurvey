@@ -430,7 +430,13 @@ function createinsertquery()
                 }
                 else
                 {
-                    if ($fieldexists['type']=='N') //sanitize numerical fields
+                    // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
+                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && $_POST[substr($value,0,strlen($value)-5)]!='-oth-') 
+                    {
+                         $_SESSION[$value]='';                               
+                    }
+                    
+                    elseif ($fieldexists['type']=='N') //sanitize numerical fields
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
                     }
@@ -586,7 +592,12 @@ function createinsertquery()
                         }
                         else
                         {
-                            if ($fieldinfo['type']=='N') //sanitize numerical fields
+                            // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
+                            if ($fieldinfo['type']=='!' && $fieldmap[$field]['aid']=='other' && $_POST[substr($field,0,strlen($field)-5)]!='-oth-') //sanitize Other fields
+                            {
+                                $qfield="''";
+                            }
+                            elseif ($fieldinfo['type']=='N') //sanitize numerical fields
                             {
                                 $qfield=db_quoteall(sanitize_float($_POST[$field]));
                             }
