@@ -6202,7 +6202,7 @@ function do_array_dual($ia)
 
         $cellwidth=sprintf("%02d", $cellwidth);
 
-        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
+        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
         $ansresult = db_execute_assoc($ansquery);   //Checked
         if ($ansresult->RecordCount()>0)
         {
@@ -6214,11 +6214,11 @@ function do_array_dual($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);   //Checked
         $anscount = $ansresult->RecordCount();
@@ -6514,13 +6514,13 @@ function do_array_dual($ia)
 
         //question atribute random_order set?
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
 
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);    //Checked
         $anscount = $ansresult->RecordCount();
