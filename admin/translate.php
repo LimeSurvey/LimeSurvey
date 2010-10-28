@@ -67,6 +67,8 @@
   
   $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 
+
+
   if (isset($tolang) && $actionvalue=="translateSave")
   // Saves translated values to database
   {
@@ -105,11 +107,9 @@
   if (isset($tolang))
   // Display tabs with fields to translate, as well as input fields for translated values
   {
- //   $translateoutput .= "<div class='tab-page'>\n";
-//    $translateoutput .= "<div id='tab-page'>\n";
 
     $translateoutput .= "<form name='translateform' method='post' "
-      ."action='$scriptname' id='translateform' />\n"
+      ."action='$scriptname' id='translateform' >\n"
       ."<input type='hidden' name='sid' value='$surveyid' />\n"
       ."<input type='hidden' name='action' value='translate' />\n"
       ."<input type='hidden' name='actionvalue' value='translateSave' />\n"
@@ -118,27 +118,23 @@
 
     // set up tabs
     $translateoutput .= ""
-//      ."<div class='condition-tbl-right'>\n"
-//      ."<div id=\"translationtabs\" class=\"tabs-nav\">\n"
-      ."<div id=\"translationtabs\" html>\n"
+      ."<div id=\"translationtabs\">\n"
       ."\t<ul>\n";
-    foreach($tab_names as $type)
-    {
-      $transarray = setupTranslateFields($type);
-      $translateoutput .= ""
-        ."\t\t<li><a href=\"#tab-".$type."\"><span>".$clang->gT($transarray["desc"])."</span></a></li>\n";
-    }
-    $translateoutput .= ""
+        foreach($tab_names as $type)
+        {
+          $transarray = setupTranslateFields($type);
+          $translateoutput .= ""
+            ."\t\t<li><a href=\"#tab-".$type."\"><span>".$clang->gT($transarray["desc"])."</span></a></li>\n";
+        }
+        $translateoutput .= ""
       ."\t</ul>\n";
-
-//      $translateoutput .= "<div class='tab-pane'>\n";
 
     // Define content of each tab
     foreach($tab_names as $type)
     {
       $transarray = setupTranslateFields($type);
       // Create tab names and heading
-      $translateoutput .= "\t<div id='tab-".$type."'>\n"      ;    //TODO continue here !!!!
+      $translateoutput .= "\t<div id='tab-".$type."'>\n";
       $translateoutput .= PrepareEditorScript("editlabel");
       // Setup form
         // start a counter in order to number the input fields for each record
@@ -197,9 +193,11 @@
                   . "<td>$tolangdesc</td>\n"
                   . "<td>\n";
                     $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
-                    $translateoutput .= "<input type='hidden' name='".$type."_oldvalue_".$i."' value='".$textto."' />\n";
+                    $translateoutput .= "<input type='hidden' "
+                      ."name='".$type."_oldvalue_".$i."' "
+                      ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
                     $translateoutput .= "<textarea cols='80' rows='".($nrows+1)."' "
-                      ." name='{$type}_newvalue_{$i}' >".$textto."</textarea>\n"
+                      ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n"
                       .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, $action);
                     $translateoutput .= "</td>\n"
                 . "</tr>\n"
@@ -217,12 +215,9 @@
           $translateoutput .= "<p>".$clang->gT("Nothing to translate on this page")."</p><br />";
         }
       $translateoutput .= "<input type='hidden' name='{$type}_size' value='$i' />";
-      $translateoutput .= "</div>";  // tab-page
+      $translateoutput .= "</div>\n";  // tab-page
 
       } // end foreach
-
-    $translateoutput .= "</div>\n";  // tab-pane
-    $translateoutput .= '</div>'; // div class='tab-page'
 
     // Submit button
     $translateoutput .= "<p><input type='submit' class='standardbtn' "
@@ -230,8 +225,8 @@
       ."\n";
 
 
-    $translateoutput .= '</div>';
-    $translateoutput .= "</form>";
+    $translateoutput .= "</div>\n";
+    $translateoutput .= "</form>\n";
   } // end if
 
 
