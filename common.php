@@ -6728,7 +6728,7 @@ function get_quotaCompletedCount($surveyid, $quotaid)
 function fix_FCKeditor_text($str)
 {
     $str = str_replace('<br type="_moz" />','',$str);
-    if ($str == "<br />" || $str == " ")
+    if ($str == "<br />" || $str == " " || $str == "&nbsp;")
     {
         $str = "";
     }
