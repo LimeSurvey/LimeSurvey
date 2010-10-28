@@ -56,7 +56,7 @@
   }
 
   $translateoutput = "";
-  $translateoutput .= "<form name='translateform' id='translateform' "
+  $translateoutput .= "<form name='translatemenu' id='translatemenu' "
                    ."action='$scriptname' method='get' >";
   $translateoutput .= showTranslateAdminmenu();
   $translateoutput .= "</form>";
@@ -108,7 +108,7 @@
  //   $translateoutput .= "<div class='tab-page'>\n";
 //    $translateoutput .= "<div id='tab-page'>\n";
 
-    $translateoutput .= "<form name='translateform' method='POST' "
+    $translateoutput .= "<form name='translateform' method='post' "
       ."action='$scriptname' id='translateform' />\n"
       ."<input type='hidden' name='sid' value='$surveyid' />\n"
       ."<input type='hidden' name='action' value='translate' />\n"
@@ -118,8 +118,9 @@
 
     // set up tabs
     $translateoutput .= ""
-      ."<div class='condition-tbl-right'>\n"
-      ."<div id=\"translationtabs\" class=\"tabs-nav\">\n"
+//      ."<div class='condition-tbl-right'>\n"
+//      ."<div id=\"translationtabs\" class=\"tabs-nav\">\n"
+      ."<div id=\"translationtabs\" html>\n"
       ."\t<ul>\n";
     foreach($tab_names as $type)
     {
@@ -196,9 +197,9 @@
                   . "<td>$tolangdesc</td>\n"
                   . "<td>\n";
                     $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
-                    $translateoutput .= "<input type='hidden' name='".$type."_oldvalue_".$i."' value='".htmlspecialchars(addslashes($textto))."' />\n";
+                    $translateoutput .= "<input type='hidden' name='".$type."_oldvalue_".$i."' value='".$textto."' />\n";
                     $translateoutput .= "<textarea cols='80' rows='".($nrows+1)."' "
-                      ." name='{$type}_newvalue_{$i}' >".htmlspecialchars(addslashes($textto))."</textarea>\n"
+                      ." name='{$type}_newvalue_{$i}' >".$textto."</textarea>\n"
                       .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, $action);
                     $translateoutput .= "</td>\n"
                 . "</tr>\n"

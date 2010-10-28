@@ -14,16 +14,43 @@
 *
 */
 
+/**
+ * menuItem() creates a menu item with text and image in the admin screen menus
+ * @global string $clang, $imageurl
+ * @return string
+ */
+function menuItem($menuText, $menuImageText, $menuImageFile, $scriptname)
+{
+  global $clang, $imageurl;
+  $menu = ""
+      ."<a href=\"#\" onclick=\"window.open('".$scriptname."', '_top')\"
+          .title='".$clang->gTview($menuText)."'>"
+          ."<img name='".$menuImageText."' src='$imageurl/".$menuImageFile."' alt='"
+          .$clang->gT($menuText)."' /></a>\n"
+      ."<img src='$imageurl/blank.gif' alt='' width='11'  />\n";
+  return $menu;
+}
+
+/**
+ * menuSeparator() creates a separator bar in the admin screen menus
+ * @global string $imageurl
+ * @return string
+ */
+function menuSeparator()
+{
+  global $imageurl;
+  return ("<img src='$imageurl/seperator.gif' alt='' />\n");
+}
 
 /**
  * showTranslateAdminmenu() creates the main menu options for the survey translation page
- * @global string $tolang
+ * @global string scriptname, $surveyid, $survey_title, $imageurl, $clang, $action,
+           $tolang, $activated, $publicurl
  * @return string
  */
-
   function showTranslateAdminmenu()
 {
-   global $scriptname, $surveyid, $imageurl, $clang, $action, 
+   global $scriptname, $surveyid, $survey_title, $imageurl, $clang, $action,
            $tolang, $activated, $publicurl;
 
   $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -33,7 +60,7 @@
   $adminmenu = ""
     ."<div class='menubar'>\n"
       ."<div class='menubar-title'>\n"
-        ."<strong>".$clang->gT("Translate survey")."</strong>\n"
+        ."<strong>".$clang->gT("Translate survey").": $survey_title</strong>\n"
       ."</div>\n" // class menubar-title
       ."<div class='menubar-main'>\n";
 
@@ -42,18 +69,10 @@
     ."<div class='menubar-left'>\n";
 
 // Return to survey administration button
-
-  $adminmenu .= ""
-      ."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\"
-          .title='".$clang->gTview("Return to survey administration")."'>"
-          ."<img name='Administration' src='$imageurl/home.png' alt='"
-          .$clang->gT("Return to survey administration")."' /></a>\n"
-      ."<img src='$imageurl/blank.gif' alt='' width='11'  />\n";
+  $adminmenu .= menuItem("Return to survey administration", "Administration", "home.png", "$scriptname?sid=$surveyid");
 
   // Separator
-  $adminmenu .= ""
-    ."<img src='$imageurl/seperator.gif' alt='' />\n";
-
+  $adminmenu .= menuSeparator();
   
   // Test / execute survey button
 
@@ -66,40 +85,38 @@
 
   if ($activated == "N")
   {
-      $icontext=$clang->gT("Test This Survey");
-      $icontext2=$clang->gTview("Test This Survey");
+      $menutext="Test This Survey";
   } else
   {
-      $icontext=$clang->gT("Execute This Survey");
-      $icontext2=$clang->gTview("Execute This Survey");
+      $menutext="Execute This Survey";
   }
-  //$baselang = GetBaseLanguageFromSurveyID($surveyid);
   if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
   {
-      $adminmenu .= "<a href=\"#\" accesskey='d' onclick=\"window.open('"
-      . $publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang', '_blank')\" title=\"".$icontext2."\" >"
-      . "<img src='$imageurl/do.png' alt='$icontext' />"
-      . "</a>\n";
+      $adminmenu .= menuItem($menutext, $menutext, "do.png", "$publicurl/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang");
 
-  } else {
-      $adminmenu .= "<a href='#' id='dosurvey' class='dosurvey'"
-      . "title=\"".$icontext2."\" accesskey='d'>"
-      . "<img  src='$imageurl/do.png' alt='$icontext' />"
-      . "</a>\n";
+  }
+  else
+  {
+    $icontext = $clang->gT($menutext);
+    $icontext2 = $clang->gT($menutext);
+    $adminmenu .= "<a href='#' id='dosurvey' class='dosurvey'"
+    . "title=\"".$icontext2."\" accesskey='d'>"
+    . "<img  src='$imageurl/do.png' alt='$icontext' />"
+    . "</a>\n";
 
-      $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-      $tmp_survlangs[] = $baselang;
-      rsort($tmp_survlangs);
-      // Test Survey Language Selection Popup
-      $adminmenu .="<div class=\"langpopup\" id=\"dosurveylangpopup\">"
-        .$clang->gT("Please select a language:")."<ul>";
-      foreach ($tmp_survlangs as $tmp_lang)
-      {
-          $adminmenu .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');"
-            ."\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;"
-            ."newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
-      }
-      $adminmenu .= "</ul></div>";
+    $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+    $tmp_survlangs[] = $baselang;
+    rsort($tmp_survlangs);
+    // Test Survey Language Selection Popup
+    $adminmenu .="<div class=\"langpopup\" id=\"dosurveylangpopup\">"
+      .$clang->gT("Please select a language:")."<ul>";
+    foreach ($tmp_survlangs as $tmp_lang)
+    {
+        $adminmenu .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');"
+          ."\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;"
+          ."newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+    }
+    $adminmenu .= "</ul></div>";
   }
 
   // End of survey-bar-left
