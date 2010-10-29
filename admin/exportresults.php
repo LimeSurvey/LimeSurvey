@@ -288,7 +288,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
         $result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
         $row = $result->FetchRow();
 
-        $sheet =& $workbook->addWorksheet(utf8_decode($row['surveyls_title']));
+        $sheet =& $workbook->addWorksheet('Results survey ID '.$surveyid); // do not translate/change this - the library does not support any special chars in sheet name
         $sheet->setInputEncoding('utf-8');
         $separator="~|";
         break;
