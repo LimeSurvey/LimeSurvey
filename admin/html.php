@@ -2317,50 +2317,20 @@ if($action == "surveysecurity")
                    ORDER BY u.users_name";
         $result2 = db_execute_assoc($query2); //Checked
 
-        $surveysecurity ="<div class='header'>".$clang->gT("Survey Security")."</div>\n";
-        $surveysecurity .= "<table class='surveysecurity'><thead>"
+        $surveysecurity ="<div class='header'>".$clang->gT("Survey Security")."</div>\n"
+        . "<table class='surveysecurity'><thead>"
         . "<tr>\n"
+        . "<th>".$clang->gT("Action")."</th>\n"
         . "<th>".$clang->gT("Username")."</th>\n"
         . "<th>".$clang->gT("User Group")."</th>\n"
         . "<th>".$clang->gT("Full name")."</th>\n";
         foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
         {
-            $surveysecurity.="<th align=\"center\"><img src=\"$imageurl/help.gif\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\"></th>\n";
+            $surveysecurity.="<th align=\"center\"><img src=\"$imageurl/help.gif\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
         }
-        $surveysecurity.= "<th>".$clang->gT("Action")."</th>\n"
-        . "</tr></thead>\n";
+        $surveysecurity .= "</tr></thead>\n";
 
-        $style="style='width: 15em;'";
-        
         // Foot first
-        $surveysecurity .= "<tfoot>\n"
-        . "<tr>\n"
-        . "<td colspan='9' align='right'>"
-        . "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
-        . "<strong>".$clang->gT("User").": </strong><select id='uidselect' name='uid'>\n"
-        . sGetSurveyUserlist(false,false)
-        . "</select>\n"
-        . "<input $style type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
-        . "<input type='hidden' name='action' value='addsurveysecurity' />"
-        . "</form>\n"
-        . "</td>\n"
-
-        . "<td></td>\n"
-        . "</tr>\n"
-
-        . "<tr>\n"
-        . "<td colspan='9' align='right'>"
-        . "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
-        . "<strong>".$clang->gT("Groups").": </strong><select id='ugidselect' name='ugid'>\n"
-        . getsurveyusergrouplist()
-        . "</select>\n"
-        . "<input $style type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
-        . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
-        . "</form>\n"
-        . "</td>\n"
-
-        . "<td></td>\n"
-        . "</tr></tfoot>\n";
 
         if (isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true)
@@ -2375,6 +2345,7 @@ if($action == "surveysecurity")
             $row = 0;
             while ($PermissionRow = $result2->FetchRow())
             {
+                
                 $query3 = "SELECT a.ugid FROM ".db_table_name('user_in_groups')." AS a RIGHT OUTER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE b.uid = ".$PermissionRow['uid'];
                 $result3 = db_execute_assoc($query3); //Checked
                 while ($resul3row = $result3->FetchRow())
@@ -2404,10 +2375,24 @@ if($action == "surveysecurity")
                 }
                 //                  else {break;} //TODO Commented by lemeur
                 if(($row % 2) == 0)
-                $surveysecurity .= "<tr class=\"oddrow\">\n";
-                else
-                $surveysecurity .= "<tr class=\"evenrow\">\n";
+                $surveysecurity .= "<tr>\n";
 
+                $surveysecurity .= "<td>\n";
+                $surveysecurity .= "<form style='display:inline;' method='post' action='$scriptname?sid={$surveyid}'>"
+                ."<input type='image' src='{$imageurl}/token_edit.png' title='".$clang->gT("Edit permissions")."' />"
+                ."<input type='hidden' name='action' value='setsurveysecurity' />"
+                ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
+                ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
+                ."</form>\n";
+                $surveysecurity .= "<form style='display:inline;' method='post' action='$scriptname?sid={$surveyid}'>"
+                ."<input type='image' src='{$imageurl}/token_delete.png' title='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                ."<input type='hidden' name='action' value='delsurveysecurity' />"
+                ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
+                ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
+                ."</form>";
+
+                
+                $surveysecurity .= "</td>\n";
                 $surveysecurity .= "<td>{$PermissionRow['users_name']}</td>\n"
                 . "<td>";
                  
@@ -2449,32 +2434,29 @@ if($action == "surveysecurity")
                     $surveysecurity .= "<td align=\"center\">\n$insert\n</td>\n";
                 }
 
-                $surveysecurity .= "<td style='padding-top:10px;'>\n";
-
-
-                $surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-                ."<input type='submit' value='".$clang->gT("Edit permissions")."' />"
-                ."<input type='hidden' name='action' value='setsurveysecurity' />"
-                ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
-                ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
-                ."</form>\n";
-                $surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-                ."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
-                ."<input type='hidden' name='action' value='delsurveysecurity' />"
-                ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
-                ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
-                ."</form>";
-
-                
-                $surveysecurity .= "</td>\n"
-                . "</tr>\n";
+                $surveysecurity .= "</tr>\n";
                 $row++;
             }
         } else {
             $surveysecurity .= "<tr><td colspan='18'></td></tr>"; //fix error on empty table
         }
         $surveysecurity .= "</tbody>\n"
-        . "</table>\n";
+        . "</table>\n"
+        . "<p><form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul>\n"
+        . "<li><label for='uidselect'>".$clang->gT("User").": </label><select id='uidselect' name='uid'>\n"
+        . sGetSurveyUserlist(false,false)
+        . "</select>\n"
+        . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
+        . "<input type='hidden' name='action' value='addsurveysecurity' />"
+        . "</li></ul></form>\n"
+        . "<form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul><li>\n"
+        . "<label for='ugidselect'>".$clang->gT("Groups").": </label><select id='ugidselect' name='ugid'>\n"
+        . getsurveyusergrouplist()
+        . "</select>\n"
+        . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
+        . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
+        . "</li></ul></form>";
+        
     }
     else
     {
@@ -3386,7 +3368,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
 
             // Ending First TABs Form
         if ($action == "newsurvey") {
-            $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='insertnewsurvey' />\n";
+            $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='insertsurvey' />\n";
         } elseif ($action == "editsurveysettings") {
         $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
             . "<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"

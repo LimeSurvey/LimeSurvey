@@ -82,7 +82,7 @@ if(isset($_SESSION['loginID']))
     if (
     preg_match
     (
-			'/^(delsurvey|delgroup|delquestion|insertnewsurvey|updatesubquestions|copynewquestion|insertquestiongroup|insertCSV|insertquestion|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatesurveylocalesettings|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
+			'/^(delsurvey|delgroup|delquestion|insertsurvey|updatesubquestions|copynewquestion|insertquestiongroup|insertCSV|insertquestion|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatesurveylocalesettings|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
     $action
     )
 

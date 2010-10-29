@@ -2,6 +2,7 @@
 
 $(document).ready(function(){
  $(".surveysecurity").tablesorter({
+        widgets: ['zebra'],
 	 	sortList: [[2,0]],
  		headers: { 19: { sorter: false} }
  });

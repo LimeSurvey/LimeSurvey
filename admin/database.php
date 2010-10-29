@@ -1237,7 +1237,7 @@ if(isset($surveyid))
 
 
 
-elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
+elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
     if ($_POST['url'] == 'http://') {$_POST['url']="";}
@@ -1418,7 +1418,7 @@ else
 }
 
 /**
-* THis is a convenience function to update/delete answer default values. If the given 
+* This is a convenience function to update/delete answer default values. If the given 
 * $defaultvalue is empty then the entry is removed from table defaultvalues
 * 
 * @param mixed $qid   Question ID

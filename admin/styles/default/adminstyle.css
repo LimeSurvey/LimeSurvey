@@ -561,10 +561,11 @@ a.optoutemail {
 .quotalist th,
 .assessmentlist th,
 .edituser th,
+.surveysecurity th,
 .users th,
 .listsurveys th {
     background-color: #D2E0F2;     
-    font-size:8pt;
+    font-size:0.8em;
     padding:2px 14px 2px 10px;
 }
 
@@ -589,8 +590,9 @@ a.optoutemail {
 }
 
 .users td,
+.surveysecurity td,
 .listsurveys td {
-    font-size:8pt;
+    font-size:0.8em;
     padding:2px 6px; 
 }
 
