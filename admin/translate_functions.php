@@ -222,7 +222,7 @@ function setupTranslateFields($type)
         "gid"  => FALSE,
         "qid"  => FALSE,
         "what" => 'surveyls_description',
-        "desc" => "Description",
+        "desc" => "Description:",
         "formname" => 'init_update'
       );
       break;
@@ -246,7 +246,7 @@ function setupTranslateFields($type)
         "gid"  => FALSE,
         "qid"  => FALSE,
         "what" => 'surveyls_welcometext',
-        "desc" => "Welcome message",
+        "desc" => "Welcome:",
         "formname" => 'init_update',
       );
       break;
@@ -270,7 +270,7 @@ function setupTranslateFields($type)
         "gid"  => FALSE,
         "qid"  => FALSE,
         "what" => 'surveyls_endtext',
-        "desc" => "End message",
+        "desc" => "End message:",
         "formname" => 'init_update'
       );
       break;
@@ -324,7 +324,7 @@ function setupTranslateFields($type)
         "gid"  => TRUE,
         "qid"  => FALSE,
         "what" => "description",
-        "desc" => "Group description",
+        "desc" => "Description:",
         "formname" => 'group_update'
       );
       break;
