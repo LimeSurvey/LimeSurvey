@@ -135,7 +135,7 @@
       $transarray = setupTranslateFields($type);
       // Create tab names and heading
       $translateoutput .= "\t<div id='tab-".$type."'>\n";
-      $translateoutput .= PrepareEditorScript("editlabel");
+      $translateoutput .= PrepareEditorScript("noneedforvalue");
       // Setup form
         // start a counter in order to number the input fields for each record
         $i = 0;
@@ -198,7 +198,7 @@
                       ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
                     $translateoutput .= "<textarea cols='80' rows='".($nrows+1)."' "
                       ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n"
-                      .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, $action);
+                      .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
                     $translateoutput .= "</td>\n"
                 . "</tr>\n"
               . "</table>\n"

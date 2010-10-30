@@ -348,7 +348,11 @@ if(isset($_SESSION['loginID']))
                 }
                 break;
             case 'editsurveylocalesettings':
-			case 'updatesurveysettingsandeditlocalesettings':
+            case 'updatesurveysettingsandeditlocalesettings':
+            case 'translatetitle':
+            case 'translatedescription':
+            case 'translatewelcome':
+            case 'translateend':
                 if (bHasSurveyPermission($surveyid,'surveysettings','update') && bHasSurveyPermission($surveyid,'surveylocale','read'))
                 {
                     $_SESSION['FileManagerContext']="edit:survey:$surveyid";
@@ -373,6 +377,8 @@ if(isset($_SESSION['loginID']))
             case 'editquestion':
             case 'copyquestion':
             case 'addquestion':
+            case 'translatequestion':
+            case 'translatequestion_help':
                 if (bHasSurveyPermission($surveyid,'surveycontent','read'))
                 {
                     $_SESSION['FileManagerContext']="edit:question:$surveyid";
@@ -385,6 +391,7 @@ if(isset($_SESSION['loginID']))
                 break;
             case 'editgroup':
             case 'addgroup':
+            case 'translategroup':
                 if (bHasSurveyPermission($surveyid,'surveycontent','read'))
                 {
                     $_SESSION['FileManagerContext']="edit:group:$surveyid";
@@ -396,6 +403,7 @@ if(isset($_SESSION['loginID']))
                 }
                 break;
             case 'editanswer':
+            case 'translateanswer':
                 if (bHasSurveyPermission($surveyid,'surveycontent','read'))
                 {
                     $_SESSION['FileManagerContext']="edit:answer:$surveyid";

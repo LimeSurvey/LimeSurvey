@@ -115,6 +115,10 @@ switch ($fieldtype)
     case 'survey-desc':
     case 'survey-welc':
     case 'survey-endtext':
+    case 'edittitle': // for translation
+    case 'editdescription': // for translation
+    case 'editwelcome': // for translation
+    case 'editend': // for translation
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
@@ -184,6 +188,9 @@ switch ($fieldtype)
     case 'group-desc':
     case 'question-text':
     case 'question-help':
+    case 'editgroup': // for translation
+    case 'editquestion': // for translation
+    case 'editquestion_help': // for translation
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
@@ -228,6 +235,7 @@ if ($isInstertansEnabled===true)
                 break;
 
             case 'editgroup':
+            case 'translategroup':
                 if (empty($gid)) {die("No GID provided.");}
 
                 if ($field['gid'] == $gid)
@@ -250,6 +258,8 @@ if ($isInstertansEnabled===true)
             case 'editanswer':
             case 'copyquestion':
             case 'editquestion':
+            case 'translatequestion':
+            case 'translateanswer':
                 if (empty($gid)) {die("No GID provided.");}
                 if (empty($qid)) {die("No QID provided.");}
 
