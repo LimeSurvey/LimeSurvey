@@ -650,6 +650,7 @@ function db_select_tables_like($table)
             return "SHOW TABLES LIKE '$table'";
         case 'odbtp' :
         case 'mssql_n' :
+        case 'mssqlnative':
         case 'odbc_mssql' :
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
         case 'postgres' :
@@ -3456,7 +3457,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>100,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
-    1=>$clang->gT('Yes')),
+                     1=>$clang->gT('Yes')),
     'default'=>0,                 
     "help"=>$clang->gT("Sort answers alphabetically"),
     "caption"=>$clang->gT('Sort answers alphabetically'));
@@ -3538,7 +3539,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>100,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
-    1=>$clang->gT('Yes')),
+                     1=>$clang->gT('Yes')),
     'default'=>0,   
     "help"=>$clang->gT('Use accessible select boxes instead of calendar popup'),
     "caption"=>$clang->gT('Display select boxes'));
