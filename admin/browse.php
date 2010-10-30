@@ -328,7 +328,9 @@ elseif ($subaction == "all")
 
     $browseoutput .= "\n<script type='text/javascript'>
                           var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
-                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."'; 
+                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
+                          var noFilesSelectedForDeletion = '".$clang->gT('Please select at least one file for deletion','js')."';
+                          var noFilesSelectedForDnld = '".$clang->gT('Please select at least one file for download','js')."';
                         </script>\n";    
     if (!isset($_POST['sql']))
     {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
@@ -692,7 +694,7 @@ elseif ($subaction == "all")
         $tableheader .= "<img id='imgDeleteMarkedResponses' src='{$imageurl}/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />";
     }
     if (bHasFileUploadQuestion($surveyid))
-        $tableheader .="<img id='imgDownloadMarkedFiles' src='{$imagefiles}/down_all.png' alt='".$clang->gT('Download marked files')."' />";
+        $tableheader .="<img id='imgDownloadMarkedFiles' src='{$imageurl}/down_all.png' alt='".$clang->gT('Download marked files')."' />";
     
     $tableheader .="</td></tr></tfoot>\n\n";
     
@@ -996,7 +998,7 @@ elseif ($subaction == "all")
 
         // Do not show the download image if the question doesn't contain the File Upload Question Type
         if (bHasFileUploadQuestion($surveyid))
-            $browseoutput .=" <a><img id='downloadfile_{$dtrow['id']}' src='{$imagefiles}/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>";
+            $browseoutput .=" <a><img id='downloadfile_{$dtrow['id']}' src='{$imageurl}/down.png' alt='".$clang->gT('Download all files in this response as a zip file')."' class='downloadfile'/></a>";
 
         if (bHasSurveyPermission($surveyid,'responses','delete'))
         {

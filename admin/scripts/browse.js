@@ -38,7 +38,7 @@ $(document).ready(function(){
             }
         }
         else
-            alert('Please select at least one file to delete')
+            alert(noFilesSelectedForDeletion)
     });
 
     // Download individual file bundle
@@ -57,7 +57,7 @@ $(document).ready(function(){
             $('#resulttableform').submit();
         }
         else
-            alert('Please select at least one file to download')
+            alert(noFilesSelectedForDnld)
     });
     
     $("#selectall").click(function(){
