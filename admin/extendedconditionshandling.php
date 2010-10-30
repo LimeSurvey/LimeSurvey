@@ -255,12 +255,12 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
 	    $extendedconditionsoutput .= "\t<tr class='$bgc'>\n"
         
         // actions
-        ."<td><input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/conditions_edit.png' title='"
+        ."<td><input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/conditions_edit_16.png' title='"
         .$clang->gT("Edit condition")
         ."' alt='"
         .$clang->gT("Edit condition")
         ."' onclick=\"window.open('$scriptname?action=extendedconditions&amp;sid=".$brow['sid']."&amp;gid=".$brow['gid']."&amp;qid=".$brow['qid']."&amp;subaction=edit', '_top')\" />"
-        ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/conditions_delete.png' title='"
+        ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/conditions_delete_16.png' title='"
         .$clang->gT("Delete condition")
         ."' alt='"
         .$clang->gT("Delete condition")

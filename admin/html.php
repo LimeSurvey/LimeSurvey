@@ -448,34 +448,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "<img src='{$imageurl}/token_manage.png' name='EditSurveySettings' alt='".$clang->gT("Edit survey settings")."' /></a>\n";
         }
  
-        if(bHasSurveyPermission($surveyid,'surveycontent','export'))
-        {
-            if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
-            {
 
-                $surveysummary .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
-                . " title=\"".$clang->gTview("Printable and scannable Version of survey")."\" >"
-                . "<img src='{$imageurl}/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' /></a>";
-
-            } else {
-
-                $surveysummary .= "<a href='#' id='doprintableScannable' title=\"".$clang->gTview("Printable and scannable version of survey")."\" >"
-                . "<img src='{$imageurl}/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' /></a>\n";
-                
-                $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                $baselang = GetBaseLanguageFromSurveyID($surveyid);
-                $tmp_survlangs[] = $baselang;
-                rsort($tmp_survlangs);
-
-                // Test Survey Language Selection Popup
-                $surveysummary .="<div class=\"langpopup\" id=\"doprintableScannablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
-                foreach ($tmp_survlangs as $tmp_lang)
-                {
-                    $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintableScannable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
-                }
-                $surveysummary .= "</ul></div>";
-            }
-        }        
  
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
@@ -682,6 +655,34 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "<img src='$imageurl/translate.png' name='translate' alt='".$clang->gT("Translate survey")."' /></a>\n";
         }
  
+        if(bHasSurveyPermission($surveyid,'surveycontent','export'))
+        {
+            if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+            {
+
+                $surveysummary .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=showquexmlsurvey&amp;sid=$surveyid', '_top')\""
+                . " title=\"".$clang->gTview("Printable and scannable Version of survey")."\" >"
+                . "<img src='{$imageurl}/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' /></a>";
+
+            } else {
+
+                $surveysummary .= "<a href='#' id='doprintableScannable' title=\"".$clang->gTview("Printable and scannable version of survey")."\" >"
+                . "<img src='{$imageurl}/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' /></a>\n";
+                
+                $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                $tmp_survlangs[] = $baselang;
+                rsort($tmp_survlangs);
+
+                // Test Survey Language Selection Popup
+                $surveysummary .="<div class=\"langpopup\" id=\"doprintableScannablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
+                foreach ($tmp_survlangs as $tmp_lang)
+                {
+                    $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintableScannable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                }
+                $surveysummary .= "</ul></div>";
+            }
+        }      
         if (bHasSurveyPermission($surveyid,'surveycontent','update'))
         {
             if ($sumcount6 > 0) {
@@ -1344,7 +1345,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             $questionsummary .= "<tr ><td></td><td align='left'>"
             . "<font face='verdana' size='1' color='red'>"
             . $clang->gT("Warning").": ". $clang->gT("You need to add answer options to this question")." "
-            . "<input align='top' type='image' src='$imageurl/answerssmall.png' title='"
+            . "<input align='top' type='image' src='$imageurl/answers_20.png' title='"
             . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'"
             . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editansweroptions', '_top')\" /></font></td></tr>\n";
         }
@@ -1353,7 +1354,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
            $questionsummary .= "<tr ><td></td><td align='left'>"
             . "<font face='verdana' size='1' color='red'>"
             . $clang->gT("Warning").": ". $clang->gT("You need to add subquestions to this question")." "
-            . "<input align='top' type='image' src='$imageurl/answerssmall.png' title='"
+            . "<input align='top' type='image' src='$imageurl/answers_20.png' title='"
             . $clang->gT("Edit subquestions for this question")."' name='EditThisQuestionAnswers'"
             . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editsubquestions', '_top')\" /></font></td></tr>\n";
 		}
@@ -2060,12 +2061,12 @@ if($action == "setsurveysecurity")
         $usersummary .= ""
         . "<tr><th align='center'>".$clang->gT("Permission")."</th>\n"
         . "<th align='center'></th>\n"
-        . "<th align='center'>".$clang->gT("Create")."</th>\n"
-        . "<th align='center'>".$clang->gT("View/read")."</th>\n"
-        . "<th align='center'>".$clang->gT("Update")."</th>\n"
-        . "<th align='center'>".$clang->gT("Delete")."</th>\n"
-        . "<th align='center'>".$clang->gT("Import")."</th>\n"
-        . "<th align='center'>".$clang->gT("Export")."</th>\n"
+        . "<th align='center' class='extended'>".$clang->gT("Create")."</th>\n"
+        . "<th align='center' class='extended'>".$clang->gT("View/read")."</th>\n"
+        . "<th align='center' class='extended'>".$clang->gT("Update")."</th>\n"
+        . "<th align='center' class='extended'>".$clang->gT("Delete")."</th>\n"
+        . "<th align='center' class='extended'>".$clang->gT("Import")."</th>\n"
+        . "<th align='center' class='extended'>".$clang->gT("Export")."</th>\n"
         . "</tr></thead>\n";
 
         //content
@@ -2080,7 +2081,7 @@ if($action == "setsurveysecurity")
             foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
             {
                 if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
-                $usersummary .= "<td align='center'>";
+                $usersummary .= "<td class='extended' align='center'>";
                 
                 if ($CRUDValue)
                 {
@@ -2326,7 +2327,7 @@ if($action == "surveysecurity")
         . "<th>".$clang->gT("Full name")."</th>\n";
         foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
         {
-            $surveysecurity.="<th align=\"center\"><img src=\"$imageurl/help.gif\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
+            $surveysecurity.="<th align=\"center\"><img src=\"{$imageurl}/{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
         }
         $surveysecurity .= "</tr></thead>\n";
 
@@ -3720,10 +3721,10 @@ function showadminmenu()
             .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
             .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
             .'<ol>'
-            .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imageurl/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
+            .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imageurl/add_20.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
             .'<li>'.$clang->gT('Create a new question group inside your survey.').'</li>'
             .'<li>'.$clang->gT('Create one or more questions inside the new question group.').'</li>'
-            .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imageurl/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
+            .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imageurl/do_20.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
             .'</ol></p><br />&nbsp;</div>';
         }
 

@@ -1149,7 +1149,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
             $conditionsoutput_main_content .= "<a href='#' "
             . " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')) {document.getElementById('deleteallconditions').submit();}\""
             ." title='".$clang->gTview("Delete all conditions")."' >"
-            ." <img src='$imageurl/conditions_deleteall.png'  alt='".$clang->gT("Delete all conditions")."' name='DeleteAllConditionsImage' /></a>\n";
+            ." <img src='$imageurl/conditions_deleteall_16.png'  alt='".$clang->gT("Delete all conditions")."' name='DeleteAllConditionsImage' /></a>\n";
         }
 
         if ($scenariocount > 1)
@@ -1482,10 +1482,10 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
                         ."<a href='#' "
                         ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) {\$('#editModeTargetVal{$rows['cid']}').remove();\$('#cquestions{$rows['cid']}').remove();document.getElementById('conditionaction{$rows['cid']}').submit();}\""
                         ." title='".$clang->gTview("Delete this condition")."' >"
-                        ." <img src='$imageurl/conditions_delete.png'  alt='".$clang->gT("Delete this condition")."' name='DeleteThisCondition' title='' /></a>\n"
+                        ." <img src='$imageurl/conditions_delete_16.png'  alt='".$clang->gT("Delete this condition")."' name='DeleteThisCondition' title='' /></a>\n"
                         ."<a href='#' "
                         ." onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";document.getElementById(\"conditionaction{$rows['cid']}\").submit();'>"
-                        ." <img src='$imageurl/conditions_edit.png'  alt='".$clang->gT("Edit this condition")."' name='EditThisCondition' /></a>\n"
+                        ." <img src='$imageurl/conditions_edit_16.png'  alt='".$clang->gT("Edit this condition")."' name='EditThisCondition' /></a>\n"
                         ."\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
                         ."\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
                         ."\t<input type='hidden' name='scenario' value='{$rows['scenario']}' />\n"

@@ -1365,7 +1365,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
 	                {
 	                    $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
-	                    $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/token_do.png' title='"
+	                    $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/do_16.png' title='"
 	                    .$clang->gT("Do Survey")
 	                    ."' alt='"
 	                    .$clang->gT("Do Survey")

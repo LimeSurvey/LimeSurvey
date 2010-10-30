@@ -498,7 +498,7 @@ if ($action == "editusers")
         $usr['parent_id'] == $_SESSION['loginID'])) && $usr['uid']!=1)
         {
             $usersummary .= "<form method='post' action='$scriptname'>"
-            ."<input type='image' src='$imageurl/security_small.png' alt='".$clang->gT("Set global permissions for this user")."' />"
+            ."<input type='image' src='$imageurl/security_16.png' alt='".$clang->gT("Set global permissions for this user")."' />"
             ."<input type='hidden' name='action' value='setuserrights' />"
             ."<input type='hidden' name='user' value='{$usr['user']}' />"
             ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
