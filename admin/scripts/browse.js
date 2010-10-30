@@ -37,6 +37,8 @@ $(document).ready(function(){
                 $('#resulttableform').submit();
             }
         }
+        else
+            alert('Please select at least one file to delete')
     });
 
     // Download individual file bundle
@@ -50,8 +52,12 @@ $(document).ready(function(){
     // Download all marked files
     $("#imgDownloadMarkedFiles").click(function() {
         if ($('.cbResponseMarker:checked').size() > 0)
+        {
             $('#downloadfile').val('marked');
             $('#resulttableform').submit();
+        }
+        else
+            alert('Please select at least one file to download')
     });
     
     $("#selectall").click(function(){
