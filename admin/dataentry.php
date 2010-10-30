@@ -239,8 +239,17 @@ if (bHasRight($surveyid, 'browse_response'))
                     }
                     else
                     {
-                        $columns[] .= db_quote_id($fieldname);
-                        $values[] .= db_quoteall($_POST[$fieldname],true);
+                        if ($irow['type'] == 'D')
+                        {
+                            $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
+                            $columns[] .= db_quote_id($fieldname);
+                            $values[] .= db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
+                        }
+                        else
+                        {
+                            $columns[] .= db_quote_id($fieldname);
+                            $values[] .= db_quoteall($_POST[$fieldname],true);
+                        }
                     }
                 }
             }
