@@ -2187,13 +2187,13 @@ if($action == "setsurveysecurity")
         $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
         $js_admin_includes[]='scripts/surveysecurity.js';
         $sUsername=$connect->GetOne("select users_name from ".db_table_name('users')." where uid={$postuserid}");
-        $usersummary = "<div class='header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div><p>
+        $usersummary = "<div class='header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div><br />
         <form action='$scriptname?sid={$surveyid}' method='post'>\n"
         . "<table style='margin:0 auto;' border='0' class='usersurveypermissions'><thead>\n";
 
         $usersummary .= ""
-        . "<tr><th align='center'>".$clang->gT("Permission")."</th>\n"
-        . "<th align='center'></th>\n"
+        . "<tr><th></th><th align='center'>".$clang->gT("Permission")."</th>\n"
+        . "<th align='center'><input type='button' id='btnToggleAdvanced' value='&gt;&gt;' /></th>\n"
         . "<th align='center' class='extended'>".$clang->gT("Create")."</th>\n"
         . "<th align='center' class='extended'>".$clang->gT("View/read")."</th>\n"
         . "<th align='center' class='extended'>".$clang->gT("Update")."</th>\n"
@@ -2209,7 +2209,8 @@ if($action == "setsurveysecurity")
         foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
         {
             $oddcolumn=!$oddcolumn;
-            $usersummary .= "<tr><td align='right'>{$aCRUDPermissions['title']}</td>";
+            $usersummary .= "<tr><td align='center'><img src='{$imageurl}/{$aCRUDPermissions['img']}_30.png' /></td>";
+            $usersummary .= "<td align='right'>{$aCRUDPermissions['title']}</td>";
             $usersummary .= "<td  align='center'><input type=\"checkbox\"  class=\"markrow\" name='all_{$sPermissionKey}' /></td>";
             foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
             {
@@ -2508,7 +2509,6 @@ if($action == "surveysecurity")
                     $group_names_query = implode(", ", $group_names);
                 }
                 //                  else {break;} //TODO Commented by lemeur
-                if(($row % 2) == 0)
                 $surveysecurity .= "<tr>\n";
 
                 $surveysecurity .= "<td>\n";
@@ -2545,6 +2545,7 @@ if($action == "surveysecurity")
 
                 //Now show the permissions
                 foreach ($aBaseSurveyPermissions as $sPKey=>$aPDetails) {
+                    unset($aPDetails['img']);
                     unset($aPDetails['description']);
                     unset($aPDetails['title']);
                     $iCount=0;
@@ -2556,14 +2557,14 @@ if($action == "surveysecurity")
                     }
                     if ($sPKey=='survey')  $iPermissionCount--;
                     if ($iCount==$iPermissionCount) {
-                        $insert = "<div class=\"ui-icon ui-icon-check\"></div>";
+                        $insert = "<div class=\"ui-icon ui-icon-check\">&nbsp;</div>";
                     } 
                     elseif ($iCount>0){
-                        $insert = "<div class=\"ui-icon ui-icon-radio-off\"></div>";
+                        $insert = "<div class=\"ui-icon ui-icon-radio-off\">&nbsp;</div>";
                     }
                     else
                     {
-                        $insert = "<div></div>";
+                        $insert = "<div>&nbsp;</div>";
                     }
                     $surveysecurity .= "<td align=\"center\">\n$insert\n</td>\n";
                 }
@@ -2576,7 +2577,7 @@ if($action == "surveysecurity")
         }
         $surveysecurity .= "</tbody>\n"
         . "</table>\n"
-        . "<p><form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul>\n"
+        . "<form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul>\n"
         . "<li><label for='uidselect'>".$clang->gT("User").": </label><select id='uidselect' name='uid'>\n"
         . sGetSurveyUserlist(false,false)
         . "</select>\n"
