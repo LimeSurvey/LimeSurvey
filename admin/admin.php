@@ -392,6 +392,7 @@ if(isset($_SESSION['loginID']))
             case 'editgroup':
             case 'addgroup':
             case 'translategroup':
+            case 'translategroup_desc':
                 if (bHasSurveyPermission($surveyid,'surveycontent','read'))
                 {
                     $_SESSION['FileManagerContext']="edit:group:$surveyid";

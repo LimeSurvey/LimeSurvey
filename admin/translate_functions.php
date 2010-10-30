@@ -324,7 +324,7 @@ function setupTranslateFields($type)
         "gid"  => TRUE,
         "qid"  => FALSE,
         "what" => "description",
-        "desc" => "Description",
+        "desc" => "Group description",
         "formname" => 'group_update'
       );
       break;

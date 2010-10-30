@@ -189,6 +189,7 @@ switch ($fieldtype)
     case 'question-text':
     case 'question-help':
     case 'editgroup': // for translation
+    case 'editgroup_desc': // for translation
     case 'editquestion': // for translation
     case 'editquestion_help': // for translation
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
@@ -235,6 +236,7 @@ if ($isInstertansEnabled===true)
                 break;
 
             case 'editgroup':
+            case 'editgroup_desc':
             case 'translategroup':
                 if (empty($gid)) {die("No GID provided.");}
 
