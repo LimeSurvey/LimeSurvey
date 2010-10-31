@@ -1,47 +1,6 @@
--- LimeSurvey MS SQL Server 2000 database schema
-
--- --------------------------------------------------------
-
-CREATE TABLE [prefix_quota] (
-  [id] int NOT NULL IDENTITY (1,1),
-  [sid] int ,
-  [name] varchar(255),
-  [qlimit] int ,
-  [action] int ,
-  [active] int NOT NULL default '1',
-  [autoload_url] int NOT NULL default '0',
-  PRIMARY KEY  ([id])
-);
-
-
-CREATE TABLE [prefix_quota_languagesettings] (
-  [quotals_id] int NOT NULL IDENTITY (1,1),
-  [quotals_quota_id] int,
-  [quotals_language] varchar(45) NOT NULL default 'en',
-  [quotals_name] varchar(255),
-  [quotals_message] text NULL,
-  [quotals_url] varchar(255),
-  [quotals_urldescrip] varchar(255),
-  PRIMARY KEY ([quotals_id])
-);
-
-
-CREATE TABLE [prefix_quota_members] (
-  [id] int NOT NULL IDENTITY (1,1),
-  [sid] int ,
-  [qid] int ,
-  [quota_id] int ,
-  [code] varchar(11) ,
-  PRIMARY KEY  ([id])
-);
-
-
-
-
 -- 
--- Table structure for table [answers]
+-- Table structure for table answers
 -- 
-
 CREATE TABLE [prefix_answers] (
   [qid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
@@ -54,12 +13,10 @@ CREATE TABLE [prefix_answers] (
 ) 
 ;
 
--- --------------------------------------------------------
 
 -- 
--- Table structure for table [assessments]
+-- Table structure for table assessments
 -- 
-
 CREATE TABLE [prefix_assessments] (
   [id] INT NOT NULL IDENTITY (1,1),
   [sid] INT NOT NULL default '0',
@@ -74,12 +31,11 @@ CREATE TABLE [prefix_assessments] (
 ) 
 ;
 
--- --------------------------------------------------------
+
 
 -- 
--- Table structure for table [conditions]
+-- Table structure for table conditions
 -- 
-
 CREATE TABLE [prefix_conditions] (
   [cid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
@@ -92,6 +48,10 @@ CREATE TABLE [prefix_conditions] (
 ) 
 ;
 
+
+-- 
+-- Table structure for table extendedconditions
+-- 
 CREATE TABLE [prefix_extendedconditions] (
   [qid] INT NOT NULL default '0',
   [gid] INT NOT NULL default '0',
@@ -102,7 +62,9 @@ CREATE TABLE [prefix_extendedconditions] (
 ;
 
 
-
+-- 
+-- Table structure for table defaultvalues
+-- 
 CREATE TABLE [prefix_defaultvalues] (
   [qid] integer NOT NULL default '0',
   [scale_id] tinyint NOT NULL default '0',
@@ -111,11 +73,11 @@ CREATE TABLE [prefix_defaultvalues] (
   [specialtype] varchar(20) NOT NULL default '',
   [defaultvalue] text,
   CONSTRAINT pk_defaultvalues_qlss PRIMARY KEY ([qid] , [scale_id], [language], [specialtype], [sqid]))
+   
                               
 -- 
--- Table structure for table [groups]
+-- Table structure for table groups
 -- 
-
 CREATE TABLE [prefix_groups] (
   [gid] INT NOT NULL IDENTITY (1,1),
   [sid] INT NOT NULL default '0',
@@ -127,12 +89,10 @@ CREATE TABLE [prefix_groups] (
 ) 
 ;
 
--- --------------------------------------------------------
 
 -- 
--- Table structure for table [labels]
+-- Table structure for table labels
 -- 
-
 CREATE TABLE [prefix_labels] (
   [lid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
@@ -148,12 +108,10 @@ CREATE INDEX labels_code_idx
   ON [prefix_labels] ([code])
 ;
 
--- --------------------------------------------------------
 
 -- 
--- Table structure for table [labelsets]
+-- Table structure for table labelsets
 -- 
-
 CREATE TABLE [prefix_labelsets] (
   [lid] INT NOT NULL IDENTITY (1,1),
   [label_name] VARCHAR(100) NOT NULL default '',
@@ -162,12 +120,10 @@ CREATE TABLE [prefix_labelsets] (
 ) 
 ;
 
--- --------------------------------------------------------
 
 -- 
--- Table structure for table [question_attributes]
+-- Table structure for table question_attributes
 -- 
-
 CREATE TABLE [prefix_question_attributes] (
   [qaid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
@@ -177,12 +133,52 @@ CREATE TABLE [prefix_question_attributes] (
 ) 
 ;
 
--- --------------------------------------------------------
 
 -- 
--- Table structure for table [questions]
+-- Table structure for table quota
 -- 
+CREATE TABLE [prefix_quota] (
+  [id] int NOT NULL IDENTITY (1,1),
+  [sid] int ,
+  [name] varchar(255),
+  [qlimit] int ,
+  [action] int ,
+  [active] int NOT NULL default '1',
+  [autoload_url] int NOT NULL default '0',
+  PRIMARY KEY  ([id])
+);
 
+-- 
+-- Table structure for table quota_languagesettings
+-- 
+CREATE TABLE [prefix_quota_languagesettings] (
+  [quotals_id] int NOT NULL IDENTITY (1,1),
+  [quotals_quota_id] int,
+  [quotals_language] varchar(45) NOT NULL default 'en',
+  [quotals_name] varchar(255),
+  [quotals_message] text NULL,
+  [quotals_url] varchar(255),
+  [quotals_urldescrip] varchar(255),
+  PRIMARY KEY ([quotals_id])
+);
+
+
+-- 
+-- Table structure for table quota_members
+--  
+CREATE TABLE [prefix_quota_members] (
+  [id] int NOT NULL IDENTITY (1,1),
+  [sid] int ,
+  [qid] int ,
+  [quota_id] int ,
+  [code] varchar(11) ,
+  PRIMARY KEY  ([id])
+);
+
+
+-- 
+-- Table structure for table questions
+-- 
 CREATE TABLE [prefix_questions] (
   [qid] INT NOT NULL IDENTITY (1,1),
   [parent_qid] INT NOT NULL default '0',
@@ -207,9 +203,8 @@ CREATE TABLE [prefix_questions] (
 
 
 -- 
--- Table structure for table [saved_control]
+-- Table structure for table saved_control
 -- 
-
 CREATE TABLE [prefix_saved_control] (
   [scid] INT NOT NULL IDENTITY (1,1),
   [sid] INT NOT NULL default '0',
@@ -226,12 +221,35 @@ CREATE TABLE [prefix_saved_control] (
 ) 
 ;
 
--- --------------------------------------------------------
 
 -- 
--- Table structure for table [surveys]
+-- Table structure for table sessions
 -- 
+CREATE TABLE prefix_sessions(
+    sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+    expiry DATETIME NOT NULL ,
+    expireref VARCHAR( 250 ) DEFAULT '',
+    created DATETIME NOT NULL ,
+    modified DATETIME NOT NULL ,
+    sessdata text,
+    CONSTRAINT pk_sessions_sesskey PRIMARY KEY ( [sesskey] ));
+create index [idx_expiry] on [prefix_sessions] ([expiry]);
+create index [idx_expireref] on [prefix_sessions] ([expireref]);
 
+
+--
+-- Table structure for table settings_global
+--
+CREATE TABLE [prefix_settings_global] (
+  [stg_name] VARCHAR(50) NOT NULL default '',
+  [stg_value] VARCHAR(255) NOT NULL default '',
+  PRIMARY KEY  ([stg_name])
+);
+
+
+-- 
+-- Table structure for table surveys
+-- 
 CREATE TABLE [prefix_surveys] (
   [sid] INT NOT NULL,
   [owner_id] INT NOT NULL,
@@ -287,14 +305,11 @@ CREATE TABLE [prefix_surveys] (
   PRIMARY KEY  ([sid])
 ) 
 ;
--- 
--- Table structure for table [surveys_languagesettings]
--- 
 
-if EXISTS (select * from dbo.sysobjects where id = object_id(N'[dbo].[prefix_surveys_languagesettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE [dbo].[prefix_surveys_languagesettings]
-;
 
+-- 
+-- Table structure for table surveys_languagesettings
+-- 
 CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_survey_id] INT NOT NULL DEFAULT 0, 
   [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
@@ -317,10 +332,49 @@ CREATE TABLE [prefix_surveys_languagesettings] (
 )
 ;
 
--- 
--- Table structure for table [users]
--- 
 
+-- 
+-- Table structure for table survey_permissions
+-- 
+CREATE TABLE [prefix_survey_permissions] (
+    [sid] INT NOT NULL,         
+    [uid] INT NOT NULL,         
+    [permission] VARCHAR(20) NOT NULL,       
+    [create_p] TINYINT NOT NULL default '0', 
+    [read_p] TINYINT NOT NULL default '0', 
+    [update_p] TINYINT NOT NULL default '0', 
+    [delete_p] TINYINT NOT NULL default '0', 
+    [import_p] TINYINT NOT NULL default '0', 
+    [export_p] inTINYINT NOT NULL default '0', 
+    PRIMARY KEY ([sid], [uid],[permission])
+);
+
+           
+-- 
+-- Table structure for table user_groups
+-- 
+CREATE TABLE [prefix_user_groups] (
+	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
+	[name] VARCHAR(20) NOT NULL UNIQUE,
+	[description] TEXT NOT NULL default '',
+	[owner_id] INT NOT NULL  
+) 
+;
+
+
+-- 
+-- Table structure for table user_in_groups
+-- 
+CREATE TABLE [prefix_user_in_groups] (
+	[ugid] INT NOT NULL, 
+	[uid] INT NOT NULL 
+) 
+;
+
+
+-- 
+-- Table structure for table users
+-- 
 CREATE TABLE [prefix_users] (
   [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [users_name] VARCHAR(64) NOT NULL UNIQUE default '',
@@ -341,80 +395,26 @@ CREATE TABLE [prefix_users] (
   [dateformat] INT NOT NULL DEFAULT 1
 );
 
-
--- 
--- Table structure for table survey_permissions
--- 
-CREATE TABLE [prefix_survey_permissions] (
-    [sid] INT NOT NULL,         
-    [uid] INT NOT NULL,         
-    [permission] VARCHAR(20) NOT NULL,       
-    [create_p] TINYINT NOT NULL default '0', 
-    [read_p] TINYINT NOT NULL default '0', 
-    [update_p] TINYINT NOT NULL default '0', 
-    [delete_p] TINYINT NOT NULL default '0', 
-    [import_p] TINYINT NOT NULL default '0', 
-    [export_p] inTINYINT NOT NULL default '0', 
-    PRIMARY KEY ([sid], [uid],[permission])
-);
-
-
--- 
--- Table structure for table user_groups
--- 
-CREATE TABLE [prefix_user_groups] (
-	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
-	[name] VARCHAR(20) NOT NULL UNIQUE,
-	[description] TEXT NOT NULL default '',
-	[owner_id] INT NOT NULL  
-) 
-;
-
--- 
--- Table structure for table [user_in_groups]
--- 
-
-CREATE TABLE [prefix_user_in_groups] (
-	[ugid] INT NOT NULL, 
-	[uid] INT NOT NULL 
-) 
-;
-
-
-CREATE TABLE prefix_sessions(
-    sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
-    expiry DATETIME NOT NULL ,
-    expireref VARCHAR( 250 ) DEFAULT '',
-    created DATETIME NOT NULL ,
-    modified DATETIME NOT NULL ,
-    sessdata text,
-    CONSTRAINT pk_sessions_sesskey PRIMARY KEY ( [sesskey] ));
-create index [idx_expiry] on [prefix_sessions] ([expiry]);
-create index [idx_expireref] on [prefix_sessions] ([expireref]);
-
+        
 --
--- Table structure for table [settings_global]
+-- Table structure for table templates_rights
 --
-
-CREATE TABLE [prefix_settings_global] (
-  [stg_name] VARCHAR(50) NOT NULL default '',
-  [stg_value] VARCHAR(255) NOT NULL default '',
-  PRIMARY KEY  ([stg_name])
-);
-
-
 CREATE TABLE [prefix_templates_rights] (
-						  [uid] int NOT NULL,
-						  [folder] varchar(255) NOT NULL,
-						  [use] int NOT NULL,
-						  PRIMARY KEY  ([uid],[folder])
-						  );
-						  
+    [uid] int NOT NULL,
+    [folder] varchar(255) NOT NULL,
+    [use] int NOT NULL,
+    PRIMARY KEY  ([uid],[folder])
+);
+
+
+--
+-- Table structure for table templates
+--						  
 CREATE TABLE [prefix_templates] (
-						  [folder] varchar(255) NOT NULL,
-						  [creator] int NOT NULL,
-						  PRIMARY KEY  ([folder])
-						  );
+    [folder] varchar(255) NOT NULL,
+    [creator] int NOT NULL,
+    PRIMARY KEY  ([folder])
+);
 
      
 --
@@ -426,10 +426,10 @@ create index [assessments_idx3] on [prefix_assessments] ([gid]);
 create index [conditions_idx2] on [prefix_conditions] ([qid]);
 create index [conditions_idx3] on [prefix_conditions] ([cqid]);
 create index [groups_idx2] on [prefix_groups] ([sid]);
+create index [question_attributes_idx2] on [prefix_question_attributes] ([qid]);
 create index [questions_idx2] on [prefix_questions] ([sid]);
 create index [questions_idx3] on [prefix_questions] ([gid]);
 create index [questions_idx4] on [prefix_questions] ([type]);
-create index [question_attributes_idx2] on [prefix_question_attributes] ([qid]);
 create index [quota_idx2] on [prefix_quota] ([sid]);
 create index [saved_control_idx2] on [prefix_saved_control] ([sid]);
 create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid]);

@@ -1,5 +1,3 @@
-
-
 SET client_encoding = 'UTF8';
 SET check_function_bodies = false;
 SET client_min_messages = warning;
@@ -7,6 +5,10 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 SET default_with_oids = false;
 
+
+-- 
+-- Table structure for table answers
+-- 
 CREATE TABLE prefix_answers (
     qid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
@@ -20,12 +22,10 @@ CREATE TABLE prefix_answers (
 ALTER TABLE ONLY prefix_answers
     ADD CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid, code, "language", scale_id);
 
---
--- TOC entry 1302 (class 1259 OID 16418)
--- Dependencies: 1660 1661 1662 1663 1664 4
--- Name: prefix_assessments; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
+    
+-- 
+-- Table structure for table assessments
+-- 
 CREATE TABLE prefix_assessments (
     id serial,
     sid integer DEFAULT 0 NOT NULL,
@@ -38,13 +38,13 @@ CREATE TABLE prefix_assessments (
     language character(20) DEFAULT 'en'::bpchar NOT NULL
 );
 
+ALTER TABLE ONLY prefix_assessments
+    ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language);
 
---
--- TOC entry 1304 (class 1259 OID 16433)
--- Dependencies: 1666 1667 1668 1669 1670 4
--- Name: prefix_conditions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
+-- 
+-- Table structure for table conditions
+--
 CREATE TABLE prefix_conditions (
     cid serial,
     qid integer DEFAULT 0 NOT NULL,
@@ -55,6 +55,13 @@ CREATE TABLE prefix_conditions (
     value character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
+ALTER TABLE ONLY prefix_conditions
+    ADD CONSTRAINT prefix_conditions_pkey PRIMARY KEY (cid);
+
+
+-- 
+-- Table structure for table extendedconditions
+--
 CREATE TABLE prefix_extendedconditions (
   qid integer DEFAULT 0 NOT NULL,
   gid integer DEFAULT 0 NOT NULL,
@@ -64,6 +71,9 @@ CREATE TABLE prefix_extendedconditions (
 ALTER TABLE prefix_extendedconditions ADD CONSTRAINT prefix_extendedconditions_pkey PRIMARY KEY (qid,gid,sid);
 
 
+-- 
+-- Table structure for table defaultvalues
+--
 CREATE TABLE prefix_defaultvalues (
       qid integer NOT NULL default '0',
       scale_id integer NOT NULL default '0',
@@ -75,12 +85,9 @@ CREATE TABLE prefix_defaultvalues (
 ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid);
 
 
+-- 
+-- Table structure for table groups
 --
--- TOC entry 1306 (class 1259 OID 16445)
--- Dependencies: 1672 1673 1674 1675 4
--- Name: prefix_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
 CREATE TABLE prefix_groups (
     gid serial,
     sid integer DEFAULT 0 NOT NULL,
@@ -90,13 +97,13 @@ CREATE TABLE prefix_groups (
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
+ALTER TABLE ONLY prefix_groups
+    ADD CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language");
 
---
--- TOC entry 1307 (class 1259 OID 16457)
--- Dependencies: 1676 1677 1678 1679 4
--- Name: prefix_labels; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
+-- 
+-- Table structure for table labels
+--
 CREATE TABLE prefix_labels (
     lid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
@@ -106,27 +113,25 @@ CREATE TABLE prefix_labels (
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
+ALTER TABLE ONLY prefix_labels ADD CONSTRAINT prefix_labels_pkey PRIMARY KEY (lid, sortorder, "language");
+CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 
 
+-- 
+-- Table structure for table labelsets
 --
--- TOC entry 1309 (class 1259 OID 16468)
--- Dependencies: 1681 1682 4
--- Name: prefix_labelsets; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
 CREATE TABLE prefix_labelsets (
     lid serial NOT NULL,
     label_name character varying(100) DEFAULT ''::character varying NOT NULL,
     languages character varying(200) DEFAULT 'en'::character varying
 );
 
+ALTER TABLE ONLY prefix_labelsets ADD CONSTRAINT prefix_labelsets_pkey PRIMARY KEY (lid);
 
---
--- TOC entry 1313 (class 1259 OID 16494)
--- Dependencies: 1692 4
--- Name: prefix_question_attributes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
+-- 
+-- Table structure for table question_attributes
+--
 CREATE TABLE prefix_question_attributes (
     qaid serial NOT NULL,
     qid integer DEFAULT 0 NOT NULL,
@@ -134,10 +139,12 @@ CREATE TABLE prefix_question_attributes (
     value text NULL
 );
 
--- 
--- Table structure for table `quota`
--- 
+ALTER TABLE ONLY prefix_question_attributes ADD CONSTRAINT prefix_question_attributes_pkey PRIMARY KEY (qaid);
 
+
+-- 
+-- Table structure for table quota
+-- 
 CREATE TABLE prefix_quota (
   id serial NOT NULL,
   sid integer,
@@ -148,9 +155,12 @@ CREATE TABLE prefix_quota (
   autoload_url integer NOT NULL DEFAULT 0
 );
 
-ALTER TABLE ONLY prefix_quota
-    ADD CONSTRAINT prefix_quota_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY prefix_quota ADD CONSTRAINT prefix_quota_pkey PRIMARY KEY (id);
 
+    
+-- 
+-- Table structure for table quota_languagesettings
+-- 
 CREATE TABLE prefix_quota_languagesettings
 (
   quotals_id serial NOT NULL,
@@ -162,9 +172,12 @@ CREATE TABLE prefix_quota_languagesettings
   quotals_urldescrip character varying(255)
 );
 
-ALTER TABLE ONLY prefix_quota_languagesettings
-  ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);
+ALTER TABLE ONLY prefix_quota_languagesettings ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);
 
+  
+-- 
+-- Table structure for table quota_members
+--   
 CREATE TABLE prefix_quota_members (
   id serial,
   sid integer,
@@ -173,13 +186,13 @@ CREATE TABLE prefix_quota_members (
   code character varying(11)
 );
 
-ALTER TABLE ONLY prefix_quota_members
-    ADD CONSTRAINT prefix_quota_members_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY prefix_quota_members ADD CONSTRAINT prefix_quota_members_pkey PRIMARY KEY (id);
 CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid,qid,quota_id,code);
 
---
--- Name: prefix_questions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
+
+-- 
+-- Table structure for table questions
+--   
 CREATE TABLE prefix_questions (
     qid serial NOT NULL,
     parent_qid integer DEFAULT 0 NOT NULL,
@@ -198,13 +211,12 @@ CREATE TABLE prefix_questions (
     same_default smallint DEFAULT 0 NOT NULL
 );
 
-ALTER TABLE ONLY prefix_questions
-    ADD CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language");
+ALTER TABLE ONLY prefix_questions ADD CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language");
 
+    
+-- 
+-- Table structure for table saved_control
 --
--- Name: prefix_saved_control; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
 CREATE TABLE prefix_saved_control (
     scid serial NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
@@ -219,7 +231,11 @@ CREATE TABLE prefix_saved_control (
     refurl text
 );
 
+ALTER TABLE ONLY prefix_saved_control ADD CONSTRAINT prefix_saved_control_pkey PRIMARY KEY (scid);
 
+-- 
+-- Table structure for table sessions
+--
 CREATE TABLE prefix_sessions(
      sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
      expiry TIMESTAMP NOT NULL ,
@@ -232,22 +248,21 @@ CREATE TABLE prefix_sessions(
 create INDEX sess_expiry on prefix_sessions( expiry );
 create INDEX sess_expireref on prefix_sessions ( expireref );
 
---
--- Dependencies: 1697 1698 4
--- Name: prefix_settings_global; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
+-- 
+-- Table structure for table settings_global
+--
 CREATE TABLE prefix_settings_global (
     stg_name character varying(50) DEFAULT ''::character varying NOT NULL,
     stg_value character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
+ALTER TABLE ONLY prefix_settings_global ADD CONSTRAINT prefix_settings_global_pkey PRIMARY KEY (stg_name);
 
 
+-- 
+-- Table structure for table surveys
 --
--- Name: prefix_surveys; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
 CREATE TABLE prefix_surveys (
     sid integer NOT NULL,
     owner_id integer NOT NULL,
@@ -299,16 +314,14 @@ CREATE TABLE prefix_surveys (
      attributedescriptions text,
 	emailresponseto text,
 	tokenlength smallint DEFAULT '15'
-
 );
 
+ALTER TABLE ONLY prefix_surveys ADD CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid);
 
 
-
--- Dependencies: 1713 1714 4
--- Name: prefix_surveys_languagesettings; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- 
+-- Table structure for table surveys_languagesettings
 --
-
 CREATE TABLE prefix_surveys_languagesettings (
     surveyls_survey_id integer DEFAULT 0 NOT NULL,
     surveyls_language character varying(45) DEFAULT 'en'::character varying NOT NULL,
@@ -329,7 +342,12 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_dateformat integer DEFAULT 1 NOT NULL
 );
 
+ALTER TABLE ONLY prefix_surveys_languagesettings ADD CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language);
 
+
+-- 
+-- Table structure for table survey_permissions
+--
 CREATE TABLE prefix_survey_permissions (
 	sid integer DEFAULT 0 NOT NULL,
 	uid integer DEFAULT 0 NOT NULL,
@@ -342,10 +360,12 @@ CREATE TABLE prefix_survey_permissions (
     export_p integer DEFAULT 0 NOT NULL
 );
 
-ALTER TABLE ONLY prefix_survey_permissions
-    ADD CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission);
+ALTER TABLE ONLY prefix_survey_permissions ADD CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission);
 
 
+-- 
+-- Table structure for table user_groups
+--    
 CREATE TABLE prefix_user_groups (
     ugid serial NOT NULL,
     name character varying(20) NOT NULL,
@@ -354,13 +374,18 @@ CREATE TABLE prefix_user_groups (
 );
 
 
-
+-- 
+-- Table structure for table user_in_groups
+--                               
 CREATE TABLE prefix_user_in_groups (
     ugid integer NOT NULL,
     uid integer NOT NULL
 );
 
 
+-- 
+-- Table structure for table users
+--   
 CREATE TABLE prefix_users (
     uid serial PRIMARY KEY NOT NULL,
     users_name character varying(64) DEFAULT ''::character varying UNIQUE NOT NULL,
@@ -381,148 +406,32 @@ CREATE TABLE prefix_users (
     "dateformat" integer DEFAULT 1 NOT NULL
 );
 
+
+-- 
+-- Table structure for table templates_rights
+--   
 CREATE TABLE prefix_templates_rights (
   "uid" integer NOT NULL,
   "folder" character varying(255) NOT NULL,
   "use" integer NOT NULL
 );
 
-ALTER TABLE ONLY prefix_templates_rights
-    ADD CONSTRAINT prefix_templates_rights_pkey PRIMARY KEY ("uid","folder");
+ALTER TABLE ONLY prefix_templates_rights ADD CONSTRAINT prefix_templates_rights_pkey PRIMARY KEY ("uid","folder");
 
 
+-- 
+-- Table structure for table templates
+--      
 CREATE TABLE prefix_templates (
   "folder" character varying(255) NOT NULL,
   "creator" integer NOT NULL
 );
 
-ALTER TABLE ONLY prefix_templates
-    ADD CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder");
+ALTER TABLE ONLY prefix_templates ADD CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder");
 
-
+     
 --
--- TOC entry 1736 (class 2606 OID 16430)
--- Dependencies: 1302 1302
--- Name: prefix_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_assessments
-    ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language);
-
-
---
--- TOC entry 1738 (class 2606 OID 16442)
--- Dependencies: 1304 1304
--- Name: prefix_conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_conditions
-    ADD CONSTRAINT prefix_conditions_pkey PRIMARY KEY (cid);
-
-
---
--- TOC entry 1740 (class 2606 OID 16456)
--- Dependencies: 1306 1306 1306
--- Name: prefix_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_groups
-    ADD CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language");
-
-
---
--- TOC entry 1743 (class 2606 OID 16464)
--- Dependencies: 1307 1307 1307 1307
--- Name: prefix_labels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_labels
-    ADD CONSTRAINT prefix_labels_pkey PRIMARY KEY (lid, sortorder, "language");
-
-
---
--- TOC entry 1745 (class 2606 OID 16474)
--- Dependencies: 1309 1309
--- Name: prefix_labelsets_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_labelsets
-    ADD CONSTRAINT prefix_labelsets_pkey PRIMARY KEY (lid);
-
-
---
--- TOC entry 1749 (class 2606 OID 16499)
--- Dependencies: 1313 1313
--- Name: prefix_question_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_question_attributes
-    ADD CONSTRAINT prefix_question_attributes_pkey PRIMARY KEY (qaid);
-
-
-ALTER TABLE ONLY prefix_saved_control
-    ADD CONSTRAINT prefix_saved_control_pkey PRIMARY KEY (scid);
-
-
---
--- TOC entry 1753 (class 2606 OID 16518)
--- Dependencies: 1316 1316
--- Name: prefix_settings_global_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_settings_global
-    ADD CONSTRAINT prefix_settings_global_pkey PRIMARY KEY (stg_name);
-
-
---
--- TOC entry 1757 (class 2606 OID 16548)
--- Dependencies: 1318 1318 1318
--- Name: prefix_surveys_languagesettings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_surveys_languagesettings
-    ADD CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language);
-
-
---
--- TOC entry 1755 (class 2606 OID 16539)
--- Dependencies: 1317 1317
--- Name: prefix_surveys_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_surveys
-    ADD CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid);
-
-
---
--- TOC entry 1759 (class 2606 OID 16560)
--- Dependencies: 1319 1319 1319
--- Name: prefix_surveys_rights_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY prefix_surveys_rights
-    ADD CONSTRAINT prefix_surveys_rights_pkey PRIMARY KEY (sid, uid);
-
-
---
--- TOC entry 1741 (class 1259 OID 16465)
--- Dependencies: 1307
--- Name: prefix_labels_ixcode_idx; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
-
---
--- Table `settings_global`
---
-
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '145');
-INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
-
-
-
---
--- indexes 
+-- Secondary indexes 
 --
 create index assessments_idx2 on prefix_assessments (sid);
 create index assessments_idx3 on prefix_assessments (gid);
@@ -535,6 +444,12 @@ create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index user_in_groups_idx1 on prefix_user_in_groups  (ugid, uid);
 
+
+--
+-- Version Info
+--
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '145');
+INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 
 --

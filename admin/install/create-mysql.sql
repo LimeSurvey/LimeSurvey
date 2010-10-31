@@ -1,4 +1,6 @@
-
+-- 
+-- Table structure for table answers
+-- 
 CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
@@ -11,7 +13,9 @@ CREATE TABLE `prefix_answers` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table assessments
+-- 
 CREATE TABLE `prefix_assessments` (
   `id` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
@@ -26,7 +30,9 @@ CREATE TABLE `prefix_assessments` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table conditions
+-- 
 CREATE TABLE `prefix_conditions` (
   `cid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
@@ -39,6 +45,9 @@ CREATE TABLE `prefix_conditions` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+-- 
+-- Table structure for table extendedconditions
+-- 
 CREATE TABLE `prefix_extendedconditions` (
   `qid` int(11) NOT NULL,
   `gid` int(11) NOT NULL,
@@ -48,7 +57,9 @@ CREATE TABLE `prefix_extendedconditions` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table defaultvalues
+-- 
 CREATE TABLE `prefix_defaultvalues` (
   `qid` int(11) NOT NULL default '0',
   `specialtype` varchar(20) NOT NULL default '',
@@ -60,6 +71,9 @@ CREATE TABLE `prefix_defaultvalues` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+-- 
+-- Table structure for table groups
+-- 
 CREATE TABLE `prefix_groups` (
   `gid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
@@ -71,7 +85,9 @@ CREATE TABLE `prefix_groups` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table labels
+-- 
 CREATE TABLE `prefix_labels` (
   `lid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
@@ -84,7 +100,9 @@ CREATE TABLE `prefix_labels` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table labelsets
+-- 
 CREATE TABLE `prefix_labelsets` (
   `lid` int(11) NOT NULL auto_increment,
   `label_name` varchar(100) NOT NULL default '',
@@ -93,7 +111,9 @@ CREATE TABLE `prefix_labelsets` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table question_attributes
+-- 
 CREATE TABLE `prefix_question_attributes` (
   `qaid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
@@ -103,7 +123,9 @@ CREATE TABLE `prefix_question_attributes` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table quota
+-- 
 CREATE TABLE `prefix_quota` (
   `id` int(11) NOT NULL auto_increment,
   `sid` int(11) default NULL,
@@ -116,7 +138,9 @@ CREATE TABLE `prefix_quota` (
 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table quota_languagesettings
+-- 
 CREATE TABLE `prefix_quota_languagesettings` (
   `quotals_id` int(11) NOT NULL auto_increment,
   `quotals_quota_id` int(11) NOT NULL default '0',
@@ -129,7 +153,9 @@ CREATE TABLE `prefix_quota_languagesettings` (
 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table quota_members
+-- 
 CREATE TABLE `prefix_quota_members` (
   `id` int(11) NOT NULL auto_increment,
   `sid` int(11) default NULL,
@@ -141,7 +167,9 @@ CREATE TABLE `prefix_quota_members` (
 )   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table questions
+-- 
 CREATE TABLE `prefix_questions` (
   `qid` int(11) NOT NULL auto_increment,
   `parent_qid` int(11) NOT NULL default '0',
@@ -162,7 +190,9 @@ CREATE TABLE `prefix_questions` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table saved_control
+-- 
 CREATE TABLE `prefix_saved_control` (
   `scid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
@@ -179,7 +209,25 @@ CREATE TABLE `prefix_saved_control` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+-- 
+-- Table structure for table templates_sessions
+-- 
+CREATE TABLE `prefix_sessions`(
+      sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+        expiry DATETIME NOT NULL ,
+      expireref VARCHAR( 250 ) DEFAULT '',
+      created DATETIME NOT NULL ,
+      modified DATETIME NOT NULL ,
+      sessdata LONGTEXT,
+      PRIMARY KEY ( sesskey ) ,
+      INDEX sess2_expiry( expiry ),
+      INDEX sess2_expireref( expireref )
+);
 
+
+-- 
+-- Table structure for table settings_global
+-- 
 CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
   `stg_value` varchar(255) NOT NULL default '',
@@ -187,7 +235,9 @@ CREATE TABLE `prefix_settings_global` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table surveys
+-- 
 CREATE TABLE `prefix_surveys` (
   `sid` int(11) NOT NULL,
   `owner_id` int(11) NOT NULL,
@@ -227,7 +277,6 @@ CREATE TABLE `prefix_surveys` (
   `bounceaccountuser` VARCHAR(320),
   `bounceaccountpass` VARCHAR(320),
   `bounceaccountencryption` VARCHAR(3),
-
   `publicstatistics` char(1) default 'N',
   `publicgraphs` char(1) default 'N',
   `listpublic` char(1) default 'N',
@@ -244,8 +293,9 @@ CREATE TABLE `prefix_surveys` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
-DROP TABLE IF EXISTS `prefix_surveys_languagesettings`;
+-- 
+-- Table structure for table surveys_languagesettings
+-- 
 CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_survey_id` INT UNSIGNED NOT NULL DEFAULT 0,
   `surveyls_language` VARCHAR(45) NULL DEFAULT 'en',
@@ -297,7 +347,9 @@ CREATE TABLE `prefix_user_groups` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table user_in_groups
+-- 
 CREATE TABLE `prefix_user_in_groups` (
 	`ugid` int(10) unsigned NOT NULL,
 	`uid` int(10) unsigned NOT NULL,
@@ -305,7 +357,9 @@ CREATE TABLE `prefix_user_in_groups` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table users
+-- 
 CREATE TABLE `prefix_users` (
   `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
   `users_name` varchar(64) NOT NULL UNIQUE default '',
@@ -327,7 +381,9 @@ CREATE TABLE `prefix_users` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table templates_rights
+-- 
 CREATE TABLE `prefix_templates_rights` (
   `uid` int(11) NOT NULL,
   `folder` varchar(255) NOT NULL,
@@ -336,25 +392,15 @@ CREATE TABLE `prefix_templates_rights` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table templates
+-- 
 CREATE TABLE `prefix_templates` (
   `folder` varchar(255) NOT NULL,
   `creator` int(11) NOT NULL,
   PRIMARY KEY  (`folder`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-
-CREATE TABLE `prefix_sessions`(
-      sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
-        expiry DATETIME NOT NULL ,
-      expireref VARCHAR( 250 ) DEFAULT '',
-      created DATETIME NOT NULL ,
-      modified DATETIME NOT NULL ,
-      sessdata LONGTEXT,
-      PRIMARY KEY ( sesskey ) ,
-      INDEX sess2_expiry( expiry ),
-      INDEX sess2_expireref( expireref )
-);
 
 --
 -- Secondary indexes 
@@ -384,4 +430,3 @@ INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 -- Create admin user
 --
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
-
