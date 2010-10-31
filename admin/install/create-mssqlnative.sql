@@ -341,24 +341,24 @@ CREATE TABLE [prefix_users] (
 
 
 -- 
--- Table structure for table [surveys_rights]
+-- Table structure for table survey_permissions
 -- 
+CREATE TABLE [prefix_survey_permissions] (
+    [sid] INT NOT NULL,         
+    [uid] INT NOT NULL,         
+    [permission] VARCHAR(20) NOT NULL,       
+    [create_p] TINYINT NOT NULL default '0', 
+    [read_p] TINYINT NOT NULL default '0', 
+    [update_p] TINYINT NOT NULL default '0', 
+    [delete_p] TINYINT NOT NULL default '0', 
+    [import_p] TINYINT NOT NULL default '0', 
+    [export_p] inTINYINT NOT NULL default '0', 
+    PRIMARY KEY ([sid], [uid],[permission])
+);
 
-CREATE TABLE [prefix_surveys_rights] (
-	[sid] INT NOT NULL default '0', 
-	[uid] INT NOT NULL default '0', 
-	[edit_survey_property] TINYINT NOT NULL default '0',
-	[define_questions] TINYINT NOT NULL default '0',
-	[browse_response] TINYINT NOT NULL default '0',
-	[export] TINYINT NOT NULL default '0',
-	[delete_survey] TINYINT NOT NULL default '0',
-	[activate_survey] TINYINT NOT NULL default '0',
-	PRIMARY KEY ([sid], [uid])
-) 
-;
 
 -- 
--- Table structure for table [user_groups]
+-- Table structure for table user_groups
 -- 
 
 CREATE TABLE [prefix_user_groups] (

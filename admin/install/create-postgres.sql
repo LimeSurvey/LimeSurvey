@@ -1,8 +1,4 @@
---
--- PostgreSQL database dump
---
 
--- Started on 2007-11-18 18:48:15
 
 SET client_encoding = 'UTF8';
 SET check_function_bodies = false;
@@ -11,11 +7,6 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 SET default_with_oids = false;
 
---
--- TOC entry 1300 (class 1259 OID 16405)
--- Dependencies: 1655 1656 1657 1658 4
--- Name: prefix_answers; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 CREATE TABLE prefix_answers (
     qid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
@@ -339,26 +330,21 @@ CREATE TABLE prefix_surveys_languagesettings (
 );
 
 
-
---
--- TOC entry 1319 (class 1259 OID 16549)
--- Dependencies: 1715 1716 1717 1718 1719 1720 1721 1722 4
--- Name: prefix_surveys_rights; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE prefix_surveys_rights (
-    sid integer DEFAULT 0 NOT NULL,
-    uid integer DEFAULT 0 NOT NULL,
-    edit_survey_property integer DEFAULT 0 NOT NULL,
-    define_questions integer DEFAULT 0 NOT NULL,
-    browse_response integer DEFAULT 0 NOT NULL,
-    export integer DEFAULT 0 NOT NULL,
-    delete_survey integer DEFAULT 0 NOT NULL,
-    activate_survey integer DEFAULT 0 NOT NULL
+CREATE TABLE prefix_survey_permissions (
+	sid integer DEFAULT 0 NOT NULL,
+	uid integer DEFAULT 0 NOT NULL,
+	permission character varying(20) NOT NULL,
+	create_p integer DEFAULT 0 NOT NULL,
+    read_p integer DEFAULT 0 NOT NULL,
+	update_p integer DEFAULT 0 NOT NULL,
+	delete_p integer DEFAULT 0 NOT NULL,
+    import_p integer DEFAULT 0 NOT NULL,
+    export_p integer DEFAULT 0 NOT NULL
 );
 
+ALTER TABLE ONLY prefix_survey_permissions
+    ADD CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission);
 
--- Name: prefix_user_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 
 CREATE TABLE prefix_user_groups (
     ugid serial NOT NULL,
@@ -374,9 +360,6 @@ CREATE TABLE prefix_user_in_groups (
     uid integer NOT NULL
 );
 
---
--- Name: prefix_users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE prefix_users (
     uid serial PRIMARY KEY NOT NULL,

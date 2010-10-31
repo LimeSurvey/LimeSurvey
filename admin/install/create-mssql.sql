@@ -343,26 +343,25 @@ CREATE TABLE [prefix_users] (
 
 
 -- 
--- Table structure for table [surveys_rights]
+-- Table structure for table survey_permissions
 -- 
+CREATE TABLE [prefix_survey_permissions] (
+    [sid] INT NOT NULL,         
+    [uid] INT NOT NULL,         
+    [permission] VARCHAR(20) NOT NULL,       
+    [create_p] TINYINT NOT NULL default '0', 
+    [read_p] TINYINT NOT NULL default '0', 
+    [update_p] TINYINT NOT NULL default '0', 
+    [delete_p] TINYINT NOT NULL default '0', 
+    [import_p] TINYINT NOT NULL default '0', 
+    [export_p] inTINYINT NOT NULL default '0', 
+    PRIMARY KEY ([sid], [uid],[permission])
+);
 
-CREATE TABLE [prefix_surveys_rights] (
-	[sid] INT NOT NULL default '0', 
-	[uid] INT NOT NULL default '0', 
-	[edit_survey_property] TINYINT NOT NULL default '0',
-	[define_questions] TINYINT NOT NULL default '0',
-	[browse_response] TINYINT NOT NULL default '0',
-	[export] TINYINT NOT NULL default '0',
-	[delete_survey] TINYINT NOT NULL default '0',
-	[activate_survey] TINYINT NOT NULL default '0',
-	PRIMARY KEY ([sid], [uid])
-) 
-;
 
 -- 
--- Table structure for table [user_groups]
+-- Table structure for table user_groups
 -- 
-
 CREATE TABLE [prefix_user_groups] (
 	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
 	[name] VARCHAR(20) NOT NULL UNIQUE,
@@ -417,16 +416,9 @@ CREATE TABLE [prefix_templates] (
 						  PRIMARY KEY  ([folder])
 						  );
 
+     
 --
--- Table [settings_global]
---
-
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '145');
-INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
-
-
---
--- indexes 
+-- Secondary indexes 
 --
 create index [answers_idx2] on [prefix_answers] ([sortorder]);
 create index [assessments_idx2] on [prefix_assessments] ([sid]);
@@ -444,7 +436,13 @@ create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid]);
 
 
 --
--- Create the admin user
+-- Version Info
 --
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '145');
+INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
+
+--
+-- Create admin user
+--
 INSERT INTO [prefix_users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [create_survey], [create_user] ,[delete_user] ,[superadmin] ,[configurator] ,[manage_template] , [manage_label]) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);

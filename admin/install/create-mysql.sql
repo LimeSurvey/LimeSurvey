@@ -269,11 +269,13 @@ CREATE TABLE `prefix_surveys_languagesettings` (
 ) ENGINE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table survey_permissions
+-- 
 CREATE TABLE `prefix_survey_permissions` (
-	`sid` int(10) unsigned NOT NULL default '0',
-	`uid` int(10) unsigned NOT NULL default '0',
-	`permission` varchar(20) NOT NULL default '',
+	`sid` int(10) unsigned NOT NULL,
+	`uid` int(10) unsigned NOT NULL,
+	`permission` varchar(20) NOT NULL,
 	`create_p` tinyint(1) NOT NULL default '0',
     `read_p` tinyint(1) NOT NULL default '0',
 	`update_p` tinyint(1) NOT NULL default '0',
@@ -284,7 +286,9 @@ CREATE TABLE `prefix_survey_permissions` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table user_groups
+-- 
 CREATE TABLE `prefix_user_groups` (
 	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
@@ -352,7 +356,9 @@ CREATE TABLE `prefix_sessions`(
       INDEX sess2_expireref( expireref )
 );
 
+--
 -- Secondary indexes 
+--
 create index `answers_idx2` on `prefix_answers` (`sortorder`);
 create index `assessments_idx2` on `prefix_assessments` (`sid`);
 create index `assessments_idx3` on `prefix_assessments` (`gid`);
@@ -367,9 +373,15 @@ create index `quota_idx2` on `prefix_quota` (`sid`);
 create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 
 
--- data
+--
+-- Version Info
+--
 INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '145');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
+
+--
+-- Create admin user
+--
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 
