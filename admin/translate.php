@@ -93,7 +93,7 @@
           {
             $id1 = $_POST["{$type}_id1_{$i}"];
             $id2 = $_POST["{$type}_id2_{$i}"];
-            $amTypeOptions = setupTranslateFields($type, $tolang, $baselang, $id1, $id2, $new);
+            $amTypeOptions = setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1, $id2, $new);
             $query = $amTypeOptions["queryupdate"];
             $connect->execute($query);
           }
@@ -122,7 +122,7 @@
       ."\t<ul>\n";
         foreach($tab_names as $type)
         {
-          $amTypeOptions = setupTranslateFields($type, $tolang, $baselang);
+          $amTypeOptions = setupTranslateFields($surveyid, $type, $tolang, $baselang);
           $translateoutput .= ""
             ."\t\t<li><a href=\"#tab-".$type."\"><span>".$amTypeOptions["description"]."</span></a></li>\n";
         }
@@ -132,7 +132,7 @@
     // Define content of each tab
     foreach($tab_names as $type)
     {
-      $amTypeOptions = setupTranslateFields($type, $tolang, $baselang);
+      $amTypeOptions = setupTranslateFields($surveyid, $type, $tolang, $baselang);
       // Create tab names and heading
       $translateoutput .= "\t<div id='tab-".$type."'>\n";
       $translateoutput .= PrepareEditorScript("noneedforvalue");
@@ -196,7 +196,7 @@
                     $translateoutput .= "<input type='hidden' "
                       ."name='".$type."_oldvalue_".$i."' "
                       ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
-                    $translateoutput .= "<textarea cols='80' rows='".($nrows+1)."' "
+                    $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
                       ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
 
                     if ($amTypeOptions["HTMLeditor"]=="Yes")

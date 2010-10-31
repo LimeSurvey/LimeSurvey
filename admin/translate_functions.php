@@ -170,6 +170,7 @@ function menuSeparator()
  * setupTranslateFields() creates a customised array with database query
  * information for use by survey translation
  * @global $dbprefix, $surveyid, $clang;
+ * @param string $surveyid Survey id
  * @param string $type Type of database field that is being translated, e.g. title, question, etc.
  * @param string $baselang The source translation language
  * @param string $tolang The target translation language
@@ -179,9 +180,9 @@ function menuSeparator()
  * @return array
  */
 
-function setupTranslateFields($type, $tolang, $baselang, $id1="", $id2="", $new="")
+function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id2="", $new="")
 {
-  global $dbprefix, $surveyid, $clang;
+  global $dbprefix, $clang;
   
   switch ( $type )
   {
@@ -330,7 +331,7 @@ function setupTranslateFields($type, $tolang, $baselang, $id1="", $id2="", $new=
         "gid"  => TRUE,
         "qid"  => FALSE,
         "dbColumn" => "description",
-        "description" => $clang->gT("Description:"),
+        "description" => $clang->gT("Group description"),
         "HTMLeditor"  => "No"
       );
       break;
