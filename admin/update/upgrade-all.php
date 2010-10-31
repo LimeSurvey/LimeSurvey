@@ -53,3 +53,103 @@ function db_upgrade_all($oldversion) {
 
     }
 }
+
+function upgrade_surveypermissions_table145()      
+{
+    global $modifyoutput, $connect;
+    $sPermissionQuery = "SELECT * FROM ".db_table_name('survey_rights');
+    $oPermissionResult = db_execute_assoc($sPermissionQuery);
+    if (!$oPermissionResult) {return "Database Error";}
+    else
+    {
+        $tablename='prefix_survey_permissions';
+        while ( $aPermissionRow = $oPermissionResult->FetchRow() )
+        {
+            
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'assessments',
+                                                                            'create_p'=>$aPermissionRow['define_questions'],
+                                                                            'read_p'=>$aPermissionRow['define_questions'],
+                                                                            'update_p'=>$aPermissionRow['define_questions'],
+                                                                            'delete_p'=>$aPermissionRow['define_questions'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+             
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'quotas',
+                                                                            'create_p'=>$aPermissionRow['define_questions'],
+                                                                            'read_p'=>$aPermissionRow['define_questions'],
+                                                                            'update_p'=>$aPermissionRow['define_questions'],
+                                                                            'delete_p'=>$aPermissionRow['define_questions'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+              
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'responses',
+                                                                            'create_p'=>$aPermissionRow['browse_response'],
+                                                                            'read_p'=>$aPermissionRow['browse_response'],
+                                                                            'update_p'=>$aPermissionRow['browse_response'],
+                                                                            'delete_p'=>$aPermissionRow['delete_survey'],
+                                                                            'export_p'=>$aPermissionRow['export'],
+                                                                            'import_p'=>$aPermissionRow['browse_response'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();              
+                                    
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'statistics',
+                                                                            'read_p'=>$aPermissionRow['browse_response'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+            
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'survey',
+                                                                            'read_p'=>1,
+                                                                            'delete_p'=>$aPermissionRow['delete_survey'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+            
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveyactivation',
+                                                                            'update_p'=>$aPermissionRow['activate_survey'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+                        
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveycontent',
+                                                                            'create_p'=>$aPermissionRow['define_questions'],
+                                                                            'read_p'=>$aPermissionRow['define_questions'],
+                                                                            'update_p'=>$aPermissionRow['define_questions'],
+                                                                            'delete_p'=>$aPermissionRow['define_questions'],
+                                                                            'export_p'=>$aPermissionRow['export'],
+                                                                            'import_p'=>$aPermissionRow['define_questions'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();              
+            
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveylocale',
+                                                                            'read_p'=>$aPermissionRow['edit_survey_property'],
+                                                                            'update_p'=>$aPermissionRow['edit_survey_property'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveysettings',
+                                                                            'read_p'=>$aPermissionRow['edit_survey_property'],
+                                                                            'update_p'=>$aPermissionRow['edit_survey_property'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid']));
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+            
+            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'tokens',
+                                                                            'create_p'=>$aPermissionRow['activate_survey'],
+                                                                            'read_p'=>$aPermissionRow['activate_survey'],
+                                                                            'update_p'=>$aPermissionRow['activate_survey'],
+                                                                            'delete_p'=>$aPermissionRow['activate_survey'],
+                                                                            'export_p'=>$aPermissionRow['export'],
+                                                                            'import_p'=>$aPermissionRow['activate_survey'],
+                                                                            'sid'=>$aPermissionRow['sid'],
+                                                                            'sid'=>$aPermissionRow['uid'])
+                                                          );                                        
+            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();
+        }
+    }    
+}

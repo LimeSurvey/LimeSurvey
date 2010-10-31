@@ -21,7 +21,7 @@ $(document).ready(function(){
                   }
     });
 
-
+    $('.mixed').fadeTo(1, .4);
 
     $(".markrow").click(
         function(){

@@ -422,8 +422,23 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountencryption VARCHAR(4) NULL "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountuser VARCHAR(320) NULL "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showwelcome CHAR(1) NULL default 'Y' "); echo $modifyoutput; flush();
+		
+        modify_database("", "CREATE TABLE [prefix_survey_permissions] (
+                            [sid] INT NOT NULL,         
+                            [uid] INT NOT NULL,         
+                            [permission] VARCHAR(20) NOT NULL,       
+                            [create_p] TINYINT NOT NULL default '0', 
+                            [read_p] TINYINT NOT NULL default '0', 
+                            [update_p] TINYINT NOT NULL default '0', 
+                            [delete_p] TINYINT NOT NULL default '0', 
+                            [import_p] TINYINT NOT NULL default '0', 
+                            [export_p] inTINYINT NOT NULL default '0', 
+                            PRIMARY KEY ([sid], [uid],[permission])
+                        );");
+        upgrade_surveypermissions_table145();
+        modify_database("", "DROP TABLE [prefix_survey_rights]"); echo $modifyoutput; flush();
         
-        //Now add an index to the questions table to speed up subquestions
+        //Add index to questions table to speed up subquestions
         modify_database("", "create index [parent_qid] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();
         
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();

@@ -2560,7 +2560,7 @@ if($action == "surveysecurity")
                         $insert = "<div class=\"ui-icon ui-icon-check\">&nbsp;</div>";
                     } 
                     elseif ($iCount>0){
-                        $insert = "<div class=\"ui-icon ui-icon-radio-off\">&nbsp;</div>";
+                        $insert = "<div class=\"ui-icon ui-icon-check mixed\">&nbsp;</div>";
                     }
                     else
                     {

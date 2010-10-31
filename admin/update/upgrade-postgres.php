@@ -248,8 +248,23 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountencryption VARCHAR(4) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccounttype VARCHAR(4) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD showwelcome CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE prefix_survey_permissions (
+                            sid integer DEFAULT 0 NOT NULL,
+                            uid integer DEFAULT 0 NOT NULL,
+                            permission character varying(20) NOT NULL,
+                            create_p integer DEFAULT 0 NOT NULL,
+                            read_p integer DEFAULT 0 NOT NULL,
+                            update_p integer DEFAULT 0 NOT NULL,
+                            delete_p integer DEFAULT 0 NOT NULL,
+                            import_p integer DEFAULT 0 NOT NULL,
+                            export_p integer DEFAULT 0 NOT NULL
+                        );"); echo $modifyoutput; flush();    
+        modify_database("", "ALTER TABLE ONLY prefix_survey_permissions ADD CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission);"); echo $modifyoutput; flush();
+		upgrade_surveypermissions_table145();
         
-        //Now add an index to the questions table to speed up subquestions
+        modify_database("", "DROP TABLE prefix_survey_rights"); echo $modifyoutput; flush();
+        
+        //Add index to questions table to speed up subquestions
         modify_database("", "create INDEX parent_qid on prefix_questions( parent_qid );"); echo $modifyoutput; flush();
         
         modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
