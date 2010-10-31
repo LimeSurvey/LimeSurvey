@@ -436,7 +436,7 @@ function db_upgrade($oldversion) {
                             PRIMARY KEY ([sid], [uid],[permission])
                         );");
         upgrade_surveypermissions_table145();
-        modify_database("", "DROP TABLE [prefix_survey_rights]"); echo $modifyoutput; flush();
+        modify_database("", "DROP TABLE [prefix_surveys_rights]"); echo $modifyoutput; flush();
         
         //Add index to questions table to speed up subquestions
         modify_database("", "create index [parent_qid] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();

@@ -262,7 +262,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE ONLY prefix_survey_permissions ADD CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission);"); echo $modifyoutput; flush();
 		upgrade_surveypermissions_table145();
         
-        modify_database("", "DROP TABLE prefix_survey_rights"); echo $modifyoutput; flush();
+        modify_database("", "DROP TABLE prefix_surveys_rights"); echo $modifyoutput; flush();
         
         //Add index to questions table to speed up subquestions
         modify_database("", "create INDEX parent_qid on prefix_questions( parent_qid );"); echo $modifyoutput; flush();
