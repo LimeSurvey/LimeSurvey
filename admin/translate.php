@@ -93,8 +93,8 @@
           {
             $id1 = $_POST["{$type}_id1_{$i}"];
             $id2 = $_POST["{$type}_id2_{$i}"];
-            $transarray = setupTranslateFields($type);
-            $query = $transarray["queryupdate"];
+            $amTypeOptions = setupTranslateFields($type, $tolang, $baselang, $id1, $id2, $new);
+            $query = $amTypeOptions["queryupdate"];
             $connect->execute($query);
           }
         }
@@ -122,9 +122,9 @@
       ."\t<ul>\n";
         foreach($tab_names as $type)
         {
-          $transarray = setupTranslateFields($type);
+          $amTypeOptions = setupTranslateFields($type, $tolang, $baselang);
           $translateoutput .= ""
-            ."\t\t<li><a href=\"#tab-".$type."\"><span>".$clang->gT($transarray["desc"])."</span></a></li>\n";
+            ."\t\t<li><a href=\"#tab-".$type."\"><span>".$amTypeOptions["description"]."</span></a></li>\n";
         }
         $translateoutput .= ""
       ."\t</ul>\n";
@@ -132,7 +132,7 @@
     // Define content of each tab
     foreach($tab_names as $type)
     {
-      $transarray = setupTranslateFields($type);
+      $amTypeOptions = setupTranslateFields($type, $tolang, $baselang);
       // Create tab names and heading
       $translateoutput .= "\t<div id='tab-".$type."'>\n";
       $translateoutput .= PrepareEditorScript("noneedforvalue");
@@ -141,40 +141,40 @@
         $i = 0;
         $all_fields_empty = TRUE;
 
-        $querybase = $transarray["querybase"];
+        $querybase = $amTypeOptions["querybase"];
         $resultbase = db_execute_assoc($querybase);
 
-        $queryto = $transarray["queryto"];
+        $queryto = $amTypeOptions["queryto"];
         $resultto = db_execute_assoc($queryto);
 
         while ($rowfrom = $resultbase->FetchRow())
         {
-          $textfrom = htmlspecialchars_decode($rowfrom[$transarray["what"]]);
+          $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
           $gid = NULL;
-          if($transarray["gid"]==TRUE)
+          if($amTypeOptions["gid"]==TRUE)
           {  
             $gid = $rowfrom['gid'];
           }
           $qid = NULL;
-          if($transarray["qid"]==TRUE)
+          if($amTypeOptions["qid"]==TRUE)
           {
             $qid = $rowfrom['qid'];
           }
           $rowto = $resultto->FetchRow();
-          $textto   = htmlspecialchars_decode($rowto[$transarray["what"]]);
+          $textto   = htmlspecialchars_decode($rowto[$amTypeOptions["dbColumn"]]);
 
           if (strlen(trim((string)$textfrom)) > 0)
           {
             $all_fields_empty = FALSE;
             $value1 = "";
-            if ($transarray["id1"] != "")
+            if ($amTypeOptions["id1"] != "")
             {
-              $value1 = $rowfrom[$transarray["id1"]];
+              $value1 = $rowfrom[$amTypeOptions["id1"]];
             }
             $value2 = "";
-            if ($transarray["id2"] != "")
+            if ($amTypeOptions["id2"] != "")
             {
-              $value2 = $rowfrom[$transarray["id2"]];
+              $value2 = $rowfrom[$amTypeOptions["id2"]];
             }
             $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
             $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
@@ -197,8 +197,13 @@
                       ."name='".$type."_oldvalue_".$i."' "
                       ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
                     $translateoutput .= "<textarea cols='80' rows='".($nrows+1)."' "
-                      ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n"
-                      .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+                      ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
+
+                    if ($amTypeOptions["HTMLeditor"]=="Yes")
+                    {  
+                      $translateoutput .= ""
+                        .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+                    }
                     $translateoutput .= "</td>\n"
                 . "</tr>\n"
               . "</table>\n"

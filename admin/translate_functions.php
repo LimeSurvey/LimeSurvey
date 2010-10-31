@@ -16,17 +16,18 @@
 
 /**
  * menuItem() creates a menu item with text and image in the admin screen menus
+ * @param string $menuText
  * @global string $clang, $imageurl
  * @return string
  */
-function menuItem($menuText, $menuImageText, $menuImageFile, $scriptname)
+function menuItem($menuText, $jsMenuText, $menuImageText, $menuImageFile, $scriptname)
 {
   global $clang, $imageurl;
   $menu = ""
       ."<a href=\"#\" onclick=\"window.open('".$scriptname."', '_top')\"
-          .title='".$clang->gTview($menuText)."'>"
+          .title='".$menuText."'>"
           ."<img name='".$menuImageText."' src='$imageurl/".$menuImageFile."' alt='"
-          .$clang->gT($menuText)."' /></a>\n"
+          .$jsMenuText."' /></a>\n"
       ."<img src='$imageurl/blank.gif' alt='' width='11'  />\n";
   return $menu;
 }
@@ -69,7 +70,9 @@ function menuSeparator()
     ."<div class='menubar-left'>\n";
 
 // Return to survey administration button
-  $adminmenu .= menuItem("Return to survey administration", "Administration", "home.png", "$scriptname?sid=$surveyid");
+  $adminmenu .= menuItem($clang->gT("Return to survey administration"),
+          $clang->gTview("Return to survey administration"),
+          "Administration", "home.png", "$scriptname?sid=$surveyid");
 
   // Separator
   $adminmenu .= menuSeparator();
@@ -85,14 +88,16 @@ function menuSeparator()
 
   if ($activated == "N")
   {
-      $menutext="Test This Survey";
+      $menutext=$clang->gT("Test This Survey");
+      $menutext2=$clang->gTview("Test This Survey");
   } else
   {
-      $menutext="Execute This Survey";
+      $menutext=$clang->gT("Execute This Survey");
+      $menutext2=$clang->gTview("Execute This Survey");
   }
   if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
   {
-      $adminmenu .= menuItem($menutext, $menutext, "do.png", "$publicurl/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang");
+      $adminmenu .= menuItem($menutext, $menutext2, "do.png", "$publicurl/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang");
 
   }
   else
@@ -162,25 +167,26 @@ function menuSeparator()
 
 
 /**
- * setupTranslateFields() creates a customised array with database query information
- * for use by survey translation
- * @global string $baselang The source translation language
- * @global string $tolang The target translation language
- * @global string $new The new value of the translated string
- * @global string $id1 An index variable used in the database select and update query
- * @global string $id2 An index variable used in the database select and update query
- * @param  string $type Type of database field that is being translated, e.g. title, question, etc.
+ * setupTranslateFields() creates a customised array with database query
+ * information for use by survey translation
+ * @global $dbprefix, $surveyid, $clang;
+ * @param string $type Type of database field that is being translated, e.g. title, question, etc.
+ * @param string $baselang The source translation language
+ * @param string $tolang The target translation language
+ * @param string $new The new value of the translated string
+ * @param string $id1 An index variable used in the database select and update query
+ * @param string $id2 An index variable used in the database select and update query
  * @return array
  */
 
-function setupTranslateFields($type)
+function setupTranslateFields($type, $tolang, $baselang, $id1="", $id2="", $new="")
 {
-  global $dbprefix, $tolang, $baselang, $surveyid, $new, $id1, $id2;
+  global $dbprefix, $surveyid, $clang;
   
   switch ( $type )
   {
     case 'title':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                     ."FROM ".db_table_name('surveys_languagesettings')
                                     ." WHERE surveyls_survey_id=".db_quoteall($surveyid)
@@ -197,14 +203,14 @@ function setupTranslateFields($type)
         "id2"  => "",
         "gid"  => FALSE,
         "qid"  => FALSE,
-        "what" => 'surveyls_title',
-        "desc" => "Survey title",
-        "formname" => 'init_update'
+        "dbColumn" => 'surveyls_title',
+        "description" => $clang->gT("Survey title"),
+        "HTMLeditor"  => "Yes"
       );
       break;
 
     case 'description':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                     ."FROM ".db_table_name('surveys_languagesettings')
                                     ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
@@ -221,14 +227,14 @@ function setupTranslateFields($type)
         "id2"  => "",
         "gid"  => FALSE,
         "qid"  => FALSE,
-        "what" => 'surveyls_description',
-        "desc" => "Description:",
-        "formname" => 'init_update'
+        "dbColumn" => 'surveyls_description',
+        "description" => $clang->gT("Description:"),
+        "HTMLeditor"  => "Yes"
       );
       break;
 
     case 'welcome':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                     ."FROM ".db_table_name('surveys_languagesettings')
                                     ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
@@ -245,14 +251,14 @@ function setupTranslateFields($type)
         "id2"  => "",
         "gid"  => FALSE,
         "qid"  => FALSE,
-        "what" => 'surveyls_welcometext',
-        "desc" => "Welcome:",
-        "formname" => 'init_update',
+        "dbColumn" => 'surveyls_welcometext',
+        "description" => $clang->gT("Welcome:"),
+        "HTMLeditor"  => "Yes"
       );
       break;
 
     case 'end':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                     ."FROM ".db_table_name('surveys_languagesettings')
                                     ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
@@ -269,14 +275,14 @@ function setupTranslateFields($type)
         "id2"  => "",
         "gid"  => FALSE,
         "qid"  => FALSE,
-        "what" => 'surveyls_endtext',
-        "desc" => "End message:",
-        "formname" => 'init_update'
+        "dbColumn" => 'surveyls_endtext',
+        "description" => $clang->gT("End message:"),
+        "HTMLeditor"  => "Yes"
       );
       break;
 
     case 'group':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                      ."FROM ".db_table_name('groups')
                                      ."WHERE sid=".db_quoteall($surveyid)
@@ -296,14 +302,14 @@ function setupTranslateFields($type)
         "id2"  => "",
         "gid"  => TRUE,
         "qid"  => FALSE,
-        "what" => "group_name",
-        "desc" => "Question groups",
-        "formname" => "group_update"
+        "dbColumn" => "group_name",
+        "description" => $clang->gT("Question groups"),
+        "HTMLeditor"  => "No"
       );
       break;
 
     case 'group_desc':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                      ."FROM ".db_table_name('groups')
                                      ."WHERE sid=".db_quoteall($surveyid)
@@ -323,14 +329,14 @@ function setupTranslateFields($type)
         "id2"  => "",
         "gid"  => TRUE,
         "qid"  => FALSE,
-        "what" => "description",
-        "desc" => "Description:",
-        "formname" => 'group_update'
+        "dbColumn" => "description",
+        "description" => $clang->gT("Description:"),
+        "HTMLeditor"  => "No"
       );
       break;
 
 //    case 'label':
-//      $transarray = array(
+//      $amTypeOptions = array(
 //        "querybase" => "SELECT * "
 //                                   ."FROM ".db_table_name('labels')
 //                                   ."WHERE language='{$baselang}' "
@@ -344,16 +350,15 @@ function setupTranslateFields($type)
 //                         ."WHERE lid = '{$id1}' "
 //                           ."AND code='{$id2}' "
 //                           ."AND language='{$tolang}' LIMIT 1",
-//        "what" => 'title',
+//        "dbColumn" => 'title',
 //        "id1"  => 'lid',
 //        "id2"  => 'code',
-//        "desc" => "Label sets",
-//        "formname" => 'labels_update'
+//        "description" => $clang->gT("Label sets")
 //      );
 //      break;
 
     case 'question':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                    ."FROM ".db_table_name('questions')
                                    ."WHERE sid=".db_quoteall($surveyid)
@@ -369,18 +374,18 @@ function setupTranslateFields($type)
                          ."WHERE qid = '{$id1}' "
                            ."AND sid=".db_quoteall($surveyid)
                            ."AND language='{$tolang}' LIMIT 1",
-        "what" => 'question',
+        "dbColumn" => 'question',
         "id1"  => 'qid',
         "id2"  => "",
         "gid"  => TRUE,
         "qid"  => TRUE,
-        "desc" => "Questions",
-        "formname" => 'question_update'
+        "description" => $clang->gT("Questions"),
+        "HTMLeditor"  => "No"
       );
       break;
 
     case 'question_help':
-      $transarray = array(
+      $amTypeOptions = array(
         "querybase" => "SELECT * "
                                      ."FROM ".db_table_name('questions')
                                      ."WHERE sid=".db_quoteall($surveyid)
@@ -396,18 +401,18 @@ function setupTranslateFields($type)
                    ."WHERE qid = '{$id1}' "
                    ."AND sid=".db_quoteall($surveyid)
                    ."AND language='{$tolang}' LIMIT 1",
-        "what" => 'help',
+        "dbColumn" => 'help',
         "id1"  => 'qid',
         "id2"  => "",
         "gid"  => TRUE,
         "qid"  => TRUE,
-        "desc" => "Help",
-        "formname" => 'question_update'
+        "description" => $clang->gT("Help"),
+        "HTMLeditor"  => "No"
       );
       break;
 
     case 'answer':
-      $transarray = array(
+      $amTypeOptions = array(
 //        "querybase" => "SELECT {$dbprefix}answers.* "
         "querybase" => "SELECT".db_table_name('answers').".*, ".db_table_name('questions').".gid "
                                      ." FROM ".db_table_name('answers').", ".db_table_name('questions')
@@ -428,17 +433,17 @@ function setupTranslateFields($type)
                          ."WHERE qid = '{$id1}' "
                            ."AND code='{$id2}' "
                            ."AND language='{$tolang}' LIMIT 1",
-        "what" => 'answer',
+        "dbColumn" => 'answer',
         "id1"  => 'qid',
         "id2"  => 'code',
         "gid"  => TRUE,
         "qid"  => TRUE,
-        "desc" => "Subquestions",
-        "formname" => 'answers_update'
+        "description" => $clang->gT("Subquestions"),
+        "HTMLeditor"  => "No"
       );
       break;
   }
-  return($transarray);
+  return($amTypeOptions);
 }
 
 /**
