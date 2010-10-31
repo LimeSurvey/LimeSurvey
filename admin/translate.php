@@ -199,10 +199,15 @@
                     $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
                       ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
 
-                    if ($amTypeOptions["HTMLeditor"]=="Yes")
+                    if ($amTypeOptions["HTMLeditorInline"]=="Yes")
                     {  
                       $translateoutput .= ""
                         .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+                    }
+                    else
+                    {
+                      $translateoutput .= ""
+                        .getPopupEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
                     }
                     $translateoutput .= "</td>\n"
                 . "</tr>\n"

@@ -206,7 +206,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_title',
         "description" => $clang->gT("Survey title"),
-        "HTMLeditor"  => "Yes"
+        "HTMLeditorInline"  => "Yes"
       );
       break;
 
@@ -230,7 +230,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_description',
         "description" => $clang->gT("Description:"),
-        "HTMLeditor"  => "Yes"
+        "HTMLeditorInline"  => "Yes"
       );
       break;
 
@@ -254,7 +254,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_welcometext',
         "description" => $clang->gT("Welcome:"),
-        "HTMLeditor"  => "Yes"
+        "HTMLeditorInline"  => "Yes"
       );
       break;
 
@@ -278,7 +278,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_endtext',
         "description" => $clang->gT("End message:"),
-        "HTMLeditor"  => "Yes"
+        "HTMLeditorInline"  => "Yes"
       );
       break;
 
@@ -305,7 +305,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => "group_name",
         "description" => $clang->gT("Question groups"),
-        "HTMLeditor"  => "No"
+        "HTMLeditorInline"  => "No"
       );
       break;
 
@@ -332,7 +332,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => "description",
         "description" => $clang->gT("Group description"),
-        "HTMLeditor"  => "No"
+        "HTMLeditorInline"  => "No"
       );
       break;
 
@@ -381,7 +381,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => TRUE,
         "qid"  => TRUE,
         "description" => $clang->gT("Questions"),
-        "HTMLeditor"  => "No"
+        "HTMLeditorInline"  => "No"
       );
       break;
 
@@ -408,7 +408,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => TRUE,
         "qid"  => TRUE,
         "description" => $clang->gT("Help"),
-        "HTMLeditor"  => "No"
+        "HTMLeditorInline"  => "No"
       );
       break;
 
@@ -440,7 +440,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => TRUE,
         "qid"  => TRUE,
         "description" => $clang->gT("Subquestions"),
-        "HTMLeditor"  => "No"
+        "HTMLeditorInline"  => "No"
       );
       break;
   }
