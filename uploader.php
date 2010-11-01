@@ -51,6 +51,11 @@ else
 session_set_cookie_params(0,$relativeurl.'/');
 @session_start();
 
+if (empty($_SESSION) || !isset($_SESSION['fieldname']))
+{
+    die("You don't have a valid session !");
+}
+
 echo $header;
 
 $body = '
