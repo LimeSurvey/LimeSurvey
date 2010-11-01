@@ -64,7 +64,7 @@ isset($_SESSION['FileManagerContext']))
     preg_match('/^edit:assessments/',$_SESSION['FileManagerContext']) !=0 ||
     preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
     {
-        $contextarray=split(':',$_SESSION['FileManagerContext'],3);
+        $contextarray=explode(':',$_SESSION['FileManagerContext'],3);
         $surveyid=$contextarray[2];
 
 
@@ -81,7 +81,7 @@ isset($_SESSION['FileManagerContext']))
     }
     elseif (preg_match('/^edit:label/',$_SESSION['FileManagerContext']) != 0)
     {
-        $contextarray=split(':',$_SESSION['FileManagerContext'],3);
+        $contextarray=explode(':',$_SESSION['FileManagerContext'],3);
         $labelid=$contextarray[2];
         // check if the user has label management right and labelid defined
         if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1 && isset($labelid) && $labelid != '')

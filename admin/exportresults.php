@@ -26,12 +26,12 @@ if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
 if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
 if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
-if (!bHasSurveyPermission($surveyid, 'export'))
+if (!bHasSurveyPermission($surveyid, 'responses','export'))
 {
     exit;
 }
 
-include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
+include_once(dirname(__FILE__)."/classes/phpexcel/PHPExcel.php");
 include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
 
 $surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
@@ -271,22 +271,17 @@ switch ( $_POST["type"] ) {
         $separator="\t";
         break;
     case "xls":
-        $workbook = new Spreadsheet_Excel_Writer();
-        $workbook->setVersion(8);
-        // Inform the module that our data will arrive as UTF-8.
-        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-        if (!empty($tempdir)) {
-            $workbook->setTempDir($tempdir);
-        }
-        $workbook->send('results-survey'.$surveyid.'.xls');
+        header("Content-Disposition: attachment; filename=results-survey".$surveyid.".xls");
+        header("Content-type: application/vnd.ms-excel");
+        $workbook = new PHPExcel();
         // Creating the first worksheet
 
         $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$surveyid;
         $result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
         $row = $result->FetchRow();
 
-        $sheet =& $workbook->addWorksheet(utf8_decode($row['surveyls_title']));
-        $sheet->setInputEncoding('utf-8');
+        $sheet = $workbook->getActiveSheet();
+        $sheet->setTitle(substr($row['surveyls_title'],0,31));
         $separator="~|";
         break;
     case "csv":
@@ -691,7 +686,7 @@ if ($type == "xls")
     $fli=0;
     foreach ($flarray as $fl)
     {
-        $sheet->write(0,$fli,$fl);
+        $sheet->setCellValueByColumnAndRow($fli,1,$fl);
         $fli++;
     }
     //print_r($fieldmap);
@@ -835,7 +830,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
                 {
                     $rowfield = "\"".$rowfield."\"";
                 }
-                $sheet->write($rowcounter,$colcounter,$rowfield);
+                $sheet->setCellValueByColumnAndRow($colcounter,$rowcounter+1,$rowfield);
                 $colcounter++;
             }
         }
@@ -1230,7 +1225,7 @@ elseif ($answers == "long")        //chose complete answers
             $ftype = "";
         }
         $exportoutput=mb_substr($exportoutput,0,-(strlen($separator)));
-        IF ($type=='xls')
+        if ($type=='xls')
         {
             $rowarray=explode($separator, $exportoutput);
             $fli=0;
@@ -1241,7 +1236,7 @@ elseif ($answers == "long")        //chose complete answers
                 {
                     $row = "\"".$row."\"";
                 }
-                $sheet->write($rowcounter,$fli,$row);
+                $sheet->setCellValueByColumnAndRow($fli,$rowcounter+1,$row);
                 $fli++;
             }
             $exportoutput='';
@@ -1251,7 +1246,11 @@ elseif ($answers == "long")        //chose complete answers
 }
 if ($type=='xls')
 {
-    $workbook->close();
+    $objWriter = new PHPExcel_Writer_Excel5($workbook);
+    $sFileName='xls_'.randomkey(40);
+    $objWriter->save($sFileName);    
+    readfile($sFileName);
+    unlink($sFileName);
 }
 else if($type=='pdf')
 {
