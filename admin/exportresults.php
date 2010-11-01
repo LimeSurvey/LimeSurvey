@@ -1247,7 +1247,7 @@ elseif ($answers == "long")        //chose complete answers
 if ($type=='xls')
 {
     $objWriter = new PHPExcel_Writer_Excel5($workbook);
-    $sFileName='xls_'.randomkey(40);
+    $sFileName=$tempdir.DIRECTORY_SEPARATOR.'xls_'.randomkey(40);
     $objWriter->save($sFileName);    
     readfile($sFileName);
     unlink($sFileName);
