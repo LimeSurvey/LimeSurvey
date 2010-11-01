@@ -45,14 +45,17 @@ function menuSeparator()
 
 /**
  * showTranslateAdminmenu() creates the main menu options for the survey translation page
- * @global string scriptname, $surveyid, $survey_title, $imageurl, $clang, $action,
-           $tolang, $activated, $publicurl
+ * @param string $surveyid The survey ID
+ * @param string $survey_title 
+ * @param string $tolang
+ * @param string $activated
+ * @param string $scriptname
+ * @global string $imageurl, $clang, $publicurl
  * @return string
  */
-  function showTranslateAdminmenu()
+  function showTranslateAdminmenu($surveyid, $survey_title, $tolang, $scriptname)
 {
-   global $scriptname, $surveyid, $survey_title, $imageurl, $clang, $action,
-           $tolang, $activated, $publicurl;
+   global $imageurl, $clang, $publicurl;
 
   $baselang = GetBaseLanguageFromSurveyID($surveyid);
   $supportedLanguages = getLanguageData(false);
@@ -79,49 +82,52 @@ function menuSeparator()
   
   // Test / execute survey button
 
-  $sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
-  $sumresult1 = db_select_limit_assoc($sumquery1, 1) ; //Checked
-  $surveyinfo = $sumresult1->FetchRow();
-
-  $surveyinfo = array_map('FlattenText', $surveyinfo);
-  $activated = $surveyinfo['active'];
-
-  if ($activated == "N")
+  if ($tolang != "")
   {
-      $menutext=$clang->gT("Test This Survey");
-      $menutext2=$clang->gTview("Test This Survey");
-  } else
-  {
-      $menutext=$clang->gT("Execute This Survey");
-      $menutext2=$clang->gTview("Execute This Survey");
-  }
-  if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
-  {
-      $adminmenu .= menuItem($menutext, $menutext2, "do.png", "$publicurl/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang");
+    $sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
+    $sumresult1 = db_select_limit_assoc($sumquery1, 1) ; //Checked
+    $surveyinfo = $sumresult1->FetchRow();
 
-  }
-  else
-  {
-    $icontext = $clang->gT($menutext);
-    $icontext2 = $clang->gT($menutext);
-    $adminmenu .= "<a href='#' id='dosurvey' class='dosurvey'"
-    . "title=\"".$icontext2."\" accesskey='d'>"
-    . "<img  src='$imageurl/do.png' alt='$icontext' />"
-    . "</a>\n";
+    $surveyinfo = array_map('FlattenText', $surveyinfo);
+    $activated = $surveyinfo['active'];
 
-    $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $tmp_survlangs[] = $baselang;
-    rsort($tmp_survlangs);
-    // Test Survey Language Selection Popup
-    $adminmenu .="<div class=\"langpopup\" id=\"dosurveylangpopup\">"
-      .$clang->gT("Please select a language:")."<ul>";
-    foreach ($tmp_survlangs as $tmp_lang)
+    if ($activated == "N")
     {
-        $adminmenu .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');"
-          ."\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;"
-          ."newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+        $menutext=$clang->gT("Test This Survey");
+        $menutext2=$clang->gTview("Test This Survey");
+    } else
+    {
+        $menutext=$clang->gT("Execute This Survey");
+        $menutext2=$clang->gTview("Execute This Survey");
     }
-    $adminmenu .= "</ul></div>";
+    if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+    {
+        $adminmenu .= menuItem($menutext, $menutext2, "do.png", "$publicurl/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang");
+
+    }
+    else
+    {
+      $icontext = $clang->gT($menutext);
+      $icontext2 = $clang->gT($menutext);
+      $adminmenu .= "<a href='#' id='dosurvey' class='dosurvey'"
+      . "title=\"".$icontext2."\" accesskey='d'>"
+      . "<img  src='$imageurl/do.png' alt='$icontext' />"
+      . "</a>\n";
+
+      $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+      $tmp_survlangs[] = $baselang;
+      rsort($tmp_survlangs);
+      // Test Survey Language Selection Popup
+      $adminmenu .="<div class=\"langpopup\" id=\"dosurveylangpopup\">"
+        .$clang->gT("Please select a language:")."<ul>";
+      foreach ($tmp_survlangs as $tmp_lang)
+      {
+          $adminmenu .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');"
+            ."\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;"
+            ."newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+      }
+      $adminmenu .= "</ul></div>";
+    }
   }
 
   // End of survey-bar-left

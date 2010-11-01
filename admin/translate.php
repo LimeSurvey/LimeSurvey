@@ -32,6 +32,7 @@
   // TODO need to do some validation here on surveyid
 
   $surveyinfo=getSurveyInfo($surveyid);
+  $tolang="";
   if (isset($_GET['tolang']))
   {
     $tolang = $_GET['tolang'];
@@ -50,7 +51,7 @@
   $baselang = GetBaseLanguageFromSurveyID($surveyid);
   $supportedLanguages = getLanguageData(false);
   $baselangdesc = $supportedLanguages[$baselang]['description'];
-  if(isset($tolang))
+  if($tolang != "")
   {  
     $tolangdesc = $supportedLanguages[$tolang]['description'];
   }
@@ -58,7 +59,7 @@
   $translateoutput = "";
   $translateoutput .= "<form name='translatemenu' id='translatemenu' "
                    ."action='$scriptname' method='get' >";
-  $translateoutput .= showTranslateAdminmenu();
+  $translateoutput .= showTranslateAdminmenu($surveyid, $survey_title, $tolang, $scriptname);
   $translateoutput .= "</form>";
 
   $translateoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>\n"; //CSS Firefox 2 transition fix
@@ -69,7 +70,7 @@
 
 
 
-  if (isset($tolang) && $actionvalue=="translateSave")
+  if ($tolang != "" && $actionvalue=="translateSave")
   // Saves translated values to database
   {
     foreach($tab_names as $type)
@@ -104,7 +105,7 @@
     $actionvalue = "";
   } // end if
 
-  if (isset($tolang))
+  if ($tolang != "")
   // Display tabs with fields to translate, as well as input fields for translated values
   {
 
