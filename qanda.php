@@ -3618,7 +3618,7 @@ function do_multiplechoice_withcomments($ia)
 // ---------------------------------------------------------------
 function do_file_upload($ia)
 {
-    global $clang, $js_header_includes, $thissurvey;
+    global $clang, $js_header_includes, $thissurvey, $surveyid;
 
     if ($ia[8] == 'Y')
         $checkconditionFunction = "checkconditions";
@@ -3629,47 +3629,45 @@ function do_file_upload($ia)
 
     // Fetch question attributes
     if (trim($qidattributes['max_num_of_files'])!='')
-        $maxfiles=$qidattributes['max_num_of_files'];
+        $_SESSION['maxfiles']=$qidattributes['max_num_of_files'];
 
     if (trim($qidattributes['min_num_of_files'])!='')
-        $minfiles=$qidattributes['min_num_of_files'];
+        $_SESSION['minfiles']=$qidattributes['min_num_of_files'];
 
     if (trim($qidattributes['max_filesize'])!='')
-        $maxfilesize=$qidattributes['max_filesize'];
+        $_SESSION['maxfilesize']=$qidattributes['max_filesize'];
 
     if (trim($qidattributes['allowed_filetypes'])!='')
-        $allowed_filetypes=$qidattributes['allowed_filetypes'];
+        $_SESSION['allowed_filetypes']=$qidattributes['allowed_filetypes'];
 
     if (trim($qidattributes['show_title'])!='')
-        $show_title = $qidattributes['show_title'];
+        $_SESSION['show_title'] = $qidattributes['show_title'];
 
     if (trim($qidattributes['show_comment'])!='')
-        $show_comment = $qidattributes['show_comment'];
+        $_SESSION['show_comment'] = $qidattributes['show_comment'];
 
-    /* TODO:
-     * 1. On returning to the survey page after error, the title/comments input contain "[{"
-     */
-
+    $_SESSION['fieldname'] = $ia[1];
+    
     // Basic uploader
     $basic  = '<br /><br /><table border="0" cellpadding="10" cellspacing="10" align="center">'
                     .'<tr>';
-    if ($show_title) { $basic .= '<th align="center"><b>Title</b></th><th>&nbsp;&nbsp;</th>'; }
-    if ($show_comment) { $basic .= '<th align="center"><b>Comment</b></th><th>&nbsp;&nbsp;</th>'; }
+    if ($_SESSION['show_title']) { $basic .= '<th align="center"><b>Title</b></th><th>&nbsp;&nbsp;</th>'; }
+    if ($_SESSION['show_comment']) { $basic .= '<th align="center"><b>Comment</b></th><th>&nbsp;&nbsp;</th>'; }
     $basic .=           '<th align="center"><b>Select file</b></th>'
                     .'</tr>'
                     .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>'
                     .'<tbody>';
 
-    for ($i = 1; $i <= $maxfiles; $i++) {
+    for ($i = 1; $i <= $_SESSION['maxfiles']; $i++) {
          $basic .= '<tr>'
                         .'<td>';
-         if ($show_title)
+         if ($_SESSION['show_title'])
              $basic .=      '<input class="basic_'.$ia[1].'" type="text" name="'.$ia[1].'_title_'.$i
                             .'" id="'.$ia[1].'_title_'.$i.'" value="'.$_SESSION[$ia[1]]
                             .'" maxlength="100" />'
                         .'</td>'
                         .'<td>&nbsp;&nbsp;</td>';
-         if ($show_comment)
+         if ($_SESSION['show_comment'])
              $basic .=  '<td>'
                             .'<input class="basic_'.$ia[1].'" type="textarea" name="'.$ia[1].'_comment_'.$i
                             .'" id="'.$ia[1].'_comment_'.$i.'" value="'.$_SESSION[$ia[1]]
@@ -3690,22 +3688,24 @@ function do_file_upload($ia)
 
     $currentdir = getcwd();
     $pos = stripos($currentdir, "admin");
-    
+
     if ($pos)
     {
-        $uploadbutton = "<h2><a class='upload' href='../uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
-        $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
+        $_SESSION['preview'] = 1;
+        $scriptloc = '../uploader.php';
     }
     else if ($thissurvey['active'] != "Y")
     {
-        $uploadbutton = "<h2><a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=1&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
-        $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
+        $_SESSION['preview'] = 1;
+        $scriptloc = 'uploader.php';
     }
     else
     {
-        $uploadbutton = "<h2><a class='upload' href='uploader.php?minfiles=".$minfiles."&maxfiles=".$maxfiles."&ia=".$ia[1]."&maxfilesize=".$maxfilesize."&allowed_filetypes=".$allowed_filetypes."&preview=0&show_title=".$show_title."&show_comment=".$show_comment."' >Upload files</a></h2><br /><br />";
-        $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
+        $_SESSION['preview'] = 0;
+        $scriptloc = 'uploader.php';
     }
+    $uploadbutton = "<h2><a class='upload' href='$scriptloc?sid=$surveyid'>Upload files</a></h2><br /><br />";
+    $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
 
 
     // Modal dialog
@@ -3725,7 +3725,7 @@ function do_file_upload($ia)
                             var horizontalPadding = 30;
                             var verticalPadding = 20;
                             $('#uploader').dialog('destroy');
-                            
+
                             if ($('#uploader').length > 0)
                             {
 
@@ -3783,7 +3783,7 @@ function do_file_upload($ia)
                             }
                         });
                     });
-                    
+
                     function isValueInArray(arr, val) {
                         inArray = false;
                         for (i = 0; i < arr.length; i++)
@@ -3804,13 +3804,13 @@ function do_file_upload($ia)
                     function displayUploadedFiles(jsonstring, filecount) {
                         var jsonobj;
                         var i;
-                        
+
                         if (jsonstring != '')
                         {
                             jsonobj = eval('(' + jsonstring + ')');
                             var display = '<table width=\"100%\"><tr><th align=\"center\" width=\"20%\">&nbsp;</th>";
-                            if ($show_title) { $answer .= "<th align=\"center\"><b>Title</b></th>"; }
-                            if ($show_comment) { $answer .= "<th align=\"center\"><b>Comment</b></th>"; }
+                            if ($_SESSION['show_title']) { $answer .= "<th align=\"center\"><b>Title</b></th>"; }
+                            if ($_SESSION['show_comment']) { $answer .= "<th align=\"center\"><b>Comment</b></th>"; }
                             $answer .= "<th align=\"center\"><b>Name</b></th></tr>';";
 
                 $answer .= "var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
@@ -3833,9 +3833,9 @@ function do_file_upload($ia)
                                                     display += '<tr><td><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }
 
-                                if ($show_title)
+                                if ($_SESSION['show_title'])
                                     $answer .= "display += '<td>'+jsonobj[i].title+'</td>';";
-                                if ($show_comment)
+                                if ($_SESSION['show_comment'])
                                     $answer .= "display += '<td>'+jsonobj[i].comment+'</td>';";
 
         $answer .= "            display += '<td>'+decodeURIComponent(jsonobj[i].name)+'</td><td>" . $editbutton . "</td></tr>';
@@ -3874,7 +3874,7 @@ function do_file_upload($ia)
                         var i;
                         var jsonstring = "[";
 
-                        for (i = 1, filecount = 0; i <= '.$maxfiles.'; i++)
+                        for (i = 1, filecount = 0; i <= '.$_SESSION['maxfiles'].'; i++)
                         {
                             if ($("#'.$ia[1].'_"+i).val() == "")
                                 continue;
@@ -3885,13 +3885,13 @@ function do_file_upload($ia)
 
                             if ($("#answer'.$ia[1].'_"+i).val() != "")
                                 jsonstring += "{';
-    
-    if ($show_title)
+
+    if ($_SESSION['show_title'])
         $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
     else
         $answer .= '\"title\":\"\",';
-    
-    if ($show_comment)
+
+    if ($_SESSION['show_comment'])
         $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
     else
         $answer .= '\"comment\":\"\",';

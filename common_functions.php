@@ -4209,7 +4209,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
 
 // This function returns the header as result string
 // If you want to echo the header use doHeader() !
-function getHeader()
+function getHeader($meta = false)
 {
     global $embedded, $surveyid, $rooturl,$defaultlang, $js_header_includes, $css_header_includes;
 
@@ -4256,6 +4256,9 @@ function getHeader()
         . "<link href=\"".$rooturl."/scripts/jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
         . "<link href=\"".$rooturl."/scripts/jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
         . $js_header;
+
+        if ($meta)
+            $header .= $meta;
 
         return $header;
     }

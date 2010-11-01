@@ -1,28 +1,68 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Advanced File Uploader</title>
-  
-        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-        <script type="text/javascript" src="scripts/ajaxupload.js"></script>
+<?php
+require_once(dirname(__FILE__).'/classes/core/startup.php');
+require_once(dirname(__FILE__).'/config-defaults.php');
+require_once(dirname(__FILE__).'/common.php');
+require_once($homedir.'/classes/core/class.progressbar.php');
+require_once(dirname(__FILE__).'/classes/core/language.php');
 
-        <link type="text/css" href="scripts/jquery/css/jquery-ui-1.8.1.custom.css" rel="stylesheet" />
-        <link type="text/css" href="scripts/uploader.css" rel="stylesheet" />
-        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-        <script type="text/javascript" src="scripts/uploader.js"></script>
-    </head>
+if (!isset($surveyid))
+{
+    $surveyid=returnglobal('sid');
+}
+else
+{
+    //This next line ensures that the $surveyid value is never anything but a number.
+    $surveyid=sanitize_int($surveyid);
+}
 
-    <body>
+$meta ='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
+<script type="text/javascript" src="scripts/uploader.js"></script>
+<link type="text/css" href="scripts/uploader.css" rel="stylesheet" />';
+            
+$baselang = GetBaseLanguageFromSurveyID($surveyid);
+$clang = new limesurvey_lang($baselang);
+
+$header = getHeader($meta);
+
+
+// Compute the Session name
+// Session name is based:
+// * on this specific limesurvey installation (Value SessionName in DB)
+// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked
+if ($usresult)
+{
+    $usrow = $usresult->FetchRow();
+    $stg_SessionName=$usrow['stg_value'];
+    if ($surveyid)
+    {
+        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+    }
+    else
+    {
+        @session_name($stg_SessionName.'-runtime-publicportal');
+    }
+}
+else
+{
+    session_name("LimeSurveyRuntime-$surveyid");
+}
+session_set_cookie_params(0,$relativeurl.'/');
+@session_start();
+
+echo $header;
+
+$body = '
         <div id="notice"></div>
-        <input type="hidden" id="ia"                value="<?php echo $_GET['ia']                 ?>" />
-        <input type="hidden" id="minfiles"          value="<?php echo $_GET['minfiles']           ?>" />
-        <input type="hidden" id="maxfiles"          value="<?php echo $_GET['maxfiles']           ?>" />
-        <input type="hidden" id="maxfilesize"       value="<?php echo $_GET['maxfilesize']        ?>" />
-        <input type="hidden" id="allowed_filetypes" value="<?php echo $_GET['allowed_filetypes']  ?>" />
-        <input type="hidden" id="preview"           value="<?php echo $_GET['preview']            ?>" />
-        <input type="hidden" id="show_comment"      value="<?php echo $_GET['show_comment']       ?>" />
-        <input type="hidden" id="show_title"        value="<?php echo $_GET['show_title']         ?>" />
+        <input type="hidden" id="ia"                value="'.$_SESSION['fieldname'].'" />
+        <input type="hidden" id="minfiles"          value="'.$_SESSION['minfiles'].'" />
+        <input type="hidden" id="maxfiles"          value="'.$_SESSION['maxfiles'].'" />
+        <input type="hidden" id="maxfilesize"       value="'.$_SESSION['maxfilesize'].'" />
+        <input type="hidden" id="allowed_filetypes" value="'.$_SESSION['allowed_filetypes'].'" />
+        <input type="hidden" id="preview"           value="'.$_SESSION['preview'].'" />
+        <input type="hidden" id="show_comment"      value="'.$_SESSION['show_comment'].'" />
+        <input type="hidden" id="show_title"        value="'.$_SESSION['show_title'].'" />
         <input type="hidden" id="licount"           value="0" />
         <input type="hidden" id="filecount"         value="0" />
 
@@ -31,11 +71,13 @@
             <button id="button1" class="upload-button" type="button" >Select file</button>
         </div>
         
-        <p class="uploadmsg">You can upload <?php echo $_GET['allowed_filetypes']; ?> under <?php echo $_GET['maxfilesize']; ?> KB each</p>
+        <p class="uploadmsg">You can upload '.$_SESSION['allowed_filetypes'].' under '.$_SESSION['maxfilesize'].' KB each</p>
         <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->
         <ul id="listfiles"></ul>
 
     </body>
-</html>
+</html>';
+echo $body;
+?>
