@@ -718,10 +718,22 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         if (bHasSurveyPermission($surveyid,'translations','read'))
         {
+          // Check if multiple languages have been activated
+          $supportedLanguages = getLanguageData(false);
+          if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) > 0)
+          {
             $surveysummary .= "<img src='$imageurl/seperator.gif' alt=''  />\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=translate&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Translate survey")."\" >"
             . "<img src='$imageurl/translate.png' name='translate' alt='".$clang->gT("Translate survey")."' /></a>\n";
+          }
+          else
+          {
+            $surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("Currently there are no additional languages configured for this survey.", "js")."');\" "
+            . "title=\"".$clang->gTview("Translate survey")."\" >"
+            . "<img src='$imageurl/translate_disabled.png' name='translate' alt='".$clang->gT("Translate survey")."' />"
+            . "</a>\n";
+          }
         }
  
 
