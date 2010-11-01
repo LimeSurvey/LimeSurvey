@@ -382,9 +382,6 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                     $surveynotprivate="TRUE";
                 }
                 break;
-            case "grouptoken":
-                $createsurvey .= " C(36)";
-                break;
             case "page_time":
             case "answer_time":
             case "interview_time":

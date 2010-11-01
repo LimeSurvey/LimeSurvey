@@ -280,7 +280,6 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
-            $url=str_replace("{GROUPTOKEN}",$clientgrouptoken, $url);          // to activate the GROUP TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
             $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
 
@@ -333,7 +332,6 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
     }
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-    echo "\n<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
@@ -1275,10 +1273,6 @@ echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thiss
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 echo "<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n";
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
-if (isset($grouptoken))
-{
-    echo "<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";   
-}
 echo "</form>\n";
 
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));

@@ -29,7 +29,7 @@ $scid=returnglobal('scid');
 $thisstep=returnglobal('thisstep');
 $move=sanitize_paranoid_string(returnglobal('move'));
 $clienttoken=sanitize_token(returnglobal('token'));
-$clientgrouptoken=sanitize_token(returnglobal('grouptoken'));
+
 
 if (!isset($thisstep))
 {
@@ -444,12 +444,6 @@ if (!isset($token))
     $token=$clienttoken;
 }
 
-// Get group token
-if (!isset($grouptoken))
-{
-    $grouptoken=$clientgrouptoken;
-}
-
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
@@ -463,19 +457,7 @@ $i = 0; //$tokensexist = 0;
 if ($surveyexists == 1 && tableExists('tokens_'.$thissurvey['sid']))
 {
     $tokensexist = 1;
-    // check if survey uses group tokens
-    if (tableExists('grouptokens_'.$thissurvey['sid']) && tableExists('usedtokens_'.$thissurvey['sid']))
-    {
-        $grouptokensexist = 1;
-}
-else
-{
-        $grouptokensexist = 0;
-        unset ($_POST['grouptoken']);
-        unset ($_GET['grouptoken']);
-        unset($grouptoken);
-        unset($clientgrouptoken);
-    }
+      
 }
 else
 {
@@ -658,14 +640,9 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 if ($tokensexist == 1 && isset($token) && $token &&
 	isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
 {
-	$grouptoken = db_quote(trim(strip_tags(returnglobal('grouptoken'))));
 	//check if tokens actually haven't been already used
-	$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))), $grouptoken);
+	$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
     
-    //check if token actually does exist
-	$gtkquery = "SELECT * FROM ".db_table_name('grouptokens_'.$surveyid)." WHERE token='".db_quote($grouptoken)."'";
-	$gtkresult = db_execute_num($gtkquery); //Checked
-
     $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
     $tkresult = db_execute_num($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
@@ -877,7 +854,7 @@ function loadanswers()
 {
     global $dbprefix,$surveyid,$errormsg;
     global $thissurvey, $thisstep, $clang;
-    global $databasetype, $clienttoken, $clientgrouptoken;
+    global $databasetype, $clienttoken;
     $scid=returnglobal('scid');
     if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
     {
@@ -925,11 +902,6 @@ function loadanswers()
             {
                 $clienttoken=$value;
                 $token=$value;
-            }
-            elseif ($column == "grouptoken")
-            {
-                $clientgrouptoken=$value;
-                $grouptoken=$value;
             }
             elseif ($column == "saved_thisstep")
             {
@@ -1911,7 +1883,7 @@ function submittokens($quotaexit=false)
 {
     global $thissurvey, $timeadjust, $emailcharset ;
     global $dbprefix, $surveyid, $connect;
-    global $sitename, $thistpl, $clang, $clienttoken, $clientgrouptoken;
+    global $sitename, $thistpl, $clang, $clienttoken;
 
     // Shift the date due to global timeadjust setting
     $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1953,24 +1925,6 @@ function submittokens($quotaexit=false)
 
     $utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
 
-    if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid))
-    {
-		if (!isset($clientgrouptoken)) { $clientgrouptoken = sanitize_token(returnglobal('grouptoken')); }
-		
-        $ugtquery = "UPDATE {$dbprefix}grouptokens_$surveyid\n"
-        ."SET completedsurveys=completedsurveys+1\n"
-        ."WHERE token=".db_quoteall($clientgrouptoken);
-        $utresult = $connect->Execute($ugtquery) or safe_die ("Couldn't update group tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
-
-        $insertedId = $_SESSION['insertedId'];
-        $utquery1 = "SELECT tid from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($clienttoken);
-        $tokenId = $connect->getOne($utquery1);
-        $utquery2 = "SELECT gtid from {$dbprefix}grouptokens_$surveyid WHERE token=".db_quoteall($clientgrouptoken);
-        $clientgrouptokenId = $connect->getOne($utquery2);
-        $utquery = "INSERT INTO {$dbprefix}usedtokens_$surveyid VALUES ($insertedId, $tokenId, $clientgrouptokenId)";
-        $utresult = $connect->Execute($utquery) or safe_die ("Couldn't update used tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
-    }
-
     if ($quotaexit==false)
     {
         // TLR change to put date into sent and completed
@@ -1991,7 +1945,6 @@ function submittokens($quotaexit=false)
             $fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
             $fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
             $fieldsarray["{TOKEN}"]=$clienttoken;
-            $fieldsarray["{GROUPTOKEN}"]=$clientgrouptoken;
             $attrfieldnames=GetAttributeFieldnames($surveyid);
             foreach ($attrfieldnames as $attr_name)
             {
@@ -2266,7 +2219,7 @@ function submitfailed($errormsg='')
 */
 function buildsurveysession()
 {
-    global $thissurvey, $secerror, $clienttoken, $clientgrouptoken;
+    global $thissurvey, $secerror, $clienttoken;
     global $tokensexist, $thistpl;
     global $surveyid, $dbprefix, $connect;
     global $register_errormsg, $clang;
@@ -2370,11 +2323,6 @@ function buildsurveysession()
                 <li>
             <label for='token'>".$clang->gT("Token")."</label><input class='text' id='token' type='text' name='token' />";
             
-            if (tableExists('grouptokens_'.$thissurvey['sid']) && tableExists('usedtokens_'.$thissurvey['sid']))
-            {
-                echo "<br/><label for='grouptoken'>".$clang->gT("Group token")."</label><input class='text' id='grouptoken' type='text' name='grouptoken' />";
-            }
-            
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
 
@@ -2412,8 +2360,8 @@ function buildsurveysession()
     elseif ($tokensexist == 1 && returnglobal('token') &&
     !captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
-    		//check if tokens actually haven't been already used
-				$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))), db_quote(trim(strip_tags(returnglobal('grouptoken')))));
+        //check if tokens actually haven't been already used
+		$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
         //check if token actually does exist
         $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
         $tkresult = db_execute_num($tkquery);    //Checked
@@ -2449,9 +2397,8 @@ function buildsurveysession()
         isset($_SESSION['secanswer']) &&
         $_GET['loadsecurity'] == $_SESSION['secanswer'])
         {
-						//check if tokens actually haven't been already used
-						$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))), db_quote(trim(strip_tags(returnglobal('grouptoken')))));
-    
+            //check if tokens actually haven't been already used
+            $areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
             //check if token actually does exist
             $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."' AND (completed = 'N' or completed='')";
             $tkresult = db_execute_num($tkquery);     //Checked
@@ -2670,14 +2617,11 @@ function buildsurveysession()
     //4. SESSION VARIABLE - fieldarray
     //See rem at end..
     $_SESSION['token'] = $clienttoken;
-    $_SESSION['grouptoken'] = $clientgrouptoken;
 
     if ($thissurvey['private'] == "N")
     {
         $_SESSION['insertarray'][]= "token";
     }
-
-    $_SESSION['insertarray'][]= "grouptoken";
 
 	if ($tokensexist == 1 && $thissurvey['private'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
@@ -3038,7 +2982,7 @@ function check_quota($checkaction,$surveyid)
     if (!isset($_SESSION['s_lang'])){
         return;
     }
-    global $thistpl, $clang, $clienttoken, $clientgrouptoken, $publicurl;
+    global $thistpl, $clang, $clienttoken, $publicurl;
     $global_matched = false;
     $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
     $x=0;
@@ -3195,7 +3139,7 @@ function check_quota($checkaction,$surveyid)
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
 					<input type='hidden' name='token' value='".$clienttoken."' id='token' />
-					<input type='hidden' name='grouptoken' value='".$clientgrouptoken."' id='grouptoken' /></form>\n";
+					</form>\n";
                 echo "\t</div>\n";
                 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
                 doFooter();
@@ -3290,7 +3234,7 @@ function GetReferringUrl()
  * Shows the welcome page, used in group by group and question by question mode
  */
  function display_first_page() {
-    global $clang, $thistpl, $token, $grouptoken, $surveyid, $thissurvey, $navigator,$publicurl;
+    global $clang, $thistpl, $token, $surveyid, $thissurvey, $navigator,$publicurl;
     sendcacheheaders();
     doHeader();
 
@@ -3311,8 +3255,7 @@ function GetReferringUrl()
         echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
     }
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-        echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-        echo "\n<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n";
+    echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));

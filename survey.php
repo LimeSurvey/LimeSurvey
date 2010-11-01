@@ -178,7 +178,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
-            $url=str_replace("{GROUPTOKEN}",$clientgrouptoken, $url);          // to activate the GROUP TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
             $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
             //Automatically redirect the page to the "url" setting for the survey
@@ -1028,7 +1027,6 @@ echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thiss
 ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
 ."<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n"
 ."<input type='hidden' name='token' value='$token' id='token' />\n"
-."<input type='hidden' name='grouptoken' value='$grouptoken' id='grouptoken' />\n"
 ."</form>\n";
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 echo "\n";

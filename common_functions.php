@@ -7639,16 +7639,13 @@ function db_rename_table($oldtable, $newtable)
 }
 
 /**
-* Checks if a pair of tokens (token and grouptoken) has been already used
+* Checks if a token has been already used
 * @param mixed $tid Token
-* @param mixed $gtid Group Token
 */
-function usedTokens($token, $grouptoken)
+function usedTokens($token)
 {
     global $connect, $dbprefix, $surveyid;
     $tid = $connect->getOne("SELECT tid from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token));
-    $gtid = $connect->getOne("SELECT gtid from {$dbprefix}grouptokens_$surveyid WHERE token=".db_quoteall($grouptoken));
-    $utquery = "SELECT COUNT(*) FROM ".db_table_name('usedtokens_'.$surveyid)." WHERE tid=".db_quoteall($tid)." AND gtid=".db_quoteall($gtid);
     $utresult = $connect->getOne($utquery);
     return $utresult;
 }

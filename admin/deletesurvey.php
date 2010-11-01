@@ -48,11 +48,6 @@ if (!isset($deleteok) || !$deleteok)
         $deletesurveyoutput .= "\t".$clang->gT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.")."<br /><br />\n";
     }
 
-		if (tableExists("grouptokens_$surveyid"))
-    {
-        $deletesurveyoutput .= "\t".$clang->gT("This survey has an associated group tokens table. If you delete this survey this group tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.")."<br /><br />\n";
-    }
-
     $deletesurveyoutput .= "<p>\n";
     $deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Delete survey")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;deleteok=Y")."\" />\n";
     $deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" />\n";
@@ -80,18 +75,6 @@ else //delete the survey
     if (tableExists("tokens_$surveyid")) //delete the tokens_$surveyid table
     {
         $dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
-        $dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
-    }
-
-		if (tableExists("grouptokens_$surveyid")) //delete the grouptokens_$surveyid table
-    {
-        $dsquery = $dict->DropTableSQL("{$dbprefix}grouptokens_$surveyid");
-        $dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
-    }
-		
-		if (tableExists("usedtokens_$surveyid")) //delete the usedtokens_$surveyid table
-    {
-        $dsquery = $dict->DropTableSQL("{$dbprefix}usedtokens_$surveyid");
         $dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
     }
 

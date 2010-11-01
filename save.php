@@ -137,10 +137,6 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             {
                 if (substr($subquery,0,6)=='INSERT')
                 {
-                    if (tableExists('grouptokens_'.$thissurvey['sid']) && tableExists('usedtokens_'.$thissurvey['sid']))
-                    {
-                        $_SESSION['insertedId'] = $connect->Insert_ID($thissurvey['tablename'],"id");
-                    }
                     $tempID=$connect->Insert_ID($thissurvey['tablename'],"id"); // Find out id immediately if inserted
                     $_SESSION['srid'] = $tempID;
                     $saved_id = $tempID;

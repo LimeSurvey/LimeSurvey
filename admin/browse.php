@@ -94,8 +94,6 @@ if ($actcount > 0)
         $surveytable = db_table_name("survey_".$actrow['sid']);
         $surveytimingstable = db_table_name("survey_".$actrow['sid']."_timings");
         $tokentable = $dbprefix."tokens_".$actrow['sid'];
-        $grouptokentable = $dbprefix."grouptokens_".$actrow['sid'];
-        $usedtokenstable = $dbprefix."usedtokens_".$actrow['sid'];
         /*
          * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
          * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
@@ -604,9 +602,7 @@ elseif ($subaction == "all")
         $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
-    if (db_tables_exist($grouptokentable)) {
-        $fnames[] = array("grouptoken", "Group Token", $clang->gT("Group Token"), 0);
-    }
+
     $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
     $fields = createFieldMap($surveyid, 'full', false, false, $language);
 
@@ -619,19 +615,16 @@ elseif ($subaction == "all")
         $question=$fielddetails['question'];
         if ($fielddetails['type'] != "|")
         {
-        if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
-            continue;
-        
-        // no headers for time data and group tokens
-        if ($fielddetails['type']=='interview_time')
-			continue;
-        if ($fielddetails['type']=='page_time')
-			continue;
-		if ($fielddetails['type']=='answer_time')
-			continue;
-		if ($fielddetails['type']=='grouptoken')
-            continue;
-			
+            if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
+                continue;
+            
+            // no headers for time data 
+            if ($fielddetails['type']=='interview_time')
+			    continue;
+            if ($fielddetails['type']=='page_time')
+			    continue;
+		    if ($fielddetails['type']=='answer_time')
+			    continue;
             if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
                 $question .=' ('.$fielddetails['subquestion'].')';
             if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
@@ -718,31 +711,13 @@ elseif ($subaction == "all")
     {
         $sql_where .= "submitdate IS NULL";
         
-        // filter group token
-        if (db_tables_exist($tokentable) && $selectedgroup != "")
-        {
-            $selectedgrouptoken = $connect->getOne("SELECT token FROM {$grouptokentable} WHERE gtid='{$selectedgroup}'");
-            $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-    }
     }
     elseif (incompleteAnsFilterstate() == "filter")
     {
         $sql_where .= "submitdate IS NOT NULL";
         
-        // filter group token
-        if (db_tables_exist($tokentable) && $selectedgroup != "")
-        {
-            $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-            $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-        }
     }
     
-    // filter group token
-    elseif (db_tables_exist($tokentable) && $selectedgroup != "")
-    {
-        $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-        $dtquery .= " WHERE grouptoken='{$selectedgrouptoken}'";
-    }
     //LETS COUNT THE DATA
     $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
     
@@ -765,29 +740,12 @@ elseif ($subaction == "all")
             if (incompleteAnsFilterstate() == "inc")
             {
                 $dtquery .= "WHERE submitdate IS NULL ";
-                // filter group token
-                if (db_tables_exist($tokentable) && $selectedgroup != "")
-                {
-                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-                }
             }
             elseif (incompleteAnsFilterstate() == "filter")
             {
                 $dtquery .= " WHERE submitdate IS NOT NULL ";
-                // filter group token
-                if (db_tables_exist($tokentable) && $selectedgroup != "")
-                {
-                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-                }
             }
-            // filter group token
-            elseif (db_tables_exist($tokentable) && $selectedgroup != "")
-            {
-                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                $dtquery .= " WHERE grouptoken='{$selectedgrouptoken}'";
-            }
+
             $dtquery .= " ORDER BY {$surveytable}.id";
         }
         else
@@ -800,12 +758,7 @@ elseif ($subaction == "all")
             if (incompleteAnsFilterstate() == "inc")
             {
                 $dtquery .= "submitdate IS NULL ";
-                // filter group token
-                if (db_tables_exist($tokentable) && $selectedgroup != "")
-                {
-                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-                }
+
                 if (stripcslashes($_POST['sql']) !== "")
                 {
                     $dtquery .= " AND ";
@@ -814,22 +767,11 @@ elseif ($subaction == "all")
             elseif (incompleteAnsFilterstate() == "filter")
             {
                 $dtquery .= " submitdate IS NOT NULL ";
-                // filter group token
-                if (db_tables_exist($tokentable) && $selectedgroup != "")
-                {
-                    $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                    $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-                }
+
                 if (stripcslashes($_POST['sql']) !== "")
                 {
                     $dtquery .= " AND ";
                 }
-            }
-            // filter group token
-            elseif (db_tables_exist($tokentable) && $selectedgroup != "")
-            {
-                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                $dtquery .= " grouptoken='{$selectedgrouptoken}'";
             }
             if (stripcslashes($_POST['sql']) !== "")
             {
@@ -847,29 +789,13 @@ elseif ($subaction == "all")
         if (incompleteAnsFilterstate() == "inc")
         {
             $dtquery .= " WHERE submitdate IS NULL ";
-            // filter group token
-            if (db_tables_exist($tokentable) && $selectedgroup != "")
-            {
-                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-            }
+
         }
         elseif (incompleteAnsFilterstate() == "filter")
         {
             $dtquery .= " WHERE submitdate IS NOT NULL ";
-            // filter group token
-            if (db_tables_exist($tokentable) && $selectedgroup != "")
-            {
-                $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-                $dtquery .= " AND grouptoken='{$selectedgrouptoken}'";
-            }
         }
-        // filter group token
-        elseif (db_tables_exist($tokentable) && $selectedgroup != "")
-        {
-            $selectedgrouptoken = $connect->getOne("SELECT token FROM $grouptokentable WHERE gtid='{$selectedgroup}'");
-            $dtquery .= " WHERE grouptoken='{$selectedgrouptoken}'";
-        }
+
         $dtquery .= " ORDER BY {$surveytable}.id";
     }
     if ($order == "desc") {$dtquery .= " DESC";}
@@ -937,33 +863,7 @@ elseif ($subaction == "all")
             ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
             ."</select>\n";
 
-    // a dropdown for group selection (group tokens)
-    if (db_tables_exist($grouptokentable))
-    {
-        $selectall = "selected='selected'";
-        $gtid = returnglobal('selectgroup');
-        if (!$gtid) {
-            $selectall = "";
-        }
-        
-        $browseoutput .= "&nbsp;&nbsp; <font size='1' face='verdana'>\n"
-        .$clang->gT("Group:")."<select name='selectgroup' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
-        ."\t<option value='' $selectall>".$clang->gT("All groups")."</option>\n";
-        
-        // get groups from table
-        $gtquery = "SELECT * FROM $grouptokentable";
-        $gtresult = db_execute_assoc($gtquery) or safe_die("Couldn't get group tokens:<br />$dtquery<br />".$connect->ErrorMsg());
-        while ($gtrow = $gtresult->FetchRow())
-        {
-            $browseoutput .= "\t<option value='{$gtrow['gtid']}'";
-            if ($gtid == $gtrow['gtid'])
-                $browseoutput .= "selected='selected'";
-            $browseoutput .= ">{$gtrow['name']}</option>\n";
-        }
-        $browseoutput .= "</select>\n";
-    }
-    
-    $browseoutput .= "</font>\n"
+     $browseoutput .= "</font>\n"
             ."<input type='hidden' name='sid' value='$surveyid' />\n"
             ."<input type='hidden' name='action' value='browse' />\n"
             ."<input type='hidden' name='subaction' value='all' />\n";
@@ -1033,26 +933,6 @@ elseif ($subaction == "all")
                     $browsedatafield = "N";
                 else
                     $browsedatafield = "Y";
-            }
-            // display group token as hyperlink
-            if ($fnames[$i][0] == 'grouptoken' && db_tables_exist($grouptokentable))
-            {
-                $browsedatafield = "";
-                $SQL = "Select * FROM ".db_table_name('grouptokens_'.$surveyid)." WHERE token='{$dtrow['grouptoken']}'";
-                if (db_tables_exist(db_table_name_nq('grouptokens_'.$surveyid)) &&
-                        $SQLResult = db_execute_assoc($SQL))
-                {
-                    $TokenRow = $SQLResult->FetchRow();
-                }
-                if (isset($TokenRow) && $TokenRow)
-                {
-                    $browsedatafield .= "<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=editgroup&amp;gtid={$TokenRow['gtid']}' title='".$clang->gT("Edit this group token")."'>";
-                }
-                $browsedatafield .= "{$dtrow['grouptoken']}";
-                if (isset($TokenRow) && $TokenRow)
-                {
-                    $browsedatafield .= "</a>";
-                }
             }
             if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
             {

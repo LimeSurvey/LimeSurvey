@@ -128,32 +128,6 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             }
         }
 
-        // check whether group token has been used with this token
-        $grouptoken='ok';
-        if (isset($_POST['grouptoken']) && $_POST['grouptoken'])
-        {
-            $gtid = "";
-            $gtidquery = "SELECT gtid from ".db_table_name("grouptokens_".$surveyid)." WHERE token='".$_POST['grouptoken']."'";
-            $gtidresult = db_execute_assoc($gtidquery);
-            $gtidcount = $gtidresult->RecordCount();
-            while ($gtidrow = $gtidresult->FetchRow())
-            {
-                $gtid = $tcrow['gtid'];
-            }
-
-            if ($gtidcount < 1)
-            { // group token doesn't exist in group token table
-                $grouptoken='UnknownToken';
-            }
-            else
-            { // group token is valid, check whether it hasn't been used with the token
-                if (usedTokens($_POST['token'],$_POST['grouptoken']))
-                {
-                    $grouptoken='UsedWithThisToken';
-                }
-            }
-        }
-
         if (tableExists('tokens_'.$thissurvey['sid']) && (!isset($_POST['token']) || !$_POST['token']))
         {// First Check if the survey uses tokens and if a token has been provided
             $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."</strong>\n";
@@ -175,18 +149,6 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             {
                 $errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymous answers, so you can't update your response.")."\n";
             }
-        }
-        elseif (tableExists('grouptokens_'.$thissurvey['sid']) && tableExists('usedtokens_'.$thissurvey['sid']) && (!isset($_POST['grouptoken']) || !$_POST['grouptoken']))
-        {// check if survey uses group tokens and if there is one provided
-            $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This survey uses group tokens, so you must supply one.  Please contact the administrator for assistance.")."</strong><br><br>\n";
-        }
-        elseif (tableExists('grouptokens_'.$thissurvey['sid']) && tableExists('usedtokens_'.$thissurvey['sid']) && $grouptoken == 'UnknownToken')
-        {// check if survey uses group tokens and if the one provided is in the table
-            $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The group token you have provided is not valid.")."</strong><br><br>\n";
-        }
-        elseif (tableExists('grouptokens_'.$thissurvey['sid']) && tableExists('usedtokens_'.$thissurvey['sid']) && $grouptoken == 'UsedWithThisToken')
-        {// check if survey uses group tokens and if the one provided is not used with the token
-            $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The group token you have provided has already been used with the given token.")."</strong><br><br>\n";
         }
         else
         {
@@ -373,22 +335,6 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $srid = $connect->Insert_ID();
                 $sdquery = "UPDATE {$dbprefix}survey_$surveyid SET submitdate='{$submitdate}' WHERE id={$srid}\n";
                 $sdresult = $connect->Execute($sdquery) or safe_die ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n".$connect->ErrorMsg());
-                
-                // update group tokens, if used
-                if (tableExists('grouptokens_'.$surveyid) && tableExists('usedtokens_'.$surveyid) && isset($_POST['grouptoken']) && $_POST['grouptoken'] != '')
-                {
-                    // increment completed surveys in grouptokens table
-                    $ugtquery = "UPDATE {$dbprefix}grouptokens_$surveyid\n"
-                    ."SET completedsurveys=completedsurveys+1\n"
-                    ."WHERE token='{$_POST['grouptoken']}'";
-                    $ugtresult = $connect->Execute($ugtquery) or safe_die ("Couldn't update group tokens table!<br />\n$ugtquery<br />\n".$connect->ErrorMsg());
-                    
-                    // update usedtokens table
-                    $tid = $connect->getOne("SELECT tid from {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}'");
-                    $gtid = $connect->getOne("SELECT gtid from {$dbprefix}grouptokens_$surveyid WHERE token='{$_POST['grouptoken']}'");
-                    $uutquery = "INSERT INTO {$dbprefix}usedtokens_$surveyid VALUES ($srid, $tid, $gtid)";
-                    $uutresult = $connect->Execute($uutquery) or safe_die ("Couldn't update used tokens table!<br />\n$uutquery<br />\n".$connect->ErrorMsg());
-            }
             }
             if (isset($_POST['save']) && $_POST['save'] == "on")
             {
@@ -1570,8 +1516,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             ."<td valign='top'  align='left' style='padding-left: 20px'>\n"
             ."\t<input type='text' id='token' name='token'";
             // if group tokens are active, the group token will activate the submit button instead
-            if (!tableExists('grouptokens_'.$thissurvey['sid']))
-            { $dataentryoutput .= " onkeyup='activateSubmit(this);'"; }            
+   
             $dataentryoutput .= "/>\n"
             ."</td>\n"
             ."\t</tr>\n";
@@ -1594,19 +1539,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             . "\t//--></script>\n";
         }
 
-        if (tableExists('grouptokens_'.$thissurvey['sid'])) // Give entry field for group token
-        {
-            $dataentryoutput .= "\t<tr>\n"
-            ."<td valign='top' width='1%'></td>\n"
-            ."<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$blang->gT("Group token").":</strong></td>\n"
-            ."<td valign='top'  align='left' style='padding-left: 20px'>\n"
-            ."\t<input type='text' id='grouptoken' name='grouptoken' onkeyup='activateSubmit(this);'/>\n"
-            ."</td>\n"
-            ."\t</tr>\n";
-
-            $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
-        }
-
+    
         if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
         {
             $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
