@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-18 18:02+0100\n"
-"PO-Revision-Date: 2010-10-24 18:26+0100\n"
+"POT-Creation-Date: 2010-11-01 16:17+0100\n"
+"PO-Revision-Date: 2010-11-01 16:17+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -127,70 +127,96 @@ msgstr "Matrix (Zahlen)"
 msgid "Array (Texts)"
 msgstr "Matrix (Texte)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:798
+#: D:\web\xampp\htdocs\limesurvey/common.php:799
 msgid "Active"
 msgstr "Aktiv"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:803
+#: D:\web\xampp\htdocs\limesurvey/common.php:804
 msgid "Expired"
 msgstr "Abgelaufen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:808
+#: D:\web\xampp\htdocs\limesurvey/common.php:809
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:813
-#: D:\web\xampp\htdocs\limesurvey/common.php:867
-#: D:\web\xampp\htdocs\limesurvey/common.php:1327
-#: D:\web\xampp\htdocs\limesurvey/common.php:1352
-#: D:\web\xampp\htdocs\limesurvey/common.php:1427
-#: D:\web\xampp\htdocs\limesurvey/common.php:5178
-#: D:\web\xampp\htdocs\limesurvey/common.php:5212
-#: D:\web\xampp\htdocs\limesurvey/common.php:5251
-#: D:\web\xampp\htdocs\limesurvey/common.php:5287
-msgid "Please Choose..."
-msgstr "Bitte auswählen.."
-
-#: D:\web\xampp\htdocs\limesurvey/common.php:818
-#: D:\web\xampp\htdocs\limesurvey/common.php:821
+#: D:\web\xampp\htdocs\limesurvey/common.php:814
+#: D:\web\xampp\htdocs\limesurvey/common.php:868
 #: D:\web\xampp\htdocs\limesurvey/common.php:1328
 #: D:\web\xampp\htdocs\limesurvey/common.php:1353
 #: D:\web\xampp\htdocs\limesurvey/common.php:1428
+#: D:\web\xampp\htdocs\limesurvey/common.php:5179
 #: D:\web\xampp\htdocs\limesurvey/common.php:5213
 #: D:\web\xampp\htdocs\limesurvey/common.php:5252
+#: D:\web\xampp\htdocs\limesurvey/common.php:5288
+msgid "Please Choose..."
+msgstr "Bitte auswählen.."
+
+#: D:\web\xampp\htdocs\limesurvey/common.php:819
+#: D:\web\xampp\htdocs\limesurvey/common.php:822
+#: D:\web\xampp\htdocs\limesurvey/common.php:1329
+#: D:\web\xampp\htdocs\limesurvey/common.php:1354
+#: D:\web\xampp\htdocs\limesurvey/common.php:1429
+#: D:\web\xampp\htdocs\limesurvey/common.php:5214
+#: D:\web\xampp\htdocs\limesurvey/common.php:5253
 msgid "None"
 msgstr "Keine"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1283
+#: D:\web\xampp\htdocs\limesurvey/common.php:1284
 msgid "No email notification"
 msgstr "Keine Bestätigung per Email"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1284
+#: D:\web\xampp\htdocs\limesurvey/common.php:1285
 msgid "Basic email notification"
 msgstr "Normale Bestätigung per Email"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1285
+#: D:\web\xampp\htdocs\limesurvey/common.php:1286
 msgid "Detailed email notification with result codes"
 msgstr "Ausführliche Bestätigung per Email mit Ergebnissen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1896
-#: D:\web\xampp\htdocs\limesurvey/common.php:1950
-#: D:\web\xampp\htdocs\limesurvey/common.php:2462
-#: D:\web\xampp\htdocs\limesurvey/common.php:2646
-#: D:\web\xampp\htdocs\limesurvey/common.php:3564
-#: D:\web\xampp\htdocs\limesurvey/common.php:3733
-#: D:\web\xampp\htdocs\limesurvey/common.php:3785
-#: D:\web\xampp\htdocs\limesurvey/common.php:3804
-#: D:\web\xampp\htdocs\limesurvey/common.php:3926
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2196
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2994
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3342
+#: D:\web\xampp\htdocs\limesurvey/common.php:1897
+#: D:\web\xampp\htdocs\limesurvey/common.php:1951
+#: D:\web\xampp\htdocs\limesurvey/common.php:2463
+#: D:\web\xampp\htdocs\limesurvey/common.php:2647
+#: D:\web\xampp\htdocs\limesurvey/common.php:3565
+#: D:\web\xampp\htdocs\limesurvey/common.php:3734
+#: D:\web\xampp\htdocs\limesurvey/common.php:3786
+#: D:\web\xampp\htdocs\limesurvey/common.php:3805
+#: D:\web\xampp\htdocs\limesurvey/common.php:3927
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2198
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2982
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3330
 msgid "Other"
 msgstr "Sonstiges"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1904
-#: D:\web\xampp\htdocs\limesurvey/common.php:1910
-#: D:\web\xampp\htdocs\limesurvey/common.php:1926
+#: D:\web\xampp\htdocs\limesurvey/common.php:1905
+#: D:\web\xampp\htdocs\limesurvey/common.php:1911
+#: D:\web\xampp\htdocs\limesurvey/common.php:1927
+#: D:\web\xampp\htdocs\limesurvey/common.php:3460
+#: D:\web\xampp\htdocs\limesurvey/common.php:3542
+#: D:\web\xampp\htdocs\limesurvey/common.php:3617
+#: D:\web\xampp\htdocs\limesurvey/common.php:3628
+#: D:\web\xampp\htdocs\limesurvey/common.php:3719
+#: D:\web\xampp\htdocs\limesurvey/common.php:3738
+#: D:\web\xampp\htdocs\limesurvey/common.php:3749
+#: D:\web\xampp\htdocs\limesurvey/common.php:3760
+#: D:\web\xampp\htdocs\limesurvey/common.php:3771
+#: D:\web\xampp\htdocs\limesurvey/common.php:3790
+#: D:\web\xampp\htdocs\limesurvey/common.php:3809
+#: D:\web\xampp\htdocs\limesurvey/common.php:3820
+#: D:\web\xampp\htdocs\limesurvey/common.php:3831
+#: D:\web\xampp\htdocs\limesurvey/common.php:3874
+#: D:\web\xampp\htdocs\limesurvey/common.php:3885
+#: D:\web\xampp\htdocs\limesurvey/common.php:3920
+#: D:\web\xampp\htdocs\limesurvey/common.php:3964
+#: D:\web\xampp\htdocs\limesurvey/common.php:3974
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4491
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4961
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5000
+msgid "Yes"
+msgstr "Ja"
+
+#: D:\web\xampp\htdocs\limesurvey/common.php:1912
+#: D:\web\xampp\htdocs\limesurvey/common.php:1928
 #: D:\web\xampp\htdocs\limesurvey/common.php:3459
 #: D:\web\xampp\htdocs\limesurvey/common.php:3541
 #: D:\web\xampp\htdocs\limesurvey/common.php:3616
@@ -209,1063 +235,1037 @@ msgstr "Sonstiges"
 #: D:\web\xampp\htdocs\limesurvey/common.php:3919
 #: D:\web\xampp\htdocs\limesurvey/common.php:3963
 #: D:\web\xampp\htdocs\limesurvey/common.php:3973
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4503
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4973
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5012
-msgid "Yes"
-msgstr "Ja"
-
-#: D:\web\xampp\htdocs\limesurvey/common.php:1911
-#: D:\web\xampp\htdocs\limesurvey/common.php:1927
-#: D:\web\xampp\htdocs\limesurvey/common.php:3458
-#: D:\web\xampp\htdocs\limesurvey/common.php:3540
-#: D:\web\xampp\htdocs\limesurvey/common.php:3615
-#: D:\web\xampp\htdocs\limesurvey/common.php:3626
-#: D:\web\xampp\htdocs\limesurvey/common.php:3717
-#: D:\web\xampp\htdocs\limesurvey/common.php:3736
-#: D:\web\xampp\htdocs\limesurvey/common.php:3747
-#: D:\web\xampp\htdocs\limesurvey/common.php:3758
-#: D:\web\xampp\htdocs\limesurvey/common.php:3769
-#: D:\web\xampp\htdocs\limesurvey/common.php:3788
-#: D:\web\xampp\htdocs\limesurvey/common.php:3807
-#: D:\web\xampp\htdocs\limesurvey/common.php:3818
-#: D:\web\xampp\htdocs\limesurvey/common.php:3829
-#: D:\web\xampp\htdocs\limesurvey/common.php:3872
-#: D:\web\xampp\htdocs\limesurvey/common.php:3883
-#: D:\web\xampp\htdocs\limesurvey/common.php:3918
-#: D:\web\xampp\htdocs\limesurvey/common.php:3962
-#: D:\web\xampp\htdocs\limesurvey/common.php:3972
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4512
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4975
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5030
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4500
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4963
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5018
 msgid "No"
 msgstr "Nein"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1912
-#: D:\web\xampp\htdocs\limesurvey/common.php:1920
-#: D:\web\xampp\htdocs\limesurvey/common.php:6127
-#: D:\web\xampp\htdocs\limesurvey/common.php:6132
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1538
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1931
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2230
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2360
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2423
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4523
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4591
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4687
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4751
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4846
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4894
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4978
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5050
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5141
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5220
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5319
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5341
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5409
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6014
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6015
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6307
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6374
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6482
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6695
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6749
+#: D:\web\xampp\htdocs\limesurvey/common.php:1913
+#: D:\web\xampp\htdocs\limesurvey/common.php:1921
+#: D:\web\xampp\htdocs\limesurvey/common.php:6128
+#: D:\web\xampp\htdocs\limesurvey/common.php:6133
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1540
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1933
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2232
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2362
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2425
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4511
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4579
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4675
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4739
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4834
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4882
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4966
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5038
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5129
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5208
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5307
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5329
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5397
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6002
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6003
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6295
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6362
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6470
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6683
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6737
 msgid "No answer"
 msgstr "keine Antwort"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1918
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4567
+#: D:\web\xampp\htdocs\limesurvey/common.php:1919
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4555
 msgid "Male"
 msgstr "männlich"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1919
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4559
+#: D:\web\xampp\htdocs\limesurvey/common.php:1920
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4547
 msgid "Female"
 msgstr "weiblich"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1928
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4974
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5020
+#: D:\web\xampp\htdocs\limesurvey/common.php:1929
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4962
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5008
 msgid "Uncertain"
 msgstr "Unsicher"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1934
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5136
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5179
+#: D:\web\xampp\htdocs\limesurvey/common.php:1935
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5124
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5167
 msgid "Increase"
 msgstr "Zunahme"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1935
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5138
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5202
+#: D:\web\xampp\htdocs\limesurvey/common.php:1936
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5126
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5190
 msgid "Decrease"
 msgstr "Abnahme"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1936
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5137
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5190
+#: D:\web\xampp\htdocs\limesurvey/common.php:1937
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5125
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5178
 msgid "Same"
 msgstr "Unverändert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2269
+#: D:\web\xampp\htdocs\limesurvey/common.php:2270
 msgid "Response ID"
 msgstr "Antwort ID"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2277
+#: D:\web\xampp\htdocs\limesurvey/common.php:2278
 msgid "Date submitted"
 msgstr "Datum Abgeschickt"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2285
+#: D:\web\xampp\htdocs\limesurvey/common.php:2286
 msgid "Last page"
 msgstr "Letzte Seite"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2293
+#: D:\web\xampp\htdocs\limesurvey/common.php:2294
 msgid "Start language"
 msgstr "Start-Sprache"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2309
+#: D:\web\xampp\htdocs\limesurvey/common.php:2310
 #: D:\web\xampp\htdocs\limesurvey/index.php:2168
 #: D:\web\xampp\htdocs\limesurvey/index.php:2316
 msgid "Token"
 msgstr "Schlüsselwort"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2324
+#: D:\web\xampp\htdocs\limesurvey/common.php:2325
 msgid "Date last action"
 msgstr "Datum letzte Aktivität"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2336
+#: D:\web\xampp\htdocs\limesurvey/common.php:2337
 msgid "Date started"
 msgstr "Datum gestartet"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2352
+#: D:\web\xampp\htdocs\limesurvey/common.php:2353
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2363
+#: D:\web\xampp\htdocs\limesurvey/common.php:2364
 msgid "Referrer URL"
 msgstr "Weiterleitungs-URL"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2491
-#: D:\web\xampp\htdocs\limesurvey/common.php:2630
+#: D:\web\xampp\htdocs\limesurvey/common.php:2492
+#: D:\web\xampp\htdocs\limesurvey/common.php:2631
 msgid "Comment"
 msgstr "Kommentar"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2554
+#: D:\web\xampp\htdocs\limesurvey/common.php:2555
 msgid "Scale 1"
 msgstr "Skala 1"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2568
+#: D:\web\xampp\htdocs\limesurvey/common.php:2569
 msgid "Scale 2"
 msgstr "Skala 2"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2588
+#: D:\web\xampp\htdocs\limesurvey/common.php:2589
 #, php-format
 msgid "Rank %s"
 msgstr "Rank %s"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2660
+#: D:\web\xampp\htdocs\limesurvey/common.php:2661
 msgid "Other comment"
 msgstr "Anderer Kommentar"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2771
+#: D:\web\xampp\htdocs\limesurvey/common.php:2772
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Achtung: Javascript ist in Ihrem Browser deaktiviert. Es kann sein, dass sie daher die Umfrage nicht abschließen werden können. Bitte überprüfen Sie ihre Browser-Einstellungen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2810
+#: D:\web\xampp\htdocs\limesurvey/common.php:2811
 msgid "There are no questions in this survey"
 msgstr "Diese Umfrage enthält keine Fragen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2814
+#: D:\web\xampp\htdocs\limesurvey/common.php:2815
 msgid "There is 1 question in this survey"
 msgstr "Diese Umfrage enthält eine Frage."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2818
+#: D:\web\xampp\htdocs\limesurvey/common.php:2819
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2841
+#: D:\web\xampp\htdocs\limesurvey/common.php:2842
 #: D:\web\xampp\htdocs\limesurvey/index.php:2593
 msgid "Submit"
 msgstr "Absenden"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2867
+#: D:\web\xampp\htdocs\limesurvey/common.php:2868
 msgid "A Note On Privacy"
 msgstr "Eine Bemerkung zum Datenschutz"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2867
+#: D:\web\xampp\htdocs\limesurvey/common.php:2868
 msgid "This survey is anonymous."
 msgstr "Dies ist eine anonyme Umfrage."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2867
+#: D:\web\xampp\htdocs\limesurvey/common.php:2868
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde. Er wird in einer getrennten Datenbank aufbewahrt und nur aktualisiert, um zu speichern, ob Sie diese Umfrage abgeschlossen haben oder nicht. Es gibt keinen Weg die Zugangsschlüssel mit den Umfrageergebnissen zusammenzuführen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2871
+#: D:\web\xampp\htdocs\limesurvey/common.php:2872
 msgid "Exit and Clear Survey"
 msgstr "Umfrage verlassen und löschen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2872
+#: D:\web\xampp\htdocs\limesurvey/common.php:2873
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Sind sie wirklich sicher, dass Sie alle Ihre  Antworten löschen wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2901
-#: D:\web\xampp\htdocs\limesurvey/common.php:2907
+#: D:\web\xampp\htdocs\limesurvey/common.php:2902
+#: D:\web\xampp\htdocs\limesurvey/common.php:2908
 #: D:\web\xampp\htdocs\limesurvey/index.php:623
 #: D:\web\xampp\htdocs\limesurvey/index.php:627
 msgid "Load Unfinished Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2902
-#: D:\web\xampp\htdocs\limesurvey/common.php:2915
+#: D:\web\xampp\htdocs\limesurvey/common.php:2903
+#: D:\web\xampp\htdocs\limesurvey/common.php:2916
 msgid "Resume Later"
 msgstr "Später Fortfahren"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2970
+#: D:\web\xampp\htdocs\limesurvey/common.php:2971
 msgid "Thank You!"
 msgstr "Vielen Dank!"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2970
+#: D:\web\xampp\htdocs\limesurvey/common.php:2971
 msgid "You have completed answering the questions in this survey."
 msgstr "Sie haben die Beantwortung der Fragen in dieser Umfrage abgeschlossen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2970
+#: D:\web\xampp\htdocs\limesurvey/common.php:2971
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Klicken Sie nun auf 'Absenden', um die Umfrage abzuschließen und Ihre Antworten zu speichern."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2976
+#: D:\web\xampp\htdocs\limesurvey/common.php:2977
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf [Zurück] klicken und Sie Ihre Antworten nochmals durchgehen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2983
+#: D:\web\xampp\htdocs\limesurvey/common.php:2984
 msgid "Answers Cleared"
 msgstr "Antworten gelöscht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2990
-#: D:\web\xampp\htdocs\limesurvey/common.php:2998
+#: D:\web\xampp\htdocs\limesurvey/common.php:2991
+#: D:\web\xampp\htdocs\limesurvey/common.php:2999
 msgid "Restart this Survey"
 msgstr "Diese Umfrage neu starten"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3001
+#: D:\web\xampp\htdocs\limesurvey/common.php:3002
 #: D:\web\xampp\htdocs\limesurvey/index.php:660
 #: D:\web\xampp\htdocs\limesurvey/index.php:687
 msgid "Close this Window"
 msgstr "Fenster schließen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3003
+#: D:\web\xampp\htdocs\limesurvey/common.php:3004
 msgid "Save Your Unfinished Survey"
 msgstr "Umfrage zwischenspeichern"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3004
+#: D:\web\xampp\htdocs\limesurvey/common.php:3005
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Geben Sie einen Namen und ein Passwort für diese Umfrage an und klicken Sie auf Speichern."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3004
+#: D:\web\xampp\htdocs\limesurvey/common.php:3005
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Ihnen weitergeführt und abgeschlossen werden, wenn Sie sich unter Ihrem Namen und Passwort wieder anmelden."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3004
+#: D:\web\xampp\htdocs\limesurvey/common.php:3005
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Wenn Sie eine Emailadresse angeben, wird Ihnen eine Email mit weitere Einzelheiten zugesandt."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3012
+#: D:\web\xampp\htdocs\limesurvey/common.php:3013
 msgid "Return To Survey"
 msgstr "Zur Umfrage zurückkehren"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3017
+#: D:\web\xampp\htdocs\limesurvey/common.php:3018
 #: D:\web\xampp\htdocs\limesurvey/save.php:370
 msgid "Name"
 msgstr "Name"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3020
-#: D:\web\xampp\htdocs\limesurvey/common.php:3046
+#: D:\web\xampp\htdocs\limesurvey/common.php:3021
+#: D:\web\xampp\htdocs\limesurvey/common.php:3047
 #: D:\web\xampp\htdocs\limesurvey/save.php:371
 msgid "Password"
 msgstr "Passwort"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3023
+#: D:\web\xampp\htdocs\limesurvey/common.php:3024
 msgid "Repeat Password"
 msgstr "Passwort wiederholen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3026
+#: D:\web\xampp\htdocs\limesurvey/common.php:3027
 msgid "Your Email"
 msgstr "Ihre E-Mail"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3031
-#: D:\web\xampp\htdocs\limesurvey/common.php:3051
-#: D:\web\xampp\htdocs\limesurvey/common.php:3102
+#: D:\web\xampp\htdocs\limesurvey/common.php:3032
+#: D:\web\xampp\htdocs\limesurvey/common.php:3052
+#: D:\web\xampp\htdocs\limesurvey/common.php:3103
 #: D:\web\xampp\htdocs\limesurvey/index.php:2192
 #: D:\web\xampp\htdocs\limesurvey/index.php:2342
 msgid "Security Question"
 msgstr "Sicherheitsfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3034
+#: D:\web\xampp\htdocs\limesurvey/common.php:3035
 msgid "Save Now"
 msgstr "Jetzt Speichern"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3039
+#: D:\web\xampp\htdocs\limesurvey/common.php:3040
 msgid "Load A Previously Saved Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3040
+#: D:\web\xampp\htdocs\limesurvey/common.php:3041
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Auf dieser Seite können Sie eine vorher zwischengespeichterte Umfrage laden."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3040
+#: D:\web\xampp\htdocs\limesurvey/common.php:3041
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Bitte geben Sie den Namen ein, den Sie benutzt haben als Sie Ihre Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3043
+#: D:\web\xampp\htdocs\limesurvey/common.php:3044
 msgid "Saved name"
 msgstr "Gespeicherter Name"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3056
+#: D:\web\xampp\htdocs\limesurvey/common.php:3057
 msgid "Load Now"
 msgstr "Jetzt laden"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3061
+#: D:\web\xampp\htdocs\limesurvey/common.php:3062
 msgid "You must be registered to complete this survey"
 msgstr "Sie müssen registriert sein, um an dieser Umfrage teilzunehmen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3062
+#: D:\web\xampp\htdocs\limesurvey/common.php:3063
 msgid "You may register for this survey if you wish to take part."
 msgstr "Sie müssen Sich für die Umfrage registrieren, wenn Sie teilnehmen wollen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3062
+#: D:\web\xampp\htdocs\limesurvey/common.php:3063
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per Email einen Link zu der Umfrage."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3069
-#: D:\web\xampp\htdocs\limesurvey/common.php:7165
+#: D:\web\xampp\htdocs\limesurvey/common.php:3070
+#: D:\web\xampp\htdocs\limesurvey/common.php:7173
 msgid "First Name"
 msgstr "Vorname"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3076
-#: D:\web\xampp\htdocs\limesurvey/common.php:7166
+#: D:\web\xampp\htdocs\limesurvey/common.php:3077
+#: D:\web\xampp\htdocs\limesurvey/common.php:7174
 msgid "Last Name"
 msgstr "Nachname"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3083
+#: D:\web\xampp\htdocs\limesurvey/common.php:3084
 msgid "Email Address"
 msgstr "Email-Adresse"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3127
+#: D:\web\xampp\htdocs\limesurvey/common.php:3128
 #: D:\web\xampp\htdocs\limesurvey/index.php:2131
 #: D:\web\xampp\htdocs\limesurvey/index.php:2196
 #: D:\web\xampp\htdocs\limesurvey/index.php:2345
 msgid "Continue"
 msgstr "Weiter"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3139
+#: D:\web\xampp\htdocs\limesurvey/common.php:3140
 msgid "Your Assessment"
 msgstr "Ihre Bewertung"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3455
-#: D:\web\xampp\htdocs\limesurvey/common.php:3466
-#: D:\web\xampp\htdocs\limesurvey/common.php:3502
-#: D:\web\xampp\htdocs\limesurvey/common.php:3518
-#: D:\web\xampp\htdocs\limesurvey/common.php:3529
-#: D:\web\xampp\htdocs\limesurvey/common.php:3537
-#: D:\web\xampp\htdocs\limesurvey/common.php:3548
-#: D:\web\xampp\htdocs\limesurvey/common.php:3556
-#: D:\web\xampp\htdocs\limesurvey/common.php:3572
-#: D:\web\xampp\htdocs\limesurvey/common.php:3580
-#: D:\web\xampp\htdocs\limesurvey/common.php:3588
-#: D:\web\xampp\htdocs\limesurvey/common.php:3612
-#: D:\web\xampp\htdocs\limesurvey/common.php:3623
-#: D:\web\xampp\htdocs\limesurvey/common.php:3690
-#: D:\web\xampp\htdocs\limesurvey/common.php:3698
-#: D:\web\xampp\htdocs\limesurvey/common.php:3706
-#: D:\web\xampp\htdocs\limesurvey/common.php:3714
-#: D:\web\xampp\htdocs\limesurvey/common.php:3744
-#: D:\web\xampp\htdocs\limesurvey/common.php:3777
-#: D:\web\xampp\htdocs\limesurvey/common.php:3796
-#: D:\web\xampp\htdocs\limesurvey/common.php:3815
-#: D:\web\xampp\htdocs\limesurvey/common.php:3899
-#: D:\web\xampp\htdocs\limesurvey/common.php:3907
-#: D:\web\xampp\htdocs\limesurvey/common.php:3915
+#: D:\web\xampp\htdocs\limesurvey/common.php:3456
+#: D:\web\xampp\htdocs\limesurvey/common.php:3467
+#: D:\web\xampp\htdocs\limesurvey/common.php:3503
+#: D:\web\xampp\htdocs\limesurvey/common.php:3519
+#: D:\web\xampp\htdocs\limesurvey/common.php:3530
+#: D:\web\xampp\htdocs\limesurvey/common.php:3538
+#: D:\web\xampp\htdocs\limesurvey/common.php:3549
+#: D:\web\xampp\htdocs\limesurvey/common.php:3557
+#: D:\web\xampp\htdocs\limesurvey/common.php:3573
+#: D:\web\xampp\htdocs\limesurvey/common.php:3581
+#: D:\web\xampp\htdocs\limesurvey/common.php:3589
+#: D:\web\xampp\htdocs\limesurvey/common.php:3613
+#: D:\web\xampp\htdocs\limesurvey/common.php:3624
+#: D:\web\xampp\htdocs\limesurvey/common.php:3691
+#: D:\web\xampp\htdocs\limesurvey/common.php:3699
+#: D:\web\xampp\htdocs\limesurvey/common.php:3707
+#: D:\web\xampp\htdocs\limesurvey/common.php:3715
+#: D:\web\xampp\htdocs\limesurvey/common.php:3745
+#: D:\web\xampp\htdocs\limesurvey/common.php:3778
+#: D:\web\xampp\htdocs\limesurvey/common.php:3797
+#: D:\web\xampp\htdocs\limesurvey/common.php:3816
+#: D:\web\xampp\htdocs\limesurvey/common.php:3900
+#: D:\web\xampp\htdocs\limesurvey/common.php:3908
+#: D:\web\xampp\htdocs\limesurvey/common.php:3916
 msgid "Display"
 msgstr "Anzeige"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3461
 #: D:\web\xampp\htdocs\limesurvey/common.php:3462
+#: D:\web\xampp\htdocs\limesurvey/common.php:3463
 msgid "Sort answers alphabetically"
 msgstr "Sortiere Antworten alphabetisch"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3471
+#: D:\web\xampp\htdocs\limesurvey/common.php:3472
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "Setze die prozentuale Breite der Antwortspalte"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3472
+#: D:\web\xampp\htdocs\limesurvey/common.php:3473
 msgid "Answer width"
 msgstr "Antwortbreite"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3476
-#: D:\web\xampp\htdocs\limesurvey/common.php:3484
-#: D:\web\xampp\htdocs\limesurvey/common.php:3493
-#: D:\web\xampp\htdocs\limesurvey/common.php:3510
-#: D:\web\xampp\htdocs\limesurvey/common.php:3604
-#: D:\web\xampp\htdocs\limesurvey/common.php:3634
-#: D:\web\xampp\htdocs\limesurvey/common.php:3650
-#: D:\web\xampp\htdocs\limesurvey/common.php:3666
-#: D:\web\xampp\htdocs\limesurvey/common.php:3682
-#: D:\web\xampp\htdocs\limesurvey/common.php:3725
-#: D:\web\xampp\htdocs\limesurvey/common.php:3755
-#: D:\web\xampp\htdocs\limesurvey/common.php:3766
+#: D:\web\xampp\htdocs\limesurvey/common.php:3477
+#: D:\web\xampp\htdocs\limesurvey/common.php:3485
+#: D:\web\xampp\htdocs\limesurvey/common.php:3494
+#: D:\web\xampp\htdocs\limesurvey/common.php:3511
+#: D:\web\xampp\htdocs\limesurvey/common.php:3605
+#: D:\web\xampp\htdocs\limesurvey/common.php:3635
+#: D:\web\xampp\htdocs\limesurvey/common.php:3651
+#: D:\web\xampp\htdocs\limesurvey/common.php:3667
+#: D:\web\xampp\htdocs\limesurvey/common.php:3683
+#: D:\web\xampp\htdocs\limesurvey/common.php:3726
+#: D:\web\xampp\htdocs\limesurvey/common.php:3756
+#: D:\web\xampp\htdocs\limesurvey/common.php:3767
 msgid "Logic"
 msgstr "Logik "
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3479
+#: D:\web\xampp\htdocs\limesurvey/common.php:3480
 msgid "Enter the code of a Multiple options question to only show the matching answer options in this question."
 msgstr "Geben Sie den Code einer Mehrfachauswahl-Frage ein, um nur diese Antwortoptionen in dieser Matrixfrage zu zeigen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3480
+#: D:\web\xampp\htdocs\limesurvey/common.php:3481
 msgid "Array filter"
 msgstr "Matrix Filter"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3487
+#: D:\web\xampp\htdocs\limesurvey/common.php:3488
 msgid "Enter the code of a Multiple options question to exclude the matching answer options in this question."
 msgstr "Geben Sie den Code einer Mehrfachauswahl-Frage ein, um die Antwortoptionen dieser Matrixfrage von gewählten Antworten zu filtern."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3488
+#: D:\web\xampp\htdocs\limesurvey/common.php:3489
 msgid "Array filter exclusion"
 msgstr "Matrix Ausschlussfilter"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3497
+#: D:\web\xampp\htdocs\limesurvey/common.php:3498
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr "Wenn eine der Teilfrage markiert wurde, dann wird für jede markierte Teilfrage dieser Wert addiert."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3498
+#: D:\web\xampp\htdocs\limesurvey/common.php:3499
 msgid "Assessment value"
 msgstr "Bewertungswert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3505
 #: D:\web\xampp\htdocs\limesurvey/common.php:3506
+#: D:\web\xampp\htdocs\limesurvey/common.php:3507
 msgid "Category Separator"
 msgstr "Kategorie Trenner"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3513
+#: D:\web\xampp\htdocs\limesurvey/common.php:3514
 msgid "Filter the available answers by this value"
 msgstr "Filtere die verfügbaren Antworten mit diesem Wert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3514
+#: D:\web\xampp\htdocs\limesurvey/common.php:3515
 msgid "Code filter"
 msgstr "Code Filter"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3524
+#: D:\web\xampp\htdocs\limesurvey/common.php:3525
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "Die Antwortoptionen werden gleichmässig über die hier gesetzte Anzahl von Spalten verteilt."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3525
+#: D:\web\xampp\htdocs\limesurvey/common.php:3526
 msgid "Display columns"
 msgstr "Anzahl Spalten"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3532
+#: D:\web\xampp\htdocs\limesurvey/common.php:3533
 msgid "How many rows to display"
 msgstr "Anzahl der anzuzeigenden Zeilen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3533
+#: D:\web\xampp\htdocs\limesurvey/common.php:3534
 msgid "Display rows"
 msgstr "Anzahl Zeilen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3543
+#: D:\web\xampp\htdocs\limesurvey/common.php:3544
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "Benutze zugänglichere Klappboxen statt Kalender-Popup"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3544
+#: D:\web\xampp\htdocs\limesurvey/common.php:3545
 msgid "Display select boxes"
 msgstr "Anzeige als Klappboxen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3551
+#: D:\web\xampp\htdocs\limesurvey/common.php:3552
 msgid "Minimum year value in calendar"
 msgstr "Anfangsjahr für Kalendar"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3552
+#: D:\web\xampp\htdocs\limesurvey/common.php:3553
 msgid "Minimum year"
 msgstr "Jahr Minimum"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3559
+#: D:\web\xampp\htdocs\limesurvey/common.php:3560
 msgid "Maximum year value for calendar"
 msgstr "Endjahr für Kalendar"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3560
+#: D:\web\xampp\htdocs\limesurvey/common.php:3561
 msgid "Maximum year"
 msgstr "Jahr Maximum"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3567
+#: D:\web\xampp\htdocs\limesurvey/common.php:3568
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Präfix/Suffix für Klappbox Listen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3568
+#: D:\web\xampp\htdocs\limesurvey/common.php:3569
 msgid "Prefix|Suffix"
 msgstr "Präfix|Suffix"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3575
+#: D:\web\xampp\htdocs\limesurvey/common.php:3576
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Nach-Antwort-Trenner|Klappbox-Trenner"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3576
+#: D:\web\xampp\htdocs\limesurvey/common.php:3577
 msgid "Dropdown separators"
 msgstr "Klappbox Trenner"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3583
+#: D:\web\xampp\htdocs\limesurvey/common.php:3584
 msgid "Enter a header text for scale A"
 msgstr "Geben Sie eine Kopfzeile für Skala A ein"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3584
+#: D:\web\xampp\htdocs\limesurvey/common.php:3585
 msgid "Header scale A"
 msgstr "Kopfzeile Skala A"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3591
+#: D:\web\xampp\htdocs\limesurvey/common.php:3592
 msgid "Enter a header text for scale B"
 msgstr "Geben Sie eine Kopfzeile für Skala B ein"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3592
+#: D:\web\xampp\htdocs\limesurvey/common.php:3593
 msgid "Header scale B"
 msgstr "Kopfzeile Skala B"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3596
-#: D:\web\xampp\htdocs\limesurvey/common.php:3642
-#: D:\web\xampp\htdocs\limesurvey/common.php:3658
-#: D:\web\xampp\htdocs\limesurvey/common.php:3674
+#: D:\web\xampp\htdocs\limesurvey/common.php:3597
+#: D:\web\xampp\htdocs\limesurvey/common.php:3643
+#: D:\web\xampp\htdocs\limesurvey/common.php:3659
+#: D:\web\xampp\htdocs\limesurvey/common.php:3675
 msgid "Input"
 msgstr "Eingabe"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3599
+#: D:\web\xampp\htdocs\limesurvey/common.php:3600
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Summe der numerischen Eingabe muss gleich diesem Wert sein"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3600
+#: D:\web\xampp\htdocs\limesurvey/common.php:3601
 msgid "Equals sum value"
 msgstr "Gleich Summenwert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3607
+#: D:\web\xampp\htdocs\limesurvey/common.php:3608
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr "Schließt alle anderen Antwortoptionen wenn eine bestimmte Option gewählt wurde - geben Sie einfach den/die Antwort-Codes (mit Semikolon getrennt)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3608
+#: D:\web\xampp\htdocs\limesurvey/common.php:3609
 msgid "Exclusive option"
 msgstr "Exklusive Option"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3618
+#: D:\web\xampp\htdocs\limesurvey/common.php:3619
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Verstecke den Hinweis der normalerweise mit einer Frage gezeigt wird"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3619
+#: D:\web\xampp\htdocs\limesurvey/common.php:3620
 msgid "Hide tip"
 msgstr "Hinweis verstecken"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3629
+#: D:\web\xampp\htdocs\limesurvey/common.php:3630
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "Verstecke diese Frage immer. Die ist nützlich, um Fragen zu verstecken, die durch Vorfüllen von Antworten schon ausgefüllt sind."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3630
+#: D:\web\xampp\htdocs\limesurvey/common.php:3631
 msgid "Always hide this question"
 msgstr "Diese Frage immer verstecken"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3637
+#: D:\web\xampp\htdocs\limesurvey/common.php:3638
 msgid "Limit the number of possible answers"
 msgstr "Limitiere die Anzahl der ankreuzbaren Antworten"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3638
+#: D:\web\xampp\htdocs\limesurvey/common.php:3639
 msgid "Maximum answers"
 msgstr "Maximale Antworten"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3645
+#: D:\web\xampp\htdocs\limesurvey/common.php:3646
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Summe der numerischen Eingabe darf nicht größer sein als dieser Wert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3646
+#: D:\web\xampp\htdocs\limesurvey/common.php:3647
 msgid "Maximum sum value"
 msgstr "Maximaler Summenwert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3653
+#: D:\web\xampp\htdocs\limesurvey/common.php:3654
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr "Geben Sie den SGQA Code ein, um die Summe einer vorherigen Frage als Maximum für diese Frage zu nutzen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3654
+#: D:\web\xampp\htdocs\limesurvey/common.php:3655
 msgid "Max value from SGQA"
 msgstr "Maximalwert von SQGA"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3661
+#: D:\web\xampp\htdocs\limesurvey/common.php:3662
 msgid "Maximum characters allowed"
 msgstr "Maximal erlaubte Zeichen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3662
+#: D:\web\xampp\htdocs\limesurvey/common.php:3663
 msgid "Maximum characters"
 msgstr "Maximale Zeichen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3669
+#: D:\web\xampp\htdocs\limesurvey/common.php:3670
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Setzen einer minimalen Anzahl von möglichen Antworten (0=Kein Limit)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3670
+#: D:\web\xampp\htdocs\limesurvey/common.php:3671
 msgid "Minimum answers"
 msgstr "Minimale Antwortanzahl"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3677
+#: D:\web\xampp\htdocs\limesurvey/common.php:3678
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "Summe der numerischen Eingabe muss größer sein als dieser Wert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3678
+#: D:\web\xampp\htdocs\limesurvey/common.php:3679
 msgid "Minimum sum value"
 msgstr "Minimaler Summenwert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3685
+#: D:\web\xampp\htdocs\limesurvey/common.php:3686
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr "Geben Sie ein SGQA Identifikator ein, um die Summe einer vorherigen Frage als Minimum für diese Frage zu nutzen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3686
+#: D:\web\xampp\htdocs\limesurvey/common.php:3687
 msgid "Min value from SGQA"
 msgstr "Minimalwert von SQGA"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3693
+#: D:\web\xampp\htdocs\limesurvey/common.php:3694
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maximalwert für für Matrix (Multi-Flexi) Fragentyp"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3694
+#: D:\web\xampp\htdocs\limesurvey/common.php:3695
 msgid "Maximum value"
 msgstr "Maximal-Wert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3701
+#: D:\web\xampp\htdocs\limesurvey/common.php:3702
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimalwert für Matrix (Multi Flexi) Fragentyp"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3702
+#: D:\web\xampp\htdocs\limesurvey/common.php:3703
 msgid "Minimum value"
 msgstr "Minimalwert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3709
 #: D:\web\xampp\htdocs\limesurvey/common.php:3710
+#: D:\web\xampp\htdocs\limesurvey/common.php:3711
 msgid "Step value"
 msgstr "Schrittweite"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3720
+#: D:\web\xampp\htdocs\limesurvey/common.php:3721
 msgid "Use checkbox layout"
 msgstr "Benutze Kontrollkästchen-Layout"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3721
+#: D:\web\xampp\htdocs\limesurvey/common.php:3722
 msgid "Checkbox layout"
 msgstr "Anzeige als Ankreuzfelder"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3728
+#: D:\web\xampp\htdocs\limesurvey/common.php:3729
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "SGQA Merkmal, um die Summe der vorherigen Frage als die Gesamtsumme für diese Frage zu nutzen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3729
+#: D:\web\xampp\htdocs\limesurvey/common.php:3730
 msgid "Value equals SGQA"
 msgstr "Wert gleich SGQA"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3739
+#: D:\web\xampp\htdocs\limesurvey/common.php:3740
 msgid "Allow only numerical input"
 msgstr "Nur numerische Eingabe erlauben"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3740
+#: D:\web\xampp\htdocs\limesurvey/common.php:3741
 msgid "Numbers only"
 msgstr "Nur Zahlen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3750
+#: D:\web\xampp\htdocs\limesurvey/common.php:3751
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "Zeige als Texteingabefelder anstatt von Auswahlboxen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3751
+#: D:\web\xampp\htdocs\limesurvey/common.php:3752
 msgid "Text inputs"
 msgstr "Text Eingabefelder"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3761
+#: D:\web\xampp\htdocs\limesurvey/common.php:3762
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "Mache das 'Anderes:' Kommentar-Feld zum Pflichtfeld, wenn das Feld 'Anderes:' markiert wurde"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3762
+#: D:\web\xampp\htdocs\limesurvey/common.php:3763
 msgid "'Other:' comment mandatory"
 msgstr "'Anderes:' Kommentar Feld ist Pflichtfeld"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3772
+#: D:\web\xampp\htdocs\limesurvey/common.php:3773
 msgid "Allow only numerical input for 'Other' text"
 msgstr "Nur numerische Eingabe für 'Sonstiges'-Eingabefeld erlauben"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3773
+#: D:\web\xampp\htdocs\limesurvey/common.php:3774
 msgid "Numbers only for 'Other'"
 msgstr "Nur numerische Eingabe für 'Sonstiges'"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3780
+#: D:\web\xampp\htdocs\limesurvey/common.php:3781
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "Ersetzt den Text 'Anderes' mit einem eigenen Text"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3781
+#: D:\web\xampp\htdocs\limesurvey/common.php:3782
 msgid "Label for 'Other:' option"
 msgstr "Beschriftung für 'Anderes:'-Option"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3791
+#: D:\web\xampp\htdocs\limesurvey/common.php:3792
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "Setzen Sie dies auf Ja wenn Sie einen Seitenumbruch vor dieser Frage in der Druckansicht einfügen wollen."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3792
+#: D:\web\xampp\htdocs\limesurvey/common.php:3793
 msgid "Insert page break in printable view"
 msgstr "Einfügen eines Seitenumbruchs in der Druckansicht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3799
+#: D:\web\xampp\htdocs\limesurvey/common.php:3800
 msgid "Add a prefix to the answer field"
 msgstr "Füge einen Präfix zum Antwort-Feld hinzu"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3800
+#: D:\web\xampp\htdocs\limesurvey/common.php:3801
 msgid "Answer prefix"
 msgstr "Antwort-Präfix"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3810
+#: D:\web\xampp\htdocs\limesurvey/common.php:3811
 msgid "Show statistics of this question in the public statistics page"
 msgstr "Zeige Statistik dieser Frage in der öffentlichen Statistikseite"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3811
+#: D:\web\xampp\htdocs\limesurvey/common.php:3812
 msgid "Show in public statistics"
 msgstr "Zeige in öffentlicher Statistik"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3821
+#: D:\web\xampp\htdocs\limesurvey/common.php:3822
 msgid "Present answers in random order"
 msgstr "Zeige Antworten in zufälliger Reihenfolge"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3822
+#: D:\web\xampp\htdocs\limesurvey/common.php:3823
 msgid "Random answer order"
 msgstr "Zufällige Antwortreihenfolge"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3826
-#: D:\web\xampp\htdocs\limesurvey/common.php:3837
-#: D:\web\xampp\htdocs\limesurvey/common.php:3845
-#: D:\web\xampp\htdocs\limesurvey/common.php:3853
-#: D:\web\xampp\htdocs\limesurvey/common.php:3861
-#: D:\web\xampp\htdocs\limesurvey/common.php:3869
-#: D:\web\xampp\htdocs\limesurvey/common.php:3880
-#: D:\web\xampp\htdocs\limesurvey/common.php:3891
+#: D:\web\xampp\htdocs\limesurvey/common.php:3827
+#: D:\web\xampp\htdocs\limesurvey/common.php:3838
+#: D:\web\xampp\htdocs\limesurvey/common.php:3846
+#: D:\web\xampp\htdocs\limesurvey/common.php:3854
+#: D:\web\xampp\htdocs\limesurvey/common.php:3862
+#: D:\web\xampp\htdocs\limesurvey/common.php:3870
+#: D:\web\xampp\htdocs\limesurvey/common.php:3881
+#: D:\web\xampp\htdocs\limesurvey/common.php:3892
 msgid "Slider"
 msgstr "Schieberegler"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3832
 #: D:\web\xampp\htdocs\limesurvey/common.php:3833
+#: D:\web\xampp\htdocs\limesurvey/common.php:3834
 msgid "Use slider layout"
 msgstr "Benutze Schieberegler"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3840
 #: D:\web\xampp\htdocs\limesurvey/common.php:3841
+#: D:\web\xampp\htdocs\limesurvey/common.php:3842
 msgid "Slider minimum value"
 msgstr "Schieberegler Minimalwert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3848
 #: D:\web\xampp\htdocs\limesurvey/common.php:3849
+#: D:\web\xampp\htdocs\limesurvey/common.php:3850
 msgid "Slider maximum value"
 msgstr "Schieberegler Maximalwert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3856
 #: D:\web\xampp\htdocs\limesurvey/common.php:3857
+#: D:\web\xampp\htdocs\limesurvey/common.php:3858
 msgid "Slider accuracy"
 msgstr "Schieberegler Genauigkeit"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3864
 #: D:\web\xampp\htdocs\limesurvey/common.php:3865
+#: D:\web\xampp\htdocs\limesurvey/common.php:3866
 msgid "Slider initial value"
 msgstr "Schieberegler Anfangswert"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3875
+#: D:\web\xampp\htdocs\limesurvey/common.php:3876
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "Der Schieberegler wird anfangs in der Mittelstellung gezeigt (dies setzt keinen Startwert)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3876
+#: D:\web\xampp\htdocs\limesurvey/common.php:3877
 msgid "Slider starts at the middle position"
 msgstr "Schieberegler startet in der Mittelposition"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3886
+#: D:\web\xampp\htdocs\limesurvey/common.php:3887
 msgid "Display min and max value under the slider"
 msgstr "Zeige Minimal- und Maximalwerte unter dem Schieberegler"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3887
+#: D:\web\xampp\htdocs\limesurvey/common.php:3888
 msgid "Display slider min and max value"
 msgstr "Zeige Schieberegler Minimal- und Maximalwerte"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3894
+#: D:\web\xampp\htdocs\limesurvey/common.php:3895
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "Antwort|Text-Schieberegler-links|Text-Schieberegler-rechts Trennzeichen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3895
+#: D:\web\xampp\htdocs\limesurvey/common.php:3896
 msgid "Slider left/right text separator"
 msgstr "Schieberegler links/recht Texttrenner"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3902
+#: D:\web\xampp\htdocs\limesurvey/common.php:3903
 msgid "Add a suffix to the answer field"
 msgstr "Füge einen Suffix zum Antwort-Feld hinzu"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3903
+#: D:\web\xampp\htdocs\limesurvey/common.php:3904
 msgid "Answer suffix"
 msgstr "Antwort-Suffix"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3910
+#: D:\web\xampp\htdocs\limesurvey/common.php:3911
 msgid "Width of text input box"
 msgstr "Breite des Texteingabefeldes"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3911
+#: D:\web\xampp\htdocs\limesurvey/common.php:3912
 msgid "Input box width"
 msgstr "Breite Eingabefeld"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3921
+#: D:\web\xampp\htdocs\limesurvey/common.php:3922
 msgid "Use dual dropdown boxes instead of dual scales"
 msgstr "Benutze Dual-Klappboxen statt Dual-Skalen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3922
+#: D:\web\xampp\htdocs\limesurvey/common.php:3923
 msgid "Dual dropdown"
 msgstr "Dual Klappbox"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3929
+#: D:\web\xampp\htdocs\limesurvey/common.php:3930
 msgid "Default"
 msgstr "Voreinstellung"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3930
+#: D:\web\xampp\htdocs\limesurvey/common.php:3931
 msgid "Nominal"
 msgstr "Nominal"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3931
+#: D:\web\xampp\htdocs\limesurvey/common.php:3932
 msgid "Ordinal"
 msgstr "Ordinal"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3932
+#: D:\web\xampp\htdocs\limesurvey/common.php:3933
 msgid "Scale"
 msgstr "Scala"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3934
+#: D:\web\xampp\htdocs\limesurvey/common.php:3935
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "Setze einen spezifischen SPSS Export-Skalentyp für diese Frage"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3935
+#: D:\web\xampp\htdocs\limesurvey/common.php:3936
 msgid "SPSS export scale type"
 msgstr "SPSS Export Skalentyp"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3940
-#: D:\web\xampp\htdocs\limesurvey/common.php:3948
-#: D:\web\xampp\htdocs\limesurvey/common.php:3959
-#: D:\web\xampp\htdocs\limesurvey/common.php:3969
-#: D:\web\xampp\htdocs\limesurvey/common.php:3979
-#: D:\web\xampp\htdocs\limesurvey/common.php:3987
-#: D:\web\xampp\htdocs\limesurvey/common.php:3995
-#: D:\web\xampp\htdocs\limesurvey/common.php:4003
-#: D:\web\xampp\htdocs\limesurvey/common.php:4011
-#: D:\web\xampp\htdocs\limesurvey/common.php:4019
-#: D:\web\xampp\htdocs\limesurvey/common.php:4027
-#: D:\web\xampp\htdocs\limesurvey/common.php:4035
-#: D:\web\xampp\htdocs\limesurvey/common.php:4043
-#: D:\web\xampp\htdocs\limesurvey/common.php:4051
-#: D:\web\xampp\htdocs\limesurvey/common.php:4059
-#: D:\web\xampp\htdocs\limesurvey/common.php:4067
-#: D:\web\xampp\htdocs\limesurvey/common.php:4075
+#: D:\web\xampp\htdocs\limesurvey/common.php:3941
+#: D:\web\xampp\htdocs\limesurvey/common.php:3949
+#: D:\web\xampp\htdocs\limesurvey/common.php:3960
+#: D:\web\xampp\htdocs\limesurvey/common.php:3970
+#: D:\web\xampp\htdocs\limesurvey/common.php:3980
+#: D:\web\xampp\htdocs\limesurvey/common.php:3988
+#: D:\web\xampp\htdocs\limesurvey/common.php:3996
+#: D:\web\xampp\htdocs\limesurvey/common.php:4004
+#: D:\web\xampp\htdocs\limesurvey/common.php:4012
+#: D:\web\xampp\htdocs\limesurvey/common.php:4020
+#: D:\web\xampp\htdocs\limesurvey/common.php:4028
+#: D:\web\xampp\htdocs\limesurvey/common.php:4036
+#: D:\web\xampp\htdocs\limesurvey/common.php:4044
+#: D:\web\xampp\htdocs\limesurvey/common.php:4052
+#: D:\web\xampp\htdocs\limesurvey/common.php:4060
+#: D:\web\xampp\htdocs\limesurvey/common.php:4068
+#: D:\web\xampp\htdocs\limesurvey/common.php:4076
 msgid "Timing"
 msgstr "Zeitvorgabe"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3943
+#: D:\web\xampp\htdocs\limesurvey/common.php:3944
 msgid "Limit time to answer question (in seconds)"
 msgstr "Begrenze die Zeit, die der User hat, um diese Frage auszufüllen (in Sekunden)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3944
+#: D:\web\xampp\htdocs\limesurvey/common.php:3945
 msgid "Time limit"
 msgstr "Zeitlimit"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3951
+#: D:\web\xampp\htdocs\limesurvey/common.php:3952
 msgid "Warn and move on"
 msgstr "Warne und geh weiter"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3952
+#: D:\web\xampp\htdocs\limesurvey/common.php:3953
 msgid "Move on without warning"
 msgstr "Gehe weiter ohne Warnung"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3953
+#: D:\web\xampp\htdocs\limesurvey/common.php:3954
 msgid "Disable only"
 msgstr "Nur deaktivieren"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3954
+#: D:\web\xampp\htdocs\limesurvey/common.php:3955
 msgid "Action to perform when time limit is up"
 msgstr "Ausgeführte Aktion, wenn das Zeitlimit erreicht wurde"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3955
+#: D:\web\xampp\htdocs\limesurvey/common.php:3956
 msgid "Time limit action"
 msgstr "Zeitlimit Aktion"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3964
+#: D:\web\xampp\htdocs\limesurvey/common.php:3965
 msgid "Disable the next button until time limit expires"
 msgstr "Deaktiviere den 'Nächste Seite'-Knopf bis das Zeitlimit abgelaufen ist"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3965
+#: D:\web\xampp\htdocs\limesurvey/common.php:3966
 msgid "Time limit disable next"
 msgstr "Zeitlimit Deaktivierung Nächster-Knopf"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3974
+#: D:\web\xampp\htdocs\limesurvey/common.php:3975
 msgid "Disable the prev button until the time limit expires"
 msgstr "Deaktiviere den 'Nächste Seite'-Knopf bis das Zeitlimit abgelaufen ist"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3975
+#: D:\web\xampp\htdocs\limesurvey/common.php:3976
 msgid "Time limit disable prev"
 msgstr "Zeitlimit Deaktivierung Nächster-Knopf"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3982
+#: D:\web\xampp\htdocs\limesurvey/common.php:3983
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr "Die Textnachricht die im Countdown-Zähler während des Countdown erscheint"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3983
+#: D:\web\xampp\htdocs\limesurvey/common.php:3984
 msgid "Time limit countdown message"
 msgstr "Zeitlimitablauf-Nachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3990
+#: D:\web\xampp\htdocs\limesurvey/common.php:3991
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr "CSS Style für die Nachricht die im Countdown-Zählen während des Countdowns erscheint"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3991
+#: D:\web\xampp\htdocs\limesurvey/common.php:3992
 msgid "Time limit timer CSS style"
 msgstr "Zeitlimit Timer CSS Stil"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3998
+#: D:\web\xampp\htdocs\limesurvey/common.php:3999
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "Zeige zweite Zeitlimitablaufwarnung für diese Anzahl von Sekunden im Countdown bevore die 'Zeilimit Aktion' ausgeführt wird (Standard ist 1 Sekunde wenn diese Einstellung leer ist)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3999
+#: D:\web\xampp\htdocs\limesurvey/common.php:4000
 msgid "Time limit expiry message display time"
 msgstr "Zeitlimit Ablaufnachricht Anzeigezeit"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4006
+#: D:\web\xampp\htdocs\limesurvey/common.php:4007
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Die anzuzeigende Nachricht, wenn das Zeitlimit abgelaufen ist (eine Standardnachricht wird gezeigt, wenn diese Einstellung leer gelassen wird)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4007
+#: D:\web\xampp\htdocs\limesurvey/common.php:4008
 msgid "Time limit expiry message"
 msgstr "Zeitlimitablauf-Nachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4014
+#: D:\web\xampp\htdocs\limesurvey/common.php:4015
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "CSS Style für die Zeitlimit-Ablaufnachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4015
+#: D:\web\xampp\htdocs\limesurvey/common.php:4016
 msgid "Time limit message CSS style"
 msgstr "Zeitlimit-Nachricht CSS-Stil"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4022
+#: D:\web\xampp\htdocs\limesurvey/common.php:4023
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Zeige eine 'Zeitlimitwarnung' wenn nur nich so viele Sekunden beim Ablauf des Countdown vorhanden sind (Warnung wird nicht gezeigt, wenn dies leer gelassen wird)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4023
+#: D:\web\xampp\htdocs\limesurvey/common.php:4024
 msgid "1st Time limit warning message timer"
 msgstr "1. Zeitlimit-Warnnachricht Zeitgeber"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4030
+#: D:\web\xampp\htdocs\limesurvey/common.php:4031
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Die 'Zeitlimitwarnung' wird für diese Anzahl von Sekunden sichtbar sein (wird nicht ausgeblendet wenn diese Einstellung leer gelassen wird)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4031
+#: D:\web\xampp\htdocs\limesurvey/common.php:4032
 msgid "1st Time limit warning message display time"
 msgstr "1. Zeitlimit-Warnnachricht Anzeigezeit"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4038
+#: D:\web\xampp\htdocs\limesurvey/common.php:4039
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Die als 'Zeitlimitwarnung' anzuzeigende Nachricht (Wenn leer, wird eine Standardnachricht gezeigt)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4039
+#: D:\web\xampp\htdocs\limesurvey/common.php:4040
 msgid "1st Time limit warning message"
 msgstr "1. Zeitlimit Warnnachricht Anzeigezeit"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4046
+#: D:\web\xampp\htdocs\limesurvey/common.php:4047
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "CSS Style für die Zeitlimit-Warnnachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4047
+#: D:\web\xampp\htdocs\limesurvey/common.php:4048
 msgid "1st Time limit warning CSS style"
 msgstr "CSS Style für die 1. Zeitlimit-Warnnachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4054
+#: D:\web\xampp\htdocs\limesurvey/common.php:4055
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Zeige die zweite Zeitlimitwarunung wenn noch diese Anzahl von Sekunden im Countdown übrig sind (Warnung wird nicht gezeigt wenn diese Einstellung leer ist)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4055
+#: D:\web\xampp\htdocs\limesurvey/common.php:4056
 msgid "2nd Time limit warning message timer"
 msgstr "CSS Style für die 2. Zeitlimit-Warnnachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4062
+#: D:\web\xampp\htdocs\limesurvey/common.php:4063
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Die zweite 'Zeitlimitwarnung' wird für diese Anzahl von Sekunden sichtbar sein (wird nicht ausgeblendet wenn diese Einstellung leer gelassen wird)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4063
+#: D:\web\xampp\htdocs\limesurvey/common.php:4064
 msgid "2nd Time limit display time"
 msgstr "2. Zeitlimit Warnnachricht Anzeigezeit"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4070
+#: D:\web\xampp\htdocs\limesurvey/common.php:4071
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Die zweite anzuzeigende 'Zeitlimitablauf-Nachricht' (wenn Sie dieses Feld leer lassen, wird eine Standardnachricht gezeigt)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4071
+#: D:\web\xampp\htdocs\limesurvey/common.php:4072
 msgid "2nd Time limit warning message"
 msgstr "2. Zeitlimit Warnnachricht Anzeigezeit"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4078
+#: D:\web\xampp\htdocs\limesurvey/common.php:4079
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "CSS Style für die 2. Zeitlimit-Warnnachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4079
+#: D:\web\xampp\htdocs\limesurvey/common.php:4080
 msgid "2nd Time Limit Warning CSS Style"
 msgstr "CSS Style für die 2. Zeitlimit-Warnnachricht"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4246
+#: D:\web\xampp\htdocs\limesurvey/common.php:4247
 msgid "Version"
 msgstr "Version"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4255
+#: D:\web\xampp\htdocs\limesurvey/common.php:4256
 msgid "Online Manual"
 msgstr "Online Bedienungsanleitung"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4258
+#: D:\web\xampp\htdocs\limesurvey/common.php:4259
 msgid "Support this project - Donate to "
 msgstr "Unterstützen Sie dieses Projekt - Spenden Sie an "
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4261
+#: D:\web\xampp\htdocs\limesurvey/common.php:4262
 msgid "Visit our website!"
 msgstr "Besuchen Sie unsere Webseite!"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4441
+#: D:\web\xampp\htdocs\limesurvey/common.php:4442
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email wurde nicht gesendet, da der Demo-Modus aktiv ist."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:4556
+#: D:\web\xampp\htdocs\limesurvey/common.php:4557
 msgid "SMTP debug output:"
 msgstr "SMTP Debug Ausgabe:"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:5061
+#: D:\web\xampp\htdocs\limesurvey/common.php:5062
 msgid "Executing"
 msgstr "Ausführen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:5061
+#: D:\web\xampp\htdocs\limesurvey/common.php:5062
 msgid "Failed! Reason: "
 msgstr "Fehlgeschlagen! Grund:"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:6141
+#: D:\web\xampp\htdocs\limesurvey/common.php:6142
 #: D:\web\xampp\htdocs\limesurvey/index.php:530
-#: D:\web\xampp\htdocs\limesurvey/save.php:635
+#: D:\web\xampp\htdocs\limesurvey/save.php:647
 msgid "Error"
 msgstr "Fehler"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:7167
+#: D:\web\xampp\htdocs\limesurvey/common.php:7175
 msgid "Email address"
 msgstr "Email-Adresse"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:7168
+#: D:\web\xampp\htdocs\limesurvey/common.php:7176
 msgid "Token code"
 msgstr "Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:7169
+#: D:\web\xampp\htdocs\limesurvey/common.php:7177
 msgid "Language code"
 msgstr "Sprachcode"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:7170
+#: D:\web\xampp\htdocs\limesurvey/common.php:7178
 msgid "Invitation sent date"
 msgstr "Versanddatum Einladung"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:7171
+#: D:\web\xampp\htdocs\limesurvey/common.php:7179
 msgid "Last Reminder sent date"
 msgstr "Versanddatum für letzte Erinnerung"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:7172
+#: D:\web\xampp\htdocs\limesurvey/common.php:7180
 msgid "Total numbers of sent reminders"
 msgstr "Gesamtanzahl versendeter Erinnerungen"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:7192
+#: D:\web\xampp\htdocs\limesurvey/common.php:7200
 #, php-format
 msgid "Attribute %s"
 msgstr "Attribute %s"
@@ -1720,10 +1720,10 @@ msgid "Please check at least one item."
 msgstr "Bitte machen Sie mindestens ein Kreuz."
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:922
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1804
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2095
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2745
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3217
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1806
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2097
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2733
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3205
 msgid "Other:"
 msgstr "Sonstiges:"
 
@@ -1776,212 +1776,212 @@ msgstr "Min"
 msgid "seconds"
 msgstr "Sekunden"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1588
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1590
 msgid "Day"
 msgstr "Tag"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1605
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1607
 msgid "Month"
 msgstr "Monat"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1607
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1609
 msgid "Jan"
 msgstr "Jan"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1608
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1610
 msgid "Feb"
 msgstr "Feb"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1609
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1611
 msgid "Mar"
 msgstr "Mär"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1610
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1612
 msgid "Apr"
 msgstr "Apr"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1611
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1613
 msgid "May"
 msgstr "Mai"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1612
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1614
 msgid "Jun"
 msgstr "Jun"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1613
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1615
 msgid "Jul"
 msgstr "Jul"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1614
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1616
 msgid "Aug"
 msgstr "Aug"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1615
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1617
 msgid "Sep"
 msgstr "Sep"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1616
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1618
 msgid "Oct"
 msgstr "Okt"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1617
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1619
 msgid "Nov"
 msgstr "Nov"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1618
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1620
 msgid "Dec"
 msgstr "Dez"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1635
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1637
 msgid "Year"
 msgstr "Jahr"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1679
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4186
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4377
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4457
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1681
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4174
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4365
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4445
 msgid "Answer"
 msgstr "Antwort"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1726
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1728
 msgid "Date picker"
 msgstr "Datumsauswahl"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1733
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1735
 #, php-format
 msgid "Format: %s"
 msgstr "Format: %s"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1761
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1913
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6675
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6729
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1763
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1915
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6663
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6717
 msgid "Please choose..."
 msgstr "Bitte auswählen.."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1985
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1987
 msgid "Other answer"
 msgstr "Andere Antwort"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2009
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2267
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2011
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2269
 #, php-format
 msgid "You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Sie haben die Antwort \"%s\" für Frage  \"%s \" markiert. Bitte füllen Sie auch das dazugehörige Feld \"Anderer Kommentar\" aus."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2326
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2328
 msgid "Please enter your comment here"
 msgstr "Bitte geben Sie hier Ihren Kommentar ein."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2596
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2598
 msgid "Remove this item"
 msgstr "Dieses Element entfernen"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2638
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2626
 msgid "Your Choices"
 msgstr "Ihre Auswahl"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2649
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2637
 msgid "Your Ranking"
 msgstr "Ihre Rangfolge"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2657
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2645
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Klicken Sie auf die Schere rechts von jedem Element, um den letzten Eintrag in der Rangliste zu entfernen"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2667
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2683
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2655
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2671
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Bitte wählen Sie mindestens %d Antworten für die Frage \"%s\" aus."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3082
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3396
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3070
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3384
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "Bitte wählen Sie maximal %d Antworten für die Frage \"%s\""
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3103
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3421
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3091
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3409
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Bitte wählen Sie mindestens %d Antwort(en) für die Frage \"%s\" aus."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3138
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3453
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3126
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3441
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Sie haben das Feld \"Sonstiges: \" für Frage  \"%s \" markiert. Bitte füllen Sie auch das dazugehörige Kommentarfeld aus."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3324
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3352
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3312
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3340
 msgid "Make a comment on your choice here:"
 msgstr "Bitte schreiben Sie einen Kommentar zu Ihrer Auswahl"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3552
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3855
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4985
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6545
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3540
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3843
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4973
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6533
 msgid "Error: This question has no answers."
 msgstr "Fehler: Diese Frage hat keine Antworten."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3993
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3981
 msgid "Only numbers may be entered in these fields"
 msgstr "In diese Felder dürfen nur Ziffern eingetragen werden."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3997
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3985
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Summe aller Einträge darf nicht größer als %d sein."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4001
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3989
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Summe aller Einträge muss gleich %d sein"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4005
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3993
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Summe aller Einträge müssen größer sein als %s"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4013
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4001
 msgid "Remaining: "
 msgstr "Verbleibend:"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4015
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4003
 msgid "Total: "
 msgstr "Gesamt:"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4059
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4065
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4101
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4112
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4047
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4053
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4089
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4100
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Antwort ist ungültig. Die Summer aller Einträge sollte nicht größer sein als"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4078
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4086
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4066
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4074
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Antwort ist ungültig. Die Summe aller Einträge muss mindenstens %s sein."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4190
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4178
 msgid "Only numbers may be entered in this field"
 msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5450
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5670
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5974
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6127
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6774
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5438
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5658
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5962
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6115
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6762
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Fehler: Es gibt keine Antwortoptionen für diese Frage oder Sie existieren nicht in dieser Sprache."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5894
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5882
 msgid "..."
 msgstr "..."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6121
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6109
 msgid "Error: There are no answers defined for this question."
 msgstr "Fehler: Es sind keine Antworten für diese Frage definiert."
 
@@ -2045,15 +2045,15 @@ msgstr "Rufen Sie die Umfrage auf, indem Sie auf folgende URL klicken (oder den 
 msgid "Your survey was successfully saved."
 msgstr "Ihre Umfrage wurde erfolgreich gespeichert."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:636
+#: D:\web\xampp\htdocs\limesurvey/save.php:648
 msgid "Cannot submit results - there are none to submit."
 msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:637
+#: D:\web\xampp\htdocs\limesurvey/save.php:649
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Diese Fehler kann auftreten, wenn Sie Ihre Antworten schon abgesendet haben und in Ihrem Browser auf 'Aktualisieren' geklickt haben. In diesem Fall sind Ihre Antworten schon gespeichert worden. "
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:637
+#: D:\web\xampp\htdocs\limesurvey/save.php:649
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwohl Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Dieses Problem kann auftauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
 
@@ -2080,7 +2080,7 @@ msgstr "Generiere Zusammenfassungen..."
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:458
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:166
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:330
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:381
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:390
 msgid "Completed"
 msgstr "Abgeschlossen"
 
@@ -2300,7 +2300,7 @@ msgstr "Datenbankfehler:"
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:113
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:127
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:81
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2461
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2471
 #: D:\web\xampp\htdocs\limesurvey/admin/deactivate.php:46
 #: D:\web\xampp\htdocs\limesurvey/admin/deactivate.php:52
 #: D:\web\xampp\htdocs\limesurvey/admin/deactivate.php:54
@@ -2364,7 +2364,7 @@ msgstr "Bewertungen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/assessments.php:111
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:975
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:344
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:353
 msgid "Return to survey administration"
 msgstr "Zur Umfragen-Administration zurückkehren"
 
@@ -2460,7 +2460,7 @@ msgid "Heading"
 msgstr "Überschrift"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/assessments.php:261
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1166
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1176
 msgid "Save"
 msgstr "Speichern"
 
@@ -2481,8 +2481,8 @@ msgstr "Nachricht:"
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:123
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:290
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:74
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1301
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1321
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1311
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1331
 msgid "Browse Responses"
 msgstr "Antworten anzeigen"
 
@@ -2678,7 +2678,7 @@ msgstr "Sie haben keine Frage ausgewählt"
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:141
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:217
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
-msgstr "Ihre Bedingung konnte nicht hinzugefügt werden. Sie enthielt nicht die Frage und/oder Antworte auf der die Bedingung basiert. Bitte wählen Sie eine Frage und eine Antwort aus."
+msgstr "Ihre Bedingung konnte nicht hinzugefügt werden. Sie enthielt nicht die Frage und/oder Antwort auf der die Bedingung basiert. Bitte wählen Sie eine Frage und eine Antwort aus."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:378
 msgid "Conditions successfully copied (some were skipped because they were duplicates)"
@@ -2773,9 +2773,9 @@ msgstr "Szenario automatisch neu durchnummerieren"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1188
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1339
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1459
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1549
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1581
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1469
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1559
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1591
 msgid "OR"
 msgstr "ODER"
 
@@ -2936,7 +2936,7 @@ msgstr "Vordefinierte Antwortoptionen für diese Frage"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1864
 msgid "Constant value"
-msgstr "Kontanter Wert"
+msgstr "Konstanter Wert"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1882
 msgid "Answers from previous questions"
@@ -2987,14 +2987,14 @@ msgid "Question in language %s could not be created."
 msgstr "Frage in Sprache %s konnte nicht erstellt werden."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:296
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:702
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:731
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:691
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:720
 msgid "Question could not be created."
 msgstr "Frage konnte nicht erstellt werden."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:372
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:587
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:654
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:643
 msgid "Question could not be updated"
 msgstr "Frage konnte nicht aktualisiert werden."
 
@@ -3002,60 +3002,55 @@ msgstr "Frage konnte nicht aktualisiert werden."
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Frage konnte nicht aktualisiert werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen - dadurch gibt es Probleme beim ändern des Typs. Sie müssen diese Bedingung löschen, bevor Sie den Typ dieser Frage ändern können."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:606
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:615
-msgid "Answers can't be deleted"
-msgstr "Frage konnte nicht gelöscht werden."
-
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:626
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "Diese Frage bezieht sich durch Bedingungen auf die Antworten andere Fragen und kann daher in der Reihenfolge nicht hinter folgende GruppenID verschoben werden:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:627
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:639
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:616
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:628
 msgid "in position"
 msgstr "an Position"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:628
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:640
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:617
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:629
 msgid "See conditions:"
 msgstr "Siehe Bedingungen:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:638
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:627
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "Einige Fragen beziehen sich auf die Antworten in dieser Frage. Sie können diese Frage nicht vor die folgende GruppenID schieben."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:664
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:653
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Frage konnte nicht hinzugefügt werden. Sie müssen einen Code eingeben."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:819
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:808
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Frage konnte nicht gelöscht werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen. Sie können diese Frage nicht löschen, solange diese Bedingungen nicht entfernt wurden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:898
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:887
 msgid "Failed to update answers"
 msgstr "Konnte Antworten nicht aktualisieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:904
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:893
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Antworten mit einem Fragecode von '0' oder Leerzeichen sind nicht erlaubt und werden nicht gespeichert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:905
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:894
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Doppelte Codes gefunden, diese Einträge werden nicht aktualisiert"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:935
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:924
 msgid "Failed to delete answer"
 msgstr "Konnte Antwort nicht löschen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1134
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1365
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1123
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1354
 msgid "Invitation to participate in survey"
 msgstr "Einladung zur Teilnahme an einer Umfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1135
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1366
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1124
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1355
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3095,10 +3090,10 @@ msgstr ""
 "Klicken Sie hier um die Umfrage zu starten:\n"
 "{SURVEYURL}"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1135
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1137
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1366
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1368
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1124
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1126
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1355
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1357
 msgid ""
 "If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n"
 "{OPTOUTURL}"
@@ -3106,13 +3101,13 @@ msgstr ""
 "Wenn Sie an diese Umfrage nicht teilnehmen und keine weiteren Erinnerungen erhalten möchten, klicken Sie bitte auf den folgenden Link:\n"
 "{OPTOUTURL}"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1136
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1367
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1125
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1356
 msgid "Reminder to participate in survey"
 msgstr "Erinnerung an Teilnahme an einer Umfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1137
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1368
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1126
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1357
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3156,13 +3151,13 @@ msgstr ""
 "Klicken Sie hier um die Umfrage zu starten:\n"
 "{SURVEYURL}"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1138
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1369
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1127
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1358
 msgid "Confirmation of completed survey"
 msgstr "Abschlussbestätigung einer Umfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1139
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1370
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1128
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1359
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3184,13 +3179,13 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1140
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1371
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1129
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1360
 msgid "Survey Registration Confirmation"
 msgstr "Registrierungsbestätigung für Teilnahmeumfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1141
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1372
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1130
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1361
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3212,32 +3207,32 @@ msgstr ""
 "\n"
 "Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1157
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1146
 msgid "Survey could not be updated"
 msgstr "Umfrage konnte nicht aktualisiert werden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1172
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1161
 msgid "ERROR deleting Survey id"
 msgstr "FEHLER beim Löschen der Umfrage ID"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1243
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1232
 msgid "Survey could not be created because it did not have a title"
 msgstr "Umfrage konnte nicht erstellt werden, da kein Titel angegeben wurde."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1389
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1378
 msgid "Survey could not be created"
 msgstr "Umfrage konnte nicht erstellt werden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1413
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1402
 msgid "Your personal settings were successfully saved."
 msgstr "Ihre persönlichen Einstellungen wurden erfolgreich gespeichert."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:77
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:90
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:443
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1244
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1311
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1346
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:452
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1254
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1321
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1356
 msgid "Data Entry"
 msgstr "Dateneingabe"
 
@@ -3266,162 +3261,162 @@ msgid "Try again"
 msgstr "Nochmal versuchen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:180
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1206
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2405
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1216
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2415
 msgid "Identifier:"
 msgstr "Name:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:182
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2407
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2417
 msgid "Password:"
 msgstr "Passwort:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:184
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2409
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2419
 msgid "Confirm Password:"
 msgstr "Passwort bestätigen:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:186
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2411
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2421
 msgid "Email:"
 msgstr "E-Mail"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:188
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2413
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2423
 msgid "Start Language:"
 msgstr "Start-Sprache"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:289
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:298
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr "Ihre Antworten wurden erfolgreich zwischengespeichert. Sie werden außerdem eine Bestätigungsmail erhalten. Bitte merken Sie sich Ihr Passwort gut, da wir auf Ihre Zugangsdaten nicht zugreifen können."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:303
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:312
 msgid "A token entry for the saved survey has been created too."
 msgstr "Es wurde außerdem für die zwischengespeicherte Umfrage ein Zugangsschlüssel angelegt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:325
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:334
 msgid "An email has been sent with details about your saved survey"
 msgstr "Es wurde eine Email mit den Einzelheiten ihrer zwischengespeicherten Umfrage an Sie versandt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:337
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1298
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:346
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1308
 msgid "Success"
 msgstr "Erfolgreich"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:339
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:348
 msgid "The entry was assigned the following record id: "
 msgstr "Dem Eintrag wurde folgende Datensatz-ID zugewiesen: "
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:343
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:352
 msgid "Add Another Record"
 msgstr "Einen weiteren Datensatz hinzufügen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:347
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1300
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:356
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1310
 msgid "View This Record"
 msgstr "Diesen Datensatz anzeigen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:351
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:360
 msgid "Browse Saved Responses"
 msgstr "Gespeicherte Antworten anzeigen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:447
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:456
 #, php-format
 msgid "Editing response (ID %s)"
 msgstr "Bearbeite Antwort (ID %s)"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:451
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:460
 #, php-format
 msgid "Viewing response (ID %s)"
 msgstr "Bearbeite Antwort (ID %s)"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:517
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:527
 msgid "Cannot be modified"
 msgstr "Kann nicht geändert werden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:536
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:569
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:638
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:860
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:928
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1653
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1786
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1819
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2058
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2113
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2128
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2149
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2170
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2190
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2350
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:546
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:579
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:648
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:870
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:938
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1663
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1796
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1829
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2068
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2123
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2138
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2159
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2180
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2200
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2360
 msgid "Please choose"
 msgstr "Bitte wählen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1171
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1181
 msgid "Update Entry"
 msgstr "Eintrag aktualisieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1200
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2395
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1210
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2405
 msgid "Finalize response submission"
 msgstr "Datensatz als vollständig in der Datenbank ablegen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1202
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2401
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1212
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2411
 msgid "Save for further completion by survey user"
 msgstr "Für weitere Bearbeitung durch Umfrage-Teilnehmer abspeichern"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1299
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1309
 msgid "Record has been updated."
 msgstr "Datensatz wurde aktualisiert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1320
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1330
 msgid "Record Deleted"
 msgstr "Datensatz wurde gelöscht"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1405
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1415
 msgid "Datestamp"
 msgstr "Zeitstempel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1419
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1429
 msgid "IP-Address"
 msgstr "IP-Adresse protokollieren?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1467
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1572
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1477
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1582
 msgid "AND"
 msgstr "UND"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1589
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1594
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1599
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1604
 msgid "to question {QUESTION}, answer {ANSWER}"
 msgstr "auf Frage {QUESTION}, Antwort {ANSWER}"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1593
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1603
 msgid "No Answer"
 msgstr "Keine Antwort"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1605
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1615
 msgid "Only answer this if the following conditions are met:"
 msgstr "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1633
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1643
 msgid "Help about this question"
 msgstr "Hilfe zu dieser Frage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1677
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1687
 msgid "Label 1"
 msgstr "Beschriftung 1"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1677
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1687
 msgid "Label 2"
 msgstr "Beschriftung 2"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2450
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2460
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Diese Umfrage ist noch nicht aktiviert. Ihre Antwort kann nicht abgespeichert werden"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2460
+#: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2470
 msgid "The survey you selected does not exist"
 msgstr "Die ausgewählte Umfrage existiert nicht."
 
@@ -3667,19 +3662,19 @@ msgstr "Allgemeine Informationen in Sprache:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:454
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:455
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:914
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:912
 msgid "Date Last Action"
 msgstr "Datum letzte Aktivität"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:459
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:460
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:917
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:915
 msgid "Date Started"
 msgstr "Datum gestartet"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:474
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:475
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:926
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:924
 msgid "Referring URL"
 msgstr "Referrer-URL"
 
@@ -3688,32 +3683,32 @@ msgstr "Referrer-URL"
 msgid "Last page seen"
 msgstr "Zuletzt gesehene Seite"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:847
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:845
 msgid "New Record"
 msgstr "Neuer Datensatz"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:880
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:885
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:878
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:883
 msgid "NEW RECORD"
 msgstr "NEUER DATENSATZ"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:920
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:918
 msgid "IP Address"
 msgstr "IP-Adresse"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:947
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:945
 msgid "Language"
 msgstr "Sprache"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1074
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1075
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1091
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1092
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1072
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1073
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1089
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1090
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1215
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1216
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1213
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1214
 msgid "Tokens problem - token table missing"
 msgstr "Problem - Teilnehmer Tabelle fehlt"
 
@@ -3904,45 +3899,45 @@ msgstr "Gesamt Bewertungspunktzahl"
 msgid "Assessment group score"
 msgstr "Gruppen-Bewertungspunktzahl"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:334
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:335
 msgid "No replacement variable available for this field"
 msgstr "Keine Ersetzungs-Variable verfügbar für dieses Feld"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:340
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:341
 msgid "Standard Fields"
 msgstr "Standard Felder"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:352
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:353
 msgid "Previous Answers Fields"
 msgstr "Vorherige Antwort Felder"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:387
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:399
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:388
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:400
 msgid "Some Question have been disabled"
 msgstr "Einige Fragen wurden deaktiviert"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:389
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:390
 #, php-format
 msgid "Survey Format is %s:"
 msgstr "Umfrage Format ist %s:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:389
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:390
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2601
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3227
 msgid "All in one"
 msgstr "Alles auf einer Seite"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:391
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:400
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:392
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:401
 msgid "Only Previous pages answers are available"
 msgstr "Nur Antworten der vorherigen Seiten sind verfügbar"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:400
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:401
 #, php-format
 msgid "Survey mode is set to %s:"
 msgstr "Umfrage Modus ist auf %s gesetzt:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:400
+#: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:401
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2598
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3226
 msgid "Group by Group"
@@ -4207,8 +4202,8 @@ msgid "Save settings"
 msgstr "Einstellungen Speichern"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/globalsettings.php:378
-msgid "Note: Demo mode is activated. Marked (*) settings won't be saved."
-msgstr "Achtung: Demo-Modus ist aktiviert. Markierte (*) Einstellungen werden nicht gespeichert."
+msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
+msgstr "Achtung: Demo-Modus ist aktiviert. Markierte (*) Einstellungen können nicht geändert werden."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/globalsettings.php:469
 msgid "System overview"
@@ -5693,7 +5688,11 @@ msgid "Export a VV survey file"
 msgstr "VV-Umfrage-Datei exportieren"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html_functions.php:124
-msgid "Iterate surevey"
+#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:28
+#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:29
+#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:43
+#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:60
+msgid "Iterate survey"
 msgstr "Umfrage iterieren"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/http_importsurvey.php:28
@@ -6506,13 +6505,6 @@ msgstr "Lösche alte Zugangsschlüssel und Antworttabellen die durch Deaktivieru
 msgid "Deleting old token tables"
 msgstr "Lösche alte Zugangsschlüssel-Tabellen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:28
-#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:29
-#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:43
-#: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:60
-msgid "Iterate survey"
-msgstr "Umfrage iterieren"
-
 #: D:\web\xampp\htdocs\limesurvey/admin/iterate_survey.php:30
 msgid "Important instructions"
 msgstr "Wichtige Anleitung"
@@ -6745,23 +6737,23 @@ msgstr "Kein Einmalpasswort für Benutzer %s gefunden"
 msgid "Passed single-use password was wrong or user doesn't exist"
 msgstr "Einmalkennwort war falsch oder Benutzer existiert nicht"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:154
+#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:155
 msgid "You have to enter user name and email."
 msgstr "Sie müssen Benutzername und Email angeben."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:169
+#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:161
 msgid "Check Data"
 msgstr "Daten überprüfen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:192
+#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:180
 msgid "You have to login first."
 msgstr "Sie müssen sich erst anmelden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:217
+#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:205
 msgid "Login"
 msgstr "Anmelden"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:218
+#: D:\web\xampp\htdocs\limesurvey/admin/login_check.php:206
 msgid "Forgot Your Password?"
 msgstr "Haben Sie Ihr Passwort vergessen?"
 
@@ -7513,8 +7505,8 @@ msgid "Results"
 msgstr "Ergebnisse"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:595
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1864
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1885
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1874
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1895
 msgid "Browse"
 msgstr "Ansehen"
 
@@ -7543,22 +7535,22 @@ msgid "Result"
 msgstr "Ergebnis"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1002
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1907
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1913
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1919
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1930
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2604
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2608
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2621
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2627
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1917
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1923
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1929
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1940
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2614
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2618
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2631
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2637
 msgid "Sum"
 msgstr "Summe"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1003
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2783
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2790
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2797
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2804
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2793
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2800
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2807
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2814
 msgid "Standard deviation"
 msgstr "Standard Abweichung"
 
@@ -7567,19 +7559,19 @@ msgid "Average"
 msgstr "Durchschnitt"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1051
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1878
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1907
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1911
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1919
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1926
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1949
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1953
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1961
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1968
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2050
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2054
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2061
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2068
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1888
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1917
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1921
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1929
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1936
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1959
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1963
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1971
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1978
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2060
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2064
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2071
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2078
 msgid "Count"
 msgstr "Anzahl"
 
@@ -7630,43 +7622,43 @@ msgstr "minitab-Methode"
 msgid "Not enough values for calculation"
 msgstr "Nicht genug Werte für Berechnung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1878
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1907
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1912
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1919
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1928
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1949
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1954
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1961
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1970
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2050
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2055
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2061
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2070
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1888
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1917
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1922
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1929
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1938
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1959
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1964
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1971
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1980
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2060
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2065
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2071
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2080
 msgid "Percentage"
 msgstr "Prozent"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2171
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2203
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2181
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2213
 msgid "Not completed or Not displayed"
 msgstr "Nicht beendet oder nicht gezeigt"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2175
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2207
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2185
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2217
 msgid "Not displayed"
 msgstr "Nicht gezeigt"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2605
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2613
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2622
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2633
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2615
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2623
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2632
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2643
 msgid "Number of cases"
 msgstr "Anzahl Fälle"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2782
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2786
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2792
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2796
-#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2802
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2806
+#: D:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2812
 msgid "Arithmetic mean"
 msgstr "Arithmetisches Mittel"
 
@@ -10121,6 +10113,12 @@ msgstr "Thailändisch"
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:466
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
+
+#~ msgid "Answers can't be deleted"
+#~ msgstr "Frage konnte nicht gelöscht werden."
+
+#~ msgid "Iterate surevey"
+#~ msgstr "Umfrage iterieren"
 
 #~ msgid "Your Answer"
 #~ msgstr "Ihre Antwort"
