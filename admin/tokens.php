@@ -1540,7 +1540,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
 		$customheaders = array( '1' => "X-surveyid: ".$surveyid,
 					'2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
 
-                $modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+        $modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
                 $modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 		
                 if (trim($emrow['validfrom'])!='' && convertDateTimeFormat($emrow['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1)
@@ -1873,7 +1873,7 @@ $customheaders = array( '1' => "X-surveyid: ".$surveyid,
                 {
                     $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
                 }
-                elseif (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
+                elseif (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid),null,$customheaders))
                 {
 
                     // Put date into remindersent

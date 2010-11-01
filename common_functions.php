@@ -4483,8 +4483,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
-    
-    if ($customheaders='')
+
+    if (!is_array($customheaders) && $customheaders == '')
     {
         $customheaders=array();
     }
@@ -4581,9 +4581,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddAddress($singletoemail);
         }
     }
-    if ($customheaders!=='')
+    if (is_array($customheaders))
     {
-        while (list($key, $val) = each($customheaders)) {
+        foreach ($customheaders as $key=>$val) {
             $mail->AddCustomHeader($val);
         }
     }
@@ -4600,7 +4600,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
        }
 
     // add the attachment if there is one
-    if($attachment!=null)
+    if(!is_null($attachment))
     $mail->AddAttachment($attachment);
 
 	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
