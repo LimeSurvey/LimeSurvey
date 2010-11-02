@@ -243,6 +243,7 @@ $(document).ready(function(){
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });
+    $('#tabs').tabs();
 });
 
 

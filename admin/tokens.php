@@ -501,9 +501,8 @@ if (bHasSurveyPermission($surveyid, 'tokens','export'))
 if (bHasSurveyPermission($surveyid, 'tokens','update'))
 {
     $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=emailsettings', '_top')\" "
-    ."title='".$clang->gTview("Edit email templates")."'>"
-    ."<img name='EmailSettingsButton' src='$imageurl/emailsettings.png' alt='".$clang->gT("Edit email templates")."' /></a>\n"
+    ."<a href='{$scriptname}?action=emailtemplates&amp;sid={$surveyid}' title='".$clang->gTview("Edit email templates")."'>"
+    ."<img name='EmailTemplatesButton' src='$imageurl/emailtemplates.png' alt='".$clang->gT("Edit email templates")."' /></a>\n"
     ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" "
     ."title='".$clang->gTview("Send email invitation")."'>"
     ."<img name='InviteButton' src='$imageurl/invite.png' alt='".$clang->gT("Send email invitation")."' /></a>\n"
@@ -720,83 +719,6 @@ $tokenoutput .= "<div id='bouncesettings'>\n"
             $tokenoutput .= "\t<p><input type='button' onclick='bouncesettings.submit()' class='standardbtn' value='".$clang->gT("Save settings")."' /><br /></p>\n";
             
           }
-if ($subaction == "emailsettings")
-{
-    $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    array_unshift($grplangs,$baselang);
-
-    $tokenoutput .= PrepareEditorScript();
-    $tokenoutput .="<tr><td align='center'>"
-    . "<div class='header'>\n"
-    . "".$clang->gT("Edit email templates")."</div>\n"
-    . "<form class='form30' name='frmemailsettings' action='$scriptname' method='post'>\n"
-    . '<div class="tab-pane" id="tab-pane-emailsettings-'.$surveyid.'">';
-    $surveyinfo=getSurveyInfo($surveyid);
-    foreach ($grplangs as $grouplang)
-    {
-        // this one is created to get the right default texts fo each language
-        $bplang = new limesurvey_lang($grouplang);
-        $esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
-        $esresult = db_execute_assoc($esquery);
-        $esrow = $esresult->FetchRow();
-        $tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false);
-        if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$tokenoutput .= '('.$clang->gT("Base language").')';}
-        $tokenoutput .= '</h2>';
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation email subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_invite_subj_".$esrow['surveyls_language']."' id='email_invite_subj_{$grouplang}' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
-        . "<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default_{$grouplang}' value='".$bplang->gT("Invitation to participate in survey")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_subj_{$grouplang}\",\"email_invite_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation email:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_invite_".$esrow['surveyls_language']."' id='email_invite_{$grouplang}'>{$esrow['surveyls_email_invite']}</textarea>\n"
-        . getEditor("email-inv","email_invite_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_{$grouplang}\",\"email_invite_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email reminder subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_remind_subj_".$esrow['surveyls_language']."' id='email_remind_subj_{$grouplang}' value=\"{$esrow['surveyls_email_remind_subj']}\" />\n"
-        . "<input type='hidden' name='email_remind_subj_default_".$esrow['surveyls_language']."' id='email_remind_subj_default_{$grouplang}' value='".$bplang->gT("Reminder to participate in survey")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_subj_{$grouplang}\",\"email_remind_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email reminder:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_remind_".$esrow['surveyls_language']."' id='email_remind_{$grouplang}'>{$esrow['surveyls_email_remind']}</textarea>\n"
-        . getEditor("email-rem","email_remind_{$grouplang}", "[".$clang->gT("Email reminder:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation email subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj_{$grouplang}' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
-        . "<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default_{$grouplang}' value='".$bplang->gT("Confirmation of completed survey")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_subj_{$grouplang}\",\"email_confirm_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation email:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_confirm_".$esrow['surveyls_language']."' id='email_confirm_{$grouplang}'>{$esrow['surveyls_email_confirm']}</textarea>\n"
-        . getEditor("email-conf","email_confirm_{$grouplang}", "[".$clang->gT("Confirmation email", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_{$grouplang}\",\"email_confirm_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration email subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_register_subj_".$esrow['surveyls_language']."' id='email_register_subj_{$grouplang}' value=\"{$esrow['surveyls_email_register_subj']}\" />\n"
-        . "<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default_{$grouplang}' value='".$bplang->gT("Survey registration confirmation")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_subj_{$grouplang}\",\"email_register_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration email:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_register_{$grouplang}' id='email_register_{$grouplang}'>{$esrow['surveyls_email_register']}</textarea>\n"
-        . getEditor("email-reg","email_register_{$grouplang}", "[".$clang->gT("Public registration email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
-        . "\t</span><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></div>\n</div>";
-    }
-    $tokenoutput .= '</div>';
-    $tokenoutput .= "\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
-    . "\t<input type='hidden' name='action' value='tokens' />\n"
-    . "\t<input type='hidden' name='subaction' value='updateemailsettings' />\n"
-    . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
-    . "\t<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
-    . "\t</p>\n"
-    . "</form></td></tr></table>\n";
-}
 
 // Save the updated email settings
 if ($subaction == "updateemailsettings" && bHasSurveyPermission($surveyid, 'tokens','update')
