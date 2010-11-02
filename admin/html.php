@@ -496,7 +496,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         // SEPARATOR
 
-        $surveysummary .= "<img src='{$imageurl}/seperator.gif' alt=''  />\n";
+        //$surveysummary .= "<img src='{$imageurl}/seperator.gif' alt=''  />\n";
 
 
         // SURVEY SECURITY SETTINGS
