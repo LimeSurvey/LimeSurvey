@@ -1488,11 +1488,13 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
+    global $js_header_includes;
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
 
     if (trim($qidattributes['time_limit'])!='')
     {
+        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia);
     }
 
