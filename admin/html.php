@@ -486,7 +486,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         if($activated!="Y" && bHasSurveyPermission($surveyid,'surveycontent','read') && getGroupSum($surveyid,$surveyinfo['language'])>1)
         {
-            $surveysummary .= "<li><img src='$imageurl/seperator.gif' alt=''  />\n";
+            //@TODO Remove separator when carousel stays
+            $surveysummary .= "<li><!--<img src='$imageurl/seperator.gif' alt=''  />-->\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
             . " title=\"".$clang->gTview("Change question group order")."\" >"
             . "<img src='$imageurl/reorder.png' alt='".$clang->gT("Change question group order")."' name='ordergroups' />"
