@@ -59,8 +59,7 @@ ul.sf-menu li li li.sfHover ul {
 	margin-bottom:	1em;
 }
 .sf-menu a {
-	border-left:	1px solid #fff;
-	border-top:		1px solid #CFDEFF;
+
 	padding: 		0.1em 1em;
 	text-decoration:none;
 }
@@ -68,7 +67,7 @@ ul.sf-menu li li li.sfHover ul {
 	color:			#13a;
 }
 .sf-menu li {
-	background:		#D2E0F2;
+	background:		#EEF6FF;
 }
 .sf-menu li li {
 	background:		#AABDE6;
@@ -78,7 +77,7 @@ ul.sf-menu li li li.sfHover ul {
 }
 .sf-menu li:hover, .sf-menu li.sfHover,
 .sf-menu a:focus, .sf-menu a:hover, .sf-menu a:active {
-	background:		#CFDEFF;
+	background:		#DBE6F4;
 	outline:		0;
 }
 
@@ -96,7 +95,7 @@ ul.sf-menu li li li.sfHover ul {
 	height:			10px;
 	text-indent: 	-999em;
 	overflow:		hidden;
-	background:		url('images/arrows-ffffff.png') no-repeat -10px -100px; /* 8-bit indexed alpha png. IE6 gets solid image only */
+	background:		url('images/arrows.png') no-repeat -10px -100px; /* 8-bit indexed alpha png. IE6 gets solid image only */
 }
 a > .sf-sub-indicator {  /* give all except IE6 the correct values */
 	top:			2em;

@@ -321,6 +321,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
     {
         $js_admin_includes[]='../scripts/jquery/jquery.cookie.js';
         $js_admin_includes[]='../scripts/jquery/superfish.js';
+        $js_admin_includes[]='../scripts/jquery/hoverIntent.js';
         $js_admin_includes[]='scripts/surveytoolbar.js';
         $css_admin_includes[]= $homeurl."/styles/default/superfish.css";        
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
