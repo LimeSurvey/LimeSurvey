@@ -1907,8 +1907,6 @@ $subaction == "editthiscondition" || $subaction == "delete")
     $js_admin_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
     $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 
-    //	$css_admin_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
-
     if ($subaction == "editthiscondition" && isset($p_cid))
     {
         $submitLabel = $clang->gT("Update condition");

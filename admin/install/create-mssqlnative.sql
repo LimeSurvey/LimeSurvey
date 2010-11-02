@@ -248,7 +248,6 @@ CREATE TABLE [prefix_surveys] (
   [additional_languages] VARCHAR(255) default NULL,
   [datestamp] char(1) default 'N',
   [usecookie] char(1) default 'N',
-  [notification] char(1) default '0',
   [allowregister] char(1) default 'N',
   [allowsave] char(1) default 'Y',
   [autonumber_start] bigINT default '0',
@@ -274,6 +273,7 @@ CREATE TABLE [prefix_surveys] (
   [bounce_email] VARCHAR(320) default NULL,
   [attributedescriptions] varchar(max),
   [emailresponseto] varchar(max),
+  [emailnotificationto] varchar(max),
   [tokenlength] tinyint default '15',
   [bouncetime] BIGINT(20) NOT NULL,
   [bounceprocessing] varchar(1) default 'N',
@@ -282,17 +282,15 @@ CREATE TABLE [prefix_surveys] (
   [bounceaccountuser] VARCHAR(320) default NULL,
   [bounceaccountpass] VARCHAR(320) default NULL,
   [bounceaccountencryption] VARCHAR(3) default NULL,
+  
   PRIMARY KEY  ([sid])
 ) 
 ;
--- 
--- Table structure for table [surveys_languagesettings]
--- 
 
-if EXISTS (select * from dbo.sysobjects where id = object_id(N'[dbo].[prefix_surveys_languagesettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE [dbo].[prefix_surveys_languagesettings]
-;
 
+-- 
+-- Table structure for table surveys_languagesettings
+-- 
 CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_survey_id] INT NOT NULL DEFAULT 0, 
   [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
@@ -360,7 +358,6 @@ CREATE TABLE [prefix_survey_permissions] (
 -- 
 -- Table structure for table user_groups
 -- 
-
 CREATE TABLE [prefix_user_groups] (
 	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
 	[name] VARCHAR(20) NOT NULL UNIQUE,

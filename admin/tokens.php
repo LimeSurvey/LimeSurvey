@@ -729,7 +729,7 @@ if ($subaction == "emailsettings")
     $tokenoutput .= PrepareEditorScript();
     $tokenoutput .="<tr><td align='center'>"
     . "<div class='header'>\n"
-    . "".$clang->gT("Edit email settings")."</div>\n"
+    . "".$clang->gT("Edit email templates")."</div>\n"
     . "<form class='form30' name='frmemailsettings' action='$scriptname' method='post'>\n"
     . '<div class="tab-pane" id="tab-pane-emailsettings-'.$surveyid.'">';
     $surveyinfo=getSurveyInfo($surveyid);
@@ -819,9 +819,9 @@ if ($subaction == "updateemailsettings" && bHasSurveyPermission($surveyid, 'toke
             $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
         }
     }
-    $tokenoutput .= "<div class='header'>".$clang->gT("Edit email settings")."</div>\n"
+    $tokenoutput .= "<div class='header'>".$clang->gT("Edit email templates")."</div>\n"
     ."<div class='messagebox'>"
-    ."\t<div class='successheader'>".$clang->gT("Token email settings have been saved.")."</div>\n"
+    ."\t<div class='successheader'>".$clang->gT("Email templates have been saved.")."</div>\n"
     ."</div>";
 }
 

@@ -1303,7 +1303,6 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey['tablename']=$dbprefix.'survey_'.$thissurvey['sid'];
         $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
         $thissurvey['url']=$thissurvey['surveyls_url'];
-        $thissurvey['sendnotification']=$thissurvey['notification'];
         $thissurvey['expiry']=$thissurvey['expires'];
         $thissurvey['email_invite_subj']=$thissurvey['surveyls_email_invite_subj'];
         $thissurvey['email_invite']=$thissurvey['surveyls_email_invite'];

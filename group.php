@@ -213,11 +213,10 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
             submittokens();
         }
 
-        //Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-        if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
-        {
-            sendsubmitnotification($thissurvey['sendnotification']);
-        }
+        //Send notifications
+
+        SendSubmitNotifications();
+
 
         $content='';
 

@@ -255,7 +255,6 @@ CREATE TABLE `prefix_surveys` (
   `additional_languages` varchar(255) default NULL,
   `datestamp` char(1) default 'N',
   `usecookie` char(1) default 'N',
-  `notification` char(1) default '0',
   `allowregister` char(1) default 'N',
   `allowsave` char(1) default 'Y',
   `autonumber_start` bigint(11) default '0',
@@ -287,7 +286,8 @@ CREATE TABLE `prefix_surveys` (
   `usetokens` char(1) default 'N',
   `bounce_email` varchar(320) default NULL,
   `attributedescriptions` text,
-  `emailresponseto` text default NULL,
+  `emailresponseto` text default NULL,  
+  `emailnotificationto` text default NULL,
   `tokenlength` tinyint(2) default '15',
    PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;

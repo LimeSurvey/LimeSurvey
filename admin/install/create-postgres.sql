@@ -280,7 +280,6 @@ CREATE TABLE prefix_surveys (
     additional_languages character varying(255),
     datestamp character(1) DEFAULT 'N'::bpchar,
     usecookie character(1) DEFAULT 'N'::bpchar,
-    notification character(1) DEFAULT '0'::bpchar,
     allowregister character(1) DEFAULT 'N'::bpchar,
     allowsave character(1) DEFAULT 'Y'::bpchar,
     printanswers character(1) DEFAULT 'N'::bpchar,
@@ -311,8 +310,9 @@ CREATE TABLE prefix_surveys (
     bounceaccountencryption character(320)
     usetokens character(1) DEFAULT 'N'::bpchar,
     "bounce_email" character varying(320) NOT NULL,
-     attributedescriptions text,
+    attributedescriptions text,
 	emailresponseto text,
+    emailnotificationto text,
 	tokenlength smallint DEFAULT '15'
 );
 

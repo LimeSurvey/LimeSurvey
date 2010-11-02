@@ -1068,7 +1068,6 @@ if(isset($surveyid))
                             'refurl'=>$_POST['refurl'],
                             'publicgraphs'=>$_POST['publicgraphs'],
                             'usecookie'=>$_POST['usecookie'],
-                            'notification'=>$_POST['notification'],
                             'allowregister'=>$_POST['allowregister'],
                             'allowsave'=>$_POST['allowsave'],
                             'printanswers'=>$_POST['printanswers'],
@@ -1084,7 +1083,8 @@ if(isset($surveyid))
                             'htmlemail'=>$_POST['htmlemail'],
                             'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'],
                             'usecaptcha'=>$_POST['usecaptcha'],
-                            'emailresponseto'=>$_POST['emailresponseto'],
+                            'emailresponseto'=>trim($_POST['emailresponseto']),
+                            'emailnotificationto'=>trim($_POST['emailnotificationto']),
                             'tokenlength'=>$_POST['tokenlength']
         );
 
