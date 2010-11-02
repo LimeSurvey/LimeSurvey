@@ -2,9 +2,5 @@
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-     $('#surveybarcarousel').jcarousel({  visible:8,
-                                          scroll:8
-    });
-
-
+     $('ul.sf-menu').superfish();
 });
