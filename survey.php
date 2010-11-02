@@ -39,6 +39,7 @@ $notvalidated=checkpregs($move);
 //SUBMIT
 if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
+    setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies : not actually used in all in one.
     if ($thissurvey['private'] == "Y")
     {
         $privacy = templatereplace(file_get_contents("$thistpl/privacy.pstpl"));

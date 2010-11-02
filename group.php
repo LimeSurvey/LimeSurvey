@@ -88,6 +88,7 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 //SUBMIT ###############################################################################
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ))
 {
+    setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies
     if ($thissurvey['refurl'] == "Y")
     {
         if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
