@@ -1130,6 +1130,8 @@ div.loader {
     padding:1% 10%;
 }
 
+#emailtemplates .ui-tabs-panel iframe,
+#frmeditgroup .tab-page iframe,
 #frmcopyquestion .tab-page iframe,   
 #sendreminder .tab-page iframe,
 #newquestiongroup .tab-page iframe,
@@ -1311,6 +1313,10 @@ clear:both;
    cursor:pointer; 
    text-align: center; 
    zoom: 1; 
+}
+
+#emailtemplates .ui-tabs-panel .limebutton {
+	margin: 3px 20% 10px 30.5%;
 }
 
 table.limetable thead th{
