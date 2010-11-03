@@ -364,7 +364,7 @@ elseif ($subaction == "all")
             else {$gbc = "oddrow";}
             }
         $tableheader .= "<th class='$gbc'><strong>"
-                . strip_javascript("$fn[1]")
+                . FlattenText("$fn[1]")
                 . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";

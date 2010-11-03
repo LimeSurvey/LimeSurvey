@@ -460,7 +460,7 @@ foreach ($filters as $flt)
      Y - Yes/No
      ! - List (Dropdown) )
      */
-    if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L'
+    if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
      || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!') //Have to make an exception for these types!
     {
 
