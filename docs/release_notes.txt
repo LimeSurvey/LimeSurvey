@@ -77,6 +77,26 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9343) to 1.90+ (build 9406) Legend: # updated feature, - bug fix 
+#Updated translation : French (b00z00)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: German (c_schmitz)
+#Updated translation: German informal (c_schmitz)
+#Updated translation: Spanish-Mexican sponsored by LimeService (c_schmitz)
+#Updated translation: Swedish 100% kindly provided by Jonas Norlinder (c_schmitz)
+-Fixed #4582: Array filter and array filter exclude now both work in group-by-goup and all-in-one mode (mennodekker)
+-Fixed a bug in the datatentry screen that prevents filling in  Date answers (possibly causing SQL INSERT Error) (lemeur)
+-Fixed issue #4688: Invalid values in single select question statistics causing Warning: imagefilledpolygon() warning when creating graphs (c_schmitz)
+-Fixed issue #4701: A single space is always inserted in question help fields with Safari or Chrome (c_schmitz)
+-Fixed issue #4703: The data of completed of a survey is always NO and it can not be changed when you try to edit on screen admin/data entry (c_schmitz)
+-Fixed issue #4704: Array dual scale inserts extra subquestions (c_schmitz)
+-Fixed issue #4705: Export to excel fails when exporting token fields with data and using Y/N conversion (c_schmitz)
+-Fixed issue #4708: Error when wanting to browse responses and using mssqlnative database driver (c_schmitz)
+-Fixed issue #4709: Timer not working with boilerplate question (c_schmitz)
+-Fixed issue #4710: Question marks in header in PDF exported files (c_schmitz)
+-Fixed issue: Excel sheet naming causing error message in Excel on exporting responses (c_schmitz)
+-Fixes issue : #4712: Timer dosent reset in timer_limit questions (shnoulle)
+
 Changes from 1.90+ (build 9321) to 1.90+ (build 9343) Legend: # updated feature, - bug fix 
 #Updated translation: German (c_schmitz)
 #Updated translation: German (informal) (c_schmitz)
