@@ -1043,6 +1043,7 @@ textarea.updater-changelog {
     color: #1d2d45;
 }        
 
+.form30newtabs li label:first-child,
 .form30 li label:first-child {
     width: 30%;
     text-align: right;
@@ -1056,6 +1057,14 @@ textarea.updater-changelog {
     width: auto;
     float: left;      
 }
+
+.form30newtabs div div li{
+    list-style-type: none;
+    clear:left;
+    padding-bottom:5px;
+}
+
+
 
 .form30 li,
 .form44 li,

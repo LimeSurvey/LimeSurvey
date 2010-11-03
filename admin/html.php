@@ -497,6 +497,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "<img src='{$imageurl}/assessments_30.png' /> ".$clang->gT("Assessments")."</a></li>\n" ;
         }
 
+        // EDIT SURVEY TEXT ELEMENTS BUTTON
+        if(bHasSurveyPermission($surveyid,'surveylocale','read'))
+        {
+            $surveysummary .= "<li><a href='{$scriptname}?action=emailtemplates&amp;sid={$surveyid}' >"
+            . "<img src='{$imageurl}/emailtemplates_30.png' name='EditEmailTemplates' /> ".$clang->gT("Email templates")."</a></li>\n";
+        }        
         
         $surveysummary .='</ul></li>'; // End if survey properties
 
@@ -3601,10 +3607,9 @@ if ($action == "emailtemplates")
     array_unshift($grplangs,$baselang);
 
     $tokenoutput = PrepareEditorScript();
-    $tokenoutput .="<div class='header'>\n"
-    . "".$clang->gT("Edit email templates")."</div>\n"
-    . "<form class='form30' name='frmemailsettings' action='$scriptname' method='post'>\n"
-    . '<div id="tabs"><ul>';
+    $tokenoutput .="<div class='header'>\n".$clang->gT("Edit email templates")."</div>\n"
+    . "<form class='form30newtabs' id='emailtemplates' action='$scriptname' method='post'>\n"
+    . "<div id='tabs'><ul>";
     $surveyinfo=getSurveyInfo($surveyid);
 
     foreach ($grplangs as $grouplang)
