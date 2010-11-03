@@ -130,14 +130,18 @@ if ($action == "editgroup")
     $editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);
     $editgroup .= '('.$clang->gT("Base Language").')';
     $esrow = array_map('htmlspecialchars', $esrow);
-    $editgroup .= '</h2><ul>';
-    $editgroup .= "\t<li><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label>\n"
-    . "<input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-    . "\t</li>\n"
-    . "\t<li><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-    . "<textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+    $editgroup .= '</h2>';
+	$editgroup .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Title").":</span>\n"
+	. "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+    . "\t</span></div>\n";
+    $editgroup .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
+    . "<span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
     . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-    . "\t</li></ul></div>";
+    . "\t</span></div>\n"
+    . "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
+    . "<span class='settingentry'>&nbsp;\n"
+    . "\t</span></div>\n";
+    $editgroup .= '&nbsp;</div>';
 
 
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
@@ -146,14 +150,18 @@ if ($action == "editgroup")
     {
         $editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);
         $esrow = array_map('htmlspecialchars', $esrow);
-        $editgroup .= '</h2><ul>';
-        $editgroup .= "\t<li><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label>\n"
-        . "<input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-        . "\t</li>\n"
-        . "\t<li><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-        . "<textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-        . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-        . "\t</li></ul></div>";
+		$editgroup .= '</h2>';
+		$editgroup .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Title").":</span>\n"
+		. "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+		. "\t</span></div>\n";
+		$editgroup .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
+		. "<span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+		.  getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+		. "\t</span></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
+		. "<span class='settingentry'>&nbsp;\n"
+		. "\t</span></div>\n";
+		$editgroup .= '&nbsp;</div>';
     }
     $editgroup .= '</div>';
     $editgroup .= "\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
