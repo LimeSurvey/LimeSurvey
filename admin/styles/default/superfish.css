@@ -12,10 +12,10 @@
 .sf-menu ul {
 	position:		absolute;
 	top:			-999em;
-	width:			10em; /* left offset of submenus need to match (see below) */
+	width:			18em; /* left offset of submenus need to match (see below) */
 }
 .sf-menu ul li {
-	width:			160%;
+	width:			100%;
 }
 .sf-menu li:hover {
 	visibility:		inherit; /* fixes IE7 'sticky bug' */
@@ -40,7 +40,7 @@ ul.sf-menu li.sfHover li ul {
 }
 ul.sf-menu li li:hover ul,
 ul.sf-menu li li.sfHover ul {
-	left:			10em; /* match ul width */
+	left:			18em; /* match ul width */
 	top:			0;
 }
 ul.sf-menu li li:hover li ul,
@@ -49,7 +49,7 @@ ul.sf-menu li li.sfHover li ul {
 }
 ul.sf-menu li li li:hover ul,
 ul.sf-menu li li li.sfHover ul {
-	left:			10em; /* match ul width */
+	left:			18em; /* match ul width */
 	top:			0;
 }
 
@@ -83,7 +83,7 @@ ul.sf-menu li li li.sfHover ul {
 
 /*** arrows **/
 .sf-menu a.sf-with-ul {
-	padding-right: 	2.25em;
+	padding-right: 	1.7em;
 	min-width:		1px; /* trigger IE7 hasLayout so spans position accurately */
 }
 .sf-sub-indicator {
@@ -112,7 +112,11 @@ li.sfHover > a > .sf-sub-indicator {
 
 /* point right for anchors in subs */
 .sf-menu ul .sf-sub-indicator { background-position:  -10px 0; }
-.sf-menu ul a > .sf-sub-indicator { background-position:  0 0; }
+.sf-menu ul a > .sf-sub-indicator {
+    background-position: 0 0;
+ 	top: 1em;
+}
+
 /* apply hovers to modern browsers */
 .sf-menu ul a:focus > .sf-sub-indicator,
 .sf-menu ul a:hover > .sf-sub-indicator,

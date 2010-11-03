@@ -350,7 +350,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         ////////////////////////////////////////////////////////////////////////
 
         $surveysummary .= ""  //"<tr><td colspan=2>\n"
-        . "<div class='menubar'>\n"
+        . "<div class='menubar surveybar'>\n"
         . "<div class='menubar-title'>\n"
         . "<strong>".$clang->gT("Survey")."</strong> "
         . "<span class='basic'>{$surveyinfo['surveyls_title']} (".$clang->gT("ID").":{$surveyid})</span></div>\n"
@@ -480,7 +480,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if($activated!="Y" && bHasSurveyPermission($surveyid,'surveycontent','read') && getGroupSum($surveyid,$surveyinfo['language'])>1)
         {
             $surveysummary .= "<li><a href='{$scriptname}?action=ordergroups&amp;sid={$surveyid}'>"
-            . "<img src='{$imageurl}/reorder_30.png' /> ".$clang->gT("Change question group order")."</a></li>\n";
+            . "<img src='{$imageurl}/reorder_30.png' /> ".$clang->gT("Reorder question groups")."</a></li>\n";
         }        
 
         // SET SURVEY QUOTAS BUTTON
@@ -570,24 +570,17 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
         else
         {
-
-            $surveysummary .= "<li><a href='#' id='doprintable' title=\"".$clang->gTview("Printable Version of Survey")."\" >"
-            . "<img src='{$imageurl}/print.png' name='ShowPrintableSurvey' alt='".$clang->gT("Printable Version of Survey")."' /></a></li>\n";
-            
+            $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
+            . "<img src='{$imageurl}/print_30.png' name='ShowPrintableSurvey' /> ".$clang->gT("Printable version")."</a><ul>";
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $tmp_survlangs[] = $baselang;
             rsort($tmp_survlangs);
-
-            // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup\" id=\"doprintablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_blank' onclick=\"$('#doprintable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}'><img src='{$imageurl}/print_30.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
-            $surveysummary .= "</ul></div>";
-
-            $surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>\n";
+            $surveysummary.='</ul></li>';
         }
         
         
@@ -603,21 +596,21 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
             } else {
 
-                $surveysummary .= "<li><a href='#' id='doprintableScannable' title=\"".$clang->gTview("Printable and scannable version of survey")."\" >"
-                . "<img src='{$imageurl}/scanner-3.png' name='ShowPrintableScannableSurvey' alt='".$clang->gT("Printable and scannable version of survey")."' /></a></li>\n";
-                
+                $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}'>"
+                . "<img src='{$imageurl}/scanner_30.png' name='ShowPrintableScannableSurvey' /> ".$clang->gT("QueXML export")."</a><ul>";
+
                 $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
                 $tmp_survlangs[] = $baselang;
                 rsort($tmp_survlangs);
 
                 // Test Survey Language Selection Popup
-                $surveysummary .="<div class=\"langpopup\" id=\"doprintableScannablelangpopup\">".$clang->gT("Please select a language:")."<ul>";
                 foreach ($tmp_survlangs as $tmp_lang)
                 {
-                    $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}' target='_top' onclick=\"$('#doprintableScannable').qtip('hide');\" accesskey='p'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                    $surveysummary .= "<li><a href='{$scriptname}?action=showquexmlsurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}'>
+                    <img src='{$imageurl}/scanner_30.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
                 }
-                $surveysummary .= "</ul></div>";
+                $surveysummary .= "</ul></li>";
             }
         }      
         $surveysummary .='</ul></li>' ;
@@ -654,9 +647,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             if ($surveyinfo['allowsave'] == "Y")
             {
-                $surveysummary .= "<li><a href='#' onclick=\"window.open('$scriptname?action=saved&amp;sid=$surveyid', '_top')\""
-                . " title=\"".$clang->gTview("View incomplete saved responses")."\" >"
-                . "<img src='$imageurl/saved_30.png' name='BrowseSaved' /> ".$clang->gT("Incomplete saved responses")."</a></li>\n";
+                $surveysummary .= "<li><a href='#' onclick=\"window.open('{$scriptname}?action=saved&amp;sid=$surveyid', '_top')\" >"
+                . "<img src='{$imageurl}/saved_30.png' name='BrowseSaved' /> ".$clang->gT("Partial (saved) responses")."</a></li>\n";
             }
         }
 

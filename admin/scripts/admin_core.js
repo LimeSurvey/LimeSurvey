@@ -31,8 +31,8 @@ $(document).ready(function(){
     )
     
 
-    // Loads the tooltips for the toolbars
-    $('img[alt],input[src]').each(function() {
+    // Loads the tooltips for the toolbars  except the surveybar
+    $('img[alt],input[src]').not('.surveybar img').each(function() {
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
@@ -57,6 +57,7 @@ $(document).ready(function(){
         }
     });    
 
+    
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
         {
