@@ -243,21 +243,6 @@ if ($subaction == "deletegroup" && bHasSurveyPermission($surveyid, 'tokens','del
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browsegroup&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
 
-$tokenoutput .= "<script type='text/javascript'>\n"
-."<!--\n"
-. "function fillin(tofield, fromfield)\n"
-. "\t{\n"
-. "if (confirm(\"".$clang->gT("This will replace the existing text. Continue?","js")."\")) {\n"
-. "if (document.getElementById(tofield).readOnly == false)\n"
-. "{\n"
-. "    $('#'+tofield).val($('#'+fromfield).val());\n"
-. "}\n"
-. "updateFCKeditor(tofield,$('#'+fromfield).val());\n"
-. "}\n"
-. "\t}\n"
-."-->\n"
-."</script>\n";
-
 // MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid )
 {
@@ -720,32 +705,6 @@ $tokenoutput .= "<div id='bouncesettings'>\n"
             
           }
 
-// Save the updated email settings
-if ($subaction == "updateemailsettings" && bHasSurveyPermission($surveyid, 'tokens','update')
-)
-{
-    $_POST  = array_map('db_quote', $_POST);
-    $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
-    foreach ($languagelist as $langname)
-    {
-        if ($langname)
-        {
-            $usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
-            . "SET surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."',\n"
-            . "surveyls_email_invite='".$_POST['email_invite_'.$langname]."', surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."',\n"
-            . "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
-            . "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
-            . "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
-            . "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
-            $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
-        }
-    }
-    $tokenoutput .= "<div class='header'>".$clang->gT("Edit email templates")."</div>\n"
-    ."<div class='messagebox'>"
-    ."\t<div class='successheader'>".$clang->gT("Email templates have been saved.")."</div>\n"
-    ."</div>";
-}
 
 if ($subaction == "deleteall" && bHasSurveyPermission($surveyid, 'tokens', 'delete')){
     $query="DELETE FROM ".db_table_name("tokens_$surveyid");

@@ -79,14 +79,7 @@ if ( $action == 'FakeGET')
 if(isset($_SESSION['loginID']))
 {
     //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
-    if (
-    preg_match
-    (
-			'/^(delsurvey|delgroup|delquestion|insertsurvey|updatesubquestions|copynewquestion|insertquestiongroup|insertCSV|insertquestion|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatesurveylocalesettings|updategroup|deactivate|savepersonalsettings|updatequestion|updateansweroptions|renumberquestions|updatedefaultvalues)$/', 
-    $action
-    )
-
-    )
+    if (in_array($action, array('updateemailtemplates','delsurvey','delgroup','delquestion','insertsurvey','updatesubquestions','copynewquestion','insertquestiongroup','insertCSV','insertquestion','updatesurveysettings','updatesurveysettingsandeditlocalesettings','updatesurveylocalesettings','updategroup','deactivate','savepersonalsettings','updatequestion','updateansweroptions','renumberquestions','updatedefaultvalues')))
     {
         include('database.php');
     }
@@ -542,7 +535,6 @@ if(isset($_SESSION['loginID']))
         $adminoutput.= showadminmenu();
     }
 
-
     if (isset($databaseoutput))  {$adminoutput.= $databaseoutput;}
     if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
     if (isset($accesssummary  )) {$adminoutput.= $accesssummary;}
@@ -578,6 +570,8 @@ if(isset($_SESSION['loginID']))
     if (isset($newanswer)) {$adminoutput.= $newanswer;}
     if (isset($editanswer)) {$adminoutput.= $editanswer;}
     if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
+    if (isset($sHTMLOutput))     {$adminoutput.= $sHTMLOutput;}
+    
 
     if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
     if (isset($importsurveyresourcesoutput)) {$adminoutput.= $importsurveyresourcesoutput;}

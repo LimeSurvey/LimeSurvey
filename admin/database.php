@@ -1132,6 +1132,8 @@ if(isset($surveyid))
                     ." surveyls_email_remind_subj, surveyls_email_remind, "
                     ." surveyls_email_confirm_subj, surveyls_email_confirm, "
                     ." surveyls_email_register_subj, surveyls_email_register, "
+                    ." email_admin_confirmation_subj, email_admin_confirmation, "
+                    ." email_admin_responses_subj, email_admin_responses, "
                     ." surveyls_dateformat) "
                     ." VALUES ({$postsid}, '".$langname."', '',"
                     .db_quoteall($bplang->gT("Invitation to participate in survey",'unescaped')).","
@@ -1142,6 +1144,7 @@ if(isset($surveyid))
                     .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
                     .db_quoteall($bplang->gT("Survey Registration Confirmation",'unescaped')).","
                     .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml)).","
+                    ."'','','','',"
                     .$languagedetails['dateformat'].")";
                     unset($bplang);
                     $usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br />".$connect->ErrorMsg()); // Checked
@@ -1161,6 +1164,33 @@ if(isset($surveyid))
         }
     }
 
+    // Save the updated email settings
+    elseif ($action == "updateemailtemplates" && bHasSurveyPermission($surveyid, 'surveylocale','update'))
+    {
+        $_POST  = array_map('db_quote', $_POST);
+        $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+        foreach ($languagelist as $langname)
+        {
+            if ($langname)
+            {
+                $usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
+                . "SET surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."', surveyls_email_invite='".$_POST['email_invite_'.$langname]."',"
+                . "surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."', surveyls_email_remind='".$_POST['email_remind_'.$langname]."',"
+                . "surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."', surveyls_email_register='".$_POST['email_register_'.$langname]."',"
+                . "surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."', surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."',"
+                . "email_admin_confirmation_subj='".$_POST['email_admin_confirmation_subj_'.$langname]."', email_admin_confirmation='".$_POST['email_admin_confirmation_'.$langname]."',"
+                . "email_admin_responses_subj='".$_POST['email_admin_responses_subj_'.$langname]."', email_admin_responses='".$_POST['email_admin_responses_'.$langname]."' "
+                . "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
+                $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
+            }
+        }
+        $databaseoutput .= "<div class='header'>".$clang->gT("Edit email templates")."</div>\n"
+        ."<div class='messagebox'>"
+        ."\t<div class='successheader'>".$clang->gT("Email templates have been saved.")."</div>\n"
+        ."</div>";
+    }     
+       
     elseif ($action == "delsurvey" && bHasSurveyPermission($surveyid,'survey','delete')) //can only happen if there are no groups, no questions, no answers etc.
     {
         $query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";

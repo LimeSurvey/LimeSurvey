@@ -327,11 +327,14 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     }
 
     if ( $fieldtype == 'email-inv' ||
-    $fieldtype == 'email-reg' ||
-    $fieldtype == 'email-conf' ||
-    $fieldtype == 'email-rem' )
+         $fieldtype == 'email-reg' ||
+         $fieldtype == 'email-conf'||
+         $fieldtype == 'email-admin-conf'||
+         $fieldtype == 'email-admin-resp'||
+         $fieldtype == 'email-rem' )
     {
-        $htmlformatoption = "$oFCKeditorVarName.Config[\"FullPage\"]=true;\n";
+        $htmlformatoption = "$oFCKeditorVarName.Config[\"FullPage\"]=true;\n"
+        . "$oFCKeditorVarName.Height = \"500\"\n";        
     }
 
 
@@ -357,9 +360,21 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     }
 
     $htmlcode .= ""
-    . "$oFCKeditorVarName.ToolbarSet = '".$toolbarname."';\n"
-    . "$oFCKeditorVarName.ReplaceTextarea() ;\n"
-    . '</script>';
+    . "$oFCKeditorVarName.ToolbarSet = '".$toolbarname."';\n";
+    
+    if ( $fieldtype == 'email-inv' ||
+     $fieldtype == 'email-reg' ||
+     $fieldtype == 'email-conf'||
+     $fieldtype == 'email-admin-conf'||
+     $fieldtype == 'email-admin-resp'||
+     $fieldtype == 'email-rem' )
+    { // do nothing
+    }
+    else
+    {
+        $htmlcode.= "$oFCKeditorVarName.ReplaceTextarea() ;\n";
+    }
+    $htmlcode.= '</script>';
 
     return $htmlcode;
 }

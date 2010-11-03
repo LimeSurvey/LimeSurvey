@@ -419,13 +419,22 @@ function db_upgrade($oldversion) {
                                 `export_p` tinyint(1) NOT NULL default '0',
                                 PRIMARY KEY (sid, uid, permission)
                             ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+                            
 		upgrade_surveypermissions_table145();
         
+        // drop the old survey rights table
         modify_database("", "DROP TABLE `prefix_surveys_rights`"); echo $modifyoutput; flush();
+        
+        // Add new fields for email templates
+        modify_database("", "ALTER TABLE `prefix_surveys_languagesettings` ADD 
+                             (`email_admin_confirmation_subj`  VARCHAR(255) NULL,    
+                              `email_admin_confirmation` TEXT NULL,        
+                              `email_admin_responses_subj` VARCHAR(255) NULL,    
+                              `email_admin_responses` TEXT NULL)");
         
         //Add index to questions table to speed up subquestions
         modify_database("", "create INDEX parent_qid on prefix_questions( parent_qid );"); echo $modifyoutput; flush();              
-        
+
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 

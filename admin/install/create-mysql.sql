@@ -313,6 +313,10 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_register` TEXT NULL,
   `surveyls_email_confirm_subj` VARCHAR(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
+  `email_admin_confirmation_subj`  VARCHAR(255) NULL,    
+  `email_admin_confirmation` TEXT NULL,        
+  `email_admin_responses_subj` VARCHAR(255) NULL,    
+  `email_admin_responses` TEXT NULL,        
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1, 
   
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)

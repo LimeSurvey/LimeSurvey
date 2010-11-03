@@ -190,7 +190,7 @@ CREATE TABLE [prefix_questions] (
   [preg] text NULL,
   [help] text NULL,
   [other] char(1) NOT NULL default 'N',
-  [mandatory] char(1) NULL,
+  [mandatory] char(1) default NULL,
   [question_order] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
   [scale_id] tinyint NOT NULL default '0',
@@ -327,6 +327,10 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_email_register] TEXT NULL,
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
   [surveyls_email_confirm] TEXT NULL,
+  [email_admin_confirmation_subj] VARCHAR(255) NULL,
+  [email_admin_confirmation] TEXT NULL,
+  [email_admin_responses_subj] VARCHAR(255) NULL,
+  [email_admin_responses] TEXT NULL,
   [surveyls_dateformat] INT NOT NULL DEFAULT 1, 
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 )

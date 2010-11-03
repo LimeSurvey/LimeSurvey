@@ -1058,7 +1058,7 @@ textarea.updater-changelog {
     float: left;      
 }
 
-.form30newtabs div div li{
+.form30newtabs div div div div li{
     list-style-type: none;
     clear:left;
     padding-bottom:5px;

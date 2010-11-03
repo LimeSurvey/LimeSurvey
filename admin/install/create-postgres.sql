@@ -339,6 +339,10 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_email_register text,
     surveyls_email_confirm_subj character varying(255),
     surveyls_email_confirm text,
+    email_admin_confirmation_subj character varying(255),
+    email_admin_confirmation text,
+    email_admin_responses_subj character varying(255),
+    email_admin_responses text,
     surveyls_dateformat integer DEFAULT 1 NOT NULL
 );
 

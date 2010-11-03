@@ -241,12 +241,12 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_surveys ADD shownoanswer CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD showqnumcode CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD timestamp BIGINT(20) NULL default 'N'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD bounceprocessing VARCHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountuser VARCHAR(320) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountpass VARCHAR(20) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccounthost VARCHAR(20) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountencryption VARCHAR(4) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccounttype VARCHAR(4) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD bounceprocessing character varying(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountuser character varying(320) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountpass character varying(20) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccounthost character varying(20) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountencryption character varying(4) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccounttype character varying(4) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD showwelcome CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_survey_permissions (
                             sid integer DEFAULT 0 NOT NULL,
@@ -263,6 +263,12 @@ function db_upgrade($oldversion) {
 		upgrade_surveypermissions_table145();
         
         modify_database("", "DROP TABLE prefix_surveys_rights"); echo $modifyoutput; flush();
+        
+        // Add new fields for email templates
+        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD email_admin_confirmation_subj character varying(255)");
+        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD email_admin_responses_subj character varying(255)");
+        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD email_admin_confirmation text");
+        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD email_admin_responses text");
         
         //Add index to questions table to speed up subquestions
         modify_database("", "create INDEX parent_qid on prefix_questions( parent_qid );"); echo $modifyoutput; flush();
