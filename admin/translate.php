@@ -148,6 +148,7 @@
         $queryto = $amTypeOptions["queryto"];
         $resultto = db_execute_assoc($queryto);
 
+        $translateoutput .= displayTranslateFieldsWideHeader($baselangdesc, $tolangdesc);
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
@@ -177,43 +178,11 @@
             {
               $value2 = $rowfrom[$amTypeOptions["id2"]];
             }
-            $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
-            $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
-          
-            $translateoutput .= "<div style=\"margin:10 10%; border-top:1px solid #0000ff;\">\n"
-               . '<table cellpadding="5" cellspacing="0" align="center" width="100%" >'
-                . '<colgroup valign="top" width="25%">'
-                . '<colgroup valign="top" width="75%">'
-                // Display text in original language
-                . "<tr>\n"
-                  . "<td>$baselangdesc</td>\n"
-                  . "<td>$textfrom</td>\n"
-                . "</tr>\n";
-                $translateoutput .= "<tr>"
-                    // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
-                  . "<td>$tolangdesc</td>\n"
-                  . "<td>\n";
-                    $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
-                    $translateoutput .= "<input type='hidden' "
-                      ."name='".$type."_oldvalue_".$i."' "
-                      ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
-                    $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
-                      ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
 
-                    if ($amTypeOptions["HTMLeditorInline"]=="Yes")
-                    {  
-                      $translateoutput .= ""
-                        .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
-                    }
-                    else
-                    {
-                      $translateoutput .= ""
-                        .getPopupEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
-                    }
-                    $translateoutput .= "</td>\n"
-                . "</tr>\n"
-              . "</table>\n"
-            . "</div>\n";
+            // Display translation fields
+            $translateoutput .= displayTranslateFieldsWide($surveyid, $gid, $qid, $type,
+                    $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $value1, $value2);
+
           }
           else
           {

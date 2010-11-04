@@ -175,11 +175,11 @@ function menuSeparator()
 /**
  * setupTranslateFields() creates a customised array with database query
  * information for use by survey translation
- * @global $dbprefix, $surveyid, $clang;
+ * @global $dbprefix, $clang;
  * @param string $surveyid Survey id
  * @param string $type Type of database field that is being translated, e.g. title, question, etc.
- * @param string $baselang The source translation language
- * @param string $tolang The target translation language
+ * @param string $baselang The source translation language code, e.g. "En"
+ * @param string $tolang The target translation language code, e.g. "De"
  * @param string $new The new value of the translated string
  * @param string $id1 An index variable used in the database select and update query
  * @param string $id2 An index variable used in the database select and update query
@@ -454,13 +454,133 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
 }
 
 /**
+ * displayTranslateFields() formats and displays translation fields (base language as well as to language)
+ * @global $dbprefix, $clang;
+ * @param string $surveyid Survey id
+ * @param string $gid Group id
+ * @param string $qid Question id
+ * @param string $type Type of database field that is being translated, e.g. title, question, etc.
+ * @param string $baselangdesc The source translation language, e.g. "English"
+ * @param string $tolangdesc The target translation language, e.g. "German"
+ * @param string $textfrom The text to be translated in source language
+ * @param string $textto The text to be translated in target language
+ * @param integer $i Counter
+ * @param string $value1 The stored value of database key responding to $id1
+ * @param string $value2 The stored value of database key responding to $id2
+ * @return string $translateoutput
+ */
+function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
+        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $value1, $value2)
+{
+  $translateoutput = "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
+  $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
+
+  $translateoutput .= "<div style=\"margin:10 10%; border-top:1px solid #0000ff;\">\n"
+     . '<table cellpadding="5" cellspacing="0" align="center" width="100%" >'
+      . '<colgroup valign="top" width="25%">'
+      . '<colgroup valign="top" width="75%">'
+      // Display text in original language
+      . "<tr>\n"
+        . "<td>$baselangdesc</td>\n"
+        . "<td>$textfrom</td>\n"
+      . "</tr>\n";
+      $translateoutput .= "<tr>"
+          // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
+        . "<td>$tolangdesc</td>\n"
+        . "<td>\n";
+          $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
+          $translateoutput .= "<input type='hidden' "
+            ."name='".$type."_oldvalue_".$i."' "
+            ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
+          $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
+            ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
+
+          if ($amTypeOptions["HTMLeditorInline"]=="Yes")
+          {
+            $translateoutput .= ""
+              .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+          }
+          else
+          {
+            $translateoutput .= ""
+              .getPopupEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+          }
+          $translateoutput .= "</td>\n"
+      . "</tr>\n"
+    . "</table>\n"
+  . "</div>\n";
+  return($translateoutput);
+}
+
+function displayTranslateFieldsWideHeader($baselangdesc, $tolangdesc)
+{
+  $translateoutput = "<div style=\"margin:10 10%; \">\n"
+     . '<table cellpadding="5" cellspacing="0" align="center" width="100%" >'
+      . '<colgroup valign="top" width="45%">'
+      . '<colgroup valign="top" width="55%">'
+      // Display text in original language
+      . "<tr>\n"
+        . "<td><b>$baselangdesc</b></td>\n"
+        . "<td><b>$tolangdesc</b></td>\n"
+      . "</tr>\n"
+    ."</table>"
+    ."</div>";
+  return($translateoutput);
+}
+
+function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions,
+        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $value1, $value2)
+{
+  $translateoutput = "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
+  $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
+
+  $translateoutput .= "<div style=\"margin:10 10%; \">\n"
+     . '<table cellpadding="5" cellspacing="0" align="center" width="100%" >'
+      . '<colgroup valign="top" width="45%">'
+      . '<colgroup valign="top" width="55%">';
+      // Display text in original language
+      if ($i % 2)
+      {
+        $translateoutput .= "<tr class=\"tr.odd\">";
+      }
+      else
+      {
+        $translateoutput .= "<tr class=\"tr.even\">";
+      }
+          // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
+      $translateoutput .= ""
+        . "<td>$textfrom</td>\n"
+        . "<td>\n";
+          $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
+          $translateoutput .= "<input type='hidden' "
+            ."name='".$type."_oldvalue_".$i."' "
+            ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
+          $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
+            ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
+
+          if ($amTypeOptions["HTMLeditorInline"]=="Yes")
+          {
+            $translateoutput .= ""
+              .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+          }
+          else
+          {
+            $translateoutput .= ""
+              .getPopupEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+          }
+          $translateoutput .= "</td>\n"
+      . "</tr>\n"
+    . "</table>\n"
+  . "</div>\n";
+  return($translateoutput);
+}
+
+/**
  * calc_nrows($subject) calculates the vertical size of textbox for survey translation.
  * The function adds the number of line breaks <br /> to the number of times a string wrap occurs.
  * @param string $subject The text string that is being translated
  * @return integer
  */
-
-
 function calc_nrows( $subject )
 {
   // Determines the size of the text box
