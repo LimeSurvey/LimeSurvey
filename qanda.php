@@ -6408,13 +6408,26 @@ function do_array_multiflexi($ia)
         }
     }
 
-    if (trim($qidattributes['multiflexible_step'])!='')
+    if (trim($qidattributes['multiflexible_step'])!='' && $qidattributes['multiflexible_step'] > 0)
     {
         $stepvalue=$qidattributes['multiflexible_step'];
     }
     else
     {
         $stepvalue=1;
+    }
+
+    if($qidattributes['reverse']==1)
+    {
+        $tmp = $minvalue;
+        $minvalue = $maxvalue;
+        $maxvalue = $tmp;
+        $reverse=true;
+        $stepvalue=-$stepvalue;
+    }
+    else
+    {
+        $reverse=false;
     }
 
     $checkboxlayout=false;
@@ -6583,7 +6596,7 @@ function do_array_multiflexi($ia)
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
                         . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
-                        for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
+                        for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
                             $answer .= "<option value=\"$ii\"";
                             if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == $ii) {
                                 $answer .= SELECTED;
