@@ -1101,7 +1101,7 @@ if ($subaction == "browse" || $subaction == "search")
 	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
 	    ."' alt='"
 	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-	    ."' onclick=\"window.open('{$scriptname}/?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+	    ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
 	    . "</td>\n"
 	    . "</tr>\n";
 	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
