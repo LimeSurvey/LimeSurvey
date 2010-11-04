@@ -388,7 +388,7 @@ if (!$tokenexists) //If no tokens table exists
 
             if ($thissurvey['private'] == 'Y')
             {
-                $tokenoutput .= "".$clang->gT("Note: If you turn on the -Anonymous answers- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
+                $tokenoutput .= "".$clang->gT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
                 ."<br /><br />\n";
             }
 

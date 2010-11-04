@@ -996,7 +996,6 @@ textarea.updater-changelog {
 #frmeditquestion li label:first-child, 
 #importquestion li label:first-child,
 #bouncesettings li label:first-child,
-#frmglobalsettings li label:first-child 
 #importquestion li label:first-child {
     width: 44%;
     text-align: right;
@@ -1005,35 +1004,7 @@ textarea.updater-changelog {
     font-weight: bold;
     color: #1d2d45;
 }
-#frmglobalsettings li {
-    list-style-type: none;
-    padding-bottom: 0.3em;
-    line-height: 1.3em;
-}
-#frmglobalsettings li label {
-    width: 44%;
-    text-align: right;
-    margin-right: 0.5em;
-    display:block;
-    margin-bottom: -1.3em;
-    font-weight: bold;
-    color: #1d2d45;
-}
-#frmglobalsettings li input, 
-#frmglobalsettings li select,
-#frmglobalsettings li span {
-    display:block;
-    margin-left: 44.5%;
-    padding-left: 0%;
-    text-align: left;
-}
-#frmglobalsettings li span { padding-left: 1em; position:relative;left:-1em; }
-#frmglobalsettings li span input, 
-#frmglobalsettings li span select {
-    display:inline;
-    margin-left: 0%;
-}
-
+         
 #loginform li label:first-child {
     width: 39%;
     text-align: right;
@@ -1094,7 +1065,6 @@ textarea.updater-changelog {
 #importsurveyresources li,
 #labelsetform li,
 #bouncesettings li,
-#frmglobalsettings li,
 #exportspss li{  
     list-style-type: none;
     clear:left;
@@ -1136,7 +1106,7 @@ div.loader {
 #sendreminder .tab-page iframe,
 #newquestiongroup .tab-page iframe,
 #sendinvitation .tab-page iframe,
-#addnewsurvey .tab-page iframe {
+#addnewsurvey .ui-tabs-panel iframe {
     width:600px !important;
 }
 
@@ -1360,4 +1330,8 @@ thead th
 
 #responsedetail td{
    padding:3px 5px;
+}
+
+#frmglobalsettings table {
+    float:none;
 }

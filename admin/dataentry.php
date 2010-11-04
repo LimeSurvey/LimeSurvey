@@ -147,7 +147,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             }
             else
             {
-                $errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymous answers, so you can't update your response.")."\n";
+                $errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
             }
         }
         else
@@ -565,7 +565,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         // First compute the submitdate
                         if ($private == "Y" && $datestamp == "N")
                         {
-                            // In case of anonymous answers survey with no datestamp
+                            // In case of anonymized responses survey with no datestamp
                             // then the the answer submutdate gets a conventional timestamp
                             // 1st Jan 1980
                             $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
