@@ -1803,9 +1803,29 @@ function checkpregs($move,$backok=null)
 
                     if ($fieldinfo['type'] == 'N')
                     {
-                        if (trim($qidattributes['num_value_int_only'])==1 &&
-                            !preg_match("/^[0-9]+$/", $_POST[$field]))
+                        $neg = true;
+                        if (trim($qidattributes['max_num_value_n'])!='' &&
+                            $qidattributes['max_num_value_n'] >= 0)
                         {
+                            $neg = false;
+                        }             
+                                   
+                        if (trim($qidattributes['num_value_int_only'])==1 &&
+                        !preg_match("/^" . ($neg? "-?": "") . "[0-9]+$/", $_POST[$field]))
+                        {
+                            $notvalidated[]=$field;
+                            continue;
+                        }
+
+                        if (trim($qidattributes['max_num_value_n'])!='' &&
+                            $_POST[$field] > $qidattributes['max_num_value_n'])
+                        {
+                            $notvalidated[]=$field;
+                            continue;
+                        }
+                        if (trim($qidattributes['min_num_value_n'])!='' &&
+                            $_POST[$field] < $qidattributes['min_num_value_n'])
+                        {                        
                             $notvalidated[]=$field;
                             continue;
                         }

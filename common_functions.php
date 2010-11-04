@@ -3602,6 +3602,14 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Maximum sum value of multiple numeric input'),
     "caption"=>$clang->gT('Maximum sum value'));
 
+    $qattributes["max_num_value_n"]=array(
+    "types"=>"N",
+    'category'=>$clang->gT('Input'),
+    'sortorder'=>110,
+    'inputtype'=>'integer',
+    "help"=>$clang->gT('Maximum value of the numeric input'),
+    "caption"=>$clang->gT('Maximum value'));
+
     $qattributes["max_num_value_sgqa"]=array(
     "types"=>"K",
     'category'=>$clang->gT('Logic'),
@@ -3631,8 +3639,16 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Multiple numeric inputs must be greater than this value'),
+    "help"=>$clang->gT('The sum of the multiple numeric inputs must be greater than this value'),
     "caption"=>$clang->gT('Minimum sum value'));
+
+    $qattributes["min_num_value_n"]=array(
+    "types"=>"N",
+    'category'=>$clang->gT('Input'),
+    'sortorder'=>100,
+    'inputtype'=>'integer',
+    "help"=>$clang->gT('Minimum value of the numeric input'),
+    "caption"=>$clang->gT('Minimum value'));
 
     $qattributes["min_num_value_sgqa"]=array(
     "types"=>"K",
