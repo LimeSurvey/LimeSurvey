@@ -477,11 +477,24 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }        
         
         // CHANGE QUESTION GROUP ORDER BUTTON
-        if($activated!="Y" && bHasSurveyPermission($surveyid,'surveycontent','read') && getGroupSum($surveyid,$surveyinfo['language'])>1)
+        if (bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            $surveysummary .= "<li><a href='{$scriptname}?action=ordergroups&amp;sid={$surveyid}'>"
-            . "<img src='{$imageurl}/reorder_30.png' /> ".$clang->gT("Reorder question groups")."</a></li>\n";
-        }        
+            if($activated=="Y")
+            {
+                $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("You can't reorder question groups if the survey is active.", "js")."');\" >"
+                . "<img src='$imageurl/reorder_disabled_30.png'' name='translate'/> ".$clang->gT("Reorder question groups")."</a></li>\n";
+            }
+            elseif (getGroupSum($surveyid,$surveyinfo['language'])>1)
+            {
+                $surveysummary .= "<li><a href='{$scriptname}?action=ordergroups&amp;sid={$surveyid}'>"
+                . "<img src='{$imageurl}/reorder_30.png' /> ".$clang->gT("Reorder question groups")."</a></li>\n";
+            }       
+            else{
+                $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("You can't reorder question groups if there is only one group.", "js")."');\" >"
+                . "<img src='$imageurl/reorder_disabled_30.png'' name='translate'/> ".$clang->gT("Reorder question groups")."</a></li>\n";
+            } 
+            
+        }
 
         // SET SURVEY QUOTAS BUTTON
         if (bHasSurveyPermission($surveyid,'quotas','read'))
@@ -627,10 +640,19 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $surveysummary .= "<li><a href='#'><img src='{$imageurl}/responses.png' name='Responses' alt='".$clang->gT("Responses")."' /></a><ul>\n";
 
         //browse responses menu item
-        if ($activated == "Y" && (bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read')))
+        if (bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read'))
         {
-            $surveysummary .= "<li><a href='{$scriptname}?action=browse&amp;sid={$surveyid}'>"
-            . "<img src='{$imageurl}/browse_30.png' name='BrowseSurveyResults' /> ".$clang->gT("Responses & statistics")."</a></li>\n";
+            if ($activated == "Y")
+            {
+                $surveysummary .= "<li><a href='{$scriptname}?action=browse&amp;sid={$surveyid}'>"
+                . "<img src='{$imageurl}/browse_30.png' name='BrowseSurveyResults' /> ".$clang->gT("Responses & statistics")."</a></li>\n";
+            }
+            else
+            {
+                $surveysummary .= "<li><a href='#' onclick=\"alert('".$clang->gT("This survey is not active - no responses are available.","js")."')\">"
+                . "<img src='{$imageurl}/browse_disabled_30.png' name='BrowseSurveyResults' /> ".$clang->gT("Responses & statistics")."</a></li>\n";
+            }
+            
         }
         
         // Data entry screen menu item
@@ -649,13 +671,19 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         
         
         
-        if ($activated == "Y" && bHasSurveyPermission($surveyid,'responses','read'))
+        if (bHasSurveyPermission($surveyid,'responses','read'))
         {
-            if ($surveyinfo['allowsave'] == "Y")
+            if ($activated == "Y")
             {
                 $surveysummary .= "<li><a href='#' onclick=\"window.open('{$scriptname}?action=saved&amp;sid=$surveyid', '_top')\" >"
                 . "<img src='{$imageurl}/saved_30.png' name='BrowseSaved' /> ".$clang->gT("Partial (saved) responses")."</a></li>\n";
             }
+            else
+            {
+                $surveysummary .= "<li><a href='#' onclick=\"alert('".$clang->gT("This survey is not active - no responses are available.","js")."')\">"
+                . "<img src='{$imageurl}/saved_disabled_30.png' name='BrowseSurveyResults' /> ".$clang->gT("Partial (saved) responses")."</a></li>\n";
+            }
+            
         }
 
         $surveysummary .='</ul></li>' ;
@@ -2341,7 +2369,7 @@ if($action == "surveysecurity")
                    ORDER BY u.users_name";
         $result2 = db_execute_assoc($query2); //Checked
 
-        $surveysecurity ="<div class='header'>".$clang->gT("Survey Security")."</div>\n"
+        $surveysecurity ="<div class='header'>".$clang->gT("Survey permissions")."</div>\n"
         . "<table class='surveysecurity'><thead>"
         . "<tr>\n"
         . "<th>".$clang->gT("Action")."</th>\n"

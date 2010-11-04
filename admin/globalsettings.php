@@ -133,7 +133,7 @@ function globalsettingsdisplay()
             <li><a href='#email'>".$clang->gT("Email settings")."</a></li>
             <li><a href='#bounce'>".$clang->gT("Bounce settings")."</a></li>
             <li><a href='#security'>".$clang->gT("Security")."</a></li>
-            <li><a href='#miscellaneous'>".$clang->gT("Miscellaneous")."</a></li>
+            <li><a href='#presentation'>".$clang->gT("Presentation")."</a></li>
             </ul>\n";
             $editsurvey .= "<form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='$scriptname' method='post'>\n";
             $editsurvey .= "<div id='overview'>\n";
@@ -430,8 +430,8 @@ function globalsettingsdisplay()
 
         $editsurvey .= "\t</ul></div>\n";
 
-        // Miscellaneous settings tab
-        $editsurvey .= "\t<div id='miscellaneous'><ul>\n";
+        // presentation settings tab
+        $editsurvey .= "\t<div id='presentation'><ul>\n";
         // shownoanswer
         $shownoanswer=getGlobalSetting('shownoanswer');
 	    $sel_na = array( 0 => '' , 1 => '' , 2 => '');
@@ -477,7 +477,7 @@ function globalsettingsdisplay()
 	    {
 	    	$sel_gri['choose'] = ' selected="selected"';
 	    };
-            $editsurvey .= "\t<li><label for=\"showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n"
+            $editsurvey .= "\t<li><label for=\"showgroupinfo\">".$clang->gT('Show question group name and/or description')."</label>\n"
             . "\t\t<select id=\"showgroupinfo\" name=\"showgroupinfo\">\n"
             . "\t\t\t<option value=\"both\"{$sel_gri['both']}>".$clang->gT('Show both')."</option>\n"
             . "\t\t\t<option value=\"name\"{$sel_gri['name']}>".$clang->gT('Show group name only')."</option>\n"
@@ -495,7 +495,7 @@ function globalsettingsdisplay()
 	    {
 	    	$sel_qnc['choose'] = ' selected="selected"';
 	    };
-            $editsurvey .= "\t<li><label for=\"showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n"
+            $editsurvey .= "\t<li><label for=\"showqnumcode\">".$clang->gT('Show question number and/or question code')."</label>\n"
             . "\t\t<select id=\"showqnumcode\" name=\"showqnumcode\">\n"
             . "\t\t\t<option value=\"both\"{$sel_qnc['both']}>".$clang->gT('Show both')."</option>\n"
             . "\t\t\t<option value=\"number\"{$sel_qnc['number']}>".$clang->gT('Show question number only')."</option>\n"
