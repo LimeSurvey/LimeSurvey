@@ -3685,6 +3685,18 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
     "caption"=>$clang->gT('Value equals SGQA'));
 
+    $qattributes["num_value_int_only"]=array(
+    "types"=>"N",
+    'category'=>$clang->gT('Input'),
+    'sortorder'=>100,
+    'inputtype'=>'singleselect',
+    'options'=>array(
+        0=>$clang->gT('No'),
+        1=>$clang->gT('Yes')),
+    'default'=>0,
+    "help"=>$clang->gT('Restrict input to integer values'),
+    "caption"=>$clang->gT('Integer only'));
+
     $qattributes["numbers_only"]=array(
         "types"=>"Q;S",
         'category'=>$clang->gT('Other'),

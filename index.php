@@ -1794,6 +1794,20 @@ function checkpregs($move,$backok=null)
                         if (!@preg_match($preg, $_POST[$field]))
                         {
                             $notvalidated[]=$field;
+                            continue;
+                        }
+                    }
+
+                    // check for other question attributes
+                    $qidattributes=getQuestionAttributes($fieldinfo['qid'],$fieldinfo['type']);
+
+                    if ($fieldinfo['type'] == 'N')
+                    {
+                        if (trim($qidattributes['num_value_int_only'])==1 &&
+                            !preg_match("/^[0-9]+$/", $_POST[$field]))
+                        {
+                            $notvalidated[]=$field;
+                            continue;
                         }
                     }
                 }
