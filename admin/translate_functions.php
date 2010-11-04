@@ -470,8 +470,13 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
  * @return string $translateoutput
  */
 function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
-        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $value1, $value2)
+        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $amTypeOptions)
 {
+  $value1 = "";
+  if ($amTypeOptions["id1"] != "") $value1 = $rowfrom[$amTypeOptions["id1"]];
+  $value2 = "";
+  if ($amTypeOptions["id2"] != "") $value2 = $rowfrom[$amTypeOptions["id2"]];
+
   $translateoutput = "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
   $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
 
@@ -529,8 +534,13 @@ function displayTranslateFieldsWideHeader($baselangdesc, $tolangdesc)
 }
 
 function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions,
-        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $value1, $value2)
+        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $amTypeOptions)
 {
+  $value1 = "";
+  if ($amTypeOptions["id1"] != "") $value1 = $rowfrom[$amTypeOptions["id1"]];
+  $value2 = "";
+  if ($amTypeOptions["id2"] != "") $value2 = $rowfrom[$amTypeOptions["id2"]];
+
   $translateoutput = "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
   $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
 
@@ -541,11 +551,11 @@ function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions
       // Display text in original language
       if ($i % 2)
       {
-        $translateoutput .= "<tr class=\"tr.odd\">";
+        $translateoutput .= "<tr class=\"odd\">";
       }
       else
       {
-        $translateoutput .= "<tr class=\"tr.even\">";
+        $translateoutput .= "<tr class=\"even\">";
       }
           // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
       $translateoutput .= ""
@@ -556,7 +566,7 @@ function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions
             ."name='".$type."_oldvalue_".$i."' "
             ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
           $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
-            ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
+            ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>";
 
           if ($amTypeOptions["HTMLeditorInline"]=="Yes")
           {

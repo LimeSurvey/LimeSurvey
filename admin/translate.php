@@ -152,43 +152,28 @@
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
+
           $gid = NULL;
-          if($amTypeOptions["gid"]==TRUE)
-          {  
-            $gid = $rowfrom['gid'];
-          }
+          if($amTypeOptions["gid"]==TRUE) $gid = $rowfrom['gid'];
+
           $qid = NULL;
-          if($amTypeOptions["qid"]==TRUE)
-          {
-            $qid = $rowfrom['qid'];
-          }
+          if($amTypeOptions["qid"]==TRUE) $qid = $rowfrom['qid'];
+
           $rowto = $resultto->FetchRow();
           $textto   = htmlspecialchars_decode($rowto[$amTypeOptions["dbColumn"]]);
 
           if (strlen(trim((string)$textfrom)) > 0)
           {
             $all_fields_empty = FALSE;
-            $value1 = "";
-            if ($amTypeOptions["id1"] != "")
-            {
-              $value1 = $rowfrom[$amTypeOptions["id1"]];
-            }
-            $value2 = "";
-            if ($amTypeOptions["id2"] != "")
-            {
-              $value2 = $rowfrom[$amTypeOptions["id2"]];
-            }
-
             // Display translation fields
             $translateoutput .= displayTranslateFieldsWide($surveyid, $gid, $qid, $type,
-                    $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $value1, $value2);
-
+                    $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $amTypeOptions);
+            ++$i;
           }
           else
           {
             $translateoutput .= "<input type='hidden' name='{$type}_newvalue[$i]' value='$textto' />";
           }
-          ++$i;
         } // end while
         if ($all_fields_empty)
         {
