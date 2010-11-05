@@ -391,7 +391,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 								<table width="100%" border="0">
         							<tbody>
           								<tr>
-            								<td colspan="2" class="header">'.$clang->gT("Edit quota").'</td>
+            								<td colspan="2" class="header ui-widget-header">'.$clang->gT("Edit quota").'</td>
           								</tr>
           								<tr class="evenrow">
             								<td align="right"><blockquote>
@@ -507,7 +507,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
         //create main quota <DIV> and headlines
-        $quotasoutput .='<div class="header">'.$clang->gT("Survey quotas").'</div>
+        $quotasoutput .='<div class="header ui-widget-header">'.$clang->gT("Survey quotas").'</div>
           				<br />
 		<table id="quotalist" class="quotalist">
 			<thead>
@@ -723,13 +723,13 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 			</div>";
         } else
         {
-            $quotasoutput .='<div class="header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
-			<div class="messagebox" style="width: 600px">
+            $quotasoutput .='<div class="header ui-widget-header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
+			<div class="messagebox ui-corner-all" style="width: 600px">
 				<form action="'.$scriptname.'" method="post">
 					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 						<thead>
 						<tr>
-						  <th class="header"  colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
+						  <th class="header ui-widget-header"  colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -801,14 +801,14 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 			</div>";
         } else
         {
-            $quotasoutput .='<div class="header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
-			<div class="messagebox" style="width: 600px">
+            $quotasoutput .='<div class="header ui-widget-header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
+			<div class="messagebox ui-corner-all" style="width: 600px">
 				<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" method="post">
 					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 						<tbody>
 							<thead>
 							<tr>
-							  <th class="header" colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
+							  <th class="header ui-widget-header" colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
 							</tr>
 							</thead>
 							<tr class="evenrow">
@@ -857,7 +857,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 
     if ($subaction == "new_quota" && bHasSurveyPermission($surveyid, 'quotas','create'))
     {
-        $quotasoutput.="<div class='header'>".$clang->gT("New quota").'</div>';
+        $quotasoutput.="<div class='header ui-widget-header'>".$clang->gT("New quota").'</div>';
         $quotasoutput.='<form class="form30" action="'.$scriptname.'" method="post" id="addnewquotaform" name="addnewquotaform">';
         $quotasoutput.='<ul>
           					<li>

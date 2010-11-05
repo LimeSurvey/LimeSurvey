@@ -35,8 +35,8 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
     //IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
     if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck))
     {
-        $activateoutput .= "<br />\n<div class='messagebox'>\n";
-        $activateoutput .= "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
+        $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
+        $activateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
         $activateoutput .= "<div class='warningheader'>\n".$clang->gT("Error")."<br />\n";
         $activateoutput .= $clang->gT("Survey does not pass consistency check")."</div>\n";
         $activateoutput .= "<p>\n";
@@ -63,8 +63,8 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
         return;
     }
 
-    $activateoutput .= "<br />\n<div class='messagebox'>\n";
-    $activateoutput .= "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
+    $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
+    $activateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
     $activateoutput .= "<div class='warningheader'>\n";
     $activateoutput .= $clang->gT("Warning")."<br />\n";
     $activateoutput .= $clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";

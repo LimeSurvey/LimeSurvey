@@ -50,13 +50,13 @@ $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
 $js_admin_includes[]='scripts/saved.js';
 
 $savedsurveyoutput .= "<div class='menubar'>\n"
-. "<div class='menubar-title'><span style='font-weight:bold;'>\n";
+. "<div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>\n";
 $savedsurveyoutput .= $clang->gT("Saved Responses")."</span> ".$thissurvey['name']." (ID: $surveyid)</div>\n"
 . "<div class='menubar-main'>\n"
 . "<div class='menubar-left'>\n";
 $savedsurveyoutput .= savedmenubar();
 $savedsurveyoutput .= "</div></div></div>\n";
-$savedsurveyoutput .= "<div class='header'>".$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</div><p>";
+$savedsurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</div><p>";
 
 showSavedList($surveyid);
 

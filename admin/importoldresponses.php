@@ -47,7 +47,7 @@ if (!$subaction == "import")
     //Get the menubar
     $importoldresponsesoutput = browsemenubar($clang->gT("Quick Statistics"));
     $importoldresponsesoutput .= "
-		<div class='header'>
+		<div class='header ui-widget-header'>
 			".$clang->gT("Import responses from an deactivated survey table")."
 		</div>
         <form id='personalsettings' method='post'>        
@@ -66,7 +66,7 @@ if (!$subaction == "import")
         </ul>
 		  <p><input type='submit' value='".$clang->gT("Import Responses")."' onclick='return confirm(\"".$clang->gT("Are you sure?","js").")'>&nbsp;
  	 	  <input type='hidden' name='subaction' value='import'><br /><br />
-			<div class='messagebox'><div class='warningheader'>".$clang->gT("Warning").'</div>'.$clang->gT("You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey.")."</div>
+			<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Warning").'</div>'.$clang->gT("You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey.")."</div>
 		</form>
         </div>
 		<br />";

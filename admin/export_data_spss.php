@@ -100,7 +100,7 @@ if (isset($_GET['dlstructure'])) $subaction = "dlstructure";
 if  (!isset($subaction))
 {
     $exportspssoutput = browsemenubar($clang->gT('Export results'));
-    $exportspssoutput .= "<div class='header'>".$clang->gT("Export result data to SPSS")."</div>\n";
+    $exportspssoutput .= "<div class='header ui-widget-header'>".$clang->gT("Export result data to SPSS")."</div>\n";
 
     $selecthide="";
     $selectshow="";
@@ -135,7 +135,7 @@ if  (!isset($subaction))
     ."<li><label for='dldata'/>" . $clang->gT("Step 2:") . "</label><input type='submit' name='dldata' id='dldata' value='" . $clang->gT("Export data") . "'/></li></ul>\n"
     ."</form>\n";
 
-    $exportspssoutput .= "<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
+    $exportspssoutput .= "<p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'>".$clang->gT("Instructions for the impatient")."</div>"
     ."<br/><ol style='margin:0 auto; font-size:8pt;'>"
     ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
     ."<li>".$clang->gT("Open the syntax file in SPSS in Unicode mode").".</li>"

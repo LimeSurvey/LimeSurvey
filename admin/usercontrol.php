@@ -156,8 +156,8 @@ if (!isset($_SESSION['loginID']))
                     }
                     $login = true;
 
-					$loginsummary .= "<div class='messagebox'>\n";
-                    $loginsummary .= "<div class='header'>" . $clang->gT("Logged in") . "</div>";
+					$loginsummary .= "<div class='messagebox ui-corner-all'>\n";
+                    $loginsummary .= "<div class='header ui-widget-header'>" . $clang->gT("Logged in") . "</div>";
 					$loginsummary .= "<br />".sprintf($clang->gT("Welcome %s!"),$_SESSION['full_name'])."<br />&nbsp;";
 					$loginsummary .= "</div>\n";
 
@@ -322,7 +322,7 @@ elseif ($action == "logout")
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
-    $addsummary = "<div class='header'>".$clang->gT("Add User")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
 
     $new_user = FlattenText($postnew_user,true);
     $new_email = FlattenText($postnew_email,true);
@@ -332,7 +332,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
     if(!validate_email($new_email))
     {
         $valid_email = false;
-        $addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n";
+        $addsummary .= "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n";
     }
     if(empty($new_user))
     {
@@ -381,7 +381,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             $subject = sprintf($clang->gT("User registration at '%s'","unescaped"),$sitename);
             $to = $new_user." <$new_email>";
             $from = $siteadminname." <$siteadminemail>";
-            $addsummary .="<div class='messagebox'>";
+            $addsummary .="<div class='messagebox ui-corner-all'>";
             if(SendEmailMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
             {
                 $addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
@@ -402,7 +402,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             ."</form></div>";
         }
         else{
-            $addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
+            $addsummary .= "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
         }
     }
     $addsummary .= "<p><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/></div>\n";
@@ -480,7 +480,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
 elseif ($action == "moduser")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Editing user")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Editing user")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     $squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
@@ -555,7 +555,7 @@ elseif ($action == "moduser")
 
 elseif ($action == "userrights")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Set User Rights")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set User Rights")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // A user can't modify his own rights ;-)
@@ -638,7 +638,7 @@ elseif ($action == "userrights")
 
 elseif ($action == "usertemplates")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Set Template Rights")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set Template Rights")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS

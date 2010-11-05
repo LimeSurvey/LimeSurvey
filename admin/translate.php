@@ -72,7 +72,7 @@
 
   $translateoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>\n"; //CSS Firefox 2 transition fix
 
-  $translateoutput .= "<div class='header'>".$clang->gT("Translate survey")."</div>\n";
+  $translateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Translate survey")."</div>\n";
   
   $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 

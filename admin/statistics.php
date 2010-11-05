@@ -218,7 +218,7 @@ foreach ($rows as $row)
 //var_dump($filters);
 // SHOW ID FIELD
 
-$statisticsoutput .= "<div class='header'>".$clang->gT("General filters")."</div><div id='statistics_general_filter'>";
+$statisticsoutput .= "<div class='header ui-widget-header'>".$clang->gT("General filters")."</div><div id='statistics_general_filter'>";
 
 
 $grapherror='';
@@ -398,7 +398,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "<!-- Close filter group --></tr>\n</table></div></td></tr>\n";
         }
 
-        $statisticsoutput .= "\t\t<tr><td><div class='header'>\n"
+        $statisticsoutput .= "\t\t<tr><td><div class='header ui-widget-header'>\n"
 		
         ."<input type=\"checkbox\" id='btn_$flt[1]' onclick=\"selectCheckboxes('grp_$flt[1]', 'summary[]', 'btn_$flt[1]');\" />"
 

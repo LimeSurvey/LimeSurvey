@@ -55,7 +55,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
 
     $labelsoutput= "<div class='menubar'>\n"
-    ."\t\t<div class='menubar-title'>\n"
+    ."\t\t<div class='menubar-title ui-widget-header'>\n"
     ."\t\t<strong>".$clang->gT("Label Sets Administration")."</strong>\n"
     ."\t\t</div>\n"
     ."\t<div class='menubar-main'>\n"
@@ -120,7 +120,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             ."//-->\n"
             ."</script>\n";
         
-        $labelsoutput .="<div class='header'>".$clang->gT('Export multiple label sets')."</div>"
+        $labelsoutput .="<div class='header ui-widget-header'>".$clang->gT('Export multiple label sets')."</div>"
         ."<form method='post' id='exportlabelset' class='form30' action='admin.php'><ul>"
         ."<li><label for='labelsets'>".$clang->gT('Please choose the label sets you want to export:')."<br />".$clang->gT('(Select multiple label sets by using the Ctrl key)')."</label>"
         ."<select id='labelsets' multiple='multiple' name='lids[]' size='20'>\n";
@@ -215,7 +215,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         if ($action == "newlabelset"){
             $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import label set(s)")."</h2>\n"
             ."<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
-            ."<div class='header'>\n"
+            ."<div class='header ui-widget-header'>\n"
             .$clang->gT("Import label set(s)")."\n"
             ."</div><ul>\n"
             ."<li><label for='the_file'>"
@@ -245,7 +245,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         while ($row=$result->FetchRow())
         {
             $labelsoutput.= "<div class='menubar'>\n"
-            ."<div class='menubar-title'>\n"
+            ."<div class='menubar-title ui-widget-header'>\n"
             ."\t<strong>".$clang->gT("Label Set").":</strong> {$row['label_name']}\n"
             ."</div>\n"
             ."<div class='menubar-main'>\n"
@@ -285,7 +285,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $msorow=$maxresult->FetchRow();
         $maxsortorder=$msorow['maxsortorder']+1;
 
-        $labelsoutput.= "\t<div class='header'>".$clang->gT("Labels")."\t</div>\n";
+        $labelsoutput.= "\t<div class='header ui-widget-header'>".$clang->gT("Labels")."\t</div>\n";
         $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>"
         ."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
         ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"

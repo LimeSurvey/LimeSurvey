@@ -47,7 +47,7 @@ if (!$subaction == "export")
 
     $vvoutput = browsemenubar($clang->gT("Export VV file")).
         "<form id='vvexport' method='post' action='admin.php?action=vvexport&amp;sid=$surveyid'>"
-    ."<div class='header'>".$clang->gT("Export a VV survey file")."</div>"
+    ."<div class='header ui-widget-header'>".$clang->gT("Export a VV survey file")."</div>"
     ."<ul>"
     ."<li>"
     ."<label for='sid'>".$clang->gT("Export Survey").":</label>"

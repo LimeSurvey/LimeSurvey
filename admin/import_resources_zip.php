@@ -29,8 +29,8 @@ if (!isset($lid))
 
 
 if ($action == "importsurveyresources" && $surveyid) {
-    $importsurveyresourcesoutput = "<div class='header'>".$clang->gT("Import Survey Resources")."</div>\n";
-    $importsurveyresourcesoutput .= "<div class='messagebox'>";
+    $importsurveyresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Survey Resources")."</div>\n";
+    $importsurveyresourcesoutput .= "<div class='messagebox ui-corner-all'>";
 
     if ($demoModeOnly === true)
     {
@@ -212,8 +212,8 @@ if ($action == "importsurveyresources" && $surveyid) {
 
 if ($action == "importlabelresources" && $lid)
 {
-    $importlabelresourcesoutput = "<div class='header'>".$clang->gT("Import Label Set")."</div>\n";
-    $importlabelresourcesoutput .= "<div class='messagebox'>";
+    $importlabelresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Label Set")."</div>\n";
+    $importlabelresourcesoutput .= "<div class='messagebox ui-corner-all'>";
 
     if ($demoModeOnly === true)
     {
@@ -394,8 +394,8 @@ if ($action == "importlabelresources" && $lid)
 
 if ($action == "templateupload")
 {
-    $importtemplateoutput = "<div class='header'>".$clang->gT("Import Template")."</div>\n";
-    $importtemplateoutput .= "<div class='messagebox'>";
+    $importtemplateoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Template")."</div>\n";
+    $importtemplateoutput .= "<div class='messagebox ui-corner-all'>";
 
     if ($demoModeOnly === true)
     {

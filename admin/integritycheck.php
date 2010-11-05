@@ -24,8 +24,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     $integritycheck='';
     if (!isset($ok) || ($ok != "Y" && $ok != "R")) // do the check, but don't delete anything
     {
-        $integritycheck .= "<div class='messagebox'>"
-        . "<div class='header'>".$clang->gT("Data Consistency Check")."<br />\n"
+        $integritycheck .= "<div class='messagebox ui-corner-all'>"
+        . "<div class='header ui-widget-header'>".$clang->gT("Data Consistency Check")."<br />\n"
         . "<span style='font-size:7pt;'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</span></div>\n"
         . "<ul>\n";
         
@@ -636,8 +636,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         $integritycheck .= "</div><br />\n";
 
-        $integritycheck2 = "<div class='messagebox'>"
-        . "<div class='header'>".$clang->gT("Data redundancy check")."<br />"
+        $integritycheck2 = "<div class='messagebox ui-corner-all'>"
+        . "<div class='header ui-widget-header'>".$clang->gT("Data redundancy check")."<br />"
         . "<span style='font-size:7pt;'>".$clang->gT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them.")."</span>\n"
         . "</div>\n";
         if (!isset($oldsoptionaldelete) && !isset($oldsmultidelete) &&
@@ -858,8 +858,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         ."</td></tr></table><br />\n";
     } elseif ($ok == "R")
     {
-        $integritycheck .= "<div class='messagebox'>\n"
-        . "<div class='header'>".$clang->gT("Data redundancy Check")."<br />\n"
+        $integritycheck .= "<div class='messagebox ui-corner-all'>\n"
+        . "<div class='header ui-widget-header'>".$clang->gT("Data redundancy Check")."<br />\n"
         . "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from deactivation")."</span></div><p>\n";
         $oldsmultidelete=returnglobal('oldsmultidelete');
         $oldtmultidelete=returnglobal('oldtmultidelete');

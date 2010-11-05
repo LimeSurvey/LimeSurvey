@@ -82,8 +82,8 @@ include_once("database.php");
 //MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 {
-    $conditionsoutput = "<div class='header'>".$clang->gT("Conditions manager")."</div>\n"
-    ."<div class='messagebox'>\n"
+    $conditionsoutput = "<div class='header ui-widget-header'>".$clang->gT("Conditions manager")."</div>\n"
+    ."<div class='messagebox ui-corner-all'>\n"
     ."\t<div class='warningheader'>".$clang->gT("Error")."</div><br />"
     .$clang->gT("You have not selected a survey")."<br /><br />"
     ."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
@@ -94,8 +94,8 @@ if (!isset($surveyid) || !$surveyid)
 //MAKE SURE THAT THERE IS A QID
 if (!isset($qid) || !$qid)
 {
-    $conditionsoutput = "<div class='header'>".$clang->gT("Conditions manager")."</div>\n"
-    ."<div class='messagebox'>\n"
+    $conditionsoutput = "<div class='header ui-widget-header'>".$clang->gT("Conditions manager")."</div>\n"
+    ."<div class='messagebox ui-corner-all'>\n"
     ."\t<div class='warningheader'>".$clang->gT("Error")."</div><br />"
     .$clang->gT("You have not selected a question")."<br /><br />"
     ."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
@@ -966,7 +966,7 @@ $conditionsoutput_main_content .= "\t<tr>\n"
 
 // Now we have enough information, we can create the menubar and question Navigator
 $conditionsoutput_menubar .= "\t<div class='menubar'>"
-."<div class='menubar-title'>"
+."<div class='menubar-title ui-widget-header'>"
 ."<strong>".$clang->gT("Conditions designer").":</strong> "
 ."</div>\n";
 $conditionsoutput_menubar .= "\t<div class='menubar-main'>\n"
@@ -1583,13 +1583,13 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
     $conditionsoutput_main_content .= "<tr class=''><td colspan='3'>\n"
     ."<form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
 
-    $conditionsoutput_main_content .= "<div class='header'>".$clang->gT("Copy conditions")."</div>\n";
+    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
 
 
     //CopyConditionsMessage
     if (isset ($CopyConditionsMessage))
     {
-        $conditionsoutput_main_content .= "<div class='messagebox'>\n"
+        $conditionsoutput_main_content .= "<div class='messagebox ui-corner-all'>\n"
         ."$CopyConditionsMessage\n"
         ."</div>\n";
     }
@@ -1645,7 +1645,7 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
     }
     else
     {
-        $conditionsoutput_main_content .= "<div class='messagebox'>\n"
+        $conditionsoutput_main_content .= "<div class='messagebox ui-corner-all'>\n"
         ."<div class='partialheader'>".$clang->gT("This survey's questions don't use conditions")."</div><br />\n"
         ."</div>\n";
     }
@@ -1689,7 +1689,7 @@ $subaction == "editthiscondition" || $subaction == "delete")
     {
         $mytitle = $clang->gT("Add condition");
     }
-    $conditionsoutput_main_content .= "<div class='header'>".$mytitle."</div>\n";
+    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$mytitle."</div>\n";
 
     ///////////////////////////////////////////////////////////////////////////////////////////
 

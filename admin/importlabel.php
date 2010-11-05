@@ -18,7 +18,7 @@ include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-$importlabeloutput = "<div class='header'>".$clang->gT("Import Label Set")."</div>\n";
+$importlabeloutput = "<div class='header ui-widget-header'>".$clang->gT("Import Label Set")."</div>\n";
 
 $sFullFilepath = $tempdir . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
 $aPathInfo = pathinfo($sFullFilepath);
@@ -32,7 +32,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
     return;
 }
 
-$importlabeloutput .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+$importlabeloutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div><br />\n";
 $importlabeloutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importlabeloutput .= $clang->gT("Reading file..")."<br /><br />\n";
 $options['checkforduplicates']='off';

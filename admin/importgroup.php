@@ -16,8 +16,8 @@
 //Ensure script is not run directly, avoid path disclosure 
 include_once("login_check.php");
 
-$importgroup = "<div class='header'>".$clang->gT("Import question group")."</div>\n";
-$importgroup .= "<div class='messagebox'>\n";
+$importgroup = "<div class='header ui-widget-header'>".$clang->gT("Import question group")."</div>\n";
+$importgroup .= "<div class='messagebox ui-corner-all'>\n";
 
 $sFullFilepath = $tempdir . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
 $aPathInfo = pathinfo($sFullFilepath);

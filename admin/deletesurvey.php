@@ -18,8 +18,8 @@ include_once("login_check.php");
 $deleteok = returnglobal('deleteok');
 
 $deletesurveyoutput = "<br />\n";
-$deletesurveyoutput .= "<div class='messagebox'>\n";
-$deletesurveyoutput .= "<div class='header'>".$clang->gT("Delete survey")."</div>\n";
+$deletesurveyoutput .= "<div class='messagebox ui-corner-all'>\n";
+$deletesurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Delete survey")."</div>\n";
 
 if (!isset($surveyid) || !$surveyid)
 {

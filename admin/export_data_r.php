@@ -83,7 +83,7 @@ if  (!isset($subaction))
     $exportroutput = browsemenubar($clang->gT('Export results'));
 
     $exportroutput = browsemenubar($clang->gT('Export results'));
-    $exportroutput .= "<div class='header'>".$clang->gT("Export result data to R")."</div>\n";
+    $exportroutput .= "<div class='header ui-widget-header'>".$clang->gT("Export result data to R")."</div>\n";
 
 	$selecthide="";
 	$selectshow="";
@@ -112,7 +112,7 @@ if  (!isset($subaction))
 	."<li><label for='dldata'/>" . $clang->gT("Step 2:") . "</label><input type='submit' name='dldata' id='dldata' value='" . $clang->gT("Export .csv data file") . "'/></li></ul>\n"
 	."</form>\n" 
     
-    ."<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
+    ."<p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'>".$clang->gT("Instructions for the impatient")."</div>"
     ."<br/><ol style='margin:0 auto; font-size:8pt;'>"
     ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
     ."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"

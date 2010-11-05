@@ -26,7 +26,7 @@ if ($action == "copyquestion")
     array_unshift($questlangs,$baselang);
     $qattributes=questionAttributes();
     $editquestion = PrepareEditorScript();
-    $editquestion .= "<div class='header'>".$clang->gT("Copy Question")."</div>\n"
+    $editquestion .= "<div class='header ui-widget-header'>".$clang->gT("Copy Question")."</div>\n"
     . "<form id='frmcopyquestion' class='form30' name='frmcopyquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n"
     . '<div class="tab-pane" id="tab-pane-copyquestion">';
     foreach ($questlangs as $language)
@@ -122,7 +122,7 @@ if ($action == "editdefaultvalues")
     $questionrow=$connect->GetRow("SELECT type, other, title, question, same_default FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
     $qtproperties=getqtypelist('','array');
 
-    $editdefvalues="<div class='header'>".$clang->gT('Edit default answer values')."</div> "   
+    $editdefvalues="<div class='header ui-widget-header'>".$clang->gT('Edit default answer values')."</div> "   
     . '<div class="tab-pane" id="tab-pane-editdefaultvalues-'.$surveyid.'">'
     . "<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues' action='$scriptname' method='post'>\n";
     foreach ($questlangs as $language)
@@ -182,7 +182,7 @@ if ($action == "editdefaultvalues")
                 $sqrows = $sqresult->GetRows();
                 if ($qtproperties[$questionrow['type']]['subquestions']>1)
                 {
-                    $editdefvalues.=" <div class='header'>".sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</div>";
+                    $editdefvalues.=" <div class='header ui-widget-header'>".sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</div>";
                 }
                 if ($questionrow['type']=='M' || $questionrow['type']=='P')
                 {
@@ -285,7 +285,7 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqresult = db_execute_assoc($eqquery);
     }
     $editquestion = PrepareEditorScript();
-    $editquestion .= "<div class='header'>";
+    $editquestion .= "<div class='header ui-widget-header'>";
     if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
     $editquestion .= "</div>\n"
     . "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n"
@@ -511,7 +511,7 @@ if ($action == "editquestion" || $action=="addquestion")
 
         if (bHasSurveyPermission($surveyid,'surveycontent','import'))
         {
-            $editquestion .= "<br /><div class='header'>".$clang->gT("...or import a question")."</div>\n"
+            $editquestion .= "<br /><div class='header ui-widget-header'>".$clang->gT("...or import a question")."</div>\n"
             . "\t<form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
             . "<ul>\n"
             . "\t<li>\n"
@@ -611,7 +611,7 @@ if($action == "orderquestions")
     $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' and parent_qid=0 order by question_order" ;
     $oqresult = db_execute_assoc($oqquery);
 
-    $orderquestions = "<div class='header'>".$clang->gT("Change Question Order")."</div>";
+    $orderquestions = "<div class='header ui-widget-header'>".$clang->gT("Change Question Order")."</div>";
 
     $questioncount = $oqresult->RecordCount();
     $oqarray = $oqresult->GetArray();

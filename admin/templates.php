@@ -791,7 +791,7 @@ $templatesoutput.= "<script type='text/javascript'>\n"
 ."\t}\n"
 ."//-->\n</script>\n";
 $templatesoutput.= "<div class='menubar'>\n"
-. "\t<div class='menubar-title'>\n"
+. "\t<div class='menubar-title ui-widget-header'>\n"
 . "\t<strong>".$clang->gT('Template Editor')."</strong>\n"
 . "</div>\n"
 . "\t<div class='menubar-main'>\n"
@@ -836,7 +836,7 @@ $templatesoutput.= "</div>\n"
 
 //TEMPLATE DETAILS
 $templatesoutput.= "\t<div class='menubar'>\n"
-. "<div class='menubar-title'>\n"
+. "<div class='menubar-title ui-widget-header'>\n"
 . "<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
 . "</div>\n"
 . "<div class='menubar-main'>\n"
@@ -911,7 +911,7 @@ else
                                    {
                                        $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
                                    }
-                                   $templatesoutput.= "<div class='header'>".$clang->gT("Uploaded template file") ."</div>\n";
+                                   $templatesoutput.= "<div class='header ui-widget-header'>".$clang->gT("Uploaded template file") ."</div>\n";
 
                                    $templatesoutput.= "\t<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
                                    . "\t<input type='hidden' name='lid' value='$lid' />\n"
@@ -1017,7 +1017,7 @@ else
                                    }
 
                                    //SAMPLE ROW
-                                   $templatesoutput.= "\t<div class='header'>\n"
+                                   $templatesoutput.= "\t<div class='header ui-widget-header'>\n"
                                    . "\t<strong>".$clang->gT("Preview:")."</strong>\n"
                                    . "\t<input type='button' value='iPhone' id='iphone' />\n"
                                    . "\t<input type='button' value='640x480' id='x640' />\n"

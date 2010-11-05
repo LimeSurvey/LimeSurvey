@@ -110,7 +110,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
                             var strnogroup='".$clang->gT("There are no groups available.", "js")."';
                         --></script>\n";
     $assessmentsoutput.="<div class='menubar'>\n"
-    . "\t<div class='menubar-title'>\n"
+    . "\t<div class='menubar-title ui-widget-header'>\n"
     . "<strong>".$clang->gT("Assessments")."</strong>\n";
 
     $assessmentsoutput.= "\t</div>\n"
@@ -163,7 +163,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
 	//PRESENT THE PAGE
 
 
-	$assessmentsoutput.= "<div class='header'>".$clang->gT("Assessment rules")."</div>"
+	$assessmentsoutput.= "<div class='header ui-widget-header'>".$clang->gT("Assessment rules")."</div>"
 
 
 	."<table class='assessmentlist'><thead>"
@@ -224,7 +224,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
     {
         
 	    //now present edit/insert form
-	    $assessmentsoutput.= "<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header'>\n";
+	    $assessmentsoutput.= "<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header ui-widget-header'>\n";
 	    $assessmentsoutput.= "$actiontitle</div>\n";
 
 	    $assessmentsoutput.="<ul><li><label>".$clang->gT("Scope")."</label><input type='radio' id='radiototal' name='scope' value='T' ";

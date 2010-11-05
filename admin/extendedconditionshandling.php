@@ -29,7 +29,7 @@ if ($subaction == 'delete') {
 // MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 {
-    $extendedconditionsoutput .= "\t<div class='messagebox'><div class='header'>"
+    $extendedconditionsoutput .= "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
     .$clang->gT("Extended conditions editor")."</div>\n"
     ."\t<br /><div class='warningheader'>".$clang->gT("Error")."</div>"
     ."<br />".$clang->gT("You have not selected a survey")."<br /><br />"
@@ -43,7 +43,7 @@ if (!isset($surveyid) || !$surveyid)
 $thissurvey=getSurveyInfo($surveyid);
 if ($thissurvey===false)
 {
-    $extendedconditionsoutput .= "\t<div class='messagebox'>\n<div class='header'>\n"
+    $extendedconditionsoutput .= "\t<div class='messagebox ui-corner-all'>\n<div class='header ui-widget-header'>\n"
     .$clang->gT("Extended conditions editor")."</div>\n"
     ."\t<br /><div class='warningheader'>".$clang->gT("Error")."</div>"
     ."<br />".$clang->gT("The survey you selected does not exist")
@@ -55,14 +55,14 @@ if ($thissurvey===false)
 else // A survey DOES exist
 {
     $extendedconditionsoutput .= "\t<div class='menubar'>"
-    ."<div class='menubar-title'>"
+    ."<div class='menubar-title ui-widget-header'>"
     ."<strong>".$clang->gT("Extended conditions editor")." </strong> (".htmlspecialchars($thissurvey['surveyls_title']).")</div>\n";
 }
 
 // CHECK TO SEE IF THE EXTENDED CONDITION TABLE EXISTS
 if (!tableExists('extendedconditions'))
 {
-    $extendedconditionsoutput .= "\t<div class='messagebox'><div class='header'>"
+    $extendedconditionsoutput .= "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
     .$clang->gT("Extended conditions editor")."</div>\n"
     ."\t<br /><div class='warningheader'>".$clang->gT("Error")."</div>"
     ."<br />".$clang->gT("There is no extended condition table")."<br /><br />"
@@ -112,7 +112,7 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
     if ($end < 0) {$end=0;}
 
     //ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
-    $extendedconditionsoutput .= "\t<div class='menubar'><div class='menubar-title'><span style='font-weight:bold;'>"
+    $extendedconditionsoutput .= "\t<div class='menubar'><div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>"
     .$clang->gT("Data view control")."</span></div>\n"
     ."<div class='menubar-main'>\n"
     ."<div class='menubar-left'>\n"
@@ -293,7 +293,7 @@ if ($subaction == '' || $subaction == 'browse' || $subaction == 'search')
 }
 else if ($subaction == 'addnew' || $subaction == 'edit')
 {
-    $extendedconditionsoutput .= "<div class='header'>";
+    $extendedconditionsoutput .= "<div class='header ui-widget-header'>";
     
     if ($subaction == 'edit')
     {
@@ -374,8 +374,8 @@ else if ($subaction == 'addnew' || $subaction == 'edit')
 }
 else if ($subaction == 'insert')
 {
-    $extendedconditionsoutput .= "\t<div class='header'>".$clang->gT("Add extended condition")."</div>\n"
-    ."\t<div class='messagebox'>\n";
+    $extendedconditionsoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Add extended condition")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>\n";
     $query = "INSERT INTO ".db_table_name('extendedconditions')." VALUES ('{$_POST['qid']}','{$_POST['gid']}','{$_POST['sid']}','{$_POST['condition']}')";
     // TODO should check if there is such condition
     $connect->Execute($query) or safe_die ("Add new record failed!<br />$query<br />".$connect->ErrorMsg());
@@ -387,8 +387,8 @@ else if ($subaction == 'insert')
 }
 else if ($subaction == 'update')
 {
-    $extendedconditionsoutput .= "\t<div class='header'>".$clang->gT("Edit extended condition")."</div>\n"
-    ."\t<div class='messagebox'>\n";
+    $extendedconditionsoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Edit extended condition")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>\n";
     $udquery = "UPDATE ".db_table_name('extendedconditions')." SET `condition`='{$_POST['condition']}'"
     . " WHERE qid='$qid' AND gid='$gid' AND sid='$surveyid'";
     $udresult = $connect->Execute($udquery) or safe_die ("Update failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
@@ -399,8 +399,8 @@ else if ($subaction == 'update')
 }
 else if ($subaction == 'delete')
 {
-    $extendedconditionsoutput .= "<div class='messagebox'>\n"
-    ."\t<div class='header'>"
+    $extendedconditionsoutput .= "<div class='messagebox ui-corner-all'>\n"
+    ."\t<div class='header ui-widget-header'>"
     .$clang->gT("Delete")
     ."\t</div>\n"
     ."\t<p><br /><strong>";

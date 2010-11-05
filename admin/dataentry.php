@@ -75,8 +75,8 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
     $surveyoptions = browsemenubar($clang->gT("Data entry"));
     if (!$surveyid && !$subaction)
     {
-        $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
-        $dataentryoutput .= "<div class='messagebox'>\n"
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n"
         ."<div class='warningheader'>".$clang->gT("Error")."</div><br />\n"
         .$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
         ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
@@ -88,8 +88,8 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
     {
         $thissurvey=getSurveyInfo($surveyid);
         $errormsg="";
-        $dataentryoutput .= $surveyoptions."<div class='header'>".$clang->gT("Data Entry")."</div>\n"
-        ."\t<div class='messagebox'>\n";
+        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n"
+        ."\t<div class='messagebox ui-corner-all'>\n";
 
         $lastanswfortoken=''; // check if a previous answer has been submitted or saved
         $rlanguage='';
@@ -509,8 +509,8 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         }
         //	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
 
-        $dataentryoutput.="<div class='header'>".$clang->gT("Data Entry")."</div>\n"
-        ."\t<div class='header'>";
+        $dataentryoutput.="<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n"
+        ."\t<div class='header ui-widget-header'>";
         if ($subaction=='edit')
         {
             $dataentryoutput .= sprintf($clang->gT("Editing response (ID %s)"),$id);
@@ -1369,7 +1369,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         }
 
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $dataentryoutput .= $surveyoptions."<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
 
         $fieldmap= createFieldMap($surveyid);
 
@@ -1436,7 +1436,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         while (ob_get_level() > 0) {
             ob_end_flush();
         }
-        $dataentryoutput .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div>\n"
+        $dataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
         .$clang->gT("Record has been updated.")."<br /><br />\n"
         ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" /><br /><br />\n"
         ."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all', '_top')\" />\n"
@@ -1449,8 +1449,8 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         {
             safe_die('You are not allowed to delete a response.');
         }        
-        $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
-        $dataentryoutput .= "<div class='messagebox'>\n";
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n";
 
         $thissurvey=getSurveyInfo($surveyid);
 
@@ -1484,7 +1484,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         // PRESENT SURVEY DATAENTRY SCREEN
         $dataentryoutput .= $surveyoptions;
 
-        $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
 
         $dataentryoutput .= "<form action='$scriptname?action=dataentry' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>\n"
         ."<table class='data-entry-tbl' cellspacing='0'>\n"

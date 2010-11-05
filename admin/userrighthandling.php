@@ -36,7 +36,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
         $grow = array_map('htmlspecialchars', $grpresult->FetchRow());
     }
     $usergroupsummary = "<div class='menubar'>\n"
-    . "<div class='menubar-title'>\n"
+    . "<div class='menubar-title ui-widget-header'>\n"
     . "<strong>".$clang->gT("User Group")."</strong>";
     if($ugid && $grpresultcount > 0)
     {
@@ -121,7 +121,7 @@ if ($action == "setusertemplates")
 {
     refreshtemplates();
     $usersummary = "\n<form action='$scriptname' method='post'>\n\t
-    <div class='header'>".$clang->gT('Edit template permissions')."</div><p>
+    <div class='header ui-widget-header'>".$clang->gT('Edit template permissions')."</div><p>
     <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
     . $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t</tr>\n";
 
@@ -203,7 +203,7 @@ if ($action == "modifyuser")
     $sresultcount > 0
     ) )
     {
-        $usersummary = "<div class='header'>\n".$clang->gT("Editing user")."</div><br />\n"
+        $usersummary = "<div class='header ui-widget-header'>\n".$clang->gT("Editing user")."</div><br />\n"
         ."<form action='$scriptname' method='post'>\n"
         . "<table class='edituser'><thead><tr>\n"
         . "<th>".$clang->gT("Username")."</th>\n"
@@ -258,7 +258,7 @@ if ($action == "setuserrights")
     ) )
     //	if($_SESSION['loginID'] != $postuserid)
     {
-        $usersummary = "<table width='100%' border='0'>\n<tr><td colspan='8' class='header' align='center'>\n"
+        $usersummary = "<table width='100%' border='0'>\n<tr><td colspan='8' class='header ui-widget-header' align='center'>\n"
         . "".$clang->gT("Set User Rights").": ".htmlspecialchars(sanitize_user($_POST['user']))."</td></tr>\n";
 
         // HERE WE LIST FOR USER RIGHTS YOU CAN SET TO a USER
@@ -396,7 +396,7 @@ if($action == "setasadminchild")
 
 if ($action == "editusers")
 {
-    $usersummary = "<div class='header'>".$clang->gT("User control")."</div><br />"
+    $usersummary = "<div class='header ui-widget-header'>".$clang->gT("User control")."</div><br />"
     . "<table id='users' class='users' width='100%' border='0'>\n"
     . "<thead>\n"
     . "<tr>\n"
@@ -584,7 +584,7 @@ if ($action == "addusergroup")
 {
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)  // only admins may do that
     {
-        $usersummary ="<div class='header'>".$clang->gT("Add User Group")."</div>\n"
+        $usersummary ="<div class='header ui-widget-header'>".$clang->gT("Add User Group")."</div>\n"
         . "<form action='$scriptname' id='usergroupform' class='form30' method='post'>"
         . "<ul>\n"
         . "<li><label for='group_name'>".$clang->gT("Name:")."</label>\n"
@@ -604,7 +604,7 @@ if ($action == "editusergroup")
         $query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
         $result = db_select_limit_assoc($query, 1);
         $esrow = $result->FetchRow();
-        $usersummary = "<div class='header'>".sprintf($clang->gT("Editing user group (Owner: %s)"),$_SESSION['user'])."</div>"
+        $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Editing user group (Owner: %s)"),$_SESSION['user'])."</div>"
         ."<form action='$scriptname' id='usergroupform' class='form30' name='usergroupform' method='post'>"
         . "<ul>\n"
         . "<li><label for='name'>".$clang->gT("Name:")."</label>\n"
@@ -625,7 +625,7 @@ if ($action == "mailusergroup")
     $result = db_execute_assoc($query); //Checked
     $crow = $result->FetchRow();
 
-    $usersummary = "<div class='header'>".$clang->gT("Mail to all Members")."</div>"
+    $usersummary = "<div class='header ui-widget-header'>".$clang->gT("Mail to all Members")."</div>"
     . "<form action='$scriptname' class='form30' id='usergroupform' name='usergroupform' method='post'><ul>"
     . "<li><label for='copymail'>".$clang->gT("Send me a copy:")."</label>\n"
     . "<input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1' /></li>\n"

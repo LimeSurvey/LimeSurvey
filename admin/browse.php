@@ -57,7 +57,7 @@ $browseoutput = "";
 
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
-    $browseoutput .= "\t<div class='messagebox'><div class='header'>"
+    $browseoutput .= "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
             . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
             .$clang->gT("Error")."\t</div>\n"
             . $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
@@ -228,7 +228,7 @@ if ($subaction == "id")
     $next=$id+1;
     $last=$id-1;
     $browseoutput .= "<div class='menubar'>\n"
-            ."<div class='menubar-title'>".sprintf($clang->gT("View response ID %d"),$id)."</div>"
+            ."<div class='menubar-title ui-widget-header'>".sprintf($clang->gT("View response ID %d"),$id)."</div>"
             ."\t<div class='menubar-main'>\n"
             ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
             ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
@@ -822,7 +822,7 @@ elseif ($subaction == "all")
     if ($end < 0) {$end=0;}
 
     $browseoutput .= "<div class='menubar'>\n"
-            . "\t<div class='menubar-title'>\n"
+            . "\t<div class='menubar-title ui-widget-header'>\n"
             . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
             . "\t<div class='menubar-main'>\n";
     if (!isset($_POST['sql']))
@@ -1070,7 +1070,7 @@ else
     if ($end < 0) {$end=0;}
 
     $browseoutput .= "<div class='menubar'>\n"
-            . "\t<div class='menubar-title'>\n"
+            . "\t<div class='menubar-title ui-widget-header'>\n"
             . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
             . "\t<div class='menubar-main'>\n";
     if (!isset($_POST['sql']))
@@ -1207,7 +1207,7 @@ else
 elseif ($subaction=="time")
 {
     $browseoutput .= $surveyoptions;
-    $browseoutput .= "<div class='header'>".$clang->gT("Timings")."</div>";
+    $browseoutput .= "<div class='header ui-widget-header'>".$clang->gT("Timings")."</div>";
 	$browseoutput .= "Timing saving is disabled or the timing table does not exist. Try to reactivate survey.\n";
 }
 else
@@ -1222,7 +1222,7 @@ else
 
     while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}
     while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}
-    $browseoutput .= "<div class='header'>".$clang->gT("Response summary")."</div>"
+    $browseoutput .= "<div class='header ui-widget-header'>".$clang->gT("Response summary")."</div>"
             ."<p><table class='statisticssummary'>\n"
             ."<tfoot><tr><th>".$clang->gT("Total responses:")."</th><td>".$num_total_answers."</td></tr></tfoot>"
             ."\t<tbody>"

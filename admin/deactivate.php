@@ -21,8 +21,8 @@ $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple de
 $deactivateoutput='';
 if (!isset($_POST['ok']) || !$_POST['ok'])
 {
-    $deactivateoutput .= "<br />\n<div class='messagebox'>\n";
-    $deactivateoutput .= "<div class='header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
+    $deactivateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
+    $deactivateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
     $deactivateoutput .= "\t<div class='warningheader'>\n";
     $deactivateoutput .= $clang->gT("Warning")."<br />".$clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING");
     $deactivateoutput .= "</div>\n";
@@ -107,8 +107,8 @@ else
 
     $deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
     $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$postsid}'>Admin</a>");
-    $deactivateoutput .= "<br />\n<div class='messagebox'>\n";
-    $deactivateoutput .= "<div class='header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
+    $deactivateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
+    $deactivateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
     $deactivateoutput .= "\t<div class='successheader'>".$clang->gT("Survey Has Been Deactivated")."\n";
     $deactivateoutput .= "</div>\n";
     $deactivateoutput .= "\t<p>\n";

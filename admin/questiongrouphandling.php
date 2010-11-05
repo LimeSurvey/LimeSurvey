@@ -25,7 +25,7 @@ if ($action == "addgroup")
     $grplangs = array_reverse($grplangs);
 
     $newgroupoutput = PrepareEditorScript();
-    $newgroupoutput .= "<div class='header'>".$clang->gT("Add question group")."</div>\n";
+    $newgroupoutput .= "<div class='header ui-widget-header'>".$clang->gT("Add question group")."</div>\n";
 
 
     //    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
@@ -122,7 +122,7 @@ if ($action == "editgroup")
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language='$baselang'";
     $egresult = db_execute_assoc($egquery);
     $editgroup = PrepareEditorScript();
-    $editgroup .= "<div class='header'>".$clang->gT("Edit Group")."</div>\n"
+    $editgroup .= "<div class='header ui-widget-header'>".$clang->gT("Edit Group")."</div>\n"
     . "<form name='frmeditgroup' id='frmeditgroup' action='$scriptname' class='form30' method='post'>\n"
     . '<div class="tab-pane" id="tab-pane-group-'.$gid.'">';
 
@@ -233,7 +233,7 @@ if ($action == "ordergroups")
             }
         }
 
-        $ordergroups = "<div class='header'>".$clang->gT("Change Group Order")."</div><br />\n";
+        $ordergroups = "<div class='header ui-widget-header'>".$clang->gT("Change Group Order")."</div><br />\n";
 
         // Get groups dependencies regarding conditions
         // => Get an array of groups containing questions with conditions outside the group

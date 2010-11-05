@@ -17,9 +17,6 @@ $(document).ready(function(){
                             }, $.datepicker.regional[userlanguage]);
     }
 
-    $('div.messagebox').addClass("ui-corner-all");   
-    $('div.header').addClass("ui-widget-header");   
-    $('.menubar-title').addClass("ui-widget-header");   
     $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");   
     $('button,input[type=submit],input[type=button],input[type=reset]').hover(
         function(){ 
@@ -107,63 +104,6 @@ $(document).ready(function(){
                    event:'unfocus'
                }}
     }); 
-
-    $('#doprintableScannable').qtip({
-        content:{
-                text:$('#doprintableScannablelangpopup')
-        },
-        style: { name: 'cream',
-                        tip:true, 
-                color:'#111111', 
-                border: {
-                     width: 1,
-                     radius: 5,
-                     color: '#EADF95'}
-               },  
-        position: { adjust: { 
-                screen: true, scroll:true },
-                corner: {
-                        target: 'bottomMiddle',
-                        tooltip: 'topMiddle'}
-                },
-        show: {effect: { length:50},
-               when: {
-                   event:'click'
-               }},
-        hide: {fixed:true,
-               when: {
-                   event:'unfocus'
-               }}
-    });     
-
- 
-    $('#doprintable').qtip({
-        content:{
-                text:$('#doprintablelangpopup')
-        },
-        style: { name: 'cream',
-                        tip:true, 
-                color:'#111111', 
-                border: {
-                     width: 1,
-                     radius: 5,
-                     color: '#EADF95'}
-               },  
-        position: { adjust: { 
-                screen: true, scroll:true },
-                corner: {
-                        target: 'bottomMiddle',
-                        tooltip: 'topMiddle'}
-                },
-        show: {effect: { length:50},
-               when: {
-                   event:'click'
-               }},
-        hide: {fixed:true,
-               when: {
-                   event:'unfocus'
-               }}
-    });     
 
     $('#previewquestion').qtip({
         content:{

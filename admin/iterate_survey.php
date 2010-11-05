@@ -26,8 +26,8 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if  (!isset($subaction))
 { // subaction is not set, then display instructions
 $iteratesurveyoutput = browsemenubar($clang->gT('Iterate survey'));
-$iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate survey")."</div>\n";
-$iteratesurveyoutput .=  "<div class='messagebox'><div class='header'>".$clang->gT("Important instructions")."</div>"
+$iteratesurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Iterate survey")."</div>\n";
+$iteratesurveyoutput .=  "<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>".$clang->gT("Important instructions")."</div>"
 . "<br/>".$clang->gT("Click on the following button if you want to").":<br />\n"
 . "<ol>"
 . "<li>".$clang->gT("Delete all incomplete answers that correspond to a token for which a completed answers is already recorded")."</li>"
@@ -57,7 +57,7 @@ if  ($subaction=='unfinalizeanswers')
     $updateqr="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0, completed='N'";
     $updateres=$connect->Execute($updateqr) or safe_die ("Couldn't reset token completed state<br />$updateqr<br />".$connect->ErrorMsg());
     $iteratesurveyoutput .= "<br />\n";
-    $iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate survey")."</div>\n";
+    $iteratesurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Iterate survey")."</div>\n";
     $iteratesurveyoutput .=  "<p style='width:100%;'>\n"
     . "<font class='successtitle'>".$clang->gT("Success")."</font><br />\n"
     . $clang->gT("Answers and tokens have been re-opened.")."<br />\n"

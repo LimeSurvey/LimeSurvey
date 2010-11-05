@@ -99,7 +99,7 @@ function globalsettingssave()
             setGlobalSetting('timeadjust',$savetime);
             setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
             setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
-            $editsurvey .= "<div class='header'>".$clang->gT("Global settings")."</div>\n"
+            $editsurvey .= "<div class='header ui-widget-header'>".$clang->gT("Global settings")."</div>\n"
             . "<div class=\"messagebox\">\n"
             . "<br /><div class=\"successheader\">".$clang->gT("Global settings were saved.")."</div>\n"
             . "<br/><input type=\"submit\" onclick=\"window.open('admin.php', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n"
@@ -124,7 +124,7 @@ function globalsettingsdisplay()
         {
             $js_admin_includes[]='scripts/globalsettings.js';
             // header
-            $editsurvey = "<div class='header'>".$clang->gT("Global settings")."</div>\n";
+            $editsurvey = "<div class='header ui-widget-header'>".$clang->gT("Global settings")."</div>\n";
             // beginning TABs section
             $editsurvey .= "\t<div id='tabs'>
             <ul>
@@ -139,7 +139,7 @@ function globalsettingsdisplay()
             $editsurvey .= "<div id='overview'>\n";
             $editsurvey .= checksettings();
             $thisupdatecheckperiod=getGlobalSetting('updatecheckperiod');
-            $editsurvey .= "<br /></p><div class='header'>".$clang->gT("Updates")."</div><ul>"
+            $editsurvey .= "<br /></p><div class='header ui-widget-header'>".$clang->gT("Updates")."</div><ul>"
             . "\t<li><label for='updatecheckperiod'>".$clang->gT("Check for updates:")."</label>\n"
             . "\t\t\t<select name='updatecheckperiod' id='updatecheckperiod'>\n"
             . "\t\t\t\t<option value='0'";
@@ -609,7 +609,7 @@ function checksettings()
     {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
     if(isset($tokenlist) && is_array($tokenlist))
     {$activetokens=count($tokenlist);} else {$activetokens=0;}
-    $cssummary = "<div class='header'>".$clang->gT("System overview")."</div>\n";
+    $cssummary = "<div class='header ui-widget-header'>".$clang->gT("System overview")."</div>\n";
     // Database name & default language
     $cssummary .= "<br /><table class='statisticssummary'><tr>\n"
     . "<th width='50%' align='right'>".$clang->gT("Database name").":</th><td>$databasename</td>\n"

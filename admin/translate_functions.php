@@ -63,7 +63,7 @@ function menuSeparator()
 
   $adminmenu = ""
     ."<div class='menubar'>\n"
-      ."<div class='menubar-title'>\n"
+      ."<div class='menubar-title ui-widget-header'>\n"
         ."<strong>".$clang->gT("Translate survey").": $survey_title</strong>\n"
       ."</div>\n" // class menubar-title
       ."<div class='menubar-main'>\n";

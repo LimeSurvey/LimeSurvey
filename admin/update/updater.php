@@ -168,7 +168,7 @@ function UpdateStep1()
         setGlobalSetting('updatekey',sanitize_paranoid_string($_POST['updatekey']));
     }
     $error=false;
-    $output='<div class="header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />';
     $output.=$clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />';
     $output.=$clang->gT('The following steps will be done by this update:').'<br /><ul>';
     $output.='<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
@@ -254,7 +254,7 @@ function UpdateStep2()
     require_once($homedir."/classes/http/http.php");
     $updatekey=getGlobalSetting('updatekey');
 
-    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="updater-background"><br />';
 
     $http=new http_class;
     /* Connection timeout */
@@ -302,7 +302,7 @@ function UpdateStep2()
     $readonlyfiles=array();
     if (!isset($updateinfo['files']))
     {
-        $output.="<div class='messagebox'>
+        $output.="<div class='messagebox ui-corner-all'>
             <div class='warningheader'>".$clang->gT('Update server busy')."</div>
             <p>".$clang->gT('The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared.')."<br />
                ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
@@ -413,7 +413,7 @@ function UpdateStep3()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 3').'</div><div class="updater-background">';
+    $output='<div class="header ui-widget-header">'.$clang->gT('ComfortUpdate Step 3').'</div><div class="updater-background">';
     $output.='<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
     if (!isset( $_SESSION['updateinfo']))
     {
@@ -496,7 +496,7 @@ function UpdateStep4()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 4').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.$clang->gT('ComfortUpdate Step 4').'</div><div class="updater-background"><br />';
     if (!isset( $_SESSION['updateinfo']))
     {
         $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';

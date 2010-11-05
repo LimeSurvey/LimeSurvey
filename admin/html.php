@@ -58,7 +58,7 @@ if ($action == "listsurveys")
                     <th>".$clang->gT("Tokens available")."</th>
                     <th>".$clang->gT("Response rate")."</th>
 				  </tr></thead>
-				  <tfoot><tr class='header'>
+				  <tfoot><tr class='header ui-widget-header'>
 		<td colspan=\"12\">&nbsp;</td>".
 		"</tr></tfoot>
 		<tbody>";
@@ -351,7 +351,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         $surveysummary .= ""  //"<tr><td colspan=2>\n"
         . "<div class='menubar surveybar'>\n"
-        . "<div class='menubar-title'>\n"
+        . "<div class='menubar-title ui-widget-header'>\n"
         . "<strong>".$clang->gT("Survey")."</strong> "
         . "<span class='basic'>{$surveyinfo['surveyls_title']} (".$clang->gT("ID").":{$surveyid})</span></div>\n"
         . "<div class='menubar-main'>\n"
@@ -974,7 +974,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
     $condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");
 
     $groupsummary = "<div class='menubar'>\n"
-    . "<div class='menubar-title'>\n";
+    . "<div class='menubar-title ui-widget-header'>\n";
 
     while ($grow = $grpresult->FetchRow())
     {
@@ -1166,7 +1166,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
     {
         $qrrow = array_map('FlattenText', $qrrow);
         //$qrrow = array_map('htmlspecialchars', $qrrow);
-        $questionsummary .= "<div class='menubar-title'>\n"
+        $questionsummary .= "<div class='menubar-title ui-widget-header'>\n"
         . "<strong>". $clang->gT("Question")."</strong> <span class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</span>\n"
         . "</div>\n"
         . "<div class='menubar-main'>\n"
@@ -1517,7 +1517,7 @@ if ($action=='editansweroptions')
     $anscount = $result->RecordCount();
     $row=$result->FetchRow();
     $maxsortorder=$row['sortorder']+1;
-    $vasummary .= "<div class='header'>\n"
+    $vasummary .= "<div class='header ui-widget-header'>\n"
     .$clang->gT("Edit answer options")
     ."</div>\n"
     ."<form id='editanswersform' name='editanswersform' method='post' action='$scriptname'>\n"
@@ -1561,7 +1561,7 @@ if ($action=='editansweroptions')
             $position=0;
             if ($scalecount>1)
             {
-                $vasummary.="<div class='header' style='margin-top:5px;'>".sprintf($clang->gT("Answer scale %s"),$scale_id+1)."</div>";
+                $vasummary.="<div class='header ui-widget-header' style='margin-top:5px;'>".sprintf($clang->gT("Answer scale %s"),$scale_id+1)."</div>";
             }
 
 
@@ -1790,7 +1790,7 @@ if ($action=='editsubquestions')
     $anscount = $result->RecordCount();
     $row=$result->FetchRow();
     $maxsortorder=$row['question_order']+1;
-    $vasummary .= "<div class='header'>\n"
+    $vasummary .= "<div class='header ui-widget-header'>\n"
     .$clang->gT("Edit subquestions")
     ."</div>\n"
     ."<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
@@ -1826,11 +1826,11 @@ if ($action=='editsubquestions')
             {
                 if ($scale_id==0)
                 {
-                    $vasummary .="<div class='header'>\n".$clang->gT("Y-Scale")."</div>";
+                    $vasummary .="<div class='header ui-widget-header'>\n".$clang->gT("Y-Scale")."</div>";
                 }
                 else
                 {
-                    $vasummary .="<div class='header'>\n".$clang->gT("X-Scale")."</div>";
+                    $vasummary .="<div class='header ui-widget-header'>\n".$clang->gT("X-Scale")."</div>";
                 }
             }
             $query = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}' AND language='{$anslang}' AND scale_id={$scale_id} ORDER BY question_order, title";
@@ -1958,7 +1958,7 @@ if ($action=='editsubquestions')
 
 if($action == "addsurveysecurity")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Add User")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
@@ -2104,7 +2104,7 @@ if($action == "setsurveysecurity")
         $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
         $js_admin_includes[]='scripts/surveysecurity.js';
         $sUsername=$connect->GetOne("select users_name from ".db_table_name('users')." where uid={$postuserid}");
-        $usersummary = "<div class='header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div><br />
+        $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div><br />
         <form action='$scriptname?sid={$surveyid}' method='post'>\n"
         . "<table style='margin:0 auto;' border='0' class='usersurveypermissions'><thead>\n";
 
@@ -2226,7 +2226,7 @@ if($action == "exportstructure")
     if(bHasSurveyPermission($surveyid,'surveycontent','export'))
     {
         $exportstructure = "<form id='exportstructure' name='exportstructure' action='$scriptname' method='post'>\n"
-        ."<div class='header'>"
+        ."<div class='header ui-widget-header'>"
         .$clang->gT("Export Survey Structure")."\n</div><br />\n"
         ."<ul style='margin-left:35%;'>\n"
         ."<li><input type='radio' class='radiobtn' name='action' value='exportstructurexml' checked='checked' id='surveyxml'"
@@ -2266,7 +2266,7 @@ if($action == "exportstructureGroup")
     if($export4lsrc === true && bHasSurveyPermission($surveyid,'export'))
     {
         $exportstructure = "<form id='exportstructureGroup' name='exportstructureGroup' action='$scriptname' method='post'>\n"
-        ."<div class='header'>".$clang->gT("Export group structure")."\n</div>\n"
+        ."<div class='header ui-widget-header'>".$clang->gT("Export group structure")."\n</div>\n"
         ."<ul>\n"
         ."<li>\n";
         $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv'
@@ -2313,7 +2313,7 @@ if($action == "exportstructureQuestion")
     if($export4lsrc === true && bHasSurveyPermission($surveyid,'export'))
     {
         $exportstructure = "<form id='exportstructureQuestion' name='exportstructureQuestion' action='$scriptname' method='post'>\n"
-        ."<div class='header'>".$clang->gT("Export question structure")."\n</div>\n"
+        ."<div class='header ui-widget-header'>".$clang->gT("Export question structure")."\n</div>\n"
         ."<ul>\n"
         ."<li>\n";
         $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv'
@@ -2369,7 +2369,7 @@ if($action == "surveysecurity")
                    ORDER BY u.users_name";
         $result2 = db_execute_assoc($query2); //Checked
 
-        $surveysecurity ="<div class='header'>".$clang->gT("Survey permissions")."</div>\n"
+        $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
         . "<table class='surveysecurity'><thead>"
         . "<tr>\n"
         . "<th>".$clang->gT("Action")."</th>\n"
@@ -2518,8 +2518,8 @@ if($action == "surveysecurity")
 
 elseif ($action == "surveyrights")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Edit survey permissions")."</div>\n";
-    $addsummary .= "<div class='messagebox'>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Edit survey permissions")."</div>\n";
+    $addsummary .= "<div class='messagebox ui-corner-all'>\n";
 
     if(isset($postuserid)){
         $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} ";
@@ -2621,7 +2621,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
             $editsurvey .= "</script>\n";
 
             // header
-            $editsurvey .= "<div class='header'>" . $clang->gT("Create, import or copy survey") . "</div>\n";
+            $editsurvey .= "<div class='header ui-widget-header'>" . $clang->gT("Create, import or copy survey") . "</div>\n";
         } elseif ($action == "editsurveysettings") {
             //Fetch survey info
         $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -2631,7 +2631,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
             }
 
             // header
-            $editsurvey = "<div class='header'>".$clang->gT("Edit survey settings")."</div>\n";
+            $editsurvey = "<div class='header ui-widget-header'>".$clang->gT("Edit survey settings")."</div>\n";
         }
 
             // beginning TABs section - create tab pane
@@ -3574,7 +3574,7 @@ if ($action == "updatesurveysettingsandeditlocalesettings" || $action == "editsu
         $editsurvey = PrepareEditorScript();
 
 
-        $editsurvey .="<div class='header'>".$clang->gT("Edit survey text elements")."</div>\n";
+        $editsurvey .="<div class='header ui-widget-header'>".$clang->gT("Edit survey text elements")."</div>\n";
         $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='$scriptname' method='post'>\n"
         . '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
         foreach ($grplangs as $grouplang)
@@ -3643,7 +3643,7 @@ if ($action == "translate")  // Translate survey
 {
     if(bHasSurveyPermission($surveyid,'translation','read'))
     {
-        $translateoutput .="<div class='header'>".$clang->gT("Quick-translate survey")."</div>\n";
+        $translateoutput .="<div class='header ui-widget-header'>".$clang->gT("Quick-translate survey")."</div>\n";
     }
     else
     {
@@ -3672,7 +3672,7 @@ if ($action == "emailtemplates")
     $sHTMLOutput .= "<script type='text/javascript'>
                           var sReplaceTextConfirmation='".$clang->gT("This will replace the existing text. Continue?","js")."'
                        </script>\n";
-    $sHTMLOutput .="<div class='header'>\n".$clang->gT("Edit email templates")."</div>\n"
+    $sHTMLOutput .="<div class='header ui-widget-header'>\n".$clang->gT("Edit email templates")."</div>\n"
     . "<form class='form30newtabs' id='emailtemplates' action='$scriptname' method='post'>\n"
     . "<div id='tabs'><ul>";
     $surveyinfo=getSurveyInfo($surveyid);
@@ -3840,7 +3840,7 @@ function showadminmenu()
 
     $adminmenu  = "<div class='menubar'>\n";
     if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
-    $adminmenu  .="<div class='menubar-title'>\n"
+    $adminmenu  .="<div class='menubar-title ui-widget-header'>\n"
     . "<div class='menubar-title-left'>\n"
     . "<strong>".$clang->gT("Administration")."</strong>";
     if(isset($_SESSION['loginID']))

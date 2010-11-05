@@ -19,7 +19,7 @@ function browsemenubar($title='')
     $thissurvey=getSurveyInfo($surveyid);
     //BROWSE MENU BAR
     $browsemenubar = "<div class='menubar'>\n"
-    . "<div class='menubar-title'>\n"
+    . "<div class='menubar-title ui-widget-header'>\n"
     . "<strong>$title</strong>: ({$thissurvey['name']})"
     . "</div>"
     . "<div class='menubar-main'>\n"

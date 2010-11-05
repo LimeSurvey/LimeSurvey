@@ -413,8 +413,8 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
     if ($execresult==0 || $execresult==1)
     {
-        $activateoutput .= "<br />\n<div class='messagebox'>\n" .
-        "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
+        $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n" .
+        "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
         "<div class='warningheader'>".$clang->gT("Survey could not be actived.")."</div>\n" .
         "<p>" .
         $clang->gT("Database error:")."\n <font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
@@ -453,8 +453,8 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
             }
         }
 
-        $activateoutput .= "<br />\n<div class='messagebox'>\n";
-        $activateoutput .= "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
+        $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
+        $activateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
         $activateoutput .= "<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
 
         // create the survey directory where the uploaded files can be saved
