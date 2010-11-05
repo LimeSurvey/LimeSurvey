@@ -1791,6 +1791,15 @@ function do_date($ia)
 
                 if ($yearmin > $yearmax)
                 {
+                    $yearmin = 1900;
+                    $yearmax = 2020;
+                }
+
+                if ($qidattributes['reverse']==1)
+                {
+                    $tmp = $yearmin;
+                    $yearmin = $yearmax;
+                    $yearmax = $tmp;
                     $step = 1;
                     $reverse = true;
                 }
