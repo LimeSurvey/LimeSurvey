@@ -23,6 +23,7 @@
 .sf-menu li {
 	float:			left;
 	position:		relative;
+    z-index: 100; /* TP - keep the dropdowns above tabbed content in IE7 */
 }
 .sf-menu a {
 	display:		block;
