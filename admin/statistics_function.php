@@ -1705,12 +1705,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         break;
                     case 'pdf':
 
+                        $sPDFQuestion=FlattenText($qquestion,true);
                         $pdfTitle = $pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8')));
-                        $titleDesc = $pdf->delete_html(html_entity_decode($qquestion,ENT_QUOTES,'UTF-8'));
+                        $titleDesc = $sPDFQuestion;
 
                         $pdf->addPage('P','A4');
-                        $pdf->Bookmark($pdf->delete_html($qquestion), 1, 0);
-                        $pdf->titleintopdf($pdfTitle,$titleDesc);
+                        $pdf->Bookmark($sPDFQuestion, 1, 0);
+                        $pdf->titleintopdf($pdfTitle,$sPDFQuestion);
                         $tablePDF = array();
                         $footPDF = array();
 
