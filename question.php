@@ -403,7 +403,10 @@ if ($plus_conditions)
 }
 //------------------------END DEVELOPMENT OF QUESTION
 
-$percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+if ($thissurvey['showprogress'] == 'Y')
+{
+    $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+}
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 sendcacheheaders();

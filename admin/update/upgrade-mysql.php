@@ -407,6 +407,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountencryption` VARCHAR(4) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountuser` VARCHAR(320) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showwelcome` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `showprogress` char(1) default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_survey_permissions` (
                                 `sid` int(10) unsigned NOT NULL,
                                 `uid` int(10) unsigned NOT NULL,
@@ -437,7 +438,6 @@ function db_upgrade($oldversion) {
 
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;

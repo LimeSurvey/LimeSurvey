@@ -444,11 +444,16 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
         $upload_file = TRUE;
 } //end iteration
 
-if ($show_empty_group) {
-    $percentcomplete = makegraph($_SESSION['totalsteps']+1, $_SESSION['totalsteps']);
-} else
+if ($thissurvey['showprogress'] == 'Y')
 {
-    $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+    if ($show_empty_group)
+    {
+        $percentcomplete = makegraph($_SESSION['totalsteps']+1, $_SESSION['totalsteps']);
+    }
+    else
+    {
+        $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+    }
 }
 $languagechanger = makelanguagechanger();
 

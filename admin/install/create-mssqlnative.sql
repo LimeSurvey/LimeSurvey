@@ -305,11 +305,12 @@ CREATE TABLE [prefix_surveys] (
   [tokenlength] tinyint default '15',
   [bouncetime] BIGINT(20) NOT NULL,
   [bounceprocessing] varchar(1) default 'N',
-  [bounceaccounttype] VARCHAR(4) default NULL,
-  [bounceaccounthost] VARCHAR(320) default NULL,
-  [bounceaccountuser] VARCHAR(320) default NULL,
-  [bounceaccountpass] VARCHAR(320) default NULL,
-  [bounceaccountencryption] VARCHAR(3) default NULL,
+  [bounceaccounttype] varchar(4) default NULL,
+  [bounceaccounthost] varchar(320) default NULL,
+  [bounceaccountuser] varchar(320) default NULL,
+  [bounceaccountpass] varchar(320) default NULL,
+  [bounceaccountencryption] varchar(3) default NULL,
+  [showprogress] char(1) default 'N',
   
   PRIMARY KEY  ([sid])
 ) 

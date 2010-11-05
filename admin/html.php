@@ -2872,6 +2872,21 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "</select></li>\n";
 
+	//Show Progress
+	$editsurvey .= "<li><label for='showprogress'>".$clang->gT("Show progress bar")."</label>\n"
+                . "<select id='showprogress' name='showprogress'>\n"
+                . "<option value='Y'";
+	if (!isset($esrow['showprogress']) || !$esrow['showprogress'] || $esrow['showprogress'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+	$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+                . "<option value='N'";
+	if (isset($esrow['showprogress']) && $esrow['showprogress'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+	$editsurvey .= ">".$clang->gT("No")."</option>\n"
+                . "</select></li>\n";
+
             //Result printing
             $editsurvey .= "<li><label for='printanswers'>".$clang->gT("Participants may print answers?")."</label>\n"
             . "<select id='printanswers' name='printanswers'>\n"

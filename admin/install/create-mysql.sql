@@ -289,6 +289,7 @@ CREATE TABLE `prefix_surveys` (
   `emailresponseto` text default NULL,  
   `emailnotificationto` text default NULL,
   `tokenlength` tinyint(2) default '15',
+  `showprogress` char(1) default 'Y',
    PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
