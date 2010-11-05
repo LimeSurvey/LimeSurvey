@@ -650,6 +650,7 @@ a.optoutemail {
     margin: 5px 2px;
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    clear: left;
 }
 
 .browsetokens th {
