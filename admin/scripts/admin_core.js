@@ -245,6 +245,10 @@ $(document).ready(function(){
         $('#groupdetails').show();
     });
     $('#tabs').tabs();
+    $("#flashmessage").notify().notify('create','themeroller',{},{custom:true,
+    speed: 500,
+    expires: 5000
+});
 });
 
 

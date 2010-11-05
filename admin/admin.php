@@ -30,7 +30,6 @@ require_once(dirname(__FILE__).'/../config-defaults.php');
 require_once(dirname(__FILE__).'/../common.php');
 
 require_once('htmleditor-functions.php');
-require_once('admin_functions.php');
 //@ini_set('session.gc_maxlifetime', $sessionlifetime);     Might cause problems in client??
 
 // Reset FileManagerContext

@@ -316,4 +316,97 @@ function aTemplateDefaultTexts($oLanguage, $mode='html'){
 
 // Closing PHP tag intentionally left out - yes, it is okay
 
+function doAdminHeader()
+{
+    echo getAdminHeader();
+}
+
+function getAdminHeader($meta=false)
+{
+    global $sitename, $admintheme, $rooturl, $defaultlang, $css_admin_includes, $homeurl;
+    if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']=$defaultlang;}
+    $strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+    ."<html ";
+
+    if (getLanguageRTL($_SESSION['adminlang']))
+    {
+        $strAdminHeader.=" dir=\"rtl\" ";
+    }
+    $strAdminHeader.=">\n<head>\n";
+
+    if ($meta)
+    {
+        $strAdminHeader.=$meta;
+    }
+    $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
+    $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.notify.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
+
+    if ($_SESSION['adminlang']!='en')
+    {
+        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
+    }
+
+    $strAdminHeader.= "<title>$sitename</title>\n";
+
+    $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
+    . '<link rel="shortcut icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n"
+    . '<link rel="icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n";
+
+    if (getLanguageRTL($_SESSION['adminlang']))
+    {
+        $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
+    }
+
+    $css_admin_includes = array_unique($css_admin_includes);
+
+    foreach ($css_admin_includes as $cssinclude)
+    {
+        $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
+    }
+    $strAdminHeader.= use_firebug()
+    . "</head>\n<body>\n";
+    if (isset($_SESSION['dateformat']))
+    {
+        $formatdata=getDateFormatData($_SESSION['dateformat']);
+        $strAdminHeader .= "<script type='text/javascript'>
+                               var userdateformat='".$formatdata['jsdate']."';
+                               var userlanguage='".$_SESSION['adminlang']."';
+                           </script>";
+    }
+
+    // Prepare flashmessage
+    if (isset($_SESSION['flashmessage']) && $_SESSION['flashmessage']!='')
+    {
+        $strAdminHeader .='<div id="flashmessage" style="display:none;">
+         
+                <div id="themeroller" class="ui-state-highlight ui-corner-all">
+                    <!-- close link -->
+                    <a class="ui-notify-close" href="#">
+                        <span class="ui-icon ui-icon-close" style="float:right"></span>
+                    </a>
+             
+                    <!-- alert icon -->
+                    <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info"></span>
+             
+                    <h1></h1>
+                    <p>'.$_SESSION['flashmessage'].'</p>
+                </div>
+             
+                <!-- other templates here, maybe.. -->
+            </div>';
+        unset($_SESSION['flashmessage']);
+    }
+                 
+    // Standard header
+    $strAdminHeader .="<div class='maintitle'>{$sitename}</div>\n";
+    return $strAdminHeader;
+}
 

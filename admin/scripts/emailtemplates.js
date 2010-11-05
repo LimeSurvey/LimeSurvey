@@ -18,7 +18,7 @@ function loadHTMLEditor(event, ui)
    if ($('#'+ui.panel.id+' iframe').size()==0)
    {
         sFCKEditorInstanceName='oFCKeditor_'+$('#'+ui.panel.id+' textarea').attr('id');
-        eval(sFCKEditorInstanceName+".ReplaceTextarea()");
+        eval("if (typeof "+sFCKEditorInstanceName+" != 'undefined')"+sFCKEditorInstanceName+".ReplaceTextarea();");
    }
 }
 

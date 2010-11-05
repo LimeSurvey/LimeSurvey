@@ -482,7 +482,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             if($activated=="Y")
             {
                 $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("You can't reorder question groups if the survey is active.", "js")."');\" >"
-                . "<img src='$imageurl/reorder_disabled_30.png'' name='translate'/> ".$clang->gT("Reorder question groups")."</a></li>\n";
+                . "<img src='$imageurl/reorder_disabled_30.png' name='translate'/> ".$clang->gT("Reorder question groups")."</a></li>\n";
             }
             elseif (getGroupSum($surveyid,$surveyinfo['language'])>1)
             {
@@ -491,7 +491,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             }       
             else{
                 $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("You can't reorder question groups if there is only one group.", "js")."');\" >"
-                . "<img src='$imageurl/reorder_disabled_30.png'' name='translate'/> ".$clang->gT("Reorder question groups")."</a></li>\n";
+                . "<img src='$imageurl/reorder_disabled_30.png' name='translate'/> ".$clang->gT("Reorder question groups")."</a></li>\n";
             } 
             
         }

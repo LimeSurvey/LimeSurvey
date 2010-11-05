@@ -113,6 +113,7 @@ if(isset($surveyid))
             }
             // This line sets the newly inserted group as the new group
             if (isset($groupid)){$gid=$groupid;}
+            $_SESSION['flashmessage'] = $clang->gT("New question group was saved.");
 
         }
     }
@@ -155,33 +156,13 @@ if(isset($surveyid))
                 else
                 {
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
+                    exit;
                 }
             }
         }
-
+        $_SESSION['flashmessage'] = $clang->gT("Question group successfully saved.");
     }
 
-    elseif ($action == "delgroupnone" && bHasSurveyPermission($surveyid, 'define_questions'))
-    {
-        if (!isset($gid)) $gid=returnglobal('gid');
-
-        $query = "DELETE FROM ".db_table_name('assessments')." WHERE sid=$surveyid AND gid=$gid";
-        $result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
-
-        $query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
-        $result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
-
-        if ($result)
-        {
-            $gid = "";
-            $groupselect = getgrouplist($gid);
-            fixSortOrderGroups($surveyid);
-        }
-        else
-        {
-            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
-        }
-    }
 
     elseif ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
     {
@@ -208,6 +189,7 @@ if(isset($surveyid))
             $gid = "";
             $groupselect = getgrouplist($gid);
             fixSortOrderGroups($surveyid);
+            $_SESSION['flashmessage'] = $clang->gT("The question group was deleted.");               
         }
         else
         {
@@ -312,6 +294,8 @@ if(isset($surveyid))
             }
 
             fixsortorderQuestions($postgid, $surveyid);
+            $_SESSION['flashmessage'] = $clang->gT("Question was successfully added.");               
+            
             //include("surveytable_functions.php");
             //surveyFixColumns($surveyid);
         }
@@ -346,6 +330,7 @@ if(isset($surveyid))
             $question_number++;
             $group_number=$grow['gid'];
         }
+        $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");                    
     }
 
     
@@ -417,8 +402,8 @@ if(isset($surveyid))
                    } 
                 }
             }
-        }        
-            
+        }
+        $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");                    
     }
 
     
@@ -616,6 +601,8 @@ if(isset($surveyid))
                             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
                         }
                     }
+                    $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");                    
+
 
                 }
                 else
@@ -804,6 +791,8 @@ if(isset($surveyid))
             fixsortorderQuestions($postgid, $surveyid);
             $gid=$postgid; //Sets the gid so that admin.php displays whatever group was chosen for this copied question
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
+            $_SESSION['flashmessage'] = $clang->gT("Question was successfully copied.");                    
+
         }
     }
     elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))     
@@ -835,6 +824,7 @@ if(isset($surveyid))
             $postqid="";
             $_GET['qid']="";
         }
+        $_SESSION['flashmessage'] = $clang->gT("Question was successfully deleted.");                    
     }
 
     elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
@@ -906,9 +896,11 @@ if(isset($surveyid))
         if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
         $sortorderid--;
+        $_SESSION['flashmessage'] = $clang->gT("Answer options were successfully saved.");                    
+        
         $action='editansweroptions';
 
-            }
+    }
 
     elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
     {
@@ -1007,6 +999,8 @@ if(isset($surveyid))
         }
         //include("surveytable_functions.php");
         //surveyFixColumns($surveyid);
+        $_SESSION['flashmessage'] = $clang->gT("Subquestions were successfully saved.");                    
+        
         $action='editsubquestions';
     }
 
@@ -1162,6 +1156,8 @@ if(isset($surveyid))
         if ($usresult)
         {
             $surveyselect = getsurveylist();
+            $_SESSION['flashmessage'] = $clang->gT("Survey settings were successfully saved.");                    
+            
         }
         else
         {
@@ -1190,10 +1186,7 @@ if(isset($surveyid))
                 $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
             }
         }
-        $databaseoutput .= "<div class='header'>".$clang->gT("Edit email templates")."</div>\n"
-        ."<div class='messagebox'>"
-        ."\t<div class='successheader'>".$clang->gT("Email templates have been saved.")."</div>\n"
-        ."</div>";
+        $_SESSION['flashmessage'] = $clang->gT("Email templates successfully saved.");
     }     
        
     elseif ($action == "delsurvey" && bHasSurveyPermission($surveyid,'survey','delete')) //can only happen if there are no groups, no questions, no answers etc.
@@ -1265,6 +1258,7 @@ if(isset($surveyid))
                 $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());   // Checked
             }
         }
+        $_SESSION['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
     }
 
 }
@@ -1428,6 +1422,8 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked
         unset($bplang);
 
+        $_SESSION['flashmessage'] = $clang->gT("Survey was successfully added.");                    
+        
         // Update survey permissions
         GiveAllSurveyPermissions($_SESSION['loginID'],$surveyid);
 
@@ -1452,7 +1448,7 @@ elseif ($action == "savepersonalsettings")
     $_SESSION['adminlang']=$_POST['lang'];
     $_SESSION['htmleditormode']=$_POST['htmleditormode'];
     $_SESSION['dateformat']= $_POST['dateformat'];
-    $databaseoutput.='<div class="messagebox"><strong>'.$clang->gT('Your personal settings were successfully saved.').'</strong></div>';
+    $_SESSION['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");                    
 }
 else
 {

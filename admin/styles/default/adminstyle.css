@@ -1346,3 +1346,11 @@ div.translate {
   width: 90%;
 }
 
+
+.ui-notify { 
+    width:350px; 
+    position:fixed; 
+    top:35px; 
+    left:50%;   
+    margin-left: -175px;
+}

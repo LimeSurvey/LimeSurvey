@@ -270,6 +270,7 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 //IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
 if ($sourcefrom == "admin")
 {
+    require_once('admin_functions.php');
     include($homedir."/sessioncontrol.php");
     /**
      * @param string $htmlheader
