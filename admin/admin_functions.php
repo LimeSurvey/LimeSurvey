@@ -348,7 +348,7 @@ function getAdminHeader($meta=false)
 
     if ($_SESSION['adminlang']!='en')
     {
-        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
+        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/jquery.ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
     }
 
     $strAdminHeader.= "<title>$sitename</title>\n";
