@@ -1335,3 +1335,14 @@ thead th
 #frmglobalsettings table {
     float:none;
 }
+
+div.translate {
+  margin: 10 5px;
+}
+
+.translate table {
+  padding: 1px 0;
+  vertical-align: top;
+  width: 90%;
+}
+

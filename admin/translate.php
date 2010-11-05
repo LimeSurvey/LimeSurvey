@@ -41,6 +41,11 @@
   {
     $tolang = $_POST['tolang'];
   }
+  if ($tolang=="" && count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 1)
+  {
+      $tmp_langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+      $tolang = $tmp_langs[0];
+  }
 
   $actionvalue = "";
   if(isset($_POST['actionvalue'])) {$actionvalue = $_POST['actionvalue'];}
@@ -50,6 +55,9 @@
   $survey_title = $surveyinfo['name'];
   $baselang = GetBaseLanguageFromSurveyID($surveyid);
   $supportedLanguages = getLanguageData(false);
+
+
+
   $baselangdesc = $supportedLanguages[$baselang]['description'];
   if($tolang != "")
   {  
@@ -67,7 +75,6 @@
   $translateoutput .= "<div class='header'>".$clang->gT("Translate survey")."</div>\n";
   
   $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
-
 
 
   if ($tolang != "" && $actionvalue=="translateSave")
@@ -105,6 +112,8 @@
     $actionvalue = "";
   } // end if
 
+
+
   if ($tolang != "")
   // Display tabs with fields to translate, as well as input fields for translated values
   {
@@ -140,6 +149,7 @@
       // Setup form
         // start a counter in order to number the input fields for each record
         $i = 0;
+        $rowCounter = 0;
         $all_fields_empty = TRUE;
 
         $querybase = $amTypeOptions["querybase"];
@@ -160,20 +170,21 @@
           if($amTypeOptions["qid"]==TRUE) $qid = $rowfrom['qid'];
 
           $rowto = $resultto->FetchRow();
-          $textto   = htmlspecialchars_decode($rowto[$amTypeOptions["dbColumn"]]);
+          $textto   = $rowto[$amTypeOptions["dbColumn"]];
 
           if (strlen(trim((string)$textfrom)) > 0)
           {
             $all_fields_empty = FALSE;
+            ++$rowCounter;
             // Display translation fields
             $translateoutput .= displayTranslateFieldsWide($surveyid, $gid, $qid, $type,
-                    $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $amTypeOptions);
-            ++$i;
+                    $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $rowCounter);
           }
           else
           {
             $translateoutput .= "<input type='hidden' name='{$type}_newvalue[$i]' value='$textto' />";
           }
+          ++$i;
         } // end while
         if ($all_fields_empty)
         {

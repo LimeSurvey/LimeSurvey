@@ -24,8 +24,8 @@ function menuItem($menuText, $jsMenuText, $menuImageText, $menuImageFile, $scrip
 {
   global $clang, $imageurl;
   $menu = ""
-      ."<a href=\"#\" onclick=\"window.open('".$scriptname."', '_top')\"
-          .title='".$menuText."'>"
+      ."<a href=\"#\" onclick=\"window.open('".$scriptname."', '_top')\""
+          ."title='".$menuText."'>"
           ."<img name='".$menuImageText."' src='$imageurl/".$menuImageFile."' alt='"
           .$jsMenuText."' /></a>\n"
       ."<img src='$imageurl/blank.gif' alt='' width='11'  />\n";
@@ -103,7 +103,6 @@ function menuSeparator()
     if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
     {
         $adminmenu .= menuItem($menutext, $menutext2, "do.png", "$publicurl/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang");
-
     }
     else
     {
@@ -142,25 +141,21 @@ function menuSeparator()
   }
   $adminmenu .= ""
       ."<div class='menubar-right'>\n"
-        ."<ul>"
-          ."<li>"
-            ."<label for='language'>" . $clang->gT("Translate to: ") . "</label>\n"
-              ."<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-              ."<option {$selected} value='$scriptname?action=translate&amp;sid={$surveyid}'>".$clang->gT("Please choose...")."</option>\n";
-            foreach($langs as $lang)
+        ."<span class=\"boxcaption\">".$clang->gT("Translate to").":</span>"
+        ."<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+          ."<option {$selected} value='$scriptname?action=translate&amp;sid={$surveyid}'>".$clang->gT("Please choose...")."</option>\n";
+          foreach($langs as $lang)
+          {
+            $selected="";
+            if ($tolang==$lang)
             {
-              $selected="";
-              if ($tolang==$lang)
-              {
-                $selected = " selected='selected' ";
-              }
-              $tolangtext   = $supportedLanguages[$lang]['description'];
-              $adminmenu .= "<option {$selected} value='$scriptname?action=translate&amp;sid={$surveyid}&amp;tolang={$lang}'> " . $tolangtext ." </option>\n";
+              $selected = " selected='selected' ";
             }
-            $adminmenu .= ""
-            ."</select>\n"
-          ."</li>\n"
-        ."</ul>\n"
+            $tolangtext   = $supportedLanguages[$lang]['description'];
+            $adminmenu .= "<option {$selected} value='$scriptname?action=translate&amp;sid={$surveyid}&amp;tolang={$lang}'> " . $tolangtext ." </option>\n";
+          }
+          $adminmenu .= ""
+        ."</select>\n"
       ."</div>\n"; // End of menubar-right
 
   $adminmenu .= ""
@@ -533,8 +528,10 @@ function displayTranslateFieldsWideHeader($baselangdesc, $tolangdesc)
   return($translateoutput);
 }
 
+
 function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions,
-        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $amTypeOptions)
+        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $rowCounter)
+
 {
   $value1 = "";
   if ($amTypeOptions["id1"] != "") $value1 = $rowfrom[$amTypeOptions["id1"]];
@@ -544,12 +541,13 @@ function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions
   $translateoutput = "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
   $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
 
-  $translateoutput .= "<div style=\"margin:10 10%; \">\n"
-     . '<table cellpadding="5" cellspacing="0" align="center" width="100%" >'
-      . '<colgroup valign="top" width="45%">'
-      . '<colgroup valign="top" width="55%">';
+  $translateoutput .= "<div class=\"translate\" >"
+    .'<table class="translate">'
+      . '<colgroup valign="top" width="45%" />'
+      . '<colgroup valign="top" width="55%" />';
+
       // Display text in original language
-      if ($i % 2)
+      if ($rowCounter % 2)
       {
         $translateoutput .= "<tr class=\"odd\">";
       }
@@ -557,7 +555,7 @@ function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions
       {
         $translateoutput .= "<tr class=\"even\">";
       }
-          // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
+      // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
       $translateoutput .= ""
         . "<td>$textfrom</td>\n"
         . "<td>\n";
@@ -566,19 +564,19 @@ function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions
             ."name='".$type."_oldvalue_".$i."' "
             ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
           $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
-            ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>";
+            ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
 
           if ($amTypeOptions["HTMLeditorInline"]=="Yes")
           {
             $translateoutput .= ""
-              .getEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+              .getEditor("edit".$type , $type."_newvalue_".$i, htmlspecialchars($textto), $surveyid, $gid, $qid, "translate".$type);
           }
           else
           {
             $translateoutput .= ""
-              .getPopupEditor("edit".$type , $type."_newvalue_".$i, $textto, $surveyid, $gid, $qid, "translate".$type);
+              .getPopupEditor("edit".$type , $type."_newvalue_".$i, htmlspecialchars($textto), $surveyid, $gid, $qid, "translate".$type);
           }
-          $translateoutput .= "</td>\n"
+          $translateoutput .= "\n</td>\n"
       . "</tr>\n"
     . "</table>\n"
   . "</div>\n";
