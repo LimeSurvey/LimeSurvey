@@ -1,10 +1,12 @@
 // $Id: saved.js 9330 2010-10-24 22:23:56Z c_schmitz $
 
 $(document).ready(function(){
-          $('.tabsinner').tabs(
+          handle=$('.tabsinner').tabs(
           {
                show: loadHTMLEditor
-          });       
+          });
+       //   alert($(".tabsinner").tabs().data("selected.tabs"));
+//          loadHTMLEditor('',)       
           
 });
 
@@ -13,11 +15,17 @@ $(document).ready(function(){
 */
 function loadHTMLEditor(event, ui) 
 { 
-    var selected = $(this).tabs('option', 'selected');
-   // var oEditor = FCKeditorAPI.GetInstance('html');
-   if ($('#'+ui.panel.id+' iframe').size()==0)
+   if (typeof ui.panel.selector != 'undefined')
    {
-        sFCKEditorInstanceName='oFCKeditor_'+$('#'+ui.panel.id+' textarea').attr('id');
+       sSelector=ui.panel.selector;
+   }
+   else
+   {
+       sSelector='#'+ui.panel.id;
+   }
+   if ($(sSelector+' iframe').size()==0)
+   {
+        sFCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id');
         eval("if (typeof "+sFCKEditorInstanceName+" != 'undefined')"+sFCKEditorInstanceName+".ReplaceTextarea();");
    }
 }

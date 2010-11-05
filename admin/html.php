@@ -681,7 +681,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             else
             {
                 $surveysummary .= "<li><a href='#' onclick=\"alert('".$clang->gT("This survey is not active - no responses are available.","js")."')\">"
-                . "<img src='{$imageurl}/saved_disabled_30.png' name='BrowseSurveyResults' /> ".$clang->gT("Partial (saved) responses")."</a></li>\n";
+                . "<img src='{$imageurl}/saved_disabled_30.png' name='PartialResponses' /> ".$clang->gT("Partial (saved) responses")."</a></li>\n";
             }
             
         }
