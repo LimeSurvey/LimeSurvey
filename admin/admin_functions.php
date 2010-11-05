@@ -253,6 +253,67 @@ function setQuestionAttribute($qid,$sAttributeName,$sAttributeValue)
     $connect->Execute('delete from '.db_table_name('question_attributes')." where qid={$qid} and attribute=".db_quoteall($sAttributeName));
     $connect->Execute($sQuery);
 }
+
+/**
+* Returns the default email template texts as array
+* 
+* @param mixed $oLanguage Required language translationb object
+* @param string $mode Escape mode for the translation function
+* @return array
+*/
+function aTemplateDefaultTexts($oLanguage, $mode='html'){
+    return array(
+      'admin_detailed_notification_subject'=>$oLanguage->gT("Response submission for survey {SURVEYNAME} with results",$mode),
+      'admin_detailed_notification'=>$oLanguage->gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}",$mode),
+      'admin_detailed_notification_css'=>'<style type="text/css">
+                                                .printouttable {
+                                                  margin:1em auto;
+                                                }
+                                                .printouttable th {
+                                                  text-align: center;
+                                                }
+                                                .printouttable td {
+                                                  border-color: #ddf #ddf #ddf #ddf;
+                                                  border-style: solid;
+                                                  border-width: 1px;
+                                                  padding:0.1em 1em 0.1em 0.5em;
+                                                }
+
+                                                .printouttable td:first-child {
+                                                  font-weight: 700;
+                                                  text-align: right;
+                                                  padding-right: 5px;
+                                                  padding-left: 5px;
+
+                                                }
+                                                .printouttable .printanswersquestion td{
+                                                  background-color:#F7F8FF;
+                                                }
+
+                                                .printouttable .printanswersquestionhead td{
+                                                  text-align: left;
+                                                  background-color:#ddf;
+                                                }
+
+                                                .printouttable .printanswersgroup td{
+                                                  text-align: center;        
+                                                  font-weight:bold;
+                                                  padding-top:1em;
+                                                }
+                                                </style>',
+      'admin_notification_subject'=>$oLanguage->gT("Response submission for survey {SURVEYNAME}",$mode),
+      'admin_notification'=>$oLanguage->gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}",$mode),
+      'confirmation_subject'=>$oLanguage->gT("Confirmation of your participation in our survey"),
+      'confirmation'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",$mode),
+      'invitation_subject'=>$oLanguage->gT("Invitation to participate in a survey",$mode),
+      'invitation'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".$oLanguage->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode),
+      'reminder_subject'=>$oLanguage->gT("Reminder to participate in a survey",$mode),
+      'reminder'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".$oLanguage->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode),
+      'registration_subject'=>$oLanguage->gT("Survey registration confirmation",$mode),
+      'registration'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",$mode)
+    );
+}
+
 // Closing PHP tag intentionally left out - yes, it is okay
 
 

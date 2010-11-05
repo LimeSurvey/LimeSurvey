@@ -172,126 +172,72 @@ if(isset($_POST['printableexport']))
     $pdf->AddPage();
         $pdf->titleintopdf($clang->gT("Survey Name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
 }
-$printoutput .= "\t<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)").":</strong> $surveyname ($surveyid)</span><br />\n";
+$printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
+
+
+$aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language);
 
 //Get the fieldmap @TODO: do we need to filter out some fields?
-$fnames = createFieldMap($surveyid,'full',false,false,$language);
-unset ($fnames['id']);
-unset ($fnames['lastpage']);
-unset ($fnames['startlanguage']);
-unset ($fnames['datestamp']);
-unset ($fnames['startdate']);
+unset ($aFullResponseTable['id']);
+unset ($aFullResponseTable['token']);
+unset ($aFullResponseTable['lastpage']);
+unset ($aFullResponseTable['startlanguage']);
+unset ($aFullResponseTable['datestamp']);
+unset ($aFullResponseTable['startdate']);
 
-//SHOW INDIVIDUAL RECORD
-$idquery = "SELECT * FROM $surveytable WHERE id=$id";
-$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked
-	while ($idrow = $idresult->FetchRow()) 
-	{
-			$id=$idrow['id']; 
-	}
-$next=$id+1;
-$last=$id-1;
 $printoutput .= "<table class='printouttable' >\n";
 if(isset($_POST['printableexport']))
 {
-        $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
+    $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
 }
-    $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your answer")."</th></tr>\n";
-$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked
-while ($idrow = $idresult->FetchRow())
+
+$oldgid = 0;
+$oldqid = 0;
+foreach ($aFullResponseTable as $sFieldname=>$fname)
 {
-    $oldgid = 0;
-    $oldqid = 0;
-    foreach ($fnames as $fname)
+    if (substr($sFieldname,0,4)=='gid_')
     {
-        $question = $fname['question'];
-        if (isset($fname['gid']) && !empty($fname['gid'])) {
-            //Check to see if gid is the same as before. if not show group name
-	            if ($oldgid !== $fname['gid']) 
-	            {
-                $oldgid = $fname['gid'];
-	                $printoutput .= "\t<tr class='printanswersgroupname'><td colspan='2'>{$fname['group_name']}</td></tr>\n";
-	                
-	                if(isset($_POST['printableexport']))
-	    			{
-		                $pdf->intopdf(FlattenText($fname['group_name'],true));
-		                $pdf->ln(2);
-            }
+        
+	    if(isset($_POST['printableexport']))
+	    {
+		    $pdf->intopdf(FlattenText($fname['group_name'],true));
+		    $pdf->ln(2);
         }
-	        }
-	        if (isset($fname['qid']) && !empty($fname['qid'])) 
-	        {
-            //Check to see if gid is the same as before. if not show group name
-	            if ($oldqid !== $fname['qid']) 
-	            {
-                $oldqid = $fname['qid'];
-	                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) 
-	                {
-	                    $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname['question']}</td></tr>\n";
-	                    if(isset($_POST['printableexport']))
-	    				{
-	                    	$pdf->intopdf(FlattenText($fname['question'],true));
-	                		$pdf->ln(2);
-                }
-            }
+        else
+        {
+           $printoutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
         }
-	        }
-        	if (isset($fname['subquestion']))  
-        	$question = "{$fname['subquestion']}";
-       	 	
-        	if (isset($fname['subquestion1'])) 
-        	$question = "{$fname['subquestion1']}";
-        	
-        	if (isset($fname['subquestion2'])) 
-        	$question .= "[{$fname['subquestion2']}]";
-			
-        $printoutput .= "\t<tr>\n"
-        	."<td  class='printanswersquestiontext'>$question</td>\n"
-			."<td class='printanswersanswertext'>"
-        .getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']])
-        ."</td>\n"
-        ."\t</tr>\n";
+	}
+    elseif (substr($sFieldname,0,4)=='qid_')
+    {
         if(isset($_POST['printableexport']))
         {
-            	if (isset($fname['subquestion']))  
-            	$question .= " [{$fname['subquestion']}]";
-            	
-            	if (isset($fname['subquestion1'])) 
-            	$question .= " [{$fname['subquestion1']}]";
-            	
-            	if (isset($fname['subquestion2'])) 
-            	$question .= " [{$fname['subquestion2']}]";      
-	            
-            	if(isset($_POST['printableexport']))
-	    		{
-            $pdf->intopdf(FlattenText($question,true).": ".FlattenText(getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]),true));
+            $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
             $pdf->ln(2);
+        }
+        else
+        {
+            $printoutput .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
+        }
+    }
+    else
+    {
+        if(isset($_POST['printableexport']))
+        {
+            $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
+            $pdf->ln(2);
+        }
+        else
+        {
+            $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
         }
     }
 }
-	}
+
 $printoutput .= "</table>\n";
 if(isset($_POST['printableexport']))
 {
-    // IE6 Header-Cache fix
-    // Wenn der IE 6 das pdf file nicht erkennt, liegts am IE6 Nutzer
-    //(zu doof, der Browser kennt keine pdf's oder kein reader ist installiert)
-    // oder daran das man multipleIE verwendet.
 
-    //		header('Cache-Control: no-cache, must-revalidate'); //Adjust maxage appropriately
-    //		header('Pragma: public');
-    //
-    //		// Wir werden eine PDF Datei ausgeben
-    //		// \n\n bewirkt eine korrektes erkennen des Content-type im IE
-    //
-    //		header('Content-Disposition: attachment; filename="'.$clang->gT($surveyname).'-'.$surveyid.'.pdf"');
-    //		header('Content-type: application/pdf');
-    //
-    //		header('Content-Transfer-Encoding: binary');
-    //		//header('Content-Length: '. filesize($filename));
-
-
-    //session_cache_limiter('private');
     header("Pragma: public");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
@@ -315,7 +261,7 @@ if(isset($_POST['printableexport']))
         header("Content-Length: ". filesize("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf"));
         readfile("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf");
         unlink("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf");
-        //$pdf->write_out($clang->gT($surveyname)."-".$surveyid.".pdf");
+
     }
     else
     {
@@ -324,15 +270,17 @@ if(isset($_POST['printableexport']))
 }
 
 
-//tadaaaaaaaaaaa : display the page with the answers of user
+//Display the page with user answers 
 if(!isset($_POST['printableexport']))
 {
     sendcacheheaders();
     doHeader();
 
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
-    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
     echo "</body></html>";
 }
+
+
 ?>

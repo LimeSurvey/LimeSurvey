@@ -151,14 +151,14 @@ if ($subaction == "id")
     $fieldmap=createFieldMap($surveyid,'full',false,false,$language);
 
     //add token to top of list if survey is not private
-    if ($surveyinfo['private'] == "N")
+    if ($surveyinfo['private'] == "N" && tableExists('tokens_'.$surveyid))
     {
         $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
         $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
         $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
-    $fnames[] = array("submitdate", "Submit Date", $clang->gT("Completed"), "0", 'D');
+    $fnames[] = array("submitdate", "Submission date", $clang->gT("Completed"), "0", 'D');
     $fnames[] = array("completed", $clang->gT("Completed"), "0");
 
     foreach ($fieldmap as $field)
@@ -228,9 +228,8 @@ if ($subaction == "id")
     $next=$id+1;
     $last=$id-1;
     $browseoutput .= "<div class='menubar'>\n"
-            ."<div class='menubar-title'>"
-            ."<strong>".$clang->gT("View Response").":</strong> $id\n"
-            ."\t</div><div class='menubar-main'>\n"
+            ."<div class='menubar-title'>".sprintf($clang->gT("View response ID %d"),$id)."</div>"
+            ."\t<div class='menubar-main'>\n"
             ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
             ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
     if (isset($rlanguage))
@@ -239,7 +238,7 @@ if ($subaction == "id")
                 ."title='".$clang->gTview("Edit this entry")."'>"
                 ."<img align='left' src='$imageurl/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
     }
-    if (bHasSurveyPermission($surveyid,'delete_survey') && isset($rlanguage))
+    if (bHasSurveyPermission($surveyid,'responses','delete') && isset($rlanguage))
     {
 
         $browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" >"

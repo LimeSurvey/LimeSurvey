@@ -1118,6 +1118,7 @@ if(isset($surveyid))
                     if (getEmailFormat($surveyid) == "html")
                     {
                         $ishtml=true;
+                        $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
                     }
                     else
                     {
@@ -1125,6 +1126,7 @@ if(isset($surveyid))
                     }
 
                     $bplang = new limesurvey_lang($langname);
+                    $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');                         
                     $languagedetails=getLanguageDetails($langname);
                     $usquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
                     ." (surveyls_survey_id, surveyls_language, surveyls_title, "
@@ -1136,15 +1138,18 @@ if(isset($surveyid))
                     ." email_admin_responses_subj, email_admin_responses, "
                     ." surveyls_dateformat) "
                     ." VALUES ({$postsid}, '".$langname."', '',"
-                    .db_quoteall($bplang->gT("Invitation to participate in survey",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$ishtml)).","
-                    .db_quoteall($bplang->gT("Reminder to participate in survey",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$ishtml)).","
-                    .db_quoteall($bplang->gT("Confirmation of completed survey",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
-                    .db_quoteall($bplang->gT("Survey Registration Confirmation",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml)).","
-                    ."'','','','',"
+                    .db_quoteall($aDefaultTexts['invitation_subject']).","
+                    .db_quoteall($aDefaultTexts['invitation']).","
+                    .db_quoteall($aDefaultTexts['reminder_subject']).","
+                    .db_quoteall($aDefaultTexts['reminder']).","
+                    .db_quoteall($aDefaultTexts['confirmation_subject']).","
+                    .db_quoteall($aDefaultTexts['confirmation']).","
+                    .db_quoteall($aDefaultTexts['registration_subject']).","
+                    .db_quoteall($aDefaultTexts['registration']).","
+                    .db_quoteall($aDefaultTexts['admin_notification_subject']).","
+                    .db_quoteall($aDefaultTexts['admin_notification']).","
+                    .db_quoteall($aDefaultTexts['admin_detailed_notification_subject']).","
+                    .db_quoteall($aDefaultTexts['admin_detailed_notification']).","
                     .$languagedetails['dateformat'].")";
                     unset($bplang);
                     $usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br />".$connect->ErrorMsg()); // Checked
@@ -1353,7 +1358,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'ipaddr'=>$_POST['ipaddr'],
                             'refurl'=>$_POST['refurl'],
                             'usecookie'=>$_POST['usecookie'],
-                            'notification'=>$_POST['notification'],
+                            'emailnotificationto'=>$_POST['emailnotificationto'],
                             'allowregister'=>$_POST['allowregister'],
                             'allowsave'=>$_POST['allowsave'],
                             'autoredirect'=>$_POST['autoredirect'],
@@ -1388,11 +1393,14 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['welcome']=fix_FCKeditor_text($_POST['welcome']);
 
         $bplang = new limesurvey_lang($_POST['language']);
+        $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');     
         $is_html_email = false;
         if (isset($_POST['htmlemail'])  && $_POST['htmlemail'] == "Y")
         {
             $is_html_email = true;
+            $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$is_html_email,'unescaped');
         }
+
         $insertarray=array( 'surveyls_survey_id'=>$surveyid,
                             'surveyls_language'=>$_POST['language'],
                             'surveyls_title'=>$_POST['surveyls_title'],
@@ -1401,16 +1409,20 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'surveyls_urldescription'=>$_POST['urldescrip'],
                             'surveyls_endtext'=>$_POST['endtext'],
                             'surveyls_url'=>$_POST['url'],
-                            'surveyls_email_invite_subj'=>$bplang->gT("Invitation to participate in survey",'unescaped'),
-                            'surveyls_email_invite'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$is_html_email,'unescaped'),
-                            'surveyls_email_remind_subj'=>$bplang->gT("Reminder to participate in survey",'unescaped'),
-                            'surveyls_email_remind'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$is_html_email,'unescaped'),
-                            'surveyls_email_confirm_subj'=>$bplang->gT("Confirmation of completed survey",'unescaped'),
-                            'surveyls_email_confirm'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$is_html_email,'unescaped'),
-                            'surveyls_email_register_subj'=>$bplang->gT("Survey Registration Confirmation",'unescaped'),
-                            'surveyls_email_register'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$is_html_email,'unescaped'),
+                            'surveyls_email_invite_subj'=>$aDefaultTexts['invitation_subject'],
+                            'surveyls_email_invite'=>conditional_nl2br($aDefaultTexts['invitation'],$is_html_email,'unescaped'),
+                            'surveyls_email_remind_subj'=>$aDefaultTexts['reminder_subject'],
+                            'surveyls_email_remind'=>conditional_nl2br($aDefaultTexts['reminder'],$is_html_email,'unescaped'),
+                            'surveyls_email_confirm_subj'=>$aDefaultTexts['confirmation_subject'],
+                            'surveyls_email_confirm'=>conditional_nl2br($aDefaultTexts['confirmation'],$is_html_email,'unescaped'),
+                            'surveyls_email_register_subj'=>$aDefaultTexts['registration_subject'],
+                            'surveyls_email_register'=>conditional_nl2br($aDefaultTexts['registration'],$is_html_email,'unescaped'),
+                            'email_admin_confirmation_subj'=>$aDefaultTexts['admin_notification_subject'],
+                            'email_admin_confirmation'=>conditional_nl2br($aDefaultTexts['admin_notification'],$is_html_email,'unescaped'),
+                            'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
+                            'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
                             'surveyls_dateformat'=>$_POST['dateformat']
-        );
+                          );
         $dbtablename=db_table_name_nq('surveys_languagesettings');
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);
         $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked

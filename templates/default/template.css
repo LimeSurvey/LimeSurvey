@@ -140,26 +140,45 @@ a:link,a:visited {
 }
 
 .printouttable {
-  width: 100%;
+  margin:1em auto;
 }
 
+.printouttable th {
+  text-align: center;
+}
+
+
 .printouttable td {
-  border-color: #fff #fff #ddf;
+  border-color: #ddf #ddf #ddf #ddf;
   border-style: solid;
   border-width: 1px;
+  padding:0.1em 1em 0.1em 0.5em;
 }
 
 .printouttable td:first-child {
-  background-color: #ddf;
   font-weight: 700;
   text-align: right;
   padding-right: 5px;
   padding-left: 5px;
+
+}
+.printouttable .printanswersquestion td{
+  background-color:#F7F8FF;
+}
+
+.printouttable .printanswersquestionhead td{
+  text-align: left;
+  background-color:#ddf;
+}
+
+.printouttable .printanswersgroup td{
+  text-align: center;        
+  font-weight:bold;
+  padding-top:1em;
 }
 
 .printouttitle {
-  padding-right: 5px;
-  padding-left: 5px;
+  padding: 10px 10px 0 10px;
   font-size: 18px;
 }
 

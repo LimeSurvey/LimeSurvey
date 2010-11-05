@@ -2610,7 +2610,6 @@ function templatereplace($line, $replacements=array())
 
     if (strpos($line, "{SURVEYLIST}") !== false) $line=str_replace("{SURVEYLIST}", $surveylist, $line);
     if (strpos($line, "{CHECKJAVASCRIPT}") !== false) $line=str_replace("{CHECKJAVASCRIPT}", "<noscript><span class='warningjs'>".$clang->gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>", $line);
-    if (strpos($line, "{ANSWERTABLE}") !== false) $line=str_replace("{ANSWERTABLE}", $printoutput, $line);
 
     if (strpos($line, "{SURVEYLANGAGE}") !== false) $line=str_replace("{SURVEYLANGAGE}", $clang->langcode, $line);
     if (strpos($line, "{SURVEYCONTACT}") !== false) $line=str_replace("{SURVEYCONTACT}", $surveycontact, $line);
@@ -7844,5 +7843,78 @@ function SSL_mode()
                 redirect();
     };
 };
+
+
+/**
+* Creates an array with details on a particular response for display purposes
+* Used in Print answers (done), Detailed response view (Todo:)and Detailed admin notification email (done)
+* 
+* @param mixed $iSurveyID
+* @param mixed $iResponseID
+* @param mixed $sLanguageCode
+*/
+function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
+{
+    global $connect;
+    $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
+    //Get response data
+    $idquery = "SELECT * FROM ".db_table_name('survey_'.$iSurveyID)." WHERE id=".$iResponseID;
+    $idrow=$connect->GetRow($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked
+
+    $aResultTable=array();
+    
+    $oldgid = 0;
+    $oldqid = 0;
+    foreach ($aFieldMap as $sKey=>$fname)
+    {
+        $question = $fname['question'];
+        $subquestion='';
+        if (isset($fname['gid']) && !empty($fname['gid'])) {
+            //Check to see if gid is the same as before. if not show group name
+            if ($oldgid !== $fname['gid']) 
+            {
+                $oldgid = $fname['gid'];
+                $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+            }
+        }
+        if (isset($fname['qid']) && !empty($fname['qid'])) 
+        {
+            if ($oldqid !== $fname['qid']) 
+            {
+                $oldqid = $fname['qid'];
+                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) 
+                {
+                    $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');                        
+                }
+                else
+                {   
+                    $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+                    $aResultTable[$fname['fieldname']]=array($question,'',$answer); 
+                    continue; 
+                }
+            }
+        }
+        else
+        {
+            $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+            $aResultTable[$fname['fieldname']]=array($question,'',$answer); 
+            continue; 
+        }
+        if (isset($fname['subquestion']))  
+        $subquestion = "{$fname['subquestion']}";
+           
+        if (isset($fname['subquestion1'])) 
+        $subquestion = "{$fname['subquestion1']}";
+        
+        if (isset($fname['subquestion2'])) 
+        $subquestion .= "[{$fname['subquestion2']}]";
+            
+        $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+        $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
+    }
+    return $aResultTable; 
+}
+
+
 
 // Closing PHP tag intentionally left out - yes, it is okay

@@ -2051,25 +2051,34 @@ function SendSubmitNotifications()
     global $dbprefix, $clang, $emailcharset;
     global $sitename, $homeurl, $surveyid, $publicurl, $maildebug, $tokensexist;
 
-    $subject = sprintf($clang->gT("Response submission for survey %s","unescaped"), $thissurvey['name']);
+    $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
 
-    $sMessage = $clang->gT("Hello!","unescaped")."\n"
-    . $clang->gT("A new response was submitted for your survey.","unescaped")."\n\n";
+    $aReplacementVars=array();
+
+
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
     {
-        $sMessage .= $clang->gT("Click the following link to reload the survey:","unescaped")."\n";
-        $sMessage .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\n\n";
+        $aReplacementVars['RELOADURL']="{$publicurl}/index.php?sid={$surveyid}&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass']);
+        if ($bIsHTML)
+        {        
+            $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
+        }
+    }
+    else
+    {
+        $aReplacementVars['RELOADURL']='';    
     }
 
-    $sMessage .= $clang->gT("Click the following link to see the individual response:","unescaped")."\n"
-    . "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."\n\n"
-    // Add link to edit individual responses from notification email
-    . $clang->gT("Click the following link to edit the individual response:","unescaped")."\n"
-
-    . "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\n\n"
-    . $clang->gT("View statistics by clicking here:","unescaped")."\n"
-    . "  $homeurl/admin.php?action=statistics&sid=$surveyid\n\n";
-
+    $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id={$_SESSION['srid']}";
+    $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$_SESSION['srid'];
+    $aReplacementVars['STATISTICSURL']="{$homeurl}/admin.php?action=statistics&sid={$surveyid}";
+    if ($bIsHTML)
+    {
+        $aReplacementVars['VIEWRESPONSEURL']="<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";
+        $aReplacementVars['EDITRESPONSEURL']="<a href='{$aReplacementVars['EDITRESPONSEURL']}'>{$aReplacementVars['EDITRESPONSEURL']}</a>";
+        $aReplacementVars['STATISTICSURL']="<a href='{$aReplacementVars['STATISTICSURL']}'>{$aReplacementVars['STATISTICSURL']}</a>";
+    }
+    $aReplacementVars['ANSWERTABLE']='';      
     $aEmailResponseTo=array();
     $aEmailNotificationTo=array();
     $sResponseData="";
@@ -2080,7 +2089,7 @@ function SendSubmitNotifications()
         {
             foreach($aRecipient as $sRecipient)
             {
-                $ert=dTexts::run($sRecipient);
+                $sRecipient=dTexts::run($sRecipient);
                 if(validate_email($sRecipient))
                 {
                     $aEmailNotificationTo[]=$sRecipient;
@@ -2114,79 +2123,72 @@ function SendSubmitNotifications()
             }
         }
 
-        // Gather results
-        $sResponseData = "----------------------------\n";
-        $prevquestion='';
-        $ssubquestion='';
-        $fieldmap=createFieldMap($surveyid,'full');
-        foreach ($_SESSION['insertarray'] as $value)
+        $aFullResponseTable=aGetFullResponseTable($surveyid,$_SESSION['srid'],$_SESSION['s_lang']);   
+        $ResultTableHTML = "<table class='printouttable' >\n";
+        $ResultTableText ="\n\n";
+        $oldgid = 0;
+        $oldqid = 0;
+        foreach ($aFullResponseTable as $sFieldname=>$fname)
         {
-            $sQuestion = strip_tags($fieldmap[$value]['question']);
-            if (isset($fieldmap[$value]['subquestion2']))
+            if (substr($sFieldname,0,4)=='gid_')
             {
-                $ssubquestion = "[".strip_tags($fieldmap[$value]['subquestion1'])."] [".strip_tags($fieldmap[$value]['subquestion2'])."]";     
-            } elseif (isset($fieldmap[$value]['subquestion']))
-            {
-                $ssubquestion = strip_tags($fieldmap[$value]['subquestion']);    
-            } else
-            {
-                $ssubquestion='';
+                
+               $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+               $ResultTableText .="\n{$fname[0]}\n\n";
             }
+            elseif (substr($sFieldname,0,4)=='qid_')
+            {
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableText .="\n{$fname[0]}\n";
+            }
+            else
+            {
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+            }
+        }
 
-            if ($prevquestion!=$sQuestion)
-            {
-                $prevquestion=$sQuestion;
-                $questiontitle=FlattenText(html_entity_decode($sQuestion, ENT_QUOTES, $emailcharset));
-                $sResponseData .= "\n$questiontitle: ";
-                if ($ssubquestion!='')
-                {
-                    $sResponseData .= "\n";
-                }
-            }
-            if ($ssubquestion!='')
-            {
-                $answeroption=FlattenText(html_entity_decode($ssubquestion, ENT_QUOTES, $emailcharset));
-                $sResponseData .= "\t[$answeroption]:   ";
-            }
-
-            if ( $fieldmap[$value]['type'] == "T" || $fieldmap[$value]['type'] == "U")
-            {
-                $sResponseData .= "\r\n";
-                if (isset($_SESSION[$value]))
-                {
-                    foreach (explode("\n",$_SESSION[$value]) as $line)
-                    {
-                        $sResponseData .= "\t" . FlattenText(html_entity_decode($line, ENT_QUOTES, $emailcharset));
-                        $sResponseData .= "\n";
-                    }
-                }
-            }
-                $sResponseData .= "\n";
-       }
+        $ResultTableHTML .= "</table>\n";  
+        $ResultTableText .= "\n\n";
+        if ($bIsHTML)
+        {
+            $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
+        }
+        else
+        {
+            $aReplacementVars['ANSWERTABLE']=$ResultTableText;
+        }
     }
     
-
-    $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-    foreach ($aEmailNotificationTo as $sRecipient)
+    $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+    if (count($aEmailNotificationTo)>0)
     {
-        if (!SendEmailMessage($sMessage, $subject, $aEmailResponseTo, $from, $sitename, false, getBounceEmail($surveyid)))
+        $sMessage=templatereplace($thissurvey['email_admin_confirmation'],$aReplacementVars);
+        $sSubject=templatereplace($thissurvey['email_admin_confirmation_subj'],$aReplacementVars);
+        foreach ($aEmailNotificationTo as $sRecipient)
         {
-            if ($debug>0)
+            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
             {
-                echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                if ($debug>0)
+                {
+                    echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                }
             }
         }
     }
     
-    foreach ($aEmailResponseTo as $sRecipient)
+    if (count($aEmailResponseTo)>0)
     {
-        $sMessage  = $clang->gT("This email contains confirmation of the responses you made to the survey")." ".$thissurvey['name']."\n";
-        $sSubject  = $clang->gT("Survey submission confirmation");
-        if (!SendEmailMessage($sMessage.$sResponseData, $sSubject, $aEmailResponseTo, $from, $sitename, false, getBounceEmail($surveyid)))
+        $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars);
+        $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars);
+        foreach ($aEmailResponseTo as $sRecipient)
         {
-            if ($debug>0)
+            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
             {
-                echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                if ($debug>0)
+                {
+                    echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                }
             }
         }
     }

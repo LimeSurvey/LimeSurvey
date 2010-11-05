@@ -3676,6 +3676,11 @@ if ($action == "emailtemplates")
         $esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
         $esresult = db_execute_assoc($esquery);
         $esrow = $esresult->FetchRow();
+        $aDefaultTexts=aTemplateDefaultTexts($bplang);
+        if ($ishtml==true){
+            $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$ishtml);            
+        }
+        
         $sHTMLOutput .= "<div id='tab-{$grouplang}'>";
         $sHTMLOutput .= "<div class='tabsinner' id='tabsinner-{$grouplang}'>"
         ."<ul>"
@@ -3690,13 +3695,13 @@ if ($action == "emailtemplates")
         ."<div id='tab-{$grouplang}-admin-confirmation'>";
         $sHTMLOutput .= "<ul><li><label for='email_admin_confirmation_subj_{$grouplang}'>".$clang->gT("Admin confirmation email subject:")."</label>\n"
         . "<input type='text' size='80' name='email_admin_confirmation_subj_{$grouplang}' id='email_admin_confirmation_subj_{$grouplang}' value=\"{$esrow['email_admin_confirmation_subj']}\" />\n"
-        . "<input type='hidden' name='email_admin_confirmation_subj_default_{$grouplang}' id='email_admin_confirmation_subj_default_{$grouplang}' value='".$bplang->gT("Invitation to participate in survey")."' />\n"
+        . "<input type='hidden' name='email_admin_confirmation_subj_default_{$grouplang}' id='email_admin_confirmation_subj_default_{$grouplang}' value='".$aDefaultTexts['admin_notification_subject']."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_confirmation_subj_{$grouplang}\",\"email_admin_confirmation_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .= "<li><label for='email_admin_confirmation_{$grouplang}'>".$clang->gT("Admin confirmation email body:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_admin_confirmation_{$grouplang}' id='email_admin_confirmation_{$grouplang}'>".htmlspecialchars($esrow['email_admin_confirmation'])."</textarea>\n"
         . getEditor("email-admin-conf","email_admin_confirmation_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_admin_confirmation_default_{$grouplang}' id='email_admin_confirmation_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been admin_confirmationd to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml),ENT_QUOTES)."' />\n"
+        . "<input type='hidden' name='email_admin_confirmation_default_{$grouplang}' id='email_admin_confirmation_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['admin_notification'],$ishtml),ENT_QUOTES)."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_confirmation_{$grouplang}\",\"email_admin_confirmation_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .="</ul></div>"
@@ -3704,13 +3709,13 @@ if ($action == "emailtemplates")
         ."<div id='tab-{$grouplang}-admin-responses'>";
         $sHTMLOutput .= "<ul><li><label for='email_admin_responses_subj_{$grouplang}'>".$clang->gT("Invitation email subject:")."</label>\n"
         . "<input type='text' size='80' name='email_admin_responses_subj_{$grouplang}' id='email_admin_responses_subj_{$grouplang}' value=\"{$esrow['email_admin_responses_subj']}\" />\n"
-        . "<input type='hidden' name='email_admin_responses_subj_default_{$grouplang}' id='email_admin_responses_subj_default_{$grouplang}' value='".$bplang->gT("Invitation to participate in survey")."' />\n"
+        . "<input type='hidden' name='email_admin_responses_subj_default_{$grouplang}' id='email_admin_responses_subj_default_{$grouplang}' value='{$aDefaultTexts['admin_detailed_notification_subject']}' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_responses_subj_{$grouplang}\",\"email_admin_responses_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .= "<li><label for='email_admin_responses_{$grouplang}'>".$clang->gT("Invitation email:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_admin_responses_{$grouplang}' id='email_admin_responses_{$grouplang}'>".htmlspecialchars($esrow['email_admin_responses'])."</textarea>\n"
         . getEditor("email-admin-resp","email_admin_responses_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_admin_responses_default_{$grouplang}' id='email_admin_responses_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been admin_responsed to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml),ENT_QUOTES)."' />\n"
+        . "<input type='hidden' name='email_admin_responses_default_{$grouplang}' id='email_admin_responses_default_{$grouplang}' value='".htmlspecialchars($aDefaultTexts['admin_detailed_notification'],ENT_QUOTES)."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_responses_{$grouplang}\",\"email_admin_responses_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .="</ul></div>"  
@@ -3718,13 +3723,13 @@ if ($action == "emailtemplates")
         ."<div id='tab-{$grouplang}-invitation'>";
         $sHTMLOutput .= "<ul><li><label for='email_invite_subj_{$grouplang}'>".$clang->gT("Invitation email subject:")."</label>\n"
         . "<input type='text' size='80' name='email_invite_subj_{$grouplang}' id='email_invite_subj_{$grouplang}' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
-        . "<input type='hidden' name='email_invite_subj_default_{$grouplang}' id='email_invite_subj_default_{$grouplang}' value='".$bplang->gT("Invitation to participate in survey")."' />\n"
+        . "<input type='hidden' name='email_invite_subj_default_{$grouplang}' id='email_invite_subj_default_{$grouplang}' value='{$aDefaultTexts['invitation_subject']}' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_subj_{$grouplang}\",\"email_invite_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .= "<li><label for='email_invite_{$grouplang}'>".$clang->gT("Invitation email:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_invite_".$esrow['surveyls_language']."' id='email_invite_{$grouplang}'>".htmlspecialchars($esrow['surveyls_email_invite'])."</textarea>\n"
         . getEditor("email-inv","email_invite_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml),ENT_QUOTES)."' />\n"
+        . "<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['invitation'],$ishtml),ENT_QUOTES)."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_{$grouplang}\",\"email_invite_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .="</ul></div>"
@@ -3732,13 +3737,13 @@ if ($action == "emailtemplates")
         ."<div id='tab-{$grouplang}-reminder'>";
         $sHTMLOutput .= "<ul><li><label for='email_remind_subj_{$grouplang}'>".$clang->gT("Reminder email subject:")."</label>\n"
         . "<input type='text' size='80' name='email_remind_subj_".$esrow['surveyls_language']."' id='email_remind_subj_{$grouplang}' value=\"{$esrow['surveyls_email_remind_subj']}\" />\n"
-        . "<input type='hidden' name='email_remind_subj_default_".$esrow['surveyls_language']."' id='email_remind_subj_default_{$grouplang}' value='".$bplang->gT("Reminder to participate in survey")."' />\n"
+        . "<input type='hidden' name='email_remind_subj_default_".$esrow['surveyls_language']."' id='email_remind_subj_default_{$grouplang}' value='{$aDefaultTexts['reminder_subject']}' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_subj_{$grouplang}\",\"email_remind_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .= "<li><label for='email_remind_{$grouplang}'>".$clang->gT("Email reminder:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_remind_".$esrow['surveyls_language']."' id='email_remind_{$grouplang}'>".htmlspecialchars($esrow['surveyls_email_remind'])."</textarea>\n"
         . getEditor("email-rem","email_remind_{$grouplang}", "[".$clang->gT("Email reminder:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml),ENT_QUOTES)."' />\n"
+        . "<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['reminder'],$ishtml),ENT_QUOTES)."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .="</ul></div>"
@@ -3746,13 +3751,13 @@ if ($action == "emailtemplates")
         ."<div id='tab-{$grouplang}-confirmation'>";
         $sHTMLOutput .= "<ul><li><label for='email_confirm_subj_{$grouplang}'>".$clang->gT("Confirmation email subject:")."</label>\n"
         . "<input type='text' size='80' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj_{$grouplang}' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
-        . "<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default_{$grouplang}' value='".$bplang->gT("Confirmation of completed survey")."' />\n"
+        . "<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default_{$grouplang}' value='{$aDefaultTexts['confirmation_subject']}' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_subj_{$grouplang}\",\"email_confirm_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .= "<li><label for='email_confirm_{$grouplang}'>".$clang->gT("Confirmation email:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_confirm_".$esrow['surveyls_language']."' id='email_confirm_{$grouplang}'>".htmlspecialchars($esrow['surveyls_email_confirm'])."</textarea>\n"
         . getEditor("email-conf","email_confirm_{$grouplang}", "[".$clang->gT("Confirmation email", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml),ENT_QUOTES)."' />\n"
+        . "<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['confirmation'],$ishtml),ENT_QUOTES)."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_{$grouplang}\",\"email_confirm_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .="</ul></div>"
@@ -3760,13 +3765,13 @@ if ($action == "emailtemplates")
         ."<div id='tab-{$grouplang}-registration'>";
         $sHTMLOutput .= "<ul><li><label for='email_register_subj_{$grouplang}'>".$clang->gT("Public registration email subject:")."</label>\n"
         . "<input type='text' size='80' name='email_register_subj_".$esrow['surveyls_language']."' id='email_register_subj_{$grouplang}' value=\"{$esrow['surveyls_email_register_subj']}\" />\n"
-        . "<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default_{$grouplang}' value='".$bplang->gT("Survey registration confirmation")."' />\n"
+        . "<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default_{$grouplang}' value='{$aDefaultTexts['registration_subject']}' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_subj_{$grouplang}\",\"email_register_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .= "<li><label for='email_register_{$grouplang}'>".$clang->gT("Public registration email:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_register_{$grouplang}' id='email_register_{$grouplang}'>".htmlspecialchars($esrow['surveyls_email_register'])."</textarea>\n"
         . getEditor("email-reg","email_register_{$grouplang}", "[".$clang->gT("Public registration email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."),$ishtml),ENT_QUOTES)."' />\n"
+        . "<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['registration'],$ishtml),ENT_QUOTES)."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
         . "\t</li></ul>";
         $sHTMLOutput .="</div>" // tab
@@ -3826,80 +3831,71 @@ function showadminmenu()
     if(isset($_SESSION['loginID']))
     {
         $adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
-        . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" >"
-        . $_SESSION['user']." <img src='$imageurl/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' /></a>"
+        . "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" >"
+        . $_SESSION['user']." <img src='{$imageurl}/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' /></a>"
         . "</strong>\n";
     }
     $adminmenu  .="</div>\n";
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updatelastcheck) && $updatelastcheck>0 && isset($updateavailable) && $updateavailable==1)
     {
-        $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
+        $adminmenu  .="<div class='menubar-title-right'><a href='{$scriptname}?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
     }
     $adminmenu .= "</div>\n"
     . "<div class='menubar-main'>\n"
     . "<div class='menubar-left'>\n"
-    . "<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\">"
-    . "<img src='$imageurl/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' /></a>\n";
+    . "<a href=\"#\" onclick=\"window.open('{$scriptname}', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\">"
+    . "<img src='{$imageurl}/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' /></a>\n";
 
-    $adminmenu .= "<img src='$imageurl/blank.gif' alt='' width='11' />\n"
-    . "<img src='$imageurl/seperator.gif' alt='' />\n";
+    $adminmenu .= "<img src='{$imageurl}/blank.gif' alt='' width='11' />\n"
+    . "<img src='{$imageurl}/seperator.gif' alt='' />\n";
 
     // Edit users
-    $adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" >"
-    ."<img src='$imageurl/security.png' name='AdminSecurity' alt='".$clang->gT("Create/Edit Users")."' /></a>";
+    $adminmenu .="<a href=\"#\" onclick=\"window.open('{$scriptname}?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" >"
+    ."<img src='{$imageurl}/security.png' name='AdminSecurity' alt='".$clang->gT("Create/Edit Users")."' /></a>";
 
-    $adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" >"
-    ."<img src='$imageurl/usergroup.png' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
+    $adminmenu .="<a href=\"#\" onclick=\"window.open('{$scriptname}?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" >"
+    ."<img src='{$imageurl}/usergroup.png' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
 
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global settings")."\" >"
-        . "<img src='$imageurl/global.png' name='GlobalSettings' alt='". $clang->gT("Global settings")."' /></a>"
-        . "<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' />\n";
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global settings")."\" >"
+        . "<img src='{$imageurl}/global.png' name='GlobalSettings' alt='". $clang->gT("Global settings")."' /></a>"
+        . "<img src='{$imageurl}/seperator.gif' alt='' border='0' hspace='0' />\n";
     }
     // Check data integrity
     if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\">".
-                      "<img src='$imageurl/checkdb.png' name='CheckDataIntegrity' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
-    }
-    else
-    {
-        $adminmenu .= "<img src='$imageurl/blank.gif' alt='' width='40'  />\n";
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\">".
+                      "<img src='{$imageurl}/checkdb.png' name='CheckDataIntegrity' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
     }
 
     // list surveys
-    $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" >\n"
-    ."<img src='$imageurl/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
+    $adminmenu .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" >\n"
+    ."<img src='{$imageurl}/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
     ."</a>" ;
 
     // db backup & label editor
     if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {
-        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=dumpdb', '_top')\" title=\"".$clang->gTview("Backup Entire Database")."\">\n"
-        ."<img src='$imageurl/backup.png' name='ExportDB' alt='". $clang->gT("Backup Entire Database")."' />"
+        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=dumpdb', '_top')\" title=\"".$clang->gTview("Backup Entire Database")."\">\n"
+        ."<img src='{$imageurl}/backup.png' name='ExportDB' alt='". $clang->gT("Backup Entire Database")."' />"
         ."</a>\n"
-        ."<img src='$imageurl/seperator.gif' alt=''  border='0' hspace='0' />\n";
+        ."<img src='{$imageurl}/seperator.gif' alt=''  border='0' hspace='0' />\n";
     }
-    else
-    {
-        $adminmenu .= "<img src='$imageurl/blank.gif' alt='' width='40'   />\n";
-    }
+
     if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     {
-        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit label sets")."\">\n"
-        ."<img src='$imageurl/labels.png'  name='LabelsEditor' alt='". $clang->gT("Edit label sets")."' /></a>\n"
-        ."<img src='$imageurl/seperator.gif' alt=''  border='0' hspace='0' />\n";
+        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=labels', '_top')\" title=\"".$clang->gTview("Edit label sets")."\">\n"
+        ."<img src='{$imageurl}/labels.png'  name='LabelsEditor' alt='". $clang->gT("Edit label sets")."' /></a>\n"
+        ."<img src='{$imageurl}/seperator.gif' alt=''  border='0' hspace='0' />\n";
     }
-    else
-    {
-        $adminmenu .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
-    }
+
     if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
     {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" >"
-        ."<img src='$imageurl/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' /></a>\n";
+        $adminmenu .= "<a href='{$scriptname}?action=templates' title=\"".$clang->gTview("Template Editor")."\" >"
+        ."<img src='{$imageurl}/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' /></a>\n";
     }
+    
     // survey select box
     $adminmenu .= "</div><div class='menubar-right'><span class=\"boxcaption\">".$clang->gT("Surveys").":</span>"
     . "<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
@@ -3908,22 +3904,22 @@ function showadminmenu()
 
     if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
     {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=newsurvey', '_top')\""
         ."title=\"".$clang->gTview("Create, import, or copy a survey")."\" >"
-        ."<img src='$imageurl/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create, import, or copy a survey")."' /></a>\n";
+        ."<img src='{$imageurl}/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create, import, or copy a survey")."' /></a>\n";
     }
 
 
     if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
     {
         // Logout
-        $adminmenu .= "<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' />"
-        . "<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\" title=\"".$clang->gTview("Logout")."\" >"
-        . "<img src='$imageurl/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
+        $adminmenu .= "<img src='{$imageurl}/seperator.gif' alt='' border='0' hspace='0' />"
+        . "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=logout', '_top')\" title=\"".$clang->gTview("Logout")."\" >"
+        . "<img src='{$imageurl}/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
 
         //Show help
         $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey Online manual")."\" >"
-        . "<img src='$imageurl/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
+        . "<img src='{$imageurl}/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
 
         $adminmenu .= "</div>"
         . "</div>\n"

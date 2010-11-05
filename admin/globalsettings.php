@@ -408,7 +408,7 @@ function globalsettingsdisplay()
 	    switch($thisforcehttps)
 	    {
 	    	case 'on':
-		    $warning_forcehttps = '';                            
+		    $warning_forcehttps = '&nbsp;';                            
 		    break;
 		case 'off':
 		case 'neither':
@@ -444,7 +444,7 @@ function globalsettingsdisplay()
         . "\t\t</select></li>\n";
 
         $thisrepeatheadings=getGlobalSetting('repeatheadings');
-        $editsurvey .= "\t<li><label for='repeatheadings'>".$clang->gT("Number of answers to show before repeating the headings in array questions:")."</label>\n"
+        $editsurvey .= "\t<li><label for='repeatheadings'>".$clang->gT("Repeating headings in array questions every X subquestions:")."</label>\n"
         . "\t\t<input id='repeatheadings' name='repeatheadings' value='$thisrepeatheadings' size='4' maxlength='4' /></li>\n";
 
 
@@ -612,40 +612,26 @@ function checksettings()
     $cssummary = "<div class='header'>".$clang->gT("System overview")."</div>\n";
     // Database name & default language
     $cssummary .= "<br /><table class='statisticssummary'><tr>\n"
-    . "<td width='50%' align='right'>\n"
-    . "<strong>".$clang->gT("Database name").":</strong>\n"
-    . "</td><td>$databasename</td>\n"
+    . "<th width='50%' align='right'>".$clang->gT("Database name").":</th><td>$databasename</td>\n"
     . "</tr>\n";
     // Other infos
     $cssummary .=  "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Users").":</strong>\n"
-    . "</td><td>$usercount</td>\n"
+    . "<th align='right'>".$clang->gT("Users").":</th><td>$usercount</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Surveys").":</strong>\n"
-    . "</td><td>$surveycount</td>\n"
+    . "<th align='right'>".$clang->gT("Surveys").":</th><td>$surveycount</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"                                               
+    . "<th align='right'>".$clang->gT("Active surveys").":</th><td>$activesurveycount</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Active surveys").":</strong>\n"
-    . "</td><td>$activesurveycount</td>\n"
+    . "<th align='right'>".$clang->gT("Deactivated result tables").":</th><td>$deactivatedsurveys</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Deactivated result tables").":</strong>\n"
-    . "</td><td>$deactivatedsurveys</td>\n"
+    . "<th align='right'>".$clang->gT("Active token tables").":</th><td>$activetokens</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Active token tables").":</strong>\n"
-    . "</td><td>$activetokens</td>\n"
-    . "</tr>\n"
-    . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Deactivated token tables").":</strong>\n"
-    . "</td><td>$deactivatedtokens</td>\n"
+    . "<th align='right'>".$clang->gT("Deactivated token tables").":</th><td>$deactivatedtokens</td>\n"
     . "</tr>\n"
     . "</table>\n";
 
