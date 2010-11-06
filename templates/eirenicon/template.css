@@ -24,10 +24,15 @@ td.survey-question-help {
   background-color: #e5e5e5
 }
 
-.warningjs {
+.warning {
+    display:block;
+    }
+.error,.errormandatory,.warningjs {
+  color: red;
+}
+.errormandatory,.warningjs {
   font-size: 12px;
   font-weight: 700;
-  color: RED;
 }
 
 .asterisk {

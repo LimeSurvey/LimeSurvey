@@ -1,9 +1,10 @@
 <div class="save">
-	<p class="error">{SAVEERROR}</p>
+	<div class="error">{SAVEERROR}</div>
 
 	<h3>{SAVEHEADING}</h3>
 
-	<p>{SAVEMESSAGE}</p>
+	<p>{SAVEMESSAGE}
+	<span class="warning">{SAVEALERT}</span></p>
 
 	<p>{SAVEFORM}</p>
 

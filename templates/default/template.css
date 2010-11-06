@@ -229,10 +229,15 @@ td.survey-question-help img {
 
 /* End formatting for the four keyparts of an question */
 
+.warning {
+    display:block;
+    }
 .error,.errormandatory,.warningjs {
+  color: red;
+}
+.errormandatory,.warningjs {
   font-size: 12px;
   font-weight: 700;
-  color: RED;
 }
 
 table.question {

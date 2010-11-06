@@ -513,7 +513,10 @@ select {
   min-width: 150px;
 }
 
-.errormandatory {
+.warning{
+    display:block;
+    }
+.error,.errormandatory {
   color: #A33D41;
 }
 

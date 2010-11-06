@@ -57,6 +57,10 @@ table {
   color: #CB0404;
 }
 
+.warning{
+    display:block;
+    }
+    
 .printouttable {
   width: 100%;
 }

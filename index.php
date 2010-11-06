@@ -1669,7 +1669,7 @@ function checkUploadedFileValidity($move, $backok=null)
         global $dbprefix;
         $fieldmap = createFieldMap(returnglobal('sid'));
 
-        if (isset($_POST['fieldnames']))
+        if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
             $fields = explode("|", $_POST['fieldnames']);
             foreach ($fields as $field)

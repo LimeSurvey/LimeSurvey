@@ -2926,6 +2926,19 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
     if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", $clang->gT("Save Your Unfinished Survey"), $line);
     if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you."), $line);
+    if (strpos($line, "{SAVEALERT}") !== false) 
+    {
+        if ($thissurvey['private']=='Y')
+        {
+            $savealert=$clang->gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.");
+        }
+        else
+        {
+            $savealert="";
+        }
+        $line=str_replace("{SAVEALERT}", $savealert, $line);
+    }
+    
     if (strpos($line, "{RETURNTOSURVEY}") !== false)
     {
         $savereturn = "<a href='$relativeurl/index.php?sid=$surveyid";

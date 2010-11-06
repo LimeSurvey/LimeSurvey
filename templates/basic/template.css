@@ -146,10 +146,15 @@ table,img {
   background-color: #fff;
 }
 
+.alert{
+    display:block;
+    }
+.error,.errormandatory,.warningjs {
+  color: red;
+}
 .errormandatory,.warningjs {
   font-size: 13px;
   font-weight: 700;
-  color: red;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {

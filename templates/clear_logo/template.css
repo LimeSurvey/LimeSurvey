@@ -42,10 +42,15 @@ td.tenpoint {
   background-color: #eee;
 }
 
-.errormandatory {
+.warning {
+    display:block;
+    }
+.error,.errormandatory,.warningjs {
+  color: red;
+}
+.errormandatory,.warningjs {
   font-size: 13px;
   font-weight: 700;
-  color: red;
 }
 
 .answertextright {

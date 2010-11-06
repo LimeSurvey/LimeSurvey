@@ -137,10 +137,16 @@ textarea {
 	text-align: center;
 }
 
-.warningjs {
+.warning {
+  display:block;
+}
+.error,.errormandatory,.warningjs {
+  color: red;
+}
+.errormandatory,.warningjs {
   font-size: 12px;
   font-weight: 700;
-  color: RED;
+  color: red;
 }
 
 .asterisk {
