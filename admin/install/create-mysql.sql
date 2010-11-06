@@ -272,9 +272,9 @@ CREATE TABLE `prefix_surveys` (
   `bouncetime` BIGINT(20),	
   `bounceprocessing` varchar(1) default 'N',
   `bounceaccounttype` VARCHAR(4),
-  `bounceaccounthost` VARCHAR(320),
-  `bounceaccountuser` VARCHAR(320),
-  `bounceaccountpass` VARCHAR(320),
+  `bounceaccounthost` VARCHAR(200),
+  `bounceaccountuser` VARCHAR(200),
+  `bounceaccountpass` VARCHAR(100),
   `bounceaccountencryption` VARCHAR(3),
   `publicstatistics` char(1) default 'N',
   `publicgraphs` char(1) default 'N',
@@ -314,8 +314,8 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_register` TEXT NULL,
   `surveyls_email_confirm_subj` VARCHAR(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
-  `email_admin_confirmation_subj`  VARCHAR(255) NULL,    
-  `email_admin_confirmation` TEXT NULL,        
+  `email_admin_notification_subj`  VARCHAR(255) NULL,    
+  `email_admin_notification` TEXT NULL,        
   `email_admin_responses_subj` VARCHAR(255) NULL,    
   `email_admin_responses` TEXT NULL,        
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1, 
@@ -422,7 +422,7 @@ create index `questions_idx3` on `prefix_questions` (`gid`);
 create index `questions_idx4` on `prefix_questions` (`type`);
 create index `quota_idx2` on `prefix_quota` (`sid`);
 create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
-
+create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 
 --
 -- Version Info

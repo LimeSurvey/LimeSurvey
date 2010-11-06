@@ -371,8 +371,6 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_answers` DROP COLUMN `default_value`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_questions` DROP COLUMN `lid1`"); echo $modifyoutput; flush();
-        // add field for timings and table for extended conditions
-        modify_database("", "ALTER TABLE `prefix_surveys` ADD `savetimings` char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_sessions(
                               sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
                               expiry DATETIME NOT NULL ,
@@ -383,29 +381,24 @@ function db_upgrade($oldversion) {
                               PRIMARY KEY ( sesskey ) ,
                               INDEX sess2_expiry( expiry ),
                               INDEX sess2_expireref( expireref ))"); echo $modifyoutput; flush();          
-        modify_database("","CREATE TABLE `prefix_extendedconditions` (
-							  `qid` int(11) NOT NULL,
-							  `gid` int(11) NOT NULL,
-							  `sid` int(11) NOT NULL,
-							  `condition` text COLLATE utf8_unicode_ci NOT NULL,
-							  PRIMARY KEY (`qid`,`gid`,`sid`));"); echo $modifyoutput; flush();        
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
         
     }
 
-    if ($oldversion < 145) //Modify surveys table
+    if ($oldversion < 145)
     {
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `savetimings` CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showXquestions` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showgroupinfo` CHAR(1) NULL default 'B'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `shownoanswer` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showqnumcode` CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_surveys` ADD `timestamp` BIGINT(20) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bouncetime` BIGINT(20) NULL "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceprocessing` VARCHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccounttype` VARCHAR(4) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccounthost` VARCHAR(20) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountpass` VARCHAR(20) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountencryption` VARCHAR(4) NULL"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountuser` VARCHAR(320) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccounthost` VARCHAR(200) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountpass` VARCHAR(100) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountencryption` VARCHAR(3) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountuser` VARCHAR(200) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showwelcome` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showprogress` char(1) default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_survey_permissions` (
@@ -428,13 +421,25 @@ function db_upgrade($oldversion) {
         
         // Add new fields for email templates
         modify_database("", "ALTER TABLE `prefix_surveys_languagesettings` ADD 
-                             (`email_admin_confirmation_subj`  VARCHAR(255) NULL,    
-                              `email_admin_confirmation` TEXT NULL,        
+                             (`email_admin_notification_subj`  VARCHAR(255) NULL,    
+                              `email_admin_notification` TEXT NULL,        
                               `email_admin_responses_subj` VARCHAR(255) NULL,    
                               `email_admin_responses` TEXT NULL)");
         
         //Add index to questions table to speed up subquestions
-        modify_database("", "create INDEX parent_qid on prefix_questions( parent_qid );"); echo $modifyoutput; flush();              
+        modify_database("", "create INDEX parent_qid_idx on prefix_questions( parent_qid );"); echo $modifyoutput; flush();   
+        
+        modify_database("","CREATE TABLE `prefix_extendedconditions` (
+                              `qid` int(11) NOT NULL,
+                              `gid` int(11) NOT NULL,
+                              `sid` int(11) NOT NULL,
+                              `condition` text NOT NULL,
+                              PRIMARY KEY (`qid`,`gid`,`sid`));"); echo $modifyoutput; flush();
+                              
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `emailnotificationto` text DEFAULT NULL"); echo $modifyoutput; flush();
+        upgrade_survey_table145();                                           
+        modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `notification`"); echo $modifyoutput; flush();
+                   
 
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }

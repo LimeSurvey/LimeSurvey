@@ -306,9 +306,9 @@ CREATE TABLE [prefix_surveys] (
   [bouncetime] BIGINT(20) NOT NULL,
   [bounceprocessing] varchar(1) default 'N',
   [bounceaccounttype] varchar(4) default NULL,
-  [bounceaccounthost] varchar(320) default NULL,
-  [bounceaccountuser] varchar(320) default NULL,
-  [bounceaccountpass] varchar(320) default NULL,
+  [bounceaccounthost] varchar(200) default NULL,
+  [bounceaccountuser] varchar(200) default NULL,
+  [bounceaccountpass] varchar(100) default NULL,
   [bounceaccountencryption] varchar(3) default NULL,
   [showprogress] char(1) default 'N',
   
@@ -337,8 +337,8 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_email_register] varchar(max) NULL,
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
   [surveyls_email_confirm] varchar(max) NULL,
-  [email_admin_confirmation_subj] VARCHAR(255) NULL,
-  [email_admin_confirmation] varchar(max) NULL,
+  [email_admin_notification_subj] VARCHAR(255) NULL,
+  [email_admin_notification] varchar(max) NULL,
   [email_admin_responses_subj] VARCHAR(255) NULL,
   [email_admin_responses] varchar(max) NULL,
   [surveyls_dateformat] INT NOT NULL DEFAULT 1, 
@@ -448,7 +448,7 @@ create index [questions_idx4] on [prefix_questions] ([type]);
 create index [quota_idx2] on [prefix_quota] ([sid]);
 create index [saved_control_idx2] on [prefix_saved_control] ([sid]);
 create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid]);
-
+create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);      
 
 --
 -- Version Info

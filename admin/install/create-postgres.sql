@@ -304,10 +304,10 @@ CREATE TABLE prefix_surveys (
     bouncetime bigint(20),
     bounceprocessing character(1) default 'N'::bpchar,
     bounceaccounttype character(4),
-    bounceaccounthost character(320),
-    bounceaccountuser character(320),
-    bounceaccountpass character(320),
-    bounceaccountencryption character(320)
+    bounceaccounthost character(200),
+    bounceaccountuser character(200),
+    bounceaccountpass character(100),
+    bounceaccountencryption character(3)
     usetokens character(1) DEFAULT 'N'::bpchar,
     "bounce_email" character varying(320) NOT NULL,
     attributedescriptions text,
@@ -340,8 +340,8 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_email_register text,
     surveyls_email_confirm_subj character varying(255),
     surveyls_email_confirm text,
-    email_admin_confirmation_subj character varying(255),
-    email_admin_confirmation text,
+    email_admin_notification_subj character varying(255),
+    email_admin_notification text,
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
     surveyls_dateformat integer DEFAULT 1 NOT NULL
@@ -448,6 +448,7 @@ create index questions_idx3 on prefix_questions (gid);
 create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index user_in_groups_idx1 on prefix_user_in_groups  (ugid, uid);
+create index parent_qid_idx on prefix_questions (parent_qid);
 
 
 --

@@ -54,6 +54,53 @@ function db_upgrade_all($oldversion) {
     }
 }
 
+function upgrade_survey_table145()
+{
+    global $modifyoutput, $connect;
+    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys')." where notification>0";
+    $oSurveyResult = db_execute_assoc($sSurveyQuery);    
+    while ( $aSurveyRow = $oSurveyResult->FetchRow() )         
+    {
+        if ($aSurveyRow['notification']==1 && trim($aSurveyRow['adminemail'])!='')
+        {
+            $aEmailAddresses=explode(';',$aSurveyRow['adminemail']);
+            $sAdminEmailAddress=$aEmailAddresses[0];
+            $sEmailnNotificationAddresses=implode(';',$aEmailAddresses);
+            $sSurveyUpdateQuery= "update ".db_table_name('surveys')." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=".$aSurveyRow['sid'];        
+            $connect->execute($sSurveyUpdateQuery);
+        }
+        else
+        {
+            $aEmailAddresses=explode(';',$aSurveyRow['adminemail']);
+            $sAdminEmailAddress=$aEmailAddresses[0];
+            $sEmailDetailedNotificationAddresses=implode(';',$aEmailAddresses);
+            if (trim($aSurveyRow['emailresponseto'])!='')
+            {
+                $sEmailDetailedNotificationAddresses=$sEmailDetailedNotificationAddresses.';'.trim($aSurveyRow['emailresponseto']);    
+            }
+            $sSurveyUpdateQuery= "update ".db_table_name('surveys')." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailDetailedNotificationAddresses}' where sid=".$aSurveyRow['sid'];        
+            $connect->execute($sSurveyUpdateQuery);
+        }
+    }
+    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys_languagesettings');
+    $oSurveyResult = db_execute_assoc($sSurveyQuery);  
+    while ( $aSurveyRow = $oSurveyResult->FetchRow() )         
+    {
+        $aDefaultTexts=aTemplateDefaultTexts($aSurveyRow['surveyls_language'],'unescaped'); 
+        $aDefaultTexts['admin_detailed_notification_subject']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
+        $aDefaultTexts=array_map('db_quoteall',$aDefaultTexts);
+        $sSurveyUpdateQuery= "update ".db_table_name('surveys_languagesettings')." set 
+                              email_admin_responses_subj={$aDefaultTexts['admin_detailed_notification_subject']}, 
+                              email_admin_responses={$aDefaultTexts['admin_detailed_notification']},
+                              email_admin_notification_subj={$aDefaultTexts['admin_notification_subject']}, 
+                              email_admin_notification={$aDefaultTexts['admin_notification']}
+                              where sid=".$aSurveyRow['surveyls_survey_id'];   
+        $connect->execute($sSurveyUpdateQuery);                                     
+    }
+
+}
+
+
 function upgrade_surveypermissions_table145()      
 {
     global $modifyoutput, $connect;

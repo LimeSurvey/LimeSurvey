@@ -3708,16 +3708,16 @@ if ($action == "emailtemplates")
         ."</ul>"
         
         ."<div id='tab-{$grouplang}-admin-confirmation'>";
-        $sHTMLOutput .= "<ul><li><label for='email_admin_confirmation_subj_{$grouplang}'>".$clang->gT("Admin confirmation email subject:")."</label>\n"
-        . "<input type='text' size='80' name='email_admin_confirmation_subj_{$grouplang}' id='email_admin_confirmation_subj_{$grouplang}' value=\"{$esrow['email_admin_confirmation_subj']}\" />\n"
-        . "<input type='hidden' name='email_admin_confirmation_subj_default_{$grouplang}' id='email_admin_confirmation_subj_default_{$grouplang}' value='".$aDefaultTexts['admin_notification_subject']."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_confirmation_subj_{$grouplang}\",\"email_admin_confirmation_subj_default_{$grouplang}\")' />\n"
+        $sHTMLOutput .= "<ul><li><label for='email_admin_notification_subj_{$grouplang}'>".$clang->gT("Admin confirmation email subject:")."</label>\n"
+        . "<input type='text' size='80' name='email_admin_notification_subj_{$grouplang}' id='email_admin_notification_subj_{$grouplang}' value=\"{$esrow['email_admin_notification_subj']}\" />\n"
+        . "<input type='hidden' name='email_admin_notification_subj_default_{$grouplang}' id='email_admin_notification_subj_default_{$grouplang}' value='".$aDefaultTexts['admin_notification_subject']."' />\n"
+        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_notification_subj_{$grouplang}\",\"email_admin_notification_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
-        $sHTMLOutput .= "<li><label for='email_admin_confirmation_{$grouplang}'>".$clang->gT("Admin confirmation email body:")."</label>\n"
-        . "<textarea cols='80' rows='20' name='email_admin_confirmation_{$grouplang}' id='email_admin_confirmation_{$grouplang}'>".htmlspecialchars($esrow['email_admin_confirmation'])."</textarea>\n"
-        . getEditor("email-admin-conf","email_admin_confirmation_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_admin_confirmation_default_{$grouplang}' id='email_admin_confirmation_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['admin_notification'],$ishtml),ENT_QUOTES)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_confirmation_{$grouplang}\",\"email_admin_confirmation_default_{$grouplang}\")' />\n"
+        $sHTMLOutput .= "<li><label for='email_admin_notification_{$grouplang}'>".$clang->gT("Admin confirmation email body:")."</label>\n"
+        . "<textarea cols='80' rows='20' name='email_admin_notification_{$grouplang}' id='email_admin_notification_{$grouplang}'>".htmlspecialchars($esrow['email_admin_notification'])."</textarea>\n"
+        . getEditor("email-admin-conf","email_admin_notification_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
+        . "<input type='hidden' name='email_admin_notification_default_{$grouplang}' id='email_admin_notification_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['admin_notification'],$ishtml),ENT_QUOTES)."' />\n"
+        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_notification_{$grouplang}\",\"email_admin_notification_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
         $sHTMLOutput .="</ul></div>"
         

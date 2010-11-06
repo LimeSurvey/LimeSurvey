@@ -5,9 +5,6 @@ $(document).ready(function(){
           {
                show: loadHTMLEditor
           });
-       //   alert($(".tabsinner").tabs().data("selected.tabs"));
-//          loadHTMLEditor('',)       
-          
 });
 
 /**

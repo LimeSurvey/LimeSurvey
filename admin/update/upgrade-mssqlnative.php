@@ -417,10 +417,10 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE [prefix_surveys] ADD timestamp BIGINT(20) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceprocessing VARCHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounttype VARCHAR(4) NULL "); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounthost VARCHAR(20) NULL "); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountpass VARCHAR(20) NULL "); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountencryption VARCHAR(4) NULL "); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountuser VARCHAR(320) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounthost VARCHAR(200) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountpass VARCHAR(100) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountencryption VARCHAR(3) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountuser VARCHAR(200) NULL "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showwelcome CHAR(1) NULL default 'Y' "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showprogress CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE [prefix_survey_permissions] (
@@ -440,8 +440,8 @@ function db_upgrade($oldversion) {
         
         // Add new fields for email templates
         modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD 
-                              email_admin_confirmation_subj  VARCHAR(255) NULL,    
-                              email_admin_confirmation varchar(max) NULL,        
+                              email_admin_notification_subj  VARCHAR(255) NULL,    
+                              email_admin_notification varchar(max) NULL,        
                               email_admin_responses_subj VARCHAR(255) NULL,    
                               email_admin_responses varchar(max) NULL");
         

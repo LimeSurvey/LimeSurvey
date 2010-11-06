@@ -1129,7 +1129,7 @@ if(isset($surveyid))
                     ." surveyls_email_remind_subj, surveyls_email_remind, "
                     ." surveyls_email_confirm_subj, surveyls_email_confirm, "
                     ." surveyls_email_register_subj, surveyls_email_register, "
-                    ." email_admin_confirmation_subj, email_admin_confirmation, "
+                    ." email_admin_notification_subj, email_admin_notification, "
                     ." email_admin_responses_subj, email_admin_responses, "
                     ." surveyls_dateformat) "
                     ." VALUES ({$postsid}, '".$langname."', '',"
@@ -1181,7 +1181,7 @@ if(isset($surveyid))
                 . "surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."', surveyls_email_remind='".$_POST['email_remind_'.$langname]."',"
                 . "surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."', surveyls_email_register='".$_POST['email_register_'.$langname]."',"
                 . "surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."', surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."',"
-                . "email_admin_confirmation_subj='".$_POST['email_admin_confirmation_subj_'.$langname]."', email_admin_confirmation='".$_POST['email_admin_confirmation_'.$langname]."',"
+                . "email_admin_notification_subj='".$_POST['email_admin_notification_subj_'.$langname]."', email_admin_notification='".$_POST['email_admin_notification_'.$langname]."',"
                 . "email_admin_responses_subj='".$_POST['email_admin_responses_subj_'.$langname]."', email_admin_responses='".$_POST['email_admin_responses_'.$langname]."' "
                 . "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
                 $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
@@ -1413,8 +1413,8 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'surveyls_email_confirm'=>conditional_nl2br($aDefaultTexts['confirmation'],$is_html_email,'unescaped'),
                             'surveyls_email_register_subj'=>$aDefaultTexts['registration_subject'],
                             'surveyls_email_register'=>conditional_nl2br($aDefaultTexts['registration'],$is_html_email,'unescaped'),
-                            'email_admin_confirmation_subj'=>$aDefaultTexts['admin_notification_subject'],
-                            'email_admin_confirmation'=>conditional_nl2br($aDefaultTexts['admin_notification'],$is_html_email,'unescaped'),
+                            'email_admin_notification_subj'=>$aDefaultTexts['admin_notification_subject'],
+                            'email_admin_notification'=>conditional_nl2br($aDefaultTexts['admin_notification'],$is_html_email,'unescaped'),
                             'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
                             'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
                             'surveyls_dateformat'=>$_POST['dateformat']

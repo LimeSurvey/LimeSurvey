@@ -640,8 +640,7 @@ if($subaction=="surveysettingsave")
 							$fieldvalue['bounceaccounthost']=$_POST['bounceaccounthost'];
 						}
 						
-	$connect->AutoExecute("{$dbprefix}surveys", $fieldvalue,
-                        2,"sid=$surveyid");
+	$connect->AutoExecute("{$dbprefix}surveys", $fieldvalue, 2,"sid=$surveyid",get_magic_quotes_gpc());
     $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Bounce settings")."</div>\n"
     ."<div class='messagebox ui-corner-all'>"
     ."\t<div class='successheader'>".$clang->gT("Bounce settings have been saved.")."</div>\n"
@@ -691,7 +690,7 @@ $tokenoutput .= "<div id='bouncesettings'>\n"
             . "\t\t<input type='password' size='50' id='bounceaccountpass' name='bounceaccountpass' value=\"".$settings['bounceaccountpass']."\"/></li>\n";
 			$tokenoutput.= "\t<li><label for='bounceencryption'>".$clang->gT("Bounce account encryption type")."</label>\n"
 			. "\t\t<select id='bounceaccountencryption' name='bounceaccountencryption'>\n"
-			. "\t\t\t<option value='O'";
+			. "\t\t\t<option value='Off'";
             if ($settings['bounceaccountencryption']=='Off') {$tokenoutput .= " selected='selected'";}
             $tokenoutput .= ">".$clang->gT("Off")."</option>\n"
             . "\t\t\t<option value='SSL'";
