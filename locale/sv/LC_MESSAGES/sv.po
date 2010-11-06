@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Swedish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-31 12:00+0100\n"
-"PO-Revision-Date: 2010-10-31 22:42+0100\n"
-"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
+"PO-Revision-Date: 2010-11-04 18:54+0100\n"
+"Last-Translator: Jonas Norlinder <jonas@norlinder.nu>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,7 +205,7 @@ msgstr "Fel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:59
 msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Databas information inte tillhandehållen, detta skript kan endast köras från admin.php."
+msgstr "Databas information inte tillhandahållen, detta skript kan endast köras från admin.php."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:86
 msgid "Database has been created."
@@ -1146,15 +1146,15 @@ msgstr "Du har inte valt en enkät att fylla i."
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:132
 #: /var/lib/limesurvey-svn/subversion1x/index.php:655
 msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
-msgstr "För att delta i enkäten krävs en giltig behörighetskod. Kontakta administratören för hjälp."
+msgstr "För att delta i enkäten krävs en giltig behörighets kod. Kontakta administratören för hjälp."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:136
 msgid "The token you have provided is not valid or has already been used."
-msgstr "Behörighetskoden som du angav är antingen ogiltlig eller har redan används."
+msgstr "Behörighetskoden som du angav är antingen ogiltig eller har redan används."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:140
 msgid "There is already a recorded answer for this token"
-msgstr "Det finns redan ett registrerat svar för den denna behörighetskod"
+msgstr "Det finns redan ett registrerat svar för den denna behörighets kod"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:143
 msgid "Follow the following link to update it"
@@ -1182,7 +1182,7 @@ msgstr "Du måste ange ett lösenord för den här omgången svar."
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:172
 #: /var/lib/limesurvey-svn/subversion1x/save.php:287
 msgid "Your passwords do not match."
-msgstr "Lösenorden stömmer inte överens."
+msgstr "Lösenorden stämmer inte överens."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:176
 msgid "Try again"
@@ -1228,7 +1228,7 @@ msgstr "Dina enkätsvar har sparats. Du kommer att få en bekräftelse via e-pos
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:312
 msgid "A token entry for the saved survey has been created too."
-msgstr "En behörighetskod för den sparade enkäten har också skapats."
+msgstr "En behörighets kod för den sparade enkäten har också skapats."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:321
 #: /var/lib/limesurvey-svn/subversion1x/save.php:367
@@ -1238,7 +1238,7 @@ msgstr "Sparade enkätsvar"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:322
 #: /var/lib/limesurvey-svn/subversion1x/save.php:368
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
-msgstr "Du har sparat enkäten du påbröjade. Följande uppgifter används för att återgå till enkäten och fortsätta där du senast var. Var vänlig spara detta e-postmeddelande för framtida referens då det inte är möjligt att begära att få lösenordet skickat till sig igen."
+msgstr "Du har sparat enkäten du påbörjade. Följande uppgifter används för att återgå till enkäten och fortsätta där du senast var. Var vänlig spara detta e-postmeddelande för framtida referens då det inte är möjligt att begära att få lösenordet skickat till sig igen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:324
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:834
@@ -1518,7 +1518,7 @@ msgstr "Posten raderat"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2316
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2310
 msgid "Token"
-msgstr "Behörighetskod"
+msgstr "Behörighets kod"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1415
 msgid "Datestamp"
@@ -1894,7 +1894,7 @@ msgstr "Exportera resultat till datafil för R"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:95
 msgid "Import answers from a deactivated survey table"
-msgstr "Imporetera svar från en avaktiverad enkät"
+msgstr "Importera svar från en avaktiverad enkät"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:101
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:542
@@ -1925,7 +1925,7 @@ msgstr "Den angivna enkät-databasen finns inte"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:64
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr "Antingen har den valda databasen inte skapats än eller så är det problem att accessa den"
+msgstr "Antingen har den valda databasen inte skapats än eller har det uppstått ett åtkomstproblem."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:75
 msgid "You have not selected a survey to browse."
@@ -2035,7 +2035,7 @@ msgstr "Stäng"
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:325
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:942
 msgid "Token ID"
-msgstr "Behörighetskod ID"
+msgstr "Behörighetskodens-ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:356
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:77
@@ -2052,12 +2052,12 @@ msgstr "Radera markerade respondenter"
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:443
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:767
 msgid "Data view control"
-msgstr "Kontroller för datavy"
+msgstr "Kontroller för data vy"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:449
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:774
 msgid "Show start..."
-msgstr "Visa första.."
+msgstr "Visa första..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:452
 msgid "Show previous.."
@@ -2107,7 +2107,7 @@ msgstr "Radera denna inmatning"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:521
 msgid "Edit this token"
-msgstr "Ändra denna behörighetskod"
+msgstr "Ändra denna behörighets kod"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:565
 msgid "Response summary"
@@ -2243,11 +2243,11 @@ msgstr "Du kan inte importera etikettsamlingar som inte stöder den nuvarande en
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:683
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:914
 msgid "Faulty line in import - fields and data don't match"
-msgstr "Felaktig rad i importdatat - fälttyp och data överensstämmer inte"
+msgstr "Felaktigheter i rad vid importering - fält typ och data överensstämmer inte"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:724
 msgid "The languages of the imported question file must at least include the base language of this survey."
-msgstr "Språken för importerad frågefil måste åtminstone inkludera basspråket för denna enkät."
+msgstr "Språken för importerad frågefil måste åtminstone inkludera bas-språket för denna enkät."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:54
 msgid "Saved Responses"
@@ -2536,7 +2536,7 @@ msgstr "Ägare"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:54
 msgid "Access"
-msgstr "Tillgång"
+msgstr "Öppen/Stängd"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:55
 msgid "Anonymous answers"
@@ -2544,14 +2544,14 @@ msgstr "Anonyma svar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:56
 msgid "Full"
-msgstr "Full"
+msgstr "Hela"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:57
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:160
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:342
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:536
 msgid "Partial"
-msgstr "Delvis"
+msgstr "Delvist"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:58
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:187
@@ -2561,11 +2561,11 @@ msgstr "Summa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:59
 msgid "Tokens available"
-msgstr "Behörighetskoder tillängliga"
+msgstr "Behörighetskoder tillgängliga"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:60
 msgid "Response rate"
-msgstr "Svarande respons"
+msgstr "Respons på respondenter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:80
 msgid "Closed"
@@ -2837,7 +2837,7 @@ msgstr "Svaren kommer att datumstämplas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:768
 msgid "IP Addresses will be logged"
-msgstr "IP Addressen kommer att loggas"
+msgstr "IP Adressen kommer att loggas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:769
 msgid "Referer-URL will be saved"
@@ -2894,7 +2894,7 @@ msgstr "Enkätens URL"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:805
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:812
 msgid "Survey URL for language:"
-msgstr "Enkätens URL för språket:y"
+msgstr "Enkätens URL för språket:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:805
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:812
@@ -2936,12 +2936,12 @@ msgstr "Faxa till:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:835
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2756
 msgid "Start date/time:"
-msgstr "Startdatum:"
+msgstr "Börjar vara öppen den:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:848
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2766
 msgid "Expiry date/time:"
-msgstr "Upphör den:"
+msgstr "Blir stängd den:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:860
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2606
@@ -3269,7 +3269,7 @@ msgstr "Fördefinierade etikettsamlingar..."
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1593
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1847
 msgid "Quick add..."
-msgstr "Snabb addera..."
+msgstr "Snabbaddera..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1605
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1857
@@ -3309,7 +3309,7 @@ msgstr "Spara ändringarna"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1654
 msgid "Some example subquestion"
-msgstr "Någa exempel på subfrågor"
+msgstr "Några exempel på subfrågor"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1686
 msgid "You cannot delete the last subquestion."
@@ -3645,7 +3645,7 @@ msgstr "Förhandsvisning av mall:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2628
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3250
 msgid "Allow Saves?"
-msgstr "Tillåt sparningar?"
+msgstr "Tillåt att enkäten sparas?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2639
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3261
@@ -3783,7 +3783,7 @@ msgstr "Kan inte ändras"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2889
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3429
 msgid "Date Stamp?"
-msgstr "Datum stämpel?"
+msgstr "Datumstämpel?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2893
 msgid "Responses will not be date stamped."
@@ -3940,7 +3940,7 @@ msgstr "Fel: Du måste ange en titel för denna enkät."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3168
 msgid "This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."
-msgstr "Detta är ditt basspråk för din enkät och kan inte ändras senare. Du kan dock lägga till mer språk efter du har skapat undersökningen."
+msgstr "Detta är ditt bas-språk för din enkät och kan inte ändras senare. Du kan dock lägga till mer språk efter du har skapat undersökningen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3187
 msgid "*This setting cannot be changed later!"
@@ -4054,7 +4054,7 @@ msgstr "Globala inställningar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3597
 msgid "Check Data Integrity"
-msgstr "Kontrollera datans hälsa"
+msgstr "Kontrollera databashälsa"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3606
 msgid "List Surveys"
@@ -4062,7 +4062,7 @@ msgstr "Lista enkäter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3613
 msgid "Backup Entire Database"
-msgstr "Ta backup på hela databasen"
+msgstr "Ta en backup på hela databasen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3624
 msgid "Edit label sets"
@@ -4157,7 +4157,7 @@ msgstr "Grupp kunde inte tas bort"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:223
 msgid "The question could not be added. You must enter at least enter a question code."
-msgstr "Det gick inte att lägga till frågan. Du måste åtminstone fylla i en frågekod."
+msgstr "Det gick inte att lägga till frågan. Du måste åtminstone fylla i en kod för frågan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:285
 #, php-format
@@ -4182,7 +4182,7 @@ msgstr "Fråga kunde inte uppdateras. Det finns 'val' för andra frågor som hä
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:615
 msgid "This question relies on other question's answers and can't be moved above groupId:"
-msgstr "Denna fråga är beronde av andra frågors svar och kan inte flyttas över grupp-ID:"
+msgstr "Denna fråga är beroende av andra frågors svar och kan inte flyttas över grupp-ID:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:616
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:628
@@ -4393,13 +4393,13 @@ msgid ""
 msgstr ""
 "Bäste {FIRSTNAME},\n"
 "\n"
-"Du, eller någon som angett din e-postadress, har anmält sig för att delta i en internet-enktät som heter {SURVEYNAME}.\n"
+"Du, eller någon som angett din e-postadress, har anmält sig för att delta i en internet-enkät som heter {SURVEYNAME}.\n"
 "\n"
 "För att genomföra enkäten, klicka på följande länk:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Om du har några frågor om denna enkät eller om du inte anmält att du vill delta och anser att detta meddelande är feltaktigt, var vänlig kontakta {ADMINNAME} här {ADMINEMAIL}."
+"Om du har några frågor om denna enkät eller om du inte anmält att du vill delta och anser att detta meddelande är felaktigt, var vänlig kontakta {ADMINNAME} här {ADMINEMAIL}."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1146
 msgid "Survey could not be updated"
@@ -4626,7 +4626,7 @@ msgstr "Ange en LimeSurvey frågefil (*.lsq/*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:524
 msgid "Convert resource links?"
-msgstr "Kovertera resurslänkar?"
+msgstr "Konvertera resurslänkar?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:624
 msgid "Current group is using conditional questions"
@@ -4981,7 +4981,7 @@ msgstr "Enkätens format är %s:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:392
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:401
 msgid "Only Previous pages answers are available"
-msgstr "Endast föregående sidas svar ät tillgängliga"
+msgstr "Endast föregående sidas svar är tillgängliga"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:401
 #, php-format
@@ -5482,7 +5482,7 @@ msgstr "Viktig kommentar:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:320
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "Uppdatera INTE denna sida, då importeras filen igen och dubletter skapas"
+msgstr "Uppdatera INTE denna sida, då importeras filen igen och dubbletter skapas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:322
 msgid "Total records imported:"
@@ -5747,7 +5747,7 @@ msgstr "Filen innehåller inte LimeSurvey-data i korrekt format."
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:553
 #, php-format
 msgid "Template %s not found, please review when activating."
-msgstr "Mall %s kunde inte hittas, vargod att se över detta när det skall aktiveras."
+msgstr "Mall %s kunde inte hittas, vänligen att se över detta när det skall aktiveras."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:734
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
@@ -5874,7 +5874,7 @@ msgstr "Det här är ett exempel på en enkäts beskrivning. Den kan vara ganska
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:411
 msgid "But this one isn't."
-msgstr "Men det här är inte det."
+msgstr "Denna är inte det."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:412
 msgid "Welcome to this sample survey"
@@ -5882,7 +5882,7 @@ msgstr "Välkommen till denna exempelenkät"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:412
 msgid "You should have a great time doing this"
-msgstr "Du borde ha riktigt kul att svara på denna"
+msgstr "Du kommer förhoppningsvis ha riktigt roligt när du deltar i enkäten"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:418
 msgid "Some URL description"
@@ -5890,7 +5890,7 @@ msgstr "Länkbeskrivning"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:421
 msgid "Group 1: The first lot of questions"
-msgstr "Grupp 1: Första gänget med frågor"
+msgstr "Grupp 1: Första gruppen med en massa frågor"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:422
 msgid "This group description is fairly vacuous, but quite important."
@@ -6276,7 +6276,7 @@ msgstr "Behörighetskod behövs inte för att genomföra enkäten."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:439
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
-msgstr "Du kan byta till läget stängd åtkomst genom att intialisera en tabell för behörighetskoder med knappen nedan."
+msgstr "Du kan byta till läget stängd åtkomst genom att initialisera en tabell för behörighetskoder med knappen nedan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:440
 msgid "Switch to closed-access mode"
@@ -7178,7 +7178,7 @@ msgstr "<inget data>"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1910
 msgid "Add token attributes"
-msgstr "Läggt till attribut för behörighetskod"
+msgstr "Lägg till attribut för behörighetskod"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1912
 #, php-format
@@ -7348,7 +7348,7 @@ msgstr "Misslyckades att öppna uppladdad fil!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2351
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
-msgstr "Fel: Den uppdallade filen saknar en eller flera obligatoriska kolumner: 'förnamn', 'efternamn' eller 'e-post'"
+msgstr "Fel: Den uppladdade filen saknar en eller flera obligatoriska kolumner: 'förnamn', 'efternamn' eller 'e-post'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2459
 msgid "Successfully created token entries"
@@ -7674,7 +7674,7 @@ msgstr "Svaren på denna enkät är inte längre tillgängliga från LimeSurvey.
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:117
 msgid "You should note the name of this table in case you need to access this information later."
-msgstr "Du bör notera namnet på denna tabell i fall att du behöver accessa denna information senare."
+msgstr "Du bör notera namnet på denna tabell i fall att du behöver åtkomst till denna information senare."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:120
 msgid "The tokens table associated with this survey has been renamed to: "
@@ -8089,7 +8089,7 @@ msgstr "Raderar alla gamla tabeller med behörighetskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:40
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr "Du är på väg att radera alla villkort i enkätens frågor"
+msgstr "Du är på väg att radera alla villkor i enkätens frågor"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:41
 msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
@@ -8572,7 +8572,7 @@ msgstr "Om det är nödvändigt kommer databasen bli uppdaterad."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:178
 msgid "Checking basic requirements..."
-msgstr "Kontrollerar grundäggande krav..."
+msgstr "Kontrollerar grundläggande krav..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:180
 msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
@@ -8644,7 +8644,7 @@ msgstr "Uppdateringsserver upptagen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:307
 msgid "The update server seems to be currently busy. This happens most likely if the necessary update files for a new version are prepared."
-msgstr "Uppdateringsservern är upptagen. Det är förmodligen pågrund utav att nya uppdateringsfiler för en ny version förbereds."
+msgstr "Uppdateringsservern är upptagen. Det är förmodligen på grund utav att nya uppdateringsfiler för en ny version förbereds."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:308
 msgid "Please be patient and try again in about 10 minutes."
@@ -8717,11 +8717,11 @@ msgstr "Ingen säkerhetskopiering av databas skapad:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:484
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
-msgstr "Säkerhetskopiering av databasen är inte tillänglig för din databastyp. För att kunna ta en säkerhetskopia måste du använda ett eget verktyg."
+msgstr "Säkerhetskopiering av databasen är inte tillgänglig för din databastyp. För att kunna ta en säkerhetskopia måste du använda ett eget verktyg."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:487
 msgid "Please check any problems above and then proceed to the final step."
-msgstr "Åtgärna felen ovan och fortsätt sedan till det sista steget."
+msgstr "Åtgärda felen ovan och fortsätt sedan till det sista steget."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:499
 msgid "ComfortUpdate Step 4"
@@ -9007,7 +9007,7 @@ msgstr "Det uppstod ett fel vid kontroll av uppdatering (%s)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:156
 msgid "There is currently no newer LimeSurvey version available."
-msgstr "Det finns för tillfället ingen nyare version av LimeSurvey tillänglig."
+msgstr "Det finns för tillfället ingen nyare version av LimeSurvey tillgänglig."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:166
 msgid "Site name:"
@@ -9498,7 +9498,7 @@ msgstr "Sparade inte"
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:80
 #: /var/lib/limesurvey-svn/subversion1x/question.php:192
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Dina enkätsvar är inte sparade. Denna enkät är inte aktiviverad ännu."
+msgstr "Dina enkätsvar är inte sparade. Denna enkät är inte aktiverad ännu."
 
 #: /var/lib/limesurvey-svn/subversion1x/group.php:130
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:85
@@ -9548,7 +9548,7 @@ msgstr "En eller flera obligatoriska frågor har inte besvarats. Du kan inte for
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:869
 #: /var/lib/limesurvey-svn/subversion1x/question.php:472
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
-msgstr "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta fürrän dessa svar är korrekta."
+msgstr "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta förrän dessa svar är korrekta."
 
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:139
 #: /var/lib/limesurvey-svn/subversion1x/question.php:244
@@ -9672,7 +9672,7 @@ msgstr "Öppna ofullständigt besvarad enkät"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2227
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2262
 msgid "The token you have provided is either not valid, or has already been used."
-msgstr "Behörighetskoden som du angett är antingen ogiltlig eller redan använd."
+msgstr "Behörighetskoden som du angett är antingen ogiltig eller redan använd."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:657
 #: /var/lib/limesurvey-svn/subversion1x/index.php:684
@@ -9733,7 +9733,7 @@ msgstr "Se statistik för enkäten genom att klicka här:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2002
 msgid "This email contains confirmation of the responses you made to the survey"
-msgstr "Detta mail innehåller en bekräftning av svaren du lämnade till enkäten"
+msgstr "Detta mail innehåller en bekräftelse av svaren du lämnade till enkäten"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2004
 msgid "Survey submission confirmation"
@@ -9757,11 +9757,11 @@ msgstr "Data skall fyllas i"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2036
 msgid "SQL CODE THAT FAILED"
-msgstr "Sql-kod som har misslyckats"
+msgstr "SQL-KOD SOM HAR MISSLYCKATS"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2038
 msgid "ERROR MESSAGE"
-msgstr "Felmeddelande"
+msgstr "FELMEDDELANDE"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2040
 msgid "Error saving results"
@@ -9784,7 +9784,7 @@ msgstr "Säkerhetsfråga:"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2261
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2296
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Detta är en kontrollerad enkät. Du behöver en giltlig behörigetskod för att delta"
+msgstr "Detta är en kontrollerad enkät. Du behöver en giltig behörighetskod för att delta"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2162
 msgid "If you have been issued a token, please enter it in the box below and click continue."
@@ -9908,7 +9908,7 @@ msgstr "En eller flera obligatoriska frågor har inte besvarats. Du kan inte for
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:982
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta fürrän dessa svar är korrekta"
+msgstr "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta förrän dessa svar är korrekta"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1027
 msgid "Your time to answer this question has expired"
@@ -10034,7 +10034,7 @@ msgstr "Rangordna åtminstone %d svarsalternativ för fråga \"%s\"."
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3382
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
-msgstr "Välj som mest %d svar för fråga \"%s\""
+msgstr "Välj som mest %d svar för frågan \"%s\""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3089
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3407
@@ -10345,7 +10345,7 @@ msgstr "Din enkät kommer att sparas med detta namn och lösenord och du kan sen
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3005
 msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr "Om du anger en e-postadress kommer ett meddelande som innehåller detaljerna att skickas till dig."
+msgstr "Om du anger en e-postadress kommer ett meddelande med dina uppgifter att skickas till dig."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3013
 msgid "Return To Survey"
@@ -10385,7 +10385,7 @@ msgstr "Du måste vara registrerad för att genomföra den här enkäten"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3063
 msgid "You may register for this survey if you wish to take part."
-msgstr "Du måste registera dig för den här enkäten om du vill delta."
+msgstr "Du måste registrera dig för den här enkäten om du vill delta."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3063
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
@@ -10501,7 +10501,7 @@ msgstr "Antal rader att visa"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3544
 msgid "Use accessible select boxes instead of calendar popup"
-msgstr "Använd vanliga SELECT-fält istället för en kalenderpopup, av användbarhetsskäl"
+msgstr "Använd vanliga SELECT-fält istället för en kalender-popup, av användbarhetsskäl"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3545
 msgid "Display select boxes"
@@ -10612,7 +10612,7 @@ msgstr "Maximalt värde för summa"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3654
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
-msgstr "SGQA-identifierare för fråga vars totalsumma ska användas som maxvärde för denna fråga"
+msgstr "SGQA-identifierare för fråga vars totalsumma ska användas som maximala värde för denna fråga"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3655
 msgid "Max value from SGQA"
@@ -10644,11 +10644,11 @@ msgstr "Minimalt värde för summa"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3686
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
-msgstr "SGQA-identifierare för fråga vars totalsumma ska användas som minvärde för denna fråga"
+msgstr "SGQA-identifierare för fråga vars totalsumma ska användas som minimala värde för denna fråga"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3687
 msgid "Min value from SGQA"
-msgstr "Minvärde från SGQA"
+msgstr "Minimala värde från SGQA"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3694
 msgid "Maximum value for array(mult-flexible) question type"
@@ -10664,7 +10664,7 @@ msgstr "Minsta värdet i rullgardinslistan för frågan av typ samling (flexibla
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3703
 msgid "Minimum value"
-msgstr "Minvärde"
+msgstr "Min värde"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3710
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3711
@@ -10813,7 +10813,7 @@ msgstr "Minsta värde på skjutreglage"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3895
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
-msgstr "Svara|Vänsta"
+msgstr "Svara|Vänster-rullist-text|Höger-rullist-text seperator bokstav"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3896
 msgid "Slider left/right text separator"
