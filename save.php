@@ -1,5 +1,4 @@
 <?php
-
 /*
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -182,7 +181,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 
 
     }
-    if ($thissurvey['savetimings']=="Y")
+    if ($thissurvey['savetimings']=="Y" && $thissurvey['active'] == "Y")
     {
 		set_answer_time();
 }
