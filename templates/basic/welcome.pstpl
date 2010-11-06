@@ -18,7 +18,7 @@
 			<td colspan="2" align="center">
 				<table class="welcome-table" width="80%">
 					<tr>
-						<td class-"welcome-text">{WELCOME}<br /> <br /></td>
+						<td class="welcome-text">{WELCOME}<br /> <br /></td>
 					</tr>
 				</table>
 			</td>
