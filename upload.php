@@ -30,8 +30,16 @@
     // If this is just a preview, don't save the file
     if ($preview)
     {
+        if ($size > $maxfilesize)
+        {
+            $return = array(
+                "success" => false,
+                "msg" => "Sorry, This file is too large. Only files upto ".$maxfilesize." KB are allowed"
+            );
+            echo json_encode($return);
+        }
 
-        if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file))
+        else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file))
         {
             $return = array(
                         "success" => true,
@@ -47,6 +55,15 @@
     else 
     {    // if everything went fine and the file was uploaded successfuly,
          // send the file related info back to the client
+        if ($size > $maxfilesize)
+        {
+            $return = array(
+                "success" => false,
+                "msg" => "Sorry, This file is too large. Only files upto ".$maxfilesize." KB are allowed"
+            );
+            echo json_encode($return);
+        }
+
         if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file))
         {
             $return = array(

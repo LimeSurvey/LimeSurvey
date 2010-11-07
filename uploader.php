@@ -48,7 +48,7 @@ else
 {
     session_name("LimeSurveyRuntime-$surveyid");
 }
-session_set_cookie_params(0,$relativeurl.'/');
+session_set_cookie_params(0,$relativeurl.'/admin/');
 @session_start();
 
 if (empty($_SESSION) || !isset($_SESSION['fieldname']))
