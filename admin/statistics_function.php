@@ -2948,6 +2948,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                             $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
                             $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                            unset($graph);
                         }
                     }	//end if (bar chart)
 
@@ -3023,6 +3024,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
                                 $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
                                 $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                                unset($graph);
                             }
                             //print_r($DataSet->GetData()); echo "<br/><br/>";
                         }
