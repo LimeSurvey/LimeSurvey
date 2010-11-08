@@ -380,7 +380,7 @@ function db_upgrade($oldversion) {
                               sessdata LONGTEXT,
                               PRIMARY KEY ( sesskey ) ,
                               INDEX sess2_expiry( expiry ),
-                              INDEX sess2_expireref( expireref ))"); echo $modifyoutput; flush();          
+                              INDEX sess2_expireref( expireref )) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();   
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
         
     }
@@ -434,7 +434,7 @@ function db_upgrade($oldversion) {
                               `gid` int(11) NOT NULL,
                               `sid` int(11) NOT NULL,
                               `condition` text NOT NULL,
-                              PRIMARY KEY (`qid`,`gid`,`sid`));"); echo $modifyoutput; flush();
+                              PRIMARY KEY (`qid`,`gid`,`sid`)) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();   
                               
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `emailnotificationto` text DEFAULT NULL"); echo $modifyoutput; flush();
         upgrade_survey_table145();                                           

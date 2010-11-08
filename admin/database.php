@@ -118,7 +118,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "updategroup" && bHasSurveyPermission($surveyid, 'define_questions'))
+    elseif ($action == "updategroup" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
         $baselang = GetBaseLanguageFromSurveyID($postsid);
