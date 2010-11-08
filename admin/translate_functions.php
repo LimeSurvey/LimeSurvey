@@ -200,7 +200,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
                          ." SET surveyls_title = ".db_quoteall($new)
                          ." WHERE surveyls_survey_id=".db_quoteall($surveyid)
-                           ." AND surveyls_language=".db_quoteall($tolang)." LIMIT 1",
+                           ." AND surveyls_language=".db_quoteall($tolang),
         "id1"  => "",
         "id2"  => "",
         "gid"  => FALSE,
@@ -224,7 +224,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
                          ."SET surveyls_description = ".db_quoteall($new)
                          ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
-                           ."AND surveyls_language='{$tolang}' LIMIT 1",
+                           ."AND surveyls_language='{$tolang}'",
         "id1"  => "",
         "id2"  => "",
         "gid"  => FALSE,
@@ -248,7 +248,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
                          ."SET surveyls_welcometext = ".db_quoteall($new)
                          ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
-                           ."AND surveyls_language='{$tolang}' LIMIT 1",
+                           ."AND surveyls_language='{$tolang}'",
         "id1"  => "",
         "id2"  => "",
         "gid"  => FALSE,
@@ -272,7 +272,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
                          ."SET surveyls_endtext = ".db_quoteall($new)
                          ."WHERE surveyls_survey_id=".db_quoteall($surveyid)
-                           ."AND surveyls_language='{$tolang}' LIMIT 1",
+                           ."AND surveyls_language='{$tolang}'",
         "id1"  => "",
         "id2"  => "",
         "gid"  => FALSE,
@@ -299,7 +299,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                          ."SET group_name = ".db_quoteall($new)
                          ."WHERE gid = '{$id1}' "
                            ."AND sid=".db_quoteall($surveyid)
-                           ."AND language='{$tolang}' LIMIT 1",
+                           ."AND language='{$tolang}'",
         "id1"  => "gid",
         "id2"  => "",
         "gid"  => TRUE,
@@ -326,7 +326,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                          ."SET description = ".db_quoteall($new)
                          ."WHERE gid = '{$id1}' "
                            ."AND sid=".db_quoteall($surveyid)
-                           ."AND language='{$tolang}' LIMIT 1",
+                           ."AND language='{$tolang}'",
         "id1"  => "gid",
         "id2"  => "",
         "gid"  => TRUE,
@@ -375,7 +375,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                          ."SET question = ".db_quoteall($new)
                          ."WHERE qid = '{$id1}' "
                            ."AND sid=".db_quoteall($surveyid)
-                           ."AND language='{$tolang}' LIMIT 1",
+                           ."AND language='{$tolang}'",
         "dbColumn" => 'question',
         "id1"  => 'qid',
         "id2"  => "",
@@ -402,7 +402,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                    ."SET help = ".db_quoteall($new)
                    ."WHERE qid = '{$id1}' "
                    ."AND sid=".db_quoteall($surveyid)
-                   ."AND language='{$tolang}' LIMIT 1",
+                   ."AND language='{$tolang}'",
         "dbColumn" => 'help',
         "id1"  => 'qid',
         "id2"  => "",
@@ -434,7 +434,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                          ."SET answer = ".db_quoteall($new)
                          ."WHERE qid = '{$id1}' "
                            ."AND code='{$id2}' "
-                           ."AND language='{$tolang}' LIMIT 1",
+                           ."AND language='{$tolang}'",
         "dbColumn" => 'answer',
         "id1"  => 'qid',
         "id2"  => 'code',
@@ -528,6 +528,23 @@ function displayTranslateFieldsWideHeader($baselangdesc, $tolangdesc)
   return($translateoutput);
 }
 
+/**
+ * displayTranslateFieldsWide() Formats and displays translation fields (base language as well as to language)
+ * @global $dbprefix, $clang;
+ * @param string $surveyid Survey id
+ * @param string $gid Group id
+ * @param string $qid Question id
+ * @param string $type Type of database field that is being translated, e.g. title, question, etc.
+ * @param array $amTypeOptions Array containing options associated with each $type
+ * @param string $baselangdesc The source translation language, e.g. "English"
+ * @param string $tolangdesc The target translation language, e.g. "German"
+ * @param string $textfrom The text to be translated in source language
+ * @param string $textto The text to be translated in target language
+ * @param integer $i Counter
+ * @param $rowfrom Contains current row of database query
+ * @param $rowCounter Counter of odd vs. even rows
+ * @return string $translateoutput
+ */
 
 function displayTranslateFieldsWide($surveyid, $gid, $qid, $type, $amTypeOptions,
         $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $rowCounter)
