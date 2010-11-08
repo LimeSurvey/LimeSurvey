@@ -265,6 +265,7 @@ textarea {
     font-family: verdana, arial, sans-serif;
 }
 
+
 .subtitle {
     font-size: 10px;
     color: #FFF;
@@ -1337,16 +1338,6 @@ thead th
     float:none;
 }
 
-div.translate {
-  margin: 10 5px;
-}
-
-.translate table {
-  padding: 1px 0;
-  vertical-align: top;
-  width: 90%;
-}
-
 
 .ui-notify { 
     width:350px; 
@@ -1354,4 +1345,19 @@ div.translate {
     top:35px; 
     left:50%;   
     margin-left: -175px;
+}
+
+div.translate {
+  margin: 2px 1px;
+}
+
+#translateform table {
+  padding: 1px 0;
+  vertical-align: top;
+  width: 90%;
+}
+
+
+#translateform textarea:focus{
+  outline: blue solid thin;
 }

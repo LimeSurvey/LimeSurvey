@@ -158,7 +158,7 @@
         $queryto = $amTypeOptions["queryto"];
         $resultto = db_execute_assoc($queryto);
 
-        $translateoutput .= displayTranslateFieldsWideHeader($baselangdesc, $tolangdesc);
+        $translateoutput .= displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
@@ -177,7 +177,7 @@
             $all_fields_empty = FALSE;
             ++$rowCounter;
             // Display translation fields
-            $translateoutput .= displayTranslateFieldsWide($surveyid, $gid, $qid, $type,
+            $translateoutput .= displayTranslateFields($surveyid, $gid, $qid, $type,
                     $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $rowCounter);
           }
           else
@@ -186,6 +186,7 @@
           }
           ++$i;
         } // end while
+        $translateoutput .= displayTranslateFieldsFooter();
         if ($all_fields_empty)
         {
           $translateoutput .= "<p>".$clang->gT("Nothing to translate on this page")."</p><br />";
