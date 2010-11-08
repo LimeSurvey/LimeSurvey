@@ -54,9 +54,41 @@ if (!isset($p_canswers))
         }
     }
 }
+
+// this array will be used soon,
+// to explain wich conditions is used to evaluate the question
+if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
+{
+    $method = array(            
+            "<"  => $clang->gT("Less than"),
+            "<=" => $clang->gT("Less than or equal to"),
+            "==" => $clang->gT("equals"),
+            "!=" => $clang->gT("Not equal to"),
+            ">=" => $clang->gT("Greater than or equal to"),
+            ">"  => $clang->gT("Greater than"),
+            "RX" => $clang->gT("Regular expression"),
+            "a<b"  => $clang->gT("Less than (Strings)"),
+            "a<=b" => $clang->gT("Less than or equal to (Strings)"),
+            "a>=b" => $clang->gT("Greater than or equal to (Strings)"),
+            "a>b"  => $clang->gT("Greater than (Strings)")
+            );
+}
+else
+{
+    $method = array(            
+            "<"  => $clang->gT("Less than"),
+            "<=" => $clang->gT("Less than or equal to"),
+            "==" => $clang->gT("equals"),
+            "!=" => $clang->gT("Not equal to"),
+            ">=" => $clang->gT("Greater than or equal to"),
+            ">"  => $clang->gT("Greater than"),
+            "RX" => $clang->gT("Regular expression")
+            );
+}
+
 if (isset($_POST['method']))
 {
-    if (!in_array($_POST['method'], array('<','<=','>','>=','==','!=','RX')))
+    if (!in_array($_POST['method'], array_keys($method)))
     {
         $p_method = "==";
     }
@@ -1279,17 +1311,6 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
 
             $conditionscount=$conditionscount+$conditionscounttoken;
 
-            // this array will be used soon,
-            // to explain wich conditions is used to evaluate the question
-            $method = array( "<"  => $clang->gT("Less than"),
-					"<=" => $clang->gT("Less than or equal to"),
-					"==" => $clang->gT("equals"),
-					"!=" => $clang->gT("Not equal to"),
-					">=" => $clang->gT("Greater than or equal to"),
-					">"  => $clang->gT("Greater than"),
-					"RX" => $clang->gT("Regular expression")
-            );
-
             if ($conditionscount > 0)
             {
                 $aConditionsMerged=Array();
@@ -1782,7 +1803,12 @@ $subaction == "editthiscondition" || $subaction == "delete")
     $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
     ."<div class='condition-tbl-left'>".$clang->gT("Comparison operator")."</div>\n"
     ."<div class='condition-tbl-right'>\n"
-    ."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n"
+    ."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n";
+    foreach ($method as $methodCode => $methodTxt)
+    {
+        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'>".$methodTxt."</option>\n";
+    }
+/**
     ."\t<option value='<'>".$clang->gT("Less than")."</option>\n"
     ."\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
     ."\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"
@@ -1790,7 +1816,12 @@ $subaction == "editthiscondition" || $subaction == "delete")
     ."\t<option value='>='>".$clang->gT("Greater than or equal to")."</option>\n"
     ."\t<option value='>'>".$clang->gT("Greater than")."</option>\n"
     ."\t<option value='RX'>".$clang->gT("Regular expression")."</option>\n"
-    ."</select>\n"
+    ."\t<option value='a<b'>".$clang->gT("Less than (Strings)")."</option>\n"
+    ."\t<option value='a<=b'>".$clang->gT("Less than or equal to (Strings)")."</option>\n"
+    ."\t<option value='a>=b'>".$clang->gT("Greater than or equal to (Strings)")."</option>\n"
+    ."\t<option value='a>b'>".$clang->gT("Greater than (Strings)")."</option>\n"
+**/
+    $conditionsoutput_main_content .="</select>\n"
     ."</div>\n"
     ."</div>\n";
 

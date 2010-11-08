@@ -1372,7 +1372,16 @@ function checkconfield($value)
 
                                 if ($cqv['matchmethod'] != "RX")
                                 {
-                                    if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if (trim($comparisonLeftOperand) '.$cqv['matchmethod'].' trim($cqv["matchvalue"]) ) {return true;} else {return false;}'))
+                                    if (preg_match("/^a(.*)b$/",$cqv['matchmethod'],$matchmethods))
+                                    {
+                                        // strings comparizon operator in PHP are the same as numerical operators
+                                        $matchOperator = $matchmethods[1]; 
+                                    }
+                                    else
+                                    {
+                                        $matchOperator = $cqv['matchmethod'];
+                                    }
+                                    if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if (trim($comparisonLeftOperand) '.$matchOperator.' trim($cqv["matchvalue"]) ) {return true;} else {return false;}'))
                                     {//plug successful matches into appropriate container
                                         $addon=1;
                                     }
@@ -2616,7 +2625,6 @@ function buildsurveysession()
     }
 
     if ($totalquestions == "0")	//break out and crash if there are no questions!
-
     {
         sendcacheheaders();
         doHeader();

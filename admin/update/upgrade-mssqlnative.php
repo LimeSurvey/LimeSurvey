@@ -445,6 +445,9 @@ function db_upgrade($oldversion) {
                               email_admin_responses_subj VARCHAR(255) NULL,    
                               email_admin_responses varchar(max) NULL");
         
+        // modify length of method in conditions
+        modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [method] CHAR( 5 ) NOT NULL"); echo $modifyoutput; flush();
+
         //Add index to questions table to speed up subquestions
         modify_database("", "create index [parent_qid] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();
         

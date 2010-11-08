@@ -385,7 +385,10 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
             // Should we really skip the question here, maybe the result won't be stored if we do that
             continue;
         }
-        $_SESSION['fieldarray'][$key][7]='N';
+        // Following line DISABLED BY lemeur
+        // It prevents further calls to checkquestionfordisplay if using PREVIOUS button
+        // from the LimeSurvey Navigator Toolbar
+        // $_SESSION['fieldarray'][$key][7]='N';
 
         //Get the answers/inputnames
         list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
@@ -790,14 +793,17 @@ END;
 
                     $newjava .= "( document.getElementById('$idname2') != null && document.getElementById('$idname2').value != '') && ";
                     $cqidattributes = getQuestionAttributes($cd[1]);
-                    if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
-                    { // Numerical questions
-                        //$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
+                    //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
+                    if (in_array($cd[6],array("<","<=",">",">=")))
+                    { // Numerical comparizons
                         $newjava .= "(parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('$idname2').value))";
+                    }
+                    elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                    { // String comparizons
+                        $newjava .= "($JSsourceVal ".$matchmethods[1]." document.getElementById('$idname2').value)";
                     }
                     else
                     {
-                        //				$newjava .= "(document.getElementById('" . $idname. "').value $cd[6] document.getElementById('".$idname2."').value)";
                         $newjava .= "($JSsourceVal $cd[6] document.getElementById('$idname2').value)";
                     }
 
@@ -881,10 +887,14 @@ END;
                     else
                     {
                         $cqidattributes = getQuestionAttributes($cd[1]);
-                        if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
-                        { // Numerical questions
-                            //$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
+                        //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
+                        if (in_array($cd[6],array("<","<=",">",">=")))
+                        { // Numerical comparizons
                             $newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".$cd[3]."')";
+                        }
+                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                        { // String comparizons
+                            $newjava .= "$JSsourceVal ".$matchmethods[1]." '$cd[3]'";
                         }
                         else
                         {

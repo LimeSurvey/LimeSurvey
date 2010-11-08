@@ -7068,13 +7068,24 @@ function checkquestionfordisplay($qid, $gid=null)
                 }
                 if ($row['method'] != 'RX')
                 {
-                    if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
+                    if (preg_match("/^a(.*)b$/",$row['method'],$matchmethods))
                     {
+                        // strings comparizon operator in PHP are the same as numerical operators
+                        $matchOperator = $matchmethods[1];
+                    }
+                    else
+                    {
+                        $matchOperator = $row['method'];
+                    }
+                    if (eval('if (trim($cfieldname)'. $matchOperator.' trim($cvalue)) return true; else return false;'))
+                    {
+                        error_log("TIBO1 oper=$matchOperator");
                         $conditionMatches=true;
                         //This condition is met
                     }
                     else
                     {
+                        error_log("TIBO2 oper=$matchOperator");
                         $conditionMatches=false;
                     }
                 }

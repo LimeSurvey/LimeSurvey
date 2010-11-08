@@ -590,6 +590,7 @@ END;
                     $qid_from_sgq=$qidMatched[3];
                     $q2type=$qtypesarray[$sgq_from_sgqa];
                     $idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
+                    /***
                     $cqidattributes = getQuestionAttributes($cd[1]);
 
                     if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
@@ -601,6 +602,19 @@ END;
                     {
                         $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && $JSsourceVal $cd[6] document.getElementById('".$idname2."').value";
                     }
+                    ****/
+                    if (in_array($cd[6],array("<","<=",">",">=")))
+                    { // Numerical comparizons
+                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
+                    }
+                    elseif (preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                    { // String comparizons
+                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$matchmethods[1]." parseFloat(document.getElementById('".$idname2."').value)";
+                    }
+                    else
+                    {
+                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$cd[6]." parseFloat(document.getElementById('".$idname2."').value)";
+                    }
 
                 }
                 elseif ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
@@ -609,9 +623,14 @@ END;
                     in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
                     {
                         $comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
-                        if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
-                        { // Numerical questions
+                        //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
+                        if (in_array($cd[6],array("<","<=",">",">=")))
+                        { // // Numerical comparizons
                             $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
+                        }
+                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                        { // Strings comparizon
+                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '".javascript_escape($comparedtokenattrValue)."'";
                         }
                         else
                         {
@@ -632,9 +651,14 @@ END;
                     else
                     {
                         $cqidattributes = getQuestionAttributes($cd[1]);
-                        if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
-                        { // Numerical questions
+                        //if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
+                        if (in_array($cd[6],array("<","<=",">",">=")))
+                        { // Numerical comparizons
                             $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('$cd[3]')";
+                        }
+                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                        { // String comaprizons
+                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '$cd[3]'";
                         }
                         else
                         {
