@@ -1,32 +1,25 @@
-<table style='width:100%; text-align:center;'>
-    <tr>
-            <td style='text-align:center;'>
-             <h1>{SITENAME}</h1>
-            </td>
-    </tr>
-	<tr>
-		<td  style='padding-top:20px; text-align:center;'>
-             <span style='font-weight:bold;'>{SURVEYLISTHEADING}</span>
-         </td>
-    </tr>
-	<tr>
-		<td align="center"  style='padding:20px 0;'>
-                <ul>{SURVEYLIST}</ul>
-		</td>
-	</tr>
-      <tr>
-            <td style='text-align:center;'>
-             {SURVEYCONTACT}
-            </td>
-      </tr>
-      <tr>
-            <td style='text-align:center;' height="100" valign="bottom">
-             <p  style='padding:20px 0;'>{LANGUAGECHANGER}</p>
-             <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey Survey Software" /></a><br />
-             <span style='font-size:0.9em;'><a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free &amp; Open Source</span><br />
-            </td>
-      </tr>
-</table>
+
+<div class="survey-list-wrapper">
+	<div class="survey-list-heading">
+		 <h1>{SITENAME}</h1>
+         {SURVEYLISTHEADING}
+	</div>
+	<div class="survey-list">
+		<ul>{SURVEYLIST}</ul>
+	</div>
+	<div class="survey-contact">
+		{SURVEYCONTACT}
+	</div>
+	<div class="language-changer">
+	   <p>{LANGUAGECHANGER}</p>
+	    <br />
+       <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey Survey Software" /></a>
+       <br />
+       <span style='font-size:0.9em;'><a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free &amp; Open Source</span>
+       <br />
+	</div>
+</div>
+
 <!--[if lt IE 7]>
 <script language="JavaScript">
 function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.

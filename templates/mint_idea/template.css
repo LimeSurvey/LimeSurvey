@@ -220,6 +220,16 @@ h5 {
   margin-bottom: 10px;
 }
 
+div.clear-all {
+	text-align: center;
+    margin-bottom: 10px;
+}
+
+/* assessments ----------------------------------------------------------------- */
+div.assessment-heading {
+	font-weight: bold;
+}
+
 /* paragraphs -------------------------------------------------------------------- */
 p {
   margin: 15px 0;
@@ -491,12 +501,92 @@ hr {
   height: 120px;
 }
 
-.register td {
+.register-wrapper {
+	text-align: center;
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
+}
+
+.register-form {
+	margin-bottom: 10px;
+}
+
+.register-form table.register {
+	margin: 0 auto 0 auto;
+    width: auto;
+}
+
+.register-form table.register td {
   padding: 2px;
 }
 
-.register table {
-  width: auto;
+.survey-load {
+	text-align: center;
+}
+
+.load-survey,
+.save-survey {
+	text-align: center;
+	padding: 10px 0;
+}
+
+.load-heading,
+.save-heading {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.load-message {
+}
+
+.load-form table,
+.save-form table {
+	margin: 0 auto 0 auto;
+    width: auto;
+}
+
+.return-to-survey {
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
+.survey-list-wrapper {
+	margin:20px 0;
+	padding:20px 10px;
+	text-align:center;
+}
+
+.survey-list-heading {
+	font-weight: bold;
+}
+
+.survey-list {
+}
+
+.survey-list ul {
+	padding: 0;
+	margin-left: 0;
+}
+
+.survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
+.survey-contact {
+	padding-bottom: 10px;
+}
+
+.language-changer {
 }
 
 .array1 {
@@ -515,6 +605,11 @@ select {
 
 .errormandatory {
   color: #A33D41;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
 }
 
 /* -------------------------------------------------
