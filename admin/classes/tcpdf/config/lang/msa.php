@@ -1,12 +1,12 @@
 <?php
 //============================================================+
-// File name   : eng.php
+// File name   : msa.php
 // Begin       : 2004-03-03
 // Last Update : 2010-10-26
 //
 // Description : Language module for TCPDF
 //               (contains translated texts)
-//               Brazilian
+//               Malay
 //
 // Author: Nicola Asuni
 //
@@ -23,7 +23,7 @@
 /**
  * TCPDF language file (contains translated texts).
  * @package com.tecnick.tcpdf
- * @abstract TCPDF language file: Brazilian
+ * @abstract TCPDF language file: Malay
  * @author Nicola Asuni
  * @copyright 2004-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.sourceforge.net
@@ -31,7 +31,7 @@
  * @since 2004-03-03
  */
 
-// Brazilian
+// Malay
 
 global $l;
 $l = Array();
@@ -40,10 +40,10 @@ $l = Array();
 
 $l['a_meta_charset'] = 'UTF-8';
 $l['a_meta_dir'] = 'ltr';
-$l['a_meta_language'] = 'pt';
+$l['a_meta_language'] = 'ms';
 
 // TRANSLATIONS --------------------------------------
-$l['w_page'] = 'página';
+$l['w_page'] = 'laman';
 
 //============================================================+
 // END OF FILE

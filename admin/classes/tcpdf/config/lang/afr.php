@@ -1,12 +1,12 @@
 <?php
 //============================================================+
-// File name   : eng.php
-// Begin       : 2004-03-03
+// File name   : afr.php
+// Begin       : 2010-10-26
 // Last Update : 2010-10-26
 //
 // Description : Language module for TCPDF
 //               (contains translated texts)
-//               Brazilian
+//               Afrikaans
 //
 // Author: Nicola Asuni
 //
@@ -23,15 +23,15 @@
 /**
  * TCPDF language file (contains translated texts).
  * @package com.tecnick.tcpdf
- * @abstract TCPDF language file: Brazilian
+ * @abstract TCPDF language file: Afrikaans
  * @author Nicola Asuni
  * @copyright 2004-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.sourceforge.net
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @since 2004-03-03
+ * @since 2010-10-26
  */
 
-// Brazilian
+// Afrikaans
 
 global $l;
 $l = Array();
@@ -40,10 +40,10 @@ $l = Array();
 
 $l['a_meta_charset'] = 'UTF-8';
 $l['a_meta_dir'] = 'ltr';
-$l['a_meta_language'] = 'pt';
+$l['a_meta_language'] = 'af';
 
 // TRANSLATIONS --------------------------------------
-$l['w_page'] = 'página';
+$l['w_page'] = 'bladsy';
 
 //============================================================+
 // END OF FILE

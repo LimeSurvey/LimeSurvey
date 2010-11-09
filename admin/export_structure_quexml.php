@@ -23,27 +23,27 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 if (isset($surveyprintlang) && !empty($surveyprintlang))
 	$quexmllang = $surveyprintlang;
-else
+	else
 	$quexmllang=GetBaseLanguageFromSurveyID($surveyid);
 
 
 if (!$surveyid)
 {
-    echo $htmlheader
-    ."<br />\n"
-    ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-    ._EXPORTSURVEY."</strong></td></tr>\n"
-    ."\t<tr><td align='center'>\n"
-    ."$setfont<br /><strong><font color='red'>"
-    ._ERROR."</font></strong><br />\n"
-    ._ES_NOSID."<br />\n"
-    ."<br /><input type='submit' $btstyle value='"
-    ._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
-    ."\t</td></tr>\n"
-    ."</table>\n"
-    ."</body></html>\n";
-    exit;
+	echo $htmlheader
+		."<br />\n"
+		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		._EXPORTSURVEY."</strong></td></tr>\n"
+		."\t<tr><td align='center'>\n"
+		."$setfont<br /><strong><font color='red'>"
+		._ERROR."</font></strong><br />\n"
+		._ES_NOSID."<br />\n"
+		."<br /><input type='submit' $btstyle value='"
+		._GO_ADMIN."' onClick=\"window.open('$scriptname', '_top')\">\n"
+		."\t</td></tr>\n"
+		."</table>\n"
+		."</body></html>\n";
+	exit;
 }
 
 
@@ -52,187 +52,355 @@ if (!$surveyid)
 
 function cleanup($string)
 {
-    return strip_tags($string);
+	return trim(strip_tags(str_ireplace("<br />","\n",$string)));
 }
 
 
 function create_free($f,$len,$lab="")
 {
-    global $dom;
-    $free = $dom->create_element("free");
+	global $dom;
+	$free = $dom->create_element("free");
 
-    $format = $dom->create_element("format");
-    $format->set_content(cleanup($f));
+	$format = $dom->create_element("format");
+	$format->set_content(cleanup($f));
 
-    $length = $dom->create_element("length");
-    $length->set_content(cleanup($len));
+	$length = $dom->create_element("length");
+	$length->set_content(cleanup($len));
 
-    $label = $dom->create_element("label");
-    $label->set_content(cleanup($lab));
+	$label = $dom->create_element("label");
+	$label->set_content(cleanup($lab));
 
-    $free->append_child($format);
-    $free->append_child($length);
-    $free->append_child($label);
+	$free->append_child($format);
+	$free->append_child($length);
+	$free->append_child($label);
 
 
-    return $free;
+	return $free;
 }
 
 
 function fixed_array($array)
 {
-    global $dom;
-    $fixed = $dom->create_element("fixed");
+	global $dom;
+	$fixed = $dom->create_element("fixed");
 
-    foreach ($array as $key => $v)
-    {
-        $category = $dom->create_element("category");
-         
-        $label = $dom->create_element("label");
-        $label->set_content(cleanup("$key"));
+	foreach ($array as $key => $v)
+	{
+		$category = $dom->create_element("category");
 
-        $value= $dom->create_element("value");
-        $value->set_content(cleanup("$v"));
-         
-        $category->append_child($label);
-        $category->append_child($value);
+		$label = $dom->create_element("label");
+		$label->set_content(cleanup("$key"));
 
-        $fixed->append_child($category);
-    }
+		$value= $dom->create_element("value");
+		$value->set_content(cleanup("$v"));
+
+		$category->append_child($label);
+		$category->append_child($value);
+
+		$fixed->append_child($category);
+	}
 
 
-    return $fixed;
+	return $fixed;
+}
+
+/**
+ * Calculate if this item should have a skipTo element attached to it
+ * 
+ * @param mixed $qid   
+ * @param mixed $value 
+ * 
+ * @return bool|string Text of item to skip to otherwise false if nothing to skip to
+ * @author Adam Zammit <adam.zammit@acspri.org.au>
+ * @since  2010-10-28
+ */
+function skipto($qid,$value,$cfieldname = "")
+{
+	global $connect ;
+	global $dbprefix ;
+	global $surveyid ;
+	global $clang ;
+
+	$Query = "SELECT q.*,CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0')) as globalorder FROM {$dbprefix}questions as q, {$dbprefix}questions as q2, {$dbprefix}groups as g, {$dbprefix}groups as g2 WHERE q.parent_qid = 0 AND q2.parent_qid = 0 AND q.sid=$surveyid AND q2.sid=$surveyid AND q2.qid = $qid AND g2.gid =q2.gid AND g.gid = q.gid AND CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0')) > CONCAT(LPAD(g2.gid,10,'0'),LPAD(q2.question_order,10,'0'))  ORDER BY globalorder";
+	$QueryResult = db_execute_assoc($Query);
+
+
+	$nextqid="";
+	$nextorder="";
+
+	$Row = $QueryResult->FetchRow();
+	if ($Row)
+	{
+		$nextqid = $Row['qid'];
+		$nextorder = $Row['globalorder'];
+	}
+	else
+		return false;
+
+
+	$Query = "SELECT q.*
+		FROM {$dbprefix}questions as q
+		JOIN {$dbprefix}groups as g ON (g.gid = q.gid)
+		LEFT JOIN {$dbprefix}conditions as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
+		WHERE q.sid = $surveyid
+		AND q.parent_qid = 0
+		AND CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0')) >= $nextorder
+		AND c.cqid IS NULL
+		ORDER BY CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0'))";
+
+
+	$QueryResult = db_execute_assoc($Query);
+
+	$Row = $QueryResult->FetchRow();
+	if ($Row)
+	{
+		if ($nextqid == $Row['qid'])
+			return false;
+		else
+			return $Row['title'];
+	}
+	else
+		return $clang->gT("End");
+
 }
 
 
 
-function create_fixed($qlid,$rotate=false,$labels=true,$scale=0)
+function create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false)
 {
-    global $dom;
-    global $connect ;
-    global $dbprefix ; 
-    global $quexmllang;
-    $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-    if ($labels)
-    $Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $qlid  AND language='$quexmllang' ORDER BY sortorder ASC";
-    else
-    $Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
-    $QueryResult = db_execute_assoc($Query);
+	global $dom;
+	global $connect ;
+	global $dbprefix ; 
+	global $quexmllang;
+	global $clang;
 
-    $fixed = $dom->create_element("fixed");
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
-    while ($Row = $QueryResult->FetchRow())
-    {
-        $category = $dom->create_element("category");
-         
-        $label = $dom->create_element("label");
-        $label->set_content(cleanup($Row['title']));
+	if ($labels)
+		$Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
+	else
+		$Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
 
-        $value= $dom->create_element("value");
-        $value->set_content(cleanup($Row['code']));
-         
-        $category->append_child($label);
-        $category->append_child($value);
+	$QueryResult = db_execute_assoc($Query);
 
-        $fixed->append_child($category);
-    }
+	$fixed = $dom->create_element("fixed");
 
-    if ($rotate) $fixed->set_attribute("rotate","true");
+	$nextcode = "";
 
-    return $fixed;
+	while ($Row = $QueryResult->FetchRow())
+	{
+		$category = $dom->create_element("category");
+
+		$label = $dom->create_element("label");
+		$label->set_content(cleanup($Row['title']));
+
+		$value= $dom->create_element("value");
+		$value->set_content(cleanup($Row['code']));
+
+		$category->append_child($label);
+		$category->append_child($value);
+
+		$st = skipto($qid,$Row['code']);
+		if ($st !== false)
+		{
+			$skipto = $dom->create_element("skipTo");
+			$skipto->set_content($st);
+			$category->append_child($skipto);	
+		}
+
+
+		$fixed->append_child($category);
+		$nextcode = $Row['code'];
+	}
+
+	if ($other)
+	{
+		$category = $dom->create_element("category");
+
+		$label = $dom->create_element("label");
+		$label->set_content(get_length($qid,"other_replace_text","Other"));
+
+		$value= $dom->create_element("value");
+
+		//Get next code
+		if (is_numeric($nextcode))
+			$nextcode++;
+		else if (is_string($nextcode))
+			$nextcode = chr(ord($nextcode) + 1);
+
+		$value->set_content($nextcode);
+
+		$category->append_child($label);
+		$category->append_child($value);	    
+
+		$contingentQuestion = $dom->create_element("contingentQuestion");
+		$length = $dom->create_element("length");
+		$text = $dom->create_element("text");
+
+		$text->set_content($clang->gT("Please specify"));
+		$length->set_content(24);
+		$contingentQuestion->append_child($text);
+		$contingentQuestion->append_child($length);
+
+		$category->append_child($contingentQuestion);
+
+		$fixed->append_child($category);
+	}
+
+	if ($rotate) $fixed->set_attribute("rotate","true");
+
+	return $fixed;
 }
 
 function get_length($qid,$attribute,$default)
 {
-    global $dom;
-    global $dbprefix;
-    global $connect ;
-    $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	global $dom;
+	global $dbprefix;
+	global $connect ;
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
-    $Query = "SELECT value FROM {$dbprefix}question_attributes WHERE qid = $qid AND attribute = '$attribute'";
-    //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
-    $QueryResult = db_execute_assoc($Query);
+	$Query = "SELECT value FROM {$dbprefix}question_attributes WHERE qid = $qid AND attribute = '$attribute'";
+	//$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+	$QueryResult = db_execute_assoc($Query);
 
-    $Row = $QueryResult->FetchRow();
-    if ($Row && !empty($Row['value']))
-    return $Row['value'];
-    else
-    return $default;
+	$Row = $QueryResult->FetchRow();
+	if ($Row && !empty($Row['value']))
+		return $Row['value'];
+	else
+		return $default;
 
 }
 
 
-function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false)
+function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$other = false)
 {
-    global $dom;
-    global $dbprefix;
-    global $connect ;
-    global $quexmllang ;
-    $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	global $dom;
+	global $dbprefix;
+	global $connect ;
+	global $quexmllang ;
+	global $surveyid;
+	global $clang;
 
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid  AND language='$quexmllang' ";
-    if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
-    $Query .= " ORDER BY question_order ASC";
-    //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
-    $QueryResult = db_execute_assoc($Query);
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
-    while ($Row = $QueryResult->FetchRow())
-    {
-        $response = $dom->create_element("response");
-	if ($free == false)
+	$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid  AND language='$quexmllang' ";
+	if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
+	$Query .= " ORDER BY question_order ASC";
+	//$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+	$QueryResult = db_execute_assoc($Query);
+
+	$nextcode = "";
+
+	while ($Row = $QueryResult->FetchRow())
 	{
-	        $fixed = $dom->create_element("fixed");
-	        $category = $dom->create_element("category");
-	         
-	        $label = $dom->create_element("label");
-	        $label->set_content(cleanup($Row['question']));
-	
-	        $value= $dom->create_element("value");
-	        //$value->set_content(cleanup($Row['title']));
-		$value->set_content("1");
-	         
-	        $category->append_child($label);
-	        $category->append_child($value);
-	
-	        $fixed->append_child($category);
-	         
-	        $response->append_child($fixed);
+		$response = $dom->create_element("response");
+		if ($free == false)
+		{
+			$fixed = $dom->create_element("fixed");
+			$category = $dom->create_element("category");
+
+			$label = $dom->create_element("label");
+			$label->set_content(cleanup($Row['question']));
+
+			$value= $dom->create_element("value");
+			//$value->set_content(cleanup($Row['title']));
+			$value->set_content("1");
+			$nextcode = $Row['title'];
+
+			$category->append_child($label);
+			$category->append_child($value);
+
+			$st = skipto($qid,'Y'," AND c.cfieldname LIKE '+$surveyid" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
+			if ($st !== false)
+			{
+				$skipto = $dom->create_element("skipTo");
+				$skipto->set_content($st);
+				$category->append_child($skipto);	
+			}
+
+
+			$fixed->append_child($category);
+
+			$response->append_child($fixed);
+		}
+		else
+			$response->append_child(create_free($free['f'],$free['len'],$Row['question']));
+
+		$response->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
+
+		$question->append_child($response);
 	}
-	else
-		$response->append_child(create_free($free['f'],$free['len'],$Row['question']));
 
-        $response->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
-         
-        $question->append_child($response);
-    }
+	if ($other && $free==false)
+	{
+		$response = $dom->create_element("response");
+		$fixed = $dom->create_element("fixed");
+		$category = $dom->create_element("category");
 
-    return;
+		$label = $dom->create_element("label");
+		$label->set_content(get_length($qid,"other_replace_text","Other"));
+
+		$value= $dom->create_element("value");
+
+		//Get next code
+		if (is_numeric($nextcode))
+			$nextcode++;
+		else if (is_string($nextcode))
+			$nextcode = chr(ord($nextcode) + 1);
+
+		$value->set_content(1);
+
+		$category->append_child($label);
+		$category->append_child($value);	    
+
+		$contingentQuestion = $dom->create_element("contingentQuestion");
+		$length = $dom->create_element("length");
+		$text = $dom->create_element("text");
+
+		$text->set_content($clang->gT("Please specify"));
+		$length->set_content(24);
+		$contingentQuestion->append_child($text);
+		$contingentQuestion->append_child($length);
+
+		$category->append_child($contingentQuestion);
+
+		$fixed->append_child($category);
+		$response->append_child($fixed);
+		$response->set_attribute("varName",$varname . cleanup($nextcode));
+
+		$question->append_child($response);
+	}
+
+
+
+
+	return;
 
 }
 
 function create_subQuestions(&$question,$qid,$varname,$use_answers = false)
 {
-    global $dom;
-    global $dbprefix;
-    global $connect ;
-    global $quexmllang ;
-    $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-    if ($use_answers)
-	$Query = "SELECT answer as question, code as title FROM {$dbprefix}answers WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
-    else
-	$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
-    $QueryResult = db_execute_assoc($Query);
-    while ($Row = $QueryResult->FetchRow())
-    {
-        $subQuestion = $dom->create_element("subQuestion");
-        $text = $dom->create_element("text");
-        $text->set_content(cleanup($Row['question']));
-        $subQuestion->append_child($text);
-        $subQuestion->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
-        $question->append_child($subQuestion);
-    }
+	global $dom;
+	global $dbprefix;
+	global $connect ;
+	global $quexmllang ;
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	if ($use_answers)
+		$Query = "SELECT answer as question, code as title FROM {$dbprefix}answers WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
+	else
+		$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
+	$QueryResult = db_execute_assoc($Query);
+	while ($Row = $QueryResult->FetchRow())
+	{
+		$subQuestion = $dom->create_element("subQuestion");
+		$text = $dom->create_element("text");
+		$text->set_content(cleanup($Row['question']));
+		$subQuestion->append_child($text);
+		$subQuestion->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
+		$question->append_child($subQuestion);
+	}
 
-    return;
+	return;
 }
 
 global $dbprefix;
@@ -266,17 +434,17 @@ $questionnaire->append_child($dataCollector);
 //questionnaireInfo == welcome
 if (!empty($Row['surveyls_welcometext']))
 {
-    $questionnaireInfo = $dom->create_element("questionnaireInfo");
-    $position = $dom->create_element("position");
-    $text = $dom->create_element("text");
-    $administration = $dom->create_element("administration");
-    $position->set_content("before");
-    $text->set_content(cleanup($Row['surveyls_welcometext']));
-    $administration->set_content("self");
-    $questionnaireInfo->append_child($position);
-    $questionnaireInfo->append_child($text);
-    $questionnaireInfo->append_child($administration);
-    $questionnaire->append_child($questionnaireInfo);
+	$questionnaireInfo = $dom->create_element("questionnaireInfo");
+	$position = $dom->create_element("position");
+	$text = $dom->create_element("text");
+	$administration = $dom->create_element("administration");
+	$position->set_content("before");
+	$text->set_content(cleanup($Row['surveyls_welcometext']));
+	$administration->set_content("self");
+	$questionnaireInfo->append_child($position);
+	$questionnaireInfo->append_child($text);
+	$questionnaireInfo->append_child($administration);
+	$questionnaire->append_child($questionnaireInfo);
 }
 
 //section == group
@@ -288,236 +456,267 @@ $QueryResult = db_execute_assoc($Query);
 //for each section
 while ($Row = $QueryResult->FetchRow())
 {
-    $gid = $Row['gid'];
+	$gid = $Row['gid'];
 
-    $section = $dom->create_element("section");
+	$section = $dom->create_element("section");
 
-    if (!empty($Row['group_name']))
-    {
-        $sectionInfo = $dom->create_element("sectionInfo");
-        $position = $dom->create_element("position");
-        $text = $dom->create_element("text");
-        $administration = $dom->create_element("administration");
-        $position->set_content("title");
-        $text->set_content(cleanup($Row['group_name']));
-        $administration->set_content("self");
-        $sectionInfo->append_child($position);
-        $sectionInfo->append_child($text);
-        $sectionInfo->append_child($administration);
-        $section->append_child($sectionInfo);
-    }
+	if (!empty($Row['group_name']))
+	{
+		$sectionInfo = $dom->create_element("sectionInfo");
+		$position = $dom->create_element("position");
+		$text = $dom->create_element("text");
+		$administration = $dom->create_element("administration");
+		$position->set_content("title");
+		$text->set_content(cleanup($Row['group_name']));
+		$administration->set_content("self");
+		$sectionInfo->append_child($position);
+		$sectionInfo->append_child($text);
+		$sectionInfo->append_child($administration);
+		$section->append_child($sectionInfo);
+	}
 
-    $section->set_attribute("id", $gid);
 
-    //boilerplate questions convert to sectionInfo elements
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
-    $QR = db_execute_assoc($Query);
-    while ($RowQ = $QR->FetchRow())
-    {
-        $sectionInfo = $dom->create_element("sectionInfo");
-        $position = $dom->create_element("position");
-        $text = $dom->create_element("text");
-        $administration = $dom->create_element("administration");
-
-        $position->set_content("before");
-        $text->set_content(cleanup($RowQ['question']));
-        $administration->set_content("self");
-        $sectionInfo->append_child($position);
-        $sectionInfo->append_child($text);
-        $sectionInfo->append_child($administration);
-
-        $section->append_child($sectionInfo);
-    }
+	if (!empty($Row['description']))
+	{
+		$sectionInfo = $dom->create_element("sectionInfo");	
+		$position = $dom->create_element("position");
+		$text = $dom->create_element("text");
+		$administration = $dom->create_element("administration");
+		$position->set_content("before");
+		$text->set_content(cleanup($Row['description']));
+		$administration->set_content("self");
+		$sectionInfo->append_child($position);
+		$sectionInfo->append_child($text);
+		$sectionInfo->append_child($administration);
+		$section->append_child($sectionInfo);
+	}
 
 
 
-    //foreach question
-    $Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
-    $QR = db_execute_assoc($Query);
-    while ($RowQ = $QR->FetchRow())
-    {
-        $question = $dom->create_element("question");
-        $type = $RowQ['type'];
-        $qid = $RowQ['qid'];
+	$section->set_attribute("id", $gid);
 
-        $text = $dom->create_element("text");
-        $text->set_content(cleanup($RowQ['question']));
-        $question->append_child($text);
+	//boilerplate questions convert to sectionInfo elements
+	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
+	$QR = db_execute_assoc($Query);
+	while ($RowQ = $QR->FetchRow())
+	{
+		$sectionInfo = $dom->create_element("sectionInfo");
+		$position = $dom->create_element("position");
+		$text = $dom->create_element("text");
+		$administration = $dom->create_element("administration");
 
-        //directive
-        if (!empty($RowQ['help']))
-        {
-            $directive = $dom->create_element("directive");
-            $position = $dom->create_element("position");
-            $position->set_content("during");
-            $text = $dom->create_element("text");
-            $text->set_content(cleanup($RowQ['help']));
-            $administration = $dom->create_element("administration");
-            $administration->set_content("self");
+		$position->set_content("before");
+		$text->set_content(cleanup($RowQ['question']));
+		$administration->set_content("self");
+		$sectionInfo->append_child($position);
+		$sectionInfo->append_child($text);
+		$sectionInfo->append_child($administration);
 
-            $directive->append_child($position);
-            $directive->append_child($text);
-            $directive->append_child($administration);
+		$section->append_child($sectionInfo);
+	}
 
-            $question->append_child($directive);
-        }
 
-        $response = $dom->create_element("response");
-        $response->set_attribute("varName",cleanup($RowQ['title']));
 
-        switch ($type)
-        {
-            case "X": //BOILERPLATE QUESTION - none should appear
+	//foreach question
+	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
+	$QR = db_execute_assoc($Query);
+	while ($RowQ = $QR->FetchRow())
+	{
+		$question = $dom->create_element("question");
+		$type = $RowQ['type'];
+		$qid = $RowQ['qid'];
 
-                break;
-            case "5": //5 POINT CHOICE radio-buttons
-                $response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-                $question->append_child($response);
-                break;
-            case "D": //DATE
-                $response->append_child(create_free("date","8",""));
-                $question->append_child($response);
-                break;
-            case "L": //LIST drop-down/radio-button list
-                $response->append_child(create_fixed($qid,false,false));
-                $question->append_child($response);
-                break;
-            case "!": //List - dropdown
-                $response->append_child(create_fixed($qid,false,false));
-                $question->append_child($response);
-                break;
-            case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-                $response->append_child(create_fixed($qid,false,false));
-                $question->append_child($response);
-                //no comment - this should be a separate question
-                break;
-            case "R": //RANKING STYLE
-                create_subQuestions(&$question,$qid,$RowQ['title'],true);
-                $Query = "SELECT COUNT(*) as sc FROM {$dbprefix}answers WHERE qid = $qid AND language='$quexmllang' ";
-                $QRE = db_execute_assoc($Query);
-                //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
-                //$QROW = mysql_fetch_assoc($QRE);
-                $QROW = $QRE->FetchRow();
-                $response->append_child(create_free("integer",strlen($QROW['sc']),""));
-                $question->append_child($response);
-                break;
-            case "M": //MULTIPLE OPTIONS checkbox
-                create_multi(&$question,$qid,$RowQ['title']);
-                break;
-            case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
-                //Not yet implemented
-                create_multi(&$question,$qid,$RowQ['title']);
-                //no comments added
-                break;
-            case "Q": //MULTIPLE SHORT TEXT
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(create_free("text",get_length($qid,"maximum_chars","10"),""));
-                $question->append_child($response);
-                break;
-            case "K": //MULTIPLE NUMERICAL
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
-                $question->append_child($response);
-                break;
-            case "N": //NUMERICAL QUESTION TYPE
-                $response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
-                $question->append_child($response);
-                break;
-            case "S": //SHORT FREE TEXT
-                $response->append_child(create_free("text",get_length($qid,"text_input_width","240"),""));
-                $question->append_child($response);
-                break;
-            case "T": //LONG FREE TEXT
-                $response->append_child(create_free("longtext",get_length($qid,"display_rows","40"),""));
-                $question->append_child($response);
-                break;
-            case "U": //HUGE FREE TEXT
-                $response->append_child(create_free("longtext",get_length($qid,"display_rows","80"),""));
-                $question->append_child($response);
-                break;
-            case "Y": //YES/NO radio-buttons
-                $response->append_child(fixed_array(array("Yes" => 1,"No" => 2)));
-                $question->append_child($response);
-                break;
-            case "G": //GENDER drop-down list
-                $response->append_child(fixed_array(array("Female" => 1,"Male" => 2)));
-                $question->append_child($response);
-                break;
-            case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-                $question->append_child($response);
-                break;
-            case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
-                $question->append_child($response);
-                break;
-            case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(fixed_array(array("Yes" => 1,"Uncertain" => 2,"No" => 3)));
-                $question->append_child($response);
-                break;
-            case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(fixed_array(array("Increase" => 1,"Same" => 2,"Decrease" => 3)));
-                $question->append_child($response);
-                break;
-            case "F": //ARRAY (Flexible) - Row Format
-                //select subQuestions from answers table where QID
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response->append_child(create_fixed($qid,false,false));
-                $question->append_child($response);
-                //select fixed responses from
-                break;
-            case "H": //ARRAY (Flexible) - Column Format
-                create_subQuestions(&$question,$RowQ['qid'],$RowQ['title']);
-                $response->append_child(create_fixed($qid,true,false));
-                $question->append_child($response);
-                break;
-            case "1": //Dualscale multi-flexi array
-                //select subQuestions from answers table where QID
-                create_subQuestions(&$question,$qid,$RowQ['title']);
-                $response = $dom->create_element("response");
-                $response->append_child(create_fixed($qid,false,false)); 
-                $response2 = $dom->create_element("response");  
-                $response2->set_attribute("varName",cleanup($RowQ['title']) . "_2");
-                $response2->append_child(create_fixed($qid,false,false,1));   
-                $question->append_child($response);
-                $question->append_child($response2);  
-                break;
-            case ":": //multi-flexi array numbers
-		create_subQuestions(&$question,$qid,$RowQ['title']);
-                //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
-		$mcb  = get_length($qid,'multiflexible_checkbox',-1);
-		if ($mcb != -1)
-			create_multi(&$question,$qid,$RowQ['title'],1);
-		else
+		$other = false;
+		if ($RowQ['other'] == 'Y') $other = true;
+
+		//create a new text element for each new line
+		$questiontext = explode('<br />',$RowQ['question']);
+		foreach ($questiontext as $qt)
 		{
-			//get multiflexible_max - if set then make boxes of max this width
-			$mcm = strlen(get_length($qid,'multiflexible_max',1));
-		 	create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
- 		}
-		break;
-            case ";": //multi-flexi array text
-		create_subQuestions(&$question,$qid,$RowQ['title']);
-		//foreach question where scale_id = 1 this is a textbox
-		create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'text', 'len' => 10, 'lab' => ''));
-		break;
-            case "^": //SLIDER CONTROL - not supported
-                $response->append_child(fixed_array(array("NOT SUPPORTED:$type" => 1)));
-                $question->append_child($response);
-                break;
-        } //End Switch
+			$txt = cleanup($qt);
+			if (!empty($txt))
+			{
+				$text = $dom->create_element("text");
+				$text->set_content($txt);	
+				$question->append_child($text);
+			}
+		}
+
+
+		//directive
+		if (!empty($RowQ['help']))
+		{
+			$directive = $dom->create_element("directive");
+			$position = $dom->create_element("position");
+			$position->set_content("during");
+			$text = $dom->create_element("text");
+			$text->set_content(cleanup($RowQ['help']));
+			$administration = $dom->create_element("administration");
+			$administration->set_content("self");
+
+			$directive->append_child($position);
+			$directive->append_child($text);
+			$directive->append_child($administration);
+
+			$question->append_child($directive);
+		}
+
+		$response = $dom->create_element("response");
+		$response->set_attribute("varName",cleanup($RowQ['title']));
+
+		switch ($type)
+		{
+			case "X": //BOILERPLATE QUESTION - none should appear
+
+				break;
+			case "5": //5 POINT CHOICE radio-buttons
+				$response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+			$question->append_child($response);
+			break;
+			case "D": //DATE
+				$response->append_child(create_free("date","8",""));
+			$question->append_child($response);
+			break;
+			case "L": //LIST drop-down/radio-button list
+				$response->append_child(create_fixed($qid,false,false,0,$other));
+			$question->append_child($response);
+			break;
+			case "!": //List - dropdown
+				$response->append_child(create_fixed($qid,false,false,0,$other));
+			$question->append_child($response);
+			break;
+			case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+				$response->append_child(create_fixed($qid,false,false,0,$other));
+			$question->append_child($response);
+			//no comment - this should be a separate question
+			break;
+			case "R": //RANKING STYLE
+				create_subQuestions(&$question,$qid,$RowQ['title'],true);
+			$Query = "SELECT COUNT(*) as sc FROM {$dbprefix}answers WHERE qid = $qid AND language='$quexmllang' ";
+			$QRE = db_execute_assoc($Query);
+			//$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
+			//$QROW = mysql_fetch_assoc($QRE);
+			$QROW = $QRE->FetchRow();
+			$response->append_child(create_free("integer",strlen($QROW['sc']),""));
+			$question->append_child($response);
+			break;
+			case "M": //MULTIPLE OPTIONS checkbox
+				create_multi(&$question,$qid,$RowQ['title'],false,false,$other);
+			break;
+			case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+				//Not yet implemented
+				create_multi(&$question,$qid,$RowQ['title'],false,false,$other);
+			//no comments added
+			break;
+			case "Q": //MULTIPLE SHORT TEXT
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response->append_child(create_free("text",get_length($qid,"maximum_chars","10"),""));
+			$question->append_child($response);
+			break;
+			case "K": //MULTIPLE NUMERICAL
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
+			$question->append_child($response);
+			break;
+			case "N": //NUMERICAL QUESTION TYPE
+				$response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
+			$question->append_child($response);
+			break;
+			case "S": //SHORT FREE TEXT
+				$response->append_child(create_free("text",get_length($qid,"maximum_chars","240"),""));
+			$question->append_child($response);
+			break;
+			case "T": //LONG FREE TEXT
+				$response->append_child(create_free("longtext",get_length($qid,"display_rows","40"),""));
+			$question->append_child($response);
+			break;
+			case "U": //HUGE FREE TEXT
+				$response->append_child(create_free("longtext",get_length($qid,"display_rows","80"),""));
+			$question->append_child($response);
+			break;
+			case "Y": //YES/NO radio-buttons
+				$response->append_child(fixed_array(array("Yes" => 1,"No" => 2)));
+			$question->append_child($response);
+			break;
+			case "G": //GENDER drop-down list
+				$response->append_child(fixed_array(array("Female" => 1,"Male" => 2)));
+			$question->append_child($response);
+			break;
+			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+			$question->append_child($response);
+			break;
+			case "B": //ARRAY (10 POINT CHOICE) radio-buttons
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
+			$question->append_child($response);
+			break;
+			case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response->append_child(fixed_array(array("Yes" => 1,"Uncertain" => 2,"No" => 3)));
+			$question->append_child($response);
+			break;
+			case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response->append_child(fixed_array(array("Increase" => 1,"Same" => 2,"Decrease" => 3)));
+			$question->append_child($response);
+			break;
+			case "F": //ARRAY (Flexible) - Row Format
+				//select subQuestions from answers table where QID
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response->append_child(create_fixed($qid,false,false,0,$other));
+			$question->append_child($response);
+			//select fixed responses from
+			break;
+			case "H": //ARRAY (Flexible) - Column Format
+				create_subQuestions(&$question,$RowQ['qid'],$RowQ['title']);
+			$response->append_child(create_fixed($qid,true,false,0,$other));
+			$question->append_child($response);
+			break;
+			case "1": //Dualscale multi-flexi array
+				//select subQuestions from answers table where QID
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			$response = $dom->create_element("response");
+			$response->append_child(create_fixed($qid,false,false,0,$other)); 
+			$response2 = $dom->create_element("response");  
+			$response2->set_attribute("varName",cleanup($RowQ['title']) . "_2");
+			$response2->append_child(create_fixed($qid,false,false,1,$other));   
+			$question->append_child($response);
+			$question->append_child($response2);  
+			break;
+			case ":": //multi-flexi array numbers
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			//get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
+			$mcb  = get_length($qid,'multiflexible_checkbox',-1);
+			if ($mcb != -1)
+				create_multi(&$question,$qid,$RowQ['title'],1);
+			else
+			{
+				//get multiflexible_max - if set then make boxes of max this width
+				$mcm = strlen(get_length($qid,'multiflexible_max',1));
+				create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+			}
+			break;
+			case ";": //multi-flexi array text
+				create_subQuestions(&$question,$qid,$RowQ['title']);
+			//foreach question where scale_id = 1 this is a textbox
+			create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+			break;
+			case "^": //SLIDER CONTROL - not supported
+				$response->append_child(fixed_array(array("NOT SUPPORTED:$type" => 1)));
+			$question->append_child($response);
+			break;
+		} //End Switch
 
 
 
 
-        $section->append_child($question);
-    }
+		$section->append_child($question);
+	}
 
 
-    $questionnaire->append_child($section);
+	$questionnaire->append_child($section);
 }
 
 
