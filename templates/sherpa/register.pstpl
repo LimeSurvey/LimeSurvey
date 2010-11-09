@@ -1,7 +1,7 @@
-<br />
-<center>
-<span style="color:red;font-weight: bold;">{REGISTERERROR}</span>
-<span style="font-weight:bold">{REGISTERMESSAGE1}</span><br /><br />
-{REGISTERMESSAGE2}<br /><br />
-{REGISTERFORM}<br />
-</center>
+
+<div class="register-wrapper">
+	<span class="warning-text">{REGISTERERROR}</span>
+	<p class="register-message-1">{REGISTERMESSAGE1}</p>
+	<p class="register-message-2">{REGISTERMESSAGE2}</p>
+	<div class="register-form">{REGISTERFORM}</div>
+</div>

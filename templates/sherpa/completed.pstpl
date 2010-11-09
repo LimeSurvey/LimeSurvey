@@ -1,5 +1,9 @@
 <br />
-<div class="survey-completed">{COMPLETED}</div>
+<div class="survey-completed">
+	{COMPLETED}
+</div>
 <br />
-<div>{URL}</div>
+<div>
+	{URL}
+</div>
 <br />

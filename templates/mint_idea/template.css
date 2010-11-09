@@ -589,6 +589,10 @@ hr {
 .language-changer {
 }
 
+.language-changer a {
+	font-size: 0.9em;
+}
+
 .array1 {
   background-color: #192D40;
   text-align: center;
