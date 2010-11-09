@@ -472,7 +472,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => $clang->gT("Invitation email"),
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorInline"  => "No",
         "associated" => "emailinvitebody"
       );
       break;
@@ -493,7 +493,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => "",
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorInline"  => "No",
         "associated" => ""
       );
       break;
@@ -514,7 +514,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => $clang->gT("Reminder email"),
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorInline"  => "No",
         "associated" => "emailreminderbody"
       );
       break;
@@ -535,7 +535,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => "",
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorInline"  => "No",
         "associated" => ""
       );
       break;
