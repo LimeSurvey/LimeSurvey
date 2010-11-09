@@ -92,7 +92,7 @@ function globalsettingssave()
             $sessionlifetimetemp=(int)($_POST['sessionlifetime']);
             if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
-            setGlobalSetting('forcehttps',$_POST['forcehttps']);
+            setGlobalSetting('force_ssl',$_POST['force_ssl']);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
             if ((substr($savetime,0,1)!='-') && (substr($savetime,0,1)!='+')) { $savetime = '+'.$savetime;}
@@ -395,37 +395,37 @@ function globalsettingsdisplay()
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></li>\n";
 
-            $thisforcehttps = getGlobalSetting('forcehttps');
-	    $opt_forcehttps_on = $opt_forcehttps_off = $opt_forcehttps_neither = '';
-	    $warning_forcehttps = $clang->gT('Warning: Before turning on HTTPS, ')
+            $thisforce_ssl = getGlobalSetting('force_ssl');
+	    $opt_force_ssl_on = $opt_force_ssl_off = $opt_force_ssl_neither = '';
+	    $warning_force_ssl = $clang->gT('Warning: Before turning on HTTPS, ')
 	    . '<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'"title="'
 	    . $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">'
 	    . $clang->gT('check if this link works.').'</a><br/> '
 	    . $clang->gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
-//	    $warning_forcehttps = ' Do <strong>NOT</strong> force "On" if you\'re <strong>not completely certain</strong> your server has a SSL enabled. <br />'
+//	    $warning_force_ssl = ' Do <strong>NOT</strong> force "On" if you\'re <strong>not completely certain</strong> your server has a SSL enabled. <br />'
 //	    . 'Before turning on HTTPS, <a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'">See if this link works</a><br />'
 //	    . 'If not, <strong>LimeSurvey will break</strong> if SSL is forced on but your server does not have a valid secure certificate installed and enabled.<br />';
-	    switch($thisforcehttps)
+	    switch($thisforce_ssl)
 	    {
 	    	case 'on':
-		    $warning_forcehttps = '&nbsp;';                            
+		    $warning_force_ssl = '&nbsp;';                            
 		    break;
 		case 'off':
 		case 'neither':
 		    break;
 	    	default:
-		    $thisforcehttps = 'neither';
+		    $thisforce_ssl = 'neither';
 	    };
-	    $this_opt = 'opt_forcehttps_'.$thisforcehttps;
+	    $this_opt = 'opt_force_ssl_'.$thisforce_ssl;
 	    $$this_opt = ' selected="selected"';
-	    $editsurvey .= '<li><label for="forcehttps">'.$clang->gT('Force HTTPS:')."</label>\n"
-	    . "<select name=\"forcehttps\" id=\"forcehttps\">\n\t"
-            . '<option value="on" '.$opt_forcehttps_on.'>'.$clang->gT('On')."</option>\n\t"
-            . '<option value="off" '.$opt_forcehttps_off.'>'.$clang->gT('Off')."</option>\n\t"
-            . '<option value="neither" '.$opt_forcehttps_neither.'>'.$clang->gT('Don\'t force on or off')."</option>\n\t"
+	    $editsurvey .= '<li><label for="force_ssl">'.$clang->gT('Force HTTPS:')."</label>\n"
+	    . "<select name=\"force_ssl\" id=\"force_ssl\">\n\t"
+            . '<option value="on" '.$opt_force_ssl_on.'>'.$clang->gT('On')."</option>\n\t"
+            . '<option value="off" '.$opt_force_ssl_off.'>'.$clang->gT('Off')."</option>\n\t"
+            . '<option value="neither" '.$opt_force_ssl_neither.'>'.$clang->gT('Don\'t force on or off')."</option>\n\t"
 	    . "</select></li>\n"
-	    . "<li><span style='font-size:0.7em;'>$warning_forcehttps\n</span></li>\n";
-	    unset($thisforcehttps,$opt_forcehttps_on,$opt_forcehttps_off,$opt_forcehttps_neither,$warning_forcehttps,$this_opt);
+	    . "<li><span style='font-size:0.7em;'>$warning_force_ssl\n</span></li>\n";
+	    unset($thisforce_ssl,$opt_force_ssl_on,$opt_force_ssl_off,$opt_force_ssl_neither,$warning_force_ssl,$this_opt);
 
 
         $editsurvey .= "\t</ul></div>\n";

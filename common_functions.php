@@ -7757,8 +7757,8 @@ function redirect($ssl_mode)
 };
 
 /**
- * SSL_mode() $forcehttps is on or off, it checks if the current
- * request is to HTTPS (or not). If $forcehttps is on, and the
+ * SSL_mode() $force_ssl is on or off, it checks if the current
+ * request is to HTTPS (or not). If $force_ssl is on, and the
  * request is not to HTTPS, it redirects the request to the HTTPS
  * version of the URL, if the request is to HTTPS, it rewrites all
  * the URL variables so they also point to HTTPS.
@@ -7772,19 +7772,19 @@ function SSL_mode()
     $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
     if($https_emergency_override !== true )
     {
-        $forcehttps = strtolower(getGlobalSetting('forcehttps'));
+        $force_ssl = strtolower(getGlobalSetting('force_ssl'));
     }
     else
     {
-        $forcehttps = 'off';
+        $force_ssl = 'off';
     };
-    if( $forcehttps == 'on' && $https != 'on' )
+    if( $force_ssl == 'on' && $https == '' )
     {
                 redirect('s');
     }
-    if( $forcehttps == 'off' && $https == 'on')
+    if( $force_ssl == 'off' && $https != '')
     {
-                redirect();
+                redirect('');
     };
 };
 

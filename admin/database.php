@@ -1110,6 +1110,8 @@ if(isset($surveyid))
                 if ($usresult->RecordCount()==0)
                 {
 
+                    $bplang = new limesurvey_lang($langname);
+                    $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');                         
                     if (getEmailFormat($surveyid) == "html")
                     {
                         $ishtml=true;
@@ -1119,9 +1121,6 @@ if(isset($surveyid))
                     {
                         $ishtml=false;
                     }
-
-                    $bplang = new limesurvey_lang($langname);
-                    $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');                         
                     $languagedetails=getLanguageDetails($langname);
                     $usquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
                     ." (surveyls_survey_id, surveyls_language, surveyls_title, "

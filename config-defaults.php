@@ -455,7 +455,7 @@ $showqnumcode = 'choose';
 
 
 /**
- * @var $forcehttps string - forces LimeSurvey to run through HTTPS or to block HTTPS
+ * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
  * 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
  *		to fail in SSL is turned off)
  *	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
@@ -470,7 +470,7 @@ $showqnumcode = 'choose';
  * If LimeSurvey comes up as normal, then everything is fine. If you
  * get a page not found error or permission denied error then 
  */
-$forcehttps = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
+$force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
 
 
 /**
