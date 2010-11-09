@@ -414,7 +414,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showgroupinfo CHAR(1) NULL default 'B' "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD shownoanswer CHAR(1) NULL default 'Y' "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showqnumcode CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE [prefix_surveys] ADD timestamp BIGINT(20) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bouncetime BIGINT NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceprocessing VARCHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounttype VARCHAR(4) NULL "); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounthost VARCHAR(200) NULL "); echo $modifyoutput; flush();
@@ -445,8 +445,22 @@ function db_upgrade($oldversion) {
                               email_admin_responses_subj VARCHAR(255) NULL,    
                               email_admin_responses varchar(max) NULL");
         
+        //Add index to questions table to speed up subquestions
+        modify_database("", "create index [parent_qid_idx] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE prefix_extendedconditions (
+                              qid integer NOT NULL,
+                              gid integer NOT NULL,
+                              sid integer NOT NULL,
+                              condition text NOT NULL,
+                              PRIMARY KEY (qid,gid,sid));"); echo $modifyoutput; flush();
+                              
+        modify_database("", "ALTER TABLE prefix_surveys ADD emailnotificationto text DEFAULT NULL"); echo $modifyoutput; flush();
+        upgrade_survey_table145();                               
+        mssql_drop_constraint('notification','surveys');
+        modify_database("", "ALTER TABLE [prefix_surveys] DROP COLUMN [notification]"); echo $modifyoutput; flush();
+                   
         // modify length of method in conditions
-        modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [method] CHAR( 5 ) NOT NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [method] CHAR(5) NOT NULL"); echo $modifyoutput; flush();
 
         //Add index to questions table to speed up subquestions
         modify_database("", "create index [parent_qid] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();
@@ -563,7 +577,7 @@ function mssql_drop_constraint($fieldname, $tablename)
     $defaultname=$connect->GetRow($dfquery);
     if ($defaultname!=false)
     {
-        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname['constraint_name']}"); echo $modifyoutput; flush();
     }
 
 

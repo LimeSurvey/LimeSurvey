@@ -57,11 +57,11 @@ function db_upgrade_all($oldversion) {
 function upgrade_survey_table145()
 {
     global $modifyoutput, $connect;
-    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys')." where notification>0";
+    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys')." where notification<>'0'";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);    
     while ( $aSurveyRow = $oSurveyResult->FetchRow() )         
     {
-        if ($aSurveyRow['notification']==1 && trim($aSurveyRow['adminemail'])!='')
+        if ($aSurveyRow['notification']=='1' && trim($aSurveyRow['adminemail'])!='')
         {
             $aEmailAddresses=explode(';',$aSurveyRow['adminemail']);
             $sAdminEmailAddress=$aEmailAddresses[0];

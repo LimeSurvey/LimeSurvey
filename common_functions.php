@@ -7750,9 +7750,9 @@ function redirect($ssl_mode)
     if (!headers_sent())
     {	// If headers not sent yet... then do php redirect
         ob_clean();
-	header('Location: '.$url);
-	ob_flush();
-	exit;
+	    header('Location: '.$url);
+	    ob_flush();
+	    exit;
     };
 };
 
@@ -7767,10 +7767,10 @@ function SSL_mode()
 {
     global $rooturl , $homeurl , $publicurl , $tempurl , $imageurl , $uploadurl;
     global $usertemplaterooturl , $standardtemplaterooturl;
-    global $parsedurl , $relativeurl , $fckeditordir , $https_emergency_override;
+    global $parsedurl , $relativeurl , $fckeditordir , $ssl_emergency_override;
 
     $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
-    if($https_emergency_override !== true )
+    if($ssl_emergency_override !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
     }

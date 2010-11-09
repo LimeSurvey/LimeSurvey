@@ -474,19 +474,19 @@ $force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/
 
 
 /**
- * @var $https_emergency_override boolean forces SSL off
+ * @var $ssl_emergency_override boolean forces SSL off
  * if You've turned HTTPS/SSL on in the global settings but your
  * server doesn't have HTTPS enabled, the only way to turn it off is
  * by changing a value in the database directly. This allows you to
  * force HTTPS off while you change the global settings for Force Secure.
  * 
  *     false = do nothing;
- *     true = override $force_secure=on;
+ *     true = override $force_ssl=on;
  *
  * This should always be false except in emergencies where you change
  * it to true until you fix the problem.
  */
-$https_emergency_override = false;
+$ssl_emergency_override = false;
 
 
 

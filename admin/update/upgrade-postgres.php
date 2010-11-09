@@ -236,7 +236,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_surveys ADD showgroupinfo CHAR(1) NULL default 'B'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD shownoanswer CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD showqnumcode CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD bouncetime BIGINT(20) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD bouncetime bigint NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD bounceprocessing character varying(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccounttype character varying(4) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccounthost character varying(200) NULL"); echo $modifyoutput; flush();
@@ -244,7 +244,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountencryption character varying(3) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD bounceaccountuser character varying(200) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD showwelcome CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD `showprogress` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD showprogress CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_survey_permissions (
                             sid integer DEFAULT 0 NOT NULL,
                             uid integer DEFAULT 0 NOT NULL,
@@ -281,6 +281,7 @@ function db_upgrade($oldversion) {
         upgrade_survey_table145();                                           
         modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN notification"); echo $modifyoutput; flush();
                    
+        modify_database("","ALTER TABLE prefix_conditions ALTER COLUMN method TYPE CHAR(5)"); echo $modifyoutput; flush();
         
         modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }

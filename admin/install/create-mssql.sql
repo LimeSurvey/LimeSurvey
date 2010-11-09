@@ -42,7 +42,7 @@ CREATE TABLE [prefix_conditions] (
   [scenario] INT NOT NULL default '1',
   [cqid] INT NOT NULL default '0',
   [cfieldname] VARCHAR(50) NOT NULL default '',
-  [method] char(2) NOT NULL default '',
+  [method] char(5) NOT NULL default '',
   [value] VARCHAR(255) NOT NULL default '',
   PRIMARY KEY  ([cid])
 ) 
@@ -269,7 +269,7 @@ CREATE TABLE [prefix_surveys] (
   [usecookie] char(1) default 'N',
   [allowregister] char(1) default 'N',
   [allowsave] char(1) default 'Y',
-  [autonumber_start] bigINT default '0',
+  [autonumber_start] bigint default '0',
   [autoredirect] char(1) default 'N',
   [showXquestions] char(1) default 'Y',
   [showgroupinfo] char(1) default 'B',
@@ -294,7 +294,7 @@ CREATE TABLE [prefix_surveys] (
   [emailresponseto] text NULL,
   [emailnotificationto] text NULL,
   [tokenlength] tinyint default '15',
-  [bouncetime] BIGINT(20) NOT NULL,
+  [bouncetime] bigint,
   [bounceprocessing] varchar(1) default 'N',
   [bounceaccounttype] varchar(4) default NULL,
   [bounceaccounthost] varchar(200) default NULL,
@@ -350,7 +350,7 @@ CREATE TABLE [prefix_survey_permissions] (
     [update_p] TINYINT NOT NULL default '0', 
     [delete_p] TINYINT NOT NULL default '0', 
     [import_p] TINYINT NOT NULL default '0', 
-    [export_p] inTINYINT NOT NULL default '0', 
+    [export_p] TINYINT NOT NULL default '0', 
     PRIMARY KEY ([sid], [uid],[permission])
 );
 

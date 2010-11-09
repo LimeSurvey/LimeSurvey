@@ -39,7 +39,7 @@ CREATE TABLE `prefix_conditions` (
   `scenario` int(11) NOT NULL default '1',
   `cqid` int(11) NOT NULL default '0',
   `cfieldname` varchar(50) NOT NULL default '',
-  `method` char(2) NOT NULL default '',
+  `method` char(5) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`cid`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -269,7 +269,7 @@ CREATE TABLE `prefix_surveys` (
   `ipaddr` char(1) default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL, 
-  `bouncetime` BIGINT(20),	
+  `bouncetime` bigint(20),	
   `bounceprocessing` varchar(1) default 'N',
   `bounceaccounttype` VARCHAR(4),
   `bounceaccounthost` VARCHAR(200),

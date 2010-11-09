@@ -51,7 +51,7 @@ CREATE TABLE prefix_conditions (
     scenario integer DEFAULT 1 NOT NULL,
     cqid integer DEFAULT 0 NOT NULL,
     cfieldname character varying(50) DEFAULT ''::character varying NOT NULL,
-    method character(2) DEFAULT ''::bpchar NOT NULL,
+    method character(5) DEFAULT ''::bpchar NOT NULL,
     value character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
@@ -301,13 +301,13 @@ CREATE TABLE prefix_surveys (
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
     assessments character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,
-    bouncetime bigint(20),
+    bouncetime bigint,
     bounceprocessing character(1) default 'N'::bpchar,
     bounceaccounttype character(4),
     bounceaccounthost character(200),
     bounceaccountuser character(200),
     bounceaccountpass character(100),
-    bounceaccountencryption character(3)
+    bounceaccountencryption character(3),
     usetokens character(1) DEFAULT 'N'::bpchar,
     "bounce_email" character varying(320) NOT NULL,
     attributedescriptions text,
