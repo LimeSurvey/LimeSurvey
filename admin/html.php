@@ -1959,7 +1959,7 @@ if ($action=='editsubquestions')
 if($action == "addsurveysecurity")
 {
     $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
-    $addsummary .= "<div class=\"messagebox\">\n";
+    $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
     $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
     $result = db_execute_assoc($query); //Checked
@@ -2007,7 +2007,7 @@ if($action == "addsurveysecurity")
 if($action == "addusergroupsurveysecurity")
 {
     $addsummary = "<div class=\"header\">".$clang->gT("Add user group")."</div>\n";
-    $addsummary .= "<div class=\"messagebox\">\n";
+    $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
 
     $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
     $result = db_execute_assoc($query); //Checked
