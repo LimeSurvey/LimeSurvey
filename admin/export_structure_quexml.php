@@ -326,7 +326,7 @@ function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$
 		else
 			$response->append_child(create_free($free['f'],$free['len'],$Row['question']));
 
-		$response->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
+		$response->set_attribute("varName",$varname . cleanup($Row['title']));
 
 		$question->append_child($response);
 	}
@@ -396,7 +396,7 @@ function create_subQuestions(&$question,$qid,$varname,$use_answers = false)
 		$text = $dom->create_element("text");
 		$text->set_content(cleanup($Row['question']));
 		$subQuestion->append_child($text);
-		$subQuestion->set_attribute("varName",$varname . "_" . cleanup($Row['title']));
+		$subQuestion->set_attribute("varName",$varname . cleanup($Row['title']));
 		$question->append_child($subQuestion);
 	}
 
