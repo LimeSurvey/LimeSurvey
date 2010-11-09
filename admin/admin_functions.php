@@ -356,7 +356,7 @@ function getAdminHeader($meta=false)
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$homeurl}/styles/$admintheme/adminstyle.css\" />\n"
     . '<link rel="shortcut icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n"
     . '<link rel="icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n";
 

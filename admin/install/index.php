@@ -18,11 +18,12 @@ if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 $action='';
 require_once(dirname(__FILE__).'/../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../common.php');
+require_once(dirname(__FILE__).'/../admin_functions.php');
 require_once(dirname(__FILE__).'/../update/updater.php');
-$adminoutput='';  // Alle future output is written into this and then outputted at the end of file
 // SET THE LANGUAGE???? -> DEFAULT SET TO EN FOR NOW
 require_once($rootdir.'/classes/core/language.php');
 $clang = new limesurvey_lang("en");
+$adminoutput=getAdminHeader();  // Alle future output is written into this and then outputted at the end of file
 ob_implicit_flush(true);
 sendcacheheaders();
 
@@ -46,15 +47,13 @@ elseif ($dbexistsbutempty && !(returnglobal('createdbstep2')==$clang->gT("Popula
 {
     $connect->database = $databasename;
     $connect->Execute("USE DATABASE `$databasename`");
-    $adminoutput.= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-    .$clang->gT("LimeSurvey Setup")."</strong></td></tr>\n"
-    ."\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
-    $adminoutput.= "<br /><strong><font class='successtitle'>\n";
-    $adminoutput.= sprintf($clang->gT('A database named "%s" already exists.'),$databasename)."</font></strong></font><br /><br />\n";
+    $adminoutput.= "<div class='messagebox ui-corner-all'><div class='header ui-widget-header' >"
+    .$clang->gT("LimeSurvey Setup")."</div>\n";
+    $adminoutput.= "<br /><div class='successtitle'>\n";
+    $adminoutput.= sprintf($clang->gT('A database named "%s" already exists.'),$databasename)."</div><p>\n";
     $adminoutput.= $clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />\n";
     $adminoutput.= "<form method='post' action='createdb.php'>";
-    $adminoutput.= "<input type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."'></form>";
+    $adminoutput.= "<input type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."'></form></div>";
 }
 else
 {

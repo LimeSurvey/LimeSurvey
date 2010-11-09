@@ -429,7 +429,7 @@ function db_upgrade($oldversion) {
         //Add index to questions table to speed up subquestions
         modify_database("", "create INDEX parent_qid_idx on prefix_questions( parent_qid );"); echo $modifyoutput; flush();   
         
-        modify_database("","CREATE TABLE `prefix_extendedconditions` (
+        modify_database("", "CREATE TABLE `prefix_extendedconditions` (
                               `qid` int(11) NOT NULL,
                               `gid` int(11) NOT NULL,
                               `sid` int(11) NOT NULL,

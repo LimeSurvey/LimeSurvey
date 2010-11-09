@@ -18,16 +18,17 @@ if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../common.php');
 require_once($rootdir.'/classes/core/language.php');
+require_once(dirname(__FILE__).'/../admin_functions.php');      
 $clang = new limesurvey_lang("en");
+
 
 $dbname = $databasename;
 
 sendcacheheaders();
-
-echo "<br />\n";
-echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Create Database")."</strong></td></tr>\n";
-echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+echo getAdminHeader();
+echo "<div class='messagebox ui-corner-all'><div class='header ui-widget-header' >"
+.$clang->gT("Create Database")."</div><p>\n";
+echo $clang->gT("Creating tables. This might take a moment...")."<p>&nbsp;\n";
 
 // In Step2 fill the database with data
 if (returnglobal('createdbstep2')==$clang->gT("Populate Database"))
@@ -41,8 +42,9 @@ if (returnglobal('createdbstep2')==$clang->gT("Populate Database"))
    if($createdbtype=='mssqlnative') $createdbtype='mssqlnative';
     if (modify_database(dirname(__FILE__).'/create-'.$createdbtype.'.sql'))
     {
-        echo sprintf($clang->gT("Database `%s` has been successfully populated."),$dbname)."</font></strong></font><br /><br />\n";
-        echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick='location.href=\"../$scriptname\"'>";
+        echo "<br /><div class='successtitle'>\n";
+        echo sprintf($clang->gT("Database `%s` has been successfully populated."),$dbname)."</div><p>&nbsp;\n";
+        echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick='location.href=\"../$scriptname\"' /></div>";
         exit;
     }
     else
@@ -59,7 +61,7 @@ if (!$dbname)
     echo $clang->gT("Database Information not provided. This script must be run from admin.php only.");
 
     echo "<br /><br />\n";
-    echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick='location.href=\"../$scriptname\"'>";
+    echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick='location.href=\"../$scriptname\"' />";
     exit;
 }
 
@@ -86,7 +88,7 @@ if (!$database_exists) //Database named in config-defaults.php does not exist
         echo $clang->gT("Database has been created.")."</font></strong></font><br /><br />\n";
         echo $clang->gT("Please click below to populate the database")."<br /><br />\n";
         echo "<form method='post'>";
-        echo "<input type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."' onclick='location.href=\"createdb.php\"'></form>";
+        echo "<input type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."' onclick='location.href=\"createdb.php\"' /></form>";
     }
     else
     {
