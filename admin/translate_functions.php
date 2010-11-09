@@ -209,8 +209,9 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_title',
-        "description" => $clang->gT("Survey title"),
-        "HTMLeditorInline"  => "Yes"
+        "description" => $clang->gT("Survey title and description"),
+        "HTMLeditorInline"  => "Yes",
+        "associated" => "description"
       );
       break;
 
@@ -234,7 +235,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_description',
         "description" => $clang->gT("Description:"),
-        "HTMLeditorInline"  => "Yes"
+        "HTMLeditorInline"  => "Yes",
+        "associated" => ""
       );
       break;
 
@@ -257,8 +259,9 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_welcometext',
-        "description" => $clang->gT("Welcome:"),
-        "HTMLeditorInline"  => "Yes"
+        "description" => $clang->gT("Welcome and end text"),
+        "HTMLeditorInline"  => "Yes",
+        "associated" => "end"
       );
       break;
 
@@ -282,7 +285,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_endtext',
         "description" => $clang->gT("End message:"),
-        "HTMLeditorInline"  => "Yes"
+        "HTMLeditorInline"  => "Yes",
+        "associated" => ""
       );
       break;
 
@@ -309,7 +313,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => "group_name",
         "description" => $clang->gT("Question groups"),
-        "HTMLeditorInline"  => "No"
+        "HTMLeditorInline"  => "No",
+        "associated" => "group_desc"
       );
       break;
 
@@ -336,7 +341,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => "description",
         "description" => $clang->gT("Group description"),
-        "HTMLeditorInline"  => "No"
+        "HTMLeditorInline"  => "No",
+        "associated" => ""
       );
       break;
 
@@ -385,7 +391,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => TRUE,
         "qid"  => TRUE,
         "description" => $clang->gT("Questions"),
-        "HTMLeditorInline"  => "No"
+        "HTMLeditorInline"  => "No",
+        "associated" => "question_help"
       );
       break;
 
@@ -411,14 +418,14 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "id2"  => "",
         "gid"  => TRUE,
         "qid"  => TRUE,
-        "description" => $clang->gT("Help"),
-        "HTMLeditorInline"  => "No"
+        "description" => "",
+        "HTMLeditorInline"  => "No",
+        "associated" => ""
       );
       break;
 
     case 'answer':
       $amTypeOptions = array(
-//        "querybase" => "SELECT {$dbprefix}answers.* "
         "querybase" => "SELECT".db_table_name('answers').".*, ".db_table_name('questions').".gid "
                                      ." FROM ".db_table_name('answers').", ".db_table_name('questions')
                                     ." WHERE ".db_table_name('questions').".sid ='{$surveyid}' "
@@ -444,9 +451,95 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => TRUE,
         "qid"  => TRUE,
         "description" => $clang->gT("Subquestions"),
-        "HTMLeditorInline"  => "No"
+        "HTMLeditorInline"  => "No",
+        "associated" => ""
       );
       break;
+
+    case 'emailinvite':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_invite_subj = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_invite_subj',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => $clang->gT("Invitation email"),
+        "HTMLeditorInline"  => "Yes",
+        "associated" => "emailinvitebody"
+      );
+      break;
+
+    case 'emailinvitebody':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_invite = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_invite',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => "",
+        "HTMLeditorInline"  => "Yes",
+        "associated" => ""
+      );
+      break;
+
+    case 'emailreminder':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_remind_subj = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_remind_subj',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => $clang->gT("Reminder email"),
+        "HTMLeditorInline"  => "Yes",
+        "associated" => "emailreminderbody"
+      );
+      break;
+
+    case 'emailreminderbody':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_remind = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_remind',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => "",
+        "HTMLeditorInline"  => "Yes",
+        "associated" => ""
+      );
+      break;
+
   }
   return($amTypeOptions);
 }

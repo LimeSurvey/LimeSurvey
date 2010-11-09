@@ -74,13 +74,26 @@
 
   $translateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Translate survey")."</div>\n";
   
-  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
+//  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
+//  $tab_names=array("title", "description", "invitation", "reminder");
+  $tab_names=array("title", "welcome", "group", "question", "answer", "emailinvite", "emailreminder");
 
 
   if ($tolang != "" && $actionvalue=="translateSave")
   // Saves translated values to database
   {
+    $tab_names_full = "";
     foreach($tab_names as $type)
+    {
+      $tab_names_full[] = $type;
+      $amTypeOptions = setupTranslateFields($surveyid, $type, $tolang, $baselang);
+      $type2 = $amTypeOptions["associated"];
+      if ($type2 != "")
+      {
+        $tab_names_full[] = $type2;
+      }  
+    }
+    foreach($tab_names_full as $type)
     {
       $size = 0;
       if(isset($_POST["{$type}_size"]))
@@ -143,6 +156,18 @@
     foreach($tab_names as $type)
     {
       $amTypeOptions = setupTranslateFields($surveyid, $type, $tolang, $baselang);
+
+      $type2 = $amTypeOptions["associated"];
+      if ($type2 != "")
+      {
+        $associated = TRUE;
+        $amTypeOptions2 = setupTranslateFields($surveyid, $type2, $tolang, $baselang);
+      }
+      else
+      {
+        $associated = FALSE;
+      }
+
       // Create tab names and heading
       $translateoutput .= "\t<div id='tab-".$type."'>\n";
       $translateoutput .= PrepareEditorScript("noneedforvalue");
@@ -154,14 +179,30 @@
 
         $querybase = $amTypeOptions["querybase"];
         $resultbase = db_execute_assoc($querybase);
+        if ($associated)
+        {
+          $querybase2 = $amTypeOptions2["querybase"];
+          $resultbase2 = db_execute_assoc($querybase2);
+        }
 
-        $queryto = $amTypeOptions["queryto"];
-        $resultto = db_execute_assoc($queryto);
+        if ($associated)
+        {
+          $queryto = $amTypeOptions["queryto"];
+          $resultto = db_execute_assoc($queryto);
+          $queryto2 = $amTypeOptions2["queryto"];
+          $resultto2 = db_execute_assoc($queryto2);
+        }
 
         $translateoutput .= displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
+
+          if ($associated)
+          {
+            $rowfrom2 = $resultbase2->FetchRow();
+            $textfrom2 = htmlspecialchars_decode($rowfrom2[$amTypeOptions2["dbColumn"]]);
+          }
 
           $gid = NULL;
           if($amTypeOptions["gid"]==TRUE) $gid = $rowfrom['gid'];
@@ -169,8 +210,13 @@
           $qid = NULL;
           if($amTypeOptions["qid"]==TRUE) $qid = $rowfrom['qid'];
 
-          $rowto = $resultto->FetchRow();
-          $textto   = $rowto[$amTypeOptions["dbColumn"]];
+          $rowto  = $resultto->FetchRow();
+          $textto = $rowto[$amTypeOptions["dbColumn"]];
+          if ($associated)
+          {
+            $rowto2  = $resultto2->FetchRow();
+            $textto2 = $rowto2[$amTypeOptions2["dbColumn"]];
+          }
 
           if (strlen(trim((string)$textfrom)) > 0)
           {
@@ -179,6 +225,11 @@
             // Display translation fields
             $translateoutput .= displayTranslateFields($surveyid, $gid, $qid, $type,
                     $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $rowCounter);
+            if ($associated && strlen(trim((string)$textfrom2)) > 0)
+            {
+              $translateoutput .= displayTranslateFields($surveyid, $gid, $qid, $type2,
+                      $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $rowfrom2, $rowCounter);
+            }
           }
           else
           {
@@ -192,6 +243,10 @@
           $translateoutput .= "<p>".$clang->gT("Nothing to translate on this page")."</p><br />";
         }
       $translateoutput .= "<input type='hidden' name='{$type}_size' value='$i' />";
+      if ($associated)
+      {
+              $translateoutput .= "<input type='hidden' name='{$type2}_size' value='$i' />";
+      }
       $translateoutput .= "</div>\n";  // tab-page
 
       } // end foreach
