@@ -185,10 +185,10 @@
           $resultbase2 = db_execute_assoc($querybase2);
         }
 
+        $queryto = $amTypeOptions["queryto"];
+        $resultto = db_execute_assoc($queryto);
         if ($associated)
         {
-          $queryto = $amTypeOptions["queryto"];
-          $resultto = db_execute_assoc($queryto);
           $queryto2 = $amTypeOptions2["queryto"];
           $resultto2 = db_execute_assoc($queryto2);
         }
