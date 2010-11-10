@@ -40,11 +40,11 @@ else
 
 if (isset($fatalerror))
 {
-    $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-    $importquestion .= $fatalerror."<br /><br />\n";
-    $importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
-    $importquestion .= "</div>\n";
-    unlink($sFullFilepath);
+    $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+    $importgroup .= $fatalerror."<br /><br />\n";
+    $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
+    $importgroup .= "</div>\n";
+    @unlink($sFullFilepath);
     return;
 }
 
