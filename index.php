@@ -2759,8 +2759,8 @@ function surveymover()
         $surveymover = "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
     }
 
-
-    if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
+    if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N" &&
+	($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
     {
         $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value=' &lt;&lt; "
         . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' />\n";

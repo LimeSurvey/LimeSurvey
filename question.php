@@ -21,9 +21,7 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 //Move current step
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
-if (!isset($_POST['newgroupondisplay'])) {$_POST['newgroupondisplay'] = "";}
-if (isset($move) && $move == "moveprev" && !$_POST['newgroupondisplay'] && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep-1;}
-elseif (isset($move) && $move == "moveprev" && $_POST['newgroupondisplay'] == "Y" && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep;}
+if (isset($move) && $move == "moveprev" && $thissurvey['allowprev']=='Y' && $_SESSION['step'] > 0) {$_SESSION['step'] = $thisstep-1;}
 if (isset($move) && $move == "movenext")
 {
     if ($_SESSION['step']==$thisstep)
@@ -458,7 +456,6 @@ if ($bIsGroupDescrPage)
     echo "\n";
 
     $_SESSION['step']--;
-    echo "\t<input type='hidden' name='newgroupondisplay' value='Y' id='newgroupondisplay' />\n";
 }
 else
 {
