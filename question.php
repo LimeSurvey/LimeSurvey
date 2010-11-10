@@ -434,7 +434,7 @@ if ($bIsGroupDescrPage)
     echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";
     echo "\t<input type='hidden' name='grpdesc' value='Y' id='grpdesc' />\n";
     echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
-    echo "\n<br />\n";
+    echo "\n";
 
     //if ($groupdescription)
     //{
