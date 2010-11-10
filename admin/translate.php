@@ -131,6 +131,8 @@
   // Display tabs with fields to translate, as well as input fields for translated values
   {
 
+    $translateoutput .= "<div id=\"translationloading\" style=\"width: 100%; font-weight: bold; color: #000; text-align: center;\"><br />".$clang->gT("Loading Translations")."...<br /><br /></div>";
+
     $translateoutput .= "<form name='translateform' method='post' "
       ."action='$scriptname' id='translateform' >\n"
       ."<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -141,7 +143,7 @@
 
     // set up tabs
     $translateoutput .= ""
-      ."<div id=\"translationtabs\">\n"
+      ."<div id=\"translationtabs\" style=\"display: none;\" >\n"
       ."\t<ul>\n";
         foreach($tab_names as $type)
         {
