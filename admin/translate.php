@@ -76,7 +76,7 @@
   
 //  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 //  $tab_names=array("title", "description", "invitation", "reminder");
-  $tab_names=array("title", "welcome", "group", "question", "answer", "emailinvite", "emailreminder");
+  $tab_names=array("title", "welcome", "group", "question", "subquestions","answer", "emailinvite", "emailreminder","email_confirm");
 
 
   if ($tolang != "" && $actionvalue=="translateSave")
@@ -212,6 +212,7 @@
 
           $rowto  = $resultto->FetchRow();
           $textto = $rowto[$amTypeOptions["dbColumn"]];
+
           if ($associated)
           {
             $rowto2  = $resultto2->FetchRow();
