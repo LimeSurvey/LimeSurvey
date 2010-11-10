@@ -450,7 +450,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "id2"  => 'code',
         "gid"  => FALSE,
         "qid"  => TRUE,
-        "description" => $clang->gT("Answers"),
+        "description" => $clang->gT("Answer options"),
         "HTMLeditorInline"  => "No",
         "associated" => ""
       );
@@ -568,6 +568,90 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
       );
       break;
 
+    case 'emailconfirmation':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_confirm_subj = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_confirm_subj',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => $clang->gT("Confirmation email"),
+        "HTMLeditorInline"  => "No",
+        "associated" => "emailreminderbody"
+      );
+      break;
+
+    case 'emailconfirmationbody':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_confirm = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_confirm',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => "",
+        "HTMLeditorInline"  => "No",
+        "associated" => ""
+      );
+      break;
+
+    case 'emailregistration':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_register_subj = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_register_subj',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => $clang->gT("Registration email"),
+        "HTMLeditorInline"  => "No",
+        "associated" => "emailregistrationbody"
+      );
+      break;
+
+    case 'emailregistrationbody':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                       ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
+        "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
+                             ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
+        "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
+                           ."SET surveyls_email_register = ".db_quoteall($new)
+                        ." WHERE surveyls_survey_id=$surveyid "
+                           ."AND surveyls_language='$tolang'",
+        "dbColumn" => 'surveyls_email_register',
+        "id1"  => '',
+        "id2"  => '',
+        "gid"  => FALSE,
+        "qid"  => FALSE,
+        "description" => "",
+        "HTMLeditorInline"  => "No",
+        "associated" => ""
+      );
+      break;
+
     case 'email_confirm':
       $amTypeOptions = array(
         "querybase" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
@@ -661,13 +745,13 @@ function displayTranslateFieldsFooter()
  * @param string $textfrom The text to be translated in source language
  * @param string $textto The text to be translated in target language
  * @param integer $i Counter
- * @param $rowfrom Contains current row of database query
- * @param $rowCounter Counter of odd vs. even rows
+ * @param string $rowfrom Contains current row of database query
+ * @param boolean $evenRow True for even rows, false for odd rows
  * @return string $translateoutput
  */
 
 function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
-        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $rowCounter)
+        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow)
 
 {
   $value1 = "";
@@ -679,7 +763,7 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
   $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
 
   // Display text in original language
-  if ($rowCounter % 2)
+  if ($evenRow)
   {
     $translateoutput .= "<tr class=\"odd\">";
   }

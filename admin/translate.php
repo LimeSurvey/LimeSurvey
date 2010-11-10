@@ -15,8 +15,6 @@
 *
 */
 
-//TODO Use javascript to create tabs, in style of conditions editor.  Create translation.js file (http://jqueryui.com/demos/tabs/)
-//TODO For database save, don't use getUpdateSQL, but block saves
 
   include_once("login_check.php");  //Login Check dies also if the script is started directly
 
@@ -76,7 +74,7 @@
   
 //  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 //  $tab_names=array("title", "description", "invitation", "reminder");
-  $tab_names=array("title", "welcome", "group", "question", "subquestions","answer", "emailinvite", "emailreminder","email_confirm");
+  $tab_names=array("title", "welcome", "group", "question", "subquestions", "answer", "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
 
 
   if ($tolang != "" && $actionvalue=="translateSave")
@@ -176,7 +174,7 @@
       // Setup form
         // start a counter in order to number the input fields for each record
         $i = 0;
-        $rowCounter = 0;
+        $evenRow = FALSE;
         $all_fields_empty = TRUE;
 
         $querybase = $amTypeOptions["querybase"];
@@ -224,14 +222,14 @@
           if (strlen(trim((string)$textfrom)) > 0)
           {
             $all_fields_empty = FALSE;
-            ++$rowCounter;
+            $evenRow = !($evenRow);
             // Display translation fields
             $translateoutput .= displayTranslateFields($surveyid, $gid, $qid, $type,
-                    $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $rowCounter);
+                    $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow);
             if ($associated && strlen(trim((string)$textfrom2)) > 0)
             {
               $translateoutput .= displayTranslateFields($surveyid, $gid, $qid, $type2,
-                      $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $rowfrom2, $rowCounter);
+                      $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $rowfrom2, $evenRow);
             }
           }
           else
