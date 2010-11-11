@@ -210,7 +210,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_title',
         "description" => $clang->gT("Survey title and description"),
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorType"    => "title",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Inline",  // Allowed values: Inline, Popup or None
         "associated" => "description"
       );
       break;
@@ -235,7 +236,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_description',
         "description" => $clang->gT("Description:"),
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorType"    => "description",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Inline",  // Allowed values: Inline, Popup or None
         "associated" => ""
       );
       break;
@@ -260,7 +262,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_welcometext',
         "description" => $clang->gT("Welcome and end text"),
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorType"    => "welcome",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Inline",  // Allowed values: Inline, Popup or None
         "associated" => "end"
       );
       break;
@@ -285,7 +288,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => 'surveyls_endtext',
         "description" => $clang->gT("End message:"),
-        "HTMLeditorInline"  => "Yes",
+        "HTMLeditorType"    => "end",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Inline",  // Allowed values: Inline, Popup or None
         "associated" => ""
       );
       break;
@@ -313,7 +317,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => "group_name",
         "description" => $clang->gT("Question groups"),
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "group",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Popup",  // Allowed values: Inline, Popup or None
         "associated" => "group_desc"
       );
       break;
@@ -341,7 +346,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "qid"  => FALSE,
         "dbColumn" => "description",
         "description" => $clang->gT("Group description"),
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "group_desc",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Popup",  // Allowed values: Inline, Popup or None
         "associated" => ""
       );
       break;
@@ -373,13 +379,77 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "querybase" => "SELECT * "
                                    ."FROM ".db_table_name('questions')
                                    ."WHERE sid=".db_quoteall($surveyid)
-                                     ."AND language='{$baselang}' AND parent_qid=0 "
+                                     ."AND language='{$baselang}' "
+                                     ."AND parent_qid=0 "
                                    ."ORDER BY qid ",
         "queryto"   => "SELECT * "
                                     ."FROM ".db_table_name('questions')
                                     ."WHERE sid=".db_quoteall($surveyid)
+                                      ."AND language='{$tolang}' "
+                                     ." AND parent_qid=0 "
+                                    ."ORDER BY qid ",
+        "queryupdate" => "UPDATE ".db_table_name('questions')
+                         ."SET question = ".db_quoteall($new)
+                         ."WHERE qid = '{$id1}' "
+                           ."AND sid=".db_quoteall($surveyid)
+                          ." AND parent_qid=0 "
+                           ."AND language='{$tolang}'",
+        "dbColumn" => 'question',
+        "id1"  => 'qid',
+        "id2"  => "",
+        "gid"  => TRUE,
+        "qid"  => TRUE,
+        "description" => $clang->gT("Questions"),
+        "HTMLeditorType"    => "question",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Popup",  // Allowed values: Inline, Popup or ""
+        "associated" => "question_help"
+      );
+      break;
+
+    case 'question_help':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * "
+                                   ."FROM ".db_table_name('questions')
+                                   ."WHERE sid=".db_quoteall($surveyid)
+                                     ."AND language='{$baselang}' "
+                                     ."AND parent_qid=0 "
+                                   ."ORDER BY qid ",
+        "queryto"   => "SELECT * "
+                                    ."FROM ".db_table_name('questions')
+                                    ."WHERE sid=".db_quoteall($surveyid)
+                                      ."AND language='{$tolang}' "
+                                     ." AND parent_qid=0 "
+                                    ."ORDER BY qid ",
+        "queryupdate" => "UPDATE ".db_table_name('questions')
+                         ."SET help = ".db_quoteall($new)
+                         ."WHERE qid = '{$id1}' "
+                           ."AND sid=".db_quoteall($surveyid)
+                          ." AND parent_qid=0 "
+                           ."AND language='{$tolang}'",
+        "dbColumn" => 'help',
+        "id1"  => 'qid',
+        "id2"  => "",
+        "gid"  => TRUE,
+        "qid"  => TRUE,
+        "description" => "",
+        "HTMLeditorType"    => "question_help",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Popup",  // Allowed values: Inline, Popup or ""
+        "associated" => ""
+      );
+      break;
+
+    case 'subquestion':
+      $amTypeOptions = array(
+        "querybase" => "SELECT * "
+                                   ."FROM ".db_table_name('questions')
+                                   ."WHERE sid=".db_quoteall($surveyid)
+                                     ."AND language='{$baselang}' AND parent_qid>0 "
+                                   ."ORDER BY parent_qid,qid ",
+        "queryto"   => "SELECT * "
+                                    ."FROM ".db_table_name('questions')
+                                    ."WHERE sid=".db_quoteall($surveyid)
                                       ."AND language=".db_quoteall($tolang)
-                                    ." AND parent_qid=0 ORDER BY qid ",
+                                    ." AND parent_qid>0 ORDER BY parent_qid,qid ",
         "queryupdate" => "UPDATE ".db_table_name('questions')
                          ."SET question = ".db_quoteall($new)
                          ."WHERE qid = '{$id1}' "
@@ -390,36 +460,9 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "id2"  => "",
         "gid"  => TRUE,
         "qid"  => TRUE,
-        "description" => $clang->gT("Questions"),
-        "HTMLeditorInline"  => "No",
-        "associated" => "question_help"
-      );
-      break;
-
-    case 'question_help':
-      $amTypeOptions = array(
-        "querybase" => "SELECT * "
-                                     ."FROM ".db_table_name('questions')
-                                     ."WHERE sid=".db_quoteall($surveyid)
-                                       ."AND language='{$baselang}' "
-                                     ."ORDER BY qid ",
-        "queryto"   => "SELECT * "
-                                    ."FROM ".db_table_name('questions')
-                                    ."WHERE sid=".db_quoteall($surveyid)
-                                      ."AND language=".db_quoteall($tolang)
-                                    ."ORDER BY qid ",
-        "queryupdate" => "UPDATE ".db_table_name('questions')
-                   ."SET help = ".db_quoteall($new)
-                   ."WHERE qid = '{$id1}' "
-                   ."AND sid=".db_quoteall($surveyid)
-                   ."AND language='{$tolang}'",
-        "dbColumn" => 'help',
-        "id1"  => 'qid',
-        "id2"  => "",
-        "gid"  => TRUE,
-        "qid"  => TRUE,
-        "description" => "",
-        "HTMLeditorInline"  => "No",
+        "description" => $clang->gT("Subquestions"),
+        "HTMLeditorType"    => "question",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Popup",  // Allowed values: Inline, Popup or None
         "associated" => ""
       );
       break;
@@ -451,36 +494,9 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => TRUE,
         "description" => $clang->gT("Answer options"),
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "subquestion",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "Popup",  // Allowed values: Inline, Popup or None
         "associated" => ""
-      );
-      break;
-
-    case 'subquestions':
-      $amTypeOptions = array(
-        "querybase" => "SELECT * "
-                                   ."FROM ".db_table_name('questions')
-                                   ."WHERE sid=".db_quoteall($surveyid)
-                                     ."AND language='{$baselang}' AND parent_qid>0 "
-                                   ."ORDER BY parent_qid,qid ",
-        "queryto"   => "SELECT * "
-                                    ."FROM ".db_table_name('questions')
-                                    ."WHERE sid=".db_quoteall($surveyid)
-                                      ."AND language=".db_quoteall($tolang)
-                                    ." AND parent_qid>0 ORDER BY parent_qid,qid ",
-        "queryupdate" => "UPDATE ".db_table_name('questions')
-                         ."SET question = ".db_quoteall($new)
-                         ."WHERE qid = '{$id1}' "
-                           ."AND sid=".db_quoteall($surveyid)
-                           ."AND language='{$tolang}'",
-        "dbColumn" => 'question',
-        "id1"  => 'qid',
-        "id2"  => "",
-        "gid"  => TRUE,
-        "qid"  => TRUE,
-        "description" => $clang->gT("Subquestions"),
-        "HTMLeditorInline"  => "No",
-        "associated" => "question_help"
       );
       break;
 
@@ -500,7 +516,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => $clang->gT("Invitation email"),
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => "emailinvitebody"
       );
       break;
@@ -521,7 +538,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => "",
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => ""
       );
       break;
@@ -542,7 +560,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => $clang->gT("Reminder email"),
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => "emailreminderbody"
       );
       break;
@@ -563,7 +582,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => "",
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => ""
       );
       break;
@@ -584,8 +604,9 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => $clang->gT("Confirmation email"),
-        "HTMLeditorInline"  => "No",
-        "associated" => "emailreminderbody"
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
+        "associated" => "emailconfirmationbody"
       );
       break;
 
@@ -605,7 +626,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => "",
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => ""
       );
       break;
@@ -626,7 +648,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => $clang->gT("Registration email"),
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => "emailregistrationbody"
       );
       break;
@@ -647,7 +670,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => "",
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => ""
       );
       break;
@@ -659,7 +683,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                              ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
         "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                           ."SET surveyls_email_remind_subj = ".db_quoteall($new)
+                           ."SET surveyls_email_confirm_subj = ".db_quoteall($new)
                         ." WHERE surveyls_survey_id=$surveyid "
                            ."AND surveyls_language='$tolang'",
         "dbColumn" => 'surveyls_email_confirm_subj',
@@ -668,7 +692,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => $clang->gT("Confirmation email"),
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => "email_confirmbody"
       );
       break;
@@ -680,7 +705,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                              ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
         "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                           ."SET surveyls_email_remind = ".db_quoteall($new)
+                           ."SET surveyls_email_confirm = ".db_quoteall($new)
                         ." WHERE surveyls_survey_id=$surveyid "
                            ."AND surveyls_language='$tolang'",
         "dbColumn" => 'surveyls_email_confirm',
@@ -689,7 +714,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
         "gid"  => FALSE,
         "qid"  => FALSE,
         "description" => "",
-        "HTMLeditorInline"  => "No",
+        "HTMLeditorType"    => "email",  // This value is passed to HTML editor and determines LimeReplacementFields
+        "HTMLeditorDisplay"  => "",  // Allowed values: Inline, Popup or ""
         "associated" => ""
       );
       break;
@@ -754,15 +780,7 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
         $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow)
 
 {
-  $value1 = "";
-  if ($amTypeOptions["id1"] != "") $value1 = $rowfrom[$amTypeOptions["id1"]];
-  $value2 = "";
-  if ($amTypeOptions["id2"] != "") $value2 = $rowfrom[$amTypeOptions["id2"]];
-
-  $translateoutput = "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
-  $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
-
-  // Display text in original language
+  $translateoutput = "";
   if ($evenRow)
   {
     $translateoutput .= "<tr class=\"odd\">";
@@ -771,10 +789,19 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
   {
     $translateoutput .= "<tr class=\"even\">";
   }
+  $value1 = "";
+  if ($amTypeOptions["id1"] != "") $value1 = $rowfrom[$amTypeOptions["id1"]];
+  $value2 = "";
+  if ($amTypeOptions["id2"] != "") $value2 = $rowfrom[$amTypeOptions["id2"]];
+
+
+  // Display text in original language
   // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
   $translateoutput .= ""
     . "<td>$textfrom</td>\n"
     . "<td>\n";
+      $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
+      $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
       $nrows = max(calc_nrows($textfrom), calc_nrows($textto));
       $translateoutput .= "<input type='hidden' "
         ."name='".$type."_oldvalue_".$i."' "
@@ -782,15 +809,15 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
       $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
         ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
 
-      if ($amTypeOptions["HTMLeditorInline"]=="Yes")
+      if ($amTypeOptions["HTMLeditorDisplay"]=="Inline")
       {
         $translateoutput .= ""
-          .getEditor("edit".$type , $type."_newvalue_".$i, htmlspecialchars($textto), $surveyid, $gid, $qid, "translate".$type);
+          .getEditor("edit".$type , $type."_newvalue_".$i, htmlspecialchars($textto), $surveyid, $gid, $qid, "translate".$amTypeOptions["HTMLeditorType"]);
       }
-      else
+      if ($amTypeOptions["HTMLeditorDisplay"]=="Popup")
       {
         $translateoutput .= ""
-          .getPopupEditor("edit".$type , $type."_newvalue_".$i, htmlspecialchars($textto), $surveyid, $gid, $qid, "translate".$type);
+          .getPopupEditor("edit".$type , $type."_newvalue_".$i, htmlspecialchars($textto), $surveyid, $gid, $qid, "translate".$amTypeOptions["HTMLeditorType"]);
       }
       $translateoutput .= "\n</td>\n"
   . "</tr>\n";

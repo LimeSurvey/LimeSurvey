@@ -74,7 +74,7 @@
   
 //  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 //  $tab_names=array("title", "description", "invitation", "reminder");
-  $tab_names=array("title", "welcome", "group", "question", "subquestions", "answer", "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
+  $tab_names=array("title", "welcome", "group", "question", "subquestion", "answer", "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
 
 
   if ($tolang != "" && $actionvalue=="translateSave")
