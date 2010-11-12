@@ -300,7 +300,7 @@ if(bHasRight($surveyid, 'edit_survey_property'))
         }
         if ($errorstring!='')
         {
-            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Quota could not be added.\\n\\nIt is missing a quota message for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+            $quotasoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Quota could not be added.\\n\\nIt is missing a quota message for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
         }
         else
         //All the required quota messages exist, now we can insert this info into the database
