@@ -2031,6 +2031,10 @@ function submitfailed($errormsg='')
     if ($thissurvey['adminemail'])
     {
         $completed .= $clang->gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
+        if ($debug>0)
+        {
+            $completed.='Error message: '.htmlspecialchars($errormsg).'<br />';    
+        }
         $email=$clang->gT("An error occurred saving a response to survey id","unescaped")." ".$thissurvey['name']." - $surveyid\n\n";
         $email .= $clang->gT("DATA TO BE ENTERED","unescaped").":\n";
         foreach ($_SESSION['insertarray'] as $value)
