@@ -1167,8 +1167,8 @@ function setup_columns($columns, $answer_count)
         ,'maxrows'  => ceil($answer_count/$columns) //Always rounds up to nearest whole number
         ,'cols'     => $columns
         );
-    }
 
+        
     switch($colstyle)
     {
         case 'ul':  if($columns > 1)
