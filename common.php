@@ -1122,12 +1122,15 @@ function setup_columns($columns, $answer_count)
         $columns = 1;
     }
 
-    if($columns > $answer_count)
+    if(($columns > $answer_count) && $answer_count>0)
     {
         $columns = $answer_count;
     };
 
-    $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
+    if ($answer_count>0 && $columns>0)
+    {
+        $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)        
+    }
 
     $class_first = '';
     if($columns > 1 && $colstyle != null)
@@ -1152,17 +1155,19 @@ function setup_columns($columns, $answer_count)
         $class_last_table = '';
     };
 
+     
     $wrapper = array(
-             'whole-start'  => "\n<ul$class_first>\n"
-    ,'whole-end'    => "</ul>\n"
-    ,'col-devide'   => ''
-    ,'col-devide-last' => ''
-    ,'item-start'   => "\t<li>\n"
-    ,'item-start-other' => "\t<li class=\"other\">\n"
-    ,'item-end' => "\t</li>\n"
-    ,'maxrows'  => ceil($answer_count/$columns) //Always rounds up to nearest whole number
-    ,'cols'     => $columns
-    );
+                 'whole-start'  => "\n<ul$class_first>\n"
+        ,'whole-end'    => "</ul>\n"
+        ,'col-devide'   => ''
+        ,'col-devide-last' => ''
+        ,'item-start'   => "\t<li>\n"
+        ,'item-start-other' => "\t<li class=\"other\">\n"
+        ,'item-end' => "\t</li>\n"
+        ,'maxrows'  => ceil($answer_count/$columns) //Always rounds up to nearest whole number
+        ,'cols'     => $columns
+        );
+    }
 
     switch($colstyle)
     {
