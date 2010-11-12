@@ -537,7 +537,7 @@ function fix_mysql_collation()
 function upgrade_survey_tables139()
 {
     global $modifyoutput,$dbprefix;
-    $surveyidquery = db_select_tables_like($dbprefix."survey_%");
+    $surveyidquery = db_select_tables_like($dbprefix."survey\_%");
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else

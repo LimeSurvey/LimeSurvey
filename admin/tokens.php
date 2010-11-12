@@ -367,7 +367,7 @@ if (!$tokenexists) //If no tokens table exists
     }
     else
     {
-        $query=db_select_tables_like("{$dbprefix}old_tokens_".$surveyid."_%");
+        $query=db_select_tables_like("{$dbprefix}old\_tokens\_".$surveyid."\_%");
         $result=db_execute_num($query) or safe_die("Couldn't get old table list<br />".$query."<br />".$connect->ErrorMsg());
         $tcount=$result->RecordCount();
         if ($tcount > 0)

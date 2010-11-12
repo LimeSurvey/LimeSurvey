@@ -36,11 +36,12 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         
         /***** Check for activate survey tables with missing survey entry **/
         
-        $sQuery = "show tables like '{$dbprefix}survey\_%'";
+        $sQuery = db_select_tables_like("{$dbprefix}survey\_%");
         $aResult = db_execute_num($sQuery) or safe_die("Couldn't get list of conditions from database<br />$query<br />".$connect->ErrorMsg());
         while ($aRow=$aResult->FetchRow())
         {
            $tablename=substr($aRow[0],strlen($dbprefix)); 
+           if ($tablename=='survey_permissions') continue;
            $iSurveyID=substr($tablename,strpos($tablename,'_')+1); 
            $qquery="SELECT sid FROM {$dbprefix}surveys WHERE sid='{$iSurveyID}'";
            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
@@ -68,7 +69,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 
         /***** Check for activate token tables with missing survey entry **/
         
-        $sQuery = "show tables like '{$dbprefix}tokens\_%'";
+        $sQuery = db_select_tables_like("{$dbprefix}tokens\_%");
         $aResult = db_execute_num($sQuery) or safe_die("Couldn't get list of token tables from database<br />$query<br />".$connect->ErrorMsg());
         while ($aRow=$aResult->FetchRow())
         {

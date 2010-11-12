@@ -638,6 +638,8 @@ function db_table_name_nq($name)
 
 /**
  *  Return a sql statement for finding LIKE named tables
+ *  Be aware that you have to escape underscor chars by using a backslash 
+ * otherwise you might get table names returned you don't want
  *
  * @param mixed $table
  */
@@ -654,6 +656,7 @@ function db_select_tables_like($table)
         case 'odbc_mssql' :
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
         case 'postgres' :
+            $table=str_replace('\\','\\\\',$table);
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
         default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");
     }
@@ -7566,7 +7569,7 @@ function getSubQuestions($sid, $qid, $sLanguage) {
  */
 function getXMLWriter() {
     if (!extension_loaded('xmlwriter')) {
-        safe_die('XMLWriter class not compiled into PHP, please contact your system administrator');
+        safe_die('XMLWriter class not enabled in PHP - please contact your system administrator - http://www.php.net/manual/en/xmlwriter.installation.php');
     } else {
         $xmlwriter = new XMLWriter();
     }
