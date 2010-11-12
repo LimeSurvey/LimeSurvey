@@ -136,7 +136,7 @@ function browsemenubar($title='')
     }
 
     //Iterate survey
-    if (bHasSurveyPermission($surveyid,'responses','delete') && $thissurvey['private'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
+    if (bHasSurveyPermission($surveyid,'responses','delete') && $thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
     {
         $browsemenubar .= "<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' title=\"".$clang->gTview("Iterate survey")."\" >"
         ."<img src='$imageurl/iterate.png' title='' alt='".$clang->gT("Iterate surevey")."' /></a>\n";

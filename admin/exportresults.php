@@ -217,7 +217,7 @@ if (!$exportstyle)
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
         //OPTIONAL EXTRAS (FROM TOKENS TABLE)
     // Find out if survey results are anonymous
-    if ($thissurvey['private'] == "N" && tableExists("tokens_$surveyid"))
+    if ($thissurvey['anonymized'] == "N" && tableExists("tokens_$surveyid"))
         {
             $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
             .$clang->gT("Choose Token Fields").":"
@@ -369,7 +369,7 @@ if (isset($_POST['email_address']) && $_POST['email_address']=="on")
     $dquery .= ", {$dbprefix}tokens_$surveyid.email";
 }
 
-if ($tokenTableExists && $thissurvey['private']=='N')
+if ($tokenTableExists && $thissurvey['anonymized']=='N')
 {
     if (isset($_POST['token']) && $_POST['token']=="on")
     {
@@ -386,7 +386,7 @@ if ($tokenTableExists && $thissurvey['private']=='N')
 }
 $dquery .= " FROM $surveytable";
 
-if ($tokenTableExists && $thissurvey['private']=='N')
+if ($tokenTableExists && $thissurvey['anonymized']=='N')
 {
     $dquery .= " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
     . " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
@@ -704,7 +704,7 @@ $limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['expor
 $attributefieldAndNames=array();
 
 //Now dump the data
-if ($tokenTableExists && $thissurvey['private']=='N')
+if ($tokenTableExists && $thissurvey['anonymized']=='N')
 {
     $dquery = "SELECT $selectfields";
     if (isset($_POST['first_name']) && $_POST['first_name']=="on")

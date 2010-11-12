@@ -537,7 +537,7 @@ function createinsertquery()
 
 
         // First compute the submitdate
-        if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+        if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
         {
             // In case of anonymized responses survey with no datestamp
             // then the the answer submutdate gets a conventional timestamp
@@ -725,7 +725,7 @@ function submitanswer()
     global $thissurvey,$timeadjust;
     global $surveyid, $connect, $clang, $move;
 
-    if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+    if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
     {
         // In case of anonymized responses survey with no datestamp
         // then the the answer submitdate gets a conventional timestamp

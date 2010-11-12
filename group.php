@@ -592,7 +592,7 @@ END;
         $localEvaluationPossible = false;
         unset($localEvaluation);
 
-        if ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
+        if ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
         { // Source of this simple condition is TokenAttr
             if ( isset($_SESSION['token']) &&
             in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -808,7 +808,7 @@ END;
                     }
 
                 } // end target @SGQA@
-                elseif ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $targetconditiontokenattr))
+                elseif ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $targetconditiontokenattr))
                 {
                     if ( isset($_SESSION['token']) &&
                     in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))

@@ -151,7 +151,7 @@ if ($subaction == "id")
     $fieldmap=createFieldMap($surveyid,'full',false,false,$language);
 
     //add token to top of list if survey is not private
-    if ($surveyinfo['private'] == "N" && tableExists('tokens_'.$surveyid))
+    if ($surveyinfo['anonymized'] == "N" && tableExists('tokens_'.$surveyid))
     {
         $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
         $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
@@ -204,7 +204,7 @@ if ($subaction == "id")
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
     $idquery = "SELECT * FROM $surveytable ";
-    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
         $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
     if (incompleteAnsFilterstate() == "inc")
         $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
@@ -594,7 +594,7 @@ elseif ($subaction == "all")
     
 
     //add token to top of list if survey is not private
-    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
+    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
     {
         $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
         $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
@@ -696,7 +696,7 @@ elseif ($subaction == "all")
     if (!isset($start) || $start =='') {$start = 0;}
 
     //Create the query
-    if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
     {
         $sql_from = "{$surveytable} LEFT JOIN {$tokentable} ON {$surveytable}.token = {$tokentable}.token";
     } else {
@@ -730,7 +730,7 @@ elseif ($subaction == "all")
     {
         if ($_POST['sql'] == "NULL" )
         {
-            if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+            if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
@@ -749,7 +749,7 @@ elseif ($subaction == "all")
         }
         else
         {
-            if ($surveytable['private'] == "N" && db_tables_exist($tokentable))
+            if ($surveytable['anonymized'] == "N" && db_tables_exist($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
             else
                 $dtquery = "SELECT * FROM $surveytable ";
@@ -781,7 +781,7 @@ elseif ($subaction == "all")
     }
     else
     {
-        if ($surveyinfo['private'] == "N" && db_tables_exist($tokentable))
+        if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
             $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
         else
             $dtquery = "SELECT * FROM $surveytable ";
@@ -906,7 +906,7 @@ elseif ($subaction == "all")
         $browseoutput .= "</td>";
         $i = 0;
         //If not private, display the token info and link to the token screen
-        if ($surveyinfo['private'] == "N" && $dtrow['token'] && db_tables_exist($tokentable))
+        if ($surveyinfo['anonymized'] == "N" && $dtrow['token'] && db_tables_exist($tokentable))
         {
             if (isset($dtrow['tid']) && !empty($dtrow['tid']))
             {

@@ -67,7 +67,7 @@ if ($action == "listsurveys")
 
         while($rows = $result->FetchRow())
         {
-            if($rows['private']=="Y")
+            if($rows['anonymized']=="Y")
             {
                 $privacy=$clang->gT("Yes") ;
             }
@@ -790,7 +790,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<td align='left' class='settingentryhighlight'><strong>{$surveyinfo['surveyls_title']} "
         . "(".$clang->gT("ID")." {$surveyinfo['sid']})</strong></td></tr>\n";
         $surveysummary2 = "";
-        if ($surveyinfo['private'] != "N") {$surveysummary2 .= $clang->gT("Answers to this survey are anonymized.")."<br />\n";}
+        if ($surveyinfo['anonymized'] != "N") {$surveysummary2 .= $clang->gT("Answers to this survey are anonymized.")."<br />\n";}
         else {$surveysummary2 .= $clang->gT("This survey is NOT anonymous.")."<br />\n";}
         if ($surveyinfo['format'] == "S") {$surveysummary2 .= $clang->gT("It is presented question by question.")."<br />\n";}
         elseif ($surveyinfo['format'] == "G") {$surveysummary2 .= $clang->gT("It is presented group by group.")."<br />\n";}
@@ -2599,7 +2599,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
             $esrow['usecaptcha']                = 'D';
             $esrow['htmlemail']                 = 'Y';
             $esrow['emailnotificationto']       = '';
-            $esrow['private']                   = 'Y';
+            $esrow['anonymized']                   = 'Y';
             $esrow['datestamp']                 = 'N';
             $esrow['ipaddr']                    = 'N';
             $esrow['refurl']                    = 'N';
@@ -3250,9 +3250,9 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
             . "if (document.getElementById('tokenanswerspersistence').value == 'Y')\n"
             . "{\n"
             . "alert('".$clang->gT("You can't use Anonymized responses when Token-based answers persistence is enabled.","js")."');\n"
-            . "document.getElementById('private').value = 'N';\n"
+            . "document.getElementById('anonymized').value = 'N';\n"
             . "}\n"
-            . "else if (document.getElementById('private').value == 'Y')\n"
+            . "else if (document.getElementById('anonymized').value == 'Y')\n"
             . "{\n"
             . "alert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
             . "}\n"
@@ -3261,23 +3261,23 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
 
         if ($esrow['active'] == "Y") {
                 $editsurvey .= "\n";
-            if ($esrow['private'] == "N") {
+            if ($esrow['anonymized'] == "N") {
                 $editsurvey .= " " . $clang->gT("This survey is NOT anonymous.");
             } else {
                 $editsurvey .= $clang->gT("Answers to this survey are anonymized.");
             }
                 $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
                 . "</font>\n";
-                $editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\" />\n";
+                $editsurvey .= "<input type='hidden' name='anonymized' value=\"{$esrow['anonymized']}\" />\n";
         } else {
-                $editsurvey .= "<select id='private' name='private' onchange='alertPrivacy();'>\n"
+                $editsurvey .= "<select id='anonymized' name='anonymized' onchange='alertPrivacy();'>\n"
                 . "<option value='Y'";
-            if ($esrow['private'] == "Y") {
+            if ($esrow['anonymized'] == "Y") {
                 $editsurvey .= " selected='selected'";
             }
                 $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
                 . "<option value='N'";
-            if ($esrow['private'] != "Y") {
+            if ($esrow['anonymized'] != "Y") {
                 $editsurvey .= " selected='selected'";
             }
                 $editsurvey .= ">".$clang->gT("No")."</option>\n"
@@ -3435,7 +3435,7 @@ if ($action == "editsurveysettings" || $action == "newsurvey")
         $editsurvey .= "<div id='tokens'><ul>\n";
         // Token answers persistence
         $editsurvey .= "<li><label for=''>".$clang->gT("Enable token-based response persistence?")."</label>\n"
-        . "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymized responses are used","js")."'); this.value='N';}\">\n"
+        . "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('anonymized').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymized responses are used","js")."'); this.value='N';}\">\n"
         . "<option value='Y'";
         if ($esrow['tokenanswerspersistence'] == "Y") {
             $editsurvey .= " selected='selected'";

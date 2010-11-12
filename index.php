@@ -799,7 +799,7 @@ GetReferringUrl();
 //  - the survey is active
 //  - a token information has been provided
 //  - the survey is setup to allow token-response-persistence
-if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['private'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
+if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
     // load previous answers if any (dataentry with nosubmit)
     $srquery="SELECT id FROM {$thissurvey['tablename']}"
@@ -1322,7 +1322,7 @@ function checkconfield($value)
                             }
                             // Replace {TOKEN:XXX} condition values
                             // By corresponding value
-                            if ($local_thissurvey['private'] == 'N' &&
+                            if ($local_thissurvey['anonymized'] == 'N' &&
                             preg_match('/^{TOKEN:([^}]*)}$/',$cqv["matchvalue"], $targetconditiontokenattr))
                             {
                                 if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -1352,7 +1352,7 @@ function checkconfield($value)
                                         $comparisonLeftOperand = null;
                                     }
                                 }
-                                elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
+                                elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
                                 {
                                     if ( isset($_SESSION['token']) &&
                                     in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -1999,7 +1999,7 @@ function submittokens($quotaexit=false)
 
             $subject=Replacefields($subject, $fieldsarray);
 
-            if ($thissurvey['private'] == "N")
+            if ($thissurvey['anonymized'] == "N")
             {
                 // Survey is not anonymous, we can translate insertAns placeholder
                 $subject=dTexts::run($subject);
@@ -2021,7 +2021,7 @@ function submittokens($quotaexit=false)
                 $message=$thissurvey['email_confirm'];
                 $message=Replacefields($message, $fieldsarray);
 
-                if ($thissurvey['private'] == "N")
+                if ($thissurvey['anonymized'] == "N")
                 {
                     // Survey is not anonymous, we can translate insertAns placeholder
                     $message=dTexts::run($message);
@@ -2649,12 +2649,12 @@ function buildsurveysession()
     //See rem at end..
     $_SESSION['token'] = $clienttoken;
 
-    if ($thissurvey['private'] == "N")
+    if ($thissurvey['anonymized'] == "N")
     {
         $_SESSION['insertarray'][]= "token";
     }
 
-	if ($tokensexist == 1 && $thissurvey['private'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+	if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
@@ -3275,7 +3275,7 @@ function GetReferringUrl()
     echo "\n\n<!-- START THE SURVEY -->\n";
 
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
-    if ($thissurvey['private'] == "Y")
+    if ($thissurvey['anonymized'] == "Y")
     {
         echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
     }

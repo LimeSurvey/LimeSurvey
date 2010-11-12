@@ -258,7 +258,7 @@ CREATE TABLE [prefix_surveys] (
   [startdate] DATETIME default NULL,
   [expires] DATETIME default NULL,
   [adminemail] VARCHAR(320) default NULL,
-  [private] char(1) default NULL,
+  [anonymized] char(1) default NULL,
   [faxto] VARCHAR(20) default NULL,
   [format] char(1) default NULL,
   [savetimings] char(1) default 'N',

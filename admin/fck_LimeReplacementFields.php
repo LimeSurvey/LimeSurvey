@@ -178,7 +178,7 @@ switch ($fieldtype)
         if (isset($surveyid))
         {
             $surveyInfo = getSurveyInfo($surveyid);
-            if ($surveyInfo['private'] == "N")
+            if ($surveyInfo['anonymized'] == "N")
             {
                 $isInstertansEnabled=true;
             }

@@ -271,7 +271,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
      $createsurveytimings='';
      $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl, savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
+    $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
     $presult=db_execute_assoc($pquery);
     $prow=$presult->FetchRow();
     if ($prow['allowregister'] == "Y")
@@ -376,10 +376,9 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                     $createsurvey .= " X";
                 break;
             case "token":
-                if ($prow['private'] == "N")
+                if ($prow['anonymized'] == "N")
                 {
                     $createsurvey .= " C(36)";
-                    $surveynotprivate="TRUE";
                 }
                 break;
             case "page_time":
@@ -466,13 +465,6 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
         $acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
         $acresult = $connect->Execute($acquery);
 
-        // Private means data privacy, not closed access survey
-        //        if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
-        //        {
-        //            $activateoutput .= $clang->gT("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
-        //            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
-        //        }
-        //        elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";

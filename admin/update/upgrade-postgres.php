@@ -283,6 +283,9 @@ function db_upgrade($oldversion) {
                    
         modify_database("","ALTER TABLE prefix_conditions ALTER COLUMN method TYPE CHAR(5)"); echo $modifyoutput; flush();
         
+        modify_database("","ALTER TABLE prefix_surveys RENAME COLUMN private TO anonymized;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized TYPE char(1) Default 'N' NOT NULL ;"); echo $modifyoutput; flush();
+        
         modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 

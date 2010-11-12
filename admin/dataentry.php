@@ -109,7 +109,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             { // token doesn't exist in token table
                 $lastanswfortoken='UnknownToken';
             }
-            elseif ($thissurvey['private'] == "Y")
+            elseif ($thissurvey['anonymized'] == "Y")
             { // token exist but survey is anonymous, check completed state
                 if ($tokencompleted != "" && $tokencompleted != "N")
                 { // token is completed
@@ -440,7 +440,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         while ($fnrow = $fnresult->FetchRow())
         {
             $fnrows[] = $fnrow;
-            $private=$fnrow['private'];
+            $private=$fnrow['anonymized'];
             $datestamp=$fnrow['datestamp'];
             $ipaddr=$fnrow['ipaddr'];
         } // Get table output into array

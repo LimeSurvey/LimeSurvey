@@ -1118,7 +1118,7 @@ if (isset($cquestions))
 }
 
 //  record a JS variable to let jQuery know if survey is Anonymous
-if ($thissurvey['private'] == 'Y')
+if ($thissurvey['anonymized'] == 'Y')
 {
     $conditionsoutput_main_content .= "isAnonymousSurvey = true;";
 }
@@ -1376,7 +1376,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
                     ."\t<font size='1' face='verdana'>\n";
 
                     $leftOperandType = 'unknown'; // prevquestion, tokenattr
-                    if ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
+                    if ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
                     {
                         $leftOperandType = 'tokenattr';
                         $aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
@@ -1449,7 +1449,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
 
                         $conditionsoutput_main_content .= "".html_escape($matchedSGQAText)."\n";
                     }
-                    elseif ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
+                    elseif ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
                     {
                         $rightOperandType = 'tokenAttr';
                         $aTokenAttrNames=GetTokenFieldsAndNames($surveyid);

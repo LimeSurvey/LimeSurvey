@@ -2055,11 +2055,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
-    $pquery = "SELECT private, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+    $pquery = "SELECT anonymized, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
     $presult=db_execute_assoc($pquery); //Checked
     while($prow=$presult->FetchRow())
     {
-        if ($prow['private'] == "N")
+        if ($prow['anonymized'] == "N")
         {
             $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
             if ($style == "full")
@@ -2928,7 +2928,7 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you."), $line);
     if (strpos($line, "{SAVEALERT}") !== false) 
     {
-        if ($thissurvey['private']=='Y')
+        if ($thissurvey['anonymized']=='Y')
         {
             $savealert=$clang->gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.");
         }
@@ -6205,7 +6205,7 @@ function tableExists($tablename)
 // Returns true otherwise
 function bIsTokenCompletedDatestamped($thesurvey)
 {
-    if ($thesurvey['private'] == 'Y' &&  tableExists('tokens_'.$thesurvey['sid']))
+    if ($thesurvey['anonymized'] == 'Y' &&  tableExists('tokens_'.$thesurvey['sid']))
     {
         return false;
     }
@@ -6946,7 +6946,7 @@ function checkquestionfordisplay($qid, $gid=null)
                             //$cfieldname=' ';
                         }
                     }
-                    elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
+                    elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
                     {
                         if ( isset($_SESSION['token']) &&
                         in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -6970,7 +6970,7 @@ function checkquestionfordisplay($qid, $gid=null)
                     //$cfieldname=' ';
                 }
             }
-            elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['value'],$targetconditiontokenattr))
+            elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['value'],$targetconditiontokenattr))
             {
                 if ( isset($_SESSION['token']) &&
                 in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -6990,7 +6990,7 @@ function checkquestionfordisplay($qid, $gid=null)
                             $conditionCanBeEvaluated=false;
                         }
                     }
-                    elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
+                    elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
                     {
                         if ( isset($_SESSION['token']) &&
                         in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -7031,7 +7031,7 @@ function checkquestionfordisplay($qid, $gid=null)
                         $conditionCanBeEvaluated=false;
                     }
                 }
-                elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
+                elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
                 {
                     if ( isset($_SESSION['token']) &&
                     in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))

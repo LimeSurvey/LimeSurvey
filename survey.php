@@ -42,7 +42,7 @@ $filenotvalidated = checkUploadedFileValidity($move);
 //SUBMIT
 if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) && !$filenotvalidated))
 {
-    if ($thissurvey['private'] == "Y")
+    if ($thissurvey['anonymized'] == "Y")
     {
         $privacy = templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
     }
@@ -226,7 +226,7 @@ if ((!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))
 // If the survey uses answer persistence and a srid is registered in SESSION
 // then loadanswers from this srid
 if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
-$thissurvey['private'] == "N" &&
+$thissurvey['anonymized'] == "N" &&
 isset($_SESSION['srid']) &&
 $thissurvey['active'] == "Y")
 {
@@ -341,7 +341,7 @@ if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
 }
 
-if ($thissurvey['private'] == "Y")
+if ($thissurvey['anonymized'] == "Y")
 {
     echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
 }
@@ -475,7 +475,7 @@ END;
         unset($localEvaluation);
         unset($JSsourceElt);
         unset($JSsourceVal);
-        if ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
+        if ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
         { // source is a token attr
             // first check if token is readable in session
             if ( isset($_SESSION['token']) &&
@@ -617,7 +617,7 @@ END;
                     }
 
                 }
-                elseif ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
+                elseif ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
                 {
                     if ( isset($_SESSION['token']) &&
                     in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))

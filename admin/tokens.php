@@ -145,12 +145,12 @@ if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'expor
     if ($_POST['tokenstatus']==2)
     {
         $bquery .= " and completed='N'";
-        if ($thissurvey['private']=='N')
+        if ($thissurvey['anonymized']=='N')
         {
             $bquery .=" and token not in (select token from ".db_table_name("survey_$surveyid")." group by token)";
         }
     }
-    if ($_POST['tokenstatus']==3 && $thissurvey['private']=='N')
+    if ($_POST['tokenstatus']==3 && $thissurvey['anonymized']=='N')
     {
         $bquery .= " and completed='N' and token in (select token from ".db_table_name("survey_$surveyid")." group by token)";
     }
@@ -276,7 +276,7 @@ else        // A survey DOES exist
    $tokenoutput .= "\t<div class='menubar'>"
     ."<div class='menubar-title ui-widget-header'>"
     ."<strong>".$clang->gT("Token control")." </strong> ".htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
-    $surveyprivate = $thissurvey['private'];
+    $surveyprivate = $thissurvey['anonymized'];
 }
 }
 
@@ -315,8 +315,8 @@ if (!$tokenexists) //If no tokens table exists
 
 
 		$tabname = "{$dbprefix}tokens_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-		$taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
-                             'mysqli' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+		$taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+                             'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 		$dict = NewDataDictionary($connect);
 		$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
 		$execresult=$dict->ExecuteSQLArray($sqlarray, false);
@@ -386,7 +386,7 @@ if (!$tokenexists) //If no tokens table exists
 
             $thissurvey=getSurveyInfo($surveyid);
 
-            if ($thissurvey['private'] == 'Y')
+            if ($thissurvey['anonymized'] == 'Y')
             {
                 $tokenoutput .= "".$clang->gT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
                 ."<br /><br />\n";
@@ -585,7 +585,7 @@ if ($subaction == "exportdialog" && bHasSurveyPermission($surveyid, 'tokens','ex
     ."<option selected='selected' value='0'>".$clang->gT('All tokens')."</option>"
     ."<option value='1'>".$clang->gT('Completed')."</option>"
     ."<option value='2'>".$clang->gT('Not started')."</option>";
-    if ($thissurvey['private']=='N')
+    if ($thissurvey['anonymized']=='N')
     {
         $tokenoutput.="<option value='3'>".$clang->gT('Started but not yet completed')."</option>";
     }

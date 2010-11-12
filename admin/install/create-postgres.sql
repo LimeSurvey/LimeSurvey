@@ -271,7 +271,7 @@ CREATE TABLE prefix_surveys (
     startdate timestamp,
     expires timestamp,
     adminemail character varying(320) NOT NULL,
-    private character(1),
+    anonymized character(1),
     faxto character varying(20),
     format character(1),
     savetimings character(1) DEFAULT 'N'::bpchar,
