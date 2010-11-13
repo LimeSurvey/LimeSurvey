@@ -1542,21 +1542,26 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
 
 
             // replace the old cfieldname by the new one
-            if (isset($aOldNewFieldmap[$insertdata["cfieldname"]]))
+            // first get the cfieldname without optionnal leading Meta-character 
+            //  (see Multiple-options (single checkbox)
+            preg_match("/^(\+{0,1})(.*)$/",$insertdata["cfieldname"],$insertedCfieldname);
+            if (isset($aOldNewFieldmap[$insertedCfieldname[2]]))
             {
-                if (preg_match("/^\+/",$insertdata["cfieldname"]))
-                {
-                    $newcfieldname = '+'.$aOldNewFieldmap[$insertdata["cfieldname"]];
+                if ($insertedCfieldname[1] == "+")
+                { // this is a single-checkbox cfieldname in the form +SGQA
+                    $newcfieldname = '+'.$aOldNewFieldmap[$insertedCfieldname[2]];
                 }
                 else
-                {
+                { // this is a normal cfieldname in the form SGQ or SGQA
+                // in the case of Multiple-options, this can be a virtual global
+                // cfieldname grouping all checkboxes (in the form SGQ)
                     $newcfieldname = $aOldNewFieldmap[$insertdata["cfieldname"]];
                 }
                 $insertdata["cfieldname"] = $newcfieldname;
             }
             else
             {
-                //error_log("TIBO: oldcfieldname={$insertdata["cfieldname"]} can't be found in aOldNewFieldmap");
+                //error_log("TIBO: oldcfieldname={$insertdata["cfieldname"]}//{$insertedCfieldname[2]} can't be found in aOldNewFieldmap");
                 continue; // a problem with cfieldname mapping -> don't consider
             }
 
