@@ -59,7 +59,7 @@ if (!$surveyid)
 
 function getXMLStructure($xmlwriter, $exclude=array())
 {
-    global $dbprefix, $surveyid;
+    global $dbprefix, $surveyid, $connect;
 
     $sdump = "";
 
@@ -118,8 +118,19 @@ function getXMLStructure($xmlwriter, $exclude=array())
     BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
     
     //Question attributes
-    $query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
-          FROM {$dbprefix}question_attributes JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}question_attributes.qid AND {$dbprefix}questions.sid=$surveyid";
+    $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
+    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+    {
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) 
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} 
+          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+    }
+    else {
+        $query="SELECT qa.qid, qa.attribute, qa.value
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} 
+          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+    }
+    
     BuildXMLFromQuery($xmlwriter,$query,'question_attributes');
 
     if ((!isset($exclude) && $exclude['quotas'] !== true) || empty($exclude))
