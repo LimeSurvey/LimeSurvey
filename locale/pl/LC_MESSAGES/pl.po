@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-25 20:57+0100\n"
-"PO-Revision-Date: 2010-10-25 20:58+0100\n"
-"Last-Translator: Elzbieta Lesinska <elesinska[at]wp.pl>\n"
+"PO-Revision-Date: 2010-11-15 22:23+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -572,7 +572,7 @@ msgstr "Brak odpowiedzi"
 #: c:\LimeSurvey-S/common.php:1918
 #: c:\LimeSurvey-S/qanda.php:4553
 msgid "Male"
-msgstr "Mężczyzna"
+msgstr "Mężczyzną"
 
 # C:\limesurvey/common.php:1491
 # C:\limesurvey/qanda.php:1832
@@ -593,7 +593,7 @@ msgstr "Mężczyzna"
 #: c:\LimeSurvey-S/common.php:1919
 #: c:\LimeSurvey-S/qanda.php:4545
 msgid "Female"
-msgstr "Kobieta"
+msgstr "Kobietą"
 
 # C:\limesurvey/common.php:1500
 # C:\limesurvey/qanda.php:2060
