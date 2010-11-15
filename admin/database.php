@@ -734,7 +734,7 @@ if(isset($surveyid))
                     if (isset($aSQIDMappings[$qr1['qid']]))
                     {
                         $qr1['qid']=$aSQIDMappings[$qr1['qid']];
-                        db_switchIDInsert($tablename,true); 
+                        db_switchIDInsert('questions',true); 
                     }
                     else
                     {
@@ -745,7 +745,7 @@ if(isset($surveyid))
                     $ir1 = $connect->Execute($sInsertSQL);   // Checked
                     if (isset($qr1['qid']))
                     {
-                        db_switchIDInsert($tablename,false); 
+                        db_switchIDInsert('questions',false); 
                     }
                     else
                     {
