@@ -77,6 +77,19 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9459) to 1.90+ (build 9487) Legend: # updated feature, - bug fix 
+-Fixed issue #4736 partially : some correction in html element.  (shnoulle)
+-Fixed issue #4729: SQL Syntax error when initialising token for survey with mySQL versions > 5.1 (c_schmitz)
+-Fixed issue #4731: Error message on failed group import (c_schmitz)
+-Fixed issue #4734: Integrity check fails on PostgreSQL database (c_schmitz)
+-Fixed issue #4735: Empty quota message box cause php interpreter error (c_schmitz)
+-Fixed issue #4739: Exported survey structure file huge due to question attribute duplication (c_schmitz)
+-Fixed issue #4742: Subquestions not copied on MSSQL when using several languages and the copy question feature (c_schmitz)
+-Fixed issue: Detection for duplicate field names was not working (c_schmitz)
+-Fixed part of issue #4731: conditions on multiple-options lost after survey import/copy (Now works for conditions on single-checkbox only). (lemeur)
+-Fixed issue #4736: some alt on img (shnoulle)
+
+
 Changes from 1.90+ (build 9406) to 1.90+ (build 9459) Legend: # updated feature, - bug fix 
 #Updated translation: Estonian (et), thanks to Rain Viigipuu (gandalfar)
 #Updated translation: Portuguese (pt), thanks to Antonio Rocha (gandalfar)
