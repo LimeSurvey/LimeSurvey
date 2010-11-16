@@ -119,9 +119,9 @@ function getXMLStructure($xmlwriter, $exclude=array())
     
     //Question attributes
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
-    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType =='mssqlnative')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) 
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value 
           FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} 
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
