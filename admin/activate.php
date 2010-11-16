@@ -199,6 +199,8 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
         }
     }
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
+    global $aDuplicateQIDs;
+    $aDuplicateQIDs=array();
     $fieldmap=createFieldMap($surveyid, "full");
     if (isset($fieldmap))
     {
@@ -208,16 +210,10 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
         }
         $fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
     }
-    $checkKeysUniqueComparison = create_function('$value','if ($value > 1) return true;');
-    @$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
-    if (isset($duplicates))
+    foreach ($aDuplicateQIDs as $iQID=>$aDetails)
     {
-        foreach ($duplicates as $dup)
-        {
-            $badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
-            $fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
-            $failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
-        }
+        $fix = "[<a href='{$scriptname}?action=activate&amp;sid={$surveyid}&amp;fixnumbering={$iQID}'>".$clang->gT("Click here to fix")."</a>]";
+        $failedcheck[]=array($iQID, Flattentext($aDetails['question']), ": ".$clang->gT("Duplicate fieldname:")." $fix", $aDetails['gid']);
     }
 
     //IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN

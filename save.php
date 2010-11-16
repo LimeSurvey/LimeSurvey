@@ -434,7 +434,7 @@ function createinsertquery()
                 else
                 {
                     // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
-                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && $_POST[substr($value,0,strlen($value)-5)]!='-oth-') 
+                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-') 
                     {
                          $_SESSION[$value]='';                               
                     }
