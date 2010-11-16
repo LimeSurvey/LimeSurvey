@@ -204,7 +204,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 
 .privacy-message {
 	width: 75%;
-	margin: 0 auto;
+	margin: 0 auto 5px auto;
 	background-color: #EFE5CA;
 }
 
@@ -266,7 +266,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 	font-weight: bold;
 }
 
-.assessments {
+.assessments-container {
 }
 
 .completed-table {

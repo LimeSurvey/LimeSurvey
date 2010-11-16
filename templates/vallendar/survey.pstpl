@@ -1,13 +1,13 @@
-<table width="100%" align="center" cellspacing="0">
+<table class="survey-header-table">
 	<tr>
-		<td align="left" bgcolor="#FFFFFF">
+		<td class="survey-name">
 			<img src="{TEMPLATEURL}logo.jpg" align="right" alt="Your logo" />
-			<font color="#17479E"><b>{SURVEYNAME}</b></font><br />
+			{SURVEYNAME}
 		</td>
 	</tr>
 	<tr>
-		<td  align="center">
-{LANGUAGECHANGER}
+		<td class="language-changer">
+			{LANGUAGECHANGER}
 		</td>
 	</tr>
 </table>

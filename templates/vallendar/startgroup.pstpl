@@ -1,12 +1,16 @@
-<table><tr><td height="2"></td></tr></table>
-<table width="100%" align="center" bgcolor="#17479E">
+<table>
+    <tr>
+        <td height="2"></td>
+    </tr>
+</table>
+<table class="group-name">
 	<tr>
-		<td align="left">
-			<font face="verdana" size="2" color="white"><b>{GROUPNAME}</b></font>
+		<td>
+			{GROUPNAME}
 		</td>
 	</tr>
 </table>
-<table width="98%" align="center" border="0">
+<table class="group">
 	<tr>
 		<td align="left">
 			
