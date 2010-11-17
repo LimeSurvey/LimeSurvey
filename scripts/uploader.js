@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+    
     var ia = $('#ia').val();
 
     /* Load the previously uploaded files */
@@ -52,12 +52,13 @@ $(document).ready(function(){
     var button = $('#button1'), interval;
 
     new AjaxUpload(button, {
-        action: 'upload.php',
+        action: 'upload.php?sid='+surveyid,
         name: 'uploadfile',
         data: {
             valid_extensions : $('#allowed_filetypes').val(),
             maxfilesize : $('#maxfilesize').val(),
-            preview : $('#preview').val()
+            preview : $('#preview').val(),
+            surveyid : surveyid
         },
         onSubmit : function(file, ext){
 
@@ -122,7 +123,7 @@ $(document).ready(function(){
             var count = parseInt($('#licount').val());
 
             var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
-
+            
             if (metadata.success)
             {
                 var previewblock =  "<li id='li_"+count+"' class='previewblock'><div>"+
@@ -131,7 +132,7 @@ $(document).ready(function(){
 
                 // If the file is not an image, use a placeholder
                 if (isValueInArray(image_extensions, metadata.ext))
-                    previewblock += "<img src='upload/tmp/"+decodeURIComponent(metadata.name)+"' height='60px' />";
+                    previewblock += "<img src='upload/tmp/"+decodeURIComponent(metadata.id)+"' height='60px' />";
                 else
                     previewblock += "<img src='images/placeholder.png' height='60px' />";
 
@@ -146,6 +147,7 @@ $(document).ready(function(){
                 previewblock += "<td  align='center' width='20%'><img style='cursor:pointer' src='images/delete.png' onclick='deletefile("+count+")'/></td>"+
                                         "</tr></table>"+
                                         "<input type='hidden' id='size_"+count+"' value="+metadata.size+" />"+
+                                        "<input type='hidden' id='file_index_"+count+"' value="+metadata.file_index+" />"+
                                         "<input type='hidden' id='name_"+count+"' value="+metadata.name+" />"+
                                         "<input type='hidden' id='filename_"+count+"' value="+metadata.filename+" />"+
                                         "<input type='hidden' id='ext_" +count+"' value="+metadata.ext+"  />"+
@@ -232,7 +234,10 @@ function saveAndExit() {
     {
         var confirmans = confirm("You need to upload " + (minfiles - filecount) + " more files for this question.\n\Are you sure you want to exit ?")
         if (confirmans)
+        {
+            passJSON();
             return true
+        }
         else
             return false;
     }
@@ -260,7 +265,7 @@ function deletefile(i) {
             }, 5000);
         }
     }
-    xmlhttp.open('GET','delete.php?file='+$("#name_"+i).val(),true);
+    xmlhttp.open('GET','delete.php?sid='+surveyid+'&file_index='+$("#file_index_"+i).val(),true);
     xmlhttp.send();
 
     $("#li_"+i).hide();

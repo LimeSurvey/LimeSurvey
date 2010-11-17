@@ -447,7 +447,7 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
         $upload_file = TRUE;
 } //end iteration
 
-if ($thissurvey['showprogress'] == 'Y')
+if (isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
 {
     if ($show_empty_group)
     {

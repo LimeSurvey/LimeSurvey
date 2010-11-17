@@ -15,7 +15,11 @@ else
     $surveyid=sanitize_int($surveyid);
 }
 
-$meta ='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
+$meta = '<script type="text/javascript">
+    var surveyid = "'.$surveyid.'";
+</script>';
+
+$meta .='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
 <script type="text/javascript" src="scripts/uploader.js"></script>
 <link type="text/css" href="scripts/uploader.css" rel="stylesheet" />';
             

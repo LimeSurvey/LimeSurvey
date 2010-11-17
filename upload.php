@@ -1,7 +1,57 @@
 <?php
 
+require_once(dirname(__FILE__).'/classes/core/startup.php');
+require_once(dirname(__FILE__).'/config-defaults.php');
+require_once(dirname(__FILE__).'/common.php');
+require_once($homedir.'/classes/core/class.progressbar.php');
+require_once(dirname(__FILE__).'/classes/core/language.php');
+
+if (!isset($surveyid))
+{
+    $surveyid=returnglobal('sid');
+}
+else
+{
+    //This next line ensures that the $surveyid value is never anything but a number.
+    $surveyid=sanitize_int($surveyid);
+}
+
+
+// Compute the Session name
+// Session name is based:
+// * on this specific limesurvey installation (Value SessionName in DB)
+// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked
+if ($usresult)
+{
+    $usrow = $usresult->FetchRow();
+    $stg_SessionName=$usrow['stg_value'];
+    if ($surveyid)
+    {
+        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+    }
+    else
+    {
+        @session_name($stg_SessionName.'-runtime-publicportal');
+    }
+}
+else
+{
+    session_name("LimeSurveyRuntime-$surveyid");
+}
+session_set_cookie_params(0,$relativeurl.'/admin/');
+@session_start();
+
+if (empty($_SESSION) || !isset($_SESSION['fieldname']))
+{
+    die("You don't have a valid session !");
+}
+
+    $id = randomkey(15);
     $uploaddir = 'upload/tmp/';
-    $file = $uploaddir . basename($_FILES['uploadfile']['name']);
+    $file_id = $uploaddir . $id;
+    $filename = $_FILES['uploadfile']['name'];
     $size = 0.001 * $_FILES['uploadfile']['size'];
     $valid_extensions = strtolower($_POST['valid_extensions']);
     $maxfilesize = $_POST['maxfilesize'];
@@ -39,17 +89,19 @@
             echo json_encode($return);
         }
 
-        else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file))
+        else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file_id))
         {
             $return = array(
                         "success" => true,
                         "size"    => $size,
-                        "name"    => rawurlencode(basename($file)),
+                        "name"    => rawurlencode(basename($filename)),
                         "ext"     => $ext,
                         "msg"     => "The file has been successfuly uploaded."
                     );
             echo json_encode($return);
 
+            // TODO : unlink this file since this is just a preview
+            // unlink($file_id);
         }
     }
     else 
@@ -64,15 +116,27 @@
             echo json_encode($return);
         }
 
-        if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file))
+        if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file_id))
         {
+            if (!isset($_SESSION['filecount']))
+                $_SESSION['filecount'] = 0;
+
+            $_SESSION['filecount'] += 1;
+            $_SESSION['files'][$_SESSION['filecount']]['name'] = rawurlencode(basename($filename));
+            $_SESSION['files'][$_SESSION['filecount']]['size'] = $size;
+            $_SESSION['files'][$_SESSION['filecount']]['ext']  = $ext;
+            $_SESSION['files'][$_SESSION['filecount']]['id']   = $id;
+
             $return = array(
-                        "success" => true,
-                        "size"    => $size,
-                        "name"    => rawurlencode(basename($file)),
-                        "ext"     => $ext,
-                        "msg"     => "The file has been successfuly uploaded"
-                    );
+                "success" => true,
+                "file_index" => $_SESSION['filecount'],
+                "size"    => $size,
+                "name"    => rawurlencode(basename($filename)),
+                "ext"     => $ext,
+                "id"      => $id,
+                "msg"     => "The file has been successfuly uploaded"
+            );
+   
             echo json_encode($return);
         }
         // if there was some error, report error message

@@ -28,7 +28,7 @@ img {
 
 .upload-button {
     border: 1px solid #79B7E7;
-    background: url("../images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
+    background: url("jquery/css/start/images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
     color: #5670A1;
     font-weight: bold;
     outline: medium none;
