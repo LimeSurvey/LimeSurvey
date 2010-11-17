@@ -312,7 +312,7 @@ if($subaction=='bounceprocessing')
 				$datelcu = strtotime($datelc);
 				$checktotal++;
 			}
-			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcfinalu' where sid='$surveyidoriginal';";
+			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcu' where sid='$surveyid'";
 			$executetimestamp = $connect->Execute($entertimestamp);
 			if($bouncetotal>0)
 			{
@@ -320,7 +320,7 @@ if($subaction=='bounceprocessing')
 			}
 			else 
 			{
-				echo sprintf($clang->gT("%s messages were scanned , none were marked as bounce by the system.",$checktotal);
+				echo sprintf($clang->gT("%s messages were scanned , none were marked as bounce by the system."),$checktotal);
 			}
 		}
 		else
