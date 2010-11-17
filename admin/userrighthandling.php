@@ -33,7 +33,10 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
         $grpquery = "SELECT gp.* FROM ".db_table_name('user_groups')." AS gp, ".db_table_name('user_in_groups')." AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$_SESSION['loginID'];
         $grpresult = db_execute_assoc($grpquery);//Checked
         $grpresultcount = $grpresult->RecordCount();
-        $grow = array_map('htmlspecialchars', $grpresult->FetchRow());
+        if ($grpresultcount>0) 
+        {
+            $grow = array_map('htmlspecialchars', $grpresult->FetchRow());   
+        }
     }
     $usergroupsummary = "<div class='menubar'>\n"
     . "<div class='menubar-title'>\n"

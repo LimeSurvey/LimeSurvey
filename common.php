@@ -2517,6 +2517,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             //MULTI FLEXI
             $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             //Now first process scale=1
+            $answerset=array();
             foreach ($abrows as $key=>$abrow)
             {
                 if($abrow['scale_id']==1) {
@@ -7565,7 +7566,7 @@ function getSubQuestions($sid, $qid, $sLanguage) {
 	            ." AND q.language='".$sLanguage. "' "
 	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
 	    $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
-	    
+        $resultset=array();
 	    while ($row=$result->FetchRow())   
 	    {
 	        $resultset[$row['parent_qid']][] = $row;
