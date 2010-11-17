@@ -231,7 +231,158 @@ if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'expor
     echo $tokenoutput;
     exit;
 }
+// Bouceprocessing
+if($subaction=='bounceprocessing' && bHasSurveyPermission($surveyid, 'tokens','update'))
+{
+	if(empty($cron))
+	{
+		$surveyidoriginal = $_GET['sid'];
+	}
+	$settings=getSurveyInfo($surveyidoriginal);
+	if ($settings['bounceprocessing']!='N')
+	{
+    	$bouncetotal=0;
+    	$checktotal=0;
+    	if($settings['bounceprocessing']=='G')
+		{
+		    $accounttype=getGlobalSetting('bounceaccounttype');
+			$hostname=getGlobalSetting('bounceaccounthost');
+			$username=getGlobalSetting('bounceaccountuser');
+			$pass=getGlobalSetting('bounceaccountpass');
+			$hostencryption=getGlobalSetting('bounceencryption');
+		}
+		else
+		{
+			$accounttype=$settings['bounceaccounttype'];
+			$hostname=$settings['bounceaccounthost'];
+			$username=$settings['bounceaccountuser'];
+			$pass=$settings['bounceaccountpass'];
+			$hostencryption=$settings['bounceaccountencryption'];
+		}
 
+		if($accounttype=='IMAP')
+		{
+			if($hostencryption=='SSL')
+			{
+				$finalhostname='{'.$hostname.'/imap/ssl/novalidate-cert}INBOX';
+			}
+			elseif($hostencryption=='TLS')
+			{
+				$finalhostname='{'.$hostname.'/imap/tls/novalidate-cert}INBOX';
+			}
+			else 
+			{
+				$finalhostname='{'.$hostname.'/imap/novalidate-cert}INBOX';
+			}
+			if(@$mbox=imap_open($finalhostname,$username,$pass))
+			{
+			    @$count=imap_num_msg($mbox);
+			    $lasthinfo=imap_headerinfo($mbox,$count);
+			    $datelc=$lasthinfo->date;
+			    $datelcu = strtotime($datelc);
+                $gettimestamp = "select bouncetime from ".db_table_name("surveys")." where sid='$surveyidoriginal';";
+		        $datelcufiles = $connect->Execute($gettimestamp);
+			    $datelcufile = substr($datelcufiles,11);
+			    while($datelcu > $datelcufile)
+			    {	
+			    	$lasthinfo=imap_headerinfo($mbox,$count);
+			    	$datelc=$lasthinfo->date;
+			    	$datelcu = strtotime($datelc);
+			    	$header = explode("\r\n", imap_body($mbox,$count));
+			    	foreach ($header as $item)
+			    	{
+						if (preg_match('/^X-surveyid/',$item))
+						{
+							$surveyid=explode(": ",$item);
+						}
+						if (preg_match('/^X-tokenid/',$item))
+						{
+							$token=explode(": ",$item);
+							if($surveyidoriginal == $surveyid[1])
+							{ 
+								$bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced' where token='$token[1]';";
+								$anish=$connect->Execute($bouncequery);
+								$bouncetotal++;
+							}
+						}
+					}
+					$count--;
+					$lasthinfo=imap_headerinfo($mbox,$count);
+					$datelc=$lasthinfo->date;
+					$datelcu = strtotime($datelc);
+					$checktotal++;
+				}
+				@$count=imap_num_msg($mbox);
+				@$lastcheckedinfo=imap_headerinfo($mbox,$count);
+				$datelcfinal=$lastcheckedinfo->date;
+				$datelcfinalu = strtotime($datelcfinal);
+				$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcfinalu' where sid='$surveyidoriginal';";
+				$executetimestamp = $connect->Execute($entertimestamp);
+			}
+			else
+			{
+				echo "Please check your settings";
+			}
+		}
+		elseif($accounttype='POP')
+		{
+			if($hostencryption=='SSL')
+			{
+				$finalhostname='{'.$hostname.'/pop3/ssl/novalidate-cert}INBOX';
+			}
+			elseif($hostencryption=='TLS')
+			{
+				$finalhostname='{'.$hostname.'/pop3/tls/novalidate-cert}INBOX';
+			}
+			else
+			{
+				$finalhostname='{'.$hostname.'/pop3/novalidate-cert}INBOX';
+			}
+			if(@$mbox=imap_open($finalhostname,$username,$pass))
+			{
+				@$count=imap_num_msg($mbox);
+				while($count>0)
+				{
+					@$header = explode("\r\n", imap_body($mbox,$count));
+					foreach ($header as $item)
+					{
+						if (preg_match('/^X-surveyid/',$item))
+	      				{
+							$surveyid=explode(": ",$item);
+						}	
+						if (preg_match('/^X-tokenid/',$item))
+						{	
+							$token=explode(": ",$item);
+							if($surveyidoriginal == $surveyid[1])
+							{ 
+								$bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced' where token='$token[1]';";
+								$anish=$connect->Execute($bouncequery) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
+								$bouncetotal++;
+							}
+						}
+					}
+					$count--;
+					$checktotal++;
+				}
+				imap_errors();
+				imap_close($mbox);
+			}
+			else
+			{
+				echo "Please check your settings";
+			}
+		}
+		if($bouncetotal>0)
+		{
+			echo "$checktotal messages were scanned out of which $bouncetotal were marked as bounce by the system. <br><br><br>Please reload the browse table to view results";
+		}
+		else 
+		{
+			echo "$checktotal messages were scanned out of which $bouncetotal were marked as bounce by the system.";
+		}
+	}
+	exit(0); // if bounceprocessing : javascript : no more todo
+}
 
 if ($subaction == "delete" && bHasSurveyPermission($surveyid, 'tokens','delete'))
 {
@@ -269,16 +420,18 @@ if ($thissurvey===false)
     ."</div>\n";
     return;
 }
-else        // A survey DOES exist
-{if($subaction != 'bounceprocessing')
+else // A survey DOES exist
 {
+    if($subaction != 'bounceprocessing')
+    {
 
-   $tokenoutput .= "\t<div class='menubar'>"
-    ."<div class='menubar-title ui-widget-header'>"
-    ."<strong>".$clang->gT("Token control")." </strong> ".htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
-    $surveyprivate = $thissurvey['anonymized'];
+    $tokenoutput .= "\t<div class='menubar'>"
+        ."<div class='menubar-title ui-widget-header'>"
+        ."<strong>".$clang->gT("Token control")." </strong> ".htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
+        $surveyprivate = $thissurvey['anonymized'];
+    }
 }
-}
+
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
 $tokenexists=tableExists('tokens_'.$surveyid);
@@ -440,89 +593,88 @@ if (!$tokenexists) //If no tokens table exists
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
 if($subaction != 'bounceprocessing')
 {
-
-$tokenoutput .= "\t<div class='menubar-main'>\n"
-."<div class='menubar-left'>\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" "
-."title='".$clang->gTview("Return to survey administration")."'>"
-."<img name='HomeButton' src='$imageurl/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
-."<img src='$imageurl/blank.gif' alt='' width='11' />\n"
-."<img src='$imageurl/seperator.gif' alt='' />\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" title='".$clang->gTview("Show token summary")."' >"
-."<img name='SummaryButton' src='$imageurl/summary.png' alt='".$clang->gT("Show token summary")."' /></a>\n"
-."<img src='$imageurl/seperator.gif' alt='' />\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" "
-."title='".$clang->gTview("Display tokens")."' >"
-."<img name='ViewAllButton' src='$imageurl/document.png' alt='".$clang->gT("Display tokens")."' /></a>\n";
-if (bHasSurveyPermission($surveyid, 'tokens','create'))
-{
-    $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\""
-    ."title='".$clang->gTview("Add new token entry")."' >"
-    ."<img name='AddNewButton' src='$imageurl/add.png' title='' alt='".$clang->gT("Add new token entry")."' /></a>\n";
-}
-if (bHasSurveyPermission($surveyid, 'tokens','update'))
-{
-    $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" "
-    ."title='".$clang->gTview("Manage additional attribute fields")."'>"
-    ."<img name='ManageAttributesButton' src='$imageurl/token_manage.png' title='' alt='".$clang->gT("Manage additional attribute fields")."' /></a>\n";
-}
-if (bHasSurveyPermission($surveyid, 'tokens','import'))
-{
-    $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" "
-    ."title='".$clang->gTview("Import tokens from CSV file")."'> "
-    ."<img name='ImportButton' src='$imageurl/importcsv.png' title='' alt='".$clang->gT("Import tokens from CSV file")."' /></a>"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')\" "
-    ."title='".$clang->gTview("Import tokens from LDAP query")."'> <img name='ImportLdapButton' src='$imageurl/importldap.png' alt='".$clang->gT("Import tokens from LDAP query")."' /></a>";
-}
-
-if (bHasSurveyPermission($surveyid, 'tokens','export'))
-{
-    $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')\" "
-    ."title='".$clang->gTview("Export tokens to CSV file")."'>".
-	"<img name='ExportButton' src='$imageurl/exportcsv.png' alt='".$clang->gT("Export tokens to CSV file")."' /></a>\n";
-}
-if (bHasSurveyPermission($surveyid, 'tokens','update'))
-{
-    $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
-    ."<a href='{$scriptname}?action=emailtemplates&amp;sid={$surveyid}' title='".$clang->gTview("Edit email templates")."'>"
-    ."<img name='EmailTemplatesButton' src='$imageurl/emailtemplates.png' alt='".$clang->gT("Edit email templates")."' /></a>\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" "
-    ."title='".$clang->gTview("Send email invitation")."'>"
-    ."<img name='InviteButton' src='$imageurl/invite.png' alt='".$clang->gT("Send email invitation")."' /></a>\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" "
-    ."title='".$clang->gTview("Send email reminder")."'>"
-    ."<img name='RemindButton' src='$imageurl/remind.png' alt='".$clang->gT("Send email reminder")."' /></a>\n"
-
+    $tokenoutput .= "\t<div class='menubar-main'>\n"
+    ."<div class='menubar-left'>\n"
+    ."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" "
+    ."title='".$clang->gTview("Return to survey administration")."'>"
+    ."<img name='HomeButton' src='$imageurl/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+    ."<img src='$imageurl/blank.gif' alt='' width='11' />\n"
     ."<img src='$imageurl/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify")."\" "
-    ." title='".$clang->gTview("Generate tokens")."'>"
-    ."<img name='TokenifyButton' src='$imageurl/tokenify.png' alt='".$clang->gT("Generate tokens")."' /></a>\n"
-    ."<img src='$imageurl/seperator.gif' alt='' />\n";
-}
-if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
-{
-    $tokenoutput .="<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" "
-    ."title='".$clang->gTview("Drop tokens table")."' >"
-    ."<img name='DeleteTokensButton' src='$imageurl/delete.png' alt='".$clang->gT("Drop tokens table")."' /></a>\n"
-    ."<img src='$imageurl/seperator.gif' alt='' />\n";
-}
-if (bHasSurveyPermission($surveyid, 'tokens','update'))
-{
-    $tokenoutput .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=bouncesettings', '_top')\" "
-    ."title='".$clang->gTview("Bounce processing settings")."' >"
-    ."<img name='BounceSettings' src='$imageurl/bounce_settings.png' alt='".$clang->gT("Bounce Settings")."' /></a>\n";
-}
+    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" title='".$clang->gTview("Show token summary")."' >"
+    ."<img name='SummaryButton' src='$imageurl/summary.png' alt='".$clang->gT("Show token summary")."' /></a>\n"
+    ."<img src='$imageurl/seperator.gif' alt='' />\n"
+    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" "
+    ."title='".$clang->gTview("Display tokens")."' >"
+    ."<img name='ViewAllButton' src='$imageurl/document.png' alt='".$clang->gT("Display tokens")."' /></a>\n";
+    if (bHasSurveyPermission($surveyid, 'tokens','create'))
+    {
+        $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\""
+        ."title='".$clang->gTview("Add new token entry")."' >"
+        ."<img name='AddNewButton' src='$imageurl/add.png' title='' alt='".$clang->gT("Add new token entry")."' /></a>\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','update'))
+    {
+        $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" "
+        ."title='".$clang->gTview("Manage additional attribute fields")."'>"
+        ."<img name='ManageAttributesButton' src='$imageurl/token_manage.png' title='' alt='".$clang->gT("Manage additional attribute fields")."' /></a>\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','import'))
+    {
+        $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" "
+        ."title='".$clang->gTview("Import tokens from CSV file")."'> "
+        ."<img name='ImportButton' src='$imageurl/importcsv.png' title='' alt='".$clang->gT("Import tokens from CSV file")."' /></a>"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')\" "
+        ."title='".$clang->gTview("Import tokens from LDAP query")."'> <img name='ImportLdapButton' src='$imageurl/importldap.png' alt='".$clang->gT("Import tokens from LDAP query")."' /></a>";
+    }
+
+    if (bHasSurveyPermission($surveyid, 'tokens','export'))
+    {
+        $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')\" "
+        ."title='".$clang->gTview("Export tokens to CSV file")."'>".
+	    "<img name='ExportButton' src='$imageurl/exportcsv.png' alt='".$clang->gT("Export tokens to CSV file")."' /></a>\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','update'))
+    {
+        $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href='{$scriptname}?action=emailtemplates&amp;sid={$surveyid}' title='".$clang->gTview("Edit email templates")."'>"
+        ."<img name='EmailTemplatesButton' src='$imageurl/emailtemplates.png' alt='".$clang->gT("Edit email templates")."' /></a>\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" "
+        ."title='".$clang->gTview("Send email invitation")."'>"
+        ."<img name='InviteButton' src='$imageurl/invite.png' alt='".$clang->gT("Send email invitation")."' /></a>\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" "
+        ."title='".$clang->gTview("Send email reminder")."'>"
+        ."<img name='RemindButton' src='$imageurl/remind.png' alt='".$clang->gT("Send email reminder")."' /></a>\n"
+
+        ."<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify")."\" "
+        ." title='".$clang->gTview("Generate tokens")."'>"
+        ."<img name='TokenifyButton' src='$imageurl/tokenify.png' alt='".$clang->gT("Generate tokens")."' /></a>\n"
+        ."<img src='$imageurl/seperator.gif' alt='' />\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
+    {
+        $tokenoutput .="<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" "
+        ."title='".$clang->gTview("Drop tokens table")."' >"
+        ."<img name='DeleteTokensButton' src='$imageurl/delete.png' alt='".$clang->gT("Drop tokens table")."' /></a>\n"
+        ."<img src='$imageurl/seperator.gif' alt='' />\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','update'))
+    {
+        $tokenoutput .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=bouncesettings', '_top')\" "
+        ."title='".$clang->gTview("Bounce processing settings")."' >"
+        ."<img name='BounceSettings' src='$imageurl/bounce_settings.png' alt='".$clang->gT("Bounce Settings")."' /></a>\n";
+    }
 
 
 
-$tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" "
-." title='".$clang->gTview("Show help")."'>"
-."<img src='$imageurl/showhelp.png' align='right' alt='".$clang->gT("Show help")."' /></a>\n";
+    $tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" "
+    ." title='".$clang->gTview("Show help")."'>"
+    ."<img src='$imageurl/showhelp.png' align='right' alt='".$clang->gT("Show help")."' /></a>\n";
 
 
-$tokenoutput .= "\t</div></div></div>\n";
+    $tokenoutput .= "\t</div></div></div>\n";
 }
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tksq = "SELECT count(tid) FROM ".db_table_name("tokens_$surveyid");
@@ -2797,6 +2949,7 @@ if ($subaction == "uploadldap" && bHasSurveyPermission($surveyid, 'tokens','crea
     }
 }
 
+// Now for the function
 function form_csv_upload($error=false)
 {
     global $surveyid, $tokenoutput,$scriptname, $clang, $encodingsarray;

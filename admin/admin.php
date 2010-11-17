@@ -279,10 +279,6 @@ if(isset($_SESSION['loginID']))
             include('tokens.php'); 
         }
         else { include('access_denied.php'); }
-        if(bHasSurveyPermission($surveyid,'tokens','update'))    
-        {
-            include('bounceprocessing.php');
-        }
     }
     elseif ($action == 'iteratesurvey')
     {
@@ -601,10 +597,7 @@ if(isset($_SESSION['loginID']))
     if (!isset($printablesurveyoutput) && $subaction!='export' && (substr($action,0,4)!= 'ajax'))
     {
         if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-		if($subaction != 'bounceprocessing')
-		{
         $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
-	}
         unset($_SESSION['metaHeader']);
         $adminoutput.= "</div>\n";
         if(!isset($_SESSION['checksessionpost']))
@@ -648,10 +641,7 @@ if(isset($_SESSION['loginID']))
         . "\n"
         . "//-->\n"
         . "</script>\n";
-		if($subaction != 'bounceprocessing')
-		{
-			$adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
-		}
+        $adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
     }
 
 }

@@ -405,9 +405,11 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             }
         }
 
-        $surveysummary .= "<img src='{$imageurl}/seperator.gif' alt=''  />\n";
-
-
+        $surveysummary .= "<img src='{$imageurl}/seperator.gif' alt=''  />\n"
+        . "</div>\n";
+        // Start of suckerfish menu
+        $surveysummary .= "<ul class='sf-menu'>\n";
+        
         // ACTIVATE SURVEY BUTTON
 
         if ($activated == "N")
@@ -422,37 +424,36 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
-            $surveysummary .= "<a href='#' accesskey='d' onclick=\"window.open('"
+            $surveysummary .= "<li><a href='#' accesskey='d' onclick=\"window.open('"
             . $publicurl."/index.php?sid={$surveyid}&amp;newtest=Y&amp;lang={$baselang}', '_blank')\" title=\"{$icontext2}\" >"
             . "<img src='{$imageurl}/do.png' alt='{$icontext}' />"
-            . "</a>\n";
+            . "</a></li>\n";
 
         } else {
-            $surveysummary .= "<a href='#' id='dosurvey' class='dosurvey'"
-            . "title=\"{$icontext2}\" accesskey='d'>"
-            . "<img  src='{$imageurl}/do.png' alt='{$icontext}' />"
-            . "</a>\n";
-
+            $surveysummary .= "<li><a href='#' "
+            . "title='{$icontext2}' accesskey='d'>"
+            . "<img src='{$imageurl}/do.png' alt='{$icontext}' />"
+            . "</a><ul>\n";
+            $surveysummary .= "<li><a accesskey='d' target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y'>"
+              . "<img src='{$imageurl}/do_30.png' /> $icontext </a><ul>";
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $tmp_survlangs[] = $baselang;
             rsort($tmp_survlangs);
             // Test Survey Language Selection Popup
-            $surveysummary .="<div class=\"langpopup\" id=\"dosurveylangpopup\">".$clang->gT("Please select a language:")."<ul>";
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<li><a accesskey='d' onclick=\"$('.dosurvey').qtip('hide');\" target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y&amp;lang={$tmp_lang}'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                $surveysummary .= "<li><a accesskey='d' target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y&amp;lang={$tmp_lang}'>"
+                . "<img src='{$imageurl}/do_30.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
-            $surveysummary .= "</ul></div>";
+            $surveysummary .= "</ul></li>"
+            ."</ul></li>";
         }
 
         // SEPARATOR
-        $surveysummary .= "<img src='{$imageurl}/seperator.gif' alt=''  />\n"
-        . "</div>\n";
+        /*$surveysummary .= "<img src='{$imageurl}/seperator.gif' alt=''  />\n"
+        . "</div>\n";*/
 
-        
-        // Start of suckerfish menu
-        $surveysummary .= "<ul class='sf-menu'>\n"
-        . "<li><a href='#'>"
+        $surveysummary .="<li><a href='#'>"
         . "<img src='$imageurl/edit.png' name='EditSurveyProperties' alt='".$clang->gT("Survey properties")."' /></a><ul>\n";
 
         // EDIT SURVEY TEXT ELEMENTS BUTTON
