@@ -232,20 +232,16 @@ if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'expor
     exit;
 }
 // Bouceprocessing
-if($subaction=='bounceprocessing' && bHasSurveyPermission($surveyid, 'tokens','update'))
+if($subaction=='bounceprocessing')
 {
-	if(empty($cron))
+
+	if ($thissurvey['bounceprocessing']!='N' && bHasSurveyPermission($surveyid, 'tokens','update'))
 	{
-		$surveyidoriginal = $_GET['sid'];
-	}
-	$settings=getSurveyInfo($surveyidoriginal);
-	if ($settings['bounceprocessing']!='N')
-	{
-    	$bouncetotal=0;
-    	$checktotal=0;
-    	if($settings['bounceprocessing']=='G')
+		$bouncetotal=0;
+		$checktotal=0;
+		if($thissurvey['bounceprocessing']=='G')
 		{
-		    $accounttype=getGlobalSetting('bounceaccounttype');
+			$accounttype=getGlobalSetting('bounceaccounttype');
 			$hostname=getGlobalSetting('bounceaccounthost');
 			$username=getGlobalSetting('bounceaccountuser');
 			$pass=getGlobalSetting('bounceaccountpass');
@@ -253,133 +249,88 @@ if($subaction=='bounceprocessing' && bHasSurveyPermission($surveyid, 'tokens','u
 		}
 		else
 		{
-			$accounttype=$settings['bounceaccounttype'];
-			$hostname=$settings['bounceaccounthost'];
-			$username=$settings['bounceaccountuser'];
-			$pass=$settings['bounceaccountpass'];
-			$hostencryption=$settings['bounceaccountencryption'];
+			$accounttype=$thissurvey['bounceaccounttype'];
+			$hostname=$thissurvey['bounceaccounthost'];
+			$username=$thissurvey['bounceaccountuser'];
+			$pass=$thissurvey['bounceaccountpass'];
+			$hostencryption=$thissurvey['bounceaccountencryption'];
 		}
 
-		if($accounttype=='IMAP')
+		$flags="";
+		switch($accounttype)
 		{
-			if($hostencryption=='SSL')
+			case "IMAP":
+			$flags.="/imap";
+			break;
+			case "POP":
+			$flags.="/pop3";
+			break;
+		}
+		switch($hostencryption) // novalidate-cert to have personal CA , maybe option.
+		{
+			case "SSL":
+			$flags.="/ssl/novalidate-cert";
+			break;
+			case "TLS":
+			$flags.="/tls/novalidate-cert";
+			break;
+		}
+		if($mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
+		{
+			$count=imap_num_msg($mbox);
+			$lasthinfo=imap_headerinfo($mbox,$count);
+			$datelcu = strtotime($lasthinfo->date);
+			$lastbounce = $thissurvey['bouncetime'];
+			while($datelcu > $lastbounce)
 			{
-				$finalhostname='{'.$hostname.'/imap/ssl/novalidate-cert}INBOX';
+				$header = explode("\r\n", imap_body($mbox,$count,FT_PEEK)); // Don't put read
+				foreach ($header as $item)
+				{
+					if (preg_match('/^X-surveyid/',$item))
+					{
+						$surveyidBounce=explode(": ",$item);
+					}
+					if (preg_match('/^X-tokenid/',$item))
+					{
+						$tokenBounce=explode(": ",$item);
+						if($surveyid == $surveyidBounce[1])
+						{ 
+							$bouncequery = "UPDATE ".db_table_name("tokens_$surveyid")." SET emailstatus='bounced' WHERE token='$tokenBounce[1]';";
+							$anish=$connect->Execute($bouncequery);
+							$readbounce=imap_body($mbox,$count); // Put read 
+							if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
+							{
+								$deletebounce=imap_delete($mbox,$count); // Put delete
+							}
+							$bouncetotal++;
+						}
+					}
+				}
+				$count--;
+				$lasthinfo=imap_headerinfo($mbox,$count);
+				$datelc=$lasthinfo->date;
+				$datelcu = strtotime($datelc);
+				$checktotal++;
 			}
-			elseif($hostencryption=='TLS')
+			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcfinalu' where sid='$surveyidoriginal';";
+			$executetimestamp = $connect->Execute($entertimestamp);
+			if($bouncetotal>0)
 			{
-				$finalhostname='{'.$hostname.'/imap/tls/novalidate-cert}INBOX';
+				echo sprintf($clang->gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal,$bouncetotal);
 			}
 			else 
 			{
-				$finalhostname='{'.$hostname.'/imap/novalidate-cert}INBOX';
-			}
-			if(@$mbox=imap_open($finalhostname,$username,$pass))
-			{
-			    @$count=imap_num_msg($mbox);
-			    $lasthinfo=imap_headerinfo($mbox,$count);
-			    $datelc=$lasthinfo->date;
-			    $datelcu = strtotime($datelc);
-                $gettimestamp = "select bouncetime from ".db_table_name("surveys")." where sid='$surveyidoriginal';";
-		        $datelcufiles = $connect->Execute($gettimestamp);
-			    $datelcufile = substr($datelcufiles,11);
-			    while($datelcu > $datelcufile)
-			    {	
-			    	$lasthinfo=imap_headerinfo($mbox,$count);
-			    	$datelc=$lasthinfo->date;
-			    	$datelcu = strtotime($datelc);
-			    	$header = explode("\r\n", imap_body($mbox,$count));
-			    	foreach ($header as $item)
-			    	{
-						if (preg_match('/^X-surveyid/',$item))
-						{
-							$surveyid=explode(": ",$item);
-						}
-						if (preg_match('/^X-tokenid/',$item))
-						{
-							$token=explode(": ",$item);
-							if($surveyidoriginal == $surveyid[1])
-							{ 
-								$bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced' where token='$token[1]';";
-								$anish=$connect->Execute($bouncequery);
-								$bouncetotal++;
-							}
-						}
-					}
-					$count--;
-					$lasthinfo=imap_headerinfo($mbox,$count);
-					$datelc=$lasthinfo->date;
-					$datelcu = strtotime($datelc);
-					$checktotal++;
-				}
-				@$count=imap_num_msg($mbox);
-				@$lastcheckedinfo=imap_headerinfo($mbox,$count);
-				$datelcfinal=$lastcheckedinfo->date;
-				$datelcfinalu = strtotime($datelcfinal);
-				$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcfinalu' where sid='$surveyidoriginal';";
-				$executetimestamp = $connect->Execute($entertimestamp);
-			}
-			else
-			{
-				echo "Please check your settings";
+				echo sprintf($clang->gT("%s messages were scanned , none were marked as bounce by the system.",$checktotal);
 			}
 		}
-		elseif($accounttype='POP')
+		else
 		{
-			if($hostencryption=='SSL')
-			{
-				$finalhostname='{'.$hostname.'/pop3/ssl/novalidate-cert}INBOX';
-			}
-			elseif($hostencryption=='TLS')
-			{
-				$finalhostname='{'.$hostname.'/pop3/tls/novalidate-cert}INBOX';
-			}
-			else
-			{
-				$finalhostname='{'.$hostname.'/pop3/novalidate-cert}INBOX';
-			}
-			if(@$mbox=imap_open($finalhostname,$username,$pass))
-			{
-				@$count=imap_num_msg($mbox);
-				while($count>0)
-				{
-					@$header = explode("\r\n", imap_body($mbox,$count));
-					foreach ($header as $item)
-					{
-						if (preg_match('/^X-surveyid/',$item))
-	      				{
-							$surveyid=explode(": ",$item);
-						}	
-						if (preg_match('/^X-tokenid/',$item))
-						{	
-							$token=explode(": ",$item);
-							if($surveyidoriginal == $surveyid[1])
-							{ 
-								$bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced' where token='$token[1]';";
-								$anish=$connect->Execute($bouncequery) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-								$bouncetotal++;
-							}
-						}
-					}
-					$count--;
-					$checktotal++;
-				}
-				imap_errors();
-				imap_close($mbox);
-			}
-			else
-			{
-				echo "Please check your settings";
-			}
+			echo $clang->gT("Please check your settings");
 		}
-		if($bouncetotal>0)
-		{
-			echo "$checktotal messages were scanned out of which $bouncetotal were marked as bounce by the system. <br><br><br>Please reload the browse table to view results";
-		}
-		else 
-		{
-			echo "$checktotal messages were scanned out of which $bouncetotal were marked as bounce by the system.";
-		}
+	}
+	else
+	{
+		echo $clang->gT("We are sorry but you don't have permissions to do this.");
 	}
 	exit(0); // if bounceprocessing : javascript : no more todo
 }
