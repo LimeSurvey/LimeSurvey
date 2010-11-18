@@ -38,7 +38,10 @@ elseif (isset($sExtension) && strtolower($sExtension)=='lss')
 {
     $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
 }
-
+else
+{
+    $bImportFailed=true;
+}
 
 // Create old fieldnames
 
@@ -104,6 +107,12 @@ if ((isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
     {
         unlink($sFullFilepath);    
     }
+}
+elseif (isset($bImportFailed) && $bImportFailed==true)
+{
+    echo "\n".$clang->gT("Error")."\n\n";
+    echo $clang->gT("Import failed. You specified an invalid file.")."\n";
+    
 }
 else
 {

@@ -2701,6 +2701,8 @@ function do_multiplechoice($ia)
     // based on value of attribute. This could be array_filter and array_filter_exclude
     
     $attribute_ref=false;
+    $inputnames=array();
+    
     $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."' and (attribute='array_filter' or attribute='array_filter_exclude')";
     $qaresult = db_execute_assoc($qaquery);     //Checked
     while($qarow = $qaresult->FetchRow())
@@ -3668,7 +3670,7 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
         $calculateValue[]=3;
     }
-    elseif (trim($qidattributes['num_value_equals_sgqa'])!='')
+    elseif (trim($qidattributes['num_value_equals_sgqa'])!='' && isset($_SESSION[$qidattributes['num_value_equals_sgqa']]))
     {
         $equals_num_value=$_SESSION[$qidattributes['num_value_equals_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
@@ -3685,7 +3687,7 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
     }
-    elseif (trim($qidattributes['min_num_value_sgqa'])!=''){
+    elseif (trim($qidattributes['min_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['min_num_value_sgqa']])){
         $min_num_value=$_SESSION[$qidattributes['min_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
@@ -3701,7 +3703,7 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;
     }
-    elseif (trim($qidattributes['max_num_value_sgqa'])!=''){
+    elseif (trim($qidattributes['max_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['max_num_value_sgqa']])){
         $max_num_value = $_SESSION[$qidattributes['max_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;

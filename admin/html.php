@@ -1641,6 +1641,7 @@ if ($action=='editsubquestions')
 
     $sQuery = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$qid} AND language='{$baselang}'";
     $sQuestiontype=$connect->GetOne($sQuery);
+    if (is_null($sQuestiontype) || $sQuestiontype==false) die('Couldn\'t get question type to edit subquestions');
     $aQuestiontypeInfo=getqtypelist($sQuestiontype,'array');
     $iScaleCount=$aQuestiontypeInfo[$sQuestiontype]['subquestions'];
     
