@@ -1030,6 +1030,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
             if (isset($aQIDReplacements[$oldsqid])){
                $insertdata['qid']=$aQIDReplacements[$oldsqid];
+               db_switchIDInsert('questions',true);
             }
             
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -1039,6 +1040,11 @@ function XMLImportGroup($sFullFilepath, $newsid)
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
             }
+            else
+            {
+               db_switchIDInsert('questions',false);
+            }
+
             $results['subquestions']++;
         }
     }

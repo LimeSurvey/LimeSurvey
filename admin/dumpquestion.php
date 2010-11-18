@@ -83,7 +83,7 @@ exit;
 
 function getXMLStructure($xml,$qid)
 {
-    global $dbprefix;
+    global $dbprefix, $connect;
     // Questions table
     $qquery = "SELECT *
                FROM {$dbprefix}questions 
