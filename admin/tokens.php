@@ -234,8 +234,7 @@ if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'expor
 // Bouceprocessing
 if($subaction=='bounceprocessing')
 {
-
-	if ($thissurvey['bounceprocessing']!='N' && bHasSurveyPermission($surveyid, 'tokens','update'))
+	if ($thissurvey['bounceprocessing']!='N' && ($thissurvey['bounceprocessing']=='G' && getGlobalSetting('bounceaccounttype')!='off') && bHasSurveyPermission($surveyid, 'tokens','update'))
 	{
 		$bouncetotal=0;
 		$checktotal=0;
@@ -280,6 +279,7 @@ if($subaction=='bounceprocessing')
 			$count=imap_num_msg($mbox);
 			$lasthinfo=imap_headerinfo($mbox,$count);
 			$datelcu = strtotime($lasthinfo->date);
+			$datelastbounce= $datelcu;
 			$lastbounce = $thissurvey['bouncetime'];
 			while($datelcu > $lastbounce)
 			{
@@ -312,7 +312,7 @@ if($subaction=='bounceprocessing')
 				$datelcu = strtotime($datelc);
 				$checktotal++;
 			}
-			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelcu' where sid='$surveyid'";
+			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
 			$executetimestamp = $connect->Execute($entertimestamp);
 			if($bouncetotal>0)
 			{
