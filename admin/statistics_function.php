@@ -1746,7 +1746,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         
                         if ($al[0] == $statlang->gT("Other"))
                         {
-                            if($qtype=='!')
+                            if($qtype=='!' || $qtype=='L')
                             {
                                 // It is better for single choice question types to filter on the number of '-oth-' entries, than to 
                                 // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up

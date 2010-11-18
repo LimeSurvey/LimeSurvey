@@ -5123,7 +5123,7 @@ function killSession()  //added by Dennis
     }
     $_SESSION = array(); // redundant with previous lines
     session_unset();
-    session_destroy();
+    @session_destroy();
 }
 
 
