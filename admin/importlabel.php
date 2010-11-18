@@ -49,16 +49,37 @@ elseif (strtolower($sExtension)=='lsl')
 {
     $aImportResults=XMLImportLabelsets($sFullFilepath, $options);
 }
-unlink($sFullFilepath);  
-if (count($aImportResults['warnings'])>0)
+  else
 {
-    $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Warnings")."</div><ul>\n";
-    foreach ($aImportResults['warnings'] as $warning)
-    {
-        $importlabeloutput .= '<li>'.$warning.'</li>';
-    } 
-    $importlabeloutput .= "</ul>\n";
+    $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+    $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
+    $importlabeloutput .= $clang->gT("Uploaded label set file needs to have an .lsl extension.")."<br /><br />\n";
+    $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('$scriptname?action=labels', '_top')\" />\n";
+    $importlabeloutput .= "</div><br />\n";
 }
+unlink($sFullFilepath);  
+
+if (isset($aImportResults))
+{
+    if (count($aImportResults['warnings'])>0)
+    {
+        $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Warnings")."</div><ul>\n";
+        foreach ($aImportResults['warnings'] as $warning)
+        {
+            $importlabeloutput .= '<li>'.$warning.'</li>';
+        } 
+        $importlabeloutput .= "</ul>\n";
+    }
+
+    $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+    $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
+    $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
+    $importlabeloutput .= "\t<li>".$clang->gT("Labels").": {$aImportResults['labels']}</li></ul>\n";
+    $importlabeloutput .= "<p><strong>".$clang->gT("Import of label set(s) is completed.")."</strong><br /><br />\n";
+    $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('$scriptname?action=labels', '_top')\" />\n";
+    $importlabeloutput .= "</div><br />\n";
+}
+
 
 $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
 $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";

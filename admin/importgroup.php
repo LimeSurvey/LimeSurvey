@@ -884,8 +884,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
     
-    $xml = simplexml_load_file($sFullFilepath);    
-    if ($xml->LimeSurveyDocType!='Group') safe_die('This is not a valid LimeSurvey group structure XML file.');
+    $xml = @simplexml_load_file($sFullFilepath);    
+    if ($xml==false || $xml->LimeSurveyDocType!='Group') safe_die('This is not a valid LimeSurvey group structure XML file.');
     $dbversion = (int) $xml->DBVersion;
     $aQIDReplacements=array();     
     $results['defaultvalues']=0;

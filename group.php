@@ -711,7 +711,7 @@ END;
                  * If the value is enclossed by @
                  * the value of this question must be evaluated instead.
                  */
-                if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname))
+                if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname) && isset($_SESSION['fieldnamesInfo'][$comparedfieldname[1]]))
                 {
                     $sgq_from_sgqa = $_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
                     $qid_from_sgq=$comparedfieldname[2];
