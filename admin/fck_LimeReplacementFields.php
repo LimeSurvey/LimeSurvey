@@ -217,6 +217,7 @@ if ($isInstertansEnabled===true)
     $previouspagequestion = true;
     //Go through each question until we reach the current one
     //error_log(print_r($qrows,true));
+    $questionlist=array();      
     foreach ($fieldmap as $field)
     {
         if (empty($field['qid'])) continue;

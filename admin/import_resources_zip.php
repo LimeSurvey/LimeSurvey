@@ -136,8 +136,8 @@ if ($action == "importsurveyresources" && $surveyid) {
         // display summary
         $okfiles = 0;
         $errfiles= 0;
-        $ErrorListHeader .= "";
-        $ImportListHeader .= "";
+        $ErrorListHeader = "";
+        $ImportListHeader = "";
         if (is_null($aErrorFilesInfo) && !is_null($aImportedFilesInfo))
         {
             $status=$clang->gT("Success");
