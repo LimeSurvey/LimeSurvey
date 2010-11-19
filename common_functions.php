@@ -631,6 +631,125 @@ function getQuestions($surveyid,$gid,$selectedqid)
     return $questionselecter;
 }
 
+/**
+ * getGidPrevious() returns the Gid of the group prior to the current active group
+ *
+ * @param string $surveyid
+ * @param string $gid
+ *
+ * @return The Gid of the previous group
+ */
+function getGidPrevious($surveyid, $gid)
+{
+    global $scriptname, $clang;
+
+    if (!$surveyid) {$surveyid=returnglobal('sid');}
+    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
+    $qresult = db_execute_assoc($gquery); //checked
+    $qrows = $qresult->GetRows();
+
+    $i = 1;
+    $iPrev = 0;
+    foreach ($qrows as $qrow)
+    {
+        if ($gid == $qrow['gid']) {$iPrev = $i - 1;}
+        $i += 1;
+    }
+    if ($iPrev > 0) {$GidPrev = $qrows[$iPrev]['gid'];}
+    else {$GidPrev = "";}
+    return $GidPrev;
+}
+
+/**
+ * getGidNext() returns the Gid of the group next to the current active group
+ *
+ * @param string $surveyid
+ * @param string $gid
+ *
+ * @return The Gid of the next group
+ */
+function getGidNext($surveyid, $gid)
+{
+    global $scriptname, $clang;
+
+    if (!$surveyid) {$surveyid=returnglobal('sid');}
+    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
+    $qresult = db_execute_assoc($gquery); //checked
+    $qrows = $qresult->GetRows();
+
+    $i = 0;
+    $iNext = count($qrows);
+    foreach ($qrows as $qrow)
+    {
+        if ($gid == $qrow['gid']) {$iNext = $i + 1;}
+        $i += 1;
+    }
+    if ($iNext < count($qrows)) {$GidNext = $qrows[$iNext]['gid'];}
+    else {$GidNext = "";}
+    return $GidNext;
+}
+
+/**
+ * getQidPrevious() returns the Qid of the question prior to the current active question
+ *
+ * @param string $surveyid
+ * @param string $gid
+ * @param string $qid
+ *
+ * @return This Qid of the previous question
+ */
+function getQidPrevious($surveyid, $gid, $qid)
+{
+    global $scriptname, $clang;
+    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    $qresult = db_execute_assoc($qquery); //checked
+    $qrows = $qresult->GetRows();
+
+    $i = 1;
+    $iPrev = 0;
+    foreach ($qrows as $qrow)
+    {
+        if ($qid == $qrow['qid']) {$iPrev = $i - 1;}
+        $i += 1;
+    }
+    if ($iPrev > 0) {$QidPrev = $qrows[$iPrev]['qid'];}
+    else {$QidPrev = "";}
+    return $QidPrev;
+}
+
+/**
+ * getQidNext() returns the Qid of the question prior to the current active question
+ *
+ * @param string $surveyid
+ * @param string $gid
+ * @param string $qid
+ *
+ * @return This Qid of the previous question
+ */
+function getQidNext($surveyid, $gid, $qid)
+{
+    global $scriptname, $clang;
+    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    $qresult = db_execute_assoc($qquery); //checked
+    $qrows = $qresult->GetRows();
+
+    $i = 0;
+    $iNext = count($qrows);
+    foreach ($qrows as $qrow)
+    {
+        if ($qid == $qrow['qid']) {$iNext = $i + 1;}
+        $i += 1;
+    }
+    if ($iNext < count($qrows)) {$QidNext = $qrows[$iNext]['qid'];}
+    else {$QidNext = "";}
+    return $QidNext;
+}
+
+
 
 /**
  * Gets number of groups inside a particular survey
