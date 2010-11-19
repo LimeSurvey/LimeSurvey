@@ -737,30 +737,28 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if ($GidPrev != "")
         {
           $surveysummary .= ""
-          . "<input type='image' src='$imageurl/questiongroupprevious.png' title='". $clang->gT("Previous question group")."' "
-          . "alt='". $clang->gT("Previous question group")."' name='questiongroupprevious' ";
-          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+            . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$GidPrev'>"
+            . "<img src='{$imageurl}/questiongroupprevious.png' title='' alt='".$clang->gT("Previous question group")."' "
+            ."name='questiongroupprevious' ".$clang->gT("Previous question group")."/> </a>";
         }
         else
         {
           $surveysummary .= ""
-          . "<input type='image' src='$imageurl/questiongroupprevioushidden.png' title='". $clang->gT("Previous question group")."' "
-          . "alt='". $clang->gT("Previous question group")."' name='questiongroupprevious' ";
+            . "<img src='{$imageurl}/questiongroupprevioushidden.png' title='' ";
         }
 
         $GidNext = getGidNext($surveyid, $gid);
         if ($GidNext != "")
         {
           $surveysummary .= ""
-          . "<input type='image' src='$imageurl/questiongroupnext.png' title='". $clang->gT("Next question group")."' "
-          . "alt='". $clang->gT("Next question group")."' name='questiongroupnext' ";
-          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+            . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$GidNext'>"
+            . "<img src='{$imageurl}/questiongroupnext.png' title='' alt='".$clang->gT("Next question group")."' "
+            ."name='questiongroupnext' ".$clang->gT("Next question group")."/> </a>";
         }
         else
         {
           $surveysummary .= ""
-          . "<input type='image' src='$imageurl/questiongroupnexthidden.png' title='". $clang->gT("Next question group")."' "
-          . "alt='". $clang->gT("Next question group")."' name='questiongroupnext' ";
+            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' ";
         }
 
 
@@ -1109,15 +1107,14 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         if ($QidPrev != "")
         {
           $groupsummary .= ""
-          . "<input type='image' src='$imageurl/questionprevious.png' title='". $clang->gT("Previous question")."' "
-          . "alt='". $clang->gT("Previous question")."' name='questionprevious' ";
-          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+            . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidPrev'>"
+            . "<img src='{$imageurl}/questionprevious.png' title='' alt='".$clang->gT("Previous question")."' "
+            ."name='questiongroupprevious' ".$clang->gT("Previous question")."/> </a>";
         }
         else
         {
           $groupsummary .= ""
-          . "<input type='image' src='$imageurl/questionprevioushidden.png' title='". $clang->gT("Previous question")."' "
-          . "alt='". $clang->gT("Previous question")."' name='questionprevious' ";
+            . "<img src='{$imageurl}/questionprevioushidden.png' title='' ";
         }
 
 
@@ -1125,15 +1122,14 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         if ($QidNext != "")
         {
           $groupsummary .= ""
-          . "<input type='image' src='$imageurl/questionnext.png' title='". $clang->gT("Next question")."' "
-          . "alt='". $clang->gT("Next question")."' name='questionnext' ";
-          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+            . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidNext'>"
+            . "<img src='{$imageurl}/questiongroupnext.png' title='' alt='".$clang->gT("Next question")."' "
+            ."name='questiongroupnext' ".$clang->gT("Next question")."/> </a>";
         }
         else
         {
           $groupsummary .= ""
-          . "<input type='image' src='$imageurl/questionnexthidden.png' title='". $clang->gT("Next question")."' "
-          . "alt='". $clang->gT("Next question")."' name='questionnext' ";
+            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' ";
         }
 
 

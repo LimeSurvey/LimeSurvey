@@ -656,9 +656,38 @@ function getGidPrevious($surveyid, $gid)
         if ($gid == $qrow['gid']) {$iPrev = $i - 1;}
         $i += 1;
     }
-    if ($iPrev > 0) {$GidPrev = $qrows[$iPrev]['gid'];}
+    if ($iPrev > 0) {$GidPrev = $qrows[$iPrev-1]['gid'];}
     else {$GidPrev = "";}
     return $GidPrev;
+}
+
+/**
+ * getQidPrevious() returns the Qid of the question prior to the current active question
+ *
+ * @param string $surveyid
+ * @param string $gid
+ * @param string $qid
+ *
+ * @return This Qid of the previous question
+ */
+function getQidPrevious($surveyid, $gid, $qid)
+{
+    global $scriptname, $clang;
+    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    $qresult = db_execute_assoc($qquery); //checked
+    $qrows = $qresult->GetRows();
+
+    $i = 1;
+    $iPrev = 0;
+    foreach ($qrows as $qrow)
+    {
+        if ($qid == $qrow['qid']) {$iPrev = $i - 1;}
+        $i += 1;
+    }
+    if ($iPrev > 0) {$QidPrev = $qrows[$iPrev-1]['qid'];}
+    else {$QidPrev = "";}
+    return $QidPrev;
 }
 
 /**
@@ -692,35 +721,6 @@ function getGidNext($surveyid, $gid)
 }
 
 /**
- * getQidPrevious() returns the Qid of the question prior to the current active question
- *
- * @param string $surveyid
- * @param string $gid
- * @param string $qid
- *
- * @return This Qid of the previous question
- */
-function getQidPrevious($surveyid, $gid, $qid)
-{
-    global $scriptname, $clang;
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
-    $qresult = db_execute_assoc($qquery); //checked
-    $qrows = $qresult->GetRows();
-
-    $i = 1;
-    $iPrev = 0;
-    foreach ($qrows as $qrow)
-    {
-        if ($qid == $qrow['qid']) {$iPrev = $i - 1;}
-        $i += 1;
-    }
-    if ($iPrev > 0) {$QidPrev = $qrows[$iPrev]['qid'];}
-    else {$QidPrev = "";}
-    return $QidPrev;
-}
-
-/**
  * getQidNext() returns the Qid of the question prior to the current active question
  *
  * @param string $surveyid
@@ -733,7 +733,7 @@ function getQidNext($surveyid, $gid, $qid)
 {
     global $scriptname, $clang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    $qquery = 'SELECT qid FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
     $qresult = db_execute_assoc($qquery); //checked
     $qrows = $qresult->GetRows();
 
