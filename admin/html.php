@@ -703,7 +703,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
  
         $surveysummary .= "</ul>";
         
-        // End of survey toolbat 2nd page
+        // End of survey toolbar 2nd page
 
         ////////////////////////////////////////////////////////////////////////
         // QUESTION GROUP TOOLBAR
@@ -730,7 +730,39 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $gid=null;
             $qid=null;
         }
-            
+
+        // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION GROUP
+        // TODO: Fix functionality to previous and next question group buttons (Andrie)
+        $GidPrev = getGidPrevious($surveyid, $gid);
+        if ($GidPrev != "")
+        {
+          $surveysummary .= ""
+          . "<input type='image' src='$imageurl/questiongroupprevious.png' title='". $clang->gT("Previous question group")."' "
+          . "alt='". $clang->gT("Previous question group")."' name='questiongroupprevious' ";
+          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+        }
+        else
+        {
+          $surveysummary .= ""
+          . "<input type='image' src='$imageurl/questiongroupprevioushidden.png' title='". $clang->gT("Previous question group")."' "
+          . "alt='". $clang->gT("Previous question group")."' name='questiongroupprevious' ";
+        }
+
+        $GidNext = getGidNext($surveyid, $gid);
+        if ($GidNext != "")
+        {
+          $surveysummary .= ""
+          . "<input type='image' src='$imageurl/questiongroupnext.png' title='". $clang->gT("Next question group")."' "
+          . "alt='". $clang->gT("Next question group")."' name='questiongroupnext' ";
+          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+        }
+        else
+        {
+          $surveysummary .= ""
+          . "<input type='image' src='$imageurl/questiongroupnexthidden.png' title='". $clang->gT("Next question group")."' "
+          . "alt='". $clang->gT("Next question group")."' name='questiongroupnext' ";
+        }
+
 
         // ADD NEW GROUP TO SURVEY BUTTON
 
@@ -1071,6 +1103,41 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         . "</select>\n";
 
 
+                // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION
+        // TODO: Fix functionality to previos and next question  buttons (Andrie)
+        $QidPrev = getQidPrevious($surveyid, $gid, $qid);
+        if ($QidPrev != "")
+        {
+          $groupsummary .= ""
+          . "<input type='image' src='$imageurl/questionprevious.png' title='". $clang->gT("Previous question")."' "
+          . "alt='". $clang->gT("Previous question")."' name='questionprevious' ";
+          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+        }
+        else
+        {
+          $groupsummary .= ""
+          . "<input type='image' src='$imageurl/questionprevioushidden.png' title='". $clang->gT("Previous question")."' "
+          . "alt='". $clang->gT("Previous question")."' name='questionprevious' ";
+        }
+
+
+        $QidNext = getQidNext($surveyid, $gid, $qid);
+        if ($QidNext != "")
+        {
+          $groupsummary .= ""
+          . "<input type='image' src='$imageurl/questionnext.png' title='". $clang->gT("Next question")."' "
+          . "alt='". $clang->gT("Next question")."' name='questionnext' ";
+          //. "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
+        }
+        else
+        {
+          $groupsummary .= ""
+          . "<input type='image' src='$imageurl/questionnexthidden.png' title='". $clang->gT("Next question")."' "
+          . "alt='". $clang->gT("Next question")."' name='questionnext' ";
+        }
+
+
+
         // ADD NEW QUESTION TO GROUP BUTTON
 
         if ($activated == "Y")
@@ -1087,7 +1154,6 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
             " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
         }
 
-        // TODO: Add buttons to navigate group here (Andrie)
 
         // Separator
 
