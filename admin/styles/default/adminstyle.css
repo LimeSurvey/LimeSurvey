@@ -253,6 +253,20 @@ input, select, button {
     font: 10px verdana, arial, sans-serif;
 }
 
+input,
+textarea {
+	background: #FFF;
+	border: 1px solid #DBDFE6;
+	border-top-color: #ABADB3;
+	border-bottom-color: #E3E9EF;
+	padding: 2px;
+}
+
+select {
+	background: #FFF;
+	border: 1px solid #828790;
+}
+
 input[disabled], textarea[disabled], select[disabled], button[disabled] {
     color: #999;
     background: #EEE;
