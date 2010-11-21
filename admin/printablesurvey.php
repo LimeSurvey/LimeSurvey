@@ -49,25 +49,26 @@ if (isset($_GET['lang']))
 // Setting the selected language for printout
 $clang = new limesurvey_lang($surveyprintlang);
 
-$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
+$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid={$surveyid} and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
 
-$desresult = db_execute_assoc($desquery);
-while ($desrow = $desresult->FetchRow())
+$desrow = $connect->GetRow($desquery);
+if ($desrow==false || count($desrow)==0)
 {
-
-    //echo '<pre>'.print_r($desrow,true).'</pre>';
-    $template = $desrow['template'];
-    $welcome = $desrow['surveyls_welcometext'];
-    $end = $desrow['surveyls_endtext'];
-    $surveyname = $desrow['surveyls_title'];
-    $surveydesc = $desrow['surveyls_description'];
-    $surveyactive = $desrow['active'];
-    $surveytable = db_table_name("survey_".$desrow['sid']);
-    $surveyexpirydate = $desrow['expires'];
-    $surveystartdate = $desrow['startdate'];
-    $surveyfaxto = $desrow['faxto'];
-    $dateformattype = $desrow['surveyls_dateformat'];
+    safe_die('Invalid survey ID');
 }
+    //echo '<pre>'.print_r($desrow,true).'</pre>';
+$template = $desrow['template'];
+$welcome = $desrow['surveyls_welcometext'];
+$end = $desrow['surveyls_endtext'];
+$surveyname = $desrow['surveyls_title'];
+$surveydesc = $desrow['surveyls_description'];
+$surveyactive = $desrow['active'];
+$surveytable = db_table_name("survey_".$desrow['sid']);
+$surveyexpirydate = $desrow['expires'];
+$surveystartdate = $desrow['startdate'];
+$surveyfaxto = $desrow['faxto'];
+$dateformattype = $desrow['surveyls_dateformat'];
+
 if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
 

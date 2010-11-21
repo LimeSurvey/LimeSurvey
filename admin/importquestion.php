@@ -880,7 +880,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
-            $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subqeustion id
+            $insertdata['sqid']=$aSQIDReplacements[(int)$insertdata['sqid']]; // remap the subquestion id
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 

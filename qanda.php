@@ -2860,6 +2860,7 @@ function do_multiplechoice($ia)
     $colcounter = 1;
     $startitem='';
     $postrow = '';
+    $trbc='';         
     foreach ($ansresult as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];

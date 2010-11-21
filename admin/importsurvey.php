@@ -26,7 +26,8 @@ if (!isset($copyfunction))
     $aPathInfo = pathinfo($sFullFilepath);
     $sExtension = $aPathInfo['extension'];
 }
-                  
+    
+$bImportFailed=false;  
 if (isset($sExtension) && strtolower($sExtension)=='csv')
 {
     $aImportResults=CSVImportSurvey($sFullFilepath);
@@ -46,7 +47,7 @@ else
 // Create old fieldnames
 
                 
-if ((isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
+if ((!$bImportFailed && isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
     if (isset($copyfunction))

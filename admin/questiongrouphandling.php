@@ -284,7 +284,7 @@ if ($action == "ordergroups")
             $lastnumber=$group['group_order'];
         }
         //Fix bad ordering
-        if($ogarray[0]['group_order'] > 0 || !$consecutive)
+        if((isset($ogarray[0]['group_order']) && $ogarray[0]['group_order'] > 0) || !$consecutive)
         {
             $i=0;
             foreach($ogarray as $group)

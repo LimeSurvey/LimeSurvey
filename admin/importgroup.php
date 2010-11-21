@@ -1022,6 +1022,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             if (!isset($aGIDReplacements[$insertdata['gid']])) continue; // Skip questions with invalid group id
             $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
             $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+            if (!isset($aQIDReplacements[(int)$insertdata['parent_qid']])) continue; // Skip subquestions with invalid parent_qids
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
