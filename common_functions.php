@@ -649,14 +649,14 @@ function getGidPrevious($surveyid, $gid)
     $qresult = db_execute_assoc($gquery); //checked
     $qrows = $qresult->GetRows();
 
-    $i = 1;
-    $iPrev = 0;
+    $i = 0;
+    $iPrev = -1;
     foreach ($qrows as $qrow)
     {
         if ($gid == $qrow['gid']) {$iPrev = $i - 1;}
         $i += 1;
     }
-    if ($iPrev > 0) {$GidPrev = $qrows[$iPrev-1]['gid'];}
+    if ($iPrev >= 0) {$GidPrev = $qrows[$iPrev]['gid'];}
     else {$GidPrev = "";}
     return $GidPrev;
 }
@@ -678,14 +678,14 @@ function getQidPrevious($surveyid, $gid, $qid)
     $qresult = db_execute_assoc($qquery); //checked
     $qrows = $qresult->GetRows();
 
-    $i = 1;
-    $iPrev = 0;
+    $i = 0;
+    $iPrev = -1;
     foreach ($qrows as $qrow)
     {
         if ($qid == $qrow['qid']) {$iPrev = $i - 1;}
         $i += 1;
     }
-    if ($iPrev > 0) {$QidPrev = $qrows[$iPrev-1]['qid'];}
+    if ($iPrev >= 0) {$QidPrev = $qrows[$iPrev]['qid'];}
     else {$QidPrev = "";}
     return $QidPrev;
 }
@@ -708,8 +708,9 @@ function getGidNext($surveyid, $gid)
     $qresult = db_execute_assoc($gquery); //checked
     $qrows = $qresult->GetRows();
 
+    $GidNext="";
     $i = 0;
-    $iNext = count($qrows);
+    $iNext = 1;
     foreach ($qrows as $qrow)
     {
         if ($gid == $qrow['gid']) {$iNext = $i + 1;}
@@ -738,7 +739,7 @@ function getQidNext($surveyid, $gid, $qid)
     $qrows = $qresult->GetRows();
 
     $i = 0;
-    $iNext = count($qrows);
+    $iNext = 1;
     foreach ($qrows as $qrow)
     {
         if ($qid == $qrow['qid']) {$iNext = $i + 1;}
