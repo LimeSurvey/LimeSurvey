@@ -1998,7 +1998,7 @@ function do_list_dropdown($ia)
     }
 
     $checkotherscript = "";
-    if (isset($other) && $other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
     {
         $checkotherscript = "\n<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -2256,7 +2256,7 @@ function do_list_radio($ia)
 
     $checkotherscript = "";
 
-    if (isset($other) && $other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
     {
         $checkotherscript = "<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -3013,7 +3013,7 @@ function do_multiplechoice($ia)
             // even if the -other- input field is still empty
             // This will be differetn for the minansw script
             // ==> hence the 1==2
-            if (1==2 || getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if (1==2 || $qidattributes['other_comment_mandatory']==1)
             {
                 $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
             }
@@ -3029,7 +3029,7 @@ function do_multiplechoice($ia)
             // so in fact I need to assume that other_comment_mandatory is set to true
             // We only count the -other- as valid if both the cbox and the other text is filled
             // ==> hence the 1==1
-            if (1==1 || getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if (1==1 || $qidattributes['other_comment_mandatory']==1)
             {
                 $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
             }
@@ -3349,7 +3349,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($maxansw > 0)
         {
-            if (getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if ($qidattributes['other_comment_mandatory']==1)
             {
                 $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3361,7 +3361,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($minansw > 0)
         {
-            if (getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if ($qidattributes['other_comment_mandatory']==1)
             {
                 $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3425,10 +3425,9 @@ function do_multiplechoice_withcomments($ia)
         //$answer = $minanswscript . $answer;
     }
 
-    //getQuestionAttributeValue($questionAttributeArray, $attributeName)
     $checkotherscript = "";
     //if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
-    if ($other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1) //TIBO
+    if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
     {
         // Multiple options with 'other' is a specific case as the checkbox isn't recorded into DB
         // this means that if it is cehcked We must force the end-user to enter text in the input

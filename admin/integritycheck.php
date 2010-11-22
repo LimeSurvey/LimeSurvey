@@ -414,7 +414,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         //1: Get list of "old_survey" tables and extract the survey id
         //2: Check if that survey id still exists
         //3: If it doesn't offer it for deletion
-        $tables=$connect->MetaTables(false, false, "{$dbprefix}%old%survey%");
+        $tables=$connect->MetaTables(false, false, "{$dbprefix}old_survey%");
         $oldsids=array();
         $sids=array();
         foreach($tables as $table)
@@ -478,7 +478,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         //1: Get list of "old_token" tables and extract the survey id
         //2: Check if that survey id still exists
         //3: If it doesn't offer it for deletion
-        $tables=$connect->MetaTables(false, false, "{$dbprefix}old%token%");
+        $tables=$connect->MetaTables(false, false, "{$dbprefix}old_token%");
         $oldtsids=array();
         $tsids=array();
         $folloldtsids=array();
