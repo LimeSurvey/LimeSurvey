@@ -347,6 +347,7 @@ if(isset($_SESSION['loginID']))
                 }
                 break;
             case 'tokens': // email
+            case 'emailtemplates': // email
                 if (bHasSurveyPermission($surveyid,'tokens','update'))
                 {
                     $_SESSION['FileManagerContext']="edit:emailsettings:$surveyid";

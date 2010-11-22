@@ -84,12 +84,12 @@
         $sHTMLOutput .="</ul></div>"
 
         ."<div id='tab-{$grouplang}-admin-responses'>";
-        $sHTMLOutput .= "<ul><li><label for='email_admin_responses_subj_{$grouplang}'>".$clang->gT("Invitation email subject:")."</label>\n"
+        $sHTMLOutput .= "<ul><li><label for='email_admin_responses_subj_{$grouplang}'>".$clang->gT("Detailed admin notification subject:")."</label>\n"
         . "<input type='text' size='80' name='email_admin_responses_subj_{$grouplang}' id='email_admin_responses_subj_{$grouplang}' value=\"{$esrow['email_admin_responses_subj']}\" />\n"
         . "<input type='hidden' name='email_admin_responses_subj_default_{$grouplang}' id='email_admin_responses_subj_default_{$grouplang}' value='{$aDefaultTexts['admin_detailed_notification_subject']}' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_responses_subj_{$grouplang}\",\"email_admin_responses_subj_default_{$grouplang}\")' />\n"
         . "\t</li>\n";
-        $sHTMLOutput .= "<li><label for='email_admin_responses_{$grouplang}'>".$clang->gT("Invitation email:")."</label>\n"
+        $sHTMLOutput .= "<li><label for='email_admin_responses_{$grouplang}'>".$clang->gT("Detailed admin notification email:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_admin_responses_{$grouplang}' id='email_admin_responses_{$grouplang}'>".htmlspecialchars($esrow['email_admin_responses'])."</textarea>\n"
         . getEditor("email-admin-resp","email_admin_responses_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
         . "<input type='hidden' name='email_admin_responses_default_{$grouplang}' id='email_admin_responses_default_{$grouplang}' value='".htmlspecialchars($aDefaultTexts['admin_detailed_notification'],ENT_QUOTES)."' />\n"

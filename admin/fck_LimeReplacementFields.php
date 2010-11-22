@@ -132,6 +132,13 @@ switch ($fieldtype)
         $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
         break;
 
+    case 'email-admin-conf':
+    case 'email-admin-resp':
+        $replFields[]=array('RELOADURL',$clang->gT("Reload URL"));
+        $replFields[]=array('VIEWRESPONSEURL',$clang->gT("View response URL"));
+        $replFields[]=array('EDITRESPONSEURL',$clang->gT("Edit response URL"));
+        $replFields[]=array('STATISTICSURL',$clang->gT("Statistics URL"));
+        $replFields[]=array('ANSWERTABLE',$clang->gT("Answers from this response"));
     case 'email-inv':
     case 'email-rem':
         // these 2 fields are supported by email-inv and email-rem
@@ -211,7 +218,6 @@ switch ($fieldtype)
         $replFields[]=array('PERC',$clang->gT("Assessment group score"));
         break;
 }
-
 if ($isInstertansEnabled===true)
 {
     if (empty($surveyid)) {die("No SID provided.");}
