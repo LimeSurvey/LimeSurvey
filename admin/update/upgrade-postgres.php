@@ -270,13 +270,7 @@ function db_upgrade($oldversion) {
         
         //Add index to questions table to speed up subquestions
         modify_database("", "create INDEX parent_qid_idx on prefix_questions( parent_qid );"); echo $modifyoutput; flush();
-        modify_database("","CREATE TABLE prefix_extendedconditions (
-                              qid integer NOT NULL,
-                              gid integer NOT NULL,
-                              sid integer NOT NULL,
-                              condition text NOT NULL,
-                              PRIMARY KEY (qid,gid,sid));"); echo $modifyoutput; flush();
-                              
+                                    
         modify_database("", "ALTER TABLE prefix_surveys ADD emailnotificationto text DEFAULT NULL"); echo $modifyoutput; flush();
         upgrade_survey_table145();                                           
         modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN notification"); echo $modifyoutput; flush();

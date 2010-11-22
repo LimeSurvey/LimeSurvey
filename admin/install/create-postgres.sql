@@ -60,18 +60,6 @@ ALTER TABLE ONLY prefix_conditions
 
 
 -- 
--- Table structure for table extendedconditions
---
-CREATE TABLE prefix_extendedconditions (
-  qid integer DEFAULT 0 NOT NULL,
-  gid integer DEFAULT 0 NOT NULL,
-  sid integer DEFAULT 0 NOT NULL,
-  condition text);
-
-ALTER TABLE prefix_extendedconditions ADD CONSTRAINT prefix_extendedconditions_pkey PRIMARY KEY (qid,gid,sid);
-
-
--- 
 -- Table structure for table defaultvalues
 --
 CREATE TABLE prefix_defaultvalues (

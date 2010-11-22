@@ -400,12 +400,6 @@ function db_upgrade($oldversion) {
         modify_database("", "create index [idx_expiry] on [prefix_sessions] ([expiry])"); echo $modifyoutput;
         modify_database("", "create index [idx_expireref] on [prefix_sessions] ([expireref])"); echo $modifyoutput;
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-        modify_database("","CREATE TABLE [prefix_extendedconditions] (
-							  [qid] INT NOT NULL default '0',
-							  [gid] INT NOT NULL default '0',
-							  [sid] INT NOT NULL default '0',
-							  [condition] text ,
-							  PRIMARY KEY ([qid],[gid],[sid]));"); echo $modifyoutput; flush();
     }
 
     if ($oldversion < 145) //Modify surveys table
@@ -447,13 +441,7 @@ function db_upgrade($oldversion) {
         
         //Add index to questions table to speed up subquestions
         modify_database("", "create index [parent_qid_idx] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();
-        modify_database("","CREATE TABLE prefix_extendedconditions (
-                              qid integer NOT NULL,
-                              gid integer NOT NULL,
-                              sid integer NOT NULL,
-                              condition text NOT NULL,
-                              PRIMARY KEY (qid,gid,sid));"); echo $modifyoutput; flush();
-                              
+                                   
         modify_database("", "ALTER TABLE prefix_surveys ADD emailnotificationto text DEFAULT NULL"); echo $modifyoutput; flush();
         upgrade_survey_table145();                                           
         mssql_drop_constraint('notification','surveys');

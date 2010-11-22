@@ -46,18 +46,6 @@ CREATE TABLE `prefix_conditions` (
 
 
 -- 
--- Table structure for table extendedconditions
--- 
-CREATE TABLE `prefix_extendedconditions` (
-  `qid` int(11) NOT NULL,
-  `gid` int(11) NOT NULL,
-  `sid` int(11) NOT NULL,
-  `condition` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`qid`,`gid`,`sid`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE utf8_unicode_ci;
-
-
--- 
 -- Table structure for table defaultvalues
 -- 
 CREATE TABLE `prefix_defaultvalues` (

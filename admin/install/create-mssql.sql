@@ -50,19 +50,6 @@ CREATE TABLE [prefix_conditions] (
 
 
 -- 
--- Table structure for table extendedconditions
--- 
-CREATE TABLE [prefix_extendedconditions] (
-  [qid] INT NOT NULL default '0',
-  [gid] INT NOT NULL default '0',
-  [sid] INT NOT NULL default '0',
-  [condition] text ,
-  PRIMARY KEY ([qid],[gid],[sid])
-)
-;
-
-
--- 
 -- Table structure for table defaultvalues
 -- 
 CREATE TABLE [prefix_defaultvalues] (
