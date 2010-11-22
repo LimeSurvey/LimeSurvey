@@ -1092,7 +1092,7 @@ function checkgroupfordisplay($gid)
         {
             // Check if this question is hidden
             $qidattributes=getQuestionAttributes($ia[0]);
-            if ($qidattributes['hidden']==0)
+            if ($qidattributes!==false && $qidattributes['hidden']==0)
             {
                 $countQuestionsInThisGroup++;
                 if ($ia[7] == "Y") //This question is conditional

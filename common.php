@@ -3389,7 +3389,7 @@ function buildLabelSetCheckSumArray()
  * @author: c_schmitz
  * @param $qid The question ID
  * @param $type optional The question type - saves a DB query if you provide it
- * @return array{attribute=>value , attribute=>value}
+ * @return array{attribute=>value , attribute=>value} or false if the question ID does not exist (anymore)
  */
 function getQuestionAttributes($qid, $type='')
 {
@@ -3404,6 +3404,11 @@ function getQuestionAttributes($qid, $type='')
         $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type";
         $result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
         $row=$result->FetchRow();
+        if ($row===false) // Question was deleted while running the survey
+        {
+            $cache[$qid]=false;
+            return false;
+        }
         $type=$row['type'];
     }
 

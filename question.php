@@ -90,64 +90,68 @@ list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 // MANAGE CONDITIONAL QUESTIONS AND HIDDEN QUESTIONS
 $qidattributes=getQuestionAttributes($ia[0]);
+if ($qidattributes===false)  // Question was deleted
+{
+    $qidattributes['hidden']==1;    //Workaround to skip the question if it was deleted while the survey is running in test mode
+}
 $conditionforthisquestion=$ia[7];
 $questionsSkipped=0;
 
 while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
 { // this is a while, not an IF because if we skip the question we loop on the next question, see below
-if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
-{ // question will be displayed
-// we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
-$conditionforthisquestion="N";
-}
-else
-{
-    $questionsSkipped++;
-    if (returnglobal('move') == "movenext")
+    if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
+    { // question will be displayed
+      // we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
+        $conditionforthisquestion="N";
+    }
+    else
     {
-        $currentquestion++;
-        if(isset($_SESSION['fieldarray'][$currentquestion]))
+        $questionsSkipped++;
+        if (returnglobal('move') == "movenext")
         {
-            $ia=$_SESSION['fieldarray'][$currentquestion];
-        }
-        if ($_SESSION['step']>=$_SESSION['totalsteps'])
-        {
-            $move="movesubmit";
-            submitanswer(); // complete this answer (submitdate)
-            break;
-        }
-        $_SESSION['step']++;
-        foreach ($_SESSION['grouplist'] as $gl)
-        {
-            if ($gl[0] == $ia[5])
+            $currentquestion++;
+            if(isset($_SESSION['fieldarray'][$currentquestion]))
             {
-                $gid=$gl[0];
-                $groupname=$gl[1];
-                $groupdescription=$gl[2];
-                if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
+                $ia=$_SESSION['fieldarray'][$currentquestion];
+            }
+            if ($_SESSION['step']>=$_SESSION['totalsteps'])
+            {
+                $move="movesubmit";
+                submitanswer(); // complete this answer (submitdate)
+                break;
+            }
+            $_SESSION['step']++;
+            foreach ($_SESSION['grouplist'] as $gl)
+            {
+                if ($gl[0] == $ia[5])
+                {
+                    $gid=$gl[0];
+                    $groupname=$gl[1];
+                    $groupdescription=$gl[2];
+                    if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
+                }
             }
         }
-    }
-    elseif (returnglobal('move') == "moveprev")
-    {
-        $currentquestion--; // if we reach -1, this means we must go back to first page
-        if ($currentquestion >= 0)
+        elseif (returnglobal('move') == "moveprev")
         {
-            $ia=$_SESSION['fieldarray'][$currentquestion];
-            $_SESSION['step']--;
+            $currentquestion--; // if we reach -1, this means we must go back to first page
+            if ($currentquestion >= 0)
+            {
+                $ia=$_SESSION['fieldarray'][$currentquestion];
+                $_SESSION['step']--;
+            }
+            else
+            {
+                $_SESSION['step']=0;
+                display_first_page();
+                exit;
+            }
         }
-        else
-        {
-            $_SESSION['step']=0;
-            display_first_page();
-            exit;
-        }
+        // because we skip this question, we need to loop on the same condition 'check-block'
+        //  with the new question (we have overwritten $ia)
+        $conditionforthisquestion=$ia[7];
+        $qidattributes=getQuestionAttributes($ia[0]);
     }
-    // because we skip this question, we need to loop on the same condition 'check-block'
-    //  with the new question (we have overwritten $ia)
-    $conditionforthisquestion=$ia[7];
-    $qidattributes=getQuestionAttributes($ia[0]);
-}
 } // End of while conditionforthisquestion=="Y"
 
 //SUBMIT
