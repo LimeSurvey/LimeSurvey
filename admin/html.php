@@ -1357,10 +1357,6 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             $questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;subaction=editconditionsform', '_top')\""
             . " title=\"".$clang->gTview("Set/view conditions for this question")."\">"
             . "<img src='$imageurl/conditions.png' alt='".$clang->gT("Set conditions for this question")."'  name='SetQuestionConditions' /></a>\n"
-            . "<img src='$imageurl/seperator.gif' alt='' />\n"
-			. "<a href='#' onclick=\"window.open('$scriptname?action=extendedconditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;question=$qid', '_top')\""
-            . " title=\"".$clang->gTview("Set/view extended conditions for this question")."\">"
-            . "<img src='$imageurl/extendedconditions.png' alt='".$clang->gT("Set extended conditions for this question")."'  name='SetQuestionExtendedConditions' /></a>\n"
             . "<img src='$imageurl/seperator.gif' alt='' />\n";
         }
         else

@@ -88,54 +88,6 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
     }
 }
 
-/**
-if (!$show_empty_group && IsSet($_SESSION['fieldarray']) && $_SESSION['step']>0) {
-
-    $grouparrayno=$_SESSION['step']-1;
-    $gid=$_SESSION['grouplist'][$grouparrayno][0];
-    
-    while(true){
-    	//get extendedconditions
-	    $query = "SELECT * FROM {$dbprefix}extendedconditions WHERE gid='{$gid}' AND sid='{$surveyid}'";
-	    $result = db_execute_assoc($query);
-	    $conditions=array();
-	    $hideQuestion=array();
-	    while($row=$result->FetchRow()){
-	    	$conditions[$row['qid']]=$row['condition'];
-	    }   
-	    $i=0;
-		foreach ($_SESSION['fieldarray'] as $ia)
-		{
-			if($ia[5]==$gid){
-				$qidattributes=getQuestionAttributes($ia[0]);
-	        	if ($qidattributes['hidden']!=1) {
-		        	if(isset($conditions[$ia[0]]) && (trim($conditions[$ia[0]]!='')) && !checkExtendedCondition($conditions[$ia[0]])){
-		        		$hideQuestion[$ia[0]]=true;
-		        	}else{
-						$i++;
-		        	}
-				}
-			}
-		}
-		if($i>0) break;
-		
-		if($move=="moveprev"){
-			$gid--;
-		}else{
-			$gid++;
-		}
-		if($gid>$_SESSION['totalsteps']){
-			$move = "movesubmit";
-            submitanswer(); // complete this answer (submitdate)
-			break;
-		}
-		if($gid<=0){
-			break;
-		}
-    }
-    $_SESSION['step'] = $gid;
-}
-**/
 //SUBMIT ###############################################################################
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
