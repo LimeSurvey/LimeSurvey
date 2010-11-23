@@ -253,6 +253,9 @@ input, select, button {
     font: 10px verdana, arial, sans-serif;
 }
 
+/* Uncomment these styles if you are using a system theme with a dark background 
+and are having difficulty seeing text in inputs, textareas and dropdown selects. */
+/*
 input,
 textarea {
 	background: #FFF;
@@ -266,6 +269,7 @@ select {
 	background: #FFF;
 	border: 1px solid #828790;
 }
+*/
 
 input[disabled], textarea[disabled], select[disabled], button[disabled] {
     color: #999;
