@@ -122,47 +122,55 @@ if ($action == "editgroup")
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language='$baselang'";
     $egresult = db_execute_assoc($egquery);
     $editgroup = PrepareEditorScript();
-    $editgroup .= "<div class='header ui-widget-header'>".$clang->gT("Edit Group")."</div>\n"
-    . "<form name='frmeditgroup' id='frmeditgroup' action='$scriptname' class='form30' method='post'>\n"
-    . '<div class="tab-pane" id="tab-pane-group-'.$gid.'">';
-
     $esrow = $egresult->FetchRow();
-    $editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);
-    $editgroup .= '('.$clang->gT("Base Language").')';
+    $tab_title[0] = getLanguageNameFromCode($esrow['language'],false). '('.$clang->gT("Base Language").')';
     $esrow = array_map('htmlspecialchars', $esrow);
-    $editgroup .= '</h2><ul>';
-    $editgroup .= "\t<li><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label>\n"
-    . "<input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-    . "\t</li>\n"
-    . "\t<li><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-    . "<textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-    . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-    . "\t</li></ul></div>";
-
-
+    $tab_content[0] = "<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
+        . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+        . "\t</span></div>\n"
+        . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
+        . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+        . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+        . "\t</span></div><div style='clear:both'></div>";
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
     $egresult = db_execute_assoc($egquery);
+    $i = 1;
     while ($esrow = $egresult->FetchRow())
     {
-        $editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);
+        $tab_title[$i] = getLanguageNameFromCode($esrow['language'],false);
         $esrow = array_map('htmlspecialchars', $esrow);
-        $editgroup .= '</h2><ul>';
-        $editgroup .= "\t<li><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label>\n"
-        . "<input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-        . "\t</li>\n"
-        . "\t<li><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-        . "<textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-        . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-        . "\t</li></ul></div>";
+        $tab_content[$i] = "<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
+            . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+            . "\t</span></div>\n"
+            . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
+            . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+            . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+            . "\t</span></div><div style='clear:both'></div>";
+        $i++;
     }
-    $editgroup .= '</div>';
-    $editgroup .= "\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
+
+    $editgroup .= "<div class='header ui-widget-header'>".$clang->gT("Edit Group")."</div>\n"
+    . "<form name='frmeditgroup' id='frmeditgroup' action='$scriptname' class='form30' method='post'>\n<div id='tabs'><ul>\n";
+
+
+    foreach ($tab_title as $i=>$eachtitle){
+        $editgroup .= "\t<li style='clear:none'><a href='#editgrp$i'>$eachtitle</a></li>\n";
+        
+    }
+    $editgroup.="</ul>\n";
+
+    foreach ($tab_content as $i=>$eachcontent){
+        $editgroup .= "\n<div id='editgrp$i'>$eachcontent</div>";
+    }
+    
+    $editgroup .= "</div>\n\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
     . "\t<input type='hidden' name='action' value='updategroup' />\n"
     . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
     . "\t<input type='hidden' name='gid' value='{$gid}' />\n"
     . "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
     . "\t</p>\n"
     . "</form>\n";
+
 }
 
 

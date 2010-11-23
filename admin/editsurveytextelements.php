@@ -28,7 +28,8 @@
 
         $editsurvey .="<div class='header ui-widget-header'>".$clang->gT("Edit survey text elements")."</div>\n";
         $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='$scriptname' method='post'>\n"
-        . '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
+        . '<div id="tabs">';
+        $i = 0;
         foreach ($grplangs as $grouplang)
         {
             // this one is created to get the right default texts fo each language
@@ -36,11 +37,14 @@
             $esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
             $esresult = db_execute_assoc($esquery); //Checked
             $esrow = $esresult->FetchRow();
-            $editsurvey .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false);
-            if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$editsurvey .= '('.$clang->gT("Base Language").')';}
-            $editsurvey .= '</h2><ul>';
+
+            $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'],false);
+
+            if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid))
+                $tab_title[$i]  .= '('.$clang->gT("Base Language").')';
+
             $esrow = array_map('htmlspecialchars', $esrow);
-            $editsurvey .= "<li><label for=''>".$clang->gT("Survey title").":</label>\n"
+            $tab_content[$i] = "<li><label for=''>".$clang->gT("Survey title").":</label>\n"
             . "<input type='text' size='80' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></li>\n"
             . "<li><label for=''>".$clang->gT("Description:")."</label>\n"
             . "<textarea cols='80' rows='15' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea>\n"
@@ -64,16 +68,26 @@
             . "<select size='1' name='dateformat_".$esrow['surveyls_language']."'>\n";
             foreach (getDateFormatData() as $index=>$dateformatdata)
             {
-                $editsurvey.= "<option value='{$index}'";
+                $tab_content[$i].= "<option value='{$index}'";
                 if ($esrow['surveyls_dateformat']==$index) {
-                    $editsurvey.=" selected='selected'";
+                   $tab_content[$i].=" selected='selected'";
                 }
-                $editsurvey.= ">".$dateformatdata['dateformat'].'</option>';
+                $tab_content[$i].= ">".$dateformatdata['dateformat'].'</option>';
             }
-            $editsurvey.= "</select></li></ul>"
-            . "</div>";
+            $tab_content[$i].= "</select></li></ul>";
+            
+            $i++;
         }
-        $editsurvey .= '</div>';
+
+        $editsurvey .= "<ul>";
+        foreach($tab_title as $i=>$eachtitle){
+            $editsurvey .= "<li style='clear:none'><a href='#edittxtele$i'>$eachtitle</a></li>";
+        }
+        $editsurvey .= "</ul>";
+        foreach ($tab_content as $i=>$eachcontent){
+            $editsurvey .= "<div id='edittxtele$i'>$eachcontent</div>";
+        }
+        $editsurvey .= "</div>";
         if(bHasSurveyPermission($surveyid,'surveylocale','update'))
         {
             $editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"

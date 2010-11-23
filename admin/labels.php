@@ -160,28 +160,28 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $labelsoutput.= "\n\t</div>\n";
 
         if (isset($row['lid'])) { $panecookie=$row['lid'];} else  {$panecookie='new';}
-        $labelsoutput.= "<div class='tab-pane' id='tab-pane-labelset-{$panecookie}'>\n";
-        $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$tabitem."</h2>\n";
-        $labelsoutput.= "<form method='post' class='form30' id='labelsetform' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
 
-        $labelsoutput.= "<ul'>\n"
+        $tab_title[0] = $tabitem;
+        $tab_content[0] = "<form method='post' class='form30' id='labelsetform' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
+
+        $tab_content[0].= "<ul'>\n"
         ."<li><label for='languageids'>".$clang->gT("Set name:")."</label>\n"
         ."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
         ."\t<input type='text' id='label_name' name='label_name' maxlength='100' size='50' value='";
-        if (isset($lbname)) {$labelsoutput.= $lbname;}
-        $labelsoutput.= "' />\n"
+        if (isset($lbname)) {$tab_content[0].= $lbname;}
+        $tab_content[0].= "' />\n"
         ."</li>\n"
         // Additional languages listbox
         . "\t<li><label>".$clang->gT("Languages:")."</label>\n"
         . "<table><tr><td align='left'><select multiple='multiple' style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>";
         foreach ($langidsarray as $langid)
         {
-            $labelsoutput.=  "\t<option id='".$langid."' value='".$langid."'";
-            $labelsoutput.= ">".getLanguageNameFromCode($langid,false)."</option>\n";
+            $tab_content[0].=  "\t<option id='".$langid."' value='".$langid."'";
+            $tab_content[0].= ">".getLanguageNameFromCode($langid,false)."</option>\n";
         }
 
         //  Add/Remove Buttons
-        $labelsoutput.= "</select></td>"
+        $tab_content[0].= "</select></td>"
         . "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this item since you need at least one language in a labelset.", "js")."')\" id=\"RemoveBtn\"  /></td>\n"
 
         // Available languages listbox
@@ -190,31 +190,32 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         {
             if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
             {
-                $labelsoutput.= "\t<option id='".$langkey."' value='".$langkey."'";
-                $labelsoutput.= ">".$langname['description']."</option>\n";
+                $tab_content[0].= "\t<option id='".$langkey."' value='".$langkey."'";
+                $tab_content[0].= ">".$langname['description']."</option>\n";
             }
         }
 
-        $labelsoutput.= "\t</select></td>"
+        $tab_content[0].= "\t</select></td>"
         ." </tr></table></li></ul>\n"
         ."<p><input type='submit' value='";
-        if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Save");}
-        else {$labelsoutput.= $clang->gT("Update");}
-        $labelsoutput.= "' />\n"
+        if ($action == "newlabelset") {$tab_content[0].= $clang->gT("Save");}
+        else {$tab_content[0].= $clang->gT("Update");}
+       $tab_content[0].= "' />\n"
         ."<input type='hidden' name='action' value='";
-        if ($action == "newlabelset") {$labelsoutput.= "insertlabelset";}
-        else {$labelsoutput.= "updateset";}
-        $labelsoutput.= "' />\n";
+        if ($action == "newlabelset") {$tab_content[0].= "insertlabelset";}
+        else {$tab_content[0].= "updateset";}
+        $tab_content[0].= "' />\n";
 
         if ($action == "editlabelset") {
-            $labelsoutput.= "<input type='hidden' name='lid' value='$lblid' />\n";
+            $tab_content[0].= "<input type='hidden' name='lid' value='$lblid' />\n";
         }
 
-        $labelsoutput.= "</form></div>\n";
+        $tab_content[0].= "</form>\n";
 
+        
         if ($action == "newlabelset"){
-            $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import label set(s)")."</h2>\n"
-            ."<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
+            $tab_title[1] = $clang->gT("Import label set(s)");
+            $tab_content[1] = "<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
             ."<div class='header ui-widget-header'>\n"
             .$clang->gT("Import label set(s)")."\n"
             ."</div><ul>\n"
@@ -234,7 +235,17 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             ."<input type='hidden' name='action' value='importlabels' />\n"
             ."</form></div>\n";
         }
-        $labelsoutput.= "</div>\n";
+        
+        $labelsoutput .= "<div id='tabs'><ul>";
+        foreach($tab_title as $i=>$eachtitle){
+            $labelsoutput .= "<li><a href='#neweditlblset$i'>$eachtitle</a></li>";
+        }
+        $labelsoutput .= "</ul>";
+        foreach($tab_content as $i=>$eachcontent){
+            $labelsoutput .= "<div id='neweditlblset$i'>$eachcontent</div>";
+        }
+        $labelsoutput .= "</div>";
+
     }
     //SET SELECTED
     if (isset($lid) && ($action != "editlabelset") && $lid)
@@ -285,6 +296,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $msorow=$maxresult->FetchRow();
         $maxsortorder=$msorow['maxsortorder']+1;
 
+        // KP
         $labelsoutput.= "\t<div class='header ui-widget-header'>".$clang->gT("Labels")."\t</div>\n";
         $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>"
         ."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
@@ -293,22 +305,22 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         ."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
         $first=true;
         $sortorderids=''; $codeids='';
+        $i = 0;
         foreach ($lslanguages as $lslanguage)
         {
             $position=0;
             $query = "SELECT * FROM ".db_table_name('labels')." WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
             $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
             $labelcount = $result->RecordCount();
-            $labelsoutput.= "<div class='tab-page'>"
-            ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage,false)."</h2>"
-            ."\t<table class='answertable' align='center'>\n"
+            $tab_title[$i] = getLanguageNameFromCode($lslanguage,false);
+            $tab_content[$i] = "<table class='answertable' align='center'>\n"
             ."<thead align='center'>"
             ."<tr>\n"
             ."\t<th align='right' class='settingcaption'>\n"
             .$clang->gT("Code")
             ."\t</th>\n";
-            $labelsoutput.="<th align='right' class='settingcaption'>".$clang->gT("Assessment value").'</th>';
-            $labelsoutput.="\t<th class='settingcaption'>\n"
+            $tab_content[$i].="<th align='right' class='settingcaption'>".$clang->gT("Assessment value").'</th>';
+            $tab_content[$i].="\t<th class='settingcaption'>\n"
             .$clang->gT("Title")
             ."\t</th>\n"
             ."\t<th align='center' class='settingcaption'>\n"
@@ -324,75 +336,75 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             {
                 $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
                 if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
-                $labelsoutput.= "<tr style='white-space: nowrap;' ";
+               $tab_content[$i].= "<tr style='white-space: nowrap;' ";
                 if ($alternate==true)
                 {
-                    $labelsoutput.=' class="highlight" ';
+                    $tab_content[$i].=' class="highlight" ';
                     $alternate=false;
                 }
                 else
                 {
                     $alternate=true;
                 }
-                $labelsoutput.="><td align='right'>\n";
+                $tab_content[$i].="><td align='right'>\n";
 
                 if (!$first)
                 {
-                    $labelsoutput.= "\t{$row['code']}";
+                    $tab_content[$i].= "\t{$row['code']}";
                 }
                 else
                 {
-                    $labelsoutput.= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n";
-                    $labelsoutput.= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['code']}\" onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
+                    $tab_content[$i].= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n";
+                    $tab_content[$i].= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['code']}\" onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
                 }
                  
 
 
 
-                $labelsoutput.= "\t</td>\n"
+                $tab_content[$i].= "\t</td>\n"
                 ."\t<td style='text-align:center;'>\n";
                 if ($first)
                 {
-                    $labelsoutput.= "\t<input type='text' id='assessmentvalue_{$row['sortorder']}' style='text-align: right;' name='assessmentvalue_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['assessment_value']}\" "
+                    $tab_content[$i].= "\t<input type='text' id='assessmentvalue_{$row['sortorder']}' style='text-align: right;' name='assessmentvalue_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['assessment_value']}\" "
                     ." onkeypress=\"if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$lslanguage').click(); return false;} return goodchars(event,'1234567890-')\" />";
                 }
                 else
                 {
-                    $labelsoutput.= $row['assessment_value'];
+                    $tab_content[$i].= $row['assessment_value'];
 
                 }
-                $labelsoutput.= "\t</td>\n"
+                $tab_content[$i].= "\t</td>\n"
                 ."\t<td>\n"
                 ."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='3000' size='80' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\"/>\n"
                 . getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
                 ."\t</td>\n"
                 ."\t<td style='text-align:center;'>\n";
-                $labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+                $tab_content[$i].= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
                  
-                $labelsoutput.= "\t</td>\n"
+                $tab_content[$i].= "\t</td>\n"
                 ."\t<td>\n";
                 if ($position > 0)
                 {
-                    $labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+                    $tab_content[$i].= "\t<input type='submit' name='method' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
                 };
                 if ($position < $labelcount-1)
                 {
                     // Fill the sortorder hiddenfield so we know what field is moved down
-                    $labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+                    $tab_content[$i].= "\t<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
                 }
-                $labelsoutput.= "\t</td></tr>\n";
+               $tab_content[$i].= "\t</td></tr>\n";
                 $position++;
             }
             if ($labelcount>0)
             {
-                $labelsoutput.= "\t<tr><td colspan='5'><center><input type='submit' name='method' value='".$clang->gT("Save Changes")."'  id='saveallbtn_$lslanguage' />"
+                $tab_content[$i].= "\t<tr><td colspan='5'><center><input type='submit' name='method' value='".$clang->gT("Save Changes")."'  id='saveallbtn_$lslanguage' />"
                 ."</center></td></tr>\n";
             }
 
             $position=sprintf("%05d", $position);
             if (!isset($_SESSION['nextlabelcode'])) $_SESSION['nextlabelcode']='';
             if ($first)
-            {   $labelsoutput.= "<tr><td><br /></td></tr><tr><td align='right'>"
+            {  $tab_content[$i].= "<tr><td><br /></td></tr><tr><td align='right'>"
             ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='code_$maxsortorder' onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'addnewlabelbtn');\" />\n"
             ."\t</td>\n"
             ."<td style='text-align:center;'>"
@@ -427,7 +439,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             }
             else
             {
-                $labelsoutput.= "<tr>\n"
+               $tab_content[$i].= "<tr>\n"
                 ."\t<td colspan='4' align='center'>\n"
                 ."<span style='font-color:green; font-size:8px; font-weight:bold; font-style: italic;'>"
                 .$clang->gT("Note: Inserting new labels must be done on the first language tab.")."</span>\n"
@@ -437,21 +449,20 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
             unset($_SESSION['nextlabelcode']);
             $first=false;
-            $labelsoutput.="</tbody></table>\n";
+            $tab_content[$i].="</tbody></table>\n";
 
-            $labelsoutput.=("</div>");
+            $i++;
         }
-        // Let's close the form for First Languages TABs
-        $labelsoutput.= "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
-        $labelsoutput.= "<input type='hidden' name='codeids' value='$codeids' />\n";
 
-        $labelsoutput.= "</form>"; // End First TABs form
-
-        // TAB for resources management
-        $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
-        if (!function_exists("zip_open"))
-        {
-            $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
+        $labelsoutput .= "<div id='tabs'><ul>";
+        foreach($tab_title as $i=>$eachtitle){
+            $labelsoutput .= "<li><a href='#neweditlblset$i'>$eachtitle</a></li>";
+        }
+        $labelsoutput .= "<li><a href='#up_resmgmt'>".$clang->gT("Uploaded Resources Management")."</a></li>";
+        $labelsoutput .= "</ul>";
+        
+        foreach($tab_content as $i=>$eachcontent){
+            $labelsoutput .= "<div id='neweditlblset$i'>$eachcontent</div>";
         }
 
         $disabledIfNoResources = '';
@@ -460,25 +471,28 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             $disabledIfNoResources = " disabled='disabled'";
         }
 
-        $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-        . "\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        // TAB for resources management
+        $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
+        if (!function_exists("zip_open"))
+        {
+            $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
+        }
+        
+        $labelsoutput.="<div id='up_resmgmt'><div>\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "\t<input type='hidden' name='lid' value='$lid' />\n"
         . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
-        . "\t<ul>\n"
+        . "\t<ul style='list-style-type:none; text-align:center'>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
-        . "\t\t<input type='button' onclick='window.open(\"$sFCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
+        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$sFCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
-        . "\t\t<input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li>\n"
+        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\"  /></li>\n"
         . "\t\t<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
         . "\t\t<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
         . "\t\t<input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></li>\n"
-        . "\t\t</ul></form>\n";
+        . "\t\t</ul></form></div></div>\n";
 
-        // End TAB Uploaded Resources Management
-        $labelsoutput.= "</div>";
-
-        $labelsoutput.= "</div>"; // End Tab pane
+        $labelsoutput .= "</div>";
 
 
     }

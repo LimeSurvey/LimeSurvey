@@ -272,9 +272,9 @@ select {
 */
 
 input[disabled], textarea[disabled], select[disabled], button[disabled] {
-    color: #999;
-    background: #EEE;
-    border:1px solid #ccc;
+    color: #999 !important;
+    background: #EEE !important;
+    border:1px solid #ccc !important;
 }
 
 textarea {
