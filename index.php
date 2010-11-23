@@ -449,10 +449,9 @@ $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
 if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") 
-    {
-        unset($_GET['token']);
-        setcookie ("limesurvey_timers", "", time() - 3600);
-    }
+{
+    setcookie ("limesurvey_timers", "", time() - 3600);
+}
 
 
 
