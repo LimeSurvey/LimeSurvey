@@ -77,6 +77,13 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9487) to 1.90+ (build 9522) Legend: # updated feature, - bug fix 
+-Fixed issue #3613: bgcolor entered into HTML and thus not editable via CSS in templates (tpartner)
+-Fixed issue #4739: Exported question/question group structure file huge due to question attribute duplication (c_schmitz)
+-Fixed issue #4740: Wrong images of diagrams in statistics view with list radio question types and (c_schmitz)
+-Fixed issue #4752: Token lastpage not used with newtest param (c_schmitz)
+-Fixed issue: Message "Warning: imagettftext() [function.imagettftext]: any2eucjp(): something happen" if used charting font does not support needed utf-8 chars (c_schmitz)
+
 Changes from 1.90+ (build 9459) to 1.90+ (build 9487) Legend: # updated feature, - bug fix 
 -Fixed issue #4736 partially : some correction in html element.  (shnoulle)
 -Fixed issue #4729: SQL Syntax error when initialising token for survey with mySQL versions > 5.1 (c_schmitz)
