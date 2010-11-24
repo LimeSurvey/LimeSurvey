@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovak Translation v0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-07 07:00+0200\n"
-"PO-Revision-Date: 2010-11-15 22:28+0100\n"
+"PO-Revision-Date: 2010-11-24 12:19+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10053,7 +10053,7 @@ msgstr "Vyberte medzi %d a %d odpoveďami"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:675
 #, php-format
 msgid "Check at most %d answers"
-msgstr "Vyberte najviac %d odpovedí"
+msgstr "Vyberte najviac %d odpovede"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:636
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:637
@@ -10061,7 +10061,7 @@ msgstr "Vyberte najviac %d odpovedí"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:680
 #, php-format
 msgid "Check at least %d answers"
-msgstr "Vyberte najmenej %d odpovedí"
+msgstr "Vyberte najmenej %d odpovede"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:648
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:649
