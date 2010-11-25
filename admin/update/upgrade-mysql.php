@@ -604,6 +604,7 @@ function upgrade_tables143()
             $insertarray['sid']=$row['sid'];
             $insertarray['gid']=$row['gid'];
             $insertarray['parent_qid']=$row['qid'];
+            $insertarray['type']=$row['type'];
             $insertarray['title']=$row['code'];
             $insertarray['question']=$row['answer'];
             $insertarray['question_order']=$row['sortorder'];
@@ -682,6 +683,7 @@ function upgrade_tables143()
                 $insertarray['sid']=$row['sid'];
                 $insertarray['gid']=$row['gid'];
                 $insertarray['parent_qid']=$row['qid'];
+                $insertarray['type']=$row['type'];
                 $insertarray['title']=$lrow['code'];
                 $insertarray['question']=$lrow['title'];
                 $insertarray['question_order']=$lrow['sortorder'];

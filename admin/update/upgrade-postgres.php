@@ -341,6 +341,7 @@ function upgrade_tables143()
             }
             $insertarray['sid']=$row['sid'];
             $insertarray['gid']=$row['gid'];
+            $insertarray['type']=$row['type'];
             $insertarray['parent_qid']=$row['qid'];
             $insertarray['title']=$row['code'];
             $insertarray['question']=$row['answer'];
@@ -417,6 +418,7 @@ function upgrade_tables143()
                     $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1'];
                 }
                 $insertarray['sid']=$row['sid'];
+                $insertarray['type']=$row['type'];
                 $insertarray['gid']=$row['gid'];
                 $insertarray['parent_qid']=$row['qid'];
                 $insertarray['title']=$lrow['code'];
