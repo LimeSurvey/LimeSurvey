@@ -1210,14 +1210,7 @@ function checkconfield($value)
         // check if this question is conditionnal ($sfa[7]): if yes eval conditions
         if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
         {
-					$lastPos = strripos($sfa[1], 'x');
-					$num = substr($sfa[1], $lastPos+1);
-					$extendedConditionResult = checkExtendedConditionForQuestion($num);
-					if($extendedConditionResult !== null)
-					{
-						return $extendedConditionResult;
-					}
-					
+       					
             $scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
             ." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
             $scenarioresult=db_execute_assoc($scenarioquery);
