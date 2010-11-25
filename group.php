@@ -326,7 +326,7 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
     ++$qnumber;
     $ia[9] = $qnumber; // incremental question count;
 
-    if ($ia[5] == $gid)
+    if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
     {
         if(IsSet($hideQuestion[$ia[0]]) && $hideQuestion[$ia[0]]==true){
         	continue;

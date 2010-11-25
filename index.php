@@ -1681,6 +1681,7 @@ function checkUploadedFileValidity($move, $backok=null)
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
             $fields = explode("|", $_POST['fieldnames']);
+
             foreach ($fields as $field)
             {
                 if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount"))
@@ -2661,6 +2662,78 @@ function buildsurveysession()
     }
     $qtypes=getqtypelist('','array');
     $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['s_lang']);
+    
+    // Randomization Groups
+    
+    // Find all defined randomization groups through question attribute values
+    $randomGroups=array();
+    $rgquery = "SELECT attr.qid,value FROM ".db_table_name('question_attributes')." as attr right join ".db_table_name('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and sid=$surveyid GROUP BY attr.qid";
+    $rgresult = db_execute_assoc($rgquery);
+    while($rgrow = $rgresult->FetchRow())
+    {
+        // Get the question IDs for each randomization group
+        $randomGroups[$rgrow['value']][] = $rgrow['qid'];
+    }
+
+    // If we have randomization groups set, then lets cycle through each group and 
+    // replace questions in the group with a randomly chosen one from the same group
+    if (count($randomGroups) > 0)
+    {
+        $copyFieldMap = array();
+        $oldQuestOrder = array();
+        $newQuestOrder = array();
+        $randGroupNames = array();
+        foreach ($randomGroups as $key=>$value)
+        {
+            $oldQuestOrder[$key] = $randomGroups[$key];
+            $newQuestOrder[$key] = $oldQuestOrder[$key];
+            // We shuffle the question list to get a random key->qid which will be used to swap from the old key
+            shuffle($newQuestOrder[$key]);
+            $randGroupNames[] = $key;
+        }
+            
+        // Loop through the fieldmap and swap each question as they come up
+        while (list($fieldkey,$fieldval) = each($fieldmap))
+        {
+            $found = 0;
+            foreach ($randomGroups as $gkey=>$gval)
+            {
+                // We found a qid that is in the randomization group
+                if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
+                {
+                    // Get the swapped question
+                    $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
+                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]],$_SESSION['s_lang']);
+                    unset($qfieldmap['id']);
+                    unset($qfieldmap['submitdate']);
+                    unset($qfieldmap['lastpage']);
+                    unset($qfieldmap['lastpage']);
+                    unset($qfieldmap['token']);
+                    foreach ($qfieldmap as $tkey=>$tval)
+                    {
+                        // Assign the swapped question (Might be more than one field)
+                        $tval['random_gid'] = $fieldval['gid'];
+                        //$tval['gid'] = $fieldval['gid'];
+                        $copyFieldMap[$tkey]=$tval;
+                    }
+                    $found = 1;
+                    break;
+                } else
+                {
+                    $found = 2;
+                }
+            }
+            if ($found == 2)
+            {
+                $copyFieldMap[$fieldkey]=$fieldval;
+            }
+            reset($randomGroups);
+        }
+        $fieldmap=$copyFieldMap;
+        
+    }
+//die(print_r($fieldmap));
+
     $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
@@ -2678,6 +2751,9 @@ function buildsurveysession()
             //			[6]=questions.mandatory,
             //			[7]=conditionsexist,
             //			[8]=usedinconditions
+            //			[8]=usedinconditions
+            //			[9]=used in group.php for question count
+            //			[10]=new group id for question in randomization group (GroupbyGroup Mode)
             if (!isset($_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
             {
                 $_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
@@ -2689,6 +2765,10 @@ function buildsurveysession()
                 $field['mandatory'],
                 $field['hasconditions'],
                 $field['usedinconditions']);
+            }
+            if (isset($field['random_gid']))
+            {
+                $_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
             }
         }
 
@@ -2734,8 +2814,8 @@ function buildsurveysession()
         $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
     }
     // END NEW
-    
     return $totalquestions;
+
 }
 
 function surveymover()
@@ -3019,14 +3099,12 @@ function check_quota($checkaction,$surveyid)
     $x=0;
 
     if(count($quota_info) > 0) // Quota's have to exist
-
     {
         // Check each quota on saved data to see if it is full
         $querycond = array();
         foreach ($quota_info as $quota)
         {
             if (count($quota['members']) > 0) // Quota can't be empty
-
             {
                 $fields_list = array(); // Keep a list of fields for easy reference
                 $y=0;

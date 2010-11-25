@@ -2245,6 +2245,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
 
     }
+
     //Get list of questions
     if (is_null($sQuestionLanguage))
     {
@@ -2291,7 +2292,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         {
             $usedinconditions = "N";
         }
-
+	
         // Field identifier
         // GXQXSXA
         // G=Group  Q=Question S=Subquestion A=Answer Option
@@ -2596,11 +2597,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             }
         }
     }
+
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
         return $fieldmap;
     }
 }
+
 
 /**
  * put your comment there...
@@ -4312,6 +4315,14 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
 	"caption"=>$clang->gT("Allowed file types"));
 
+    $qattributes["random_group"]=array(
+    "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>100,
+    'inputtype'=>'text',
+    "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
+    "caption"=>$clang->gT("Randomization Group Name:"));
+    
 
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
