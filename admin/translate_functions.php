@@ -798,7 +798,7 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
   // Display text in original language
   // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
   $translateoutput .= ""
-    . "<td>$textfrom</td>\n"
+    . "<td class='_from_' id='${type}_from_${i}' lan=''>$textfrom</td>\n"
     . "<td>\n";
       $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
       $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";

@@ -129,6 +129,9 @@
   // Display tabs with fields to translate, as well as input fields for translated values
   {
 
+    $sGoogleApiError     = $clang->gT("There was an error using the Google API.");
+    $sDetailedError      = $clang->gT("Detailed Error");
+
     $translateoutput .= "<div id=\"translationloading\" style=\"width: 100%; font-weight: bold; color: #000; text-align: center;\"><br />".$clang->gT("Loading Translations")."...<br /><br /></div>";
 
     $translateoutput .= "<form name='translateform' method='post' "
@@ -137,8 +140,14 @@
       ."<input type='hidden' name='action' value='translate' />\n"
       ."<input type='hidden' name='actionvalue' value='translateSave' />\n"
       ."<input type='hidden' name='tolang' value='$tolang' />\n"
+      ."<input type='hidden' name='baselang' value='$baselang' />\n"
       ."<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."' />\n";
-
+     $translateoutput.=<<<END
+    <script type="text/javascript">
+        sGoogleApiError = "$sGoogleApiError";
+        sDetailedError  = "$sDetailedError";
+    </script>
+END;
     // set up tabs
     $translateoutput .= ""
       ."<div id=\"translationtabs\" style=\"display: none;\" >\n"
@@ -194,6 +203,8 @@
         }
 
         $translateoutput .= displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
+        $translateoutput .="<input type='button' class='auto-trans' value='".$clang->gT("Auto Translate")."' id='auto-trans-tab-$type' />";
+        $translateoutput .="<img src='../images/ajax-loader.gif' style='display: none' class='ajax-loader'>";
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);

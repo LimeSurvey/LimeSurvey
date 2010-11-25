@@ -411,6 +411,17 @@ if(isset($_SESSION['loginID']))
                 break;
         }
     }
+    elseif ($action == 'ajaxtranslategoogleapi')
+    {
+        if(bHasSurveyPermission($surveyid,'translations','read'))
+        {
+            include('translate_google_api.php');
+        }
+        else
+        {
+            include('access_denied.php');
+        }
+    }
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) &&
         !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) && 
         !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
