@@ -3823,21 +3823,21 @@ function do_file_upload($ia)
                             $answer .= "<th align=\"center\"><b>Name</b></th></tr>';";
 
                 $answer .= "var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
-
+                    
                             for (i = 0; i < filecount; i++)
                             {
                             ";
                                 if ($pos)
                                 {
                                     $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"../upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
+                                                    display += '<tr><td><img src=\"../upload/tmp/'+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
                                                 else
                                                     display += '<tr><td><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }
                                 else
                                 {
                                     $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"upload/tmp/'+decodeURIComponent(jsonobj[i].name)+'\" height=100px  align=\"center\"/></td>';
+                                                    display += '<tr><td><img src=\"upload/tmp/'+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
                                                 else
                                                     display += '<tr><td><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }

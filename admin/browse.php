@@ -474,7 +474,7 @@ elseif ($subaction == "all")
                 ob_clean();
                 flush();
                 readfile($tmpdir."/".$zipfilename);
-                //unlink($tmpdir."/".$zipfilename);
+                unlink($tmpdir."/".$zipfilename);
                 exit;
             }
         }
@@ -550,7 +550,7 @@ elseif ($subaction == "all")
             ob_clean();
             flush();
             readfile($tmpdir . "/" . $zipfilename);
-            //unlink($tmpdir . "/" . $zipfilename);
+            unlink($tmpdir . "/" . $zipfilename);
             exit;
         }
     }
@@ -584,7 +584,7 @@ elseif ($subaction == "all")
                     ob_clean();
                     flush();
                     readfile($file);
-                    //unlink($file);
+                    unlink($file);
                     exit;
                 }
                 break;

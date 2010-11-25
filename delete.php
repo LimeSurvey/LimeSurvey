@@ -50,14 +50,14 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
     $file_index = $_GET['file_index'];
 
-    $fileid = "upload/tmp/".$_SESSION['files'][$file_index]['id'];
-    $filename = $_SESSION['files'][$file_index]['name'];
-    $fh = fopen($fileid, 'w') or die("can't open file");
+    $filename = "upload/tmp/".$_SESSION['files'][$file_index]['filename'];
+    $name = $_SESSION['files'][$file_index]['name'];
+    $fh = fopen($filename, 'w') or die("can't open file");
     fclose($fh);
 
-    if (unlink($fileid))
+    if (unlink($filename))
     {
-        echo 'File '.rawurldecode($filename).' deleted';
+        echo 'File '.rawurldecode($name).' deleted';
         for ($i = $file_index; $i < $_SESSION['filecount']; $i++)
         {
             $_SESSION['files'][$i]['name'] = $_SESSION['files'][$i + 1]['name'];

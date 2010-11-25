@@ -491,18 +491,19 @@ function createinsertquery()
 
                     $json = $_SESSION[$value];
                     $phparray = json_decode(stripslashes($json));
-                    if (isset($phparray[0]->filename) && $phparray[0]->filename != "undefined")
-                        ; // get out of here as this has already been saved into the filesystem
-                    else
+
+                    // if the files have not been saved already,
+                    // move the files from tmp to the files folder
+                    
+                    if (file_exists("upload/tmp/".$phparray[0]->filename))
                     {
-                        // ajax, move files from temp to files directory
+                        // move files from temp to files directory
                         $tmp = "upload/tmp/";
                         $target = "upload/surveys/". $thissurvey['sid'] . "/files/";
-
+    
                         for ($i = 0; $i < count($phparray); $i++)
                         {
-                            $phparray[$i]->filename = randomkey(20);
-                            if (!rename($tmp . rawurldecode($phparray[$i]->name), $target . $phparray[$i]->filename))
+                            if (!rename($tmp . $phparray[$i]->filename, $target . $phparray[$i]->filename))
                                 echo "Error Moving file to its destination";
 
                             $_SESSION[$value] = json_encode($phparray);

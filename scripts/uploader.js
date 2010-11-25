@@ -23,7 +23,7 @@ $(document).ready(function(){
                         "<td  align='center' width='50%' padding='20px' >";
 
             if (isValueInArray(image_extensions, json[i].ext))
-                previewblock += "<img src='upload/tmp/"+decodeURIComponent(json[i].name)+"' height='60px' />"+decodeURIComponent(json[i].name);
+                previewblock += "<img src='upload/tmp/"+json[i].filename+"' height='60px' />"+decodeURIComponent(json[i].name);
             else
                 previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i].name);
 
@@ -132,7 +132,7 @@ $(document).ready(function(){
 
                 // If the file is not an image, use a placeholder
                 if (isValueInArray(image_extensions, metadata.ext))
-                    previewblock += "<img src='upload/tmp/"+decodeURIComponent(metadata.id)+"' height='60px' />";
+                    previewblock += "<img src='upload/tmp/"+decodeURIComponent(metadata.filename)+"' height='60px' />";
                 else
                     previewblock += "<img src='images/placeholder.png' height='60px' />";
 

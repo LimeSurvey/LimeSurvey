@@ -123,6 +123,14 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
             echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
         }
 
+        // fetch all filenames from $_SESSIONS['files'] and delete them all
+        // from the /upload/tmp/ directory
+        /*echo "<pre>";print_r($_SESSION);echo "</pre>";
+        for($i = 1; isset($_SESSION['files'][$i]); $i++)
+        {
+            unlink('upload/tmp/'.$_SESSION['files'][$i]['filename']);
+        }
+        */
         $completed = $thissurvey['surveyls_endtext'];
         $completed .= "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
         $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
