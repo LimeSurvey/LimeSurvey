@@ -1383,7 +1383,7 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
             $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='off' />\n";
             $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='off' />\n";
         } else {
-        $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />\n";
+            $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />\n";
         }
     } else if
     (
@@ -3143,7 +3143,8 @@ function do_multiplechoice($ia)
         } else {
             $startitem = $wrapper['item-start'];
         }
-        $answer .= $startitem.'
+        $answer .= $startitem;
+		$answer .= $hiddenfield.'
 		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
 
         if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='')
