@@ -99,83 +99,136 @@ if (!isset($_SESSION['loginID']))
         if (isset($postuser) && isset($_POST['password']))
         {
             include("database.php");
-            $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
-            $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
-            $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
-            if ($result->RecordCount() < 1)
-            {
-                // wrong or unknown username
-                $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
-                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 
+            $sIp=   $_SERVER['REMOTE_ADDR'];
+            $query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
+            $result = db_execute_assoc($query);
+            $bLoginAttempted = false;
+            $bCannotLogin = false;
+
+            $intNthAttempt = 0;
+            if ($result->RecordCount() >= 1)
+            {
+                $bLoginAttempted = true;
+                $field = $result->FetchRow();
+                $intNthAttempt = $field['number_attempts'];
+                if ($intNthAttempt>=$maxLoginAttempt){
+                    $bCannotLogin = true;
+                }
+
+                $iLastAttempt = strtotime($field['last_attempt']);
+
+                if (time() > $iLastAttempt + $timeOutTime){
+                    $bCannotLogin = false;
+                    $query = "DELETE FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
+                    $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
+
+                }
+                
             }
-            else
-            {
-                $fields = $result->FetchRow();
-                if (SHA256::hashing($_POST['password']) == $fields['password'])
+            if(!$bCannotLogin){
+                $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
+                $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
+                $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
+                if ($result->RecordCount() < 1)
                 {
-                    // Anmeldung ERFOLGREICH
-                    if (strtolower($_POST['password'])=='password')
-                    {
-                        $_SESSION['pw_notify']=true;
-                    }
-                    else
-                    {
-                        $_SESSION['pw_notify']=false;
-                    } // Check if the user has changed his default password
+                    $query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
 
-                    if ($sessionhandler=='db')
+                    $result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
+                    if ($result)
                     {
-                        adodb_session_regenerate_id();
+                        // wrong or unknown username
+                        $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                        if ($intNthAttempt+1>=$maxLoginAttempt)
+                            $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                        $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                     }
-                    else
-                    {
-                        session_regenerate_id();
-                        
-                    }
-                    $_SESSION['loginID'] = intval($fields['uid']);
-                    $_SESSION['user'] = $fields['users_name'];
-                    $_SESSION['full_name'] = $fields['full_name'];
-                    $_SESSION['htmleditormode'] = $fields['htmleditormode'];
-                    $_SESSION['dateformat'] = $fields['dateformat'];
-                    // Compute a checksession random number to test POSTs
-                    $_SESSION['checksessionpost'] = randomkey(10);
-                    if (isset($postloginlang) && $postloginlang!='default')
-                    {
-                        $_SESSION['adminlang'] = $postloginlang;
-                        $clang = new limesurvey_lang($postloginlang);
-                        $uquery = "UPDATE {$dbprefix}users "
-                        . "SET lang='{$postloginlang}' "
-                        . "WHERE uid={$_SESSION['loginID']}";
-                        $uresult = $connect->Execute($uquery);  // Checked
-                    }
-                    else
-                    {
-                        $_SESSION['adminlang'] = $fields['lang'];
-                        $clang = new limesurvey_lang($_SESSION['adminlang']);
-                    }
-                    $login = true;
 
-					$loginsummary .= "<div class='messagebox ui-corner-all'>\n";
-                    $loginsummary .= "<div class='header ui-widget-header'>" . $clang->gT("Logged in") . "</div>";
-					$loginsummary .= "<br />".sprintf($clang->gT("Welcome %s!"),$_SESSION['full_name'])."<br />&nbsp;";
-					$loginsummary .= "</div>\n";
 
-                    if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
-                    strpos($_POST['refererargs'], "action=logout") === FALSE)
-                    {
-                        $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
-                        . " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
-                        $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
-                    }
-                    $loginsummary .= "<br /><br />\n";
-                    GetSessionUserRights($_SESSION['loginID']);
                 }
                 else
                 {
-                    $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
-                    $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                    $fields = $result->FetchRow();
+                    if (SHA256::hashing($_POST['password']) == $fields['password'])
+                    {
+                        // Anmeldung ERFOLGREICH
+                        if (strtolower($_POST['password'])=='password')
+                        {
+                            $_SESSION['pw_notify']=true;
+                        }
+                        else
+                        {
+                            $_SESSION['pw_notify']=false;
+                        } // Check if the user has changed his default password
+
+                        if ($sessionhandler=='db')
+                        {
+                            adodb_session_regenerate_id();
+                        }
+                        else
+                        {
+                            session_regenerate_id();
+
+                        }
+                        $_SESSION['loginID'] = intval($fields['uid']);
+                        $_SESSION['user'] = $fields['users_name'];
+                        $_SESSION['full_name'] = $fields['full_name'];
+                        $_SESSION['htmleditormode'] = $fields['htmleditormode'];
+                        $_SESSION['dateformat'] = $fields['dateformat'];
+                        // Compute a checksession random number to test POSTs
+                        $_SESSION['checksessionpost'] = randomkey(10);
+                        if (isset($postloginlang) && $postloginlang!='default')
+                        {
+                            $_SESSION['adminlang'] = $postloginlang;
+                            $clang = new limesurvey_lang($postloginlang);
+                            $uquery = "UPDATE {$dbprefix}users "
+                            . "SET lang='{$postloginlang}' "
+                            . "WHERE uid={$_SESSION['loginID']}";
+                            $uresult = $connect->Execute($uquery);  // Checked
+                        }
+                        else
+                        {
+                            $_SESSION['adminlang'] = $fields['lang'];
+                            $clang = new limesurvey_lang($_SESSION['adminlang']);
+                        }
+                        $login = true;
+
+                                            $loginsummary .= "<div class='messagebox ui-corner-all'>\n";
+                        $loginsummary .= "<div class='header ui-widget-header'>" . $clang->gT("Logged in") . "</div>";
+                                            $loginsummary .= "<br />".sprintf($clang->gT("Welcome %s!"),$_SESSION['full_name'])."<br />&nbsp;";
+                                            $loginsummary .= "</div>\n";
+
+                        if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
+                        strpos($_POST['refererargs'], "action=logout") === FALSE)
+                        {
+                            $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
+                            . " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
+                            $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
+                        }
+                        $loginsummary .= "<br /><br />\n";
+                        GetSessionUserRights($_SESSION['loginID']);
+                    }
+                    else
+                    {
+                        $query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
+
+                        $result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
+                        if ($result)
+                        {
+                            // wrong or unknown username
+                            $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                            if ($intNthAttempt+1>=$maxLoginAttempt)
+                                $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                            $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                        }
+                    
+                    }
                 }
+
+            }
+            else{
+                $loginsummary .= "<p>".sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
             }
         }
     }
@@ -273,9 +326,17 @@ if (!isset($_SESSION['loginID']))
             }
             else
             {
-                // wrong or unknown username
-                $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
-                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                $query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
+
+                $result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
+                if ($result)
+                {
+                    // wrong or unknown username
+                    $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                    if ($intNthAttempt+1>=$maxLoginAttempt)
+                        $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                    $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                }
                 $isAuthenticated=false;
             }
 
@@ -690,6 +751,19 @@ function getInitialAdmin_uid()
     $adminresult = db_select_limit_assoc($adminquery, 1);
     $row=$adminresult->FetchRow();
     return $row['uid'];
+}
+
+function fGetLoginAttemptUpdateQry($la,$sIp)
+{
+    $timestamp = date("Y-m-d H:m:s");    
+    if ($la)
+        $query = "UPDATE ".db_table_name('failed_login_attempts')
+                 ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
+    else
+        $query = "INSERT INTO ".db_table_name('failed_login_attempts') . "(ip, number_attempts,last_attempt)"
+                 ." VALUES('$sIp',1,'$timestamp')";
+
+    return $query;
 }
 
 ?>

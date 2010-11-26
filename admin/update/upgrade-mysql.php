@@ -382,7 +382,18 @@ function db_upgrade($oldversion) {
                               INDEX sess2_expiry( expiry ),
                               INDEX sess2_expireref( expireref )) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();   
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+
+        modify_database("", "CREATE TABLE `prefix_failed_login_attempts` (
+                              `id` int(11) NOT NULL AUTO_INCREMENT,
+                              `ip` varchar(37) NOT NULL,
+                              `last_attempt` varchar(20) NOT NULL,
+                              `number_attempts` int(11) NOT NULL,
+                              PRIMARY KEY (`id`)
+                            ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
         
+        
+
+
     }
 
     if ($oldversion < 145)

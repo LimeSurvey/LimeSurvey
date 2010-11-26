@@ -397,6 +397,18 @@ CREATE TABLE `prefix_templates` (
 
 
 --
+-- Create failed_login_attempts
+--
+
+CREATE TABLE `prefix_failed_login_attempts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(37) NOT NULL,
+  `last_attempt` varchar(20) NOT NULL,
+  `number_attempts` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+--
 -- Secondary indexes 
 --
 create index `answers_idx2` on `prefix_answers` (`sortorder`);
@@ -424,3 +436,4 @@ INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 -- Create admin user
 --
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+

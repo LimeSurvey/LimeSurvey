@@ -409,7 +409,18 @@ CREATE TABLE [prefix_templates] (
     PRIMARY KEY  ([folder])
 );
 
-     
+--
+-- Create failed_login_attempts
+--
+
+CREATE TABLE [prefix_failed_login_attempts] (
+  [id] int(11) NOT NULL AUTO_INCREMENT,
+  [ip] varchar(37) NOT NULL,
+  [last_attempt] varchar(20) NOT NULL,
+  [number_attempts] int(11) NOT NULL,
+  PRIMARY KEY ([id])
+);
+
 --
 -- Secondary indexes 
 --

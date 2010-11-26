@@ -62,6 +62,10 @@ $scriptname         =   'admin.php';      // The name of the admin script
 $defaultuser        =   'admin';          // This is the default username when LimeSurvey is installed
 $defaultpass        =   'password';       // This is the default password for the default user when LimeSurvey is installed
 
+// If the user enters password incorrectly
+$maxLoginAttempt    =   3;                // Lock them out after 3 attempts
+$timeOutTime        =   60 * 30;          // Lock them out for 30 minutes.
+
 // Site Settings
 $lwcdropdowns       =   'R';              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
 $dropdownthreshold  =   '25';             // The number of answers to a list type question before it switches from Radio Buttons to List
