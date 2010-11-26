@@ -225,7 +225,59 @@ function show_hide_group(group_id)
 		}
 }
 
+function submit_and_disable()
+{
+	$('#limesurvey').submit();
+	$('#navigator input').attr('disabled', 'disabled');
+}
 
+function navigator_countdown_btn()
+{
+	return $('#movenextbtn, #moveprevbtn, #movesubmitbtn');
+}
+
+function navigator_countdown_end()
+{
+	navigator_countdown_btn().each(function(i, e)
+	{
+		e.value = $(e).data('text');
+		$(e).attr('disabled', '');
+	});
+	$(window).data('countdown', null);
+}
+
+function navigator_countdown_int()
+{
+	var n = $(window).data('countdown');
+	if(n)
+	{
+		navigator_countdown_btn().each(function(i, e)
+		{
+			e.value = $(e).data('text');
+
+                        // just count-down for delays longer than 1 second
+                        if(n > 1) e.value += " (" + n + ")";
+		});
+
+		$(window).data('countdown', --n);
+	}
+	window.setTimeout((n > 0? navigator_countdown_int: navigator_countdown_end), 1000);
+}
+
+function navigator_countdown(n)
+{
+	$(document).ready(function()
+	{
+		$(window).data('countdown', n);
+
+		navigator_countdown_btn().each(function(i, e)
+		{
+			$(e).data('text', e.value);
+		});
+
+		navigator_countdown_int();
+	});
+}
 
 // ==========================================================
 // totals

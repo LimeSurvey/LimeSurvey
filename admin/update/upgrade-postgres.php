@@ -255,6 +255,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_surveys ADD showwelcome CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD showprogress CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD allowjumps CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD navigationdelay smallint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_survey_permissions (
                             sid integer DEFAULT 0 NOT NULL,
                             uid integer DEFAULT 0 NOT NULL,

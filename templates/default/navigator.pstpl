@@ -1,4 +1,4 @@
-<table width="100%" align="center" bgcolor="#EEF6FF">
+<table class="navigator-table">
 	<tr>
 		<td align="left" width='30%'>
 			{SAVE}

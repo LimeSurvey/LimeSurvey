@@ -211,6 +211,42 @@ td.questiontext {
   padding: 0.5em 1em;
 }
 
+.page-odd td.questiontext {
+  background-color: #EFFFEE;
+}
+
+.navigator-table {
+  background-color: #EEF6FF;
+  text-align: center;
+  width: 100%;
+}
+
+.page-odd .navigator-table {
+  background-color: #EFFFEE;
+}
+
+td.page-title {
+  text-align: center;
+  background-color: #EEF6FF;
+}
+
+.page-odd td.page-title {
+  background-color: #EFFFEE;
+}
+
+table.question-group {
+  width: 100%;
+  text-align: center;
+  background-color: #d2e0f2;
+  border: 0;
+  border-collapse:collapse;
+  border-color: #111111;
+}
+
+.page-odd table.question-group {
+  background-color: #D2F2D3;
+}
+
 td.answer {
   padding: 0.5em 1.5em;
 }
@@ -219,6 +255,10 @@ td.survey-question-help {
   font-size: 10px;
   background-color: #eef6ff;
   padding-left: 1em;
+}
+
+.page-odd td.survey-question-help {
+  background-color: #EFFFEE;
 }
 
 td.survey-question-help img {
@@ -646,6 +686,10 @@ table.rank td.helptext {
 #progress-wrapper .ui-widget-header {
   background-color: #CCCCCC;
   border: 1px solid #999999;
+}
+
+.page-odd td.graph {
+  background-color: #D2F2D3;
 }
 
 /** UI Slider **/

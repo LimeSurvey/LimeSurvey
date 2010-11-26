@@ -301,7 +301,10 @@
         $editsurvey .= ">" . $clang->gT("No") . "</option>\n"
                 . "</select></li>\n";
 
-
+        //Navigation Delay
+        $editsurvey .= "<li><label for='navigationdelay'>".$clang->gT("Navigation delay (seconds):")."</label>\n"
+        . "<input type='text' value=\"{$esrow['navigationdelay']}\" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />\n"
+        . "</li>\n";
 
         //Show Prev Button
         $editsurvey .= "<li><label for='allowprev'>".$clang->gT("Show [<< Prev] button")."</label>\n"

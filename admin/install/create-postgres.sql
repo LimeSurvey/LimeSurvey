@@ -303,7 +303,8 @@ CREATE TABLE prefix_surveys (
     emailnotificationto text,
 	tokenlength smallint DEFAULT '15',
     showprogress character(1) DEFAULT 'N'::bpchar,
-    allowjumps character(1) DEFAULT 'N'::bpchar
+    allowjumps character(1) DEFAULT 'N'::bpchar,
+    navigationdelay smallint DEFAULT '0'
 );
 
 ALTER TABLE ONLY prefix_surveys ADD CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid);

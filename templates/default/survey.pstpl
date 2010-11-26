@@ -1,6 +1,6 @@
 <table width="100%" align="center" cellspacing="0">
 	<tr>
-		<td align="center" bgcolor="#EEF6FF">
+		<td class="page-title">
 			<h2>{SURVEYNAME}</h2><br />
 			<span style='font-size:10px;' >{SURVEYDESCRIPTION}</span>
 		</td>

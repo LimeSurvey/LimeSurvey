@@ -2795,41 +2795,55 @@ function surveymover()
     global $thissurvey, $clang;
     global $surveyid, $presentinggroupdescription;
     $surveymover = "";
-    if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+
+    if ($thissurvey['navigationdelay'] > 0 && (
+        isset($_SESSION['maxstep']) && $_SESSION['maxstep'] > 0 && $_SESSION['maxstep'] == $_SESSION['step']))
     {
-        $surveymover = "<input type=\"hidden\" name=\"move\" value=\"movesubmit\" id=\"movesubmit\" />";
+        $disabled = "disabled=\"disabled\"";
+        $surveymover .= "<script type=\"text/javascript\">\n"
+        . "  navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n"
+        . "</script>\n";
     }
     else
     {
-        $surveymover = "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
+        $disabled = "";
+    }
+
+    if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+    {
+        $surveymover .= "<input type=\"hidden\" name=\"move\" value=\"movesubmit\" id=\"movesubmit\" />";
+    }
+    else
+    {
+        $surveymover .= "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
     }
 
     if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['allowjumps'] == "Y") &&
 	($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
     {
-        $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value=' &lt;&lt; "
-        . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' />\n";
+        $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; submit_and_disable();\" value=' &lt;&lt; "
+        . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
     {
-        $surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-        . $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' />\n";
+        $surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; submit_and_disable();\" value=' "
+        . $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' $disabled />\n";
     }
     // here, in some lace, is where I must modify to turn the next button conditionable
     if (!isset($_SESSION['step']) || !$_SESSION['step'])
     {
-        $surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-        . $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' />\n";
+        $surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; submit_and_disable();\" value=' "
+        . $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' $disabled />\n";
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
     {
-        $surveymover .=  "\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-        . $clang->gT("Next")." &gt;&gt; ' name='move2' id=\"movenextbtn\"/>\n";
+        $surveymover .=  "\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; submit_and_disable();\" value=' "
+        . $clang->gT("Next")." &gt;&gt; ' name='move2' id=\"movenextbtn\" $disabled />\n";
     }
     if (($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
     {
         $surveymover .= "\t<input class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=\""
-        . $clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" />\n";
+        . $clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled />\n";
     }
 
     //	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
