@@ -28,7 +28,7 @@ if (isset($move) && $move == "moveprev" && ($thissurvey['allowprev']=='Y' || $th
 if (isset($move) && $move == "movenext")
 {
     if ($_SESSION['step']==$thisstep)
-    $_SESSION['step'] = $thisstep+1;
+        $_SESSION['step'] = $thisstep+1;
 }
 if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
 {
@@ -116,15 +116,13 @@ $questionsSkipped=0;
 
 while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
 {
-<<<<<<< .mine     // this is a while, not an IF because if we skip the question we loop on the next question, see below
-=======    // this is a while, not an IF because if we skip the question we loop on the next question, see below
->>>>>>> .theirs    if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
+    // this is a while, not an IF because if we skip the question we loop on the next question, see below
+    if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
     {
         // question will be displayed we set conditionforthisquestion to N here
         // because it is used later to select style=display:'' for the question
-<<<<<<< .mine    $conditionforthisquestion="N";
-=======        $conditionforthisquestion="N";
->>>>>>> .theirs    }
+        $conditionforthisquestion="N";
+    }
     else
     {
         $questionsSkipped++;
@@ -158,13 +156,8 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
             $currentquestion--; // if we reach -1, this means we must go back to first page
             if ($currentquestion >= 0)
             {
-<<<<<<< .mine            $ia=$_SESSION['fieldarray'][$currentquestion];
-            $_SESSION['step']--;
-        }
-=======                $ia=$_SESSION['fieldarray'][$currentquestion];
                 $_SESSION['step']--;
             }
->>>>>>> .theirs            else
             {
                 $_SESSION['step']=0;
                 display_first_page();
