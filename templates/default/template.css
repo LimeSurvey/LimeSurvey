@@ -300,6 +300,10 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   margin: 0% 0% 0.5em 0.5em;
 }
 
+.outerframe.withindex div.missing td.questiontext {
+  background: red;
+}
+
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
   /* STYLES NOT YET DEFINED - - - - -
@@ -729,7 +733,9 @@ table.rank td.helptext {
   font-size: 0.9em;
 }
 
-table.outerframe {
+table.innerframe {
+  width: 75%;
+  text-align: center;
   border-collapse: separate;
   border-spacing: 1px;
   margin: 20px auto 40px auto;
@@ -943,3 +949,59 @@ div.questionTitle {
   font-weight: bold;
   background-color: #D2E0F2;
 }
+
+/* Question Index */
+.outerframe.withindex {
+  margin-left: 1em;
+  margin-right: 26em;
+}
+
+#index {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  background: #fff;
+  border-left: 1px solid #ccc;
+}
+
+#index h2 { 
+  padding: 1em;
+  background: #eef6ff;
+  text-align: center;
+}
+
+#index h3 { margin: 0.5em 0 0 0.5em; }
+
+#index .container {
+  width: 24em;
+}
+
+#index .container .row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  border-top: 1px solid #fff;
+}
+
+#index .container .row:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+#index .container .row .hdr {
+  width: 3em;
+  text-align: right;
+  display: inline-block;
+  padding: 0 0.5em 0 0;
+}
+
+#index .container .row.odd { background: #EEF6FF; }
+#index .container .row.current { background: #1D2D45; color: #fff; }
+#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container input { margin: 1em; }

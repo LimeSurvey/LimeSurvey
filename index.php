@@ -1480,14 +1480,7 @@ function checkmandatorys($move, $backok=null)
                     {
                         //The number of questions not answered is equal to the number of questions
                         //This section gets used if it is a multiple choice type question
-                        if (isset($move) && $move == "moveprev")
-                        {
                             $_SESSION['step'] = $thisstep;
-                        }
-                        if (isset($move) && $move == "movenext")
-                        {
-                            $_SESSION['step'] = $thisstep;
-                        }
                         $notanswered[]=substr($multiname, 5, strlen($multiname));
                         $$multiname=0;
                         $$multiname2=0;
@@ -1509,14 +1502,7 @@ function checkmandatorys($move, $backok=null)
             elseif ((!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtcm]) || $_POST[$dtcm] == "on"))
             {
                 //One of the mandatory questions hasn't been asnwered
-                if (isset($move) && $move == "moveprev")
-                {
                     $_SESSION['step'] = $thisstep;
-                }
-                if (isset($move) && $move == "movenext")
-                {
-                    $_SESSION['step'] = $thisstep;
-                }
                 $notanswered[]=$mfns[$mi];
             }
             else
@@ -1588,14 +1574,7 @@ function checkconditionalmandatorys($move, $backok=null)
 
                     {
                         //The number of questions not answered is equal to the number of questions
-                        if (isset($move) && $move == "moveprev")
-                        {
                             $_SESSION['step'] = $thisstep;
-                        }
-                        if (isset($move) && $move == "movenext")
-                        {
-                            $_SESSION['step'] = $thisstep;
-                        }
                         $notanswered[]=substr($multiname, 5, strlen($multiname));
                         $$multiname=0;
                         $$multiname2=0;
@@ -1844,14 +1823,7 @@ function checkpregs($move,$backok=null)
                 //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
                 if (!empty($_POST['qattribute_answer'.$maxvalueanswer]) && $_POST['display'.$maxvalueanswer] == "on")
                 {
-                    if (isset($move) && $move == "moveprev")
-                    {
                         $_SESSION['step'] = $thisstep;
-                    }
-                    if (isset($move) && $move == "movenext")
-                    {
-                        $_SESSION['step'] = $thisstep;
-                    }
                     $notvalidated[]=$maxvalueanswer;
                     return $notvalidated;
                 }
@@ -2832,7 +2804,7 @@ function surveymover()
         $surveymover = "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
     }
 
-    if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N" &&
+    if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['allowjumps'] == "Y") &&
 	($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
     {
         $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value=' &lt;&lt; "

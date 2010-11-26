@@ -17,14 +17,23 @@
 
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
-//Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
+if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
 if (!isset($gl)) {$gl=array('null');}
+$_SESSION['prevstep']=$_SESSION['step'];
+
+//Move current step ###########################################################################
 if (isset($move) && $move == 'moveprev' && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep-1;}
 if (isset($move) && $move == "movenext") {
     if ($_SESSION['step']==$thisstep)
     $_SESSION['step'] = $thisstep+1;
+}
+if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
+{
+    $move = (int)$move;
+    if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep'])))
+        $_SESSION['step'] = $move;
 }
 
 // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
@@ -36,7 +45,9 @@ if (isset($move) && $move == "movenext") {
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($move) &&  $move == 'moveprev') || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+if ($allowmandbackwards==1 && (
+    (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['prevstep'] == $_SESSION['maxstep']))) ||
+    (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
     $backok="Y";
 }
@@ -61,11 +72,11 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 {
     while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
     {
-        if (isset($move) && $move == "moveprev")
+        if ($_SESSION['prevstep'] <= $_SESSION['step'])
         {
             $_SESSION['step']=$_SESSION['step']-1;
         }
-        if (isset($move) && $move == "movenext")
+        else
         {
             $_SESSION['step']=$_SESSION['step']+1;
         }
@@ -295,6 +306,13 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
+}
+
+//Setup an inverted fieldnamesInfo for quick lookup of field answers.
+$aFieldnamesInfoInv = aArrayInvert($_SESSION['fieldnamesInfo']);
+if ($_SESSION['step'] > $_SESSION['maxstep'])
+{
+    $_SESSION['maxstep'] = $_SESSION['step'];
 }
 
 //******************************************************************************************************
@@ -1153,6 +1171,13 @@ if (isset($qanda) && is_array($qanda))
         {
             $man_class = '';
         }
+
+        if (!bCheckQuestionForAnswer($qa[7], $aFieldnamesInfoInv) &&
+                $_SESSION['maxstep'] != $_SESSION['step'])
+        {
+            $man_class .= ' missing';
+        }
+
         if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
         $question= $qa[0];
@@ -1204,6 +1229,63 @@ echo "\n";
 if ($thissurvey['active'] != "Y")
 {
     echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+}
+
+
+if($thissurvey['allowjumps']=='Y')
+{
+    echo "\n\n<!-- PRESENT THE INDEX -->\n";
+
+    echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
+    for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
+    {
+        $g = $_SESSION['grouplist'][$n];
+        if(!checkgroupfordisplay($g[0]))
+            continue;
+
+        $sText = FlattenText($g[1]);
+
+        $bGAnsw = true;
+        foreach($_SESSION['fieldarray'] as $ia)
+        {
+            if($ia[5] != $g[0])
+                continue;
+
+            $qidattributes=getQuestionAttributes($ia[0]);
+            if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
+                continue;
+
+            if (!bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv))
+            {
+                $bGAnsw = false;
+                break;
+            }
+        }
+
+        ++$v;
+
+        $class = ($n == $_SESSION['step'] - 1? 'current': ($bGAnsw? 'answer': 'missing'));
+        if($v % 2) $class .= " odd";
+
+        $s = $n + 1;
+        echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
+    }
+
+    if($_SESSION['maxstep'] == $_SESSION['totalsteps'])
+    {
+        echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+            . $clang->gT("Submit")." ' name='move2' />\n";
+    }
+
+    echo '</div></div>';
+
+    echo "<script type=\"text/javascript\">\n"
+    . "  $(\".outerframe\").addClass(\"withindex\");\n"
+    . "  var idx = $(\"#index\");\n"
+    . "  var row = $(\"#index .row.current\");\n"
+    . "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
+    . "</script>\n";
+    echo "\n";
 }
 
 echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging

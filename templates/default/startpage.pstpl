@@ -22,6 +22,7 @@
 <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />		
 </head>
 <body class="default lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
-<table width="75%" align="center" class="outerframe">
-	<tr>
-		<td>
+    <div class="outerframe">
+        <table class="innerframe">
+            <tr>
+                <td>

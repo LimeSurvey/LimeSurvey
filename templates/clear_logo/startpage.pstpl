@@ -20,4 +20,4 @@
 	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 </head>
 <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
-
+        <div class="outerframe">

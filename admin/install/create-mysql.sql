@@ -278,6 +278,7 @@ CREATE TABLE `prefix_surveys` (
   `bounceaccountuser` VARCHAR(200),
   `showwelcome` char(1) default 'Y',
   `showprogress` char(1) default 'Y',
+  `allowjumps` char(1) default 'N',
    PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

@@ -401,6 +401,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountuser` VARCHAR(200) NULL"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showwelcome` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `showprogress` char(1) default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `allowjumps` char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_survey_permissions` (
                                 `sid` int(10) unsigned NOT NULL,
                                 `uid` int(10) unsigned NOT NULL,

@@ -318,6 +318,17 @@
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "</select></li>\n";
 
+        //Show Question Index
+        $editsurvey .= "<li><label for='allowjumps'>".$clang->gT("Show Question Index / Allow jumping")."</label>\n"
+                . "<select id='allowjumps' name='allowjumps'>\n"
+                . "<option value='Y'";
+        if (!isset($esrow['allowjumps']) || !$esrow['allowjumps'] || $esrow['allowjumps'] == "Y") {$editsurvey .= " selected='selected'";}
+        $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+                . "<option value='N'";
+        if (isset($esrow['allowjumps']) && $esrow['allowjumps'] == "N") {$editsurvey .= " selected='selected'";}
+        $editsurvey .= ">".$clang->gT("No")."</option>\n"
+                . "</select></li>\n";
+
 	//Show Progress
 	$editsurvey .= "<li><label for='showprogress'>".$clang->gT("Show progress bar")."</label>\n"
                 . "<select id='showprogress' name='showprogress'>\n"

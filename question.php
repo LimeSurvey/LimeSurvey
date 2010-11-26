@@ -18,14 +18,23 @@
 
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
-//Move current step
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
-if (isset($move) && $move == "moveprev" && $thissurvey['allowprev']=='Y' && $_SESSION['step'] > 0) {$_SESSION['step'] = $thisstep-1;}
+if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
+$_SESSION['prevstep']=$_SESSION['step'];
+
+//Move current step
+if (isset($move) && $move == "moveprev" && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y') && $_SESSION['step'] > 0) {$_SESSION['step'] = $thisstep-1;}
 if (isset($move) && $move == "movenext")
 {
     if ($_SESSION['step']==$thisstep)
     $_SESSION['step'] = $thisstep+1;
+}
+if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
+{
+    $move = (int)$move;
+    if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep'])))
+        $_SESSION['step'] = $move;
 }
 
 
@@ -36,7 +45,9 @@ if (isset($move) && $move == "movenext")
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($move) &&  $move == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+if ($allowmandbackwards==1 && (
+    (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['prevstep'] == $_SESSION['maxstep']))) ||
+    (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
     $backok="Y";
 }
@@ -70,7 +81,7 @@ if ($surveyexists <1)
 }
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if (!isset($_SESSION['step']) || !$_SESSION['step'])
+if (!$_SESSION['step'])
 {
     $totalquestions = buildsurveysession();
     if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
@@ -81,6 +92,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
         exit;
     }
 }
+
 //******************************************************************************************************
 //PRESENT SURVEY
 //******************************************************************************************************
@@ -104,16 +116,19 @@ $questionsSkipped=0;
 
 while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
 {
-     // this is a while, not an IF because if we skip the question we loop on the next question, see below
-    if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
-    { // question will be displayed
-    // we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
-    $conditionforthisquestion="N";
-    }
+<<<<<<< .mine     // this is a while, not an IF because if we skip the question we loop on the next question, see below
+=======    // this is a while, not an IF because if we skip the question we loop on the next question, see below
+>>>>>>> .theirs    if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
+    {
+        // question will be displayed we set conditionforthisquestion to N here
+        // because it is used later to select style=display:'' for the question
+<<<<<<< .mine    $conditionforthisquestion="N";
+=======        $conditionforthisquestion="N";
+>>>>>>> .theirs    }
     else
     {
         $questionsSkipped++;
-        if (returnglobal('move') == "movenext")
+        if ($_SESSION['prevstep'] <= $_SESSION['step'])
         {
             $currentquestion++;
             if(isset($_SESSION['fieldarray'][$currentquestion]))
@@ -138,15 +153,18 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
                 }
             }
         }
-        elseif (returnglobal('move') == "moveprev")
+        else
         {
             $currentquestion--; // if we reach -1, this means we must go back to first page
             if ($currentquestion >= 0)
             {
-            $ia=$_SESSION['fieldarray'][$currentquestion];
+<<<<<<< .mine            $ia=$_SESSION['fieldarray'][$currentquestion];
             $_SESSION['step']--;
         }
-            else
+=======                $ia=$_SESSION['fieldarray'][$currentquestion];
+                $_SESSION['step']--;
+            }
+>>>>>>> .theirs            else
             {
                 $_SESSION['step']=0;
                 display_first_page();
@@ -159,6 +177,13 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
         $qidattributes=getQuestionAttributes($ia[0]);
     }
 } // End of while conditionforthisquestion=="Y"
+
+//Setup an inverted fieldnamesInfo for quick lookup of field answers.
+$aFieldnamesInfoInv = aArrayInvert($_SESSION['fieldnamesInfo']);
+if ($_SESSION['step'] > $_SESSION['maxstep'])
+{
+    $_SESSION['maxstep'] = $_SESSION['step'];
+}
 
 //SUBMIT
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
@@ -326,7 +351,9 @@ list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 //Check if current page is for group description only
 $bIsGroupDescrPage = false;
-if ($newgroup == "Y" && $groupdescription && (isset($move) && $move != "moveprev"))
+if ($newgroup == "Y" && $groupdescription &&
+    (isset($move) && $move != "moveprev" && !is_int($move)) &&
+    $_SESSION['maxstep'] == $_SESSION['step'])
 {
     // This is a group description page
     //  - $ia contains next question description,
@@ -574,6 +601,62 @@ if ($thissurvey['active'] != "Y")
 }
 
 echo "\n";
+
+if($thissurvey['allowjumps']=='Y' && !$bIsGroupDescrPage)
+{
+    echo "\n\n<!-- PRESENT THE INDEX -->\n";
+
+    $iLastGrp = null;
+
+    echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
+    for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
+    {
+        $ia = $_SESSION['fieldarray'][$n];
+        $qidattributes=getQuestionAttributes($ia[0]);
+        if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
+            continue;
+
+        $sText = FlattenText($ia[3]);
+        $bAnsw = bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv);
+
+        if($iLastGrp != $ia[5])
+        {
+            $iLastGrp = $ia[5];
+            foreach ($_SESSION['grouplist'] as $gl)
+            {
+                if ($gl[0] == $iLastGrp)
+                {
+                    echo '<h3>' . htmlspecialchars(strip_tags($gl[1]),ENT_QUOTES,'UTF-8') . "</h3>";
+                    break;
+                }
+            }
+        }
+
+        ++$v;
+
+        $class = ($n == $_SESSION['step'] - 1? 'current': ($bAnsw? 'answer': 'missing'));
+        if($v % 2) $class .= " odd";
+
+        $s = $n + 1;
+        echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
+    }
+
+    if($_SESSION['maxstep'] == $_SESSION['totalsteps'])
+    {
+        echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+            . $clang->gT("Submit")." ' name='move2' />\n";
+    }
+
+    echo '</div></div>';
+
+    echo "<script type=\"text/javascript\">\n"
+    . "  $(\".outerframe\").addClass(\"withindex\");\n"
+    . "  var idx = $(\"#index\");\n"
+    . "  var row = $(\"#index .row.current\");\n"
+    . "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
+    . "</script>\n";
+    echo "\n";
+}
 
 if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 {

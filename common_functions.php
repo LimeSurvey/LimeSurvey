@@ -7904,4 +7904,56 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
 
 
 
+/**
+ * Check if $str is an integer, or string representation of an integer
+ *
+ * @param mixed $mStr
+ */
+function bIsNumericInt($mStr)
+{
+    if(is_int($mStr))
+        return true;
+    elseif(is_string($mStr))
+        return preg_match("/^[0-9]+$/", $mStr);
+    return false;
+}
+
+/**
+ * Invert key/values of an associative array, preserving multiple values in
+ * the source array as a single key with multiple values in the resulting
+ * array.
+ *
+ * This is not the same as array_flip(), which flattens the structure of the
+ * source array.
+ *
+ * @param array $aArr
+ */
+function aArrayInvert($aArr)
+{
+    $aRet = array();
+    foreach($aArr as $k => $v)
+        $aRet[$v][] = $k;
+    return $aRet;
+}
+
+/**
+ * Check if a question was (at least partially) answered in the current session.
+ *
+ * @param integer $q - Question id
+ * @param array $aFieldnamesInfoInv - Inverted fieldnamesInfo
+ */
+function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
+{
+    $bAnsw = false;
+    foreach($aFieldnamesInfoInv[$q] as $sField)
+    {
+        if(!empty($_SESSION[$sField]))
+        {
+            $bAnsw = true;
+            break;
+        }
+    }
+    return $bAnsw;
+}
+
 // Closing PHP tag intentionally left out - yes, it is okay

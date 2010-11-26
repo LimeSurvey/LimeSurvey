@@ -21,13 +21,15 @@
 </head>
 	<body  class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
 
-    <div id="layout">
-      
-      <div id="header">
-        
-        <h1 id="logo"><a href="./" title="Company">Lime<span class="light">Survey</span><span class="leaf"> </span></a></h1>
-        <hr class="noscreen" />   
-     
-        <p class="noscreen noprint">
-          <em>Skip to <a href="#obsah">content</a>, <a href="#nav">navigation</a>.</em>
-        </p>
+        <div class="outerframe">
+
+          <div id="layout">
+            
+            <div id="header">
+              
+              <h1 id="logo"><a href="./" title="Company">Lime<span class="light">Survey</span><span class="leaf"> </span></a></h1>
+              <hr class="noscreen" />   
+           
+              <p class="noscreen noprint">
+                <em>Skip to <a href="#obsah">content</a>, <a href="#nav">navigation</a>.</em>
+              </p>
