@@ -492,13 +492,13 @@ if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s",
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
-    ."<br /><br />\n";
+    ."<br /><br /></center>\n";
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -509,13 +509,13 @@ if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
-    ."<br /><br />\n";
+    ."<br /><br /></center>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -528,14 +528,14 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
     ."\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
-    ."<br /><br />\n";
+    ."<br /><br /></center>\n";
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
