@@ -336,6 +336,11 @@ table.question tr:first-child td:first-child {
   background-color: #fff;
 }
 
+.array-flexible-duel-scale table.question thead .emptycell,
+.array-flexible-duel-scale table.question tbody tr.repeat .emptycell {
+	background-color: #FFFFFF !important;
+}
+
 td.answertext {
   padding: 3px 6px;
 }

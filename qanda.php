@@ -6260,7 +6260,7 @@ function do_array_dual($ia)
 
 
         $myheader2 = "\n<tr class=\"array1\">\n"
-        . "\t<th>&nbsp;</th>\n\n";
+        . "\t<th class=\"emptycell\">&nbsp;</th>\n\n";
         $odd_even = '';
         foreach ($labelans as $ld)
         {
@@ -6274,7 +6274,7 @@ function do_array_dual($ia)
         {
             $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n"
             . "\t<col class=\"seperator\" />\n";
-            $myheader2 .= "\n\t<td>&nbsp;</td>\n\n";
+            $myheader2 .= "\n\t<td class=\"emptycell\">&nbsp;</td>\n\n";
             foreach ($labelans1 as $ld)
             {
                 $myheader2 .= "\t<th>".$ld."</th>\n";
@@ -6283,19 +6283,17 @@ function do_array_dual($ia)
             }
              
         }
-        $myheader2 .= "\t<td>&nbsp;</td>\n";
         if ($right_exists)
         {
+        	$myheader2 .= "\t<td class=\"emptycell\">&nbsp;</td>\n";
             $mycolumns .= "\n\t<col class=\"answertextright\" />\n\n";
-        }
-        else
-        {
-            $mycolumns .= "\n\t<col class=\"seperator\" />\n\n";
         }
         if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
         {
+        	$myheader2 .= "\t<td class=\"emptycell\">&nbsp;</td>\n";
             $myheader2 .= "\t<th>".$clang->gT('No answer')."</th>\n";
             $odd_even = alternation($odd_even);
+            $mycolumns .= "\n\t<col class=\"seperator\" />\n\n";
             $mycolumns .= "\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
         }
 
@@ -6308,20 +6306,22 @@ function do_array_dual($ia)
         if ($leftheader != '' || $rightheader !='')
         {
             $myheader1 = "<tr class=\"array1 groups\">\n"
-            . "\t<th>&nbsp;</th>\n"
+            . "\t<th class=\"emptycell\">&nbsp;</th>\n"
             . "\t<th colspan=\"".count($labelans)."\" class=\"dsheader\">$leftheader</th>\n";
 
             if (count($labelans1)>0)
             {
-                $myheader1 .= "\t<td>&nbsp;</td>\n"
+                $myheader1 .= "\t<td class=\"emptycell\">&nbsp;</td>\n"
                 ."\t<th colspan=\"".count($labelans1)."\" class=\"dsheader\">$rightheader</th>\n";
             }
-
-            $myheader1 .= "\t<td>&nbsp;</td>\n";
-
+			if ($right_exists)
+			{
+				$myheader1 .= "\t<td class=\"emptycell\">&nbsp;</td>\n";
+			}
             if ($ia[6] != 'Y' && $shownoanswer == 1)
             {
-                $myheader1 .= "\t<th>&nbsp;</th>\n";
+            	$myheader1 .= "\t<td class=\"emptycell\">&nbsp;</td>\n";
+                $myheader1 .= "\t<th class=\"emptycell\">&nbsp;</th>\n";
             }
             $myheader1 .= "</tr>\n";
         }
@@ -6330,7 +6330,7 @@ function do_array_dual($ia)
             $myheader1 = '';
         }
 
-        $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an dual array type question\">\n"
+        $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a dual array type question\">\n"
         . $mycolumns
         . "\n\t<thead>\n"
         . $myheader1
@@ -6345,22 +6345,27 @@ function do_array_dual($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $answer .= "<tbody>\n<tr  class=\"repeat\">\n"
-                    . "\t<th>&nbsp;</th>\n";
+                    . "\t<th class=\"emptycell\">&nbsp;</th>\n";
                     foreach ($labelans as $ld)
                     {
-                        $answer .= "\t<th>".$ld."</td>\n";
+                        $answer .= "\t<th>".$ld."</th>\n";
                     }
                     if (count($labelans1)>0) // if second label set is used
                     {
-                        $answer .= "<th>&nbsp;</th>\n";		// separator
+                        $answer .= "<th class=\"emptycell\">&nbsp;</th>\n";		// separator
                         foreach ($labelans1 as $ld)
                         {
                             $answer .= "\t<th>".$ld."</th>\n";
                         }
                     }
+					if ($right_exists)
+					{
+						$myheader2 .= "\t<td class=\"emptycell\">&nbsp;</td>\n";
+						$mycolumns .= "\n\t<col class=\"answertextright\" />\n\n";
+					}
                     if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
                     {
-                        $answer .= "\t<td>&nbsp;</td>\n";		// separator
+                        $answer .= "\t<td class=\"emptycell\">&nbsp;</td>\n";		// separator
                         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
                     }
                     $answer .= "</tr>\n</tbody>\n";
@@ -6460,14 +6465,11 @@ function do_array_dual($ia)
             {
                 $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
             }
-            else
-            {
-                $answer .= "\t<td>&nbsp;</td>\n";		// separator
-            }
 
             if ($ia[6] != "Y" && $shownoanswer == 1)
             {
-                $answer .= "\t<td>\n"
+                $answer .= "\t<td class=\"dual_scale_separator\">&nbsp;</td>\n"; // separator
+				$answer .= "\t<td>\n"
                 . "<label for='answer$myfname-'>\n"
                 . "\t<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
@@ -6482,11 +6484,12 @@ function do_array_dual($ia)
             }
              
             $answer .= "</tr>\n";
+        	$answer .= "\t</tbody>\n";
             // $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-        $answer .= "\t</tbody>\n</table>\n";
+        $answer .= "</table>\n";
     }
     elseif ($useDropdownLayout === true && $lresult->RecordCount() > 0)
     {
