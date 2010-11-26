@@ -25,6 +25,7 @@ try {
     // Replace {TEXT} with <TEXT>. Text within <> act as a placeholder and are
     // not translated by Google Translate
     $sToNewconvert  = preg_replace("/\{(\w+)\}/", "<$1>",$sToconvert);
+    $bDoNotConvertBack = false;
     if ($sToNewconvert == $sToconvert)
         $bDoNotConvertBack = true;
     $sToconvert = $sToNewconvert;
