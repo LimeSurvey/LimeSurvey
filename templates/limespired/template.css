@@ -874,6 +874,16 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   font-size: 90%;
 }
 
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #FFFFFF;
+}
+
+#limesurvey table.question  thead tr.header_row {
+  background-color: #CBEFF2;
+}
+
 #limesurvey table.question tbody td {
   text-align: center;
 }

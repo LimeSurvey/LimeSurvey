@@ -668,6 +668,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   font-weight: normal;
 }
 
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .dual_scale_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #FFFFFF;
+}
+
+#limesurvey table.question  thead tr.header_row {
+  background-color: #EEEEEE;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+	background-color: #F6F6F6;
+}
+
 #limesurvey table.question .answer tbody td {
   text-align: center;
 }
@@ -916,3 +930,4 @@ div.questionTitle {
   font-weight: normal;
   background-color: #efefef;
 }
+

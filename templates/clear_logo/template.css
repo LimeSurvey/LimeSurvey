@@ -699,7 +699,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   font-weight: normal;
 }
 
-#limesurvey table.question thead th {
+#limesurvey table.question thead th,
+#limesurvey table.question thead td,
+#limesurvey table.question .dual_scale_separator {
   background-color: #fff;
 }
 

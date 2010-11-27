@@ -820,11 +820,29 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin-left: 1em;
 }
 
-#limesurvey table.question thead th,#limesurvey table.question .repeat th
+#limesurvey table.question thead th,
+#limesurvey table.question .repeat th
   {
   text-align: center;
   vertical-align: bottom;
   font-weight: 600 !important;
+}
+
+#limesurvey table.question thead th,
+#limesurvey table.question thead td {
+  background-color: #FFFFFF;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+	background-color: #F9F9F9;
+}
+
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question tr.repeat th.header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .repeat .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #FFFFFF;
 }
 
 #limesurvey .answer table.question tbody td {

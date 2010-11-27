@@ -786,8 +786,10 @@ table.rank td.helptext {
 .yes-no {}
 .gender {}
 */
-#limesurvey table.question thead th,#limesurvey table.question .repeat th
-  {
+#limesurvey table.question thead th,
+#limesurvey table.question thead td,
+#limesurvey table.question .repeat th,
+#limesurvey table.question .repeat td {
   vertical-align: bottom;
   text-align: center;
   background-color: #F5F9F9;

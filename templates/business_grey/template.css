@@ -778,6 +778,27 @@ table.rank td.helptext {
   font-weight: normal;
 }
 
+#limesurvey .array-flexible-duel-scale table.question tr.repeat th {
+	background-color: #F6F6F6;
+}
+
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question tr.repeat th.header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .repeat .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .dual_scale_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #E1E1E1;
+}
+
+#limesurvey table.question  thead tr.header_row {
+  background-color: #D1D1D1;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+	background-color: #F6F6F6;
+}
+
 .array-flexible-row tbody th.answertextright,.array-flexible-duel-scale tbody th.answertextright
   {
   text-align: left;
