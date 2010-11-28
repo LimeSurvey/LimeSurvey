@@ -41,6 +41,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         while ($aRow=$aResult->FetchRow())
         {
            $tablename=substr($aRow[0],strlen($dbprefix)); 
+           if ($tablename=='survey_permissions') continue;
            $iSurveyID=substr($tablename,strpos($tablename,'_')+1); 
            $qquery="SELECT sid FROM {$dbprefix}surveys WHERE sid='{$iSurveyID}'";
            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());

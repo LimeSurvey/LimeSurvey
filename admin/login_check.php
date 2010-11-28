@@ -192,14 +192,13 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 
 
         //include("database.php");
-
-        $sIp=   $_SERVER['REMOTE_ADDR'];
+        $sIp = $_SERVER['REMOTE_ADDR'];
         $query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
         $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-        $result = $connect->query($query);
+        $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
         $bCannotLogin = false;
         $intNthAttempt = 0;
-        if ($result->RecordCount() >= 1)
+        if ($result!==false && $result->RecordCount() >= 1)
         {
             $field = $result->FetchRow();
             $intNthAttempt = $field['number_attempts'];
@@ -212,7 +211,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
             if (time() > $iLastAttempt + $timeOutTime){
                 $bCannotLogin = false;
                 $query = "DELETE FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
-                $result = $connect->query($query);
+                $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
             }
 
         }
