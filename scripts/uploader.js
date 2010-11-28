@@ -39,6 +39,7 @@ $(document).ready(function(){
             previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='images/delete.png' onclick='deletefile("+i+")' /></td></tr></table>"+
                     "<input type='hidden' id='size_"    +i+"' value="+json[i].size+" />"+
                     "<input type='hidden' id='name_"    +i+"' value="+json[i].name+" />"+
+                    "<input type='hidden' id='file_index_"+i+"' value="+(i+1)+" />"+
                     "<input type='hidden' id='filename_"+i+"' value="+json[i].filename+" />"+
                     "<input type='hidden' id='ext_"     +i+"' value="+json[i].ext+"  />"+
                     "</div></li>";
@@ -248,12 +249,15 @@ function saveAndExit() {
     }
 }
 
-function deletefile(i) {
+function deletefile(count) {
     var xmlhttp;
     if (window.XMLHttpRequest)
         xmlhttp=new XMLHttpRequest();
     else
         xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    
+    var filecount = $('#filecount').val();
+    var licount   =  $('#licount').val();
 
     xmlhttp.onreadystatechange=function()
     {
@@ -265,11 +269,23 @@ function deletefile(i) {
             }, 5000);
         }
     }
-    xmlhttp.open('GET','delete.php?sid='+surveyid+'&file_index='+$("#file_index_"+i).val(),true);
+    var file_index = $("#file_index_"+count).val();
+    xmlhttp.open('GET','delete.php?sid='+surveyid+'&file_index='+file_index, true);
     xmlhttp.send();
 
-    $("#li_"+i).hide();
-    var filecount = $('#filecount').val();
+    $("#li_"+count).hide();
     filecount--;
     $('#filecount').val(filecount);
+    
+    // rearrange the file indexes
+    // i.e move the files below i to one step up
+
+    for (j = count; j <= licount; j++)
+    {
+        if ($('#li_'+j).visible())
+        {
+            $('#file_index_'+j).val(file_index++);
+        }
+    }
+
 }

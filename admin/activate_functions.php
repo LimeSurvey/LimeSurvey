@@ -458,7 +458,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
 
         // create the survey directory where the uploaded files can be saved
         if ($createsurveydirectory)
-            if (!(mkdir("../upload/surveys/" . $postsid . "/files", 0777, true)))
+            if (!file_exists("../upload/surveys/" . $postsid . "/files") && !(mkdir("../upload/surveys/" . $postsid . "/files", 0777, true)))
                 $activateoutput .= "<div class='warningheader'>".
                     $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory.") . "</div>";
 

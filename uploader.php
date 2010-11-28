@@ -15,20 +15,6 @@ else
     $surveyid=sanitize_int($surveyid);
 }
 
-$meta = '<script type="text/javascript">
-    var surveyid = "'.$surveyid.'";
-</script>';
-
-$meta .='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
-<script type="text/javascript" src="scripts/uploader.js"></script>
-<link type="text/css" href="scripts/uploader.css" rel="stylesheet" />';
-            
-$baselang = GetBaseLanguageFromSurveyID($surveyid);
-$clang = new limesurvey_lang($baselang);
-
-$header = getHeader($meta);
-
-
 // Compute the Session name
 // Session name is based:
 // * on this specific limesurvey installation (Value SessionName in DB)
@@ -52,13 +38,26 @@ else
 {
     session_name("LimeSurveyRuntime-$surveyid");
 }
-session_set_cookie_params(0,$relativeurl.'/admin/');
+session_set_cookie_params(0,$relativeurl.'/');
 @session_start();
 
 if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 {
     die("You don't have a valid session !");
 }
+
+$meta = '<script type="text/javascript">
+    var surveyid = "'.$surveyid.'";
+</script>';
+
+$meta .='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
+<script type="text/javascript" src="scripts/uploader.js"></script>
+<link type="text/css" href="scripts/uploader.css" rel="stylesheet" />';
+
+$baselang = GetBaseLanguageFromSurveyID($surveyid);
+$clang = new limesurvey_lang($baselang);
+
+$header = getHeader($meta);
 
 echo $header;
 
