@@ -435,7 +435,7 @@ CREATE TABLE prefix_failed_login_attempts (
   number_attempts integer NOT NULL
 );
 
-ALTER TABLE ONLY failed_login_attempts ADD CONSTRAINT failed_login_attempts_pkey PRIMARY KEY ("id");
+ALTER TABLE ONLY prefix_failed_login_attempts ADD CONSTRAINT prefix_failed_login_attempts_pkey PRIMARY KEY ("id");
 
 --
 -- Secondary indexes 

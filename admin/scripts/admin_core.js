@@ -1,4 +1,5 @@
 //$Id$    
+
 $(document).ready(function(){
     setupAllTabs();
     if(typeof(userdateformat) !== 'undefined') 
@@ -189,6 +190,52 @@ $(document).ready(function(){
     speed: 500,
     expires: 5000
 });
+
+    var old_owner = '';
+
+    $(".ownername_edit").live('click',function(){
+       var oldThis = this;
+       var ownername_edit_id = $(this).attr('id');
+       var survey_id = ownername_edit_id.slice(15);
+       $.getJSON('admin.php', {
+                    action: 'ajaxgetusers'
+                },function(oData)
+                {
+                    old_owner =  $($(oldThis).parent()).html();
+                    old_owner = (old_owner.split(" "))[0];
+                    $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>'
+                    + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" value="Update">');
+                    $(oData).each(function(key,value){
+                        $('#ownername_select_'+survey_id).
+                          append($("<option id='opt_"+value[1]+"'></option>").
+                          attr("value",value[0]).
+                          text(value[1]));
+                    });
+                    $("#ownername_select_"+survey_id+ " option[id=opt_"+old_owner+"]").attr("selected","selected");
+         });
+    });
+
+    $(".ownername_button").live('click',function(){
+       var oldThis = this;
+       var ownername_select_id = $(this).attr('id');
+       var survey_id = ownername_select_id.slice(17);
+       var newowner = $("#ownername_select_"+survey_id).val();
+
+       $.getJSON('admin.php',{
+            action: 'ajaxowneredit',
+            newowner: newowner,
+            survey_id : survey_id
+       }, function (data){
+           var objToUpdate = $($(oldThis).parent());
+           if (data.record_count>0)
+               $(objToUpdate).html(data.newowner);
+           else
+               $(objToUpdate).html(old_owner);
+
+           $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" class="ownername_edit" href="#">Edit</a>)' );
+       });
+    });
+
 });
 
 

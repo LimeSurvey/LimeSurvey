@@ -112,7 +112,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 }
 
 
-if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $action == "userrights"  || $action == "usertemplates")
+if ($action == "adduser" || $action=="deluser" ||$action=="finaldeluser" || $action == "moduser" || $action == "userrights"  || $action == "usertemplates")
 {
     include("usercontrol.php");
 }

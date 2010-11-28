@@ -229,14 +229,7 @@ function db_upgrade($oldversion) {
         modify_database("", "UPDATE prefix_settings_global SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 
 
-        modify_database("", "CREATE TABLE prefix_failed_login_attempts (
-                                  id integer NOT NULL AUTO_INCREMENT,
-                                  ip character varying(37) NOT NULL,
-                                  last_attempt character varying(20) NOT NULL,
-                                  number_attempts integer NOT NULL,
-                                  PRIMARY KEY ( id )
-                                );"); echo $modifyoutput; flush();
- 
+        
     }
     if ($oldversion < 145)
     {
@@ -292,6 +285,16 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized TYPE char(1) Default 'N' NOT NULL ;"); echo $modifyoutput; flush();
         
         modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+
+        modify_database("", "CREATE TABLE prefix_failed_login_attempts (
+                                  id integer NOT NULL AUTO_INCREMENT,
+                                  ip character varying(37) NOT NULL,
+                                  last_attempt character varying(20) NOT NULL,
+                                  number_attempts integer NOT NULL
+                                );"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE ONLY prefix_failed_login_attempts ADD CONSTRAINT prefix_failed_login_attempts_pkey PRIMARY KEY (\"id\");"); echo $modifyoutput; flush();
+ 
+
     }
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';

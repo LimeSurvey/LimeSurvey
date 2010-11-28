@@ -102,7 +102,8 @@ if (!isset($_SESSION['loginID']))
 
             $sIp=   $_SERVER['REMOTE_ADDR'];
             $query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
-            $result = db_execute_assoc($query);
+            $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+            $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
             $bLoginAttempted = false;
             $bCannotLogin = false;
 
@@ -128,7 +129,7 @@ if (!isset($_SESSION['loginID']))
             }
             if(!$bCannotLogin){
                 $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
-                $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
+
                 $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
                 if ($result->RecordCount() < 1)
                 {
@@ -469,7 +470,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
     $addsummary .= "<p><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/></div>\n";
 }
 
-elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
+elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
 {
     $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
@@ -498,32 +499,91 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
             if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sresultcount > 0 || $postuserid == $_SESSION['loginID'])
             {
-                // We are about to kill an uid with potential childs
-                // Let's re-assign them their grand-father as their
-                // new parentid
-                $squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".$postuserid;
-                $sresult = $connect->Execute($squery); //Checked
-                $fields = $sresult->FetchRow($sresult);
+                $transfer_surveys_to = 0;
+                $query = "SELECT users_name, uid FROM ".db_table_name('users').";";
+                $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-                if (isset($fields[0]))
-                {
-                    $uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".$postuserid;	//		added by Dennis
-                    $uresult = $connect->Execute($uquery); //Checked
+                $current_user = $_SESSION['loginID'];
+                if($result->RecordCount() == 2) {
+                    
+                    $action = "finaldeluser";
+                    while($rows = $result->FetchRow()){
+                            $intUid = $rows['uid'];
+                            $selected = '';
+                            if ($intUid == $current_user)
+                                $selected = " selected='selected'";
+
+                            if ($postuserid != $intUid)
+                                $transfer_surveys_to = $intUid;
+                    }
                 }
 
-                //DELETE USER FROM TABLE
-                $dquery="DELETE FROM {$dbprefix}users WHERE uid=".$postuserid;	//	added by Dennis
-                $dresult=$connect->Execute($dquery);  //Checked
+                $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE owner_id = $current_user ;";
+                $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+                if($result->RecordCount() == 0) {
+                    $action = "finaldeluser";
+                 }
 
-                // Delete user rights
-                $dquery="DELETE FROM {$dbprefix}survey_permissions WHERE uid=".$postuserid;
-                $dresult=$connect->Execute($dquery); //Checked
+                if ($action=="finaldeluser")
+                {
+                    if (isset($_POST['transfer_surveys_to'])) {$transfer_surveys_to=sanitize_int($_POST['transfer_surveys_to']);}
+                    if ($transfer_surveys_to > 0){
+                        $query = "UPDATE ".db_table_name('surveys')." SET owner_id = $transfer_surveys_to WHERE owner_id=$postuserid";
+                        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+                    }
+                    $squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".$postuserid;
+                    $sresult = $connect->Execute($squery); //Checked
+                    $fields = $sresult->FetchRow($sresult);
 
-                if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
+                    if (isset($fields[0]))
+                    {
+                        $uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".$postuserid;	//		added by Dennis
+                        $uresult = $connect->Execute($uquery); //Checked
+                    }
 
-                $addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br /><br />\n";
-                $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
-                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                    //DELETE USER FROM TABLE
+                    $dquery="DELETE FROM {$dbprefix}users WHERE uid=".$postuserid;	//	added by Dennis
+                    $dresult=$connect->Execute($dquery);  //Checked
+
+                    // Delete user rights
+                    $dquery="DELETE FROM {$dbprefix}survey_permissions WHERE uid=".$postuserid;
+                    $dresult=$connect->Execute($dquery); //Checked
+
+                    if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
+
+                    $addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br /><br />\n";
+                    $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
+                    if ($transfer_surveys_to>0){
+                        $sTransferred_to = getUserNameFromUid($transfer_surveys_to);
+                        $addsummary .= $clang->gT("All of the user's surveys were transferred to ") .$sTransferred_to;
+                    }
+                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                }
+                else
+                {
+                    $current_user = $_SESSION['loginID'];
+                    $addsummary .= "<br />".$clang->gT("Transfer the user's surveys to: ")."\n";
+                    $addsummary .= "<form method='post' name='deluserform' action='admin.php?action=finaldeluser'><select name='transfer_surveys_to'>\n";
+                    $query = "SELECT users_name, uid FROM ".db_table_name('users').";";
+                    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+                    if($result->RecordCount() > 0) {
+                        while($rows = $result->FetchRow()){
+                                $intUid = $rows['uid'];
+                                $sUsersName = $rows['users_name'];
+                                $selected = '';
+                                if ($intUid == $current_user)
+                                    $selected = " selected='selected'";
+
+                                if ($postuserid != $intUid)
+                                    $addsummary .= "<option value='$intUid'$selected>$sUsersName</option>\n";
+                        }
+                    }
+                    $addsummary .= "</select><input type='hidden' name='uid' value='$postuserid'>";
+                    $addsummary .= "<input type='hidden' name='user' value='$postuser'>";
+                    $addsummary .= "<input type='hidden' name='action' value='finaldeluser'><br /><br />";
+                    $addsummary .= "<input type='submit' value='Delete User'></form>";
+                }
+                
             }
             else
             {
@@ -538,6 +598,8 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
     }
     $addsummary .= "</div>\n";
 }
+
+
 
 elseif ($action == "moduser")
 {
@@ -766,4 +828,16 @@ function fGetLoginAttemptUpdateQry($la,$sIp)
     return $query;
 }
 
-?>
+
+function getUserNameFromUid($uid){
+    $query = "SELECT users_name, uid FROM ".db_table_name('users')." WHERE uid = $uid;";
+
+    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+
+    
+    if($result->RecordCount() > 0) {
+        while($rows = $result->FetchRow()){
+            return $rows['users_name'];
+        }
+    }
+}

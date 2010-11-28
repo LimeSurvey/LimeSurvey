@@ -422,12 +422,16 @@ if(isset($_SESSION['loginID']))
             include('access_denied.php');
         }
     }
+    elseif ($action=='ajaxowneredit' || $action == 'ajaxgetusers'){
+        
+        include('surveylist.php');
+    }
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) &&
         !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) && 
         !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
         !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) && !isset($translateoutput) && //<AdV>
         !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
-        (isset($surveyid) || $action == "" || preg_match('/^(listsurveys|personalsettings|statistics|copysurvey|importsurvey|editsurveysettings|editsurveylocalesettings|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatedefaultvalues|ordergroups|dataentry|newsurvey|listsurveys|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
+        (isset($surveyid) || $action == "" || preg_match('/^(personalsettings|statistics|copysurvey|importsurvey|editsurveysettings|editsurveylocalesettings|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatedefaultvalues|ordergroups|dataentry|newsurvey|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|finaldeluser|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
     {
         if ($action=='editsurveysettings' || $action=='editsurveylocalesettings')
         {
@@ -435,6 +439,12 @@ if(isset($_SESSION['loginID']))
         }
         include('html_functions.php');
         include('html.php');
+    }
+
+    if ($action == "listsurveys"){
+        include('html_functions.php');
+        include('html.php');
+        include('surveylist.php');
     }
 
     if ($action == 'dataentry')
@@ -515,7 +525,7 @@ if(isset($_SESSION['loginID']))
     }
 
 
-    if ($action=='adduser' || $action=='deluser' || $action=='moduser' || $action=='setusertemplates' || $action=='usertemplates' ||                                        //Still to check
+    if ($action=='adduser' || $action=='deluser'|| $action=='finaldeluser' || $action=='moduser' || $action=='setusertemplates' || $action=='usertemplates' ||                                        //Still to check
     $action=='userrights' || $action=='modifyuser' || $action=='editusers' ||
     $action=='addusergroup' || $action=='editusergroup' || $action=='mailusergroup' ||
     $action=='delusergroup' || $action=='usergroupindb' || $action=='mailsendusergroup' ||

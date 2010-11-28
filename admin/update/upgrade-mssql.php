@@ -401,13 +401,7 @@ function db_upgrade($oldversion) {
         modify_database("", "create index [idx_expireref] on [prefix_sessions] ([expireref])"); echo $modifyoutput;
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 
-        modify_database("", "CREATE TABLE [prefix_failed_login_attempts] (
-                              [id] int(11) NOT NULL AUTO_INCREMENT,
-                              [ip] varchar(37) NOT NULL,
-                              [last_attempt] varchar(20) NOT NULL,
-                              [number_attempts] int(11) NOT NULL,
-                              PRIMARY KEY ([id])
-                            );"); echo $modifyoutput; flush();
+
         
 
 
@@ -472,6 +466,14 @@ function db_upgrade($oldversion) {
         
         
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+
+        modify_database("", "CREATE TABLE [prefix_failed_login_attempts] (
+                              [id] int(11) NOT NULL AUTO_INCREMENT,
+                              [ip] varchar(37) NOT NULL,
+                              [last_attempt] varchar(20) NOT NULL,
+                              [number_attempts] int(11) NOT NULL,
+                              PRIMARY KEY ([id]));"); echo $modifyoutput; flush();
+
     }
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
