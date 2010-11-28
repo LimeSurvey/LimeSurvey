@@ -74,12 +74,12 @@ function defdump($tablename)
 {
     global $connect;
     $def = "";
-    $def .="#------------------------------------------"."\n";
-    $def .="# Table definition for $tablename"."\n";
-    $def .="#------------------------------------------"."\n";
-    $def .= "DROP TABLE IF EXISTS $tablename;"."\n"."\n";
-    $def .= "CREATE TABLE $tablename ("."\n";
-    $result = db_execute_assoc("SHOW COLUMNS FROM $tablename") or die("Table $tablename not existing in database");
+    $def .="#\n";
+    $def .="# Table definition for {$tablename}"."\n";
+    $def .="#\n";
+    $def .= "DROP TABLE IF EXISTS {$tablename};"."\n"."\n";
+    $def .= "CREATE TABLE {$tablename} ("."\n";
+    $result = db_execute_assoc("SHOW COLUMNS FROM {$tablename}") or die("Table $tablename not existing in database");
     while($row = $result->FetchRow())
     {
         $def .= "    `$row[Field]` $row[Type]";
@@ -116,34 +116,41 @@ function datadump ($table) {
 
     global $connect;
 
-    $result = "#------------------------------------------"."\n";
+    $result = "#\n";
     $result .="# Table data for $table"."\n";
-    $result .="#------------------------------------------"."\n";
+    $result .="#\n";
 
     $query = db_execute_num("select * from $table");
     $num_fields = $query->FieldCount();
+    $aFieldNames= $connect->MetaColumnNames($table, true);
+    $sFieldNames= implode('`,`',$aFieldNames);
     $numrow = $query->RecordCount();
 
-    while($row=$query->FetchRow()){
-        @set_time_limit(5);
-        $result .= "INSERT INTO ".$table." VALUES(";
-        for($j=0; $j<$num_fields; $j++) {
-            if (isset($row[$j]) && !is_null($row[$j]))
-            {
-                $row[$j] = addslashes($row[$j]);
-                $row[$j] = preg_replace("#\n#","\\n",$row[$j]);
-                $result .= "\"$row[$j]\"";
-            }
-            else
-            {
-                $result .= "NULL";
-            }
+    if ($numrow>0)
+    {
+        $result .= "INSERT INTO `{$table}` (`{$sFieldNames}`) VALUES";
+        while($row=$query->FetchRow()){
+            @set_time_limit(5);
+            $result .= "(";
+            for($j=0; $j<$num_fields; $j++) {
+                if (isset($row[$j]) && !is_null($row[$j]))
+                {
+                    $row[$j] = addslashes($row[$j]);
+                    $row[$j] = preg_replace("#\n#","\\n",$row[$j]);
+                    $result .= "\"$row[$j]\"";
+                }
+                else
+                {
+                    $result .= "NULL";
+                }
 
-            if ($j<($num_fields-1)) $result .= ",";
-        }
-        $result .= ");\n";
-    } // while
-    return $result . "\n\n\n";
+                if ($j<($num_fields-1)) $result .= ",";
+            }
+            $result .= "),\n";
+        } // while
+        $result=substr($result,0,-2);
+    }
+    return $result . ";\n\n";
 }
 
 ?>
