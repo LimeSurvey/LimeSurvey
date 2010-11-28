@@ -1488,7 +1488,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL, $bT
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query);
             $results['question_attributes']++;
         }        
     }
