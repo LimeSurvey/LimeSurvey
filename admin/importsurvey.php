@@ -1187,8 +1187,16 @@ function CSVImportSurvey($sFullFilepath)
             $oldgid=array_search($connect->GetOne('select gid from '.db_table_name('questions').' where qid='.$aQIDReplacements[$conditionrowdata["cqid"]]),$aGIDReplacements);
             $conditionrowdata["qid"]=$aQIDReplacements[$conditionrowdata["qid"]];
             $conditionrowdata["cqid"]=$aQIDReplacements[$conditionrowdata["cqid"]];
-            $oldcfieldname=$conditionrowdata["cfieldname"];
-            $conditionrowdata["cfieldname"]=str_replace($oldsid.'X'.$oldgid.'X'.$oldcqid,$newsid.'X'.$aGIDReplacements[$oldgid].'X'.$conditionrowdata["cqid"],$conditionrowdata["cfieldname"]);
+            if ($oldcqid == 0)
+            {
+                // this is not an Answer cfieldname, for instance
+                // can this be a {TOKEN:XXX} cfieldname
+                // Do not convert the cfieldname in this case: Do nothing
+            }
+            else
+            {
+                $conditionrowdata["cfieldname"]=str_replace($oldsid.'X'.$oldgid.'X'.$oldcqid,$newsid.'X'.$aGIDReplacements[$oldgid].'X'.$conditionrowdata["cqid"],$conditionrowdata["cfieldname"]);
+            }
 
             $tablename=$dbprefix.'conditions';
             $conditioninsert = $connect->getInsertSQL($tablename,$conditionrowdata);
