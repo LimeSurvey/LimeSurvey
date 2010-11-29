@@ -495,10 +495,10 @@ function createinsertquery()
                     // if the files have not been saved already,
                     // move the files from tmp to the files folder
                     
-                    if (file_exists("upload/tmp/".$phparray[0]->filename))
+                    if (file_exists("tmp/upload/".$phparray[0]->filename))
                     {
                         // move files from temp to files directory
-                        $tmp = "upload/tmp/";
+                        $tmp = "tmp/upload/";
                         $target = "upload/surveys/". $thissurvey['sid'] . "/files/";
     
                         for ($i = 0; $i < count($phparray); $i++)

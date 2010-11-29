@@ -50,7 +50,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
     $file_index = $_GET['file_index'];
 
-    $filename = "upload/tmp/".$_SESSION['files'][$file_index]['filename'];
+    $filename = "tmp/upload/".$_SESSION['files'][$file_index]['filename'];
     $name = $_SESSION['files'][$file_index]['name'];
     $fh = fopen($filename, 'w') or die("can't open file");
     fclose($fh);

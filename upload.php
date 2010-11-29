@@ -50,7 +50,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 }
 
     $randfilename = randomkey(15);
-    $uploaddir = 'upload/tmp/';
+    $uploaddir = 'tmp/upload/';
     $randfileloc = $uploaddir . $randfilename;
     $filename = $_FILES['uploadfile']['name'];
     $size = 0.001 * $_FILES['uploadfile']['size'];

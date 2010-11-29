@@ -135,11 +135,11 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         }
 
         // fetch all filenames from $_SESSIONS['files'] and delete them all
-        // from the /upload/tmp/ directory
+        // from the /tmp/upload/ directory
         /*echo "<pre>";print_r($_SESSION);echo "</pre>";
         for($i = 1; isset($_SESSION['files'][$i]); $i++)
         {
-            unlink('upload/tmp/'.$_SESSION['files'][$i]['filename']);
+            unlink('tmp/upload/'.$_SESSION['files'][$i]['filename']);
         }
         */
         $completed = $thissurvey['surveyls_endtext'];

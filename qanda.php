@@ -3831,14 +3831,14 @@ function do_file_upload($ia)
                                 if ($pos)
                                 {
                                     $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"../upload/tmp/'+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
+                                                    display += '<tr><td><img src=\"../tmp/upload/'+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
                                                 else
                                                     display += '<tr><td><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }
                                 else
                                 {
                                     $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"upload/tmp/'+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
+                                                    display += '<tr><td><img src=\"tmp/upload/'+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
                                                 else
                                                     display += '<tr><td><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }
