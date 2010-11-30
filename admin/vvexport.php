@@ -19,7 +19,7 @@
 
 include_once("login_check.php");
 
-if (!bHasSurveyPermission($surveyid, 'export'))
+if (!bHasSurveyPermission($surveyid, 'responses','export'))
 {
     return;
 }
