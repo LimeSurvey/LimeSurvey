@@ -77,6 +77,25 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9522) to 1.90+ (build 9561) Legend: # updated feature, - bug fix 
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Bulgarian 100% - work done by Google Code-In participant Ivan Tsvetanov Mateev. Thank you! (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Lithuanian 100% - work done by Google Code-In participant Henry Tankus. Thank you! (c_schmitz)
+#Updated translation: Slovakian (c_schmitz)
+#Updated translation: Vietnamese 80% - work done by Google Code-In participant Nguyen Vinh. Thank you! (c_schmitz)
+-Fixed issue 04762: Notification about expired survey is not centered (at least in bluengrey-template) (tpartner)
+-Fixed issue 04763: Improve Layout of DualScale-Question-Type in bluengrey-Template (tpartner)
+-Fixed issue #4731: Certain kind of conditions were not properly set in .lss survey import (c_schmitz)
+-Fixed issue #4760: Lowered memory requirement for database dump on MySQL (c_schmitz)
+-Fixed issue #4761: Copy of dual scale question doesn't copy second answer scale (c_schmitz)
+-Fixed issue #4768: Graph images not scaled properly when statistics exported to PDF (c_schmitz)
+-Fixed issue: Question type wasn't properly set for converted subquestions on update from 1.87 or earlier (c_schmitz)
+-Fixed issue: conditions set on token attributes are lost on survey import (lemeur)
+
+
 Changes from 1.90+ (build 9487) to 1.90+ (build 9522) Legend: # updated feature, - bug fix 
 -Fixed issue #3613: bgcolor entered into HTML and thus not editable via CSS in templates (tpartner)
 -Fixed issue #4739: Exported question/question group structure file huge due to question attribute duplication (c_schmitz)
