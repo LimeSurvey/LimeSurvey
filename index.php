@@ -2320,6 +2320,16 @@ function buildsurveysession()
     // TOKEN REQUIRED BUT NO TOKEN PROVIDED
     if ($tokensexist == 1 && !returnglobal('token'))
     {
+        if ($thissurvey['nokeyboard']=='Y')
+        {
+            vIncludeKeypad();
+            $kpclass = "text-keypad";
+        }
+        else
+        {
+            $kpclass = "";
+        }
+
         // DISPLAY REGISTER-PAGE if needed
         // DISPLAY CAPTCHA if needed
         sendcacheheaders();
@@ -2341,7 +2351,7 @@ function buildsurveysession()
 	        <form id='tokenform' method='get' action='{$publicurl}/index.php'>
                 <ul>
                 <li>
-            <label for='token'>".$clang->gT("Token")."</label><input class='text' id='token' type='text' name='token' />";
+            <label for='token'>".$clang->gT("Token")."</label><input class='text $kpclass' id='token' type='text' name='token' />";
             
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";

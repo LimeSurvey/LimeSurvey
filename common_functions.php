@@ -7956,4 +7956,19 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
     return $bAnsw;
 }
 
-// Closing PHP tag intentionally left out - yes, it is okay
+/**
+ * Include Keypad headers
+ */
+function vIncludeKeypad()
+{
+    global $js_header_includes, $css_header_includes, $clang;
+
+    $js_header_includes[] = '/scripts/jquery/jquery.keypad.min.js';
+    if ($clang->langcode !== 'en')
+    {
+        $js_header_includes[] = '/scripts/jquery/locale/ui.keypad-'.$clang->langcode.'.js';
+    }
+    $css_header_includes[] = '/scripts/jquery/css/jquery.keypad.alt.css';
+}
+
+// Closing PHP tag intentionally omitted - yes, it is okay

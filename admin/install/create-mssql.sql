@@ -291,6 +291,7 @@ CREATE TABLE [prefix_surveys] (
   [showprogress] char(1) default 'N',
   [allowjumps] char(1) default 'N',
   [navigationdelay] tinyint default '0',
+  [nokeyboard] char(1) default 'N',
   
   PRIMARY KEY  ([sid])
 ) 

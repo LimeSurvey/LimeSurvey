@@ -280,6 +280,7 @@ CREATE TABLE `prefix_surveys` (
   `showprogress` char(1) default 'Y',
   `allowjumps` char(1) default 'N',
   `navigationdelay` tinyint(2) default '0',
+  `nokeyboard` char(1) default 'N',
    PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

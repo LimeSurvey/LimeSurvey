@@ -332,6 +332,17 @@
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
                 . "</select></li>\n";
 
+        //No Keyboard
+        $editsurvey .= "<li><label for='nokeyboard'>".$clang->gT("Keyboard-less operation")."</label>\n"
+                . "<select id='nokeyboard' name='nokeyboard'>\n"
+                . "<option value='Y'";
+        if (!isset($esrow['nokeyboard']) || !$esrow['nokeyboard'] || $esrow['nokeyboard'] == "Y") {$editsurvey .= " selected='selected'";}
+        $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+                . "<option value='N'";
+        if (isset($esrow['nokeyboard']) && $esrow['nokeyboard'] == "N") {$editsurvey .= " selected='selected'";}
+        $editsurvey .= ">".$clang->gT("No")."</option>\n"
+                . "</select></li>\n";
+
 	//Show Progress
 	$editsurvey .= "<li><label for='showprogress'>".$clang->gT("Show progress bar")."</label>\n"
                 . "<select id='showprogress' name='showprogress'>\n"

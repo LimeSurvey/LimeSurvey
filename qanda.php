@@ -3926,7 +3926,7 @@ function do_file_upload($ia)
 // ---------------------------------------------------------------
 function do_multipleshorttext($ia)
 {
-    global $dbprefix, $clang;
+    global $dbprefix, $clang, $thissurvey;
 
     if ($ia[8] == 'Y')
     {
@@ -3978,6 +3978,16 @@ function do_multipleshorttext($ia)
     else
     {
         $suffix = '';
+    }
+
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
     }
 
     if ($qidattributes['random_order']==1) {
@@ -4039,7 +4049,7 @@ function do_multipleshorttext($ia)
                 $answer_main .= "\t<li>\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
-				<textarea class="textarea" name="'.$myfname.'" id="answer'.$myfname.'" 
+				<textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'" 
 				rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
@@ -4068,7 +4078,7 @@ function do_multipleshorttext($ia)
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
                 $answer_main .= "\t<li>\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
-                . "\t<span>\n".$prefix."\n".'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+                . "\t<span>\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -4102,7 +4112,7 @@ function do_multipleshorttext($ia)
 // ---------------------------------------------------------------
 function do_multiplenumeric($ia)
 {
-    global $dbprefix, $clang, $js_header_includes, $css_header_includes;
+    global $dbprefix, $clang, $js_header_includes, $css_header_includes, $thissurvey;
 
     if ($ia[8] == 'Y')
     {
@@ -4188,6 +4198,16 @@ function do_multiplenumeric($ia)
     else
     {
         $suffix = '';
+    }
+
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "num-keypad";
+    }
+    else
+    {
+        $kpclass = "";
     }
 
     if(!empty($numbersonlyonblur))
@@ -4356,7 +4376,7 @@ function do_multiplenumeric($ia)
 
             if ($slider_layout === false)
             {
-                $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+                $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 if (isset($_SESSION[$myfname]))
                 {
                     $answer_main .= $_SESSION[$myfname];
@@ -4587,7 +4607,7 @@ function do_multiplenumeric($ia)
 // ---------------------------------------------------------------
 function do_numerical($ia)
 {
-    global $clang;
+    global $clang, $thissurvey;
 
     if ($ia[8] == 'Y')
     {
@@ -4642,8 +4662,18 @@ function do_numerical($ia)
         $acomma=".,";
     }
 
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "num-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
+
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
+    $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
     . "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
     . "maxlength=\"{$maxsize}\" />\n\t{$suffix}\n</p>\n";
     if ($qidattributes['hide_tip']==0)
@@ -4664,7 +4694,7 @@ function do_numerical($ia)
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
-    global $clang, $js_header_includes;
+    global $clang, $js_header_includes, $thissurvey;
 
     if ($ia[8] == 'Y')
     {
@@ -4715,6 +4745,15 @@ function do_shortfreetext($ia)
     {
         $suffix = '';
     }
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
     if (trim($qidattributes['display_rows'])!='')
     {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
@@ -4747,7 +4786,7 @@ function do_shortfreetext($ia)
         //NEW: textarea instead of input=text field
 
         // --> START NEW FEATURE - SAVE
-        $answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+        $answer .= '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
         .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
@@ -4758,7 +4797,7 @@ function do_shortfreetext($ia)
     else
     {
         //no question attribute set, use common input text field
-        $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
+        $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
         .htmlspecialchars($_SESSION[$ia[1]],ENT_QUOTES,'UTF-8')
         ."\" maxlength=\"$maxsize\" onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
     }
