@@ -249,6 +249,13 @@ if(isset($_SESSION['loginID']))
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))    {include('preview.php');}
         else { include('access_denied.php');}
     }
+    elseif ($action == 'previewgroup')
+    {
+	
+        require_once('../index.php');
+        exit;
+    
+    }
     elseif ($action=='addgroup' || $action=='editgroup' || $action=='ordergroups')
     {
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include('questiongrouphandling.php');}

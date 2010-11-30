@@ -811,10 +811,20 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
 //        // CREATE BLANK SPACE FOR IMAGINARY BUTTONS
 //
 //
-      $groupsummary .= ""
-        . "<img src='$imageurl/blank.gif' alt='' width='54' height='20'  />\n"
-        . "<img src='$imageurl/seperator.gif' alt=''  />"
-        . "<img src='$imageurl/blank.gif' alt='' width='50' height='20'  />";
+        $groupsummary .= ""
+        . "<img src='$imageurl/blank.gif' alt='' width='54' height='20'  />\n";
+
+        if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n"
+            . "<a href=\"#\" onclick=\"window.open('$scriptname?action=previewgroup&amp;sid=$surveyid&amp;gid=$gid','_blank')\""
+            . " title=\"".$clang->gTview("Preview current question group")."\">"
+            . "<img src='$imageurl/preview.png' alt='".$clang->gT("Preview current question group")."' name='PreviewGroup' /></a>\n" ;
+        }
+        else{
+            $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n";
+        }
+
 
 
         // EDIT CURRENT QUESTION GROUP BUTTON

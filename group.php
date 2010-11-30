@@ -14,268 +14,291 @@
  */
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
-
+$previewgrp = false;
+if (isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup')){
+    $previewgrp = true;
+}
+if (isset($_REQUEST['newtest']))
+	if ($_REQUEST['newtest']=="Y")
+		setcookie("limesurvey_timers", "0");
+$show_empty_group = false;
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
-if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
-if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
-if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
-if (!isset($gl)) {$gl=array('null');}
-$_SESSION['prevstep']=$_SESSION['step'];
-
-//Move current step ###########################################################################
-if (isset($move) && $move == 'moveprev' && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep-1;}
-if (isset($move) && $move == "movenext") {
-    if ($_SESSION['step']==$thisstep)
-    $_SESSION['step'] = $thisstep+1;
+if ($previewgrp){
+	$_SESSION['prevstep'] = 1;
+	$_SESSION['maxstep'] = 0;
 }
-if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
-{
-    $move = (int)$move;
-    if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep'])))
-        $_SESSION['step'] = $move;
-}
+else{
+    if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
+    if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
+    if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
+    if (!isset($gl)) {$gl=array('null');}
+    $_SESSION['prevstep']=$_SESSION['step'];
 
-// We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
-// Previously we used to keep the session and redirect the user to the
-// submit page.
-//if (isset($_SESSION['finished'])) {$move='movesubmit'; }
-
-
-
-//CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
-//First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && (
-    (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['prevstep'] == $_SESSION['maxstep']))) ||
-    (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
-{
-    $backok="Y";
-}
-else
-{
-    $backok="N";
-}
-
-//Now, we check mandatory questions if necessary
-//CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
-$notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
-
-//CHECK PREGS
-$notvalidated=checkpregs($move,$backok);
-
-// CHECK UPLOADED FILES
-$filenotvalidated = checkUploadedFileValidity($move, $backok);
-
-//SEE IF THIS GROUP SHOULD DISPLAY
-$show_empty_group = false;
-if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
-{
-    while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
+    //Move current step ###########################################################################
+    if (isset($move) && $move == 'moveprev' && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep-1;}
+    if (isset($move) && $move == "movenext") {
+        if ($_SESSION['step']==$thisstep)
+        $_SESSION['step'] = $thisstep+1;
+    }
+    if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
     {
-        if ($_SESSION['prevstep'] <= $_SESSION['step'])
-        {
-            $_SESSION['step']=$_SESSION['step']-1;
+        $move = (int)$move;
+        if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep'])))
+            $_SESSION['step'] = $move;
         }
-        else
+
+    // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
+    // Previously we used to keep the session and redirect the user to the
+    // submit page.
+    //if (isset($_SESSION['finished'])) {$move='movesubmit'; }
+
+
+
+    //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
+    //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
+    if ($allowmandbackwards==1 && (
+        (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['prevstep'] == $_SESSION['maxstep']))) ||
+        (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+    {
+        $backok="Y";
+    }
+    else
+    {
+        $backok="N";
+    }
+
+    //Now, we check mandatory questions if necessary
+    //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
+
+    //CHECK PREGS
+    $notvalidated=checkpregs($move,$backok);
+
+    // CHECK UPLOADED FILES
+    $filenotvalidated = checkUploadedFileValidity($move, $backok);
+
+    //SEE IF THIS GROUP SHOULD DISPLAY
+    $show_empty_group = false;
+    
+    if ($_SESSION['step']==0)
+		$show_empty_group = true;
+		
+    if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
+    {
+        while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
         {
-            $_SESSION['step']=$_SESSION['step']+1;
-        }
-        if ($_SESSION['step']>$_SESSION['totalsteps'])
-        {
-            // We are skipping groups, but we moved 'off' the last group.
-            // Now choose to implement an implicit submit (old behaviour),
-            // or create an empty page giving the user the explicit option to submit.
-            if (isset($show_empty_group_if_the_last_group_is_hidden) && $show_empty_group_if_the_last_group_is_hidden == true)
+            if ($_SESSION['prevstep'] <= $_SESSION['step'])
             {
-                $show_empty_group = true;
-                break;
-            } else
+                $_SESSION['step']=$_SESSION['step']-1;
+            }
+            else
             {
-                $move = "movesubmit";
-                submitanswer(); // complete this answer (submitdate)
-                break;
+                $_SESSION['step']=$_SESSION['step']+1;
+            }
+            if ($_SESSION['step']>$_SESSION['totalsteps'])
+            {
+                // We are skipping groups, but we moved 'off' the last group.
+                // Now choose to implement an implicit submit (old behaviour),
+                // or create an empty page giving the user the explicit option to submit.
+                if (isset($show_empty_group_if_the_last_group_is_hidden) && $show_empty_group_if_the_last_group_is_hidden == true)
+                {
+                	
+                    $show_empty_group = true;
+                    break;
+                } else
+                {
+                    $move = "movesubmit";
+                    submitanswer(); // complete this answer (submitdate)
+                    break;
+                }
             }
         }
     }
-}
 
-//SUBMIT ###############################################################################
-if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
-{
-    if ($thissurvey['refurl'] == "Y")
+    //SUBMIT ###############################################################################
+    if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
     {
-        if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
+        if ($thissurvey['refurl'] == "Y")
         {
-            $_SESSION['insertarray'][] = "refurl";
-        }
-    }
-
-    //COMMIT CHANGES TO DATABASE
-    if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
-    {
-        if ($thissurvey['assessments']== "Y")
-        {
-            $assessments = doAssessment($surveyid);
+            if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
+            {
+                $_SESSION['insertarray'][] = "refurl";
+            }
         }
 
-        if($thissurvey['printanswers'] != 'Y')
+        //COMMIT CHANGES TO DATABASE
+        if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
         {
-            killSession();
-        }
+            if ($thissurvey['assessments']== "Y")
+            {
+                $assessments = doAssessment($surveyid);
+            }
 
-        sendcacheheaders();
-        doHeader();
+            if($thissurvey['printanswers'] != 'Y')
+            {
+                killSession();
+            }
 
-        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+            sendcacheheaders();
+            doHeader();
 
-        //Check for assessments
-        if ($thissurvey['assessments']== "Y" && $assessments)
-        {
-            echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
-        }
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
-        // fetch all filenames from $_SESSIONS['files'] and delete them all
+            //Check for assessments
+            if ($thissurvey['assessments']== "Y" && $assessments)
+            {
+                echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+            }
+
+       // fetch all filenames from $_SESSIONS['files'] and delete them all
         // from the /tmp/upload/ directory
         /*echo "<pre>";print_r($_SESSION);echo "</pre>";
         for($i = 1; isset($_SESSION['files'][$i]); $i++)
         {
             unlink('tmp/upload/'.$_SESSION['files'][$i]['filename']);
-        }
-        */
-        $completed = $thissurvey['surveyls_endtext'];
-        $completed .= "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
-        $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
-        if ($thissurvey['printanswers'] == 'Y')
-        {
-            // ClearAll link is only relevant for survey with printanswers enabled
-            // in other cases the session is cleared at submit time
-            $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
-        }
-    }
-    else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
-    {
-        if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
-        {
-            $cookiename="PHPSID".returnglobal('sid')."STATUS";
-            setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
-        }
-
-        //Before doing the "templatereplace()" function, check the $thissurvey['url']
-        //field for limereplace stuff, and do transformations!
-        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
-        $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-
-        $content='';
-        $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-
-        //Check for assessments
-        if ($thissurvey['assessments']== "Y")
-        {
-            $assessments = doAssessment($surveyid);
-            if ($assessments)
+=======            // fetch all filenames from $_SESSIONS['files'] and delete them all
+            // from the /upload/tmp/ directory
+            /*echo "<pre>";print_r($_SESSION);echo "</pre>";
+            for($i = 1; isset($_SESSION['files'][$i]); $i++)
             {
-                $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+                unlink('upload/tmp/'.$_SESSION['files'][$i]['filename']);
             }
-        }
-
-        //Update the token if needed and send a confirmation email
-        if (isset($clienttoken) && $clienttoken)
-        {
-            submittokens();
-        }
-
-        //Send notifications
-
-        SendSubmitNotifications();
-
-
-        $content='';
-
-        $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-
-        //echo $thissurvey['url'];
-        //Check for assessments
-        if ($thissurvey['assessments']== "Y")
-        {
-            $assessments = doAssessment($surveyid);
-            if ($assessments)
-            {
-                $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
-            }
-        }
-
-
-        if (trim(strip_tags($thissurvey['surveyls_endtext']))=='')
-        {
-            $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
-            . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";
-        }
-        else
-        {
+            */
             $completed = $thissurvey['surveyls_endtext'];
-        }
-
-        // Link to Print Answer Preview  **********
-        if ($thissurvey['printanswers']=='Y')
-        {
-            $completed .= "<br /><br />"
-            ."<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
-            .$clang->gT("Print your answers.")
-            ."</a><br />\n";
-        }
-        //*****************************************
-
-        if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
-
-        // Link to Public statistics  **********
-        if ($thissurvey['publicstatistics']=='Y')
-        {
-            $completed .= "<br /><br />"
-            ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
-            .$clang->gT("View the statistics for this survey.")
-            ."</a><br />\n";
-        }
-        //*****************************************
-
-        $_SESSION['finished']=true;
-        $_SESSION['sid']=$surveyid;
-
-        sendcacheheaders();
-        if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
-        {
-            //Automatically redirect the page to the "url" setting for the survey
-
-            $url = $thissurvey['surveyls_url'];
-            $url = dTexts::run($thissurvey['surveyls_url']);
-            $url = passthruReplace($url, $thissurvey);
-            $url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
-            $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
-            $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
-            $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
-
-            header("Location: {$url}");
-
-        }
-
-
-        //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
-        if($thissurvey['printanswers'] != 'Y')
-        {
-            killSession();
-        }
-
-        doHeader();
-        echo $content;
-
-    }
-
-    echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
-    echo "\n<br />\n";
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-    doFooter();
-    exit;
+            $completed .= "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
+            $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
+            if ($thissurvey['printanswers'] == 'Y')
+            {
+                // ClearAll link is only relevant for survey with printanswers enabled
+                // in other cases the session is cleared at submit time
+                $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+            }
 }
+        else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
+        {
+            if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
+            {
+                $cookiename="PHPSID".returnglobal('sid')."STATUS";
+                setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
+            }
 
+            //Before doing the "templatereplace()" function, check the $thissurvey['url']
+            //field for limereplace stuff, and do transformations!
+            $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+            $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+
+            $content='';
+            $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+
+            //Check for assessments
+            if ($thissurvey['assessments']== "Y")
+            {
+                $assessments = doAssessment($surveyid);
+                if ($assessments)
+                {
+                    $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+                }
+            }
+
+            //Update the token if needed and send a confirmation email
+            if (isset($clienttoken) && $clienttoken)
+            {
+                submittokens();
+            }
+
+            //Send notifications
+
+            SendSubmitNotifications();
+
+
+            $content='';
+
+            $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+
+            //echo $thissurvey['url'];
+            //Check for assessments
+            if ($thissurvey['assessments']== "Y")
+            {
+                $assessments = doAssessment($surveyid);
+                if ($assessments)
+                {
+                    $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+                }
+            }
+
+
+            if (trim(strip_tags($thissurvey['surveyls_endtext']))=='')
+            {
+                $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
+                . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";
+            }
+            else
+            {
+                $completed = $thissurvey['surveyls_endtext'];
+            }
+
+            // Link to Print Answer Preview  **********
+            if ($thissurvey['printanswers']=='Y')
+            {
+                $completed .= "<br /><br />"
+                ."<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
+                .$clang->gT("Print your answers.")
+                ."</a><br />\n";
+            }
+            //*****************************************
+
+            if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
+
+            // Link to Public statistics  **********
+            if ($thissurvey['publicstatistics']=='Y')
+            {
+                $completed .= "<br /><br />"
+                ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+                .$clang->gT("View the statistics for this survey.")
+                ."</a><br />\n";
+            }
+            //*****************************************
+
+            $_SESSION['finished']=true;
+            $_SESSION['sid']=$surveyid;
+
+            sendcacheheaders();
+            if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
+            {
+                //Automatically redirect the page to the "url" setting for the survey
+
+                $url = $thissurvey['surveyls_url'];
+                $url = dTexts::run($thissurvey['surveyls_url']);
+                $url = passthruReplace($url, $thissurvey);
+                $url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
+                $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
+                $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
+                $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
+
+                header("Location: {$url}");
+
+            }
+
+
+            //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+            if($thissurvey['printanswers'] != 'Y')
+            {
+                killSession();
+            }
+
+            doHeader();
+            echo $content;
+
+        }
+
+        echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
+        echo "\n<br />\n";
+        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+        doFooter();
+        exit;
+    }
+}
 
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)
@@ -288,6 +311,31 @@ if ($surveyexists <1)
     doFooter();
     exit;
 }
+
+//GET GROUP DETAILS
+
+if ($previewgrp){
+	setcookie("limesurvey_timers", "0");
+    $_SESSION['step'] = $_REQUEST['gid']+1;
+    $grouparrayno=$_SESSION['step']-2;
+    $gid=$_SESSION['grouplist'][$grouparrayno][0];
+    $groupname=$_SESSION['grouplist'][$grouparrayno][1];
+    $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+}
+else{
+    if (($show_empty_group)||!isset($_SESSION['grouplist'])) {
+        $gid=-1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
+        $groupname=$clang->gT("Submit your answers");
+        $groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
+    } else
+    {
+        $grouparrayno=$_SESSION['step']-1;
+        $gid=$_SESSION['grouplist'][$grouparrayno][0];
+        $groupname=$_SESSION['grouplist'][$grouparrayno][1];
+        $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+    }
+}
+
 
 //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
@@ -319,18 +367,8 @@ if ($_SESSION['step'] > $_SESSION['maxstep'])
 //PRESENT SURVEY
 //******************************************************************************************************
 
-//GET GROUP DETAILS
-if ($show_empty_group) {
-    $gid=-1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
-    $groupname=$clang->gT("Submit your answers");
-    $groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
-} else
-{
-    $grouparrayno=$_SESSION['step']-1;
-    $gid=$_SESSION['grouplist'][$grouparrayno][0];
-    $groupname=$_SESSION['grouplist'][$grouparrayno][1];
-    $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
-}
+
+
 
 require_once("qanda.php"); //This should be qanda.php when finished
 
@@ -1208,7 +1246,6 @@ if (isset($qanda) && is_array($qanda))
         $help=$qa[2];
 
         $question_template = file_get_contents($thistpl.'/question.pstpl');
-
         if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
         {
             // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
@@ -1229,125 +1266,129 @@ if (isset($qanda) && is_array($qanda))
         };
     }
 	echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+    
+
 }
 echo "\n\n<!-- END THE GROUP -->\n";
 echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 echo "\n";
 
-$navigator = surveymover(); //This gets globalised in the templatereplace function
+if (!$previewgrp){
+    $navigator = surveymover(); //This gets globalised in the templatereplace function
 
-echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
-echo "\n";
+    echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
+    echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
+    echo "\n";
 
-if ($thissurvey['active'] != "Y")
-{
-    echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
-}
-
-
-if($thissurvey['allowjumps']=='Y')
-{
-    echo "\n\n<!-- PRESENT THE INDEX -->\n";
-
-    echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
-    for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
+    if ($thissurvey['active'] != "Y")
     {
-        $g = $_SESSION['grouplist'][$n];
-        if(!checkgroupfordisplay($g[0]))
-            continue;
+        echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+    }
 
-        $sText = FlattenText($g[1]);
 
-        $bGAnsw = true;
-        foreach($_SESSION['fieldarray'] as $ia)
+    if($thissurvey['allowjumps']=='Y')
+    {
+        echo "\n\n<!-- PRESENT THE INDEX -->\n";
+
+        echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
+        for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
         {
-            if($ia[5] != $g[0])
+            $g = $_SESSION['grouplist'][$n];
+            if(!checkgroupfordisplay($g[0]))
                 continue;
 
-            $qidattributes=getQuestionAttributes($ia[0]);
-            if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
-                continue;
+            $sText = FlattenText($g[1]);
 
-            if (!bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv))
+            $bGAnsw = true;
+            foreach($_SESSION['fieldarray'] as $ia)
             {
-                $bGAnsw = false;
-                break;
+                if($ia[5] != $g[0])
+                    continue;
+
+                $qidattributes=getQuestionAttributes($ia[0]);
+                if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
+                    continue;
+
+                if (!bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv))
+                {
+                    $bGAnsw = false;
+                    break;
+                }
+            }
+
+            ++$v;
+
+            $class = ($n == $_SESSION['step'] - 1? 'current': ($bGAnsw? 'answer': 'missing'));
+            if($v % 2) $class .= " odd";
+
+            $s = $n + 1;
+            echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
+        }
+
+        if($_SESSION['maxstep'] == $_SESSION['totalsteps'])
+        {
+            echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+                . $clang->gT("Submit")." ' name='move2' />\n";
+        }
+
+        echo '</div></div>';
+
+        echo "<script type=\"text/javascript\">\n"
+        . "  $(\".outerframe\").addClass(\"withindex\");\n"
+        . "  var idx = $(\"#index\");\n"
+        . "  var row = $(\"#index .row.current\");\n"
+        . "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
+        . "</script>\n";
+        echo "\n";
+    }
+
+    echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
+
+    if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
+    {
+        //if conditions exist, create hidden inputs for 'previously' answered questions
+        // Note that due to move 'back' possibility, there may be answers from next pages
+        // However we make sure that no answer from this page are inserted here
+        foreach (array_keys($_SESSION) as $SESak)
+        {
+            if (in_array($SESak, $_SESSION['insertarray'])  && !in_array($SESak, $inputnames))
+            {
+                echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES). "' />\n";
             }
         }
-
-        ++$v;
-
-        $class = ($n == $_SESSION['step'] - 1? 'current': ($bGAnsw? 'answer': 'missing'));
-        if($v % 2) $class .= " odd";
-
-        $s = $n + 1;
-        echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
     }
-
-    if($_SESSION['maxstep'] == $_SESSION['totalsteps'])
+    //SOME STUFF FOR MANDATORY QUESTIONS
+    if (remove_nulls_from_array($mandatorys))
     {
-        echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
-            . $clang->gT("Submit")." ' name='move2' />\n";
+        $mandatory=implode("|", remove_nulls_from_array($mandatorys));
+        echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
+    }
+    if (remove_nulls_from_array($conmandatorys))
+    {
+        $conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
+        echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
+    }
+    if (remove_nulls_from_array($mandatoryfns))
+    {
+        $mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
+        echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
+    }
+    if (remove_nulls_from_array($conmandatoryfns))
+    {
+        $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
+        echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
     }
 
-    echo '</div></div>';
+    echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
+    echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+    echo "<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n";
+    echo "<input type='hidden' name='token' value='$token' id='token' />\n";
+    echo "</form>\n";
 
-    echo "<script type=\"text/javascript\">\n"
-    . "  $(\".outerframe\").addClass(\"withindex\");\n"
-    . "  var idx = $(\"#index\");\n"
-    . "  var row = $(\"#index .row.current\");\n"
-    . "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n"
-    . "</script>\n";
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+
     echo "\n";
 }
-
-echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
-
-if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
-{
-    //if conditions exist, create hidden inputs for 'previously' answered questions
-    // Note that due to move 'back' possibility, there may be answers from next pages
-    // However we make sure that no answer from this page are inserted here
-    foreach (array_keys($_SESSION) as $SESak)
-    {
-        if (in_array($SESak, $_SESSION['insertarray'])  && !in_array($SESak, $inputnames))
-        {
-            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES). "' />\n";
-        }
-    }
-}
-//SOME STUFF FOR MANDATORY QUESTIONS
-if (remove_nulls_from_array($mandatorys))
-{
-    $mandatory=implode("|", remove_nulls_from_array($mandatorys));
-    echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
-}
-if (remove_nulls_from_array($conmandatorys))
-{
-    $conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-    echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
-}
-if (remove_nulls_from_array($mandatoryfns))
-{
-    $mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-    echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
-}
-if (remove_nulls_from_array($conmandatoryfns))
-{
-    $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-    echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
-}
-
-echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
-echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-echo "<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n";
-echo "<input type='hidden' name='token' value='$token' id='token' />\n";
-echo "</form>\n";
-
-echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-
-echo "\n";
 doFooter();
 
 // Closing PHP tag intentionally left out - yes, it is okay       

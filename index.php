@@ -78,7 +78,8 @@ else
     session_name("LimeSurveyRuntime-$surveyid");
 }
 session_set_cookie_params(0,$relativeurl.'/');
-@session_start();
+if (!isset($_SESSION))
+	@session_start();
 
 
 
@@ -152,11 +153,20 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     doFooter();
     exit;
 }
-
-if ($surveyid &&
+$previewgrp = false;
+if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
+	$rightquery="SELECT uid FROM {$dbprefix}survey_permissions WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID'].' group by uid');
+	$rightresult = db_execute_assoc($rightquery);
+	if ($rightresult->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	{
+		$previewgrp = true;
+	}
+}
+    	
+if (($surveyid &&
 $issurveyactive===false && $surveyexists &&
 isset ($surveyPreview_require_Auth) &&
-$surveyPreview_require_Auth == true)
+$surveyPreview_require_Auth == true) &&  $previewgrp == false)
 {
     // admin session and permission have not already been imported
     // for this particular survey
@@ -260,8 +270,8 @@ $surveyPreview_require_Auth == true)
     { // already authorized
         $previewright = true;
     }
-
-    if ( $previewright === false)
+    
+    if ($previewright === false)
     {
         // print an error message
         if (isset($_REQUEST['rootdir']))
@@ -287,7 +297,6 @@ $surveyPreview_require_Auth == true)
         exit;
     }
 }
-
 if (isset($_SESSION['srid']))
 {
     $saved_id = $_SESSION['srid'];
@@ -325,6 +334,7 @@ if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the lan
     $templang = sanitize_languagecode($_POST['lang']);
     $clang = SetSurveyLanguage( $surveyid, $templang);
     UpdateSessionGroupList($templang);  // to refresh the language strings in the group list session variable
+    
     UpdateFieldArray();        // to refresh question titles and question text
 }
 else
@@ -826,7 +836,10 @@ if (isset($move) || isset($_POST['saveprompt']))
     }
 }
 
-
+if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
+        $thissurvey['format'] = 'G';
+        buildsurveysession();
+}
 
 sendcacheheaders();
 //CALL APPROPRIATE SCRIPT
@@ -1052,6 +1065,10 @@ function makelanguagechanger()
     {
         $tokenparam = "";
     }
+    $previewgrp = false;
+    if (isset($_REQUEST['action']))
+        if ($_REQUEST['action']=='previewgroup')
+            $previewgrp = true;
 
     if (!empty($slangs))
     {
@@ -1072,15 +1089,20 @@ function makelanguagechanger()
 
         $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
         $htmlcode .= "<option value=\"$relativeurl/index.php?sid=". $surveyid ."&amp;lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
-
+        $sAddToURL = "";
+        $sTargetURL = "$relativeurl/index.php";
+        if ($previewgrp){
+            $sAddToURL = "&amp;action=previewgroup&amp;gid={$_REQUEST['gid']}";
+            $sTargetURL = "";
+        }
         foreach ($slangs as $otherlang)
         {
             if($otherlang != $lang)
-            $htmlcode .= "\t<option value=\"$relativeurl/index.php?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
+            $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
         }
         if($lang != GetBaseLanguageFromSurveyID($surveyid))
         {
-            $htmlcode .= "<option value=\"$relativeurl/index.php?sid=".$surveyid."&amp;lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";
+            $htmlcode .= "<option value=\"$sTargetURL?sid=".$surveyid."&amp;lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam$sAddToURL\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";
         }
 
         $htmlcode .= "</select>\n";
