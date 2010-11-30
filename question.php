@@ -411,7 +411,6 @@ if ($pluscon !== null)
     $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
 }
 //Build an array containing the conditions that apply for this page
-if(!$extendedConditionResult)	// we don't retrieve conditions while there are extended conditions for this page
 $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 if ($plus_conditions)
 {
