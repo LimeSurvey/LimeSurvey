@@ -531,7 +531,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         else
         {
           $surveysummary .= ""
-            . "<img src='{$imageurl}/questiongroupprevioushidden.png' title='' ";
+            . "<img src='{$imageurl}/questiongroupprevioushidden.png' title='' alt='".$clang->gT("No previous question group")."' "
+            ."name='noquestiongroupprevious' />";
         }
 
         $GidNext = getGidNext($surveyid, $gid);
@@ -545,7 +546,8 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         else
         {
           $surveysummary .= ""
-            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' ";
+            . "<img src='{$imageurl}/questiongroupnexthidden.png' title=' alt='".$clang->gT("No next question group")."' "
+            ."name='noquestiongroupnext' />";
         }
 		$surveysummary .= "</span>";
 
@@ -918,7 +920,8 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         else
         {
           $groupsummary .= ""
-            . "<img src='{$imageurl}/questionprevioushidden.png' title='' ";
+            . "<img src='{$imageurl}/questionprevioushidden.png' title='' alt='".$clang->gT("No previous question")."' "
+            ."name='noquestionprevious' />";
         }
 
 
@@ -933,7 +936,8 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         else
         {
           $groupsummary .= ""
-            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' ";
+            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' alt='".$clang->gT("No next question")."' "
+            ."name='noquestionnext' />";
         }
         $groupsummary .= "</span>";
 
