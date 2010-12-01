@@ -179,6 +179,28 @@ div.menubar {
     color: #333;
     width: 200px;
 }
+
+.menubar-right .arrow-wrapper {
+	display: inline; /* For IE */
+	position: relative;
+	margin: 0 5px 0 5px;
+	width: 20px;
+	vertical-align: bottom;
+}
+
+html>body .menubar-right .arrow-wrapper { /* For real browsers */
+	display: inline-block;
+}
+
+.menubar-right .arrow-wrapper a {
+	display: block;
+}
+
+.menubar-right .arrow-wrapper img {
+	display: block;
+	margin: 0;
+}
+
 /* END menubar CSS */    
 
 #surveydetails, #groupdetails, #questiondetails {

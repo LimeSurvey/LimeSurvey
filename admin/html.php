@@ -520,6 +520,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION GROUP
         // TODO: Fix functionality to previous and next question group buttons (Andrie)
         $GidPrev = getGidPrevious($surveyid, $gid);
+        $surveysummary .= "<span class='arrow-wrapper'>";
         if ($GidPrev != "")
         {
           $surveysummary .= ""
@@ -546,6 +547,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
           $surveysummary .= ""
             . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' ";
         }
+		$surveysummary .= "</span>";
 
 
         // ADD NEW GROUP TO SURVEY BUTTON
@@ -905,6 +907,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
                 // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION
         // TODO: Fix functionality to previos and next question  buttons (Andrie)
         $QidPrev = getQidPrevious($surveyid, $gid, $qid);
+        $groupsummary .= "<span class='arrow-wrapper'>";
         if ($QidPrev != "")
         {
           $groupsummary .= ""
@@ -932,6 +935,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
           $groupsummary .= ""
             . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' ";
         }
+        $groupsummary .= "</span>";
 
 
 
