@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Russian language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-31 07:00+0100\n"
-"PO-Revision-Date: 2010-12-02 00:54+0100\n"
+"PO-Revision-Date: 2010-12-02 00:57+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
-"X-Poedit-Bookmarks: 762,1396,1938,-1,-1,-1,-1,-1,-1,-1\n"
+"X-Poedit-Bookmarks: 762,1396,1938,706,-1,-1,-1,-1,-1,-1\n"
 "X-Poedit-SearchPath-0: C:\\Temp\\limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
@@ -41,7 +41,7 @@ msgstr "Заполнить БД"
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:44
 #, php-format
 msgid "Database `%s` has been successfully populated."
-msgstr "БД `%s` успешно создана."
+msgstr "БД `%s` успешно создана"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:45
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:62
@@ -211,7 +211,7 @@ msgstr "Нет информации о БД. Этот скрипт может б
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:86
 msgid "Database has been created."
-msgstr "БД создана."
+msgstr "БД создана"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:87
 msgid "Please click below to populate the database"
@@ -236,7 +236,7 @@ msgstr "БД, указанная в config.php, не существует."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/index.php:38
 msgid "LimeSurvey can attempt to create this database for you."
-msgstr "LimeSurvey попытается создать БД для Вас."
+msgstr "LimeSurvey попытается создать БД для Вас"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/index.php:39
 msgid "Your selected database name is:"
@@ -245,7 +245,7 @@ msgstr "Имя выбранной БД:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/index.php:54
 #, php-format
 msgid "A database named \"%s\" already exists."
-msgstr "БД с именем  \"%s\" уже существует."
+msgstr "БД с именем  \"%s\" уже существует"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/index.php:55
 msgid "Do you want to populate that database now by creating the necessary tables?"
@@ -715,7 +715,7 @@ msgstr "Выбор вопроса"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:710
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Извините, этот опрос не поддерживает такие типы вопросов. "
+msgstr "Извините, этот опрос не поддерживает такие типы вопросов"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:711
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:789
@@ -813,7 +813,7 @@ msgstr "Продолжить"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:788
 msgid "All answers are already selected in this quota."
-msgstr "Все ответы по данной квоте уже выбраны."
+msgstr "Все ответы по данной квоте уже выбраны"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:808
 msgid "Select Answer"
@@ -850,7 +850,7 @@ msgstr "Закончить опрос с предупреждением"
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:896
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1147
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "Ваши ответы превысили квоту для этого опроса."
+msgstr "Ваши ответы превысили квоту для этого опроса"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:149
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:224
@@ -868,7 +868,7 @@ msgstr "Библиотека GD не установлена. Она необхо
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:226
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:230
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
-msgstr "Для получения дополнительной информации перейдите на  http://us2.php.net/manual/en/ref.image.php"
+msgstr "Для получения дополнительной информации перейдите на http://us2.php.net/manual/en/ref.image.php"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:229
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
@@ -1143,7 +1143,7 @@ msgstr "Ввод данных"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:80
 msgid "You have not selected a survey for data-entry."
-msgstr "Вы не выбрали опрос для ввода данных."
+msgstr "Вы не выбрали опрос для ввода данных"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:132
 #: /var/lib/limesurvey-svn/subversion1x/index.php:655
@@ -1156,7 +1156,7 @@ msgstr "Предоставленный маркер доступа недейс�
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:140
 msgid "There is already a recorded answer for this token"
-msgstr "Для данного маркера доступа уже есть записанные ответы"
+msgstr "Для данного маркера доступа уже есть записанные ответы."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:143
 msgid "Follow the following link to update it"
@@ -1184,7 +1184,7 @@ msgstr "Вы должны ввести пароль для сохранённо�
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:172
 #: /var/lib/limesurvey-svn/subversion1x/save.php:287
 msgid "Your passwords do not match."
-msgstr "Пароль не совпадает, введите еще раз"
+msgstr "Пароль не совпадает, введите еще раз."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:176
 msgid "Try again"
@@ -1230,7 +1230,7 @@ msgstr "Ваши ответы успешно сохранены. На ваш а�
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:312
 msgid "A token entry for the saved survey has been created too."
-msgstr "Так же была создана запись маркера доступа для сохраненного опроса."
+msgstr "Также была создана запись маркера доступа для сохраненного опроса."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:321
 #: /var/lib/limesurvey-svn/subversion1x/save.php:367
@@ -1240,7 +1240,7 @@ msgstr "Детали сохраненного опроса"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:322
 #: /var/lib/limesurvey-svn/subversion1x/save.php:368
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
-msgstr "Вы, или кто-то другой, используя Ваш e-mail, сохранил незаконченный опрос. Используя нижепреведенные имя, пароль и ссылку, Вы можете вернуться и продолжить опрос с того места, где остановились."
+msgstr "Вы или кто-то другой, используя Ваш адрес E-mail, сохранил незаконченный опрос. Используя приведённые ниже имя, пароль и ссылку, Вы можете вернуться и продолжить опрос с того места, где остановились."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:324
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:834
@@ -1268,7 +1268,7 @@ msgstr "Чтобы загрузить опрос, нажмите эту ссыл
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:334
 msgid "An email has been sent with details about your saved survey"
-msgstr "Сообщение с детальной информацией Вашего сохраненного опроса было отправлено."
+msgstr "Сообщение с детальной информацией Вашего сохранённого опроса было отправлено."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:346
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1308
@@ -1501,7 +1501,7 @@ msgstr "Сохранить для дальнейшего завершения п
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1309
 msgid "Record has been updated."
-msgstr "Запись обновлена."
+msgstr "Запись обновлена"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1330
 msgid "Record Deleted"
@@ -1577,7 +1577,7 @@ msgstr "Метка 2"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6661
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6715
 msgid "Please choose..."
-msgstr "Пожалуйста, выберите.."
+msgstr "Пожалуйста, выберите..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1832
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2492
@@ -1587,7 +1587,7 @@ msgstr "Комментарий"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2460
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Опрос еще не активен. Выш ответ не может быть сохранен"
+msgstr "Опрос еще не активен. Ваш ответ не может быть сохранён."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2470
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:268
@@ -1602,13 +1602,13 @@ msgstr "Экспорт в PDF"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:133
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1788
 msgid "Submit Your Survey."
-msgstr "Отправить вашу анкету."
+msgstr "Отправить вашу анкету"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:135
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1788
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:691
 msgid "Thank you for completing this survey."
-msgstr "Благодарим за участие в опросе."
+msgstr "Благодарим за участие в опросе!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:149
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:687
@@ -1876,7 +1876,7 @@ msgstr "Показать последние 50 ответов"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:455
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:464
 msgid "Dataentry Screen for Survey"
-msgstr "Ручной ввод ответов"
+msgstr "Прямой ввод ответов"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:72
 msgid "Get statistics from these responses"
@@ -1923,7 +1923,7 @@ msgstr "Создать опрос"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:63
 msgid "The defined LimeSurvey database does not exist"
-msgstr "Заданная база данных LimeSurvey не существует"
+msgstr "Заданная база данных LimeSurvey не существует."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:64
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
@@ -2209,7 +2209,7 @@ msgstr "Атрибуты вопросов:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:98
 msgid "Question import is complete."
-msgstr "Импорт вопроса выполнен."
+msgstr "Импорт вопроса выполнен"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:99
 msgid "Go to question"
@@ -2229,23 +2229,23 @@ msgstr "Этот файл слишком стар. Поддерживаются 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:279
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:322
 msgid "You can't import a question which doesn't support at least the survey base language."
-msgstr "Вы не можете импортировать вопрос, который не поддерживает язык, выбранный для текущего опроса."
+msgstr "Вы не можете импортировать вопрос, который не поддерживает язык, выбранный для текущего опроса"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:293
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:336
 msgid "You can't import answers which doesn't support at least the survey base language."
-msgstr "Вы не можете импортировать ответы, которые не поддерживают выбранный для текущего опроса язык."
+msgstr "Вы не можете импортировать ответы, которые не поддерживают выбранный для текущего опроса язык"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:308
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:351
 msgid "You can't import label sets which don't support the current survey's base language"
-msgstr "Вы не можете импортировать набор меток, который не поддерживает язык, выбранный для текущего опроса."
+msgstr "Вы не можете импортировать набор меток, который не поддерживает язык, выбранный для текущего опроса"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:578
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:683
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:914
 msgid "Faulty line in import - fields and data don't match"
-msgstr "Выявлена сбойная строка при импорте — несоответствие полей и данных"
+msgstr "Выявлена сбойная строка при импорте — несоответствие полей и данных."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:724
 msgid "The languages of the imported question file must at least include the base language of this survey."
@@ -2374,7 +2374,7 @@ msgstr "Формат"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:136
 msgid "Microsoft Word (Latin charset)"
-msgstr "Microsoft Word (латиница)"
+msgstr "Microsoft Word (все кодировки)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:144
 msgid "Microsoft Excel (All charsets)"
@@ -2507,7 +2507,7 @@ msgstr "N/A"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1213
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1214
 msgid "Tokens problem - token table missing"
-msgstr "Проблема с маркерами доступа: таблица маркеров отсутствует"
+msgstr "Проблема с маркерами доступа: таблица маркеров отсутствует."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:45
 msgid "Responses"
@@ -2706,7 +2706,7 @@ msgstr "Изменение установок безопасности опро�
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:462
 msgid "This survey is not active, data entry is not allowed"
-msgstr "Опрос не активирован, ввод ответов не разрешены"
+msgstr "Опрос не активирован, ввод ответов не разрешён."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:473
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:479
@@ -2819,7 +2819,7 @@ msgstr "Ответы для этого опроса анонимны."
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:763
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2869
 msgid "This survey is NOT anonymous."
-msgstr "Это НЕанонимный опрос."
+msgstr "Этот опрос — НЕ анонимный."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:764
 msgid "It is presented question by question."
@@ -2835,27 +2835,27 @@ msgstr "Отображение: на одной странице."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:767
 msgid "Responses will be date stamped"
-msgstr "Ответы будут иметь дату"
+msgstr "Ответы будут иметь дату."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:768
 msgid "IP Addresses will be logged"
-msgstr "IP адрес будет записан"
+msgstr "IP адрес будет записан."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:769
 msgid "Referer-URL will be saved"
-msgstr "Ссылающийся URL будет записан"
+msgstr "Ссылающийся URL будет записан."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:770
 msgid "It uses cookies for access control."
-msgstr "Для контроля доступа будут использованы cookie ."
+msgstr "Для контроля доступа будут использованы cookie."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:771
 msgid "If tokens are used, the public may register for this survey"
-msgstr "Если будут использованы маркеры доступа, то любой может зарегистрироваться для участия в этом опросе"
+msgstr "Если будут использованы маркеры доступа, то любой может зарегистрироваться для участия в этом опросе."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:772
 msgid "Participants can save partially finished surveys"
-msgstr "Участники могут сохранять частично завершенные опросы"
+msgstr "Участники могут сохранять частично завершенные опросы."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:776
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1284
@@ -2962,7 +2962,7 @@ msgstr "Основной язык:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:872
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2531
 msgid "Additional Languages"
-msgstr "Дополнительные языки"
+msgstr "Дополнительные языки:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:894
 msgid "Exit Link"
@@ -2990,11 +2990,11 @@ msgstr "Опрос не может быть активирован."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:932
 msgid "You need to add question groups"
-msgstr "Необходимо добавить группы вопросов"
+msgstr "Необходимо добавить группы вопросов."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:936
 msgid "You need to add questions"
-msgstr "Необходимо добавить вопросы"
+msgstr "Необходимо добавить вопросы."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:984
 msgid "Edit current question group"
@@ -3182,11 +3182,11 @@ msgstr "Предупреждение"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1331
 msgid "You need to add answer options to this question"
-msgstr "Необходимо добавить варианты ответов к этому вопросу"
+msgstr "Необходимо добавить варианты ответов к этому вопросу."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1340
 msgid "You need to add subquestions to this question"
-msgstr "Необходимо добавить подвопросы к этому вопросу"
+msgstr "Необходимо добавить подвопросы к этому вопросу."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1350
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:76
@@ -3780,7 +3780,7 @@ msgstr "Если Вы включите -Анонимные ответы- и со
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2920
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2946
 msgid "Cannot be changed"
-msgstr "Не может быть изменено"
+msgstr "Не может быть изменено."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2889
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3429
@@ -3802,11 +3802,11 @@ msgstr "Сохранить IP адрес?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2918
 msgid "Responses will not have the IP address logged."
-msgstr "Ответы не будут иметь записанный IP адрес."
+msgstr "IP адрес респондента не будет записан."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2919
 msgid "Responses will have the IP address logged"
-msgstr "Ответы будут иметь записанный IP адрес"
+msgstr "IP адрес респондента будет записан."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2939
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3443
@@ -3899,7 +3899,7 @@ msgstr "Редактирование настроек опроса — Шаг 2 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3196
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3198
 msgid "Welcome message:"
-msgstr "Приветственное сообщение"
+msgstr "Приветственное сообщение:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3094
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3096
@@ -4145,7 +4145,7 @@ msgid ""
 msgstr ""
 "Группа не может быть добавлена.\\n"
 "\\n"
-"Отсутствует обязательное имя группы для следующих языков"
+"Отсутствует обязательное имя группы для следующих языков:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:106
 msgid "Error: The database reported the following error:"
@@ -4153,12 +4153,12 @@ msgstr "Ошибка. СУБД вернула сообщение об ошибк
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:156
 msgid "Group could not be updated"
-msgstr "Группа не может быть обновлена"
+msgstr "Группа не может быть обновлена."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:181
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:213
 msgid "Group could not be deleted"
-msgstr "Группа не может быть удалена"
+msgstr "Группа не может быть удалена."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:223
 msgid "The question could not be added. You must enter at least enter a question code."
@@ -4179,15 +4179,15 @@ msgstr "Вопрос не может быть создан."
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:587
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:643
 msgid "Question could not be updated"
-msgstr "Вопрос  не может быть обновлен"
+msgstr "Вопрос не может быть обновлен."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:504
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr "Вопрос не может быть обновлен. Есть условия для других вопросов, которые связаны с ответами на него. И изменение типа вызовет проблемы. Удалите сначала условия, затем  измените тип этого вопроса."
+msgstr "Вопрос не может быть обновлен. Есть условия для других вопросов, которые связаны с ответами на него. Поэтому изменение типа вопроса вызовет проблемы. Удалите сначала условия, затем измените тип данного вопроса."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:615
 msgid "This question relies on other question's answers and can't be moved above groupId:"
-msgstr "Этот вопрос связан с ответами на другие вопросы и не может быть поставлен выше groupId "
+msgstr "Этот вопрос связан с ответами на другие вопросы и не может быть поставлен выше groupId:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:616
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:628
@@ -4201,7 +4201,7 @@ msgstr "См. условия:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:627
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
-msgstr "Некоторые вопросы связаны с ответами на этот вопрос. Вы не можете поставить этот вопрос ниже groupId "
+msgstr "Некоторые вопросы связаны с ответами на этот вопрос. Вы не можете поставить этот вопрос ниже groupId:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:653
 msgid "Question could not be added. You must insert a code in the mandatory field"
@@ -4217,7 +4217,7 @@ msgstr "Сбой обновления ответов"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:893
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
-msgstr "Ответы с кодом 0 или без кода не допустимы и сохранены не будут"
+msgstr "Ответы с кодом 0 или без кода не допустимы и сохранены не будут."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:894
 msgid "Duplicate codes found, these entries won't be updated"
@@ -4722,7 +4722,7 @@ msgstr "Вы успешно вошли в систему."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:320
 msgid "Logout successful."
-msgstr "Завершение сеанса выполнено успешно."
+msgstr "Вы успешно вышли из системы"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:335
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:339
@@ -7481,7 +7481,7 @@ msgstr "Проверить данные"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:180
 msgid "You have to login first."
-msgstr "Вы должны выполнить вход в систему."
+msgstr "Вход в систему"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:205
 msgid "Login"
@@ -7489,7 +7489,7 @@ msgstr "Войти"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:206
 msgid "Forgot Your Password?"
-msgstr "Забыли свой пароль?"
+msgstr "Забыли пароль?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:101
 msgid "There are no groups available."
@@ -9188,7 +9188,7 @@ msgstr "Количество ответов, отображаемых перед
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:378
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
-msgstr "Внимание: Активирован демо-режим. Параметы, отмеченные (*) не могут быть сохранены."
+msgstr "Внимание: Активирован демо-режим. Параметы, отмеченные (*), не могут быть сохранены."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:469
 msgid "System overview"
