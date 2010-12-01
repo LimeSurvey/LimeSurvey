@@ -5,6 +5,13 @@ require_once(dirname(__FILE__).'/common.php');
 require_once($homedir.'/classes/core/class.progressbar.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
 
+if (isset($_GET['filegetcontents']))
+{
+    $handle = file_get_contents("tmp/upload/".$_GET['filegetcontents']);
+    echo $handle;
+    exit;
+}
+
 if (!isset($surveyid))
 {
     $surveyid=returnglobal('sid');
