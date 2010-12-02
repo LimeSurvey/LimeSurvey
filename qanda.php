@@ -4387,9 +4387,14 @@ function do_multiplenumeric($ia)
 
             if ($slider_layout === false)
             {
+                $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                $sSeperator = $sSeperator['seperator'];
+                
+                
                 $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 if (isset($_SESSION[$myfname]))
                 {
+                    $_SESSION[$myfname] = str_replace('.',$sSeperator,$_SESSION[$myfname]);
                     $answer_main .= $_SESSION[$myfname];
                 }
 
@@ -4513,6 +4518,8 @@ function do_multiplenumeric($ia)
      color: #0f0;
      }
      */
+    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeperator = $sSeperator['seperator'];
     if ($max_num_value || $equals_num_value || $min_num_value)
     { //Do value validation
         $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
@@ -4524,13 +4531,13 @@ function do_multiplenumeric($ia)
         foreach ($inputnames as $inputname)
         {
             $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
-            $javainputnames[]="parseInt(parseFloat(document.limesurvey.answer".$inputname.".value)*1000)";
+            $javainputnames[]="parseInt(parseFloat((document.limesurvey.answer".$inputname.".value).split(',').join('.'))*1000)";
         }
         $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
         $answer .= "       totalvalue_".$ia[1]."=(";
         $answer .= implode(" + ", $javainputnames);
         $answer .= ")/1000;\n";
-        $answer .= "       $('#totalvalue_{$ia[1]}').val(parseFloat(totalvalue_{$ia[1]}));\n";
+        $answer .= "       $('#totalvalue_{$ia[1]}').val((parseFloat(totalvalue_{$ia[1]})+'').split('.').join('{$sSeperator}'));\n";
         $answer .= "       var ua = navigator.appVersion.indexOf('MSIE');\n";
         $answer .= "       var ieAtt = ua != -1 ? 'className' : 'class';\n";
         $answer .= "       switch(method)\n";
@@ -4676,6 +4683,7 @@ function do_numerical($ia)
     }
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
+    $_SESSION[$ia[1]] = str_replace('.',$sSeperator,$_SESSION[$ia[1]]);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
