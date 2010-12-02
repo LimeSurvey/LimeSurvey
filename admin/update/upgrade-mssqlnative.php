@@ -474,6 +474,8 @@ function db_upgrade($oldversion) {
                             );"); echo $modifyoutput; flush();
 
     }
+    modify_database("", "ALTER TABLE  [prefix_surveys_languagesettings] ADD  [surveyls_numberformat] int(11) default 0 NOT NULL AFTER  [surveyls_dateformat]"); echo $modifyoutput; flush();
+    
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
   	return true;
 }

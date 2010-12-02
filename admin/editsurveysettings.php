@@ -25,7 +25,6 @@
     else
     {
         $js_admin_includes[]='scripts/surveysettings.js';
-
         if ($action == "newsurvey") {
             //New survey, set the defaults
             $esrow = array();

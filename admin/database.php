@@ -1256,7 +1256,8 @@ if(isset($surveyid))
                 . "surveyls_endtext='".db_quote($_POST['endtext_'.$langname])."',\n"
                 . "surveyls_url='".db_quote($_POST['url_'.$langname])."',\n"
                 . "surveyls_urldescription='".db_quote($_POST['urldescrip_'.$langname])."',\n"
-                . "surveyls_dateformat='".db_quote($_POST['dateformat_'.$langname])."'\n"
+                . "surveyls_dateformat='".db_quote($_POST['dateformat_'.$langname])."',\n"
+                . "surveyls_numberformat='".db_quote($_POST['numberformat_'.$langname])."'\n"
                 . "WHERE surveyls_survey_id=".$postsid." and surveyls_language='".$langname."'";
                 $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());   // Checked
             }
@@ -1272,6 +1273,11 @@ if(isset($surveyid))
 elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+    // $_POST['language']
+
+    $supportedLanguages = getLanguageData();
+    $numberformatid = $supportedLanguages[$_POST['language']]['radixpoint'];
+    
     if ($_POST['url'] == 'http://') {$_POST['url']="";}
     if (!$_POST['surveyls_title'])
     {
@@ -1422,7 +1428,8 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'email_admin_notification'=>conditional_nl2br($aDefaultTexts['admin_notification'],$is_html_email,'unescaped'),
                             'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
                             'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
-                            'surveyls_dateformat'=>$_POST['dateformat']
+                            'surveyls_dateformat'=>$_POST['dateformat'],
+                            'surveyls_numberformat'=>$numberformatid
                           );
         $dbtablename=db_table_name_nq('surveys_languagesettings');
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);

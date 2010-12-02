@@ -322,7 +322,8 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [email_admin_notification] TEXT NULL,
   [email_admin_responses_subj] VARCHAR(255) NULL,
   [email_admin_responses] TEXT NULL,
-  [surveyls_dateformat] INT NOT NULL DEFAULT 1, 
+  [surveyls_dateformat] INT NOT NULL DEFAULT 1,
+  [surveyls_numberformat] INT NOT NULL DEFAULT 0, 
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 )
 ;

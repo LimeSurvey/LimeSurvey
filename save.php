@@ -517,9 +517,10 @@ function createinsertquery()
 
                 else
                 {
-                    if ($fieldexists['type']=='N') //sanitize numerical fields
+                    if (($fieldexists['type']=='N')|| ($fieldexists['type']=='K')) //sanitize numerical fields
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
+                        
                     }
                     elseif ($fieldexists['type']=='D' && in_array($value,$postedfieldnames))  // convert the date to the right DB Format but only if it was posted
                     {
@@ -670,7 +671,7 @@ function createinsertquery()
                         }
                         else
                         {
-                            if ($fieldinfo['type']=='N') //sanitize numerical fields
+                            if (($fieldinfo['type']=='N')||($fieldinfo['type']=='K')) //sanitize numerical fields
                             {
                                 $_POST[$field]=sanitize_float($_POST[$field]);
                             }

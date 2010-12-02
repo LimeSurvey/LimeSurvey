@@ -1695,6 +1695,7 @@ function do_date($ia)
     }
 
     $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
+    $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
     if (trim($qidattributes['dropdown_dates'])!=0) {
         if (!empty($_SESSION[$ia[1]]))
@@ -2300,10 +2301,12 @@ function do_list_radio($ia)
     if (isset($other) && $other=='Y')
     {
 
+        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeperator = $sSeperator['seperator'];
 
         if ($qidattributes['other_numbers_only']==1)
         {
-            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         }
         else
         {
@@ -2909,7 +2912,9 @@ function do_multiplechoice($ia)
 
     if ($qidattributes['other_numbers_only']==1)
     {
-        $numbersonly = 'return goodchars(event,"0123456789.")';
+        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeperator= $sSeperator['seperator'];
+        $numbersonly = 'return goodchars(event,"0123456789'.$sSeperator.'")';
     }
     else
     {
@@ -3355,7 +3360,9 @@ function do_multiplechoice_withcomments($ia)
 
     if ($qidattributes['other_numbers_only']==1)
     {
-        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeperator = $sSeperator['seperator'];
+        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
     }
     else
     {
@@ -3941,7 +3948,9 @@ function do_multipleshorttext($ia)
 
     if ($qidattributes['numbers_only']==1)
     {
-		$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeperator = $sSeperator['seperator'];
+		$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
     }
     else
     {
@@ -4124,8 +4133,10 @@ function do_multiplenumeric($ia)
     }
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
+    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeperator = $sSeperator['seperator'];
     //Must turn on the "numbers only javascript"
-    $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\'.\')>0 && String.fromCharCode(getkey(event))==\'.\') return false; return goodchars(event,\'0123456789.\')"';
+    $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\''.$sSeperator.'\')>0 && String.fromCharCode(getkey(event))==\''.$sSeperator.'\') return false; return goodchars(event,\'0123456789'.$sSeperator.'\')"';
     if (trim($qidattributes['maximum_chars'])!='')
     {
         $maxsize=$qidattributes['maximum_chars'];
@@ -4659,8 +4670,12 @@ function do_numerical($ia)
     }
     else
     {
-        $acomma=".,";
+        $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
+        $acomma = $acomma['seperator'];
+
     }
+    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeperator = $sSeperator['seperator'];
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -4671,7 +4686,6 @@ function do_numerical($ia)
     {
         $kpclass = "";
     }
-
     // --> START NEW FEATURE - SAVE
     $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
     . "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
@@ -4709,7 +4723,9 @@ function do_shortfreetext($ia)
 
     if ($qidattributes['numbers_only']==1)
     {
-        $numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeperator = $sSeperator['seperator'];
+        $numbersonly = 'onkeypress="return goodchars(event,\'0123456789'.$sSeperator.'\')"';
     }
     else
     {
@@ -6655,9 +6671,11 @@ function do_array_multiflexi($ia)
                         $answer .= "\t</select>\n";
                     } elseif ($inputboxlayout == true)
                     {
+                        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                        $sSeperator = $sSeperator['seperator'];
                         $answer .= "\t<input type='text' class=\"multiflexitext\" name=\"$myfname2\" id=\"answer{$myfname2}\" size=5 title=\""
                         . html_escape($labelans[$thiskey]).'"'
-                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'0123456789.')\""
+                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'0123456789$sSeperator')\""
                         . " value=\"";
                         if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
                             $answer .= $_SESSION[$myfname2];

@@ -335,7 +335,8 @@ CREATE TABLE prefix_surveys_languagesettings (
     email_admin_notification text,
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
-    surveyls_dateformat integer DEFAULT 1 NOT NULL
+    surveyls_dateformat integer DEFAULT 1 NOT NULL,
+    surveyls_numberformat integer NOT NULL DEFAULT 1
 );
 
 ALTER TABLE ONLY prefix_surveys_languagesettings ADD CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language);

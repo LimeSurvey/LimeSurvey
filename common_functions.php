@@ -5085,8 +5085,10 @@ function getArrayFilterExcludesForQuestion($qid)
                     $qresult = db_execute_assoc($query);  //Checked
                     while ($code = $qresult->fetchRow())
                     {
-                        if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
-                        || $_SESSION[$fields[1]] == $code['title'])						array_push($selected,$code['title']);
+                        if (isset($_SESSION[$fields[1]]))
+                            if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
+                            || $_SESSION[$fields[1]] == $code['title'])
+                                array_push($selected,$code['title']);
                     }
                     //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                     $query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";

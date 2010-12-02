@@ -464,7 +464,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
         $surveylsrowdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_register']);
         $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
         unset($surveylsrowdata['lastpage']);
-
+        $surveylsrowdata['surveyls_numberformat']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_numberformat']);;
         $surveylsrowdata['surveyls_survey_id']=$newsid;
         $newvalues=array_values($surveylsrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly

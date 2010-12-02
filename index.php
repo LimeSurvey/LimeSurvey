@@ -1983,6 +1983,7 @@ function submittokens($quotaexit=false)
             }
 
             $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+            $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
             $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
 
             $subject=Replacefields($subject, $fieldsarray);

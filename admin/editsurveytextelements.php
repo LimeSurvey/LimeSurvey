@@ -74,8 +74,18 @@
                 }
                 $tab_content[$i].= ">".$dateformatdata['dateformat'].'</option>';
             }
+            $tab_content[$i].= "</select></li>"
+            . "<li><label for=''>".$clang->gT("Decimal Point Format:")."</label>\n";
+            $tab_content[$i].="<select size='1' name='numberformat_".$esrow['surveyls_language']."'>\n";
+            foreach (getRadixPointData() as $index=>$radixptdata)
+            {
+                $tab_content[$i].= "<option value='{$index}'";
+                if ($esrow['surveyls_numberformat']==$index) {
+                   $tab_content[$i].=" selected='selected'";
+                }
+                $tab_content[$i].= ">".$radixptdata['desc'].'</option>';
+            }
             $tab_content[$i].= "</select></li></ul>";
-            
             $i++;
         }
 

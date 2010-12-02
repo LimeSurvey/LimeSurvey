@@ -283,6 +283,7 @@ function sanitize_labelname($string)
 // make float float!
 function sanitize_float($float, $min='', $max='')
 {
+    $float = str_replace(',','.',$float);
     $float = floatval($float);
     if((($min != '') && ($float < $min)) || (($max != '') && ($float > $max)))
     return FALSE;
