@@ -654,6 +654,11 @@ if ($subaction=='')
     while ($tkr = $tksr->FetchRow())
     {$tokenoutput .= "<th>".$clang->gT("Total invitations sent")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
 
+    $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE emailstatus = 'optOut'";
+    $tksr = db_execute_num($tksq);
+    while ($tkr = $tksr->FetchRow())
+    {$tokenoutput .= "<th>".$clang->gT("Total opted out")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
+
     $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
     $tksr = db_execute_num($tksq) or safe_die ("Couldn't execute token selection query<br />$abquery<br />".$connect->ErrorMsg());
     while ($tkr = $tksr->FetchRow())
@@ -948,6 +953,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	//COLUMN HEADINGS
 	$tokenoutput .= "\t<tr>\n"
 	."<th><input type='checkbox' id='tokencheckboxtoggle'></th>\n"   //Checkbox
+
 	."<th align='left' >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
@@ -955,6 +961,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."ID' alt='"
 	.$clang->gT("Sort by: ")
 	."ID' border='0' align='left' hspace='0' /></a>"."ID</th>\n" // ID
+
 	."<th align='left'  >".$clang->gT("Actions")."</th>\n"  //Actions
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
@@ -965,6 +972,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("First name")
 	."' border='0' align='left' /></a>".$clang->gT("First name")."</th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
@@ -984,6 +992,16 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Email address")
 	."' border='0' align='left' /></a>".$clang->gT("Email address")."</th>\n"
+
+	."<th align='left'  >"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<img src='$imageurl/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Email status")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Email status")
+	."' border='0' align='left' /></a>".$clang->gT("Email status")."</th>\n"
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
@@ -1014,6 +1032,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Invite sent?")
 	."' border='0' align='left' /></a>".$clang->gT("Invite sent?")."</th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindersent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
@@ -1023,6 +1042,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder sent?")
 	."' border='0' align='left' /></a><span>".$clang->gT("Reminder sent?")."</span></th>\n"
+
 	."<th align='left'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindercount%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
@@ -1032,6 +1052,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder count")
 	."' border='0' align='left' /></a><span>".$clang->gT("Reminder count")."</span></th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
@@ -1041,6 +1062,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Completed?")
 	."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=usesleft%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
@@ -1050,6 +1072,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Uses left")
 	."' border='0' align='left' /></a><span>".$clang->gT("Uses left")."</span></th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
@@ -1059,9 +1082,8 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Valid from")
 	."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
+
 	."<th align='left'  >"
-
-
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
@@ -1135,7 +1157,9 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                ."$brow[$tokenfieldname]</a></td>\n";
 	            }
 	        }
-	        elseif ($tokenfieldname != 'emailstatus')
+
+//	        elseif ($tokenfieldname != 'emailstatus')
+          else
 	        {
 	            if  ($tokenfieldname=='tid')
 	            {
