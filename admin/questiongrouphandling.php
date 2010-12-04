@@ -26,11 +26,22 @@ if ($action == "addgroup")
 
     $newgroupoutput = PrepareEditorScript();
     $newgroupoutput .= "<div class='header ui-widget-header'>".$clang->gT("Add question group")."</div>\n";
-
+     $newgroupoutput .= "<div id='tabs'>\n<ul>\n";
+	 foreach ($grplangs as $grouplang)
+    {
+        $newgroupoutput .= '<li><a href="#'.$grouplang.'">'.GetLanguageNameFromCode($grouplang,false);
+        if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base Language").')';}
+        $newgroupoutput .= "</a></li>\n";
+		}
+		if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+    {
+        $newgroupoutput .= '<li><a href="#import">'.$clang->gT("Import question group")."</a></li>\n";
+		
+	}
+		$newgroupoutput .= "</ul>";
 
     //    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
-    $newgroupoutput .="\n"
-    .  '<div class="tab-pane" id="tab-pane-newgroup">';
+    $newgroupoutput .="\n";
     $newgroupoutput .= "<form action='$scriptname' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=\"if (1==0 ";
 
     foreach ($grplangs as $grouplang)
@@ -41,9 +52,8 @@ if ($action == "addgroup")
 
     foreach ($grplangs as $grouplang)
     {
-        $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang,false);
-        if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base Language").')';}
-        $newgroupoutput .= "</h2><ul>"
+        $newgroupoutput .= '<div id="'.$grouplang.'">';
+        $newgroupoutput .= "<ul>"
         . "<li>"
         . "<label for='group_name_$grouplang'>".$clang->gT("Title").":</label>\n"
         . "<input type='text' size='80' maxlength='100' name='group_name_$grouplang' id='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></li>\n"
@@ -64,7 +74,7 @@ if ($action == "addgroup")
     // Import TAB
     if (bHasSurveyPermission($surveyid,'surveycontent','import'))
     {
-        $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.$clang->gT("Import question group")."</h2>\n"
+        $newgroupoutput .= '<div id="import">'."\n"
         . "<form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "<ul>\n"
         . "<li>\n"
@@ -79,10 +89,12 @@ if ($action == "addgroup")
         // End Import TABS
         $newgroupoutput.= "</div>";
     }
+	 
 
 
     // End of TABS
-    $newgroupoutput.= "</div>";
+     $newgroupoutput.= "</div>";
+	
 
 }
 

@@ -1350,12 +1350,26 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
         {
             $tokenoutput .="<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
         }
-        $tokenoutput .= "<form id='sendinvitation' class='form30' method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
-
-        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$tokenoutput .= "\n<div id='tabs'>\n"
+		. "<ul>\n";
+		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($surveylangs,$baselang);
-        $tokenoutput .= "<div class='tab-pane' id='tab-pane-send-$surveyid'>";
+		foreach ($surveylangs as $language)
+        {
+		$tokenoutput .= '<li><a href="#'.$language.'">'.getLanguageNameFromCode($language,false);
+		if ($language==$baselang)
+            {
+                $tokenoutput .= "(".$clang->gT("Base Language").")";
+            }
+
+		
+		$tokenoutput .= "</a></li>\n";
+		}
+		$tokenoutput .= "</ul>\n";
+		$tokenoutput .= "<form id='sendinvitation' class='form30' method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
+
+            
         foreach ($surveylangs as $language)
         {
             //GET SURVEY DETAILS
@@ -1386,13 +1400,8 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
             $subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
             $textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
             if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
-            $tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
-            if ($language==$baselang)
-            {
-                $tokenoutput .= "(".$clang->gT("Base Language").")";
-            }
-            $tokenoutput .= "</h2>\n";
-
+            $tokenoutput .= '<div id="'.$language.'">'."\n";
+			
             $tokenoutput .= "\t<ul>\n"
             ."<li><label for='from_$language'>".$clang->gT("From").":</label>\n"
             ."<input type='text' size='50' id='from_$language' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></li>\n"
@@ -1407,6 +1416,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
             . getEditor("email-inv","message_$language","[".$clang->gT("Invitation Email:", "js")."](".$language.")",$surveyid,'','',$action)
             ."</li>\n"
             ."\t</ul></div>\n";
+			
         }
         $tokenoutput .= "</div>";
         /*
@@ -1428,18 +1438,19 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
          ."</li>";
          }
          */
-        $tokenoutput .="\t<p>\n"
-        ."\t<label for='bypassbademails'>".$clang->gT("Bypass token with failing email addresses").":</label><select id='bypassbademails' name='bypassbademails'>\n"
-        ."<option value='Y'>".$clang->gT("Yes")."</option>"
-        ."<option value='N'>".$clang->gT("No")."</option>"
-        ."\t</select></p><p>\n"
-        ."\t<input type='submit' value='".$clang->gT("Send Invitations")."' />\n"
-        ."\t<input type='hidden' name='ok' value='absolutely' />\n"
-        ."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
-        ."\t<input type='hidden' name='subaction' value='email' />\n";
+		  $tokenoutput .="\t<p>\n"
+             ."\t<label for='bypassbademails'>".$clang->gT("Bypass token with failing email addresses").":</label><select id='bypassbademails' name='bypassbademails'>\n"
+             ."<option value='Y'>".$clang->gT("Yes")."</option>"
+             ."<option value='N'>".$clang->gT("No")."</option>"
+             ."\t</select></p><p>\n"
+             ."\t<input type='submit' value='".$clang->gT("Send Invitations")."' />\n"
+             ."\t<input type='hidden' name='ok' value='absolutely' />\n"
+             ."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
+             ."\t<input type='hidden' name='subaction' value='email' />\n";
         if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='$tokenid' />\n";}
         if (isset($tokenids)) {$tokenoutput .= "\n<input type='hidden' name='tids' value='|".implode("|", $tokenids)."' />\n";}
-        $tokenoutput .= "</form>\n";
+        $tokenoutput .= "</form></div>\n";
+       
     }
     else
     {

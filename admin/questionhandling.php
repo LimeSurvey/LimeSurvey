@@ -284,14 +284,15 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
         $eqresult = db_execute_assoc($eqquery);
     }
+	
     $editquestion = PrepareEditorScript();
+	
     $editquestion .= "<div class='header ui-widget-header'>";
     if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
-    $editquestion .= "</div>\n"
-    . "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n"
-    . '<div class="tab-pane" id="tab-pane-editquestion-'.$surveyid.'">';
-
-    if (!$adding)
+    $editquestion .= "</div>\n";
+	
+	
+	  if (!$adding)
     {
         $eqrow = $eqresult->FetchRow();  // there should be only one datarow, therefore we don't need a 'while' construct here.
         // Todo: handler in case that record is not found
@@ -310,10 +311,27 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqrow['mandatory']='N';
         $eqrow['preg']='';
     }
-    $editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
+   $editquestion .= "<div id='tabs'><ul>";
+   
+	
+	
+	$editquestion .= '<li><a href="#'.$eqrow['language'].'">'.getLanguageNameFromCode($eqrow['language'],false);
     $editquestion .= '('.$clang->gT("Base Language").')';
+	$editquestion .= "</a></li>\n";
+    if ($adding) {
+	$addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
+        foreach  ($addlanguages as $addlanguage)
+        {
+		$editquestion .= '<li><a href="#'.$addlanguage.'">'.getLanguageNameFromCode($addlanguage,false);
+	$editquestion .= "</a></li>\n";
+		}
+		}
+		$editquestion .= "\n</ul>\n";
+		$editquestion .=  "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n";
+
+    
+    $editquestion .= '<div id="'.$eqrow['language'].'">';
     $eqrow  = array_map('htmlspecialchars', $eqrow);
-    $editquestion .= '</h2>';
     $editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
     . "<span class='settingentry'><input type='text' size='20' maxlength='20'  id='title' name='title' value=\"{$eqrow['title']}\" />\n"
     . "\t</span></div>\n";
@@ -338,9 +356,8 @@ if ($action == "editquestion" || $action=="addquestion")
         while (!$aqresult->EOF)
         {
             $aqrow = $aqresult->FetchRow();
-            $editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($aqrow['language'],false);
+            $editquestion .= '<div id="'.$aqrow['language'].'">';
             $aqrow  = array_map('htmlspecialchars', $aqrow);
-            $editquestion .= '</h2>';
             $editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
             . "<span class='settingentry'><textarea cols='50' rows='4' name='question_{$aqrow['language']}'>{$aqrow['question']}</textarea>\n"
             . getEditor("question-text","question_".$aqrow['language'], "[".$clang->gT("Question:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
@@ -357,7 +374,7 @@ if ($action == "editquestion" || $action=="addquestion")
         $addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
         foreach  ($addlanguages as $addlanguage)
         {
-            $editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($addlanguage,false);
+            $editquestion .= '<div id="'.$addlanguage.'">';
             $editquestion .= '</h2>';
             $editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
             . "<span class='settingentry'><textarea cols='50' rows='4' name='question_{$addlanguage}'></textarea>\n"
@@ -373,8 +390,6 @@ if ($action == "editquestion" || $action=="addquestion")
             $editquestion .= '</div>';
         }
     }
-
-
 
 
     //question type:
@@ -501,7 +516,7 @@ if ($action == "editquestion" || $action=="addquestion")
         . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
     }
     $editquestion .= "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
-    . "</div></div></form>\n";
+    . "</div></form></div>\n";
 
 
 
