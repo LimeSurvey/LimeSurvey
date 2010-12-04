@@ -4631,7 +4631,7 @@ function getArrayFiltersForGroup($surveyid,$gid)
     $grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qresult = getQuestionAttributes($qrow['qid']);
+        $qresult = getQuestionAttributes($qrow['qid'], $qrow['type']);    
         if (isset($qresult['array_filter'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4679,7 +4679,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributes($qrow['qid']);
+        $qresult = getQuestionAttributes($qrow['qid'],$qrow['type']);    
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4769,7 +4769,7 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
     $grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qresult = getQuestionAttributes($qrow['qid']);
+        $qresult = getQuestionAttributes($qrow['qid'],$qrow['type']);    
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
