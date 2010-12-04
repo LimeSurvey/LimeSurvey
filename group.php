@@ -36,10 +36,14 @@ else{
     $_SESSION['prevstep']=$_SESSION['step'];
 
     //Move current step ###########################################################################
-    if (isset($move) && $move == 'moveprev' && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep-1;}
-    if (isset($move) && $move == "movenext") {
+    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y'))
+    {
+        $_SESSION['step'] = $thisstep-1;
+    }
+    if (isset($move) && $move == "movenext")
+    {
         if ($_SESSION['step']==$thisstep)
-        $_SESSION['step'] = $thisstep+1;
+            $_SESSION['step'] = $thisstep+1;
     }
     if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
     {
