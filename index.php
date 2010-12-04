@@ -2665,7 +2665,7 @@ function buildsurveysession()
     
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
-    $rgquery = "SELECT attr.qid,value FROM ".db_table_name('question_attributes')." as attr right join ".db_table_name('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and sid=$surveyid GROUP BY attr.qid";
+    $rgquery = "SELECT attr.qid,value FROM ".db_table_name('question_attributes')." as attr right join ".db_table_name('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid";
     $rgresult = db_execute_assoc($rgquery);
     while($rgrow = $rgresult->FetchRow())
     {
