@@ -40,7 +40,7 @@ $notvalidated=checkpregs($move);
 $filenotvalidated = checkUploadedFileValidity($move);
 
 //SUBMIT
-if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) && !$filenotvalidated))
+if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
     if ($thissurvey['anonymized'] == "Y")
     {

@@ -525,13 +525,13 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
           $surveysummary .= ""
             . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$GidPrev'>"
-            . "<img src='{$imageurl}/questiongroupprevious.png' title='' alt='".$clang->gT("Previous question group")."' "
+            . "<img src='{$imageurl}/previous_20.png' title='' alt='".$clang->gT("Previous question group")."' "
             ."name='questiongroupprevious' ".$clang->gT("Previous question group")."/> </a>";
         }
         else
         {
           $surveysummary .= ""
-            . "<img src='{$imageurl}/questiongroupprevioushidden.png' title='' alt='".$clang->gT("No previous question group")."' "
+            . "<img src='{$imageurl}/previous_disabled_20.png' title='' alt='".$clang->gT("No previous question group")."' "
             ."name='noquestiongroupprevious' />";
         }
 
@@ -540,13 +540,13 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
           $surveysummary .= ""
             . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$GidNext'>"
-            . "<img src='{$imageurl}/questiongroupnext.png' title='' alt='".$clang->gT("Next question group")."' "
+            . "<img src='{$imageurl}/next_20.png' title='' alt='".$clang->gT("Next question group")."' "
             ."name='questiongroupnext' ".$clang->gT("Next question group")."/> </a>";
         }
         else
         {
           $surveysummary .= ""
-            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' alt='".$clang->gT("No next question group")."' "
+            . "<img src='{$imageurl}/next_disabled_20.png' title='' alt='".$clang->gT("No next question group")."' "
             ."name='noquestiongroupnext' />";
         }
 		$surveysummary .= "</span>";
@@ -914,13 +914,13 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
           $groupsummary .= ""
             . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidPrev'>"
-            . "<img src='{$imageurl}/questionprevious.png' title='' alt='".$clang->gT("Previous question")."' "
+            . "<img src='{$imageurl}/previous_20.png' title='' alt='".$clang->gT("Previous question")."' "
             ."name='questiongroupprevious' ".$clang->gT("Previous question")."/> </a>";
         }
         else
         {
           $groupsummary .= ""
-            . "<img src='{$imageurl}/questionprevioushidden.png' title='' alt='".$clang->gT("No previous question")."' "
+            . "<img src='{$imageurl}/previous_disabled_20.png' title='' alt='".$clang->gT("No previous question")."' "
             ."name='noquestionprevious' />";
         }
 
@@ -930,13 +930,13 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
           $groupsummary .= ""
             . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidNext'>"
-            . "<img src='{$imageurl}/questiongroupnext.png' title='' alt='".$clang->gT("Next question")."' "
+            . "<img src='{$imageurl}/next_20.png' title='' alt='".$clang->gT("Next question")."' "
             ."name='questiongroupnext' ".$clang->gT("Next question")."/> </a>";
         }
         else
         {
           $groupsummary .= ""
-            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' alt='".$clang->gT("No next question")."' "
+            . "<img src='{$imageurl}/next_disabled_20.png' title='' alt='".$clang->gT("No next question")."' "
             ."name='noquestionnext' />";
         }
         $groupsummary .= "</span>";

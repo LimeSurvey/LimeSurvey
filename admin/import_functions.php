@@ -432,9 +432,14 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     unset($surveyrowdata['attribute1']);
     unset($surveyrowdata['attribute2']);
     unset($surveyrowdata['usestartdate']);
+    unset($surveyrowdata['notification']);
     unset($surveyrowdata['useexpiry']);
     unset($surveyrowdata['url']);
     unset($surveyrowdata['lastpage']);
+    if (isset($surveyrowdata['private'])){
+        $surveyrowdata['anonymized']=$surveyrowdata['private'];
+        unset($surveyrowdata['private']);
+    }                            
     if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
     $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
     if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));}
@@ -464,7 +469,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
         $surveylsrowdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_register']);
         $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
         unset($surveylsrowdata['lastpage']);
-        $surveylsrowdata['surveyls_numberformat']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_numberformat']);;
         $surveylsrowdata['surveyls_survey_id']=$newsid;
         $newvalues=array_values($surveylsrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
