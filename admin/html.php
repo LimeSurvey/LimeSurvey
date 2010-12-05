@@ -329,12 +329,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
           if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) > 0)
           {
             $surveysummary .= "<li><a href='{$scriptname}?action=translate&amp;sid={$surveyid}'>"
-            . "<img src='{$imageurl}/translate_30.png' name='translate' /> ".$clang->gT("Quick-translation")."</a></li>\n";
+            . "<img src='{$imageurl}/translate_30.png' /> ".$clang->gT("Quick-translation")."</a></li>\n";
           }
           else
           {
             $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("Currently there are no additional languages configured for this survey.", "js")."');\" >"
-            . "<img src='$imageurl/translate_disabled_30.png' name='translate'/> ".$clang->gT("Quick-translation")."</a></li>\n";
+            . "<img src='$imageurl/translate_disabled_30.png' /> ".$clang->gT("Quick-translation")."</a></li>\n";
           }
         }            
          
@@ -546,7 +546,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         else
         {
           $surveysummary .= ""
-            . "<img src='{$imageurl}/questiongroupnexthidden.png' title=' alt='".$clang->gT("No next question group")."' "
+            . "<img src='{$imageurl}/questiongroupnexthidden.png' title='' alt='".$clang->gT("No next question group")."' "
             ."name='noquestiongroupnext' />";
         }
 		$surveysummary .= "</span>";

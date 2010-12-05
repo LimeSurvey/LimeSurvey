@@ -301,6 +301,10 @@
                 . "</select></li>\n";
 
         //Navigation Delay
+        if (!isset($esrow['navigationdelay'])) 
+        {
+            $esrow['navigationdelay']=0;
+        }
         $editsurvey .= "<li><label for='navigationdelay'>".$clang->gT("Navigation delay (seconds):")."</label>\n"
         . "<input type='text' value=\"{$esrow['navigationdelay']}\" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />\n"
         . "</li>\n";
