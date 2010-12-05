@@ -915,7 +915,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
           $groupsummary .= ""
             . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidPrev'>"
             . "<img src='{$imageurl}/previous_20.png' title='' alt='".$clang->gT("Previous question")."' "
-            ."name='questiongroupprevious' ".$clang->gT("Previous question")."/> </a>";
+            ."name='questiongroupprevious'/></a>";
         }
         else
         {
@@ -1267,10 +1267,9 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<tr ><td></td><td align='left'>"
             . "<font face='verdana' size='1' color='red'>"
-            . $clang->gT("Warning").": ". $clang->gT("You need to add answer options to this question")." "
-            . "<input align='top' type='image' src='$imageurl/answers_20.png' title='"
-            . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'"
-            . "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=editansweroptions', '_top')\" /></font></td></tr>\n";
+            . $clang->gT("Warning").": <a href='{$scriptname}?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editansweroptions'>". $clang->gT("You need to add answer options to this question")." "
+            . "<img src='$imageurl/answers_20.png' title='"
+            . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'/></font></td></tr>\n";
         }
 
 
