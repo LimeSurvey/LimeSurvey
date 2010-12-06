@@ -1,4 +1,5 @@
-<div id='savetable'><center>
+<div id='savetable'>
+	<center>
 <span class="save-error">{SAVEERROR}</span>
 <h3 class="save-heading">{SAVEHEADING}</h3>
 <br />

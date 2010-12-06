@@ -1,7 +1,7 @@
 <table class="navigator-table">
 	<tr>
-		<td align="left" nowrap="nowrap" width="33%">{CLEARALL}</td>
-        <td align="center" nowrap="nowrap" width="33%">{SAVE}</td>
-		<td align="right" nowrap="nowrap" width="33%">{NAVIGATOR}</td>
+		<td class="clear-all" align="left" nowrap="nowrap" width="33%">{CLEARALL}</td>
+        <td class="save-all" align="center" nowrap="nowrap" width="33%">{SAVE}</td>
+		<td class="submit-buttons" align="right" nowrap="nowrap" width="33%">{NAVIGATOR}</td>
 	</tr>
 </table>

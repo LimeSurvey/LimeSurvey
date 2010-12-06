@@ -236,6 +236,15 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 	padding: 8px;
 }
 
+.submit-buttons {
+}
+
+.clear-all {
+}
+
+.save-all {
+}
+
 .privacy-table {
 	margin: 0 auto;
 	width: 75%;
@@ -273,6 +282,12 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 .survey-name {
 	font-weight: bold;
 	text-align: center;
+}
+
+.survey-description {
+}
+
+.welcome-text {
 }
 
 .survey-list-table {
