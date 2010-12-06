@@ -1,12 +1,12 @@
 <br />
-<table align="center" width="90%" border="1" style="border-collapse: collapse; border-color: #eeeeee" >
+<table class="assessment-table">
  <tr>
-  <td bgcolor="#EEf6ff" align="center"><font size="2">
-   <strong>{ASSESSMENT_HEADING}</strong></font>
+		<td class="assessment-heading">
+			{ASSESSMENT_HEADING}
   </td>
  </tr>
  <tr>
-  <td bgcolor="#FFFFFF">
+		<td class="assessments-container">
    {ASSESSMENTS}
   </td>
  </tr>

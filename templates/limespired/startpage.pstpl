@@ -26,7 +26,7 @@
 	<body id="page_bg"  class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
                 <div class="outerframe">
 		        <div id="wrapper2">
-		        	<div id="wrapper">
+			<div id="survey-wrapper">
 		        		<div id="header">
 		        			<div class="rk-1">
 		        				<div class="rk-2">

@@ -1091,7 +1091,15 @@ function textarea_encode($html_code)
                                //Load this editfile
 function filetext($templatename,$templatefile) {
     global $templates;
-    return file_get_contents($templates[$templatename].'/'.$templatefile);
+    $sFileName=$templates[$templatename].'/'.$templatefile;
+    if (file_exists($sFileName))
+    {
+        return file_get_contents($sFileName);
+}
+    else
+    {
+        return '';
+    }
 }
 
 function makegraph($currentstep, $total)

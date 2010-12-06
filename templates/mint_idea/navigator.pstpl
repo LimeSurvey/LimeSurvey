@@ -1,7 +1,7 @@
         <div id="footer">
           <span class="f-left">{SAVE} </span> <span class="f-right">{NAVIGATOR}</span>
         </div>
-<center>
+        <div class="clear-all">
 {CLEARALL}
-</center>
+        </div>
     

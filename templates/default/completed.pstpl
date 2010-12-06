@@ -1,10 +1,13 @@
 <br />
-<table width="90%" align="center" border="1" style="border-collapse: collapse; border-color: #eee"  bgcolor="#EEf6ff">
+<table class="completed-table">
 	<tr>
-		<td align="center">
-			<font size="2"><br />{COMPLETED}<br />
+		<td class="completed-text">
 <br />
-			{URL}<br /><br /></font>
+			{COMPLETED}
+			<br />
+			<br />
+			{URL}
+			<br /><br />
 		</td>
 	</tr>
 </table>

@@ -458,7 +458,10 @@ if (!isset($token))
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
-if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
+if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") 
+{
+    setcookie ("limesurvey_timers", "", time() - 3600);
+}
 
 
 
@@ -500,13 +503,13 @@ if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s",
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
-    ."<br /><br />\n";
+    ."<br /><br /></center>\n";
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -517,13 +520,13 @@ if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
-    ."<br /><br />\n";
+    ."<br /><br /></center>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -536,14 +539,14 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "<center><br />\n"
     ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
     ."\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
-    ."<br /><br />\n";
+    ."<br /><br /></center>\n";
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -1122,7 +1125,7 @@ function makelanguagechanger()
             $htmlcode .= "\t<option value=\"$relativeurl/index.php?lang=".$key."$tokenparam\" ";
             if($key == $baselang)
             {
-                $htmlcode .= " selected";
+                $htmlcode .= " selected=\"selected\" ";
             }
             $htmlcode .= ">".getLanguageNameFromCode($key,false)."</option>\n";
         }
@@ -1150,7 +1153,7 @@ function checkgroupfordisplay($gid)
         {
             // Check if this question is hidden
             $qidattributes=getQuestionAttributes($ia[0]);
-            if ($qidattributes['hidden']==0)
+            if ($qidattributes!==false && $qidattributes['hidden']==0)
             {
                 $countQuestionsInThisGroup++;
                 if ($ia[7] == "Y") //This question is conditional
@@ -2208,6 +2211,10 @@ function submitfailed($errormsg='')
     if ($thissurvey['adminemail'])
     {
         $completed .= $clang->gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
+        if ($debug>0)
+        {
+            $completed.='Error message: '.htmlspecialchars($errormsg).'<br />';    
+        }
         $email=$clang->gT("An error occurred saving a response to survey id","unescaped")." ".$thissurvey['name']." - $surveyid\n\n";
         $email .= $clang->gT("DATA TO BE ENTERED","unescaped").":\n";
         foreach ($_SESSION['insertarray'] as $value)
@@ -2280,7 +2287,7 @@ function buildsurveysession()
                 echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect.")."</font><br />";
             }
 
-            echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."<br /><p>
+            echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
 			        <form class='captcha' method='get' action='{$publicurl}/index.php'>
 			        <table align='center'>
 				        <tr>
@@ -2304,7 +2311,7 @@ function buildsurveysession()
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<tr>
-				                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='center'><img src='$rooturl/verification.php?sid=$surveyid' /></td>
+				                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /></td>
                                 <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
 				                </td>
 			                </tr>";
@@ -2380,7 +2387,7 @@ function buildsurveysession()
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<li>
-			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
 		                  </li>";
             }
             echo "<li>
@@ -2533,7 +2540,7 @@ function buildsurveysession()
                 if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
                     echo "<li>
-                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                           </li>";
                 }
                 echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>

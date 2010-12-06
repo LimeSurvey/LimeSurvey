@@ -1,7 +1,7 @@
 <br />
-<div style="text-align: center;">
-<strong style="color: #f00;">{REGISTERERROR}</strong>
-<p><strong>{REGISTERMESSAGE1}</strong></p>
-<p>{REGISTERMESSAGE2}</p>
-{REGISTERFORM}<br />
+<div class="register-table">
+	<span class="warning-text">{REGISTERERROR}</span>
+	<p class="register-message-1">{REGISTERMESSAGE1}</p>
+	<p class="register-message-2">{REGISTERMESSAGE2}</p>
+	<div class="register-form">{REGISTERFORM}</div>
 </div>

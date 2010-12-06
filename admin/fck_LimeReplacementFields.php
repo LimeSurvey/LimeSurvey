@@ -231,6 +231,7 @@ if ($isInstertansEnabled===true)
     $previouspagequestion = true;
     //Go through each question until we reach the current one
     //error_log(print_r($qrows,true));
+    $questionlist=array();      
     foreach ($fieldmap as $field)
     {
         if (empty($field['qid'])) continue;
@@ -287,7 +288,12 @@ if ($isInstertansEnabled===true)
         }
         if ( $AddQuestion===True)
         {
-            if ($surveyformat == "S")
+            if ($action == 'tokens' && $fieldtype == 'email-conf')
+            {
+                //For confirmation email all fields are valid
+                $previouspagequestion = true;
+            }
+            elseif ($surveyformat == "S")
             {
                 $previouspagequestion = true;
             }
@@ -304,10 +310,6 @@ if ($isInstertansEnabled===true)
             elseif ($surveyformat == "A")
             {
                 $previouspagequestion = false;
-            }
-            elseif ($action == 'tokens' && $fieldtype == 'email-conf')
-            {
-                $previouspagequestion = true;
             }
 
             $questionlist[]=array_merge($field,Array( "previouspage" => $previouspagequestion));

@@ -109,8 +109,8 @@ $sessionhandler     =  'file';
 // Email Settings
 // These settings determine how LimeSurvey will send emails
 
-$siteadminemail     = 'your@email.org'; // The default email address of the site administrator
-$siteadminbounce    = 'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
+$siteadminemail     = 'your-email@example.net'; // The default email address of the site administrator
+$siteadminbounce    = 'your-email@example.net'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      = 'Your Name';      // The name of the site administrator
 
 $emailmethod        = 'mail';           // The following values can be used:

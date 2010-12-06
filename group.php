@@ -123,6 +123,7 @@ else{
     //SUBMIT ###############################################################################
     if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
     {
+    setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies
         if ($thissurvey['refurl'] == "Y")
         {
             if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
@@ -401,7 +402,7 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
         }
     	
         $qidattributes=getQuestionAttributes($ia[0]);
-        if ($qidattributes['hidden']==1) {
+        if ($qidattributes===false || $qidattributes['hidden']==1) {
             // Should we really skip the question here, maybe the result won't be stored if we do that
             continue;
         }
@@ -816,7 +817,7 @@ END;
                  * If the value is enclossed by @
                  * the value of this question must be evaluated instead.
                  */
-                if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname))
+                if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname) && isset($_SESSION['fieldnamesInfo'][$comparedfieldname[1]]))
                 {
                     $sgq_from_sgqa = $_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
                     $qid_from_sgq=$comparedfieldname[2];
@@ -1092,7 +1093,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
             {
                 $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' order by title;";
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
             } 
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;

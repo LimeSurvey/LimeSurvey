@@ -1,6 +1,6 @@
 <div id="welcome">
     <span class="survey-name">{SURVEYNAME}</span>
-	<p class="survey-description"> {SURVEYDESCRIPTION}</P>
+	<p class="survey-description"> {SURVEYDESCRIPTION}</p>
       {PERCENTCOMPLETE}<br/>
       {LANGUAGECHANGER}
 </div>

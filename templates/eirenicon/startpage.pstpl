@@ -27,6 +27,6 @@
 
 	<body bgcolor="#C0C0C0" class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
                 <div class="outerframe">
-                        <table width="75%" align="center" style="border-collapse: collapse; border-color:#333333" bgcolor="#EDEDED" border="1" cellspacing="0">
+<table class="outer-frame">
                         	<tr>
                         		<td>

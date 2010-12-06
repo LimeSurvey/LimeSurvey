@@ -1,12 +1,11 @@
 <br />
- <table align="center" cellpadding="30" width="60%">
+<table class="clearall-result">
   <tr>
-   <td align="center" bgcolor="white">
-    <font face="arial" size="2">
-    <font color="red"><strong>{ANSWERSCLEARED}</strong></font><br /><br />
+		<td align="center">
+			<span class="warning-text">{ANSWERSCLEARED}</span>
+			<br /><br />
 	{RESTART}<br />
 	{CLOSEWINDOW}
-	</font>
    </td>
   </tr>
  </table>

@@ -150,30 +150,18 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
     if($action == "forgotpassword")
     {
         $loginsummary = '
-			<form name="forgot" id="forgot" method="post" action="'.$homeurl.'/admin.php" >
+       
+			<form class="form44" name="forgotpassword" id="forgotpassword" method="post" action="'.$homeurl.'/admin.php" >
 				<p><strong>'.$clang->gT('You have to enter user name and email.').'</strong></p>
 
-				<table>
-					<tbody>
-					<tr>
-						<td><label for="user">'.$clang->gT('Username').'</label></td>
-						<td><input name="user" id="user" type="text" size="60" maxlength="60" value="" /></td>
-					</tr>
-					<tr>
-						<td><label for="email">'.$clang->gT('Email').'</label></td>
-						<td><input name="email" id="email" type="text" size="60" maxlength="60" value="" /></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td><input type="hidden" name="action" value="forgotpass" />
-						<input class="action" type="submit" value="'.$clang->gT('Check Data').'" /></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td><a href="'.$scriptname.'">'.$clang->gT('Main Admin Screen').'</a></td>
-					</tr>
-				</table>
+				<ul>
+						<li><label for="user">'.$clang->gT('Username').'</label><input name="user" id="user" type="text" size="60" maxlength="60" value="" /></li>
+						<li><label for="email">'.$clang->gT('Email').'</label><input name="email" id="email" type="text" size="60" maxlength="60" value="" /></li>
+						<p><input type="hidden" name="action" value="forgotpass" />
+						<input class="action" type="submit" value="'.$clang->gT('Check Data').'" />
+						<p><a href="'.$scriptname.'">'.$clang->gT('Main Admin Screen').'</a>
 			</form>
+            <p>&nbsp;</p>
 ';
     }
     elseif (!isset($loginsummary))

@@ -8,6 +8,8 @@ body {
 table.question {
   border: 1px;
   border-color: #aaa;
+  border: 1px solid #AAAAAA;
+  border-collapse: collapse;
   width: 100%;
 }
 
@@ -175,7 +177,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 	border-bottom: 1px solid #000000;
 }
 
-.assessments {
+.assessments-container {
 }
 
 .clearall-result {
@@ -315,10 +317,23 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 .survey-list-table .survey-list {
 }
 
+.survey-list-table .survey-list ul {
+	padding: 0;
+}
+
+.survey-list-table .survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
 .survey-list-table .survey-contact {
 }
 
 .survey-list-table .language-changer {
+}
+
+.survey-list-table .language-changer a {
+	color: #000000;
 }
 
 .register-message-1 {
@@ -656,6 +671,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   text-align: center;
   vertical-align: bottom;
   font-weight: normal;
+}
+
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .dual_scale_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #FFFFFF;
+}
+
+#limesurvey table.question  thead tr.header_row {
+  background-color: #EEEEEE;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+	background-color: #F6F6F6;
 }
 
 #limesurvey table.question .answer tbody td {

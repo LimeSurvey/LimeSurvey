@@ -1,5 +1,4 @@
-<table><tr><td height="2"></td></tr></table>
-<table class="question-group">
+<table class="group">
 	<tr>
 		<td align="center">
-			<font face="verdana" size="2"><strong>{GROUPNAME}</strong></font>
+			<span class="group-name">{GROUPNAME}</span>

@@ -401,7 +401,7 @@ td.answertext {
 	border-bottom: 1px solid #2f5376;
 }
 
-.assessments {
+.assessments-container {
 	background-color: #FFFFFF;
 }
 
@@ -454,6 +454,25 @@ td.clearall-result .warning-text {
 }
 
 .save-form{
+}
+
+#listingContent .survey-contact {
+}
+
+#listingContent .language-changer {
+}
+
+#listingContent .language-changer a {
+	color: #000000;
+}
+
+#listingList ul {
+	padding: 0;
+}
+
+#listingList li {
+	list-style: none;
+	padding-bottom: 5px;
 }
 
 
@@ -818,14 +837,30 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 .yes-no {}
 .gender {}
 */
-#limesurvey table.question tbody th.arraycaptionleft,#limesurvey table.question thead th,#limesurvey table.question .repeat th
-  {
+#limesurvey table.question tbody th.arraycaptionleft,
+#limesurvey table.question thead th,
+#limesurvey table.question .repeat th {
   text-align: center;
   padding: 3px 10px;
   background-color: #D1D1D1;
   vertical-align: middle !important;
   font-size: 0.6em;
   font-weight: bold;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat th {
+	background-color: #F6F6F6;
+}
+
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question tr.repeat th.header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #FFFFFF;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+	background-color: #F6F6F6;
 }
 
 #limesurvey table.question .answer tbody td {

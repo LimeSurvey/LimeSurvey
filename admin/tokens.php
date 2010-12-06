@@ -470,7 +470,7 @@ if (!$tokenexists) //If no tokens table exists
     }
     else
     {
-        $query=db_select_tables_like("{$dbprefix}old_tokens_".$surveyid."_%");
+        $query=db_select_tables_like("{$dbprefix}old\_tokens\_".$surveyid."\_%");
         $result=db_execute_num($query) or safe_die("Couldn't get old table list<br />".$query."<br />".$connect->ErrorMsg());
         $tcount=$result->RecordCount();
         if ($tcount > 0)
@@ -1273,7 +1273,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
             .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
             ."' alt='"
             .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-            ."' onclick=\"window.open('{$scriptname}/?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />";
+            ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />";
         }
 	    $tokenoutput .= "</td>\n"
 	    . "</tr>\n";

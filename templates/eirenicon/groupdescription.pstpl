@@ -1,1 +1,3 @@
-			<p style="font-family: verdana, arial, helvetica, sans-serif;">{GROUPDESCRIPTION}</p>
+			<br />
+			<span class="group-description">{GROUPDESCRIPTION}</span>
+			<br />

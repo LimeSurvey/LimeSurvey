@@ -598,7 +598,7 @@ function mssql_drop_constraint($fieldname, $tablename)
 function upgrade_survey_tables139()
 {
     global $modifyoutput,$dbprefix;
-    $surveyidquery = db_select_tables_like($dbprefix."survey_%");
+    $surveyidquery = db_select_tables_like($dbprefix."survey\_%");
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
@@ -663,6 +663,7 @@ function upgrade_tables143()
             $insertarray['sid']=$row['sid'];
             $insertarray['gid']=$row['gid'];
             $insertarray['parent_qid']=$row['qid'];
+            $insertarray['type']=$row['type'];
             $insertarray['title']=$row['code'];
             $insertarray['question']=$row['answer'];
             $insertarray['question_order']=$row['sortorder'];
@@ -742,6 +743,7 @@ function upgrade_tables143()
                 }
                 $insertarray['sid']=$row['sid'];
                 $insertarray['gid']=$row['gid'];
+                $insertarray['type']=$row['type'];
                 $insertarray['parent_qid']=$row['qid'];
                 $insertarray['title']=$lrow['code'];
                 $insertarray['question']=$lrow['title'];

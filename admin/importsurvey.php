@@ -28,27 +28,27 @@ if (!isset($copyfunction))
     $sExtension = $aPathInfo['extension'];
 }
                   
+$bImportFailed=false;  
 if (isset($sExtension) && strtolower($sExtension)=='csv')
 {
     $aImportResults=CSVImportSurvey($sFullFilepath);
 }
 elseif (isset($sExtension) && strtolower($sExtension)=='lss')
 {
-    $aImportResults=XMLImportSurvey($sFullFilepath);
+    $aImportResults=XMLImportSurvey($sFullFilepath,null,null,(isset($_POST['translinksfields'])));
 } elseif (isset($copyfunction))
 {
     $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
 }
-
-
-// Translate INSERTANS codes if chosen
-if (isset($aImportResults['fieldnames']) && $sTransLinks === true)
+else
 {
-    transInsertAns($aImportResults['newsid'],$aImportResults['oldsid'],$aImportResults['fieldnames']);
+    $bImportFailed=true;
 }
 
+// Create old fieldnames
                  
-if ((isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
+                
+if ((!$bImportFailed && isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
     if (isset($copyfunction))
@@ -109,6 +109,12 @@ if ((isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
     {
         unlink($sFullFilepath);    
     }
+}
+elseif (isset($bImportFailed) && $bImportFailed==true)
+{
+    echo "\n".$clang->gT("Error")."\n\n";
+    echo $clang->gT("Import failed. You specified an invalid file.")."\n";
+    
 }
 else
 {

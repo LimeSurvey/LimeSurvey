@@ -1,15 +1,14 @@
-<table align="center" width="100%" cellpadding="25" cellspacing="0" border="1" style="border-collapse: collapse" bordercolor="#111111">
+<table class="welcome-table">
 {CHECKJAVASCRIPT}
 	<tr>
-		<td align="left" bgcolor="#17479E">
-			<font size="4" color="#E5E5E5"><b>{SURVEYNAME}</b></font><br />
-			<font size="2" color="#CCCCCC">{SURVEYDESCRIPTION}</font>
+		<td class="survey-description">
+			<h1>{SURVEYNAME}</h1>
+			{SURVEYDESCRIPTION}
 		</td>
 	</tr>
 	<tr>
-		<td align="left" bgcolor="#E5E5E5">
-			<font size="2">{WELCOME}<br /><br />
-			<i><br /><br />
+		<td class="survey-welcome">
+			{WELCOME}<br /><br />
 			{CLEARALL}
 		</td>
 	</tr>

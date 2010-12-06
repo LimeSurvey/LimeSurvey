@@ -119,12 +119,15 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
     {
         $bQuotaMatched=false;
         $aQuotas=check_quota('return',$surveyid);
+        if ($aQuotas !== false)
+        {
         if ($aQuotas!=false)  
         {
             foreach ($aQuotas as $aQuota)
             {
                 if (isset($aQuota['status']) && $aQuota['status']=='matched') $bQuotaMatched=true;
             }
+        }
         }
             if ($bQuotaMatched) $bFinalizeThisAnswer=false;        
         }  
@@ -158,7 +161,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             check_quota('enforce',$surveyid);                    
     }
     }
-    elseif (isset($move) && $move!='moveprev')
+    elseif (isset($move))
     {
         // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
         $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
@@ -172,7 +175,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             if (isset($_SESSION[$value]) && isset($fieldexists) && $_SESSION[$value]!='')
             {
 
-                if ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                if ($fieldexists['type']=='D' && isset($_POST[$value]))  // convert the date to the right DB Format
                 {
                     $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                     $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
@@ -517,13 +520,20 @@ function createinsertquery()
 
                 else
                 {
-                    if (($fieldexists['type']=='N')|| ($fieldexists['type']=='K')) //sanitize numerical fields
+                    // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
+                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-') 
+                    {
+                         $_SESSION[$value]='';                               
+                    }
+                    
+                    elseif ($fieldexists['type']=='N' || $fieldinfo['type']=='K') //sanitize numerical fields
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
                         
                     }
-                    elseif ($fieldexists['type']=='D' && in_array($value,$postedfieldnames))  // convert the date to the right DB Format but only if it was posted
+                    elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
                     {
+                        // convert the date to the right DB Format but only if it was posted
                         $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                         $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
                         $_SESSION[$value]=$datetimeobj->convert("Y-m-d");
@@ -671,19 +681,28 @@ function createinsertquery()
                         }
                         else
                         {
-                            if (($fieldinfo['type']=='N')||($fieldinfo['type']=='K')) //sanitize numerical fields
+                            // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
+                            if ($fieldinfo['type']=='!' && $fieldmap[$field]['aid']=='other' && $_POST[substr($field,0,strlen($field)-5)]!='-oth-') //sanitize Other fields
                             {
-                                $_POST[$field]=sanitize_float($_POST[$field]);
+                                $qfield="''";
+                            }
+                            elseif ($fieldinfo['type']=='N' || $fieldinfo['type']=='K') //sanitize numerical fields
+                            {
+                                $qfield=db_quoteall(sanitize_float($_POST[$field]));
                             }
                             elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
                             {
                                 $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
-                                $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
+                                $qfield=db_quoteall($connect->BindDate($datetimeobj->convert("Y-m-d")));
                             }
-                            $query .= db_quote_id($field)." = ".db_quoteall($_POST[$field],true).",";
+                            else
+                            {
+                                $qfield = db_quoteall($_POST[$field],true);
                         }
+                            $query .= db_quote_id($field)." = ".$qfield.",";
                     }
+                }
                 }
 
 

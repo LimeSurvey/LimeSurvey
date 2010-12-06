@@ -43,8 +43,8 @@ function getDateFormatData($format=0)
         12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yy',    'dateformat' => 'd-m-yyyy'),
         8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy', 'dateformat' => 'd/m/yyyy'),
         9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yy', 'dateformat' => 'mm-dd-yyyy'),
-        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yyyy', 'dateformat' => 'mm.dd.yyyy'),
-        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yyyy','dateformat' => 'mm/dd/yyyy')
+        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yy',  'dateformat' => 'mm.dd.yyyy'),
+        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy',  'dateformat' => 'mm/dd/yyyy')
     );
 
     if ($format >0)

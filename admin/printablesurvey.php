@@ -49,12 +49,13 @@ if (isset($_GET['lang']))
 // Setting the selected language for printout
 $clang = new limesurvey_lang($surveyprintlang);
 
-$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
+$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid={$surveyid} and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
 
-$desresult = db_execute_assoc($desquery);
-while ($desrow = $desresult->FetchRow())
+$desrow = $connect->GetRow($desquery);
+if ($desrow==false || count($desrow)==0)
 {
-
+    safe_die('Invalid survey ID');
+}
     //echo '<pre>'.print_r($desrow,true).'</pre>';
     $template = $desrow['template'];
     $welcome = $desrow['surveyls_welcometext'];
@@ -67,7 +68,7 @@ while ($desrow = $desresult->FetchRow())
     $surveystartdate = $desrow['startdate'];
     $surveyfaxto = $desrow['faxto'];
     $dateformattype = $desrow['surveyls_dateformat'];
-}
+
 if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
 

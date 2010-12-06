@@ -456,8 +456,8 @@ if(isset($surveyid))
 
         $qtypes=getqtypelist('','array');
         // These are the questions types that have no answers and therefore we delete the answer in that case
-        $keepansweroptions = ($qtypes[$_POST['type']]['answerscales']>0);
-        $keepsubquestions = ($qtypes[$_POST['type']]['subquestions']>0);
+        $iAnswerScales = $qtypes[$_POST['type']]['answerscales'];
+        $iSubquestionScales = $qtypes[$_POST['type']]['subquestions'];
 
         // These are the questions types that have the other option therefore we set everything else to 'No Other'
         if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M"))
@@ -583,24 +583,13 @@ if(isset($surveyid))
                         // then change the cfieldname accordingly
                         fixmovedquestionConditions($postqid, $oldgid, $postgid);
                     }
-                    if (!$keepansweroptions)
-                    {
-                        $query = "DELETE FROM ".db_table_name('answers')." WHERE qid=".$postqid;
+
+                    $query = "DELETE FROM ".db_table_name('answers')." WHERE qid= {$postqid} and scale_id>={$iAnswerScales}";
                         $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
-                        if (!$result)
-                        {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-                        }
-                    }
-                    if (!$keepsubquestions)
-                    {
-                        $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid=".$postqid;
+
+                    // Remove old subquestion scales
+                    $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid={$postqid} and scale_id>={$iSubquestionScales}";
                         $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
-                        if (!$result)
-                        {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
-                        }
-                    }
                     $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");                    
 
 
@@ -733,7 +722,7 @@ if(isset($surveyid))
                     if (isset($aSQIDMappings[$qr1['qid']]))
                     {
                         $qr1['qid']=$aSQIDMappings[$qr1['qid']];
-                        db_switchIDInsert($tablename,true); 
+                        db_switchIDInsert('questions',true); 
                     }
                     else
                     {
@@ -744,7 +733,7 @@ if(isset($surveyid))
                     $ir1 = $connect->Execute($sInsertSQL);   // Checked
                     if (isset($qr1['qid']))
                     {
-                        db_switchIDInsert($tablename,false); 
+                        db_switchIDInsert('questions',false); 
                     }
                     else
                     {
@@ -763,10 +752,10 @@ if(isset($surveyid))
                 while ($qr1 = $r1->FetchRow())
                 {
                     $qr1 = array_map('db_quote', $qr1);
-                    $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language) "
+                    $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) "
                     . "VALUES ('$newqid', '{$qr1['code']}', "
                     . "'{$qr1['answer']}', "
-                    . "'{$qr1['sortorder']}', '{$qr1['language']}')";
+                    . "'{$qr1['sortorder']}', '{$qr1['language']}', '{$qr1['scale_id']}')";
                     $ir1 = $connect->Execute($i1);   // Checked
 
                 }

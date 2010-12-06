@@ -1,8 +1,8 @@
-<table width="100%" align="center" cellspacing="0">
+<table class="survey-header-table">
 	<tr>
-		<td align="center" bgcolor="#042455">
-			<strong style="color: #fff;">{SURVEYNAME}</strong><br />
-			<span style="font-size: 120%; color: #ccc;">{SURVEYDESCRIPTION}</span>
+		<td class="survey-description">
+			<h2 class="survey-name">{SURVEYNAME}</h2>
+			<span class="survey-description-text">{SURVEYDESCRIPTION}</span>
 		</td>
 	</tr>
 	<tr>
@@ -10,6 +10,8 @@
       {PERCENTCOMPLETE}
     </td>
   </tr>
+</table>
+<table class="language-changer-table">
 	<tr>
     <td align="center">
       {LANGUAGECHANGER}

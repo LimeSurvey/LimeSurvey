@@ -1554,11 +1554,13 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
+    global $js_header_includes;
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
 
     if (trim($qidattributes['time_limit'])!='')
     {
+        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia);
     }
 
@@ -2166,7 +2168,7 @@ function do_list_dropdown($ia)
     }
 
     $checkotherscript = "";
-    if (isset($other) && $other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
     {
         $checkotherscript = "\n<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -2426,7 +2428,7 @@ function do_list_radio($ia)
 
     $checkotherscript = "";
 
-    if (isset($other) && $other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
     {
         $checkotherscript = "<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -2779,29 +2781,15 @@ function do_ranking($ia)
     $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
     if (isset($choicewidth)) {$choicelist.=$choicewidth;}
     $choicelist .= " id=\"CHOICES_{$ia[0]}\" onclick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
-    if (_PHPVERSION <= "4.2.0")
-    {
-        foreach ($chosen as $chs) {$choose[]=$chs[0];}
-        foreach ($answers as $ans)
-        {
-            if (!in_array($ans[0], $choose))
-            {
-                $choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-                if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
-            }
-        }
-    }
-    else
-    {
+
         foreach ($answers as $ans)
         {
             if (!in_array($ans, $chosen))
             {
                 $choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-                if (isset($maxselectlength) && strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
             }
+        if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
         }
-    }
     $choicelist .= "</select>\n";
 
     $answer .= "\t<table border='0' cellspacing='0' class='rank'>\n"
@@ -2884,6 +2872,8 @@ function do_multiplechoice($ia)
     // based on value of attribute. This could be array_filter and array_filter_exclude
     
     $attribute_ref=false;
+    $inputnames=array();
+    
     $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."' and (attribute='array_filter' or attribute='array_filter_exclude')";
     $qaresult = db_execute_assoc($qaquery);     //Checked
     while($qarow = $qaresult->FetchRow())
@@ -3043,6 +3033,7 @@ function do_multiplechoice($ia)
     $colcounter = 1;
     $startitem='';
     $postrow = '';
+    $trbc='';         
     foreach ($ansresult as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
@@ -3196,7 +3187,7 @@ function do_multiplechoice($ia)
             // even if the -other- input field is still empty
             // This will be differetn for the minansw script
             // ==> hence the 1==2
-            if (1==2 || getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if (1==2 || $qidattributes['other_comment_mandatory']==1)
             {
                 $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
             }
@@ -3212,7 +3203,7 @@ function do_multiplechoice($ia)
             // so in fact I need to assume that other_comment_mandatory is set to true
             // We only count the -other- as valid if both the cbox and the other text is filled
             // ==> hence the 1==1
-            if (1==1 || getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if (1==1 || $qidattributes['other_comment_mandatory']==1)
             {
                 $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
             }
@@ -3534,7 +3525,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($maxansw > 0)
         {
-            if (getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if ($qidattributes['other_comment_mandatory']==1)
             {
                 $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3546,7 +3537,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($minansw > 0)
         {
-            if (getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1)
+            if ($qidattributes['other_comment_mandatory']==1)
             {
                 $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3610,10 +3601,9 @@ function do_multiplechoice_withcomments($ia)
         //$answer = $minanswscript . $answer;
     }
 
-    //getQuestionAttributeValue($questionAttributeArray, $attributeName)
     $checkotherscript = "";
     //if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
-    if ($other == 'Y' && getQuestionAttributeValue($qidattributes,'other_comment_mandatory')==1) //TIBO
+    if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
     {
         // Multiple options with 'other' is a specific case as the checkbox isn't recorded into DB
         // this means that if it is cehcked We must force the end-user to enter text in the input
@@ -4167,7 +4157,7 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
         $calculateValue[]=3;
     }
-    elseif (trim($qidattributes['num_value_equals_sgqa'])!='')
+    elseif (trim($qidattributes['num_value_equals_sgqa'])!='' && isset($_SESSION[$qidattributes['num_value_equals_sgqa']]))
     {
         $equals_num_value=$_SESSION[$qidattributes['num_value_equals_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
@@ -4184,7 +4174,7 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
     }
-    elseif (trim($qidattributes['min_num_value_sgqa'])!=''){
+    elseif (trim($qidattributes['min_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['min_num_value_sgqa']])){
         $min_num_value=$_SESSION[$qidattributes['min_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
@@ -4200,7 +4190,7 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;
     }
-    elseif (trim($qidattributes['max_num_value_sgqa'])!=''){
+    elseif (trim($qidattributes['max_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['max_num_value_sgqa']])){
         $max_num_value = $_SESSION[$qidattributes['max_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;
@@ -4842,7 +4832,7 @@ function do_shortfreetext($ia)
     }
     if (trim($qidattributes['time_limit'])!='')
     {
-		$js_header_includes[] = '/scripts/cookies.js';
+		$js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
@@ -4923,7 +4913,7 @@ function do_longfreetext($ia)
 
     if (trim($qidattributes['time_limit'])!='')
     {
-		$js_header_includes[] = '/scripts/cookies.js';
+		$js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
@@ -5006,7 +4996,7 @@ function do_hugefreetext($ia)
 
     if (trim($qidattributes['time_limit']) != '')
     {
-		$js_header_includes[] = '/scripts/cookies.js';
+		$js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
     }
 
@@ -7007,7 +6997,7 @@ function do_array_dual($ia)
 
         $cellwidth=sprintf("%02d", $cellwidth);
 
-        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
+        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
         $ansresult = db_execute_assoc($ansquery);   //Checked
         if ($ansresult->RecordCount()>0)
         {
@@ -7019,11 +7009,11 @@ function do_array_dual($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);   //Checked
         $anscount = $ansresult->RecordCount();
@@ -7056,12 +7046,13 @@ function do_array_dual($ia)
 
 
 
+        // Header row and colgroups
         $mycolumns = "\t<colgroup class=\"col-responses group-1\">\n"
         ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
 
-        $myheader2 = "\n<tr class=\"array1\">\n"
-        . "\t<th>&nbsp;</th>\n\n";
+        $myheader2 = "\n<tr class=\"array1 header_row\">\n"
+        . "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
         $odd_even = '';
         foreach ($labelans as $ld)
         {
@@ -7075,7 +7066,7 @@ function do_array_dual($ia)
         {
             $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n"
             . "\t<col class=\"seperator\" />\n";
-            $myheader2 .= "\n\t<td>&nbsp;</td>\n\n";
+            $myheader2 .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator
             foreach ($labelans1 as $ld)
             {
                 $myheader2 .= "\t<th>".$ld."</th>\n";
@@ -7084,19 +7075,17 @@ function do_array_dual($ia)
             }
              
         }
-        $myheader2 .= "\t<td>&nbsp;</td>\n";
         if ($right_exists)
         {
+        	$myheader2 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
             $mycolumns .= "\n\t<col class=\"answertextright\" />\n\n";
-        }
-        else
-        {
-            $mycolumns .= "\n\t<col class=\"seperator\" />\n\n";
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
         {
-            $myheader2 .= "\t<th>".$clang->gT('No answer')."</th>\n";
+        	$myheader2 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
+            $myheader2 .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
             $odd_even = alternation($odd_even);
+            $mycolumns .= "\n\t<col class=\"seperator\" />\n\n";
             $mycolumns .= "\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
         }
 
@@ -7108,21 +7097,23 @@ function do_array_dual($ia)
         // build first row of header if needed
         if ($leftheader != '' || $rightheader !='')
         {
-            $myheader1 = "<tr class=\"array1 groups\">\n"
-            . "\t<th>&nbsp;</th>\n"
+            $myheader1 = "<tr class=\"array1 groups header_row\">\n"
+            . "\t<th class=\"header_answer_text\">&nbsp;</th>\n"
             . "\t<th colspan=\"".count($labelans)."\" class=\"dsheader\">$leftheader</th>\n";
 
             if (count($labelans1)>0)
             {
-                $myheader1 .= "\t<td>&nbsp;</td>\n"
+                $myheader1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n" // Separator
                 ."\t<th colspan=\"".count($labelans1)."\" class=\"dsheader\">$rightheader</th>\n";
             }
-
-            $myheader1 .= "\t<td>&nbsp;</td>\n";
-
+			if ($right_exists)
+			{
+				$myheader1 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
+			}
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $myheader1 .= "\t<th>&nbsp;</th>\n";
+            	$myheader1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
+                $myheader1 .= "\t<th class=\"header_no_answer\">&nbsp;</th>\n";
             }
             $myheader1 .= "</tr>\n";
         }
@@ -7131,7 +7122,7 @@ function do_array_dual($ia)
             $myheader1 = '';
         }
 
-        $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an dual array type question\">\n"
+        $answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a dual array type question\">\n"
         . $mycolumns
         . "\n\t<thead>\n"
         . $myheader1
@@ -7141,28 +7132,33 @@ function do_array_dual($ia)
         $trbc = '';
         while ($ansrow = $ansresult->FetchRow())
         {
+            // Build repeat headings if needed
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $answer .= "<tbody>\n<tr  class=\"repeat\">\n"
-                    . "\t<th>&nbsp;</th>\n";
+                    . "\t<th class=\"header_answer_text\">&nbsp;</th>\n";
                     foreach ($labelans as $ld)
                     {
-                        $answer .= "\t<th>".$ld."</td>\n";
+                        $answer .= "\t<th>".$ld."</th>\n";
                     }
                     if (count($labelans1)>0) // if second label set is used
                     {
-                        $answer .= "<th>&nbsp;</th>\n";		// separator
+                        $answer .= "<th class=\"header_separator\">&nbsp;</th>\n"; // Separator
                         foreach ($labelans1 as $ld)
                         {
                             $answer .= "\t<th>".$ld."</th>\n";
                         }
                     }
+					if ($right_exists)
+					{
+						$answer .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
+					}
                     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
                     {
-                        $answer .= "\t<td>&nbsp;</td>\n";		// separator
-                        $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
+                        $answer .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
+                        $answer .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
                     }
                     $answer .= "</tr>\n</tbody>\n";
                 }
@@ -7261,14 +7257,11 @@ function do_array_dual($ia)
             {
                 $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
             }
-            else
-            {
-                $answer .= "\t<td>&nbsp;</td>\n";		// separator
-            }
 
             if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
             {
-                $answer .= "\t<td>\n"
+                $answer .= "\t<td class=\"dual_scale_separator\">&nbsp;</td>\n"; // separator
+				$answer .= "\t<td class=\"dual_scale_no_answer\">\n"
                 . "<label for='answer$myfname-'>\n"
                 . "\t<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
@@ -7283,11 +7276,12 @@ function do_array_dual($ia)
             }
              
             $answer .= "</tr>\n";
+        	$answer .= "\t</tbody>\n";
             // $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-        $answer .= "\t</tbody>\n</table>\n";
+        $answer .= "</table>\n";
     }
     elseif ($useDropdownLayout === true && $lresult->RecordCount() > 0)
     {
@@ -7319,13 +7313,13 @@ function do_array_dual($ia)
 
         //question atribute random_order set?
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
 
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);    //Checked
         $anscount = $ansresult->RecordCount();
@@ -7556,9 +7550,10 @@ function do_array_dual($ia)
                 $inputnames[]=$myfname1;
 
                 $answer .= "</tr>\n";
+				$answer .= "\t</tbody>\n";
             }
         } // End there are answers
-        $answer .= "\t</tbody>\n</table>\n";
+        $answer .= "</table>\n";
     }
     else
     {

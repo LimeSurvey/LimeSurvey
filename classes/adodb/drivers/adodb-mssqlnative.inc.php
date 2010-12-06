@@ -1,6 +1,6 @@
 <?php
 /*
- V5.10 10 Nov 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
+V5.11 5 May 2010   (c) 2000-2010 John Lim (jlim#natsoft.com). All rights reserved.
  Released under both BSD license and Lesser GPL library license.
  Whenever there is any discrepancy between the two licenses,
  the BSD license will take precedence.
@@ -330,8 +330,9 @@ class ADODB_mssqlnative extends ADOConnection {
 
      See http://www.swynk.com/friends/achigrik/SQL70Locks.asp
      */
-    function RowLock($tables,$where,$col='top 1 null as ignore')
+	function RowLock($tables,$where,$col='1 as adodbignore') 
     {
+		if ($col == '1 as adodbignore') $col = 'top 1 null as ignore';
         if (!$this->transCnt) $this->BeginTrans();
         return $this->GetOne("select $col from $tables with (ROWLOCK,HOLDLOCK) where $where");
     }
@@ -703,22 +704,74 @@ class ADORecordset_mssqlnative extends ADORecordSet {
 
     function &FetchField($fieldOffset = -1)
     {
-        if ($this->connection->debug) error_log("<hr>fetchfield: $fieldOffset, fetch array: <pre>".print_r($this->fields,true)."</pre> backtrace: ".adodb_backtrace(false));
-        if ($fieldOffset != -1) $this->fieldOffset = $fieldOffset;
-        $arrKeys = array_keys($this->fields);
-        if(array_key_exists($this->fieldOffset,$arrKeys) && !array_key_exists($arrKeys[$this->fieldOffset],$this->fields)) {
-            $f = false;
-        } else {
-            $f = $this->fields[ $arrKeys[$this->fieldOffset] ];
-            if($fieldOffset == -1) $this->fieldOffset++;
+        $_typeConversion = array(
+            -155 => 'datetimeoffset',
+            -154 => 'time',
+            -152 => 'xml',
+            -151 => 'udt',
+            -11 => 'uniqueidentifier',
+            -10 => 'ntext',
+            -9 => 'nvarchar',
+            -8 => 'nchar',
+            -7 => 'bit',
+            -6 => 'tinyint',
+            -5 => 'bigint',
+            -4 => 'image',
+            -3 => 'varbinary',
+            -2 => 'timestamp',
+            -1 => 'text',
+            1 => 'char',
+            2 => 'numeric',
+            3 => 'decimal',
+            4 => 'int',
+            5 => 'smallint',
+            6 => 'float',
+            7 => 'real',
+            12 => 'varchar',
+            91 => 'date',
+            93 => 'datetime'
+            );
+        
+        $fa = @sqlsrv_field_metadata($this->_queryID);
+        if ($fieldOffset != -1) {
+            $fa = $fa[$fieldOffset];
         }
-
-        if (empty($f)) {
+        $false = false;
+        if (empty($fa)) {
             $f = false;//PHP Notice: Only variable references should be returned by reference
         }
+        else
+        {
+            // Convert to an object
+            $fa = array_change_key_case($fa, CASE_LOWER);
+            $fb = array();
+            if ($fieldOffset != -1)
+            {
+                 $fb = array(
+                     'name' => $fa['name'],
+                     'max_length' => $fa['size'],
+                     'column_source' => $fa['name'],
+                     'type' => $_typeConversion[$fa['type']]
+                     );
+             }
+             else
+             {
+                 foreach ($fa as $key => $value)
+                 {
+                     $fb[] = array(
+                         'name' => $value['name'],
+                         'max_length' => $value['size'],
+                         'column_source' => $value['name'],
+                         'type' => $_typeConversion[$value['type']]
+                         );
+                 }
+             }
+             $f = (object) $fb;
+         }
         return $f;
     }
 
+	
     function _seek($row)
     {
         return false;//There is no support for cursors in the driver at this time.  All data is returned via forward-only streams.

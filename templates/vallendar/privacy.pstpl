@@ -1,4 +1,4 @@
-<table align="center" bgcolor="#EEEEEE" width="75%">
+<table class='privacy'>
 	<tr>
 		<td align="center">
 		{PRIVACYMESSAGE}

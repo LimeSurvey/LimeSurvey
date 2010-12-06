@@ -1,12 +1,12 @@
 <table class="navigator-table">
 	<tr>
-		<td align="left" width='30%'>
+		<td class="save-all">
 			{SAVE}
 		</td>
-		<td align="center" width='40%'>
+		<td class="submit-buttons">
 			{NAVIGATOR}
 		</td>
-		<td align="right" width='30%'>
+		<td class="clear-all">
 			{CLEARALL}
 		</td>
 	</tr>

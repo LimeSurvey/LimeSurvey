@@ -1123,6 +1123,11 @@ textarea.updater-changelog {
     padding-bottom:7px;   
 }
 
+#forgotpassword input#user, #forgotpassword input#email
+{
+    width:18em;
+}
+
 div.loader {
     background-image: url(images/ajax-loader.gif);
     background-repeat: no-repeat;

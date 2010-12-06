@@ -110,6 +110,10 @@ list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 // MANAGE CONDITIONAL QUESTIONS AND HIDDEN QUESTIONS
 $qidattributes=getQuestionAttributes($ia[0]);
+if ($qidattributes===false)  // Question was deleted
+{
+    $qidattributes['hidden']==1;    //Workaround to skip the question if it was deleted while the survey is running in test mode
+}
 $conditionforthisquestion=$ia[7];
 $questionsSkipped=0;
 
@@ -181,6 +185,7 @@ if ($_SESSION['step'] > $_SESSION['maxstep'])
 //SUBMIT
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
+    setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies
     if ($thissurvey['refurl'] == "Y")
     {
         if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist

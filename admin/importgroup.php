@@ -40,11 +40,11 @@ else
 
 if (isset($fatalerror))
 {
-    $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-    $importquestion .= $fatalerror."<br /><br />\n";
-    $importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
-    $importquestion .= "</div>\n";
-    unlink($sFullFilepath);
+    $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+    $importgroup .= $fatalerror."<br /><br />\n";
+    $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
+    $importgroup .= "</div>\n";
+    @unlink($sFullFilepath);
     return;
 }
 
@@ -884,8 +884,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
     
-    $xml = simplexml_load_file($sFullFilepath);    
-    if ($xml->LimeSurveyDocType!='Group') safe_die('This is not a valid LimeSurvey group structure XML file.');
+    $xml = @simplexml_load_file($sFullFilepath);    
+    if ($xml==false || $xml->LimeSurveyDocType!='Group') safe_die('This is not a valid LimeSurvey group structure XML file.');
     $dbversion = (int) $xml->DBVersion;
     $aQIDReplacements=array();     
     $results['defaultvalues']=0;
@@ -979,6 +979,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
         }
         $oldsid=$insertdata['sid'];
         $insertdata['sid']=$newsid;
+        if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
         $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
         $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
@@ -1018,8 +1019,10 @@ function XMLImportGroup($sFullFilepath, $newsid)
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['sid']=$newsid;
+            if (!isset($aGIDReplacements[$insertdata['gid']])) continue; // Skip questions with invalid group id
             $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
             $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+            if (!isset($aQIDReplacements[(int)$insertdata['parent_qid']])) continue; // Skip subquestions with invalid parent_qids
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
@@ -1028,6 +1031,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
             if (isset($aQIDReplacements[$oldsqid])){
                $insertdata['qid']=$aQIDReplacements[$oldsqid];
+               db_switchIDInsert('questions',true);
             }
             
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
@@ -1037,6 +1041,11 @@ function XMLImportGroup($sFullFilepath, $newsid)
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array                
             }
+            else
+            {
+               db_switchIDInsert('questions',false);
+            }
+
             $results['subquestions']++;
         }
     }
@@ -1053,6 +1062,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
             {
                 $insertdata[(string)$key]=(string)$value;
             }
+            if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue; // Skip questions with invalid group id
+            
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
@@ -1075,7 +1086,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
                 $insertdata[(string)$key]=(string)$value;
             }
             unset($insertdata['qaid']);
-            $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the parent_qid
+            if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue; // Skip questions with invalid group id
+            $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 

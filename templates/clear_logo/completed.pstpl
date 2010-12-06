@@ -1,15 +1,21 @@
-<table width="80%" align="center" class="bf" cellpadding="0" cellspacing="0">
+<table class="completed-table bf">
 <tr>
-	<td rowspan="2"><table width="100%" cellspacing="10">
+		<td>
+			<table width="80%" align="center">
 		<tr>
-			<td>
-<table width="80%" align="center"><tr><td>
+					<td class="completed-text">
+						{COMPLETED}<br /><br />
+						<span>{URL}</span><br /><br />
+						<center>
+							<input type="button" name="closeme" value="Close Window" onclick="top.window.close();" />
+						</center>
+					</td>
+				</tr>
+			</table>
+		</td>				
+	</tr>					
+</table>							
 
-{COMPLETED}
-
-<p>{URL}<p>
-
-<center><input type="button" name="closeme" value="Close Window" onClick="top.window.close();"></center>
 
 
-</td></tr></table>
+							

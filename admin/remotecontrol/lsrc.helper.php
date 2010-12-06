@@ -2202,29 +2202,6 @@ class LsrcHelper {
         // check if the Token table already exists, if not, create it...
         if(!db_tables_exist("{$dbprefix}tokens_".$iVid))
         {
-            /**
-             *
-             * CREATE TABLE `lime_tokens_4711` (
-             `tid` int(11) NOT NULL AUTO_INCREMENT,
-             `firstname` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
-             `lastname` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
-             `email` text COLLATE utf8_unicode_ci,
-             `emailstatus` text COLLATE utf8_unicode_ci,
-             `token` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
-             `language` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
-             `sent` varchar(17) COLLATE utf8_unicode_ci DEFAULT 'N',
-             `remindersent` varchar(17) COLLATE utf8_unicode_ci DEFAULT 'N',
-             `remindercount` int(11) DEFAULT '0',
-             `completed` varchar(17) COLLATE utf8_unicode_ci DEFAULT 'N',
-             `validfrom` datetime DEFAULT NULL,
-             `validuntil` datetime DEFAULT NULL,
-             `mpid` int(11) DEFAULT NULL,
-             PRIMARY KEY (`tid`),
-             KEY `lime_tokens_4711_idx` (`token`),
-             KEY `idx_lime_tokens_4711_efl` (`email`(120),`firstname`,`lastname`)
-             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-             */
-
             $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token Table existiert nicht ");
             $createtokentable =
 			"tid int I NOT NULL AUTO PRIMARY,\n "

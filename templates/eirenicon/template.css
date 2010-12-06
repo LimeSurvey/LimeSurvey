@@ -41,12 +41,6 @@ td.survey-question-help {
   font-family: verdana;
 }
 
-td.graph {
-  background-color: #999;
-  padding: 0.2em 0%;
-  border: 1px solid #042455;
-}
-
 #progress-graph {
   line-height: 1.5em;
   width: 17em;
@@ -164,6 +158,304 @@ table.question {
 table.question tr.array1:hover,table.question tr.array2:hover {
   background-color: #A7A9D1;
 }
+
+.outer-frame {
+	width: 75%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	border: 1px solid #333333;
+	background-color: #EDEDED;
+}
+
+.welcome-table {
+    margin: 0 auto;
+    width: 100%;
+	border: 1px solid #111111;
+    border-collapse: collapse;
+}
+
+.welcome-table td {
+	padding: 25px;
+}
+
+.welcome-header {
+	text-align: center;
+	background-color: #042455;
+}
+
+h2.survey-name {
+	font-size: 110%; 
+	color: #E5E5E5; 
+	font-weight: bold;
+	margin: 0;
+}
+
+.survey-description-text {
+	font-size: 90%; 
+	color: #CCCCCC;
+}
+
+.welcome-content {
+	font-size: 90%; 
+	text-align: center; 
+	background-color: #E5E5E5;
+}
+
+td.welcome-content {
+	text-align: center;
+}
+
+.survey-welcome {
+}
+
+.x-questions {
+	font-style: italic;
+}
+
+.privacy {
+    margin: 0 auto;
+    width: 75%;
+	background-color: #EEEEEE;
+}
+
+.privacy td {
+	text-align: 
+	center; font-size: 100%;
+	padding: 20px 0;
+}
+
+.navigator-table {
+	width:100%;
+	background-color: #042455;
+	border-collapse: collapse;
+}
+
+.navigator-table td {
+	text-align: center;
+	padding-top: 3px;
+}
+
+.navigator-table input {
+    margin-bottom: 3px;
+}	
+
+.survey-header-table {
+	width: 100%;
+	margin: 0 auto;
+    border: 1px solid #042455;
+	border-collapse: collapse;
+}	
+
+.survey-header-table td {
+    border: 1px solid #042455;
+	border-collapse: collapse;
+	margin: 0;
+}
+
+.survey-description {
+	text-align: center;
+	background-color: #042455;
+	padding: 25px;
+}
+
+td.graph {
+    background-color: #999999;
+    padding: 0.2em 0;
+}	
+
+.language-changer-table {
+	width: 100%;
+	margin: 3px auto 3px auto;
+	border: 0 none;
+	border-collapse: collapse;
+}
+
+table.group {
+	width: 98%;
+	margin: 0 auto 6px auto;
+	border: 0 none;
+	border-collapse: collapse;
+}
+
+.group-name {
+	font-family: verdana, arial, helvetica, sans-serif; 
+	font-size: 120%; 
+	font-weight: bold; 
+	color: #000080;
+}
+
+.group-description {
+	font-family: verdana, arial, helvetica, sans-serif;
+}
+
+.question-wrapper {
+	width: 75%;
+	margin: 0 auto 15px auto;
+	border: 1px solid #111111;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+}
+
+.question-text {
+	font-size: 120%; 
+	font-weight: bold; 
+	text-align: center; 
+	background-color: #CCCCCC;
+}
+
+.assessment-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #111111;
+}
+
+.assessment-heading {
+	background-color:#CCCCCC; 
+	text-align: center; 
+	font-size: 90%; 
+	font-weight: bold;
+	border-bottom: 1px solid #111111;
+}
+
+.assessments-container {
+}	
+
+.completed-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #111111;
+	background-color: #FFFFFF;
+}
+
+.completed-text {
+	text-align: center;
+	font-size: 90%;
+	padding-top: 5px;
+	
+}
+
+table.clearall-result {
+	margin: 0 auto;
+}
+
+table.clearall-result td {
+	background-color: #FFFFFF; 
+	font-family: arial, helvetica, sans-serif; 
+	text-align: center;
+	padding: 10px 20px;
+	border-collapse: collapse;
+	border: 1px solid #111111;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.register-table {
+	text-align: center;
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
+}
+
+.register-form {
+	margin-bottom: 10px;
+}
+
+.register-form table.register {
+	margin: 0 auto 0 auto;
+}
+
+.load-survey,
+.save-survey {
+	text-align: center;
+	padding: 10px 0;
+}
+
+.load-heading,
+.save-heading {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.load-message {
+}
+
+.load-form table,
+.save-form table {
+	margin: 0 auto 0 auto;
+}
+
+.return-to-survey {
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
+.survey-list-table {
+	width: 100%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	background-color: #FFFFFF;
+}
+
+.survey-list-table td {
+	text-align: center;
+}
+
+.survey-list-table .site-name {
+	text-align: center; 
+}
+
+.survey-list-table .site-name h1 {
+	font-family: verdana, arial helvetica, sans-serif; 
+	font-size: 160%; 
+	color: #328639; 
+	font-weight: bold;
+}
+
+.survey-list-table .survey-list-heading {
+	font-weight: bold;
+}
+
+.survey-list-table .survey-list {
+}
+
+.survey-list-table .survey-list ul {
+	padding: 0;
+}
+
+.survey-list-table .survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
+.survey-list-table .survey-contact {
+}
+
+.survey-list-table .language-changer {
+	padding-bottom: 10px;
+	height: 100px;
+}
+
+.survey-list-table .language-changer p {
+	padding: 10px 0;
+}
+
+.survey-list-table .language-changer a {
+	color: #000000;
+}
+	
 
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
@@ -730,7 +1022,7 @@ table.statisticstable {
 table.statisticstable td {
   padding-top: 4px;
   padding-bottom: 4px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #CCCCCC;
   font-size: 12px;
 }
 
@@ -810,7 +1102,7 @@ table.statisticstable {
 table.statisticstable td {
   padding-top: 4px;
   padding-bottom: 4px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #CCCCCC;
   font-size: 12px;
 }
 

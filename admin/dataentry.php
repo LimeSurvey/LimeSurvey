@@ -271,16 +271,19 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         }
                         else
                         {
+                        if ($irow['type'] == 'D')
+                        {
+                            $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                             $columns[] .= db_quote_id($fieldname);
-                            $values[] .= db_quoteall(count($phparray), true);
+                            $values[] .= db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
                         }
-                    }
-                    else
-                    {
-                        $columns[] .= db_quote_id($fieldname);
+                        else
+                        {
+                            $columns[] .= db_quote_id($fieldname);
                         $values[] .= db_quoteall($_POST[$fieldname],true);
                     }
                 }
+            }
             }
             
             $SQL = "INSERT INTO $surveytable
@@ -563,7 +566,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 {
                     case "completed":
                         // First compute the submitdate
-                        if ($private == "Y" && $datestamp == "N")
+                        if ($private == "Y")
                         {
                             // In case of anonymized responses survey with no datestamp
                             // then the the answer submutdate gets a conventional timestamp
@@ -578,11 +581,11 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
                         $dataentryoutput .= "                <select name='submitdate'>\n";
                         $dataentryoutput .= "                    <option value=";
-                        if(empty($idrow[$fname['fieldname']])) { $dataentryoutput .= "'' selected"; }
+                        if(empty($idrow['submitdate'])) { $dataentryoutput .= "'' selected"; }
                         else    { $dataentryoutput .= "'N'"; }
                         $dataentryoutput .= ">".$clang->gT("No")."</option>\n";
                         $dataentryoutput .= "                    <option value=";
-                        if(!empty($idrow[$fname['fieldname']])) { $dataentryoutput .= "'' selected"; }
+                        if(!empty($idrow['submitdate'])) { $dataentryoutput .= "'' selected"; }
                         else     { $dataentryoutput .= "'$completedate'"; }
                         $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n";
                         $dataentryoutput .= "                </select>\n";

@@ -1,9 +1,8 @@
 <br />
  <table align="center" cellpadding="30">
   <tr>
-   <td align="center" bgcolor="efe5ca">
-    <font face="arial" size="2">
-    <strong><font color="red">{ANSWERSCLEARED}</font></strong><br /><br />
+		<td class="clearall-result">
+			<span class="warning-text">{ANSWERSCLEARED}</span><br /><br />
 	{RESTART}<br />
         {URL}<br />
 	{CLOSEWINDOW}

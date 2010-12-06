@@ -105,7 +105,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 {
     if(bHasSurveyPermission($surveyid,'survey','read'))
     {
-        $js_admin_includes[]='../scripts/jquery/jquery.cookie.js';
+        $js_admin_includes[]='../scripts/jquery/jquery.coookie.js';
         $js_admin_includes[]='../scripts/jquery/superfish.js';
         $js_admin_includes[]='../scripts/jquery/hoverIntent.js';
         $js_admin_includes[]='scripts/surveytoolbar.js';

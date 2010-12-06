@@ -42,6 +42,7 @@ $filenotvalidated = checkUploadedFileValidity($move);
 //SUBMIT
 if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
+    setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies : not actually used in all in one.
     if ($thissurvey['anonymized'] == "Y")
     {
         $privacy = templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
@@ -259,7 +260,7 @@ foreach ($_SESSION['grouplist'] as $gl)
         if ($ia[5] == $gid)
         {
             $qidattributes=getQuestionAttributes($ia[0]);
-            if ($qidattributes['hidden']==1) {
+            if ($qidattributes===false || $qidattributes['hidden']==1) {
                 continue;
             }
             $qtypesarray[$ia[1]] = $ia[4];
@@ -713,7 +714,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
             {
                 $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' order by title;";
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
             }
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;

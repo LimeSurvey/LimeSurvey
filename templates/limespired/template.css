@@ -7,8 +7,101 @@
   text-align: center;
 }
 
+.survey-navigator,
+.clear-all,
+.save-all {
+  text-align: center;
+}
+
 .survey-navigator {
-  margin: 0 0 10px 0;
+  margin: 15px 0 10px 0;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.register {
+	text-align: center;
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
+}
+
+.register-form {
+	margin-bottom: 10px;
+}
+
+.register-form table.register {
+	margin: 0 auto 0 auto;
+}
+
+.survey-load {
+	text-align: center;
+}
+
+.load-survey,
+.save-survey {
+	text-align: center;
+	padding: 10px 0;
+}
+
+.load-heading,
+.save-heading {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.load-message {
+}
+
+.load-form table,
+.save-form table {
+	margin: 0 auto 0 auto;
+}
+
+.return-to-survey {
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
+.survey-list-wrapper {
+	background-color:#E0FBFF;
+	border:1px solid #3C9AAE;
+	margin:20px 0;
+	padding:20px 10px;
+	text-align:center;
+}
+
+.survey-list-heading {
+	font-weight: bold;
+}
+
+.survey-list {
+}
+
+.survey-list ul {
+	padding: 0;
+}
+
+.survey-list li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
+.survey-contact {
+}
+
+.language-changer {
 }
 
 /* --------------------------------------------------- */
@@ -92,7 +185,7 @@ html {
   nt-size: 8pt
 }
 
-div#wrapper {
+div#survey-wrapper {
   margin: 0 auto;
   width: 868px;
 }
@@ -393,6 +486,10 @@ table.question tr.array2:hover {
   text-align: center;
   border: 1px solid #00677d;
   background: #f0fdff;
+}
+
+.survey-assessment {
+  font-weight: bold;
 }
 
 A:link,A:visited,A:active {
@@ -779,6 +876,16 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   vertical-align: bottom;
   font-weight: normal;
   font-size: 90%;
+}
+
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #FFFFFF;
+}
+
+#limesurvey table.question  thead tr.header_row {
+  background-color: #CBEFF2;
 }
 
 #limesurvey table.question tbody td {

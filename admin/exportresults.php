@@ -783,14 +783,13 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         {
             $convertyto=returnglobal('convertyto');
             foreach($drow as $key=>$dr) {
+                if (isset($fieldmap[$key]))
+                {
                 $fielddata=$fieldmap[$key];
-                if(isset($fielddata['type']) &&
-                ($fielddata['type'] == "M" ||
-                $fielddata['type'] == "P" ||
-                $fielddata['type'] == "Y")
-                )
+                    if (isset($fielddata['type']) && ($fielddata['type'] == "M" || $fielddata['type'] == "P" || $fielddata['type'] == "Y"))
                 {
                     if($dr == "Y") {$dr = $convertyto;}
+                }
                 }
                 $line[$key]=$dr;
             }
@@ -801,14 +800,13 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         {
             $convertnto=returnglobal('convertnto');
             foreach($drow as $key=>$dr) {
+                if (isset($fieldmap[$key]))
+                {
                 $fielddata=$fieldmap[$key];
-                if(isset($fielddata['type']) &&
-                ($fielddata['type'] == "M" ||
-                $fielddata['type'] == "P" ||
-                $fielddata['type'] == "Y")
-                )
+                    if (isset($fielddata['type']) && ($fielddata['type'] == "M" || $fielddata['type'] == "P" || $fielddata['type'] == "Y"))
                 {
                     if($dr == "N") {$dr = $convertnto;}
+                }
                 }
                 $line[$key]=$dr;
             }

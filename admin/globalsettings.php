@@ -514,7 +514,7 @@ function globalsettingsdisplay()
             $editsurvey .= "\t<p><input type='button' onclick='$(\"#frmglobalsettings\").submit();' class='standardbtn' value='".$clang->gT("Save settings")."' /><br /></p>\n";
             if ($demoModeOnly==true)
             {
-                $editsurvey .= '<p>'.$clang->gT("Note: Demo mode is activated. Marked (*) settings won't be saved.").'</p>\n';
+                $editsurvey .= '<p>'.$clang->gT("Note: Demo mode is activated. Marked (*) settings can't be changed.").'</p>\n';
             }
 
 

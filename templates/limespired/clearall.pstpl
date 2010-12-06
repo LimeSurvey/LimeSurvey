@@ -1,6 +1,6 @@
 <br />
 <div class="survey-cleared">
-    <span style="color:red; font-weight:bold;">{ANSWERSCLEARED}</span>
+    <span class="warning-text">{ANSWERSCLEARED}</span>
 	<br /><br />
 	{RESTART}<br />
 </div>

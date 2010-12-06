@@ -1,4 +1,4 @@
 <table width="100%">
 	<tr>
-		<td align="center">
-			<font face="verdana" size="2" color="#666666"><strong>{GROUPNAME}</strong></font>
+		<td class="group-name">
+			{GROUPNAME}

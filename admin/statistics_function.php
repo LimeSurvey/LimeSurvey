@@ -229,9 +229,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->SetHeaderData('../../../../images/statistics.png', 10, $statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
 
         // set header and footer fonts
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
+        // set default header data
+        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".html_entity_decode($surveyInfo['surveyls_title'],ENT_QUOTES,'UTF-8')."'");
+        
+        
         // set default monospaced font
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
@@ -840,15 +844,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     4)      Average size of file per respondent
                     5)      Average no. of files
                     5)      Summary/count of file types (ie: 37 jpg, 65 gif, 12 png)
-                    6)      Total size of all files (useful if you‚Äôre about to download them all)
-                    7)      You could also add things like ‚Äúsmallest file size‚Äù, ‚Äúlargest file size‚Äù, ‚Äúmedian file size‚Äù
+                    6)      Total size of all files (useful if youíre about to download them all)
+                    7)      You could also add things like ìsmallest file sizeî, ìlargest file sizeî, ìmedian file sizeî
                     8)      no. of files corresponding to each extension
                     9)      max file size
                     10)     min file size
                  */
 
                 // 1) Total number of files uploaded
-                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn‚Äôt upload any)
+                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didnít upload any)
                 $fieldname=substr($rt, 1, strlen($rt));
                 $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".db_table_name("survey_$surveyid");
                 $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
@@ -1856,12 +1860,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         break;
                     case 'pdf':
 
+                        $sPDFQuestion=FlattenText($qquestion,true);
                         $pdfTitle = $pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8')));
-                        $titleDesc = $pdf->delete_html(html_entity_decode($qquestion,ENT_QUOTES,'UTF-8'));
+                        $titleDesc = $sPDFQuestion;
 
                         $pdf->addPage('P','A4');
-                        $pdf->Bookmark($pdf->delete_html($qquestion), 1, 0);
-                        $pdf->titleintopdf($pdfTitle,$titleDesc);
+                        $pdf->Bookmark($sPDFQuestion, 1, 0);
+                        $pdf->titleintopdf($pdfTitle,$sPDFQuestion);
                         $tablePDF = array();
                         $footPDF = array();
 
@@ -1893,11 +1898,21 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if (isset($al[2]) && $al[2])
                     {
                         //handling for "other" option
+                        
                         if ($al[0] == $statlang->gT("Other"))
                         {
+                            if($qtype=='!' || $qtype=='L')
+                            {
+                                // It is better for single choice question types to filter on the number of '-oth-' entries, than to 
+                                // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
+                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
+                            }
+                            else
+                            {
                             //get data
                             $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
                             $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        }
                         }
                          
                         /*
@@ -3088,6 +3103,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                             $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
                             $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                            unset($graph);
                         }
                     }	//end if (bar chart)
 
@@ -3163,6 +3179,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
                                 $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
                                 $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                                unset($graph);
                             }
                             //print_r($DataSet->GetData()); echo "<br/><br/>";
                         }
@@ -3188,7 +3205,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $pdf->AddPage('P','A4');
 
                             $pdf->titleintopdf($pdfTitle,$titleDesc);
-                            $pdf->Image($tempdir."/".$cachefilename, 5, 70, 200, 200, '', $homeurl."/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true);
+                            $pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', $homeurl."/admin.php?sid=$surveyid", 'B', true, 150,'C',false,false,0,true);
 
                             break;
                         case 'html':

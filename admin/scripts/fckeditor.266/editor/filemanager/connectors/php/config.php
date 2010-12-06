@@ -104,6 +104,7 @@ isset($_SESSION['FileManagerContext']))
         //		echo $clang->gT("Upload of files is not enabled in this mode");
 
         // I can't find a way to notify the user here :-(
+        die('You are not allowed to upload files.');
     }
 }
 

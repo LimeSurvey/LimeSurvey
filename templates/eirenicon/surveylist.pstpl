@@ -1,35 +1,29 @@
-<table width="100%" align="center" cellspacing="0">
+<table class="survey-list-table">
     <tr>
-            <td align="center" bgcolor="#FFFFFF" style="text-align: center; background-color: #fff; font-family: verdana, arial helvetica, sans-serif; font-size: 160%; color: #328639; font-weight: bold;">
-             <p>{SITENAME}</p>
+    	<td class="site-name">
+			<h1>{SITENAME}</h1>
             </td>
     </tr>
 	<tr>
-		<td align="center" bgcolor="#FFFFFF">
-             <strong>{SURVEYLISTHEADING}</strong>
+		<td class="survey-list-heading">
+             {SURVEYLISTHEADING}
          </td>
     </tr>
 	<tr>
-		<td align="center" bgcolor="#FFFFFF">
-             <table align="center">
-               <tr>
-                <td>
+		<td class="survey-list">
                 <ul>{SURVEYLIST}</ul>
                 </td>
                </tr>
-             </table>
-		</td>
-	</tr>
       <tr>
-            <td align="center" bgcolor="#FFFFFF">
+		<td class="survey-contact">
              {SURVEYCONTACT}
             </td>
       </tr>
       <tr>
-            <td align="center" height="100px" bgcolor="#FFFFFF" valign="bottom">
+		<td class="language-changer">
              <p>{LANGUAGECHANGER}</p>
              <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey" /></a><br />
-             <a href="http://www.limesurvey.org" target="_blank" style="color:#000;">The Online Survey Tool</a> - Free &amp; Open Source<br />
+		 <a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free &amp; Open Source<br />
             </td>
       </tr>
 </table>

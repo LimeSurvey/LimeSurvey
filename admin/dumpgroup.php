@@ -94,7 +94,7 @@ exit;
 
 function getXMLStructure($xml,$gid)
 {
-    global $dbprefix; 
+    global $dbprefix, $connect; 
     // Groups 
     $gquery = "SELECT *
                FROM {$dbprefix}groups 
@@ -125,13 +125,24 @@ function getXMLStructure($xml,$gid)
                FROM {$dbprefix}conditions c, {$dbprefix}questions q, {$dbprefix}questions b 
                WHERE (c.cqid=q.qid) 
                AND (c.qid=b.qid) 
-               AND (q.gid=$gid) 
-               AND (b.gid=$gid)";
+               AND (q.gid={$gid}) 
+               AND (b.gid={$gid})";
     BuildXMLFromQuery($xml,$cquery,'conditions');
 
     //Question attributes
-    $query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
-          FROM {$dbprefix}question_attributes JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}question_attributes.qid AND {$dbprefix}questions.gid=$gid";
+    $surveyid=$connect->GetOne("select sid from {$dbprefix}groups where gid={$gid}");
+    $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
+    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType =='mssqlnative')
+    {
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value 
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid} 
+          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+    }
+    else {
+        $query="SELECT qa.qid, qa.attribute, qa.value
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}         
+          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+    }
     BuildXMLFromQuery($xml,$query,'question_attributes');
     
     // Default values
