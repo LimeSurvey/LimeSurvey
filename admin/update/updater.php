@@ -304,7 +304,7 @@ function UpdateStep2()
     {
         $output.="<div class='messagebox ui-corner-all'>
             <div class='warningheader'>".$clang->gT('Update server busy')."</div>
-            <p>".$clang->gT('The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared.')."<br />
+            <p>".$clang->gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
                ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
             <p><button onclick=\"window.open('$scriptname?action=globalsettings', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button></p>";
          
