@@ -920,11 +920,14 @@ if(isset($surveyid))
         foreach ($deletedqids as $deletedqid)
         {
             $deletedqid=(int)$deletedqid;
+            if ($deletedqid>0)
+            { // don't remove undefined
             $query = "DELETE FROM ".db_table_name('questions')." WHERE qid='{$deletedqid}'";  // Checked
             if (!$result = $connect->Execute($query))
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
             }
+        }
         }
 
         //Determine ids by evaluating the hidden field

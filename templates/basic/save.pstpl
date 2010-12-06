@@ -1,9 +1,11 @@
 <center>
-<strong class="alert error">{SAVEERROR}</strong>
-<strong><font size="+1">{SAVEHEADING}</font></strong><br /><br />
-{SAVEMESSAGE}
+<span class="save-error">{SAVEERROR}</span>
+<span class="save-heading">{SAVEHEADING}</span>
+<br /><br />
+<span class="save-message">{SAVEMESSAGE</span>}<br /><br />
 <span class="alert warning">{SAVEALERT}</span><br /><br />
-{SAVEFORM}<br />
-{RETURNTOSURVEY}
+
+<div class="save-form">{SAVEFORM}</div>
+<br />
+<span class="return-to-survey">{RETURNTOSURVEY}</span>
 </center>
-<table  width="0%" align="center"><tr><td><table align="center"  width="0%" border="0"><tr><td>

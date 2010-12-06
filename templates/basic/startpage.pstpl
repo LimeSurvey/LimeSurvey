@@ -4,11 +4,12 @@
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
+		
+		<!--[if lte IE 6]>
+				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
+		<![endif]-->
 <!--[if IE 7]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
-<![endif]-->
-<!--[if lte IE 6]>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
 <![endif]-->
 <!--[if IE 8]>
     	<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />

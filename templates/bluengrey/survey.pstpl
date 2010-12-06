@@ -1,8 +1,6 @@
 <div id="welcome">
-   <font style="font-family: Verdana; font-size: 14px;">
-   <b>{SURVEYNAME}</b>
-   </font><br />
-<p> {SURVEYDESCRIPTION}</P>
+    <span class="survey-name">{SURVEYNAME}</span>
+	<p class="survey-description"> {SURVEYDESCRIPTION}</P>
       {PERCENTCOMPLETE}<br/>
       {LANGUAGECHANGER}
 </div>

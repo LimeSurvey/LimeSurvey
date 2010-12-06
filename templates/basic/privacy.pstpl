@@ -1,5 +1,5 @@
-<table align="center" bgcolor="#EEEEEE" width="75%">
+<table class="privacy-table">
 	<tr>
-		<td align="center"><font size="1">{PRIVACYMESSAGE}</font></td>
+		<td>{PRIVACYMESSAGE}</font></td>
 	</tr>
 </table>

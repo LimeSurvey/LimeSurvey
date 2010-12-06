@@ -119,15 +119,15 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
     {
         $bQuotaMatched=false;
         $aQuotas=check_quota('return',$surveyid);
-        if ($aQuotas !== false)
+        if ($aQuotas!=false)  
         {
             foreach ($aQuotas as $aQuota)
             {
                 if (isset($aQuota['status']) && $aQuota['status']=='matched') $bQuotaMatched=true;
             }
+        }
             if ($bQuotaMatched) $bFinalizeThisAnswer=false;        
         }  
-    }
     
     if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
     {

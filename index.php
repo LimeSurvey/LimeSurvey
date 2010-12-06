@@ -751,7 +751,10 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
         
 
         // delete the response but only if not already completed
-        $connect->query('delete from '.db_table_name('survey_'.$surveyid).' where srid='.$_SESSION['srid']."and completed='N'");
+        $connect->query('DELETE FROM '.db_table_name('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
+
+        // also delete a record from saved_control when there is one
+        $connect->query('DELETE FROM '.db_table_name('saved_control'). ' WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
     }
     session_unset();
     session_destroy();
@@ -2356,7 +2359,12 @@ function buildsurveysession()
             
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
+            if (isset($_GET['newtest']) && $_GET['newtest'] = "Y")
+            {
+                  echo "  <input type='hidden' name='newtest' value='Y' id='newtest' />";
 
+            } 
+                
             // If this is a direct Reload previous answers URL, then add hidden fields
             if (isset($_GET['loadall']) && isset($_GET['scid'])
             && isset($_GET['loadname']) && isset($_GET['loadpass']))

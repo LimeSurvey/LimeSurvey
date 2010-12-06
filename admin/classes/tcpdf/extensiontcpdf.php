@@ -12,9 +12,12 @@ class PDF extends TCPDF
 
     }
 
-    function intopdf($text,$format='')
+    function intopdf($text,$format='',$bStripHTML=true)
     {
+        if ($bStripHTML)
+        {
         $text = $this->delete_html($text);
+        }
         $oldformat = $this->FontStyle;
         $this->SetFont('',$format,$this->FontSizePt);
         $this->Write(5,$text);

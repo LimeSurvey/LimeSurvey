@@ -1,10 +1,12 @@
 <div id='savetable'><center>
-<span class="warning error">{SAVEERROR}</span>
-<h3>{SAVEHEADING}</h3><br />
-{SAVEMESSAGE}
-<span class="warning">{SAVEALERT}</span>
+<span class="save-error">{SAVEERROR}</span>
+<h3 class="save-heading">{SAVEHEADING}</h3>
 <br />
-{SAVEFORM}<br />
-{RETURNTOSURVEY}
+<span class="save-message">{SAVEMESSAGE}</span>
+<span class="warning">{SAVEALERT}</span>
+<br /><br />
+<div class="save-form">{SAVEFORM}</div>
+<br />
+<span class="return-to-survey">{RETURNTOSURVEY}</span>
 </center>
 </div>

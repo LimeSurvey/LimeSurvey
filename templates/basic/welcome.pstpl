@@ -5,7 +5,7 @@
 			<td valign="bottom" align="center" width="100%">
 				<table width="100%">
 					<tr>
-						<td  align="center"><strong>{SURVEYNAME}</strong></td>
+						<td class="survey-name"><strong>{SURVEYNAME}</td>
 					</tr>
 					<tr>
 						<td  align="center">{LANGUAGECHANGER}</td>
@@ -16,7 +16,7 @@
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<table width="80%">
+				<table class="welcome-table" width="80%">
 					<tr>
 						<td>{WELCOME}<br /> <br /></td>
 					</tr>

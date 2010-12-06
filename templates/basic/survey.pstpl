@@ -4,7 +4,7 @@
 			<td valign="bottom" align="center" width="100%">
 				<table width="100%">
 					<tr>
-						<td align="center"><strong>{SURVEYNAME}</strong></td>
+						<td class="survey-name">{SURVEYNAME}</td>
 					</tr>
 					<tr>
 						<td class="graph">{PERCENTCOMPLETE}</td>

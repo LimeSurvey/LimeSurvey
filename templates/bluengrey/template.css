@@ -103,10 +103,12 @@ div.questiontext {
 
 #groupheader {
   margin: 1%;
+  font-style:italic;
 }
 
 #groupdescription {
   margin: 1%;
+  color: #777777;
 }
 
 #container {
@@ -348,6 +350,106 @@ td.answertext {
   font-size: 12px;
   font-weight: bold;
 }
+
+.survey-name {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.survey-description {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size:0.8em;
+	margin:6px auto;
+}
+
+.x-questions {
+	color: #333333;
+	font-size: 0.8em;
+}
+
+.submit-buttons {
+}
+
+.clear-all {
+}
+
+.assessment-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #2f5376;
+}
+
+.assessment-table th,
+.assessment-table td {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.assessment-heading {
+	background-color: #DDDDDD;
+	text-align: center;
+	font-size: small;
+	font-weight: bold;
+	border-bottom: 1px solid #2f5376;
+}
+
+.assessments {
+	background-color: #FFFFFF;
+}
+
+td.clearall-result {
+	text-align: center;
+}
+
+td.clearall-result .warning-text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+	color: #FF0000;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
+}
+
+.load-error {
+	color:#FF0000;
+}
+
+.load-heading {
+}
+
+.load-message {
+}
+
+.load-form {
+}
+
+.return-to-survey {
+}
+
+.save-error{
+	color: #FF0000;
+}
+
+.save-heading{
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
 
 /* -------------------------------------------------
    START: Question styles  ------------------------- */

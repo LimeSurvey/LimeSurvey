@@ -66,7 +66,7 @@ $(document).ready(function(){
     
     $('#browseresponses').qtip({
         content:{
-                text:$('#browselangpopup'),
+                text:$('#browselangpopup')
         },
         style: { name: 'cream',
                         tip:true, 

@@ -220,10 +220,12 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
     if (!isset($_POST['autoload_url']) || empty($_POST['autoload_url'])) {$_POST['autoload_url']=0;}
     if($subaction == "insertquota" && bHasSurveyPermission($surveyid, 'quotas','create'))
     {
-        if(!isset($_POST['quota_limit']) || $_POST['quota_limit'] < 1)
+  if(!isset($_POST['quota_limit']) || $_POST['quota_limit'] < 0 || empty($_POST['quota_limit']) || !is_numeric($_POST['quota_limit']))
         {
-            $_POST['quota_limit'] = 1;
+            $_POST['quota_limit'] = 0;
+          
         }
+            
         array_walk( $_POST, 'db_quote', true);
 
         $query = "INSERT INTO ".db_table_name('quota')." (sid,name,qlimit,action,autoload_url)

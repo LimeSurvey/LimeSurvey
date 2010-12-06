@@ -232,6 +232,11 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
             $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
         }
     }
+            else
+            {
+                if ($oldqid !== $fname['qid']) 
+                {
+                    $oldqid = $fname['qid'];
 }
 
 $printoutput .= "</table>\n";
