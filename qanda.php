@@ -3714,21 +3714,24 @@ function do_file_upload($ia)
     if ($pos)
     {
         $_SESSION['preview'] = 1;
+        $questgrppreview = 1;   // Preview is launched from Question or group level
         $scriptloc = '../uploader.php';
     }
     else if ($thissurvey['active'] != "Y")
     {
         $_SESSION['preview'] = 1;
+        $questgrppreview = 0;
         $scriptloc = 'uploader.php';
     }
     else
     {
         $_SESSION['preview'] = 0;
+        $questgrppreview = 0;
         $scriptloc = 'uploader.php';
     }
-    $uploadbutton = "<h2><a class='upload' href='$scriptloc?sid=$surveyid'>Upload files</a></h2><br /><br />";
+    $uploadbutton = "<h2><a class='upload' href='$scriptloc?sid=$surveyid&preview=".$questgrppreview."'>Upload files</a></h2><br /><br />";
     $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
-
+    
 
     // Modal dialog
     $answer =  "<script type='text/javascript'>
@@ -3843,14 +3846,14 @@ function do_file_upload($ia)
                                 if ($pos)
                                 {
                                     $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"uploader.php?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
+                                                    display += '<tr><td><img src=\"".$scriptloc."?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
                                                 else
                                                     display += '<tr><td><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }
                                 else
                                 {
                                     $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"uploader.php?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
+                                                    display += '<tr><td><img src=\"".$scriptloc."?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
                                                 else
                                                     display += '<tr><td><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }

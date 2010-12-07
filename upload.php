@@ -30,7 +30,14 @@ if ($usresult)
     $stg_SessionName=$usrow['stg_value'];
     if ($surveyid)
     {
-        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+        if (isset($_GET['preview']) && $_GET['preview'] == 1)
+        {
+            @session_name($stg_SessionName);
+        }
+        else
+        {
+            @session_name($stg_SessionName.'-runtime-'.$surveyid);
+        }
     }
     else
     {

@@ -9,7 +9,7 @@ if (isset($_GET['filegetcontents']))
 {
     $handle = file_get_contents("tmp/upload/".$_GET['filegetcontents']);
     echo $handle;
-    exit;
+    exit();
 }
 
 if (!isset($surveyid))
@@ -34,7 +34,14 @@ if ($usresult)
     $stg_SessionName=$usrow['stg_value'];
     if ($surveyid)
     {
-        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+        if (isset($_GET['preview']) && $_GET['preview'] == 1)
+        {
+            @session_name($stg_SessionName);
+        }
+        else
+        {
+            @session_name($stg_SessionName.'-runtime-'.$surveyid);
+        }
     }
     else
     {
@@ -55,6 +62,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
 $meta = '<script type="text/javascript">
     var surveyid = "'.$surveyid.'";
+    var questgrppreview  = '.$_GET['preview'].';
 </script>';
 
 $meta .='<script type="text/javascript" src="scripts/ajaxupload.js"></script>

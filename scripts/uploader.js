@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    
+
     var ia = $('#ia').val();
 
     /* Load the previously uploaded files */
@@ -53,7 +53,7 @@ $(document).ready(function(){
     var button = $('#button1'), interval;
 
     new AjaxUpload(button, {
-        action: 'upload.php?sid='+surveyid,
+        action: 'upload.php?sid='+surveyid+'&preview='+questgrppreview,
         name: 'uploadfile',
         data: {
             valid_extensions : $('#allowed_filetypes').val(),
@@ -120,6 +120,7 @@ $(document).ready(function(){
             // Once the file has been uploaded via AJAX,
             // the preview is appended to the list of files
             var metadata = eval('(' + response + ')');
+            
             $('#notice').html('<p class="success">'+metadata.msg+'</p>');
             var count = parseInt($('#licount').val());
 
@@ -163,7 +164,7 @@ $(document).ready(function(){
                 filecount++;
                 var maxfiles = $('#maxfiles').val();
                 $('#filecount').val(filecount);
-
+                
                 if (filecount < minfiles)
                     $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
                 else if (filecount < maxfiles)
