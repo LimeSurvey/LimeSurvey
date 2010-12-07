@@ -115,7 +115,7 @@
                           var strlabel='".$clang->gT('Label','js')."';
                           var strCantDeleteLastAnswer='".$clang->gT('You cannot delete the last answer option.','js')."';
                           var lsbrowsertitle='".$clang->gT('Label set browser','js')."';
-                          var quickaddtitle='".$clang->gT('Quick-add subquestions','js')."';
+                          var quickaddtitle='".$clang->gT('Quick-add answers','js')."';
                           var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."';
                           var langs='".implode(';',$anslangs)."';</script>\n";
 
@@ -247,8 +247,8 @@
 
                    <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
     $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
-                      <label for='quickadd'>".$clang->gT('Enter your subquestions:')."</label>
-                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab.')."' rows='30' style='width:570px;'></textarea>
+                      <label for='quickadd'>".$clang->gT('Enter your answers:')."</label>
+                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' style='width:570px;'></textarea>
                       <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>

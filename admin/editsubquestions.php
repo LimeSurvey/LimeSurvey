@@ -248,7 +248,7 @@
                    <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
     $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
                       <label for='quickadd'>".$clang->gT('Enter your subquestions:')."</label>
-                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab.')."' rows='30' style='width:570px;'></textarea>
+                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' style='width:570px;'></textarea>
                       <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>

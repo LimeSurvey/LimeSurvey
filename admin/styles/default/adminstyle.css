@@ -1149,10 +1149,10 @@ div.loader {
 }
 
 #emailtemplates .ui-tabs-panel iframe,
-#frmeditgroup .tab-page iframe,
+#frmeditgroup .ui-tabs-panel iframe,
 #frmcopyquestion .tab-page iframe,   
 #sendreminder .tab-page iframe,
-#newquestiongroup .tab-page iframe,
+#newquestiongroup .ui-tabs-panel iframe,
 #sendinvitation .tab-page iframe,
 #addnewsurvey .ui-tabs-panel iframe {
     width:600px !important;

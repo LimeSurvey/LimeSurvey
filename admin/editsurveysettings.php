@@ -44,7 +44,7 @@
             $esrow['usecaptcha']                = 'D';
             $esrow['htmlemail']                 = 'Y';
             $esrow['emailnotificationto']       = '';
-            $esrow['anonymized']                   = 'Y';
+            $esrow['anonymized']                = 'N';
             $esrow['datestamp']                 = 'N';
             $esrow['ipaddr']                    = 'N';
             $esrow['refurl']                    = 'N';
@@ -54,7 +54,7 @@
             $esrow['expires']                   = '';
             $esrow['showwelcome']               = 'Y';
             $esrow['emailresponseto']           = '';
-            $esrow['assessments']               = 'Y';
+            $esrow['assessments']               = 'N';
 
             $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
