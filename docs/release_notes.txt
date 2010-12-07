@@ -77,6 +77,17 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9561) to 1.90+ (build 9596) Legend: # updated feature, - bug fix 
+#Updated translation: English by Olga Metzler (c_schmitz)
+#Updated translation : French (b00z00)
+#Updated translation: Italian (it), thanks to Andrea Giorgini (gandalfar)
+#Updated translation: Italian (it), thanks to Eugenio Pombi (gandalfar)
+#Updated translation: Icelandic kindly provided by Jóhann Friðriksson (c_schmi)zz
+#Updated translation: Russian by Ð¸Ñ¸лл СвеÑ¸Ñºий (c_schmitz)
+#Updated translation: Swedish by Daniel Tamm (c_schmitz)
+-Fixed issue: Slowdowns with array filter question attribute (c_schmitz)
+
+
 Changes from 1.90+ (build 9522) to 1.90+ (build 9561) Legend: # updated feature, - bug fix 
 #Updated translation: Spanish (es) (kadejo)
 #Updated translation: Polish (elisa-ls)
