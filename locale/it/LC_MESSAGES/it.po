@@ -10236,7 +10236,7 @@ msgstr "Ordinare almento %d punti"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:689
 #, php-format
 msgid "Check between %d and %d answers"
-msgstr "Controllare tra le risposte %d e  %d"
+msgstr "Scegliere da %d a  %d risposte"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:650
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:651
