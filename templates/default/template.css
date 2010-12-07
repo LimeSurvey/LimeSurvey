@@ -304,6 +304,10 @@ td.survey-description {
 	padding-bottom: 20px;
 }
 
+.page-odd td.survey-description {
+    background-color: #EFFFEE;
+}
+
 span.surveydescription {
 }
 
@@ -368,6 +372,10 @@ table.group {
 	border: 0 none;
 	border-collapse: collapse;
 	background-color: #D2E0F2;
+}
+
+.page-odd table.group {
+    background-color: #D2F2D3;
 }
 
 .group-name {
