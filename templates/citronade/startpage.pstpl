@@ -6,7 +6,7 @@
 	<style type="text/css" media="aural tty">
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
 	</style>
-	<link rel="stylesheet" type="text/css"  media="all" href="{TEMPLATEURL}style.css" />
+	<link rel="stylesheet" type="text/css"  media="all" href="{TEMPLATEURL}base.css" />
 	<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
     {TEMPLATECSS}
 	<link rel="stylesheet" type="text/css"  media="print" href="{TEMPLATEURL}print.css" />

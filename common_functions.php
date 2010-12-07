@@ -254,6 +254,7 @@ function isStandardTemplate($sTemplateName)
     return in_array($sTemplateName,array('basic',
                                         'bluengrey',
                                         'business_grey',
+                                        'citronade',
                                         'clear_logo',
                                         'default',
                                         'eirenicon',

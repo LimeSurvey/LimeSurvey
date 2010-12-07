@@ -1,3 +1,5 @@
+/* This part don't have to be modified */
+/* Base style only */
 /* --- STYLES DE BASE --- */ 
 /* source: http://www.alsacreations.com/astuce/lire/654-feuille-de-styles-de-base.html */
 html { font-size: 100%; } 
@@ -80,123 +82,9 @@ ul#surveylist{list-style: none ;}
     top: -9999px;
     left: -9999px;
 }
-
-table.question{border-width:0 0 1px 0;}
-table.question tbody{border-width:0 1px 0 0;}
-table.question thead th{border-width:1px 1px 0px 0px;}
-table.question thead td,table.question thead th:first-child{border-width:0px 1px 0px 0px;}
-table.question tbody th{border-width:1px 1px 0px 1px;}
-table.question tbody td{border-width:1px 1px 0px 0px;}
-
-table.question tbody th.answertext,table.question tbody th.arraycaptionleft{text-align:right;}
-table.question tbody th.answertextright{text-align:left;}
-table.question thead th{text-align:center;}
-table.question tbody td{text-align:center;}
-
-table.question tbody td.ddarrayseparator{border-top-width: 0px;}
-
- .choice-5-pt-radio ul
-,.list-radio-flexible ul
-,.list-radio ul
-,.list-with-comment ul
-,.multiple-opt ul
-,.multiple-opt-comments ul
-,.multiple-short-txt ul
-,.numeric-multi ul
-,.yes-no ul
-,.gender ul {
-	list-style: none;
-}
- .choice-5-pt-radio .answers li
-,.list-radio-flexible .answers li
-,.list-radio .answers li
-,.list-with-comment .answers li
-,.multiple-opt .answers li
-,.multiple-opt-comments .answers li
-,.multiple-short-txt .answers li
-,.numeric-multi .answers li
-,.yes-no .answers li
-,.gender .answers li {
-    list-style-type: none;
-}
- .choice-5-pt-radio ul li
-,.yes-no ul li
-,.gender ul li
-{
-	display: inline;
-	padding: 0% 1em 0% 0%;
-text-align:left;
-}
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-{
-	font-size: 80%;
-	font-style: italic;
-}
-.error
-{
-	color: #f70;
-}
-.good
-{
-	color: #090;
-}
-
-table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
-table.rank td{border-width:1px;}
-table.rank table td{border-width:0px;}
-
-/* DEFINED ABOVE UNDER "General list styles" - - - - -
-.list-radio-flexible
-.list-radio
-*/
-
-  ul.cols-2 , table.cols-2
-, ul.cols-3 , table.cols-3
-, ul.cols-4 , table.cols-4
-, ul.cols-5 , table.cols-5
-, ul.cols-6 , table.cols-6
-, ul.cols-7 , table.cols-7
-, ul.cols-8 , table.cols-8
-{
-	width: 98%;
-	margin: 0% auto 0% auto;
-}
-  ul.cols-2 li , ul.cols-2-ul
-, ul.cols-3 li , ul.cols-3-ul
-, ul.cols-4 li , ul.cols-4-ul
-, ul.cols-5 li , ul.cols-5-ul
-, ul.cols-6 li , ul.cols-6-ul
-, ul.cols-7 li , ul.cols-7-ul
-, ul.cols-8 li , ul.cols-8-ul
-{
-	float: left;
-	padding: 0;
-	white-space: normal
-}
-  ul.cols-2 li , ul.cols-2-ul li
-, ul.cols-3 li , ul.cols-3-ul li
-, ul.cols-4 li , ul.cols-4-ul li
-, ul.cols-5 li , ul.cols-5-ul li
-, ul.cols-6 li , ul.cols-6-ul li
-, ul.cols-7 li , ul.cols-7-ul li
-, ul.cols-8 li , ul.cols-8-ul li
-{
-	padding: 0 0.5em;
-}
-ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 48%; }
-ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 30.5%; }
-ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 23%; }
-ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 19%; }
-ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
-ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
-ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
-
-.numeric-multi ul.slider.computed
-{
-	width: 14em;
-}
+.error{color: #f70;}
+.good{color: #090;}
+.problem{color: #f70;}
 
 /*****
 Default styles for the jQuery UI progress bar
@@ -220,7 +108,9 @@ Default styles for the jQuery UI progress bar
   width: 150px;
   height: 1em;
   text-align: left;
-  border: 1px solid #666666;
+  border-width: 1px
+  border-style: solid
+  border-color: #666666;
 }
 
 #progress-wrapper .ui-widget-header {
@@ -297,3 +187,4 @@ Default styles for the jQuery UI slider
 	height: 20px;
 	margin: 0 auto;
 }
+

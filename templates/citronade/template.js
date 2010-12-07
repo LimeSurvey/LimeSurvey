@@ -42,7 +42,8 @@ function focusFirst(Event)
 }
 
 // Replace common alert with jquery-ui dialog
-function alert(text) {
+// Uncomment this part to test this function
+/*function alert(text) {
 	var $dialog = $('<div></div>')
 		.html(text)
 		.dialog({
@@ -52,7 +53,7 @@ function alert(text) {
 		});
 
 	$dialog.dialog('open');
-}
+}*/
 
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.
