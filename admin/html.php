@@ -2039,7 +2039,9 @@ function showadminmenu()
     global $homedir, $scriptname, $surveyid, $setfont, $imageurl, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck;
 
     $adminmenu  = "<div class='menubar'>\n";
-    if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
+    if  ($_SESSION['pw_notify'] && $debug<2)  {
+						$_SESSION['flashmessage']=$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+	}
     $adminmenu  .="<div class='menubar-title ui-widget-header'>\n"
     . "<div class='menubar-title-left'>\n"
     . "<strong>".$clang->gT("Administration")."</strong>";

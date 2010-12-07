@@ -156,6 +156,7 @@ if (!isset($_SESSION['loginID']))
                         if (strtolower($_POST['password'])=='password')
                         {
                             $_SESSION['pw_notify']=true;
+						    $_SESSION['flashmessage']=$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
                         }
                         else
                         {
