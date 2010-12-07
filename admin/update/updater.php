@@ -630,19 +630,41 @@ function CheckForDBUpgrades()
     $currentDBVersion=GetGlobalSetting('DBVersion');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
-        $upgradedbtype=$databasetype;
-        if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
-        if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
-        if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
-        include ('upgrade-'.$upgradedbtype.'.php');
-        include ('upgrade-all.php');
-        $tables = $connect->MetaTables();
-        db_upgrade_all(intval($currentDBVersion));
-        db_upgrade(intval($currentDBVersion));
-        $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+        if(isset($_GET['continue']) && $_GET['continue']==1) 
+        {
+            $upgradedbtype=$databasetype;
+            if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
+            if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
+            if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
+            include ('upgrade-'.$upgradedbtype.'.php');
+            include ('upgrade-all.php');
+            $tables = $connect->MetaTables();
+            db_upgrade_all(intval($currentDBVersion));
+            db_upgrade(intval($currentDBVersion));
+            $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+        }
+        else {
+            return ShowDBUpgradeNotice();
+        }
     }
     return $adminoutput;
 }
 
+function ShowDBUpgradeNotice() {
+    global $databasetype, $dbprefix, $databasename, $sitename, $rooturl,$clang;
+    $error=false;
+    $output="<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
+    $output.=$clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
+    $output.="<li><b>" .$clang->gT('Database type') . ":</b> " . $databasetype . "</li>"; 
+    $output.="<li><b>" .$clang->gT('Database name') . ":</b> " . $databasename . "</li>"; 
+    $output.="<li><b>" .$clang->gT('Table prefix') . ":</b> " . $dbprefix . "</li>";   
+    $output.="<li><b>" .$clang->gT('Site name') . ":</b> " . $sitename . "</li>";   
+    $output.="<li><b>" .$clang->gT('Root URL') . ":</b> " . $rooturl . "</li>"; 
+    $output.='</ul>';
+    $output.="<br />";
+    $output.="<a href='{$rooturl}/admin/admin.php?continue=1'>" . $clang->gT('Click here to continue') . "</a>";  
+    $output.="<br />";
+    return $output;     
+}
 
 ?>
