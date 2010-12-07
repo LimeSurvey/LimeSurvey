@@ -298,8 +298,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
         // KP
         $labelsoutput.= "\t<div class='header ui-widget-header'>".$clang->gT("Labels")."\t</div>\n";
-        $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>"
-        ."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
+        $labelsoutput.= "<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
         ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
         ."<input type='hidden' name='lid' value='$lid' />\n"
         ."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
@@ -405,6 +404,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             if (!isset($_SESSION['nextlabelcode'])) $_SESSION['nextlabelcode']='';
             if ($first)
             {  $tab_content[$i].= "<tr><td><br /></td></tr><tr><td align='right'>"
+            ."<input type='hidden' name='sortorderids' value='$sortorderids' />\n"
+            ."<input type='hidden' name='codeids' value='$codeids' />\n"
             ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='code_$maxsortorder' onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'addnewlabelbtn');\" />\n"
             ."\t</td>\n"
             ."<td style='text-align:center;'>"
@@ -453,7 +454,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
             $i++;
         }
-
+        
         $labelsoutput .= "<div id='tabs'><ul>";
         foreach($tab_title as $i=>$eachtitle){
             $labelsoutput .= "<li><a href='#neweditlblset$i'>$eachtitle</a></li>";
@@ -464,7 +465,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         foreach($tab_content as $i=>$eachcontent){
             $labelsoutput .= "<div id='neweditlblset$i'>$eachcontent</div>";
         }
-
+        $labelsoutput .="</form>";
         $disabledIfNoResources = '';
         if (hasResources($lid,'label') === false)
         {
