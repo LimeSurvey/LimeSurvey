@@ -600,41 +600,33 @@ for ($i=0; $i<$fieldcount; $i++)
                 case ";":
                     list($faid, $fcode) = explode("_", $faid);
                     if ($answers == "short") {
-                        $fquest .= " [$faid] [$fcode]";
+                        $fquest .= " [$fcode] [$faid]";
                     } else {
                         
-                        $fquery = "SELECT sq.*, q.other"
-                            ." FROM ".db_table_name('questions')." sq, ".db_table_name('questions')." q"
-                            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
-                            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+                        $fquery = "SELECT sq.question"
+                            ." FROM ".db_table_name('questions')." sq"
+                            ." WHERE sq.sid=$surveyid "
                             ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-                            ." AND q.qid={$fqid}
-                               AND sq.scale_id=0
-                               ORDER BY sq.question_order";
+                            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+                               AND sq.parent_qid={$fqid} and sq.title=".db_quoteall($faid)."
+                               AND sq.scale_id=0";
             
-                            $y_axis_db = db_execute_assoc($fquery);
+                            $sSubquestionY = $connect->GetOne($fquery);
             
                             // Get the X-Axis   
-                            $aquery = "SELECT sq.*
+                            $aquery = "SELECT sq.question
                                 FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
                                 WHERE q.sid=$surveyid 
                                 AND sq.parent_qid=q.qid
                                 AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                                 AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                                AND q.qid={$fqid}
-                                AND sq.scale_id=1
-                                ORDER BY sq.question_order";
+                                AND q.parent_qid={$faid} and q.title=".db_quoteall($fcode)."
+                                AND sq.scale_id=1";
               
-                            $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+                            $sSubquestionX = $connect->GetOne($aquery);
 
-                           while ($arows = $y_axis_db->FetchRow())
-                        {
-                                while ($xrows = $x_axis_db->FetchRow())
-                            {
-                                $fquest .= " [".strip_tags_full($arows['question'])."] [".strip_tags_full($xrows['question'])."]";
+                            $fquest .= " [".strip_tags_full($sSubquestionY)."] [".strip_tags_full($sSubquestionX)."]";
                             }
-                        }
-                    }
                     break;
                 case "1": // multi scale Headline
                     $iAnswerScale = substr($fieldinfo,-1)+1;
