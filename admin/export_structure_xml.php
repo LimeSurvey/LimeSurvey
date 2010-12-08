@@ -197,12 +197,12 @@ function getXMLData($exclude = array())
 if (!isset($copyfunction))
 {
     $fn = "limesurvey_survey_$surveyid.lss";      
-    header("Content-Type: text/html/force-download");
+    header("Content-Type: text/xml");
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");                          // HTTP/1.0
+    header("Pragma: public");                          // HTTP/1.0
     echo getXMLData();
     exit;
 }
