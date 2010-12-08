@@ -84,9 +84,12 @@ unlink($f3);
 unlink($f4);
 rmdir($zipdir);
 
-header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="quexmlpdf_' . $qid . '_' . $surveyprintlang . '.zip"'); 
+header('Content-Type: application/zip');
 header('Content-Transfer-Encoding: binary');
+header('Content-Disposition: attachment; filename="quexmlpdf_' . $qid . '_' . $surveyprintlang . '.zip"'); 
+$len = filesize($zipfile);
+header("Content-Length: $len;\n");
+header("Pragma: public");
 // load the file to send:
 readfile($zipfile);
 unlink($zipfile);
