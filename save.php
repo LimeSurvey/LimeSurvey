@@ -526,7 +526,7 @@ function createinsertquery()
                          $_SESSION[$value]='';                               
                     }
                     
-                    elseif ($fieldexists['type']=='N' || $fieldinfo['type']=='K') //sanitize numerical fields
+                    elseif ($fieldexists['type']=='N' || $fieldexists['type']=='K') //sanitize numerical fields
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
                         
@@ -803,7 +803,10 @@ function array_remval($val, &$arr)
 function set_answer_time()
 {
 	global $connect, $thissurvey;
-	$setField = $_POST['lastanswer'];
+    if (isset($_POST['lastanswer']))
+    {
+        $setField = $_POST['lastanswer'];
+    }
 	$passedTime = time() - $_POST['start_time'];
 
 	if(!isset($setField))

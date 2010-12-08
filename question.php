@@ -539,7 +539,7 @@ else
     {
         foreach ($qanda as $qa)
         {
-						echo "<input type='hidden' name='lastanswer' value='$qa[7]' id='lastanswer' />\n";
+			echo "<input type='hidden' name='lastanswer' value='$qa[7]' id='lastanswer' />\n";
             $q_class = question_class($qa[8]); // render question class (see common.php)
 
             if ($qa[9] == 'Y')
