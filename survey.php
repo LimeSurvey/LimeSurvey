@@ -1047,7 +1047,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
-."<input type='hidden' name='_starttime' value='".time()."' id='_starttime' />\n"
+."<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n"
 ."<input type='hidden' name='token' value='$token' id='token' />\n"
 ."</form>\n";
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));

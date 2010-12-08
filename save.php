@@ -796,7 +796,7 @@ function array_remval($val, &$arr)
 
 /**
  * This functions saves the answer time for question/group and whole survey.
- * [ It compares current time with the time in $_POST['_starttime'] ]
+ * [ It compares current time with the time in $_POST['start_time'] ]
  * The times are saved in table: {prefix}{surveytable}_timings
  * @return void
  */
@@ -804,7 +804,7 @@ function set_answer_time()
 {
 	global $connect, $thissurvey;
 	$setField = $_POST['lastanswer'];
-	$passedTime = time() - $_POST['_starttime'];
+	$passedTime = time() - $_POST['start_time'];
 
 	if(!isset($setField))
 		$setField = $_POST['lastgroup'];
