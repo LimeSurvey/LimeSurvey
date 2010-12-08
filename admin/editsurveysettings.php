@@ -28,33 +28,37 @@
         if ($action == "newsurvey") {
             //New survey, set the defaults
             $esrow = array();
-            $esrow['active']                    = 'N';
-            $esrow['format']                    = 'G'; //Group-by-group mode
-            $esrow['template']                  = $defaulttemplate;
-            $esrow['allowsave']                 = 'Y';
-            $esrow['allowprev']                 = 'N';
-            $esrow['printanswers']              = 'N';
-            $esrow['publicstatistics']          = 'N';
-            $esrow['publicgraphs']              = 'N';
-            $esrow['public']                    = 'Y';
-            $esrow['autoredirect']              = 'N';
-            $esrow['tokenlength']               = 15;
-            $esrow['allowregister']             = 'N';
-            $esrow['usecookie']                 = 'N';
-            $esrow['usecaptcha']                = 'D';
-            $esrow['htmlemail']                 = 'Y';
-            $esrow['emailnotificationto']       = '';
-            $esrow['anonymized']                = 'N';
-            $esrow['datestamp']                 = 'N';
-            $esrow['ipaddr']                    = 'N';
-            $esrow['refurl']                    = 'N';
-            $esrow['tokenanswerspersistence']   = 'N';
-            $esrow['assesments']                = 'N';
-            $esrow['startdate']                 = '';
-            $esrow['expires']                   = '';
-            $esrow['showwelcome']               = 'Y';
-            $esrow['emailresponseto']           = '';
-            $esrow['assessments']               = 'N';
+            $esrow['active']                   = 'N';
+            $esrow['allowjumps']               = 'N';   
+            $esrow['format']                   = 'G'; //Group-by-group mode
+            $esrow['template']                 = $defaulttemplate;
+            $esrow['allowsave']                = 'Y';
+            $esrow['allowprev']                = 'N';
+            $esrow['nokeyboard']               = 'N';   
+            $esrow['printanswers']             = 'N';
+            $esrow['publicstatistics']         = 'N';
+            $esrow['publicgraphs']             = 'N';
+            $esrow['public']                   = 'Y';
+            $esrow['autoredirect']             = 'N';
+            $esrow['tokenlength']              = 15;
+            $esrow['allowregister']            = 'N';
+            $esrow['usecookie']                = 'N';
+            $esrow['usecaptcha']               = 'D';
+            $esrow['htmlemail']                = 'Y';
+            $esrow['emailnotificationto']      = '';
+            $esrow['anonymized']               = 'N';
+            $esrow['datestamp']                = 'N';
+            $esrow['ipaddr']                   = 'N';
+            $esrow['refurl']                   = 'N';
+            $esrow['tokenanswerspersistence']  = 'N';
+            $esrow['assesments']               = 'N';
+            $esrow['startdate']                = '';
+            $esrow['savetimings']              = 'N';
+            $esrow['expires']                  = '';
+            $esrow['showqnumcode']             = 'N';
+            $esrow['showwelcome']              = 'Y';
+            $esrow['emailresponseto']          = '';
+            $esrow['assessments']              = 'N';
 
             $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
@@ -325,7 +329,7 @@
             . "</select></li>\n";
 
         //Show Question Index
-        $editsurvey .= "<li><label for='allowjumps'>".$clang->gT("Show Question Index / Allow jumping")."</label>\n"
+        $editsurvey .= "<li><label for='allowjumps'>".$clang->gT("Show question index / allow jumping")."</label>\n"
                 . "<select id='allowjumps' name='allowjumps'>\n"
                 . "<option value='Y'";
         if (!isset($esrow['allowjumps']) || !$esrow['allowjumps'] || $esrow['allowjumps'] == "Y") {$editsurvey .= " selected='selected'";}
@@ -522,7 +526,7 @@
 		    . "<select id=\"showqnumcode\" name=\"showqnumcode\">\n\t\t\t"
 		    . '<option value="B"'.$sel_showqnc['B'].'>'.$clang->gT('Show both')."</option>\n\t\t\t"
 		    . '<option value="N"'.$sel_showqnc['N'].'>'.$clang->gT('Show question number only')."</option>\n\t\t\t"
-		    . '<option value="C"'.$sel_showqnc['C'].'>'.$clang->gT('Show question Code only')."</option>\n\t\t\t"
+		    . '<option value="C"'.$sel_showqnc['C'].'>'.$clang->gT('Show question code only')."</option>\n\t\t\t"
 		    . '<option value="X"'.$sel_showqnc['X'].'>'.$clang->gT('Hide both')."</option>\n\t\t"
 		    . "</select>\n\t</li>\n";
 		    unset($sel_showqnc,$set_showqnc);
