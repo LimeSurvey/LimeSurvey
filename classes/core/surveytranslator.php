@@ -148,6 +148,12 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['eu']['nativedescription'] = 'Euskara';
     $supportedLanguages['eu']['rtl'] = false;
     $supportedLanguages['eu']['dateformat'] = 3;
+    
+    // Belarusian
+    $supportedLanguages['be']['description'] = $clang->gT('Belarusian');
+    $supportedLanguages['be']['nativedescription'] = '&#1041;&#1077;&#1083;&#1072;&#1088;&#1091;&#1089;&#1082;&#1110;';
+    $supportedLanguages['be']['rtl'] = false;
+    $supportedLanguages['be']['dateformat'] = 1;
 
     // Bosnian
     $supportedLanguages['bs']['description'] = $clang->gT('Bosnian');
