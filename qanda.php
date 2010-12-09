@@ -56,7 +56,6 @@ else
 {
     define('SHOW_NO_ANSWER',0);
 };
-
 function retrieveConditionInfo($ia)
 {
     //This function returns an array containing all related conditions
@@ -774,7 +773,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
         case '1': //Array (Flexible Labels) dual scale
             $values=do_array_dual($ia);
             break;
-
     } //End Switch
 
     if (isset($values)) //Break apart $values array returned from switch
@@ -4125,7 +4123,6 @@ function do_multipleshorttext($ia)
 }
 
 
-
 // ---------------------------------------------------------------
 function do_multiplenumeric($ia)
 {
@@ -4826,6 +4823,80 @@ function do_shortfreetext($ia)
 
         $answer .= "</textarea>\n";
     }
+    elseif((int)($qidattributes['location_mapservice'])!=0){
+
+        $mapservice = $qidattributes['location_mapservice'];
+        $currentLocation = $_SESSION[$ia[1]];
+        $currentLatLong = null;
+
+        $floatLat = 0;
+        $floatLng = 0;
+
+        // Get the latitude/longtitude for the point that needs to be displayed by default
+        if (strlen($currentLocation) > 2){
+            $currentLatLong = explode(';',$currentLocation);
+            $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
+        }
+        else{
+            if ((int)($qidattributes['location_nodefaultfromip'])==0)
+                $currentLatLong = getLatLongFromIp($_SERVER['REMOTE_ADDR']);
+            if (!isset($currentLatLong) || $currentLatLong==false){
+                $floatLat = 0;
+                $floatLng = 0;
+                $LatLong = explode(" ",trim($qidattributes['location_defaultcoordinates']));
+
+                if (isset($LatLong[0]) && isset($LatLong[1])){
+                    $floatLat = $LatLong[0];
+                    $floatLng = $LatLong[1];
+                }
+
+                $currentLatLong = array($floatLat,$floatLng);
+            }
+        }
+        // 2 - city; 3 - state; 4 - country; 5 - postal
+        $strBuild = "";
+        if ($qidattributes['location_city'])
+            $strBuild .= "2";
+        if ($qidattributes['location_state'])
+            $strBuild .= "3";
+        if ($qidattributes['location_country'])
+            $strBuild .= "4";
+        if ($qidattributes['location_postal'])
+            $strBuild .= "5";
+        
+        $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
+        $answer = "
+        	<script type=\"text/javascript\">
+        		zoom['$ia[1]'] = {$qidattributes['location_mapzoom']};
+        	</script>
+            <p class=\"question\">
+            <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION[$ia[1]]}\">
+            
+            <input class=\"text location\" type=\"text\" size=\"20\" name=\"$ia[1]_c\"
+                id=\"answer$ia[1]_c\" value=\"$currentLocation\"
+                onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+            </p>
+
+            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
+                value = \"{$strBuild}\" >
+            <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
+                class=\"mapservice\" value = \"{$qidattributes['location_mapservice']}\" >
+            <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$qidattributes['location_mapwidth']}px; height: {$qidattributes['location_mapheight']}px\"></div>";
+
+        if ($qidattributes['location_mapservice']==1)
+            $js_header_includes[] = "http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6MouMmBA";
+        elseif ($qidattributes['location_mapservice']==2)
+            $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
+            
+	    if (isset($qidattributes['hide_tip']) && $qidattributes['hide_tip']==0)
+            {
+                $answer .= "<br />\n<span class=\"questionhelp\">"
+                . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</span>';
+                $question_text['help'] = $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
+            }
+
+
+    }
     else
     {
         //no question attribute set, use common input text field
@@ -4833,6 +4904,8 @@ function do_shortfreetext($ia)
         .htmlspecialchars($_SESSION[$ia[1]],ENT_QUOTES,'UTF-8')
         ."\" maxlength=\"$maxsize\" onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
     }
+
+
     if (trim($qidattributes['time_limit'])!='')
     {
 		$js_header_includes[] = '/scripts/coookies.js';
@@ -4844,6 +4917,18 @@ function do_shortfreetext($ia)
 
 }
 
+function getLatLongFromIp($ip){
+    global $ipInfoDbAPIKey;
+    $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&timezone=false");
+    if ($xml->{'Status'} == "OK"){
+        $lat = (float)$xml->{'Latitude'};
+        $lng = (float)$xml->{'Longitude'};
+
+        return(array($lat,$lng));
+    }
+    else
+        return false;
+}
 
 
 

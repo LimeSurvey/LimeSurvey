@@ -31,7 +31,169 @@ $(document).ready(function()
 			        $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
 			        $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER]});
         }
+        
+        $(".location").each(function(index,element){
+            var question = $(element).attr('name');
+            var coordinates = $(element).val();
+            var latLng = coordinates.split(" ");
+            var question_id = question.substr(0,question.length-2);
+            if ($("#mapservice_"+question_id).val()==1){
+                // Google Maps
+				if (gmaps[''+question]==undefined)
+					gmaps[''+question] = GMapsInitialize(question,latLng[0],latLng[1]);
+					}
+            else if ($("#mapservice_"+question_id).val()==2){
+                // Open Street Map
+				if (osmaps[''+question]==undefined)
+					osmaps[''+question] = OSMapInitialize(question,latLng[0],latLng[1]);
+            }
+        });
+        $(".location").live('focusout',function(event){
+            var question = $(event.target).attr('name');
+            var name = question.substr(0,question.length - 2);
+            var coordinates = $(event.target).attr('value');
+            var xy = coordinates.split(" ");
+            var currentMap = gmaps[question];
+            var marker = gmaps["marker__"+question];
+            var markerLatLng = new GLatLng(xy[0],xy[1]);
+        	marker.setLatLng(markerLatLng);
+        	var geocoder = new GClientGeocoder();
+            geocoder.getLocations(markerLatLng,function(response){
+            	
+                parseGeocodeAddress(response,name);
+            });
+            currentMap.panTo(markerLatLng);
+        });
 });
+
+gmaps = new Object;
+osmaps = new Object;
+zoom = [];
+
+// OSMap functions
+function OSMapInitialize(question,lat,lng){
+	 
+    map = new OpenLayers.Map("gmap_canvas_" + question);
+    map.addLayer(new OpenLayers.Layer.OSM());
+    var lonLat = new OpenLayers.LonLat(lat,lng)
+          .transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+    var zoom=11;
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+    markers.addMarker(new OpenLayers.Marker(lonLat));
+    map.setCenter (lonLat, zoom);
+    return map;
+    
+}
+
+// Google Maps Functions
+function GMapsInitialize(question,lat,lng) {
+    if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("gmap_canvas_" + question));
+        var center = new GLatLng(lat,lng);
+        map.addControl(new GSmallMapControl());
+
+        var name = question.substr(0,question.length - 2);
+        map.setCenter(center, zoom[name]);
+        var marker = new GMarker(center, {draggable: true});
+        GEvent.addListener(map, "singlerightclick", function(GP) {
+        	var markerLatLng = map.fromContainerPixelToLatLng(GP);
+        	marker.setLatLng(markerLatLng);
+        	var geocoder = new GClientGeocoder();
+            geocoder.getLocations(markerLatLng,function(response){
+            	
+                parseGeocodeAddress(response,name);
+            });
+            $("#answer"+question).val(Math.round(markerLatLng.lat()*10000)/10000 + " " + Math.round(markerLatLng.lng()*10000)/10000);
+         
+        });
+        gmaps['marker__'+question] = marker;
+        GEvent.addListener(marker, "dragend", function() {
+           var markerLatLng = marker.getLatLng();
+           var geocoder = new GClientGeocoder();
+           geocoder.getLocations(markerLatLng,function(response){
+               parseGeocodeAddress(response,name);
+           });
+           $("#answer"+question).val(Math.round(markerLatLng.lat()*10000)/10000 + " " + Math.round(markerLatLng.lng()*10000)/10000);
+        });
+        map.addOverlay(marker);
+    }
+    return map;
+}
+
+function parseGeocodeAddress(response, name){
+	var city  = '';
+	var state = '';
+	var country = '';
+	var postal = '';
+	
+  if (!(!response || response.Status.code != 200)) {
+        place = response.Placemark[0];
+        point = new GLatLng(place.Point.coordinates[1],
+                            place.Point.coordinates[0]);
+        var lat = place.Point.coordinates[1];
+        var lng = place.Point.coordinates[0];
+		
+		
+		
+		try{
+			city = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName;
+		}
+		catch(e){
+			city  = '';
+		}
+		
+		try{
+			state = place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
+		}
+		catch(e){
+			state  = '';
+		}
+		
+		try{
+			country = place.AddressDetails.Country.CountryNameCode;
+		}
+		catch(e){
+			country  = '';
+		}
+		
+        try{
+        	postal = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.PostalCode.PostalCodeNumber;
+        }
+		catch(e){
+			postal  = '';
+		}
+		getInfoToStore(name,lat,lng,city,state,country,postal);
+    }
+	  else{
+		  var latlong = (response.name).split(",");
+		  
+		  
+		  getInfoToStore(name,latlong[0],latlong[1],city,state,country,postal);
+	  }
+}
+
+
+
+// General Function
+function getInfoToStore(name, lat,lng,city,state,country,postal){
+    var boycott = $("#boycott_"+name).val();
+    // 2 - city; 3 - state; 4 - country; 5 - postal
+    if (boycott.indexOf("2")!=-1)
+        city = '';
+    if (boycott.indexOf("3")!=-1)
+        state = '';
+    if (boycott.indexOf("4")!=-1)
+        country = '';
+    if (boycott.indexOf("5")!=-1)
+        postal = '';
+    
+    $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
+    
+}
 
 Array.prototype.push = function()
 {
@@ -681,4 +843,4 @@ function multi_set(ids)
 		//run main function per id
 		_collection.push(new multi_total(ids[ii]));
 	}
-};
+}

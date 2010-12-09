@@ -493,7 +493,10 @@ $force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/
 $ssl_emergency_override = false;
 
 
+// Get your IP Info DB key from http://ipinfodb.com/
+// If you have the API key, you can use it to get the approximate location of the user initially.
 
+$ipInfoDbAPIKey = '';
 
 
 //DO NOT EVER CHANGE THE FOLLOWING 5 LINES ---------------
@@ -553,5 +556,3 @@ else
 {
     // commandline installation, no relativeurl needed
 }
-
-

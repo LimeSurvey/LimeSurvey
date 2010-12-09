@@ -23,6 +23,7 @@
 *  If you want to generally add a new permission just add it here.
 * 
 */
+
 function aGetBaseSurveyPermissions()
 {
     global $clang;
@@ -142,6 +143,11 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     "I"=>array('description'=>$clang->gT("Language Switch"),
                'hasdefaultvalues'=>0,
                'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "J"=>array('description'=>$clang->gT("Location"),
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
@@ -1514,6 +1520,7 @@ function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group
     global $dbprefix, $connect, $surveyid;
     $qid=sanitize_int($qid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    
     $cdresult = db_execute_num("SELECT qid, code, sortorder FROM ".db_table_name('answers')." WHERE qid={$qid} and language='{$baselang}' ORDER BY sortorder"); //Checked
     $position=0;
     while ($cdrow=$cdresult->FetchRow())
@@ -2302,7 +2309,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
         // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U"
 
-        if ($qtypes[$arow['type']]['subquestions']==0 && $arow['type'] != "R" && $arow['type'] != "|")
+        if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
             $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
@@ -2598,7 +2605,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             }
         }
     }
-
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
         return $fieldmap;
@@ -3700,6 +3706,109 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon.'),
     "caption"=>$clang->gT('Exclusive option'));
 
+    // Map Options
+    
+    $qattributes["location_city"]=array(
+    "types"=>"S",
+    'readonly_when_active'=>true,
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>100,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Yes'),
+    1=>$clang->gT('No')),
+    "help"=>$clang->gT("Store the city of the user?"),
+    "caption"=>$clang->gT("City"));
+
+    $qattributes["location_state"]=array(
+    "types"=>"S",
+    'readonly_when_active'=>true,
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>100,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Yes'),
+    1=>$clang->gT('No')),
+    "help"=>$clang->gT("Store the state of the user?"),
+    "caption"=>$clang->gT("State"));
+
+    $qattributes["location_postal"]=array(
+    "types"=>"S",
+    'readonly_when_active'=>true,
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>100,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Yes'),
+    1=>$clang->gT('No')),
+    "help"=>$clang->gT("Store the postal code of the user?"),
+    "caption"=>$clang->gT("Postal Code"));
+
+    $qattributes["location_country"]=array(
+    "types"=>"S",
+    'readonly_when_active'=>true,
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>100,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Yes'),
+    1=>$clang->gT('No')),
+    "help"=>$clang->gT("Store the country of the user?"),
+    "caption"=>$clang->gT("Country"));
+
+    $qattributes["location_mapservice"]=array(
+    "types"=>"S",
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>90,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Off'),
+    1=>$clang->gT('Google Maps')),
+    "help"=>$clang->gT("Which mapping service to use?"),
+    "caption"=>$clang->gT("Mapping Service"));
+    
+    $qattributes["location_mapwidth"]=array(
+    "types"=>"S",
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>102,
+    'inputtype'=>'text',
+    'default'=>'500',
+    "help"=>$clang->gT("Width of the Map Holder"),
+    "caption"=>$clang->gT("Width"));
+    
+    $qattributes["location_mapheight"]=array(
+    "types"=>"S",
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>103,
+    'inputtype'=>'text',
+    'default'=>'300',
+    "help"=>$clang->gT("Height of the Map Holder"),
+    "caption"=>$clang->gT("Height"));
+
+    $qattributes["location_nodefaultfromip"]=array(
+    "types"=>"S",
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>91,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Yes'),
+    1=>$clang->gT('No')),
+    "help"=>$clang->gT("Get the default location using the user's IP address?"),
+    "caption"=>$clang->gT("IP as default location"));
+
+    $qattributes["location_defaultcoordinates"]=array(
+    "types"=>"S",
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>101,
+    'inputtype'=>'text',
+    "help"=>$clang->gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
+    "caption"=>$clang->gT('Default Position'));
+	
+    $qattributes["location_mapzoom"]=array(
+    "types"=>"S",
+    'category'=>$clang->gT('Location'),
+    'sortorder'=>101,
+    'inputtype'=>'text',
+    'default'=>'11',
+    "help"=>$clang->gT("Maps Zoom Level"),
+    "caption"=>$clang->gT("Zoom"));
+    
+    // End Map Options
+    
     $qattributes["hide_tip"]=array(
     "types"=>"!KLMNOPRWZ",
     'category'=>$clang->gT('Display'),
@@ -4429,7 +4538,10 @@ function getHeader($meta = false)
     $js_header = ''; $css_header='';
     foreach ($js_header_includes as $jsinclude)
     {
-        $js_header .= "<script type=\"text/javascript\" src=\"".$rooturl."$jsinclude\"></script>\n";
+        if (substr($jsinclude,0,4) == 'http')
+            $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
+        else
+            $js_header .= "<script type=\"text/javascript\" src=\"".$rooturl."$jsinclude\"></script>\n";
     }
 
     foreach ($css_header_includes as $cssinclude)

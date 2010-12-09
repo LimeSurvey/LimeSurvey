@@ -92,6 +92,7 @@ function globalsettingssave()
             $sessionlifetimetemp=(int)($_POST['sessionlifetime']);
             if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
+            setGlobalSetting('ipInfoDbAPIKey',$_POST['ipInfoDbAPIKey']);
             setGlobalSetting('force_ssl',$_POST['force_ssl']);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
@@ -254,7 +255,10 @@ function globalsettingsdisplay()
             $editsurvey .= ">".$clang->gT("Off")."</option>\n"
             . "</select>\n</li>\n"
             . "<li><label for='sessionlifetime'>".$clang->gT("Session lifetime (seconds):")."</label>\n"
-            . "<input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value=\"".htmlspecialchars(getGlobalSetting('sessionlifetime'))."\" /></li>";
+            . "<input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value=\"".htmlspecialchars(getGlobalSetting('sessionlifetime'))."\" /></li>"
+            . "<li><label for='ipInfoDbAPIKey'>".$clang->gT("IP Info DB API Key:")."</label>\n"
+            . "<input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value=\"".htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey'))."\" /></li>";
+
 
             // End General TAB
 
