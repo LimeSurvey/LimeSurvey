@@ -22,7 +22,7 @@ if ($enableLdap)
     require_once(dirname(__FILE__).'/../config-ldap.php');
 }
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($order)) {$order=returnglobal('order');}
+if (!isset($order)) {$order=preg_replace('/[^_ a-z0-9-]/i', '', returnglobal('order'));}
 if (!isset($limit)) {$limit=(int)returnglobal('limit');}
 if ($limit==0) $limit=50;
 if (!isset($start)) {$start=(int)returnglobal('start');}
@@ -32,7 +32,6 @@ if (!isset($tokenids)) {$tokenids=returnglobal('tids');}
 if (!isset($gtokenid)) {$gtokenid=returnglobal('gtid');}
 if (!isset($gtokenids)) {$gtokenids=returnglobal('gtids');}
 if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
-if (!isset($usertoken)) {$usertoken=returnglobal('usertoken');}
 
 if(isset($tokenids)) {
     $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
@@ -41,24 +40,12 @@ if(isset($tokenids)) {
         if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
     }
 }
-if(isset($gtokenids)) {
-    $gtokenidsarray=explode("|", substr($gtokenids, 1)); //Make the gtids string into an array, and exclude the first character
-    unset($gtokenids);
-    foreach($gtokenidsarray as $gtokenitem) {
-        if($gtokenitem != "") $gtokenids[]=sanitize_int($gtokenitem);
-    }
-}
 
 include_once("login_check.php");
 include_once("database.php");
 $js_admin_includes[]='scripts/tokens.js';
 $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 $thissurvey=getSurveyInfo($surveyid);
-
-//$invitationBody = "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
-//$reminderBody = "Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
-//$confirmationBody = "Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}";
-//$registrationBody = "Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.");
 
 if ($subaction == "import" || $subaction == "upload" )  // THis array only needs to be defined for these two functions
 {
@@ -897,23 +884,23 @@ if($subaction != 'bounceprocessing')
         $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
     }
     
-    $tokenoutput .= "<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'"
+    $tokenoutput .= "<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'"
     ." title='".$clang->gTview("Show start...")."'>"
     ."<img name='DBeginButton' align='left' src='$imageurl/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
-    ."<a href='$scriptname?action=toknens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+    ."<a href='$scriptname?action=toknens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
 	" title='".$clang->gTview("Show previous...")."'>" 
 	."<img name='DBackButton' align='left' src='$imageurl/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
 	."<img src='$imageurl/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
-	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
 	"title='".$clang->gTview("Show next...")."'>" .
 	"<img name='DForwardButton' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
-	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
 	"title='".$clang->gTview("Show last...")."'>".
 	"<img name='DEndButton' align='left'  src='$imageurl/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
 	."<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' /></form>\n";
 }
 $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?action=tokens'>\n"
-	."<input type='text' name='searchstring' value='$searchstring' />\n"
+	."<input type='text' name='searchstring' value='".htmlspecialchars($searchstring,ENT_QUOTES,'utf-8')."' />\n"
 	."<input type='submit' value='".$clang->gT("Search")."' />\n"
 	."\t<input type='hidden' name='order' value='$order' />\n"
 	."\t<input type='hidden' name='subaction' value='search' />\n"
@@ -930,16 +917,17 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."<input type='hidden' name='action' value='tokens' />\n"
 	."<input type='hidden' name='subaction' value='browse' />\n"
 	."<input type='hidden' name='order' value='$order' />\n"
-	."<input type='hidden' name='searchstring' value='$searchstring' />\n"
+	."<input type='hidden' name='searchstring' value='".htmlspecialchars($searchstring,ENT_QUOTES,'utf-8')."' />\n"
 	."</form>\n";
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	if ($searchstring)
 	{
-	    $bquery .= " WHERE firstname LIKE '%$searchstring%' "
-	    . "OR lastname LIKE '%$searchstring%' "
-	    . "OR email LIKE '%$searchstring%' "
-	    . "OR emailstatus LIKE '%$searchstring%' "
-	    . "OR token LIKE '%$searchstring%'";
+        $sSearch=db_quote($searchstring);
+	    $bquery .= " WHERE firstname LIKE '%{$sSearch}%' "
+	    . "OR lastname LIKE '%{$sSearch}%' "
+	    . "OR email LIKE '%{$sSearch}%' "
+	    . "OR emailstatus LIKE '%{$sSearch}%' "
+	    . "OR token LIKE '%{$sSearch}%'";
 	}
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
@@ -955,7 +943,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."<th><input type='checkbox' id='tokencheckboxtoggle'></th>\n"   //Checkbox
 
 	."<th align='left' >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	."ID' alt='"
@@ -964,7 +952,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 
 	."<th align='left'  >".$clang->gT("Actions")."</th>\n"  //Actions
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("First name")
@@ -974,7 +962,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("First name")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Last name")
@@ -984,7 +972,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Last name")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=email&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=email&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Email address")
@@ -994,7 +982,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Email address")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Email status")
@@ -1004,7 +992,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Email status")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Token")
@@ -1014,7 +1002,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Token")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=language&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=language&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Language")
@@ -1024,7 +1012,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Language")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Invite sent?")
@@ -1034,7 +1022,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Invite sent?")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindersent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindersent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder sent?")
@@ -1044,7 +1032,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a><span>".$clang->gT("Reminder sent?")."</span></th>\n"
 
 	."<th align='left'>"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindercount%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindercount%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder count")
@@ -1054,7 +1042,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a><span>".$clang->gT("Reminder count")."</span></th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Completed?")
@@ -1064,7 +1052,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=usesleft%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=usesleft%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Uses left")
@@ -1074,7 +1062,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a><span>".$clang->gT("Uses left")."</span></th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Valid from")
@@ -1084,7 +1072,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
 
 	."<th align='left'  >"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Valid until")
@@ -1097,7 +1085,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	foreach ($attrfieldnames as $attr_name=>$attr_translation)
 	{
 	    $tokenoutput .= "<th align='left' >"
-	    ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=$attr_name&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	    ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=$attr_name&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
 	    ."<img src='$imageurl/downarrow.png' alt='' title='"
 	    .$clang->gT("Sort by: ").$attr_translation."' border='0' align='left' /></a>".$attr_translation."</th>\n";
 	}
