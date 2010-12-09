@@ -6038,7 +6038,7 @@ function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,
         {
             $rowid .= $rowcontents[$idfieldnum]."-";
         }
-        $rowlangarray = split (" ", $rowcontents[$langfieldnum]);
+        $rowlangarray = explode (" ", $rowcontents[$langfieldnum]);
         if (!isset($objlangsupportarray[$rowid]))
         {
             if (array_search($langcode,$rowlangarray)!== false)

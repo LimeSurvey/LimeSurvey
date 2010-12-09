@@ -139,11 +139,13 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
     else    // unknown file - show error message
     {
         $results['fatalerror'] = $clang->gT("This file is not a LimeSurvey question file. Import failed.");
+        return  $results;
     }
     
     if  ((int)$importversion<112)
     {
         $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
+        return  $results;
     }
 
     for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
