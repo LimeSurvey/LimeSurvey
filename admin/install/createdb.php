@@ -39,6 +39,10 @@ if (returnglobal('createdbstep2')==$clang->gT("Populate Database"))
         $createdbtype='mysql';
     }
     if ($createdbtype=='mssql_n' || $createdbtype=='odbc_mssql' || $createdbtype=='odbtp') $createdbtype='mssql';
+    if($createdbtype=='postgres' && $connect->pgVersion=='9') 
+    {
+        $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
+    }
    if($createdbtype=='mssqlnative') $createdbtype='mssqlnative';
     if (modify_database(dirname(__FILE__).'/create-'.$createdbtype.'.sql'))
     {
