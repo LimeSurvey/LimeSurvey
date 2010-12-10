@@ -549,6 +549,11 @@ if($subaction != 'bounceprocessing')
         $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\""
         ."title='".$clang->gTview("Add new token entry")."' >"
         ."<img name='AddNewButton' src='$imageurl/add.png' title='' alt='".$clang->gT("Add new token entry")."' /></a>\n";
+        
+        $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=adddummys', '_top')\""
+        ."title='".$clang->gTview("Add dummy tokens")."' >"
+        ."<img name='AddNewDummyButton' src='$imageurl/create_dummy_token.png' title='' alt='".$clang->gT("Add dummy tokens")."' /></a>\n";
+
     }
     if (bHasSurveyPermission($surveyid, 'tokens','update'))
     {
@@ -2305,6 +2310,78 @@ if (($subaction == "edit" &&  bHasSurveyPermission($surveyid, 'tokens','update')
     ."</form>\n";
 }
 
+if ($subaction == "adddummys" && bHasSurveyPermission($surveyid, 'tokens','create'))
+{
+    //get token length from survey settings
+    $tlquery = "SELECT tokenlength FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
+    $tlresult = db_execute_assoc($tlquery);
+    while ($tlrow = $tlresult->FetchRow())
+    {
+        $tokenlength = $tlrow['tokenlength'];
+    }
+
+    //if tokenlength is not set or there are other problems use the default value (15)
+    if(!isset($tokenlength) || $tokenlength == '')
+    {
+        $tokenlength = 15;
+    }
+    
+    $tokenoutput .= "<div class='header ui-widget-header'>";
+    $tokenoutput .=$clang->gT("Create dummy tokens");
+    $tokenoutput .="</div>"
+    ."<form id='edittoken' class='form30' method='post' action='$scriptname?action=tokens'>\n"
+    ."<ul>\n"
+    ."\t<li><label>ID:</label>\n";
+    $tokenoutput .=$clang->gT("Auto");
+    $tokenoutput .= "</li>\n"
+    ."<li><label for='amount'>".$clang->gT("Number of tokens").":</label>\n"
+    ."<input type='text' size='20' id='amount' name='amount' value=\"100\" /></li>\n"
+    ."<li><label for='tokenlen'>".$clang->gT("Token length").":</label>\n"
+    ."<input type='text' size='20' id='tokenlen' name='tokenlen' value=\"{$tokenlength}\" /></li>\n"
+    ."<li><label for='firstname'>".$clang->gT("First Name").":</label>\n"
+    ."<input type='text' size='30' id='firstname' name='firstname' value=\"\" /></li>\n"
+    ."<li><label for='lastname'>".$clang->gT("Last Name").":</label>\n"
+    ."<input type='text' size='30'  id='lastname' name='lastname' value=\"\" /></li>\n"
+    ."\t<li><label for='email'>".$clang->gT("Email").":</label>\n"
+    ."\t<input type='text' maxlength='320' size='50' id='email' name='email' value=\"\" /></li>\n";
+    $tokenoutput .= "\t</li>\n"
+    ."<li><label for='language'>".$clang->gT("Language").":</label>\n";
+    $tokenoutput .= languageDropdownClean($surveyid,GetBaseLanguageFromSurveyID($surveyid));
+    $tokenoutput .= "</li>\n"
+    ."\t<li><label for='usesleft'>".$clang->gT("Uses left:")."</label>\n"
+    ."\t<input type='text' size='20' id='usesleft' name='usesleft' value=\"1\" /></li>\n"
+    ."\t<li><label for='validfrom'>".$clang->gT("Valid from").":</label>\n"
+    ."\t<input type='text' class='popupdatetime' size='20' id='validfrom' name='validfrom' value=\"";
+    if (isset($validfrom)){
+        $datetimeobj = new Date_Time_Converter($validfrom , "Y-m-d H:i:s");
+        $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+    }
+    $tokenoutput .= "\" />\n <label for='validuntil'>".$clang->gT('until')
+    ."\t</label><input type='text' size='20' id='validuntil' name='validuntil' class='popupdatetime' value=\"";
+    if (isset($validuntil)){
+        $datetimeobj = new Date_Time_Converter($validuntil , "Y-m-d H:i:s");
+        $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+    }
+    $tokenoutput .= "\" /> <span class='annotation'>".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'].' '.$clang->gT('hh:mm')).'</span>'
+    ."</li>\n";
+
+    // now the attribute fieds
+    $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
+    foreach ($attrfieldnames as $attr_name=>$attr_description)
+    {
+        $tokenoutput .= "<li>"
+        ."<label for='$attr_name'>".$attr_description.":</label>\n"
+        ."\t<input type='text' size='55' id='$attr_name' name='$attr_name' value='";
+        if (isset($$attr_name)) { $tokenoutput .=htmlspecialchars($$attr_name,ENT_QUOTES,'UTF-8');}
+        $tokenoutput.="' /></li>";
+    }
+
+    $tokenoutput .="\t</ul><p>";
+    $tokenoutput .= "<input type='submit' value='".$clang->gT("Add dummy tokens")."' />\n"
+    ."<input type='hidden' name='subaction' value='insertdummys' />\n";
+    $tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' /></p>\n"
+    ."</form>\n";
+}
 
 if ($subaction == "updatetoken" && bHasSurveyPermission($surveyid, 'tokens','update'))
 {
@@ -2392,6 +2469,7 @@ if ($subaction == "inserttoken" && (bHasSurveyPermission($surveyid, 'tokens','cr
     }
 
     $santitizedtoken=sanitize_token($_POST['token']);
+    
     $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Add token entry")."</div>\n"
     ."\t<div class='messagebox ui-corner-all'>\n";
     $data = array('firstname' => $_POST['firstname'],
@@ -2430,6 +2508,79 @@ if ($subaction == "inserttoken" && (bHasSurveyPermission($surveyid, 'tokens','cr
         ."\t\t<input type='button' value='".$clang->gT("Display Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n"
         ."\t\t<input type='button' value='".$clang->gT("Add new token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" /><br />\n";
     }
+    $tokenoutput .= "\t</div>";
+}
+
+if ($subaction == "insertdummys" && (bHasSurveyPermission($surveyid, 'tokens','create')))
+{
+    //Fix up dates and match to database format
+    if (trim($_POST['validfrom'])=='') {
+        $_POST['validfrom']=null;
+    }
+    
+    else
+    {
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
+    }
+    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
+    else
+    {
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
+    }
+
+    $santitizedtoken='';
+    
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Add dummy tokens")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>\n";
+    $data = array('firstname' => $_POST['firstname'],
+	'lastname' => $_POST['lastname'],
+	'email' => sanitize_email($_POST['email']),
+	'emailstatus' => 'OK',
+	'token' => $santitizedtoken,
+	'language' => sanitize_languagecode($_POST['language']),
+        'sent' => 'N',
+	'remindersent' => 'N',
+	'completed' => 'N',
+	'usesleft' => $_POST['usesleft'],
+	'validfrom' => $_POST['validfrom'],
+	'validuntil' => $_POST['validuntil']);
+    
+    // add attributes
+    $attrfieldnames=GetAttributeFieldnames($surveyid);
+    foreach ($attrfieldnames as $attr_name)
+    {
+        $data[$attr_name]=$_POST[$attr_name];
+    }
+    $tblInsert=db_table_name('tokens_'.$surveyid);
+    $amount = sanitize_int($_POST['amount']);
+    $tokenlength = sanitize_int($_POST['tokenlen']);
+        
+    for ($i=0; $i<$amount;$i++){
+    	$dataToInsert = $data;
+        $dataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['firstname']);
+        $dataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['lastname']);
+        $dataToInsert['email'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['email']);
+        
+        $isvalidtoken = false;
+        while ($isvalidtoken == false)
+        {
+            $newtoken = randomkey($tokenlength);
+            if (!isset($existingtokens[$newtoken])) {
+                $isvalidtoken = true;
+                $existingtokens[$newtoken]=null;
+            }
+        }
+        $dataToInsert['token'] = $newtoken;
+        $tblInsert=db_table_name('tokens_'.$surveyid);
+        $inresult = $connect->AutoExecute($tblInsert, $dataToInsert, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
+
+    }
+
+    $tokenoutput .= "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
+    ."\t\t<br />".$clang->gT("New dummy tokens were added.")."<br /><br />\n"
+    ."\t\t<input type='button' value='".$clang->gT("Display Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n";
     $tokenoutput .= "\t</div>";
 }
 
