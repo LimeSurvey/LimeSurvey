@@ -659,8 +659,9 @@ if ($tokensexist == 1 && isset($token) && $token &&
 	// check also if it is allowed to change survey after completion
 	if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
     	$tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
-		} else {
+	} else {
     	$tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+    }
     $tkresult = db_execute_num($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
     if ($tkresult->RecordCount()==0 || $areTokensUsed)
@@ -688,10 +689,10 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
 
 	// check also if it is allowed to change survey after completion
 	if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-    $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
-} else {
-    $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
-}
+        $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
+    } else {
+        $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+    }
     $tkresult = db_execute_assoc($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
     if ((trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
@@ -2419,7 +2420,7 @@ function buildsurveysession()
         //check if tokens actually haven't been already used
 		$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
         //check if token actually does exist
-	    // check also if it is allowed to change survey after completion (patch by johannes.klug@silverage.de)
+	    // check also if it is allowed to change survey after completion
 		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
           $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' ";
 		} else {

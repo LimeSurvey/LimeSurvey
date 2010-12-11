@@ -553,7 +553,7 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE `prefix_users` CHANGE `superadmin` `superadmin` tinyint(1) NOT NULL default '0' AFTER `delete_user`"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_users` CHANGE `htmleditormode` `htmleditormode` varchar(7) collate utf8_unicode_ci default 'default'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_users` CHANGE `dateformat` `dateformat` int(10) unsigned NOT NULL default '1'"); echo $modifyoutput; flush();
-        modify_database("","ALTER TABLE `prefix_users`  DROP INDEX `email`;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` DROP INDEX `email`;"); 
 
         modify_database("","UPDATE `prefix_user_groups` SET `name`='' where `name` is null;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_user_groups` CHANGE `name` `name` varchar(20) collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();
@@ -561,8 +561,8 @@ function db_upgrade($oldversion) {
         modify_database("","UPDATE `prefix_user_groups` SET `description`='' where `description` is null;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_user_groups` CHANGE `description` `description` text collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();
 
-        modify_database("","ALTER TABLE `prefix_user_in_groups` DROP INDEX `user_in_groups_idx1`"); echo $modifyoutput; flush();
-        modify_database("","ALTER TABLE `prefix_user_in_groups` ADD PRIMARY KEY (`ugid`, `uid`)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_user_in_groups` DROP INDEX `user_in_groups_idx1`"); // Don't show output because this key might not exist
+        modify_database("","ALTER TABLE `prefix_user_in_groups` ADD PRIMARY KEY (`ugid`, `uid`)"); // Don't show output because this might already be set
         modify_database("", "ALTER TABLE  `prefix_surveys_languagesettings` ADD  `surveyls_numberformat` int(11) NOT NULL DEFAULT 0 AFTER  `surveyls_dateformat`"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_failed_login_attempts` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,

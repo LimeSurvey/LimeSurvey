@@ -25,16 +25,16 @@
 // Basic Setup
 
 $databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, mysqli, odbc_mssql, mssql_n, odbtp or postgres
-// mysql: Recommended driver for mysql
-// mysqli: Slightly faster driver for mysql - not on all server systems available
-// odbc_mssql: MSSQL driver using ODBC with MS SQL Server
-// mssqlnative: Native SQL Server driver for SQL Server 2005+
-// mssql_n: Experimental driver for MS SQL Server which handles UTF-8 charsets
-// odbtp: ODBTP driver to access MSSQL-Server is needed for this one - we also recommend to activate $databasepersistent for decent speed
-// postgres: Standard postgres driver
+                                       // mysql: Recommended driver for mysql
+                                       // mysqli: Slightly faster driver for mysql - not on all server systems available 
+                                       // odbc_mssql: MSSQL driver using ODBC with MS SQL Server
+                                       // mssqlnative: Native SQL Server driver for SQL Server 2005+
+                                       // mssql_n: Experimental driver for MS SQL Server which handles UTF-8 charsets
+                                       // odbtp: ODBTP driver to access MSSQL-Server is needed for this one - we also recommend to activate $databasepersistent for decent speed
+                                       // postgres: Standard postgres driver
 
 $databaselocation   =   'localhost';   // Network location of your Database - for odbc_mssql or mssqlnative use the mssql servername, not localhost or IP
-$databasename       =   'limesurvey_dev';  // The name of the database that we will create
+$databasename       =   'limesurvey';  // The name of the database that we will create
 $databaseuser       =   'root';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   '';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
@@ -54,7 +54,7 @@ $defaultuser        =   'admin';           // This is the username when LimeSurv
 $defaultpass        =   'password';        // This is the password for the administration user when LimeSurvey is installed
 
 // Debug Settings
-$debug              =   3;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+$debug              =   0;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir
 // on your webspace.
 // LimeSurvey developers: Set this to 2 to circumvent the restriction to remove the installation directory

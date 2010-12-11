@@ -3864,7 +3864,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Max value from SGQA'));
 
     $qattributes["maximum_chars"]=array(
-    "types"=>"STUNQK",
+    "types"=>"STUNQK:",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'text',
