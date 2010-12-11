@@ -1857,8 +1857,8 @@ function do_list_dropdown($ia)
         while ($ansrow = $ansresult->FetchRow())
         {
             // Let's sort answers in an array indexed by subcategories
-            list ($categorytext, $answertext) = explode($optCategorySeparator,$ansrow['answer']);
-            // The blank category is left at the end outside optgroups
+            @list ($categorytext, $answertext) = explode($optCategorySeparator,$ansrow['answer']);
+            // The blank category is left at the end outside optgroups   
             if ($categorytext == '')
             {
                 $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext);
