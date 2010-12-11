@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.90!
+Welcome to LimeSurvey v1.91beta!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -56,7 +56,7 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 --------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -76,6 +76,53 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.90 to 1.91beta
++New feature: #4324: Allow dropdowns for Array(flexible label) questions - patch provided by CarbonaCat
++New feature: Mail Bounce Tracking System (anishseth)
++New feature: (Idea #103) Gives the user the ability to preview question groups. (parajulik)
++New feature: Ability to add Google Maps as a question (parajulik)
++New feature: Survey toolbar redesign (c_schmitz)
++New feature: Ability to add mass dummy tokens (parajulik)
++New feature: Token CSV-import now accepts semicolon as separator (mennodekker)
++New feature: Welcome screen can be skipped by using a setting at survey level (mennodekker)
++New feature #4588: Allow to reverse iteration order in Array (Numbers). This allows to reverse the iteration order of the generated numbers when setting "Minimum value" "Maximum value" and "Step" in "Array (Numbers)" question type. Reverse ordering can be achieved by putting a _max value lower than _min. The loop will iterate in reverse (you don't need to put a negative step value). Requested for questions where ordering could introduce bias. Patch by wavexx - Thank you!
++New feature #4652: Keyboard-less operation through JS keypad for tablet PCs or other devices without keyboard - patch provided by Yuri D'Elia (wavexx) - thank you!
++New feature #4660: New switch in survey setting where you can enable that users may enter they survey even after completion and update their answers using the invitation link and token persistence - patch by room2web 
++New feature #4650: Page color alternation and navigation delay (c_schmitz)
++New feature: Quick navigation buttons to move forward and backward between question groups and questions (adevries)
++New feature: Survey quick translation screen(adevries)
++New feature: Ability to use comma or dot as decimal separator for numeric and multiple numeric question types - - work done by Google Code-In participant Kshitij Parajuli. Thank you! (c_schmitz)
++New feature: Administration brute force detection and prevention - work done by Google Code-In participant Kshitij Parajuli. Thank you!
++New feature: Allow to restrict input to integers for Numeric question type - patch by wavexx 
++New feature: Allow to reverse year order in dropdown dates - patch by wavexx 
++New feature: Changing owner of survey. (parajulik)
++New feature: Detailed survey permissions based on a CRUD model (c_schmitz)
++New feature: Direct export to queXML PDF file (azammitdcarf)
++New feature: Emoticon slider (c_schmitz)
++New feature: Extended condition editor (c_schmitz)
++New feature: Google Translate support for quick translation feature - work done by Google Code-In participant Kshitij Parajuli. Thank you! 
++New feature: In "question by question" mode, you can now go "back" from the starting element of a group - patch by wavexx 
++New feature: Login page automatically sets login language to browser language (c_schmitz)
++New feature: New option for "Number" question types named "Maximum value of the numeric input" and "Minimum value of the numeric input"  - patch by wavexx 
++New feature: Option in survey settings to hide the progress bar. (c_schmitz)
++New feature: Optional question index to easily jump between questions while taking the survey. Index also shows if a part of a survey was completely answered or not - great work & patch done by Yuri D'Elia (wavexx) (c_schmitz)
++New feature: Question attribute to reverse iteration order in Array (Numbers) question types - patch by wavexx (c_schmitz)
++New feature: Show details about LimeSurvey installation before starting the db upgrade - work done by Google Code-In participant Little Bird 
++New feature: Support for the "maximum_chars" attribute to the array/numbers question type, when using the text input layout. (c_schmitz)
++New feature: Spread sheet type row and colum totals for Array Multi text (numbers only) (eric_t_cruiser)
++New feature: Switching SSL on and off  (eric_t_cruiser)
++New feature #4069: Differentiate String comparizon and numerical comparizon operators. By default numerical order is now assume. Old surveys that were using string comparizons must be updated. The stringcomparizonoperators parameter must be set to 1 in config.php in order to enable these string comparizons. (lemeur)
++New feature #4661 : add some placeholder : {SURVEYLANG}, {SURVEYFORMAT}, {SURVEYCONTACT} (shnoulle)
+#Updated feature #4426: Separation of survey settings - survey settings and editing of survey text elements are now separated to two different icons because users had problems to find the text elemens - patch kindly provided by CarbonaCat (c_schmitz)
+#Updated feature: Easier handling for passthru values (to pass URL values from incoming to outgoing link) - patch by orvil
+#Updated feature: Converted tabs in label sets, survey text elements and question groups to use jQuery UI - work done by Google Code-In participant Kshitij Parajuli. Thank you! (c_schmitz)
+#Updated Feature: the switch for "List survey publicly" moved from "Presentation and Navigation" to "Publication & access control" (wahrendorff)
+#Updated feature: Enable token-based response persistence: silent save when "Resume later" is clicked (eric_t_cruiser)
+#Updated feature: Direct export to queXML PDF file (azammitdcarf)
+#Updated feature: Summary information about opt-out in token table summary, and sortable email status column in "display tokens" view (adevries)
+-Deleted feature: business_grey template (c_schmitz)
+
 
 Changes from 1.90+ (build 9522) to 1.90+ (build 9561) Legend: # updated feature, - bug fix 
 #Updated translation: Spanish (es) (kadejo)
