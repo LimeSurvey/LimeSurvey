@@ -305,7 +305,8 @@ CREATE TABLE prefix_surveys (
     showprogress character(1) DEFAULT 'N'::bpchar,
     allowjumps character(1) DEFAULT 'N'::bpchar,
     navigationdelay smallint DEFAULT '0',
-    nokeyboard character(1) DEFAULT 'N'::bpchar
+    nokeyboard character(1) DEFAULT 'N'::bpchar,
+    alloweditaftercompletion character(1) DEFAULT 'N'::bpchar
 );
 
 ALTER TABLE ONLY prefix_surveys ADD CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid);
@@ -331,11 +332,11 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_email_register text,
     surveyls_email_confirm_subj character varying(255),
     surveyls_email_confirm text,
+    surveyls_dateformat integer DEFAULT 1 NOT NULL,
     email_admin_notification_subj character varying(255),
     email_admin_notification text,
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
-    surveyls_dateformat integer DEFAULT 1 NOT NULL,
     surveyls_numberformat integer NOT NULL DEFAULT 1
 );
 

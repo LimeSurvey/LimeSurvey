@@ -250,6 +250,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_surveys ADD allowjumps CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD navigationdelay smallint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE prefix_surveys ADD nokeyboard char(1) default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD alloweditaftercompletion char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_survey_permissions (
                             sid integer DEFAULT 0 NOT NULL,
                             uid integer DEFAULT 0 NOT NULL,
@@ -284,9 +285,6 @@ function db_upgrade($oldversion) {
         
         modify_database("","ALTER TABLE prefix_surveys RENAME COLUMN private TO anonymized;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized TYPE char(1) Default 'N' NOT NULL ;"); echo $modifyoutput; flush();
-        
-        modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-
         modify_database("", "CREATE TABLE prefix_failed_login_attempts (
                                   id integer NOT NULL AUTO_INCREMENT,
                                   ip character varying(37) NOT NULL,
@@ -294,10 +292,10 @@ function db_upgrade($oldversion) {
                                   number_attempts integer NOT NULL
                                 );"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE ONLY prefix_failed_login_attempts ADD CONSTRAINT prefix_failed_login_attempts_pkey PRIMARY KEY (\"id\");"); echo $modifyoutput; flush();
- 
-
+        modify_database("", "ALTER TABLE  prefix_surveys_languagesettings ADD surveyls_numberformat integer default 0 NOT NULL"); echo $modifyoutput; flush();
+      
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    modify_database("", "ALTER TABLE  prefix_surveys_languagesettings ADD  surveyls_numberformat integer default 0 NOT NULL AFTER  surveyls_dateformat"); echo $modifyoutput; flush();
     
 
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';

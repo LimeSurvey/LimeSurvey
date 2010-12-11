@@ -408,6 +408,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `allowjumps` char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `navigationdelay` tinyint(2) default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `nokeyboard` char(1) default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `alloweditaftercompletion` char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_survey_permissions` (
                                 `sid` int(10) unsigned NOT NULL,
                                 `uid` int(10) unsigned NOT NULL,
@@ -562,9 +563,7 @@ function db_upgrade($oldversion) {
 
         modify_database("","ALTER TABLE `prefix_user_in_groups` DROP INDEX `user_in_groups_idx1`"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_user_in_groups` ADD PRIMARY KEY (`ugid`, `uid`)"); echo $modifyoutput; flush();
-        
-        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-
+        modify_database("", "ALTER TABLE  `prefix_surveys_languagesettings` ADD  `surveyls_numberformat` int(11) NOT NULL DEFAULT 0 AFTER  `surveyls_dateformat`"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE `prefix_failed_login_attempts` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `ip` varchar(37) NOT NULL,
@@ -573,12 +572,9 @@ function db_upgrade($oldversion) {
                               PRIMARY KEY (`id`)
                             ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
         
-
-
-
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
-    modify_database("", "ALTER TABLE  `prefix_surveys_languagesettings` ADD  `surveyls_numberformat` int(11) NOT NULL DEFAULT 0 AFTER  `surveyls_dateformat`"); echo $modifyoutput; flush();
     
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;

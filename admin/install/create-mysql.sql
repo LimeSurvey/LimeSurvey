@@ -281,6 +281,7 @@ CREATE TABLE `prefix_surveys` (
   `allowjumps` char(1) default 'N',
   `navigationdelay` tinyint(2) default '0',
   `nokeyboard` char(1) default 'N',
+  `alloweditaftercompletion` char(1) default 'N',
    PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -306,11 +307,11 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_confirm_subj` VARCHAR(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
-  `surveyls_numberformat` INT NOT NULL DEFAULT 0,
   `email_admin_notification_subj`  VARCHAR(255) NULL,    
   `email_admin_notification` TEXT NULL,        
   `email_admin_responses_subj` VARCHAR(255) NULL,    
   `email_admin_responses` TEXT NULL,        
+  `surveyls_numberformat` INT NOT NULL DEFAULT 0,
   
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 ) ENGINE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;

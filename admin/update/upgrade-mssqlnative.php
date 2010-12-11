@@ -423,6 +423,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE [prefix_surveys] ADD allowjumps CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD navigationdelay tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD nokeyboard CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD alloweditaftercompletion CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE [prefix_survey_permissions] (
                             [sid] INT NOT NULL,         
                             [uid] INT NOT NULL,         
@@ -461,20 +462,22 @@ function db_upgrade($oldversion) {
         
         modify_database("","EXEC sp_rename 'prefix_surveys.private','anonymized'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [anonymized] char(1) NOT NULL default 'N';"); echo $modifyoutput; flush();
+
+        modify_database("", "CREATE TABLE [prefix_failed_login_attempts] (
+                      [id] int(11) NOT NULL AUTO_INCREMENT,
+                      [ip] varchar(37) NOT NULL,
+                      [last_attempt] varchar(20) NOT NULL,
+                      [number_attempts] int(11) NOT NULL,
+                      PRIMARY KEY ([id])
+                    );"); echo $modifyoutput; flush();
+
+        modify_database("", "ALTER TABLE  [prefix_surveys_languagesettings] ADD  [surveyls_numberformat] INT default 0 NOT NULL"); echo $modifyoutput; flush();
         
         
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 
-                modify_database("", "CREATE TABLE [prefix_failed_login_attempts] (
-                              [id] int(11) NOT NULL AUTO_INCREMENT,
-                              [ip] varchar(37) NOT NULL,
-                              [last_attempt] varchar(20) NOT NULL,
-                              [number_attempts] int(11) NOT NULL,
-                              PRIMARY KEY ([id])
-                            );"); echo $modifyoutput; flush();
 
     }
-    modify_database("", "ALTER TABLE  [prefix_surveys_languagesettings] ADD  [surveyls_numberformat] int(11) default 0 NOT NULL AFTER  [surveyls_dateformat]"); echo $modifyoutput; flush();
     
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
   	return true;

@@ -51,6 +51,7 @@
             $esrow['ipaddr']                   = 'N';
             $esrow['refurl']                   = 'N';
             $esrow['tokenanswerspersistence']  = 'N';
+            $esrow['alloweditaftercompletion'] = 'N';
             $esrow['assesments']               = 'N';
             $esrow['startdate']                = '';
             $esrow['savetimings']              = 'N';
@@ -866,6 +867,16 @@
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
 
+            // Allow editing answers after completion 
+            $editsurvey .= "<li><label for=''>".$clang->gT("Allow editing answers after completion?")."</label>\n"
+            . "<select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n"
+            . "<option value='Y'";
+            if ($esrow['alloweditaftercompletion'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+            if ($esrow['alloweditaftercompletion'] == "N") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "</select></li>\n";
 
         // Save timings
         $editsurvey .= "<li><label for='savetimings'>".$clang->gT("Save timings?")."</label>\n";

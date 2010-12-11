@@ -301,6 +301,7 @@ CREATE TABLE [prefix_surveys] (
   [allowjumps] char(1) default 'N',
   [navigationdelay] tinyint default '0',
   [nokeyboard] char(1) default 'N',
+  [alloweditaftercompletion] char(1) default 'N',
   
   PRIMARY KEY  ([sid])
 ) 
@@ -327,11 +328,11 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_email_register] varchar(max) NULL,
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
   [surveyls_email_confirm] varchar(max) NULL,
+  [surveyls_dateformat] INT NOT NULL DEFAULT 1,
   [email_admin_notification_subj] VARCHAR(255) NULL,
   [email_admin_notification] varchar(max) NULL,
   [email_admin_responses_subj] VARCHAR(255) NULL,
   [email_admin_responses] varchar(max) NULL,
-  [surveyls_dateformat] INT NOT NULL DEFAULT 1,
   [surveyls_numberformat] INT NOT NULL DEFAULT 0,
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 )
@@ -421,7 +422,6 @@ CREATE TABLE [prefix_templates] (
 						  [creator] int NOT NULL,
 						  PRIMARY KEY  ([folder])
 						  );
-
 
 
 --

@@ -655,8 +655,12 @@ if ($tokensexist == 1 && isset($token) && $token &&
 {
 	//check if tokens actually haven't been already used
 	$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
-    
-    $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+	// check if token actually does exist
+	// check also if it is allowed to change survey after completion
+	if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+    	$tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
+		} else {
+    	$tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
     $tkresult = db_execute_num($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
     if ($tkresult->RecordCount()==0 || $areTokensUsed)
@@ -681,7 +685,13 @@ if ($tokensexist == 1 && isset($token) && $token &&
 }
 if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'tokens_'.$surveyid)) //check if token is in a valid time frame
 {
+
+	// check also if it is allowed to change survey after completion
+	if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+    $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
+} else {
     $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+}
     $tkresult = db_execute_assoc($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
     if ((trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
@@ -922,12 +932,12 @@ function loadanswers()
                 $clienttoken=$value;
                 $token=$value;
             }
-            elseif ($column == "saved_thisstep")
+            elseif ($column == "saved_thisstep" && $thissurvey['alloweditaftercompletion'] != 'Y' )
             {
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
             }
-            elseif ($column =='lastpage' && isset($_GET['token']))
+            elseif ($column =='lastpage' && isset($_GET['token']) && $thissurvey['alloweditaftercompletion'] != 'Y' )
             {
                 if ($value<1) $value=1;
                 $_SESSION['step']=$value;
@@ -2409,7 +2419,13 @@ function buildsurveysession()
         //check if tokens actually haven't been already used
 		$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
         //check if token actually does exist
-        $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
+	    // check also if it is allowed to change survey after completion (patch by johannes.klug@silverage.de)
+		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+          $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' ";
+		} else {
+        	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
+		}
+
         $tkresult = db_execute_num($tkquery);    //Checked
         list($tkexist) = $tkresult->FetchRow();
         if (!$tkexist || $areTokensUsed)
