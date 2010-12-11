@@ -1,13 +1,11 @@
 // $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz 
 $(document).ready(function(){
+
+    intThrottlingRate = 550; // 1 request per 550 ms
+
     $('#translationtabs').tabs();
     $('#translationtabs').show();
     $('#translationloading').hide();
-    $('.ajax-loader').ajaxStart(function() {
-        $(this).css('display','inline');
-    }).ajaxStop(function(){
-        $(this).css('display','none');
-    });
 
     $('input.auto-trans').live('click',function(ui)
     {
@@ -50,42 +48,55 @@ $(document).ready(function(){
             }
 
             if (!bIgnore){
-                $.getJSON('admin.php', {
-                    action: 'ajaxtranslategoogleapi',
-                    baselang:sBaseLang,
-                    tolang:sToLang,
-                    async:false,
-                    text:sToConvert
-                },
-                function(aData)
-                {
-                    if (aData.error)
-                    {
-                        alert(sGoogleApiError + " " + sDetailedError + ": " + aData.error);
-                    }
-                    else if (!aData.error)
-                    {
-                        $("[name="+sId+"]").html(aData.converted);
-
-                        var oMyEditor = FCKeditorAPI.GetInstance(sId);
-                        if (oMyEditor)
-                        {
-                            oMyEditor.SetData(aData.converted);
-                        }
-
-                    }
-                });
+                 setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate)
             }
             
         });
 
+        setTimeout('fHideAjaxLoader();',($("._from_",$(ui.target).parent()).length)*intThrottlingRate)
+
         return false;
     });
+});
+function fHideAjaxLoader(){
+    $('.ajax-loader').css('display','none');
+}
 
+function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
+  {
+      $('.ajax-loader').css('display','inline');
+      $.ajax({
+            url:'admin.php',
+            datatype: 'json',
+            async: true,
+            data:{
+                action: 'ajaxtranslategoogleapi',
+                baselang:sBaseLang,
+                tolang:sToLang,
+                text:sToConvert
+            },
+            success: function(aData)
+            {
+                if (aData.error)
+                {
+                    alert(sGoogleApiError + " " + sDetailedError + ": " + aData.error);
+                }
+                else if (!aData.error)
+                {
+                    $("[name="+sId+"]").html(aData.converted);
+
+                    var oMyEditor = FCKeditorAPI.GetInstance(sId);
+                    if (oMyEditor)
+                    {
+                        oMyEditor.SetData(aData.converted);
+                    }
+
+                }
+            }
+      });
   }
 
 
-);
 
 
 function strip(html)
