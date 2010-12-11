@@ -2044,9 +2044,8 @@ if($action == "setsurveysecurity")
             $resul2row = $result2->FetchRow();
 
             $usersummary = "<form action='$scriptname?sid={$surveyid}' method='post'>\n"
-            . "<table width='100%' border='0'>\n<tr><td colspan='6' class='header'>\n"
-            . "".$clang->gT("Set Survey Rights")."</td></tr>\n";
-
+            . "<div class='header'>".$clang->gT("Set Survey Rights")."</div>\n"
+            . "<table width='100%' border='0'>\n<tr><td colspan='6' class='header'>\n";
             $usersummary .= "<tr><th align='center'>".$clang->gT("Edit Survey Properties")."</th>\n"
             . "<th align='center'>".$clang->gT("Define Questions")."</th>\n"
             . "<th align='center'>".$clang->gT("Browse Responses")."</th>\n"
