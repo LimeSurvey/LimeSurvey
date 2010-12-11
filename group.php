@@ -1064,7 +1064,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 }
 
 if (isset($java)) {echo $java;}
-echo "\n\tdocument.getElementById('runonce').value=1\n"
+echo "\n\tdocument.getElementById('runonce').value=1;\n"
 . "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
