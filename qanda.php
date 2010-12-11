@@ -2025,7 +2025,7 @@ function do_list_dropdown($ia)
         while ($ansrow = $ansresult->FetchRow())
         {
             // Let's sort answers in an array indexed by subcategories
-            list ($categorytext, $answertext) = explode($optCategorySeparator,$ansrow['answer']);
+            @list ($categorytext, $answertext) = explode($optCategorySeparator,$ansrow['answer']);
             // The blank category is left at the end outside optgroups
             if ($categorytext == '')
             {
