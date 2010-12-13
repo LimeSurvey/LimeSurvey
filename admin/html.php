@@ -744,11 +744,11 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         if ($surveyinfo['surveyls_urldescription']==""){$surveyinfo['surveyls_urldescription']=htmlspecialchars($surveyinfo['surveyls_url']);}
         $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Exit Link").":</strong></td>\n"
+        . $clang->gT("End URL").":</strong></td>\n"
         . "<td align='left'>";                                             
         if ($surveyinfo['surveyls_url']!="") 
         {
-            $surveysummary .=" <a href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";
+            $surveysummary .=" <a target='_blank' href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";
         }
         else
         {

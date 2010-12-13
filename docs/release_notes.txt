@@ -80,7 +80,7 @@ Thank you to everyone who helped with this new release!
 Changes from 1.90 to 1.91beta
 +New feature: #4324: Allow dropdowns for Array(flexible label) questions - patch provided by CarbonaCat
 +New feature: Mail Bounce Tracking System (anishseth)
-+New feature: (Idea #103) Gives the user the ability to preview question groups. (parajulik)
++New feature: Gives the user the ability to preview question groups. (parajulik)
 +New feature: Ability to add Google Maps as a question (parajulik)
 +New feature: Survey toolbar redesign (c_schmitz)
 +New feature: Ability to add mass dummy tokens (parajulik)
@@ -100,7 +100,6 @@ Changes from 1.90 to 1.91beta
 +New feature: Detailed survey permissions based on a CRUD model (c_schmitz)
 +New feature: Direct export to queXML PDF file (azammitdcarf)
 +New feature: Emoticon slider (c_schmitz)
-+New feature: Extended condition editor (c_schmitz)
 +New feature: Google Translate support for quick translation feature - work done by Google Code-In participant Kshitij Parajuli. Thank you! 
 +New feature: In "question by question" mode, you can now go "back" from the starting element of a group - patch by wavexx 
 +New feature: Login page automatically sets login language to browser language (c_schmitz)

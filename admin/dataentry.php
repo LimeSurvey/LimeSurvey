@@ -271,19 +271,22 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         }
                         else
                         {
-                        if ($irow['type'] == 'D')
-                        {
-                            $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                             $columns[] .= db_quote_id($fieldname);
-                            $values[] .= db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
+                            $values[] .= db_quoteall(count($phparray), true);
                         }
-                        else
-                        {
-                            $columns[] .= db_quote_id($fieldname);
+                    }
+                    elseif ($irow['type'] == 'D')
+                    {
+                        $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
+                        $columns[] .= db_quote_id($fieldname);
+                        $values[] .= db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
+                    }
+                    else
+                    {
+                        $columns[] .= db_quote_id($fieldname);
                         $values[] .= db_quoteall($_POST[$fieldname],true);
                     }
                 }
-            }
             }
             
             $SQL = "INSERT INTO $surveytable
