@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-09 21:53+0100\n"
-"PO-Revision-Date: 2010-12-09 21:53+0100\n"
+"PO-Revision-Date: 2010-12-13 13:08+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2021,7 +2021,7 @@ msgstr "Du musst einen Namen angeben."
 
 #: D:\web\xampp\htdocs\limesurvey/save.php:288
 msgid "You must supply a password for this saved session."
-msgstr "Du müssen ein Passwort angeben."
+msgstr "Du musst ein Passwort angeben."
 
 #: D:\web\xampp\htdocs\limesurvey/save.php:290
 msgid "Your passwords do not match."
@@ -4635,7 +4635,7 @@ msgstr "Du musst Fragengruppen hinzufügen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:936
 msgid "You need to add questions"
-msgstr "Du müssen Fragen hinzufügen."
+msgstr "Du musst Fragen hinzufügen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:984
 msgid "Edit current question group"
