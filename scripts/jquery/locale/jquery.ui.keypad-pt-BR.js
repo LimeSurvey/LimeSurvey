@@ -7,7 +7,7 @@
         closeText: 'Fechar', closeStatus: 'Fechar o teclado',
         clearText: 'Limpar', clearStatus: 'Limpar todo o texto',
         backText: 'Apagar', backStatus: 'Apagar o caractere anterior',
-        shiftText: 'Shift', shiftStatus: 'Ativar maiúsculas/minusculas',
+        shiftText: 'Shift', shiftStatus: 'Ativar maiÃºsculas/minusculas',
         alphabeticLayout: $.keypad.qwertyAlphabetic,
         fullLayout: $.keypad.qwertyLayout,
         isAlphabetic: $.keypad.isAlphabetic,

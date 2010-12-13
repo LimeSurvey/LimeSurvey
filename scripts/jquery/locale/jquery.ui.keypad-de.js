@@ -3,25 +3,25 @@
    Written by Uwe Jakobs(u.jakobs{at}imageco.de) September 2009. */
 (function($) { // hide the namespace
 
-$.keypad.qwertzAlphabetic = ['qwertzuiopüß', 'asdfghjklöä', 'yxcvbnm'];
+$.keypad.qwertzAlphabetic = ['qwertzuiopÃ¼ÃŸ', 'asdfghjklÃ¶Ã¤', 'yxcvbnm'];
 $.keypad.qwertzLayout = 
-	['!"§$%&/()=?`' + $.keypad.BACK + $.keypad.HALF_SPACE + '$£€/',
-	'<>°^@{[]}\\~´;:' + $.keypad.HALF_SPACE + '789*',
+	['!"Â§$%&/()=?`' + $.keypad.BACK + $.keypad.HALF_SPACE + '$Â£Â€/',
+	'<>Â°^@{[]}\\~Â´;:' + $.keypad.HALF_SPACE + '789*',
 	$.keypad.qwertzAlphabetic[0] + '+*' +
 	$.keypad.HALF_SPACE + '456-',
 	$.keypad.HALF_SPACE + $.keypad.qwertzAlphabetic[1] +
 	'#\'' + $.keypad.SPACE + '123+',
-	'|' + $.keypad.qwertzAlphabetic[2] + 'µ,.-_' +
+	'|' + $.keypad.qwertzAlphabetic[2] + 'Âµ,.-_' +
 	$.keypad.SPACE + $.keypad.HALF_SPACE +'.0,=', 
 	$.keypad.SHIFT + $.keypad.SPACE + $.keypad.SPACE_BAR +
 	$.keypad.SPACE + $.keypad.SPACE + $.keypad.SPACE + $.keypad.CLEAR +
 	$.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + $.keypad.CLOSE];
 $.keypad.regional['de'] = {
-	buttonText: '...', buttonStatus: 'Öffnen',
-	closeText: 'schließen', closeStatus: 'schließen',
-	clearText: 'löschen', clearStatus: 'Gesamten Inhalt löschen',
-	backText: 'zurück', backStatus: 'Letzte Eingabe löschen',
-	shiftText: 'umschalten', shiftStatus: 'Zwischen Groß- und Kleinschreibung wechseln',
+	buttonText: '...', buttonStatus: 'Ã–ffnen',
+	closeText: 'schlieÃŸen', closeStatus: 'schlieÃŸen',
+	clearText: 'lÃ¶schen', clearStatus: 'Gesamten Inhalt lÃ¶schen',
+	backText: 'zurÃ¼ck', backStatus: 'Letzte Eingabe lÃ¶schen',
+	shiftText: 'umschalten', shiftStatus: 'Zwischen GroÃŸ- und Kleinschreibung wechseln',
 	alphabeticLayout: $.keypad.qwertzAlphabetic,
 	fullLayout: $.keypad.qwertzLayout,
 	isAlphabetic: $.keypad.isAlphabetic,

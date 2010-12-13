@@ -8076,7 +8076,7 @@ function vIncludeKeypad()
     $js_header_includes[] = '/scripts/jquery/jquery.keypad.min.js';
     if ($clang->langcode !== 'en')
     {
-        $js_header_includes[] = '/scripts/jquery/locale/ui.keypad-'.$clang->langcode.'.js';
+        $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.keypad-'.$clang->langcode.'.js';
     }
     $css_header_includes[] = '/scripts/jquery/css/jquery.keypad.alt.css';
 }
