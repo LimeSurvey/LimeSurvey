@@ -221,7 +221,7 @@ if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'expor
 // Bouceprocessing
 if($subaction=='bounceprocessing')
 {
-	if ($thissurvey['bounceprocessing']!='N' && ($thissurvey['bounceprocessing']=='G' && getGlobalSetting('bounceaccounttype')!='off') && bHasSurveyPermission($surveyid, 'tokens','update'))
+	if ($thissurvey['bounceprocessing']!='N' && !($thissurvey['bounceprocessing']=='G' && getGlobalSetting('bounceaccounttype')=='off') && bHasSurveyPermission($surveyid, 'tokens','update'))
 	{
 		$bouncetotal=0;
 		$checktotal=0;
@@ -884,7 +884,7 @@ if($subaction != 'bounceprocessing')
         }
         else
         {
-            $tokenoutput .="<image src='$imageurl/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce Processing")."'>";
+            $tokenoutput .="<image src='$imageurl/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce processing")."'>";
         }
         $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
     }
