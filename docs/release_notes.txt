@@ -77,6 +77,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.90
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.90+ (build 9596) to 1.90+ (build 9642) Legend: # updated feature, - bug fix 
+#Updated translation: Hebrew - work done by Google Code-In participant Evyatar Parker - thank you! (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Hindi - word done by Google Code-In participant Aki (c_schmitz)
+#Updated translation: Hindi - work done by Google Code-In participant Happy Nawani - thank you! (c_schmitz)
+#Updated translation: Romanian by Marius Radu (c_schmitz)
++New translation: Belarusian - great work done by Google Code-In participant Taras Klaskovsky! (c_schmitz)
+-Fixed issue #04779: Headings in result export are incorrect for Array (Number) question types (c_schmitz)
+-Fixed issue #4781: Using apostrophe in tokens search box causes error (c_schmitz)
+-Fixed issue #4783: If installed on Postgres 9.0 you can't login (c_schmitz)
+-Fixed issue #4785: Under certain circumstances it is possible to enter spaces in the code field (c_schmitz)
+-Fixed issue #4800: queXML-survey export over https-connection fails with Internet Explorer 8 - patch by Xoff (azammitdcarf)
+-Fixed issue #4807: Notice when setting a catgogry separator in a List question and not have set any categories in the answer options (c_schmitz)
+
 Changes from 1.90+ (build 9561) to 1.90+ (build 9596) Legend: # updated feature, - bug fix 
 #Updated translation: English by Olga Metzler (c_schmitz)
 #Updated translation : French (b00z00)
