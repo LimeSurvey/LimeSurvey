@@ -232,7 +232,8 @@ if($subaction=='bounceprocessing')
 			$username=getGlobalSetting('bounceaccountuser');
 			$pass=getGlobalSetting('bounceaccountpass');
 			$hostencryption=getGlobalSetting('bounceencryption');
-		}
+		    
+        }
 		else
 		{
 			$accounttype=$thissurvey['bounceaccounttype'];
@@ -240,10 +241,22 @@ if($subaction=='bounceprocessing')
 			$username=$thissurvey['bounceaccountuser'];
 			$pass=$thissurvey['bounceaccountpass'];
 			$hostencryption=$thissurvey['bounceaccountencryption'];
+            
 		}
-
+        @list($hostname,$port) = split(':', $hostname);
+            if(empty($port))
+            {
+              if($accounttype=="IMAP")
+                {
+                  $hostname = $hostname.":993";
+                }
+              else
+                {
+                  $hostname = $hostname.":995";
+                }
+            }
 		$flags="";
-		switch($accounttype)
+        switch($accounttype)
 		{
 			case "IMAP":
 			$flags.="/imap";
@@ -262,7 +275,8 @@ if($subaction=='bounceprocessing')
 			break;
 		}
 		if($mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
-		{
+		{   
+            imap_errors();          
 			$count=imap_num_msg($mbox);
 			$lasthinfo=imap_headerinfo($mbox,$count);
 			$datelcu = strtotime($lasthinfo->date);
@@ -298,7 +312,8 @@ if($subaction=='bounceprocessing')
 				$datelc=$lasthinfo->date;
 				$datelcu = strtotime($datelc);
 				$checktotal++;
-			}
+			    imap_close($mbox);
+            }
 			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
 			$executetimestamp = $connect->Execute($entertimestamp);
 			if($bouncetotal>0)
