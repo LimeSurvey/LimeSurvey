@@ -3,6 +3,7 @@ include_once('globalsettings.php');
 include_once('database.php');
 if($subaction=='bounceprocessing')
 {
+    
 	if(empty($cron))
 	{
 	$surveyidoriginal = $_GET['sid'];
@@ -142,7 +143,7 @@ if($subaction=='bounceprocessing')
 	else
 	{
 		echo "Please check your settings";
-	}
+	}                  
  }
 if($bouncetotal>0)
 	{	
