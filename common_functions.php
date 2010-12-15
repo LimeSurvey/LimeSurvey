@@ -403,6 +403,8 @@ function db_table_name_nq($name)
 
 /**
  *  Return a sql statement for finding LIKE named tables
+ *  Be aware that you have to escape underscor chars by using a backslash 
+ * otherwise you might get table names returned you don't want
  *
  * @param mixed $table
  */
@@ -415,9 +417,11 @@ function db_select_tables_like($table)
             return "SHOW TABLES LIKE '$table'";
         case 'odbtp' :
         case 'mssql_n' :
+        case 'mssqlnative':
         case 'odbc_mssql' :
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
         case 'postgres' :
+            $table=str_replace('\\','\\\\',$table);
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
         default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");
     }
@@ -1005,12 +1009,15 @@ function setup_columns($columns, $answer_count)
         $columns = 1;
     }
 
-    if($columns > $answer_count)
+    if(($columns > $answer_count) && $answer_count>0)
     {
         $columns = $answer_count;
     };
 
+    if ($answer_count>0 && $columns>0)
+    {
     $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
+    }
 
     $class_first = '';
     if($columns > 1 && $colstyle != null)
@@ -2137,7 +2144,7 @@ function validate_templatedir($templatename)
  */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $dbprefix, $connect, $globalfieldmap, $clang;
+    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($globalfieldmap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
@@ -2307,6 +2314,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
             $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+            if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']); 
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
             if ($style == "full")
             {
@@ -2332,6 +2340,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     if ($arow['other'] == "Y")
                     {
                         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
+                        if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
+                        
                         $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                             'type'=>$arow['type'],
                             'sid'=>$surveyid,
@@ -2361,6 +2371,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     break;
                 case "O": //DROPDOWN LIST WITH COMMENT
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
+                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
+                    
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                         'type'=>$arow['type'],
                         'sid'=>$surveyid,
@@ -2387,6 +2399,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             //MULTI FLEXI
             $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             //Now first process scale=1
+            $answerset=array();
             foreach ($abrows as $key=>$abrow)
             {
                 if($abrow['scale_id']==1) {
@@ -2400,6 +2413,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 foreach($answerset as $answer)
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$answer['title']}";
+                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                                     'type'=>$arow['type'],
                                     'sid'=>$surveyid,
@@ -2429,6 +2443,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             foreach ($abrows as $abrow)
             {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
+                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
                     if ($style == "full")
                     {
@@ -2443,6 +2458,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     }
 
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
+                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
                     if ($style == "full")
                     {
@@ -2465,6 +2481,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             for ($i=1; $i<=$slots; $i++)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
+                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
                 if ($style == "full")
                 {
@@ -2533,6 +2550,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
+                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
                 if ($style == "full")
                 {
@@ -2555,6 +2573,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 if ($arow['type'] == "P")
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
+                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']."comment");
                     if ($style == "full")
                     {
@@ -2571,6 +2590,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             if ($arow['other']=="Y" && ($arow['type']=="M" || $arow['type']=="P"))
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
+                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
                 if ($style == "full")
                 {
@@ -2585,6 +2605,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 if ($arow['type']=="P")
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment";
+                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
                     if ($style == "full")
                     {
@@ -3460,7 +3481,7 @@ function buildLabelSetCheckSumArray()
  * @author: c_schmitz
  * @param $qid The question ID
  * @param $type optional The question type - saves a DB query if you provide it
- * @return array{attribute=>value , attribute=>value}
+ * @return array{attribute=>value , attribute=>value} or false if the question ID does not exist (anymore)
  */
 function getQuestionAttributes($qid, $type='')
 {
@@ -3475,6 +3496,11 @@ function getQuestionAttributes($qid, $type='')
         $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type";
         $result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
         $row=$result->FetchRow();
+        if ($row===false) // Question was deleted while running the survey
+        {
+            $cache[$qid]=false;
+            return false;
+        }
         $type=$row['type'];
     }
 
@@ -4019,7 +4045,7 @@ function questionAttributes($returnByName=false)
 	"caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
-    "types"=>"PLW!Z",
+    "types"=>"MPLW!Z",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -5050,7 +5076,7 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
     $grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qresult = getQuestionAttributes($qrow['qid']);
+        $qresult = getQuestionAttributes($qrow['qid'],$qrow['type']);    
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -5392,7 +5418,7 @@ function killSession()  //added by Dennis
     }
     $_SESSION = array(); // redundant with previous lines
     session_unset();
-    session_destroy();
+    @session_destroy();
 }
 
 
@@ -6625,6 +6651,8 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
       if ($aFieldinfo['qid']!=null)
       {
           $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
+          // now also add a shortened field mapping which is needed for certain kind of condition mappings
+          $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid'].'X'.$aFieldinfo['qid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']];
       }
     }
     return array_flip($aFieldMappings);
@@ -7014,7 +7042,7 @@ function get_quotaCompletedCount($surveyid, $quotaid)
 function fix_FCKeditor_text($str)
 {
     $str = str_replace('<br type="_moz" />','',$str);
-    if ($str == "<br />" || $str == " ")
+    if ($str == "<br />" || $str == " " || $str == "&nbsp;")
     {
         $str = "";
     }
@@ -7826,21 +7854,21 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
  *
  * @param int $sid
  * @param int $qid
+ * @param $sLanguage Language of the subquestion text
  */
-function getSubQuestions($sid, $qid) {
+function getSubQuestions($sid, $qid, $sLanguage) {
     global $dbprefix, $connect, $clang;
     static $subquestions;
 
     if (!isset($subquestions[$sid])) {
 	    $sid = sanitize_int($sid);
-	    $s_lang = GetBaseLanguageFromSurveyID($sid);
 	    $query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
 	            ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
-	            ." AND sq.language='".$s_lang. "' "
-	            ." AND q.language='".$s_lang. "' "
+	            ." AND sq.language='".$sLanguage. "' "
+	            ." AND q.language='".$sLanguage. "' "
 	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
 	    $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
-
+        $resultset=array();
 	    while ($row=$result->FetchRow())
 	    {
 	        $resultset[$row['parent_qid']][] = $row;
