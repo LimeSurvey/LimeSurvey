@@ -248,11 +248,33 @@ if($subaction=='bounceprocessing')
             {
               if($accounttype=="IMAP")
                 {
-                  $hostname = $hostname.":993";
+                  switch($hostencryption)
+                  {
+                      case "Off":
+                        $hostname = $hostname.":143";    
+                        break;
+                      case "SSL":
+                        $hostname = $hostname.":993";    
+                        break;
+                      case "TLS":
+                        $hostname = $hostname.":993";    
+                        break;
+                  }
                 }
               else
                 {
-                  $hostname = $hostname.":995";
+                   switch($hostencryption)
+                  {
+                      case "Off":
+                        $hostname = $hostname.":110";    
+                        break;
+                      case "SSL":
+                        $hostname = $hostname.":995";    
+                        break;
+                      case "TLS":
+                        $hostname = $hostname.":995";    
+                        break;
+                  }
                 }
             }
 		$flags="";
@@ -770,7 +792,7 @@ $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Bounce set
 $tokenoutput .= "<div id='bouncesettings'>\n"
 			."<form id='bouncesettings' name='bouncesettings' action='$scriptname?action=tokens&sid=$surveyid&subaction=surveysettingsave' method='post'>"
 	        ."\t\n<br><li><label for='bounce_email'>".$clang->gT('Survey bounce email:')."</label>\n"
-            ."\t\t<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
+            ."\t\t<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"".$settings['bounce_email']."\" ></li>\n"
 			."\t<li><label for='bounceprocessing'>".$clang->gT("Bounce Settings to be used")."</label>\n"
 	        ."\t\t<select id='bounceprocessing' name='bounceprocessing'>\n"
     	    ."\t\t\t<option value='N'";
