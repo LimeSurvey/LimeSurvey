@@ -6619,6 +6619,16 @@ function do_array_multiflexi($ia)
         $maxsize=255;
     }
 
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "num-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
+
     if (trim($qidattributes['answer_width'])!='')
     {
         $answerwidth=$qidattributes['answer_width'];
@@ -6783,7 +6793,7 @@ function do_array_multiflexi($ia)
                     {
                         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
                         $sSeperator = $sSeperator['seperator'];
-                        $answer .= "\t<input type='text' class=\"multiflexitext\" name=\"$myfname2\" id=\"answer{$myfname2}\" maxlength=\"{$maxsize}\" size=5 title=\""
+                        $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" maxlength=\"{$maxsize}\" size=5 title=\""
                         . html_escape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'0123456789$sSeperator')\""
                         . " value=\"";
