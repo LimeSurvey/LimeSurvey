@@ -9397,7 +9397,7 @@ msgstr "El servidor de actualizaciones está saturado"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:307
 msgid ""
-"The update server seems to be currently busy . This happens most likely if "
+"The update server seems to be currently busy. This happens most likely if "
 "the necessary update files for a new version are prepared."
 msgstr ""
 "El servidor de actualizaciones parece estar actualmente saturado. Esto "

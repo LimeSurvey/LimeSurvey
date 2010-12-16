@@ -3577,7 +3577,7 @@ msgstr "請先選擇用戶組"
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:184
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:49
 msgid "Delete"
-msgstr "刪除 "
+msgstr "刪除"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2488
 msgid "Update survey rights successful."
@@ -7991,7 +7991,7 @@ msgstr "正在刪除條件"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:636
 msgid "Deleting cid"
-msgstr "正在刪除 cid"
+msgstr "正在刪除cid"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:643
 msgid "Deleting Answers"
@@ -8007,7 +8007,7 @@ msgstr "正在刪除問題"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:655
 msgid "Deleting qid"
-msgstr "正在刪除 qid"
+msgstr "正在刪除qid"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:662
 msgid "Deleting Groups"
@@ -11520,7 +11520,7 @@ msgstr "您已經成功退出此調查。"
 #~ msgstr "本調查已啟用，但已過期"
 
 #~ msgid "LimeSurvey System Summary"
-#~ msgstr "LimeSurvey 系統摘要"
+#~ msgstr "LimeSurvey系統摘要"
 
 #~ msgid "disabled"
 #~ msgstr "禁用"
@@ -11738,7 +11738,7 @@ msgstr "您已經成功退出此調查。"
 #~ msgstr "問題組："
 
 #~ msgid "Record ID"
-#~ msgstr "記錄 id"
+#~ msgstr "記錄id"
 
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "用戶名和/或者郵寄地址已經存在。"

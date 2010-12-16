@@ -6618,7 +6618,7 @@ msgstr "Всего записей в этой таблице маркеров д
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:521
 msgid "Total with no unique Token"
-msgstr "Всего с не уникальными маркерами доступа"
+msgstr "Всего с неуникальными маркерами доступа"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:528
 msgid "Total invitations sent"

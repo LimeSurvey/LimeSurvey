@@ -2055,7 +2055,7 @@ msgstr "Radera markerade respondenter"
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:443
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:767
 msgid "Data view control"
-msgstr "Kontroller för datavy"
+msgstr "Kontroller för data vy"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:449
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:774
@@ -2207,7 +2207,7 @@ msgstr "Etikettsamlingar"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:95
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:87
 msgid "Question attributes:"
-msgstr "Fråge attribut:"
+msgstr "Frågeattribut:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:98
 msgid "Question import is complete."
@@ -3273,7 +3273,7 @@ msgstr "Fördefinierade etikettsamlingar..."
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1593
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1848
 msgid "Quick add..."
-msgstr "Snabb addera..."
+msgstr "Snabbaddera..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1605
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1858
@@ -3787,7 +3787,7 @@ msgstr "Kan inte ändras"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2890
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3430
 msgid "Date Stamp?"
-msgstr "Datum stämpel?"
+msgstr "Datumstämpel?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2894
 msgid "Responses will not be date stamped."
@@ -8672,7 +8672,7 @@ msgstr "Uppdateringsserver upptagen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:307
 msgid "The update server seems to be currently busy. This happens most likely if the necessary update files for a new version are prepared."
-msgstr "Uppdateringsservern är upptagen. Det är förmodligen pågrund utav att nya uppdateringsfiler för en ny version förbereds."
+msgstr "Uppdateringsservern är upptagen. Det är förmodligen på grund utav att nya uppdateringsfiler för en ny version förbereds."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:308
 msgid "Please be patient and try again in about 10 minutes."
@@ -10692,7 +10692,7 @@ msgstr "Minsta värdet i rullgardinslistan för frågan av typ samling (flexibla
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3711
 msgid "Minimum value"
-msgstr "Minvärde"
+msgstr "Min värde"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3718
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3719

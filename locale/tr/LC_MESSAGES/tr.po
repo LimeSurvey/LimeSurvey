@@ -11062,7 +11062,7 @@ msgid "SMTP debug output:"
 msgstr "SMTP hata ayıklama çıktısı:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:5061
-msgid "Failed! Reason:"
+msgid "Failed! Reason: "
 msgstr "Başarısız! Nedeni:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:7175

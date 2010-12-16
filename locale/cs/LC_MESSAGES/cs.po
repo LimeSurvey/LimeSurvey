@@ -9938,7 +9938,7 @@ msgid "Update server busy"
 msgstr "Aktualizační server je zaneprázdněn"
 
 #: C:\xampp\htdocs\limesurvey_beta/admin/update/updater.php:167
-msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
+msgid "The update server seems to be currently busy. This happens most likely if the necessary update files for a new version are prepared."
 msgstr "Aktualizační server se jeví zaneprázdněn. To se stane zejména v době, kdy jsou připravovány soubory pro novou verzi."
 
 #: C:\xampp\htdocs\limesurvey_beta/admin/update/updater.php:168

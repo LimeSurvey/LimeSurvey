@@ -5708,7 +5708,7 @@ msgstr "Quotum onderdelen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:83
 msgid "quota language settings"
-msgstr "Quotum taal instellingen"
+msgstr "Quotum taalinstellingen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:95
 msgid "Copy of survey is completed."
@@ -6348,7 +6348,7 @@ msgid "(Select multiple label sets by using the Ctrl key)"
 msgstr "(Selecteer meerdere labels door de CTRL toets te gebruiken)."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:137
-msgid "Export selected labelsets"
+msgid "Export selected label sets"
 msgstr "Exporteer geselecteerde labelsets"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:157
@@ -8656,7 +8656,7 @@ msgid "Update server busy"
 msgstr "Update server bezig"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:307
-msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
+msgid "The update server seems to be currently busy. This happens most likely if the necessary update files for a new version are prepared."
 msgstr "De server is op dit moment bezet. Dit kan betekenen dat er op dit moment een nieuwe versie wordt aangemaakt op de server."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:308

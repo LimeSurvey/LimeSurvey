@@ -10874,7 +10874,7 @@ msgstr "Procent"
 #: c:\LimeSurvey-S/admin/statistics_function.php:2184
 #: c:\LimeSurvey-S/admin/statistics_function.php:2216
 msgid "Not completed or Not displayed"
-msgstr "Niezakończone lub Nie pokazane"
+msgstr "Niezakończone lub Niepokazane"
 
 # C:\limesurvey/admin/browse.php:570
 # C:\limesurvey/admin/tokens.php:515
@@ -13650,7 +13650,7 @@ msgid "Update server busy"
 msgstr "Serwer aktualizacji zajęty"
 
 #: c:\LimeSurvey-S/admin/update/updater.php:307
-msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
+msgid "The update server seems to be currently busy. This happens most likely if the necessary update files for a new version are prepared."
 msgstr "Serwer aktualizacji wydaje się teraz zajęty. Zdarza się to najczęściej, kiedy przygotowywane są niezbędne pliki do nowej wersji."
 
 #: c:\LimeSurvey-S/admin/update/updater.php:308

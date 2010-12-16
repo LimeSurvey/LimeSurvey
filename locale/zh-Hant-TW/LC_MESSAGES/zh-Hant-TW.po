@@ -1544,7 +1544,7 @@ msgstr "操作代碼"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1405
 msgid "Datestamp"
-msgstr "日期 "
+msgstr "日期"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1419
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:469
@@ -1931,7 +1931,7 @@ msgstr "匯入VV問卷檔案"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:111
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:50
 msgid "Export a VV survey file"
-msgstr "匯出 VV 問卷檔案"
+msgstr "匯出VV問卷檔案"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:124
 msgid "Iterate surevey"
@@ -3594,7 +3594,7 @@ msgstr "請先選擇使用者群組"
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:178
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:49
 msgid "Delete"
-msgstr "刪除 "
+msgstr "刪除"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2484
 msgid "Update survey rights successful."

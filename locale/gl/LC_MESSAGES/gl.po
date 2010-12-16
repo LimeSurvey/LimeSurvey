@@ -8595,7 +8595,7 @@ msgid "Update server busy"
 msgstr "Servidor de actualización ocupado"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:307
-msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
+msgid "The update server seems to be currently busy. This happens most likely if the necessary update files for a new version are prepared."
 msgstr "O servidor de actualizacións semella ocupado. Isto pode acontecer cando os ficheiros de actualización necesarios para unha nova versión están a ser preparados."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:308

@@ -3481,7 +3481,7 @@ msgstr "Määra ankeedi õigused"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1921
 msgid "Failed to add user."
-msgstr "Kasutaja lisamine nurjus."
+msgstr "Kasutaja lisamine nurjus. "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1922
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1041

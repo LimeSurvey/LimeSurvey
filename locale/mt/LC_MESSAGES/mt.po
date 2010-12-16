@@ -1239,7 +1239,7 @@ msgstr "Id-dettalji tal-istħarriġ ġew issejvjati"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:306
 #: /var/lib/limesurvey-svn/subversion1x/save.php:355
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
-msgstr "Grazzi talli ssejvjajt l-istħarriġ tiegħek mill-quddiem.  Dawn id-dettalji jistgħu jintużaw biex tirritorna għal dan l-istħarriġ u tkompli fejn ħallejt.  Jekk jogħġbok żomm din l-email biex tirreferi għaliha-aħna ma nistgħux nakkwistawlek il-password tiegħek."
+msgstr "Grazzi talli ssejvjajt l-istħarriġ tiegħek mill-quddiem.  Dawn id-dettalji jistgħu jintużaw biex tirritorna għal dan l-istħarriġ u tkompli fejn ħallejt.  Jekk jogħġbok żomm din l-email biex tirreferi għaliha - aħna ma nistgħux nakkwistawlek il-password tiegħek."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:308
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:834
@@ -8569,7 +8569,7 @@ msgstr "Meta konna qed niċċekkjaw l-installazzjoni tiegħek, sibna xi problemi
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:234
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:396
 msgid "Check again"
-msgstr "Erġa 'ċċekkja"
+msgstr "Erġa' ċċekkja"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:238
 msgid "Everything looks alright. Please proceed to the next step."
@@ -9518,7 +9518,7 @@ msgstr "Ikklikkja hawn biex tipprintja t-tweġibiet."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:229
 msgid "Please try again."
-msgstr "Jekk jogħġbok erġa 'pprova."
+msgstr "Jekk jogħġbok erġa' pprova."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:282
 #: /var/lib/limesurvey-svn/subversion1x/index.php:605
@@ -9743,7 +9743,7 @@ msgstr "Jekk jogħġbok ikkonferma l-aċċess għall-istħarrig billi twieġeb i
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2122
 msgid "Security question:"
-msgstr "Mistoqsija ta 'sigurtà:"
+msgstr "Mistoqsija ta' sigurtà:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2157
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2217
@@ -9762,7 +9762,7 @@ msgstr "Jekk għandek token, jekk jogħġbok niżżlu fil-kaxxa t'hawn taħt u k
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3034
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3085
 msgid "Security Question"
-msgstr "Mistoqsija ta 'sigurtà"
+msgstr "Mistoqsija ta' sigurtà"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2219
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2254
