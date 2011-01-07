@@ -10,6 +10,7 @@
 							<span class="questionhelp">{QUESTION_HELP}</span>
 							{QUESTION_MAN_MESSAGE}
 							{QUESTION_VALID_MESSAGE}
+							{QUESTION_FILE_VALID_MESSAGE}
 						</td>
 					</tr>
 					<tr>

@@ -1,5 +1,5 @@
 						<table class="navigator-table">
-							<tr>
+	<tr>
 								<td class="clear-all">
 									{CLEARALL}
 								</td>
@@ -9,8 +9,8 @@
 								<td class="submit-buttons">
 									{NAVIGATOR}
 								</td>
-							</tr>
-						</table>
+	</tr>
+</table>
 					</td>
 				</tr>
 			</table>

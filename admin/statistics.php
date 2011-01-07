@@ -29,10 +29,10 @@
  *  I - Language Switch
  *  K - Multiple Numerical Input
  *  L - List (Radio)
- *  M - Multiple Options
+ *  M - Multiple choice
  *  N - Numerical Input
  *  O - List With Comment
- *  P - Multiple Options With Comments
+ *  P - Multiple choice with comments
  *  Q - Multiple Short Text
  *  R - Ranking
  *  S - Short Free Text
@@ -43,6 +43,7 @@
  *  ! - List (Dropdown)
  *  : - Array (Flexible Labels) multiple drop down
  *  ; - Array (Flexible Labels) multiple texts
+ *  | - File Upload
 
 
  Debugging help:
@@ -217,7 +218,7 @@ foreach ($rows as $row)
 //var_dump($filters);
 // SHOW ID FIELD
 
-$statisticsoutput .= "<div class='header'>".$clang->gT("General filters")."</div><div id='statistics_general_filter'>";
+$statisticsoutput .= "<div class='header ui-widget-header'>".$clang->gT("General filters")."</div><div id='statistics_general_filter'>";
 
 
 $grapherror='';
@@ -353,7 +354,7 @@ $statisticsoutput .= "</ul></fieldset></div><p>"
 
 //second row below options -> filter settings headline
 $statisticsoutput.="<div class='header header_statistics'>"
-."<img src='$imagefiles/plus.gif' align='right' id='showfilter' /><img src='$imagefiles/minus.gif' align='right' id='hidefilter' />"
+."<img src='$imageurl/plus.gif' align='right' id='showfilter' /><img src='$imageurl/minus.gif' align='right' id='hidefilter' />"
 .$clang->gT("Response filters")
 ."</div>\n";
 
@@ -397,7 +398,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= "<!-- Close filter group --></tr>\n</table></div></td></tr>\n";
         }
 
-        $statisticsoutput .= "\t\t<tr><td><div class='header'>\n"
+        $statisticsoutput .= "\t\t<tr><td><div class='header ui-widget-header'>\n"
 		
         ."<input type=\"checkbox\" id='btn_$flt[1]' onclick=\"selectCheckboxes('grp_$flt[1]', 'summary[]', 'btn_$flt[1]');\" />"
 
@@ -453,10 +454,11 @@ foreach ($filters as $flt)
      G - Gender
      I - Language Switch
      L - List (Radio)
-     M - Multiple Options
+     M - Multiple choice
      N - Numerical Input
+     | - File Upload
      O - List With Comment
-     P - Multiple Options With Comments
+     P - Multiple choice with comments
      Y - Yes/No
      ! - List (Dropdown) )
      */
@@ -466,10 +468,13 @@ foreach ($filters as $flt)
 
         $statisticsoutput .= "\t\t\t\t<td align='center'>";
 
-        //multiple options:
+        //Multiple choice:
         if ($flt[2] == "M") {$myfield = "M$myfield";}
         if ($flt[2] == "P") {$myfield = "P$myfield";}
 
+        // File Upload will need special filters in future, hence the special treatment
+        if ($flt[2] == "|") {$myfield = "|$myfield";}
+        
         //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
         if ($flt[2] == "N") {$myfield = "N$myfield";}
         $statisticsoutput .= "<input type='checkbox'  id='filter$myfield' name='summary[]' value='$myfield'";
@@ -477,7 +482,7 @@ foreach ($filters as $flt)
         /*
          * one of these conditions has to be true
          * 1. SGQ can be found within the summary array
-         * 2. M-SGQ can be found within the summary array (M = multiple options)
+         * 2. M-SGQ can be found within the summary array (M = Multiple choice)
          * 3. N-SGQ can be found within the summary array (N = numerical input)
          *
          * Always remember that we just have very few question types that are checked here
@@ -497,14 +502,14 @@ foreach ($filters as $flt)
 
         //numerical question type -> add some HTML to the output
         //if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
-        if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
+        if ($flt[2] != "N" && $flt[2] != "|") {$statisticsoutput .= "\t\t\t\t<select name='";}
 
-        //multiple options ("M"/"P") -> add "M" to output
+        //Multiple choice ("M"/"P") -> add "M" to output
         if ($flt[2] == "M" ) {$statisticsoutput .= "M";}
         if ($flt[2] == "P" ) {$statisticsoutput .= "P";}
 
         //numerical -> add SGQ to output
-        if ($flt[2] != "N") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
+        if ($flt[2] != "N" && $flt[2] != "|") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
 
     }	//end if -> filter certain question types
 
@@ -675,6 +680,30 @@ foreach ($filters as $flt)
 
             $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
             ."\t\t\t\t\t<font size='1'>".$clang->gT("Number less than").":</font><br />\n"
+            ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
+
+            if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
+
+            //only numeriacl input allowed -> check using JS
+            $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
+
+            //put field names into array
+
+            break;
+
+
+        case "|": // File Upload
+
+            // Number of files uploaded for greater and less than X
+            $myfield2 = "{$myfield}G";
+            $myfield3 = "{$myfield}L";
+            $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number of files greater than").":</font><br />\n"
+            ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
+
+            if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
+
+            $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
+            ."\t\t\t\t\t<font size='1'>".$clang->gT("Number of files less than").":</font><br />\n"
             ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 
             if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
@@ -1472,8 +1501,8 @@ foreach ($filters as $flt)
             $counter=0;
             break;
 
-        case "P":  //P - Multiple options with comments
-        case "M":  //M - Multiple options
+        case "P":  //P - Multiple choice with comments
+        case "M":  //M - Multiple choice
 
             //get answers
             $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
@@ -1498,7 +1527,7 @@ foreach ($filters as $flt)
              * This question types use the default settings:
              * 	L - List (Radio)
              O - List With Comment
-             P - Multiple Options With Comments
+             P - Multiple choice with comments
              ! - List (Dropdown)
              */
         default:
@@ -1587,7 +1616,7 @@ if (isset($summary) && $summary)
             $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
             break;
         case 'pdf':
-            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
             break;
         case 'xls':
             generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
@@ -1604,7 +1633,7 @@ if (isset($summary) && $summary)
 
 function showSpeaker($hinttext)
 {
-    global $clang, $imagefiles, $maxchars;
+    global $clang, $imageurl, $maxchars;
 
     if(!isset($maxchars))
     {
@@ -1623,7 +1652,7 @@ function showSpeaker($hinttext)
         $reshtml= "<span style='cursor: hand' title='".$htmlhinttext."' "
         ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\">"
         ." \"$shortstring...\" </span>"
-        ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+        ."<img style='cursor: hand' src='$imageurl/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
         ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
     }
     else

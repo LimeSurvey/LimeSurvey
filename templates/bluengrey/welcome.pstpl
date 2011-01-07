@@ -4,6 +4,6 @@
    <p class="survey-description">{SURVEYDESCRIPTION}</p>
 </div>
 <div id="welcometext">
-	<p>{WELCOME}</p>
+			<p>{WELCOME}</p>
 	<span class="x-questions">{THEREAREXQUESTIONS}</span>
 </div>

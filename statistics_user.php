@@ -153,27 +153,21 @@ $clang = SetSurveyLanguage($surveyid, $language);
 //Create header (fixes bug #3097)
 $surveylanguage= $language;
 sendcacheheaders();
-if ( !$embedded )
+
+$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
+if (getLanguageRTL($surveylanguage))
 {
-    $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-    . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
-    if (getLanguageRTL($surveylanguage))
-    {
-        $header.=" dir=\"rtl\" ";
-    }
-    $header.= ">\n\t<head>\n"
-    . "<title>$sitename</title>\n"
-    . "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
-    . "<link href=\"".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
-    . "</head>\n<body>\n";
-
-    echo $header;
+    $header.=" dir=\"rtl\" ";
 }
+$header.= ">\n\t<head>\n"
+. "<title>$sitename</title>\n"
+. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+    . "<link href=\"".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
+. "</head>\n<body>\n";
 
-global $embedded_headerfunc;
+echo $header;
 
-if ( function_exists( $embedded_headerfunc ) )
-echo $embedded_headerfunc();
 
 
 /*
@@ -210,7 +204,6 @@ $rows = $result->GetRows();
 usort($rows, 'GroupOrderThenQuestionOrder');
 
 //put the question information into the filter array
-$filters = array();
 foreach ($rows as $row)
 {
     //store some column names in $filters array
@@ -251,7 +244,7 @@ $allfields = array();
 
 //---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
 
-/*
+        /*
  * let's go through the filter array which contains
  * 	['qid'],
  ['gid'],
@@ -259,7 +252,7 @@ $allfields = array();
  ['title'],
  ['group_name'],
  ['question'];
- */
+         */
 
 $currentgroup='';
 foreach ($filters as $flt)
@@ -296,8 +289,8 @@ foreach ($filters as $flt)
             //go through all the (multiple) answers
             while ($row=$result->FetchRow())
             {
-                $myfield2=$myfield.$row[0];
-                $allfields[] = $myfield2;
+                $myfield2 = $myfield.$row[0];
+                $allfields[]=$myfield2;
             }
             break;
         // all "free text" types (T, U, S)  get the same prefix ("T")
@@ -318,11 +311,11 @@ foreach ($filters as $flt)
                 while ($frow = $fresult->FetchRow())
                 {
                     $myfield2 = "T".$myfield . $row[0] . "_" . $frow['title'];
-                    $allfields[] = $myfield2;
-                }
+                $allfields[]=$myfield2;
+            }
             }
             break;
-        case "R":  //RANKING
+        case "R": //RANKING
             //get some answers
             $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
             $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -334,13 +327,13 @@ foreach ($filters as $flt)
             for ($i=1; $i<=$count; $i++)
             {
                 $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
-                $allfields[] = $myfield2;
+                $allfields[]=$myfield2;
             }
             break;
         //Boilerplate questions are only used to put some text between other questions -> no analysis needed
         case "X":  //This is a boilerplate question and it has no business in this script
             break;
-        case "1":  // MULTI SCALE
+        case "1": // MULTI SCALE
             //get answers
             $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -350,19 +343,19 @@ foreach ($filters as $flt)
             {
                 //----------------- LABEL 1 ---------------------
                 $myfield2 = $myfield . "$row[0]#0";
-                $allfields[] = $myfield2;
+                $allfields[]=$myfield2;
                 //----------------- LABEL 2 ---------------------
                 $myfield2 = $myfield . "$row[0]#1";
-                $allfields[] = $myfield2;
+                $allfields[]=$myfield2;
             }	//end WHILE -> loop through all answers
             break;
 
-        case "P":  //P - Multiple options with comments
-        case "M":  //M - Multiple options
+        case "P":  //P - Multiple choice with comments
+        case "M":  //M - Multiple choice
         case "N":  //N - Numerical input
         case "D":  //D - Date
             $myfield2 = $flt[2].$myfield;
-            $allfields[] = $myfield2;
+                    $allfields[]=$myfield2;
             break;
         default:   //Default settings    
             $allfields[] = $myfield;
@@ -431,7 +424,7 @@ if (isset($summary) && $summary)
     $prb->moveStep($process_status);
 
     //let's run through the survey // Fixed bug 3053 with array_unique
-    $runthrough=array_unique($summary); 
+    $runthrough=array_unique($summary);
 
     //loop through all selected questions
     foreach ($runthrough as $rt)
@@ -445,7 +438,7 @@ if (isset($summary) && $summary)
 
     $statisticsoutput .= generate_statistics($surveyid, $summary, $summary, $publicgraphs, 'html',null,$language,false);
 
-    //output
+                //output
     $statisticsoutput .= "<br />\n"
     . "</div>\n";
 

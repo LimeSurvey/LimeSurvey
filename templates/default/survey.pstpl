@@ -12,7 +12,7 @@
 	</tr>
 	<tr>
 		<td class="language-changer">
-		  {LANGUAGECHANGER}
-		</td>
-    </tr>
+      {LANGUAGECHANGER}
+    </td>
+  </tr>
 </table>

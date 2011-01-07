@@ -2,8 +2,9 @@
 <span class="save-error">{SAVEERROR}</span>
 <span class="save-heading">{SAVEHEADING}</span>
 <br /><br />
-<span class="save-message">{SAVEMESSAGE</span>}
-<br /><br />
+<span class="save-message">{SAVEMESSAGE</span>}<br /><br />
+<span class="alert warning">{SAVEALERT}</span><br /><br />
+
 <div class="save-form">{SAVEFORM}</div>
 <br />
 <span class="return-to-survey">{RETURNTOSURVEY}</span>

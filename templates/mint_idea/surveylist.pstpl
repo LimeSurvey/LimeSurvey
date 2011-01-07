@@ -1,14 +1,14 @@
 
 <div class="survey-list-wrapper">
 	<div class="survey-list-heading">
-		 <h1>{SITENAME}</h1>
+             <h1>{SITENAME}</h1>
          {SURVEYLISTHEADING}
 	</div>
 	<div class="survey-list">
-		<ul>{SURVEYLIST}</ul>
+                <ul>{SURVEYLIST}</ul>
 	</div>
 	<div class="survey-contact">
-		{SURVEYCONTACT}
+             {SURVEYCONTACT}
 	</div>
 	<div class="language-changer">
 	   <p>{LANGUAGECHANGER}</p>

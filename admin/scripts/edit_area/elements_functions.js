@@ -301,7 +301,7 @@
 		}
 		if( t && t.id )
 		{
-			setTimeout("get_IE_selection(document.getElementById('"+ t.id +"'));", 50);
+		setTimeout("get_IE_selection(document.getElementById('"+ t.id +"'));", 50);
 		}
 	};
 	

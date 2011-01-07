@@ -115,7 +115,11 @@ switch ($fieldtype)
     case 'survey-desc':
     case 'survey-welc':
     case 'survey-endtext':
-        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
+    case 'edittitle': // for translation
+    case 'editdescription': // for translation
+    case 'editwelcome': // for translation
+    case 'editend': // for translation
+        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -123,11 +127,16 @@ switch ($fieldtype)
         {
             $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
         }
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
         break;
 
+    case 'email-admin-conf':
+    case 'email-admin-resp':
+        $replFields[]=array('RELOADURL',$clang->gT("Reload URL"));
+        $replFields[]=array('VIEWRESPONSEURL',$clang->gT("View response URL"));
+        $replFields[]=array('EDITRESPONSEURL',$clang->gT("Edit response URL"));
+        $replFields[]=array('STATISTICSURL',$clang->gT("Statistics URL"));
+        $replFields[]=array('ANSWERTABLE',$clang->gT("Answers from this response"));
     case 'email-inv':
     case 'email-rem':
         // these 2 fields are supported by email-inv and email-rem
@@ -135,7 +144,7 @@ switch ($fieldtype)
         $replFields[]=array('EMAIL',$clang->gT("Email from the token"));
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
     case 'email-reg':
-        $replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
+        $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
@@ -147,14 +156,12 @@ switch ($fieldtype)
         $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
         $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
         $replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
         break;
 
     case 'email-conf':
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
-        $replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
+        $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
@@ -166,15 +173,13 @@ switch ($fieldtype)
         $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
         $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
         $replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
 
         // email-conf can accept insertans fields for non anonymous surveys
         if (isset($surveyid))
         {
             $surveyInfo = getSurveyInfo($surveyid);
-            if ($surveyInfo['private'] == "N")
+            if ($surveyInfo['anonymized'] == "N")
             {
                 $isInstertansEnabled=true;
             }
@@ -184,7 +189,11 @@ switch ($fieldtype)
     case 'group-desc':
     case 'question-text':
     case 'question-help':
-        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
+    case 'editgroup': // for translation
+    case 'editgroup_desc': // for translation
+    case 'editquestion': // for translation
+    case 'editquestion_help': // for translation
+        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -192,9 +201,7 @@ switch ($fieldtype)
         {
             $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
         }
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
     case 'editanswer':
         $isInstertansEnabled=true;
         break;
@@ -203,7 +210,6 @@ switch ($fieldtype)
         $replFields[]=array('PERC',$clang->gT("Assessment group score"));
         break;
 }
-
 if ($isInstertansEnabled===true)
 {
     if (empty($surveyid)) {die("No SID provided.");}
@@ -229,6 +235,8 @@ if ($isInstertansEnabled===true)
                 break;
 
             case 'editgroup':
+            case 'editgroup_desc':
+            case 'translategroup':
                 if (empty($gid)) {die("No GID provided.");}
 
                 if ($field['gid'] == $gid)
@@ -251,6 +259,8 @@ if ($isInstertansEnabled===true)
             case 'editanswer':
             case 'copyquestion':
             case 'editquestion':
+            case 'translatequestion':
+            case 'translateanswer':
                 if (empty($gid)) {die("No GID provided.");}
                 if (empty($qid)) {die("No QID provided.");}
 
@@ -268,7 +278,7 @@ if ($isInstertansEnabled===true)
                 die("No Action provided.");
                 break;
         }
-        if ( $AddQuestion===True )
+        if ( $AddQuestion===True)
         {
             if ($action == 'tokens' && $fieldtype == 'email-conf')
             {
@@ -310,11 +320,11 @@ if ($isInstertansEnabled===true)
         foreach($questionlist as $rows)
         {
             $question = $rows['question'];
-            
+
             if (isset($rows['subquestion'])) $question = "[{$rows['subquestion']}] " . $question;
             if (isset($rows['subquestion1'])) $question = "[{$rows['subquestion1']}] " . $question;
             if (isset($rows['subquestion2'])) $question = "[{$rows['subquestion2']}] " . $question;
-            
+
             $shortquestion=$rows['title'].": ".FlattenText($question);
             $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['fieldname'],$rows['previouspage']);
         } //foreach questionlist

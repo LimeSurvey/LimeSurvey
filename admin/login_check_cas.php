@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: $
+ * $Id: login_check_cas.php 9586 2010-12-06 03:08:07Z c_schmitz $
  */
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (!isset($action)) {$action=returnglobal('action');}

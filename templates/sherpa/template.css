@@ -402,6 +402,9 @@ text-align:center;
   color: #000;
 }
 
+.warning{
+    display:block;
+}
 .error {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 13px;
@@ -1054,3 +1057,66 @@ td.statsImageholder {
   font-weight: bold;
   text-align: right;
 }
+
+/* Question Index */
+.outerframe.withindex {
+  margin-left: 1em;
+  margin-right: 26em;
+}
+
+#index {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  background: #fff;
+  border-left: 4px double #999;
+}
+
+#index h2 { 
+  margin: 0;
+  padding: 3px;
+  height: 23px;
+  background: url("box_bg.gif") repeat-x;
+  text-align: center;
+  font-family: "Verdana,Geneva,Arial,Helvetica,sans-serif";
+  font-size: 13px;
+}
+
+#index h3 {
+  color: #000099;
+  margin: 0.5em 0 0 0.5em;
+}
+
+#index .container {
+  width: 24em;
+}
+
+#index .container .row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  border-top: 1px solid #fff;
+}
+
+#index .container .row:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+#index .container .row .hdr {
+  width: 3em;
+  text-align: right;
+  display: inline-block;
+  padding: 0 0.5em 0 0;
+}
+
+#index .container .row.odd { background: #EEE; }
+#index .container .row.current { background: #000099; color: #fff; }
+#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container input { margin: 1em; }

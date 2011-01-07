@@ -8,13 +8,13 @@
 		
 		<!--[if lte IE 6]>
 				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
-		<![endif]-->
-		<!--[if IE 7]>
-				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
-		<![endif]-->
+<![endif]-->
+<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
+<![endif]-->
 		<!--[if IE 8]>
 				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
-		<![endif]-->
+<![endif]-->
 
     <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
     <style type="text/css" media="aural tty">
@@ -23,15 +23,16 @@
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>    
 <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 </head>
-	<body id="page_bg">
-		<div id="wrapper2">
+	<body id="page_bg"  class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+                <div class="outerframe">
+		        <div id="wrapper2">
 			<div id="survey-wrapper">
-				<div id="header">
-					<div class="rk-1">
-						<div class="rk-2">
-							<a href="http://www.limesurvey.org" class="nounder" title="Limesurvey - The free open source survey tool"><img src="{TEMPLATEURL}blank.gif" border="0" alt="" id="logo" /></a>
-						</div>
-					</div>
-				</div>
-				<div class="surveyname">{SURVEYNAME}</div>
-				<div class="survey-main">
+		        		<div id="header">
+		        			<div class="rk-1">
+		        				<div class="rk-2">
+		        					<a href="http://www.limesurvey.org" class="nounder" title="Limesurvey - The free open source survey tool"><img src="{TEMPLATEURL}blank.gif" border="0" alt="" id="logo" /></a>
+		        				</div>
+		        			</div>
+		        		</div>
+		        		<div class="surveyname">{SURVEYNAME}</div>
+		        		<div class="survey-main">

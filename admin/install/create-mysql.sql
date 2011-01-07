@@ -1,4 +1,6 @@
-
+-- 
+-- Table structure for table answers
+-- 
 CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
@@ -11,7 +13,9 @@ CREATE TABLE `prefix_answers` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table assessments
+-- 
 CREATE TABLE `prefix_assessments` (
   `id` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
@@ -26,19 +30,24 @@ CREATE TABLE `prefix_assessments` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table conditions
+-- 
 CREATE TABLE `prefix_conditions` (
   `cid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
   `scenario` int(11) NOT NULL default '1',
   `cqid` int(11) NOT NULL default '0',
   `cfieldname` varchar(50) NOT NULL default '',
-  `method` char(2) NOT NULL default '',
+  `method` char(5) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`cid`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+-- 
+-- Table structure for table defaultvalues
+-- 
 CREATE TABLE `prefix_defaultvalues` (
   `qid` int(11) NOT NULL default '0',
   `specialtype` varchar(20) NOT NULL default '',
@@ -50,6 +59,9 @@ CREATE TABLE `prefix_defaultvalues` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+-- 
+-- Table structure for table groups
+-- 
 CREATE TABLE `prefix_groups` (
   `gid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
@@ -61,7 +73,9 @@ CREATE TABLE `prefix_groups` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table labels
+-- 
 CREATE TABLE `prefix_labels` (
   `lid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
@@ -74,7 +88,9 @@ CREATE TABLE `prefix_labels` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table labelsets
+-- 
 CREATE TABLE `prefix_labelsets` (
   `lid` int(11) NOT NULL auto_increment,
   `label_name` varchar(100) NOT NULL default '',
@@ -83,7 +99,9 @@ CREATE TABLE `prefix_labelsets` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table question_attributes
+-- 
 CREATE TABLE `prefix_question_attributes` (
   `qaid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
@@ -93,7 +111,9 @@ CREATE TABLE `prefix_question_attributes` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table quota
+-- 
 CREATE TABLE `prefix_quota` (
   `id` int(11) NOT NULL auto_increment,
   `sid` int(11) default NULL,
@@ -106,7 +126,9 @@ CREATE TABLE `prefix_quota` (
 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table quota_languagesettings
+-- 
 CREATE TABLE `prefix_quota_languagesettings` (
   `quotals_id` int(11) NOT NULL auto_increment,
   `quotals_quota_id` int(11) NOT NULL default '0',
@@ -119,7 +141,9 @@ CREATE TABLE `prefix_quota_languagesettings` (
 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table quota_members
+-- 
 CREATE TABLE `prefix_quota_members` (
   `id` int(11) NOT NULL auto_increment,
   `sid` int(11) default NULL,
@@ -131,7 +155,9 @@ CREATE TABLE `prefix_quota_members` (
 )   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table questions
+-- 
 CREATE TABLE `prefix_questions` (
   `qid` int(11) NOT NULL auto_increment,
   `parent_qid` int(11) NOT NULL default '0',
@@ -152,7 +178,9 @@ CREATE TABLE `prefix_questions` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table saved_control
+-- 
 CREATE TABLE `prefix_saved_control` (
   `scid` int(11) NOT NULL auto_increment,
   `sid` int(11) NOT NULL default '0',
@@ -169,7 +197,25 @@ CREATE TABLE `prefix_saved_control` (
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+-- 
+-- Table structure for table templates_sessions
+-- 
+CREATE TABLE `prefix_sessions`(
+      sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+        expiry DATETIME NOT NULL ,
+      expireref VARCHAR( 250 ) DEFAULT '',
+      created DATETIME NOT NULL ,
+      modified DATETIME NOT NULL ,
+      sessdata LONGTEXT,
+      PRIMARY KEY ( sesskey ) ,
+      INDEX sess2_expiry( expiry ),
+      INDEX sess2_expireref( expireref )
+);
 
+
+-- 
+-- Table structure for table settings_global
+-- 
 CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
   `stg_value` varchar(255) NOT NULL default '',
@@ -177,7 +223,9 @@ CREATE TABLE `prefix_settings_global` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table surveys
+-- 
 CREATE TABLE `prefix_surveys` (
   `sid` int(11) NOT NULL,
   `owner_id` int(11) NOT NULL,
@@ -186,15 +234,15 @@ CREATE TABLE `prefix_surveys` (
   `expires` datetime default NULL,
   `startdate` datetime default NULL,
   `adminemail` varchar(320) default NULL,
-  `private` char(1) default NULL,
+  `anonymized` char(1) NOT NULL default 'N',
   `faxto` varchar(20) default NULL,
   `format` char(1) default NULL,
+  `savetimings` char(1) default 'N',
   `template` varchar(100) default 'default',
   `language` varchar(50) default NULL,
   `additional_languages` varchar(255) default NULL,
   `datestamp` char(1) default 'N',
   `usecookie` char(1) default 'N',
-  `notification` char(1) default '0',
   `allowregister` char(1) default 'N',
   `allowsave` char(1) default 'Y',
   `autonumber_start` bigint(11) default '0',
@@ -203,7 +251,7 @@ CREATE TABLE `prefix_surveys` (
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
   `refurl` char(1) default 'N',
-  `datecreated` date default NULL,
+  `datecreated` date default NULL, 
   `publicstatistics` char(1) default 'N',
   `publicgraphs` char(1) default 'N',
   `listpublic` char(1) default 'N',
@@ -214,14 +262,33 @@ CREATE TABLE `prefix_surveys` (
   `usetokens` char(1) default 'N',
   `bounce_email` varchar(320) default NULL,
   `attributedescriptions` text,
-  `emailresponseto` text default NULL,
+  `emailresponseto` text default NULL,  
+  `emailnotificationto` text default NULL,
   `tokenlength` tinyint(2) default '15',
-  PRIMARY KEY  (`sid`)
+  `showXquestions` char(1) default 'Y',
+  `showgroupinfo` char(1) default 'B',
+  `shownoanswer` char(1) default 'Y',
+  `showqnumcode` char(1) default 'X',
+  `bouncetime` bigint(20),    
+  `bounceprocessing` varchar(1) default 'N',
+  `bounceaccounttype` VARCHAR(4),
+  `bounceaccounthost` VARCHAR(200),
+  `bounceaccountpass` VARCHAR(100),
+  `bounceaccountencryption` VARCHAR(3),
+  `bounceaccountuser` VARCHAR(200),
+  `showwelcome` char(1) default 'Y',
+  `showprogress` char(1) default 'Y',
+  `allowjumps` char(1) default 'N',
+  `navigationdelay` tinyint(2) default '0',
+  `nokeyboard` char(1) default 'N',
+  `alloweditaftercompletion` char(1) default 'N',
+   PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
-DROP TABLE IF EXISTS `prefix_surveys_languagesettings`;
+-- 
+-- Table structure for table surveys_languagesettings
+-- 
 CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_survey_id` INT UNSIGNED NOT NULL DEFAULT 0,
   `surveyls_language` VARCHAR(45) NULL DEFAULT 'en',
@@ -239,27 +306,37 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_register` TEXT NULL,
   `surveyls_email_confirm_subj` VARCHAR(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
-  `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1, 
+  `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
+  `email_admin_notification_subj`  VARCHAR(255) NULL,    
+  `email_admin_notification` TEXT NULL,        
+  `email_admin_responses_subj` VARCHAR(255) NULL,    
+  `email_admin_responses` TEXT NULL,        
+  `surveyls_numberformat` INT NOT NULL DEFAULT 0,
   
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 ) ENGINE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
-CREATE TABLE `prefix_surveys_rights` (
-	`sid` int(10) unsigned NOT NULL default '0',
-	`uid` int(10) unsigned NOT NULL default '0',
-	`edit_survey_property` tinyint(1) NOT NULL default '0',
-	`define_questions` tinyint(1) NOT NULL default '0',
-	`browse_response` tinyint(1) NOT NULL default '0',
-	`export` tinyint(1) NOT NULL default '0',
-	`delete_survey` tinyint(1) NOT NULL default '0',
-	`activate_survey` tinyint(1) NOT NULL default '0',
-	PRIMARY KEY (sid, uid)
+-- 
+-- Table structure for table survey_permissions
+-- 
+CREATE TABLE `prefix_survey_permissions` (
+	`sid` int(10) unsigned NOT NULL,
+	`uid` int(10) unsigned NOT NULL,
+	`permission` varchar(20) NOT NULL,
+	`create_p` tinyint(1) NOT NULL default '0',
+    `read_p` tinyint(1) NOT NULL default '0',
+	`update_p` tinyint(1) NOT NULL default '0',
+	`delete_p` tinyint(1) NOT NULL default '0',
+    `import_p` tinyint(1) NOT NULL default '0',
+    `export_p` tinyint(1) NOT NULL default '0',
+	PRIMARY KEY (sid, uid, permission)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table user_groups
+-- 
 CREATE TABLE `prefix_user_groups` (
 	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
@@ -268,7 +345,9 @@ CREATE TABLE `prefix_user_groups` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table user_in_groups
+-- 
 CREATE TABLE `prefix_user_in_groups` (
 	`ugid` int(10) unsigned NOT NULL,
 	`uid` int(10) unsigned NOT NULL,
@@ -276,7 +355,9 @@ CREATE TABLE `prefix_user_in_groups` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table users
+-- 
 CREATE TABLE `prefix_users` (
   `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
   `users_name` varchar(64) NOT NULL UNIQUE default '',
@@ -298,7 +379,9 @@ CREATE TABLE `prefix_users` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table templates_rights
+-- 
 CREATE TABLE `prefix_templates_rights` (
   `uid` int(11) NOT NULL,
   `folder` varchar(255) NOT NULL,
@@ -307,7 +390,9 @@ CREATE TABLE `prefix_templates_rights` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-
+-- 
+-- Table structure for table templates
+-- 
 CREATE TABLE `prefix_templates` (
   `folder` varchar(255) NOT NULL,
   `creator` int(11) NOT NULL,
@@ -315,19 +400,21 @@ CREATE TABLE `prefix_templates` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-CREATE TABLE `prefix_sessions`(
-      sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
-        expiry DATETIME NOT NULL ,
-      expireref VARCHAR( 250 ) DEFAULT '',
-      created DATETIME NOT NULL ,
-      modified DATETIME NOT NULL ,
-      sessdata LONGTEXT,
-      PRIMARY KEY ( sesskey ) ,
-      INDEX sess2_expiry( expiry ),
-      INDEX sess2_expireref( expireref )
-);
+--
+-- Create failed_login_attempts
+--
 
+CREATE TABLE `prefix_failed_login_attempts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(37) NOT NULL,
+  `last_attempt` varchar(20) NOT NULL,
+  `number_attempts` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+--
 -- Secondary indexes 
+--
 create index `answers_idx2` on `prefix_answers` (`sortorder`);
 create index `assessments_idx2` on `prefix_assessments` (`sid`);
 create index `assessments_idx3` on `prefix_assessments` (`gid`);
@@ -340,11 +427,17 @@ create index `questions_idx3` on `prefix_questions` (`gid`);
 create index `questions_idx4` on `prefix_questions` (`type`);
 create index `quota_idx2` on `prefix_quota` (`sid`);
 create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
+create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 
-
--- data
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '143');
+--
+-- Version Info
+--
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '145');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
+
+--
+-- Create admin user
+--
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 

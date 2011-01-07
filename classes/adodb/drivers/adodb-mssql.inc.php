@@ -180,7 +180,7 @@ class ADODB_mssql extends ADOConnection {
         }
 
         // undo magic quotes for " unless sybase is on
-        $sybase = ini_get('magic_quotes_sybase');
+        $sybase = @ini_get('magic_quotes_sybase');
         if (!$sybase) {
             $s = str_replace('\\"','"',$s);
             if ($this->replaceQuote == "\\'")  // ' already quoted, no need to change anything

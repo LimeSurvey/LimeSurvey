@@ -326,7 +326,7 @@ function lspreview()
        return;
    }
     
-   var lsid=$('#labelsets').selectedValues();
+   var lsid=$('#labelsets').val();
    surveyid=$('input[name=sid]').val();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))
@@ -358,6 +358,10 @@ function lspreview()
                                 tabbody=tabbody+'<tbody><tr';
                                 if (highlight==true) { 
                                     tabbody=tabbody+" class='highlight' ";
+                                }
+                                if (lsrows[z].title==null)
+                                {
+                                    lsrows[z].title='';
                                 }
                                 tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
                             }
@@ -421,7 +425,7 @@ function transferlabels()
    {
        var lsreplace=false;
    }
-   var lsid=$('#labelsets').selectedValues();
+   var lsid=$('#labelsets').val();
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
           dataType: 'json',
@@ -556,22 +560,25 @@ function quickaddlabels()
         for (k in lsrows)
         {
             thisrow=lsrows[k].splitCSV(separatorchar);
-            if (thisrow.length==1)
+            if (thisrow.length<=languages.length)
             {
-                thisrow[1]=thisrow[0];
-                thisrow[0]=parseInt(k)+1;
+                thisrow.unshift(parseInt(k)+1);
             }
             else
             {
                 thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "");
             }            
-             
+            
+            if (typeof thisrow[parseInt(x)+1]=='undefined')
+            {
+                thisrow[parseInt(x)+1]=thisrow[1];
+            }             
             if (x==0) {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
             }
             else
             {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+thisrow[1]+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
 
             }
         }

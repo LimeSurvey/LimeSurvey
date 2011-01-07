@@ -349,10 +349,16 @@ table.clearall-result td {
   vertical-align: middle;
 }
 
-.warningjs {
+.warning{
+    display:block;
+    }
+.error,.errormandatory,.warningjs {
+  color: red;
+}
+.errormandatory,.warningjs {
   font-size: 12px;
   font-weight: 700;
-  color: RED;
+  color: red;
 }
 
 .asterisk {
@@ -1051,3 +1057,62 @@ td.statsImageholder {
 table.statisticstable strong {
   font-weight: bold;
 }
+
+/* Question Index */
+.outerframe.withindex {
+  margin-left: 1em;
+  margin-right: 26em;
+}
+
+#index {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  background: #EDEDED;
+  border-left: 1px solid #000;
+}
+
+#index h2 {
+  color: #17479e;
+  background: #FFF;
+  margin: 0;
+}
+
+#index h3 {
+  margin: 0.5em 0 0 0.5em;
+  color: #17479e;
+}
+
+#index .container {
+  width: 24em;
+}
+
+#index .container .row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  border-top: 1px solid #fff;
+}
+
+#index .container .row:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+#index .container .row .hdr {
+  width: 3em;
+  text-align: right;
+  display: inline-block;
+  padding: 0 0.5em 0 0;
+}
+
+#index .container .row.odd { background: #CCC; }
+#index .container .row.current { background: #17479e; color: #fff; }
+#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container input { margin: 1em; }

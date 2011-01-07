@@ -140,26 +140,45 @@ a:link,a:visited {
 }
 
 .printouttable {
-  width: 100%;
+  margin:1em auto;
 }
 
+.printouttable th {
+  text-align: center;
+}
+
+
 .printouttable td {
-  border-color: #fff #fff #ddf;
+  border-color: #ddf #ddf #ddf #ddf;
   border-style: solid;
   border-width: 1px;
+  padding:0.1em 1em 0.1em 0.5em;
 }
 
 .printouttable td:first-child {
-  background-color: #ddf;
   font-weight: 700;
   text-align: right;
   padding-right: 5px;
   padding-left: 5px;
+
+}
+.printouttable .printanswersquestion td{
+  background-color:#F7F8FF;
+}
+
+.printouttable .printanswersquestionhead td{
+  text-align: left;
+  background-color:#ddf;
+}
+
+.printouttable .printanswersgroup td{
+  text-align: center;        
+  font-weight:bold;
+  padding-top:1em;
 }
 
 .printouttitle {
-  padding-right: 5px;
-  padding-left: 5px;
+  padding: 10px 10px 0 10px;
   font-size: 18px;
 }
 
@@ -192,6 +211,42 @@ td.questiontext {
   padding: 0.5em 1em;
 }
 
+.page-odd td.questiontext {
+  background-color: #EFFFEE;
+}
+
+.navigator-table {
+  background-color: #EEF6FF;
+  text-align: center;
+  width: 100%;
+}
+
+.page-odd .navigator-table {
+  background-color: #EFFFEE;
+}
+
+td.page-title {
+  text-align: center;
+  background-color: #EEF6FF;
+}
+
+.page-odd td.page-title {
+  background-color: #EFFFEE;
+}
+
+table.question-group {
+  width: 100%;
+  text-align: center;
+  background-color: #d2e0f2;
+  border: 0;
+  border-collapse:collapse;
+  border-color: #111111;
+}
+
+.page-odd table.question-group {
+  background-color: #D2F2D3;
+}
+
 td.answer {
   padding: 0.5em 1.5em;
 }
@@ -202,6 +257,10 @@ td.survey-question-help {
   padding-left: 1em;
 }
 
+.page-odd td.survey-question-help {
+  background-color: #EFFFEE;
+}
+
 td.survey-question-help img {
   margin: 4px 4px 4px 0;
   padding-right: 5px;
@@ -210,10 +269,15 @@ td.survey-question-help img {
 
 /* End formatting for the four keyparts of an question */
 
+.warning {
+    display:block;
+    }
 .error,.errormandatory,.warningjs {
+  color: red;
+}
+.errormandatory,.warningjs {
   font-size: 12px;
   font-weight: 700;
-  color: RED;
 }
 
 table.question {
@@ -238,6 +302,10 @@ td.survey-description {
 	text-align: center;
 	background-color: #EEF6FF;
 	padding-bottom: 20px;
+}
+
+.page-odd td.survey-description {
+    background-color: #EFFFEE;
 }
 
 span.surveydescription {
@@ -304,6 +372,10 @@ table.group {
 	border: 0 none;
 	border-collapse: collapse;
 	background-color: #D2E0F2;
+}
+
+.page-odd table.group {
+    background-color: #D2F2D3;
 }
 
 .group-name {
@@ -545,6 +617,10 @@ table.clearall-result td {
   list-style-type: none;
   text-align: left;
   margin: 0% 0% 0.5em 0.5em;
+}
+
+.outerframe.withindex div.missing td.questiontext {
+  background: red;
 }
 
 /* END:  General list styles - - - -  - - -  - - - -
@@ -909,6 +985,10 @@ table.rank td.helptext {
   border: 1px solid #999999;
 }
 
+.page-odd td.graph {
+  background-color: #D2F2D3;
+}
+
 /** UI Slider **/
 .numeric-multi label.slider-label {
   display: table-cell;
@@ -994,7 +1074,9 @@ table.rank td.helptext {
   font-size: 0.9em;
 }
 
-table.outerframe {
+table.innerframe {
+  width: 75%;
+  text-align: center;
   border-collapse: separate;
   border-spacing: 1px;
   margin: 20px auto 40px auto;
@@ -1192,3 +1274,59 @@ div.questionTitle {
   font-weight: bold;
   background-color: #D2E0F2;
 }
+
+/* Question Index */
+.outerframe.withindex {
+  margin-left: 1em;
+  margin-right: 26em;
+}
+
+#index {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  background: #fff;
+  border-left: 1px solid #ccc;
+}
+
+#index h2 { 
+  padding: 1em;
+  background: #eef6ff;
+  text-align: center;
+}
+
+#index h3 { margin: 0.5em 0 0 0.5em; }
+
+#index .container {
+  width: 24em;
+}
+
+#index .container .row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  border-top: 1px solid #fff;
+}
+
+#index .container .row:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+#index .container .row .hdr {
+  width: 3em;
+  text-align: right;
+  display: inline-block;
+  padding: 0 0.5em 0 0;
+}
+
+#index .container .row.odd { background: #EEF6FF; }
+#index .container .row.current { background: #1D2D45; color: #fff; }
+#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container input { margin: 1em; }

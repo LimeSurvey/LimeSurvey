@@ -14,7 +14,7 @@
  */
 $updaterversion=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
 $updaterversion=$updaterversion[1];
- 
+
 if (isset($_REQUEST['update'])) die();
 
 if ($action=='update'){
@@ -34,7 +34,7 @@ if ($action=='update'){
     {
         $adminoutput=RunUpdaterUpdate();
         $adminoutput=UpdateStep1();    
-    }
+}
 }
 
 
@@ -168,7 +168,7 @@ function UpdateStep1()
         setGlobalSetting('updatekey',sanitize_paranoid_string($_POST['updatekey']));
     }
     $error=false;
-    $output='<div class="header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />';
     $output.=$clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />';
     $output.=$clang->gT('The following steps will be done by this update:').'<br /><ul>';
     $output.='<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
@@ -254,7 +254,7 @@ function UpdateStep2()
     require_once($homedir."/classes/http/http.php");
     $updatekey=getGlobalSetting('updatekey');
 
-    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
 
     $http=new http_class;
     /* Connection timeout */
@@ -302,9 +302,9 @@ function UpdateStep2()
     $readonlyfiles=array();
     if (!isset($updateinfo['files']))
     {
-        $output.="<div class='messagebox'>
+        $output.="<div class='messagebox ui-corner-all'>
             <div class='warningheader'>".$clang->gT('Update server busy')."</div>
-            <p>".$clang->gT('The update server seems to be currently busy. This happens most likely if the necessary update files for a new version are prepared.')."<br />
+            <p>".$clang->gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
                ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
             <p><button onclick=\"window.open('$scriptname?action=globalsettings', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button></p>";
          
@@ -413,7 +413,7 @@ function UpdateStep3()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 3').'</div><div class="updater-background">';
+    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'3').'</div><div class="updater-background">';
     $output.='<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
     if (!isset( $_SESSION['updateinfo']))
     {
@@ -496,7 +496,7 @@ function UpdateStep4()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header">'.$clang->gT('ComfortUpdate Step 4').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'4').'</div><div class="updater-background"><br />';
     if (!isset( $_SESSION['updateinfo']))
     {
         $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
@@ -630,19 +630,41 @@ function CheckForDBUpgrades()
     $currentDBVersion=GetGlobalSetting('DBVersion');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
-        $upgradedbtype=$databasetype;
-        if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
-        if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
-        if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
-        include ('upgrade-'.$upgradedbtype.'.php');
-        include ('upgrade-all.php');
-        $tables = $connect->MetaTables();
-        db_upgrade_all(intval($currentDBVersion));
-        db_upgrade(intval($currentDBVersion));
-        $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+        if(isset($_GET['continue']) && $_GET['continue']==1) 
+        {
+            $upgradedbtype=$databasetype;
+            if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
+            if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
+            if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
+            include ('upgrade-'.$upgradedbtype.'.php');
+            include ('upgrade-all.php');
+            $tables = $connect->MetaTables();
+            db_upgrade_all(intval($currentDBVersion));
+            db_upgrade(intval($currentDBVersion));
+            $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+        }
+        else {
+            return ShowDBUpgradeNotice();
+        }
     }
     return $adminoutput;
 }
 
+function ShowDBUpgradeNotice() {
+    global $databasetype, $dbprefix, $databasename, $sitename, $rooturl,$clang;
+    $error=false;
+    $output="<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
+    $output.=$clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
+    $output.="<li><b>" .$clang->gT('Database type') . ":</b> " . $databasetype . "</li>"; 
+    $output.="<li><b>" .$clang->gT('Database name') . ":</b> " . $databasename . "</li>"; 
+    $output.="<li><b>" .$clang->gT('Table prefix') . ":</b> " . $dbprefix . "</li>";   
+    $output.="<li><b>" .$clang->gT('Site name') . ":</b> " . $sitename . "</li>";   
+    $output.="<li><b>" .$clang->gT('Root URL') . ":</b> " . $rooturl . "</li>"; 
+    $output.='</ul>';
+    $output.="<br />";
+    $output.="<a href='{$rooturl}/admin/admin.php?continue=1'>" . $clang->gT('Click here to continue') . "</a>";  
+    $output.="<br />";
+    return $output;     
+}
 
 ?>

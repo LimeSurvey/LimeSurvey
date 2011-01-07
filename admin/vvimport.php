@@ -77,7 +77,7 @@ if ($subaction != "upload")
     {
 
         $vvoutput = browsemenubar($clang->gT("Import VV file")).
-		"<div class='header'>".$clang->gT("Import a VV survey file")."</div>
+		"<div class='header ui-widget-header'>".$clang->gT("Import a VV survey file")."</div>
 		<form id='vvexport' enctype='multipart/form-data' method='post' action='admin.php?sid=$surveyid'>
 		<ul>		
 		<li><label for='the_file'>".$clang->gT("File:")."</label><input type='file' size=50 id='the_file' name='the_file' /></li>

@@ -175,7 +175,7 @@ class MyPDF extends TCPDF
 
         $this->SetFillColor(220, 220, 220);
         for($a=0;$a<sizeof($array);$a++)
-        {       
+        {
             if($modulo){
                 if($a%2 === 0){$fill=1;}
                 else{$fill=0;}
@@ -206,11 +206,11 @@ class MyPDF extends TCPDF
                     if ($b==0)
                     {
                         $iLines=$this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',$fill,0); 
-                    }
+                }
                     else
                     {
                        $this->MultiCell($maxwidth[$b],$iLines,$this->delete_html($array[$a][$b]),0,'L',$fill,0);   
-                    }
+            }
 
                 }
             }

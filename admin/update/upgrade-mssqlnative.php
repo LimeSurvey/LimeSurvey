@@ -210,7 +210,7 @@ function db_upgrade($oldversion) {
         modify_database("","create index [saved_control_idx2] on [prefix_saved_control] ([sid])"); echo $modifyoutput;
         modify_database("","create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid])"); echo $modifyoutput;
         modify_database("","update [prefix_settings_global] set [stg_value]='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-}
+	}
 
 	if ($oldversion < 128) {
 		upgrade_token_tables128();
@@ -387,6 +387,8 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE [prefix_questions] DROP COLUMN lid"); echo $modifyoutput; flush();
         mssql_drop_constraint('lid1','questions');
         modify_database("", "ALTER TABLE [prefix_questions] DROP COLUMN lid1"); echo $modifyoutput; flush();
+        // add field for timings and table for extended conditions
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD savetimings char(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("", "CREATE TABLE prefix_sessions(
                               sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
                               expiry DATETIME NOT NULL ,
@@ -398,8 +400,85 @@ function db_upgrade($oldversion) {
         modify_database("", "create index [idx_expiry] on [prefix_sessions] ([expiry])"); echo $modifyoutput;
         modify_database("", "create index [idx_expireref] on [prefix_sessions] ([expireref])"); echo $modifyoutput;
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+
+
+
     }
 
+    if ($oldversion < 145) //Modify surveys table
+    {
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD showXquestions CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD showgroupinfo CHAR(1) NULL default 'B' "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD shownoanswer CHAR(1) NULL default 'Y' "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD showqnumcode CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bouncetime BIGINT NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceprocessing VARCHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounttype VARCHAR(4) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccounthost VARCHAR(200) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountpass VARCHAR(100) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountencryption VARCHAR(3) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD bounceaccountuser VARCHAR(200) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD showwelcome CHAR(1) NULL default 'Y' "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD showprogress CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD allowjumps CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD navigationdelay tinyint NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD nokeyboard CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD alloweditaftercompletion CHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE [prefix_survey_permissions] (
+                            [sid] INT NOT NULL,         
+                            [uid] INT NOT NULL,         
+                            [permission] VARCHAR(20) NOT NULL,       
+                            [create_p] TINYINT NOT NULL default '0', 
+                            [read_p] TINYINT NOT NULL default '0', 
+                            [update_p] TINYINT NOT NULL default '0', 
+                            [delete_p] TINYINT NOT NULL default '0', 
+                            [import_p] TINYINT NOT NULL default '0', 
+                            [export_p] inTINYINT NOT NULL default '0', 
+                            PRIMARY KEY ([sid], [uid],[permission])
+                        );");
+        upgrade_surveypermissions_table145();
+        modify_database("", "DROP TABLE [prefix_surveys_rights]"); echo $modifyoutput; flush();
+        
+        // Add new fields for email templates
+        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD 
+                              email_admin_notification_subj  VARCHAR(255) NULL,    
+                              email_admin_notification varchar(max) NULL,        
+                              email_admin_responses_subj VARCHAR(255) NULL,    
+                              email_admin_responses varchar(max) NULL");
+        
+        //Add index to questions table to speed up subquestions
+        modify_database("", "create index [parent_qid_idx] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();
+
+        modify_database("", "ALTER TABLE prefix_surveys ADD emailnotificationto text DEFAULT NULL"); echo $modifyoutput; flush();
+        upgrade_survey_table145();                               
+        mssql_drop_constraint('notification','surveys');
+        modify_database("", "ALTER TABLE [prefix_surveys] DROP COLUMN [notification]"); echo $modifyoutput; flush();
+                   
+        // modify length of method in conditions
+        modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [method] CHAR(5) NOT NULL"); echo $modifyoutput; flush();
+
+        //Add index to questions table to speed up subquestions
+        modify_database("", "create index [parent_qid] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();
+        
+        modify_database("","EXEC sp_rename 'prefix_surveys.private','anonymized'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [anonymized] char(1) NOT NULL default 'N';"); echo $modifyoutput; flush();
+
+        modify_database("", "CREATE TABLE [prefix_failed_login_attempts] (
+                      [id] int(11) NOT NULL AUTO_INCREMENT,
+                      [ip] varchar(37) NOT NULL,
+                      [last_attempt] varchar(20) NOT NULL,
+                      [number_attempts] int(11) NOT NULL,
+                      PRIMARY KEY ([id])
+                    );"); echo $modifyoutput; flush();
+
+        modify_database("", "ALTER TABLE  [prefix_surveys_languagesettings] ADD  [surveyls_numberformat] INT default 0 NOT NULL"); echo $modifyoutput; flush();
+        
+        
+        modify_database("", "UPDATE [prefix_settings_global] SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+
+
+    }
+    
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
   	return true;
 }
@@ -510,7 +589,7 @@ function mssql_drop_constraint($fieldname, $tablename)
     $defaultname=$connect->GetRow($dfquery);
     if ($defaultname!=false)
     {
-        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname['constraint_name']}"); echo $modifyoutput; flush();
     }
 
 
@@ -684,7 +763,7 @@ function upgrade_tables143()
         }
     }
 
-           
+
 
     $updatequery = "update {$dbprefix}questions set type='!' where type='W'";
     modify_database("",$updatequery); echo $modifyoutput; flush();

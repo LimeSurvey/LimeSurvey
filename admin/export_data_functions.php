@@ -287,14 +287,14 @@ function spss_fieldmap($prefix = 'V') {
     $tokensexist = tableExists('tokens_'.$surveyid);
 
     #Lookup the names of the attributes
-    $query="SELECT sid, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
+    $query="SELECT sid, anonymized, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
     $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
     $num_results = $result->RecordCount();
     $num_fields = $num_results;
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
         $row = $result->FetchRow();
-        $surveyprivate=$row['private'];
+        $surveyprivate=$row['anonymized'];
         $language=$row['language'];
     }
 
@@ -508,11 +508,11 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             foreach ($Row as $Key=>$Value)
             {
                 if (!isset($exclude[$Key])) {
-	                $xmlwriter->startElement($Key);
+                $xmlwriter->startElement($Key);
                     // Remove invalid XML characters
                     $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
-	                $xmlwriter->endElement();
-                }
+                $xmlwriter->endElement();
+            }
             }
             $xmlwriter->endElement(); // close row
         }

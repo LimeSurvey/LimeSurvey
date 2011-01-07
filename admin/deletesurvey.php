@@ -18,8 +18,8 @@ include_once("login_check.php");
 $deleteok = returnglobal('deleteok');
 
 $deletesurveyoutput = "<br />\n";
-$deletesurveyoutput .= "<div class='messagebox'>\n";
-$deletesurveyoutput .= "<div class='header'>".$clang->gT("Delete survey")."</div>\n";
+$deletesurveyoutput .= "<div class='messagebox ui-corner-all'>\n";
+$deletesurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Delete survey")."</div>\n";
 
 if (!isset($surveyid) || !$surveyid)
 {
@@ -65,6 +65,13 @@ else //delete the survey
         $dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
     }
 
+	if (tableExists("survey_{$surveyid}_timings"))  //delete the survey_$surveyid_timings table
+    {    	
+        $dsquery = $dict->DropTableSQL("{$dbprefix}survey_{$surveyid}_timings");
+        //$dict->ExecuteSQLArray($sqlarraytimings);
+        $dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+    }
+
     if (tableExists("tokens_$surveyid")) //delete the tokens_$surveyid table
     {
         $dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
@@ -95,7 +102,7 @@ else //delete the survey
     $slsdel = "DELETE FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
     $slsres = $connect->Execute($slsdel);
 
-    $srdel = "DELETE FROM {$dbprefix}surveys_rights WHERE sid=$surveyid";
+    $srdel = "DELETE FROM {$dbprefix}survey_permissions WHERE sid=$surveyid";
     $srres = $connect->Execute($srdel);
 
     $srdel = "DELETE FROM {$dbprefix}saved_control WHERE sid=$surveyid";

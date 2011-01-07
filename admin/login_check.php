@@ -108,6 +108,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
                     if (strtolower($srow['password'])=='password')
                     {
                         $_SESSION['pw_notify']=true;
+						$_SESSION['flashmessage']=$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
                     }
                     else
                     {
@@ -175,36 +176,154 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 
 
 
-        if (!isset($logoutsummary))
+        
+
+
+
+        //include("database.php");
+        $sIp = $_SERVER['REMOTE_ADDR'];
+        $query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
+        $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+        $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
+        $bCannotLogin = false;
+        $intNthAttempt = 0;
+        if ($result!==false && $result->RecordCount() >= 1)
         {
-            $loginsummary = "<form name='loginform' id='loginform' method='post' action='$homeurl/admin.php' ><p><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
+            $field = $result->FetchRow();
+            $intNthAttempt = $field['number_attempts'];
+            if ($intNthAttempt>=$maxLoginAttempt){
+                $bCannotLogin = true;
+            }
+
+            $iLastAttempt = strtotime($field['last_attempt']);
+
+            if (time() > $iLastAttempt + $timeOutTime){
+                $bCannotLogin = false;
+                $query = "DELETE FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
+                $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
+            }
+
         }
-        else
+        $loginsummary ="";
+        if (!$bCannotLogin)
         {
-            $loginsummary = "<form name='loginform' id='loginform' method='post' action='$homeurl/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
+            if (!isset($logoutsummary))
+            {
+                $loginsummary = "<form name='loginform' id='loginform' method='post' action='$homeurl/admin.php' ><p><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
+            }
+            else
+            {
+                $loginsummary = "<form name='loginform' id='loginform' method='post' action='$homeurl/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
+            }
+            
+            $loginsummary .= "
+                                                            <ul>
+                                                                            <li><label for='user'>".$clang->gT("Username")."</label>
+                                                                            <input name='user' id='user' type='text' size='40' maxlength='40' value='' /></li>
+                                                                            <li><label for='password'>".$clang->gT("Password")."</label>
+                                                                            <input name='password' id='password' type='password' size='40' maxlength='40' /></li>
+                                        <li><label for='loginlang'>".$clang->gT("Language")."</label>
+                                        <select id='loginlang' name='loginlang' style='width:216px;'>\n";
+            $loginsummary .='<option value="default">'.$clang->gT('Default').'</option>';
+            $lan=array();
+            foreach (getlanguagedata(true) as $langkey=>$languagekind)
+            {
+				array_push($lan,$langkey);
+			}
+			//The loop above stores all the language codes supported by LimeSurvey in a numeric array $lan.
+			$x=0;
+			while ($x<count($lan))
+			{
+				if ($lan[$x]=="zh-Hans")
+				{
+					$lan[$x]="zh";
+				}
+				elseif ($lan[$x]=="zh-Hant-HK")
+				{
+					$lan[$x]="zh-hk";
+				}
+				elseif ($lan[$x]=="zh-Hant-TW")
+				{
+					$lan[$x]="zh-tw";
+				}
+				elseif ($lan[$x]=="de-informal")
+				{
+					$lan[$x]="de";
+				}
+				elseif ($lan[$x]=="it-formal")
+				{
+					$lan[$x]="it";
+				}
+				elseif ($lan[$x]=="nl-informal")
+				{
+					$lan[$x]="nl";
+				}
+				else
+				{
+					$lan[$x]=strtolower($lan[$x]);
+				}
+				$x++;
+			}
+			//The above loop changes certain elements of $lan to the language codes which are supported by the browsers.
+			$browlang="";
+			if ( isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
+			{
+				$browlang=strtolower( $_SERVER["HTTP_ACCEPT_LANGUAGE"] );
+				$browlang=str_replace(' ', '', $browlang);
+				$browlang=explode( ",", $browlang);
+				$browlang=$browlang[0];
+				$browlang=explode( ";", $browlang);
+				$browlang=$browlang[0];
+				$check=0;
+				$value=26;
+				if ($browlang!="zh-hk" && $browlang!="zh-tw" && $browlang!="es-mx" && $browlang!="pt-br")
+				{
+					$browlang=explode( "-",$browlang);
+					$browlang=$browlang[0];
+				}
+				//This if statement converts all the browser codes to Internet Explorer codes if the user is using Internet Explorer.
+			}
+			$x=0;
+			$count=-1;
+			while ($x<count($lan))
+			{
+				if ($browlang==$lan[$x])
+				{
+					$count=$x;
+				}
+				$x++;
+			}
+			if ($check==1)
+			{
+				$count=$value;
+			}
+			$x=0;
+			foreach (getlanguagedata(true) as $langkey=>$languagekind)
+            {	
+				//The following conditional statements select the browser language in the language drop down box and echoes the other options.
+				if ($x==$count)
+				{
+					$loginsummary .= "\t\t\t\t<option value='$langkey' selected='yes'>".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
+				}
+				else
+				{
+                $loginsummary .= "\t\t\t\t<option value='$langkey'>".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
+            }
+				$x++;
+            }
+            $loginsummary .= "\t\t\t</select>\n"
+            . "</li>
+                                    </ul>
+                                                                            <p><input type='hidden' name='action' value='login' />
+                                                                            <input type='hidden' name='refererargs' value='".$refererargs."' />
+                                                                            <input class='action' type='submit' value='".$clang->gT("Login")."' /><br />&nbsp;\n<br/>";
+        }
+        else{
+            $loginsummary .= "<p>".sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br /></p>";
         }
 
-        $loginsummary .= "
-							<ul>
-									<li><label for='user'>".$clang->gT("Username")."</label>
-									<input name='user' id='user' type='text' size='40' maxlength='40' value='' /></li>
-									<li><label for='password'>".$clang->gT("Password")."</label>
-									<input name='password' id='password' type='password' size='40' maxlength='40' /></li>
-                                    <li><label for='loginlang'>".$clang->gT("Language")."</label>
-                                    <select id='loginlang' name='loginlang' style='width:216px;'>\n";
-        $loginsummary .='<option value="default">'.$clang->gT('Default').'</option>';
-        foreach (getlanguagedata(true) as $langkey=>$languagekind)
-        {
-            $loginsummary .= "\t\t\t\t<option value='$langkey'>".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
-        }
-        $loginsummary .= "\t\t\t</select>\n"
-        . "</li>
-                                </ul>
-									<p><input type='hidden' name='action' value='login' />
-									<input type='hidden' name='refererargs' value='".$refererargs."' />
-									<input class='action' type='submit' value='".$clang->gT("Login")."' /><br />&nbsp;\n<br/>
-									<a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n
-						</form><br />";
+        $loginsummary .= "<p><a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n
+						</form><br /></p>";
         $loginsummary .= "                                                <script type='text/javascript'>\n";
         $loginsummary .= "                                                  document.getElementById('user').focus();\n";
         $loginsummary .= "                                                </script>\n";

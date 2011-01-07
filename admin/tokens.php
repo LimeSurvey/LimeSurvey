@@ -15,9 +15,8 @@
 
 
 # TOKENS FILE
-
 include_once("login_check.php");
-
+ 
 if ($enableLdap)
 {
     require_once(dirname(__FILE__).'/../config-ldap.php');
@@ -30,6 +29,8 @@ if (!isset($start)) {$start=(int)returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
 if (!isset($tokenids)) {$tokenids=returnglobal('tids');}
+if (!isset($gtokenid)) {$gtokenid=returnglobal('gtid');}
+if (!isset($gtokenids)) {$gtokenids=returnglobal('gtids');}
 if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
 
 if(isset($tokenids)) {
@@ -101,10 +102,9 @@ if ($subaction == "importldap" || $subaction == "uploadldap" )
     $filterduplicatetoken=(isset($_POST['filterduplicatetoken']) && $_POST['filterduplicatetoken']=='on');
     $filterblankemail=(isset($_POST['filterblankemail']) && $_POST['filterblankemail']=='on');
 }
-
 $tokenoutput = "";
 
-if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'export')) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
     header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -132,12 +132,12 @@ if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATUR
     if ($_POST['tokenstatus']==2)
     {
         $bquery .= " and completed='N'";
-        if ($thissurvey['private']=='N')
+        if ($thissurvey['anonymized']=='N')
         {
             $bquery .=" and token not in (select token from ".db_table_name("survey_$surveyid")." group by token)";
         }
     }
-    if ($_POST['tokenstatus']==3 && $thissurvey['private']=='N')
+    if ($_POST['tokenstatus']==3 && $thissurvey['anonymized']=='N')
     {
         $bquery .= " and completed='N' and token in (select token from ".db_table_name("survey_$surveyid")." group by token)";
     }
@@ -170,7 +170,7 @@ if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATUR
     $bfieldcount=$bresult->FieldCount();
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
-    $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed";
+    $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
     $attrfieldnames = GetAttributeFieldnames($surveyid);
     $attrfielddescr = GetTokenFieldsAndNames($surveyid, true);
     foreach ($attrfieldnames as $attr_name)
@@ -207,6 +207,7 @@ if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATUR
         $tokenoutput .= '"'.trim($brow['remindersent']).'",';
         $tokenoutput .= '"'.trim($brow['remindercount']).'",';
         $tokenoutput .= '"'.trim($brow['completed']).'",';
+        $tokenoutput .= '"'.trim($brow['usesleft']).'",';
         foreach ($attrfieldnames as $attr_name)
         {
             $tokenoutput .='"'.trim($brow[$attr_name]).'",';
@@ -217,33 +218,161 @@ if ($subaction == "export" && ( bHasRight($surveyid, 'export')) )//EXPORT FEATUR
     echo $tokenoutput;
     exit;
 }
+// Bouceprocessing
+if($subaction=='bounceprocessing')
+{
+	if ($thissurvey['bounceprocessing']!='N' && !($thissurvey['bounceprocessing']=='G' && getGlobalSetting('bounceaccounttype')=='off') && bHasSurveyPermission($surveyid, 'tokens','update'))
+	{
+		$bouncetotal=0;
+		$checktotal=0;
+		if($thissurvey['bounceprocessing']=='G')
+		{
+			$accounttype=getGlobalSetting('bounceaccounttype');
+			$hostname=getGlobalSetting('bounceaccounthost');
+			$username=getGlobalSetting('bounceaccountuser');
+			$pass=getGlobalSetting('bounceaccountpass');
+			$hostencryption=getGlobalSetting('bounceencryption');
+		    
+        }
+		else
+		{
+			$accounttype=$thissurvey['bounceaccounttype'];
+			$hostname=$thissurvey['bounceaccounthost'];
+			$username=$thissurvey['bounceaccountuser'];
+			$pass=$thissurvey['bounceaccountpass'];
+			$hostencryption=$thissurvey['bounceaccountencryption'];
+            
+		}
+        @list($hostname,$port) = split(':', $hostname);
+            if(empty($port))
+            {
+              if($accounttype=="IMAP")
+                {
+                  switch($hostencryption)
+                  {
+                      case "Off":
+                        $hostname = $hostname.":143";    
+                        break;
+                      case "SSL":
+                        $hostname = $hostname.":993";    
+                        break;
+                      case "TLS":
+                        $hostname = $hostname.":993";    
+                        break;
+                  }
+                }
+              else
+                {
+                   switch($hostencryption)
+                  {
+                      case "Off":
+                        $hostname = $hostname.":110";    
+                        break;
+                      case "SSL":
+                        $hostname = $hostname.":995";    
+                        break;
+                      case "TLS":
+                        $hostname = $hostname.":995";    
+                        break;
+                  }
+                }
+            }
+		$flags="";
+        switch($accounttype)
+		{
+			case "IMAP":
+			$flags.="/imap";
+			break;
+			case "POP":
+			$flags.="/pop3";
+			break;
+		}
+		switch($hostencryption) // novalidate-cert to have personal CA , maybe option.
+		{
+			case "SSL":
+			$flags.="/ssl/novalidate-cert";
+			break;
+			case "TLS":
+			$flags.="/tls/novalidate-cert";
+			break;
+		}
+		if($mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
+		{   
+            imap_errors();          
+			$count=imap_num_msg($mbox);
+			$lasthinfo=imap_headerinfo($mbox,$count);
+			$datelcu = strtotime($lasthinfo->date);
+			$datelastbounce= $datelcu;
+			$lastbounce = $thissurvey['bouncetime'];
+			while($datelcu > $lastbounce)
+			{
+				$header = explode("\r\n", imap_body($mbox,$count,FT_PEEK)); // Don't put read
+				foreach ($header as $item)
+				{
+					if (preg_match('/^X-surveyid/',$item))
+					{
+						$surveyidBounce=explode(": ",$item);
+					}
+					if (preg_match('/^X-tokenid/',$item))
+					{
+						$tokenBounce=explode(": ",$item);
+						if($surveyid == $surveyidBounce[1])
+						{ 
+							$bouncequery = "UPDATE ".db_table_name("tokens_$surveyid")." SET emailstatus='bounced' WHERE token='$tokenBounce[1]';";
+							$anish=$connect->Execute($bouncequery);
+							$readbounce=imap_body($mbox,$count); // Put read 
+							if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
+							{
+								$deletebounce=imap_delete($mbox,$count); // Put delete
+							}
+							$bouncetotal++;
+						}
+					}
+				}
+				$count--;
+				$lasthinfo=imap_headerinfo($mbox,$count);
+				$datelc=$lasthinfo->date;
+				$datelcu = strtotime($datelc);
+				$checktotal++;
+			    imap_close($mbox);
+            }
+			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
+			$executetimestamp = $connect->Execute($entertimestamp);
+			if($bouncetotal>0)
+			{
+				echo sprintf($clang->gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal,$bouncetotal);
+			}
+			else 
+			{
+				echo sprintf($clang->gT("%s messages were scanned, none were marked as bounce by the system."),$checktotal);
+			}
+		}
+		else
+		{
+			echo $clang->gT("Please check your settings");
+		}
+	}
+	else
+	{
+		echo $clang->gT("We are sorry but you don't have permissions to do this.");
+	}
+	exit(0); // if bounceprocessing : javascript : no more todo
+}
 
-if ($subaction == "delete" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "delete" && bHasSurveyPermission($surveyid, 'tokens','delete'))
 {
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
 
-$tokenoutput .= "<script type='text/javascript'>\n"
-."<!--\n"
-. "function fillin(tofield, fromfield)\n"
-. "\t{\n"
-. "if (confirm(\"".$clang->gT("This will replace the existing text. Continue?","js")."\")) {\n"
-. "if (document.getElementById(tofield).readOnly == false)\n"
-. "{\n"
-. "    $('#'+tofield).val($('#'+fromfield).val());\n"
-. "}\n"
-. "updateFCKeditor(tofield,$('#'+fromfield).val());\n"
-. "}\n"
-. "\t}\n"
-."-->\n"
-."</script>\n";
+if ($subaction == "deletegroup" && bHasSurveyPermission($surveyid, 'tokens','delete'))       
+{
+    $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browsegroup&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
+}
 
 // MAKE SURE THAT THERE IS A SID
-if (!isset($surveyid) || !$surveyid)
+if (!isset($surveyid) || !$surveyid )
 {
-    $tokenoutput .= "\t<div class='messagebox'><div class='header'>"
+    $tokenoutput .= "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
     .$clang->gT("Token control")."</div>\n"
     ."\t<br /><div class='warningheader'>".$clang->gT("Error")."</div>"
     ."<br />".$clang->gT("You have not selected a survey")."<br /><br />"
@@ -252,12 +381,12 @@ if (!isset($surveyid) || !$surveyid)
     ."</div>\n";
     return;
 }
-
 // MAKE SURE THAT THE SURVEY EXISTS
 $thissurvey=getSurveyInfo($surveyid);
 if ($thissurvey===false)
 {
-    $tokenoutput .= "\t<div class='messagebox'>\n<div class='header'>\n"
+
+    $tokenoutput .= "\t<div class='messagebox ui-corner-all'>\n<div class='header ui-widget-header'>\n"
     .$clang->gT("Token control")."</div>\n"
     ."\t<br /><div class='warningheader'>".$clang->gT("Error")."</div>"
     ."<br />".$clang->gT("The survey you selected does not exist")
@@ -266,21 +395,24 @@ if ($thissurvey===false)
     ."</div>\n";
     return;
 }
-else        // A survey DOES exist
+else // A survey DOES exist
 {
+    if($subaction != 'bounceprocessing')
+    {
+
     $tokenoutput .= "\t<div class='menubar'>"
-    ."<div class='menubar-title'>"
-    ."<strong>".$clang->gT("Token control")." </strong> ".htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
-    $surveyprivate = $thissurvey['private'];
+        ."<div class='menubar-title ui-widget-header'>"
+        ."<strong>".$clang->gT("Token control")." </strong> ".htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
+        $surveyprivate = $thissurvey['anonymized'];
+    }
 }
+
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
 $tokenexists=tableExists('tokens_'.$surveyid);
 if (!$tokenexists) //If no tokens table exists
 {
-    if (isset($_POST['createtable']) && $_POST['createtable']=="Y" &&
-    (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-    )
+    if (isset($_POST['createtable']) && $_POST['createtable']=="Y" && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
     {
         $createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
@@ -304,6 +436,7 @@ if (!$tokenexists) //If no tokens table exists
 		. "remindersent C(17) DEFAULT 'N',\n "
 		. "remindercount int I DEFAULT 0,\n "
 		. "completed C(17) DEFAULT 'N',\n "
+		. "usesleft I DEFAULT 1,\n"
 		. "validfrom T ,\n "
 		. "validuntil T ,\n "
 		. "mpid I ";
@@ -319,7 +452,7 @@ if (!$tokenexists) //If no tokens table exists
 		if ($execresult==0 || $execresult==1)
 		{
 
-		    $tokenoutput .= "\t</div><div class='messagebox'>\n"
+		    $tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
 		    ."<font size='1'><strong><center>".$clang->gT("Token table could not be created.")."</center></strong></font>\n"
 		    .$clang->gT("Error").": \n<font color='red'>" . $connect->ErrorMsg() . "</font>\n"
 		    ."<pre>".htmlspecialchars(implode(" ",$sqlarray))."</pre>\n"
@@ -339,21 +472,20 @@ if (!$tokenexists) //If no tokens table exists
 		    }
 
 
-
 		    $tokenoutput .= "\t</div><p>\n"
-		    ."".$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
+		    .$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
 		    ."<input type='submit' value='"
 		    .$clang->gT("Continue")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n";
 		}
 		return;
     }
-    elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') &&
-    (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+    elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
     {
         $query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("tokens_$surveyid"));
         $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
-        $tokenoutput .= "\t</div><div class='messagebox'>\n"
-        ."<div class='header'>".$clang->gT("Import old tokens")."</div>"
+		
+        $tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
+        ."<div class='header ui-widget-header'>".$clang->gT("Import old tokens")."</div>"
         ."<br />".$clang->gT("A token table has been created for this survey and the old tokens were imported.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
         ."<input type='submit' value='"
         .$clang->gT("Continue")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n"
@@ -372,36 +504,41 @@ if (!$tokenexists) //If no tokens table exists
                 $oldlist[]=$rows[0];
             }
         }
-        $tokenoutput .= "\t</div><div class='messagebox'>\n"
+        $tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
         ."<div class='warningheader'>".$clang->gT("Warning")."</div>\n"
         ."<br /><strong>".$clang->gT("Tokens have not been initialised for this survey.")."</strong><br /><br />\n";
-        if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
+        if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
         {
-            $tokenoutput .= "".$clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.")
+            $tokenoutput .= "".$clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either smanually or by URL.")
             ."<br /><br />\n";
 
             $thissurvey=getSurveyInfo($surveyid);
 
-            if ($thissurvey['private'] == 'Y')
+            if ($thissurvey['anonymized'] == 'Y')
             {
-                $tokenoutput .= "".$clang->gT("Note: If you turn on the -Anonymous answers- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
+                $tokenoutput .= "".$clang->gT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
                 ."<br /><br />\n";
             }
 
-            $tokenoutput .= "".$clang->gT("Do you want to create a token table for this survey?");
+            $tokenoutput .= $clang->gT("Do you want to create a token table for this survey?");
             $tokenoutput .= "<br /><br />\n";
             $tokenoutput .= "<input type='submit' value='"
             .$clang->gT("Initialise tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y")."\" />\n";
+            $tokenoutput .= "<input type='submit' value='"
+            .$clang->gT("No, thanks.")."' onclick=\"window.open('{$scriptname}?sid=$surveyid', '_top')\" /></div>\n";
         }
-        $tokenoutput .= "<input type='submit' value='"
-        .$clang->gT("No, thanks.")."' onclick=\"window.open('{$scriptname}?sid=$surveyid', '_top')\" /></div>\n";
-        // Do not offer old postgres token tables for restore since these are having an issue with missing index
-        if ($tcount>0 && $databasetype!='postgres' &&
-        (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-        )
+        else
         {
-            $tokenoutput .= "<br /><div class='header'>".$clang->gT("Restore options")."</div>\n"
-            ."<div class='messagebox'>\n"
+            $tokenoutput .= $clang->gT("You don't have the permission to activate tokens.");
+            $tokenoutput .= "<input type='submit' value='"
+            .$clang->gT("Back to main menu")."' onclick=\"window.open('{$scriptname}?sid=$surveyid', '_top')\" /></div>\n";
+
+        }
+        // Do not offer old postgres token tables for restore since these are having an issue with missing index
+        if ($tcount>0 && $databasetype!='postgres' && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
+        {
+            $tokenoutput .= "<br /><div class='header ui-widget-header'>".$clang->gT("Restore options")."</div>\n"
+            ."<div class='messagebox ui-corner-all'>\n"
             ."<form method='post' action='$scriptname?action=tokens'>\n"
             .$clang->gT("The following old token tables could be restored:")."<br /><br />\n"
             ."<select size='4' name='oldtable' style='width:250px;'>\n";
@@ -420,6 +557,7 @@ if (!$tokenexists) //If no tokens table exists
     }
 }
 
+
 #Lookup the names of the attributes
 /*$query = "SELECT attribute1, attribute2 FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
  $result = db_execute_assoc($query) or safe_die("Couldn't execute query: <br />$query<br />".$connect->ErrorMsg());
@@ -428,72 +566,96 @@ if (!$tokenexists) //If no tokens table exists
  if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=$clang->gT("Attribute 2");}*/
 
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
-$tokenoutput .= "\t<div class='menubar-main'>\n"
-."<div class='menubar-left'>\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" "
-."title='".$clang->gTview("Return to survey administration")."'>"
-."<img name='HomeButton' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
-."<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
-."<img src='$imagefiles/seperator.gif' alt='' />\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" title='".$clang->gTview("Show token summary")."' >"
-."<img name='SummaryButton' src='$imagefiles/summary.png' alt='".$clang->gT("Show token summary")."' /></a>\n"
-."<img src='$imagefiles/seperator.gif' alt='' />\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" "
-."title='".$clang->gTview("Display tokens")."' >"
-."<img name='ViewAllButton' src='$imagefiles/document.png' alt='".$clang->gT("Display tokens")."' /></a>\n";
-
-if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
+if($subaction != 'bounceprocessing')
 {
-    $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\""
-    ."title='".$clang->gTview("Add new token entry")."' >"
-    ."<img name='AddNewButton' src='$imagefiles/add.png' title='' alt='".$clang->gT("Add new token entry")."' /></a>\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" "
-    ."title='".$clang->gTview("Manage additional attribute fields")."'>"
-    ."<img name='ManageAttributesButton' src='$imagefiles/token_manage.png' title='' alt='".$clang->gT("Manage additional attribute fields")."' /></a>\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" "
-    ."title='".$clang->gTview("Import tokens from CSV file")."'> "
-    ."<img name='ImportButton' src='$imagefiles/importcsv.png' title='' alt='".$clang->gT("Import tokens from CSV file")."' /></a>"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')\" "
-    ."title='".$clang->gTview("Import tokens from LDAP query")."'> <img name='ImportLdapButton' src='$imagefiles/importldap.png' alt='".$clang->gT("Import tokens from LDAP query")."' /></a>";
+    $tokenoutput .= "\t<div class='menubar-main'>\n"
+    ."<div class='menubar-left'>\n"
+    ."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" "
+    ."title='".$clang->gTview("Return to survey administration")."'>"
+    ."<img name='HomeButton' src='$imageurl/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+    ."<img src='$imageurl/blank.gif' alt='' width='11' />\n"
+    ."<img src='$imageurl/seperator.gif' alt='' />\n"
+    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" title='".$clang->gTview("Show token summary")."' >"
+    ."<img name='SummaryButton' src='$imageurl/summary.png' alt='".$clang->gT("Show token summary")."' /></a>\n"
+    ."<img src='$imageurl/seperator.gif' alt='' />\n"
+    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" "
+    ."title='".$clang->gTview("Display tokens")."' >"
+    ."<img name='ViewAllButton' src='$imageurl/document.png' alt='".$clang->gT("Display tokens")."' /></a>\n";
+    if (bHasSurveyPermission($surveyid, 'tokens','create'))
+    {
+        $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\""
+        ."title='".$clang->gTview("Add new token entry")."' >"
+        ."<img name='AddNewButton' src='$imageurl/add.png' title='' alt='".$clang->gT("Add new token entry")."' /></a>\n";
+        
+        $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=adddummys', '_top')\""
+        ."title='".$clang->gTview("Add dummy tokens")."' >"
+        ."<img name='AddNewDummyButton' src='$imageurl/create_dummy_token.png' title='' alt='".$clang->gT("Add dummy tokens")."' /></a>\n";
+
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','update'))
+    {
+        $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" "
+        ."title='".$clang->gTview("Manage additional attribute fields")."'>"
+        ."<img name='ManageAttributesButton' src='$imageurl/token_manage.png' title='' alt='".$clang->gT("Manage additional attribute fields")."' /></a>\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','import'))
+    {
+        $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" "
+        ."title='".$clang->gTview("Import tokens from CSV file")."'> "
+        ."<img name='ImportButton' src='$imageurl/importcsv.png' title='' alt='".$clang->gT("Import tokens from CSV file")."' /></a>"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')\" "
+        ."title='".$clang->gTview("Import tokens from LDAP query")."'> <img name='ImportLdapButton' src='$imageurl/importldap.png' alt='".$clang->gT("Import tokens from LDAP query")."' /></a>";
+    }
+
+    if (bHasSurveyPermission($surveyid, 'tokens','export'))
+    {
+        $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')\" "
+        ."title='".$clang->gTview("Export tokens to CSV file")."'>".
+	    "<img name='ExportButton' src='$imageurl/exportcsv.png' alt='".$clang->gT("Export tokens to CSV file")."' /></a>\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','update'))
+    {
+        $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href='{$scriptname}?action=emailtemplates&amp;sid={$surveyid}' title='".$clang->gTview("Edit email templates")."'>"
+        ."<img name='EmailTemplatesButton' src='$imageurl/emailtemplates.png' alt='".$clang->gT("Edit email templates")."' /></a>\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" "
+        ."title='".$clang->gTview("Send email invitation")."'>"
+        ."<img name='InviteButton' src='$imageurl/invite.png' alt='".$clang->gT("Send email invitation")."' /></a>\n"
+        ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" "
+        ."title='".$clang->gTview("Send email reminder")."'>"
+        ."<img name='RemindButton' src='$imageurl/remind.png' alt='".$clang->gT("Send email reminder")."' /></a>\n"
+
+        ."<img src='$imageurl/seperator.gif' alt='' />\n"
+        ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify")."\" "
+        ." title='".$clang->gTview("Generate tokens")."'>"
+        ."<img name='TokenifyButton' src='$imageurl/tokenify.png' alt='".$clang->gT("Generate tokens")."' /></a>\n"
+        ."<img src='$imageurl/seperator.gif' alt='' />\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
+    {
+        $tokenoutput .="<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" "
+        ."title='".$clang->gTview("Drop tokens table")."' >"
+        ."<img name='DeleteTokensButton' src='$imageurl/delete.png' alt='".$clang->gT("Drop tokens table")."' /></a>\n"
+        ."<img src='$imageurl/seperator.gif' alt='' />\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens','update'))
+    {
+        $tokenoutput .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=bouncesettings', '_top')\" "
+        ."title='".$clang->gTview("Bounce processing settings")."' >"
+        ."<img name='BounceSettings' src='$imageurl/bounce_settings.png' alt='".$clang->gT("Bounce settings")."' /></a>\n";
+    }
+
+
+
+    $tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" "
+    ." title='".$clang->gTview("Show help")."'>"
+    ."<img src='$imageurl/showhelp.png' align='right' alt='".$clang->gT("Show help")."' /></a>\n";
+
+
+    $tokenoutput .= "\t</div></div></div>\n";
 }
-
-if (bHasRight($surveyid, 'export'))
-{
-    $tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')\" "
-    ."title='".$clang->gTview("Export tokens to CSV file")."'>".
-	"<img name='ExportButton' src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export tokens to CSV file")."' /></a>\n";
-}
-if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-{
-    $tokenoutput .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=emailsettings', '_top')\" "
-    ."title='".$clang->gTview("Edit email templates")."'>"
-    ."<img name='EmailSettingsButton' src='$imagefiles/emailsettings.png' alt='".$clang->gT("Edit email templates")."' /></a>\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" "
-    ."title='".$clang->gTview("Send email invitation")."'>"
-    ."<img name='InviteButton' src='$imagefiles/invite.png' alt='".$clang->gT("Send email invitation")."' /></a>\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" "
-    ."title='".$clang->gTview("Send email reminder")."'>"
-    ."<img name='RemindButton' src='$imagefiles/remind.png' alt='".$clang->gT("Send email reminder")."' /></a>\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify")."\" "
-    ." title='".$clang->gTview("Generate tokens")."'>"
-    ."<img name='TokenifyButton' src='$imagefiles/tokenify.png' alt='".$clang->gT("Generate tokens")."' /></a>\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" "
-    ."title='".$clang->gTview("Drop tokens table")."' >"
-    ."<img name='DeleteTokensButton' src='$imagefiles/delete.png' alt='".$clang->gT("Drop tokens table")."' /></a>\n";
-}
-
-$tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" "
-." title='".$clang->gTview("Show help")."'>"
-."<img src='$imagefiles/showhelp.png' align='right' alt='".$clang->gT("Show help")."' /></a>\n";
-
-
-$tokenoutput .= "\t</div></div></div>\n";
-
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tksq = "SELECT count(tid) FROM ".db_table_name("tokens_$surveyid");
 $tksr = db_execute_num($tksq);
@@ -501,8 +663,9 @@ $tkr = $tksr->FetchRow();
 $tkcount = $tkr[0];
 
 // GIVE SOME INFORMATION ABOUT THE TOKENS
-if ($subaction==''){
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Token summary")."</div>\n"
+if ($subaction=='')
+{
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Token summary")."</div>\n"
     ."<br /><table align='center' class='statisticssummary'>\n"
     ."\t<tr>\n"
     ."<th>\n"
@@ -516,19 +679,23 @@ if ($subaction==''){
     {$tokenoutput .= "<th>".$clang->gT("Total with no unique Token")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
 
     $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!='N' and sent<>'')";
-
     $tksr = db_execute_num($tksq);
     while ($tkr = $tksr->FetchRow())
-
     {$tokenoutput .= "<th>".$clang->gT("Total invitations sent")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
-    $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
 
+    $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE emailstatus = 'optOut'";
+    $tksr = db_execute_num($tksq);
+    while ($tkr = $tksr->FetchRow())
+    {$tokenoutput .= "<th>".$clang->gT("Total opted out")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
+
+    $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
     $tksr = db_execute_num($tksq) or safe_die ("Couldn't execute token selection query<br />$abquery<br />".$connect->ErrorMsg());
     while ($tkr = $tksr->FetchRow())
     {$tokenoutput .= "<th>".$clang->gT("Total surveys completed")."</th><td> $tkr[0] / $tkcount\n";}
     $tokenoutput .= "</td>\n"
     ."\t</tr>\n"
     ."</table><br />\n";
+    
 }
 
 #############################################################################################
@@ -543,19 +710,19 @@ else
     $ishtml=false;
 }
 
-if ($subaction == "exportdialog" && bHasRight($surveyid, 'export') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+if ($subaction == "exportdialog" && bHasSurveyPermission($surveyid, 'tokens','export') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
     $langquery = "SELECT language FROM ".db_table_name("tokens_$surveyid")." group by language";
     $langresult = db_execute_assoc($langquery);
 
 
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Token export options")."</div>\n";
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Token export options")."</div>\n";
     $tokenoutput .= "<form id='exportdialog' name='exportdialog' action='$scriptname' method='post'>\n"
     ."<ul><li><label for='tokenstatus'>".$clang->gT('Token status:')."</label><select id='tokenstatus' name='tokenstatus' >"
     ."<option selected='selected' value='0'>".$clang->gT('All tokens')."</option>"
     ."<option value='1'>".$clang->gT('Completed')."</option>"
     ."<option value='2'>".$clang->gT('Not started')."</option>";
-    if ($thissurvey['private']=='N')
+    if ($thissurvey['anonymized']=='N')
     {
         $tokenoutput.="<option value='3'>".$clang->gT('Started but not yet completed')."</option>";
     }
@@ -590,157 +757,139 @@ if ($subaction == "exportdialog" && bHasRight($surveyid, 'export') )//EXPORT FEA
 
 }
 
-if ($subaction == "emailsettings")
-{
-    $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    array_unshift($grplangs,$baselang);
+$tokenoutput .= "<script language='javascript' type='text/javascript'>"
+	         ."surveyid = '$surveyid'"
+                 ."</script>";
 
-    $tokenoutput .= PrepareEditorScript();
-    $tokenoutput .="<tr><td align='center'>"
-    . "<div class='header'>\n"
-    . "".$clang->gT("Edit email settings")."</div>\n"
-    . "<form class='form30' name='frmemailsettings' action='$scriptname' method='post'>\n"
-    . '<div class="tab-pane" id="tab-pane-emailsettings-'.$surveyid.'">';
-    $surveyinfo=getSurveyInfo($surveyid);
-    foreach ($grplangs as $grouplang)
-    {
-        // this one is created to get the right default texts fo each language
-        $bplang = new limesurvey_lang($grouplang);
-        $esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
-        $esresult = db_execute_assoc($esquery);
-        $esrow = $esresult->FetchRow();
-        $tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false);
-        if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$tokenoutput .= '('.$clang->gT("Base language").')';}
-        $tokenoutput .= '</h2>';
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation email subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_invite_subj_".$esrow['surveyls_language']."' id='email_invite_subj_{$grouplang}' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
-        . "<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default_{$grouplang}' value='".$bplang->gT("Invitation to participate in survey")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_subj_{$grouplang}\",\"email_invite_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation email:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_invite_".$esrow['surveyls_language']."' id='email_invite_{$grouplang}'>{$esrow['surveyls_email_invite']}</textarea>\n"
-        . getEditor("email-inv","email_invite_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_{$grouplang}\",\"email_invite_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email reminder subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_remind_subj_".$esrow['surveyls_language']."' id='email_remind_subj_{$grouplang}' value=\"{$esrow['surveyls_email_remind_subj']}\" />\n"
-        . "<input type='hidden' name='email_remind_subj_default_".$esrow['surveyls_language']."' id='email_remind_subj_default_{$grouplang}' value='".$bplang->gT("Reminder to participate in survey")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_subj_{$grouplang}\",\"email_remind_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email reminder:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_remind_".$esrow['surveyls_language']."' id='email_remind_{$grouplang}'>{$esrow['surveyls_email_remind']}</textarea>\n"
-        . getEditor("email-rem","email_remind_{$grouplang}", "[".$clang->gT("Email reminder:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation email subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj_{$grouplang}' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
-        . "<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default_{$grouplang}' value='".$bplang->gT("Confirmation of completed survey")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_subj_{$grouplang}\",\"email_confirm_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation email:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_confirm_".$esrow['surveyls_language']."' id='email_confirm_{$grouplang}'>{$esrow['surveyls_email_confirm']}</textarea>\n"
-        . getEditor("email-conf","email_confirm_{$grouplang}", "[".$clang->gT("Confirmation email", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_{$grouplang}\",\"email_confirm_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration email subject:")."</span>\n"
-        . "<span class='settingentry'><input type='text' size='80' name='email_register_subj_".$esrow['surveyls_language']."' id='email_register_subj_{$grouplang}' value=\"{$esrow['surveyls_email_register_subj']}\" />\n"
-        . "<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default_{$grouplang}' value='".$bplang->gT("Survey registration confirmation")."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_subj_{$grouplang}\",\"email_register_subj_default_{$grouplang}\")' />\n"
-        . "\t</span></div>\n";
-        $tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration email:")."</span>\n"
-        . "<span class='settingentry'><textarea cols='80' rows='10' name='email_register_{$grouplang}' id='email_register_{$grouplang}'>{$esrow['surveyls_email_register']}</textarea>\n"
-        . getEditor("email-reg","email_register_{$grouplang}", "[".$clang->gT("Public registration email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
-        . "<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."),$ishtml)."' />\n"
-        . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
-        . "\t</span><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></div>\n</div>";
-    }
-    $tokenoutput .= '</div>';
-    $tokenoutput .= "\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
-    . "\t<input type='hidden' name='action' value='tokens' />\n"
-    . "\t<input type='hidden' name='subaction' value='updateemailsettings' />\n"
-    . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
-    . "\t<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
-    . "\t</p>\n"
-    . "</form></td></tr></table>\n";
-}
-
-// Save the updated email settings
-if ($subaction == "updateemailsettings" &&
-bHasRight($surveyid, 'activate_survey')
-)
+if($subaction=="surveysettingsave")
 {
-    $_POST  = array_map('db_quote', $_POST);
-    $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
-    foreach ($languagelist as $langname)
-    {
-        if ($langname)
-        {
-            $usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
-            . "SET surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."',\n"
-            . "surveyls_email_invite='".$_POST['email_invite_'.$langname]."', surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."',\n"
-            . "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
-            . "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
-            . "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
-            . "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
-            $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
-        }
-    }
-    $tokenoutput .= "<div class='header'>".$clang->gT("Edit email settings")."</div>\n"
-    ."<div class='messagebox'>"
-    ."\t<div class='successheader'>".$clang->gT("Token email settings have been saved.")."</div>\n"
+	global $connect;
+	@$fieldvalue = array("bounceprocessing"=>$_POST['bounceprocessing'],
+	"bounce_email"=>$_POST['bounce_email'],
+	);
+		
+						if(@$_POST['bounceprocessing']=='L')
+						{
+							$fieldvalue['bounceaccountencryption']=$_POST['bounceaccountencryption'];
+							$fieldvalue['bounceaccountuser']=$_POST['bounceaccountuser'];
+							$fieldvalue['bounceaccountpass']=$_POST['bounceaccountpass'];
+							$fieldvalue['bounceaccounttype']=$_POST['bounceaccounttype'];
+							$fieldvalue['bounceaccounthost']=$_POST['bounceaccounthost'];
+						}
+						
+	$connect->AutoExecute("{$dbprefix}surveys", $fieldvalue, 2,"sid=$surveyid",get_magic_quotes_gpc());
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Bounce settings")."</div>\n"
+    ."<div class='messagebox ui-corner-all'>"
+    ."\t<div class='successheader'>".$clang->gT("Bounce settings have been saved.")."</div>\n"
     ."</div>";
+                        
 }
 
-if ($subaction == "deleteall" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
-{
+if ($subaction=='bouncesettings'){           
+    
+$settings=getSurveyInfo($surveyid);
+$tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Bounce settings")."</div>\n";
+$tokenoutput .= "<div id='bouncesettings'>\n"
+			."<form id='bouncesettings' name='bouncesettings' action='$scriptname?action=tokens&sid=$surveyid&subaction=surveysettingsave' method='post'>"
+	        ."\t\n<br><li><label for='bounce_email'>".$clang->gT('Survey bounce email:')."</label>\n"
+            ."\t\t<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"".$settings['bounce_email']."\" ></li>\n"
+			."\t<li><label for='bounceprocessing'>".$clang->gT("Bounce settings to be used")."</label>\n"
+	        ."\t\t<select id='bounceprocessing' name='bounceprocessing'>\n"
+    	    ."\t\t\t<option value='N'";
+            if ($settings['bounceprocessing']=='N') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("None")."</option>\n"
+            . "\t\t\t<option value='L'";
+            if ($settings['bounceprocessing']=='L') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("Use settings below")."</option>\n"
+            . "\t\t\t<option value='G'";
+            if ($settings['bounceprocessing']=='G') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("Use global settings")."</option>\n"
+            ."\t\t</select></li>\n"
+            
+            . "\t<li><label for='bounceaccounttype'>".$clang->gT("Server type:")."</label>\n"
+	        . "\t\t<select id='bounceaccounttype' name='bounceaccounttype'>\n"
+    	    . "\t\t\t<option value='Off'";
+            if ($settings['bounceaccounttype']=='Off') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("Off")."</option>\n"
+            . "\t\t\t<option value='IMAP'";
+            if ($settings['bounceaccounttype']=='IMAP') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("IMAP")."</option>\n"
+            . "\t\t\t<option value='POP'";
+            if ($settings['bounceaccounttype']=='POP') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("POP")."</option>\n"
+            ."\t\t</select></li>\n"
+            
+            . "\t<li><label for='bounceaccounthost'>".$clang->gT("Server name & port:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value=\"".$settings['bounceaccounthost']."\" />\n"."<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: imap.gmail.com:995")."</font>\n"
+            . "\t<li><label for='bounceaccountuser'>".$clang->gT("User name:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser' value=\"".$settings['bounceaccountuser']."\" /></li>\n"
+            . "\t<li><label for='bounceaccountpass'>".$clang->gT("Password:")."</label>\n"
+            . "\t\t<input type='password' size='50' id='bounceaccountpass' name='bounceaccountpass' value=\"".$settings['bounceaccountpass']."\"/></li>\n";
+			$tokenoutput.= "\t<li><label for='bounceencryption'>".$clang->gT("Encryption type:")."</label>\n"
+			. "\t\t<select id='bounceaccountencryption' name='bounceaccountencryption'>\n"
+			. "\t\t\t<option value='Off'";
+            if ($settings['bounceaccountencryption']=='Off') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("None")."</option>\n"
+            . "\t\t\t<option value='SSL'";
+            if ($settings['bounceaccountencryption']=='SSL') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("SSL")."</option>\n"
+            . "\t\t\t<option value='TLS'";
+            if ($settings['bounceaccountencryption']=='TLS') {$tokenoutput .= " selected='selected'";}
+            $tokenoutput .= ">".$clang->gT("TLS")."</option>\n"
+            ."\t\t</select></li>\n<br></div>"."</form>";
+            $tokenoutput .= "\t<p><input type='button' onclick='bouncesettings.submit()' class='standardbtn' value='".$clang->gT("Save settings")."' /><br /></p>\n";
+            
+          }
+
+
+if ($subaction == "deleteall" && bHasSurveyPermission($surveyid, 'tokens', 'delete')){
     $query="DELETE FROM ".db_table_name("tokens_$surveyid");
     $result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-    $tokenoutput .= "<div class='header'>".$clang->gT("Delete all token entries")."</div>\n"
-    ."<div class='messagebox'><div class='successheader'>".$clang->gT("All token entries have been deleted.")."</div></div><br />\n";
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Delete all token entries")."</div>\n"
+    ."<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("All token entries have been deleted.")."</div></div><br />\n";
     $subaction="";
 }
 
-if ($subaction == "clearinvites" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "clearinvites" && bHasSurveyPermission($surveyid, 'tokens', 'update'))
 {
     $query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0";
     $result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-    $tokenoutput .= "<div class='header'>".$clang->gT("Reset token invitation status")."</div>\n"
-    ."<div class='messagebox'><div class='successheader'>".$clang->gT("All token entries have been set to 'Not invited'.")."</div></div><br />\n";
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Reset token invitation status")."</div>\n"
+    ."<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("All token entries have been set to 'Not invited'.")."</div></div><br />\n";
     $subaction="";
 }
 
-if ($subaction == "cleartokens" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "cleartokens" && bHasSurveyPermission($surveyid, 'tokens', 'update'))    
 {
     $query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
     $result=$connect->Execute($query) or safe_die("Couldn't reset the tokens field<br />$query<br />".$connect->ErrorMsg());
-    $tokenoutput .= "<div class='header'>".$clang->gT("Remove unique token numbers")."</div>\n"
-    ."<div class='messagebox'><div class='successheader'>".$clang->gT("All unique token numbers have been removed.")."</div></div><br />\n";
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Remove unique token numbers")."</div>\n"
+    ."<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("All unique token numbers have been removed.")."</div></div><br />\n";
     $subaction="";
 }
 
 
-if (!$subaction && (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if (!$subaction && (bHasSurveyPermission($surveyid, 'tokens', 'update') || bHasSurveyPermission($surveyid, 'tokens', 'delete')))
 {
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Token database administration options")."</div>\n"
-    ."<div style='width:30%; margin:0 auto;'><ul><li><a href='#' onclick=\"if( confirm('"
-    .$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
-    ."<li><a href='#' onclick=\"if ( confirm('"
-    .$clang->gT("Are you sure you want to delete all unique token strings?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token strings")."</a></li>\n"
-    ."<li><a href='#' onclick=\" if (confirm('"
-    .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
-    $tokenoutput .= "<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul></div>\n";
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Token database administration options")."</div>\n"
+    ."<div style='width:30%; margin:0 auto;'>";
+
+    if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+    {
+        $tokenoutput .="<ul><li><a href='#' onclick=\"if( confirm('"
+        .$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
+        ."<li><a href='#' onclick=\"if ( confirm('"
+        .$clang->gT("Are you sure you want to delete all unique token strings?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token strings")."</a></li>\n";
+    }
+    if (bHasSurveyPermission($surveyid, 'tokens', 'delete'))
+    {
+        
+        $tokenoutput .="<li><a href='#' onclick=\" if (confirm('"
+        .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
+    }
+    $tokenoutput .= "</ul></div>\n";
 }
+
 
 if ($subaction == "browse" || $subaction == "search")
 {
@@ -758,27 +907,41 @@ if ($subaction == "browse" || $subaction == "search")
     $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 
     //ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
-    $tokenoutput .= "\t<div class='menubar'><div class='menubar-title'><span style='font-weight:bold;'>"
+if($subaction != 'bounceprocessing')
+{
+	$tokenoutput .="\t<div class='menubar'><div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>"
     .$clang->gT("Data view control")."</span></div>\n"
-    ."<div class='menubar-main'>\n"
-    ."<div class='menubar-left'>\n"
-    ."<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left' />\n"
-    ."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-    ."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'"
+	."<div class='menubar-main'>\n";
+    $tokenoutput .="<div class='menubar-left'>\n";
+    if (bHasSurveyPermission($surveyid,'tokens','update'))
+    {
+        if($thissurvey['bounceprocessing']=='N')
+        {
+            $tokenoutput .="<image src='$imageurl/bounce_disabled.png'  alt='".$clang->gT("You have selected not to use any bounce settings")."'>";
+        }
+        else
+        {
+            $tokenoutput .="<image src='$imageurl/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce processing")."'>";
+        }
+        $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+    }
+    
+    $tokenoutput .= "<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'"
     ." title='".$clang->gTview("Show start...")."'>"
-    ."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
-    ."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
-	" title='".$clang->gTview("Show previous...")."'>" .
-	"<img name='DBackButton' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
-	."<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
+    ."<img name='DBeginButton' align='left' src='$imageurl/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
+    ."<a href='$scriptname?action=toknens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
+	" title='".$clang->gTview("Show previous...")."'>" 
+	."<img name='DBackButton' align='left' src='$imageurl/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
+	."<img src='$imageurl/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
 	"title='".$clang->gTview("Show next...")."'>" .
-	"<img name='DForwardButton' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
+	"<img name='DForwardButton' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
 	"title='".$clang->gTview("Show last...")."'>".
-	"<img name='DEndButton' align='left'  src='$imagefiles/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-	."\t<form id='tokensearch' method='post' action='$scriptname?action=tokens'>\n"
+	"<img name='DEndButton' align='left'  src='$imageurl/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
+	."<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' /></form>\n";
+}
+$tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?action=tokens'>\n"
 	."<input type='text' name='searchstring' value='".htmlspecialchars($searchstring,ENT_QUOTES,'utf-8')."' />\n"
 	."<input type='submit' value='".$clang->gT("Search")."' />\n"
 	."\t<input type='hidden' name='order' value='$order' />\n"
@@ -786,7 +949,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	."\t</form>\n"
 	."<form id='tokenrange' action='{$scriptname}'>\n"
-	."<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+	."<img src='$imageurl/seperator.gif' alt='' border='0' />\n"
 	."<font size='1' face='verdana'>"
 	."&nbsp;<label for='limit'>".$clang->gT("Records displayed:")."</label> <input type='text' size='4' value='$limit' id='limit' name='limit' />"
 	."&nbsp;&nbsp;<label for='start'>".$clang->gT("Starting from:")."</label> <input type='text' size='4' value='$start'  id='start' name='start' />"
@@ -820,26 +983,29 @@ if ($subaction == "browse" || $subaction == "search")
 	//COLUMN HEADINGS
 	$tokenoutput .= "\t<tr>\n"
 	."<th><input type='checkbox' id='tokencheckboxtoggle'></th>\n"   //Checkbox
+
 	."<th align='left' >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	."ID' alt='"
 	.$clang->gT("Sort by: ")
 	."ID' border='0' align='left' hspace='0' /></a>"."ID</th>\n" // ID
+
 	."<th align='left'  >".$clang->gT("Actions")."</th>\n"  //Actions
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("First name")
 	."' alt='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("First name")
 	."' border='0' align='left' /></a>".$clang->gT("First name")."</th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Last name")
 	."' alt='"
@@ -849,7 +1015,7 @@ if ($subaction == "browse" || $subaction == "search")
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=email&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Email address")
 	."' alt='"
@@ -858,8 +1024,18 @@ if ($subaction == "browse" || $subaction == "search")
 	."' border='0' align='left' /></a>".$clang->gT("Email address")."</th>\n"
 
 	."<th align='left'  >"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
+	."<img src='$imageurl/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Email status")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Email status")
+	."' border='0' align='left' /></a>".$clang->gT("Email status")."</th>\n"
+
+	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Token")
 	."' alt='"
@@ -869,7 +1045,7 @@ if ($subaction == "browse" || $subaction == "search")
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=language&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Language")
 	."' alt='"
@@ -879,52 +1055,67 @@ if ($subaction == "browse" || $subaction == "search")
 
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
-	.$clang->gT("Invite sent?")
+	.$clang->gT("Invitation sent?")
 	."' alt='"
 	.$clang->gT("Sort by: ")
-	.$clang->gT("Invite sent?")
-	."' border='0' align='left' /></a>".$clang->gT("Invite sent?")."</th>\n"
+	.$clang->gT("Invitation sent?")
+	."' border='0' align='left' /></a>".$clang->gT("Invitation sent?")."</th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindersent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder sent?")
 	."' alt='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder sent?")
 	."' border='0' align='left' /></a><span>".$clang->gT("Reminder sent?")."</span></th>\n"
+
 	."<th align='left'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindercount%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder count")
 	."' alt='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Reminder count")
 	."' border='0' align='left' /></a><span>".$clang->gT("Reminder count")."</span></th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Completed?")
 	."' alt='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Completed?")
 	."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
+
+	."<th align='left'  >"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=usesleft%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
+	."<img src='$imageurl/downarrow.png' title='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Uses left")
+	."' alt='"
+	.$clang->gT("Sort by: ")
+	.$clang->gT("Uses left")
+	."' border='0' align='left' /></a><span>".$clang->gT("Uses left")."</span></th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Valid from")
 	."' alt='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Valid from")
 	."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
+
 	."<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	."<img src='$imagefiles/downarrow.png' title='"
+	."<img src='$imageurl/downarrow.png' title='"
 	.$clang->gT("Sort by: ")
 	.$clang->gT("Valid until")
 	."' alt='"
@@ -937,7 +1128,7 @@ if ($subaction == "browse" || $subaction == "search")
 	{
 	    $tokenoutput .= "<th align='left' >"
 	    ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=$attr_name&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
-	    ."<img src='$imagefiles/downarrow.png' alt='' title='"
+	    ."<img src='$imageurl/downarrow.png' alt='' title='"
 	    .$clang->gT("Sort by: ").$attr_translation."' border='0' align='left' /></a>".$attr_translation."</th>\n";
 	}
 	$tokenoutput .="\t</tr>\n";
@@ -953,6 +1144,7 @@ if ($subaction == "browse" || $subaction == "search")
                            'remindersent',
                            'remindercount',
                            'completed',
+                           'usesleft',
                            'validfrom',
                            'validuntil');
 	foreach ($attrfieldnames as $attr_name=>$attr_translation)
@@ -995,7 +1187,9 @@ if ($subaction == "browse" || $subaction == "search")
 	                ."$brow[$tokenfieldname]</a></td>\n";
 	            }
 	        }
-	        elseif ($tokenfieldname != 'emailstatus')
+
+//	        elseif ($tokenfieldname != 'emailstatus')
+          else
 	        {
 	            if  ($tokenfieldname=='tid')
 	            {
@@ -1009,12 +1203,12 @@ if ($subaction == "browse" || $subaction == "search")
 	        if ($tokenfieldname=='tid')
 	        {
 	            $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
-	            if (bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
+	            if (bHasSurveyPermission($surveyid, 'tokens','update'))
 	            {
 	                if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
 	                {
 	                    $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
-	                    $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_do.png' title='"
+	                    $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/do_16.png' title='"
 	                    .$clang->gT("Do Survey")
 	                    ."' alt='"
 	                    .$clang->gT("Do Survey")
@@ -1022,19 +1216,23 @@ if ($subaction == "browse" || $subaction == "search")
 	                }
 	                else
 	                {
-	                    $tokenoutput .= "<img src='{$imagefiles}/blank.gif' height='16' width='16'/>";
+	                    $tokenoutput .= "<img src='{$imageurl}/blank.gif' height='16' width='16'/>";
 	                }
-	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_edit.png' title='"
+	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_edit.png' title='"
 	                .$clang->gT("Edit token entry")
 	                ."' alt='"
 	                .$clang->gT("Edit token entry")
-	                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start={$start}&amp;limit={$limit}&amp;order={$order}', '_top')\" />"
-	                ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_delete.png' title='"
-	                .$clang->gT("Delete token entry")
-	                ."' alt='"
-	                .$clang->gT("Delete token entry")
-	                ."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")." (".$brow['tid'].")')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
+	                ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start={$start}&amp;limit={$limit}&amp;order={$order}', '_top')\" /> ";
 	            }
+                if (bHasSurveyPermission($surveyid, 'tokens','delete'))
+                {
+                    $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_delete.png' title='"
+                    .$clang->gT("Delete token entry")
+                    ."' alt='"
+                    .$clang->gT("Delete token entry")
+                    ."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")." (".$brow['tid'].")')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
+                }
+                
 	            if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
 	            {
 	                // Get response Id
@@ -1045,16 +1243,16 @@ if ($subaction == "browse" || $subaction == "search")
 	                // UPDATE button to the tokens display in the MPID Actions column
 	                if  ($id)
 	                {
-	                    $tokenoutput .= "<input type='image' src='{$imagefiles}/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
-	                    .$clang->gT("View/Update response")
+	                    $tokenoutput .= "<input type='image' src='{$imageurl}/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
+	                    .$clang->gT("View/Update last response")
 	                    ."' alt='"
-	                    .$clang->gT("View/Update response")
+	                    .$clang->gT("View/Update last response")
 	                    ."' />\n";
 	                }
 	            }
-	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='')
+	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='' && bHasSurveyPermission($surveyid, 'tokens','update'))
 	            {
-	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_invite.png' title='"
+	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_invite.png' title='"
 	                .$clang->gT("Send invitation email to this entry")
 	                ."' alt='"
 	                .$clang->gT("Send invitation email to this entry")
@@ -1062,13 +1260,13 @@ if ($subaction == "browse" || $subaction == "search")
 	            }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            {
-	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_remind.png' title='"
+	                $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_remind.png' title='"
 	                .$clang->gT("Send reminder email to this entry")
 	                ."' alt='"
 	                .$clang->gT("Send reminder email to this entry")
 	                ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tid={$brow['tid']}', '_top')\" />";
 	            }
-	            $tokenoutput .= "\n</td>\n";
+  	            $tokenoutput .= "\n</td>\n";
 	        }
 	    }
 	    $tokenoutput .= "\t</tr>\n";
@@ -1077,28 +1275,37 @@ if ($subaction == "browse" || $subaction == "search")
 	// Multiple item actions
 	if ($bresult->rowCount() > 0) {
 	    $tokenoutput .= "<tr class='{$bgc}'>\n"
-	    . "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)+1)."'>"
-	    . "<img src='{$imagefiles}/blank.gif' height='16' width='16'/>"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_delete.png' title='"
-	    .$clang->gT("Delete the selected entries")
-	    ."' alt='"
-	    .$clang->gT("Delete the selected entries")
-	    ."' onclick=\"if (confirm('"
-	    .$clang->gT("Are you sure you want to delete the selected entries?","js")
-	    ."')) {".get2post("{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}")."}\"  />"
-	    . "&nbsp;"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_invite.png' title='"
-	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-	    ."' alt='"
-	    .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
-	    ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
-	    . "&nbsp;"
-	    . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imagefiles}/token_remind.png' title='"
-	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-	    ."' alt='"
-	    .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
-	    ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
-	    . "</td>\n"
+	    . "<td align='left' style='text-align: left' colspan='".(count($tokenfieldorder)+1)."'>";
+        
+        if (bHasSurveyPermission($surveyid, 'tokens','delete'))
+        {
+            $tokenoutput .= "<img src='{$imageurl}/blank.gif' height='16' width='16'/>"
+            . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_delete.png' title='"
+            .$clang->gT("Delete the selected entries")
+            ."' alt='"
+            .$clang->gT("Delete the selected entries")
+            ."' onclick=\"if (confirm('"
+            .$clang->gT("Are you sure you want to delete the selected entries?","js")
+            ."')) {".get2post("{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}")."}\"  />";
+            
+        }
+        
+        if (bHasSurveyPermission($surveyid, 'tokens','delete'))         
+        {
+            $tokenoutput .= "&nbsp;"
+            . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_invite.png' title='"
+            .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+            ."' alt='"
+            .$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)")
+            ."' onclick=\"window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />"
+            . "&nbsp;"
+            . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_remind.png' title='"
+            .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+            ."' alt='"
+            .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
+            ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />";
+        }
+	    $tokenoutput .= "</td>\n"
 	    . "</tr>\n";
 	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
 	}
@@ -1107,13 +1314,11 @@ if ($subaction == "browse" || $subaction == "search")
 	$tokenoutput .= "</table>\n<br />\n";
 }
 
-if ($subaction == "kill" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "kill" && bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
 {
     $date = date('YmdHis');
-    $tokenoutput .= "<div class='header'>".$clang->gT("Delete Tokens Table")."</div>\n"
-    ."<div class='messagebox'>\n";
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Delete Tokens Table")."</div>\n"
+    ."<div class='messagebox ui-corner-all'>\n";
     // ToDo: Just delete it if there is no token in the table
     if (!isset($_POST['ok']) || !$_POST['ok'])
     {
@@ -1144,6 +1349,7 @@ if ($subaction == "kill" &&
         } else {
             $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
         }
+ 	
         $tokenoutput .= '<br />'.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
         ."(\"{$dbprefix}old_tokens_{$surveyid}_$date\")"."<br /><br />\n"
         ."<input type='submit' value='"
@@ -1153,8 +1359,7 @@ if ($subaction == "kill" &&
 }
 
 
-if ($subaction == "email" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
 {
     if (getEmailFormat($surveyid) == 'html')
     {
@@ -1166,21 +1371,35 @@ if ($subaction == "email" &&
     }
 
     $tokenoutput .= PrepareEditorScript();
-    $tokenoutput .= "\t<div class='header'>"
+    $tokenoutput .= "\t<div class='header ui-widget-header'>"
     .$clang->gT("Send email invitations")."</div>\n"
     ."\t<div><br/>\n";
     if (!isset($_POST['ok']) || !$_POST['ok'])
     {
         if ($thissurvey['active']!='Y')
         {
-            $tokenoutput .="<div class='messagebox'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
+            $tokenoutput .="<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
         }
-        $tokenoutput .= "<form id='sendinvitation' class='form30' method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
-
-        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$tokenoutput .= "\n<div id='tabs'>\n"
+		. "<ul>\n";
+		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($surveylangs,$baselang);
-        $tokenoutput .= "<div class='tab-pane' id='tab-pane-send-$surveyid'>";
+		foreach ($surveylangs as $language)
+        {
+		$tokenoutput .= '<li><a href="#'.$language.'">'.getLanguageNameFromCode($language,false);
+		if ($language==$baselang)
+            {
+                $tokenoutput .= "(".$clang->gT("Base language").")";
+            }
+
+		
+		$tokenoutput .= "</a></li>\n";
+		}
+		$tokenoutput .= "</ul>\n";
+		$tokenoutput .= "<form id='sendinvitation' class='form30' method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
+
+            
         foreach ($surveylangs as $language)
         {
             //GET SURVEY DETAILS
@@ -1198,26 +1417,19 @@ if ($subaction == "email" &&
             }
             if (!$thissurvey['email_invite_subj'])
             {
-                $thissurvey['email_invite_subj']=$clang->gT("Invitation to participate in survey");
+                $thissurvey['email_invite_subj']=$clang->gT("Invitation to participate in a survey");
             }
             $fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
             $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
             $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
             $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
             $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-            $fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-            $fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
             $subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
             $textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
             if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
-            $tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
-            if ($language==$baselang)
-            {
-                $tokenoutput .= "(".$clang->gT("Base Language").")";
-            }
-            $tokenoutput .= "</h2>\n";
-
+            $tokenoutput .= '<div id="'.$language.'">'."\n";
+			
             $tokenoutput .= "\t<ul>\n"
             ."<li><label for='from_$language'>".$clang->gT("From").":</label>\n"
             ."<input type='text' size='50' id='from_$language' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></li>\n"
@@ -1229,9 +1441,10 @@ if ($subaction == "email" &&
             ."<textarea name='message_$language' id='message_$language' rows='20' cols='80'>\n"
             .$textarea
             ."</textarea>\n"
-            . getEditor("email-inv","message_$language","[".$clang->gT("Invitation Email:", "js")."](".$language.")",$surveyid,'','',$action)
+            . getEditor("email-inv","message_$language","[".$clang->gT("Invitation email:", "js")."](".$language.")",$surveyid,'','',$action)
             ."</li>\n"
             ."\t</ul></div>\n";
+			
         }
         $tokenoutput .= "</div>";
         /*
@@ -1253,23 +1466,24 @@ if ($subaction == "email" &&
          ."</li>";
          }
          */
-        $tokenoutput .="\t<p>\n"
-        ."\t<label for='bypassbademails'>".$clang->gT("Bypass token with failing email addresses").":</label><select id='bypassbademails' name='bypassbademails'>\n"
-        ."<option value='Y'>".$clang->gT("Yes")."</option>"
-        ."<option value='N'>".$clang->gT("No")."</option>"
-        ."\t</select></p><p>\n"
-        ."\t<input type='submit' value='".$clang->gT("Send Invitations")."' />\n"
-        ."\t<input type='hidden' name='ok' value='absolutely' />\n"
-        ."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
-        ."\t<input type='hidden' name='subaction' value='email' />\n";
+		  $tokenoutput .="\t<p>\n"
+             ."\t<label for='bypassbademails'>".$clang->gT("Bypass token with failing email addresses").":</label><select id='bypassbademails' name='bypassbademails'>\n"
+             ."<option value='Y'>".$clang->gT("Yes")."</option>"
+             ."<option value='N'>".$clang->gT("No")."</option>"
+             ."\t</select></p><p>\n"
+             ."\t<input type='submit' value='".$clang->gT("Send Invitations")."' />\n"
+             ."\t<input type='hidden' name='ok' value='absolutely' />\n"
+             ."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
+             ."\t<input type='hidden' name='subaction' value='email' />\n";
         if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='$tokenid' />\n";}
         if (isset($tokenids)) {$tokenoutput .= "\n<input type='hidden' name='tids' value='|".implode("|", $tokenids)."' />\n";}
-        $tokenoutput .= "</form>\n";
+        $tokenoutput .= "</form></div>\n";
+       
     }
     else
     {
-        $tokenoutput .= "<div class='messagebox'>\n"
-        ."\t<div class='header'>\n";
+        $tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
+        ."\t<div class='header ui-widget-header'>\n";
         $tokenoutput .= $clang->gT("Sending invitations...");
         $tokenoutput .= "\n\t</div>\n";
         if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
@@ -1369,10 +1583,12 @@ if ($subaction == "email" &&
                         $fieldsarray["@@SURVEYURL@@"]="$publicurl/index.php?lang=".trim($emrow['language'])."&amp;sid=$surveyid&amp;token={$emrow['token']}";
                     }
                 }
+		$customheaders = array( '1' => "X-surveyid: ".$surveyid,
+					'2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
 
-                $modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+        $modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
                 $modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-
+		
                 if (trim($emrow['validfrom'])!='' && convertDateTimeFormat($emrow['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1)
                 {
                     $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.")."<br />", $fieldsarray);
@@ -1381,7 +1597,7 @@ if ($subaction == "email" &&
                 {
                     $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
                 }
-                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid),null,$customheaders))
                 {
                     // Put date into sent
                     $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1432,27 +1648,26 @@ if ($subaction == "email" &&
         }
         else
         {
-            $tokenoutput .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Warning")."</div>\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
+            $tokenoutput .= "<div class='warningheader'>".$clang->gT("Warning")."</div>\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
             ."<br/>&nbsp;<ul><li>".$clang->gT("having a valid email address")."</li>"
             ."<li>".$clang->gT("not having been sent an invitation already")."</li>"
             ."<li>".$clang->gT("having already completed the survey")."</li>"
-            ."<li>".$clang->gT("having a token")."</li></ul></div>";
+            ."<li>".$clang->gT("having a token")."</li></ul>";
         }
     }
     $tokenoutput .= "</div>\n</div>\n";
 }
 
-if ($subaction == "remind" && //XXX
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update'))
 {
     $tokenoutput .= PrepareEditorScript();
-    $tokenoutput .= "\t<div class='header'>"
+    $tokenoutput .= "\t<div class='header ui-widget-header'>"
     .$clang->gT("Send email reminder")."</div><br />\n";
     if (!isset($_POST['ok']) || !$_POST['ok'])
     {
         if ($thissurvey['active']!='Y')
         {
-            $tokenoutput .="<div class='messagebox'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
+            $tokenoutput .="<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
         }
         //GET SURVEY DETAILS
         $tokenoutput .= "<form method='post' class='form30' id='sendreminder' action='$scriptname?action=tokens'>";
@@ -1469,7 +1684,7 @@ if ($subaction == "remind" && //XXX
             $tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
             if ($language==$baselang)
             {
-                $tokenoutput .= "(".$clang->gT("Base Language").")";
+                $tokenoutput .= "(".$clang->gT("Base language").")";
             }
             $tokenoutput .= "</h2><ul>\n"
             ."<li><label for='from_$language' >".$clang->gT("From").":</label>\n"
@@ -1482,8 +1697,6 @@ if ($subaction == "remind" && //XXX
             $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
             $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
             $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-            $fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-            $fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
             $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
             $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
@@ -1548,8 +1761,8 @@ if ($subaction == "remind" && //XXX
     else
     {
 
-        $tokenoutput .= "<div class='messagebox'>\n"
-        . "<div class='header'>";
+        $tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
+        . "<div class='header ui-widget-header'>";
         $tokenoutput .= $clang->gT("Sending Reminders")
         ."</div><br />\n";
 
@@ -1624,14 +1837,14 @@ if ($subaction == "remind" && //XXX
         $emquery .= " ORDER BY tid ";
         $emresult = db_select_limit_assoc($emquery, $maxemails) or safe_die ("Couldn't do query.<br />$emquery<br />".$connect->ErrorMsg());
         $emcount = $emresult->RecordCount();
-        $tokenoutput .= "<table width='500' align='center' >\n"
-        ."\t<tr>\n"
-        ."<td><font size='1'>\n";
 
 
         $attributes=GetTokenFieldsAndNames($surveyid);
         if ($emcount > 0)
         {
+            $tokenoutput .= "<table width='450' align='center' >\n"
+            ."\t<tr>\n"
+            ."<td><font size='1'>\n";
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
@@ -1693,6 +1906,8 @@ if ($subaction == "remind" && //XXX
 
                 $msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
                 $sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+$customheaders = array( '1' => "X-surveyid: ".$surveyid,
+					'2' => "X-tokenid: ".$tokenid);
 
                 if (trim($emrow['validfrom'])!='' && convertDateTimeFormat($emrow['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1)
                 {
@@ -1702,7 +1917,7 @@ if ($subaction == "remind" && //XXX
                 {
                     $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
                 }
-                elseif (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
+                elseif (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid),null,$customheaders))
                 {
 
                     // Put date into remindersent
@@ -1767,25 +1982,26 @@ if ($subaction == "remind" && //XXX
                 $tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
                 ."\t</form>\n";
             }
+            $tokenoutput .= "\t</tr>\n"
+            ."</table>\n";
         }
         else
         {
-            $tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n"
-            .$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.")."\n"
-            ."<br /><br />\n"
-            ."</td>\n";
+            $tokenoutput .= "<div class='warningheader'>".$clang->gT("Warning")."</div>\n"
+            .$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")."\n"
+            ."<br/>&nbsp;<ul><li>".$clang->gT("having a valid email address")."</li>"
+            ."<li>".$clang->gT("not having been sent an invitation already")."</li>"
+            ."<li>".$clang->gT("but not having already completed the survey")."</li>"
+            ."</ul><br />\n";
         }
-        $tokenoutput .= "\t</tr>\n"
-        ."</table>\n";
         $tokenoutput .= "</div>\n";
     }
 }
 
-if ($subaction == "tokenify" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if ($subaction == "tokenify" && bHasSurveyPermission($surveyid, 'tokens', 'update'))
 {
-    $tokenoutput .= "<div class='header'>".$clang->gT("Create tokens")."</div>\n";
-    $tokenoutput .= "<div class='messagebox'>\n";
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Create tokens")."</div>\n";
+    $tokenoutput .= "<div class='messagebox ui-corner-all'>\n";
     if (!isset($_POST['ok']) || !$_POST['ok'])
     {
         $tokenoutput .= "".$clang->gT("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
@@ -1843,11 +2059,10 @@ if ($subaction == "tokenify" &&
     $tokenoutput .= "</div>\n";
 }
 
-if ($subaction == "delete" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if ($subaction == "delete" && bHasSurveyPermission($surveyid, 'tokens','delete'))
 {
-    $tokenoutput .= "<div class='messagebox'>\n"
-    ."\t<div class='header'>"
+    $tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
+    ."\t<div class='header ui-widget-header'>"
     .$clang->gT("Delete")
     ."\t</div>\n"
     ."\t<p><br /><strong>";
@@ -1867,11 +2082,10 @@ if ($subaction == "delete" &&
     $tokenoutput .= "</strong><br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
     ."</p>\n</div>\n";
 }
-
-if ($subaction == "managetokenattributes" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+   
+if ($subaction == "managetokenattributes" && bHasSurveyPermission($surveyid, 'tokens', 'update'))
 {
-    $tokenoutput .= "<div class='header'>".$clang->gT("Manage token attribute fields")."</div>\n";
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Manage token attribute fields")."</div>\n";
     $tokenfields=GetTokenFieldsAndNames($surveyid,true);
     $nrofattributes=0;
     $tokenoutput.='<form action="'.$scriptname.'" method="post">'
@@ -1903,7 +2117,7 @@ if ($subaction == "managetokenattributes" &&
     ."<input type='hidden' name='sid' value=\"{$surveyid}\" /></p>\n"
     .'</form><br /><br />';
 
-    $tokenoutput .= "<div class='header'>".$clang->gT("Add token attributes")."</div><p>\n";
+    $tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Add token attributes")."</div><p>\n";
 
     $tokenoutput .=sprintf($clang->gT('There are %s user attribute fields in this token table'),$nrofattributes).'</p>'
     .'<form id="addattribute" action="'.$scriptname.'" method="post">'
@@ -1921,8 +2135,7 @@ if ($subaction == "managetokenattributes" &&
     .'<br /><br />';
 }
 
-if ($subaction == "updatetokenattributedescriptions" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if ($subaction == "updatetokenattributedescriptions" && bHasSurveyPermission($surveyid, 'tokens', 'update'))  
 {
     // find out the existing token attribute fieldnames
     $tokenattributefieldnames=GetAttributeFieldNames($surveyid);
@@ -1934,8 +2147,8 @@ if ($subaction == "updatetokenattributedescriptions" &&
     $updatequery = "update ".db_table_name('surveys').' set attributedescriptions='.db_quoteall($fieldcontents,true)." where sid=$surveyid";
     $execresult=db_execute_assoc($updatequery);
 
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Update token attribute descriptions")."</div>\n"
-    ."\t<div class='messagebox'>";
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Update token attribute descriptions")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>";
     if ($execresult===false)
     {
         $tokenoutput.="\t\t<div class='warningheader'>".$clang->gT("Updating token attribute descriptions failed:")."".htmlspecialchars($connect->ErrorMsg())."</div>"
@@ -1948,10 +2161,8 @@ if ($subaction == "updatetokenattributedescriptions" &&
     }
     $tokenoutput .= "\t</div>";
 }
-
-if ($subaction == "updatetokenattributes" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')
-))
+$tokenoutput .= "<div id ='dialog-modal'></div>";
+if ($subaction == "updatetokenattributes" && bHasSurveyPermission($surveyid, 'tokens', 'update'))
 {
     $number2add=sanitize_int($_POST['addnumber'],1,100);
     // find out the existing token attribute fieldnames
@@ -1970,8 +2181,8 @@ if ($subaction == "updatetokenattributes" &&
     $sqlarray = $dict->ChangeTableSQL("{$dbprefix}tokens_$surveyid", $fields);
     $execresult=$dict->ExecuteSQLArray($sqlarray, false);
 
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Update token attributes")."</div>\n"
-    ."\t<div class='messagebox'>";
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Update token attributes")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>";
     if ($execresult==0)
     {
         $tokenoutput.="\t\t<div class='warningheader'>".$clang->gT("Adding attribute fields failed:")."".htmlspecialchars($connect->ErrorMsg())."</div>"
@@ -1986,8 +2197,8 @@ if ($subaction == "updatetokenattributes" &&
 }
 
 
-if (($subaction == "edit" || $subaction == "addnew") &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if (($subaction == "edit" &&  bHasSurveyPermission($surveyid, 'tokens','update')) || 
+    ($subaction == "addnew" && bHasSurveyPermission($surveyid, 'tokens','create')))
 {
     if ($subaction == "edit")
     {
@@ -2007,7 +2218,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
         $edfieldcount = $edresult->FieldCount();
     }
 
-    $tokenoutput .= "<div class='header'>";
+    $tokenoutput .= "<div class='header ui-widget-header'>";
     if ($subaction == "edit")
     {
         $tokenoutput .=$clang->gT("Edit token entry");
@@ -2024,11 +2235,11 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     if ($subaction == "edit")
     {$tokenoutput .=$tokenid;} else {$tokenoutput .=$clang->gT("Auto");}
     $tokenoutput .= "</li>\n"
-    ."<li><label for='firstname'>".$clang->gT("First Name").":</label>\n"
+    ."<li><label for='firstname'>".$clang->gT("First name").":</label>\n"
     ."<input type='text' size='30' id='firstname' name='firstname' value=\"";
     if (isset($firstname)) {$tokenoutput .= $firstname;}
     $tokenoutput .= "\" /></li>\n"
-    ."<li><label for='lastname'>".$clang->gT("Last Name").":</label>\n"
+    ."<li><label for='lastname'>".$clang->gT("Last name").":</label>\n"
     ."<input type='text' size='30'  id='lastname' name='lastname' value=\"";
     if (isset($lastname)) {$tokenoutput .= $lastname;}
     $tokenoutput .= "\" /></li>\n"
@@ -2051,7 +2262,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     $tokenoutput .= "\" />\n";
     if ($subaction == "addnew")
     {
-        $tokenoutput .= "<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Create Tokens'")."</font>\n";
+        $tokenoutput .= "<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'")."</font>\n";
     }
     $tokenoutput .= "\t</li>\n"
     ."<li><label for='language'>".$clang->gT("Language").":</label>\n";
@@ -2061,7 +2272,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     }
     $tokenoutput .= "</li>\n"
 
-    ."\t<li><label for='sent'>".$clang->gT("Invite sent?")."</label>\n"
+    ."\t<li><label for='sent'>".$clang->gT("Invitation sent?")."</label>\n"
     ."\t<input type='text' size='20' id='sent' name='sent' value=\"";
     if (isset($sent)) {$tokenoutput .= $sent;}	else {$tokenoutput .= "N";}
     $tokenoutput .= "\" /></li>\n"
@@ -2082,6 +2293,11 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     $tokenoutput.="\t<li><label for='completed'>".$clang->gT("Completed?")."</label>\n"
     ."\t<input type='text' size='20' id='completed' name='completed' value=\"";
     if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
+    $tokenoutput .= "\" /></li>\n"
+
+    ."\t<li><label for='usesleft'>".$clang->gT("Uses left:")."</label>\n"
+    ."\t<input type='text' size='20' id='usesleft' name='usesleft' value=\"";
+    if (isset($usesleft)) {$tokenoutput .= $usesleft;} else {$tokenoutput .= "1";}
     $tokenoutput .= "\" /></li>\n"
 
     ."\t<li><label for='validfrom'>".$clang->gT("Valid from").":</label>\n"
@@ -2127,11 +2343,83 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     ."</form>\n";
 }
 
-if ($subaction == "updatetoken" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey')))
+if ($subaction == "adddummys" && bHasSurveyPermission($surveyid, 'tokens','create'))
 {
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Edit token entry")."</div>\n"
-    ."\t<div class='messagebox'>\n";
+    //get token length from survey settings
+    $tlquery = "SELECT tokenlength FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
+    $tlresult = db_execute_assoc($tlquery);
+    while ($tlrow = $tlresult->FetchRow())
+    {
+        $tokenlength = $tlrow['tokenlength'];
+    }
+
+    //if tokenlength is not set or there are other problems use the default value (15)
+    if(!isset($tokenlength) || $tokenlength == '')
+    {
+        $tokenlength = 15;
+    }
+    
+    $tokenoutput .= "<div class='header ui-widget-header'>";
+    $tokenoutput .=$clang->gT("Create dummy tokens");
+    $tokenoutput .="</div>"
+    ."<form id='edittoken' class='form30' method='post' action='$scriptname?action=tokens'>\n"
+    ."<ul>\n"
+    ."\t<li><label>ID:</label>\n";
+    $tokenoutput .=$clang->gT("Auto");
+    $tokenoutput .= "</li>\n"
+    ."<li><label for='amount'>".$clang->gT("Number of tokens").":</label>\n"
+    ."<input type='text' size='20' id='amount' name='amount' value=\"100\" /></li>\n"
+    ."<li><label for='tokenlen'>".$clang->gT("Token length").":</label>\n"
+    ."<input type='text' size='20' id='tokenlen' name='tokenlen' value=\"{$tokenlength}\" /></li>\n"
+    ."<li><label for='firstname'>".$clang->gT("First name").":</label>\n"
+    ."<input type='text' size='30' id='firstname' name='firstname' value=\"\" /></li>\n"
+    ."<li><label for='lastname'>".$clang->gT("Last name").":</label>\n"
+    ."<input type='text' size='30'  id='lastname' name='lastname' value=\"\" /></li>\n"
+    ."\t<li><label for='email'>".$clang->gT("Email").":</label>\n"
+    ."\t<input type='text' maxlength='320' size='50' id='email' name='email' value=\"\" /></li>\n";
+    $tokenoutput .= "\t</li>\n"
+    ."<li><label for='language'>".$clang->gT("Language").":</label>\n";
+    $tokenoutput .= languageDropdownClean($surveyid,GetBaseLanguageFromSurveyID($surveyid));
+    $tokenoutput .= "</li>\n"
+    ."\t<li><label for='usesleft'>".$clang->gT("Uses left:")."</label>\n"
+    ."\t<input type='text' size='20' id='usesleft' name='usesleft' value=\"1\" /></li>\n"
+    ."\t<li><label for='validfrom'>".$clang->gT("Valid from").":</label>\n"
+    ."\t<input type='text' class='popupdatetime' size='20' id='validfrom' name='validfrom' value=\"";
+    if (isset($validfrom)){
+        $datetimeobj = new Date_Time_Converter($validfrom , "Y-m-d H:i:s");
+        $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+    }
+    $tokenoutput .= "\" />\n <label for='validuntil'>".$clang->gT('until')
+    ."\t</label><input type='text' size='20' id='validuntil' name='validuntil' class='popupdatetime' value=\"";
+    if (isset($validuntil)){
+        $datetimeobj = new Date_Time_Converter($validuntil , "Y-m-d H:i:s");
+        $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+    }
+    $tokenoutput .= "\" /> <span class='annotation'>".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'].' '.$clang->gT('hh:mm')).'</span>'
+    ."</li>\n";
+
+    // now the attribute fieds
+    $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
+    foreach ($attrfieldnames as $attr_name=>$attr_description)
+    {
+        $tokenoutput .= "<li>"
+        ."<label for='$attr_name'>".$attr_description.":</label>\n"
+        ."\t<input type='text' size='55' id='$attr_name' name='$attr_name' value='";
+        if (isset($$attr_name)) { $tokenoutput .=htmlspecialchars($$attr_name,ENT_QUOTES,'UTF-8');}
+        $tokenoutput.="' /></li>";
+    }
+
+    $tokenoutput .="\t</ul><p>";
+    $tokenoutput .= "<input type='submit' value='".$clang->gT("Add dummy tokens")."' />\n"
+    ."<input type='hidden' name='subaction' value='insertdummys' />\n";
+    $tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' /></p>\n"
+    ."</form>\n";
+}
+
+if ($subaction == "updatetoken" && bHasSurveyPermission($surveyid, 'tokens','update'))
+{
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Edit token entry")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>\n";
     if (trim($_POST['validfrom'])=='') {
         $_POST['validfrom']=null;
     }
@@ -2156,6 +2444,7 @@ if ($subaction == "updatetoken" &&
     $data[] = sanitize_languagecode($_POST['language']);
     $data[] = $_POST['sent'];
     $data[] = $_POST['completed'];
+    $data[] = $_POST['usesleft'];
     //    $db->DBTimeStamp("$year-$month-$day $hr:$min:$secs");
     $data[] = $_POST['validfrom'];
     $data[] = $_POST['validuntil'];
@@ -2171,7 +2460,7 @@ if ($subaction == "updatetoken" &&
         // Using adodb Execute with blinding method so auto-dbquote is done
         $udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
         . "lastname=?, email=?, emailstatus=?, "
-        . "token=?, language=?, sent=?, completed=?, validfrom=?, validuntil=?, remindersent=?, remindercount=?";
+        . "token=?, language=?, sent=?, completed=?, usesleft=?, validfrom=?, validuntil=?, remindersent=?, remindercount=?";
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
         {
@@ -2183,7 +2472,7 @@ if ($subaction == "updatetoken" &&
         $udresult = $connect->Execute($udquery, $data) or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
         $tokenoutput .=  "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
         ."\t\t<br />".$clang->gT("The token entry was successfully updated.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Display Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" />\n";
+        ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" />\n";
     }
     else
     {
@@ -2194,9 +2483,7 @@ if ($subaction == "updatetoken" &&
     $tokenoutput .= "\t</div>";
 }
 
-if ($subaction == "inserttoken" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "inserttoken" && (bHasSurveyPermission($surveyid, 'tokens','create')))
 {
     //Fix up dates and match to database format
     if (trim($_POST['validfrom'])=='') {
@@ -2215,8 +2502,9 @@ if ($subaction == "inserttoken" &&
     }
 
     $santitizedtoken=sanitize_token($_POST['token']);
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Add token entry")."</div>\n"
-    ."\t<div class='messagebox'>\n";
+    
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Add token entry")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>\n";
     $data = array('firstname' => $_POST['firstname'],
 	'lastname' => $_POST['lastname'],
 	'email' => sanitize_email($_POST['email']),
@@ -2226,6 +2514,7 @@ if ($subaction == "inserttoken" &&
     'sent' => $_POST['sent'],
 	'remindersent' => $_POST['remindersent'],
 	'completed' => $_POST['completed'],
+	'usesleft' => $_POST['usesleft'],
 	'validfrom' => $_POST['validfrom'],
 	'validuntil' => $_POST['validuntil']);
     // add attributes
@@ -2242,54 +2531,121 @@ if ($subaction == "inserttoken" &&
         $inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
         $tokenoutput .= "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
         ."\t\t<br />".$clang->gT("New token was added.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Display Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n"
+        ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n"
         ."\t\t<input type='button' value='".$clang->gT("Add another token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" /><br />\n";
     }
     else
     {
         $tokenoutput .=  "\t\t<div class='warningheader'>".$clang->gT("Failed")."</div>\n"
         ."\t\t<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Display Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n"
+        ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n"
         ."\t\t<input type='button' value='".$clang->gT("Add new token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" /><br />\n";
     }
     $tokenoutput .= "\t</div>";
 }
 
-if ($subaction == "import" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "insertdummys" && (bHasSurveyPermission($surveyid, 'tokens','create')))
 {
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload CSV File")."</div>\n";
+    //Fix up dates and match to database format
+    if (trim($_POST['validfrom'])=='') {
+        $_POST['validfrom']=null;
+    }
+    
+    else
+    {
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
+    }
+    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
+    else
+    {
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
+    }
+
+    $santitizedtoken='';
+    
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Add dummy tokens")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>\n";
+    $data = array('firstname' => $_POST['firstname'],
+	'lastname' => $_POST['lastname'],
+	'email' => sanitize_email($_POST['email']),
+	'emailstatus' => 'OK',
+	'token' => $santitizedtoken,
+	'language' => sanitize_languagecode($_POST['language']),
+        'sent' => 'N',
+	'remindersent' => 'N',
+	'completed' => 'N',
+	'usesleft' => $_POST['usesleft'],
+	'validfrom' => $_POST['validfrom'],
+	'validuntil' => $_POST['validuntil']);
+    
+    // add attributes
+    $attrfieldnames=GetAttributeFieldnames($surveyid);
+    foreach ($attrfieldnames as $attr_name)
+    {
+        $data[$attr_name]=$_POST[$attr_name];
+    }
+    $tblInsert=db_table_name('tokens_'.$surveyid);
+    $amount = sanitize_int($_POST['amount']);
+    $tokenlength = sanitize_int($_POST['tokenlen']);
+        
+    for ($i=0; $i<$amount;$i++){
+    	$dataToInsert = $data;
+        $dataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['firstname']);
+        $dataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['lastname']);
+        $dataToInsert['email'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['email']);
+        
+        $isvalidtoken = false;
+        while ($isvalidtoken == false)
+        {
+            $newtoken = randomkey($tokenlength);
+            if (!isset($existingtokens[$newtoken])) {
+                $isvalidtoken = true;
+                $existingtokens[$newtoken]=null;
+            }
+        }
+        $dataToInsert['token'] = $newtoken;
+        $tblInsert=db_table_name('tokens_'.$surveyid);
+        $inresult = $connect->AutoExecute($tblInsert, $dataToInsert, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
+
+    }
+
+    $tokenoutput .= "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
+    ."\t\t<br />".$clang->gT("New dummy tokens were added.")."<br /><br />\n"
+    ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n";
+    $tokenoutput .= "\t</div>";
+}
+
+if ($subaction == "import" && bHasSurveyPermission($surveyid, 'tokens','import'))
+{
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Upload CSV File")."</div>\n";
     form_csv_upload();
-    $tokenoutput .= "<div class='messagebox'>\n"
-    ."<div class='header'>".$clang->gT("CSV input format")."</div>\n"
+    $tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
+    ."<div class='header ui-widget-header'>".$clang->gT("CSV input format")."</div>\n"
     ."<p>".$clang->gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order.").'</p><span style="font-weight:bold;">'.$clang->gT("Mandatory fields:")."</span> firstname,lastname,email<br />"
     .'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, ... ."
     ."</div>\n";
 }
 
-if ($subaction == "importldap" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "importldap" && bHasSurveyPermission($surveyid, 'tokens','import'))   
 {
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Upload LDAP entries")."</div>\n";
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Upload LDAP entries")."</div>\n";
     formldap();
-    $tokenoutput .= "<div class='messagebox'>\n"
-    ."\t<div class='header'>".$clang->gT("Note:")."</div><br />\n"
+    $tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
+    ."\t<div class='header ui-widget-header'>".$clang->gT("Note:")."</div><br />\n"
     .$clang->gT("LDAP queries are defined by the administrator in the config-ldap.php file")."\n"
     ."</div>\n";
 }
 
-if ($subaction == "upload" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "upload" && bHasSurveyPermission($surveyid, 'tokens','import'))      
 {
     $attrfieldnames=GetAttributeFieldnames($surveyid);
     $duplicatelist=array();
     $invalidemaillist=array();
     $invalidformatlist=array();
-    $tokenoutput .= "\t<div class='header'>".$clang->gT("Token file upload")."</div>\n"
-    ."\t<div class='messagebox'>\n";
+    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Token file upload")."</div>\n"
+    ."\t<div class='messagebox ui-corner-all'>\n";
     if (!isset($tempdir))
     {
         $the_path = $homedir;
@@ -2303,7 +2659,7 @@ if ($subaction == "upload" &&
     $the_full_file_path = $the_path."/".$the_file_name;
     if (!@move_uploaded_file($the_file, $the_full_file_path))
     {
-        $errormessage="<div class='warningheader'>".$clang->gT("Error")."</div><p>".$clang->gT("Upload file not found. Check your permissions and path for the upload directory")."</p>\n";
+        $errormessage="<div class='warningheader'>".$clang->gT("Error")."</div><p>".$clang->gT("Upload file not found. Check your permissions and path ({$the_full_file_path}) for the upload directory")."</p>\n";
         form_csv_upload($errormessage);
     }
     else
@@ -2319,6 +2675,13 @@ if ($subaction == "upload" &&
         {
             $tokenoutput .= "<div class='warningheader'>".$clang->gT("Failed to open the uploaded file!")."</div><br />\n";
         }
+        if (!isset($_POST['filterduplicatefields']) || (isset($_POST['filterduplicatefields']) && count($_POST['filterduplicatefields'])==0))
+        {
+            $filterduplicatefields=array('firstname','lastname','email');
+        } else {
+            $filterduplicatefields=$_POST['filterduplicatefields'];
+        }
+        $separator = returnglobal('separator');
         foreach ($tokenlistarray as $buffer)
         {
             $buffer=@mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
@@ -2329,7 +2692,20 @@ if ($subaction == "upload" &&
                 $buffer=removeBOM($buffer);
                 $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','language', 'validfrom', 'validuntil');
                 $allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
-                $firstline = convertCSVRowToArray($buffer,',','"');
+                
+                switch ($separator) {
+                    case 'comma':
+                        $separator = ',';
+                        break;
+                    case 'semicolon':
+                        $separator = ';';
+                        break;
+                    default:
+                        $comma = substr_count($buffer,',');
+                        $semicolon = substr_count($buffer,';');
+                        if ($semicolon>$comma) $separator = ';'; else $separator = ',';
+                }
+                $firstline = convertCSVRowToArray($buffer,$separator,'"');
                 $firstline=array_map('trim',$firstline);
                 $ignoredcolumns=array();
                 //now check the first line for invalid fields
@@ -2353,7 +2729,7 @@ if ($subaction == "upload" &&
             else
             {
 
-                $line = convertCSVRowToArray($buffer,',','"');
+                $line = convertCSVRowToArray($buffer,$separator,'"');
 
                 if (count($firstline)!=count($line))
                 {
@@ -2373,14 +2749,6 @@ if ($subaction == "upload" &&
 
                 if ($filterduplicatetoken!=false)
                 {
-                    if (!isset($_POST['filterduplicatefields']) || (isset($_POST['filterduplicatefields']) && count($_POST['filterduplicatefields'])==0))
-                    {
-                        $filterduplicatefields=array('firstname','lastname','email');
-                    }
-                    else
-                    {
-                        $filterduplicatefields=$_POST['filterduplicatefields'];
-                    }
                     $dupquery = "SELECT tid from ".db_table_name("tokens_$surveyid")." where 1=1";
                     foreach($filterduplicatefields as $field)
                     {
@@ -2412,20 +2780,21 @@ if ($subaction == "upload" &&
                     {
                         if (!validate_email($sEmailaddress))
                         {
-                            $invalidemail=true;
-                            $invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
-                        }
+                    $invalidemail=true;
+                    $invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
+                }
                     }
+                }
+
+                if (!isset($writearray['token'])) {
+                    $writearray['token'] = '';
+                } else {
+                    $writearray['token']=sanitize_token($writearray['token']);
                 }
 
                 if (!$dupfound && !$invalidemail)
                 {
                     if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
-                    if (!isset($writearray['token'])) {
-                        $writearray['token'] = '';
-                    }else{
-                        $writearray['token']=sanitize_token($writearray['token']);
-                    }
                     if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
                     if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
                     if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
@@ -2506,9 +2875,7 @@ if ($subaction == "upload" &&
     $tokenoutput .= "</div>\n";
 }
 
-if ($subaction == "uploadldap" &&
-(bHasRight($surveyid, 'edit_survey_property') || bHasRight($surveyid, 'activate_survey'))
-)
+if ($subaction == "uploadldap" && bHasSurveyPermission($surveyid, 'tokens','create'))      
 {
     $duplicatelist=array();
     $invalidemaillist=array();
@@ -2740,6 +3107,7 @@ if ($subaction == "uploadldap" &&
     }
 }
 
+// Now for the function
 function form_csv_upload($error=false)
 {
     global $surveyid, $tokenoutput,$scriptname, $clang, $encodingsarray;
@@ -2753,9 +3121,19 @@ function form_csv_upload($error=false)
         if ($charset=='auto') {$charsetsout.=" selected ='selected'";}
         $charsetsout.=">$title ($charset)</option>";
     }
+    $separator = returnglobal('separator');
+    if (empty($separator) || $separator == 'auto') $selected = " selected = 'selected'"; else $selected = ''; 
+    $separatorout = "<option value='auto'$selected>".$clang->gT("Auto detect")."</option>";
+    if ($separator == 'comma') $selected = " selected = 'selected'"; else $selected = ''; 
+    $separatorout .= "<option value='comma'$selected>".$clang->gT("Comma")."</option>";
+    if ($separator == 'semicolon') $selected = " selected = 'selected'"; else $selected = ''; 
+    $separatorout .= "<option value='semicolon'$selected>".$clang->gT("Semicolon")."</option>";
     $tokenoutput .= "<form id='tokenimport' enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'><ul>\n"
     . "<li><label for='the_file'>".$clang->gT("Choose the CSV file to upload:")."</label><input type='file' id='the_file' name='the_file' size='35' /></li>\n"
     . "<li><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select id='csvcharset' name='csvcharset' size='1'>$charsetsout</select></li>\n"
+    . "<li><label for='separator'>".$clang->gT("Separator used:")."</label><select id='separator' name='separator' size='1'>"
+    . $separatorout
+    . "</select></li>\n"
     . "<li><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' /></li>\n"
     . "<li><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' /></li>"
     . "<li id='lifilterduplicatefields'><label for='filterduplicatefields[]'>".$clang->gT("Duplicates are determined by:")."</label>"

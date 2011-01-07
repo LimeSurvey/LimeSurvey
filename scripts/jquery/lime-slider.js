@@ -77,6 +77,6 @@ $(document).ready(function(){
 		{
 				var thevalue = slider_startvalue / slider_divisor;
                 $('#slider-callout-'+basename).css('left', $('.ui-slider-handle:first').css('left')).text(slider_prefix + thevalue + slider_suffix);
-        }
+		}
 	})
 });

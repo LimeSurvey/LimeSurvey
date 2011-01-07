@@ -223,7 +223,7 @@
 					beginStr		= t.last_hightlighted_text.substr( 0, stay_begin.length + nbStart );
 					// fix special chars
 					newHtml			= newHtml.replace( /&lt;/g, '<').replace( /&gt;/g, '>').replace( /&amp;/g, '&');
-		
+			
 					nbOpendedSpan	= beginStr.split('<span').length - 1;
 					nbClosedSpan	= beginStr.split('</span').length - 1;
 					// retrieve the previously opened span (Add 1 for the first level span?)
@@ -351,7 +351,7 @@
 			catch( e )
 			{
 		//		throw e;
-			//	console.log( e );
+		//		console.log( e );
 				doHtmlOpti	= false;
 			}
 			

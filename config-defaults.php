@@ -62,6 +62,10 @@ $scriptname         =   'admin.php';      // The name of the admin script
 $defaultuser        =   'admin';          // This is the default username when LimeSurvey is installed
 $defaultpass        =   'password';       // This is the default password for the default user when LimeSurvey is installed
 
+// If the user enters password incorrectly
+$maxLoginAttempt    =   3;                // Lock them out after 3 attempts
+$timeOutTime        =   60 * 30;          // Lock them out for 30 minutes.
+
 // Site Settings
 $lwcdropdowns       =   'R';              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
 $dropdownthreshold  =   '25';             // The number of answers to a list type question before it switches from Radio Buttons to List
@@ -75,8 +79,9 @@ $allowexportalldb   =   1;                // 0 will only export prefixed tables 
 $allowmandbackwards =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
 // has not been answered. 1=Allow, 0=Deny
 $deletenonvalues    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
+$stringcomparizonoperators   =   0;                // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $printanswershonorsconditions = 1;	      // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic
-$shownoanswer       =   1;                // Show 'no answer' for non mandatory questions
+$shownoanswer       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $admintheme         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 
 $defaulttemplate    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
@@ -146,14 +151,7 @@ $emailcharset       = "utf-8";          // You can change this to change the cha
 // If you don't know what this is better leave this setting alone.
 $modrewrite         =   0;
 
-// CMS Integration Settings
-// Set $embedded to true and specify the header and footer functions - for example if the survey is to be displayed embedded in a CMS
-$embedded = false;
-$embedded_inc = '';             // path to a php file to include
-$embedded_headerfunc = '';      // e.g. COM_siteHeader for geeklog
-$embedded_footerfunc = '';      // e.g. COM_siteFooter for geeklog
-
-// Enable or Disable Ldap feature
+// Enable or Disable LDAP feature
 $enableLdap = false;
 
 // Experimental parameters, only change if you know what you're doing
@@ -365,7 +363,7 @@ $standard_templates_readonly =  true;
  */
 
 $usepdfexport   = 0;                       //Set 0 to disable; 1 to enable
-$pdfdefaultfont = 'unifont';              //Default font for the pdf Export
+$pdfdefaultfont = 'freemono';              //Default font for the pdf Export
 $pdffontsize    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $pdforientation = 'P';                     // Set L for Landscape or P for portrait format
@@ -424,8 +422,88 @@ $chartfontsize =10;
  */
 $updatecheckperiod=7;
 
+/**
+ * @var $showXquestions string allows you to control whether or not
+ * {THEREAREXQUESTIONS} is displayed (if it is included in a template)
+ *	hide = always hide {THEREAREXQUESTIONS}
+ *	show = always show {THEREAREXQUESTIONS}
+ *	choose = allow survey admins to choose
+ */
+$showXquestions = 'choose';
 
-//DO NOT EVER CHANGE THE FOLLOWING FOUR LINES ---------------
+
+/**
+ * @var $showgroupinfo string allows you to control whether or not
+ * {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
+ * included in a template)
+ *	none = always hide both title and description
+ *	name = always {GROUPNAME} only
+ *	description = always show {GROUPDESCRIPTION} only
+ *	both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
+ *	choose = allow survey admins to choose
+ */
+$showgroupinfo = 'choose';
+
+
+/**
+ * @var $showqnumcode string allows you to control whether or not
+ * {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
+ * are included in a template)
+ *	none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
+ *	code = always show {QUESTION_CODE} only
+ *	number = always show {QUESTION_NUMBER} only
+ *	both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
+ *	choose = allow survey admins to choose
+ */
+$showqnumcode = 'choose';
+
+
+/**
+ * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
+ * 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
+ *		to fail in SSL is turned off)
+ *	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
+ *		running through SSL)
+ *	'' =	do nothing (default)
+ *
+ * DO NOT turn on secure unless you are sure SSL/HTTPS is working and
+ * that you have a current, working, valid certificate. If you are
+ * unsure whether your server has a valid certificate, just add 's'
+ * to the http part of your normal LimeSurvey URL.
+ *	e.g. https://your.domain.org/limesurvey/admin/admin.php
+ * If LimeSurvey comes up as normal, then everything is fine. If you
+ * get a page not found error or permission denied error then 
+ */
+$force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
+
+
+/**
+ * @var $ssl_emergency_override boolean forces SSL off
+ * if You've turned HTTPS/SSL on in the global settings but your
+ * server doesn't have HTTPS enabled, the only way to turn it off is
+ * by changing a value in the database directly. This allows you to
+ * force HTTPS off while you change the global settings for Force Secure.
+ * 
+ *     false = do nothing;
+ *     true = override $force_ssl=on;
+ *
+ * This should always be false except in emergencies where you change
+ * it to true until you fix the problem.
+ */
+$ssl_emergency_override = false;
+
+
+// Get your IP Info DB key from http://ipinfodb.com/
+// If you have the API key, you can use it to get the approximate location of the user initially.
+
+$ipInfoDbAPIKey = '';
+
+// Google Maps API key. http://code.google.com/apis/maps/signup.html
+// To have questions that require google Maps!
+
+$googleMapsAPIKey = '';
+
+//DO NOT EVER CHANGE THE FOLLOWING 5 LINES ---------------
 require_once(dirname(__FILE__).'/config.php');
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
 {
@@ -444,26 +522,24 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
 
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
-$homeurl        =   "$rooturl/admin";                           // The website location (url) of the admin scripts
-$publicurl      =   "$rooturl";                                 // The public website location (url) of the public survey script
-$tempurl        =   "$rooturl/tmp";
-$imagefiles     =   "$rooturl/images";                          // Location of button bar files for admin script
-    
-//Location of the user directory
-$uploaddir      =     "$rootdir".DIRECTORY_SEPARATOR."upload";
-$uploadurl      =     "$rooturl/upload";
 
-// Location of the user templates
-$usertemplaterootdir= "$uploaddir".DIRECTORY_SEPARATOR."templates"; // Location of the templates
-$usertemplaterooturl= "$uploadurl/templates"; // Location of the templates
+$homeurl                 = "$rooturl/admin";         // The website location (url) of the admin scripts
+$publicurl               = "$rooturl";               // The public website location (url) of the public survey script
+$tempurl                 = "$rooturl/tmp";
+$imageurl                = "$rooturl/images";        // Location of button bar files for admin script
+$uploadurl               = "$rooturl/upload";
+$standardtemplaterooturl = "$rooturl/templates";     // Location of the standard templates
+$usertemplaterooturl     = "$uploadurl/templates";   // Location of the user templates
 
-// Location of the standard tempaltes
-$standardtemplaterootdir= "$rootdir".DIRECTORY_SEPARATOR."templates";               // Location of the templates
-$standardtemplaterooturl= "$rooturl/templates"; // Location of the templates
 
-$homedir        =   "$rootdir".DIRECTORY_SEPARATOR."admin";     // The physical disk location of the admin scripts
-$publicdir      =   "$rootdir";                                 // The physical disk location of the public scripts
-$tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical location where LimeSurvey can store temporary files
+$homedir                 = "$rootdir".DIRECTORY_SEPARATOR."admin";       // The directory path of the admin scripts
+$publicdir               = "$rootdir";                                   // The directory path of the public scripts
+$tempdir                 = "$rootdir".DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
+$imagedir                = "$rootdir".DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
+$uploaddir               = "$rootdir".DIRECTORY_SEPARATOR."upload";
+$standardtemplaterootdir = "$rootdir".DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
+$usertemplaterootdir     = "$uploaddir".DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates           
+
 // Note: For OS/2 the $tempdir may need to be defined as an actual directory
 // example: "x:/limesurvey/tmp". We don't know why.
 $sFCKEditorURL   =   "$homeurl/scripts/fckeditor.266";
@@ -484,5 +560,3 @@ else
 {
     // commandline installation, no relativeurl needed
 }
-
-

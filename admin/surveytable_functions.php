@@ -171,8 +171,8 @@ function surveyCheckStructure($surveyid)
     //THESE QUESTION TYPES ARE:
     //	# "L" -> LIST
     //  # "O" -> LIST WITH COMMENT
-    //  # "M" -> MULTIPLE OPTIONS
-    //	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
+    //  # "M" -> Multiple choice
+    //	# "P" -> Multiple choice with comments
     //	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
@@ -306,7 +306,7 @@ function surveyCreateTable($surveyid)
     $createsurvey='';
      
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$surveyid}";
+    $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$surveyid}";
     $presult=db_execute_assoc($pquery);
     $prow=$presult->FetchRow();
 

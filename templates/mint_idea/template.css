@@ -547,7 +547,7 @@ hr {
 .load-form table,
 .save-form table {
 	margin: 0 auto 0 auto;
-    width: auto;
+  width: auto;
 }
 
 .return-to-survey {
@@ -607,7 +607,10 @@ select {
   min-width: 150px;
 }
 
-.errormandatory {
+.warning{
+    display:block;
+    }
+.error,.errormandatory {
   color: #A33D41;
 }
 
@@ -1241,3 +1244,57 @@ td.statsImageholder {
   /*float:left;*/ /*text-align: left;*/
   
 }
+
+/* Question Index */
+.outerframe.withindex {
+  margin-left: 1em;
+  margin-right: 26em;
+}
+
+#index {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  border-left: 1px solid #ccc;
+}
+
+#index h2 { 
+  padding: 1em;
+  text-align: center;
+}
+
+#index h3 { margin: 0.5em 0 0 0.5em; }
+
+#index .container {
+  width: 24em;
+}
+
+#index .container .row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  border-top: 1px solid #fff;
+}
+
+#index .container .row:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+#index .container .row .hdr {
+  width: 3em;
+  text-align: right;
+  display: inline-block;
+  padding: 0 0.5em 0 0;
+}
+
+#index .container .row.odd { background: #1D2D45; }
+#index .container .row.current { background: #FFF; color: #000; }
+#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container input { margin: 1em; }

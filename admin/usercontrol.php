@@ -45,7 +45,7 @@ if (!isset($_SESSION['loginID']))
 
     if($action == "forgotpass")
     {
-        $loginsummary = "<br /><strong>".$clang->gT("Forgot Password")."</strong><br />\n";
+        $loginsummary = "<br /><strong>".$clang->gT("Forgot password")."</strong><br />\n";
 
         if (isset($postuser) && isset($postemail))
         {
@@ -68,7 +68,7 @@ if (!isset($_SESSION['loginID']))
                 $new_pass = createPassword();
                 $body = sprintf($clang->gT("Your user data for accessing %s"),$sitename). "<br />\n";;
                 $body .= $clang->gT("Username") . ": " . $fields['users_name'] . "<br />\n";
-                $body .= $clang->gT("New Password") . ": " . $new_pass . "<br />\n";
+                $body .= $clang->gT("New password") . ": " . $new_pass . "<br />\n";
 
                 $subject = $clang->gT("User data","unescaped");
                 $to = $emailaddr;
@@ -99,83 +99,138 @@ if (!isset($_SESSION['loginID']))
         if (isset($postuser) && isset($_POST['password']))
         {
             include("database.php");
-            $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
-            $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
-            $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
-            if ($result->RecordCount() < 1)
-            {
-                // wrong or unknown username
-                $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
-                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 
+            $sIp=   $_SERVER['REMOTE_ADDR'];
+            $query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
+            $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+            $result = $connect->query($query);
+            $bLoginAttempted = false;
+            $bCannotLogin = false;
+
+            $intNthAttempt = 0;
+            if ($result!==false && $result->RecordCount() >= 1)
+            {
+                $bLoginAttempted = true;
+                $field = $result->FetchRow();
+                $intNthAttempt = $field['number_attempts'];
+                if ($intNthAttempt>=$maxLoginAttempt){
+                    $bCannotLogin = true;
+                }
+
+                $iLastAttempt = strtotime($field['last_attempt']);
+
+                if (time() > $iLastAttempt + $timeOutTime){
+                    $bCannotLogin = false;
+                    $query = "DELETE FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
+                    $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
+
+                }
+                
             }
-            else
-            {
-                $fields = $result->FetchRow();
-                if (SHA256::hashing($_POST['password']) == $fields['password'])
+            if(!$bCannotLogin){
+                $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
+
+                $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
+                if ($result->RecordCount() < 1)
                 {
-                    // Anmeldung ERFOLGREICH
-                    if (strtolower($_POST['password'])=='password')
-                    {
-                        $_SESSION['pw_notify']=true;
-                    }
-                    else
-                    {
-                        $_SESSION['pw_notify']=false;
-                    } // Check if the user has changed his default password
+                    $query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
 
-                    if ($sessionhandler=='db')
+                    $result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
+                    if ($result)
                     {
-                        adodb_session_regenerate_id();
+                        // wrong or unknown username
+                        $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                        if ($intNthAttempt+1>=$maxLoginAttempt)
+                            $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                        $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                     }
-                    else
-                    {
-                        session_regenerate_id();
-                        
-                    }
-                    $_SESSION['loginID'] = intval($fields['uid']);
-                    $_SESSION['user'] = $fields['users_name'];
-                    $_SESSION['full_name'] = $fields['full_name'];
-                    $_SESSION['htmleditormode'] = $fields['htmleditormode'];
-                    $_SESSION['dateformat'] = $fields['dateformat'];
-                    // Compute a checksession random number to test POSTs
-                    $_SESSION['checksessionpost'] = randomkey(10);
-                    if (isset($postloginlang) && $postloginlang!='default')
-                    {
-                        $_SESSION['adminlang'] = $postloginlang;
-                        $clang = new limesurvey_lang($postloginlang);
-                        $uquery = "UPDATE {$dbprefix}users "
-                        . "SET lang='{$postloginlang}' "
-                        . "WHERE uid={$_SESSION['loginID']}";
-                        $uresult = $connect->Execute($uquery);  // Checked
-                    }
-                    else
-                    {
-                        $_SESSION['adminlang'] = $fields['lang'];
-                        $clang = new limesurvey_lang($_SESSION['adminlang']);
-                    }
-                    $login = true;
 
-					$loginsummary .= "<div class='messagebox'>\n";
-                    $loginsummary .= "<div class='header'>" . $clang->gT("Logged in") . "</div>";
-					$loginsummary .= "<br />".sprintf($clang->gT("Welcome %s!"),$_SESSION['full_name'])."<br />&nbsp;";
-					$loginsummary .= "</div>\n";
 
-                    if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
-                    strpos($_POST['refererargs'], "action=logout") === FALSE)
-                    {
-                        $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
-                        . " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
-                        $loginsummary .= "<br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
-                    }
-                    $loginsummary .= "<br /><br />\n";
-                    GetSessionUserRights($_SESSION['loginID']);
                 }
                 else
                 {
-                    $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
-                    $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                    $fields = $result->FetchRow();
+                    if (SHA256::hashing($_POST['password']) == $fields['password'])
+                    {
+                        // Anmeldung ERFOLGREICH
+                        if (strtolower($_POST['password'])=='password')
+                        {
+                            $_SESSION['pw_notify']=true;
+						    $_SESSION['flashmessage']=$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+                        }
+                        else
+                        {
+                            $_SESSION['pw_notify']=false;
+                        } // Check if the user has changed his default password
+
+                        if ($sessionhandler=='db')
+                        {
+                            adodb_session_regenerate_id();
+                        }
+                        else
+                        {
+                            session_regenerate_id();
+
+                        }
+                        $_SESSION['loginID'] = intval($fields['uid']);
+                        $_SESSION['user'] = $fields['users_name'];
+                        $_SESSION['full_name'] = $fields['full_name'];
+                        $_SESSION['htmleditormode'] = $fields['htmleditormode'];
+                        $_SESSION['dateformat'] = $fields['dateformat'];
+                        // Compute a checksession random number to test POSTs
+                        $_SESSION['checksessionpost'] = randomkey(10);
+                        if (isset($postloginlang) && $postloginlang!='default')
+                        {
+                            $_SESSION['adminlang'] = $postloginlang;
+                            $clang = new limesurvey_lang($postloginlang);
+                            $uquery = "UPDATE {$dbprefix}users "
+                            . "SET lang='{$postloginlang}' "
+                            . "WHERE uid={$_SESSION['loginID']}";
+                            $uresult = $connect->Execute($uquery);  // Checked
+                        }
+                        else
+                        {
+                            $_SESSION['adminlang'] = $fields['lang'];
+                            $clang = new limesurvey_lang($_SESSION['adminlang']);
+                        }
+                        $login = true;
+
+                                            $loginsummary .= "<div class='messagebox ui-corner-all'>\n";
+                        $loginsummary .= "<div class='header ui-widget-header'>" . $clang->gT("Logged in") . "</div>";
+                                            $loginsummary .= "<br />".sprintf($clang->gT("Welcome %s!"),$_SESSION['full_name'])."<br />&nbsp;";
+                                            $loginsummary .= "</div>\n";
+
+                        if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
+                        strpos($_POST['refererargs'], "action=logout") === FALSE)
+                        {
+                            $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
+                            . " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
+                            $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
+                        }
+                        $loginsummary .= "<br /><br />\n";
+                        GetSessionUserRights($_SESSION['loginID']);
+                    }
+                    else
+                    {
+                        $query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
+
+                        $result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
+                        if ($result)
+                        {
+                            // wrong or unknown username
+                            $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                            if ($intNthAttempt+1>=$maxLoginAttempt)
+                                $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                            $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                        }
+                    
+                    }
                 }
+
+            }
+            else{
+                $loginsummary .= "<p>".sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
             }
         }
     }
@@ -265,7 +320,7 @@ if (!isset($_SESSION['loginID']))
                 }
                 else
                 {
-                    $loginsummary .= "<br />".$clang->gT("Auto Import User Failed!")."<br />";
+                    $loginsummary .= "<br />".$clang->gT("Auto-import of user failed!")."<br />";
                     $loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                     $isAuthenticated=false;
                 }
@@ -273,9 +328,17 @@ if (!isset($_SESSION['loginID']))
             }
             else
             {
-                // wrong or unknown username
-                $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
-                $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                $query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
+
+                $result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
+                if ($result)
+                {
+                    // wrong or unknown username
+                    $loginsummary .= "<p>".$clang->gT("Incorrect username and/or password!")."<br />";
+                    if ($intNthAttempt+1>=$maxLoginAttempt)
+                        $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
+                    $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                }
                 $isAuthenticated=false;
             }
 
@@ -307,7 +370,7 @@ if (!isset($_SESSION['loginID']))
             {
                 $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
                 . " content=\"1;URL={$scriptname}?".$_SERVER['QUERY_STRING']."\" />";
-                $loginsummary .= "<br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
+                $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
             }
             $loginsummary .= "<br /><br />\n";
             GetSessionUserRights($_SESSION['loginID']);
@@ -322,7 +385,7 @@ elseif ($action == "logout")
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
-    $addsummary = "<div class='header'>".$clang->gT("Add User")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add user")."</div>\n";
 
     $new_user = FlattenText($postnew_user,true);
     $new_email = FlattenText($postnew_email,true);
@@ -332,7 +395,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
     if(!validate_email($new_email))
     {
         $valid_email = false;
-        $addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n";
+        $addsummary .= "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n";
     }
     if(empty($new_user))
     {
@@ -381,7 +444,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             $subject = sprintf($clang->gT("User registration at '%s'","unescaped"),$sitename);
             $to = $new_user." <$new_email>";
             $from = $siteadminname." <$siteadminemail>";
-            $addsummary .="<div class='messagebox'>";
+            $addsummary .="<div class='messagebox ui-corner-all'>";
             if(SendEmailMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
             {
                 $addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
@@ -395,22 +458,22 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             }
 
             $addsummary .= "<br />\t\t\t<form method='post' action='$scriptname'>"
-            ."<input type='submit' value='".$clang->gT("Set User Rights")."'>"
+            ."<input type='submit' value='".$clang->gT("Set user permissions")."'>"
             ."<input type='hidden' name='action' value='setuserrights'>"
             ."<input type='hidden' name='user' value='{$new_user}'>"
             ."<input type='hidden' name='uid' value='{$newqid}'>"
             ."</form></div>";
         }
         else{
-            $addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
+            $addsummary .= "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
         }
     }
     $addsummary .= "<p><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/></div>\n";
 }
 
-elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
+elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
 {
-    $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
+    $addsummary = "<div class=\"header\">".$clang->gT("Deleting user")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // CAN'T DELETE ORIGINAL SUPERADMIN
@@ -437,32 +500,91 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
             if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sresultcount > 0 || $postuserid == $_SESSION['loginID'])
             {
-                // We are about to kill an uid with potential childs
-                // Let's re-assign them their grand-father as their
-                // new parentid
-                $squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".$postuserid;
-                $sresult = $connect->Execute($squery); //Checked
-                $fields = $sresult->FetchRow($sresult);
+                $transfer_surveys_to = 0;
+                $query = "SELECT users_name, uid FROM ".db_table_name('users').";";
+                $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-                if (isset($fields[0]))
-                {
-                    $uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".$postuserid;	//		added by Dennis
-                    $uresult = $connect->Execute($uquery); //Checked
+                $current_user = $_SESSION['loginID'];
+                if($result->RecordCount() == 2) {
+                    
+                    $action = "finaldeluser";
+                    while($rows = $result->FetchRow()){
+                            $intUid = $rows['uid'];
+                            $selected = '';
+                            if ($intUid == $current_user)
+                                $selected = " selected='selected'";
+
+                            if ($postuserid != $intUid)
+                                $transfer_surveys_to = $intUid;
+                    }
                 }
 
-                //DELETE USER FROM TABLE
-                $dquery="DELETE FROM {$dbprefix}users WHERE uid=".$postuserid;	//	added by Dennis
-                $dresult=$connect->Execute($dquery);  //Checked
+                $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE owner_id = $current_user ;";
+                $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+                if($result->RecordCount() == 0) {
+                    $action = "finaldeluser";
+                 }
 
-                // Delete user rights
-                $dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".$postuserid;
-                $dresult=$connect->Execute($dquery); //Checked
+                if ($action=="finaldeluser")
+                {
+                    if (isset($_POST['transfer_surveys_to'])) {$transfer_surveys_to=sanitize_int($_POST['transfer_surveys_to']);}
+                    if ($transfer_surveys_to > 0){
+                        $query = "UPDATE ".db_table_name('surveys')." SET owner_id = $transfer_surveys_to WHERE owner_id=$postuserid";
+                        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+                    }
+                    $squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".$postuserid;
+                    $sresult = $connect->Execute($squery); //Checked
+                    $fields = $sresult->FetchRow($sresult);
 
-                if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
+                    if (isset($fields[0]))
+                    {
+                        $uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".$postuserid;	//		added by Dennis
+                        $uresult = $connect->Execute($uquery); //Checked
+                    }
 
-                $addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br /><br />\n";
-                $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
-                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                    //DELETE USER FROM TABLE
+                    $dquery="DELETE FROM {$dbprefix}users WHERE uid=".$postuserid;	//	added by Dennis
+                    $dresult=$connect->Execute($dquery);  //Checked
+
+                    // Delete user rights
+                    $dquery="DELETE FROM {$dbprefix}survey_permissions WHERE uid=".$postuserid;
+                    $dresult=$connect->Execute($dquery); //Checked
+
+                    if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
+
+                    $addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br /><br />\n";
+                    $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
+                    if ($transfer_surveys_to>0){
+                        $sTransferred_to = getUserNameFromUid($transfer_surveys_to);
+                        $addsummary .= sprintf($clang->gT("All of the user's surveys were transferred to %s."),$sTransferred_to);
+                    }
+                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                }
+                else
+                {
+                    $current_user = $_SESSION['loginID'];
+                    $addsummary .= "<br />".$clang->gT("Transfer the user's surveys to: ")."\n";
+                    $addsummary .= "<form method='post' name='deluserform' action='admin.php?action=finaldeluser'><select name='transfer_surveys_to'>\n";
+                    $query = "SELECT users_name, uid FROM ".db_table_name('users').";";
+                    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+                    if($result->RecordCount() > 0) {
+                        while($rows = $result->FetchRow()){
+                                $intUid = $rows['uid'];
+                                $sUsersName = $rows['users_name'];
+                                $selected = '';
+                                if ($intUid == $current_user)
+                                    $selected = " selected='selected'";
+
+                                if ($postuserid != $intUid)
+                                    $addsummary .= "<option value='$intUid'$selected>$sUsersName</option>\n";
+                        }
+                    }
+                    $addsummary .= "</select><input type='hidden' name='uid' value='$postuserid'>";
+                    $addsummary .= "<input type='hidden' name='user' value='$postuser'>";
+                    $addsummary .= "<input type='hidden' name='action' value='finaldeluser'><br /><br />";
+                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>"; 
+                }
+                
             }
             else
             {
@@ -478,9 +600,11 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
     $addsummary .= "</div>\n";
 }
 
+
+
 elseif ($action == "moduser")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Editing user")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Editing user")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     $squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
@@ -502,7 +626,7 @@ elseif ($action == "moduser")
         {
             $valid_email = false;
             $failed = true;
-            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify User Data.")."</div><br />\n"
+            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify user data.")."</div><br />\n"
             . " ".$clang->gT("Email address is not valid.")."<br />\n";
         }
         elseif($valid_email)
@@ -529,7 +653,7 @@ elseif ($action == "moduser")
             else
             {
                 // Username and/or email adress already exists.
-                $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify User Data.")."</div><br />\n"
+                $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify user data.")."</div><br />\n"
                 . " ".$clang->gT("Email address already exists.")."<br />\n";
             }
         }
@@ -555,7 +679,7 @@ elseif ($action == "moduser")
 
 elseif ($action == "userrights")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Set User Rights")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set user permissions")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // A user can't modify his own rights ;-)
@@ -630,7 +754,7 @@ elseif ($action == "userrights")
     }
     else
     {
-        $addsummary .= "<div class=\"warningheader\">".$clang->gT("You are not allowed to change your own rights!")."</div>\n";
+        $addsummary .= "<div class=\"warningheader\">".$clang->gT("You are not allowed to change your own permissions!")."</div>\n";
         $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
     }
     $addsummary .= "</div>\n";
@@ -638,7 +762,7 @@ elseif ($action == "userrights")
 
 elseif ($action == "usertemplates")
 {
-    $addsummary = "<div class='header'>".$clang->gT("Set Template Rights")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set template permissions")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
@@ -692,4 +816,29 @@ function getInitialAdmin_uid()
     return $row['uid'];
 }
 
-?>
+function fGetLoginAttemptUpdateQry($la,$sIp)
+{
+    $timestamp = date("Y-m-d H:m:s");    
+    if ($la)
+        $query = "UPDATE ".db_table_name('failed_login_attempts')
+                 ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
+    else
+        $query = "INSERT INTO ".db_table_name('failed_login_attempts') . "(ip, number_attempts,last_attempt)"
+                 ." VALUES('$sIp',1,'$timestamp')";
+
+    return $query;
+}
+
+
+function getUserNameFromUid($uid){
+    $query = "SELECT users_name, uid FROM ".db_table_name('users')." WHERE uid = $uid;";
+
+    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+
+    
+    if($result->RecordCount() > 0) {
+        while($rows = $result->FetchRow()){
+            return $rows['users_name'];
+        }
+    }
+}

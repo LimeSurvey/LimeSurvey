@@ -179,6 +179,28 @@ div.menubar {
     color: #333;
     width: 200px;
 }
+
+.menubar-right .arrow-wrapper {
+	display: inline; /* For IE */
+	position: relative;
+	margin: 0 5px 0 5px;
+	width: 20px;
+	vertical-align: bottom;
+}
+
+html>body .menubar-right .arrow-wrapper { /* For real browsers */
+	display: inline-block;
+}
+
+.menubar-right .arrow-wrapper a {
+	display: block;
+}
+
+.menubar-right .arrow-wrapper img {
+	display: block;
+	margin: 0;
+}
+
 /* END menubar CSS */    
 
 #surveydetails, #groupdetails, #questiondetails {
@@ -253,10 +275,28 @@ input, select, button {
     font: 10px verdana, arial, sans-serif;
 }
 
+/* Uncomment these styles if you are using a system theme with a dark background 
+and are having difficulty seeing text in inputs, textareas and dropdown selects. */
+/*
+input,
+textarea {
+	background: #FFF;
+	border: 1px solid #DBDFE6;
+	border-top-color: #ABADB3;
+	border-bottom-color: #E3E9EF;
+	padding: 2px;
+}
+
+select {
+	background: #FFF;
+	border: 1px solid #828790;
+}
+*/
+
 input[disabled], textarea[disabled], select[disabled], button[disabled] {
-    color: #999;
-    background: #EEE;
-    border:1px solid #ccc;
+    color: #999 !important;
+    background: #EEE !important;
+    border:1px solid #ccc !important;
 }
 
 textarea {
@@ -264,6 +304,7 @@ textarea {
     color: navy;
     font-family: verdana, arial, sans-serif;
 }
+
 
 .subtitle {
     font-size: 10px;
@@ -390,8 +431,8 @@ span.settingcaption {
 .langpopup ul {
     font-size: 1em;
     font-weight:bold;
-    padding-left:1.2em;
-    line-height:1.5em;
+     padding-left:1.2em;
+     line-height:1.5em;
     margin-top:0.5em; 
 }
 
@@ -404,8 +445,12 @@ li.cancellink
 }
 
 
-.oddrow {
-    background-color: #EBF2FA;
+tr.even
+{
+    background-color: #EFF4F9;
+}
+tr.odd,.oddrow {
+    background-color: #E3ECF5;
 }
 
 .choicelist {
@@ -557,10 +602,11 @@ a.optoutemail {
 .quotalist th,
 .assessmentlist th,
 .edituser th,
+.surveysecurity th,
 .users th,
 .listsurveys th {
     background-color: #D2E0F2;     
-    font-size:8pt;
+    font-size:0.8em;
     padding:2px 14px 2px 10px;
 }
 
@@ -585,8 +631,9 @@ a.optoutemail {
 }
 
 .users td,
+.surveysecurity td,
 .listsurveys td {
-    font-size:8pt;
+    font-size:0.8em;
     padding:2px 6px; 
 }
 
@@ -624,7 +671,6 @@ a.optoutemail {
     margin:0 auto;
 }
 
-#responsedetail tr.highlight,
 .answertable tr.highlight {
     background-color:#EAF2FF;
 }
@@ -645,7 +691,7 @@ a.optoutemail {
     margin: 5px 2px;
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
-    clear: left;    
+    clear: left;
 }
 
 .browsetokens th {
@@ -842,6 +888,7 @@ div.messagebox {
     margin:10px auto; 
     border: 1px solid;
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    background-color: #F8F8FF;
     text-align: center;
     padding:10px;  
 }
@@ -981,7 +1028,7 @@ textarea.updater-changelog {
     max-width:200px;
 }
    
-.form44 li label:first-child,   
+.form44 li label:first-child, 
 #exportspss li label:first-child,
 #importtemplate li label:first-child,            
 #tokenimport li label:first-child,            
@@ -991,7 +1038,8 @@ textarea.updater-changelog {
 #exportdialog li label:first-child, 
 #frmeditquestion li label:first-child, 
 #importquestion li label:first-child,
-#frmglobalsettings li label:first-child {
+#bouncesettings li label:first-child,
+#importquestion li label:first-child {
     width: 44%;
     text-align: right;
     margin-right: 0.5em;
@@ -999,8 +1047,8 @@ textarea.updater-changelog {
     font-weight: bold;
     color: #1d2d45;
 }
-
-#loginform li label:first-child{
+         
+#loginform li label:first-child {
     width: 39%;
     text-align: right;
     margin-right: 0.5em;
@@ -1009,6 +1057,7 @@ textarea.updater-changelog {
     color: #1d2d45;
 }        
 
+.form30newtabs li label:first-child,
 .form30 li label:first-child {
     width: 30%;
     text-align: right;
@@ -1016,12 +1065,20 @@ textarea.updater-changelog {
     float: left;      
     font-weight: bold;
     color: #121A28;
-}       
+}
 
 .form30 table {
     width: auto;
     float: left;      
 }
+
+.form30newtabs div div div div li{
+    list-style-type: none;
+    clear:left;
+    padding-bottom:5px;
+}
+
+
 
 .form30 li,
 .form44 li,
@@ -1050,12 +1107,14 @@ textarea.updater-changelog {
 #assessmentsform li,
 #importsurveyresources li,
 #labelsetform li,
-#frmglobalsettings li,
+#bouncesettings li,
 #exportspss li{  
     list-style-type: none;
     clear:left;
     padding-bottom:5px;
 }
+
+
 
 #frmeditquestion li,
 #importquestion li {
@@ -1089,11 +1148,13 @@ div.loader {
     padding:1% 10%;
 }
 
+#emailtemplates .ui-tabs-panel iframe,
+#frmeditgroup .ui-tabs-panel iframe,
 #frmcopyquestion .tab-page iframe,   
 #sendreminder .tab-page iframe,
-#newquestiongroup .tab-page iframe,
+#newquestiongroup .ui-tabs-panel iframe,
 #sendinvitation .tab-page iframe,
-#addnewsurvey .tab-page iframe {
+#addnewsurvey .ui-tabs-panel iframe {
     width:600px !important;
 }
 
@@ -1272,6 +1333,10 @@ clear:both;
    zoom: 1; 
 }
 
+#emailtemplates .ui-tabs-panel .limebutton {
+	margin: 3px 20% 10px 30.5%;
+}
+
 table.limetable thead th{
     background-color: #D2E0F2;     
     font-size:8pt;
@@ -1300,4 +1365,45 @@ table.limetable tbody tr.highlight {
 .users td:first-child,.users th:first-child
 {
     width:10%;
+}
+
+thead th 
+{
+    background-color:#E1E7EF;
+}
+
+.usersurveypermissions th{
+     padding:0 2em;
+}
+
+#responsedetail td{
+   padding:3px 5px;
+}
+
+#frmglobalsettings table {
+    float:none;
+}
+
+
+.ui-notify { 
+    width:350px; 
+    position:fixed; 
+    top:35px; 
+    left:50%;   
+    margin-left: -175px;
+}
+
+div.translate {
+  margin: 2px 1px;
+}
+
+#translateform table {
+  padding: 1px 0;
+  vertical-align: top;
+  width: 90%;
+}
+
+
+#translateform textarea:focus{
+  outline: blue solid thin;
 }

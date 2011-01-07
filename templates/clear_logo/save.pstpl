@@ -2,6 +2,7 @@
 	<p class="save-error">{SAVEERROR}</p>
 	<p class="save-heading">{SAVEHEADING}</p>
 	<p class="save-message">{SAVEMESSAGE}</p>
+    <span class="warning">{SAVEALERT}</span></p>
 	<div class="save-form">{SAVEFORM}</div>
 	<p class="return-to-survey">{RETURNTOSURVEY}</p>
 </center>

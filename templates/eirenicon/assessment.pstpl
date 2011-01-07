@@ -1,13 +1,13 @@
 <br />
 <table class="assessment-table">
-	<tr>
+ <tr>
 		<td class="assessment-heading">
-			{ASSESSMENT_HEADING}
-		</td>
-	</tr>
-	<tr>
+   {ASSESSMENT_HEADING}
+  </td>
+ </tr>
+ <tr>
 		<td class="assessments-container">
-			{ASSESSMENTS}
-		</td>
-	</tr>
+   {ASSESSMENTS}
+  </td>
+ </tr>
 </table>

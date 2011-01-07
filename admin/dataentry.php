@@ -28,10 +28,10 @@
  I - Language Switch
  K - Multiple Numerical Input
  L - List (Radio)
- M - Multiple Options
+ M - Multiple choice
  N - Numerical Input
  O - List With Comment
- P - Multiple Options With Comments
+ P - Multiple choice with comments
  Q - Multiple Short Text
  R - Ranking
  S - Short Free Text
@@ -42,6 +42,7 @@
  ! - List (Dropdown)
  : - Array (Flexible Labels) multiple drop down
  ; - Array (Flexible Labels) multiple texts
+ | - File Upload Question
 
 
  */
@@ -68,14 +69,14 @@ if (!isset($sDataEntryLanguage))
 }
 $surveyinfo=getSurveyInfo($surveyid);
 
-if (bHasRight($surveyid, 'browse_response'))
+if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission($surveyid, 'responses','create')  || bHasSurveyPermission($surveyid, 'responses','update'))
 {
 
-    $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
+    $surveyoptions = browsemenubar($clang->gT("Data entry"));
     if (!$surveyid && !$subaction)
     {
-        $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
-        $dataentryoutput .= "<div class='messagebox'>\n"
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
+        $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n"
         ."<div class='warningheader'>".$clang->gT("Error")."</div><br />\n"
         .$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
         ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
@@ -83,12 +84,12 @@ if (bHasRight($surveyid, 'browse_response'))
         return;
     }
 
-    if ($subaction == "insert")
+    if ($subaction == "insert" && bHasSurveyPermission($surveyid,'responses','create'))
     {
         $thissurvey=getSurveyInfo($surveyid);
         $errormsg="";
-        $dataentryoutput .= $surveyoptions."<div class='header'>".$clang->gT("Data Entry")."</div>\n"
-        ."\t<div class='messagebox'>\n";
+        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
+        ."\t<div class='messagebox ui-corner-all'>\n";
 
         $lastanswfortoken=''; // check if a previous answer has been submitted or saved
         $rlanguage='';
@@ -108,10 +109,10 @@ if (bHasRight($surveyid, 'browse_response'))
             { // token doesn't exist in token table
                 $lastanswfortoken='UnknownToken';
             }
-            elseif ($thissurvey['private'] == "Y")
+            elseif ($thissurvey['anonymized'] == "Y")
             { // token exist but survey is anonymous, check completed state
                 if ($tokencompleted != "" && $tokencompleted != "N")
-                { // token is not completed
+                { // token is completed
                     $lastanswfortoken='PrivacyProtected';
                 }
             }
@@ -121,7 +122,7 @@ if (bHasRight($surveyid, 'browse_response'))
                 $aresult = db_execute_assoc($aquery);
                 while ($arow = $aresult->FetchRow())
                 {
-                    $lastanswfortoken=$arow['id'];
+					if ($tokencompleted != "N") { $lastanswfortoken=$arow['id']; }
                     $rlanguage=$arow['startlanguage'];
                 }
             }
@@ -133,7 +134,7 @@ if (bHasRight($surveyid, 'browse_response'))
         }
         elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken == 'UnknownToken')
         {
-            $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The token you have provided is not valid or has already been used.")."</strong>\n";
+            $errormsg="<div class='warningheader'>".$clang->gT("Error")."</div> ".$clang->gT("The token you have provided is not valid or has already been used.")."<p>\n";
         }
         elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken != '')
         {
@@ -146,7 +147,7 @@ if (bHasRight($surveyid, 'browse_response'))
             }
             else
             {
-                $errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymous answers, so you can't update your response.")."\n";
+                $errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
             }
         }
         else
@@ -235,25 +236,59 @@ if (bHasRight($surveyid, 'browse_response'))
                 {
                     if ($_POST[$fieldname] == "" && ($irow['type'] == 'D' || $irow['type'] == 'N' || $irow['type'] == 'K'))
                     { // can't add '' in Date column
-                        // Do nothing
+                      // Do nothing
                     }
-                    else
+                    else if ($irow['type'] == '|')
                     {
-                        if ($irow['type'] == 'D')
+                        if (!strpos($irow['fieldname'], "_filecount"))
                         {
-                            $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
+                            $json = $_POST[$fieldname];
+                            $phparray = json_decode(stripslashes($json));
+                            $filecount = 0;
+
+                            for ($i = 0; $filecount < count($phparray); $i++)
+                            {
+                                if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
+                                {
+                                    $target = dirname(getcwd())."/upload/surveys/". $thissurvey['sid'] ."/files/".randomkey(20);
+                                    $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
+                                    $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
+
+                                    if (move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target))
+                                    {
+                                        $phparray[$filecount]->filename = basename($target);
+                                        $phparray[$filecount]->name = $name;
+                                        $phparray[$filecount]->size = $size;
+                                        $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
+                                        $phparray[$filecount]->ext = $pathinfo['extension'];
+                                        $filecount++;
+                                    }
+                                }
+                            }
+
                             $columns[] .= db_quote_id($fieldname);
-                            $values[] .= db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
+                            $values[] .= db_quoteall(json_encode($phparray), true);
                         }
                         else
                         {
                             $columns[] .= db_quote_id($fieldname);
-                            $values[] .= db_quoteall($_POST[$fieldname],true);
+                            $values[] .= db_quoteall(count($phparray), true);
                         }
+                    }
+                    elseif ($irow['type'] == 'D')
+                    {
+                        $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
+                        $columns[] .= db_quote_id($fieldname);
+                        $values[] .= db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
+                    }
+                    else
+                    {
+                        $columns[] .= db_quote_id($fieldname);
+                        $values[] .= db_quoteall($_POST[$fieldname],true);
                     }
                 }
             }
-
+            
             $SQL = "INSERT INTO $surveytable
 					(".implode(',',$columns).")
 					VALUES 
@@ -263,18 +298,49 @@ if (bHasRight($surveyid, 'browse_response'))
 
             if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
             {
-                $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);
+                // get submit date
+                if (isset($_POST['closedate']))
+                    { $submitdate = $_POST['closedate']; }
+                else
+                    { $submitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
+                
+				// check how many uses the token has left
+				$usesquery = "SELECT usesleft FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}'";
+				$usesresult = db_execute_assoc($usesquery);
+				$usesrow = $usesresult->FetchRow();
+				if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
+				
+                // query for updating tokens
                 $utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
                 if (bIsTokenCompletedDatestamped($thissurvey))
                 {
-                    $utquery .= "SET completed='$today'\n";
+					if (isset($usesleft) && $usesleft<=1)
+					{
+						$utquery .= "SET usesleft=usesleft-1, completed='$submitdate'\n";
                 }
                 else
                 {
-                    $utquery .= "SET completed='Y'\n";
+						$utquery .= "SET usesleft=usesleft-1\n";
+                }
+                }
+                else
+                {
+					if (isset($usesleft) && $usesleft<=1)
+					{
+						$utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
+					}
+					else
+					{
+						$utquery .= "SET usesleft=usesleft-1\n";
+					}
                 }
                 $utquery .= "WHERE token='{$_POST['token']}'";
                 $utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());
+                
+                // save submitdate into survey table
+                $srid = $connect->Insert_ID();
+                $sdquery = "UPDATE {$dbprefix}survey_$surveyid SET submitdate='{$submitdate}' WHERE id={$srid}\n";
+                $sdresult = $connect->Execute($sdquery) or safe_die ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n".$connect->ErrorMsg());
             }
             if (isset($_POST['save']) && $_POST['save'] == "on")
             {
@@ -363,7 +429,7 @@ if (bHasRight($surveyid, 'browse_response'))
 
     }
 
-    elseif ($subaction == "edit" || $subaction == "editsaved")
+    elseif (($subaction == "edit" || $subaction == "editsaved") && bHasSurveyPermission($surveyid,'responses','update'))
     {
         $dataentryoutput .= $surveyoptions;
 
@@ -380,7 +446,7 @@ if (bHasRight($surveyid, 'browse_response'))
         while ($fnrow = $fnresult->FetchRow())
         {
             $fnrows[] = $fnrow;
-            $private=$fnrow['private'];
+            $private=$fnrow['anonymized'];
             $datestamp=$fnrow['datestamp'];
             $ipaddr=$fnrow['ipaddr'];
         } // Get table output into array
@@ -394,7 +460,7 @@ if (bHasRight($surveyid, 'browse_response'))
 
         //SHOW INDIVIDUAL RECORD
 
-        if ($subaction == "edit")
+        if ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
         {
             $idquery = "SELECT * FROM $surveytable WHERE id=$id";
             $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get individual record<br />$idquery<br />".$connect->ErrorMsg());
@@ -403,7 +469,7 @@ if (bHasRight($surveyid, 'browse_response'))
                 $results[]=$idrow;
             }
         }
-        elseif ($subaction == "editsaved")
+        elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
         {
             if (isset($_GET['public']) && $_GET['public']=="true")
             {
@@ -449,9 +515,9 @@ if (bHasRight($surveyid, 'browse_response'))
         }
         //	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
 
-        $dataentryoutput.="<div class='header'>".$clang->gT("Data Entry")."</div>\n"
-        ."\t<div class='header'>";
-        if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $surveyinfo['owner_id'] == $_SESSION['loginID'])
+        $dataentryoutput.="<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
+        ."\t<div class='header ui-widget-header'>";
+        if ($subaction=='edit')
         {
             $dataentryoutput .= sprintf($clang->gT("Editing response (ID %s)"),$id);
         }
@@ -462,11 +528,21 @@ if (bHasRight($surveyid, 'browse_response'))
         $dataentryoutput .="</div>\n";
 
 
-        $dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editresponse' id='editresponse'>\n"
-        ."<table id='responsedetail' width='99%' align='center' cellpadding='1' cellspacing='0'>\n";
+        $dataentryoutput .= "<form method='post' action='{$scriptname}?action=dataentry' name='editresponse' id='editresponse'>\n"
+        ."<table id='responsedetail' width='99%' align='center' cellpadding='0' cellspacing='0'>\n";
         $highlight=false;
         unset($fnames['lastpage']);
-        unset($fnames['submitdate']);
+        
+        // unset timings
+        foreach ($fnames as $fname)
+        {
+            if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time")
+            {
+                unset($fnames[$fname['fieldname']]);
+                $nfncount--;
+            }
+        }
+        
         foreach ($results as $idrow)
         {
             //$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
@@ -478,7 +554,9 @@ if (bHasRight($surveyid, 'browse_response'))
                 if (isset($idrow[$fname['fieldname']])) $answer = $idrow[$fname['fieldname']];
                 $question=$fname['question'];
                 $dataentryoutput .= "\t<tr";
-                if ($highlight) $dataentryoutput .=" class='highlight'";
+                if ($highlight) $dataentryoutput .=" class='odd'";
+                   else $dataentryoutput .=" class='even'";
+                 
                 $highlight=!$highlight;
                 $dataentryoutput .=">\n"
                 ."<td valign='top' align='right' width='25%'>"
@@ -493,7 +571,7 @@ if (bHasRight($surveyid, 'browse_response'))
                         // First compute the submitdate
                         if ($private == "Y")
                         {
-                            // In case of anonymous answers survey with no datestamp
+                            // In case of anonymized responses survey with no datestamp
                             // then the the answer submutdate gets a conventional timestamp
                             // 1st Jan 1980
                             $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
@@ -524,7 +602,7 @@ if (bHasRight($surveyid, 'browse_response'))
                         .$idrow[$fname['fieldname']] . "' />\n";
                         break;
                     case "id":
-                        $dataentryoutput .= "\t&nbsp;{$idrow[$fname['fieldname']]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
+                        $dataentryoutput .= "<span style='font-weight:bold;'>&nbsp;{$idrow[$fname['fieldname']]}</span>";
                         break;
                     case "5": //5 POINT CHOICE radio-buttons
                         for ($x=1; $x<=5; $x++)
@@ -778,7 +856,7 @@ if (bHasRight($surveyid, 'browse_response'))
                                 $chosen[]=array($thiscode, $thistext);
                             }
                             $ranklist .= "' />\n"
-                            . "<img src='$imagefiles/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
+                            . "<img src='$imageurl/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
                             if ($j != $existing)
                             {
                                 $ranklist .= "style='display:none'";
@@ -820,7 +898,7 @@ if (bHasRight($surveyid, 'browse_response'))
                         $fname=prev($fnames);
                         break;
 
-                    case "M": //MULTIPLE OPTIONS checkbox
+                    case "M": //Multiple choice checkbox
                         $qidattributes=getQuestionAttributes($fname['qid']);
                         if (trim($qidattributes['display_columns'])!='')
                         {
@@ -850,10 +928,10 @@ if (bHasRight($surveyid, 'browse_response'))
                             }
 
                             $fname=next($fnames);
-                        }
+                            }
                         $fname=prev($fnames);
 
-                        break;
+                                break;
 
                     case "I": //Language Switch
                         $lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
@@ -878,7 +956,7 @@ if (bHasRight($surveyid, 'browse_response'))
                         $dataentryoutput .= "</select>";
                         break;
 
-                    case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+                    case "P": //Multiple choice with comments checkbox + text
                         $dataentryoutput .= "<table>\n";
                         while (isset($fname) && $fname['type'] == "P")
                         {
@@ -914,6 +992,56 @@ if (bHasRight($surveyid, 'browse_response'))
                         }
                         $dataentryoutput .= "</table>\n";
                         $fname=prev($fnames);
+                        break;
+                    case "|": //FILE UPLOAD
+                        $dataentryoutput .= "<table>\n";
+                        if ($fname['aid']!=='filecount')
+                        {//file metadata
+                            $metadata = json_decode($idrow[$fname['fieldname']], true);
+                            $qAttributes = getQuestionAttributes($fname['qid']);
+                            
+                            for ($i = 0; $i < $idrow[$fname['fieldname']]['max_files'], isset($metadata[$i]); $i++)
+                            {
+                                if ($qAttributes['show_title'])
+                                    $dataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
+                                if ($qAttributes['show_comment'])
+                                    $dataentryoutput .= '<tr><td width="25%">Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>';
+
+                                $dataentryoutput .= '<tr><td>        File name</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i    .'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"]))    .'" /></td></tr>'
+                                                   .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_size_'.$i    .'" name="size"     size=50 value="'.htmlspecialchars($metadata[$i]["size"])    .'" /></td></tr>'
+                                                   .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_ext_'.$i     .'" name="ext"      size=50 value="'.htmlspecialchars($metadata[$i]["ext"])     .'" /></td></tr>'
+                                                   .'<tr><td></td><td><input type="hidden"  class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_filename_'.$i    .'" name="filename" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["filename"]))    .'" /></td></tr>';
+                            }
+                            $dataentryoutput .= '<tr><td></td><td><input type="hidden" id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" size=50 value="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></tr>';
+                            $dataentryoutput .= '</table>';
+                            $dataentryoutput .= '<script type="text/javascript">
+                                                     $(function() {
+                                                        $(".'.$fname['fieldname'].'").keyup(function() {
+                                                            var filecount = $("#'.$fname['fieldname'].'_filecount").val();
+                                                            var jsonstr = "[";
+                                                            var i;
+                                                            for (i = 0; i < filecount; i++)
+                                                            {
+                                                                if (i != 0)
+                                                                    jsonstr += ",";
+                                                                jsonstr += \'{"title":"\'+$("#'.$fname['fieldname'].'_title_"+i).val()+\'",\';
+                                                                jsonstr += \'"comment":"\'+$("#'.$fname['fieldname'].'_comment_"+i).val()+\'",\';
+                                                                jsonstr += \'"size":"\'+$("#'.$fname['fieldname'].'_size_"+i).val()+\'",\';
+                                                                jsonstr += \'"ext":"\'+$("#'.$fname['fieldname'].'_ext_"+i).val()+\'",\';
+                                                                jsonstr += \'"filename":"\'+$("#'.$fname['fieldname'].'_filename_"+i).val()+\'",\';
+                                                                jsonstr += \'"name":"\'+encodeURIComponent($("#'.$fname['fieldname'].'_name_"+i).val())+\'"}\';
+                                                            }
+                                                            jsonstr += "]";
+                                                            $("#'.$fname['fieldname'].'").val(jsonstr);
+
+                                                        });
+                                                     });
+                                                 </script>';
+                        }
+                        else
+                        {//file count
+                            $dataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></table>';
+                        }
                         break;
                     case "N": //NUMERICAL TEXT
                         $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
@@ -1162,29 +1290,25 @@ if (bHasRight($surveyid, 'browse_response'))
                 }
 
                 $dataentryoutput .= "		</td>
-							</tr>
-							<tr>
-								<td colspan='2' height='1'>
-								</td>
 							</tr>\n";
             } while ($fname=next($fnames));
-        }
+            }
         $dataentryoutput .= "</table>\n"
         ."<p>\n";
-        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
+        if (!bHasSurveyPermission($surveyid, 'responses','update'))
         { // if you are not survey owner or super admin you cannot modify responses
             $dataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
         }
-        elseif ($subaction == "edit")
+        elseif ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
         {
             $dataentryoutput .= "
-						 <input type='submit' value='".$clang->gT("Update Entry")."' />
+						 <input type='submit' value='".$clang->gT("Save")."' />
 						 <input type='hidden' name='id' value='$id' />
 						 <input type='hidden' name='sid' value='$surveyid' />
 						 <input type='hidden' name='subaction' value='update' />
 						 <input type='hidden' name='language' value='".$sDataEntryLanguage."' />";
         }
-        elseif ($subaction == "editsaved")
+        elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
         {
 
 
@@ -1243,7 +1367,7 @@ if (bHasRight($surveyid, 'browse_response'))
     }
 
 
-    elseif ($subaction == "update")
+    elseif ($subaction == "update"  && bHasSurveyPermission($surveyid,'responses','update'))
     {
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
         {
@@ -1251,10 +1375,19 @@ if (bHasRight($surveyid, 'browse_response'))
         }
 
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $dataentryoutput .= $surveyoptions."<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
         $fieldmap= createFieldMap($surveyid);
 
+        // unset timings
+        foreach ($fieldmap as $fname)
+        {
+            if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time")
+            {
+                unset($fieldmap[$fname['fieldname']]);
+            }
+        }
+        
         $updateqr = "UPDATE $surveytable SET \n";
 
         foreach ($fieldmap as $irow)
@@ -1288,6 +1421,10 @@ if (bHasRight($surveyid, 'browse_response'))
             {
                 $updateqr .= db_quote_id($fieldname)." = NULL, \n";
             }
+            elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
+            {
+                $updateqr .= db_quote_id($fieldname)." = NULL, \n";
+            }
             elseif (($irow['type'] == 'submitdate') && ($thisvalue == 'N' || $thisvalue == ''))
             {
                 $updateqr .= db_quote_id($fieldname)." = NULL, \n";
@@ -1305,21 +1442,21 @@ if (bHasRight($surveyid, 'browse_response'))
         while (ob_get_level() > 0) {
             ob_end_flush();
         }
-        $dataentryoutput .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div>\n"
+        $dataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
         .$clang->gT("Record has been updated.")."<br /><br />\n"
         ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" /><br /><br />\n"
         ."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all', '_top')\" />\n"
         ."</div>\n";
     }
 
-    elseif ($subaction == "delete")
+    elseif ($subaction == "delete"  && bHasSurveyPermission($surveyid,'responses','delete'))
     {
-        if (!bHasRight($surveyid,'delete_survey'))
+        if (!bHasSurveyPermission($surveyid,'delete_survey'))
         {
             safe_die('You are not allowed to delete a response.');
         }        
-        $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
-        $dataentryoutput .= "<div class='messagebox'>\n";
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
+        $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n";
 
         $thissurvey=getSurveyInfo($surveyid);
 
@@ -1353,9 +1490,9 @@ if (bHasRight($surveyid, 'browse_response'))
         // PRESENT SURVEY DATAENTRY SCREEN
         $dataentryoutput .= $surveyoptions;
 
-        $dataentryoutput .= "<div class='header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
-        $dataentryoutput .= "<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
+        $dataentryoutput .= "<form action='$scriptname?action=dataentry' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>\n"
         ."<table class='data-entry-tbl' cellspacing='0'>\n"
         ."\t<tr>\n"
         ."\t<td colspan='3' align='center'>\n"
@@ -1383,7 +1520,10 @@ if (bHasRight($surveyid, 'browse_response'))
             ."<td valign='top' width='1%'></td>\n"
             ."<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$blang->gT("Token").":</strong></td>\n"
             ."<td valign='top'  align='left' style='padding-left: 20px'>\n"
-            ."\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);'/>\n"
+            ."\t<input type='text' id='token' name='token'";
+            // if group tokens are active, the group token will activate the submit button instead
+   
+            $dataentryoutput .= "/>\n"
             ."</td>\n"
             ."\t</tr>\n";
 
@@ -1403,9 +1543,9 @@ if (bHasRight($surveyid, 'browse_response'))
             . "}\n"
             . "\t}"
             . "\t//--></script>\n";
-
         }
 
+    
         if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
         {
             $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1426,7 +1566,7 @@ if (bHasRight($surveyid, 'browse_response'))
             $dataentryoutput .= "\t<tr>\n"
             ."<td valign='top' width='1%'></td>\n"
             ."<td valign='top' align='right' width='30%'><strong>"
-            .$blang->gT("IP-Address").":</strong></td>\n"
+            .$blang->gT("IP address").":</strong></td>\n"
             ."<td valign='top'  align='left' style='padding-left: 20px'>\n"
             ."\t<input type='text' name='ipaddr' value='NULL' />\n"
             ."</td>\n"
@@ -1611,7 +1751,7 @@ if (bHasRight($surveyid, 'browse_response'))
                 }
                 if ($explanation)
                 {
-                    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";} //Do no alternate on explanation row
+                    if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
                     $explanation = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
                     $dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
                 }
@@ -1619,9 +1759,9 @@ if (bHasRight($surveyid, 'browse_response'))
                 //END OF GETTING CONDITIONS
 
                 //Alternate bgcolor for different groups
-                if (!isset($bgc)) {$bgc = "evenrow";}
-                if ($bgc == "evenrow") {$bgc = "oddrow";}
-                else {$bgc = "evenrow";}
+                if (!isset($bgc)) {$bgc = "even";}
+                if ($bgc == "even") {$bgc = "odd";}
+                else {$bgc = "even";}
 
                 $qid = $deqrow['qid'];
                 $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
@@ -1640,7 +1780,7 @@ if (bHasRight($surveyid, 'browse_response'))
                 {
                     $hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                     $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-                    $dataentryoutput .= "\t<img src='$imagefiles/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+                    $dataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
                 }
                 switch($deqrow['type'])
                 {
@@ -1684,7 +1824,7 @@ if (bHasRight($surveyid, 'browse_response'))
                     case "1": // multi scale^
                         $deaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
                         $dearesult = db_execute_assoc($deaquery);
-                        $dataentryoutput .='<table><tr><td></td><th>'.$clang->gT('Label 1').'</th><th>'.$clang->gT('Label 2').'</th></tr>';
+                        $dataentryoutput .='<table><tr><td></td><th>'.sprintf($clang->gT('Label %s'),'1').'</th><th>'.sprintf($clang->gT('Label %s'),'2').'</th></tr>';
 
                         while ($dearow = $dearesult->FetchRow())
                         {
@@ -1950,7 +2090,7 @@ if (bHasRight($surveyid, 'browse_response'))
                                 $chosen[]=array($thiscode, $thistext);
                             }
                             $ranklist .= "' /></font>\n";
-                            $ranklist .= "<img src='$imagefiles/cut.gif' alt='".$blang->gT("Remove this item")."' title='".$blang->gT("Remove this item")."' ";
+                            $ranklist .= "<img src='$imageurl/cut.gif' alt='".$blang->gT("Remove this item")."' title='".$blang->gT("Remove this item")."' ";
                             if (!isset($existing) || $i != $existing)
                             {
                                 $ranklist .= "style='display:none'";
@@ -2001,7 +2141,7 @@ if (bHasRight($surveyid, 'browse_response'))
                         $ranklist="";
                         unset($answers);
                         break;
-                    case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
+                    case "M": //Multiple choice checkbox (Quite tricky really!)
                         $qidattributes=getQuestionAttributes($deqrow['qid']);
                         if (trim($qidattributes['display_columns'])!='')
                         {
@@ -2075,7 +2215,7 @@ if (bHasRight($surveyid, 'browse_response'))
                         }
                         $dataentryoutput .= "</select>";
                         break;
-                    case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+                    case "P": //Multiple choice with comments checkbox + text
                         $dataentryoutput .= "<table border='0'>\n";
                         $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
                         $mearesult = db_execute_assoc($meaquery);
@@ -2104,6 +2244,78 @@ if (bHasRight($surveyid, 'browse_response'))
                             $dataentryoutput .= "</td>\n";
                             $dataentryoutput .= "\t</tr>\n";
                         }
+                        $dataentryoutput .= "</table>\n";
+                        break;
+                    case "|":
+                        $qidattributes = getQuestionAttributes($deqrow['qid']);
+
+                        // JS to update the json string
+                        $dataentryoutput .= "<script type='text/javascript'>
+
+                            function updateJSON".$fieldname."() {
+
+                                var jsonstr = '[';
+                                var i;
+                                var filecount = 0;
+
+                                for (i = 0; i < " . $qidattributes['max_num_of_files'] . "; i++)
+                                {
+                                    if ($('#".$fieldname."_file_'+i).val() != '')
+                                    {";
+
+                        if ($qidattributes['show_title'])
+                            $dataentryoutput .= "jsonstr += '{\"title\":\"'+$('#".$fieldname."_title_'+i).val()+'\",';";
+                        else
+                            $dataentryoutput .= "jsonstr += '{\"title\":\"\",';";
+
+                        
+                        if ($qidattributes['show_comment'])
+                            $dataentryoutput .= "jsonstr += '\"comment\":\"'+$('#".$fieldname."_comment_'+i).val()+'\",';";
+                        else
+                            $dataentryoutput .= "jsonstr += '\"comment\":\"\",';";
+
+                        $dataentryoutput .= "jsonstr += '\"name\":\"'+$('#".$fieldname."_file_'+i).val()+'\"}';";
+
+                        $dataentryoutput .= "jsonstr += ',';\n
+                            filecount++;
+                                    }
+                                }
+                                // strip trailing comma
+                                if (jsonstr.charAt(jsonstr.length - 1) == ',')
+                                jsonstr = jsonstr.substring(0, jsonstr.length - 1);
+                                
+                                jsonstr += ']';
+                                $('#" . $fieldname . "').val(jsonstr);
+                                $('#" . $fieldname . "_filecount').val(filecount);
+                            }
+                        </script>\n";
+
+                        $dataentryoutput .= "<table border='0'>\n";
+
+
+                        if ($qidattributes['show_title'] && $qidattributes['show_title'])
+                            $dataentryoutput .= "<tr><th>Title</th><th>Comment</th>";
+                        else if ($qidattributes['show_title'])
+                            $dataentryoutput .= "<tr><th>Title</th>";
+                        else if ($qidattributes['show_comment'])
+                            $dataentryoutput .= "<tr><th>Comment</th>";
+
+                        $dataentryoutput .= "<th>Select file</th></tr>\n";
+
+                        $maxfiles = $qidattributes['max_num_of_files'];
+                        for ($i = 0; $i < $maxfiles; $i++)
+                        {
+                            $dataentryoutput .= "<tr>\n";
+                            if ($qidattributes['show_title'])
+                                $dataentryoutput .= "<td align='center'><input type='text' id='".$fieldname."_title_".$i  ."' maxlength='100' onChange='updateJSON".$fieldname."()' /></td>\n";
+
+                            if ($qidattributes['show_comment'])
+                                $dataentryoutput .= "<td align='center'><input type='text' id='".$fieldname."_comment_".$i."' maxlength='100' onChange='updateJSON".$fieldname."()' /></td>\n";
+
+                            $dataentryoutput .= "<td align='center'><input type='file' name='".$fieldname."_file_".$i."' id='".$fieldname."_file_".$i."' onChange='updateJSON".$fieldname."()' /></td>\n</tr>\n";
+                        }
+                        $dataentryoutput .= "<tr><td align='center'><input type='hidden' name='".$fieldname."' id='".$fieldname."' value='' /></td>\n</tr>\n";
+                        $dataentryoutput .= "<tr><td align='center'><input type='hidden' name='".$fieldname."_filecount' id='".$fieldname."_filecount' value='' /></td>\n</tr>\n";
                         $dataentryoutput .= "</table>\n";
                         break;
                     case "N": //NUMERICAL TEXT

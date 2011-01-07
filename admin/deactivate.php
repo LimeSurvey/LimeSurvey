@@ -21,8 +21,8 @@ $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple de
 $deactivateoutput='';
 if (!isset($_POST['ok']) || !$_POST['ok'])
 {
-    $deactivateoutput .= "<br />\n<div class='messagebox'>\n";
-    $deactivateoutput .= "<div class='header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
+    $deactivateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
+    $deactivateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
     $deactivateoutput .= "\t<div class='warningheader'>\n";
     $deactivateoutput .= $clang->gT("Warning")."<br />".$clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING");
     $deactivateoutput .= "</div>\n";
@@ -107,8 +107,8 @@ else
 
     $deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
     $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$postsid}'>Admin</a>");
-    $deactivateoutput .= "<br />\n<div class='messagebox'>\n";
-    $deactivateoutput .= "<div class='header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
+    $deactivateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
+    $deactivateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";
     $deactivateoutput .= "\t<div class='successheader'>".$clang->gT("Survey Has Been Deactivated")."\n";
     $deactivateoutput .= "</div>\n";
     $deactivateoutput .= "\t<p>\n";
@@ -121,6 +121,19 @@ else
     }
     $deactivateoutput .= "\t<p>".$clang->gT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details")."</p>";
     $deactivateoutput .= "</div><br/>&nbsp;\n";
+    
+    $pquery = "SELECT savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
+    $presult=db_execute_assoc($pquery);
+    $prow=$presult->FetchRow(); //fetch savetimings value
+    if ($prow['savetimings'] == "Y")
+    {
+		$oldtable="{$dbprefix}survey_{$postsid}_timings";
+		$newtable="{$dbprefix}old_survey_{$postsid}_timings_{$date}";
+
+		$deactivatequery = db_rename_table($oldtable,$newtable);
+		$deactivateresult2 = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey timings table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was deactivated.<br /><br /><a href='$scriptname?sid={$postsid}'>".$clang->gT("Main Admin Screen")."</a>");
+		$deactivateresult=($deactivateresult && $deactivateresult2);
+}
 }
 
 ?>

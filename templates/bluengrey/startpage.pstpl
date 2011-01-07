@@ -8,15 +8,15 @@
 		<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
         {TEMPLATECSS}
 		
-		<!--[if lte IE 6]>
-				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
-		<![endif]-->
-		<!--[if IE 7]>
-				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
-		<![endif]-->
-		<!--[if IE 8]>
-				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
-		<![endif]-->
+<!--[if lte IE 6]>
+    		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
+<![endif]-->
+<!--[if IE 7]>
+    		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
+<![endif]-->
+<!--[if IE 8]>
+    		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
+<![endif]-->
 
     <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
     <style type="text/css" media="aural tty">
@@ -26,6 +26,7 @@
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
     <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 	</head>
-	<body>
-		<br/>
-		<div id="container">
+        <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+            <div class="outerframe">
+                <br/>
+                <div id="container">

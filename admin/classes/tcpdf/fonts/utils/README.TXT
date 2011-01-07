@@ -2,7 +2,12 @@ TCPDF Fonts
 
 TCPDF supports TrueTypeUnicode (UTF-8 Unicode), OpenTypeUnicode, TrueType, OpenType, Type1, CID-0 and Core (standard) fonts.
 
-There are two ways to use a new font: embedding it in the PDF or not. When a font is not embedded, it is searched in the system. The advantage is that the PDF file is lighter; on the other hand, if it is not available, a substitution font is used. So it is preferable to ensure that the needed font is installed on the client systems. If the file is to be viewed by a large audience, it is recommended to embed.
+There are two ways to use a new font: embedding it in the PDF (with or without subsetting) or not. When a font is not embedded, it is searched in the system. The advantage is that the PDF file is lighter; on the other hand, if it is not available, a substitution font is used. So it is preferable to ensure that the needed font is installed on the client systems. If the file is to be viewed by a large audience, it is recommended to embed.
+
+TCPDF support font subsetting to reduce the size of documents using large unicode font files.
+If you embed the whole font in the PDF, the person on the other end can make changes to it even if he didn't have your font.
+If you subset the font, file size of the PDF will be smaller but the person who receives your PDF would need to have your same font in order to make changes to your PDF.
+The option for enabling/disabling the font subsetting are explained on the source code documentation for methods SetFont() and AddFont(). 
 
 The fonts that could be not embedded are only the standard core fonts and CID-0 fonts.
 
@@ -95,6 +100,7 @@ Setting up a font for usage with TCPDF requires the following steps:
 
    4. Edit and copy resulting files by case:
           * For embedded fonts: copy the resulting .php, .z and .ctg.z (if available) files to the TCPDF fonts directory.
+          * For not-embedding the font, edit the .php file and comment the $file entry.
           * For CID-0 fonts (not embeddeed) you have to edit the .php file:
                 o change the font type to: $type='cidfont0';
                 o set the default font width by adding the line: $dw=1000;
@@ -103,7 +109,7 @@ Setting up a font for usage with TCPDF requires the following steps:
                       + // Chinese Simplified
                         $enc='UniCNS-UTF16-H';
                         $cidinfo=array('Registry'=>'Adobe', 'Ordering'=>'CNS1','Supplement'=>0);
-                        include(dirname(__FILE__).'/uni2cid_ac16.php');
+                        include(dirname(__FILE__).'/uni2cid_ac15.php');
 
                       + // Chinese Traditional
                         $enc='UniGB-UTF16-H';

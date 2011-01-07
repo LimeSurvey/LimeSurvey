@@ -5,13 +5,13 @@
          {SURVEYLISTHEADING}
 	</div>
 	<div class="survey-list">
-		<ul>{SURVEYLIST}</ul>
+                <ul>{SURVEYLIST}</ul>
 	</div>
 	<div class="survey-contact">
-		{SURVEYCONTACT}
+             {SURVEYCONTACT}
 	</div>
 	<div class="language-changer">
-	   <p>{LANGUAGECHANGER}</p>
+             <p>{LANGUAGECHANGER}</p>
 	    <br />
        <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey Survey Software" /></a>
        <br />

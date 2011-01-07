@@ -4,5 +4,5 @@
 		<td class='privacynote'>{PRIVACYMESSAGE}</td>
 		<td width="15%" >&nbsp;</td>
 	</tr>
-	<tr><td><br /> </td></tr>
+<tr><td><br /> </td></tr>
 </table>

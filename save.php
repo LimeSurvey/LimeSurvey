@@ -53,7 +53,6 @@
  2. saved table no longer exists.
  */
 
-
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 
@@ -97,7 +96,9 @@ if (isset($move) && $move == "movesubmit")
     $backok=null;
     $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
     $notvalidated=checkpregs($move,$backok);
-    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) )
+    $filenotvalidated = checkUploadedFileValidity($move, $backok);
+
+    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
     {
         $bFinalizeThisAnswer = true;
     }
@@ -120,16 +121,16 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
         $aQuotas=check_quota('return',$surveyid);
         if ($aQuotas !== false)
         {
-            if ($aQuotas!=false)  
+        if ($aQuotas!=false)  
+        {
+            foreach ($aQuotas as $aQuota)
             {
-                foreach ($aQuotas as $aQuota)
-                {
-                    if (isset($aQuota['status']) && $aQuota['status']=='matched') $bQuotaMatched=true;
-                }
+                if (isset($aQuota['status']) && $aQuota['status']=='matched') $bQuotaMatched=true;
             }
         }
-        if ($bQuotaMatched) $bFinalizeThisAnswer=false;         
-    }
+        }
+            if ($bQuotaMatched) $bFinalizeThisAnswer=false;        
+        }  
     
     if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
     {
@@ -158,7 +159,7 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
         if ($bQuotaMatched) 
         {
             check_quota('enforce',$surveyid);                    
-        }
+    }
     }
     elseif (isset($move))
     {
@@ -186,6 +187,10 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 
 
     }
+    if ($thissurvey['savetimings']=="Y" && $thissurvey['active'] == "Y")
+    {
+		set_answer_time();
+}
 }
 
 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
@@ -210,7 +215,14 @@ if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' 
 // Show 'SAVE FORM' only when click the 'Save so far' button the first time
 if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SESSION['scid']))
 {
-    showsaveform();
+    if($thissurvey['tokenanswerspersistence'] != 'Y')
+    {
+        showsaveform();
+    }
+    else
+    {
+    	$flashmessage = savedsilent();
+    };
 }
 elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
 {
@@ -391,6 +403,49 @@ function savedcontrol()
     }
 }
 
+/**
+ * savesilent() saves survey responses when the "Resume later" button
+ * is press but has no interaction. i.e. it does not ask for email,
+ * username or password or capture.
+ *
+ * @return string confirming successful save.
+ */
+function savedsilent()
+{
+    global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
+    submitanswer();
+    // Prepare email
+    $tokenentryquery = 'SELECT * from '.$dbprefix.'tokens_'.$surveyid.' WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
+    $tokenentryresult = db_execute_assoc($tokenentryquery);
+    $tokenentryarray = $tokenentryresult->FetchRow();
+
+    $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+    $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
+    $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
+    $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.","unescaped")."\n\n";
+    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
+    $language = $tokenentryarray['language'];
+
+    if($modrewrite)
+    {
+        $message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
+    }
+    else
+    {
+        $message .= "\n\n$publicurl/index.php?lang=$language&sid=$surveyid&token=$clienttoken";
+    };
+    if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
+    {
+        $emailsent="Y";
+    }
+    else
+    {
+        echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
+    };
+    return  $clang->gT('Your survey was successfully saved.');
+};
+
+
 //FUNCTIONS USED WHEN SUBMITTING RESULTS:
 function createinsertquery()
 {
@@ -407,7 +462,7 @@ function createinsertquery()
     if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
     {
         $inserts=array_unique($_SESSION['insertarray']);
-
+        
         $colnames_hidden=Array();
         foreach ($inserts as $value)
         {
@@ -431,6 +486,38 @@ function createinsertquery()
                     // therefore if no date was chosen in a date question the insert value has to be NULL
                     $values[]='NULL';
                 }
+
+                else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
+                {
+                    $fieldname = $fieldexists['fieldname'];
+                    $target = "upload/surveys/". $thissurvey['sid'] ."/files/";
+
+                    $json = $_SESSION[$value];
+                    $phparray = json_decode(stripslashes($json));
+
+                    // if the files have not been saved already,
+                    // move the files from tmp to the files folder
+                    
+                    if (file_exists("tmp/upload/".$phparray[0]->filename))
+                    {
+                        // move files from temp to files directory
+                        $tmp = "tmp/upload/";
+                        $target = "upload/surveys/". $thissurvey['sid'] . "/files/";
+    
+                        for ($i = 0; $i < count($phparray); $i++)
+                        {
+                            if (!rename($tmp . $phparray[$i]->filename, $target . $phparray[$i]->filename))
+                                echo "Error Moving file to its destination";
+
+                            $_SESSION[$value] = json_encode($phparray);
+                        }
+                    }
+                    $values[] = $connect->qstr($_SESSION[$value], get_magic_quotes_gpc());
+                    // filename is changed from undefined to a random value
+                    // update uses $_POST for saving responses
+                    $_POST[$value] = $_SESSION[$value];
+                }
+
                 else
                 {
                     // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
@@ -439,9 +526,10 @@ function createinsertquery()
                          $_SESSION[$value]='';                               
                     }
                     
-                    elseif ($fieldexists['type']=='N') //sanitize numerical fields
+                    elseif ($fieldexists['type']=='N' || $fieldexists['type']=='K') //sanitize numerical fields
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
+                        
                     }
                     elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
                     {
@@ -453,10 +541,9 @@ function createinsertquery()
                     }
                     $values[]=$connect->qstr($_SESSION[$value],get_magic_quotes_gpc());
                 }
-
             }
         }
-
+                
         if ($thissurvey['datestamp'] == "Y")
         {
             $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
@@ -465,9 +552,9 @@ function createinsertquery()
 
 
         // First compute the submitdate
-        if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+        if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
         {
-            // In case of anonymous answers survey with no datestamp
+            // In case of anonymized responses survey with no datestamp
             // then the the answer submutdate gets a conventional timestamp
             // 1st Jan 1980
             $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
@@ -556,7 +643,6 @@ function createinsertquery()
                 {
                     $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
                 }
-
                 // Resets fields hidden due to conditions
                 if ($deletenonvalues == 1)
                 {
@@ -600,7 +686,7 @@ function createinsertquery()
                             {
                                 $qfield="''";
                             }
-                            elseif ($fieldinfo['type']=='N') //sanitize numerical fields
+                            elseif ($fieldinfo['type']=='N' || $fieldinfo['type']=='K') //sanitize numerical fields
                             {
                                 $qfield=db_quoteall(sanitize_float($_POST[$field]));
                             }
@@ -613,10 +699,10 @@ function createinsertquery()
                             else
                             {
                                 $qfield = db_quoteall($_POST[$field],true);
-                            }
-                            $query .= db_quote_id($field)." = ".$qfield.",";
                         }
+                            $query .= db_quote_id($field)." = ".$qfield.",";
                     }
+                }
                 }
 
 
@@ -634,9 +720,6 @@ function createinsertquery()
                 }
             }
         }
-        //DEBUG START
-        //echo $query;
-        //DEBUG END
         return $query;
     }
     else
@@ -666,10 +749,10 @@ function submitanswer()
     global $thissurvey,$timeadjust;
     global $surveyid, $connect, $clang, $move;
 
-    if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+    if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
     {
-        // In case of anonymous answers survey with no datestamp
-        // then the the answer submutdate gets a conventional timestamp
+        // In case of anonymized responses survey with no datestamp
+        // then the the answer submitdate gets a conventional timestamp
         // 1st Jan 1980
         $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
     }
@@ -711,5 +794,49 @@ function array_remval($val, &$arr)
     return $array_remval;
 }
 
+/**
+ * This functions saves the answer time for question/group and whole survey.
+ * [ It compares current time with the time in $_POST['start_time'] ]
+ * The times are saved in table: {prefix}{surveytable}_timings
+ * @return void
+ */
+function set_answer_time()
+{
+	global $connect, $thissurvey;
+    if (isset($_POST['lastanswer']))
+    {
+        $setField = $_POST['lastanswer'];
+    }
+	$passedTime = time() - $_POST['start_time'];
 
+	if(!isset($setField))
+		$setField = $_POST['lastgroup'];
+	if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
+		if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
+			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
+				 ."id, interviewTime)"			 
+				 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
+		}else{	// UPDATE
+			$query = "UPDATE {$thissurvey['tablename']}_timings SET "
+				."interviewTime = interviewTime" ." + " .$passedTime
+				." WHERE id = " .$_SESSION['srid'];
+		}
+		$connect->execute($query);
+		return;
+	}
+	
+	$setField .= "time";
+	//saving the times
+	if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
+		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
+			 ."id, interviewTime, " .db_quote_id($setField) .")"			 
+			 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
+	}else{	// UPDATE
+		$query = "UPDATE {$thissurvey['tablename']}_timings SET "
+			."interviewTime = interviewTime" ." + " .$passedTime .","
+			.db_quote_id($setField) ." = " .db_quote_id($setField) ." + " .$passedTime 
+			." WHERE id = " .$_SESSION['srid'];
+	}
+	$connect->execute($query);
+}
 ?>

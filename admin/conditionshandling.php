@@ -54,9 +54,41 @@ if (!isset($p_canswers))
         }
     }
 }
+
+// this array will be used soon,
+// to explain wich conditions is used to evaluate the question
+if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
+{
+    $method = array(            
+            "<"  => $clang->gT("Less than"),
+            "<=" => $clang->gT("Less than or equal to"),
+            "==" => $clang->gT("equals"),
+            "!=" => $clang->gT("Not equal to"),
+            ">=" => $clang->gT("Greater than or equal to"),
+            ">"  => $clang->gT("Greater than"),
+            "RX" => $clang->gT("Regular expression"),
+            "a<b"  => $clang->gT("Less than (Strings)"),
+            "a<=b" => $clang->gT("Less than or equal to (Strings)"),
+            "a>=b" => $clang->gT("Greater than or equal to (Strings)"),
+            "a>b"  => $clang->gT("Greater than (Strings)")
+            );
+}
+else
+{
+    $method = array(            
+            "<"  => $clang->gT("Less than"),
+            "<=" => $clang->gT("Less than or equal to"),
+            "==" => $clang->gT("equals"),
+            "!=" => $clang->gT("Not equal to"),
+            ">=" => $clang->gT("Greater than or equal to"),
+            ">"  => $clang->gT("Greater than"),
+            "RX" => $clang->gT("Regular expression")
+            );
+}
+
 if (isset($_POST['method']))
 {
-    if (!in_array($_POST['method'], array('<','<=','>','>=','==','!=','RX')))
+    if (!in_array($_POST['method'], array_keys($method)))
     {
         $p_method = "==";
     }
@@ -82,8 +114,8 @@ include_once("database.php");
 //MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 {
-    $conditionsoutput = "<div class='header'>".$clang->gT("Conditions manager")."</div>\n"
-    ."<div class='messagebox'>\n"
+    $conditionsoutput = "<div class='header ui-widget-header'>".$clang->gT("Conditions manager")."</div>\n"
+    ."<div class='messagebox ui-corner-all'>\n"
     ."\t<div class='warningheader'>".$clang->gT("Error")."</div><br />"
     .$clang->gT("You have not selected a survey")."<br /><br />"
     ."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
@@ -94,8 +126,8 @@ if (!isset($surveyid) || !$surveyid)
 //MAKE SURE THAT THERE IS A QID
 if (!isset($qid) || !$qid)
 {
-    $conditionsoutput = "<div class='header'>".$clang->gT("Conditions manager")."</div>\n"
-    ."<div class='messagebox'>\n"
+    $conditionsoutput = "<div class='header ui-widget-header'>".$clang->gT("Conditions manager")."</div>\n"
+    ."<div class='messagebox ui-corner-all'>\n"
     ."\t<div class='warningheader'>".$clang->gT("Error")."</div><br />"
     .$clang->gT("You have not selected a question")."<br /><br />"
     ."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
@@ -168,11 +200,11 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
 
                 if ($count_caseinsensitivedupes == 0)
                 {
-                    $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-                        . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
-                    $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
-                }
+                $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
+                . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
+                $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
             }
+        }
         }
 
         unset($posted_condition_value);
@@ -966,22 +998,22 @@ $conditionsoutput_main_content .= "\t<tr>\n"
 
 // Now we have enough information, we can create the menubar and question Navigator
 $conditionsoutput_menubar .= "\t<div class='menubar'>"
-."<div class='menubar-title'>"
+."<div class='menubar-title ui-widget-header'>"
 ."<strong>".$clang->gT("Conditions designer").":</strong> "
 ."</div>\n";
 $conditionsoutput_menubar .= "\t<div class='menubar-main'>\n"
 ."<div class='menubar-left'>\n"
 ."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid$extraGetParams', '_top')\" title='".$clang->gTview("Return to survey administration")."'>"
-."<img name='HomeButton' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
-."<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
-."<img src='$imagefiles/seperator.gif' alt='' />\n"
+."<img name='HomeButton' src='$imageurl/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+."<img src='$imageurl/blank.gif' alt='' width='11' />\n"
+."<img src='$imageurl/seperator.gif' alt='' />\n"
 ."<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\" title='".$clang->gTview("Show conditions for this question")."' >"
-."<img name='SummaryButton' src='$imagefiles/summary.png' alt='".$clang->gT("Show conditions for this question")."' /></a>\n"
-."<img src='$imagefiles/seperator.gif' alt='' />\n"
+."<img name='SummaryButton' src='$imageurl/summary.png' alt='".$clang->gT("Show conditions for this question")."' /></a>\n"
+."<img src='$imageurl/seperator.gif' alt='' />\n"
 ."<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=editconditionsform', '_top')\" title='".$clang->gTview("Add and edit conditions")."' >"
-."<img name='ConditionAddButton' src='$imagefiles/conditions_add.png' alt='".$clang->gT("Add and edit conditions")."' /></a>\n"
+."<img name='ConditionAddButton' src='$imageurl/conditions_add.png' alt='".$clang->gT("Add and edit conditions")."' /></a>\n"
 ."<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=copyconditionsform', '_top')\" title='".$clang->gTview("Copy conditions")."' >"
-."<img name='ConditionCopyButton' src='$imagefiles/conditions_copy.png' alt='".$clang->gT("Copy conditions")."' /></a>\n";
+."<img name='ConditionCopyButton' src='$imageurl/conditions_copy.png' alt='".$clang->gT("Copy conditions")."' /></a>\n";
 
 
 
@@ -1034,13 +1066,13 @@ foreach ($postrows as $row)
 $quesitonNavOptions .= "</optgroup>\n";
 
 $conditionsoutput_menubar .="\t</div><div class='menubar-right'>\n"
-."<img width=\"11\" alt=\"\" src=\"$imagefiles/blank.gif\"/>\n"
+."<img width=\"11\" alt=\"\" src=\"$imageurl/blank.gif\"/>\n"
 ."<font class=\"boxcaption\">".$clang->gT("Questions").":</font>\n"
 ."<select id='questionNav' onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">$quesitonNavOptions</select>\n"
-."<img hspace=\"0\" border=\"0\" alt=\"\" src=\"$imagefiles/seperator.gif\"/>\n"
-."<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey manual")."\">"
-."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
-."alt='". $clang->gT("LimeSurvey manual")."' /></a>";
+."<img hspace=\"0\" border=\"0\" alt=\"\" src=\"$imageurl/seperator.gif\"/>\n"
+."<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey online manual")."\">"
+."<img src='$imageurl/showhelp.png' name='ShowHelp' title=''"
+."alt='". $clang->gT("LimeSurvey online manual")."' /></a>";
 
 
 $conditionsoutput_menubar .= "\t</div></div></div>\n"
@@ -1086,7 +1118,7 @@ if (isset($cquestions))
 }
 
 //  record a JS variable to let jQuery know if survey is Anonymous
-if ($thissurvey['private'] == 'Y')
+if ($thissurvey['anonymized'] == 'Y')
 {
     $conditionsoutput_main_content .= "isAnonymousSurvey = true;";
 }
@@ -1149,7 +1181,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
             $conditionsoutput_main_content .= "<a href='#' "
             . " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')) {document.getElementById('deleteallconditions').submit();}\""
             ." title='".$clang->gTview("Delete all conditions")."' >"
-            ." <img src='$imagefiles/conditions_deleteall.png'  alt='".$clang->gT("Delete all conditions")."' name='DeleteAllConditionsImage' /></a>\n";
+            ." <img src='$imageurl/conditions_deleteall_16.png'  alt='".$clang->gT("Delete all conditions")."' name='DeleteAllConditionsImage' /></a>\n";
         }
 
         if ($scenariocount > 1)
@@ -1157,7 +1189,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
             $conditionsoutput_main_content .= "<a href='#' "
             . " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js")."')) {document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}\""
             ." title='".$clang->gTview("Renumber scenario automatically")."' >"
-            ." <img src='$imagefiles/scenario_renumber.png'  alt='".$clang->gT("Renumber scenario automatically")."' name='renumberscenarios' /></a>\n";
+            ." <img src='$imageurl/scenario_renumber.png'  alt='".$clang->gT("Renumber scenario automatically")."' name='renumberscenarios' /></a>\n";
         }
     }
     else
@@ -1221,13 +1253,13 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
                 $conditionsoutput_main_content .= "\t<a href='#' "
                 ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')) {document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}\""
                 ." title='".$clang->gTview("Delete this scenario")."' >"
-                ." <img src='$imagefiles/scenario_delete.png' ".$clang->gT("Delete this scenario")." name='DeleteWholeGroup' /></a>\n";
+                ." <img src='$imageurl/scenario_delete.png' ".$clang->gT("Delete this scenario")." name='DeleteWholeGroup' /></a>\n";
 
                 $conditionsoutput_main_content .= "\t<a href='#' "
                 ." id='editscenariobtn{$scenarionr['scenario']}'"
                 ." onclick=\"$('#editscenario{$scenarionr['scenario']}').toggle('slow');\""
                 ." title='".$clang->gTview("Edit scenario")."' >"
-                ." <img src='$imagefiles/scenario_edit.png' alt='".$clang->gT("Edit scenario")."' name='DeleteWholeGroup' /></a>\n";
+                ." <img src='$imageurl/scenario_edit.png' alt='".$clang->gT("Edit scenario")."' name='DeleteWholeGroup' /></a>\n";
 
             }
 
@@ -1278,17 +1310,6 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
             $conditionscounttoken=$resulttoken->RecordCount();
 
             $conditionscount=$conditionscount+$conditionscounttoken;
-
-            // this array will be used soon,
-            // to explain wich conditions is used to evaluate the question
-            $method = array( "<"  => $clang->gT("Less than"),
-					"<=" => $clang->gT("Less than or equal to"),
-					"==" => $clang->gT("equals"),
-					"!=" => $clang->gT("Not equal to"),
-					">=" => $clang->gT("Greater than or equal to"),
-					">"  => $clang->gT("Greater than"),
-					"RX" => $clang->gT("Regular expression")
-            );
 
             if ($conditionscount > 0)
             {
@@ -1355,7 +1376,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
                     ."\t<font size='1' face='verdana'>\n";
 
                     $leftOperandType = 'unknown'; // prevquestion, tokenattr
-                    if ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
+                    if ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
                     {
                         $leftOperandType = 'tokenattr';
                         $aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
@@ -1428,7 +1449,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
 
                         $conditionsoutput_main_content .= "".html_escape($matchedSGQAText)."\n";
                     }
-                    elseif ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
+                    elseif ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
                     {
                         $rightOperandType = 'tokenAttr';
                         $aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
@@ -1482,10 +1503,10 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
                         ."<a href='#' "
                         ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) {\$('#editModeTargetVal{$rows['cid']}').remove();\$('#cquestions{$rows['cid']}').remove();document.getElementById('conditionaction{$rows['cid']}').submit();}\""
                         ." title='".$clang->gTview("Delete this condition")."' >"
-                        ." <img src='$imagefiles/conditions_delete.png'  alt='".$clang->gT("Delete this condition")."' name='DeleteThisCondition' title='' /></a>\n"
+                        ." <img src='$imageurl/conditions_delete_16.png'  alt='".$clang->gT("Delete this condition")."' name='DeleteThisCondition' title='' /></a>\n"
                         ."<a href='#' "
                         ." onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";document.getElementById(\"conditionaction{$rows['cid']}\").submit();'>"
-                        ." <img src='$imagefiles/conditions_edit.png'  alt='".$clang->gT("Edit this condition")."' name='EditThisCondition' /></a>\n"
+                        ." <img src='$imageurl/conditions_edit_16.png'  alt='".$clang->gT("Edit this condition")."' name='EditThisCondition' /></a>\n"
                         ."\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
                         ."\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
                         ."\t<input type='hidden' name='scenario' value='{$rows['scenario']}' />\n"
@@ -1583,13 +1604,13 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
     $conditionsoutput_main_content .= "<tr class=''><td colspan='3'>\n"
     ."<form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
 
-    $conditionsoutput_main_content .= "<div class='header'>".$clang->gT("Copy conditions")."</div>\n";
+    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
 
 
     //CopyConditionsMessage
     if (isset ($CopyConditionsMessage))
     {
-        $conditionsoutput_main_content .= "<div class='messagebox'>\n"
+        $conditionsoutput_main_content .= "<div class='messagebox ui-corner-all'>\n"
         ."$CopyConditionsMessage\n"
         ."</div>\n";
     }
@@ -1645,7 +1666,7 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
     }
     else
     {
-        $conditionsoutput_main_content .= "<div class='messagebox'>\n"
+        $conditionsoutput_main_content .= "<div class='messagebox ui-corner-all'>\n"
         ."<div class='partialheader'>".$clang->gT("This survey's questions don't use conditions")."</div><br />\n"
         ."</div>\n";
     }
@@ -1689,7 +1710,7 @@ $subaction == "editthiscondition" || $subaction == "delete")
     {
         $mytitle = $clang->gT("Add condition");
     }
-    $conditionsoutput_main_content .= "<div class='header'>".$mytitle."</div>\n";
+    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$mytitle."</div>\n";
 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1698,7 +1719,7 @@ $subaction == "editthiscondition" || $subaction == "delete")
     ( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
     {
         $scenarioAddBtn = "\t<a id='scenarioaddbtn' href='#' title='".$clang->gTview('Add scenario')."' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\">"
-        ."<img src='$imagefiles/plus.png' alt='".$clang->gT('Add scenario')."' /></a>\n";
+        ."<img src='$imageurl/plus.png' alt='".$clang->gT('Add scenario')."' /></a>\n";
         $scenarioTxt = "<span id='defaultscenariotxt'>".$clang->gT("Default scenario")."</span>";
         $scenarioInputStyle = "style = 'display: none;'";
     }
@@ -1782,7 +1803,12 @@ $subaction == "editthiscondition" || $subaction == "delete")
     $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
     ."<div class='condition-tbl-left'>".$clang->gT("Comparison operator")."</div>\n"
     ."<div class='condition-tbl-right'>\n"
-    ."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n"
+    ."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n";
+    foreach ($method as $methodCode => $methodTxt)
+    {
+        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'>".$methodTxt."</option>\n";
+    }
+/**
     ."\t<option value='<'>".$clang->gT("Less than")."</option>\n"
     ."\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
     ."\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"
@@ -1790,7 +1816,12 @@ $subaction == "editthiscondition" || $subaction == "delete")
     ."\t<option value='>='>".$clang->gT("Greater than or equal to")."</option>\n"
     ."\t<option value='>'>".$clang->gT("Greater than")."</option>\n"
     ."\t<option value='RX'>".$clang->gT("Regular expression")."</option>\n"
-    ."</select>\n"
+    ."\t<option value='a<b'>".$clang->gT("Less than (Strings)")."</option>\n"
+    ."\t<option value='a<=b'>".$clang->gT("Less than or equal to (Strings)")."</option>\n"
+    ."\t<option value='a>=b'>".$clang->gT("Greater than or equal to (Strings)")."</option>\n"
+    ."\t<option value='a>b'>".$clang->gT("Greater than (Strings)")."</option>\n"
+**/
+    $conditionsoutput_main_content .="</select>\n"
     ."</div>\n"
     ."</div>\n";
 
@@ -1906,8 +1937,6 @@ $subaction == "editthiscondition" || $subaction == "delete")
     $js_admin_includes[]= $homeurl.'/scripts/conditions.js';
     $js_admin_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
     $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
-
-    //	$css_admin_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
 
     if ($subaction == "editthiscondition" && isset($p_cid))
     {
@@ -2067,7 +2096,7 @@ $conditionsoutput = $conditionsoutput_header
 
 function showSpeaker($hinttext)
 {
-    global $clang, $imagefiles, $max;
+    global $clang, $imageurl, $max;
 
     if(!isset($max))
     {
@@ -2086,7 +2115,7 @@ function showSpeaker($hinttext)
         $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
         ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />"
         ." \"$shortstring...\" </span>"
-        ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+        ."<img style='cursor: hand' src='$imageurl/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
         ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
     }
     else

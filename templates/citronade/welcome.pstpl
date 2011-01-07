@@ -1,0 +1,6 @@
+{CHECKJAVASCRIPT}
+<div id="welcome">
+	<p id='surveydescription' class="text">{SURVEYDESCRIPTION}</p>
+	<p id='surveywelcome' class="text">{WELCOME}</p>
+	<p id="therearexquestions" class="text">{THEREAREXQUESTIONS}</p>
+</div>

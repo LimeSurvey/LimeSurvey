@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: export_structure_csv.php 8592 2010-04-14 12:23:25Z machaven $
+ * $Id: export_structure_xml.php 9607 2010-12-08 22:59:51Z azammitdcarf $
  */
 
 
@@ -116,7 +116,7 @@ function getXMLStructure($xmlwriter, $exclude=array())
            WHERE sid=$surveyid and parent_qid>0
            ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
-    
+
     //Question attributes
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
     if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType =='mssqlnative')

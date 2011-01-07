@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: export_structure_csv.php 5747 2008-10-07 19:40:33Z c_schmitz $
+ * $Id: export_structure_lsrc.php 9586 2010-12-06 03:08:07Z c_schmitz $
  */
 
 

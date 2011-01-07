@@ -20,7 +20,7 @@
 function db_upgrade($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
-    global $modifyoutput, $databasename, $databasetabletype;
+    global $modifyoutput, $databasename, $databasetabletype, $connect;
     if ($oldversion < 111) {
         // Language upgrades from version 110 to 111 since the language names did change
 
@@ -380,11 +380,202 @@ function db_upgrade($oldversion) {
                               sessdata LONGTEXT,
                               PRIMARY KEY ( sesskey ) ,
                               INDEX sess2_expiry( expiry ),
-                              INDEX sess2_expireref( expireref ))"); echo $modifyoutput; flush();          
+                              INDEX sess2_expireref( expireref )) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();   
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+
+        
+        
+
+
     }
 
+    if ($oldversion < 145)
+    {
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `savetimings` CHAR(1) NULL default 'N' AFTER `format`"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `showXquestions` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `showgroupinfo` CHAR(1) NULL default 'B'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `shownoanswer` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `showqnumcode` CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bouncetime` BIGINT(20) NULL "); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceprocessing` VARCHAR(1) NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccounttype` VARCHAR(4) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccounthost` VARCHAR(200) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountpass` VARCHAR(100) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountencryption` VARCHAR(3) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `bounceaccountuser` VARCHAR(200) NULL"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `showwelcome` CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `showprogress` char(1) default 'Y'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `allowjumps` char(1) default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `navigationdelay` tinyint(2) default '0'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `nokeyboard` char(1) default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `alloweditaftercompletion` char(1) default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE `prefix_survey_permissions` (
+                                `sid` int(10) unsigned NOT NULL,
+                                `uid` int(10) unsigned NOT NULL,
+                                `permission` varchar(20) NOT NULL,
+                                `create_p` tinyint(1) NOT NULL default '0',
+                                `read_p` tinyint(1) NOT NULL default '0',
+                                `update_p` tinyint(1) NOT NULL default '0',
+                                `delete_p` tinyint(1) NOT NULL default '0',
+                                `import_p` tinyint(1) NOT NULL default '0',
+                                `export_p` tinyint(1) NOT NULL default '0',
+                                PRIMARY KEY (sid, uid, permission)
+                            ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+                            
+		upgrade_surveypermissions_table145();
+        
+        // drop the old survey rights table
+        modify_database("", "DROP TABLE `prefix_surveys_rights`"); echo $modifyoutput; flush();
+        
+        // Add new fields for email templates
+        modify_database("", "ALTER TABLE `prefix_surveys_languagesettings` ADD 
+                             (`email_admin_notification_subj`  VARCHAR(255) NULL,    
+                              `email_admin_notification` TEXT NULL,        
+                              `email_admin_responses_subj` VARCHAR(255) NULL,    
+                              `email_admin_responses` TEXT NULL)");
+        
+        //Add index to questions table to speed up subquestions
+        modify_database("", "create INDEX parent_qid_idx on prefix_questions( parent_qid );"); echo $modifyoutput; flush();   
+        
+                   
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `emailnotificationto` text DEFAULT NULL AFTER `emailresponseto`"); echo $modifyoutput; flush();
+        upgrade_survey_table145();                                           
+        modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `notification`"); echo $modifyoutput; flush();
+                   
+        modify_database("","ALTER TABLE `prefix_conditions` CHANGE `method` `method` CHAR( 5 ) NOT NULL default '';"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `private` `anonymized` char(1) collate utf8_unicode_ci NOT NULL default 'N';"); echo $modifyoutput; flush();
+        
+        
+        //now we clean up things that were not properly set in previous DB upgrades
 
+        modify_database("","UPDATE `prefix_answers` SET `answer`='' where `answer` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_answers` CHANGE `answer` `answer` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_answers` CHANGE `assessment_value` `assessment_value` int(11) NOT NULL default '0' AFTER `answer`;"); echo $modifyoutput; flush();
+
+        modify_database("","UPDATE `prefix_assessments` SET `scope`='' where `scope` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` CHANGE `scope` `scope` varchar(5) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_assessments` SET `name`='' where `name` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` CHANGE `name` `name` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_assessments` SET `message`='' where `message` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` CHANGE `message` `message` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_assessments` SET `minimum`='' where `minimum` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` CHANGE `minimum` `minimum` varchar(50) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_assessments` SET `maximum`='' where `maximum` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` CHANGE `maximum` `maximum` varchar(50) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+        
+        modify_database("","ALTER TABLE `prefix_assessments` CHANGE `id` `id` int(11) NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` DROP PRIMARY KEY;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` ADD PRIMARY KEY (`id`,`language`);"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_assessments` CHANGE `id` `id` int(11) NOT NULL auto_increment;"); echo $modifyoutput; flush();
+
+        modify_database("","ALTER TABLE `prefix_conditions` CHANGE `cfieldname` `cfieldname` varchar(50) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+                                                                                                                  
+        modify_database("","ALTER TABLE `prefix_defaultvalues` CHANGE `specialtype` `specialtype` varchar(20) collate utf8_unicode_ci NOT NULL default '' AFTER `qid`;"); echo $modifyoutput; flush();
+
+        modify_database("","UPDATE `prefix_groups` SET `group_name`='' where `group_name` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_groups` CHANGE `group_name` `group_name` varchar(100) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+
+        modify_database("","UPDATE `prefix_labels` SET `code`='' where `code` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_labels` CHANGE `code` `code` varchar(5) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_labels` CHANGE `language` `language` varchar(20) collate utf8_unicode_ci NOT NULL default 'en' AFTER `assessment_value`;"); echo $modifyoutput; flush();
+        
+        modify_database("","UPDATE `prefix_labelsets` SET `label_name`='' WHERE `label_name` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_labelsets` CHANGE `label_name` `label_name` varchar(100) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+
+        modify_database("","ALTER TABLE `prefix_questions` CHANGE `parent_qid` `parent_qid` int(11) NOT NULL default '0' AFTER `qid`;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_questions` SET `type`='T' where `type` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_questions` CHANGE `type` `type` char(1) collate utf8_unicode_ci NOT NULL default 'T';"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_questions` SET `title`='' where `type` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_questions` CHANGE `title` `title` varchar(20) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_questions` SET `question`='' where `question` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_questions` CHANGE `question` `question` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_questions` SET `other`='N' where `other` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_questions` CHANGE `other` `other` char(1) collate utf8_unicode_ci NOT NULL default 'N';"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_questions` CHANGE `mandatory` `mandatory` char(1) collate utf8_unicode_ci default NULL;"); echo $modifyoutput; flush();
+
+        modify_database("","ALTER TABLE `prefix_question_attributes` CHANGE `attribute` `attribute` varchar(50) collate utf8_unicode_ci default NULL;"); echo $modifyoutput; flush();
+
+        modify_database("","ALTER TABLE `prefix_quota` CHANGE `qlimit` `qlimit` int(8) default NULL AFTER `name`;"); echo $modifyoutput; flush();
+
+        modify_database("","UPDATE `prefix_saved_control` SET `identifier`='' where `identifier` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_saved_control` CHANGE `identifier` `identifier` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_saved_control` SET `access_code`='' where `access_code` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_saved_control` CHANGE `access_code` `access_code` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_saved_control` CHANGE `email` `email` varchar(320) collate utf8_unicode_ci default NULL;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_saved_control` SET `ip`='' where `ip` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_saved_control` CHANGE `ip` `ip` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_saved_control` SET `saved_thisstep`='' where `access_code` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_saved_control` CHANGE `saved_thisstep` `saved_thisstep` text collate utf8_unicode_ci NOT NULL;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_saved_control` SET `status`='' where `access_code` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_saved_control` CHANGE `status` `status` char(1) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_saved_control` SET `saved_date`='0000-00-00 00:00:00' where `saved_date` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_saved_control` CHANGE `saved_date` `saved_date` datetime NOT NULL;"); echo $modifyoutput; flush();
+
+        modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='' where `stg_value` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_settings_global` CHANGE `stg_value` `stg_value` varchar(255) collate utf8_unicode_ci NOT NULL default ''"); echo $modifyoutput; flush();
+        
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `admin` `admin` varchar(50) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_surveys` SET `active`='N' where `active` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `active` `active` char(1) collate utf8_unicode_ci NOT NULL default 'N';"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `startdate` `startdate` datetime default NULL AFTER `expires`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `adminemail` `adminemail` varchar(320) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `anonymized` `anonymized` char(1) collate utf8_unicode_ci NOT NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `faxto` `faxto` varchar(20) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `format` `format` char(1) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `language` `language` varchar(50) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `additional_languages` `additional_languages` varchar(255) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `printanswers` `printanswers` char(1) collate utf8_unicode_ci default 'N' AFTER `allowprev`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `publicstatistics` `publicstatistics` char(1) collate utf8_unicode_ci default 'N' after `datecreated`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `publicgraphs` `publicgraphs` char(1) collate utf8_unicode_ci default 'N' AFTER `publicstatistics`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `assessments` `assessments` char(1) collate utf8_unicode_ci default 'N' AFTER `tokenanswerspersistence`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `usetokens` `usetokens` char(1) collate utf8_unicode_ci default 'N' AFTER `usecaptcha`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `bounce_email` `bounce_email` varchar(320) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `tokenlength` `tokenlength` tinyint(2) default '15'"); echo $modifyoutput; flush();
+
+        modify_database("","UPDATE `prefix_surveys_languagesettings` SET `surveyls_title`='' where `surveyls_title` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_title` `surveyls_title` varchar(200) collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_endtext` `surveyls_endtext` text collate utf8_unicode_ci AFTER `surveyls_welcometext`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_url` `surveyls_url` varchar(255) collate utf8_unicode_ci default NULL   AFTER `surveyls_endtext`"); echo $modifyoutput; flush();
+
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_urldescription` `surveyls_urldescription` varchar(255) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_email_invite_subj` `surveyls_email_invite_subj` varchar(255) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_email_remind_subj` `surveyls_email_remind_subj` varchar(255) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_email_register_subj` `surveyls_email_register_subj` varchar(255) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_email_confirm_subj` `surveyls_email_confirm_subj` varchar(255) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` CHANGE `surveyls_dateformat` `surveyls_dateformat` int(10) unsigned NOT NULL default '1'"); echo $modifyoutput; flush();
+
+        modify_database("","UPDATE `prefix_users` SET `users_name`='' where `users_name` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` CHANGE `users_name` `users_name` varchar(64) collate utf8_unicode_ci NOT NULL default ''"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_users` SET `full_name`='' where `full_name` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` CHANGE `full_name` `full_name` varchar(50) collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` CHANGE `lang` `lang` varchar(20) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` CHANGE `email` `email` varchar(320) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` CHANGE `superadmin` `superadmin` tinyint(1) NOT NULL default '0' AFTER `delete_user`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` CHANGE `htmleditormode` `htmleditormode` varchar(7) collate utf8_unicode_ci default 'default'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` CHANGE `dateformat` `dateformat` int(10) unsigned NOT NULL default '1'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` DROP INDEX `email`;"); 
+
+        modify_database("","UPDATE `prefix_user_groups` SET `name`='' where `name` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_user_groups` CHANGE `name` `name` varchar(20) collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();
+        
+        modify_database("","UPDATE `prefix_user_groups` SET `description`='' where `description` is null;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_user_groups` CHANGE `description` `description` text collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();
+
+        modify_database("","ALTER TABLE `prefix_user_in_groups` DROP INDEX `user_in_groups_idx1`"); // Don't show output because this key might not exist
+        modify_database("","ALTER TABLE `prefix_user_in_groups` ADD PRIMARY KEY (`ugid`, `uid`)"); // Don't show output because this might already be set
+        modify_database("", "ALTER TABLE  `prefix_surveys_languagesettings` ADD  `surveyls_numberformat` int(11) NOT NULL DEFAULT 0 AFTER  `surveyls_dateformat`"); echo $modifyoutput; flush();
+        modify_database("", "CREATE TABLE `prefix_failed_login_attempts` (
+                              `id` int(11) NOT NULL AUTO_INCREMENT,
+                              `ip` varchar(37) NOT NULL,
+                              `last_attempt` varchar(20) NOT NULL,
+                              `number_attempts` int(11) NOT NULL,
+                              PRIMARY KEY (`id`)
+                            ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+        
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+
+    
     echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;
 }
@@ -592,7 +783,7 @@ function upgrade_tables143()
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}
     else
-    {                
+    {
         while ( $row = $answerresult->FetchRow() )
         {
             
@@ -629,7 +820,7 @@ function upgrade_tables143()
     }
     // Sanitize data
     modify_database("","delete {$dbprefix}answers from {$dbprefix}answers LEFT join {$dbprefix}questions ON {$dbprefix}answers.qid={$dbprefix}questions.qid where {$dbprefix}questions.type in ('1','F','H','M','P','W','Z')"); echo $modifyoutput; flush();
-    
+
     // Convert labels to answers
     $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
     $answerresult = db_execute_assoc($answerquery);
@@ -700,7 +891,7 @@ function upgrade_tables143()
         }
     }
 
-             
+
 
     $updatequery = "update {$dbprefix}questions set type='!' where type='W'";
     modify_database("",$updatequery); echo $modifyoutput; flush();

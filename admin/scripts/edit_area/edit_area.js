@@ -228,7 +228,7 @@
 		if( t.isSafari ){
 			t.editor_area.style.position	= "absolute";
 			if( t.isSafari < 5)
-				a.style.marginLeft		="-3px";
+			a.style.marginLeft		="-3px";
 			if( t.isSafari < 3.2 ) // Safari 3.0 (3.1?)
 				a.style.marginTop	="1px";
 		}
@@ -384,8 +384,8 @@
 				}
 				destDiv.innerHTML= destDiv.innerHTML + newLines;
 				if(this.settings['word_wrap']){
-					this.fixLinesHeight( this.textarea.value, start, -1 );
-				}
+				this.fixLinesHeight( this.textarea.value, start, -1 );
+			}
 			}
 		
 			//4) be sure the text is well displayed

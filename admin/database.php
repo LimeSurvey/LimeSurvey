@@ -27,10 +27,11 @@ if (get_magic_quotes_gpc())
 {$_POST  = array_map('recursive_stripslashes', $_POST);}
 
 
+
 /**
  * Gets the maximum question_order field value for a group
  *
- * @param mixed $gid
+ * @param mixed $gid  The id of the group     
  * @return mixed
  */
 function get_max_question_order($gid)
@@ -48,7 +49,7 @@ $databaseoutput ='';
 
 if(isset($surveyid))
 {
-    if ($action == "insertnewgroup" && bHasRight($surveyid, 'define_questions'))
+    if ($action == "insertquestiongroup" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
     {
         $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
         $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -112,11 +113,12 @@ if(isset($surveyid))
             }
             // This line sets the newly inserted group as the new group
             if (isset($groupid)){$gid=$groupid;}
+            $_SESSION['flashmessage'] = $clang->gT("New question group was saved.");
 
         }
     }
 
-    elseif ($action == "updategroup" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updategroup" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         $grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
         $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -154,35 +156,15 @@ if(isset($surveyid))
                 else
                 {
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
+                    exit;
                 }
             }
         }
-
+        $_SESSION['flashmessage'] = $clang->gT("Question group successfully saved.");
     }
 
-    elseif ($action == "delgroupnone" && bHasRight($surveyid, 'define_questions'))
-    {
-        if (!isset($gid)) $gid=returnglobal('gid');
 
-        $query = "DELETE FROM ".db_table_name('assessments')." WHERE sid=$surveyid AND gid=$gid";
-        $result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
-
-        $query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
-        $result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
-
-        if ($result)
-        {
-            $gid = "";
-            $groupselect = getgrouplist($gid);
-            fixSortOrderGroups($surveyid);
-        }
-        else
-        {
-            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
-        }
-    }
-
-    elseif ($action == "delgroup" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
     {
         if (!isset($gid)) $gid=returnglobal('gid');
         $query = "SELECT qid FROM ".db_table_name('groups')." g, ".db_table_name('questions')." q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
@@ -207,6 +189,7 @@ if(isset($surveyid))
             $gid = "";
             $groupselect = getgrouplist($gid);
             fixSortOrderGroups($surveyid);
+            $_SESSION['flashmessage'] = $clang->gT("The question group was deleted.");               
         }
         else
         {
@@ -214,7 +197,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "insertnewquestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
     {
         $baselang = GetBaseLanguageFromSurveyID($postsid);
         if (strlen($_POST['title']) < 1)
@@ -311,11 +294,13 @@ if(isset($surveyid))
             }
 
             fixsortorderQuestions($postgid, $surveyid);
+            $_SESSION['flashmessage'] = $clang->gT("Question was successfully added.");               
+            
             //include("surveytable_functions.php");
             //surveyFixColumns($surveyid);
         }
     }
-    elseif ($action == "renumberquestions" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         //Automatically renumbers the "question codes" so that they follow
         //a methodical numbering method
@@ -345,10 +330,11 @@ if(isset($surveyid))
             $question_number++;
             $group_number=$grow['gid'];
         }
+        $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");                    
     }
 
     
-    elseif ($action == "updatedefaultvalues" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
     {
         
         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -416,12 +402,12 @@ if(isset($surveyid))
                    } 
                 }
             }
-        }        
-            
+        }
+        $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");                    
     }
 
     
-    elseif ($action == "updatequestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
         $cqresult=db_execute_assoc($cqquery) or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
@@ -571,22 +557,20 @@ if(isset($surveyid))
                                     $uqquery .=', question_order=0 ';
                                 }
                             }
-                            if (isset($_POST['lid']) && trim($_POST['lid'])!="")
-                            {
-                                $uqquery.=", lid='".db_quote($_POST['lid'])."' ";
-                            }
-                            if (isset($_POST['lid1']) && trim($_POST['lid1'])!="")
-                            {
-                                $uqquery.=", lid1='".db_quote($_POST['lid1'])."' ";
-                            }
-
                             $uqquery.= "WHERE sid='".$postsid."' AND qid='".$postqid."' AND language='{$qlang}'";
                             $uqresult = $connect->Execute($uqquery) or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
                             if (!$uqresult)
                             {
                                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                             }
+
                         }
+                    } 
+                    // Update the group ID on subquestions, too
+                    if ($oldgid!=$postgid)
+                    {
+                        $sQuery="UPDATE ".db_table_name('questions')." set gid={$postgid} where gid={$oldgid} and parent_qid>0"; 
+                        $oResult = $connect->Execute($sQuery) or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
                     }
                     // if the group has changed then fix the sortorder of old and new group
                     if ($oldgid!=$postgid)
@@ -599,12 +583,14 @@ if(isset($surveyid))
                     }
 
                     $query = "DELETE FROM ".db_table_name('answers')." WHERE qid= {$postqid} and scale_id>={$iAnswerScales}";
-                    $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+                        $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
 
                     // Remove old subquestion scales
                     $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid={$postqid} and scale_id>={$iSubquestionScales}";
-                    $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
-    
+                        $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+                    $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");                    
+
+
                 }
                 else
                 {
@@ -645,7 +631,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "copynewquestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))     
     {
 
         if (!$_POST['title'])
@@ -754,7 +740,7 @@ if(isset($surveyid))
 
                 }
             }
-                        
+
             if (returnglobal('copyanswers') == "Y")
             {
                 $q1 = "SELECT * FROM {$dbprefix}answers WHERE qid="
@@ -792,9 +778,11 @@ if(isset($surveyid))
             fixsortorderQuestions($postgid, $surveyid);
             $gid=$postgid; //Sets the gid so that admin.php displays whatever group was chosen for this copied question
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
+            $_SESSION['flashmessage'] = $clang->gT("Question was successfully copied.");                    
+
         }
     }
-    elseif ($action == "delquestion" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))     
     {
         if (!isset($qid)) {$qid=returnglobal('qid');}
         //check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -823,9 +811,10 @@ if(isset($surveyid))
             $postqid="";
             $_GET['qid']="";
         }
+        $_SESSION['flashmessage'] = $clang->gT("Question was successfully deleted.");                    
     }
 
-    elseif ($action == "updateansweroptions" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -894,11 +883,13 @@ if(isset($surveyid))
         if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
         $sortorderid--;
+        $_SESSION['flashmessage'] = $clang->gT("Answer options were successfully saved.");                    
+        
         $action='editansweroptions';
 
     }
 
-    elseif ($action == "updatesubquestions" && bHasRight($surveyid, 'define_questions'))
+    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -918,12 +909,12 @@ if(isset($surveyid))
             $deletedqid=(int)$deletedqid;
             if ($deletedqid>0)
             { // don't remove undefined
-                $query = "DELETE FROM ".db_table_name('questions')." WHERE qid='{$deletedqid}'";  // Checked
-                if (!$result = $connect->Execute($query))
-                {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-                }
+            $query = "DELETE FROM ".db_table_name('questions')." WHERE qid='{$deletedqid}'";  // Checked
+            if (!$result = $connect->Execute($query))
+            {
+                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
             }
+        }
         }
 
         //Determine ids by evaluating the hidden field
@@ -998,11 +989,13 @@ if(isset($surveyid))
         }
         //include("surveytable_functions.php");
         //surveyFixColumns($surveyid);
+        $_SESSION['flashmessage'] = $clang->gT("Subquestions were successfully saved.");                    
+        
         $action='editsubquestions';
     }
 
 
-    elseif ($action == "updatesurvey" && bHasRight($surveyid, 'edit_survey_property'))
+    elseif (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasSurveyPermission($surveyid,'surveysettings','update'))
     {
 
         $formatdata=getDateFormatData($_SESSION['dateformat']);
@@ -1046,10 +1039,10 @@ if(isset($surveyid))
                             'adminemail'=>$_POST['adminemail'],
                             'startdate'=>$_POST['startdate'],
                             'bounce_email'=>$_POST['bounce_email'],
-        //                            'usetokens'=>$_POST['usetokens'],
-                            'private'=>$_POST['private'],
+                            'anonymized'=>$_POST['anonymized'],
                             'faxto'=>$_POST['faxto'],
                             'format'=>$_POST['format'],
+                            'savetimings'=>$_POST['savetimings'],
                             'template'=>$_POST['template'],
                             'assessments'=>$_POST['assessments'],
                             'language'=>$_POST['language'],
@@ -1059,18 +1052,28 @@ if(isset($surveyid))
                             'refurl'=>$_POST['refurl'],
                             'publicgraphs'=>$_POST['publicgraphs'],
                             'usecookie'=>$_POST['usecookie'],
-                            'notification'=>$_POST['notification'],
                             'allowregister'=>$_POST['allowregister'],
                             'allowsave'=>$_POST['allowsave'],
+                            'navigationdelay'=>$_POST['navigationdelay'],
                             'printanswers'=>$_POST['printanswers'],
                             'publicstatistics'=>$_POST['publicstatistics'],
                             'autoredirect'=>$_POST['autoredirect'],
+                            'showXquestions'=>$_POST['showXquestions'],
+                            'showgroupinfo'=>$_POST['showgroupinfo'],
+                            'showqnumcode'=>$_POST['showqnumcode'],
+                            'shownoanswer'=>$_POST['shownoanswer'],
+                            'showwelcome'=>$_POST['showwelcome'],
                             'allowprev'=>$_POST['allowprev'],
+                            'allowjumps'=>$_POST['allowjumps'],
+                            'nokeyboard'=>$_POST['nokeyboard'],
+                            'showprogress'=>$_POST['showprogress'],
                             'listpublic'=>$_POST['public'],
                             'htmlemail'=>$_POST['htmlemail'],
                             'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'],
+                            'alloweditaftercompletion'=>$_POST['alloweditaftercompletion'],
                             'usecaptcha'=>$_POST['usecaptcha'],
-                            'emailresponseto'=>$_POST['emailresponseto'],
+                            'emailresponseto'=>trim($_POST['emailresponseto']),
+                            'emailnotificationto'=>trim($_POST['emailnotificationto']),
                             'tokenlength'=>$_POST['tokenlength']
         );
 
@@ -1101,16 +1104,17 @@ if(isset($surveyid))
                 if ($usresult->RecordCount()==0)
                 {
 
+                    $bplang = new limesurvey_lang($langname);
+                    $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');                         
                     if (getEmailFormat($surveyid) == "html")
                     {
                         $ishtml=true;
+                        $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
                     }
                     else
                     {
                         $ishtml=false;
                     }
-
-                    $bplang = new limesurvey_lang($langname);
                     $languagedetails=getLanguageDetails($langname);
                     $usquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
                     ." (surveyls_survey_id, surveyls_language, surveyls_title, "
@@ -1118,16 +1122,22 @@ if(isset($surveyid))
                     ." surveyls_email_remind_subj, surveyls_email_remind, "
                     ." surveyls_email_confirm_subj, surveyls_email_confirm, "
                     ." surveyls_email_register_subj, surveyls_email_register, "
+                    ." email_admin_notification_subj, email_admin_notification, "
+                    ." email_admin_responses_subj, email_admin_responses, "
                     ." surveyls_dateformat) "
                     ." VALUES ({$postsid}, '".$langname."', '',"
-                    .db_quoteall($bplang->gT("Invitation to participate in survey",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$ishtml)).","
-                    .db_quoteall($bplang->gT("Reminder to participate in survey",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$ishtml)).","
-                    .db_quoteall($bplang->gT("Confirmation of completed survey",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
-                    .db_quoteall($bplang->gT("Survey Registration Confirmation",'unescaped')).","
-                    .db_quoteall(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml)).","
+                    .db_quoteall($aDefaultTexts['invitation_subject']).","
+                    .db_quoteall($aDefaultTexts['invitation']).","
+                    .db_quoteall($aDefaultTexts['reminder_subject']).","
+                    .db_quoteall($aDefaultTexts['reminder']).","
+                    .db_quoteall($aDefaultTexts['confirmation_subject']).","
+                    .db_quoteall($aDefaultTexts['confirmation']).","
+                    .db_quoteall($aDefaultTexts['registration_subject']).","
+                    .db_quoteall($aDefaultTexts['registration']).","
+                    .db_quoteall($aDefaultTexts['admin_notification_subject']).","
+                    .db_quoteall($aDefaultTexts['admin_notification']).","
+                    .db_quoteall($aDefaultTexts['admin_detailed_notification_subject']).","
+                    .db_quoteall($aDefaultTexts['admin_detailed_notification']).","
                     .$languagedetails['dateformat'].")";
                     unset($bplang);
                     $usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br />".$connect->ErrorMsg()); // Checked
@@ -1140,6 +1150,8 @@ if(isset($surveyid))
         if ($usresult)
         {
             $surveyselect = getsurveylist();
+            $_SESSION['flashmessage'] = $clang->gT("Survey settings were successfully saved.");                    
+            
         }
         else
         {
@@ -1147,7 +1159,31 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "delsurvey" && bHasRight($surveyid, 'delete_survey')) //can only happen if there are no groups, no questions, no answers etc.
+    // Save the updated email settings
+    elseif ($action == "updateemailtemplates" && bHasSurveyPermission($surveyid, 'surveylocale','update'))
+    {
+        $_POST  = array_map('db_quote', $_POST);
+        $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+        foreach ($languagelist as $langname)
+        {
+            if ($langname)
+            {
+                $usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
+                . "SET surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."', surveyls_email_invite='".$_POST['email_invite_'.$langname]."',"
+                . "surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."', surveyls_email_remind='".$_POST['email_remind_'.$langname]."',"
+                . "surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."', surveyls_email_register='".$_POST['email_register_'.$langname]."',"
+                . "surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."', surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."',"
+                . "email_admin_notification_subj='".$_POST['email_admin_notification_subj_'.$langname]."', email_admin_notification='".$_POST['email_admin_notification_'.$langname]."',"
+                . "email_admin_responses_subj='".$_POST['email_admin_responses_subj_'.$langname]."', email_admin_responses='".$_POST['email_admin_responses_'.$langname]."' "
+                . "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
+                $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
+            }
+        }
+        $_SESSION['flashmessage'] = $clang->gT("Email templates successfully saved.");
+    }     
+       
+    elseif ($action == "delsurvey" && bHasSurveyPermission($surveyid,'survey','delete')) //can only happen if there are no groups, no questions, no answers etc.
     {
         $query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
         $result = $connect->Execute($query);  // Checked
@@ -1165,7 +1201,7 @@ if(isset($surveyid))
 
 
     // Save the 2nd page from the survey-properties
-    elseif ($action == "updatesurvey2" && bHasRight($surveyid, 'edit_survey_property'))
+    elseif (($action == "updatesurveylocalesettings") && bHasSurveyPermission($surveyid,'surveylocale','update'))
     {
         $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
         $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
@@ -1177,7 +1213,7 @@ if(isset($surveyid))
             if ($langname)
             {
 
-                if ($_POST['url_'.$langname] == "http://") {$_POST['url_'.$langname]="";}
+                if ($_POST['url_'.$langname] == 'http://') {$_POST['url_'.$langname]="";}
 
                 // Clean XSS attacks
                 if ($filterxsshtml)
@@ -1211,11 +1247,13 @@ if(isset($surveyid))
                 . "surveyls_endtext='".db_quote($_POST['endtext_'.$langname])."',\n"
                 . "surveyls_url='".db_quote($_POST['url_'.$langname])."',\n"
                 . "surveyls_urldescription='".db_quote($_POST['urldescrip_'.$langname])."',\n"
-                . "surveyls_dateformat='".db_quote($_POST['dateformat_'.$langname])."'\n"
+                . "surveyls_dateformat='".db_quote($_POST['dateformat_'.$langname])."',\n"
+                . "surveyls_numberformat='".db_quote($_POST['numberformat_'.$langname])."'\n"
                 . "WHERE surveyls_survey_id=".$postsid." and surveyls_language='".$langname."'";
                 $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());   // Checked
             }
         }
+        $_SESSION['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
     }
 
 }
@@ -1223,10 +1261,15 @@ if(isset($surveyid))
 
 
 
-elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
+elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-    if ($_POST['url'] == "http://") {$_POST['url']="";}
+    // $_POST['language']
+
+    $supportedLanguages = getLanguageData();
+    $numberformatid = $supportedLanguages[$_POST['language']]['radixpoint'];
+    
+    if ($_POST['url'] == 'http://') {$_POST['url']="";}
     if (!$_POST['surveyls_title'])
     {
         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a title","js")."\")\n //-->\n</script>\n";
@@ -1299,26 +1342,37 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'startdate'=>$_POST['startdate'],
                             'adminemail'=>$_POST['adminemail'],
                             'bounce_email'=>$_POST['bounce_email'],
-                            'private'=>$_POST['private'],
+                            'anonymized'=>$_POST['anonymized'],
                             'faxto'=>$_POST['faxto'],
                             'format'=>$_POST['format'],
+                            'savetimings'=>$_POST['savetimings'],
                             'template'=>$_POST['template'],
                             'language'=>$_POST['language'],
                             'datestamp'=>$_POST['datestamp'],
                             'ipaddr'=>$_POST['ipaddr'],
                             'refurl'=>$_POST['refurl'],
                             'usecookie'=>$_POST['usecookie'],
-                            'notification'=>$_POST['notification'],
+                            'emailnotificationto'=>$_POST['emailnotificationto'],
                             'allowregister'=>$_POST['allowregister'],
                             'allowsave'=>$_POST['allowsave'],
+                            'navigationdelay'=>$_POST['navigationdelay'],
                             'autoredirect'=>$_POST['autoredirect'],
+                            'showXquestions'=>$_POST['showXquestions'],
+                            'showgroupinfo'=>$_POST['showgroupinfo'],
+                            'showqnumcode'=>$_POST['showqnumcode'],
+                            'shownoanswer'=>$_POST['shownoanswer'],
+                            'showwelcome'=>$_POST['showwelcome'],
                             'allowprev'=>$_POST['allowprev'],
+                            'allowjumps'=>$_POST['allowjumps'],
+                            'nokeyboard'=>$_POST['nokeyboard'],
+                            'showprogress'=>$_POST['showprogress'],
                             'printanswers'=>$_POST['printanswers'],
         //                            'usetokens'=>$_POST['usetokens'],
                             'datecreated'=>date("Y-m-d"),
                             'public'=>$_POST['public'],
                             'htmlemail'=>$_POST['htmlemail'],
                             'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'],
+                            'alloweditaftercompletion'=>$_POST['alloweditaftercompletion'],
                             'usecaptcha'=>$_POST['usecaptcha'],
                             'publicstatistics'=>$_POST['publicstatistics'],
                             'publicgraphs'=>$_POST['publicgraphs'],
@@ -1338,11 +1392,14 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['welcome']=fix_FCKeditor_text($_POST['welcome']);
 
         $bplang = new limesurvey_lang($_POST['language']);
+        $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');     
         $is_html_email = false;
         if (isset($_POST['htmlemail'])  && $_POST['htmlemail'] == "Y")
         {
             $is_html_email = true;
+            $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$is_html_email,'unescaped');
         }
+
         $insertarray=array( 'surveyls_survey_id'=>$surveyid,
                             'surveyls_language'=>$_POST['language'],
                             'surveyls_title'=>$_POST['surveyls_title'],
@@ -1351,34 +1408,32 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'surveyls_urldescription'=>$_POST['urldescrip'],
                             'surveyls_endtext'=>$_POST['endtext'],
                             'surveyls_url'=>$_POST['url'],
-                            'surveyls_email_invite_subj'=>$bplang->gT("Invitation to participate in survey",'unescaped'),
-                            'surveyls_email_invite'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$is_html_email,'unescaped'),
-                            'surveyls_email_remind_subj'=>$bplang->gT("Reminder to participate in survey",'unescaped'),
-                            'surveyls_email_remind'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped'),$is_html_email,'unescaped'),
-                            'surveyls_email_confirm_subj'=>$bplang->gT("Confirmation of completed survey",'unescaped'),
-                            'surveyls_email_confirm'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$is_html_email,'unescaped'),
-                            'surveyls_email_register_subj'=>$bplang->gT("Survey Registration Confirmation",'unescaped'),
-                            'surveyls_email_register'=>conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$is_html_email,'unescaped'),
-                            'surveyls_dateformat'=>$_POST['dateformat']
-        );
+                            'surveyls_email_invite_subj'=>$aDefaultTexts['invitation_subject'],
+                            'surveyls_email_invite'=>conditional_nl2br($aDefaultTexts['invitation'],$is_html_email,'unescaped'),
+                            'surveyls_email_remind_subj'=>$aDefaultTexts['reminder_subject'],
+                            'surveyls_email_remind'=>conditional_nl2br($aDefaultTexts['reminder'],$is_html_email,'unescaped'),
+                            'surveyls_email_confirm_subj'=>$aDefaultTexts['confirmation_subject'],
+                            'surveyls_email_confirm'=>conditional_nl2br($aDefaultTexts['confirmation'],$is_html_email,'unescaped'),
+                            'surveyls_email_register_subj'=>$aDefaultTexts['registration_subject'],
+                            'surveyls_email_register'=>conditional_nl2br($aDefaultTexts['registration'],$is_html_email,'unescaped'),
+                            'email_admin_notification_subj'=>$aDefaultTexts['admin_notification_subject'],
+                            'email_admin_notification'=>conditional_nl2br($aDefaultTexts['admin_notification'],$is_html_email,'unescaped'),
+                            'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
+                            'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
+                            'surveyls_dateformat'=>$_POST['dateformat'],
+                            'surveyls_numberformat'=>$numberformatid
+                          );
         $dbtablename=db_table_name_nq('surveys_languagesettings');
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);
         $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked
         unset($bplang);
 
-        // Update survey_rights
-        $isrquery = "INSERT INTO {$dbprefix}surveys_rights (sid,uid,edit_survey_property,define_questions,browse_response,export,delete_survey,activate_survey) VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
-        $isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
-        if ($isresult)
-        {
-            $surveyselect = getsurveylist();
-        }
-        else
-        {
-            $errormsg=$clang->gT("Survey could not be created","js")." - ".$connect->ErrorMsg();
-            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-            $databaseoutput .= htmlspecialchars($isquery);
-        }
+        $_SESSION['flashmessage'] = $clang->gT("Survey was successfully added.");                    
+        
+        // Update survey permissions
+        GiveAllSurveyPermissions($_SESSION['loginID'],$surveyid);
+
+        $surveyselect = getsurveylist();
         
         // Create initial Survey table
         //include("surveytable_functions.php");
@@ -1399,7 +1454,7 @@ elseif ($action == "savepersonalsettings")
     $_SESSION['adminlang']=$_POST['lang'];
     $_SESSION['htmleditormode']=$_POST['htmleditormode'];
     $_SESSION['dateformat']= $_POST['dateformat'];
-    $databaseoutput.='<div class="messagebox"><strong>'.$clang->gT('Your personal settings were successfully saved.').'</strong></div>';
+    $_SESSION['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");                    
 }
 else
 {
@@ -1407,7 +1462,7 @@ else
 }
 
 /**
-* THis is a convenience function to update/delete answer default values. If the given 
+* This is a convenience function to update/delete answer default values. If the given 
 * $defaultvalue is empty then the entry is removed from table defaultvalues
 * 
 * @param mixed $qid   Question ID

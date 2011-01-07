@@ -25,12 +25,23 @@ if ($action == "addgroup")
     $grplangs = array_reverse($grplangs);
 
     $newgroupoutput = PrepareEditorScript();
-    $newgroupoutput .= "<div class='header'>".$clang->gT("Add question group")."</div>\n";
-
+    $newgroupoutput .= "<div class='header ui-widget-header'>".$clang->gT("Add question group")."</div>\n";
+     $newgroupoutput .= "<div id='tabs'>\n<ul>\n";
+	 foreach ($grplangs as $grouplang)
+    {
+        $newgroupoutput .= '<li><a href="#'.$grouplang.'">'.GetLanguageNameFromCode($grouplang,false);
+        if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base language").')';}
+        $newgroupoutput .= "</a></li>\n";
+		}
+		if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+    {
+        $newgroupoutput .= '<li><a href="#import">'.$clang->gT("Import question group")."</a></li>\n";
+		
+	}
+		$newgroupoutput .= "</ul>";
 
     //    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
-    $newgroupoutput .="\n"
-    .  '<div class="tab-pane" id="tab-pane-newgroup">';
+    $newgroupoutput .="\n";
     $newgroupoutput .= "<form action='$scriptname' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=\"if (1==0 ";
 
     foreach ($grplangs as $grouplang)
@@ -41,9 +52,8 @@ if ($action == "addgroup")
 
     foreach ($grplangs as $grouplang)
     {
-        $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang,false);
-        if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base Language").')';}
-        $newgroupoutput .= "</h2><ul>"
+        $newgroupoutput .= '<div id="'.$grouplang.'">';
+        $newgroupoutput .= "<ul>"
         . "<li>"
         . "<label for='group_name_$grouplang'>".$clang->gT("Title").":</label>\n"
         . "<input type='text' size='80' maxlength='100' name='group_name_$grouplang' id='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></li>\n"
@@ -56,38 +66,36 @@ if ($action == "addgroup")
         . "</div>\n";
     }
 
-    $newgroupoutput.= "<input type='hidden' name='action' value='insertnewgroup' />\n"
+    $newgroupoutput.= "<input type='hidden' name='action' value='insertquestiongroup' />\n"
     . "<input type='hidden' name='sid' value='$surveyid' />\n"
     . "</form>\n";
 
 
     // Import TAB
-    $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.$clang->gT("Import question group")."</h2>\n";
-    $newgroupoutput.= ""
-    . "<form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-    . "<ul>\n"
-    . "<li>\n"
-    . "<label for='the_file'>".$clang->gT("Select question group file (*.lsg/*.csv):")."</label>\n"
-    . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"35\" /></li>\n"
-    . "<li><label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
-    . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></li></ul>\n"
-    . "\t<p><input type='submit' value='".$clang->gT("Import question group")."' />\n"
-    . "\t<input type='hidden' name='action' value='importgroup' />\n"
-    . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-    . "\t</form>\n";
+    if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+    {
+        $newgroupoutput .= '<div id="import">'."\n"
+        . "<form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        . "<ul>\n"
+        . "<li>\n"
+        . "<label for='the_file'>".$clang->gT("Select question group file (*.lsg/*.csv):")."</label>\n"
+        . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"35\" /></li>\n"
+        . "<li><label for='translinksfields'>".$clang->gT("Convert resource links?")."</label>\n"
+        . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></li></ul>\n"
+        . "\t<p><input type='submit' value='".$clang->gT("Import question group")."' />\n"
+        . "\t<input type='hidden' name='action' value='importgroup' />\n"
+        . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+        . "\t</form>\n";
+        // End Import TABS
+        $newgroupoutput.= "</div>";
+    }
+	 
 
-    // End Import TABS
-    $newgroupoutput.= "</div>";
 
     // End of TABS
-    $newgroupoutput.= "</div>";
+     $newgroupoutput.= "</div>";
+	
 
-    $newgroupoutput.= ""
-    ."<script type='text/javascript'>\n"
-    ."<!--\n"
-    ."document.getElementById('group_name_$grouplang').focus();\n"
-    ."//-->\n"
-    ."</script>\n";
 }
 
 
@@ -126,53 +134,61 @@ if ($action == "editgroup")
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language='$baselang'";
     $egresult = db_execute_assoc($egquery);
     $editgroup = PrepareEditorScript();
-    $editgroup .= "<div class='header'>".$clang->gT("Edit Group")."</div>\n"
-    . "<form name='frmeditgroup' id='frmeditgroup' action='$scriptname' class='form30' method='post'>\n"
-    . '<div class="tab-pane" id="tab-pane-group-'.$gid.'">';
-
     $esrow = $egresult->FetchRow();
-    $editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);
-    $editgroup .= '('.$clang->gT("Base Language").')';
+    $tab_title[0] = getLanguageNameFromCode($esrow['language'],false). '('.$clang->gT("Base language").')';
     $esrow = array_map('htmlspecialchars', $esrow);
-    $editgroup .= '</h2><ul>';
-    $editgroup .= "\t<li><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label>\n"
-    . "<input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-    . "\t</li>\n"
-    . "\t<li><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-    . "<textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-    . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-    . "\t</li></ul></div>";
-
-
+    $tab_content[0] = "<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
+        . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+        . "\t</span></div>\n"
+        . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
+        . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+        . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+        . "\t</span></div><div style='clear:both'></div>";
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
     $egresult = db_execute_assoc($egquery);
+    $i = 1;
     while ($esrow = $egresult->FetchRow())
     {
-        $editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);
+        $tab_title[$i] = getLanguageNameFromCode($esrow['language'],false);
         $esrow = array_map('htmlspecialchars', $esrow);
-        $editgroup .= '</h2><ul>';
-        $editgroup .= "\t<li><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label>\n"
-        . "<input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-        . "\t</li>\n"
-        . "\t<li><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-        . "<textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-        . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-        . "\t</li></ul></div>";
+        $tab_content[$i] = "<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
+            . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+            . "\t</span></div>\n"
+            . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
+            . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+            . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+            . "\t</span></div><div style='clear:both'></div>";
+        $i++;
     }
-    $editgroup .= '</div>';
-    $editgroup .= "\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
+
+    $editgroup .= "<div class='header ui-widget-header'>".$clang->gT("Edit Group")."</div>\n"
+    . "<form name='frmeditgroup' id='frmeditgroup' action='$scriptname' class='form30' method='post'>\n<div id='tabs'><ul>\n";
+
+
+    foreach ($tab_title as $i=>$eachtitle){
+        $editgroup .= "\t<li style='clear:none'><a href='#editgrp$i'>$eachtitle</a></li>\n";
+        
+    }
+    $editgroup.="</ul>\n";
+
+    foreach ($tab_content as $i=>$eachcontent){
+        $editgroup .= "\n<div id='editgrp$i'>$eachcontent</div>";
+    }
+    
+    $editgroup .= "</div>\n\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
     . "\t<input type='hidden' name='action' value='updategroup' />\n"
     . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
     . "\t<input type='hidden' name='gid' value='{$gid}' />\n"
     . "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
     . "\t</p>\n"
     . "</form>\n";
+
 }
 
 
 if ($action == "ordergroups")
 {
-    if(bHasRight($surveyid,'edit_survey_property'))
+    if(bHasSurveyPermission($surveyid,'surveycontent','update'))
     {
         // Check if one of the up/down buttons have been clicked
         if (isset($_POST['groupordermethod']) && isset($_POST['sortorder']))
@@ -237,7 +253,7 @@ if ($action == "ordergroups")
             }
         }
 
-        $ordergroups = "<div class='header'>".$clang->gT("Change Group Order")."</div><br />\n";
+        $ordergroups = "<div class='header ui-widget-header'>".$clang->gT("Change Group Order")."</div><br />\n";
 
         // Get groups dependencies regarding conditions
         // => Get an array of groups containing questions with conditions outside the group
@@ -381,12 +397,12 @@ if ($action == "ordergroups")
             $ordergroups.= "<input style='float:right;";
 
             if ($i == 0){$ordergroups.="visibility:hidden;";}
-            $ordergroups.="' type='image' src='$imagefiles/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('up')\" ".$updisabled."/>\n";
+            $ordergroups.="' type='image' src='$imageurl/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('up')\" ".$updisabled."/>\n";
 
             if ($i < $groupcount-1)
             {
                 // Fill the hidden field 'sortorder' so we know what field is moved down
-                $ordergroups.= "<input type='image' src='$imagefiles/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('down')\" ".$downdisabled."/>\n";
+                $ordergroups.= "<input type='image' src='$imageurl/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('down')\" ".$downdisabled."/>\n";
             }
             $ordergroups.=$ogarray[$i]['group_name']."</li>\n" ;
 

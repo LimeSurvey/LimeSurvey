@@ -36,11 +36,14 @@ $notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys
 //CHECK PREGS
 $notvalidated=checkpregs($move);
 
+//CHECK UPLOADED FILES
+$filenotvalidated = checkUploadedFileValidity($move);
+
 //SUBMIT
-if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
     setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies : not actually used in all in one.
-    if ($thissurvey['private'] == "Y")
+    if ($thissurvey['anonymized'] == "Y")
     {
         $privacy = templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
     }
@@ -51,7 +54,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             $_SESSION['insertarray'][] = "refurl";
         }
     }
-
 
     //COMMIT CHANGES TO DATABASE
     if ($thissurvey['active'] != "Y")
@@ -96,7 +98,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 
         //Before doing the "templatereplace()" function, check the $thissurvey['url']
         //field for limereplace stuff, and do transformations!
-        $thissurvey['surveyls_url']=insertansReplace($thissurvey['surveyls_url']);
+        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
         $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
         $content='';
@@ -160,20 +162,17 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             submittokens();
         }
 
-        //Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-        if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
-        {
-            sendsubmitnotification($thissurvey['sendnotification']);
-        }
+        //Send notification to survey administrator 
+        SendSubmitNotifications();
 
         $_SESSION['finished']=true;
         $_SESSION['sid']=$surveyid;
 
         sendcacheheaders();
-        if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
+        if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
 
-            $url = insertansReplace($thissurvey['surveyls_url']);
+            $url = dTexts::run($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
@@ -219,7 +218,7 @@ if ($surveyexists <1)
 }
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if ((!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) || !$filenotvalidated))
 {
     $totalquestions = buildsurveysession();
     $_SESSION['step'] = 1;
@@ -228,7 +227,7 @@ if ((!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))
 // If the survey uses answer persistence and a srid is registered in SESSION
 // then loadanswers from this srid
 if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
-$thissurvey['private'] == "N" &&
+$thissurvey['anonymized'] == "N" &&
 isset($_SESSION['srid']) &&
 $thissurvey['active'] == "Y")
 {
@@ -252,8 +251,12 @@ foreach ($_SESSION['grouplist'] as $gl)
 {
     $gid=$gl[0];
     $groupUnconditionnalQuestionsCount[$gid]=0;
+    $qnumber = 0;
+
     foreach ($_SESSION['fieldarray'] as $ia)
     {
+    	++$qnumber;
+	$ia[9] = $qnumber; // incremental question count;
         if ($ia[5] == $gid)
         {
             $qidattributes=getQuestionAttributes($ia[0]);
@@ -282,6 +285,11 @@ foreach ($_SESSION['grouplist'] as $gl)
             if (isset($notvalidated))
             {
                 list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
+            }
+
+            if (isset($filenotvalidated))
+            {
+                list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
             }
 
             //Get list of mandatory questions
@@ -328,9 +336,13 @@ echo "\n<!-- INPUT NAMES -->\n"
 
 // <-- END FEATURE - SAVE
 
-echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
+    //Hide the welcome screen if explicitly set
+} else {
+    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+}
 
-if ($thissurvey['private'] == "Y")
+if ($thissurvey['anonymized'] == "Y")
 {
     echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
 }
@@ -464,7 +476,7 @@ END;
         unset($localEvaluation);
         unset($JSsourceElt);
         unset($JSsourceVal);
-        if ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
+        if ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
         { // source is a token attr
             // first check if token is readable in session
             if ( isset($_SESSION['token']) &&
@@ -579,6 +591,7 @@ END;
                     $qid_from_sgq=$qidMatched[3];
                     $q2type=$qtypesarray[$sgq_from_sgqa];
                     $idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
+                    /***
                     $cqidattributes = getQuestionAttributes($cd[1]);
 
                     if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
@@ -590,17 +603,35 @@ END;
                     {
                         $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && $JSsourceVal $cd[6] document.getElementById('".$idname2."').value";
                     }
+                    ****/
+                    if (in_array($cd[6],array("<","<=",">",">=")))
+                    { // Numerical comparizons
+                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
+                    }
+                    elseif (preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                    { // String comparizons
+                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$matchmethods[1]." parseFloat(document.getElementById('".$idname2."').value)";
+                    }
+                    else
+                    {
+                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$cd[6]." parseFloat(document.getElementById('".$idname2."').value)";
+                    }
 
                 }
-                elseif ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
+                elseif ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
                 {
                     if ( isset($_SESSION['token']) &&
                     in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
                     {
                         $comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
-                        if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
-                        { // Numerical questions
+                        //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
+                        if (in_array($cd[6],array("<","<=",">",">=")))
+                        { // // Numerical comparizons
                             $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
+                        }
+                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                        { // Strings comparizon
+                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '".javascript_escape($comparedtokenattrValue)."'";
                         }
                         else
                         {
@@ -621,9 +652,14 @@ END;
                     else
                     {
                         $cqidattributes = getQuestionAttributes($cd[1]);
-                        if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
-                        { // Numerical questions
+                        //if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
+                        if (in_array($cd[6],array("<","<=",">",">=")))
+                        { // Numerical comparizons
                             $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('$cd[3]')";
+                        }
+                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+                        { // String comaprizons
+                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '$cd[3]'";
                         }
                         else
                         {
@@ -678,13 +714,13 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
             {
                 $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE parent_qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-            } 
-            $qresult = db_execute_assoc($qquery); //Checked       
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+            }
+            $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
             {
-                if($fansrows['other']== "Y") $other="Y";
+                if($fansrows['other']=="Y") $other="Y";
                 if(strpos($array_filter_types, $fansrows['type']) === false) {} else
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
@@ -694,7 +730,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                         $dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
                         $dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
                     } else {
-                        $dtbody = "tbdisp".$qbase.$fansrows['title'];
+                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
                     }
                     $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
@@ -715,7 +751,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                         //for a dual scale array question type we have to massage the system
                         $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
                     }
-                     // This line resets the text fields in the hidden row
+                    // This line resets the text fields in the hidden row
                     $appendj .= "\t\t$('#$tbody input').val('');\n";
                     // This line resets any radio group in the hidden row
                     $appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
@@ -761,9 +797,9 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
             {
                 $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE parent_qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
             } 
-            $qresult = db_execute_assoc($qquery); //Checked       
+            $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
             {
@@ -777,7 +813,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 						$dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
 						$dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
 					} else {
-						$dtbody = "tbdisp".$qbase.$fansrows['title'];
+                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
 					}
                     $tbodyae = $qbase.$fansrows['title'];
                     $appendj .= "\n";
@@ -868,6 +904,12 @@ if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswere
 if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+}
+
+//Display the "file validation" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true)
+{
+    echo "<p><span class='errormandatory'>" . $clang->gT("One or more files are either not in the proper format or exceed the maximum file size limitation. You cannot proceed until these answers are valid.") . "</span></p>";
 }
 
 foreach ($_SESSION['grouplist'] as $gl)
@@ -965,7 +1007,7 @@ echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 echo "\n";
 
-if ($thissurvey['active'] != "Y") {echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "<center><font color='red' size='2'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</font></center>\n";}
 
 
 if (is_array($conditions) && count($conditions) != 0 )
@@ -1005,6 +1047,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
+."<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n"
 ."<input type='hidden' name='token' value='$token' id='token' />\n"
 ."</form>\n";
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));

@@ -16,7 +16,7 @@ class PDF extends TCPDF
     {
         if ($bStripHTML)
         {
-            $text = $this->delete_html($text);            
+        $text = $this->delete_html($text);
         }
         $oldformat = $this->FontStyle;
         $this->SetFont('',$format,$this->FontSizePt);

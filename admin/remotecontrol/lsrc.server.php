@@ -292,10 +292,10 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
         throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
         exit;
     }
-
-    if(!$lsrcHelper->activateSurvey($iVid))
+    $activateResult = $lsrcHelper->activateSurvey($iVid);
+    if($activateResult!=true)
     {
-        throw new SoapFault("Server: ", "Activation went wrong somehow");
+        throw new SoapFault("Server: ", "Import went wrong. Check lsrc.log.");
         exit;
     }
 
@@ -367,34 +367,42 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $s
     $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",vor import OK ");
 
 
-    if($lsrcHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp))
-    {// if import of survey went ok it returns true, else nothing
-        $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",surveyid=$iVid nach import OK ");
-
-        //get the optional data into db
-        if($sMail!='')
-        {
-            $lsrcHelper->changeTable("surveys", "adminemail", $sMail, "sid='$iVid'");
-            $lsrcHelper->changeTable("surveys", "bounce_email", $sMail, "sid='$iVid'");
-        }
-        if($sName!='')
-        $lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
-        if($sUrl!='')
-        $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iVid'");
-        if($autoRd=='Y')
-        $lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
-        if($sVend!='')
-        $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "surveyls_survey_id='$iVid'");
-         
-        $lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
-
-        return $iVid;
-    }
-    else
+    $iNewSid = $lsrcHelper->importSurvey($iVid, $sVtyp);
+    if($iNewSid==NULL)
     {
         throw new SoapFault("Server: ", "Import went wrong somehow");
         exit;
     }
+
+// if import of survey went ok it returns true, else nothing
+    $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",surveyid=$iNewSid nach import OK ");
+
+    //get the optional data into db
+    if($sMail!='')
+    {
+        $lsrcHelper->changeTable("surveys", "adminemail", $sMail, "sid='$iNewSid'");
+        $lsrcHelper->changeTable("surveys", "bounce_email", $sMail, "sid='$iNewSid'");
+    }
+    if($sName!='')
+    $lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iNewSid'");
+    if($sUrl!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iNewSid'");
+    if($sUbes!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_urldescription", $sUbes, "surveyls_survey_id='$iNewSid'");
+    if($autoRd=='Y')
+    $lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iNewSid'");
+     if($sVtit!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_title", $sVtit, "surveyls_survey_id='$iNewSid'");
+     if($sVbes!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_description", $sVbes, "surveyls_survey_id='$iNewSid'");
+     if($sVwel!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_welcometext", $sVwel, "surveyls_survey_id='$iNewSid'"); 
+    if($sVend!='')
+    $lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "surveyls_survey_id='$iNewSid'");
+
+    $lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iNewSid'");
+
+    return $iNewSid;
 
 }//end of function sCreateSurvey
 
@@ -919,9 +927,9 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
             $n=0;
             while(false !== ($file = readdir($mDir)))
             {
-                if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
+                if(substr($file,-4,4)==".lss" || substr($file,-4,4)==".csv")
                 {
-                    $file = basename ($file, ".csv");
+                    //$file = basename ($file, ".csv");
                     //$file = str_replace("mod_", "", $file);
 
                     if($n == 0)
@@ -944,9 +952,9 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
             $n=0;
             while(false !== ($file = readdir($cDir)))
             {
-                if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
+                if(substr($file,-4,4)==".lss" || substr($file,-4,4)==".csv")
                 {
-                    $file = basename ($file, ".csv");
+                    //$file = basename ($file, ".csv");
                     //$file = str_replace("mod_", "", $file);
                     if($n == 0)
                     {
@@ -968,9 +976,9 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
             $n=0;
             while(false !== ($file = readdir($cDir)))
             {
-                if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
+                if(substr($file,-4,4)==".lss" || substr($file,-4,4)==".csv")
                 {
-                    $file = basename ($file, ".csv");
+                    //$file = basename ($file, ".csv");
                     //$file = str_replace("mod_", "", $file);
                     if($n == 0)
                     {
@@ -1088,7 +1096,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph='0
     {
         $myField = $surveyid."X".$field['gid']."X".$field['qid'];
          
-        // Multiple Options get special treatment
+        // Multiple choice get special treatment
         if ($field['type'] == "M" || $field['type'] == "P") {$myField = "M$myField";}
         //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
         if ($field['type'] == "N") {$myField = "N$myField";}

@@ -129,27 +129,27 @@ function datadump ($table) {
     if ($numrow>0)
     {
         $result .= "INSERT INTO `{$table}` (`{$sFieldNames}`) VALUES";
-        while($row=$query->FetchRow()){
-            @set_time_limit(5);
+    while($row=$query->FetchRow()){
+        @set_time_limit(5);
             $result .= "(";
-            for($j=0; $j<$num_fields; $j++) {
-                if (isset($row[$j]) && !is_null($row[$j]))
-                {
-                    $row[$j] = addslashes($row[$j]);
-                    $row[$j] = preg_replace("#\n#","\\n",$row[$j]);
-                    $result .= "\"$row[$j]\"";
-                }
-                else
-                {
-                    $result .= "NULL";
-                }
-
-                if ($j<($num_fields-1)) $result .= ",";
+        for($j=0; $j<$num_fields; $j++) {
+            if (isset($row[$j]) && !is_null($row[$j]))
+            {
+                $row[$j] = addslashes($row[$j]);
+                $row[$j] = preg_replace("#\n#","\\n",$row[$j]);
+                $result .= "\"$row[$j]\"";
             }
+            else
+            {
+                $result .= "NULL";
+            }
+
+            if ($j<($num_fields-1)) $result .= ",";
+        }
             $result .= "),\n";
-        } // while
+    } // while
         $result=substr($result,0,-2);
-    }
+}
     return $result . ";\n\n";
 }
 

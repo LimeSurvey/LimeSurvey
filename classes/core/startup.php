@@ -1,5 +1,10 @@
 <?php
 
+if(ob_get_contents() !== false)
+{
+   ob_clean();
+};
+ob_start();
 
 @ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 

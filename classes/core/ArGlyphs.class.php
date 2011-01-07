@@ -284,7 +284,7 @@ class ArGlyphs
 
         $lines = 0;
         $chars = 0;
-        $words = split(' ', $str);
+        $words = explode(' ', $str);
         $w_count = count($words);
         $max_chars = $this->a4_max_chars($font);
 
@@ -341,7 +341,7 @@ class ArGlyphs
         $str = str_replace(array("\r\n", "\n", "\r"), "\n", $str);
 
         $lines = array();
-        $words = split(' ', $str);
+        $words = explode(' ', $str);
         $w_count = count($words);
         $c_chars = 0;
         $c_words = array();
@@ -381,7 +381,7 @@ class ArGlyphs
 
             if ($c_chars + $w_len < $max_chars) {
                 if (preg_match("/\n/i", $words[$i])) {
-                    $words_nl = split("\n", $words[$i]);
+                    $words_nl = explode("\n", $words[$i]);
 
                     array_push($c_words, $words_nl[0]);
                     array_push($lines, implode(' ', $c_words));

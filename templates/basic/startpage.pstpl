@@ -8,12 +8,12 @@
 		<!--[if lte IE 6]>
 				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
 		<![endif]-->
-		<!--[if IE 7]>
-				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
-		<![endif]-->
-		<!--[if IE 8]>
-				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
-		<![endif]-->
+<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
+<![endif]-->
+<!--[if IE 8]>
+    	<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
+<![endif]-->
 
     <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
     <style type="text/css" media="aural tty">
@@ -23,8 +23,8 @@
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
 	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 	</head>
-	<body>
-		<table width="80%" align="center" class="bf" cellpadding="0" cellspacing="11">
-		<tr>
-			<td>
-
+	<body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+                <div class="outerframe">
+		        <table width="80%" align="center" class="bf" cellpadding="0" cellspacing="11">
+		        <tr>
+		        	<td>

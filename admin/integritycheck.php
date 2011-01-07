@@ -24,15 +24,15 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     $integritycheck='';
     if (!isset($ok) || ($ok != "Y" && $ok != "R")) // do the check, but don't delete anything
     {
-        $integritycheck .= "<div class='messagebox'>"
-        . "<div class='header'>".$clang->gT("Data Consistency Check")."<br />\n"
+        $integritycheck .= "<div class='messagebox ui-corner-all'>"
+        . "<div class='header ui-widget-header'>".$clang->gT("Data Consistency Check")."<br />\n"
         . "<span style='font-size:7pt;'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</span></div>\n"
         . "<ul>\n";
         
         /****** Plainly delete survey permissions if the survey or user does not exist ***/
         
-        $connect->query("delete FROM {$dbprefix}surveys_rights where sid not in (select sid from {$dbprefix}surveys)");
-        $connect->query("delete FROM {$dbprefix}surveys_rights where uid not in (select uid from {$dbprefix}users)");
+        $connect->query("delete FROM {$dbprefix}survey_permissions where sid not in (select sid from {$dbprefix}surveys)");
+        $connect->query("delete FROM {$dbprefix}survey_permissions where uid not in (select uid from {$dbprefix}users)");
         
         /***** Check for activate survey tables with missing survey entry **/
         
@@ -442,6 +442,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 foreach($fulloldsids[$oldsid] as $tablename)
                 {
                     list($one, $two, $three, $four, $five)=explode("_", $tablename);
+                    $five=substr($tablename,-14);
                     $year=substr($five, 0,4);
                     $month=substr($five, 4,2);
                     $day=substr($five, 6, 2);
@@ -555,7 +556,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         } else {
             $integritycheck .= "<br />".$clang->gT("Should we proceed with the delete?")."<br />\n";
             $integritycheck .= "<form action='{$scriptname}?action=checkintegrity' method='post'>\n";
-            
+
             if ($iCountQuotaMembers>0)
             {
                     $integritycheck .= "<input type='hidden' name='quotamembers_delete'  value='1' />\n";
@@ -637,8 +638,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         $integritycheck .= "</div><br />\n";
 
-        $integritycheck2 = "<div class='messagebox'>"
-        . "<div class='header'>".$clang->gT("Data redundancy check")."<br />"
+        $integritycheck2 = "<div class='messagebox ui-corner-all'>"
+        . "<div class='header ui-widget-header'>".$clang->gT("Data redundancy check")."<br />"
         . "<span style='font-size:7pt;'>".$clang->gT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them.")."</span>\n"
         . "</div>\n";
         if (!isset($oldsoptionaldelete) && !isset($oldsmultidelete) &&
@@ -717,7 +718,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $bQuotaDelete=returnglobal('quota_delete');
         $bQuotaLanguageSettingsDelete=returnglobal('quotalanguagesettings_delete');
         $bQuotaMembersDelete=returnglobal('quotamembers_delete');
-        
+
         if (isset($bDefaultValueDelete) && $bDefaultValueDelete==1)
         {
             $integritycheck .= $clang->gT("Deleting orphaned default values.")."<br />\n";
@@ -859,8 +860,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         ."</td></tr></table><br />\n";
     } elseif ($ok == "R")
     {
-        $integritycheck .= "<div class='messagebox'>\n"
-        . "<div class='header'>".$clang->gT("Data redundancy Check")."<br />\n"
+        $integritycheck .= "<div class='messagebox ui-corner-all'>\n"
+        . "<div class='header ui-widget-header'>".$clang->gT("Data redundancy check")."<br />\n"
         . "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from deactivation")."</span></div><p>\n";
         $oldsmultidelete=returnglobal('oldsmultidelete');
         $oldtmultidelete=returnglobal('oldtmultidelete');

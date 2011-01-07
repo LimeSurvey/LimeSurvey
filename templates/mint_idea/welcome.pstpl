@@ -1,9 +1,9 @@
 {CHECKJAVASCRIPT}      
 <div id="container" class="box">
       
-	<div id="obsah" class="content box">
-		<div class="in">
-			<h2>{SURVEYNAME}</h2>
+        <div id="obsah" class="content box">
+          <div class="in">
+                        <h2>{SURVEYNAME}</h2>
 			<p>{SURVEYDESCRIPTION}</p>
 			<p>{WELCOME}</p>
 			<h3>{THEREAREXQUESTIONS}</h3>

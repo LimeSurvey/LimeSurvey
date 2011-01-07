@@ -2,10 +2,11 @@
 //============================================================+
 // File name   : eng.php
 // Begin       : 2004-03-03
-// Last Update : 2008-11-17
+// Last Update : 2010-10-26
 //
 // Description : Language module for TCPDF
 //               (contains translated texts)
+//               English
 //
 // Author: Nicola Asuni
 //
@@ -22,15 +23,15 @@
 /**
  * TCPDF language file (contains translated texts).
  * @package com.tecnick.tcpdf
- * @abstract TCPDF language file.
+ * @abstract TCPDF language file: English
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.sourceforge.net
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2004-03-03
  */
 
-// ENGLISH
+// English
 
 global $l;
 $l = Array();
@@ -47,4 +48,3 @@ $l['w_page'] = 'page';
 //============================================================+
 // END OF FILE
 //============================================================+
-?>

@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: common.php 7566 2009-09-04 14:04:56Z c_schmitz $
+ * $Id: globalsettings.php 9662 2010-12-20 15:26:32Z c_schmitz $
  */
 require_once('classes/core/settingsstorage.php');
 
@@ -64,6 +64,15 @@ function globalsettingssave()
             {
                 setGlobalSetting('emailsmtppassword',strip_tags(returnglobal('emailsmtppassword')));
             }
+            setGlobalSetting('bounceaccounthost',strip_tags(returnglobal('bounceaccounthost')));
+      	    setGlobalSetting('bounceaccounttype',strip_tags(returnglobal('bounceaccounttype')));
+            setGlobalSetting('bounceencryption',strip_tags(returnglobal('bounceencryption')));
+            setGlobalSetting('bounceaccountuser',strip_tags(returnglobal('bounceaccountuser')));
+       
+	    if (returnglobal('bounceaccountpass')!='enteredpassword')
+            {
+                setGlobalSetting('bounceaccountpass',strip_tags(returnglobal('bounceaccountpass')));
+            }
             setGlobalSetting('emailsmtpssl',sanitize_paranoid_string(returnglobal('emailsmtpssl')));
             setGlobalSetting('emailsmtpdebug',sanitize_int(returnglobal('emailsmtpdebug')));
             setGlobalSetting('emailsmtpuser',strip_tags(returnglobal('emailsmtpuser')));
@@ -72,6 +81,9 @@ function globalsettingssave()
             setGlobalSetting('siteadminemail',strip_tags($_POST['siteadminemail']));
             setGlobalSetting('siteadminname',strip_tags($_POST['siteadminname']));
             setGlobalSetting('shownoanswer',sanitize_int($_POST['shownoanswer']));
+            setGlobalSetting('showXquestions',($_POST['showXquestions']));
+            setGlobalSetting('showgroupinfo',($_POST['showgroupinfo']));
+            setGlobalSetting('showqnumcode',($_POST['showqnumcode']));
             $repeatheadingstemp=(int)($_POST['repeatheadings']);
             if ($repeatheadingstemp==0)  $repeatheadingstemp=25;
             setGlobalSetting('repeatheadings',$repeatheadingstemp);
@@ -80,17 +92,18 @@ function globalsettingssave()
             $sessionlifetimetemp=(int)($_POST['sessionlifetime']);
             if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
+            setGlobalSetting('ipInfoDbAPIKey',$_POST['ipInfoDbAPIKey']);
+            setGlobalSetting('googleMapsAPIKey',$_POST['googleMapsAPIKey']);
+            setGlobalSetting('force_ssl',$_POST['force_ssl']);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
             if ((substr($savetime,0,1)!='-') && (substr($savetime,0,1)!='+')) { $savetime = '+'.$savetime;}
             setGlobalSetting('timeadjust',$savetime);
             setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
             setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
-            $editsurvey .= "<div class='header'>".$clang->gT("Global settings")."</div>\n"
-            . "<div class=\"messagebox\">\n"
-            . "<br /><div class=\"successheader\">".$clang->gT("Global settings were saved.")."</div>\n"
-            . "<br/><input type=\"submit\" onclick=\"window.open('admin.php', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n"
-            . "</div>\n";
+
+            $_SESSION['flashmessage'] = $clang->gT("Global settings were saved.");
+            
         }
     }
 }
@@ -111,16 +124,22 @@ function globalsettingsdisplay()
         {
             $js_admin_includes[]='scripts/globalsettings.js';
             // header
-            $editsurvey = "<div class='header'>".$clang->gT("Global settings")."</div>\n";
-
-
+            $editsurvey = "<div class='header ui-widget-header'>".$clang->gT("Global settings")."</div>\n";
             // beginning TABs section
-            $editsurvey .= "\t<div class='tab-pane' id='tab-pane-globalsettings'>\n";
-            $editsurvey .= "<form id='frmglobalsettings' name='frmglobalsettings' action='$scriptname' method='post'>\n";
-            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Overview & Update")."</h2>\n";
+            $editsurvey .= "\t<div id='tabs'>
+            <ul>
+            <li><a href='#overview'>".$clang->gT("Overview & update")."</a></li>
+            <li><a href='#general'>".$clang->gT("General")."</a></li>
+            <li><a href='#email'>".$clang->gT("Email settings")."</a></li>
+            <li><a href='#bounce'>".$clang->gT("Bounce settings")."</a></li>
+            <li><a href='#security'>".$clang->gT("Security")."</a></li>
+            <li><a href='#presentation'>".$clang->gT("Presentation")."</a></li>
+            </ul>\n";
+            $editsurvey .= "<form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='$scriptname' method='post'>\n";
+            $editsurvey .= "<div id='overview'>\n";
             $editsurvey .= checksettings();
             $thisupdatecheckperiod=getGlobalSetting('updatecheckperiod');
-            $editsurvey .= "<br /></p><div class='header'>".$clang->gT("Updates")."</div><ul>"
+            $editsurvey .= "<br /></p><div class='header ui-widget-header'>".$clang->gT("Updates")."</div><ul>"
             . "\t<li><label for='updatecheckperiod'>".$clang->gT("Check for updates:")."</label>\n"
             . "\t\t\t<select name='updatecheckperiod' id='updatecheckperiod'>\n"
             . "\t\t\t\t<option value='0'";
@@ -160,7 +179,7 @@ function globalsettingsdisplay()
 
 
             // General TAB
-            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
+            $editsurvey .= "\t<div id='general'>\n";
             // Administrator...
             $editsurvey .= "<ul>"
             . "\t<li><label for='sitename'>".$clang->gT("Site name:").(($demoModeOnly==true)?'*':'')."</label>\n"
@@ -211,9 +230,9 @@ function globalsettingsdisplay()
 
             $dateformatdata=getDateFormatData($_SESSION['dateformat']);
             $editsurvey.= "\t<li><label for='timeadjust'>".$clang->gT("Time difference (in hours):")."</label>\n"
-            . "\t\t<input type='text' size='10' id='timeadjust' name='timeadjust' value=\"".htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust')))."\" /> "
+            . "\t\t<span><input type='text' size='10' id='timeadjust' name='timeadjust' value=\"".htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust')))."\" /> "
             . $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ".$clang->gT("Corrected time :").' '.convertDateTimeFormat(date_shift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')."
-            </li>\n";
+            </span></li>\n";
 
             $thisusepdfexport=getGlobalSetting('usepdfexport');
             $editsurvey .= "\t<li><label for='usepdfexport'>".$clang->gT("PDF export available:")."</label>\n"
@@ -237,8 +256,13 @@ function globalsettingsdisplay()
             $editsurvey .= ">".$clang->gT("Off")."</option>\n"
             . "</select>\n</li>\n"
             . "<li><label for='sessionlifetime'>".$clang->gT("Session lifetime (seconds):")."</label>\n"
-            . "<input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value=\"".htmlspecialchars(getGlobalSetting('sessionlifetime'))."\" /></li>";
+            . "<input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value=\"".htmlspecialchars(getGlobalSetting('sessionlifetime'))."\" /></li>"
+            . "<li><label for='ipInfoDbAPIKey'>".$clang->gT("IP Info DB API Key:")."</label>\n"
+            . "<input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value=\"".htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey'))."\" /></li>"
+            . "<li><label for='googleMapsAPIKey'>".$clang->gT("Google Maps API key:")."</label>\n"
+            . "<input type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value=\"".htmlspecialchars(getGlobalSetting('googleMapsAPIKey'))."\" /></li>"
 
+                    ;
 
 
             // End General TAB
@@ -246,13 +270,11 @@ function globalsettingsdisplay()
             $editsurvey .= "\t</ul></div>\n";
 
             // Email TAB
-            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Email settings")."</h2><ul>\n";
-
-            //Format
+            $editsurvey .= "\t<div id='email'><ul>\n";
+			 //Format
             $editsurvey.= "\t<li><label for='siteadminemail'>".$clang->gT("Default site admin email:")."</label>\n"
             . "\t\t<input type='text' size='50' id='siteadminemail' name='siteadminemail' value=\"".htmlspecialchars(getGlobalSetting('siteadminemail'))."\" /></li>\n"
-            . "\t<li><label for='siteadminbounce'>".$clang->gT("Default site bounce email:")."</label>\n"
-            . "\t\t<input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
+ 
             . "\t<li><label for='siteadminname'>".$clang->gT("Administrator name:")."</label>\n"
             . "\t\t<input type='text' size='50' id='siteadminname' name='siteadminname' value=\"".htmlspecialchars(getGlobalSetting('siteadminname'))."\" /><br /><br /></li>\n"
             . "\t<li><label for='emailmethod'>".$clang->gT("Email method:")."</label>\n"
@@ -270,7 +292,7 @@ function globalsettingsdisplay()
             if (getGlobalSetting('emailmethod')=='qmail') {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("Qmail")."</option>\n"
             . "\t\t</select></li>\n"
-            . "\t<li><label for='emailsmtphost'>".$clang->gT("SMTP host:")."</label>\n"
+            . "\t<li>\n\t\t<label for=\"emailsmtphost\">".$clang->gT("SMTP host:")."</label>\n"
             . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: my.smtp.com:25")."</font></li>\n"
             . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."</label>\n"
             . "\t\t<input type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value=\"".htmlspecialchars(getGlobalSetting('emailsmtpuser'))."\" /></li>\n"
@@ -303,14 +325,48 @@ function globalsettingsdisplay()
             . "\t<li><label for='maxemails'>".$clang->gT("Email batch size:")."</label>\n"
             . "\t\t<input type='text' size='5' id='maxemails' name='maxemails' value=\"".htmlspecialchars(getGlobalSetting('maxemails'))."\" /></li>\n"
             . "\t</ul>\n";
-
             // End Email TAB
             $editsurvey .= "\t</div>\n";
+            // Start bounce tab
+            $editsurvey .= "\t<div id='bounce'><ul>\n"
+            . "\t<li><label for='siteadminbounce'>".$clang->gT("Default site bounce email:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
+            . "\t<li><label for='bounceaccounttype'>".$clang->gT("Server type:")."</label>\n"
+	        . "\t\t<select id='bounceaccounttype' name='bounceaccounttype'>\n"
+  	        . "\t\t\t<option value='off'";
+            if (getGlobalSetting('bounceaccounttype')=='off') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Off")."</option>\n"
+            . "\t\t\t<option value='IMAP'";
+            if (getGlobalSetting('bounceaccounttype')=='IMAP') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("IMAP")."</option>\n"
+            . "\t\t\t<option value='POP'";
+            if (getGlobalSetting('bounceaccounttype')=='POP') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("POP")."</option>\n"
+            ."\t\t</select></li>\n"
 
+            . "\t<li><label for='bounceaccounthost'>".$clang->gT("Server name & port:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value=\"".htmlspecialchars(getGlobalSetting('bounceaccounthost'))."\" />\n"."<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: imap.gmail.com:995")."</font>\n"
+
+            . "\t<li><label for='bounceaccountuser'>".$clang->gT("User name:")."</label>\n"
+            . "\t\t<input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser' value=\"".htmlspecialchars(getGlobalSetting('bounceaccountuser'))."\" /></li>\n"
+            . "\t<li><label for='bounceaccountpass'>".$clang->gT("Password:")."</label>\n"
+            . "\t\t<input type='password' size='50' id='bounceaccountpass' name='bounceaccountpass' value='enteredpassword' /></li>\n";
+	    $editsurvey.= "\t<li><label for='bounceencryption'>".$clang->gT("Encryption type:")."</label>\n"
+	    . "\t\t<select id='bounceencryption' name='bounceencryption'>\n"
+  	    . "\t\t\t<option value='off'";
+            if (getGlobalSetting('bounceencryption')=='off') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Off")."</option>\n"
+            . "\t\t\t<option value='SSL'";
+            if (getGlobalSetting('bounceencryption')=='SSL') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("SSL")."</option>\n"
+            . "\t\t\t<option value='TLS'";
+            if (getGlobalSetting('bounceencryption')=='TLS') {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("TLS")."</option>\n"
+            ."\t\t</select></li>\n</ul>";
+            $editsurvey .= "\t</div>\n";
+            // End of bounce tabs
             // Security Settings
-            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Security")."</h2><ul>\n";
-
-
+            $editsurvey .= "\t<div id='security'><ul>\n";
             // Expiration
             $thissurveyPreview_require_Auth=getGlobalSetting('surveyPreview_require_Auth');
             $editsurvey .= "\t<li><label for='surveyPreview_require_Auth'>".$clang->gT("Survey preview only for administration users")."</label>\n"
@@ -345,25 +401,117 @@ function globalsettingsdisplay()
             if ( $thisusercontrolSameGroupPolicy == false) {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></li>\n";
-            $editsurvey .= "\t</ul></div>\n";
 
-            // Miscellaneous Settings
-            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Miscellaneous")."</h2><ul>\n";
+            $thisforce_ssl = getGlobalSetting('force_ssl');
+	    $opt_force_ssl_on = $opt_force_ssl_off = $opt_force_ssl_neither = '';
+	    $warning_force_ssl = $clang->gT('Warning: Before turning on HTTPS, ')
+	    . '<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'"title="'
+	    . $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">'
+	    . $clang->gT('check if this link works.').'</a><br/> '
+	    . $clang->gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
+//	    $warning_force_ssl = ' Do <strong>NOT</strong> force "On" if you\'re <strong>not completely certain</strong> your server has a SSL enabled. <br />'
+//	    . 'Before turning on HTTPS, <a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'">See if this link works</a><br />'
+//	    . 'If not, <strong>LimeSurvey will break</strong> if SSL is forced on but your server does not have a valid secure certificate installed and enabled.<br />';
+	    switch($thisforce_ssl)
+	    {
+	    	case 'on':
+		    $warning_force_ssl = '&nbsp;';                            
+		    break;
+		case 'off':
+		case 'neither':
+		    break;
+	    	default:
+		    $thisforce_ssl = 'neither';
+	    };
+	    $this_opt = 'opt_force_ssl_'.$thisforce_ssl;
+	    $$this_opt = ' selected="selected"';
+	    $editsurvey .= '<li><label for="force_ssl">'.$clang->gT('Force HTTPS:')."</label>\n"
+	    . "<select name=\"force_ssl\" id=\"force_ssl\">\n\t"
+            . '<option value="on" '.$opt_force_ssl_on.'>'.$clang->gT('On')."</option>\n\t"
+            . '<option value="off" '.$opt_force_ssl_off.'>'.$clang->gT('Off')."</option>\n\t"
+            . '<option value="neither" '.$opt_force_ssl_neither.'>'.$clang->gT('Don\'t force on or off')."</option>\n\t"
+	    . "</select></li>\n"
+	    . "<li><span style='font-size:0.7em;'>$warning_force_ssl\n</span></li>\n";
+	    unset($thisforce_ssl,$opt_force_ssl_on,$opt_force_ssl_off,$opt_force_ssl_neither,$warning_force_ssl,$this_opt);
 
-            // shownoanswer
-            $shownoanswer=getGlobalSetting('shownoanswer');
-            $editsurvey .= "\t<li><label for='shownoanswer'>".$clang->gT("Show 'no answer' option for non-mandatory questions:")."</label>\n"
-            . "\t\t<select id='shownoanswer' name='shownoanswer'>\n"
-            . "\t\t\t<option value='1'";
-            if ($shownoanswer == 1) {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "\t\t\t<option value='0'";
-            if ($shownoanswer == 0) {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+
+        $editsurvey .= "\t</ul></div>\n";
+
+        // presentation settings tab
+        $editsurvey .= "\t<div id='presentation'><ul>\n";
+        // shownoanswer
+        $shownoanswer=getGlobalSetting('shownoanswer');
+	    $sel_na = array( 0 => '' , 1 => '' , 2 => '');
+	    $sel_na[$shownoanswer] = ' selected="selected"';
+        $editsurvey .= "\t<li><label for='shownoanswer'>".$clang->gT("Show 'no answer' option for non-mandatory questions:")."</label>\n"
+        . "\t\t<select id='shownoanswer' name='shownoanswer'>\n"
+        . "\t\t\t<option value=\"1\"{$sel_na[1]}>".$clang->gT('Yes')."</option>\n"
+        . "\t\t\t<option value=\"0\"{$sel_na[0]}>".$clang->gT('No')."</option>\n"
+        . "\t\t\t<option value=\"2\"{$sel_na[2]}>".$clang->gT('Survey admin can choose')."</option>\n"
+        . "\t\t</select></li>\n";
+
+        $thisrepeatheadings=getGlobalSetting('repeatheadings');
+        $editsurvey .= "\t<li><label for='repeatheadings'>".$clang->gT("Repeating headings in array questions every X subquestions:")."</label>\n"
+        . "\t\t<input id='repeatheadings' name='repeatheadings' value='$thisrepeatheadings' size='4' maxlength='4' /></li>\n";
+
+
+        // showXquestions
+        $set_xq=getGlobalSetting('showXquestions');
+	    $sel_xq = array( 'hide' => '' , 'show' => '' , 'choose' => '');
+	    $sel_xq[$set_xq] = ' selected="selected"';
+	    if( empty($sel_xq['hide']) && empty($sel_xq['show']) && empty($sel_xq['choose']))
+	    {
+	    	$sel_xq['choose'] = ' selected="selected"';
+	    };
+            $editsurvey .= "\t<li><label for=\"showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n"
+            . "\t\t<select id=\"showXquestions\" name=\"showXquestions\">\n"
+            . "\t\t\t<option value=\"show\"{$sel_xq['show']}>".$clang->gT('Yes')."</option>\n"
+            . "\t\t\t<option value=\"hide\"{$sel_xq['hide']}>".$clang->gT('No')."</option>\n"
+            . "\t\t\t<option value=\"choose\"{$sel_xq['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"
             . "\t\t</select></li>\n";
-            $thisrepeatheadings=getGlobalSetting('repeatheadings');
-            $editsurvey .= "\t<li><label for='repeatheadings'>".$clang->gT("Number of answers to show before repeating the headings in array questions:")."</label>\n"
-            . "\t\t<input id='repeatheadings' name='repeatheadings' value='$thisrepeatheadings' size='4' maxlength='4' /></li>\n";
+	    unset($set_xq,$sel_xq);
+
+
+
+
+
+
+	    // showgroupinfo
+            $set_gri=getGlobalSetting('showgroupinfo');
+	    $sel_gri = array( 'both' => '' , 'choose' =>'' , 'description' => '' , 'name' => '' , 'none' => '' );
+	    $sel_gri[$set_gri] = ' selected="selected"';
+	    if( empty($sel_gri['both']) && empty($sel_gri['choose']) && empty($sel_gri['description']) && empty($sel_gri['name']) && empty($sel_gri['none']))
+	    {
+	    	$sel_gri['choose'] = ' selected="selected"';
+	    };
+            $editsurvey .= "\t<li><label for=\"showgroupinfo\">".$clang->gT('Show question group name and/or description')."</label>\n"
+            . "\t\t<select id=\"showgroupinfo\" name=\"showgroupinfo\">\n"
+            . "\t\t\t<option value=\"both\"{$sel_gri['both']}>".$clang->gT('Show both')."</option>\n"
+            . "\t\t\t<option value=\"name\"{$sel_gri['name']}>".$clang->gT('Show group name only')."</option>\n"
+            . "\t\t\t<option value=\"description\"{$sel_gri['description']}>".$clang->gT('Show group description only')."</option>\n"
+            . "\t\t\t<option value=\"none\"{$sel_gri['none']}>".$clang->gT('Hide both')."</option>\n"
+            . "\t\t\t<option value=\"choose\"{$sel_gri['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"
+            . "\t\t</select></li>\n";
+	    unset($set_gri,$sel_gri);
+
+	    // showqnumcode
+            $set_qnc=getGlobalSetting('showqnumcode');
+	    $sel_qnc = array( 'both' => '' , 'choose' =>'' , 'number' => '' , 'code' => '' , 'none' => '' );
+	    $sel_qnc[$set_qnc] = ' selected="selected"';
+	    if( empty($sel_qnc['both']) && empty($sel_qnc['choose']) && empty($sel_qnc['number']) && empty($sel_qnc['code']) && empty($sel_qnc['none']))
+	    {
+	    	$sel_qnc['choose'] = ' selected="selected"';
+	    };
+            $editsurvey .= "\t<li><label for=\"showqnumcode\">".$clang->gT('Show question number and/or question code')."</label>\n"
+            . "\t\t<select id=\"showqnumcode\" name=\"showqnumcode\">\n"
+            . "\t\t\t<option value=\"both\"{$sel_qnc['both']}>".$clang->gT('Show both')."</option>\n"
+            . "\t\t\t<option value=\"number\"{$sel_qnc['number']}>".$clang->gT('Show question number only')."</option>\n"
+            . "\t\t\t<option value=\"code\"{$sel_qnc['code']}>".$clang->gT('Show question code only')."</option>\n"
+            . "\t\t\t<option value=\"none\"{$sel_qnc['none']}>".$clang->gT('Hide both')."</option>\n"
+            . "\t\t\t<option value=\"choose\"{$sel_qnc['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"
+           . "\t\t</select></li>\n";
+	    unset($set_qnc,$sel_qnc);
+
             $editsurvey .= "\t</ul>\n";
             // End TAB page & form
             $editsurvey .= "\t</div><input type='hidden' name='action' value='globalsettingssave'/></form>\n";
@@ -377,6 +525,8 @@ function globalsettingsdisplay()
             {
                 $editsurvey .= '<p>'.$clang->gT("Note: Demo mode is activated. Marked (*) settings can't be changed.").'</p>\n';
             }
+
+
 
 
         }
@@ -466,43 +616,29 @@ function checksettings()
     {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
     if(isset($tokenlist) && is_array($tokenlist))
     {$activetokens=count($tokenlist);} else {$activetokens=0;}
-    $cssummary = "<div class='header'>".$clang->gT("System overview")."</div>\n";
+    $cssummary = "<div class='header ui-widget-header'>".$clang->gT("System overview")."</div>\n";
     // Database name & default language
     $cssummary .= "<br /><table class='statisticssummary'><tr>\n"
-    . "<td width='50%' align='right'>\n"
-    . "<strong>".$clang->gT("Database name").":</strong>\n"
-    . "</td><td>$databasename</td>\n"
+    . "<th width='50%' align='right'>".$clang->gT("Database name").":</th><td>$databasename</td>\n"
     . "</tr>\n";
     // Other infos
     $cssummary .=  "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Users").":</strong>\n"
-    . "</td><td>$usercount</td>\n"
+    . "<th align='right'>".$clang->gT("Users").":</th><td>$usercount</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Surveys").":</strong>\n"
-    . "</td><td>$surveycount</td>\n"
+    . "<th align='right'>".$clang->gT("Surveys").":</th><td>$surveycount</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"                                               
+    . "<th align='right'>".$clang->gT("Active surveys").":</th><td>$activesurveycount</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Active surveys").":</strong>\n"
-    . "</td><td>$activesurveycount</td>\n"
+    . "<th align='right'>".$clang->gT("Deactivated result tables").":</th><td>$deactivatedsurveys</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Deactivated result tables").":</strong>\n"
-    . "</td><td>$deactivatedsurveys</td>\n"
+    . "<th align='right'>".$clang->gT("Active token tables").":</th><td>$activetokens</td>\n"
     . "</tr>\n"
     . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Active token tables").":</strong>\n"
-    . "</td><td>$activetokens</td>\n"
-    . "</tr>\n"
-    . "<tr>\n"
-    . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Deactivated token tables").":</strong>\n"
-    . "</td><td>$deactivatedtokens</td>\n"
+    . "<th align='right'>".$clang->gT("Deactivated token tables").":</th><td>$deactivatedtokens</td>\n"
     . "</tr>\n"
     . "</table>\n";
 

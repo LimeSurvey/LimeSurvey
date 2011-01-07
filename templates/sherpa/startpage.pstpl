@@ -11,12 +11,12 @@
 		<!--[if lte IE 6]>
 				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
 		<![endif]-->
-		<!--[if IE 7]>
-				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
-		<![endif]-->
+<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
+<![endif]-->
 		<!--[if IE 8]>
 				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
-		<![endif]-->
+<![endif]-->
 
     <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
     <style type="text/css" media="aural tty">
@@ -26,14 +26,16 @@
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
     <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />   
 </head>
-	<body>
+	<body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
 
-	<table align="center" cellpadding="0" cellspacing="0">
-		<tr class="grayboxheader">
-			<td width="14"><img src="{TEMPLATEURL}box_left.gif" border="0" width="14" /></td>
+        <div class="outerframe">
+
+	        <table align="center" cellpadding="0" cellspacing="0">
+	        	<tr class="grayboxheader">
+	        		<td width="14"><img src="{TEMPLATEURL}box_left.gif" border="0" width="14" /></td>
 			<td class="center-cell">{SURVEYNAME}</td>
-			<td width="14"><img src="{TEMPLATEURL}box_right.gif" border="0" width="14" /></td>
-		</tr>
-	</table>
+	        		<td width="14"><img src="{TEMPLATEURL}box_right.gif" border="0" width="14" /></td>
+	                </tr>
+	        </table>
 
-	<div class="survey-main">
+	        <div class="survey-main">

@@ -150,6 +150,10 @@ table {
   color: #CB0404;
 }
 
+.warning{
+    display:block;
+    }
+    
 .printouttable {
   width: 100%;
 }
@@ -1157,3 +1161,67 @@ div.questionTitle {
 td.statsImageholder {
   background-color: #FFF;
 }
+
+/* Question Index */
+.outerframe.withindex {
+  margin-left: 1em;
+  margin-right: 26em;
+}
+
+#index {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  background: #F5FEFF;
+  border-left: 1px solid #00677D;
+}
+
+#index h2 { 
+  margin-top: 0;
+  padding: 10px;
+  background: #00677D;
+  color: #fff;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: normal;
+}
+
+#index h3 {
+  margin: 0.5em 0 0 0.5em;
+  color: #00677D;
+  font-size: 100%;
+}
+
+#index .container {
+  width: 24em;
+}
+
+#index .container .row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  border-top: 1px solid #fff;
+}
+
+#index .container .row:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+#index .container .row .hdr {
+  width: 3em;
+  text-align: right;
+  display: inline-block;
+  padding: 0 0.5em 0 0;
+}
+
+#index .container .row.odd { background: #FFF; }
+#index .container .row.current { background: #00407A; color: #fff; }
+#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container input { margin: 1em; }

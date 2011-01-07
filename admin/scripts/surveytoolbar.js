@@ -2,36 +2,36 @@
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-    $('.btnsurveybar').click(function(){
-        $('.btnsurveybar').attr('disabled','disabled');
-        $('#basicsurveybar').css('white-space','nowrap')
-        $('#advancedsurveybar').css('white-space','nowrap')
-        $('.btnsurveybar').toggle();
-        $('#basicsurveybar').animate({width: 'toggle'}, {duration:1500, easing:'easeOutExpo'});
-        $('#advancedsurveybar').animate({ width: 'toggle'}, 1500, 'easeOutExpo', function()
-        {
-            $('#basicsurveybar').css('white-space','normal')
-            $('#advancedsurveybar').css('white-space','normal')
-            $('.btnsurveybar').attr('disabled',false);
-        });
-        $.cookie('surveybarmode',$('#advancedsurveybar').css('width'));
-        
-               
+    // Load the superfish menu 
+    $('ul.sf-menu').superfish({
+        speed:'fast'
     });
+    //Load the special tooltips for the surveybar
+    $('.surveybar img[alt]').each(function() {
+        if($(this).attr('alt') != '')
+        {
+             $(this).qtip({
+               style: { name: 'cream',
+                        tip:true, 
+                        color:'#1D2D45', 
+                        border: {
+                             width: 1,
+                             radius: 5,
+                             color: '#EADF95'}
+                       },  
+               position: { adjust: { 
+                        screen: true, scroll:true },
+                        corner: {
+                                target: 'topRight',
+                                tooltip: 'bottomLeft'}       
+                        },
+                show: {effect: { length:50},
+                       delay:1000
+                      },
+                hide: { when: 'mouseout' },
+                api: { onRender: function() {$(this.options.hide.when.target).bind('click', this.hide);}}
 
-    if  ($.cookie('surveybarmode')!='1px')
-    {
-        $('#surveyhandleright').hide();  
-        $('#advancedsurveybar').hide();  
-        $('#advancedsurveybar').attr('width','0%');  
-        $('#basicsurveybar').show();  
-    }
-    else
-    {
-        $('#surveyhandleleft').hide();  
-        $('#advancedsurveybar').show();  
-        $('#basicsurveybar').hide();  
-        $('#basicsurveybar').attr('width','0%');  
-    }
-
+               });
+        }
+    });       
 });

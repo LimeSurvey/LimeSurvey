@@ -1,8 +1,8 @@
 <table class="completed-table bf">
-	<tr>
+<tr>
 		<td>
 			<table width="80%" align="center">
-				<tr>
+		<tr>
 					<td class="completed-text">
 						{COMPLETED}<br /><br />
 						<span>{URL}</span><br /><br />
@@ -15,7 +15,7 @@
 		</td>				
 	</tr>					
 </table>							
-							
-							
-							
+
+
+
 							

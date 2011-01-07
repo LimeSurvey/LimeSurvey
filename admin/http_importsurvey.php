@@ -25,7 +25,7 @@ if ( (isset($_POST['copysurveytranslinksfields']) && $_POST['copysurveytranslink
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 if ($action == 'importsurvey')
 {
-    $importsurvey = "<div class='header'>".$clang->gT("Import Survey")."</div>\n";
+    $importsurvey = "<div class='header ui-widget-header'>".$clang->gT("Import survey")."</div>\n";
 
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
@@ -40,15 +40,15 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importsurvey .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
+$importsurvey .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
 $importsurvey .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importsurvey .= $clang->gT("Reading file..")."<br />\n";
 
 $importingfrom = "http";	// "http" for the web version and "cmdline" for the command line version
 } elseif ($action == 'copysurvey')
 {
-    $importsurvey = "<div class='header'>".$clang->gT("Copy survey")."</div>\n";
-    $importsurvey .= "<div class='messagebox'><br />\n";
+    $importsurvey = "<div class='header ui-widget-header'>".$clang->gT("Copy survey")."</div>\n";
+    $importsurvey .= "<div class='messagebox ui-corner-all'><br />\n";
     $surveyid = sanitize_int($_POST['copysurveylist']);
     $exclude = array();
     if (get_magic_quotes_gpc()) {$sNewSurveyName = stripslashes($_POST['copysurveyname']);}

@@ -6,15 +6,15 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="graph">
-		    {PERCENTCOMPLETE}
-		</td>
-    </tr>
+    <td class="graph">
+      {PERCENTCOMPLETE}
+    </td>
+  </tr>
 </table>
 <table class="language-changer-table">
 	<tr>
-    	<td align="center">
-        	{LANGUAGECHANGER}
-    	</td>
-    </tr>
+    <td align="center">
+      {LANGUAGECHANGER}
+    </td>
+  </tr>
 </table>

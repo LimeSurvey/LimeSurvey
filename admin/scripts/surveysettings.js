@@ -15,7 +15,7 @@ function templatechange()
     }
     else
     {
-        $("#preview").attr('src',templaterooturl+'/'+this.value+'/preview.png');
+    $("#preview").attr('src',templaterooturl+'/'+this.value+'/preview.png');
     } 
 }
 

@@ -1,4 +1,5 @@
 //$Id$    
+
 $(document).ready(function(){
     setupAllTabs();
     if(typeof(userdateformat) !== 'undefined') 
@@ -17,9 +18,6 @@ $(document).ready(function(){
                             }, $.datepicker.regional[userlanguage]);
     }
 
-    $('div.messagebox').addClass("ui-corner-all");   
-    $('div.header').addClass("ui-widget-header");   
-    $('.menubar-title').addClass("ui-widget-header");   
     $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");   
     $('button,input[type=submit],input[type=button],input[type=reset]').hover(
         function(){ 
@@ -31,8 +29,8 @@ $(document).ready(function(){
     )
     
 
-    // Loads the tooltips for the toolbars
-    $('img[alt],input[src]').each(function() {
+    // Loads the tooltips for the toolbars  except the surveybar
+    $('img[alt],input[src]').not('.surveybar img').each(function() {
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
@@ -57,6 +55,7 @@ $(document).ready(function(){
         }
     });    
 
+    
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
         {
@@ -106,34 +105,6 @@ $(document).ready(function(){
                    event:'unfocus'
                }}
     }); 
-    
-    $('#doprintable').qtip({
-        content:{
-                text:$('#doprintablelangpopup')
-        },
-        style: { name: 'cream',
-                        tip:true, 
-                color:'#111111', 
-                border: {
-                     width: 1,
-                     radius: 5,
-                     color: '#EADF95'}
-               },  
-        position: { adjust: { 
-                screen: true, scroll:true },
-                corner: {
-                        target: 'bottomMiddle',
-                        tooltip: 'topMiddle'}
-                },
-        show: {effect: { length:50},
-               when: {
-                   event:'click'
-               }},
-        hide: {fixed:true,
-               when: {
-                   event:'unfocus'
-               }}
-    });     
 
     $('#previewquestion').qtip({
         content:{
@@ -208,14 +179,130 @@ $(document).ready(function(){
 
     }) 
     $('#question_type').change(updatequestionattributes);
+
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
     });     
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });
+    $('#tabs').tabs();
+    $("#flashmessage").notify().notify('create','themeroller',{},{custom:true,
+    speed: 500,
+    expires: 5000
 });
 
+    var old_owner = '';
+
+    $(".ownername_edit").live('click',function(){
+       var oldThis = this;
+       var ownername_edit_id = $(this).attr('id');
+       var survey_id = ownername_edit_id.slice(15);
+       $.getJSON('admin.php', {
+                    action: 'ajaxgetusers'
+                },function(oData)
+                {
+                    old_owner =  $($(oldThis).parent()).html();
+                    old_owner = (old_owner.split(" "))[0];
+                    $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>'
+                    + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" value="Update">');
+                    $(oData).each(function(key,value){
+                        $('#ownername_select_'+survey_id).
+                          append($("<option id='opt_"+value[1]+"'></option>").
+                          attr("value",value[0]).
+                          text(value[1]));
+                    });
+                    $("#ownername_select_"+survey_id+ " option[id=opt_"+old_owner+"]").attr("selected","selected");
+         });
+    });
+
+    $(".ownername_button").live('click',function(){
+       var oldThis = this;
+       var ownername_select_id = $(this).attr('id');
+       var survey_id = ownername_select_id.slice(17);
+       var newowner = $("#ownername_select_"+survey_id).val();
+
+       $.getJSON('admin.php',{
+            action: 'ajaxowneredit',
+            newowner: newowner,
+            survey_id : survey_id
+       }, function (data){
+           var objToUpdate = $($(oldThis).parent());
+           if (data.record_count>0)
+               $(objToUpdate).html(data.newowner);
+           else
+               $(objToUpdate).html(old_owner);
+
+           $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" class="ownername_edit" href="#">Edit</a>)' );
+       });
+    });
+
+    if ($("#question_type").length > 0){
+        $("#question_type").msDropDown();
+
+        $("#question_type").change(function(event){
+          
+           var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
+           OtherSelection(selected_value);
+});
+
+        $.getScript('../scripts/jquery/jquery-qtip.js', function() {
+            $("#question_type_child a").each(function(index,element){
+
+                $(element).qtip({
+                       style: {
+                                    'margin' : '15px',
+                                    'width': '450px',
+                                    'height':'auto',
+                                    'border':{
+                                            width: 4,
+                                            radius: 2
+                                    }
+                            },
+                       content: getToolTip($(element).text()),
+                       position: {
+                                    corner:{
+                                            target: 'leftMiddle',
+                                            tooltip:'rightMiddle'
+                                    }
+                            },
+                       show: 'mouseover',
+                       hide: 'mouseout'
+                });
+
+            });
+        });
+
+        }
+    
+    
+    
+});
+
+var aToolTipData = {
+
+};
+
+var qDescToCode;
+var qCodeToInfo;
+
+function getToolTip(type){
+    var code = qDescToCode[''+type];
+    var multiple = 0;
+    if (code=='S') multiple = 2;
+    
+    if (code == ":") code = "COLON";
+    else if(code == "|") code = "PIPE";
+
+    if (multiple > 0){
+        returnval = '';
+        for(i=1;i<=multiple;i++){
+            returnval = returnval + "<img src='../images/screenshots/"+code+i+".png' /><br /><br />";
+        }
+        return returnval;
+    }
+    return "<img src='../images/screenshots/"+code+".png' />";
+}
 
 //We have form validation and other stuff..
 
@@ -223,8 +310,10 @@ function updatequestionattributes()
 {
         $('.loader').show();
         $('#advancedquestionsettings').html('');
+        var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
+        if (selected_value==undefined) selected_value = $("#question_type").val();
         $('#advancedquestionsettings').load('admin.php?action=ajaxquestionattributes',{qid:$('#qid').val(),
-                                                                                   question_type:$('#question_type').val(),
+                                                                                   question_type:selected_value,
                                                                                    sid:$('#sid').val()
                                                                                   }, function(){
             // Loads the tooltips for the toolbars
@@ -533,14 +622,16 @@ function removechars(strtoconvert){
 
 
 function htmlspecialchars(str) {
-    if (typeof(str) == "string") {
-        str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
-        str = str.replace(/"/g, "&quot;");
-        str = str.replace(/'/g, "&#039;");
-        str = str.replace(/</g, "&lt;");
-        str = str.replace(/>/g, "&gt;");
-    }
-    return str;
+ if (typeof(str) == "string") {
+  str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
+  str = str.replace(/"/g, "&quot;");
+  str = str.replace(/'/g, "&#039;");
+  str = str.replace(/</g, "&lt;");
+  str = str.replace(/>/g, "&gt;");
+  }
+ return str;
 }
+
+
 
 
