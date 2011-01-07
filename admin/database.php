@@ -1278,7 +1278,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         // Get random ids until one is found that is not used
         do
         {
-            $surveyid = getRandomID();
+            $surveyid = sRandomChars(5,'123456789');
             $isquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
             $isresult = db_execute_assoc($isquery); // Checked
         }
