@@ -794,12 +794,20 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
         $tableusage = get_dbtableusage($surveyid);
         if ($tableusage != false){
-        $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
-        $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2);
 
-        
-        $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$column_usage}'></div> </td></tr>";
-        $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Size Usage")}: </strong></td><td><strong>{$size_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$size_usage}'></div></td></tr>";
+            if ($tableusage['dbtype']=='mysql'){
+                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
+                $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2);
+
+
+                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$column_usage}'></div> </td></tr>";
+                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Size Usage")}: </strong></td><td><strong>{$size_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$size_usage}'></div></td></tr>";
+            }
+            elseif (($arrCols['dbtype'] == 'mssqlnative')||($arrCols['dbtype'] == 'postgres')||($arrCols['dbtype'] == 'odbtp')||($arrCols['dbtype'] == 'mssql_n')){
+                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
+                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$column_usage}'></div> </td></tr>";
+            }
+            
         }
         
         $surveysummary .= "</table>\n";
@@ -2212,12 +2220,26 @@ function get_dbtableusage($surveyid){
                 break;
         }
     }
+    if ($arrCols['dbtype'] == 'mysql'){
+        if ($arrCols['dbengine']=='myISAM'){
+            $hard_limit = 4096;
+        }
+        elseif ($arrCols['dbengine'] == "InnoDB"){
+            $hard_limit = 1000;
+        }
+        else{
+            return false;
+        }
 
-    if ($arrCols['dbengine']=='myISAM'){
-        $hard_limit = 4096;
+        $size_limit = 65535;
     }
-    elseif ($arrCols['dbengine'] == "InnoDB"){
-        $hard_limit = 1000;
+    elseif ($arrCols['dbtype'] == 'postgres'){
+        $hard_limit = 1600;
+        $size_limit = 0;
+    }
+    elseif (($arrCols['dbtype'] == 'mssqlnative')||($arrCols['dbtype'] == 'odbtp')||($arrCols['dbtype'] == 'mssql_n')){
+        $hard_limit = 1024;
+        $size_limit = 0;
     }
     else{
         return false;
@@ -2225,7 +2247,7 @@ function get_dbtableusage($surveyid){
 
     $columns_used = count($arrCols['fields']);
 
-    $size_limit = 65535;
+    
 
-    return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
+    return (array( 'dbtype'=>$arrCols['dbtype'], 'column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
 }

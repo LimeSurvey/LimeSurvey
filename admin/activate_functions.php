@@ -415,7 +415,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
     }
 
     if ($simulate){
-        return array('dbengine'=>$databasetabletype, 'fields'=>$arrSim);
+        return array('dbengine'=>$databasetabletype, 'dbtype'=>$databasetype, 'fields'=>$arrSim);
     }
     
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
