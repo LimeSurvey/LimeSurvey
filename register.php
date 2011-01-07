@@ -99,7 +99,7 @@ if (($result->RecordCount()) > 0)
 $mayinsert = false;
 while ($mayinsert != true)
 {
-    $newtoken = randomkey(15);
+    $newtoken = sRandomChars(15);
     $ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
     $ntresult = $connect->Execute($ntquery); //Checked
     if (!$ntresult->RecordCount()) {$mayinsert = true;}

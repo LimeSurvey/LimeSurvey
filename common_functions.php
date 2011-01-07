@@ -4925,11 +4925,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	return $sent;
 }
 
-function str_get_html($htmlbody)
-{
-    return $htmlbody;
 
-		}
 
 /**
  *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
@@ -4954,17 +4950,6 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     return  $sNicetext;
 }
 
-function getRandomID()
-{        // Create a random survey ID - based on code from Ken Lyle
-// Random sid/ question ID generator...
-$totalChar = 5; // number of chars in the sid
-$salt = "123456789"; // This is the char. that is possible to use
-srand((double)microtime()*1000000); // start the random generator
-$sid=""; // set the inital variable
-for ($i=0;$i<$totalChar;$i++) // loop and create sid
-$sid = $sid . substr ($salt, rand() % strlen($salt), 1);
-return $sid;
-}
 
 /**
  * getArrayFiltersForGroup() queries the database and produces a list of array_filter questions and targets with in the same group
@@ -5426,12 +5411,12 @@ function modify_database($sqlfile='', $sqlstring='')
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', $defaultlang, $command);
-                $command = str_replace('$sessionname', 'ls'.getRandomID().getRandomID().getRandomID().getRandomID(), $command);
+                $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
                 $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
                 if (! db_execute_num($command)) {  //Checked
                     $command=htmlspecialchars($command);
-                    $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#FF0000'>...".$clang->gT("Failed! Reason:").'&nbsp;'.$connect->ErrorMsg()."</font>";
+                    $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s Reason: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'>".$connect->ErrorMsg()."</span><br/>");
                     $success = false;
                 }
                 else
@@ -6883,13 +6868,13 @@ function hasResources($id,$type='survey')
 }
 
 /**
- * put your comment there...
+ * Creates a random sequence of characters
  *
- * @param mixed $length
+ * @param mixed $length Length of resulting string
+ * @param string $pattern To define which characters should be in the resulting string
  */
-function randomkey($length)
+function sRandomChars($length,$pattern="23456789abcdefghijkmnpqrstuvwxyz")
 {
-    $pattern = "23456789abcdefghijkmnpqrstuvwxyz";
     $patternlength = strlen($pattern)-1;
     for($i=0;$i<$length;$i++)
     {

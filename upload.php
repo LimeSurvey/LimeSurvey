@@ -56,7 +56,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     die("You don't have a valid session !");
 }
 
-    $randfilename = randomkey(15);
+    $randfilename = sRandomChars(15);
     $uploaddir = 'tmp/upload/';
     $randfileloc = $uploaddir . $randfilename;
     $filename = $_FILES['uploadfile']['name'];

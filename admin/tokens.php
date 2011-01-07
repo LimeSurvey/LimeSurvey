@@ -2043,7 +2043,7 @@ if ($subaction == "tokenify" && bHasSurveyPermission($surveyid, 'tokens', 'updat
             $isvalidtoken = false;
             while ($isvalidtoken == false)
             {
-                $newtoken = randomkey($tokenlength);
+                $newtoken = sRandomChars($tokenlength);
                 if (!isset($existingtokens[$newtoken])) {
                     $isvalidtoken = true;
                     $existingtokens[$newtoken]=null;
@@ -2599,7 +2599,7 @@ if ($subaction == "insertdummys" && (bHasSurveyPermission($surveyid, 'tokens','c
         $isvalidtoken = false;
         while ($isvalidtoken == false)
         {
-            $newtoken = randomkey($tokenlength);
+            $newtoken = sRandomChars($tokenlength);
             if (!isset($existingtokens[$newtoken])) {
                 $isvalidtoken = true;
                 $existingtokens[$newtoken]=null;

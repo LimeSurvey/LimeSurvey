@@ -2336,7 +2336,7 @@ class LsrcHelper {
 
                 while($checkCnt>0)
                 {
-                    $value = randomkey(10); //change randomkey value for different tokenlength (up to 36 chars max.)
+                    $value = sRandomChars(10); //change sRandomChars value for different tokenlength (up to 36 chars max.)
                     $cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
                     $result = db_execute_assoc($cQuery);
                     $checkCnt = $result->RecordCount();

@@ -178,7 +178,7 @@ if (!isset($_SESSION['loginID']))
                         $_SESSION['htmleditormode'] = $fields['htmleditormode'];
                         $_SESSION['dateformat'] = $fields['dateformat'];
                         // Compute a checksession random number to test POSTs
-                        $_SESSION['checksessionpost'] = randomkey(10);
+                        $_SESSION['checksessionpost'] = sRandomChars(10);
                         if (isset($postloginlang) && $postloginlang!='default')
                         {
                             $_SESSION['adminlang'] = $postloginlang;
@@ -357,7 +357,7 @@ if (!isset($_SESSION['loginID']))
             $_SESSION['adminlang'] = $fields['lang'];
             $_SESSION['htmleditormode'] = $fields['htmleditormode'];
             $_SESSION['dateformat'] = $fields['dateformat'];
-            $_SESSION['checksessionpost'] = randomkey(10);
+            $_SESSION['checksessionpost'] = sRandomChars(10);
             $_SESSION['pw_notify']=false;
             $clang = new limesurvey_lang($_SESSION['adminlang']);
             $login = true;

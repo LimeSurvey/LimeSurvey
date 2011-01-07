@@ -250,7 +250,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             {
                                 if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
                                 {
-                                    $target = dirname(getcwd())."/upload/surveys/". $thissurvey['sid'] ."/files/".randomkey(20);
+                                    $target = dirname(getcwd())."/upload/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
                                     $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
                                     $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
 
@@ -370,7 +370,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     "firstname"=> $saver['identifier'],	
                     "lastname"=> $saver['identifier'], 	
     				        "email"=>$saver['email'],
-                    "token"=>randomkey(15),
+                    "token"=>sRandomChars(15),
                     "language"=>$saver['language'],
                     "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
                     "completed"=>"N");

@@ -1554,7 +1554,7 @@ function GetNewSurveyID($oldsid)
         // Get new random ids until one is found that is not used
         do
         {
-            $newsid = getRandomID();
+            $newsid = sRandomChars(5,'123456789');
             $isresult = $connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid");
         }
         while (!is_null($isresult));

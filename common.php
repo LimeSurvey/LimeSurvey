@@ -261,13 +261,13 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
         if(isset($_GET['continue']) && $_GET['continue']==1) 
         {   
             echo CheckForDBUpgrades();
-            echo "<br /><a href='$homeurl'>".$clang->gT("Back to main menu")."</a>";
+            echo "<br /><a href='$homeurl'>".$clang->gT("Back to main menu")."</a></div>";
             updatecheck();                     
         }        
         else
         {   
             $dbupgradeoutput='<div class="messagebox">';
-            $dbupgradeoutput.=CheckForDBUpgrades();                    
+            $dbupgradeoutput.= CheckForDBUpgrades();                    
             $dbupgradeoutput.='</div>';
             echo getAdminHeader() . $dbupgradeoutput . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));            
         }        
