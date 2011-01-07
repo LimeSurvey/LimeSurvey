@@ -322,7 +322,14 @@ if ($surveyexists <1)
 if ($previewgrp){
 	setcookie("limesurvey_timers", "0");
     $_SESSION['step'] = $_REQUEST['gid']+1;
-    $grouparrayno=$_SESSION['step']-2;
+
+    foreach($_SESSION['grouplist'] as $index=>$group){
+        if ($group[0]==$_REQUEST['gid']){
+            $grouparrayno = $index;
+            break;
+        }
+    }
+
     $gid=$_SESSION['grouplist'][$grouparrayno][0];
     $groupname=$_SESSION['grouplist'][$grouparrayno][1];
     $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];

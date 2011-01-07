@@ -231,6 +231,10 @@
             }
             $vasummary .= "<button class='btnlsbrowser' id='btnlsbrowser_{$scale_id}' $disabled type='button'>".$clang->gT('Predefined label sets...')."</button>";
             $vasummary .= "<button class='btnquickadd' id='btnquickadd_{$scale_id}' $disabled type='button'>".$clang->gT('Quick add...')."</button>";
+            if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1){
+                $vasummary .= "<button class='bthsaveaslabel' id='bthsaveaslabel_{$scale_id}' $disabled type='button'>".$clang->gT('Save as label set')."</button>";
+            }
+
         }
 
         $first=false;

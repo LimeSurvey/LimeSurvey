@@ -789,8 +789,20 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 $surveysummary .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</span><br />";
             }
         }
-        $surveysummary .=  $surveysummary2
-        . "</table>\n";
+        $surveysummary .=  $surveysummary2;
+
+        //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
+        $tableusage = get_dbtableusage($surveyid);
+        if ($tableusage != false){
+        $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
+        $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2);
+
+        
+        $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$column_usage}'></div> </td></tr>";
+        $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Size Usage")}: </strong></td><td><strong>{$size_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$size_usage}'></div></td></tr>";
+        }
+        
+        $surveysummary .= "</table>\n";
     }
     else
     {
@@ -2157,4 +2169,63 @@ function showadminmenu()
 
     }
     return $adminmenu;
+}
+
+function get_dbtableusage($surveyid){
+    include_once("activate_functions.php");
+    $arrCols = activateSurvey($surveyid,$surveyid,'admin.php',true);
+
+    $length = 1;
+    foreach ($arrCols['fields'] as $col){
+        switch ($col[0]){
+            case 'C':
+                $length = $length + ($col[1]*3) + 1;
+                break;
+            case 'X':
+            case 'B':
+                $length = $length + 12;
+                break;
+            case 'D':
+                $length = $length + 3;
+                break;
+            case 'T':
+            case 'TS':
+            case 'N':
+                $length = $length + 8;
+                break;
+            case 'L':
+                $legth++;
+                break;
+            case 'I':
+            case 'I4':
+            case 'F':
+                $length = $length + 4;
+                break;
+            case 'I1':
+                $length = $length + 1;
+                break;
+            case 'I2':
+                $length = $length + 2;
+                break;
+            case 'I8':
+                $length = $length + 8;
+                break;
+        }
+    }
+
+    if ($arrCols['dbengine']=='myISAM'){
+        $hard_limit = 4096;
+    }
+    elseif ($arrCols['dbengine'] == "InnoDB"){
+        $hard_limit = 1000;
+    }
+    else{
+        return false;
+    }
+
+    $columns_used = count($arrCols['fields']);
+
+    $size_limit = 65535;
+
+    return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
 }

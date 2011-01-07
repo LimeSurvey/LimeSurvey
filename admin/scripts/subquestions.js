@@ -569,3 +569,4 @@ function quickadddialog()
     scale_id=removechars($(this).attr('id'));      
     $('#quickadd').dialog('open');    
 }
+

@@ -46,7 +46,6 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
-
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {
     $adminoutput="<div id='wrapper'>";
@@ -132,7 +131,7 @@ if(isset($_SESSION['loginID']))
         else { include("access_denied.php");}
     }
     elseif ($action=='labels' || $action=='newlabelset' || $action=='insertlabelset' ||
-    $action=='deletelabelset' || $action=='editlabelset' || $action=='modlabelsetanswers' ||
+    $action=='deletelabelset' || $action=='editlabelset' || $action=='modlabelsetanswers' || $action == "ajaxmodlabelsetanswers" ||
     $action=='updateset' || $action=='importlabels' ||$action == 'importlabelresources')
     {
         if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {$_SESSION['FileManagerContext']="edit:label:$lid"; include('labels.php');}

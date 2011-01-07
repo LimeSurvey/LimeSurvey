@@ -152,7 +152,8 @@ $dangerousActionsArray = Array
         5 => Array('subaction' => 'insertquotaanswer'),
         6 => Array('subaction' => 'quota_delans')
     ),
-    'translate' => Array()
+    'translate' => Array(),
+    'ajaxmodlabelsetanswers'=>Array()
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) &&

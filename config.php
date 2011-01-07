@@ -54,7 +54,7 @@ $defaultuser        =   'admin';           // This is the username when LimeSurv
 $defaultpass        =   'password';        // This is the password for the administration user when LimeSurvey is installed
 
 // Debug Settings
-$debug              =   0;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+$debug              =   3;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir
 // on your webspace.
 // LimeSurvey developers: Set this to 2 to circumvent the restriction to remove the installation directory

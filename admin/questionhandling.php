@@ -18,7 +18,6 @@
 include_once("login_check.php");
 
 if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
-
 if ($action == "copyquestion")
 {
     $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -284,10 +283,22 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
         $eqresult = db_execute_assoc($eqquery);
     }
-	
+
+    $js_admin_includes[] = '../scripts/jquery/jquery.dd.js';
+    $css_admin_includes[] = '../scripts/jquery/dd.css';
+    
     $editquestion = PrepareEditorScript();
-	
-    $editquestion .= "<div class='header ui-widget-header'>";
+
+    $qtypelist=getqtypelist('','array');
+    $qDescToCode = 'qDescToCode = {';
+    $qCodeToInfo = 'qCodeToInfo = {';
+    foreach ($qtypelist as $qtype=>$qdesc){
+        $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
+        $qCodeToInfo .= " '{$qtype}' : '".json_encode($qdesc)."', \n";
+    }
+    $qTypeOutput = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
+
+    $editquestion .= "<script type='text/javascript'>\n{$qTypeOutput}\n</script>\n<div class='header ui-widget-header'>";
     if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
     $editquestion .= "</div>\n";
 	
@@ -397,9 +408,9 @@ if ($action == "editquestion" || $action=="addquestion")
     . "<li><label for='question_type'>".$clang->gT("Question Type:")."</label>\n";
     if ($activated != "Y")
     {
-        $editquestion .= "<select id='question_type' name='type' "
-        . "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
-        . getqtypelist($eqrow['type'])
+        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' "
+        . ">\n"
+        . getqtypelist($eqrow['type'],'group')
         . "</select>\n";
     }
     else

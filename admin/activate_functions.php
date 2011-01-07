@@ -262,7 +262,9 @@ function checkQestions($postsid, $surveyid, $qtypes)
  * @param int $surveyid
  * @return string
  */
-function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
+
+
+function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = false)
 {
     global $dbprefix, $connect, $clang, $databasetype,$databasetabletype;
     
@@ -289,7 +291,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
 
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
-    foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
+    foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
     {
         // don't include time fields
         if ($arow['type'] != "answer_time" && $arow['type'] != "page_time" && $arow['type'] != "interview_time")
@@ -297,7 +299,9 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
             if ($createsurvey!='') {$createsurvey .= ",\n";}
             $createsurvey .= " `{$arow['fieldname']}`";
         }
-        
+
+        $createsurveybkup = $createsurvey;
+        $createsurvey = '';
         switch($arow['type'])
         {
             case 'startlanguage':
@@ -389,6 +393,29 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
             default:
                 $createsurvey .= " C(5)";
         }
+
+        if ($simulate){
+            $tempTrim = trim($createsurvey);
+            $brackets = strpos($tempTrim,"(");
+            if ($brackets === false){
+                $type = substr($tempTrim,0,2);
+                $arrSim[] = array($type);
+            }
+            else{
+                $type = substr($tempTrim,0,$brackets);
+                $len = substr($tempTrim,$brackets+1,strrpos($tempTrim,')')-2);
+                $arrSim[] = array($type,$len);
+            }
+
+        }
+
+        $createsurvey = $createsurveybkup. $createsurvey;
+
+
+    }
+
+    if ($simulate){
+        return array('dbengine'=>$databasetabletype, 'fields'=>$arrSim);
     }
     
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
@@ -401,6 +428,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                          'mysqli'=> 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
+    
     
     if (isset($savetimings) && $savetimings=="TRUE")
     {
