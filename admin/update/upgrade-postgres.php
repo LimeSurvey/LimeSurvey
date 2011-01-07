@@ -293,7 +293,7 @@ function db_upgrade($oldversion) {
                                 );"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE ONLY prefix_failed_login_attempts ADD CONSTRAINT prefix_failed_login_attempts_pkey PRIMARY KEY (\"id\");"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE  prefix_surveys_languagesettings ADD surveyls_numberformat integer default 0 NOT NULL"); echo $modifyoutput; flush();ob_flush();
-      
+        upgrade_token_tables145();      
         modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
     
@@ -342,6 +342,22 @@ function upgrade_token_tables134()
         {
             modify_database("","ALTER TABLE ".$sv[0]." ADD validfrom timestamp"); echo $modifyoutput; flush();ob_flush();
             modify_database("","ALTER TABLE ".$sv[0]." ADD validuntil timestamp"); echo $modifyoutput; flush();ob_flush();
+        }
+    }
+}
+// Add the usesleft field to all existing token tables
+function upgrade_token_tables145()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = db_select_tables_like($dbprefix."tokens%");
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+    {
+        while ( $sv = $surveyidresult->FetchRow() )
+        {
+            modify_database("","ALTER TABLE ".$sv[0]." ADD usesleft integer DEFAULT 1 NOT NULL"); echo $modifyoutput; flush();ob_flush();
+            modify_database("","UPDATE ".$sv[0]." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
         }
     }
 }

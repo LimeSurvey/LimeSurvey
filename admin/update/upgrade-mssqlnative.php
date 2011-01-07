@@ -473,7 +473,7 @@ function db_upgrade($oldversion) {
 
         modify_database("", "ALTER TABLE  [prefix_surveys_languagesettings] ADD  [surveyls_numberformat] INT default 0 NOT NULL"); echo $modifyoutput; flush();ob_flush();
         
-        
+        upgrade_token_tables145();
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
 
 
@@ -558,6 +558,20 @@ function upgrade_token_tables134()
             modify_database("","ALTER TABLE ".$sv." ADD [validuntil] DATETIME"); echo $modifyoutput; flush();ob_flush();
             }
 }
+
+// Add the usesleft field to all existing token tables
+function upgrade_token_tables145()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = db_select_tables_like($dbprefix."tokens%");
+    $surveyidresult = db_execute_num($surveyidquery);
+    $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    foreach ($tokentables as $sv)
+            modify_database("","ALTER TABLE ".$sv[0]." ADD [usesleft] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
+            modify_database("","UPDATE ".$sv[0]." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
+    }
+}
+
 
 function mssql_drop_primary_index($tablename)
 {

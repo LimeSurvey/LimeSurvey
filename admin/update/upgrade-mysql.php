@@ -571,7 +571,7 @@ function db_upgrade($oldversion) {
                               `number_attempts` int(11) NOT NULL,
                               PRIMARY KEY (`id`)
                             ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
-        
+        upgrade_token_tables145();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
 
@@ -673,6 +673,24 @@ function upgrade_token_tables134()
         }
     }
 }
+
+// Add the usesleft field to all existing token tables
+function upgrade_token_tables145()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+    {
+        while ( $sv = $surveyidresult->FetchRow() )
+        {
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `usesleft` int(11) NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
+            modify_database("","UPDATE ".$sv[0]." SET `usesleft`='0' WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
+        }
+    }
+}
+
 
 function fix_mysql_collation()
 {
