@@ -3231,6 +3231,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             unset($grawdata);
             unset($label);
             unset($lbl);
+            unset($lblrtl);
             unset($lblout);
             unset($justcode);
             unset ($alist);
