@@ -551,6 +551,13 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['th']['radixpoint'] = 0;
 
 
+    //Urdu
+    $supportedLanguages['ur']['description'] = $clang->gT('Urdu');
+    $supportedLanguages['ur']['nativedescription'] = '&#1575;&#1585;&#1583;&#1608;';
+    $supportedLanguages['ur']['rtl'] = true;
+    $supportedLanguages['ur']['dateformat'] = 2;
+    $supportedLanguages['ur']['radixpoint'] = 0;    
+    
     // Vietnamese
     $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
     $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
