@@ -800,12 +800,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
                 $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2);
 
 
-                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$column_usage}'></div> </td></tr>";
-                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Size Usage")}: </strong></td><td><strong>{$size_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$size_usage}'></div></td></tr>";
+                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='{$column_usage}'></div> </td></tr>";
+                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Size Usage")}: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='{$size_usage}'></div></td></tr>";
             }
             elseif (($arrCols['dbtype'] == 'mssqlnative')||($arrCols['dbtype'] == 'postgres')||($arrCols['dbtype'] == 'odbtp')||($arrCols['dbtype'] == 'mssql_n')){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
-                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:40%; height:15px;' name='{$column_usage}'></div> </td></tr>";
+                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:20%; height:15px;' name='{$column_usage}'></div> </td></tr>";
             }
             
         }

@@ -65,19 +65,11 @@ $(document).ready(function(){
         if (pValue > 85){
             $("div",$(this)).css({ 'background': 'Red' });
         }
+	
+	$("div",this).html(pValue + "%");
     });
     
-    $(".progressbar").each(function(){
-        var pValue = parseInt($(this).attr('name'));
-        
-        $(this).progressbar({
-                            value: pValue
-        });
-
-        if (pValue > 85){
-            $("div",$(this)).css({ 'background': 'Red' });
-        }
-    });
+    
     
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
