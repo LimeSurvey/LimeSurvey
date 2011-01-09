@@ -1153,7 +1153,7 @@ div.loader {
 #frmcopyquestion .tab-page iframe,   
 #sendreminder .tab-page iframe,
 #newquestiongroup .ui-tabs-panel iframe,
-#sendinvitation .tab-page iframe,
+#sendinvitation .ui-tabs-panel iframe,
 #addnewsurvey .ui-tabs-panel iframe {
     width:600px !important;
 }
