@@ -7947,14 +7947,18 @@ function db_rename_table($oldtable, $newtable)
 }
 
 /**
-* Checks if a token has been already used
+* Returns true when a token can be used
+*
 * @param mixed $tid Token
 */
 function usedTokens($token)
 {
     global $connect, $dbprefix, $surveyid;
-    $tid = $connect->getOne("SELECT tid from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token));
-    $utresult = $connect->getOne($utquery);
+    $utresult = true;
+    $tInfo = $connect->getRow("SELECT tid, usesleft from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token));
+    if (!$tInfo === false) {
+        if ($tInfo['usesleft']>0) $utresult = false;
+    }
     return $utresult;
 }
      
