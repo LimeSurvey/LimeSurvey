@@ -327,7 +327,7 @@ function getAdminHeader($meta=false)
     if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']=$defaultlang;}
     $strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
     ."<html ";
-
+	
     if (getLanguageRTL($_SESSION['adminlang']))
     {
         $strAdminHeader.=" dir=\"rtl\" ";
@@ -372,7 +372,7 @@ function getAdminHeader($meta=false)
         $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
     }
     $strAdminHeader.= use_firebug()
-    . "</head>\n<body>\n";
+    . "</head>\n<body class='".getJsMode()."'>\n";
     if (isset($_SESSION['dateformat']))
     {
         $formatdata=getDateFormatData($_SESSION['dateformat']);
@@ -381,7 +381,6 @@ function getAdminHeader($meta=false)
                                var userlanguage='".$_SESSION['adminlang']."';
                            </script>";
     }
-
     // Prepare flashmessage
     if (isset($_SESSION['flashmessage']) && $_SESSION['flashmessage']!='')
     {
@@ -410,3 +409,42 @@ function getAdminHeader($meta=false)
     return $strAdminHeader;
 }
 
+function getJsMode(){
+    global $defaulthtmleditormode;
+    
+    switch ($defaulthtmleditormode)
+    {
+        case 'none':
+            $defauljsmode="none";
+            break;
+        case 'popup':
+            $defauljsmode="simple";
+            break;
+        case 'inline':
+            $defauljsmode="full";
+            break;
+        default:
+            $defauljsmode="full";
+            break;
+    }
+    if (isset($_SESSION['htmleditormode'])){
+		switch ($_SESSION['htmleditormode']){
+		     case 'none':
+		        $userjsmode="none";
+		        break;
+		    case 'popup':
+		        $userjsmode="simple";
+		        break;
+		    case 'inline':
+		        $userjsmode="full";
+		        break;
+		    default:
+		        $userjsmode=$defauljsmode;
+		        break; 
+		}  
+    }
+    else{
+            $userjsmode=$defauljsmode;    
+    }
+    return $userjsmode;
+}
