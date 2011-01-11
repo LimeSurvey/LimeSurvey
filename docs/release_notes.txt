@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.91RC1!
+Welcome to LimeSurvey v1.91RC2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,23 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.91RC1 (build 9696) to 1.91RC2 (build 9672)
++New translation: Urdu - provided by Google Code-In participant (c_schmitz)
+#Updated translation: Norwegian Bokmål (nb), thanks to Pål Monstad (gandalfar)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Arabian - work done by Google Code-In participant (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Hindi - provided by Google Code-In participant (c_schmitz)
+#Updated translation: Hindi - work done by Google Code-In participant Gautam Gupta - Thank you! (c_schmitz)
+-Fixed issue #4853: Survey runtime broken because of token checks (mennodekker)
+-Fixed issue #4808: Database upgrade: Umlaut display issue if default language is set to German (c_schmitz)
+-Fixed issue #4832: ofer a possibility to deactivate the javascript selector (shnoulle)
+-Fixed issue #4840: Graph legends containing duplicate labels when using a RTL language (c_schmitz)
+-Fixed issue #4852: Tokens tables in databases are not updated with usesleft field (c_schmitz)
+-Fixed issue #4855: VV import button is missing (c_schmitz)
+-Fixed issue #4856: HTML editor not shown when sending invitations or reminders. (lemeur)
 
 Changes from 1.91beta (build 9631) to 1.91RC1 (build 9696)
 +New Feature: 'All of the above' option automatically kick in if the participant checks all other options (set by the 'Exclusive option' setting). (parajulik)
