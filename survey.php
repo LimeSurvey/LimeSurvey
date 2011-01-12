@@ -33,8 +33,8 @@ if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 $notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys($move));
 
-//CHECK PREGS
-$notvalidated=checkpregs($move);
+//CHECK INPUT
+$notvalidated=aCheckInput($move);
 
 //CHECK UPLOADED FILES
 $filenotvalidated = checkUploadedFileValidity($move);

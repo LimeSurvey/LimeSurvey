@@ -60,8 +60,8 @@ else
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
-//CHECK PREGS
-$notvalidated=checkpregs($move,$backok);
+//CHECK INPUT
+$notvalidated=aCheckInput($move,$backok);
 
 // CHECK UPLOADED FILES
 $filenotvalidated = checkUploadedFileValidity($move, $backok);

@@ -1784,7 +1784,7 @@ function checkUploadedFileValidity($move, $backok=null)
 }
 
 
-function checkpregs($move,$backok=null)
+function aCheckInput($move,$backok=null)
 {
     global $connect, $thisstep;
     if (!isset($backok) || $backok != "Y")
