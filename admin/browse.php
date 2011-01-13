@@ -158,7 +158,7 @@ if ($subaction == "id")
         $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
-    $fnames[] = array("submitdate", "Submission date", $clang->gT("Completed"), "0", 'D');
+    $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
     $fnames[] = array("completed", $clang->gT("Completed"), "0");
 
     foreach ($fieldmap as $field)
@@ -602,7 +602,7 @@ elseif ($subaction == "all")
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
 
-    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
+    $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
     $fields = createFieldMap($surveyid, 'full', false, false, $language);
 
     foreach ($fields as $fielddetails)
