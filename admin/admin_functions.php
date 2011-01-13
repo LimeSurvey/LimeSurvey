@@ -372,7 +372,7 @@ function getAdminHeader($meta=false)
         $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
     }
     $strAdminHeader.= use_firebug()
-    . "</head>\n<body class='".getJsMode()."'>\n";
+    . "</head>\n<body>\n";
     if (isset($_SESSION['dateformat']))
     {
         $formatdata=getDateFormatData($_SESSION['dateformat']);
@@ -407,44 +407,4 @@ function getAdminHeader($meta=false)
     // Standard header
     $strAdminHeader .="<div class='maintitle'>{$sitename}</div>\n";
     return $strAdminHeader;
-}
-
-function getJsMode(){
-    global $defaulthtmleditormode;
-    
-    switch ($defaulthtmleditormode)
-    {
-        case 'none':
-            $defauljsmode="none";
-            break;
-        case 'popup':
-            $defauljsmode="simple";
-            break;
-        case 'inline':
-            $defauljsmode="full";
-            break;
-        default:
-            $defauljsmode="full";
-            break;
-    }
-    if (isset($_SESSION['htmleditormode'])){
-		switch ($_SESSION['htmleditormode']){
-		     case 'none':
-		        $userjsmode="none";
-		        break;
-		    case 'popup':
-		        $userjsmode="simple";
-		        break;
-		    case 'inline':
-		        $userjsmode="full";
-		        break;
-		    default:
-		        $userjsmode=$defauljsmode;
-		        break; 
-		}  
-    }
-    else{
-            $userjsmode=$defauljsmode;    
-    }
-    return $userjsmode;
 }

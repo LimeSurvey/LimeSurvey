@@ -237,7 +237,7 @@ $(document).ready(function(){
        });
     });
 
-    if ($("body.full #question_type").length > 0){
+    if ($("#question_type").length > 0){
         $("#question_type").msDropDown();
 
         $("#question_type").change(function(event){
