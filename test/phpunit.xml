@@ -1,0 +1,9 @@
+<phpunit>
+	<testsuites>
+		<testsuite name="All Tests">
+			<!-- directory option doesn't seem to work... -->
+			<!--<directory>test</directory>-->
+			<file>test/admin/exportresults_objects_Tests.php</file>
+		</testsuite>
+	</testsuites>
+</phpunit>

@@ -1,0 +1,4 @@
+"tid","firstname","lastname","email","emailstatus","token","language","sent","remindersent","remindercount","completed","validfrom","validuntil","mpid"
+1,"David","Wolff","not@gonna.happen","OK","abcdefg","en","2010-11-04 14:42","N",0,"N",[NULL],[NULL],[NULL]
+2,"Bartholomew","Pumpernickel","bartpumpernickel@gonna.happen","OK","bcdefgh","en","2010-11-15 13:27","N",0,"N",[NULL],[NULL],[NULL]
+3,"Aloycious","Smith",asmith@gonna.happen","OK","cdefghi","en","2010-12-13 03:00","N",0,"N",[NULL],[NULL],[NULL]

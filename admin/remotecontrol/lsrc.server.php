@@ -27,6 +27,9 @@ $clang = new limesurvey_lang($defaultlang);
 include_once($rootdir."/classes/core/sanitize.php");
 include_once($homedir.'/statistics_function.php');
 
+// for the results export
+include_once($rootdir.'/admin/exportresults_objects.php');
+
 /**
  * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting
  */
@@ -94,6 +97,7 @@ $server->addFunction("sImportFreetext");
 $server->addFunction("sSendEmail");
 $server->addFunction("sGetFieldmap");
 $server->addFunction("fSendStatistic");
+$server->addFunction("sGetResults");
 // handle the soap request!
 if($enableLsrc===true)
 {
@@ -1211,6 +1215,66 @@ function sGetFieldmap($sUser, $sPass, $iVid)
     $returnCSV = "".$lsrcHelper->FieldMap2CSV($iVid);
     return $returnCSV;
 
+}
+
+function sGetResults($sUser, $sPass, $iVid, $sFilter = 'show', $sFormat = 'csv', $iFromRecord = 1, $iToRecord = 500) 
+{
+    require('lsrc.config.php');
+    $lsrcHelper = new lsrcHelper();
+
+    if(!$lsrcHelper->checkUser($sUser, $sPass))
+    {
+        throw new SoapFault("Authentication: ", "User or password wrong");
+        exit;
+    }
+    if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+    {
+        throw new SoapFault("Authentication: ", "You have no right to get results from other people's surveys");
+        exit;
+    }
+    if(!$lsrcHelper->surveyExists($iVid))
+    {
+        throw new SoapFault("Database: ", "Survey $iVid does not exist");
+        exit;
+    }
+
+    //This has only been tested with CSV output, although it could theoretically be used to 
+    //generate any form of output the exportresults_objects.php page can generate.  For now this is
+    //being limited to csv format. -- Dave Wolff
+    if($sFormat != 'csv')
+    {
+        throw new SoapFault("Format: ", "At this time only 'csv' format is supported'.");
+        exit;
+    }
+
+    //Some of the output format has been hard wired here but it might be worth
+    //giving people options at some point in the future.
+    $_REQUEST['filterinc'] = $sFilter;
+    $intSurveyId = sanitize_int($iVid);
+    $languageCode = GetBaseLanguageFromSurveyID($intSurveyId);
+    $options = new FormattingOptions();
+    $options->answerFormat = 'short';
+    $options->headingFormat = 'headcodes';
+    $options->format = $sFormat;
+    $options->convertY = false;
+    $options->convertN = false;
+    $options->headerSpacesToUnderscores = false;
+    $options->responseMinRecord = $iFromRecord;
+    $options->responseMaxRecord = $iToRecord;
+    $options->responseCompletionState = $sFilter;
+    if ($options->responseCompletionState == 'inc')
+    {
+        $options->responseCompletionState = 'incomplete';
+    }
+    
+    //We want to output all columns here.
+    $options->selectedColumns = array_keys(createFieldMap($intSurveyId));
+    //$options->selectedColumns = array();
+    
+    $resultsService = new ExportSurveyResultsService();
+    $output = $resultsService->exportSurvey($intSurveyId, $languageCode, $options);
+    
+    return $output;
 }
 
 ?>

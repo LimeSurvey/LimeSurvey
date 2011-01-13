@@ -296,6 +296,21 @@
   <message name="sGetFieldmapFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
+  <message name="sGetResultsRequest">
+        <part name="sUser" type="xsd:string"></part>
+        <part name="sPass" type="xsd:string"></part>
+      	<part name="iVid" type="xsd:int"></part>
+	<part name="sFilter" type="xsd:string"></part>
+	<part name="sFormat" type="xsd:string"></part>
+	<part name="iFromRecord" type="xsd:int"></part>
+	<part name="iToRecord" type="xsd:int"></part>
+  </message>
+  <message name="sGetResultsResponse">
+	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sGetResultsFault">
+	<part name="fault" element="xsd:string"></part>
+  </message>
   <message name="fSendStatisticRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
@@ -384,7 +399,12 @@
     	<input message="tns:sGetFieldmapRequest" name="sGetFieldmapRequest"></input>
     	<output message="tns:sGetFieldmapResponse" name="sGetFieldmapResponse"></output>
             <fault name="sGetFieldmapFault" message="tns:sGetFieldmapFault"></fault>
-        </operation>
+    </operation>
+    <operation name="sGetResults">
+	<input message="sGetResultsRequest" name="sGetResultsRequest"></input>
+	<output message="sGetResultsResponse" name="sGetResultsResponse"></output>
+	    <fault name="sGetResultsFault" message="tns:sGetResultsFault"></fault>
+    </operation>
     <operation name="fSendStatistic">
     	<input message="tns:fSendStatisticRequest" name="fSendStatisticRequest"></input>
     	<output message="tns:fSendStatisticResponse" name="fSendStatisticResponse"></output>
@@ -416,7 +436,21 @@
   				name="sGetFieldmapFault" />
   		</fault>
   	</operation>
-
+	<operation name="sGetResults">
+	        <soap:operation soapAction="urn:lsrcNamespaceAction" stype="rpc" />
+	        <input name="sGetResultsRequest">
+	                <soap:body namespace="urn:lsrcNamespace" 
+		                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	        </input>
+	        <output name="sGetResultsResponse">
+	                <soap:body namespace="urn:lsrcNamespace" 
+		                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	        </output>
+	        <fault name="sGetResultsFault">
+	                <soap:fault name="sGetResultsFault" namespace="urn:lsrcNamespace" 
+		                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	        </fault>
+        </operation>
   	<operation name="sSendEmail">
 
   		<soap:operation soapAction="urn:lsrcNamespace/sSendEmail" />
