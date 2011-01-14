@@ -384,7 +384,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
             case "page_time":
             case "answer_time":
             case "interview_time":
-                $createsurveytimings .= " `{$arow['fieldname']}` I(11) DEFAULT '0',\n";
+                $createsurveytimings .= " `{$arow['fieldname']}` F DEFAULT '0',\n";
                 break;
             default:
                 $createsurvey .= " C(5)";

@@ -2765,7 +2765,7 @@ function buildsurveysession()
     $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
-        if ($field['qid']!='')
+        if (isset($field['qid']) && $field['qid']!='')
         {
             $_SESSION['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
             $_SESSION['insertarray'][]=$field['fieldname'];
