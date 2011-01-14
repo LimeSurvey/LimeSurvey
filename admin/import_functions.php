@@ -35,6 +35,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
     $aIgnoredAnswers=array();
     $aSQIDReplacements=array();
+    $aLIDReplacements=array();
     $aGIDReplacements=array();
     $substitutions=array();
     $aQuotaReplacements=array();
@@ -721,7 +722,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
 
             // Now we will fix up old label sets where they are used as answers
-            if ((isset($oldlid1) || isset($oldlid2)) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
+            if (((isset($oldlid1) && isset($aLIDReplacements[$oldlid1])) || (isset($oldlid2) && isset($aLIDReplacements[$oldlid2]))) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
             {
                 $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldlid1]} and language='{$questionrowdata['language']}'";
                 $oldlabelsresult=db_execute_assoc($query);
