@@ -165,6 +165,12 @@ if ($subaction == "id")
     {
         if ($field['fieldname']=='lastpage' || $field['fieldname'] == 'submitdate')
             continue;
+        if ($field['type']=='interview_time')
+            continue;
+        if ($field['type']=='page_time')
+            continue;
+        if ($field['type']=='answer_time')
+            continue;            
 
         $question=$field['question'];
         if ($field['type'] != "|")
@@ -610,7 +616,6 @@ elseif ($subaction == "all")
         if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate')
             continue;
 
-        
         $question=$fielddetails['question'];
         if ($fielddetails['type'] != "|")
         {

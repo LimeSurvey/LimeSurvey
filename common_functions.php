@@ -2337,22 +2337,22 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     $aquery.=" ORDER BY group_order, question_order";
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
-    $fieldname='interviewTime';
-    $fieldmap[$fieldname]=array('fieldname'=>$fieldname,'type'=>'interview_time','sid'=>$surveyid, 'question'=>'');
+
+    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'question'=>'');
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
 		// field for time spent on page
 		$fieldname="{$arow['sid']}X{$arow['gid']}time";
 		if (!isset($fieldmap[$fieldname]))
 		{
-			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$arow['gid'], 'question'=>'');
+			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>'', 'question'=>'');
 		}
 		
 		// field for time spent on answering a question
 		$fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}time";
 		if (!isset($fieldmap[$fieldname]))
 		{
-			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$arow['gid']);
+			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'],'question'=>$arow['question']);
 		}
 
         if ($arow['hasconditions']>0)

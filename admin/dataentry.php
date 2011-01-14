@@ -1451,10 +1451,6 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
     elseif ($subaction == "delete"  && bHasSurveyPermission($surveyid,'responses','delete'))
     {
-        if (!bHasSurveyPermission($surveyid,'delete_survey'))
-        {
-            safe_die('You are not allowed to delete a response.');
-        }        
         $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
         $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n";
 
