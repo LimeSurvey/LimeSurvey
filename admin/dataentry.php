@@ -1451,7 +1451,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
     elseif ($subaction == "delete"  && bHasSurveyPermission($surveyid,'responses','delete'))
     {
-        if (!bHasSurveyPermission($surveyid,'delete_survey'))
+        if (!bHasSurveyPermission($surveyid,'delete_survey', 'delete'))
         {
             safe_die('You are not allowed to delete a response.');
         }        
