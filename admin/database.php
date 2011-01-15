@@ -557,22 +557,20 @@ if(isset($surveyid))
                                     $uqquery .=', question_order=0 ';
                                 }
                             }
-                            if (isset($_POST['lid']) && trim($_POST['lid'])!="")
-                            {
-                                $uqquery.=", lid='".db_quote($_POST['lid'])."' ";
-                            }
-                            if (isset($_POST['lid1']) && trim($_POST['lid1'])!="")
-                            {
-                                $uqquery.=", lid1='".db_quote($_POST['lid1'])."' ";
-                            }
-
                             $uqquery.= "WHERE sid='".$postsid."' AND qid='".$postqid."' AND language='{$qlang}'";
                             $uqresult = $connect->Execute($uqquery) or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
                             if (!$uqresult)
                             {
                                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                             }
+
                         }
+                    }
+                    // Update the group ID on subquestions, too
+                    if ($oldgid!=$postgid)
+                    {
+                        $sQuery="UPDATE ".db_table_name('questions')." set gid={$postgid} where gid={$oldgid} and parent_qid>0"; 
+                        $oResult = $connect->Execute($sQuery) or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
                     }
                     // if the group has changed then fix the sortorder of old and new group
                     if ($oldgid!=$postgid)
@@ -1280,7 +1278,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         // Get random ids until one is found that is not used
         do
         {
-            $surveyid = getRandomID();
+            $surveyid = sRandomChars(5,'123456789');
             $isquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
             $isresult = db_execute_assoc($isquery); // Checked
         }

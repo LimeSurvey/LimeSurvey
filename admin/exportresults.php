@@ -51,7 +51,7 @@ if (!$exportstyle)
 
 
     $afieldcount = count($excesscols);
-    $exportoutput .= browsemenubar($clang->gT("Export Results"));
+    $exportoutput .= browsemenubar($clang->gT("Export results"));
     $exportoutput .= "<div class='header ui-widget-header'>".$clang->gT("Export results").'</div>'
     ."<div class='wrap2columns'>\n"
     ."<form id='resultexport' action='$scriptname?action=exportresults' method='post'><div class='left'>\n";
@@ -220,15 +220,15 @@ if (!$exportstyle)
     // Find out if survey results are anonymous
     if ($thissurvey['anonymized'] == "N" && tableExists("tokens_$surveyid"))
         {
-            $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
+            $exportoutput .= "<fieldset><legend>".$clang->gT("Token control")."</legend>\n"
             .$clang->gT("Choose Token Fields").":"
             ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
             .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
             ."\")' /><ul><li>\n"
             ."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name' />"
-            ."<label for='first_name'>".$clang->gT("First Name")."</label></li>\n"
+            ."<label for='first_name'>".$clang->gT("First name")."</label></li>\n"
             ."<li><input type='checkbox' class='checkboxbtn' name='last_name' id='last_name' />"
-            ."<label for='last_name'>".$clang->gT("Last Name")."</label></li>\n"
+            ."<label for='last_name'>".$clang->gT("Last name")."</label></li>\n"
             ."<li><input type='checkbox' class='checkboxbtn' name='email_address' id='email_address' />"
             ."<label for='email_address'>".$clang->gT("Email")."</label></li>\n"
             ."<li><input type='checkbox' class='checkboxbtn' name='token' id='token' />"
@@ -266,17 +266,17 @@ $options->convertN = $convertnto2;
 if ($options->convertN)
 {
     $options->nValue = $convertnto;
-}
+        } 
 $options->convertY = $convertyto1;
 if ($options->convertY)
-{
+        {
     $options->yValue = $convertyto;
-}
+        }
 $options->format = $type;
 $options->headerSpacesToUnderscores = $convertspacetous;
 $options->headingFormat = $exportstyle;
 $options->responseCompletionState = incompleteAnsFilterstate();
- 
+
 //If we have no data for the filter state then default to show all.
 if (empty($options->responseCompletionState)) 
 {
@@ -291,4 +291,3 @@ $resultsService = new ExportSurveyResultsService();
 $resultsService->exportSurvey($surveyid, $explang, $options);
 
 exit;
-

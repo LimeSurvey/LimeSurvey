@@ -247,8 +247,6 @@ class LsrcHelper {
                         $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
                         $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
                         $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-                        $fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-                        $fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
                         $emrow['language']=trim($emrow['language']);
                         if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
@@ -506,8 +504,6 @@ class LsrcHelper {
                         $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
                         $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
                         $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-                        $fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-                        $fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
                         $emrow['language']=trim($emrow['language']);
                         if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
@@ -2143,10 +2139,10 @@ class LsrcHelper {
 			"I"=>"Language Switch",
 			"K"=>"Multiple Numerical Input",
 			"L"=>"List (Radio)",
-			"M"=>"Multiple Options",
+			"M"=>"Multiple choice",
 			"N"=>"Numerical Input",
 			"O"=>"List With Comment",
-			"P"=>"Multiple Options With Comments",
+			"P"=>"Multiple choice with comments",
 			"Q"=>"Multiple Short Text",
 			"R"=>"Ranking",
 			"S"=>"Short Free Text",
@@ -2340,7 +2336,7 @@ class LsrcHelper {
 
                 while($checkCnt>0)
                 {
-                    $value = randomkey(10); //change randomkey value for different tokenlength (up to 36 chars max.)
+                    $value = sRandomChars(10); //change sRandomChars value for different tokenlength (up to 36 chars max.)
                     $cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
                     $result = db_execute_assoc($cQuery);
                     $checkCnt = $result->RecordCount();

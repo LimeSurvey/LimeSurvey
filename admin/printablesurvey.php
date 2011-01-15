@@ -609,26 +609,32 @@ while ($degrow = $degresult->FetchRow())
                                 break;
 
                             case "1": // dual: (Label 1), (Label 2)
-                                $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
+                                $labelIndex=substr($conrow['cfieldname'],-1);
                                 $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                 $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                 //$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
                                 $ansresult=db_execute_assoc($ansquery);
-
+                                $cqidattributes = getQuestionAttributes($conrow['cqid'], $conrow['type']);
                                 if ($labelIndex == 0)
                                 {
-                                    while ($ansrow=$ansresult->FetchRow())
-                                    {
-                                        $answer_section=" (".$ansrow['question']." ".sprint($clang->gT("Label %s"),'1').")";
+                                    if (trim($cqidattributes['dualscale_headerA']) != '') {
+                                        $header = $clang->gT($cqidattributes['dualscale_headerA']);
+                                    } else {
+                                        $header = '1';
                                     }
                                 }
                                 elseif ($labelIndex == 1)
                                 {
-                                    while ($ansrow=$ansresult->FetchRow())
-                                    {
-                                        $answer_section=" (".$ansrow['question']." ".sprint($clang->gT("Label %s"),'2').")";
+                                    if (trim($cqidattributes['dualscale_headerB']) != '') {
+                                        $header = $clang->gT($cqidattributes['dualscale_headerB']);
+                                    } else {
+                                        $header = '2';
                                     }
                                 }
+                                    while ($ansrow=$ansresult->FetchRow())
+                                    {
+                                    $answer_section=" (".$ansrow['question']." ".sprintf($clang->gT("Label %s"),$header).")";
+                                    }
                                 break;
                             case ":":
                             case ";": //multi flexi: ( answer [label] )
@@ -906,7 +912,7 @@ while ($degrow = $degresult->FetchRow())
                     break;
 
                     // ==================================================================
-                case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
+                case "M":  //Multiple choice (Quite tricky really!)
 
                     if (trim($qidattributes['display_columns'])!='')
                     {
@@ -973,7 +979,7 @@ while ($degrow = $degresult->FetchRow())
                     break;
 
                      // ==================================================================
-                case "P":  //MULTIPLE OPTIONS WITH COMMENTS
+                case "P":  //Multiple choice with comments
                     if (trim($qidattributes['max_answers'])=='') {
                         $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
                         if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose all that apply and provide a comment:"),"U");}

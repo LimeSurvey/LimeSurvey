@@ -1070,9 +1070,9 @@ $conditionsoutput_menubar .="\t</div><div class='menubar-right'>\n"
 ."<font class=\"boxcaption\">".$clang->gT("Questions").":</font>\n"
 ."<select id='questionNav' onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">$quesitonNavOptions</select>\n"
 ."<img hspace=\"0\" border=\"0\" alt=\"\" src=\"$imageurl/seperator.gif\"/>\n"
-."<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey manual")."\">"
+."<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey online manual")."\">"
 ."<img src='$imageurl/showhelp.png' name='ShowHelp' title=''"
-."alt='". $clang->gT("LimeSurvey manual")."' /></a>";
+."alt='". $clang->gT("LimeSurvey online manual")."' /></a>";
 
 
 $conditionsoutput_menubar .= "\t</div></div></div>\n"

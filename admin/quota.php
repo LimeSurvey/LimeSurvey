@@ -397,27 +397,27 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
           								</tr>
           								<tr class="evenrow">
             								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("Quota Name").':</strong></p>
+                								<p><strong>'.$clang->gT("Quota name").':</strong></p>
               									</blockquote></td>
             								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255" value="'.$quotainfo['name'].'" /></td>
           								</tr>
           								<tr class="evenrow">
             								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("Quota Limit").':</strong></p>
+                								<p><strong>'.$clang->gT("Quota limit").':</strong></p>
               									</blockquote></td>
             								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8" value="'.$quotainfo['qlimit'].'" /></td>
           								</tr>
           								<tr class="evenrow">
             								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("Quota Action").':</strong></p>
+                								<p><strong>'.$clang->gT("Quota action").':</strong></p>
               									</blockquote></td>
             								<td align="left"> <select name="quota_action">
             									<option value ="1" ';
         if($quotainfo['action'] == 1) $quotasoutput .= "selected";
-        $quotasoutput .='>'.$clang->gT("Terminate Survey") .'</option>
+        $quotasoutput .='>'.$clang->gT("Terminate survey") .'</option>
             									<option value ="2" ';
         if($quotainfo['action'] == 2) $quotasoutput .= "selected";
-        $quotasoutput .= '>'.$clang->gT("Terminate Survey With Warning") .'</option>
+        $quotasoutput .= '>'.$clang->gT("Terminate survey with warning") .'</option>
             									</select></td>
           								</tr>
           								<tr class="evenrow">
@@ -451,7 +451,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
             $quotasoutput .= '
 				<div class="tab-page">
 						  	 	 <h2 class="tab">'.GetLanguageNameFromCode($lang,false);
-            if ($lang==$baselang) {$quotasoutput .= '('.$clang->gT("Base Language").')';}
+            if ($lang==$baselang) {$quotasoutput .= '('.$clang->gT("Base language").')';}
             $quotasoutput .= "</h2>";
 
             $quotasoutput.='
@@ -514,9 +514,9 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 		<table id="quotalist" class="quotalist">
 			<thead>
           		<tr>
-            		<th width="20%">'.$clang->gT("Quota Name").'</th>
+            		<th width="20%">'.$clang->gT("Quota name").'</th>
             		<th width="20%">'.$clang->gT("Status").'</th>
-            		<th width="30%">'.$clang->gT("Quota Action").'</th>
+            		<th width="30%">'.$clang->gT("Quota action").'</th>
             		<th width="5%">'.$clang->gT("Limit").'</th>
             		<th width="5%">'.$clang->gT("Completed").'</th>
             		<th width="20%">'.$clang->gT("Action").'</th>
@@ -562,9 +562,9 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
             		<td align="center">';
                 if ($quotalisting['action'] == 1)
                 {
-                    $quotasoutput .= $clang->gT("Terminate Survey");
+                    $quotasoutput .= $clang->gT("Terminate survey");
                 } elseif ($quotalisting['action'] == 2) {
-                    $quotasoutput .= $clang->gT("Terminate Survey With Warning");
+                    $quotasoutput .= $clang->gT("Terminate survey with warning");
                 }
                 $totalquotas+=$quotalisting['qlimit'];
                 $completed=get_quotaCompletedCount($surveyid, $quotalisting['id']);
@@ -694,7 +694,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
         header("Content-type: text/comma-separated-values; charset=UTF-8");
         header("Pragma: public");
-        echo $clang->gT("Quota Name").",".$clang->gT("Limit").",".$clang->gT("Completed").",".$clang->gT("Remaining")."\r\n";
+        echo $clang->gT("Quota name").",".$clang->gT("Limit").",".$clang->gT("Completed").",".$clang->gT("Remaining")."\r\n";
         foreach($csvoutput as $line)
         {
             echo $line;
@@ -900,7 +900,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
             $quotasoutput .= '
 				<div class="tab-page">
 						  	 	 <h2 class="tab">'.GetLanguageNameFromCode($lang,false);
-            if ($lang==$baselang) {$quotasoutput .= '('.$clang->gT("Base Language").')';}
+            if ($lang==$baselang) {$quotasoutput .= '('.$clang->gT("Base language").')';}
             $quotasoutput .= "</h2>";
             $quotasoutput.='
 					<ul>

@@ -29,10 +29,10 @@
  *  I - Language Switch
  *  K - Multiple Numerical Input
  *  L - List (Radio)
- *  M - Multiple Options
+ *  M - Multiple choice
  *  N - Numerical Input
  *  O - List With Comment
- *  P - Multiple Options With Comments
+ *  P - Multiple choice with comments
  *  Q - Multiple Short Text
  *  R - Ranking
  *  S - Short Free Text
@@ -152,7 +152,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         {
             $myField = $surveyid."X".$field['gid']."X".$field['qid'];
 
-            // Multiple Options get special treatment
+            // Multiple choice get special treatment
             if ($field['type'] == "M") {$myField = "M$myField";}
             if ($field['type'] == "P") {$myField = "P$myField";}
             //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
@@ -296,12 +296,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     foreach ($postvars as $pv)
     {
         //Only do this if there is actually a value for the $pv
-        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap))
+        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap) || (substr($pv,0,1)=='D' && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)))
         {
             $firstletter=substr($pv,0,1);
             /*
              * these question types WON'T be handled here:
-             * M = Multiple Options
+             * M = Multiple choice
              * T - Long Free Text
              * Q - Multiple Short Text
              * D - Date
@@ -328,8 +328,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $selects[]=$thisquestion;
             }
 
-            //M - Multiple Options
-            //P - Multiple Options with comments
+            //M - Multiple choice
+            //P - Multiple choice with comments
             elseif ($firstletter == "M"  || $firstletter == "P")
             {
                 $mselects=array();
@@ -641,7 +641,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             $firstletter = substr($rt, 0, 1);
             // 1. Get answers for question ##############################################################
 
-            //M - Multiple Options, therefore multiple fields
+            //M - Multiple choice, therefore multiple fields
             if ($firstletter == "M" || $firstletter == "P")
             {
                 //get SGQ data
@@ -887,7 +887,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $responsecount++;
                 }
                 $showem[] = array($statlang->gT("Total size of files"), $size." KB");
-                $showem[] = array($statlang->gT("Average File size"), $size/$filecount . " KB");
+                $showem[] = array($statlang->gT("Average file size"), $size/$filecount . " KB");
                 $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
                 
 /*              $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
@@ -1756,7 +1756,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             }
 
                             //output
-                            $labelno = "Label 1";
+                            $labelno = sprintf($clang->gT('Label %s'),'1');
                         }
 
                         //label 2
@@ -1778,7 +1778,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             }
 
                             //output
-                            $labelno = "Label 2";
+                            $labelno = sprintf($clang->gT('Label %s'),'2');
                         }
 
                         //get data
@@ -3044,7 +3044,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $setcentrey=0.5;
                     }
 
-                    // Create bar chart for multiple options
+                    // Create bar chart for Multiple choice
                     if ($qtype == "M" || $qtype == "P")
                     {
                         //new bar chart using data from array $grawdata which contains percentage
@@ -3231,6 +3231,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             unset($grawdata);
             unset($label);
             unset($lbl);
+            unset($lblrtl);
             unset($lblout);
             unset($justcode);
             unset ($alist);
@@ -3253,7 +3254,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             }
             else
             {
-                $sFileName=$tempdir.DIRECTORY_SEPARATOR.'xls_'.randomkey(40);
+                $sFileName=$tempdir.DIRECTORY_SEPARATOR.'xls_'.sRandomChars(40);
             }    
             $objWriter->save($sFileName); 
             if($pdfOutput!='F')

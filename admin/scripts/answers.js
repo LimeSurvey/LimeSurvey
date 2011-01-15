@@ -326,7 +326,7 @@ function lspreview()
        return;
    }
     
-   var lsid=$('#labelsets').selectedValues();
+   var lsid=$('#labelsets').val();
    surveyid=$('input[name=sid]').val();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))
@@ -358,6 +358,10 @@ function lspreview()
                                 tabbody=tabbody+'<tbody><tr';
                                 if (highlight==true) { 
                                     tabbody=tabbody+" class='highlight' ";
+                                }
+                                if (lsrows[z].title==null)
+                                {
+                                    lsrows[z].title='';
                                 }
                                 tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
                             }
@@ -421,7 +425,7 @@ function transferlabels()
    {
        var lsreplace=false;
    }
-   var lsid=$('#labelsets').selectedValues();
+   var lsid=$('#labelsets').val();
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
           dataType: 'json',

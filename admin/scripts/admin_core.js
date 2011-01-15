@@ -194,6 +194,7 @@ $(document).ready(function(){
 
     }) 
     $('#question_type').change(updatequestionattributes);
+
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
     });     
@@ -255,10 +256,9 @@ $(document).ready(function(){
         $("#question_type").msDropDown();
 
         $("#question_type").change(function(event){
-          
            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
            OtherSelection(selected_value);
-        });
+	});
 
         $.getScript('../scripts/jquery/jquery-qtip.js', function() {
             $("#question_type_child a").each(function(index,element){
@@ -287,9 +287,9 @@ $(document).ready(function(){
             });
         });
 
-        }
+    }
     
-        $('.bthsaveaslabel').click(saveaslabelset);
+    
     
 });
 
@@ -325,6 +325,7 @@ function updatequestionattributes()
         $('.loader').show();
         $('#advancedquestionsettings').html('');
         var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
+        if (selected_value==undefined) selected_value = $("#question_type").val();
         $('#advancedquestionsettings').load('admin.php?action=ajaxquestionattributes',{qid:$('#qid').val(),
                                                                                    question_type:selected_value,
                                                                                    sid:$('#sid').val()

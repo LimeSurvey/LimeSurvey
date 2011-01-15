@@ -93,6 +93,7 @@ function globalsettingssave()
             if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
             setGlobalSetting('ipInfoDbAPIKey',$_POST['ipInfoDbAPIKey']);
+            setGlobalSetting('googleMapsAPIKey',$_POST['googleMapsAPIKey']);
             setGlobalSetting('force_ssl',$_POST['force_ssl']);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
@@ -257,8 +258,11 @@ function globalsettingsdisplay()
             . "<li><label for='sessionlifetime'>".$clang->gT("Session lifetime (seconds):")."</label>\n"
             . "<input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value=\"".htmlspecialchars(getGlobalSetting('sessionlifetime'))."\" /></li>"
             . "<li><label for='ipInfoDbAPIKey'>".$clang->gT("IP Info DB API Key:")."</label>\n"
-            . "<input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value=\"".htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey'))."\" /></li>";
+            . "<input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value=\"".htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey'))."\" /></li>"
+            . "<li><label for='googleMapsAPIKey'>".$clang->gT("Google Maps API key:")."</label>\n"
+            . "<input type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value=\"".htmlspecialchars(getGlobalSetting('googleMapsAPIKey'))."\" /></li>"
 
+                    ;
 
             // End General TAB
 
@@ -326,7 +330,7 @@ function globalsettingsdisplay()
             $editsurvey .= "\t<div id='bounce'><ul>\n"
             . "\t<li><label for='siteadminbounce'>".$clang->gT("Default site bounce email:")."</label>\n"
             . "\t\t<input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
-            . "\t<li><label for='bounceaccounttype'>".$clang->gT("Bounce account type:")."</label>\n"
+            . "\t<li><label for='bounceaccounttype'>".$clang->gT("Server type:")."</label>\n"
 	        . "\t\t<select id='bounceaccounttype' name='bounceaccounttype'>\n"
   	        . "\t\t\t<option value='off'";
             if (getGlobalSetting('bounceaccounttype')=='off') {$editsurvey .= " selected='selected'";}
@@ -339,14 +343,14 @@ function globalsettingsdisplay()
             $editsurvey .= ">".$clang->gT("POP")."</option>\n"
             ."\t\t</select></li>\n"
 
-            . "\t<li><label for='bounceaccounthost'>".$clang->gT("Bounce account host:")."</label>\n"
+            . "\t<li><label for='bounceaccounthost'>".$clang->gT("Server name & port:")."</label>\n"
             . "\t\t<input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value=\"".htmlspecialchars(getGlobalSetting('bounceaccounthost'))."\" />\n"."<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: imap.gmail.com:995")."</font>\n"
 
-            . "\t<li><label for='bounceaccountuser'>".$clang->gT("Bounce account user:")."</label>\n"
+            . "\t<li><label for='bounceaccountuser'>".$clang->gT("User name:")."</label>\n"
             . "\t\t<input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser' value=\"".htmlspecialchars(getGlobalSetting('bounceaccountuser'))."\" /></li>\n"
-            . "\t<li><label for='bounceaccountpass'>".$clang->gT("Bounce account password:")."</label>\n"
+            . "\t<li><label for='bounceaccountpass'>".$clang->gT("Password:")."</label>\n"
             . "\t\t<input type='password' size='50' id='bounceaccountpass' name='bounceaccountpass' value='enteredpassword' /></li>\n";
-	    $editsurvey.= "\t<li><label for='bounceencryption'>".$clang->gT("Bounce account encryption type")."</label>\n"
+	    $editsurvey.= "\t<li><label for='bounceencryption'>".$clang->gT("Encryption type:")."</label>\n"
 	    . "\t\t<select id='bounceencryption' name='bounceencryption'>\n"
   	    . "\t\t\t<option value='off'";
             if (getGlobalSetting('bounceencryption')=='off') {$editsurvey .= " selected='selected'";}

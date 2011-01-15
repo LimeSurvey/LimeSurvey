@@ -28,10 +28,10 @@
  I - Language Switch
  K - Multiple Numerical Input
  L - List (Radio)
- M - Multiple Options
+ M - Multiple choice
  N - Numerical Input
  O - List With Comment
- P - Multiple Options With Comments
+ P - Multiple choice with comments
  Q - Multiple Short Text
  R - Ranking
  S - Short Free Text
@@ -75,7 +75,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
     $surveyoptions = browsemenubar($clang->gT("Data entry"));
     if (!$surveyid && !$subaction)
     {
-        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
         $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n"
         ."<div class='warningheader'>".$clang->gT("Error")."</div><br />\n"
         .$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
@@ -88,7 +88,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
     {
         $thissurvey=getSurveyInfo($surveyid);
         $errormsg="";
-        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n"
+        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
         ."\t<div class='messagebox ui-corner-all'>\n";
 
         $lastanswfortoken=''; // check if a previous answer has been submitted or saved
@@ -250,7 +250,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             {
                                 if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
                                 {
-                                    $target = dirname(getcwd())."/upload/surveys/". $thissurvey['sid'] ."/files/".randomkey(20);
+                                    $target = dirname(getcwd())."/upload/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
                                     $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
                                     $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
 
@@ -370,7 +370,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     "firstname"=> $saver['identifier'],	
                     "lastname"=> $saver['identifier'], 	
     				        "email"=>$saver['email'],
-                    "token"=>randomkey(15),
+                    "token"=>sRandomChars(15),
                     "language"=>$saver['language'],
                     "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
                     "completed"=>"N");
@@ -515,7 +515,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         }
         //	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
 
-        $dataentryoutput.="<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n"
+        $dataentryoutput.="<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
         ."\t<div class='header ui-widget-header'>";
         if ($subaction=='edit')
         {
@@ -898,7 +898,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         $fname=prev($fnames);
                         break;
 
-                    case "M": //MULTIPLE OPTIONS checkbox
+                    case "M": //Multiple choice checkbox
                         $qidattributes=getQuestionAttributes($fname['qid']);
                         if (trim($qidattributes['display_columns'])!='')
                         {
@@ -956,7 +956,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         $dataentryoutput .= "</select>";
                         break;
 
-                    case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+                    case "P": //Multiple choice with comments checkbox + text
                         $dataentryoutput .= "<table>\n";
                         while (isset($fname) && $fname['type'] == "P")
                         {
@@ -1375,7 +1375,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         }
 
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
         $fieldmap= createFieldMap($surveyid);
 
@@ -1451,11 +1451,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
     elseif ($subaction == "delete"  && bHasSurveyPermission($surveyid,'responses','delete'))
     {
-        if (!bHasSurveyPermission($surveyid,'delete_survey', 'delete'))
-        {
-            safe_die('You are not allowed to delete a response.');
-        }        
-        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
         $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n";
 
         $thissurvey=getSurveyInfo($surveyid);
@@ -1490,7 +1486,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         // PRESENT SURVEY DATAENTRY SCREEN
         $dataentryoutput .= $surveyoptions;
 
-        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data Entry")."</div>\n";
+        $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
         $dataentryoutput .= "<form action='$scriptname?action=dataentry' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>\n"
         ."<table class='data-entry-tbl' cellspacing='0'>\n"
@@ -1566,7 +1562,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             $dataentryoutput .= "\t<tr>\n"
             ."<td valign='top' width='1%'></td>\n"
             ."<td valign='top' align='right' width='30%'><strong>"
-            .$blang->gT("IP-Address").":</strong></td>\n"
+            .$blang->gT("IP address").":</strong></td>\n"
             ."<td valign='top'  align='left' style='padding-left: 20px'>\n"
             ."\t<input type='text' name='ipaddr' value='NULL' />\n"
             ."</td>\n"
@@ -1824,7 +1820,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     case "1": // multi scale^
                         $deaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
                         $dearesult = db_execute_assoc($deaquery);
-                        $dataentryoutput .='<table><tr><td></td><th>'.$clang->gT('Label 1').'</th><th>'.$clang->gT('Label 2').'</th></tr>';
+                        $dataentryoutput .='<table><tr><td></td><th>'.sprintf($clang->gT('Label %s'),'1').'</th><th>'.sprintf($clang->gT('Label %s'),'2').'</th></tr>';
 
                         while ($dearow = $dearesult->FetchRow())
                         {
@@ -2141,7 +2137,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         $ranklist="";
                         unset($answers);
                         break;
-                    case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
+                    case "M": //Multiple choice checkbox (Quite tricky really!)
                         $qidattributes=getQuestionAttributes($deqrow['qid']);
                         if (trim($qidattributes['display_columns'])!='')
                         {
@@ -2215,7 +2211,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         }
                         $dataentryoutput .= "</select>";
                         break;
-                    case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+                    case "P": //Multiple choice with comments checkbox + text
                         $dataentryoutput .= "<table border='0'>\n";
                         $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
                         $mearesult = db_execute_assoc($meaquery);

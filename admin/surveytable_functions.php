@@ -171,8 +171,8 @@ function surveyCheckStructure($surveyid)
     //THESE QUESTION TYPES ARE:
     //	# "L" -> LIST
     //  # "O" -> LIST WITH COMMENT
-    //  # "M" -> MULTIPLE OPTIONS
-    //	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
+    //  # "M" -> Multiple choice
+    //	# "P" -> Multiple choice with comments
     //	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE

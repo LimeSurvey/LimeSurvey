@@ -154,17 +154,23 @@ if ($subaction == "id")
     if ($surveyinfo['anonymized'] == "N" && tableExists('tokens_'.$surveyid))
     {
         $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-        $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
-        $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
+        $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
+        $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
-    $fnames[] = array("submitdate", "Submission date", $clang->gT("Completed"), "0", 'D');
+    $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
     $fnames[] = array("completed", $clang->gT("Completed"), "0");
 
     foreach ($fieldmap as $field)
     {
         if ($field['fieldname']=='lastpage' || $field['fieldname'] == 'submitdate')
             continue;
+        if ($field['type']=='interview_time')
+            continue;
+        if ($field['type']=='page_time')
+            continue;
+        if ($field['type']=='answer_time')
+            continue;            
 
         $question=$field['question'];
         if ($field['type'] != "|")
@@ -599,10 +605,13 @@ elseif ($subaction == "all")
     if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
     {
         $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-        $fnames[] = array("firstname", "First Name", $clang->gT("First Name"), 0);
-        $fnames[] = array("lastname", "Last Name", $clang->gT("Last Name"), 0);
+        $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
+        $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
         $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
     }
+
+    $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
+    $fields = createFieldMap($surveyid, 'full', false, false, $language);
 
     $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
     $fields = createFieldMap($surveyid, 'full', false, false, $language);
@@ -612,7 +621,6 @@ elseif ($subaction == "all")
         if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate')
             continue;
 
-        
         $question=$fielddetails['question'];
         if ($fielddetails['type'] != "|")
         {
@@ -855,8 +863,9 @@ elseif ($subaction == "all")
 
     $browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
             ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-            ."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
-            ."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."".$clang->gT("Records displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."&nbsp;&nbsp; <input type='submit' value='".$clang->gT("Show")."' />\n"
             ."&nbsp;&nbsp; <input type='submit' value='".$clang->gT("Show")."' />\n"
             ."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
             ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
@@ -1103,8 +1112,8 @@ else
 
     $browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
             ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-            ."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
-            ."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."".$clang->gT("Records displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
             ."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
             ."</font>\n"
             ."<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -1160,7 +1169,7 @@ else
     </form>\n<br />\n";
 	
 	// Interview time
-	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Interview Time').'</div>';
+	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Interview time').'</div>';
 	
 	//interview Time statistics
 	$count=false;

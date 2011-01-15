@@ -35,7 +35,6 @@ require_once('htmleditor-functions.php');
 // Reset FileManagerContext
 $_SESSION['FileManagerContext']='';
 
-if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');} // Admin language
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID
 if (!isset($ugid)) {$ugid=returnglobal('ugid');}                //Usergroup-ID
 if (!isset($gid)) {$gid=returnglobal('gid');}                   //GroupID
@@ -663,7 +662,7 @@ if(isset($_SESSION['loginID']))
         . "\n"
         . "//-->\n"
         . "</script>\n";
-        $adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
+        $adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
 }
@@ -674,7 +673,7 @@ sendcacheheaders();
 if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
 $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput.$loginsummary;  // All future output is written into this and then outputted at the end of file
 unset($_SESSION['metaHeader']);
-$adminoutput.= "</div>\n".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
+$adminoutput.= "</div>\n".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 }
 if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1))
 {

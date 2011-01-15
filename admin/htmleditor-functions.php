@@ -369,6 +369,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
      $fieldtype == 'email-admin-resp'||
      $fieldtype == 'email-rem' )
     { // do nothing
+        $htmlcode.= "$oFCKeditorVarName.ReplaceTextarea() ;\n";
     }
     else
     {

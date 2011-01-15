@@ -254,7 +254,7 @@ function UpdateStep2()
     require_once($homedir."/classes/http/http.php");
     $updatekey=getGlobalSetting('updatekey');
 
-    $output='<div class="header ui-widget-header">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
 
     $http=new http_class;
     /* Connection timeout */
@@ -413,7 +413,7 @@ function UpdateStep3()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header ui-widget-header">'.$clang->gT('ComfortUpdate Step 3').'</div><div class="updater-background">';
+    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'3').'</div><div class="updater-background">';
     $output.='<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
     if (!isset( $_SESSION['updateinfo']))
     {
@@ -496,7 +496,7 @@ function UpdateStep4()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header ui-widget-header">'.$clang->gT('ComfortUpdate Step 4').'</div><div class="updater-background"><br />';
+    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'4').'</div><div class="updater-background"><br />';
     if (!isset( $_SESSION['updateinfo']))
     {
         $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
@@ -626,12 +626,12 @@ function UpdateStep4()
 function CheckForDBUpgrades()
 {
     global $connect, $databasetype, $dbprefix, $dbversionnumber, $clang;
-    $adminoutput='';
     $currentDBVersion=GetGlobalSetting('DBVersion');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
         if(isset($_GET['continue']) && $_GET['continue']==1) 
         {
+            echo getAdminHeader()."<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
             $upgradedbtype=$databasetype;
             if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
             if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
@@ -641,13 +641,12 @@ function CheckForDBUpgrades()
             $tables = $connect->MetaTables();
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
-            $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+            echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
         }
         else {
             return ShowDBUpgradeNotice();
         }
     }
-    return $adminoutput;
 }
 
 function ShowDBUpgradeNotice() {

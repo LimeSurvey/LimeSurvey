@@ -91,9 +91,9 @@ function browsemenubar($title='')
     if (bHasSurveyPermission($surveyid,'exportresponses','read'))         
     {
         // Export to application
-        $browsemenubar .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export Results to Application")."\" >"
+        $browsemenubar .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to application")."\" >"
         . "<img name='Export' src='$imageurl/export.png' "
-        . "alt='".$clang->gT("Export Results to Application")."' /></a>\n"
+        . "alt='".$clang->gT("Export results to application")."' /></a>\n"
         
         // Export to SPSS
         . "<a href='$scriptname?action=exportspss&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a SPSS/PASW command file")."\" >"
@@ -122,14 +122,14 @@ function browsemenubar($title='')
     }
 
     //Import VV
-    if (bHasSurveyPermission($surveyid,'responses','create'))  
+    if (bHasSurveyPermission($surveyid,'responses','import'))  
     {    
-        $browsemenubar . "<a href='$scriptname?action=vvimport&amp;sid=$surveyid' title=\"".$clang->gTview("Import a VV survey file")."\" >"
+        $browsemenubar .= "<a href='$scriptname?action=vvimport&amp;sid=$surveyid' title=\"".$clang->gTview("Import a VV survey file")."\" >"
         . "<img src='$imageurl/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
     }
 
     //Export VV
-    if (bHasSurveyPermission($surveyid,'exportresponses','read'))   
+    if (bHasSurveyPermission($surveyid,'responses','export'))   
     {
         $browsemenubar .= "<a href='$scriptname?action=vvexport&amp;sid=$surveyid' title=\"".$clang->gTview("Export a VV survey file")."\" >"
         ."<img src='$imageurl/exportvv.png' title='' alt='".$clang->gT("Export a VV survey file")."' /></a>\n";

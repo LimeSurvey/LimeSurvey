@@ -53,8 +53,8 @@ $typeMap = array(
 'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
 'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
 'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
-'M'=>Array('name'=>'Multiple Options','size'=>1,'SPSStype'=>'F'),
-'P'=>Array('name'=>'Multiple Options With Comments','size'=>1,'SPSStype'=>'F'),
+'M'=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
+'P'=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
 'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
 'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
 'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
@@ -146,7 +146,7 @@ if  (!isset($subaction))
 
 
 } else {
-    // Get Base Language:
+    // Get Base language:
 
     $language = GetBaseLanguageFromSurveyID($surveyid);
     $clang = new limesurvey_lang($language);

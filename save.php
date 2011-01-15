@@ -807,7 +807,7 @@ function set_answer_time()
     {
         $setField = $_POST['lastanswer'];
     }
-	$passedTime = time() - $_POST['start_time'];
+	$passedTime = round(microtime(true) - $_POST['start_time'],2);
 
 	if(!isset($setField))
 		$setField = $_POST['lastgroup'];

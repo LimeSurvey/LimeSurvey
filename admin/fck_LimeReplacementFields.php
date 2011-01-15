@@ -127,9 +127,7 @@ switch ($fieldtype)
         {
             $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
         }
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
         break;
 
     case 'email-admin-conf':
@@ -158,9 +156,7 @@ switch ($fieldtype)
         $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
         $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
         $replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
         break;
 
     case 'email-conf':
@@ -177,9 +173,7 @@ switch ($fieldtype)
         $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
         $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
         $replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
 
         // email-conf can accept insertans fields for non anonymous surveys
         if (isset($surveyid))
@@ -207,9 +201,7 @@ switch ($fieldtype)
         {
             $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
         }
-        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
-        $replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
-        $replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
+        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
     case 'editanswer':
         $isInstertansEnabled=true;
         break;

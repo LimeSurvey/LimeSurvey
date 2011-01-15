@@ -1100,7 +1100,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph='0
     {
         $myField = $surveyid."X".$field['gid']."X".$field['qid'];
          
-        // Multiple Options get special treatment
+        // Multiple choice get special treatment
         if ($field['type'] == "M" || $field['type'] == "P") {$myField = "M$myField";}
         //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
         if ($field['type'] == "N") {$myField = "N$myField";}

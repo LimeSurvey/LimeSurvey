@@ -29,7 +29,7 @@ if (!isset($lid))
 
 
 if ($action == "importsurveyresources" && $surveyid) {
-    $importsurveyresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Survey Resources")."</div>\n";
+    $importsurveyresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import survey resources")."</div>\n";
     $importsurveyresourcesoutput .= "<div class='messagebox ui-corner-all'>";
 
     if ($demoModeOnly === true)
@@ -149,7 +149,7 @@ if ($action == "importsurveyresources" && $surveyid) {
         {
             $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
             $importsurveyresourcesoutput .= $clang->gT("This ZIP archive contains no valid Resources files. Import failed.")."<br /><br />\n";
-            $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP Archive.")."<br /><br />\n";
+            $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br /><br />\n";
             $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\" />\n";
             $importsurveyresourcesoutput .= "</div>\n";
             return;
@@ -218,7 +218,7 @@ if ($action == "importlabelresources" && $lid)
     if ($demoModeOnly === true)
     {
         $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
-        $importlabelresourcesoutput .= sprintf ($clang->gT("Demo Mode Only: Uploading file is disabled in this system."),$basedestdir)."<br /><br />\n";
+        $importlabelresourcesoutput .= sprintf ($clang->gT("Demo mode only: Uploading files is disabled in this system."),$basedestdir)."<br /><br />\n";
         $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?action=labels&lid=$lid', '_top')\" />\n";
         $importlabelresourcesoutput .= "</div>\n";
         return;
@@ -332,7 +332,7 @@ if ($action == "importlabelresources" && $lid)
         {
             $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
             $importlabelresourcesoutput .= $clang->gT("This ZIP archive contains no valid Resources files. Import failed.")."<br /><br />\n";
-            $importlabelresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP Archive.")."<br /><br />\n";
+            $importlabelresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br /><br />\n";
             $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?action=labels&lid=$lid', '_top')\" />\n";
             $importlabelresourcesoutput .= "</div>\n";
             return;
@@ -394,7 +394,7 @@ if ($action == "importlabelresources" && $lid)
 
 if ($action == "templateupload")
 {
-    $importtemplateoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Template")."</div>\n";
+    $importtemplateoutput = "<div class='header ui-widget-header'>".$clang->gT("Import template")."</div>\n";
     $importtemplateoutput .= "<div class='messagebox ui-corner-all'>";
 
     if ($demoModeOnly === true)

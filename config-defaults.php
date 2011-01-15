@@ -498,6 +498,10 @@ $ssl_emergency_override = false;
 
 $ipInfoDbAPIKey = '';
 
+// Google Maps API key. http://code.google.com/apis/maps/signup.html
+// To have questions that require google Maps!
+
+$googleMapsAPIKey = '';
 
 //DO NOT EVER CHANGE THE FOLLOWING 5 LINES ---------------
 require_once(dirname(__FILE__).'/config.php');

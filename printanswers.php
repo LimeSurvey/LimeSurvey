@@ -170,7 +170,7 @@ if(isset($_POST['printableexport']))
     $pdf = new PDF($pdforientation);
     $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
     $pdf->AddPage();
-        $pdf->titleintopdf($clang->gT("Survey Name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
+        $pdf->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
 }
 $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
 
@@ -227,16 +227,11 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
             $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
             $pdf->ln(2);
         }
-        else
-        {
+            else
+            {
             $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
         }
     }
-            else
-            {
-                if ($oldqid !== $fname['qid']) 
-                {
-                    $oldqid = $fname['qid'];
 }
 
 $printoutput .= "</table>\n";

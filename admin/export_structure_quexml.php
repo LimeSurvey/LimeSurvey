@@ -600,10 +600,10 @@ while ($Row = $QueryResult->FetchRow())
 			$response->append_child(create_free("integer",strlen($QROW['sc']),""));
 			$question->append_child($response);
 			break;
-			case "M": //MULTIPLE OPTIONS checkbox
+			case "M": //Multiple choice checkbox
 				create_multi(&$question,$qid,$RowQ['title'],false,false,$other);
 			break;
-			case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+			case "P": //Multiple choice with comments checkbox + text
 				//Not yet implemented
 				create_multi(&$question,$qid,$RowQ['title'],false,false,$other);
 			//no comments added

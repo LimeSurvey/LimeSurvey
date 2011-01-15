@@ -30,7 +30,7 @@ if ($action == "addgroup")
 	 foreach ($grplangs as $grouplang)
     {
         $newgroupoutput .= '<li><a href="#'.$grouplang.'">'.GetLanguageNameFromCode($grouplang,false);
-        if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base Language").')';}
+        if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base language").')';}
         $newgroupoutput .= "</a></li>\n";
 		}
 		if (bHasSurveyPermission($surveyid,'surveycontent','import'))
@@ -80,7 +80,7 @@ if ($action == "addgroup")
         . "<li>\n"
         . "<label for='the_file'>".$clang->gT("Select question group file (*.lsg/*.csv):")."</label>\n"
         . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"35\" /></li>\n"
-        . "<li><label for='translinksfields'>".$clang->gT("Convert resources links?")."</label>\n"
+        . "<li><label for='translinksfields'>".$clang->gT("Convert resource links?")."</label>\n"
         . "<input id='translinksfields' name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></li></ul>\n"
         . "\t<p><input type='submit' value='".$clang->gT("Import question group")."' />\n"
         . "\t<input type='hidden' name='action' value='importgroup' />\n"
@@ -135,7 +135,7 @@ if ($action == "editgroup")
     $egresult = db_execute_assoc($egquery);
     $editgroup = PrepareEditorScript();
     $esrow = $egresult->FetchRow();
-    $tab_title[0] = getLanguageNameFromCode($esrow['language'],false). '('.$clang->gT("Base Language").')';
+    $tab_title[0] = getLanguageNameFromCode($esrow['language'],false). '('.$clang->gT("Base language").')';
     $esrow = array_map('htmlspecialchars', $esrow);
     $tab_content[0] = "<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
         . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"

@@ -676,8 +676,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
         ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
         ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-        ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-        ."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+        ."{$thissurvey['adminemail']}</a>)<br /><br />&nbsp;\n";
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 	killSession();
         doFooter();
@@ -708,8 +707,7 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
         ."\t".$clang->gT("Your token seems to be valid but can be used only during a certain time period.")."<br />\n"
         ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-        ."{$thissurvey['adminemail']}</a>)")."<br /><br />\n"
-        ."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+        ."{$thissurvey['adminemail']}</a>)")."<br /><br />&nbsp;\n";
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
 	killSession();
@@ -1565,7 +1563,7 @@ function checkmandatorys($move, $backok=null)
             $$multiname2++;
             $mi++;
         }
-        if ($multiname && isset($_POST[$multiname]) && $_POST[$multiname]) // Catch the last multiple options question in the lot
+        if ($multiname && isset($_POST[$multiname]) && $_POST[$multiname]) // Catch the last Multiple choice question in the lot
 
         {
             if ($$multiname == $$multiname2 && isset($visibleanswers) && $visibleanswers > 0) //so far all multiple choice options are unanswered
@@ -2441,7 +2439,7 @@ function buildsurveysession()
             echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
             ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br />\n"
-            ."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
+            ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
             ." (<a href='mailto:{$thissurvey['adminemail']}'>"
             ."{$thissurvey['adminemail']}</a>)</p></div>\n";
 
@@ -2478,7 +2476,7 @@ function buildsurveysession()
                 echo "\t<center><br />\n"
                 ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
                 ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br/>\n"
-                ."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
+                ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
                 ." (<a href='mailto:{$thissurvey['adminemail']}'>"
                 ."{$thissurvey['adminemail']}</a>)<br /><br />\n";
 
@@ -2516,7 +2514,7 @@ function buildsurveysession()
                 // AND HIDE ENTRY FIELD
                 if (!isset($gettoken))
                 {
-                    echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."</p>
+                    echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
 			            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
                         <ul>
                         <li>
@@ -2663,7 +2661,7 @@ function buildsurveysession()
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
         echo "\t<center><br />\n"
         ."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
-        ."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
+        ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
         ."{$thissurvey['adminemail']}</a>)<br /><br />\n";
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
@@ -2767,7 +2765,7 @@ function buildsurveysession()
     $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
-        if ($field['qid']!='')
+        if (isset($field['qid']) && $field['qid']!='')
         {
             $_SESSION['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
             $_SESSION['insertarray'][]=$field['fieldname'];
@@ -2984,7 +2982,7 @@ function doAssessment($surveyid, $returndataonly=false)
 
                                 if (($field['type'] == "M") || ($field['type'] == "P"))
                                 {
-                                    if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple Options type questions
+                                    if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple choice type questions
                                     {
                                         $aAttributes=getQuestionAttributes($field['qid'],$field['type']);
                                         $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
@@ -3017,7 +3015,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         //$grouptotal=$grouptotal+$field['answer'];
                         if (isset ($_SESSION[$field['fieldname']]))
                         {
-                            if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple Options type questions
+                            if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple choice type questions
                             $grouptotal=$grouptotal+$field['assessment_value'];
                             else																		// any other type of question
                             $grouptotal=$grouptotal+$field['assessment_value'];
@@ -3127,7 +3125,7 @@ function UpdateFieldArray()
 /**
  * check_quota() returns quota information for the current survey
  * @param string $checkaction - action the function must take after completing:
- * 								enforce: Enforce the quota action
+ * 								enforce: Enforce the Quota action
  * 								return: Return the updated quota array from getQuotaAnswers()
  * @param string $surveyid - Survey identification number
  * @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
@@ -3248,7 +3246,7 @@ function check_quota($checkaction,$surveyid)
         return $quota_info;
     } else if ($global_matched == true && $checkaction == 'enforce')
     {
-        // Need to add quota action enforcement here.
+        // Need to add Quota action enforcement here.
         reset($quota_info);
 
         $tempmsg ="";
@@ -3405,10 +3403,12 @@ function GetReferringUrl()
     echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
     if ($thissurvey['active'] != "Y")
     {
-        echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+        echo "<center><font color='red' size='2'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</font></center>\n";
     }
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+    if (isset($token) && !empty($token)) {
+        echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+    }
     echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));

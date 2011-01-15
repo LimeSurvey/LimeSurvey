@@ -29,10 +29,10 @@
  *  I - Language Switch
  *  K - Multiple Numerical Input
  *  L - List (Radio)
- *  M - Multiple Options
+ *  M - Multiple choice
  *  N - Numerical Input
  *  O - List With Comment
- *  P - Multiple Options With Comments
+ *  P - Multiple choice with comments
  *  Q - Multiple Short Text
  *  R - Ranking
  *  S - Short Free Text
@@ -454,11 +454,11 @@ foreach ($filters as $flt)
      G - Gender
      I - Language Switch
      L - List (Radio)
-     M - Multiple Options
+     M - Multiple choice
      N - Numerical Input
      | - File Upload
      O - List With Comment
-     P - Multiple Options With Comments
+     P - Multiple choice with comments
      Y - Yes/No
      ! - List (Dropdown) )
      */
@@ -468,7 +468,7 @@ foreach ($filters as $flt)
 
         $statisticsoutput .= "\t\t\t\t<td align='center'>";
 
-        //multiple options:
+        //Multiple choice:
         if ($flt[2] == "M") {$myfield = "M$myfield";}
         if ($flt[2] == "P") {$myfield = "P$myfield";}
 
@@ -482,7 +482,7 @@ foreach ($filters as $flt)
         /*
          * one of these conditions has to be true
          * 1. SGQ can be found within the summary array
-         * 2. M-SGQ can be found within the summary array (M = multiple options)
+         * 2. M-SGQ can be found within the summary array (M = Multiple choice)
          * 3. N-SGQ can be found within the summary array (N = numerical input)
          *
          * Always remember that we just have very few question types that are checked here
@@ -504,7 +504,7 @@ foreach ($filters as $flt)
         //if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
         if ($flt[2] != "N" && $flt[2] != "|") {$statisticsoutput .= "\t\t\t\t<select name='";}
 
-        //multiple options ("M"/"P") -> add "M" to output
+        //Multiple choice ("M"/"P") -> add "M" to output
         if ($flt[2] == "M" ) {$statisticsoutput .= "M";}
         if ($flt[2] == "P" ) {$statisticsoutput .= "P";}
 
@@ -1501,8 +1501,8 @@ foreach ($filters as $flt)
             $counter=0;
             break;
 
-        case "P":  //P - Multiple options with comments
-        case "M":  //M - Multiple options
+        case "P":  //P - Multiple choice with comments
+        case "M":  //M - Multiple choice
 
             //get answers
             $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
@@ -1527,7 +1527,7 @@ foreach ($filters as $flt)
              * This question types use the default settings:
              * 	L - List (Radio)
              O - List With Comment
-             P - Multiple Options With Comments
+             P - Multiple choice with comments
              ! - List (Dropdown)
              */
         default:

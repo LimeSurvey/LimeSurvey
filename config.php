@@ -55,8 +55,7 @@ $defaultpass        =   'password';        // This is the password for the admin
 
 // Debug Settings
 $debug              =   3;                 // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
-// then please check your error-logs - either in your hosting provider admin panel or in some /logs dir
-// on your webspace.
-// LimeSurvey developers: Set this to 2 to circumvent the restriction to remove the installation directory
-// or to change the password. If you set it to 3 then PHP STRICT warnings will be shown additionally.
-
+                                           // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir
+                                           // on your webspace.
+                                           // LimeSurvey developers: Set this to 3 to circumvent the restriction to remove the installation directory and full access to standard templates
+                                           // or to change the password. If you set it to 3 then PHP STRICT warnings will be shown additionally.

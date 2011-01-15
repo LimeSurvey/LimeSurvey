@@ -76,9 +76,9 @@ function showSavedList($surveyid)
         $savedsurveyoutput .= "<thead><tr><th>SCID</th><th>"
         .$clang->gT("Actions")."</th><th>"
         .$clang->gT("Identifier")."</th><th>"
-        .$clang->gT("IP Address")."</th><th>"
+        .$clang->gT("IP address")."</th><th>"
         .$clang->gT("Date Saved")."</th><th>"
-        .$clang->gT("Email Address")."</th>"
+        .$clang->gT("Email address")."</th>"
         ."</tr></thead><tbody>\n";
         while($row=$result->FetchRow())
         {

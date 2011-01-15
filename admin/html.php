@@ -149,7 +149,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         if ($activated == "N" )
         {
             $surveysummary .= "<img src='{$imageurl}/inactive.png' "
-            . "alt='".$clang->gT("This survey is not currently active")."' />\n";
+            . "alt='".$clang->gT("This survey is currently not active")."' />\n";
             if($sumcount3>0 && bHasSurveyPermission($surveyid,'surveyactivation','update'))
             {
                 $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
@@ -177,7 +177,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             else
             {
                 $surveysummary .= "<img src='{$imageurl}/active.png' title='' "
-                . "alt='".$clang->gT("This survey is currently active")."' />\n";
+                . "alt='".$clang->gT("This survey is currently active.")."' />\n";
             }
             if(bHasSurveyPermission($surveyid,'surveyactivation','update'))
             {
@@ -621,9 +621,9 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
           if ($surveyinfo['format'] == 'A') {$surveysummary2 .= $clang->gT("No question index will be shown with this format.")."<br />\n";}
           else {$surveysummary2 .= $clang->gT("A question index will be shown; participants will be able to jump between viewed questions.")."<br />\n";}
         }
-        if ($surveyinfo['datestamp'] == "Y") {$surveysummary2 .= $clang->gT("Responses will be date stamped")."<br />\n";}
+        if ($surveyinfo['datestamp'] == "Y") {$surveysummary2 .= $clang->gT("Responses will be date stamped.")."<br />\n";}
         if ($surveyinfo['ipaddr'] == "Y") {$surveysummary2 .= $clang->gT("IP Addresses will be logged")."<br />\n";}
-        if ($surveyinfo['refurl'] == "Y") {$surveysummary2 .= $clang->gT("Referer-URL will be saved")."<br />\n";}
+        if ($surveyinfo['refurl'] == "Y") {$surveysummary2 .= $clang->gT("Referrer URL will be saved.")."<br />\n";}
         if ($surveyinfo['usecookie'] == "Y") {$surveysummary2 .= $clang->gT("It uses cookies for access control.")."<br />\n";}
         if ($surveyinfo['allowregister'] == "Y") {$surveysummary2 .= $clang->gT("If tokens are used, the public may register for this survey")."<br />\n";}
         if ($surveyinfo['allowsave'] == "Y" && $surveyinfo['tokenanswerspersistence'] == 'N') {$surveysummary2 .= $clang->gT("Participants can save partially finished surveys")."<br />\n";}
@@ -714,7 +714,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<td align='left'> {$surveyinfo['template']}</td></tr>\n"
 
         . "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Base Language:")."</strong></td>\n";
+        . $clang->gT("Base language:")."</strong></td>\n";
         if (!$surveyinfo['language']) {$language=getLanguageNameFromCode($currentadminlang,false);} else {$language=getLanguageNameFromCode($surveyinfo['language'],false);}
         $surveysummary .= "<td align='left'>$language</td></tr>\n";
 
@@ -802,7 +802,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
                 $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='{$column_usage}'></div> </td></tr>";
                 $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Size Usage")}: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='{$size_usage}'></div></td></tr>";
-            }
+    }
             elseif (($arrCols['dbtype'] == 'mssqlnative')||($arrCols['dbtype'] == 'postgres')||($arrCols['dbtype'] == 'odbtp')||($arrCols['dbtype'] == 'mssql_n')){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
                 $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:20%; height:15px;' name='{$column_usage}'></div> </td></tr>";
@@ -1411,7 +1411,7 @@ if($action == "addsurveysecurity")
         }
         else
         {
-            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n"
+            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
             . "<br />" . $clang->gT("No Username selected.")."<br />\n";
             $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
         }
@@ -1431,8 +1431,7 @@ if($action == "addusergroupsurveysecurity")
 
     $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
     $result = db_execute_assoc($query); //Checked
-    if( ($result->RecordCount() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray')) ) ||
-    $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    if( ($result->RecordCount() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray'))) || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         if($postusergroupid > 0){
             $query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('survey_permissions')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
@@ -1442,7 +1441,7 @@ if($action == "addusergroupsurveysecurity")
                 while ($row2 = $result2->FetchRow())
                 {
                     $uid_arr[] = $row2['uid'];
-                    $isrquery = "INSERT INTO {$dbprefix}surveys_permissions (sid,uid,permission,read_p) VALUES ({$surveyid}, {$row2['uid']},'survey',1) ";
+                    $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,read_p) VALUES ({$surveyid}, {$row2['uid']},'survey',1) ";
                     $isrresult = $connect->Execute($isrquery); //Checked
                     if (!$isrresult) break;
                 }
@@ -1473,7 +1472,7 @@ if($action == "addusergroupsurveysecurity")
         }
         else
         {
-            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n"
+            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
             . "<br />" . $clang->gT("No Username selected.")."<br />\n";
             $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=surveysecurity&amp;sid={$surveyid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
         }
@@ -1515,17 +1514,29 @@ if($action == "delsurveysecurity")
     $addsummary .= "</div>\n";
 }
 
-if($action == "setsurveysecurity")
+if($action == "setsurveysecurity" || $action == "setusergroupsurveysecurity") 
 {
-    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
+    if ($action == "setsurveysecurity")
+    {
+      $query.=  " AND owner_id != ".$postuserid;
+    }
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
         $js_admin_includes[]='scripts/surveysecurity.js';
-        $sUsername=$connect->GetOne("select users_name from ".db_table_name('users')." where uid={$postuserid}");
-        $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div><br />
-        <form action='$scriptname?sid={$surveyid}' method='post'>\n"
+        if ($action == "setsurveysecurity")
+        {
+            $sUsername=$connect->GetOne("select users_name from ".db_table_name('users')." where uid={$postuserid}");
+            $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div>";
+        }
+        else
+        {
+            $sUsergroupName=$connect->GetOne("select name from ".db_table_name('user_groups')." where ugid={$postusergroupid}");
+            $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
+        }
+        $usersummary .= "<br /><form action='$scriptname?sid={$surveyid}' method='post'>\n"
         . "<table style='margin:0 auto;' border='0' class='usersurveypermissions'><thead>\n";
 
         $usersummary .= ""
@@ -1559,7 +1570,7 @@ if($action == "setsurveysecurity")
                     if (!($sPermissionKey=='survey' && $sCRUDKey=='read')) 
                     {
                         $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
-                        if(bHasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
+                        if($action=='setsurveysecurity' && bHasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
                             $usersummary .= ' checked="checked" ';
                         }
                         $usersummary .=" />";                    
@@ -1573,66 +1584,17 @@ if($action == "setsurveysecurity")
         $usersummary .= "\n</table>"
         ."<p><input type='submit' value='".$clang->gT("Save Now")."' />"
         ."<input type='hidden' name='perm_survey_read' value='1' />"
-        ."<input type='hidden' name='action' value='surveyrights' />"
-        ."<input type='hidden' name='uid' value='{$postuserid}' />"
-        . "</form>\n";
-    }
-    else
-    {
-        include("access_denied.php");
-    }
-}
-
-
-if($action == "setusergroupsurveysecurity")
-{
-    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$postuserid;
-    $result = db_execute_assoc($query); //Checked
-    if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-    {
-        $usersummary = "<table width='100%' border='0'>\n<tr><td colspan='7'>\n"
-        . "".$clang->gT("Set Survey Rights")."</td></tr>\n";
-
-        $usersummary .= ""
-        . "<th align='center'>".$clang->gT("Edit Survey Property")."</th>\n"
-        . "<th align='center'>".$clang->gT("Define Questions")."</th>\n"
-        . "<th align='center'>".$clang->gT("Browse Response")."</th>\n"
-        . "<th align='center'>".$clang->gT("Export")."</th>\n"
-        . "<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
-        . "<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
-        . "<th align='center'>".$clang->gT("Translate Survey")."</th>\n"
-        . "</tr>\n"
-        . "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
-
-        //content
-        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
-
-        $usersummary .=" /></td>\n";
-        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"define_questions\" value=\"define_questions\"";
-
-        $usersummary .=" /></td>\n";
-        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"browse_response\" value=\"browse_response\"";
-
-        $usersummary .=" /></td>\n";
-        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"export\" value=\"export\"";
-
-        $usersummary .=" /></td>\n";
-        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_survey\" value=\"delete_survey\"";
-
-        $usersummary .=" /></td>\n";
-        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"activate_survey\" value=\"activate_survey\"";
-
-        $usersummary .=" /></td>\n";
-        $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"translate_survey\" value=\"translate_survey\"";
-
-        $usersummary .=" /></td>\n";
-
-        $usersummary .= "\n<tr><td colspan='7' align='center'>"
-        ."<input type='submit' value='".$clang->gT("Save Now")."' />"
-        ."<input type='hidden' name='action' value='surveyrights' />"
-        ."<input type='hidden' name='ugid' value='{$postusergroupid}' /></td></tr>"
-        ."</form>"
-        . "</table>\n";
+        ."<input type='hidden' name='action' value='surveyrights' />";
+        
+        if ($action=='setsurveysecurity')
+        {
+            $usersummary .="<input type='hidden' name='uid' value='{$postuserid}' />";
+        }
+        else
+        {
+            $usersummary .="<input type='hidden' name='ugid' value='{$postusergroupid}' />";
+        }
+        $usersummary .= "</form>\n";
     }
     else
     {
@@ -1949,7 +1911,8 @@ elseif ($action == "surveyrights")
         }
     }
     else{
-        $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
+        $sQuery = "SELECT owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
+        $iOwnerID=$connect->GetOne($sQuery);
     }
     
     $aBaseSurveyPermissions=aGetBaseSurveyPermissions();
@@ -1972,13 +1935,30 @@ elseif ($action == "surveyrights")
             }
         }        
     }
-    if(SetSurveyPermissions($postuserid, $surveyid, $aPermissions))
+    if (isset($postusergroupid) && $postusergroupid>0)
     {
-        $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions were successfully updated.")."</div>\n";
+        $sQuery = "SELECT uid from ".db_table_name('user_in_groups')." where ugid = {$postusergroupid} and uid<>{$_SESSION['loginID']} AND uid<>{$iOwnerID}";
+        $oResult = db_execute_assoc($sQuery); //Checked
+        if($oResult->RecordCount() > 0)
+        {
+            while ($aRow = $oResult->FetchRow())
+            {
+                SetSurveyPermissions($aRow['uid'], $surveyid, $aPermissions);
+            }
+            $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions for all users in this group were successfully updated.")."</div>\n";
+        }
     }
     else
     {
-        $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update survey permissions!")."</div>\n";
+        if(SetSurveyPermissions($postuserid, $surveyid, $aPermissions))
+        {
+            $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions were successfully updated.")."</div>\n";
+        }
+        else
+        {
+            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update survey permissions!")."</div>\n";
+        }
+        
     }
     $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
     $addsummary .= "</div>\n";
@@ -2155,8 +2135,8 @@ function showadminmenu()
         . "<img src='{$imageurl}/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
 
         //Show help
-        $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey Online manual")."\" >"
-        . "<img src='{$imageurl}/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
+        $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey online manual")."\" >"
+        . "<img src='{$imageurl}/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey online manual")."'/></a>";
 
         $adminmenu .= "</div>"
         . "</div>\n"

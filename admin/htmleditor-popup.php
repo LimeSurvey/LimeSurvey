@@ -59,6 +59,7 @@ if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 else {
     $fieldname=$_GET['fieldname'];
     $fieldtext=$_GET['fieldtext'];
+    if (get_magic_quotes_gpc()) $fieldtext = stripslashes($fieldtext);
     $controlidena=$_GET['fieldname'].'_popupctrlena';
     $controliddis=$_GET['fieldname'].'_popupctrldis';
 

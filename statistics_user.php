@@ -350,8 +350,8 @@ foreach ($filters as $flt)
             }	//end WHILE -> loop through all answers
             break;
 
-        case "P":  //P - Multiple options with comments
-        case "M":  //M - Multiple options
+        case "P":  //P - Multiple choice with comments
+        case "M":  //M - Multiple choice
         case "N":  //N - Numerical input
         case "D":  //D - Date
             $myfield2 = $flt[2].$myfield;

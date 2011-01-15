@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.91beta!
+Welcome to LimeSurvey v1.91RC2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -77,7 +77,65 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.90 to 1.91beta
+Changes from 1.91RC1 (build 9696) to 1.91RC2 (build 9672)
++New translation: Urdu - provided by Google Code-In participant (c_schmitz)
+#Updated translation: Norwegian Bokmål (nb), thanks to Pål Monstad (gandalfar)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Arabian - work done by Google Code-In participant (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Hindi - provided by Google Code-In participant (c_schmitz)
+#Updated translation: Hindi - work done by Google Code-In participant Gautam Gupta - Thank you! (c_schmitz)
+-Fixed issue #4853: Survey runtime broken because of token checks (mennodekker)
+-Fixed issue #4808: Database upgrade: Umlaut display issue if default language is set to German (c_schmitz)
+-Fixed issue #4832: ofer a possibility to deactivate the javascript selector (shnoulle)
+-Fixed issue #4840: Graph legends containing duplicate labels when using a RTL language (c_schmitz)
+-Fixed issue #4852: Tokens tables in databases are not updated with usesleft field (c_schmitz)
+-Fixed issue #4855: VV import button is missing (c_schmitz)
+-Fixed issue #4856: HTML editor not shown when sending invitations or reminders. (lemeur)
+
+Changes from 1.91beta (build 9631) to 1.91RC1 (build 9696)
++New Feature: 'All of the above' option automatically kick in if the participant checks all other options (set by the 'Exclusive option' setting). (parajulik)
++New Feature: Group avaiable question types with screenshots (parajulik)
++New translation: Punjabi - work done by Google Code-In participant rs - thank you! (c_schmitz)
+#Updated translation : French (b00z00)
+#Updated translation, Italian formal (it-formal), thanks to Gabriella Fazzi (gandalfar)
+#Updated translation: French (fr), thanks to Thierry PARET (gandalfar)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: 100% Hungarian - work done by Google Code-In participant Licker Nandor - thank you! (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Romanian (ro), thanks to Andrei Tiut (gandalfar)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Simplified Chinese  Files for 1.91 RC1 (yooyooh)
+-Fixed issue 04821: Filtered array with previous question not working (tpartner)
+-Fixed issue: bounce mail set to global bounce email if it's set (shnoulle)
+-Fixed 4842: printable survey throws error when array dual scale question is used in conditions (mennodekker)
+-Fixed issue : 04824 (anishseth)
+-Fixed issue :04824 (anishseth)
+-Fixed issue #4786: Group preview in group-by-group mode broken (parajulik)
+-Fixed issue: The options/attribute for a question type are not loaded unless you change it. (parajulik)
+-Fixed issue: The question type groups were not translated (parajulik)
+-Fixed issue #4741: popup editor editor is borken when the edited field name contains a quote and magic_quotes is set to On in php.ini (lemeur)
+-Fixed issue #4791: User group handling in survey permissions was brokenUpdated translation: German (c_schmitz)
+-Fixed issue #4798: Bad encoding of scripts/jquery/locale/ui.keypad (wavexx)
+-Fixed issue #4810: End URL in overview should open in new browser tab or window (c_schmitz)
+-Fixed issue #4819: Data entry php error (c_schmitz)
+-Fixed issue #4820: Question type 'Location' not workin at all (c_schmitz)
+-Fixed issue #4825: Print answers by participant not working (c_schmitz)
+-Fixed issue #4827: Subquestion GID not updating properly when qestion was moved to another group which creates problems when trying to export and import the affected survey. (c_schmitz)
+-Fixed issue #4828: Survey list: Sorting date column doesn't do real date sorting with certain date format (c_schmitz)
+-Fixed issue #4829: Checkbox and List(Radio) behaving differently when entering 'Other' input field (c_schmitz)
+-Fixed issue #4833: Label set browser not properly working (c_schmitz)
+-Fixed issue #4836: Can't switch tab in email templates (c_schmitz)
+-Fixed issue #4839: when more than one array dual scale question with drop downs is present conditions might fail. (fixed thanks to mdekker). (lemeur)
+-Fixed issue #4841: Postgres installation fails on AUTO_INCREMENT (c_schmitz)
+-Fixed issue #4843: jQuery datepicker doesn't like year ranges (c_schmitz)
+-Fixed issue : 04824 (anishseth)
+-Fixed issue: Bounce processing not permitted to use (c_schmitz)
+-Fixed minor issues: Added Google Maps API Key, autoArray undefined javascript bug, and grammar. (parajulik)
+
+Changes from 1.90 to 1.91beta (build 9631)
 +New feature: #4324: Allow dropdowns for Array(flexible label) questions - patch provided by CarbonaCat
 +New feature: Mail Bounce Tracking System (anishseth)
 +New feature: Gives the user the ability to preview question groups. (parajulik)

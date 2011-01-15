@@ -249,7 +249,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
 	    {
 		    $position=0;
 		    $assessmentsoutput .= '<li><a href="#tablang'.$assessmentlang.'"><span>'.getLanguageNameFromCode($assessmentlang, false);
-		    if ($assessmentlang==$baselang) {$assessmentsoutput .= ' ('.$clang->gT("Base Language").')';}
+		    if ($assessmentlang==$baselang) {$assessmentsoutput .= ' ('.$clang->gT("Base language").')';}
 		    $assessmentsoutput .='</span></a></li>';
 	    }
 	    $assessmentsoutput.= '</ul>';

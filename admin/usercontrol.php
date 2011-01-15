@@ -45,7 +45,7 @@ if (!isset($_SESSION['loginID']))
 
     if($action == "forgotpass")
     {
-        $loginsummary = "<br /><strong>".$clang->gT("Forgot Password")."</strong><br />\n";
+        $loginsummary = "<br /><strong>".$clang->gT("Forgot password")."</strong><br />\n";
 
         if (isset($postuser) && isset($postemail))
         {
@@ -68,7 +68,7 @@ if (!isset($_SESSION['loginID']))
                 $new_pass = createPassword();
                 $body = sprintf($clang->gT("Your user data for accessing %s"),$sitename). "<br />\n";;
                 $body .= $clang->gT("Username") . ": " . $fields['users_name'] . "<br />\n";
-                $body .= $clang->gT("New Password") . ": " . $new_pass . "<br />\n";
+                $body .= $clang->gT("New password") . ": " . $new_pass . "<br />\n";
 
                 $subject = $clang->gT("User data","unescaped");
                 $to = $emailaddr;
@@ -178,7 +178,7 @@ if (!isset($_SESSION['loginID']))
                         $_SESSION['htmleditormode'] = $fields['htmleditormode'];
                         $_SESSION['dateformat'] = $fields['dateformat'];
                         // Compute a checksession random number to test POSTs
-                        $_SESSION['checksessionpost'] = randomkey(10);
+                        $_SESSION['checksessionpost'] = sRandomChars(10);
                         if (isset($postloginlang) && $postloginlang!='default')
                         {
                             $_SESSION['adminlang'] = $postloginlang;
@@ -205,7 +205,7 @@ if (!isset($_SESSION['loginID']))
                         {
                             $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
                             . " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
-                            $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
+                            $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
                         }
                         $loginsummary .= "<br /><br />\n";
                         GetSessionUserRights($_SESSION['loginID']);
@@ -320,7 +320,7 @@ if (!isset($_SESSION['loginID']))
                 }
                 else
                 {
-                    $loginsummary .= "<br />".$clang->gT("Auto Import User Failed!")."<br />";
+                    $loginsummary .= "<br />".$clang->gT("Auto-import of user failed!")."<br />";
                     $loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                     $isAuthenticated=false;
                 }
@@ -357,7 +357,7 @@ if (!isset($_SESSION['loginID']))
             $_SESSION['adminlang'] = $fields['lang'];
             $_SESSION['htmleditormode'] = $fields['htmleditormode'];
             $_SESSION['dateformat'] = $fields['dateformat'];
-            $_SESSION['checksessionpost'] = randomkey(10);
+            $_SESSION['checksessionpost'] = sRandomChars(10);
             $_SESSION['pw_notify']=false;
             $clang = new limesurvey_lang($_SESSION['adminlang']);
             $login = true;
@@ -370,7 +370,7 @@ if (!isset($_SESSION['loginID']))
             {
                 $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
                 . " content=\"1;URL={$scriptname}?".$_SERVER['QUERY_STRING']."\" />";
-                $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
+                $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
             }
             $loginsummary .= "<br /><br />\n";
             GetSessionUserRights($_SESSION['loginID']);
@@ -385,7 +385,7 @@ elseif ($action == "logout")
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
-    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add user")."</div>\n";
 
     $new_user = FlattenText($postnew_user,true);
     $new_email = FlattenText($postnew_email,true);
@@ -458,7 +458,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             }
 
             $addsummary .= "<br />\t\t\t<form method='post' action='$scriptname'>"
-            ."<input type='submit' value='".$clang->gT("Set User Rights")."'>"
+            ."<input type='submit' value='".$clang->gT("Set user permissions")."'>"
             ."<input type='hidden' name='action' value='setuserrights'>"
             ."<input type='hidden' name='user' value='{$new_user}'>"
             ."<input type='hidden' name='uid' value='{$newqid}'>"
@@ -473,7 +473,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 
 elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
 {
-    $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
+    $addsummary = "<div class=\"header\">".$clang->gT("Deleting user")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // CAN'T DELETE ORIGINAL SUPERADMIN
@@ -556,7 +556,7 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
                     if ($transfer_surveys_to>0){
                         $sTransferred_to = getUserNameFromUid($transfer_surveys_to);
-                        $addsummary .= $clang->gT("All of the user's surveys were transferred to ") .$sTransferred_to;
+                        $addsummary .= sprintf($clang->gT("All of the user's surveys were transferred to %s."),$sTransferred_to);
                     }
                     $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
@@ -582,7 +582,7 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     $addsummary .= "</select><input type='hidden' name='uid' value='$postuserid'>";
                     $addsummary .= "<input type='hidden' name='user' value='$postuser'>";
                     $addsummary .= "<input type='hidden' name='action' value='finaldeluser'><br /><br />";
-                    $addsummary .= "<input type='submit' value='Delete User'></form>";
+                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>"; 
                 }
                 
             }
@@ -626,7 +626,7 @@ elseif ($action == "moduser")
         {
             $valid_email = false;
             $failed = true;
-            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify User Data.")."</div><br />\n"
+            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify user data.")."</div><br />\n"
             . " ".$clang->gT("Email address is not valid.")."<br />\n";
         }
         elseif($valid_email)
@@ -653,7 +653,7 @@ elseif ($action == "moduser")
             else
             {
                 // Username and/or email adress already exists.
-                $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify User Data.")."</div><br />\n"
+                $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify user data.")."</div><br />\n"
                 . " ".$clang->gT("Email address already exists.")."<br />\n";
             }
         }
@@ -679,7 +679,7 @@ elseif ($action == "moduser")
 
 elseif ($action == "userrights")
 {
-    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set User Rights")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set user permissions")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // A user can't modify his own rights ;-)
@@ -754,7 +754,7 @@ elseif ($action == "userrights")
     }
     else
     {
-        $addsummary .= "<div class=\"warningheader\">".$clang->gT("You are not allowed to change your own rights!")."</div>\n";
+        $addsummary .= "<div class=\"warningheader\">".$clang->gT("You are not allowed to change your own permissions!")."</div>\n";
         $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
     }
     $addsummary .= "</div>\n";
@@ -762,7 +762,7 @@ elseif ($action == "userrights")
 
 elseif ($action == "usertemplates")
 {
-    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set Template Rights")."</div>\n";
+    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set template permissions")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
     // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS

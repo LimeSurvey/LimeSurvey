@@ -64,6 +64,37 @@ $(document).ready(function()
             });
             currentMap.panTo(markerLatLng);
         });
+        if ((typeof(autoArray) != "undefined")){
+            if ((autoArray.list.length > 0)){
+                var aListOfQuestions = autoArray.list;
+
+                $(aListOfQuestions).each(function(index,element){
+
+                    var elementInfo = autoArray[element];
+                    var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
+
+                    var aJSelectors = strJSelector.split(", ");
+                    var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
+
+                    $(strJSelector).live('change',function(event){
+
+                        if ($(strCheckedSelector).length == $(strJSelector).length){
+
+                            $("#answer"+elementInfo.focus).trigger('click');
+
+                            eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
+
+                            checkconditions($("#answer"+elementInfo.focus).val(),
+                                            $("#answer"+elementInfo.focus).attr("name"),
+                                            $("#answer"+elementInfo.focus).attr('type')
+                                        );
+
+                        }
+                    });
+
+                });
+            }
+        }
 });
 
 gmaps = new Object;
@@ -843,4 +874,17 @@ function multi_set(ids)
 		//run main function per id
 		_collection.push(new multi_total(ids[ii]));
 	}
+}
+
+//Special function for array dual scale in drop down layout to check conditions
+function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
+{
+   if (value == '') {
+        //If value is set to empty, reset both drop downs and check conditions
+        if (rank == 0) { dualname = name.replace(/#0/g,"#1"); }
+        else if (rank == 1) { dualname = name.replace(/#1/g,"#0"); }
+        document.getElementsByName(dualname)[0].value=value;
+        condfunction(value, dualname, type);
+   }
+    condfunction(value, name, type);
 }

@@ -432,13 +432,11 @@ ALTER TABLE ONLY prefix_templates ADD CONSTRAINT prefix_templates_pkey PRIMARY K
 --
 
 CREATE TABLE prefix_failed_login_attempts (
-  id integer NOT NULL AUTO_INCREMENT,
+  id serial PRIMARY KEY NOT NULL,
   ip character varying(37) NOT NULL,
   last_attempt character varying(20) NOT NULL,
   number_attempts integer NOT NULL
 );
-
-ALTER TABLE ONLY prefix_failed_login_attempts ADD CONSTRAINT prefix_failed_login_attempts_pkey PRIMARY KEY ("id");
 
 --
 -- Secondary indexes 

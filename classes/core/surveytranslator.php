@@ -369,7 +369,7 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['it']['radixpoint'] = 1;
 
     // Italian-Formal
-    $supportedLanguages['it-formal']['description'] = $clang->gT('Italian-Formal');
+    $supportedLanguages['it-formal']['description'] = $clang->gT('Italian (formal)');
     $supportedLanguages['it-formal']['nativedescription'] = 'Formale Italiano';
     $supportedLanguages['it-formal']['rtl'] = false;
     $supportedLanguages['it-formal']['dateformat'] = 5;
@@ -466,6 +466,13 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['pt-BR']['dateformat'] = 5;
     $supportedLanguages['pt-BR']['radixpoint'] = 1;
 
+	// Punjabi
+    $supportedLanguages['pa']['description'] = $clang->gT('Punjabi');
+    $supportedLanguages['pa']['nativedescription'] = '&#2602;&#2672;&#2588;&#2622;&#2604;&#2624;';
+    $supportedLanguages['pa']['rtl'] = false;
+    $supportedLanguages['pa']['dateformat'] = 2;
+    $supportedLanguages['pa']['radixpoint'] = 0;
+
     // Russian
     $supportedLanguages['ru']['description'] = $clang->gT('Russian');
     $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
@@ -544,6 +551,13 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['th']['radixpoint'] = 0;
 
 
+    //Urdu
+    $supportedLanguages['ur']['description'] = $clang->gT('Urdu');
+    $supportedLanguages['ur']['nativedescription'] = '&#1575;&#1585;&#1583;&#1608;';
+    $supportedLanguages['ur']['rtl'] = true;
+    $supportedLanguages['ur']['dateformat'] = 2;
+    $supportedLanguages['ur']['radixpoint'] = 0;    
+    
     // Vietnamese
     $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
     $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';

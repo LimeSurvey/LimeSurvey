@@ -283,12 +283,12 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
         $eqresult = db_execute_assoc($eqquery);
     }
-
+	
     $js_admin_includes[] = '../scripts/jquery/jquery.dd.js';
     $css_admin_includes[] = '../scripts/jquery/dd.css';
     
     $editquestion = PrepareEditorScript();
-
+	
     $qtypelist=getqtypelist('','array');
     $qDescToCode = 'qDescToCode = {';
     $qCodeToInfo = 'qCodeToInfo = {';
@@ -327,9 +327,9 @@ if ($action == "editquestion" || $action=="addquestion")
 	
 	
 	$editquestion .= '<li><a href="#'.$eqrow['language'].'">'.getLanguageNameFromCode($eqrow['language'],false);
-    $editquestion .= '('.$clang->gT("Base Language").')';
+    $editquestion .= '('.$clang->gT("Base language").')';
 	$editquestion .= "</a></li>\n";
-    if ($adding) {
+    if (!$adding) {
 	$addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
         foreach  ($addlanguages as $addlanguage)
         {
@@ -416,7 +416,7 @@ if ($action == "editquestion" || $action=="addquestion")
     else
     {
         $qtypelist=getqtypelist('','array');
-        $editquestion .= "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
+        $editquestion .= "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)")."\n"
         . "<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n";
     }
 
@@ -440,7 +440,7 @@ if ($action == "editquestion" || $action=="addquestion")
     {
         $editquestion .= "\t<li>\n"
         . "\t<label>".$clang->gT("Question group:")."</label>\n"
-        . getgroupname($eqrow['gid'])." - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
+        . getgroupname($eqrow['gid'])." - ".$clang->gT("Cannot be changed (survey is active)")."\n"
         . "\t<input type='hidden' name='gid' value='{$eqrow['gid']}' />"
         . "</li>\n";
     }
@@ -458,7 +458,7 @@ if ($action == "editquestion" || $action=="addquestion")
     }
     else
     {
-        $editquestion .= " [{$eqrow['other']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
+        $editquestion .= " [{$eqrow['other']}] - ".$clang->gT("Cannot be changed (survey is active)")."\n"
         . "\t<input type='hidden' name='other' value=\"{$eqrow['other']}\" />\n";
     }
     $editquestion .= "\t</li>\n";

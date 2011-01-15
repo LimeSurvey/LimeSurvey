@@ -634,7 +634,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
                 }
             }
             break;
-        case 'M': //MULTIPLE OPTIONS checkbox
+        case 'M': //Multiple choice checkbox
             $values=do_multiplechoice($ia);
             if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
             {
@@ -677,7 +677,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
                 $question_text['help'] = $clang->gT('Choose your language');
             }
             break;
-        case 'P': //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+        case 'P': //Multiple choice with comments checkbox + text
             $values=do_multiplechoice_withcomments($ia);
             if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
             {
@@ -994,7 +994,7 @@ function mandatory_popup($ia, $notanswered=null)
         {
             $popup="<script type=\"text/javascript\">\n
                     <!--\n $(document).ready(function(){
-                        alert(\"".$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed", "js")."\");});\n //-->\n
+                        alert(\"".$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.", "js")."\");});\n //-->\n
                     </script>\n";
             $mandatorypopup="Y";
         }
@@ -1021,7 +1021,7 @@ function validation_popup($ia, $notvalidated=null)
         {
             $vpopup="<script type=\"text/javascript\">\n
                     <!--\n $(document).ready(function(){
-                        alert(\"".$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid", "js")."\");});\n //-->\n
+                        alert(\"".$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.", "js")."\");});\n //-->\n
                     </script>\n";
             $validationpopup="Y";
         }
@@ -2365,7 +2365,7 @@ function do_list_radio($ia)
         $answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
+			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onkeyup="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
 		</label>
         '.$wrapper['item-end'];
 
@@ -2930,6 +2930,13 @@ function do_multiplechoice($ia)
     $callmaxanswscriptother = '';
     $maxanswscript = '';
 
+    $exclude_all_others_auto = trim($qidattributes["exclude_all_others_auto"]);
+    
+    if ($exclude_all_others_auto=='1'){
+        $autoArray['list'][]=$ia[1];
+        $autoArray[$ia[1]]['parent'] = $ia[1];
+    }
+
     if (trim($qidattributes['exclude_all_others'])!='')
     {
         $excludeallothers=explode(';',trim($qidattributes['exclude_all_others']));
@@ -2946,7 +2953,8 @@ function do_multiplechoice($ia)
         $excludeallothers=array();
     }
 
-    if ((int)$qidattributes['max_answers']>0) 
+
+    if (((int)$qidattributes['max_answers']>0) && $exclude_all_others_auto=='0')
     {
         $maxansw=$qidattributes['max_answers'];
         $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
@@ -2964,7 +2972,6 @@ function do_multiplechoice($ia)
     // Check if the min_answers attribute is set
     $minansw=0;
     $minanswscript = "";
-
 
     if ((int)$qidattributes['min_answers']>0) 
     {
@@ -3000,7 +3007,7 @@ function do_multiplechoice($ia)
         $position=0;
         foreach ($ansresult as $answer)
         {
-            if ($answer['title']==trim($qidattributes['exclude_all_others']))
+            if ((trim($qidattributes['exclude_all_others']) != '')  &&    ($answer['title']==trim($qidattributes['exclude_all_others']))) 
             {
                 if ($position==$answer['question_order']-1) break; //already in the right position
                 $tmp  = array_splice($ansresult, $position, 1);
@@ -3035,6 +3042,16 @@ function do_multiplechoice($ia)
     foreach ($ansresult as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
+
+        if ($exclude_all_others_auto!=''){
+            if ($ansrow['title']==trim($qidattributes['exclude_all_others'])){
+                $autoArray[$ia[1]]['focus'] = $ia[1].trim($qidattributes['exclude_all_others']);
+            }
+            else{
+                $autoArray[$ia[1]]['children'][] = $myfname;
+            }
+        }
+
         $trbc='';
         /* Check for array_filter */
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
@@ -3128,6 +3145,8 @@ function do_multiplechoice($ia)
             ++$colcounter;
         }
     }
+
+    $answer .= "<script type='text/javascript'>autoArray = ".json_encode($autoArray).";</script>";
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
@@ -3237,7 +3256,6 @@ function do_multiplechoice($ia)
         }
     }
     $answer .= $wrapper['whole-end'];
-
     if ( $maxansw > 0 )
     {
         $maxanswscript .= "\tif (count > max)\n"
@@ -3282,7 +3300,7 @@ function do_multiplechoice($ia)
     $checkotherscript = "";
     if ($other == 'Y')
     {
-        // Multiple options with 'other' is a specific case as the checkbox isn't recorded into DB
+        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
         // this means that if it is cehcked We must force the end-user to enter text in the input
         // box
         $checkotherscript = "<script type='text/javascript'>\n"
@@ -3603,7 +3621,7 @@ function do_multiplechoice_withcomments($ia)
     //if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
     if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
     {
-        // Multiple options with 'other' is a specific case as the checkbox isn't recorded into DB
+        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
         // this means that if it is cehcked We must force the end-user to enter text in the input
         // box
         $checkotherscript = "<script type='text/javascript'>\n"
@@ -4721,7 +4739,7 @@ function do_numerical($ia)
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
-    global $clang, $js_header_includes, $thissurvey;
+    global $clang, $js_header_includes, $thissurvey,$googleMapsAPIKey;
 
     if ($ia[8] == 'Y')
     {
@@ -4884,7 +4902,7 @@ function do_shortfreetext($ia)
             <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$qidattributes['location_mapwidth']}px; height: {$qidattributes['location_mapheight']}px\"></div>";
 
         if ($qidattributes['location_mapservice']==1)
-            $js_header_includes[] = "http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6MouMmBA";
+            $js_header_includes[] = "http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key={$googleMapsAPIKey}";
         elseif ($qidattributes['location_mapservice']==2)
             $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
             
@@ -7402,19 +7420,7 @@ function do_array_dual($ia)
         $separatorwidth=(100-$answerwidth)/10;
         $columnswidth=100-$answerwidth-($separatorwidth*2);
 
-        $answer = "<script type='text/javascript'>\n"
-        . "<!--\n"
-        . "\tfunction special_checkconditions(value, name, type, rank)\n"
-        . "{\n"
-        . "\tif (value == '') {\n"
-        . "if (rank == 0) { dualname = name.replace(/#0/g,\"#1\"); }\n"
-        . "else if (rank == 1) { dualname = name.replace(/#1/g,\"#0\"); }\n"
-        . "document.getElementsByName(dualname)[0].value=value;\n"
-        . "\t}\n"
-        . "$checkconditionFunction(value, name, type);\n"
-        . "}\n"
-        . " //-->\n"
-        . " </script>\n";
+        $answer = "";
 
         // Get Answers
 
@@ -7560,7 +7566,7 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"ddprefix\">$ddprefix</td>\n";
                 }
                 $answer .= "\t<td >\n"
-                . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"special_checkconditions(this.value, this.name, this.type,$dualgroup);\">\n";
+                . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup,$checkconditionFunction);\">\n";
 
                 if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
                 {
@@ -7614,7 +7620,7 @@ function do_array_dual($ia)
                 }
                 //				$answer .= "\t<td align='left' width='$columnswidth%'>\n"
                 $answer .= "\t<td>\n"
-                . "<select name=\"$myfname1\" id=\"answer$myfname1\" onchange=\"special_checkconditions(this.value, this.name, this.type,$dualgroup1);\">\n";
+                . "<select name=\"$myfname1\" id=\"answer$myfname1\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup1,$checkconditionFunction);\">\n";
 
                 if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] =='')
                 {

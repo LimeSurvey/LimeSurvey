@@ -97,7 +97,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 
                     //data necessary for following functions
                     $_SESSION['user'] = $srow['users_name'];
-                    $_SESSION['checksessionpost'] = randomkey(10);
+                    $_SESSION['checksessionpost'] = sRandomChars(10);
                     $_SESSION['loginID'] = $srow['uid'];
                     $_SESSION['dateformat'] = $srow['dateformat'];
                     $_SESSION['htmleditormode'] = $srow['htmleditormode'];

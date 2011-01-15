@@ -283,7 +283,7 @@ function lspreview()
        return;
    }
     
-   var lsid=$('#labelsets').selectedValues();
+   var lsid=$('#labelsets').val();
    surveyid=$('input[name=sid]').val();
    // check if this label set is already cached
    if (!isset(labelcache[lsid]))
@@ -395,7 +395,7 @@ function transferlabels()
        }); 
     }
    
-   var lsid=$('#labelsets').selectedValues();
+   var lsid=$('#labelsets').val();
    $.ajax({
           url: 'admin.php?action=ajaxlabelsetdetails',
           dataType: 'json',

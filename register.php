@@ -99,7 +99,7 @@ if (($result->RecordCount()) > 0)
 $mayinsert = false;
 while ($mayinsert != true)
 {
-    $newtoken = randomkey(15);
+    $newtoken = sRandomChars(15);
     $ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
     $ntresult = $connect->Execute($ntquery); //Checked
     if (!$ntresult->RecordCount()) {$mayinsert = true;}
@@ -131,8 +131,6 @@ $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 $fieldsarray["{FIRSTNAME}"]=$postfirstname;
 $fieldsarray["{LASTNAME}"]=$postlastname;
 $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
 $message=$thissurvey['email_register'];
 $subject=$thissurvey['email_register_subj'];

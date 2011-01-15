@@ -25,7 +25,7 @@ if ( (isset($_POST['copysurveytranslinksfields']) && $_POST['copysurveytranslink
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 if ($action == 'importsurvey')
 {
-    $importsurvey = "<div class='header ui-widget-header'>".$clang->gT("Import Survey")."</div>\n";
+    $importsurvey = "<div class='header ui-widget-header'>".$clang->gT("Import survey")."</div>\n";
 
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];

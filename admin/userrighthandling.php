@@ -1035,13 +1035,13 @@ if($action == "addusertogroup")
                 else  // ToDo: for this to happen the keys on the table must still be set accordingly
                 {
                     // Username already exists.
-                    $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n"
+                    $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                     . "<br />" . $clang->gT("Username already exists.")."<br />\n";
                 }
             }
             else
             {
-                $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n"
+                $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                 . "<br />" . $clang->gT("No Username selected.")."<br />\n";
             }
             $addsummary .= "<br/><input type=\"submit\" onclick=\"window.location='$scriptname?action=editusergroups&amp;ugid={$ugid}'\" value=\"".$clang->gT("Continue")."\"/>\n";

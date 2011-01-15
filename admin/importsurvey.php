@@ -119,7 +119,7 @@ elseif (isset($bImportFailed) && $bImportFailed==true)
 else
 {
     echo "\n".$clang->gT("Success")."\n\n";
-    echo $clang->gT("Survey Import Summary")."\n";
+    echo $clang->gT("Survey import summary")."\n";
     echo $clang->gT("Surveys").": {$aImportResults['surveys']}\n";
     if ($aImportResults['importversion']>=111)
     {
@@ -144,7 +144,7 @@ else
     {
         echo $clang->gT("Label sets").": {$aImportResults['labelsets']}\n";
     }
-    if ($importresults['deniedcountls']>0) echo $clang->gT("Not imported Label Sets").": {$importresults['deniedcountls']} (".$clang->gT("(Label Sets were not imported since you do not have the permission to create new label sets.)");
+    if ($importresults['deniedcountls']>0) echo $clang->gT("Not imported label sets").": {$importresults['deniedcountls']} (".$clang->gT("(Label sets were not imported since you do not have the permission to create new label sets.)");
     echo $clang->gT("Question Attributes").": {$aImportResults['question_attributes']}\n";
     echo $clang->gT("Assessments").": {$aImportResults['assessments']}\n\n";
 

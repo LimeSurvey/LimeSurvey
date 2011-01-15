@@ -442,6 +442,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 foreach($fulloldsids[$oldsid] as $tablename)
                 {
                     list($one, $two, $three, $four, $five)=explode("_", $tablename);
+                    $five=substr($tablename,-14);
                     $year=substr($five, 0,4);
                     $month=substr($five, 4,2);
                     $day=substr($five, 6, 2);
@@ -860,7 +861,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     } elseif ($ok == "R")
     {
         $integritycheck .= "<div class='messagebox ui-corner-all'>\n"
-        . "<div class='header ui-widget-header'>".$clang->gT("Data redundancy Check")."<br />\n"
+        . "<div class='header ui-widget-header'>".$clang->gT("Data redundancy check")."<br />\n"
         . "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from deactivation")."</span></div><p>\n";
         $oldsmultidelete=returnglobal('oldsmultidelete');
         $oldtmultidelete=returnglobal('oldtmultidelete');
