@@ -6876,13 +6876,13 @@ function hasResources($id,$type='survey')
 }
 
 /**
- * put your comment there...
+ * Creates a random sequence of characters
  *
- * @param mixed $length
+ * @param mixed $length Length of resulting string
+ * @param string $pattern To define which characters should be in the resulting string
  */
-function randomkey($length)
+function sRandomChars($length,$pattern="23456789abcdefghijkmnpqrstuvwxyz")
 {
-    $pattern = "23456789abcdefghijkmnpqrstuvwxyz";
     $patternlength = strlen($pattern)-1;
     for($i=0;$i<$length;$i++)
     {
