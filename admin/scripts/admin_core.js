@@ -252,8 +252,8 @@ $(document).ready(function(){
        });
     });
 
-    if ($("#question_type").length > 0){
-        $("#question_type").msDropDown();
+    if ($("#question_type.full").length > 0){
+        $("#question_type").msDropDown({style:'max-height:20em;'});
 
         $("#question_type").change(function(event){
            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];

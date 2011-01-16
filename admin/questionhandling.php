@@ -17,6 +17,7 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
+
 if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
 if ($action == "copyquestion")
 {
@@ -236,6 +237,8 @@ if ($action == "editquestion" || $action=="addquestion")
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $questlangs[] = $baselang;
     $questlangs = array_flip($questlangs);
+    	// prepare selector Mode TODO: with and without image
+
     if (!$adding)
     {
         $egquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
@@ -408,7 +411,10 @@ if ($action == "editquestion" || $action=="addquestion")
     . "<li><label for='question_type'>".$clang->gT("Question Type:")."</label>\n";
     if ($activated != "Y")
     {
-        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' "
+    	// Prepare selector Class for javascript function : TODO with or without picture
+    	$selectormodeclass='full'; // default
+    	if (isset($_SESSION['questionselectormode']) && ($_SESSION['questionselectormode']=='none')){$selectormodeclass='none';}
+        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' class='{$selectormodeclass}'"
         . ">\n"
         . getqtypelist($eqrow['type'],'group')
         . "</select>\n";

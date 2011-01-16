@@ -74,7 +74,35 @@ if ($action == "personalsettings")
     . "<option value='none' {$edmod2}>".$clang->gT("No HTML editor")."</option>\n";
     $cssummary .= "</select>\n"
     . "</li>\n";
+    
+    // Current selectormode ENCOURS
+    $cssummary .=  "<li>\n"
+    . "<label for='questionselectormode'>".$clang->gT("Question selector mode").":</label>\n"
+    . "<select id='questionselectormode' name='questionselectormode'>\n"
+    . "<option value='default'>".$clang->gT("Default")."</option>\n";
+    $cssummary .= "<option value='full'";
+    if (isset($_SESSION['questionselectormode']) && ($_SESSION['questionselectormode']=="full")){$cssummary .= "selected='selected'";}
+    $cssummary .= ">".$clang->gT("Full question selector")."</option>\n";
+    $cssummary .= "<option value='none'";
+    if (isset($_SESSION['questionselectormode']) && ($_SESSION['questionselectormode']=="none")){$cssummary .= "selected='selected'";}
+    $cssummary .= ">".$clang->gT("Simple question selector")."</option>\n";
+    $cssummary .= "</select>\n"
+    . "</li>\n";
 
+    // Current Template editor ENCOURS
+    $cssummary .=  "<li>\n"
+    . "<label for='templateeditormode'>".$clang->gT("Template editor mode").":</label>\n"
+    . "<select id='templateeditormode' name='templateeditormode'>\n"
+    . "<option value='default'>".$clang->gT("Default")."</option>\n";
+    $cssummary .= "<option value='full'";
+    if (isset($_SESSION['templateeditormode']) && ($_SESSION['templateeditormode']=="full")){$cssummary .= "selected='selected'";}
+    $cssummary .= ">".$clang->gT("Full template editor")."</option>\n";
+    $cssummary .= "<option value='none'";
+    if (isset($_SESSION['templateeditormode']) && ($_SESSION['templateeditormode']=="none")){$cssummary .= "selected='selected'";}
+    $cssummary .= ">".$clang->gT("Simple template editor")."</option>\n";
+    $cssummary .= "</select>\n"
+    . "</li>\n";
+        
     // Date format
     $cssummary .=  "<li>\n"
     . "<label for='dateformat'>".$clang->gT("Date format").":</label>\n"

@@ -101,6 +101,8 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
                     $_SESSION['loginID'] = $srow['uid'];
                     $_SESSION['dateformat'] = $srow['dateformat'];
                     $_SESSION['htmleditormode'] = $srow['htmleditormode'];
+                    $_SESSION['questionselectormode'] = $srow['questionselectormode'];
+                    $_SESSION['templateeditormode'] = $srow['templateeditormode'];
                     $_SESSION['full_name'] = $srow['full_name'];
                     GetSessionUserRights($_SESSION['loginID']);
 

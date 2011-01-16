@@ -934,6 +934,9 @@ else
                                    //FILE CONTROL DETAILS
                                    if (is_template_editable($templatename)==true)
                                    {
+                                   		// prepare textarea class for optional javascript
+										$templateclasseditormode='full'; // default
+										if (isset($_SESSION['templateeditormode']) && ($_SESSION['templateeditormode']=='none')){$templateclasseditormode='none';}
                                        $templatesoutput.= "\t<table class='templatecontrol'>\n"
                                        ."\t<tr>\n"
                                        ."<th colspan='3'>\n"
@@ -948,7 +951,7 @@ else
                                        ."\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
                                        ."\t<input type='hidden' name='editfile' value='$editfile' />\n"
                                        ."\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-                                       ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html'>";
+                                       ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html {$templateclasseditormode}'>";
                                        if ($editfile) {
         $templatesoutput.= textarea_encode(filetext($templatename,$editfile));
                                        }

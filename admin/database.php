@@ -1448,11 +1448,13 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 elseif ($action == "savepersonalsettings")
 {
     $_POST  = array_map('db_quote', $_POST);
-    $uquery = "UPDATE {$dbprefix}users SET lang='{$_POST['lang']}', dateformat='{$_POST['dateformat']}', htmleditormode= '{$_POST['htmleditormode']}'
+    $uquery = "UPDATE {$dbprefix}users SET lang='{$_POST['lang']}', dateformat='{$_POST['dateformat']}', htmleditormode= '{$_POST['htmleditormode']}', questionselectormode= '{$_POST['questionselectormode']}', templateeditormode= '{$_POST['templateeditormode']}'
                WHERE uid={$_SESSION['loginID']}";
     $uresult = $connect->Execute($uquery)  or safe_die ($isrquery."<br />".$connect->ErrorMsg());  // Checked
     $_SESSION['adminlang']=$_POST['lang'];
     $_SESSION['htmleditormode']=$_POST['htmleditormode'];
+    $_SESSION['questionselectormode']=$_POST['questionselectormode'];
+    $_SESSION['templateeditormode']=$_POST['templateeditormode'];
     $_SESSION['dateformat']= $_POST['dateformat'];
     $_SESSION['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");                    
 }
