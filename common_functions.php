@@ -7970,6 +7970,7 @@ function usedTokens($token)
 {
     global $connect, $dbprefix, $surveyid;
     $utresult = true;
+    $connect->SetFetchMode(ADODB_FETCH_ASSOC);
     $tInfo = $connect->getRow("SELECT tid, usesleft from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token));
     if (!$tInfo === false) {
         if ($tInfo['usesleft']>0) $utresult = false;
