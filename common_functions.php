@@ -7962,18 +7962,21 @@ function db_rename_table($oldtable, $newtable)
 }
 
 /**
-* Returns true when a token can be used
+* Returns true when a token can not be used (either doesn't exist or has less then one usage left
 *
 * @param mixed $tid Token
 */
 function usedTokens($token)
 {
-    global $connect, $dbprefix, $surveyid;
+    global $dbprefix, $surveyid;
+    
     $utresult = true;
-    $connect->SetFetchMode(ADODB_FETCH_ASSOC);
-    $tInfo = $connect->getRow("SELECT tid, usesleft from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token));
-    if (!$tInfo === false) {
-        if ($tInfo['usesleft']>0) $utresult = false;
+    $query = "SELECT tid, usesleft from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token);
+    
+    $result=db_execute_assoc($query,null,true);
+    if ($result !== false) {
+        $row=$result->FetchRow();
+        if ($row['usesleft']>0) $utresult = false;
     }
     return $utresult;
 }
