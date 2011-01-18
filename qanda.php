@@ -3145,8 +3145,9 @@ function do_multiplechoice($ia)
             ++$colcounter;
         }
     }
-
-    $answer .= "<script type='text/javascript'>autoArray = ".json_encode($autoArray).";</script>";
+    if ($exclude_all_others_auto!=''){
+        $answer .= "<script type='text/javascript'>autoArray = ".json_encode($autoArray).";</script>";
+    }
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
