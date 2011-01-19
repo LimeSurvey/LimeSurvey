@@ -591,7 +591,7 @@ while ($Row = $QueryResult->FetchRow())
 			//no comment - this should be a separate question
 			break;
 			case "R": //RANKING STYLE
-				create_subQuestions(&$question,$qid,$RowQ['title'],true);
+				create_subQuestions($question,$qid,$RowQ['title'],true);
 			$Query = "SELECT COUNT(*) as sc FROM {$dbprefix}answers WHERE qid = $qid AND language='$quexmllang' ";
 			$QRE = db_execute_assoc($Query);
 			//$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
@@ -601,20 +601,20 @@ while ($Row = $QueryResult->FetchRow())
 			$question->append_child($response);
 			break;
 			case "M": //Multiple choice checkbox
-				create_multi(&$question,$qid,$RowQ['title'],false,false,$other);
+				create_multi($question,$qid,$RowQ['title'],false,false,$other);
 			break;
 			case "P": //Multiple choice with comments checkbox + text
 				//Not yet implemented
-				create_multi(&$question,$qid,$RowQ['title'],false,false,$other);
+				create_multi($question,$qid,$RowQ['title'],false,false,$other);
 			//no comments added
 			break;
 			case "Q": //MULTIPLE SHORT TEXT
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response->append_child(create_free("text",get_length($qid,"maximum_chars","10"),""));
 			$question->append_child($response);
 			break;
 			case "K": //MULTIPLE NUMERICAL
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
 			$question->append_child($response);
 			break;
@@ -643,40 +643,40 @@ while ($Row = $QueryResult->FetchRow())
 			$question->append_child($response);
 			break;
 			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
 			$question->append_child($response);
 			break;
 			case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response->append_child(fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
 			$question->append_child($response);
 			break;
 			case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response->append_child(fixed_array(array("Yes" => 1,"Uncertain" => 2,"No" => 3)));
 			$question->append_child($response);
 			break;
 			case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response->append_child(fixed_array(array("Increase" => 1,"Same" => 2,"Decrease" => 3)));
 			$question->append_child($response);
 			break;
 			case "F": //ARRAY (Flexible) - Row Format
 				//select subQuestions from answers table where QID
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response->append_child(create_fixed($qid,false,false,0,$other));
 			$question->append_child($response);
 			//select fixed responses from
 			break;
 			case "H": //ARRAY (Flexible) - Column Format
-				create_subQuestions(&$question,$RowQ['qid'],$RowQ['title']);
+				create_subQuestions($question,$RowQ['qid'],$RowQ['title']);
 			$response->append_child(create_fixed($qid,true,false,0,$other));
 			$question->append_child($response);
 			break;
 			case "1": //Dualscale multi-flexi array
 				//select subQuestions from answers table where QID
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			$response = $dom->create_element("response");
 			$response->append_child(create_fixed($qid,false,false,0,$other)); 
 			$response2 = $dom->create_element("response");  
@@ -686,22 +686,22 @@ while ($Row = $QueryResult->FetchRow())
 			$question->append_child($response2);  
 			break;
 			case ":": //multi-flexi array numbers
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			//get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
 			$mcb  = get_length($qid,'multiflexible_checkbox',-1);
 			if ($mcb != -1)
-				create_multi(&$question,$qid,$RowQ['title'],1);
+				create_multi($question,$qid,$RowQ['title'],1);
 			else
 			{
 				//get multiflexible_max - if set then make boxes of max this width
 				$mcm = strlen(get_length($qid,'multiflexible_max',1));
-				create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+				create_multi($question,$qid,$RowQ['title'],1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
 			}
 			break;
 			case ";": //multi-flexi array text
-				create_subQuestions(&$question,$qid,$RowQ['title']);
+				create_subQuestions($question,$qid,$RowQ['title']);
 			//foreach question where scale_id = 1 this is a textbox
-			create_multi(&$question,$qid,$RowQ['title'],1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+			create_multi($question,$qid,$RowQ['title'],1,array('f' => 'text', 'len' => 10, 'lab' => ''));
 			break;
 			case "^": //SLIDER CONTROL - not supported
 				$response->append_child(fixed_array(array("NOT SUPPORTED:$type" => 1)));
