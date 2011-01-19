@@ -2307,7 +2307,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap["refurl"]['group_name']="";
             }
         }
-
     }
 
     //Get list of questions
@@ -2338,23 +2337,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $aquery.=" ORDER BY group_order, question_order";
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
 
-    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'question'=>'');
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
-		// field for time spent on page
-		$fieldname="{$arow['sid']}X{$arow['gid']}time";
-		if (!isset($fieldmap[$fieldname]))
-		{
-			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>'', 'question'=>'');
-		}
-		
-		// field for time spent on answering a question
-		$fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}time";
-		if (!isset($fieldmap[$fieldname]))
-		{
-			$fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'],'question'=>$arow['question']);
-		}
-
         if ($arow['hasconditions']>0)
         {
             $conditions = "Y";
@@ -2696,6 +2680,51 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 }
 
+
+/**
+ * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
+ *
+ * @param string $surveyid The Survey ID
+ * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
+ * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
+ * @param int $questionid Limit to a certain qid only (for question preview) - default is false
+ * @return array
+ */
+function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
+
+    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    static $timingsFieldMap;
+
+    $surveyid=sanitize_int($surveyid);
+    //checks to see if fieldmap has already been built for this page.
+    if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
+        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    }
+
+    //do something
+    $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
+    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'question'=>'');
+    foreach ($fields as $field) {
+        if (!empty($field['gid'])) {
+            // field for time spent on page
+            $fieldname="{$field['sid']}X{$field['gid']}time";
+            if (!isset($fieldmap[$fieldname]))
+            {
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>'', 'question'=>'');
+            }
+
+            // field for time spent on answering a question            
+            $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
+            if (!isset($fieldmap[$fieldname]))
+            {
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>$field['qid'],'question'=>$field['question']);
+            }
+        }
+    }
+
+    $timingsFieldMap[$surveyid][$style][$clang->langcode] = $fieldmap;
+    return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+}
 
 /**
  * put your comment there...

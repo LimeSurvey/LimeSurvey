@@ -100,7 +100,7 @@ function checkGroup($postsid)
  * @param <type> $surveyid
  * @return array $faildcheck
  */
-function checkQestions($postsid, $surveyid, $qtypes)
+function checkQuestions($postsid, $surveyid, $qtypes)
 {
      global $dbprefix, $connect, $clang;
 
@@ -290,14 +290,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
-    {
-        // don't include time fields
-        if ($arow['type'] != "answer_time" && $arow['type'] != "page_time" && $arow['type'] != "interview_time")
-        {
-            if ($createsurvey!='') {$createsurvey .= ",\n";}
-            $createsurvey .= " `{$arow['fieldname']}`";
-        }
-        
+    {       
         switch($arow['type'])
         {
             case 'startlanguage':
@@ -381,19 +374,15 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                     $createsurvey .= " C(36)";
                 }
                 break;
-            case "page_time":
-            case "answer_time":
-            case "interview_time":
-                $createsurveytimings .= " `{$arow['fieldname']}` F DEFAULT '0',\n";
-                break;
             default:
                 $createsurvey .= " C(5)";
         }
     }
-    
+    $timingsfieldmap = createTimingsFieldMap($surveyid);
+    $createsurveytimings .= join(" F DEFAULT '0',\n",array_keys($timingsfieldmap)) . " F DEFAULT '0'";
+
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     $createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
-    $createsurveytimings = rtrim($createsurveytimings, ",\n")."\n"; // Does nothing if not ending with a comma
 
     $tabname = "{$dbprefix}survey_{$postsid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 

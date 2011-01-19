@@ -994,7 +994,7 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
         }
     }
     
-    $fields=createFieldMap($surveyid,'full');
+    $fields=createTimingsFieldMap($surveyid,'full');
 
     foreach ($fields as $fielddetails)
     {
