@@ -4320,14 +4320,14 @@ function questionAttributes($returnByName=false)
 
     $qattributes["use_dropdown"]=array(
     "types"=>"1F",
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,
     "help"=>$clang->gT('Use dropdown boxes instead of list of radio buttons'),
-    "caption"=>$clang->gT('Dropdown'));
+    "caption"=>$clang->gT('Use dropdown boxes'));
 
     $qattributes["scale_export"]=array(
     "types"=>"CEFGHLMOPWYZ1!:",
@@ -4551,7 +4551,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>100,
     'inputtype'=>'text',
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
-    "caption"=>$clang->gT("Randomization group name:"));
+    "caption"=>$clang->gT("Randomization group name"));
     
 
     //This builds a more useful array (don't modify)
