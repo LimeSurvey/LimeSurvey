@@ -724,7 +724,10 @@ elseif ($subaction == "all")
     
     //LETS COUNT THE DATA
     $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
-    
+    if ($sql_where!="")
+    {
+        $dtquery .=" WHERE $sql_where";
+    }
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
