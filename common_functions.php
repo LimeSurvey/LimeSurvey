@@ -96,14 +96,14 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 
 
     $qtypes = array(
-    "1"=>array('description'=>$clang->gT("Array Dual Scale"),
+    "1"=>array('description'=>$clang->gT("Array dual scale"),
                'group'=>$group['Arrays'],
                'subquestions'=>1,
                'assessable'=>1,
                'hasdefaultvalues'=>0,
                'answerscales'=>2),
     "5"=>array('description'=>$clang->gT("5 Point Choice"),
-               'group'=>$group['Arrays'],
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
@@ -3748,8 +3748,8 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,
-    "help"=>$clang->gT('Use accessible select boxes instead of calendar popup'),
-    "caption"=>$clang->gT('Display select boxes'));
+    "help"=>$clang->gT('Use accessible dropdown boxes instead of calendar popup'),
+    "caption"=>$clang->gT('Display dropdown boxes'));
 
     $qattributes["dropdown_dates_year_min"]=array(
     "types"=>"D",
@@ -3769,11 +3769,11 @@ function questionAttributes($returnByName=false)
 
     $qattributes["dropdown_prepostfix"]=array(
     "types"=>"1",
-    'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>112,
     'inputtype'=>'text',
     "help"=>$clang->gT('Prefix|Suffix for dropdown lists'),
-    "caption"=>$clang->gT('Prefix|Suffix'));
+    "caption"=>$clang->gT('Dropdown prefix/suffix'));
 
     $qattributes["dropdown_separators"]=array(
     "types"=>"1",
@@ -3781,23 +3781,23 @@ function questionAttributes($returnByName=false)
     'sortorder'=>120,
     'inputtype'=>'text',
     "help"=>$clang->gT('Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists'),
-    "caption"=>$clang->gT('Dropdown separators'));
+    "caption"=>$clang->gT('Dropdown separator'));
 
     $qattributes["dualscale_headerA"]=array(
     "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>110,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Enter a header text for scale A'),
-    "caption"=>$clang->gT('Header scale A'));
+    "help"=>$clang->gT('Enter a header text for the first scale'),
+    "caption"=>$clang->gT('Header for first scale'));
 
     $qattributes["dualscale_headerB"]=array(
     "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>111,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Enter a header text for scale B'),
-    "caption"=>$clang->gT('Header scale B'));
+    "help"=>$clang->gT('Enter a header text for the second scale'),
+    "caption"=>$clang->gT('Header for second scale'));
 
     $qattributes["equals_num_value"]=array(
     "types"=>"K",
@@ -4021,7 +4021,7 @@ function questionAttributes($returnByName=false)
      'sortorder'=>100,
    'inputtype'=>'text',
     "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-    "caption"=>$clang->gT('Min value from SGQA'));
+    "caption"=>$clang->gT('Minimum value from SGQA'));
 
     $qattributes["multiflexible_max"]=array(
     "types"=>":",
@@ -4095,12 +4095,13 @@ function questionAttributes($returnByName=false)
         'sortorder'=>100,
         'inputtype'=>'singleselect',
         'options'=>array(
-	    0=>$clang->gT('No'),
+	        0=>$clang->gT('No'),
             1=>$clang->gT('Yes')
-	),
+	    ),
         'default'=>0,
         "help"=>$clang->gT('Allow only numerical input'),
-        "caption"=>$clang->gT('Numbers only'));
+        "caption"=>$clang->gT('Numbers only')
+    );
 
     $qattributes['show_totals'] =	array(
  	'types' =>	';',
@@ -4108,13 +4109,13 @@ function questionAttributes($returnByName=false)
  	'sortorder' =>	100,
  	'inputtype'	=> 'singleselect',
  	'options' =>	array(
- 	    'X' =>	$clang->gT('none'),
+ 	    'X' =>	$clang->gT('None'),
  	    'R' =>	$clang->gT('Rows'),
  	    'C' =>	$clang->gT('Columns'),
  	    'B' =>	$clang->gT('Both rows and columns')
- 	),
- 	'default' =>	0,
- 	'help' =>	$clang->gT('Show totals either rows, columns or both rows and columns'),
+ 	    ),
+ 	    'default' =>	0,
+ 	    'help' =>	$clang->gT('Show totals either rows, columns or both rows and columns'),
         'caption' =>	$clang->gT('Show totals for')
     );
 
