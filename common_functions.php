@@ -89,171 +89,177 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     {
         $clang = new limesurvey_lang("en");
     }
+    $group['Arrays'] = $clang->gT('Arrays');
+    $group['MaskQuestions'] = $clang->gT("Mask questions");
+    $group['SinChoiceQues'] = $clang->gT("Single choice questions");
+    $group['MulChoiceQues'] = $clang->gT("Multiple choice questions");
+
+
     $qtypes = array(
-    "1"=>array('description'=>$clang->gT("Array Dual Scale"),
-               'group'=>'Arrays',
+    "1"=>array('description'=>$clang->gT("Array dual scale"),
+               'group'=>$group['Arrays'],
                'subquestions'=>1,
                'assessable'=>1,
                'hasdefaultvalues'=>0,
                'answerscales'=>2),
     "5"=>array('description'=>$clang->gT("5 Point Choice"),
-               'group'=>'Arrays',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "A"=>array('description'=>$clang->gT("Array (5 Point Choice)"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'subquestions'=>1,
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>0),
     "B"=>array('description'=>$clang->gT("Array (10 Point Choice)"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'subquestions'=>1,
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>0),
     "C"=>array('description'=>$clang->gT("Array (Yes/No/Uncertain)"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'subquestions'=>1,
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>0),
     "D"=>array('description'=>$clang->gT("Date"),
-               'group'=>'Mask Questions',
+               'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "E"=>array('description'=>$clang->gT("Array (Increase/Same/Decrease)"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'subquestions'=>1,
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>0),
     "F"=>array('description'=>$clang->gT("Array"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'subquestions'=>1,
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>1),
     "G"=>array('description'=>$clang->gT("Gender"),
-               'group'=>'Mask Questions',
+               'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "H"=>array('description'=>$clang->gT("Array by column"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'hasdefaultvalues'=>0,
                'subquestions'=>1,
                'assessable'=>1,
                'answerscales'=>1),
     "I"=>array('description'=>$clang->gT("Language Switch"),
-               'group'=>'Mask Questions',
+               'group'=>$group['MaskQuestions'],
                'hasdefaultvalues'=>0,
                'subquestions'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'hasdefaultvalues'=>0,
                'subquestions'=>1,
                'assessable'=>1,
                'answerscales'=>0),
     "L"=>array('description'=>$clang->gT("List (Radio)"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>1,
                'assessable'=>1,
                'answerscales'=>1),
-    "M"=>array('description'=>$clang->gT("Multiple Options"),
-               'group'=>'Multiple Choice Questions',
+    "M"=>array('description'=>$clang->gT("Multiple choice"),
+               'group'=>$group['MulChoiceQues'],
                'subquestions'=>1,
                'hasdefaultvalues'=>1,
                'assessable'=>1,
                'answerscales'=>0),
     "N"=>array('description'=>$clang->gT("Numerical Input"),
-               'group'=>'Mask Questions',
+               'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "O"=>array('description'=>$clang->gT("List with comment"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>1,
                'assessable'=>1,
                'answerscales'=>1),
-    "P"=>array('description'=>$clang->gT("Multiple Options With Comments"),
-               'group'=>'Multiple Choice Questions',
+    "P"=>array('description'=>$clang->gT("Multiple choice with comments"),
+               'group'=>$group['MulChoiceQues'],
                'subquestions'=>1,
                'hasdefaultvalues'=>1,
                'assessable'=>1,
                'answerscales'=>0),
     "Q"=>array('description'=>$clang->gT("Multiple Short Text"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>1,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "R"=>array('description'=>$clang->gT("Ranking"),
-               'group'=>'Mask Questions',
+               'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>1),
     "S"=>array('description'=>$clang->gT("Short Free Text"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "T"=>array('description'=>$clang->gT("Long Free Text"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "U"=>array('description'=>$clang->gT("Huge Free Text"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
-    "X"=>array('description'=>$clang->gT("Boilerplate Question"),
-               'group'=>'Mask Questions',
+    "X"=>array('description'=>$clang->gT("Text display"),
+               'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "Y"=>array('description'=>$clang->gT("Yes/No"),
-               'group'=>'Mask Questions',
+               'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "!"=>array('description'=>$clang->gT("List (Dropdown)"),
-               'group'=>'Single Choice Questions',
+               'group'=>$group['SinChoiceQues'],
                'subquestions'=>0,
                'hasdefaultvalues'=>1,
                'assessable'=>1,
                'answerscales'=>1),
     ":"=>array('description'=>$clang->gT("Array (Numbers)"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'subquestions'=>2,
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>0),
     ";"=>array('description'=>$clang->gT("Array (Texts)"),
-               'group'=>'Arrays',
+               'group'=>$group['Arrays'],
                'subquestions'=>2,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
-    "|"=>array('description'=>$clang->gT("File Upload"),
-               'group'=>'Mask Questions',
+    "|"=>array('description'=>$clang->gT("File upload"),
+               'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
@@ -626,7 +632,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
     }
     if (!isset($svexist))
     {
-        $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
+        $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
     } else
     {
         if ($returnwithouturl===false)
@@ -680,7 +686,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 
     if (!isset($qexists))
     {
-        $questionselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$questionselecter;
+        $questionselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$questionselecter;
     }
     return $questionselecter;
 }
@@ -928,9 +934,9 @@ function question_class($input)
         case '!': return 'list-dropdown';   //  List - dropdown
         case 'O': return 'list-with-comment';   //  LIST radio-button + textarea
         case 'R': return 'ranking';     //  RANKING STYLE
-        case 'M': return 'multiple-opt';    //  MULTIPLE OPTIONS checkbox
+        case 'M': return 'multiple-opt';    //  Multiple choice checkbox
         case 'I': return 'language';        //  Language Question
-        case 'P': return 'multiple-opt-comments'; //    MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+        case 'P': return 'multiple-opt-comments'; //    Multiple choice with comments checkbox + text
         case 'Q': return 'multiple-short-txt';  //  TEXT
         case 'K': return 'numeric-multi';   //  MULTIPLE NUMERICAL QUESTION
         case 'N': return 'numeric';     //  NUMERICAL QUESTION TYPE
@@ -1263,7 +1269,7 @@ function getgrouplist($gid)
     }
     if ($groupselecter)
     {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
         else {$groupselecter .= "<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
     }
     return $groupselecter;
@@ -1288,7 +1294,7 @@ function getgrouplist2($gid)
     }
     if ($groupselecter)
     {
-        if (!$gvexist) {$groupselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+        if (!$gvexist) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
         else {$groupselecter .= "<option value=''>".$clang->gT("None")."</option>\n";}
     }
     return $groupselecter;
@@ -1363,7 +1369,7 @@ function getgrouplistlang($gid, $language)
     }
     if ($groupselecter)
     {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
         else {$groupselecter .= "<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
     }
     return $groupselecter;
@@ -2677,6 +2683,51 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
 
 /**
+ * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
+ *
+ * @param string $surveyid The Survey ID
+ * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
+ * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
+ * @param int $questionid Limit to a certain qid only (for question preview) - default is false
+ * @return array
+ */
+function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
+
+    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    static $timingsFieldMap;
+
+    $surveyid=sanitize_int($surveyid);
+    //checks to see if fieldmap has already been built for this page.
+    if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
+        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    }
+
+    //do something
+    $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
+    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'question'=>'');
+    foreach ($fields as $field) {
+        if (!empty($field['gid'])) {
+            // field for time spent on page
+            $fieldname="{$field['sid']}X{$field['gid']}time";
+            if (!isset($fieldmap[$fieldname]))
+            {
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>'', 'question'=>'');
+            }
+
+            // field for time spent on answering a question            
+            $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
+            if (!isset($fieldmap[$fieldname]))
+            {
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>$field['qid'],'question'=>$field['question']);
+            }
+        }
+    }
+
+    $timingsFieldMap[$surveyid][$style][$clang->langcode] = $fieldmap;
+    return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+}
+
+/**
  * put your comment there...
  *
  * @param mixed $needle
@@ -2776,14 +2827,6 @@ function templatereplace($line, $replacements=array())
         $surveycontact="";
     }
     
-    if (stripos ($line,"</head>"))
-    {
-        $line=str_ireplace("</head>",
-            "<script type=\"text/javascript\" src=\"$rooturl/scripts/survey_runtime.js\"></script>\n"
-        .use_firebug()
-        ."\t</head>", $line);
-    }
-
     // If there are non-bracketed replacements to be made do so above this line.
     // Only continue in this routine if there are bracketed items to replace {}
     if (strpos($line, "{") === false) {
@@ -2939,8 +2982,6 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
 
     if (strpos($line, "{EXPIRY}") !== false) $line=str_replace("{EXPIRY}", $thissurvey['expiry'], $line);
-    if (strpos($line, "{EXPIRY-DMY}") !== false) $line=str_replace("{EXPIRY-DMY}", date("d-m-Y",strtotime($thissurvey["expiry"])), $line);
-    if (strpos($line, "{EXPIRY-MDY}") !== false) $line=str_replace("{EXPIRY-MDY}", date("m-d-Y",strtotime($thissurvey["expiry"])), $line);
     if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
     if (strpos($line, "{SUBMITBUTTON}") !== false) {
         $submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("Submit")." ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
@@ -3085,7 +3126,7 @@ function templatereplace($line, $replacements=array())
 
     $line=insertansReplace($line);
 
-    if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank You!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
+    if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
     if (strpos($line, "{SUBMITREVIEW}") !== false) {
         if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {
             $strreview = "";
@@ -3116,7 +3157,7 @@ function templatereplace($line, $replacements=array())
             $line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
         }
     }
-    if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a>", $line);
+    if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>", $line);
     if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
     if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", $clang->gT("Save Your Unfinished Survey"), $line);
     if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you."), $line);
@@ -3197,21 +3238,21 @@ function templatereplace($line, $replacements=array())
         ."<table class='register' summary='Registrationform'>\n"
         ."<tr><td align='right'>"
         ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
-        .$clang->gT("First Name").":</td>"
+        .$clang->gT("First name").":</td>"
         ."<td align='left'><input class='text' type='text' name='register_firstname'";
         if (isset($_POST['register_firstname']))
         {
             $registerform .= " value='".htmlentities(returnglobal('register_firstname'),ENT_QUOTES,'UTF-8')."'";
         }
         $registerform .= " /></td></tr>"
-        ."<tr><td align='right'>".$clang->gT("Last Name").":</td>\n"
+        ."<tr><td align='right'>".$clang->gT("Last name").":</td>\n"
         ."<td align='left'><input class='text' type='text' name='register_lastname'";
         if (isset($_POST['register_lastname']))
         {
             $registerform .= " value='".htmlentities(returnglobal('register_lastname'),ENT_QUOTES,'UTF-8')."'";
         }
         $registerform .= " /></td></tr>\n"
-        ."<tr><td align='right'>".$clang->gT("Email Address").":</td>\n"
+        ."<tr><td align='right'>".$clang->gT("Email address").":</td>\n"
         ."<td align='left'><input class='text' type='text' name='register_email'";
         if (isset($_POST['register_email']))
         {
@@ -3644,7 +3685,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT("Enter the code of a Multiple options question to only show the matching answer options in this question."),
+    "help"=>$clang->gT("Enter the code of a Multiple choice question to only show the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
@@ -3652,7 +3693,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT("Enter the code of a Multiple options question to exclude the matching answer options in this question."),
+    "help"=>$clang->gT("Enter the code of a Multiple choice question to exclude the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter exclusion'));
 
     $qattributes["assessment_value"]=array(
@@ -3707,8 +3748,8 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,
-    "help"=>$clang->gT('Use accessible select boxes instead of calendar popup'),
-    "caption"=>$clang->gT('Display select boxes'));
+    "help"=>$clang->gT('Use accessible dropdown boxes instead of calendar popup'),
+    "caption"=>$clang->gT('Display dropdown boxes'));
 
     $qattributes["dropdown_dates_year_min"]=array(
     "types"=>"D",
@@ -3728,11 +3769,11 @@ function questionAttributes($returnByName=false)
 
     $qattributes["dropdown_prepostfix"]=array(
     "types"=>"1",
-    'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>112,
     'inputtype'=>'text',
     "help"=>$clang->gT('Prefix|Suffix for dropdown lists'),
-    "caption"=>$clang->gT('Prefix|Suffix'));
+    "caption"=>$clang->gT('Dropdown prefix/suffix'));
 
     $qattributes["dropdown_separators"]=array(
     "types"=>"1",
@@ -3740,23 +3781,23 @@ function questionAttributes($returnByName=false)
     'sortorder'=>120,
     'inputtype'=>'text',
     "help"=>$clang->gT('Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists'),
-    "caption"=>$clang->gT('Dropdown separators'));
+    "caption"=>$clang->gT('Dropdown separator'));
 
     $qattributes["dualscale_headerA"]=array(
     "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>110,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Enter a header text for scale A'),
-    "caption"=>$clang->gT('Header scale A'));
+    "help"=>$clang->gT('Enter a header text for the first scale'),
+    "caption"=>$clang->gT('Header for first scale'));
 
     $qattributes["dualscale_headerB"]=array(
     "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>111,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Enter a header text for scale B'),
-    "caption"=>$clang->gT('Header scale B'));
+    "help"=>$clang->gT('Enter a header text for the second scale'),
+    "caption"=>$clang->gT('Header for second scale'));
 
     $qattributes["equals_num_value"]=array(
     "types"=>"K",
@@ -3774,6 +3815,17 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon.'),
     "caption"=>$clang->gT('Exclusive option'));
 
+    $qattributes["exclude_all_others_auto"]=array(
+    "types"=>"M",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>101,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>0,
+    "help"=>$clang->gT('If the participant marks all options, uncheck all and check the option set in the "Exclusive option" setting'),
+    "caption"=>$clang->gT('Auto-check exclusive option if all others are checked'));
+
     // Map Options
     
     $qattributes["location_city"]=array(
@@ -3784,7 +3836,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
-    "help"=>$clang->gT("Store the city of the user?"),
+    "help"=>$clang->gT("Store the city?"),
     "caption"=>$clang->gT("City"));
 
     $qattributes["location_state"]=array(
@@ -3795,7 +3847,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
-    "help"=>$clang->gT("Store the state of the user?"),
+    "help"=>$clang->gT("Store the state?"),
     "caption"=>$clang->gT("State"));
 
     $qattributes["location_postal"]=array(
@@ -3806,8 +3858,8 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
-    "help"=>$clang->gT("Store the postal code of the user?"),
-    "caption"=>$clang->gT("Postal Code"));
+    "help"=>$clang->gT("Store the postal code?"),
+    "caption"=>$clang->gT("Postal code"));
 
     $qattributes["location_country"]=array(
     "types"=>"S",
@@ -3817,7 +3869,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
-    "help"=>$clang->gT("Store the country of the user?"),
+    "help"=>$clang->gT("Store the country?"),
     "caption"=>$clang->gT("Country"));
 
     $qattributes["location_mapservice"]=array(
@@ -3827,8 +3879,8 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Off'),
     1=>$clang->gT('Google Maps')),
-    "help"=>$clang->gT("Which mapping service to use?"),
-    "caption"=>$clang->gT("Mapping Service"));
+    "help"=>$clang->gT("Activate this to show a map above the input field where the user can select a location"),
+    "caption"=>$clang->gT("Use mapping service"));
     
     $qattributes["location_mapwidth"]=array(
     "types"=>"S",
@@ -3836,7 +3888,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>102,
     'inputtype'=>'text',
     'default'=>'500',
-    "help"=>$clang->gT("Width of the Map Holder"),
+    "help"=>$clang->gT("Width of the map in pixel"),
     "caption"=>$clang->gT("Width"));
     
     $qattributes["location_mapheight"]=array(
@@ -3845,7 +3897,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>103,
     'inputtype'=>'text',
     'default'=>'300',
-    "help"=>$clang->gT("Height of the Map Holder"),
+    "help"=>$clang->gT("Height of the map in pixel"),
     "caption"=>$clang->gT("Height"));
 
     $qattributes["location_nodefaultfromip"]=array(
@@ -3864,7 +3916,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>101,
     'inputtype'=>'text',
     "help"=>$clang->gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
-    "caption"=>$clang->gT('Default Position'));
+    "caption"=>$clang->gT('Default position'));
 	
     $qattributes["location_mapzoom"]=array(
     "types"=>"S",
@@ -3872,7 +3924,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>101,
     'inputtype'=>'text',
     'default'=>'11',
-    "help"=>$clang->gT("Maps Zoom Level"),
+    "help"=>$clang->gT("Maps zoom level"),
     "caption"=>$clang->gT("Zoom"));
     
     // End Map Options
@@ -3969,7 +4021,7 @@ function questionAttributes($returnByName=false)
      'sortorder'=>100,
    'inputtype'=>'text',
     "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-    "caption"=>$clang->gT('Min value from SGQA'));
+    "caption"=>$clang->gT('Minimum value from SGQA'));
 
     $qattributes["multiflexible_max"]=array(
     "types"=>":",
@@ -4048,7 +4100,8 @@ function questionAttributes($returnByName=false)
 	),
         'default'=>0,
         "help"=>$clang->gT('Allow only numerical input'),
-        "caption"=>$clang->gT('Numbers only'));
+        "caption"=>$clang->gT('Numbers only')
+    );
 
     $qattributes['show_totals'] =	array(
  	'types' =>	';',
@@ -4056,7 +4109,7 @@ function questionAttributes($returnByName=false)
  	'sortorder' =>	100,
  	'inputtype'	=> 'singleselect',
  	'options' =>	array(
- 	    'X' =>	$clang->gT('none'),
+ 	    'X' =>	$clang->gT('None'),
  	    'R' =>	$clang->gT('Rows'),
  	    'C' =>	$clang->gT('Columns'),
  	    'B' =>	$clang->gT('Both rows and columns')
@@ -4268,14 +4321,14 @@ function questionAttributes($returnByName=false)
 
     $qattributes["use_dropdown"]=array(
     "types"=>"1F",
-    'category'=>$clang->gT('Other'),
+    'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,
     "help"=>$clang->gT('Use dropdown boxes instead of list of radio buttons'),
-    "caption"=>$clang->gT('Dropdown'));
+    "caption"=>$clang->gT('Use dropdown boxes'));
 
     $qattributes["scale_export"]=array(
     "types"=>"CEFGHLMOPWYZ1!:",
@@ -4376,7 +4429,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>108,
     "inputtype"=>"integer",
     "help"=>$clang->gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
-    "caption"=>$clang->gT("1st Time limit warning message timer"));
+    "caption"=>$clang->gT("1st time limit warning message timer"));
 
     $qattributes["time_limit_warning_display_time"]=array(
     "types"=>"STUX",
@@ -4384,7 +4437,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>110,
     "inputtype"=>"integer",
     "help"=>$clang->gT("The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-    "caption"=>$clang->gT("1st Time limit warning message display time"));
+    "caption"=>$clang->gT("1st time limit warning message display time"));
 
     $qattributes["time_limit_warning_message"]=array(
     "types"=>"STUX",
@@ -4392,7 +4445,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>112,
     "inputtype"=>"textarea",
     "help"=>$clang->gT("The message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
-    "caption"=>$clang->gT("1st Time limit warning message"));
+    "caption"=>$clang->gT("1st time limit warning message"));
 
     $qattributes["time_limit_warning_style"]=array(
     "types"=>"STUX",
@@ -4400,7 +4453,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>114,
     "inputtype"=>"textarea",
     "help"=>$clang->gT("CSS style used when the 'time limit warning' message is displayed"),
-    "caption"=>$clang->gT("1st Time limit warning CSS style"));
+    "caption"=>$clang->gT("1st time limit warning CSS style"));
 
     $qattributes["time_limit_warning_2"]=array(
 	"types"=>"STUX",
@@ -4408,7 +4461,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>116,
     "inputtype"=>"integer",
 	"help"=>$clang->gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
-	"caption"=>$clang->gT("2nd Time limit warning message timer"));
+	"caption"=>$clang->gT("2nd time limit warning message timer"));
 
     $qattributes["time_limit_warning_2_display_time"]=array(
 	"types"=>"STUX",
@@ -4416,7 +4469,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>118,
     "inputtype"=>"integer",
 	"help"=>$clang->gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-	"caption"=>$clang->gT("2nd Time limit display time"));
+	"caption"=>$clang->gT("2nd time limit display time"));
 
     $qattributes["time_limit_warning_2_message"]=array(
 	"types"=>"STUX",
@@ -4424,7 +4477,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>120,
     "inputtype"=>"textarea",
 	"help"=>$clang->gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
-	"caption"=>$clang->gT("2nd Time limit warning message"));
+	"caption"=>$clang->gT("2nd time limit warning message"));
 
     $qattributes["time_limit_warning_2_style"]=array(
 	"types"=>"STUX",
@@ -4432,29 +4485,29 @@ function questionAttributes($returnByName=false)
     'sortorder'=>122,
     "inputtype"=>"textarea",
 	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
-	"caption"=>$clang->gT("2nd Time Limit Warning CSS Style"));
+	"caption"=>$clang->gT("2nd time limit warning CSS style"));
 
     $qattributes["show_title"]=array(
 	"types"=>"|",
-    'category'=>$clang->gT('File Metadata'),
+    'category'=>$clang->gT('File metadata'),
     'sortorder'=>124,
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>1,
 	"help"=>$clang->gT("Is the participant required to give a title to the uploaded file?"),
-	"caption"=>$clang->gT("Show Title"));
+	"caption"=>$clang->gT("Show title"));
 
     $qattributes["show_comment"]=array(
 	"types"=>"|",
-    'category'=>$clang->gT('File Metadata'),
+    'category'=>$clang->gT('File metadata'),
     'sortorder'=>126,
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>1,
 	"help"=>$clang->gT("Is the participant required to give a comment to the uploaded file?"),
-	"caption"=>$clang->gT("Show Comment"));
+	"caption"=>$clang->gT("Show comment"));
 
 
     $qattributes["max_filesize"]=array(
@@ -4499,7 +4552,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>100,
     'inputtype'=>'text',
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
-    "caption"=>$clang->gT("Randomization Group Name:"));
+    "caption"=>$clang->gT("Randomization group name"));
     
 
     //This builds a more useful array (don't modify)
@@ -4917,11 +4970,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	return $sent;
 }
 
-function str_get_html($htmlbody)
-{
-    return $htmlbody;
 
-		}
 
 /**
  *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
@@ -4946,17 +4995,6 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     return  $sNicetext;
 }
 
-function getRandomID()
-{        // Create a random survey ID - based on code from Ken Lyle
-// Random sid/ question ID generator...
-$totalChar = 5; // number of chars in the sid
-$salt = "123456789"; // This is the char. that is possible to use
-srand((double)microtime()*1000000); // start the random generator
-$sid=""; // set the inital variable
-for ($i=0;$i<$totalChar;$i++) // loop and create sid
-$sid = $sid . substr ($salt, rand() % strlen($salt), 1);
-return $sid;
-}
 
 /**
  * getArrayFiltersForGroup() queries the database and produces a list of array_filter questions and targets with in the same group
@@ -5418,12 +5456,12 @@ function modify_database($sqlfile='', $sqlstring='')
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', $defaultlang, $command);
-                $command = str_replace('$sessionname', 'ls'.getRandomID().getRandomID().getRandomID().getRandomID(), $command);
+                $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
                 $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
                 if (! db_execute_num($command)) {  //Checked
                     $command=htmlspecialchars($command);
-                    $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#FF0000'>...".$clang->gT("Failed! Reason: ").$connect->ErrorMsg()."</font>";
+                    $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s Reason: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'>".$connect->ErrorMsg()."</span><br/>");
                     $success = false;
                 }
                 else
@@ -5523,7 +5561,7 @@ function getgroupuserlist()
             $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
         }
     }
-    $surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
+    $surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
 }
 
@@ -5572,7 +5610,7 @@ function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true)
             }
         }
     }
-    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
 }
@@ -5608,7 +5646,7 @@ function getsurveyusergrouplist($outputformat='htmloptions')
             }
         }
     }
-    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
 
     if ($outputformat == 'simpleugidarray')
@@ -5644,7 +5682,7 @@ function getusergrouplist($outputformat='optionlist')
             $simplegidarray[] = $gn['ugid'];
         }
     }
-    if (!isset($svexist)) {$selecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$selecter;}
+    if (!isset($svexist)) {$selecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$selecter;}
     //else {$selecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
 
     if ($outputformat == 'simplegidarray')
@@ -7541,8 +7579,8 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
     $extra_attrs=GetAttributeFieldNames($surveyid);
     $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
     $basic_attrs_names=Array(
-    $clang->gT('First Name'),
-    $clang->gT('Last Name'),
+    $clang->gT('First name'),
+    $clang->gT('Last name'),
     $clang->gT('Email address'),
     $clang->gT('Token code'),
     $clang->gT('Language code'),
@@ -7954,14 +7992,22 @@ function db_rename_table($oldtable, $newtable)
 }
 
 /**
-* Checks if a token has been already used
+* Returns true when a token can not be used (either doesn't exist or has less then one usage left
+*
 * @param mixed $tid Token
 */
 function usedTokens($token)
 {
-    global $connect, $dbprefix, $surveyid;
-    $tid = $connect->getOne("SELECT tid from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token));
-    $utresult = $connect->getOne($utquery);
+    global $dbprefix, $surveyid;
+    
+    $utresult = true;
+    $query = "SELECT tid, usesleft from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token);
+    
+    $result=db_execute_assoc($query,null,true);
+    if ($result !== false) {
+        $row=$result->FetchRow();
+        if ($row['usesleft']>0) $utresult = false;
+    }
     return $utresult;
 }
      
