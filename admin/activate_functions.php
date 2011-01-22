@@ -291,6 +291,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     $fieldmap=createFieldMap($surveyid);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
+        if ($createsurvey!='') {$createsurvey .= ",\n";}
         $createsurvey .= " ".db_quote_id($arow['fieldname']);
         switch($arow['type'])
         {
