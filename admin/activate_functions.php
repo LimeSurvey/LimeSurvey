@@ -290,7 +290,8 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
-    {       
+    {
+        $createsurvey .= " ".db_quote_id($arow['fieldname']);
         switch($arow['type'])
         {
             case 'startlanguage':
