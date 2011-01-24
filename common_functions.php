@@ -8179,7 +8179,7 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
     $bAnsw = true;
     foreach($aFieldnamesInfoInv[$q] as $sField)
     {
-        if(empty($_SESSION[$sField]))
+        if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
         {
             $bAnsw = false;
             break;
