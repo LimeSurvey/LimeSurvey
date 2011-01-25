@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.91RC2!
+Welcome to LimeSurvey v1.91RC3!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,26 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.91RC2 (build 9672) to 1.91RC3 (build 9715)
+#Updated language: Norwegian bokmål, thanks to Pål Monstad (gandalfar)
+#Updated language: pt-BR, thanks to Eziquiel Menta (gandalfar)
+-Fixed issue: citronade preview aren't actualised when use selector (shnoulle)
+-Fixed issue: some alert in quota pages with question delete (shnoulle)
+-Fixed issue: activate survey don't create good SQL database (shnoulle)
+-Fixed issue: unable to activate survey (shnoulle)
+-Fixed issue: Removed call-time pass-by-reference (azammitdcarf)
+-Fixed issue #4758: Date filter in statistics on date questions doesn't work (c_schmitz)
+-Fixed issue #4849: Timings table is not properly created (c_schmitz)
+-Fixed issue #4859: Date picker not translated when using a Norwegian language (c_schmitz)
+-Fixed issue #4860: Error message when trying to delete a response in detailed response view (c_schmitz)
+-Fixed issue #4861: .csv structure file fails to import if question contains invalid label set ID (c_schmitz)
+-Fixed issue #4873: Assessment values not being shown/transferred when using label set browser in answers. (c_schmitz)
+-Fixed issue #4894 : SQL syntax error in browse response ( thanks to starmonkey ) (shnoulle)
+-Fixed issue: LimeReplacementFields not showing all options for emailtemplates (lemeur)
+-Fixed issue: Missing translation when browsing responses (c_schmitz)
+-Fixed issue: token checks for UsesLeft option. (lemeur)
+-Fixed issue: quickfix for broken runtime survey (mennodekker)
 
 Changes from 1.91RC1 (build 9696) to 1.91RC2 (build 9672)
 +New translation: Urdu - provided by Google Code-In participant (c_schmitz)
