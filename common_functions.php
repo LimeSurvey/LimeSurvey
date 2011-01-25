@@ -4808,12 +4808,17 @@ function doFooter()
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)
-function ReplaceFields ($text,$fieldsarray)
+function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 {
 
     foreach ( $fieldsarray as $key => $value )
     {
         $text=str_replace($key, $value, $text);
+    }
+
+    if ($bReplaceInsertans)
+    {
+        $text = insertansReplace($text);
     }
     return $text;
 }

@@ -2001,7 +2001,7 @@ function submittokens($quotaexit=false)
             $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
             $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
 
-            $subject=Replacefields($subject, $fieldsarray);
+            $subject=ReplaceFields($subject, $fieldsarray, true);
 
             if ($thissurvey['anonymized'] == "N")
             {
@@ -2023,7 +2023,7 @@ function submittokens($quotaexit=false)
             if (trim(strip_tags($thissurvey['email_confirm'])) != "")
             {
                 $message=$thissurvey['email_confirm'];
-                $message=Replacefields($message, $fieldsarray);
+                $message=ReplaceFields($message, $fieldsarray, true);
 
                 if ($thissurvey['anonymized'] == "N")
                 {
