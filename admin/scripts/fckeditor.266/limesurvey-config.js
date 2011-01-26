@@ -56,10 +56,10 @@ FCKConfig.PluginsPath = FCKConfig.BasePath + 'plugins/' ;
 // FCKConfig.Plugins.Add( 'dragresizetable' );
 FCKConfig.AutoGrowMax = 400 ;
 
-FCKConfig.Plugins.Add( 'placeholder' ,'en,fr') ;
-FCKConfig.Plugins.Add( 'LimeFitWin' ,'en') ;
+FCKConfig.Plugins.Add( 'placeholder' ,'de,en,es,fr,it,pl') ;
+FCKConfig.Plugins.Add( 'LimeFitWin' ,'de,en,ru,uk') ;
 FCKConfig.LimeFitWinList = ['Basic', 'LimeSurveyToolbarfull'];
-FCKConfig.Plugins.Add( 'LimeReplacementFields' ,'en') ;
+FCKConfig.Plugins.Add( 'LimeReplacementFields' ,'de,en') ;
 
 // FCKConfig.ProtectedSource.Add( /<%[\s\S]*?%>/g ) ;	// ASP style server side code <%...%>
 // FCKConfig.ProtectedSource.Add( /<\?[\s\S]*?\?>/g ) ;	// PHP style server side code
