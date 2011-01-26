@@ -2082,6 +2082,8 @@ function SendSubmitNotifications()
         $aReplacementVars['RELOADURL']='';    
     }
 
+    $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
+    $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];    
     $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id={$_SESSION['srid']}";
     $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$_SESSION['srid'];
     $aReplacementVars['STATISTICSURL']="{$homeurl}/admin.php?action=statistics&sid={$surveyid}";
