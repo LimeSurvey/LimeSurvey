@@ -360,14 +360,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
         display_first_page();
         exit;
     }
-    echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    if (isset($token) && !empty($token))                    {
-        echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-    }
-    echo "\n</form>\n";
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-    doFooter();
-    exit;
+
 }
 
 //Setup an inverted fieldnamesInfo for quick lookup of field answers.
