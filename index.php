@@ -2886,8 +2886,14 @@ function surveymover()
     if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['allowjumps'] == "Y") &&
 	($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
     {
-        $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; submit_and_disable();\" value=' &lt;&lt; "
-        . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
+        //To prevent too much complication in the if statement above I put it here...
+        if ($thissurvey['showwelcome'] == 'N' && $_SESSION['step'] == 1) {
+           //first step and we do not want to go back to the welcome screen since we don't show that...
+           //so skip the prev button
+        } else {
+            $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; submit_and_disable();\" value=' &lt;&lt; "
+            . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
+        }
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
     {
