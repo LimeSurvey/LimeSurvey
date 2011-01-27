@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Norwegian Bokmål language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-11 12:00+0100\n"
-"PO-Revision-Date: 2010-10-22 21:42+0100\n"
+"PO-Revision-Date: 2011-01-24 09:02+0100\n"
 "Last-Translator: Pål Monstad <pal.monstad@hkskole.no>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -364,7 +364,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:234
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:396
 msgid "Check again"
-msgstr "Sjekk én gang til"
+msgstr "Sjekk en gang til"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:238
 msgid "Everything looks alright. Please proceed to the next step."
@@ -489,7 +489,7 @@ msgstr "Sikkehetskopierer filer..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:467
 msgid "File backup created:"
-msgstr "Sikkerhetskopiering av filer gjennomført:"
+msgstr "Sikkerhetskopi opprettet:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:475
 msgid "Creating database backup... "
@@ -647,7 +647,7 @@ msgstr "Tilgang"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:36
 msgid "Anonymized responses"
-msgstr "Anonymisert"
+msgstr "Anonym"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:37
 msgid "Full"
@@ -668,7 +668,7 @@ msgstr "Total"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:40
 msgid "Tokens available"
-msgstr "Nøkler"
+msgstr "Adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:41
 msgid "Response rate"
@@ -1129,7 +1129,7 @@ msgstr "Hendelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:535
 msgid "Quick CSV report"
-msgstr "Kjapp CSV-rapport"
+msgstr "Hurtig CSV-rapport"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:558
 msgid "Not Active"
@@ -1616,11 +1616,11 @@ msgstr "Spørsmål"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1458
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1493
 msgid "Data entry"
-msgstr "Datatilgang"
+msgstr "Dataregistrering"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:81
 msgid "You have not selected a survey for data-entry."
-msgstr "Det er ikke oppgitt en undersøkelse for datatilgang."
+msgstr "Det er ikke oppgitt en undersøkelse for dataregistrering."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:133
 #: /var/lib/limesurvey-svn/subversion1x/index.php:675
@@ -1628,16 +1628,16 @@ msgid ""
 "This is a closed-access survey, so you must supply a valid token.  Please "
 "contact the administrator for assistance."
 msgstr ""
-"Dette er en lukket undersøkelse og den krever at du har en nøkkel for å "
+"Dette er en lukket undersøkelse og den krever at du har en adgangskode for å "
 "delta. Kontakt administratoren om du trenger hjelp med dette."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:137
 msgid "The token you have provided is not valid or has already been used."
-msgstr "Nøkkelen du oppga er enten ugyldig eller har allerede blitt brukt."
+msgstr "Adgangskoden du oppgav er enten ugyldig eller allerede brukt."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:141
 msgid "There is already a recorded answer for this token"
-msgstr "Det finnes allerede en besvarelse gitt med denne nøkkelen"
+msgstr "Det finnes allerede en besvarelse gitt med denne adgangskoden"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:144
 msgid "Follow the following link to update it"
@@ -1646,7 +1646,7 @@ msgstr "Klikk på lenken under for å oppdatere"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:146
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:239
 msgid "Edit this entry"
-msgstr "Rediger dette svaret"
+msgstr "Rediger denne besvarelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:150
 msgid ""
@@ -1724,7 +1724,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:378
 msgid "A token entry for the saved survey has been created too."
-msgstr "En nøkkel for lagret undersøkelse er også laget."
+msgstr "En adgangskodeoppføring for lagret undersøkelse er også opprettet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:387
 #: /var/lib/limesurvey-svn/subversion1x/save.php:382
@@ -1828,7 +1828,7 @@ msgstr "Tilbake til administrasjon av undersøkelsen"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:422
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1447
 msgid "View This Record"
-msgstr "Vis dette svaret"
+msgstr "Vis denne besvarelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:426
 msgid "Browse Saved Responses"
@@ -2047,7 +2047,7 @@ msgstr "Post er slettet"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2374
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2532
 msgid "Token"
-msgstr "Nøkkel"
+msgstr "Adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1555
 msgid "Datestamp"
@@ -2161,23 +2161,23 @@ msgstr "Manuell utfylling av undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:80
 msgid "Get statistics from these responses"
-msgstr "Vis statistikk fra disse besvarelsene"
+msgstr "Vis statistikk fra besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:86
 msgid "Get time statistics from these responses"
-msgstr "hent tidsstatistikk fra disse besvarelsene"
+msgstr "Hent tidsstatistikk fra besvarelsene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:96
 msgid "Export results to application"
-msgstr "Eksporter resultater til applikasjon"
+msgstr "Eksporter besvarelser til applikasjon"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:101
 msgid "Export results to a SPSS/PASW command file"
-msgstr "Eksporter resultat til en SPSS/PASW-kommandofil"
+msgstr "Eksporter besvarelser til en SPSS/PASW-kommandofil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:106
 msgid "Export results to a R data file"
-msgstr "Eksporter resultater til en R-datafil"
+msgstr "Eksporter besvarelser til en R-datafil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:112
 msgid "Import answers from a deactivated survey table"
@@ -2190,12 +2190,12 @@ msgstr "Vis lagrede men ikke innsendte besvarelser"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:128
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:80
 msgid "Import a VV survey file"
-msgstr "Importer en VV-fil"
+msgstr "Importer en VV-undersøkelsefil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:135
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:50
 msgid "Export a VV survey file"
-msgstr "Eksporter en VV-undersøkelsefil"
+msgstr "Eksporter en VV-undersøkelefil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:142
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:28
@@ -2212,7 +2212,7 @@ msgstr "Oversett undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate.php:132
 msgid "There was an error using the Google API."
-msgstr "Det oppsto en feil ved bruk av Google API."
+msgstr "Det oppsto en feil ved bruk av Google-API."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate.php:133
 msgid "Detailed Error"
@@ -2295,7 +2295,7 @@ msgstr "Prosent av total:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:565
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:574
 msgid "Results"
-msgstr "Resultater"
+msgstr "Besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:610
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2032
@@ -2697,7 +2697,7 @@ msgstr "Kunne ikke oppdatere undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1183
 msgid "Email templates successfully saved."
-msgstr "Epostmal ble lagret."
+msgstr "E-postmal ble lagret."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1197
 msgid "ERROR deleting Survey id"
@@ -2804,7 +2804,7 @@ msgstr "Test denne undersøkelsen"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:207
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate_functions.php:100
 msgid "Execute This Survey"
-msgstr "Kjør denne undersøkelsen"
+msgstr "Gjennomfør denne undersøkelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:243
 msgid "Survey properties"
@@ -2931,7 +2931,7 @@ msgstr "Delvis lagrede besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:486
 msgid "Token management"
-msgstr "Nøkkel-konfigurasjon"
+msgstr "Administrasjon av adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:501
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:63
@@ -3057,7 +3057,7 @@ msgstr "Det brukes cookies som adgangskontroll."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:628
 msgid "If tokens are used, the public may register for this survey"
-msgstr "Hvis nøkler er brukt, kan offentlige brukere registrere seg"
+msgstr "Offentlige brukere kan registrere seg hvis det er brukt adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:629
 msgid "Participants can save partially finished surveys"
@@ -3065,11 +3065,11 @@ msgstr "Deltakere kan lagre delvis utfylt undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:632
 msgid "Basic email notification is sent to:"
-msgstr "Enkel e-postpåminnelse er sendt til:"
+msgstr "Enkel påminnelse er sendt til:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:636
 msgid "Detailed email notification with response data is sent to:"
-msgstr "Detaljert e-postpåminnelse med svarkoder er sendt til:"
+msgstr "Detaljert påminnelse med svardata er sendt til:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:641
 msgid "Regenerate question codes:"
@@ -3199,11 +3199,11 @@ msgstr "Du må legge til spørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:840
 msgid "Preview current question group"
-msgstr "Forhåndsvis gjeldende spørsmålsgruppe"
+msgstr "Forhåndsvis denne spørsmålsgruppen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:855
 msgid "Edit current question group"
-msgstr "Rediger gjeldende spørsmålsgruppe"
+msgstr "Rediger denne spørsmålsgruppen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:868
 msgid ""
@@ -3223,8 +3223,8 @@ msgid ""
 "Impossible to delete this group because there is at least one question "
 "having a condition on its content"
 msgstr ""
-"Ikke mulig å slette denne gruppen fordi minst ett spørsmål avhenger av "
-"innhold i gruppen"
+"Ikke mulig å slette denne gruppen fordi minst ett spørsmål har betingelser "
+"knyttet til seg"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:893
 msgid "Export this question group"
@@ -3233,7 +3233,7 @@ msgstr "Eksporter denne spørsmålsgruppen"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:907
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:640
 msgid "Change Question Order"
-msgstr "Endre spørsmålenes rekkefølge"
+msgstr "Endre rekkefølge på spørsmålene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:931
 msgid "Previous question"
@@ -3279,7 +3279,7 @@ msgstr "Forhåndsvis dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1113
 msgid "Edit Current Question"
-msgstr "Rediger gjeldende spørsmål"
+msgstr "Rediger dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1124
 msgid ""
@@ -3291,19 +3291,19 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1125
 msgid "Delete current question"
-msgstr "Slett gjeldende spørsmål"
+msgstr "Slett dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1131
 msgid ""
 "It's impossible to delete this question because there is at least one "
 "question having a condition on it."
 msgstr ""
-"Kan ikke slette dette spørsmålet fordi minst ett annet spørsmål avhenger av "
-"det."
+"Kan ikke slette dette spørsmålet fordi minst ett annet spørsmål har "
+"betingelser knyttet til det."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1133
 msgid "Disabled - Delete current question"
-msgstr "Deaktivert - Slett gjeldende spørsmål"
+msgstr "Deaktivert - Slett dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1145
 msgid "Export this question"
@@ -3312,7 +3312,7 @@ msgstr "Eksporter dette spørsmålet"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1159
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1166
 msgid "Copy Current Question"
-msgstr "Kopier gjeldende spørsmål"
+msgstr "Kopier dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1165
 msgid "You can't copy a question if the survey is active."
@@ -3320,21 +3320,21 @@ msgstr "Du kan ikke kopiere et spørsmål når undersøkelsen er aktiv."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1182
 msgid "Set conditions for this question"
-msgstr "Sett betingelser for dette spørsmålet"
+msgstr "Sett betingelser til dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1200
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1298
 msgid "Edit subquestions for this question"
-msgstr "Rediger underspørsmål for dette spørsmålet"
+msgstr "Rediger underspørsmål til dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1215
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1286
 msgid "Edit answer options for this question"
-msgstr "Rediger svaralternativer for dette spørsmålet"
+msgstr "Rediger svaralternativer til dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1229
 msgid "Edit default answers for this question"
-msgstr "Rediger forhåndssvar for dette spørsmålet"
+msgstr "Rediger forhåndsvalg til dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1234
 msgid "Hide Details of this Question"
@@ -3429,7 +3429,7 @@ msgstr "Du må angi underspørsmål til dette spørsmålet"
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:75
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:448
 msgid "Option 'Other':"
-msgstr "Tillat 'annet':"
+msgstr "Alternativet 'Annet':"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1315
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:87
@@ -3585,7 +3585,7 @@ msgstr "Lagre nå"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1592
 msgid "Export Survey Structure"
-msgstr "Eksporter undersøkelsestruktur"
+msgstr "Eksporter undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1596
 msgid "LimeSurvey XML survey file (*.lss)"
@@ -3607,7 +3607,7 @@ msgstr "Eksporter til fil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1631
 msgid "Export group structure"
-msgstr "Eksporter gruppestruktur"
+msgstr "Eksporter gruppe"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1637
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1684
@@ -3621,7 +3621,7 @@ msgstr "Eksporter til fil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1678
 msgid "Export question structure"
-msgstr "Eksporter spørsmålsstruktur"
+msgstr "Eksporter spørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1739
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:43
@@ -3744,7 +3744,7 @@ msgstr "Undersøk databasens integritet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2071
 msgid "List Surveys"
-msgstr "Vis undersøkelser"
+msgstr "Oversikt over undersøkelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2078
 msgid "Backup Entire Database"
@@ -3752,7 +3752,7 @@ msgstr "Lag komplett sikkerhetskopi av databasen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2086
 msgid "Edit label sets"
-msgstr "Rediger etiketter"
+msgstr "Rediger etikettsamlinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2093
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:795
@@ -3763,7 +3763,7 @@ msgstr "Rediger etiketter"
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:529
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:579
 msgid "Template Editor"
-msgstr "Malredigering"
+msgstr "Rediger maler"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2097
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:61
@@ -3894,7 +3894,7 @@ msgstr "Se gjennom etiketter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:74
 msgid "Quick-add subquestions"
-msgstr "Rask Legg til underspørsmål"
+msgstr "Legg hurtig til underspørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:75
 msgid "Error: You are trying to use duplicate subquestion codes."
@@ -3933,17 +3933,17 @@ msgstr "Underspørsmål:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:232
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:229
 msgid "Predefined label sets..."
-msgstr "Forhåndsdefinerte etiketter..."
+msgstr "Predefinerte etikettsamlinger..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:233
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:230
 msgid "Quick add..."
-msgstr "Rask Legg til..."
+msgstr "Legg hurtig til..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:243
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:242
 msgid "Available label sets:"
-msgstr "Tilgjengelige etiketter:"
+msgstr "Tilgjengelige etikettsamlinger:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:245
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:252
@@ -4136,8 +4136,8 @@ msgid ""
 "We recommend that before you delete this survey you export the entire survey "
 "from the main administration screen."
 msgstr ""
-"Vi anbefaler at du før sletting eksporterer hele undersøkelsen. Dette gjøres "
-"fra hovedsiden administrasjon."
+"Vi anbefaler at du eksporterer hele undersøkelsen før du sletter den. Dette gjøres "
+"fra hovedsiden Administrasjon."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:43
 msgid ""
@@ -4155,13 +4155,13 @@ msgid ""
 "tokens table will be deleted. We recommend that you export or backup these "
 "tokens before deleting this survey."
 msgstr ""
-"Denne undersøkelsen har en tilknyttet nøkkeltabell. Hvis du sletter "
-"undersøkelsen vil denne nøkkeltabellen også sletes. Vi anbefaler at du "
-"eksporterer eller tar sikkerhetskopi av denne nøkkeltabellen før sletting."
+"Denne undersøkelsen har en tilknyttet adgangstabell. Hvis du sletter "
+"undersøkelsen vil denne adgangstabellen også slettes. Vi anbefaler at du "
+"eksporterer eller tar sikkerhetskopi av denne adgangstabellen før sletting."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:123
 msgid "This survey has been deleted."
-msgstr "Denne undersøkelsen ble slettet."
+msgstr "Undersøkelsen ble slettet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/admin_functions.php:266
 msgid "Response submission for survey {SURVEYNAME} with results"
@@ -4429,11 +4429,11 @@ msgstr "Send e-post til alle medlemmer"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:74
 msgid "Edit Current User Group"
-msgstr "Rediger nåværende brukergruppe"
+msgstr "Rediger denne brukergruppen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:87
 msgid "Delete Current User Group"
-msgstr "Slett nåværende brukergruppe"
+msgstr "Slett denne brukergruppen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:97
 msgid "User Groups"
@@ -4917,7 +4917,7 @@ msgstr "Importer som ikke fullførte spørsmål?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:93
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3134
 msgid "Character set of the file:"
-msgstr "Karaktersett i denne filen:"
+msgstr "Tegnsett i denne filen:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:106
 msgid "Cannot import the VVExport file."
@@ -5029,7 +5029,7 @@ msgstr "Betingelser"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:76
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:86
 msgid "Label sets"
-msgstr "Etiketter"
+msgstr "Etikettsamlinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:87
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:95
@@ -5087,7 +5087,7 @@ msgid ""
 "You can't import label sets which don't support the current survey's base "
 "language"
 msgstr ""
-"Du kan ikke importere etiketter som ikke støter standardspråket i "
+"Du kan ikke importere etikettsamlinger som ikke støtter standardspråket i "
 "undersøkelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:683
@@ -5122,12 +5122,12 @@ msgstr "Språk"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:72
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:137
 msgid "Default answers"
-msgstr "Forhåndssvar"
+msgstr "Forhåndsvalg"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:84
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:147
 msgid "Not imported label sets"
-msgstr "Ikke importere etiketter"
+msgstr "Ikke importere etikettsamlinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:84
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:147
@@ -5135,8 +5135,8 @@ msgid ""
 "(Label sets were not imported since you do not have the permission to create "
 "new label sets.)"
 msgstr ""
-"(Etiketter ble ikke importert siden du ikke har rettigheter til å lage nye "
-"etiketter.)"
+"(Etikettsamlinger ble ikke importert siden du ikke har rettigheter til å lage nye "
+"etikettsamlinger.)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:86
 msgid "Question attributes"
@@ -5217,13 +5217,13 @@ msgstr ""
 msgid ""
 "This survey allows public registration. A token table must also be created."
 msgstr ""
-"Denne undersøkelsen muliggjør offentlig registrering. En nøkkeltabell må "
+"Denne undersøkelsen muliggjør offentlig registrering. En adgangstabell må "
 "opprettes."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:471
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:526
 msgid "Initialise tokens"
-msgstr "Opprett nøkler"
+msgstr "Opprett adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:475
 msgid "This survey is now active, and responses can be recorded."
@@ -5242,7 +5242,7 @@ msgid ""
 "You can switch to the closed-access mode by initialising a token table with "
 "the button below."
 msgstr ""
-"Du kan endre til lukket tilgangsmodus ved å tildele en nøkkeltabell ved å "
+"Du kan endre til lukket tilgangsmodus ved å tildele en adgangstabell ved å "
 "klikke på knappen under."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:477
@@ -5303,7 +5303,7 @@ msgstr "Endre rekkefølge på grupper"
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:265
 msgid "Current survey has questions with conditions outside their own group"
 msgstr ""
-"Gjeldende undersøkelse har spørsmål med betingelser utenfor egen gruppe"
+"Denne undersøkelsen har spørsmål med betingelser utenfor egen gruppe"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:265
 msgid ""
@@ -5353,7 +5353,7 @@ msgstr "Filtype"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:85
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:102
 msgid "Export results"
-msgstr "Eksporter resultater"
+msgstr "Eksporter besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:73
 msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
@@ -5553,7 +5553,7 @@ msgstr "Du har ikke oppgitt et identifikasjonsnummer til undersøkelsen"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:546
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "Vennligst kontakt %s ( %s ) for videre assistanse."
+msgstr "Vennligst kontakt %s ( %s ) for videre assistanse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:474
 #: /var/lib/limesurvey-svn/subversion1x/index.php:432
@@ -5876,17 +5876,17 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:59
 msgid "Label Sets Administration"
-msgstr "Administrasjon av etiketter"
+msgstr "Administrasjon av etikettsamlinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:70
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:123
 msgid "Export multiple label sets"
-msgstr "Eksporter flere etiketter"
+msgstr "Eksporter flere etikettsamlinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:93
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:157
 msgid "Create or import new label set(s)"
-msgstr "Opprett eller importer nye etiketter"
+msgstr "Opprett eller importer etikettsamling(er)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:103
 msgid "Show Help"
@@ -5894,36 +5894,36 @@ msgstr "Vis hjelp"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:119
 msgid "You have to select at least one label set."
-msgstr "Du må angi minst en etikett"
+msgstr "Du må angi minst en etikettsamling"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:125
 msgid "Please choose the label sets you want to export:"
-msgstr "Velg etikettene du vil eksportere:"
+msgstr "Velg etikettsamlingene du vil eksportere:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:125
 msgid "(Select multiple label sets by using the Ctrl key)"
-msgstr "(Velg flere etiketter ved å holde nede CTRL-tasten)"
+msgstr "(Velg flere etikettsamlinger ved å holde nede CTRL-tasten)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:137
 msgid "Export selected label sets"
-msgstr "Eksporter valgte etiketter"
+msgstr "Eksporter valgte etikettsamlinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:157
 msgid "Create New Label Set"
-msgstr "Lag nye etiketter"
+msgstr "Lag ny etikettsamling"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:158
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:267
 msgid "Edit label set"
-msgstr "Rediger etiketter"
+msgstr "Rediger etikettsamling"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:165
 msgid "Error: You have to enter a name for this label set."
-msgstr "Feil: Du må angi et navn på disse etikettene."
+msgstr "Feil: Du må angi et navn på denne etikettsamlingen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:168
 msgid "Set name:"
-msgstr "Navn:"
+msgstr "Navn på samling:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:175
 msgid "Languages:"
@@ -5935,37 +5935,37 @@ msgid ""
 "labelset."
 msgstr ""
 "Du kan ikke slette dette elementet fordi det kreves minst ett språk i en "
-"samling etiketter."
+"etikettsamling."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:217
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:220
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:234
 msgid "Import label set(s)"
-msgstr "Importer etiketter"
+msgstr "Importer etikettsamling(er)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:223
 msgid "Select label set file (*.lsl,*.csv):"
-msgstr "Velg etikettfil (*.lsl,*.csv):"
+msgstr "Velg etikettsamlingfil (*.lsl,*.csv):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:227
 msgid "Don't import if label set already exists:"
-msgstr "Ikke importer hvis etikettene allerede finnes:"
+msgstr "Ikke importer hvis etikettsamlingen allerede finnes:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:260
 msgid "Label Set"
-msgstr "Etiketter"
+msgstr "Etikettsamling"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:268
 msgid "Do you really want to delete this label set?"
-msgstr "Er du sikker på du vil slette disse etikettene?"
+msgstr "Er du sikker på du vil slette denne etikettsamlingen?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:269
 msgid "Delete label set"
-msgstr "Slett etiketter"
+msgstr "Slett etikettsamling"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:272
 msgid "Export this label set"
-msgstr "Eksporter etiketter"
+msgstr "Eksporter etikettsamlingen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:275
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:341
@@ -5980,7 +5980,7 @@ msgstr "Etiketter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:301
 msgid "Error: You are trying to use duplicate label codes."
-msgstr "Feil: Du prøver å bruke duplikate svarkoder."
+msgstr "Feil: Du prøver å bruke duplikate etikettkoder."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:321
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:146
@@ -6098,8 +6098,8 @@ msgid ""
 "Delete all incomplete answers that correspond to a token for which a "
 "completed answers is already recorded"
 msgstr ""
-"Slett alle ufullstendige besvarelser som knytter seg til en nøkkel som "
-"allerede har en fullført besvarelse."
+"Slett alle ufullstendige besvarelser som knytter seg til en adgangskode "
+"som allerede har en fullført besvarelse."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:34
 msgid "Reset the completed answers to the incomplete state"
@@ -6107,7 +6107,7 @@ msgstr "Nullstill alle svarene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:35
 msgid "Reset all your tokens to the 'not used' state"
-msgstr "Tilbakestill alle nøklene til 'ubrukt'"
+msgstr "Tilbakestill alle adgangskodene til 'ubrukt'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:37
 msgid ""
@@ -6123,7 +6123,7 @@ msgstr "Nullstill alle svarene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:63
 msgid "Answers and tokens have been re-opened."
-msgstr "Svar og nøkler har blitt åpnet opp på nytt."
+msgstr "Svar og adgangskoder har blitt åpnet opp på ny."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/cmdline_importsurvey.php:65
 msgid "User name invalid!"
@@ -6425,7 +6425,7 @@ msgstr "Det finnes ingen slik undersøkelse."
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:599
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:926
 msgid "Token ID"
-msgstr "Nøkkel-ID"
+msgstr "Adgangskode-ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:157
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:600
@@ -6466,7 +6466,7 @@ msgstr "Vis besvarelse ID %d"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:245
 msgid "Delete this entry"
-msgstr "Slett dette svaret"
+msgstr "Slett denne besvarelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:249
 msgid "You don't have permission to delete this entry."
@@ -6474,11 +6474,11 @@ msgstr "Du har ikke tilgang til å slette denne oppføringen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:252
 msgid "Download files for this entry"
-msgstr "Last ned filer til dette svaret"
+msgstr "Last ned filer til denne besvarelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:257
 msgid "Export this Response"
-msgstr "Eksporter dette svaret"
+msgstr "Eksporter denne besvarelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:262
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:934
@@ -6500,7 +6500,7 @@ msgstr "Er du sikker på du vil slette denne besvarelsen?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:328
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:972
 msgid "Do you really want to delete all marked responses?"
-msgstr "Er du sikker på du vil slette alle merkede besvarelser?"
+msgstr "Er du sikker på du vil slette alle markerte besvarelser?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:329
 msgid "Please select at least one file for deletion"
@@ -6512,7 +6512,7 @@ msgstr "Velg minst en fil som skal lastes ned"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:340
 msgid "Showing Filtered Results"
-msgstr "Viser filtrerte resultater"
+msgstr "Viser filtrerte besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:668
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:77
@@ -6520,12 +6520,12 @@ msgstr "Viser filtrerte resultater"
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:170
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:155
 msgid "Actions"
-msgstr "Hendelser"
+msgstr "Handlinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:686
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1030
 msgid "Delete marked responses"
-msgstr "Slett merkede besvarelser"
+msgstr "Slett markerte besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:689
 msgid "Download marked files"
@@ -6551,7 +6551,7 @@ msgstr "Vis forrige..."
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:840
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1088
 msgid "Show next.."
-msgstr "Vis neste..."
+msgstr "Vis neste.."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:842
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1090
@@ -6562,19 +6562,19 @@ msgstr "Vis siste..."
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:843
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1091
 msgid "Show last.."
-msgstr "Vis siste..."
+msgstr "Vis siste.."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:856
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1104
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:954
 msgid "Records displayed:"
-msgstr "Viste besvarelser:"
+msgstr "Vis ant. poster:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:857
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1105
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:955
 msgid "Starting from:"
-msgstr "Starter fra:"
+msgstr "Start fra:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:858
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1106
@@ -6589,7 +6589,7 @@ msgstr "Vis:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:891
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1132
 msgid "View response details"
-msgstr "Vis detaljerte besvarelser"
+msgstr "Vis detaljert besvarelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:895
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1133
@@ -6607,7 +6607,7 @@ msgstr "Slett denne besvarelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:914
 msgid "Edit this token"
-msgstr "Rediger denne nøkkelen"
+msgstr "Rediger denne adgangskoden"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:967
 msgid "Time statistics"
@@ -6715,7 +6715,7 @@ msgstr "Filtrert fra statistikkskript"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:59
 msgid "Single response"
-msgstr "Én besvarelse"
+msgstr "En besvarelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:86
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:132
@@ -6831,19 +6831,19 @@ msgstr "Velg kolonnene du vil eksportere."
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:390
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:405
 msgid "Token control"
-msgstr "Nøkkelkontroll"
+msgstr "Adgangskodekontroll"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:223
 msgid "Choose Token Fields"
-msgstr "Velg nøkkeldata"
+msgstr "Velg adgangskodefelter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:225
 msgid ""
 "Your survey can export associated token data with each response. Select any "
 "additional fields you would like to export."
 msgstr ""
-"Undersøkelsen kan eksportere tilhørende nøkkeldata med hver besvarelse. Velg "
-"de tilleggsfelt du vil eksportere."
+"Undersøkelsen kan eksportere tilhørende adgangskodedata med hver besvarelse. Velg "
+"de ekstrafelt du vil eksportere."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:245
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:135
@@ -6891,7 +6891,7 @@ msgstr "Ny post"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:862
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:867
 msgid "NEW RECORD"
-msgstr "NY OPPFØRING"
+msgstr "NY POST"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:929
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1050
@@ -6913,7 +6913,7 @@ msgstr "Ikke tilgjengelig"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1197
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1198
 msgid "Tokens problem - token table missing"
-msgstr "Problem med nøklene: Nøkkeltabellen mangler"
+msgstr "Problem med adgangskontrollene: Adgangstabellen mangler"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:21
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:215
@@ -6993,26 +6993,26 @@ msgstr "Kopier spørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:124
 msgid "Edit default answer values"
-msgstr "Rediger forhåndssvar"
+msgstr "Rediger forhåndsvalg"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:139
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:184
 #, php-format
 msgid "Default answer for scale %s:"
-msgstr "Forhåndssvar for skala %s:"
+msgstr "Forhåndsvalg for skala %s:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:143
 msgid "Default answer value:"
-msgstr "Forhåndssvar:"
+msgstr "Forhåndsvalg:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:152
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:188
 msgid "<No default value>"
-msgstr "<Ingen forhåndssvar>"
+msgstr "<Ingen forhåndsvalg>"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:169
 msgid "Default value for option 'Other':"
-msgstr "Forhåndsverdi for 'Annet':"
+msgstr "Forhåndsvalg for 'Annet':"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:188
 msgid "Checked"
@@ -7020,7 +7020,7 @@ msgstr "Avkrysset"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:212
 msgid "Use same default value across languages:"
-msgstr "Bruk samme standardverdi på tvers av språk:"
+msgstr "Bruk samme forhåndsvalg på tvers av språk:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:302
 msgid "Edit question"
@@ -7042,7 +7042,7 @@ msgstr "Kan ikke endres (undersøkelsen er aktiv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:493
 msgid "Position:"
-msgstr "Posisjon:"
+msgstr "Plassering:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:495
 msgid "At end"
@@ -7075,7 +7075,7 @@ msgstr "Velg LimeSurvey spørsmålsfil (*.lsq/*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:650
 msgid "Current group is using conditional questions"
-msgstr "Gjeldende gruppe bruker spørsmål med betingelser"
+msgstr "Denne gruppen bruker spørsmål med betingelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:650
 msgid ""
@@ -7215,7 +7215,7 @@ msgstr "En avkryssingsboks"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1002
 msgid "Conditions designer"
-msgstr "oppsett av betingelser"
+msgstr "Oppsett av betingelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1011
 msgid "Show conditions for this question"
@@ -7291,12 +7291,12 @@ msgstr "Rediger scenario"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1385
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1458
 msgid "From token table"
-msgstr "Fra nøkkeltabell"
+msgstr "Fra adgangstabell"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1389
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1462
 msgid "Inexistant token table"
-msgstr "Ikke-eksisterende nøkkeltabell"
+msgstr "Ikke-eksisterende adgangstabell"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1447
 msgid "Not found"
@@ -7320,7 +7320,7 @@ msgstr "Dette spørsmålet vises alltid."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1622
 msgid "Copy the selected conditions to"
-msgstr "Kopier de merkede betingelsene til"
+msgstr "Kopier de markerte betingelsene til"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1646
 msgid ""
@@ -7362,7 +7362,7 @@ msgstr "Foregående spørsmål"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1747
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1881
 msgid "Token fields"
-msgstr "Nøkkelfelter"
+msgstr "Ekstrafelter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1804
 msgid "Comparison operator"
@@ -7382,7 +7382,7 @@ msgstr "RegExp"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1889
 msgid "Predefined answer options for this question"
-msgstr "Forhåndsdefinerte svaralternativer for dette spørsmålet"
+msgstr "Predefinerte svaralternativer for dette spørsmålet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1895
 msgid "Constant value"
@@ -7394,7 +7394,7 @@ msgstr "Svar fra tidligere spørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1925
 msgid "Attributes values from the participant's token"
-msgstr "Verdien på ekstrafeltene fra deltagerens nøkkel"
+msgstr "Verdien på ekstrafeltene fra deltagerens adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1943
 msgid "Update condition"
@@ -7517,8 +7517,8 @@ msgid ""
 "this is an automated email to notify that a user has been created for you on "
 "the site '%s'."
 msgstr ""
-"dette er en automatisk e-post for å meddele om at det har blitt laget en "
-"bruker til deg på nettstedet '%s'."
+"Dette er en automatisk utsendt e-post for å meddele at det har blitt "
+"opprettet en bruker til deg på nettstedet '%s'."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:433
 msgid "You can use now the following credentials to log into the site:"
@@ -7603,7 +7603,7 @@ msgstr "Tilbake"
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:707
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:747
 msgid "User permissions were updated successfully."
-msgstr "Bruker-rettigheter ble oppdatert."
+msgstr "Brukerrettigheter ble oppdatert."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:757
 msgid "You are not allowed to change your own permissions!"
@@ -7626,20 +7626,20 @@ msgstr "En feil oppstod under oppdatering av brukermalene."
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:196
 msgid "First name from token"
-msgstr "Fornavn fra nøkkel"
+msgstr "Fornavn fra adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:123
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:148
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:165
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:197
 msgid "Lastname from token"
-msgstr "Etternavn fra nøkkel"
+msgstr "Etternavn fra adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:124
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:144
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:198
 msgid "Email from the token"
-msgstr "E-postadresse fra nøkkel"
+msgstr "E-postadresse fra adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:128
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:154
@@ -7647,7 +7647,7 @@ msgstr "E-postadresse fra nøkkel"
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:202
 #, php-format
 msgid "Token attribute: %s"
-msgstr "Nøkkelattributt: %s"
+msgstr "Ekstrafelt i adgangskode: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:130
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:159
@@ -7679,7 +7679,7 @@ msgstr "Svar fra denne besvarelsen"
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:145
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:163
 msgid "Token code for this participant"
-msgstr "Nøkkelkode for denne deltakeren"
+msgstr "Adgangskode for denne deltakeren"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:149
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:166
@@ -7762,7 +7762,7 @@ msgstr "Globale innstillinger ble lagret."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:131
 msgid "Overview & update"
-msgstr "Oversikt & oppdatering"
+msgstr "Oversikt og oppdatering"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:133
 msgid "Email settings"
@@ -7947,7 +7947,7 @@ msgstr "SMTP-tjener:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:296
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
-msgstr "Skriv inn tjenernavn og port, f. eks. min.smtp.no:25"
+msgstr "F.eks. min.smtp.no:25"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:297
 msgid "SMTP username:"
@@ -8016,7 +8016,7 @@ msgstr "Tjenernavn og port:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:348
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:823
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
-msgstr "Skriv inn tjenernavn og port, f.eks. imap.gmail.com:995"
+msgstr "F.eks. imap.gmail.com:995"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:350
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:824
@@ -8153,11 +8153,11 @@ msgstr "Inaktive svartabeller"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:638
 msgid "Active token tables"
-msgstr "Aktive nøkkeltabeller"
+msgstr "Aktive adgangstabeller"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:641
 msgid "Deactivated token tables"
-msgstr "Inaktive nøkkeltabeller"
+msgstr "Inaktive adgangstabeller"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:647
 msgid "Show PHPInfo"
@@ -8178,23 +8178,23 @@ msgstr "Endre innstillingene til undersøkelsen"
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:91
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:186
 msgid "Presentation & navigation"
-msgstr "Presentasjon & navigasjon"
+msgstr "Presentasjon og navigasjon"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:92
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:187
 msgid "Publication & access control"
-msgstr "Publisitet & tilgangskontroll"
+msgstr "Publisitet og tilgangskontroll"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:93
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:188
 msgid "Notification & data management"
-msgstr "Varsler & databehandling"
+msgstr "Varsler og databehandling"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:94
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:189
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:41
 msgid "Tokens"
-msgstr "Nøkler"
+msgstr "Adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:96
 msgid "Copy"
@@ -8384,7 +8384,7 @@ msgstr "Lagre & last inn"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:694
 msgid "Use HTML format for token emails?"
-msgstr "Bruk HTML-format for e-post om nøkler?"
+msgstr "Bruk HTML-format i e-post om adgangskoder?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:695
 msgid ""
@@ -8411,8 +8411,8 @@ msgid ""
 "You can't use Anonymized responses when Token-based answers persistence is "
 "enabled."
 msgstr ""
-"Du kan ikke bruke anonymiserte besvarelser når nøkkelbaserte besvarelser er "
-"skrudd på."
+"Du kan ikke bruke anonymiserte besvarelser når adgangskodebaserte besvarelser "
+"er skrudd på."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:741
 msgid ""
@@ -8420,7 +8420,7 @@ msgid ""
 "LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
 "time to ensure the anonymity of your participants."
 msgstr ""
-"Hvis du slår på anonymiserte basvarelser, og deretter lager en nøkkeltabell, "
+"Hvis du slår på anonymiserte besvarelser, og deretter lager en adgangstabell, "
 "vil besvarte undersøkelser bli merket med Y i stedet for dato/klokkeslett "
 "for å opprettholde anonymiteten til deltakerne."
 
@@ -8494,7 +8494,7 @@ msgstr "Deltaker kan lagre og fortsette senere?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:931
 msgid "Enable token-based response persistence?"
-msgstr "Slå på lagring av nøkkelbaserte svar?"
+msgstr "Slå på lagring av adgangskodebaserte svar?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:932
 msgid ""
@@ -8503,11 +8503,11 @@ msgstr "Dette valget kan ikke gjøres når anonymiserte besvarelser er slått p�
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:946
 msgid "Set token length to:"
-msgstr "Sett nøkkel-lengde til:"
+msgstr "Sett lengde på adgangskode til:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:972
 msgid "Select survey structure file (*.lss, *.csv):"
-msgstr "Velg undersøkelsesstrukturfil (*.lss, *.csv):"
+msgstr "Velg undersøkelsefil (*.lss, *.csv):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:974
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:994
@@ -8809,35 +8809,35 @@ msgstr "Beklager men du har ikke rettigheter til å gjøre dette."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:456
 msgid "Token table could not be created."
-msgstr "Nøkkelen kunne ikke lages."
+msgstr "Adgangstabell kunne ikke lages."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:476
 msgid "A token table has been created for this survey."
-msgstr "Det ble opprettet en nøkkeltabell til denne undersøkelsen."
+msgstr "Det ble opprettet en adgangstabell til denne undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:488
 msgid "Import old tokens"
-msgstr "Importer gamle nøkler"
+msgstr "Importer gamle adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:489
 msgid ""
 "A token table has been created for this survey and the old tokens were "
 "imported."
 msgstr ""
-"Det har blitt opprettet en nøkkeltabell for denne undersøkelsen, og de gamle "
-"nøklene ble importert."
+"Det har blitt opprettet en adgangstabell for denne undersøkelsen, og de gamle "
+"adgangskodene ble importert."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:509
 msgid "Tokens have not been initialised for this survey."
-msgstr "Nøkler er ikke tildelt denne undersøkelsen."
+msgstr "Adgangskoder er ikke tildelt denne undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:512
 msgid ""
 "If you initialise tokens for this survey then this survey will only be "
 "accessible to users who provide a token either smanually or by URL."
 msgstr ""
-"Hvis du tildeler nøkler til denne undersøkelsen, vil den bare bli "
-"tilgjengelig for brukere som oppgir en nøkkel, enten manuelt eller i URLen."
+"Hvis du tildeler adgangskoder til denne undersøkelsen, vil den bare bli "
+"tilgjengelig for brukere som oppgir en adgangskode, enten manuelt eller i URLen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:519
 msgid ""
@@ -8846,16 +8846,16 @@ msgid ""
 "time to ensure the anonymity of your participants."
 msgstr ""
 "Merk: Hvis du slår på -anonymiserte basvarelser- for denne undersøkelsen, "
-"vil brukte nøkler bli merket med 'Y' i stedet for dato/klokkeslett for å "
+"vil brukte adgangskoder bli merket med 'Y' i stedet for dato/klokkeslett for å "
 "opprettholde anonymiteten til deltagerne."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:523
 msgid "Do you want to create a token table for this survey?"
-msgstr "Vil du opprette en nøkkeltabell for denne undersøkelsen?"
+msgstr "Vil du opprette en adgangstabell for denne undersøkelsen?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:532
 msgid "You don't have the permission to activate tokens."
-msgstr "Du har ikke tilgang til å aktivere nøkler."
+msgstr "Du har ikke tilgang til å aktivere adgangskoder."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:540
 msgid "Restore options"
@@ -8863,7 +8863,7 @@ msgstr "Gjennopprett innstillinger"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:543
 msgid "The following old token tables could be restored:"
-msgstr "Følgende gamle nøkkeltabeller kan bli gjennopprettet:"
+msgstr "Følgende gamle adgangstabeller kan bli gjennopprettet:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:550
 msgid "Restore"
@@ -8871,7 +8871,7 @@ msgstr "Gjennopprett"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:579
 msgid "Show token summary"
-msgstr "Vis nøkkel-oppsummering"
+msgstr "Vis oppsummering av adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:583
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2476
@@ -8879,18 +8879,18 @@ msgstr "Vis nøkkel-oppsummering"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2542
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2617
 msgid "Display tokens"
-msgstr "Vis nøkler"
+msgstr "Vis adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:588
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2543
 msgid "Add new token entry"
-msgstr "Legg til nøkkeloppføring"
+msgstr "Legg til adgangskodeoppføring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:592
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2414
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2569
 msgid "Add dummy tokens"
-msgstr "Legg til falske nøkler"
+msgstr "Legg til navnløs adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:600
 msgid "Manage additional attribute fields"
@@ -8898,32 +8898,32 @@ msgstr "Behandle ekstrafelter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:607
 msgid "Import tokens from CSV file"
-msgstr "Importer nøkler fra en CSV-fil"
+msgstr "Importer adgangskoder fra en CSV-fil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:609
 msgid "Import tokens from LDAP query"
-msgstr "Importer nøkler fra en LDAP-spørring"
+msgstr "Importer adgangskoder fra en LDAP-spørring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:616
 msgid "Export tokens to CSV file"
-msgstr "Eksporter nøkler til en CSV-fil"
+msgstr "Eksporter adgangskoder til en CSV-fil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:625
 msgid "Send email invitation"
-msgstr "Send e-postinvitasjon"
+msgstr "Send invitasjon"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:628
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1666
 msgid "Send email reminder"
-msgstr "Send e-postpåminnelse"
+msgstr "Send påminnelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:633
 msgid "Generate tokens"
-msgstr "Generer nøkler"
+msgstr "Generer adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:640
 msgid "Drop tokens table"
-msgstr "Slett nøkkeltabell"
+msgstr "Slett adgangstabell"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:654
 msgid "Show help"
@@ -8931,23 +8931,23 @@ msgstr "Vis hjelp"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:668
 msgid "Token summary"
-msgstr "Oppsummering av nøkler"
+msgstr "Oppsummering av adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:672
 msgid "Total records in this token table"
-msgstr "Antall nøkkeloppføringer i denne nøkkeltabellen"
+msgstr "Antall poster i denne adgangstabellen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:679
 msgid "Total with no unique Token"
-msgstr "Antall som ikke har en unik nøkkel"
+msgstr "Antall uten unik adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:684
 msgid "Total invitations sent"
-msgstr "Antall invitasjoner sendt"
+msgstr "Antall sendte invitasjoner"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:689
 msgid "Total opted out"
-msgstr "Totalt avbrutte"
+msgstr "Totalt valgt bort"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:694
 msgid "Total surveys completed"
@@ -8955,15 +8955,15 @@ msgstr "Antall gjennomførte undersøkelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:719
 msgid "Token export options"
-msgstr "Alternativer for eksport av nøkler"
+msgstr "Alternativer for eksport av adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:721
 msgid "Token status:"
-msgstr "Nøkkelstatus:"
+msgstr "Status for adgangskoder:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:722
 msgid "All tokens"
-msgstr "Alle nøkler"
+msgstr "Alle adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:724
 msgid "Not started"
@@ -9001,7 +9001,7 @@ msgstr "Påminnelse(r) sendt"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:738
 msgid "No reminder(s) sent"
-msgstr "Ingen påminnelser sendt"
+msgstr "Ingen sendte påminnelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:740
 msgid "Filter by language"
@@ -9013,7 +9013,7 @@ msgstr "Filtrer etter e-postadresse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:752
 msgid "Export tokens"
-msgstr "Eksporter nøkler"
+msgstr "Eksporter adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:783
 msgid "Bounce settings have been saved."
@@ -9025,7 +9025,7 @@ msgstr "Returadresse for undersøkelse:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:796
 msgid "Bounce settings to be used"
-msgstr "Innstillinger forreturadresse som skal brukes"
+msgstr "Innstillinger for returadresse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:803
 msgid "Use settings below"
@@ -9038,35 +9038,35 @@ msgstr "Bruk globale innstillinger"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:848
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:888
 msgid "Delete all token entries"
-msgstr "Slett alle nøkkeloppføringer"
+msgstr "Slett alle adgangskodeoppføringer"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:849
 msgid "All token entries have been deleted."
-msgstr "Alle nøkkeloppføringer er slettet."
+msgstr "Alle adgangskodeoppføringer er slettet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:857
 msgid "Reset token invitation status"
-msgstr "Nullstill status på nøkkelinvitasjoner"
+msgstr "Nullstill status på adgangskode-invitasjoner"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:858
 msgid "All token entries have been set to 'Not invited'."
-msgstr "Alle nøkkel-oppføringer har blitt satt til 'Ikke invitert'."
+msgstr "Alle adgangskodeoppføringer er satt til 'Ikke invitert'."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:866
 msgid "Remove unique token numbers"
-msgstr "Slett unike nøkkelnummer"
+msgstr "Slett unike adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:867
 msgid "All unique token numbers have been removed."
-msgstr "Alle unike nøkkelnummer er slettet."
+msgstr "Alle unike adgangskoder er slettet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:874
 msgid "Token database administration options"
-msgstr "Nøkkeldatabase-administrasjon"
+msgstr "Administrasjon av adgangskodedatabase"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:880
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr "Er du sikker på du ønsker å nullstille alle invitiasjonsmarkeringene?"
+msgstr "Er du sikker på du ønsker å sette alle invitiasjonspostene til NEI?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:880
 msgid "Set all entries to 'No invitation sent'."
@@ -9074,15 +9074,15 @@ msgstr "Sett alle oppføringer til 'Ingen invitasjon sendt'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:882
 msgid "Are you sure you want to delete all unique token strings?"
-msgstr "Er du sikker på at du vil slette alle unike nøkkel-IDer?"
+msgstr "Er du sikker på at du vil slette alle unike adgangskoder?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:882
 msgid "Delete all unique token strings"
-msgstr "Slett alle unike nøkkelnummer"
+msgstr "Slett alle unike adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:888
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr "Er du sikker på at du vil slette ALLE nøkler?"
+msgstr "Er du sikker på at du vil slette ALLE adgangskodeoppføringer?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:920
 msgid "You have selected not to use any bounce settings"
@@ -9139,27 +9139,27 @@ msgstr "Status for e-post"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1064
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2276
 msgid "Invitation sent?"
-msgstr "Sendt invitasjon?"
+msgstr "Invitasjon"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1070
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1073
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1074
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2281
 msgid "Reminder sent?"
-msgstr "Sendt påminnelse?"
+msgstr "Påminnelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1080
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1083
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1084
 msgid "Reminder count"
-msgstr "Antall påminnelser"
+msgstr "Påminnelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1090
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1093
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1094
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2294
 msgid "Completed?"
-msgstr "Ferdig?"
+msgstr "Ferdig"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1100
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1103
@@ -9179,7 +9179,7 @@ msgstr "Gyldig fra"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1123
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1124
 msgid "Valid until"
-msgstr "Gyldig til og med"
+msgstr "Gyldig til"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1180
 msgid "Invalid email address:"
@@ -9187,7 +9187,7 @@ msgstr "Ugyldig e-postadresse:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1186
 msgid "This participant opted out of this survey."
-msgstr "Denne deltakeren valgte å avbryte denne undersøkelsen."
+msgstr "Denne deltakeren valgte å avbryte undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1212
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1214
@@ -9199,12 +9199,12 @@ msgstr "Besvar undersøkelse"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2225
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2422
 msgid "Edit token entry"
-msgstr "Rediger nøkkeloppføring"
+msgstr "Rediger adgangskodeoppføring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1230
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1232
 msgid "Delete token entry"
-msgstr "Slett nøkkeloppføring"
+msgstr "Slett adgangskodeoppføring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1247
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1249
@@ -9214,12 +9214,12 @@ msgstr "Vis/oppdater siste besvarelse"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1256
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1258
 msgid "Send invitation email to this entry"
-msgstr "Send invitasjon per e-post"
+msgstr "Send invitasjon til denne oppføringen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1264
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1266
 msgid "Send reminder email to this entry"
-msgstr "Sende påminnelse per e-post"
+msgstr "Sende påminnelse til denne oppføringen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1284
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1286
@@ -9236,7 +9236,7 @@ msgid ""
 "Send invitation emails to the selected entries (if they have not yet been "
 "sent an invitation email)"
 msgstr ""
-"Send invitasjon per e-post til de valgte (hvis de ikke allerede har fått en)"
+"Send invitasjon til de valgte (hvis de ikke allerede har fått en)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1303
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1305
@@ -9244,19 +9244,19 @@ msgid ""
 "Send reminder email to the selected entries (if they have already received "
 "the invitation email)"
 msgstr ""
-"Send påminnelse per e-post til valgte (hvis de allerede har fått invitasjon)"
+"Send påminnelse til de valgte (hvis de allerede har fått invitasjon)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1320
 msgid "Delete Tokens Table"
-msgstr "Slett nøkkeltabell"
+msgstr "Slett adgangstabell"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1326
 msgid ""
 "If you delete this table tokens will no longer be required to access this "
 "survey."
 msgstr ""
-"Hvis du sletter denne tabellen er ikke nøkler lenger nødvendige for å få "
-"adgang til undersøkelsen."
+"Hvis du sletter denne tabellen er ikke adgangskoder lenger nødvendige for "
+"å få adgang til undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1326
 msgid ""
@@ -9268,15 +9268,15 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1329
 msgid "Delete Tokens"
-msgstr "Slett nøkler"
+msgstr "Slett adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1353
 msgid ""
 "The tokens table has now been removed and tokens are no longer required to "
 "access this survey."
 msgstr ""
-"Nøkkeltabellen er nå blitt fjernet og nøkler er ikke lenger nødvendige for å "
-"få adgang til undersøkelsen."
+"Adgangstabellen er nå blitt fjernet og adgangskoder er ikke lenger nødvendige "
+"for å få adgang til undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1353
 msgid ""
@@ -9288,7 +9288,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1375
 msgid "Send email invitations"
-msgstr "Send e-postinvitasjoner"
+msgstr "Send invitasjoner"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1381
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1671
@@ -9360,7 +9360,7 @@ msgstr "Melding"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1470
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1741
 msgid "Bypass token with failing email addresses"
-msgstr "Hoppe over nøkkel hvis feil med e-postadresse"
+msgstr "Hoppe over adgangskode hvis det er feil i e-postadresse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1474
 msgid "Send Invitations"
@@ -9373,19 +9373,19 @@ msgstr "Sender invitasjoner..."
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1489
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1782
 msgid "Sending to Token ID"
-msgstr "Sender til nøkkel-ID"
+msgstr "Sender til adgangskode-ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1490
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1783
 msgid "Sending to Token IDs"
-msgstr "Sender til nøkkel-ID"
+msgstr "Sender til adgangskode-IDer"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1594
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1915
 msgid ""
 "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr ""
-"E-post til {FIRSTNAME} {LASTNAME} ({EMAIL}) utsatt. Nøkkelen er ennå ikke "
+"E-post til {FIRSTNAME} {LASTNAME} ({EMAIL}) bleutsatt. Adgangskoden er ennå ikke "
 "gyldig."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1598
@@ -9394,7 +9394,7 @@ msgid ""
 "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid "
 "anymore."
 msgstr ""
-"Sender ikke e-post til {FIRSTNAME} {LASTNAME} ({EMAIL}). Nøkkelen er ikke "
+"Sender ikke e-post til {FIRSTNAME} {LASTNAME} ({EMAIL}). Adgangskoden er ikke "
 "lenger gyldig."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1608
@@ -9434,7 +9434,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1652
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1993
 msgid "having a valid email address"
-msgstr "ha en gyldig e-postadresse"
+msgstr "har en gyldig e-postadresse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1653
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1994
@@ -9447,11 +9447,11 @@ msgstr "allerede har fullført undersøkelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1655
 msgid "having a token"
-msgstr "har en nøkkel"
+msgstr "har en adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1715
 msgid "Reminder Email:"
-msgstr "E-postpåminnelse:"
+msgstr "Påminnelse:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1724
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1737
@@ -9464,11 +9464,11 @@ msgstr "Sender til:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1729
 msgid "All token entries to whom a reminder email would apply"
-msgstr "Alle nøkkeloppføringer som vil få en e-postpåminnelse"
+msgstr "Adgangskodeoppføringer som får påminnelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1732
 msgid "Start at Token ID:"
-msgstr "Start på nøkkelnummer:"
+msgstr "Start på adgangskode-ID:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1747
 msgid "Min days between reminders"
@@ -9488,7 +9488,7 @@ msgstr "Sender påminnelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1781
 msgid "From Token ID"
-msgstr "Fra nøkkel-ID"
+msgstr "Fra adgangskode-ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1931
 msgid "Reminder sent to:"
@@ -9500,31 +9500,31 @@ msgstr "men har ikke allerede fullført undersøkelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2004
 msgid "Create tokens"
-msgstr "Opprett nøkler"
+msgstr "Opprett adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2008
 msgid ""
 "Clicking yes will generate tokens for all those in this token list that have "
 "not been issued one. Is this OK?"
 msgstr ""
-"Ved å velge Ja vil nøkler bli generert for alle i nøkkellisten som ikke "
+"Ved å velge Ja vil adgangskoder bli generert for alle i adgangslisten som ikke "
 "allerede har fått en. Er dette OK?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2057
 msgid "{TOKENCOUNT} tokens have been created"
-msgstr "{TOKENCOUNT} nøkler er opprettet"
+msgstr "{TOKENCOUNT} adgangskoder er opprettet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2074
 msgid "Marked tokens have been deleted."
-msgstr "Markerte nøkkeloppføringer er slettet."
+msgstr "Markerte adgangskoder er slettet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2076
 msgid "No tokens were selected for deletion"
-msgstr "Ingen nøkler ble valgt for sletting"
+msgstr "Ingen adgangskoder ble valgt for sletting"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2081
 msgid "Token has been deleted."
-msgstr "Nøkkel er slettet."
+msgstr "Adgangskode er slettet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2083
 msgid "Reloading Screen. Please wait."
@@ -9532,7 +9532,7 @@ msgstr "Laster skjermbilde på nytt. Vennligst vent."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2089
 msgid "Manage token attribute fields"
-msgstr "Behandle ekstrafelt i nøkkel"
+msgstr "Behandle ekstrafelter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2093
 msgid "Attribute field"
@@ -9552,12 +9552,12 @@ msgstr "<ingen data>"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2121
 msgid "Add token attributes"
-msgstr "Legg til ekstrafelt"
+msgstr "Legg til ekstrafelter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2123
 #, php-format
 msgid "There are %s user attribute fields in this token table"
-msgstr "Det finnes %s ekstrafelter i denne nøkkeltabellen"
+msgstr "Det finnes %s ekstrafelter i denne adgangstabellen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2126
 msgid "Number of attribute fields to add:"
@@ -9569,30 +9569,30 @@ msgstr "Legg til felter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2151
 msgid "Update token attribute descriptions"
-msgstr "Oppdater beskrivelse for nøkkelattributt"
+msgstr "Oppdater beskrivelse for ekstrafelt"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2155
 msgid "Updating token attribute descriptions failed:"
-msgstr "Feil ved oppdatering av beskrivelse av nøkkelattributter:"
+msgstr "Feil ved oppdatering av beskrivelse av ekstrafelter:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2156
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2161
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2190
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2195
 msgid "Back to attribute field management."
-msgstr "Tilbake til attributtfeltbehandling."
+msgstr "Tilbake til feltfeltbehandling."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2160
 msgid "Token attribute descriptions were successfully updated."
-msgstr "Beskrivelse av nøkkelattributt ble oppdatert."
+msgstr "Beskrivelse av ekstrafelt ble oppdatert."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2185
 msgid "Update token attributes"
-msgstr "Oppdater nøkkelattributter"
+msgstr "Oppdater ekstrafelter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2189
 msgid "Adding attribute fields failed:"
-msgstr "Feil ved oppretting av nye attributtfelter:"
+msgstr "Feil ved oppretting av nye ekstrafelter:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2194
 #, php-format
@@ -9603,7 +9603,7 @@ msgstr "%s felt(er) ble lagt til."
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2339
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2507
 msgid "Add token entry"
-msgstr "Legg til nøkkeloppføring"
+msgstr "Legg til adgangskodeoppføring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2237
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2369
@@ -9619,8 +9619,8 @@ msgid ""
 "You can leave this blank, and automatically generate tokens using 'Generate "
 "Tokens'"
 msgstr ""
-"Du kan la dette være tomt, og automatisk generere nøkler ved å klikke på "
-"'Generer nøkler'"
+"Du kan la dette være tomt, og automatisk generere adgangskoder ved å klikke på "
+"'Generer adgangskoder'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2288
 msgid "Reminder count:"
@@ -9650,23 +9650,23 @@ msgstr "tt:mm"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2334
 msgid "Update token entry"
-msgstr "Oppdater nøkkeloppføring"
+msgstr "Oppdater adgangskodeoppføring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2364
 msgid "Create dummy tokens"
-msgstr "Opprett falske nøkler"
+msgstr "Opprett navnløse adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2371
 msgid "Number of tokens"
-msgstr "Antall nøkler"
+msgstr "Antall adgangskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2373
 msgid "Token length"
-msgstr "Nøkkellengde"
+msgstr "Lengde på adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2475
 msgid "The token entry was successfully updated."
-msgstr "Nøkkeloppføringen ble oppdatert."
+msgstr "Adgangskodeoppføringen ble oppdatert."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2480
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2540
@@ -9680,24 +9680,24 @@ msgid ""
 "There is already an entry with that exact token in the table. The same token "
 "cannot be used in multiple entries."
 msgstr ""
-"Det finnes allerede en oppføring med denne nøkkelen i tabelen. Samme nøkkel "
+"Det finnes allerede en oppføring med denne adgangskoden i tabellen. Samme adgangskode "
 "kan ikke brukes i flere oppføringer."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2482
 msgid "Show this token entry"
-msgstr "Vis denne nøkkeloppføringen"
+msgstr "Vis denne adgangskodeoppføringen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2534
 msgid "New token was added."
-msgstr "Ny nøkkel ble lagt til."
+msgstr "Ny adgangskode ble lagt til."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2536
 msgid "Add another token entry"
-msgstr "Legg til ny nøkkeloppføring"
+msgstr "Legg til ny adgangskodeoppføring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2616
 msgid "New dummy tokens were added."
-msgstr "Ny falsk nøkkel ble lagt til."
+msgstr "Ny navnløs adgangskode ble lagt til."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2623
 msgid "Upload CSV File"
@@ -9740,7 +9740,7 @@ msgstr "LDAP-spørringer er definert av administrator i config-ldap.php-filen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2648
 msgid "Token file upload"
-msgstr "Nøkkelfil-opplasting"
+msgstr "Opplasting av adgangskodefil"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2668
 msgid "Uploaded CSV file successfully"
@@ -9760,31 +9760,31 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2825
 msgid "Successfully created token entries"
-msgstr "Laget nøkkeloppføringer"
+msgstr "Opprettet adgangskodeoppføringer"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2827
 msgid "Failed to create token entries"
-msgstr "Klarte ikke å lage nøkkeloppføringer"
+msgstr "Klarte ikke å opprette adgangskodeoppføringer"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2829
 #, php-format
 msgid "%s records in CSV"
-msgstr "%s besvarelser i CSV"
+msgstr "%s poster i CSV"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2830
 #, php-format
 msgid "%s records met minumum requirements"
-msgstr "%s besvarelser oppfylte minimumskravene"
+msgstr "%s poster oppfylte minimumskravene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2831
 #, php-format
 msgid "%s records imported"
-msgstr "%s besvarelser ble importert"
+msgstr "%s poster ble importert"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2840
 #, php-format
 msgid "%s duplicate records removed"
-msgstr "%s duplikate besvarelser fjernet"
+msgstr "%s duplikate poster ble slettet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2841
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2853
@@ -9803,7 +9803,7 @@ msgstr "%s linjer hadde feil antall felter."
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3089
 #, php-format
 msgid "%s records with invalid email address removed"
-msgstr "%s besvarelser med ugyldig e-postadresse ble fjernet"
+msgstr "%s poster med ugyldig e-postadresse ble slettet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2884
 msgid "Uploading LDAP Query"
@@ -9815,7 +9815,7 @@ msgstr "Resultater fra LDAP-spørring"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3079
 msgid "Records met minumum requirements"
-msgstr "Poster oppfylte standard"
+msgstr "Poster oppfyller minimunsstandard"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3080
 msgid "Records imported"
@@ -9827,7 +9827,7 @@ msgstr "Duplikate poster er slettet"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3100
 msgid "Can't bind to the LDAP directory"
-msgstr "Kan ikke binde til LDAP_katalogen"
+msgstr "Kan ikke binde til LDAP-katalogen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3106
 msgid "Can't connect to the LDAP directory"
@@ -9865,11 +9865,11 @@ msgstr "Filtrer duplikate poster:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3140
 msgid "Duplicates are determined by:"
-msgstr "Duplikate besvarelser bestemmes av:"
+msgstr "Duplikater bestemmes av:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3170
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
-msgstr "Beklager, men LDAP-modulen mangler i PHP-oppsettet på serveren."
+msgstr "Beklager, men LDAP-modulen mangler i PHP-oppsettet på tjeneren."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3176
 msgid "LDAP is disabled or no LDAP query defined."
@@ -9963,7 +9963,7 @@ msgstr "Deaktiver undersøkelse"
 msgid ""
 "In an active survey, a table is created to store all the data-entry records."
 msgstr ""
-"I en aktiv undersøkelse er en tabell laget for å inneholde alle dataposter."
+"I en aktiv undersøkelse er det opprettet en tabell for alle besvarelser."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:30
 msgid ""
@@ -9984,7 +9984,7 @@ msgid ""
 msgstr ""
 "Data fra deaktiverte undersøkelser kan kun systemadministrator hente frem "
 "igjen ved å bruke spesielle databaseadministrasjonsprogrammer som "
-"phpmyadmin. Bruker undersøkelsen nøkler vil tabellen endre navn og kun være "
+"phpmyadmin. Bruker undersøkelsen adgangskoder vil tabellen endre navn og kun være "
 "tilgjengelig for systemadministrator."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:32
@@ -10019,7 +10019,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:120
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "Nøkkeltabellen som bruker av denne undersøkelsen har endret navn til: "
+msgstr "Adgangstabellen som bruker av denne undersøkelsen har endret navn til: "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:122
 msgid ""
@@ -10223,7 +10223,7 @@ msgstr "Det er %s foreldreløse oppføringer av standardverdier som kan slettes.
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:189
 msgid "All default values meet consistency standards"
-msgstr "Alle standardverdieer oppfyller konsistenskravene"
+msgstr "Alle standardverdier oppfyller konsistenskravene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:200
 #, php-format
@@ -10344,31 +10344,31 @@ msgstr "Undersøkelsen med ID %d lagret på %s"
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:526
 #, php-format
 msgid "Survey ID %d saved at %s containing %d record(s)"
-msgstr "Undersøkelsen med ID %d ble lagret på %s med %d oppføring(er)"
+msgstr "Undersøkelse med ID %d ble lagret på %s med %d post(er)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:467
 msgid ""
 "The following old survey tables should be deleted because their parent "
 "survey no longer exists"
 msgstr ""
-"Følgende spørsmålstabeller bør slettes siden de ikke lenger har noen "
+"Følgende gamle tabeller bør slettes siden de ikke lenger har noen "
 "foreldreundersøkelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:473
 msgid "All old survey tables meet consistency standards"
-msgstr "Alle gamle undersøkelsestabeller oppfyller konsistenskravene"
+msgstr "Alle gamle tabeller oppfyller konsistenskravene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:534
 msgid ""
 "The following old token tables should be deleted because their parent survey "
 "no longer exists"
 msgstr ""
-"Følgende gamle nøkkeltabeller bør slettes, da de ikke lenger har noen "
-"foreldre-undersøkelser"
+"Følgende gamle adgangstabeller bør slettes, da de ikke lenger har noen "
+"foreldreundersøkelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:540
 msgid "All old token tables meet consistency standards"
-msgstr "Alle gamle nøkkeltabeller oppfyller konsistenskravene"
+msgstr "Alle gamle adgangstabeller oppfyller konsistenskravene"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:555
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:647
@@ -10413,14 +10413,14 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:669
 msgid "The following old token tables contain no tokens and can be deleted:"
 msgstr ""
-"Følgende gamle nøkkeltabeller inneholder ingen nøkler, og kan derfor slettes:"
+"Følgende gamle adgangstabeller inneholder ingen adgangskoder og kan derfor slettes:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:677
 msgid ""
 "The following old token list tables exist and may be deleted if no longer "
 "required:"
 msgstr ""
-"Følgende gamle nøkkellistetabeller finnes, og kan slettes hvis de ikke "
+"Følgende gamle adgangstabeller finnes og kan slettes hvis de ikke "
 "lenger trengs:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:685
@@ -10542,7 +10542,7 @@ msgstr "Sletter gamle nøkler og svartabeller som ble igjen etter deaktivering"
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:892
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:902
 msgid "Deleting old token tables"
-msgstr "Sletter gamle nøkkeltabeller"
+msgstr "Sletter gamle adgangstabeller"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:45
@@ -10573,7 +10573,7 @@ msgid ""
 "main administration screen."
 msgstr ""
 "Vi anbefaler at du eksporterer hele undersøkelsen før du fortsetter. Gjør "
-"dette fra menyen under Administrasjon."
+"dette fra menyen Administrasjon."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:64
 msgid "All conditions in this survey have been deleted."
@@ -10626,7 +10626,7 @@ msgid ""
 "answer text with a semikolon or tab. For multilingual surveys you add the "
 "translation(s) on the same line separated with a semikolon/tab."
 msgstr ""
-"Angi ett svar per linje. Du kan angi en kode ved å skille kode og svartekst "
+"Angi ett svar pr. linje. Du kan angi en kode ved å skille kode og svartekst "
 "med et semikolon eller tab. For flerspråklige undersøkelser legger du til "
 "oversettelsen(e) på samme linje separert med et semikolon/tab."
 
@@ -10640,11 +10640,11 @@ msgstr "SPSS-versjon:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:128
 msgid "Prior to 16"
-msgstr "Under 16"
+msgstr "Mindre enn 16"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:130
 msgid "16 or up"
-msgstr "Over 16"
+msgstr "16 og over"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:134
 msgid "Export syntax"
@@ -10852,7 +10852,7 @@ msgstr "portugisisk (Brasil)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:470
 msgid "Punjabi"
-msgstr ""
+msgstr "punjab"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:477
 msgid "Russian"
@@ -10900,7 +10900,7 @@ msgstr "thai"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:555
 msgid "Urdu"
-msgstr ""
+msgstr "urdu"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:562
 msgid "Vietnamese"
@@ -10916,7 +10916,7 @@ msgstr "Lagre dine foreløpige svar"
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:82
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2218
 msgid "Did Not Save"
-msgstr "Kunne ikke lagre"
+msgstr "Lagret ikke"
 
 #: /var/lib/limesurvey-svn/subversion1x/group.php:175
 #: /var/lib/limesurvey-svn/subversion1x/question.php:225
@@ -11076,7 +11076,7 @@ msgstr "En eller flere opplastede filer oppfyller ikke kriteriene"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:31
 msgid "Permission to create/view/update/delete assessments rules for a survey"
 msgstr ""
-"Rettighet tilå lage/vise/oppdatere/slette  vurderingsregler i en undersøkelse"
+"Rettighet til å lage/vise/oppdatere/slette vurderingsregler i en undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:32
 msgid "Permission to create/view/update/delete quota rules for a survey"
@@ -11111,7 +11111,7 @@ msgstr "Aktivering av undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:36
 msgid "Permission to activate/deactivate a survey"
-msgstr "Retighet til å aktivere/deaktivere en undersøkelse"
+msgstr "Rettighet til å aktivere/deaktivere en undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:37
 msgid "Survey content"
@@ -11150,16 +11150,16 @@ msgid ""
 "Permission to view/update the survey settings including token table creation"
 msgstr ""
 "Rettighet til å vise/oppdatere innstillinger for undersøkelsen inkludert "
-"oppretting av nøkkeltabell"
+"oppretting av adgangstabell"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:41
 msgid "Permission to create/update/delete/import/export token entries"
 msgstr ""
-"Rettighet til å lage/oppdatere/slette/importere/eksportere nøkkeloppføringer"
+"Rettighet til å lage/oppdatere/slette/importere/eksportere adgangskodeoppføringer"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:42
 msgid "Quick translation"
-msgstr "Rask oversettelse"
+msgstr "Hurtig oversettelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:42
 msgid ""
@@ -11238,7 +11238,7 @@ msgstr "Liste (radioknapp)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:177
 msgid "Multiple choice"
-msgstr "Flere valg"
+msgstr "Flervalg"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:183
 msgid "Numerical Input"
@@ -11250,7 +11250,7 @@ msgstr "Liste med kommentar"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:195
 msgid "Multiple choice with comments"
-msgstr "Flere valg med kommentar"
+msgstr "Flervalg med kommentar"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:201
 msgid "Multiple Short Text"
@@ -11314,7 +11314,7 @@ msgstr "Siste side"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2267
 msgid "Date last action"
-msgstr "Dato ved siste hendelse"
+msgstr "Dato for siste hendelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2279
 msgid "Date started"
@@ -11331,7 +11331,7 @@ msgstr "Skala 2"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2544
 #, php-format
 msgid "Rank %s"
-msgstr "Vurdering %s"
+msgstr "Rangering %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2668
 msgid "Other comment"
@@ -11361,7 +11361,7 @@ msgstr "Det er {NUMBEROFQUESTIONS} spørsmål i denne undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2968
 msgid "A Note On Privacy"
-msgstr "Merknad om personvern"
+msgstr "Informasjon om personvern"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2968
 msgid "This survey is anonymous."
@@ -11380,10 +11380,10 @@ msgid ""
 msgstr ""
 "Informasjonen du har lagt igjen i undersøkelsen inneholder ikke noe som gjør "
 "det mulig å identifisere deg, med mindre et spørsmål spør spesielt om dette. "
-"Hvis du har brukt en nøkkel til å gjennomføre undersøkelsen, vil vi "
-"poengtere at nøkkel og besvarelse oppbevares i ulike databasetabeller, og "
+"Hvis du har brukt en adgangskode til å gjennomføre undersøkelsen, vil vi "
+"poengtere at adgangskode og besvarelse oppbevares i ulike databasetabeller og "
 "blir kun brukt til å kontrollere om du har svart på undersøkelsen eller "
-"ikke. Det er ikke mulig å koble svar opp mot hvem som eier en nøkkel."
+"ikke. Det er ikke mulig å koble svar opp mot hvem som eier en adgangskode."
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2972
 msgid "Exit and Clear Survey"
@@ -11425,7 +11425,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3097
 msgid "Answers Cleared"
-msgstr "Alle svar er nullstilt"
+msgstr "Alle svar er slettet"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3104
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3112
@@ -11438,7 +11438,7 @@ msgstr "Lukk dette vinduet"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3117
 msgid "Save Your Unfinished Survey"
-msgstr "Lagre uferdig besvarelse"
+msgstr "Lagre uferdig undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3118
 msgid "Enter a name and password for this survey and click save below."
@@ -11496,7 +11496,7 @@ msgstr "Last inn en tidligere lagret undersøkelse"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3167
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr ""
-"Her kan du hente inn en tidligere lagret besvarelse på denne undersøkelsen."
+"Her kan du hente inn en tidligere lagret undersøkelse."
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3167
 msgid "Type in the 'name' you used to save the survey, and the password."
@@ -11505,7 +11505,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3170
 msgid "Saved name"
-msgstr "Navn"
+msgstr "Lagret navn"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3183
 msgid "Load Now"
@@ -11513,11 +11513,11 @@ msgstr "Hent inn"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3188
 msgid "You must be registered to complete this survey"
-msgstr "Du må være registrert forå gjøre ferdig denne undersøkelse"
+msgstr "Du må være registrert for å delta i denne undersøkelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3189
 msgid "You may register for this survey if you wish to take part."
-msgstr "Du kan registrere deg for å delta i denne undersøkelsen."
+msgstr "Du kan registrere deg for å delta i undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3189
 msgid ""
@@ -11529,7 +11529,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3266
 msgid "Your Assessment"
-msgstr "Vurdering"
+msgstr "Din vurdering"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3619
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3630
@@ -11566,7 +11566,7 @@ msgstr "Sorter svarene i alfabetisk rekkefølge"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3635
 msgid "Set the percentage width of the answer column (1-100)"
-msgstr "Sett bredden til svar-kolonnen i prosent (1-100)"
+msgstr "Sett bredden på svar-kolonnen i prosent (1-100)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3636
 msgid "Answer width"
@@ -11627,7 +11627,7 @@ msgstr "Kategori-separator"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3677
 msgid "Filter the available answers by this value"
-msgstr "Filtrer svaralternativene med denne verdien"
+msgstr "Filtrer tilgjengelige svar med denne verdien"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3678
 msgid "Code filter"
@@ -11653,11 +11653,11 @@ msgstr "Vis rader"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3707
 msgid "Use accessible select boxes instead of calendar popup"
-msgstr "Bruk valgbokser fremfor en kalenderpopup, av tilgjengelighetshensyn"
+msgstr "Bruk valgbokser fremfor en kalenderpopup"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3708
 msgid "Display select boxes"
-msgstr "Vis rullegardinslister"
+msgstr "Vis valgbokser"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3715
 msgid "Minimum year value in calendar"
@@ -11843,7 +11843,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3875
 msgid "Default position"
-msgstr "Standard posisjon"
+msgstr "Standard plassering"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3883
 msgid "Maps zoom level"
@@ -12533,11 +12533,11 @@ msgstr "SQL-kommando feilet: %s Årsak: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7540
 msgid "Token code"
-msgstr "Nøkkelkode"
+msgstr "Adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7541
 msgid "Language code"
-msgstr "Språk-kode"
+msgstr "Språkkode"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7542
 msgid "Invitation sent date"
@@ -12784,13 +12784,13 @@ msgstr "Skriv dine kommentarer her"
 msgid ""
 "Click on the scissors next to each item on the right to remove the last "
 "entry in your ranked list"
-msgstr "Klikk på saksen til høyre for å fjerne siste oppføring i listen"
+msgstr "Klikk på saksen for å fjerne siste oppføring i rangeringslisten"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2826
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2841
 #, php-format
 msgid "Please rank at least %d item for question \"%s\""
-msgstr "Vennligst ranger minst %d element for spørsmål \"%s\"."
+msgstr "Vennligst ranger minst %d element(er) for spørsmål \"%s\"."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3263
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3579
@@ -12932,11 +12932,11 @@ msgstr "navn på undersøkelse (ID):"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:123
 msgid "Token mismatch"
-msgstr "Feil nøkkel"
+msgstr "Feil adgangskode"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:124
 msgid "The token you provided doesn't match the one in your session."
-msgstr "Nøkkelen du har oppgitt er ugyldig eller allerede brukt."
+msgstr "Adgangskoden du oppgav stemmer ikke med den som er i bruk i sesjonen."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:125
 #: /var/lib/limesurvey-svn/subversion1x/index.php:149
@@ -12989,7 +12989,7 @@ msgstr "Du oppgav ikke et passord"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2478
 msgid ""
 "The token you have provided is either not valid, or has already been used."
-msgstr "Den nøkkelen du har oppgitt er ugyldig, eller er allerede brukt."
+msgstr "Den adgangskoden du oppgav er ugyldig eller allerede brukt."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:677
 #: /var/lib/limesurvey-svn/subversion1x/index.php:708
@@ -13009,7 +13009,7 @@ msgid ""
 "Your token seems to be valid but can be used only during a certain time "
 "period."
 msgstr ""
-"Nøkkelen din ser ut til å være gyldig, men kan bare brukes i et gitt tidsrom."
+"Adgangskoden din ser ut til å være gyldig, men kan bare brukes i et gitt tidsrom."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:878
 msgid "Your responses were successfully saved."
@@ -13049,7 +13049,7 @@ msgstr "FEILMELDING"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2237
 msgid "Error saving results"
-msgstr "Feil ved lagring av resultater"
+msgstr "Feil ved lagring av besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2245
 msgid "Try to submit again"
@@ -13073,7 +13073,7 @@ msgstr "Kontrollspørsmål:"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2512
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
-"Dette er en lukket undersøkelse som krever at du har en nøkkel for at du "
+"Dette er en lukket undersøkelse som krever at du har en adgangskode for at du "
 "skal kunne delta."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2369
@@ -13081,18 +13081,18 @@ msgstr ""
 msgid ""
 "If you have been issued a token, please enter it in the box below and click "
 "continue."
-msgstr "Hvis du har en nøkkel, vennligst oppgi den i feltet under."
+msgstr "Hvis du har en adgangskode, vennligst oppgi den i feltet under."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2536
 msgid ""
 "Please confirm the token by answering the security question below and click "
 "continue."
 msgstr ""
-"Vennligst bekreft nøkkelen ved å først besvare kontrollspørsmålet under."
+"Vennligst bekreft adgangskoden ved å først besvare kontrollspørsmålet under."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2550
 msgid "Token:"
-msgstr "Nøkkel:"
+msgstr "Adgangskode:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2663
 msgid ""
@@ -13111,15 +13111,15 @@ msgstr "Den oppgitte e-postadressen er allerede registert."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:166
 msgid "Thank you for registering to participate in this survey."
-msgstr "Takk for at du deltok i undersøkelsen."
+msgstr "Takk for at du registrerte deg for å delta i undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:166
 msgid ""
 "An email has been sent to the address you provided with access details for "
 "this survey. Please follow the link in that email to proceed."
 msgstr ""
-"En e-post er blitt sendt til den adressen du har skrevet i detaljene for "
-"denne undersøkelsen. Bruk lenken i e-posten du mottar for å fortsette."
+"En e-post er blitt sendt til den e-postadressen du oppgav. Der finner du detaljer for "
+"tilgang til undersøkelsen. Bruk lenken i e-posten du mottar for å fortsette."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:166
 msgid "Survey Administrator"
@@ -13139,7 +13139,7 @@ msgstr "Henter spørsmål og svar..."
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:410
 msgid "Total records in survey"
-msgstr "Totalt antall oppføringer i undersøkelsen"
+msgstr "Totalt antall poster i undersøkelsen"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:423
 msgid "Generating summaries ..."
@@ -13164,7 +13164,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Standardspråk"
 
 #~ msgid "Data Entry"
-#~ msgstr "Datatilgang"
+#~ msgstr "Dataregistrering"
 
 #~ msgid "IP-Address"
 #~ msgstr "IP-adresse"
@@ -13182,7 +13182,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Etternavn"
 
 #~ msgid "Records Displayed:"
-#~ msgstr "Viste besvarelser:"
+#~ msgstr "Viste poster:"
 
 #~ msgid "Starting From:"
 #~ msgstr "Start fra:"
@@ -13194,10 +13194,10 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "E-postadresse"
 
 #~ msgid "Export Results"
-#~ msgstr "Eksportere resultater"
+#~ msgstr "Eksporter resultater"
 
 #~ msgid "Token Control"
-#~ msgstr "Nøkkelkontroll"
+#~ msgstr "Adgangskodekontroll"
 
 #~ msgid "Referring URL"
 #~ msgstr "Avsenders URL"
@@ -13230,7 +13230,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Slett undersøkelsen"
 
 #~ msgid "Cannot be modified"
-#~ msgstr "kan ikke endres"
+#~ msgstr "Kan ikke endres"
 
 #~ msgid "Survey is currently active."
 #~ msgstr "Undersøkelsen er for tiden aktiv."
@@ -13251,23 +13251,23 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Oppsummering av undersøkelsesimport"
 
 #~ msgid "Not imported Label Sets"
-#~ msgstr "Etiketter som ikke er importert"
+#~ msgstr "Etikettsamlinger som ikke er importert"
 
 #~ msgid ""
 #~ "(Label Sets were not imported since you do not have the permission to "
 #~ "create new label sets.)"
 #~ msgstr ""
-#~ "(Etiketter ble ikke importert siden du ikke har rettigheter til å lage "
-#~ "nye etiketter.)"
+#~ "(Etikettsamlinger ble ikke importert siden du ikke har rettigheter til å lage "
+#~ "nye etikettsamlinger.)"
 
 #~ msgid "LimeSurvey Online Manual"
 #~ msgstr "LimeSurvery onlinemanual"
 
 #~ msgid "Labelsets"
-#~ msgstr "Etiketter"
+#~ msgstr "Etikettsamlinger"
 
 #~ msgid "Edit Label Set"
-#~ msgstr "Rediger etiketter"
+#~ msgstr "Rediger etikettsamling"
 
 #~ msgid "Convert resources links?"
 #~ msgstr "Konverter ressurslenker?"
@@ -13344,7 +13344,7 @@ msgstr "Genererer sammendrag..."
 #~ msgid ""
 #~ "If you have been issued with a token, please enter it in the box below "
 #~ "and click continue."
-#~ msgstr "Hvis du har en nøkkel, vennligst oppgi den i feltet under."
+#~ msgstr "Hvis du har en adgangskode, vennligst oppgi den i feltet under."
 
 #~ msgid ""
 #~ "One or more mandatory questions have not been answered. You cannot "
@@ -13382,7 +13382,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Anonyme besvarelser"
 
 #~ msgid "Delete Current Survey"
-#~ msgstr "Slett gjeldende undersøkelse"
+#~ msgstr "Slett denne undersøkelsen"
 
 #~ msgid "Browse Responses For This Survey"
 #~ msgstr "Se besvarelsene for denne undersøkelsen"
@@ -13445,7 +13445,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Bekreftelse på gjennomført undersøkelse"
 
 #~ msgid "Survey Registration Confirmation"
-#~ msgstr "Bekreftelse på at undersøkelse er gjennomført"
+#~ msgstr "Bekreftelse på registrering for gjennomføring av undersøkelse"
 
 #~ msgid "Survey could not be created"
 #~ msgstr "Kunne ikke lage undersøkelsen"
@@ -13519,13 +13519,13 @@ msgstr "Genererer sammendrag..."
 #~ "undersøkelsen"
 
 #~ msgid "Survey submission confirmation"
-#~ msgstr "Svar på undersøkelsen er sendt inn"
+#~ msgstr "Bekreftelse på innsending av undersøkelse"
 
 #~ msgid "Boilerplate Question"
-#~ msgstr "Tekst/designavbrudd"
+#~ msgstr "Standardtekstspørsmål"
 
 #~ msgid "2nd Time Limit Warning CSS Style"
-#~ msgstr "CSS-stil for andre gangs varsel om tidsutløputløp"
+#~ msgstr "CSS-stil for andre gangs varsel om tidsutløp"
 
 #~ msgid "Iterate surevey"
 #~ msgstr "Iterer undersøkelsen"
@@ -13564,10 +13564,10 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Rangeringsspor"
 
 #~ msgid "Edit/Add Label Sets"
-#~ msgstr "Rediger/Legg til etiketter"
+#~ msgstr "Rediger/Legg til etikettsamlinger"
 
 #~ msgid "Create or Import New Survey"
-#~ msgstr "Opprett ny eller importer undersøkelse"
+#~ msgstr "Opprett eller importer ny undersøkelse"
 
 #~ msgid "Array (Flexible Labels) by Column"
 #~ msgstr "Matrise (Fleksible etiketter) med kolonner"
@@ -13576,7 +13576,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Liste (Fleksible etiketter) (nedtrekksliste)"
 
 #~ msgid "List (Flexible Labels) (Radio)"
-#~ msgstr "Liste (fleksible etiketter) (radioknapp)"
+#~ msgstr "Liste (fleksible etiketter) (radioknapper)"
 
 #~ msgid "Array (Multi Flexible) (Text)"
 #~ msgstr "Matrise (flere fleksible) (tekst)"
@@ -13735,7 +13735,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Du må velge alternative etiketter til dette spørsmålet!"
 
 #~ msgid "Edit/Add second Label Sets"
-#~ msgstr "Rediger/Legg til alternative etiketter"
+#~ msgstr "Rediger/Legg til ekstra etikettsamlinger"
 
 #~ msgid "Move answer option up"
 #~ msgstr "Flytt svaralternativet opp"
@@ -13765,7 +13765,7 @@ msgstr "Genererer sammendrag..."
 #~ "The following languages in this group were not imported since the survey "
 #~ "does not contain such a language: "
 #~ msgstr ""
-#~ "Følgende språk i gruppen ble ikke importert siden gjeldende undersøkelse "
+#~ "Følgende språk i gruppen ble ikke importert siden denne undersøkelsen "
 #~ "ikke støtter språket: "
 
 #~ msgid "Group Import Summary"
@@ -13787,7 +13787,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Tilbake til administrasjon av etiketter"
 
 #~ msgid "Label Sets"
-#~ msgstr "Etiketter"
+#~ msgstr "Etikettsamlinger"
 
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
@@ -13875,10 +13875,10 @@ msgstr "Genererer sammendrag..."
 #~ "undersøkelse allerede er utført m.m."
 
 #~ msgid "Stop at Token ID:"
-#~ msgstr "Stopp på nøkkelnummer:"
+#~ msgstr "Stopp på adgangskode-ID:"
 
 #~ msgid "Added New Token"
-#~ msgstr "Lagt til ny nøkkel"
+#~ msgstr "Lagt til ny adgangskode"
 
 #~ msgid "Your data:"
 #~ msgstr "Dine data:"
@@ -14000,31 +14000,31 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Henter besvarelser..."
 
 #~ msgid "Email Invitation"
-#~ msgstr "E-postinvitasjon"
+#~ msgstr "Invitasjon"
 
 #~ msgid "Email Reminder"
-#~ msgstr "E-postpåminnelse"
+#~ msgstr "Påminnelse"
 
 #~ msgid "Add or Edit Token Entry"
-#~ msgstr "Legg til eller endre nøkkeloppføring"
+#~ msgstr "Legg til eller endre adgangskodeoppføring"
 
 #~ msgid "Updated Token"
-#~ msgstr "Oppdatert nøkkel"
+#~ msgstr "Oppdatert adgangskode"
 
 #~ msgid "Importing CSV File"
 #~ msgstr "Importer CSV-fil"
 
 #~ msgid "Creating Token Entries"
-#~ msgstr "Lager nøkkeloppføringer"
+#~ msgstr "Oppretter adgangskodeoppføringer"
 
 #~ msgid "All answers have been set to not completed."
 #~ msgstr "Alle svarene har blitt nullstilte."
 
 #~ msgid "Attribute_1 from token"
-#~ msgstr "Attributt_1 fra nøkkel"
+#~ msgstr "Attributt_1 fra adgangskode"
 
 #~ msgid "Attribute_2 from token"
-#~ msgstr "Attributt_2 fra nøkkel"
+#~ msgstr "Attributt_2 fra adgangskode"
 
 #~ msgid "This template can be modified"
 #~ msgstr "Dette temaet kan endres"
@@ -14076,10 +14076,10 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Foretrukket HTML-editormodus"
 
 #~ msgid "Edit Current Survey"
-#~ msgstr "Rediger gjeldende undersøkelse"
+#~ msgstr "Rediger denne undersøkelsen"
 
 #~ msgid "Disabled - Change Group Order"
-#~ msgstr "Deaktivert - endre rekkefølge på gruppe"
+#~ msgstr "Deaktivert - endre rekkefølge på grupper"
 
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Aktiver/Rediger nøkler til denne undersøkelsen"
@@ -14088,14 +14088,14 @@ msgstr "Genererer sammendrag..."
 #~ "Adding/editing tokens is not possible because this survey is not "
 #~ "activated."
 #~ msgstr ""
-#~ "Det er ikke mulig å legge til/redigere nøkkelen fordi undersøkelsen ikke "
+#~ "Det er ikke mulig å legge til/redigere nøkler fordi undersøkelsen ikke "
 #~ "er aktivert."
 
 #~ msgid "Edit Current Group"
-#~ msgstr "Rediger gjeldende gruppe"
+#~ msgstr "Rediger denne gruppen"
 
 #~ msgid "Delete Current Group"
-#~ msgstr "Slett gjeldende gruppe"
+#~ msgstr "Slett denne gruppen"
 
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "Kopiere spørsmål er ikke mulig siden undersøkelsen er aktiv"
@@ -14280,7 +14280,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Stor fritekst"
 
 #~ msgid "The token you have provided is not valid."
-#~ msgstr "Nøkkelen du har oppgitt er ugyldig."
+#~ msgstr "Adgangskoden du har oppgitt er ugyldig."
 
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Din besvarelse er lagret"
@@ -14303,7 +14303,7 @@ msgstr "Genererer sammendrag..."
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
-#~ "Dette er en lukket undersøkelse. For å besvare må du ha en gyldig nøkkel."
+#~ "Dette er en lukket undersøkelse. For å besvare må du ha en gyldig adgangskode."
 
 #~ msgid "prev"
 #~ msgstr "forrige"
@@ -14321,7 +14321,7 @@ msgstr "Genererer sammendrag..."
 #~ msgstr "Velg mest"
 
 #~ msgid "Export Current Survey"
-#~ msgstr "Eksportere gjeldende undersøkelse"
+#~ msgstr "Eksportere denne undersøkelsen"
 
 #~ msgid "Update tokens table with new fields"
-#~ msgstr "Oppdater nye nøkkeloppføringer"
+#~ msgstr "Oppdater nye adgangstabell med nye felter"
