@@ -4938,7 +4938,7 @@ function do_shortfreetext($ia)
 
 function getLatLongFromIp($ip){
     global $ipInfoDbAPIKey;
-    $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&timezone=false");
+    $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&ip=$ip&timezone=false");
     if ($xml->{'Status'} == "OK"){
         $lat = (float)$xml->{'Latitude'};
         $lng = (float)$xml->{'Longitude'};
