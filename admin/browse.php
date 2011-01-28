@@ -1002,14 +1002,14 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     foreach ($fields as $fielddetails)
     {
         // headers for answer id and time data
-		if ($fielddetails['type']=='id')
-			$fnames[]=array($fielddetails['fieldname'],$fielddetails['question']);
+        if ($fielddetails['type']=='id')
+            $fnames[]=array($fielddetails['fieldname'],$fielddetails['question']);
         if ($fielddetails['type']=='interview_time')
-			$fnames[]=array($fielddetails['fieldname'],"Interview time");
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Total time'));
         if ($fielddetails['type']=='page_time')
-			$fnames[]=array($fielddetails['fieldname'],"Page ".$fielddetails['gid']." time");
-		if ($fielddetails['type']=='answer_time')
-			$fnames[]=array($fielddetails['fieldname'],"Question ".$fielddetails['qid']." time");
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Group').": ".$fielddetails['gid']);
+        if ($fielddetails['type']=='answer_time')
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Question').": ".$fielddetails['qid']);
     }
     $fncount = count($fnames);
 
@@ -1019,7 +1019,7 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     else {$tableheader .= "<table class='browsetable'>\n";}
     $tableheader .= "\t<thead><tr valign='top'>\n"
             . "<th><input type='checkbox' id='selectall'></th>\n"
-            . "<th>Actions</th>\n";
+            . "<th>".$clang->gT('Actions')."</th>\n";
     foreach ($fnames as $fn)
     {
         if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}
