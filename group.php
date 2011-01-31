@@ -24,7 +24,8 @@ if (isset($_REQUEST['newtest']))
 $show_empty_group = false;
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
-if ($previewgrp){
+if ($previewgrp)
+{
 	$_SESSION['prevstep'] = 1;
 	$_SESSION['maxstep'] = 0;
 }
@@ -93,7 +94,7 @@ else
     {
         while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
         {
-            if ($_SESSION['prevstep'] <= $_SESSION['step'])
+            if ($_SESSION['prevstep'] > $_SESSION['step'])
             {
                 $_SESSION['step']=$_SESSION['step']-1;
             }
@@ -1319,7 +1320,7 @@ if (!$previewgrp){
                 if($ia[5] != $g[0])
                     continue;
 
-                $qidattributes=getQuestionAttributes($ia[0]);
+                $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
                 if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
                     continue;
 
