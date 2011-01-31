@@ -354,6 +354,21 @@ $showaggregateddata = 1;
 $standard_templates_readonly =  true;
 
 
+/**
+ * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
+ * to the "lime_survey_12345" table which stores the survey answers. 
+ * It will show a code like "12345X22X333name":
+ * 12345 = surveyID
+ * 22 = groupID
+ * 333 = questionID
+ * name = answer code (only shown for certain question types
+ * 
+ * This code will be shown in front of each question and in front of each answer option at the printable survey.
+ * It can be used as a data analysis code book for querying data from the main response table.
+ */
+$showsgqacode =  false;
+
+
 
 /**
  *  PDF Export Settings
