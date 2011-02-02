@@ -24,11 +24,13 @@ if (isset($_REQUEST['newtest']))
 $show_empty_group = false;
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
-if ($previewgrp){
+if ($previewgrp)
+{
 	$_SESSION['prevstep'] = 1;
 	$_SESSION['maxstep'] = 0;
 }
-else{
+else
+{
     //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
     if (!isset($_SESSION['step']) || !$_SESSION['step'])
     {
@@ -60,7 +62,7 @@ else{
         $move = (int)$move;
         if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep'])))
             $_SESSION['step'] = $move;
-        }
+    }
 
     // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
     // Previously we used to keep the session and redirect the user to the
@@ -90,8 +92,8 @@ else{
     //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
     $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
-    //CHECK PREGS
-    $notvalidated=checkpregs($move,$backok);
+    //CHECK INPUT
+    $notvalidated=aCheckInput($move,$backok);
 
     // CHECK UPLOADED FILES
     $filenotvalidated = checkUploadedFileValidity($move, $backok);
@@ -137,7 +139,7 @@ else{
     //SUBMIT ###############################################################################
     if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
     {
-    setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies
+        setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies
         if ($thissurvey['refurl'] == "Y")
         {
             if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
@@ -170,13 +172,7 @@ else{
                 echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
             }
 
-       // fetch all filenames from $_SESSIONS['files'] and delete them all
-        // from the /tmp/upload/ directory
-        /*echo "<pre>";print_r($_SESSION);echo "</pre>";
-        for($i = 1; isset($_SESSION['files'][$i]); $i++)
-        {
-            unlink('tmp/upload/'.$_SESSION['files'][$i]['filename']);
-=======            // fetch all filenames from $_SESSIONS['files'] and delete them all
+            // fetch all filenames from $_SESSIONS['files'] and delete them all
             // from the /upload/tmp/ directory
             /*echo "<pre>";print_r($_SESSION);echo "</pre>";
             for($i = 1; isset($_SESSION['files'][$i]); $i++)
@@ -193,7 +189,7 @@ else{
                 // in other cases the session is cleared at submit time
                 $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
             }
-}
+        }
         else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
         {
             if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
@@ -333,11 +329,13 @@ if ($surveyexists <1)
 
 //GET GROUP DETAILS
 
-if ($previewgrp){
+if ($previewgrp)
+{
 	setcookie("limesurvey_timers", "0");
     $_SESSION['step'] = $_REQUEST['gid']+1;
 
-    foreach($_SESSION['grouplist'] as $index=>$group){
+    foreach($_SESSION['grouplist'] as $index=>$group)
+    {
         if ($group[0]==$_REQUEST['gid']){
             $grouparrayno = $index;
             break;
@@ -348,12 +346,15 @@ if ($previewgrp){
     $groupname=$_SESSION['grouplist'][$grouparrayno][1];
     $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
 }
-else{
-    if (($show_empty_group)||!isset($_SESSION['grouplist'])) {
+else
+{
+    if (($show_empty_group)||!isset($_SESSION['grouplist']))
+    {
         $gid=-1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
         $groupname=$clang->gT("Submit your answers");
         $groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
-    } else
+    }
+    else
     {
         $grouparrayno=$_SESSION['step']-1;
         $gid=$_SESSION['grouplist'][$grouparrayno][0];
