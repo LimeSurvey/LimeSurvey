@@ -60,8 +60,8 @@ else
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
-//CHECK PREGS
-$notvalidated=checkpregs($move,$backok);
+//CHECK INPUT
+$notvalidated=aCheckInput($move,$backok);
 
 // CHECK UPLOADED FILES
 $filenotvalidated = checkUploadedFileValidity($move, $backok);
@@ -623,7 +623,7 @@ if($thissurvey['allowjumps']=='Y' && !$bIsGroupDescrPage)
     for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
     {
         $ia = $_SESSION['fieldarray'][$n];
-        $qidattributes=getQuestionAttributes($ia[0]);
+        $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
         if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
             continue;
 

@@ -3696,7 +3696,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Enter the code of a Multiple choice question to exclude the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter exclusion'));
 
-    
     $qattributes["assessment_value"]=array(
     "types"=>"MP",
     'category'=>$clang->gT('Logic'),
@@ -8182,12 +8181,13 @@ function aArrayInvert($aArr)
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 {
-    $bAnsw = false;
+    // all answers required
+    $bAnsw = true;
     foreach($aFieldnamesInfoInv[$q] as $sField)
     {
-        if(!empty($_SESSION[$sField]))
+        if(empty($_SESSION[$sField]))
         {
-            $bAnsw = true;
+            $bAnsw = false;
             break;
         }
     }
