@@ -369,19 +369,21 @@ elseif ($subaction == "all")
                 $fuqtquestions[] = $field['fieldname'];
         }
 
-        // find all responses (filenames) to the fuqt questions
-        $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
-        $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+        if (!empty($fuqtquestions)) {
+            // find all responses (filenames) to the fuqt questions
+            $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
+            $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
 
-        while($json = $responses->FetchRow())
-        {
-            foreach ($fuqtquestions as $fieldname)
+            while($json = $responses->FetchRow())
             {
-                $phparray = json_decode($json[$fieldname]);
-                foreach($phparray as $metadata)
+                foreach ($fuqtquestions as $fieldname)
                 {
-                    $path = dirname(getcwd())."/upload/surveys/".$surveyid."/files/";
-                    unlink($path.$metadata->filename); // delete the file
+                    $phparray = json_decode($json[$fieldname]);
+                    foreach($phparray as $metadata)
+                    {
+                        $path = dirname(getcwd())."/upload/surveys/".$surveyid."/files/";
+                        unlink($path.$metadata->filename); // delete the file
+                    }
                 }
             }
         }
