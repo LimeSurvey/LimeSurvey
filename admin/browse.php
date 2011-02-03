@@ -594,7 +594,6 @@ elseif ($subaction == "all")
                     ob_clean();
                     flush();
                     readfile($file);
-                    unlink($file);
                     exit;
                 }
                 break;
