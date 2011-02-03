@@ -61,7 +61,7 @@ else
 $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
 //CHECK INPUT
-$notvalidated=aCheckInput($move,$backok);
+$notvalidated=checkpregs($move,$backok);
 
 // CHECK UPLOADED FILES
 $filenotvalidated = checkUploadedFileValidity($move, $backok);
