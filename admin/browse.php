@@ -1007,9 +1007,9 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
         if ($fielddetails['type']=='interview_time')
             $fnames[]=array($fielddetails['fieldname'],$clang->gT('Total time'));
         if ($fielddetails['type']=='page_time')
-            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Group').": ".$fielddetails['gid']);
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Group').": ".$fielddetails['group_name']);
         if ($fielddetails['type']=='answer_time')
-            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Question').": ".$fielddetails['qid']);
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Question').": ".$fielddetails['title']);
     }
     $fncount = count($fnames);
 

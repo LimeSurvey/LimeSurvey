@@ -2711,14 +2711,14 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
             $fieldname="{$field['sid']}X{$field['gid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>'', 'question'=>'');
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>'', 'title'=>'', 'question'=>'');
             }
 
             // field for time spent on answering a question            
             $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>$field['title'], 'question'=>$field['question']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], "title"=>$field['title'], "question"=>$field['question']); 
             }
         }
     }
