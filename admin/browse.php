@@ -514,7 +514,7 @@ elseif ($subaction == "all")
                 $query .= ", $question ";
             $count++;
         }
-        $query .= " FROM $surveytable WHERE id={$_POST['downloadfile']}";
+        $query .= " FROM $surveytable WHERE id={".mysql_real_escape_string($_POST['downloadfile'])."}";
         $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
         while ($metadata = $filearray->FetchRow())
         {
