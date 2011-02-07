@@ -105,10 +105,7 @@ function bHasFileUploadQuestion($surveyid) {
     $fieldmap = createFieldMap($surveyid);
 
     foreach ($fieldmap as $field) {
-        foreach ($field as $key => $value) {
-            if ($value == "|")
-                return true;
-        }
+        if (isset($field['type']) &&  $field['type'] === '|') return true;
     }
 }
 
