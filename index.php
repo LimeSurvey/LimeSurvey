@@ -2464,7 +2464,6 @@ function buildsurveysession()
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
                 $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."'";
-            error_log("TIBO2 = $tkquery");
             }
             else
             {
