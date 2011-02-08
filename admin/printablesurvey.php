@@ -1166,8 +1166,16 @@ while ($degrow = $degresult->FetchRow())
                     {
                         $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                         $rowclass = alternation($rowclass,'row');
-                        $answertext=$mearow['question'].addsgqacode(" (".$fieldname.$mearow['title'].")");
-                        if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+                                                
+                        //semantic differential question type?
+                        if (strpos($mearow['question'],'|')) 
+                        {
+                        	$answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
+                        }
+                        else
+                        {
+                        	$answertext=$mearow['question'].addsgqacode(" (".$fieldname.$mearow['title'].")");
+                        }
                         $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
 
                         $pdfoutput[$j][0]=$answertext;
@@ -1177,11 +1185,13 @@ while ($degrow = $degresult->FetchRow())
                             $pdfoutput[$j][$i]=" o ".$i;
                         }
 
-                        $answertext=$mearow['question'];
-                        if (strpos($answertext,'|'))
+                        $answertext .= $mearow['question'];
+                        
+                        //semantic differential question type?
+                        if (strpos($mearow['question'],'|'))
                         {
-                            $answertext=substr($answertext,strpos($answertext,'|')+1);
-                            $question['ANSWER'] .= "\t\t\t<th class=\"answertextright\">$answertext</td>\n";
+                            $answertext2 = substr($mearow['question'],strpos($mearow['question'],'|')+1);
+                            $question['ANSWER'] .= "\t\t\t<th class=\"answertextright\">$answertext2</td>\n";
                         }
                         $question['ANSWER'] .= "\t\t</tr>\n";
                         $j++;
@@ -1545,9 +1555,18 @@ while ($degrow = $degresult->FetchRow())
                     {
                         $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                         $rowclass = alternation($rowclass,'row');
-                        $answertext=$mearow['question'].addsgqacode(" (".$fieldname.$mearow['title'].")");
                         if (trim($answertext)=='') $answertext='&nbsp;';
-                        if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+                                    
+                        //semantic differential question type?
+                        if (strpos($mearow['question'],'|')) 
+                        {
+                        	$answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
+                        }
+                        else
+                        {
+                        	$answertext=$mearow['question'].addsgqacode(" (".$fieldname.$mearow['title'].")");
+                        }                        
+                        
                         if (trim($qidattributes['answer_width'])!='')
                         {
                             $sInsertStyle=' style="width:'.$qidattributes['answer_width'].'%" ';
@@ -1557,11 +1576,10 @@ while ($degrow = $degresult->FetchRow())
                             $sInsertStyle='';
                         }
                         $question['ANSWER'] .= "\t\t\t<th $sInsertStyle class=\"answertext\">$answertext</th>\n";
-                        //$printablesurveyoutput .="\t\t\t\t\t<td>";
+                        
                         $pdfoutput[$counter][0]=$answertext;
                         for ($i=1; $i<=$fcount; $i++)
                         {
-
                             $question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio')."</td>\n";
                             $pdfoutput[$counter][$i] = "o";
 
@@ -1569,11 +1587,12 @@ while ($degrow = $degresult->FetchRow())
                         $counter++;
 
                         $answertext=$mearow['question'];
-                        if (strpos($answertext,'|'))
+                        
+                        //semantic differential question type?
+                        if (strpos($mearow['question'],'|'))
                         {
-                            $answertext=substr($answertext,strpos($answertext,'|')+1);
-                            $question['ANSWER'] .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
-
+                            $answertext2=substr($mearow['question'],strpos($mearow['question'],'|')+1);
+                            $question['ANSWER'] .= "\t\t\t<th class=\"answertextright\">$answertext2</th>\n";
                         }
                         $question['ANSWER'] .= "\t\t</tr>\n";
                     }
