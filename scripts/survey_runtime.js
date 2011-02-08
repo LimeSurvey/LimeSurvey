@@ -65,7 +65,7 @@ $(document).ready(function()
             currentMap.panTo(markerLatLng);
         });
         if ((typeof(autoArray) != "undefined")){
-            if ((autoArray.list.length > 0)){
+            if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
                 var aListOfQuestions = autoArray.list;
 
                 $(aListOfQuestions).each(function(index,element){

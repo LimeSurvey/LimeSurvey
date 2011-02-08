@@ -3043,7 +3043,7 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
 
-        if ($exclude_all_others_auto!=''){
+        if ($exclude_all_others_auto==1){
             if ($ansrow['title']==trim($qidattributes['exclude_all_others'])){
                 $autoArray[$ia[1]]['focus'] = $ia[1].trim($qidattributes['exclude_all_others']);
             }
@@ -3145,7 +3145,7 @@ function do_multiplechoice($ia)
             ++$colcounter;
         }
     }
-    if ($exclude_all_others_auto!=''){
+    if ($exclude_all_others_auto==1){
         $answer .= "<script type='text/javascript'>autoArray = ".json_encode($autoArray).";</script>";
     }
     if ($other == 'Y')
