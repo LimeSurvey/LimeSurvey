@@ -35,7 +35,7 @@ if (isset($sExtension) && strtolower($sExtension)=='csv')
 }
 elseif (isset($sExtension) && strtolower($sExtension)=='lss')
 {
-    $aImportResults=XMLImportSurvey($sFullFilepath,null,null,(isset($_POST['translinksfields'])));
+    $aImportResults=XMLImportSurvey($sFullFilepath,null,null, null,(isset($_POST['translinksfields'])));
 } elseif (isset($copyfunction))
 {
     $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
