@@ -2463,10 +2463,18 @@ function buildsurveysession()
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
             //check if token actually does exist
-            $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."' AND (completed = 'N' or completed='')";
+            if ($thissurvey['alloweditaftercompletion'] == 'Y' )
+            {
+                $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."'";
+            error_log("TIBO2 = $tkquery");
+            }
+            else
+            {
+                $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."' AND (completed = 'N' or completed='')";
+            }
             $tkresult = db_execute_num($tkquery);     //Checked
             list($tkexist) = $tkresult->FetchRow();
-            if (!$tkexist || $areTokensUsed)
+            if (!$tkexist || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
             {
                 sendcacheheaders();
                 doHeader();
@@ -2531,7 +2539,7 @@ function buildsurveysession()
 						        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                     }
 
-                    echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='text' id=token name='token'></li>";
+                    echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='text' id='token' name='token'></li>";
                 }
                 else
                 {
@@ -2549,7 +2557,7 @@ function buildsurveysession()
                               <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                               <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                     }
-                    echo '<label for="token">'.$clang->gT("Token:")."</label><span id=token>$gettoken</span>"
+                    echo '<label for="token">'.$clang->gT("Token:")."</label><span id='token'>$gettoken</span>"
                     ."<input type='hidden' name='token' value='$gettoken'></li>";
                 }
 
