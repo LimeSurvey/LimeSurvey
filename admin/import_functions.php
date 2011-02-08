@@ -1084,7 +1084,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 *
 * @param mixed $sFullFilepath  The full filepath of the uploaded file
 */
-function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL)
+function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true)
 {
     global $connect, $dbprefix, $clang, $timeadjust;
 
@@ -1536,6 +1536,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     // Set survey rights
     GiveAllSurveyPermissions($_SESSION['loginID'],$newsid);
+    if ($bTranslateInsertansTags)
+    {
+        $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
+        TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
+    }
 
     return $results;
 }
