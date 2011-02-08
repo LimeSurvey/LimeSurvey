@@ -8181,14 +8181,30 @@ function aArrayInvert($aArr)
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 {
-    // all answers required
-    $bAnsw = true;
-    foreach($aFieldnamesInfoInv[$q] as $sField)
+    if(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] != 'M')
     {
-        if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+        // all answers required
+        $bAnsw = true;
+        foreach($aFieldnamesInfoInv[$q] as $sField)
         {
-            $bAnsw = false;
-            break;
+            if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+            {
+                $bAnsw = false;
+                break;
+            }
+        }
+    }
+    else
+    {
+        // multiple choice, just one answer is required
+        $bAnsw = false;
+        foreach($aFieldnamesInfoInv[$q] as $sField)
+        {
+            if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
+            {
+                $bAnsw = true;
+                break;
+            }
         }
     }
     return $bAnsw;
