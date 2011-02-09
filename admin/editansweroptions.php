@@ -116,6 +116,7 @@
                           var strCantDeleteLastAnswer='".$clang->gT('You cannot delete the last answer option.','js')."';
                           var lsbrowsertitle='".$clang->gT('Label set browser','js')."';
                           var quickaddtitle='".$clang->gT('Quick-add answers','js')."';
+                          var sAssessmentValue='".$clang->gT('Assessment value','js')."';
                           var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."';
                           var langs='".implode(';',$anslangs)."';</script>\n";
 

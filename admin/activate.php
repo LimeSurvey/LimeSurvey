@@ -30,7 +30,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 
     // Check consistency for groups and questions
     $failedgroupcheck = checkGroup($postsid);
-    $failedcheck = checkQestions($postsid, $surveyid, $qtypes);
+    $failedcheck = checkQuestions($postsid, $surveyid, $qtypes);
 
     //IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
     if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck))

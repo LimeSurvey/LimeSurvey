@@ -3043,7 +3043,7 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
 
-        if ($exclude_all_others_auto!=''){
+        if ($exclude_all_others_auto==1){
             if ($ansrow['title']==trim($qidattributes['exclude_all_others'])){
                 $autoArray[$ia[1]]['focus'] = $ia[1].trim($qidattributes['exclude_all_others']);
             }
@@ -3145,8 +3145,9 @@ function do_multiplechoice($ia)
             ++$colcounter;
         }
     }
-
+    if ($exclude_all_others_auto==1){
     $answer .= "<script type='text/javascript'>autoArray = ".json_encode($autoArray).";</script>";
+    }
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
@@ -4937,7 +4938,7 @@ function do_shortfreetext($ia)
 
 function getLatLongFromIp($ip){
     global $ipInfoDbAPIKey;
-    $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&timezone=false");
+    $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&ip=$ip&timezone=false");
     if ($xml->{'Status'} == "OK"){
         $lat = (float)$xml->{'Latitude'};
         $lng = (float)$xml->{'Longitude'};

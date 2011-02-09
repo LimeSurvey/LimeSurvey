@@ -31,7 +31,17 @@ if ($previewgrp)
 }
 else
 {
-    if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
+    //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
+    if (!isset($_SESSION['step']) || !$_SESSION['step'])
+    {
+        $totalquestions = buildsurveysession();
+        $_SESSION['step'] = 0;
+        if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
+            //If explicitply set, hide the welcome screen
+            $_SESSION['step'] = 1;
+        } 
+    }
+    
     if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     if (!isset($gl)) {$gl=array('null');}
@@ -59,6 +69,10 @@ else
     // submit page.
     //if (isset($_SESSION['finished'])) {$move='movesubmit'; }
 
+    if ($_SESSION['step'] == 0) {
+        display_first_page();
+        exit;
+    }
 
 
     //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
@@ -347,28 +361,6 @@ else
         $groupname=$_SESSION['grouplist'][$grouparrayno][1];
         $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
     }
-}
-
-
-//RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
-if (!isset($_SESSION['step']) || !$_SESSION['step'])
-{
-    $totalquestions = buildsurveysession();
-    if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
-        //If explicitply set, hide the welcome screen
-        $_SESSION['step'] = 1;
-    } else {
-        display_first_page();
-        exit;
-    }
-    echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    if (isset($token) && !empty($token))                    {
-    echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-    }
-    echo "\n</form>\n";
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-    doFooter();
-    exit;
 }
 
 //Setup an inverted fieldnamesInfo for quick lookup of field answers.

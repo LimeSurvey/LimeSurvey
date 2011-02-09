@@ -105,12 +105,9 @@ function bHasFileUploadQuestion($surveyid) {
     $fieldmap = createFieldMap($surveyid);
 
     foreach ($fieldmap as $field) {
-        foreach ($field as $key => $value) {
-            if ($value == "|")
-                return true;
+        if (isset($field['type']) &&  $field['type'] === '|') return true;
         }
     }
-}
 
 /**
  * Returns true if a user has global permission for a certain action. Available permissions are

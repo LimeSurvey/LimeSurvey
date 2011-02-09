@@ -2001,7 +2001,7 @@ function submittokens($quotaexit=false)
             $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
             $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
 
-            $subject=Replacefields($subject, $fieldsarray);
+            $subject=ReplaceFields($subject, $fieldsarray, true);
 
             if ($thissurvey['anonymized'] == "N")
             {
@@ -2023,7 +2023,7 @@ function submittokens($quotaexit=false)
             if (trim(strip_tags($thissurvey['email_confirm'])) != "")
             {
                 $message=$thissurvey['email_confirm'];
-                $message=Replacefields($message, $fieldsarray);
+                $message=ReplaceFields($message, $fieldsarray, true);
 
                 if ($thissurvey['anonymized'] == "N")
                 {
@@ -2082,6 +2082,8 @@ function SendSubmitNotifications()
         $aReplacementVars['RELOADURL']='';    
     }
 
+    $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
+    $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];    
     $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id={$_SESSION['srid']}";
     $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$_SESSION['srid'];
     $aReplacementVars['STATISTICSURL']="{$homeurl}/admin.php?action=statistics&sid={$surveyid}";
@@ -2891,8 +2893,14 @@ function surveymover()
     if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['allowjumps'] == "Y") &&
 	($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
     {
+        //To prevent too much complication in the if statement above I put it here...
+        if ($thissurvey['showwelcome'] == 'N' && $_SESSION['step'] == 1) {
+           //first step and we do not want to go back to the welcome screen since we don't show that...
+           //so skip the prev button
+        } else {
         $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; submit_and_disable();\" value=' &lt;&lt; "
         . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
+    }
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
     {

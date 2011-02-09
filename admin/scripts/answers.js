@@ -363,9 +363,19 @@ function lspreview()
                                 {
                                     lsrows[z].title='';
                                 }
-                                tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+lsrows[z].title+'</td></tr><tbody>';
+                                tabbody=tabbody+'><td>'+lsrows[z].code+'</td>';
+                                if (assessmentvisible)
+                                {
+                                    tabbody=tabbody+'<td>'+lsrows[z].assessment_value+'</td>';
                             }
-                            tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th>'+strlabel+'</th></tr></thead></table></div>';
+                                tabbody=tabbody+'<td>'+lsrows[z].title+'</td></tr><tbody>';
+                        }
+                            tabbody=tabbody+'<thead><tr><th>'+strcode+'</th>';
+                            if (assessmentvisible)
+                            {
+                                tabbody=tabbody+'<th>'+sAssessmentValue+'</th>';
+                    }
+                            tabbody=tabbody+'<th>'+strlabel+'</th></tr></thead></table></div>';
                         }
                     }
                     $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
@@ -473,7 +483,7 @@ function transferlabels()
                             for (k in lsrows)
                             {
                                 if (x==0) {
-                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="../images/handle.png" /></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                                 else
                                 {
@@ -499,6 +509,7 @@ function transferlabels()
                     $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
                     $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
                     $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+                    // Bind events again
                     $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
                     $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
                     $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){

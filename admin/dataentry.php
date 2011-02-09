@@ -613,8 +613,12 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         }
                         break;
                     case "D": //DATE
+                        $thisdate='';
+                        if ($idrow[$fname['fieldname']]!='')
+                        {
                         $datetimeobj = new Date_Time_Converter($idrow[$fname['fieldname']] , "Y-m-d H:i:s");
                         $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);
+                        }
                         $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' />\n";
                         break;
                     case "G": //GENDER drop-down list

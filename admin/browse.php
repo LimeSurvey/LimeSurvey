@@ -254,7 +254,9 @@ if ($subaction == "id")
     {
         $browseoutput .=  "<img align='left' hspace='0' border='0' src='$imageurl/delete_disabled.png' alt='".$clang->gT("You don't have permission to delete this entry.")."'/>";
     }
-    if (bHasFileUploadQuestion($surveyid)) {
+
+    if (bHasFileUploadQuestion($surveyid))
+    {
         $browseoutput .= "<a href='#' title='".$clang->gTview("Download files for this entry")."' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadfile='.$id.'&amp;sid='.$surveyid)."\" >"
                 ."<img align='left' hspace='0' border='0' src='$imageurl/download.png' alt='".$clang->gT("Download files for this entry")."' /></a>\n";
     }
@@ -368,7 +370,8 @@ elseif ($subaction == "all")
             if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
                 $fuqtquestions[] = $field['fieldname'];
         }
-
+        if (count($fuqtquestions)>0)
+        {
         if (!empty($fuqtquestions)) {
             // find all responses (filenames) to the fuqt questions
             $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
@@ -730,7 +733,10 @@ elseif ($subaction == "all")
     
     //LETS COUNT THE DATA
     $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
-    
+    if ($sql_where!="")
+    {
+        $dtquery .=" WHERE $sql_where";
+    }
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
@@ -1001,7 +1007,7 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
         }
     }
     
-    $fields=createFieldMap($surveyid,'full');
+    $fields=createTimingsFieldMap($surveyid,'full');
 
     foreach ($fields as $fielddetails)
     {
@@ -1009,11 +1015,11 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
 		if ($fielddetails['type']=='id')
 			$fnames[]=array($fielddetails['fieldname'],$fielddetails['question']);
         if ($fielddetails['type']=='interview_time')
-			$fnames[]=array($fielddetails['fieldname'],"Interview time");
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Total time'));
         if ($fielddetails['type']=='page_time')
-			$fnames[]=array($fielddetails['fieldname'],"Page ".$fielddetails['gid']." time");
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Group').": ".$fielddetails['group_name']);
 		if ($fielddetails['type']=='answer_time')
-			$fnames[]=array($fielddetails['fieldname'],"Question ".$fielddetails['qid']." time");
+            $fnames[]=array($fielddetails['fieldname'],$clang->gT('Question').": ".$fielddetails['title']);
     }
     $fncount = count($fnames);
 
@@ -1023,7 +1029,7 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     else {$tableheader .= "<table class='browsetable'>\n";}
     $tableheader .= "\t<thead><tr valign='top'>\n"
             . "<th><input type='checkbox' id='selectall'></th>\n"
-            . "<th>Actions</th>\n";
+            . "<th>".$clang->gT('Actions')."</th>\n";
     foreach ($fnames as $fn)
     {
         if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}

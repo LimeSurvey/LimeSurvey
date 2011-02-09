@@ -93,6 +93,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     $group['MaskQuestions'] = $clang->gT("Mask questions");
     $group['SinChoiceQues'] = $clang->gT("Single choice questions");
     $group['MulChoiceQues'] = $clang->gT("Multiple choice questions");
+    $group['TextQuestions'] = $clang->gT("Text questions");
 
 
     $qtypes = array(
@@ -163,7 +164,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'assessable'=>0,
                'answerscales'=>0),
     "K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
-               'group'=>$group['SinChoiceQues'],
+               'group'=>$group['MaskQuestions'],
                'hasdefaultvalues'=>0,
                'subquestions'=>1,
                'assessable'=>1,
@@ -199,7 +200,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'assessable'=>1,
                'answerscales'=>0),
     "Q"=>array('description'=>$clang->gT("Multiple Short Text"),
-               'group'=>$group['SinChoiceQues'],
+               'group'=>$group['TextQuestions'],
                'subquestions'=>1,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
@@ -211,19 +212,19 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'assessable'=>1,
                'answerscales'=>1),
     "S"=>array('description'=>$clang->gT("Short Free Text"),
-               'group'=>$group['SinChoiceQues'],
+               'group'=>$group['TextQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "T"=>array('description'=>$clang->gT("Long Free Text"),
-               'group'=>$group['SinChoiceQues'],
+               'group'=>$group['TextQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
     "U"=>array('description'=>$clang->gT("Huge Free Text"),
-               'group'=>$group['SinChoiceQues'],
+               'group'=>$group['TextQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
                'assessable'=>0,
@@ -2307,7 +2308,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap["refurl"]['group_name']="";
             }
         }
-
     }
 
     //Get list of questions
@@ -2337,6 +2337,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     $aquery.=" ORDER BY group_order, question_order";
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
+
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
 
@@ -2711,14 +2712,14 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
             $fieldname="{$field['sid']}X{$field['gid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>'', 'question'=>'');
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>'', 'title'=>'', 'question'=>'');
             }
 
             // field for time spent on answering a question            
             $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "qid"=>$field['qid'],'question'=>$field['question']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], "title"=>$field['title'], "question"=>$field['question']); 
             }
         }
     }
@@ -3161,7 +3162,7 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>", $line);
     if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
     if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", $clang->gT("Save Your Unfinished Survey"), $line);
-    if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you."), $line);
+    if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey."), $line);
     if (strpos($line, "{SAVEALERT}") !== false) 
     {
         if (isset($thissurvey['anonymized']) && $thissurvey['anonymized'] =='Y')
@@ -3668,7 +3669,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,
-    "help"=>$clang->gT("Sort answers alphabetically"),
+    "help"=>$clang->gT("Sort the answer options alphabetically"),
     "caption"=>$clang->gT('Sort answers alphabetically'));
 
     $qattributes["answer_width"]=array(
@@ -3682,7 +3683,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MPLT",
+    "types"=>"1ABCEF:;MPL",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3690,7 +3691,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MPLT",
+    "types"=>"1ABCEF:;MPL",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3711,8 +3712,8 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Category Separator'),
-    "caption"=>$clang->gT('Category Separator'));
+    "help"=>$clang->gT('Category separator'),
+    "caption"=>$clang->gT('Category separator'));
 
     $qattributes["code_filter"]=array(
     "types"=>"WZ",
@@ -3811,7 +3812,7 @@ function questionAttributes($returnByName=false)
     $qattributes["exclude_all_others"]=array(
     "types"=>"M",
     'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
+    'sortorder'=>130,
     'inputtype'=>'text',
     "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon.'),
     "caption"=>$clang->gT('Exclusive option'));
@@ -3819,7 +3820,7 @@ function questionAttributes($returnByName=false)
     $qattributes["exclude_all_others_auto"]=array(
     "types"=>"M",
     'category'=>$clang->gT('Logic'),
-    'sortorder'=>101,
+    'sortorder'=>131,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
@@ -3838,7 +3839,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
     "help"=>$clang->gT("Store the city?"),
-    "caption"=>$clang->gT("City"));
+    "caption"=>$clang->gT("Save city"));
 
     $qattributes["location_state"]=array(
     "types"=>"S",
@@ -3849,7 +3850,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
     "help"=>$clang->gT("Store the state?"),
-    "caption"=>$clang->gT("State"));
+    "caption"=>$clang->gT("Save state"));
 
     $qattributes["location_postal"]=array(
     "types"=>"S",
@@ -3860,7 +3861,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
     "help"=>$clang->gT("Store the postal code?"),
-    "caption"=>$clang->gT("Postal code"));
+    "caption"=>$clang->gT("Save postal code"));
 
     $qattributes["location_country"]=array(
     "types"=>"S",
@@ -3871,7 +3872,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
     "help"=>$clang->gT("Store the country?"),
-    "caption"=>$clang->gT("Country"));
+    "caption"=>$clang->gT("Save country"));
 
     $qattributes["location_mapservice"]=array(
     "types"=>"S",
@@ -3890,7 +3891,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'text',
     'default'=>'500',
     "help"=>$clang->gT("Width of the map in pixel"),
-    "caption"=>$clang->gT("Width"));
+    "caption"=>$clang->gT("Map width"));
     
     $qattributes["location_mapheight"]=array(
     "types"=>"S",
@@ -3899,7 +3900,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'text',
     'default'=>'300',
     "help"=>$clang->gT("Height of the map in pixel"),
-    "caption"=>$clang->gT("Height"));
+    "caption"=>$clang->gT("Map height"));
 
     $qattributes["location_nodefaultfromip"]=array(
     "types"=>"S",
@@ -3925,8 +3926,8 @@ function questionAttributes($returnByName=false)
     'sortorder'=>101,
     'inputtype'=>'text',
     'default'=>'11',
-    "help"=>$clang->gT("Maps zoom level"),
-    "caption"=>$clang->gT("Zoom"));
+    "help"=>$clang->gT("Map zoom level"),
+    "caption"=>$clang->gT("Zoom level"));
     
     // End Map Options
     
@@ -4197,7 +4198,7 @@ function questionAttributes($returnByName=false)
     $qattributes["public_statistics"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:",
     'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'sortorder'=>80,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
@@ -4272,13 +4273,13 @@ function questionAttributes($returnByName=false)
 
     $qattributes["slider_rating"]=array(
     "types"=>"5",
-    'category'=>$clang->gT('Slider'),
-    'sortorder'=>1,
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>90,
     'inputtype'=>'singleselect',
     'options'=>array(
         0=>$clang->gT('No'),
         1=>$clang->gT('Yes - stars'),
-        2=>$clang->gT('Yes - slider with Emoticon'),
+        2=>$clang->gT('Yes - slider with emoticon'),
         ),
     'default'=>0,                 
     "help"=>$clang->gT('Use slider layout'),
@@ -4347,7 +4348,7 @@ function questionAttributes($returnByName=false)
     //Timer attributes
     $qattributes["time_limit"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>90,
     "inputtype"=>"integer",
     "help"=>$clang->gT("Limit time to answer question (in seconds)"),
@@ -4355,7 +4356,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_action"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>92,
     'inputtype'=>'singleselect',
     'options'=>array(1=>$clang->gT('Warn and move on'),
@@ -4366,9 +4367,10 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_disable_next"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>94,
     "inputtype"=>"singleselect",
+    'default'=>0,
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     "help"=>$clang->gT("Disable the next button until time limit expires"),
@@ -4376,7 +4378,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_disable_prev"]=array(
 	"types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>96,
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
@@ -4386,7 +4388,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_countdown_message"]=array(
 	"types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>98,
     "inputtype"=>"textarea",
 	"help"=>$clang->gT("The text message that displays in the countdown timer during the countdown"),
@@ -4394,7 +4396,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_timer_style"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>100,
     "inputtype"=>"textarea",
     "help"=>$clang->gT("CSS Style for the message that displays in the countdown timer during the countdown"),
@@ -4402,7 +4404,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_message_delay"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>102,
     "inputtype"=>"integer",
     "help"=>$clang->gT("Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"),
@@ -4410,7 +4412,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_message"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>104,
     "inputtype"=>"textarea",
     "help"=>$clang->gT("The message to display when the time limit has expired (a default message will display if this setting is left blank)"),
@@ -4418,7 +4420,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_message_style"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>106,
     "inputtype"=>"textarea",
     "help"=>$clang->gT("CSS style for the 'time limit expiry message'"),
@@ -4426,7 +4428,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_warning"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>108,
     "inputtype"=>"integer",
     "help"=>$clang->gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
@@ -4434,7 +4436,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_warning_display_time"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>110,
     "inputtype"=>"integer",
     "help"=>$clang->gT("The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
@@ -4442,7 +4444,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_warning_message"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>112,
     "inputtype"=>"textarea",
     "help"=>$clang->gT("The message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
@@ -4450,7 +4452,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_warning_style"]=array(
     "types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>114,
     "inputtype"=>"textarea",
     "help"=>$clang->gT("CSS style used when the 'time limit warning' message is displayed"),
@@ -4458,7 +4460,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_warning_2"]=array(
 	"types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>116,
     "inputtype"=>"integer",
 	"help"=>$clang->gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
@@ -4466,15 +4468,15 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_warning_2_display_time"]=array(
 	"types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>118,
     "inputtype"=>"integer",
 	"help"=>$clang->gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-	"caption"=>$clang->gT("2nd time limit display time"));
+	"caption"=>$clang->gT("2nd time limit warning message display time"));
 
     $qattributes["time_limit_warning_2_message"]=array(
 	"types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>120,
     "inputtype"=>"textarea",
 	"help"=>$clang->gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
@@ -4482,7 +4484,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["time_limit_warning_2_style"]=array(
 	"types"=>"STUX",
-    'category'=>$clang->gT('Timing'),
+    'category'=>$clang->gT('Timer'),
     'sortorder'=>122,
     "inputtype"=>"textarea",
 	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
@@ -4549,7 +4551,7 @@ function questionAttributes($returnByName=false)
 
     $qattributes["random_group"]=array(
     "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
-    'category'=>$clang->gT('Display'),
+    'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
@@ -4807,12 +4809,17 @@ function doFooter()
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)
-function ReplaceFields ($text,$fieldsarray)
+function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 {
 
     foreach ( $fieldsarray as $key => $value )
     {
         $text=str_replace($key, $value, $text);
+    }
+
+    if ($bReplaceInsertans)
+    {
+        $text = insertansReplace($text);
     }
     return $text;
 }
@@ -8176,15 +8183,31 @@ function aArrayInvert($aArr)
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 {
-    // all answers required
-    $bAnsw = true;
+    if(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] != 'M')
+    {
+        // all answers required
+        $bAnsw = true;
+        foreach($aFieldnamesInfoInv[$q] as $sField)
+        {
+            if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+            {
+                $bAnsw = false;
+                break;
+            }
+        }
+    }
+    else
+    {
+        // multiple choice, just one answer is required
+        $bAnsw = false;
     foreach($aFieldnamesInfoInv[$q] as $sField)
     {
-        if(!isset($_SESSION[$sField]) || (!is_array($_SESSION[$sField]) && trim($_SESSION[$sField]) == ''))
+            if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
         {
             $bAnsw = false;
             break;
         }
+    }
     }
     return $bAnsw;
 }

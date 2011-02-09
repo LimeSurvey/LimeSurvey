@@ -92,4 +92,19 @@ $(document).ready(function(){
                }}
 });
         
+    // Fix the heigh of the cell
+    $('.browsetable td').each(function(){
+    	if ($(this).text().length> 30){
+    		$(this).html("<span class=\"content\" title=\""+$(this).text()+"\">"+$(this).html()+"</span>");
+    	}
+});
+    $('.browsetable th strong').each(function(){
+    	if ($(this).text().length> 30){
+    		$(this).addClass("content");
+    		$(this).attr("title",$(this).text());
+    	}
+   });
+   
+   $('.browsetable td span.content').qtip();
+   $('.browsetable th strong.content').qtip();
 });
