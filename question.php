@@ -569,6 +569,7 @@ else
             $question['class'] = $q_class;
             $question['man_class'] = $man_class;
             $question['code'] = $qa[5];
+            $question['sgq']=$qa[7];
             //===================================================================
             $answer=$qa[1];
             $help=$qa[2];

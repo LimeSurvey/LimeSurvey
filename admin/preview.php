@@ -86,6 +86,7 @@ $question = $answers[0][0];
 $question['code']=$answers[0][5];
 $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
+$question['sgq']=$ia[1];
 if ($qrows['mandatory'] == 'Y')
 {
     $question['man_class'] = ' mandatory';
