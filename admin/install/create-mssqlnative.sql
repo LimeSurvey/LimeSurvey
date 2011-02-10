@@ -429,11 +429,10 @@ CREATE TABLE [prefix_templates] (
 --
 
 CREATE TABLE [prefix_failed_login_attempts] (
-  [id] int(11) NOT NULL AUTO_INCREMENT,
+  [id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [ip] varchar(37) NOT NULL,
   [last_attempt] varchar(20) NOT NULL,
-  [number_attempts] int(11) NOT NULL,
-  PRIMARY KEY ([id])
+  [number_attempts] int NOT NULL
 );
 
 
