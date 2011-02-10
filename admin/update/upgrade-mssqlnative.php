@@ -567,11 +567,11 @@ function upgrade_token_tables134()
 // Add the usesleft field to all existing token tables
 function upgrade_token_tables145()
 {
-    global $modifyoutput,$dbprefix;
+    global $modifyoutput, $dbprefix, $connect;
     $surveyidquery = db_select_tables_like($dbprefix."tokens%");
     $surveyidresult = db_execute_num($surveyidquery);
     $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
-    foreach ($tokentables as $sv)
+    foreach ($tokentables as $sv) {
             modify_database("","ALTER TABLE ".$sv[0]." ADD [usesleft] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
             modify_database("","UPDATE ".$sv[0]." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
     }

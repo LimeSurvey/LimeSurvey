@@ -849,20 +849,18 @@ function getQuestionSum($surveyid, $groupid)
 
 
 /**
- * getMaxgrouporder($surveyid) queries the database for the maximum sortorder of a group.
+ * getMaxgrouporder($surveyid) queries the database for the maximum sortorder of a group and returns the next higher one.
  *
  * @param mixed $surveyid
  * @global string $surveyid
  */
 function getMaxgrouporder($surveyid)
 {
-    global $surveyid ;
+    global $surveyid, $connect ;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
-    $max_result =db_execute_assoc($max_sql) ; //Checked
-    $maxrow = $max_result->FetchRow() ;
-    $current_max = $maxrow['max'];
-    if($current_max=="")
+    $current_max = $connect->GetOne($max_sql) ;
+    if(is_null($current_max))
     {
         return "0" ;
     }
@@ -8204,7 +8202,7 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
     {
             if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
         {
-            $bAnsw = false;
+                $bAnsw = true;
             break;
         }
     }
