@@ -743,8 +743,9 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         break;
                     case "R": //RANKING TYPE QUESTION
                         $thisqid=$fname['qid'];
-                        $myfname=substr($fname['fieldname'], 0, -1);
-                        while (isset($fname['type']) && $fname['type'] == "R")
+                        $currentvalues=array();
+                        $myfname=$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid'];
+                        while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid']==$thisqid)
                         {
                             //Let's get all the existing values into an array
                             if ($idrow[$fname['fieldname']])
