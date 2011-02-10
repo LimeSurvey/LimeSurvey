@@ -200,7 +200,7 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
         
 	    if(isset($_POST['printableexport']))
 	    {
-		    $pdf->intopdf(FlattenText($fname['group_name'],true));
+		    $pdf->intopdf(FlattenText($fname[0],true));
 		    $pdf->ln(2);
         }
         else
@@ -265,7 +265,7 @@ if(isset($_POST['printableexport']))
     }
     else
     {
-			$pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf","DD");
+			$pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf","D");
     }
 }
 
