@@ -10,7 +10,7 @@ class dFunctionInsertAns implements dFunctionInterface
 	{
 		global $connect;
 		$field = $args[0];
-		$srid = $_SESSION['srid'];
+		if (isset($_SESSION['srid'])) $srid = $_SESSION['srid'];
 		$sid = $_POST['sid'];
 		return retrieve_Answer($field, $_SESSION['dateformats']['phpdate']);
 	}

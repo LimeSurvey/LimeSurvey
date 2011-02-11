@@ -35,6 +35,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
     $aIgnoredAnswers=array();
     $aSQIDReplacements=array();
+    $aLIDReplacements=array();
     $aGIDReplacements=array();
     $substitutions=array();
     $aQuotaReplacements=array();
@@ -721,7 +722,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
 
             // Now we will fix up old label sets where they are used as answers
-            if ((isset($oldlid1) || isset($oldlid2)) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
+            if (((isset($oldlid1) && isset($aLIDReplacements[$oldlid1])) || (isset($oldlid2) && isset($aLIDReplacements[$oldlid2]))) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
             {
                 $query="select * from ".db_table_name('labels')." where lid={$aLIDReplacements[$oldlid1]} and language='{$questionrowdata['language']}'";
                 $oldlabelsresult=db_execute_assoc($query);
@@ -1304,6 +1305,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
             if (isset($aQIDReplacements[$oldsqid])){
                $insertdata['qid']=$aQIDReplacements[$oldsqid];
+               db_switchIDInsert('questions',true);
             }
 
             $query=$connect->GetInsertSQL($tablename,$insertdata);
@@ -1313,6 +1315,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
             }
+            else
+            {
+               db_switchIDInsert('questions',false);
+            }            
             $results['subquestions']++;
         }
     }
@@ -1559,7 +1565,7 @@ function GetNewSurveyID($oldsid)
         // Get new random ids until one is found that is not used
         do
         {
-            $newsid = getRandomID();
+            $newsid = sRandomChars(5,'123456789');
             $isresult = $connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid");
         }
         while (!is_null($isresult));
