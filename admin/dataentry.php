@@ -2172,7 +2172,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                                 }
                                 $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['title']}' id='answer$fieldname{$mearow['title']}' value='Y'";
                                 //if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " /><label for='$fieldname{$mearow['title']}'>{$mearow['question']}</label><br />\n";
+                                $dataentryoutput .= " /><label for='answer$fieldname{$mearow['title']}'>{$mearow['question']}</label><br />\n";
                                 $upto++;
                             }
                             if ($deqrow['other'] == "Y")
