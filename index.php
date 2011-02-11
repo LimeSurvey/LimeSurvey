@@ -2261,7 +2261,7 @@ function submitfailed($errormsg='')
 */
 function buildsurveysession()
 {
-    global $thissurvey, $secerror, $clienttoken;
+    global $thissurvey, $secerror, $clienttoken, $databasetype;
     global $tokensexist, $thistpl;
     global $surveyid, $dbprefix, $connect;
     global $register_errormsg, $clang;
@@ -2704,7 +2704,14 @@ function buildsurveysession()
     
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
-    $rgquery = "SELECT attr.qid,value FROM ".db_table_name('question_attributes')." as attr right join ".db_table_name('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid";
+    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative')
+    {
+        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM ".db_table_name('question_attributes')." as attr right join ".db_table_name('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
+    }
+    else
+    {
+        $rgquery = "SELECT attr.qid, value FROM ".db_table_name('question_attributes')." as attr right join ".db_table_name('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
+    }
     $rgresult = db_execute_assoc($rgquery);
     while($rgrow = $rgresult->FetchRow())
     {
