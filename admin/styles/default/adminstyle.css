@@ -488,10 +488,16 @@ th.admincell {
     padding-left:42px; 
 }
 
+.btnaddanswer, 
+.btndelanswer,
 .header_statistics img {
     cursor:pointer;   
-    
 }
+
+img.handle {
+    cursor:move;   
+}
+
 
 .header_small {
     margin-top:2px;
