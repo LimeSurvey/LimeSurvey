@@ -3667,28 +3667,10 @@ function do_file_upload($ia)
    	$qidattributes=getQuestionAttributes($ia[0]);
 
     // Fetch question attributes
-    if (trim($qidattributes['max_num_of_files'])!='')
-        $_SESSION['maxfiles']=$qidattributes['max_num_of_files'];
-
-    if (trim($qidattributes['min_num_of_files'])!='')
-        $_SESSION['minfiles']=$qidattributes['min_num_of_files'];
-
-    if (trim($qidattributes['max_filesize'])!='')
-        $_SESSION['maxfilesize']=$qidattributes['max_filesize'];
-
-    if (trim($qidattributes['allowed_filetypes'])!='')
-        $_SESSION['allowed_filetypes']=$qidattributes['allowed_filetypes'];
-
-    if (trim($qidattributes['show_title'])!='')
-        $_SESSION['show_title'] = $qidattributes['show_title'];
-
-    if (trim($qidattributes['show_comment'])!='')
-        $_SESSION['show_comment'] = $qidattributes['show_comment'];
-
     $_SESSION['fieldname'] = $ia[1];
     
     // Basic uploader
-    $basic  = '<br /><br /><table border="0" cellpadding="10" cellspacing="10" align="center">'
+  /*  $basic  = '<br /><br /><table border="0" cellpadding="10" cellspacing="10" align="center">'
                     .'<tr>';
     if ($_SESSION['show_title']) { $basic .= '<th align="center"><b>Title</b></th><th>&nbsp;&nbsp;</th>'; }
     if ($_SESSION['show_comment']) { $basic .= '<th align="center"><b>Comment</b></th><th>&nbsp;&nbsp;</th>'; }
@@ -3724,7 +3706,7 @@ function do_file_upload($ia)
 
     $basic .= '</tbody></table>';
     $basic .= '<br /><br /><a href="#" onclick="hideBasic()">Hide Simple Uploader</a>';
-
+*/
     $currentdir = getcwd();
     $pos = stripos($currentdir, "admin");
 
@@ -3746,157 +3728,17 @@ function do_file_upload($ia)
         $questgrppreview = 0;
         $scriptloc = 'uploader.php';
     }
-    $uploadbutton = "<h2><a class='upload' href='$scriptloc?sid=$surveyid&preview=".$questgrppreview."'>Upload files</a></h2><br /><br />";
-    $editbutton   = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
-    
+
+    $uploadbutton = "<h2><a class='upload' href='$scriptloc?sid=$surveyid&fieldname=".$ia[1]."&qid=".$ia[0]."&preview="
+    .$questgrppreview."&show_title=".$qidattributes['show_title']."&show_comment="
+    .$qidattributes['show_comment']."&pos=".($pos?1:0)."'>Upload files</a></h2><br /><br />";
+    $editbutton = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
+
+
+    $answer  = "<script type='text/javascript' src='scripts/parseuri.js'></script>";
+    $answer .= "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
 
     // Modal dialog
-    $answer =  "<script type='text/javascript'>
-
-                    $(document).ready(function() {
-                        $('#basic').hide();
-                        var jsonstring = $('#".$ia[1]."').val();
-                        var filecount = $('#".$ia[1]."_filecount').val();
-                        displayUploadedFiles(jsonstring, filecount);
-                    });
-
-                    $(function() {
-                        $('.upload').click(function(e) {
-                            e.preventDefault();
-                            var \$this = $(this);
-                            var horizontalPadding = 30;
-                            var verticalPadding = 20;
-                            $('#uploader').dialog('destroy');
-
-                            if ($('#uploader').length > 0)
-                            {
-
-                                $('iframe#uploader', parent.document).dialog({
-                                    title: 'Upload your files',
-                                    autoOpen: true,
-                                    width: 984,
-                                    height: 440,
-                                    modal: true,
-                                    resizable: false,
-                                    autoResize: true,
-                                    draggable: false,
-                                    closeOnEscape: false,
-                                    beforeclose: function() {
-                                        var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit();
-                                        return pass;
-                                    },
-                                    overlay: {
-                                        opacity: 0.85,
-                                        background: 'black'
-                                    },
-                                    buttons: {
-                                        'Save and exit': function() {
-                                            $(this).dialog('close');
-                                        }
-                                    }
-                                }).width(984 - horizontalPadding).height(440 - verticalPadding);
-                            }
-                            else
-                            {
-                                $('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-                                    title: 'Upload your files',
-                                    autoOpen: true,
-                                    width: 984,
-                                    height: 440,
-                                    modal: true,
-                                    resizable: false,
-                                    autoResize: true,
-                                    draggable: false,
-                                    closeOnEscape: false,
-                                    beforeclose: function() {
-                                        var pass = window.frames.uploader.saveAndExit();
-                                        return pass;
-                                    },
-                                    overlay: {
-                                        opacity: 0.85,
-                                        background: 'black'
-                                    },
-                                    buttons: {
-                                        'Save and exit': function() {
-                                            $(this).dialog('close');
-                                        }
-                                    }
-                                }).width(984 - horizontalPadding).height(440 - verticalPadding);
-                            }
-                        });
-                    });
-
-                    function isValueInArray(arr, val) {
-                        inArray = false;
-                        for (i = 0; i < arr.length; i++)
-                            if (val == arr[i])
-                                inArray = true;
-
-                        return inArray;
-                    }
-
-                    function copyJSON(jsonstring, filecount) {
-                        $('#".$ia[1]."').val(jsonstring);
-                        $('#".$ia[1]."_filecount').val(filecount);
-
-                        displayUploadedFiles(jsonstring, filecount);
-
-                    }
-
-                    function displayUploadedFiles(jsonstring, filecount) {
-                        var jsonobj;
-                        var i;
-
-                        if (jsonstring != '')
-                        {
-                            jsonobj = eval('(' + jsonstring + ')');
-                            var display = '<table width=\"100%\"><tr><th align=\"center\" width=\"20%\">&nbsp;</th>";
-                            if ($_SESSION['show_title']) { $answer .= "<th align=\"center\"><b>Title</b></th>"; }
-                            if ($_SESSION['show_comment']) { $answer .= "<th align=\"center\"><b>Comment</b></th>"; }
-                            $answer .= "<th align=\"center\"><b>Name</b></th></tr>';";
-
-                $answer .= "var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
-                    
-                            for (i = 0; i < filecount; i++)
-                            {
-                            ";
-                                if ($pos)
-                                {
-                                    $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"".$scriptloc."?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
-                                                else
-                                                    display += '<tr><td><img src=\"../images/placeholder.png\" height=100px  align=\"center\"/></td>';";
-                                }
-                                else
-                                {
-                                    $answer .= "if (isValueInArray(image_extensions, jsonobj[i].ext))
-                                                    display += '<tr><td><img src=\"".$scriptloc."?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'\" height=100px  align=\"center\"/></td>';
-                                                else
-                                                    display += '<tr><td><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
-                                }
-
-                                if ($_SESSION['show_title'])
-                                    $answer .= "display += '<td>'+jsonobj[i].title+'</td>';";
-                                if ($_SESSION['show_comment'])
-                                    $answer .= "display += '<td>'+jsonobj[i].comment+'</td>';";
-
-        $answer .= "            display += '<td>'+decodeURIComponent(jsonobj[i].name)+'</td><td>" . $editbutton . "</td></tr>';
-                            }
-                            display += '</table>';
-                            $('#uploadedfiles').html(display);
-                        }
-                    }
-
-                    function showBasic() {
-                        $('#basic').show();
-                    }
-
-                    function hideBasic() {
-                        $('#basic').hide();
-                    }
-
-                </script>";
-
     $answer .= $uploadbutton;
 
     $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
@@ -3907,7 +3749,7 @@ function do_file_upload($ia)
     else
         $answer .= "0 />";
 
-    $answer .= "<div id='uploadedfiles'></div>";
+    $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
 
     //$answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
 
@@ -3916,7 +3758,7 @@ function do_file_upload($ia)
                         var i;
                         var jsonstring = "[";
 
-                        for (i = 1, filecount = 0; i <= '.$_SESSION['maxfiles'].'; i++)
+                        for (i = 1, filecount = 0; i <= '.$qidattributes['max_num_of_files'].'; i++)
                         {
                             if ($("#'.$ia[1].'_"+i).val() == "")
                                 continue;
@@ -3928,12 +3770,12 @@ function do_file_upload($ia)
                             if ($("#answer'.$ia[1].'_"+i).val() != "")
                                 jsonstring += "{';
 
-    if ($_SESSION['show_title'])
+    if ($qidattributes['show_title'])
         $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
     else
         $answer .= '\"title\":\"\",';
 
-    if ($_SESSION['show_comment'])
+    if ($qidattributes['show_comment'])
         $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
     else
         $answer .= '\"comment\":\"\",';

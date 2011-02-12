@@ -76,29 +76,33 @@ $header = getHeader($meta);
 
 echo $header;
 
+$fn = $_GET['fieldname'];
+$qid = $_GET['qid'];
+$qidattributes=getQuestionAttributes($qid);
+
 $body = '
         <div id="notice"></div>
-        <input type="hidden" id="ia"                value="'.$_SESSION['fieldname'].'" />
-        <input type="hidden" id="minfiles"          value="'.$_SESSION['minfiles'].'" />
-        <input type="hidden" id="maxfiles"          value="'.$_SESSION['maxfiles'].'" />
-        <input type="hidden" id="maxfilesize"       value="'.$_SESSION['maxfilesize'].'" />
-        <input type="hidden" id="allowed_filetypes" value="'.$_SESSION['allowed_filetypes'].'" />
-        <input type="hidden" id="preview"           value="'.$_SESSION['preview'].'" />
-        <input type="hidden" id="show_comment"      value="'.$_SESSION['show_comment'].'" />
-        <input type="hidden" id="show_title"        value="'.$_SESSION['show_title'].'" />
-        <input type="hidden" id="licount"           value="0" />
-        <input type="hidden" id="filecount"         value="0" />
+        <input type="hidden" id="ia"                value="'.$fn.'" />
+        <input type="hidden" id="'.$fn.'_minfiles"          value="'.$qidattributes['min_num_of_files'].'" />
+        <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$qidattributes['max_num_of_files'].'" />
+        <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$qidattributes['max_filesize'].'" />
+        <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$qidattributes['allowed_filetypes'].'" />
+        <input type="hidden" id="preview"                   value="'.$_SESSION['preview'].'" />
+        <input type="hidden" id="'.$fn.'_show_comment"      value="'.$qidattributes['show_comment'].'" />
+        <input type="hidden" id="'.$fn.'_show_title"        value="'.$qidattributes['show_title'].'" />
+        <input type="hidden" id="'.$fn.'_licount"           value="0" />
+        <input type="hidden" id="'.$fn.'_filecount"         value="0" />
 
         <!-- The upload button -->
         <div align="center" class="upload-div">
             <button id="button1" class="upload-button" type="button" >Select file</button>
         </div>
         
-        <p class="uploadmsg">You can upload '.$_SESSION['allowed_filetypes'].' under '.$_SESSION['maxfilesize'].' KB each</p>
+        <p class="uploadmsg">You can upload '.$qidattributes['allowed_filetypes'].' under '.$qidattributes['max_filesize'].' KB each</p>
         <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->
-        <ul id="listfiles"></ul>
+        <ul id="'.$fn.'_listfiles"></ul>
 
     </body>
 </html>';

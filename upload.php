@@ -62,7 +62,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     $filename = $_FILES['uploadfile']['name'];
     $size = 0.001 * $_FILES['uploadfile']['size'];
     $valid_extensions = strtolower($_POST['valid_extensions']);
-    $maxfilesize = $_POST['maxfilesize'];
+    $maxfilesize = $_POST['max_filesize'];
     $preview = $_POST['preview'];
 
     $valid_extensions_array = explode(",", $valid_extensions);
@@ -83,6 +83,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
                     );
 
         echo json_encode($return);
+        exit ();
     }
 
     // If this is just a preview, don't save the file
