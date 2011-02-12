@@ -1687,7 +1687,8 @@ function returnglobal($stringname)
         $stringname == "lid" || $stringname == "ugid"||
         $stringname == "thisstep" || $stringname == "scenario" ||
         $stringname == "cqid" || $stringname == "cid" ||
-        $stringname == "qaid" || $stringname == "scid")
+        $stringname == "qaid" || $stringname == "scid" ||
+        $stringname == "loadsecurity")
         {
             return sanitize_int($urlParam);
         }
