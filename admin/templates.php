@@ -505,6 +505,7 @@ switch($screenname) {
 		         ,'mandatory' => ''
 		         ,'man_message' => ''
 		         ,'valid_message' => ''
+		         ,'file_valid_message' => ''
 		         ,'essentials' => 'id="question1"'
 		         ,'class' => 'list-radio'
 		         ,'man_class' => ''
@@ -524,6 +525,7 @@ switch($screenname) {
 		 ,'mandatory' => $clang->gT('*')
 		 ,'man_message' => ''
 		 ,'valid_message' => ''
+		 ,'file_valid_message' => ''
 		 ,'essentials' => 'id="question2"'
 		 ,'class' => 'text-long'
 		 ,'man_class' => 'mandatory'
