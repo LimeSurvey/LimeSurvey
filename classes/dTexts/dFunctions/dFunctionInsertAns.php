@@ -11,7 +11,7 @@ class dFunctionInsertAns implements dFunctionInterface
 		global $connect;
 		$field = $args[0];
 		if (isset($_SESSION['srid'])) $srid = $_SESSION['srid'];
-		$sid = $_POST['sid'];
+		$sid = returnglobal('sid');
 		return retrieve_Answer($field, $_SESSION['dateformats']['phpdate']);
 	}
 }
