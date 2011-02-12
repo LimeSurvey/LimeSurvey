@@ -729,7 +729,8 @@ elseif ($subaction == "all")
     }
     
     //LETS COUNT THE DATA
-    $dtquery = "SELECT count(*) FROM $sql_from $sql_where";
+    //$dtquery = "SELECT count(*) FROM $sql_from $sql_where";
+    $dtquery = "SELECT count(*) FROM $sql_from";
     if ($sql_where!="")
     {
         $dtquery .=" WHERE $sql_where";
