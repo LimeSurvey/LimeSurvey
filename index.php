@@ -2274,16 +2274,16 @@ function buildsurveysession()
     }
 
     $totalBoilerplatequestions = 0;
-
+    $loadsecurity = returnglobal('loadsecurity');
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
     if ($tokensexist == 0 &&
     captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
-        if (!isset($_GET['loadsecurity']) ||
+        if (!isset($loadsecurity) ||
         !isset($_SESSION['secanswer']) ||
-        $_GET['loadsecurity'] != $_SESSION['secanswer'])
+        $loadsecurity != $_SESSION['secanswer'])
         {
             sendcacheheaders();
             doHeader();
@@ -2293,7 +2293,7 @@ function buildsurveysession()
             //echo makedropdownlist();
             echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
-            if (isset($_GET['loadsecurity']))
+            if (isset($loadsecurity))
             { // was a bad answer
                 echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect.")."</font><br />";
             }
@@ -2456,9 +2456,9 @@ function buildsurveysession()
     {
 
         // IF CAPTCHA ANSWER IS CORRECT
-        if (isset($_GET['loadsecurity']) &&
+        if (isset($loadsecurity) &&
         isset($_SESSION['secanswer']) &&
-        $_GET['loadsecurity'] == $_SESSION['secanswer'])
+        $loadsecurity == $_SESSION['secanswer'])
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
@@ -2513,7 +2513,7 @@ function buildsurveysession()
             { // only show CAPTCHA
 
                 echo '<div id="wrapper"><p id="tokenmessage">';
-                if (isset($_GET['loadsecurity']))
+                if (isset($loadsecurity))
                 { // was a bad answer
                     echo "<span class='error'>".$clang->gT("The answer to the security question is incorrect.")."</span><br />";
                 }
@@ -3432,6 +3432,10 @@ function GetReferringUrl()
         echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     }
     echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
+    $loadsecurity = returnglobal('loadsecurity');
+    if (isset($loadsecurity)) {
+        echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
+    }
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
