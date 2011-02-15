@@ -2982,7 +2982,7 @@ function doAssessment($surveyid, $returndataonly=false)
             $groups=array();
             foreach($fieldmap as $field)
             {
-                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
+                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P',":")))
                 {
                     $fieldmap[$field['fieldname']]['assessment_value']=0;
                     if (isset($_SESSION[$field['fieldname']]))
