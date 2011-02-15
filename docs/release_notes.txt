@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.91RC3!
+Welcome to LimeSurvey v1.91RC4!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,60 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.91RC3 (build 9715) to 1.91RC4 (build 9797)
++New feature #4927: added SurveyGroupQuestion identifier {SGQ} as a variable for use in questions - thanks to timbee for the patch (mennodekker)
++New feature: added the 'showsgqacode' parameter. When this settings is true/1 (default = false/0) then the printable survey option will show a reference to the "lime_survey_12345" table which stores the survey answers.  This code will be shown in front of each question and in front of each answer option at the printable survey. It can be used as a data analysis code book for querying data from the main response table.
+#Updated feature: in copy mode all conditions are checked by default. The multi-selection box to select target question is now using a new layout making it easier to select multiple questions (lemeur)
+#Updated translation : French (b00z00)
+#Updated translation: Dutch, thanks to H. Velthuis (gandalfar)
+#Updated translation: Dutch-informal, thanks to H. Velthuis (gandalfar)
+#Updated translation: French translation for LimeReplacementFields and LimeFitWin buttons in HTML editor. (lemeur)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Norwegian Bokmål (nb), thanks to Pål Monstad (gandalfar)
+#Updated translation: Swedish, thanks to Daniel Tamm (gandalfar)
+-Fixed issue 04928: GSoC - answer options in list radio don't work well (tpartner)
+-Fixed issue 04949: Checkbox labels are not clicable (tpartner)
+-Fixed issue: Show SGQA codes for semantic differential question types (Array questions "A" and "F") if enabled at optional settings. (maziminke)
+-Fixed issue #4892: Cannot skip welcome screen in group-by-group mode (mennodekker)
+-Fixed issue #4917: Not allowed to edit answers after completion when using 'alloweditaftercompletion' and CAPTCHA (lemeur)
+-Fixed issue #4938, #4936, #4893: "Auto-check exclusive option" code causes JavaScript crash thanks to tparner / wavexx (mennodekker)
+-Fixed issue #04869: Field file upload does not work when more than one. (Thanks to fcabralpacheco for reporting the bug) (texens)
+-Fixed issue #04904: SQL Injection possible in admin/browse.php (Thanks to starmonkey for reporting the bug) (texens)
+-Fixed issue 04919: GSoC - Notice at template editor: Undefined index: file_valid_message (texens)
+-Fixed issue #4868: Missing translation (parajulik)
+-Fixed issue #04920: Notice when using INSERTANS placeholders and "all-in-one" survey format. (lemeur)
+-Fixed issue #4797: Fix page advancement in group-by-group mode with conditionals. (wavexx)
+-Fixed issue #4864: InsertAns replacement fields note replaced in Confirmation email subject and message. (lemeur)
+-Fixed issue #4870: missing translation in HTML editor (c_schmitz)
+-Fixed issue #4876: Manual data entry changes values in Rank type question (c_schmitz)
+-Fixed issue #4878: Missing translation for decimal separator setting (c_schmitz)
+-Fixed issue #4879: Missing image file (c_schmitz)
+-Fixed issue #4885: When editing a response with a date question containing an empty responses the date field is filled with the value 30.11.1999 (c_schmitz)
+-Fixed issue #4897 : browsetable can be too big . (shnoulle)
+-Fixed issue #4899: Iterate survey icon not showing up - patch kindly provided by jacopo (c_schmitz)
+-Fixed issue #4902: ADMINNAME and ADMINEMAIL cannot be used in notification email (c_schmitz)
+-Fixed issue #4921: INSERTANS fields not correctly replaced at import and copy survey. (lemeur)
+-Fixed issue #4922: Captchas at multilingual surveys cause a loop and prevent accessing a survey (lemeur)
+-Fixed issue #4926 : can't use pdf export in print answers (shnoulle)
+-Fixed issue #4932 : unable to delete single response (shnoulle)
+-Fixed issue #4934 : Editing a response in the data entry form always resets the answer to "not completed" in private surveys (shnoulle)
+-Fixed issue #4939: Group ordering problem: group_order not correctly initialized when adding groups and using mssql_n driver (c_schmitz)
+-Fixed issue #4940: Missing png for jquery template (c_schmitz)
+-Fixed issue #4946 :  php warnig with assesment in Array (Multi Flexible) (Numbers)  (shnoulle)
+-Fixed issue #4957 : php alert in template editor (shnoulle)
+-Fixed issue 04957 : php alert if rename template (shnoulle)
+-Fixed issue: Google maps was showing server location instead of user location (idobraca)
+-Fixed issue: In timings view group and question title are shown instead of gid/qid (idobraca)
+-Fixed issue: Missing translation on timings data view (idobraca)
+-Fixed issue: SQL error in browse response module when counting answers (lemeur)
+-Fixed issue: Showing question title instead of qid (idobraca)
+-Fixed issue: Various problems when using any MSSQL driver (c_schmitz)
+-Fixed issue: default Editor language is German for LimeReplacementFields and LimeFitWin buttons. (lemeur)
+-Fixed issue: the copy-conditions check-all checkbox is not working (lemeur)
+-Fixed issue #4910: Download all files for reponse in browse screen throws en error (mennodekker)
+-Fixed issue #04869: Field file upload does not work when more than one. (texens)
 
 Changes from 1.91RC2 (build 9672) to 1.91RC3 (build 9715)
 #Updated language: Norwegian bokmål, thanks to Pål Monstad (gandalfar)
