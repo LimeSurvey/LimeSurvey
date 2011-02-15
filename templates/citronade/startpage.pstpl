@@ -19,7 +19,6 @@
 		<div class="wrapper">
 			<a href="http://www.limesurvey.org" title="The survey software" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt="LimeSurvey" id="logo"/></a>
 			<h1 id="sitename">{SITENAME}</h1>
-			<div id="languagechanger" class="form">{LANGUAGECHANGER}</div>
 		</div>
 	</div>
 <div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>
