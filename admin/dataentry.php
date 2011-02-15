@@ -97,7 +97,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         {
             $tokencompleted = "";
             $tokentable = db_table_name("tokens_".$surveyid);
-            $tcquery = "SELECT completed from $tokentable WHERE token='".$_POST['token']."'";
+            $tcquery = "SELECT completed from $tokentable WHERE token=".db_quoteall($_POST['token'],true);
             $tcresult = db_execute_assoc($tcquery);
             $tccount = $tcresult->RecordCount();
             while ($tcrow = $tcresult->FetchRow())
@@ -118,7 +118,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             }
             else
             { // token is valid, survey not anonymous, try to get last recorded response id
-                $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'";
+                $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".db_quoteall($_POST['token'],true);
                 $aresult = db_execute_assoc($aquery);
                 while ($arow = $aresult->FetchRow())
                 {
@@ -305,7 +305,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     { $submitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
                 
 				// check how many uses the token has left
-				$usesquery = "SELECT usesleft FROM {$dbprefix}tokens_$surveyid WHERE token='{$_POST['token']}'";
+				$usesquery = "SELECT usesleft FROM {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($_POST['token'],true);
 				$usesresult = db_execute_assoc($usesquery);
 				$usesrow = $usesresult->FetchRow();
 				if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
@@ -334,7 +334,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 						$utquery .= "SET usesleft=usesleft-1\n";
 					}
                 }
-                $utquery .= "WHERE token='{$_POST['token']}'";
+                $utquery .= "WHERE token=".db_quoteall($_POST['token']);
                 $utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());
                 
                 // save submitdate into survey table
@@ -582,7 +582,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         }
                         $completedate= empty($idrow[$fname['fieldname']]) ? $mysubmitdate : $idrow[$fname['fieldname']];
 
-                        $dataentryoutput .= "                <select name='submitdate'>\n";
+                        $dataentryoutput .= "                <select name='completed'>\n";
                         $dataentryoutput .= "                    <option value=";
                         if(empty($idrow['submitdate'])) { $dataentryoutput .= "'' selected"; }
                         else    { $dataentryoutput .= "'N'"; }
@@ -1430,9 +1430,20 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             {
                 $updateqr .= db_quote_id($fieldname)." = NULL, \n";
             }
-            elseif (($irow['type'] == 'submitdate') && ($thisvalue == 'N' || $thisvalue == ''))
+            elseif (($irow['type'] == 'submitdate'))
             {
-                $updateqr .= db_quote_id($fieldname)." = NULL, \n";
+                if (isset($_POST['completed']) && ($_POST['completed']== "N"))
+                {
+                    $updateqr .= db_quote_id($fieldname)." = NULL, \n";
+                }
+                elseif ($thisvalue=="")
+                {
+                    $updateqr .= db_quote_id($fieldname)." = " . db_quoteall($_POST['completed'],true) . ", \n";
+                }
+                else
+                {
+                    $updateqr .= db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
+                }
             }
             else
             {
