@@ -946,6 +946,7 @@ div.messagebox .warningheader {
       
 .condition-tbl-row {
     width: 100%;
+    height: 300px;
     float: left;
     padding: 0;
     margin: 0;
