@@ -580,19 +580,15 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         {
                             $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                         }
-                        $completedate= empty($idrow[$fname['fieldname']]) ? $mysubmitdate : $idrow[$fname['fieldname']];
-
+                        $completedate= empty($idrow['submitdate']) ? $mysubmitdate : $idrow['submitdate'];
                         $dataentryoutput .= "                <select name='completed'>\n";
-                        $dataentryoutput .= "                    <option value=";
-                        if(empty($idrow['submitdate'])) { $dataentryoutput .= "'' selected"; }
-                        else    { $dataentryoutput .= "'N'"; }
+                        $dataentryoutput .= "                    <option value='N'";
+                        if(empty($idrow['submitdate'])) { $dataentryoutput .= " selected='selected'"; }
                         $dataentryoutput .= ">".$clang->gT("No")."</option>\n";
-                        $dataentryoutput .= "                    <option value=";
-                        if(!empty($idrow['submitdate'])) { $dataentryoutput .= "'' selected"; }
-                        else     { $dataentryoutput .= "'$completedate'"; }
+                        $dataentryoutput .= "                    <option value='{$completedate}'";
+                        if(!empty($idrow['submitdate'])) { $dataentryoutput .= " selected='selected'"; }
                         $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n";
                         $dataentryoutput .= "                </select>\n";
-                        break;
                     case "X": //Boilerplate question
                         $dataentryoutput .= "";
                         break;
@@ -1436,7 +1432,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 {
                     $updateqr .= db_quote_id($fieldname)." = NULL, \n";
                 }
-                elseif ($thisvalue=="")
+                elseif (isset($_POST['completed']) && $thisvalue=="")
                 {
                     $updateqr .= db_quote_id($fieldname)." = " . db_quoteall($_POST['completed'],true) . ", \n";
                 }
