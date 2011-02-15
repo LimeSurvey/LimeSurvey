@@ -1222,7 +1222,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
             if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
             {
                 $initialCheckbox = "<td><input type='checkbox' id='scenarioCbx{$scenarionr['scenario']}'/>\n"
-                ."<script type='text/javascript'>$('#scenarioCbx{$scenarionr['scenario']}').checkgroup({groupName:'aConditionFromScenario{$scenarionr['scenario']}'});</script>"
+                ."<script type='text/javascript'>$(document).ready(function () { $('#scenarioCbx{$scenarionr['scenario']}').checkgroup({groupName:'aConditionFromScenario{$scenarionr['scenario']}'}); });</script>"
                 ."</td><td>&nbsp;</td>\n";
             }
             else
