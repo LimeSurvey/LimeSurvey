@@ -36,8 +36,6 @@ a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;}
 #head a#link-logo:hover,#head a#link-logo:focus,#head a#link-logo:active{background:transparent;}
 #head a#link-logo {outline: 0;} /* remove the outline on logo click */
 
-#head #languagechanger{position:absolute;top:1em;right:0;}
-#head #languagechanger{text-align:right;}
 #head #sitename a{text-decoration:none;color:#328639;}
 
 /* survey title color */
@@ -165,7 +163,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 /* specific decoration */
 p.url{font-size:1.2em;text-align:center;font-weight:bold}
 table.printouttable{width:99%}
-
+#languagechanger{margin:0.5em 0;text-align:center}
 /* survey list (home page) */
 #surveylist-container{text-align:center}
 h2#surveytitle{font-size:1.2em;text-align:left;line-height:2em;}

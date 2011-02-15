@@ -15,9 +15,6 @@
 
 body{text-align:right;direction:rtl;}
 
-#head #languagechanger{position:absolute;top:0;left:0;}
-#head #languagechanger{text-align:left;}
-
 h2#surveytitle{text-align:right;}
 
 ul.tools{
@@ -32,6 +29,8 @@ ul#surveylist li{
     float:right; 
     clear:right ;
 }
+
+.wrapper,#content{text-align:right;}
 
 table.question tbody th.answertext,table.question tbody th.arraycaptionright{text-align:left;}
 table.question tbody th.answertextleft{text-align:right;}
