@@ -267,18 +267,21 @@ if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 }
 
 if ($action == "templaterename" && isset($newname) && isset($copydir) && (!in_array($newname,$standardtemplates))) 
-{
-	$newdirname=$usertemplaterootdir."/".$newname;
-	$olddirname=$usertemplaterootdir."/".$copydir;
+    {
+    if (isStandardTemplate($newname)){
+        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("This name is reserved for standard template.","js")."\");\n//-->\n</script>";
+    }
+    $newdirname=$usertemplaterootdir."/".$newname;
+    $olddirname=$usertemplaterootdir."/".$copydir;
     if (rename($olddirname, $newdirname)==false) {
        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
-    } 
+        } 
     else 
-    {
-		$templates[$newname]=$newdirname;
+        {
+        $templates[$newname]=$newdirname;
         $templatename=$newname;
+        }
     }
-}
 
 if ($action == "templateuploadfile")
 {
