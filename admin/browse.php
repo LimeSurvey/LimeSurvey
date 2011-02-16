@@ -370,7 +370,7 @@ elseif ($subaction == "all")
             if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
                 $fuqtquestions[] = $field['fieldname'];
         }
-        if (count($fuqtquestions)>0)
+        if (!empty($fuqtquestions))
         {
             // find all responses (filenames) to the fuqt questions
             $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
