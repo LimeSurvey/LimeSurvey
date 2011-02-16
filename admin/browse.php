@@ -370,7 +370,8 @@ elseif ($subaction == "all")
                 $fuqtquestions[] = $field['fieldname'];
         }
 
-        if (!empty($fuqtquestions)) {
+        if (!empty($fuqtquestions))
+        {
             // find all responses (filenames) to the fuqt questions
             $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
             $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
