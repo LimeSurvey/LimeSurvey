@@ -1621,7 +1621,7 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
         $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery.multiselect.min.js';
         $css_admin_includes[] = '../scripts/jquery/css/jquery.multiselect.css';
 
-        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( {autoOpen: true, height: 200 } ); });</script>";
+        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( {autoOpen: true, noneSelectedText: 'No questions selected.', beforeclose: function(){return false;},height: 200 } ); });</script>";
 
         $conditionsoutput_main_content .= "\t<div class='condition-tbl-row'>\n"
         ."\t<div class='condition-tbl-left'>".$clang->gT("Copy the selected conditions to").":</div>\n"

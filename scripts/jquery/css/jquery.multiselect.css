@@ -22,3 +22,6 @@
 /* remove label borders in IE6 because IE6 does not support transparency */
 * html .ui-multiselect-checkboxes label { border:none }
 
+.ui-multiselect-close, .ui-multiselect .ui-icon-triangle-2-n-s {display:none;}
+.ui-multiselect-checkboxes .ui-state-hover {font-weight:normal;}
+
