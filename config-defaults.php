@@ -196,6 +196,16 @@ $surveyPreview_require_Auth = true;
 $use_one_time_passwords = false;
 
 
+// $display_user_password_in_html
+// Option to tell LS to display the automatically generated user password in the html GUI or not
+$display_user_password_in_html = false;
+
+
+// $display_user_password_in_email
+// Option to tell LS to display the automatically generated user password in the welcome email or not
+$display_user_password_in_email = true;
+
+
 // $useWebserverAuth
 // Enable delegation of authentication to the webserver.
 // If you set this parameter to true and set your webserver to authenticate

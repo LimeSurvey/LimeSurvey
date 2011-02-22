@@ -324,8 +324,11 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
             $loginsummary .= "<p>".sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br /></p>";
         }
 
-        $loginsummary .= "<p><a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n
-						</form><br /></p>";
+        if ($display_user_password_in_email === true)
+        {
+            $loginsummary .= "<p><a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n";
+        }
+        $loginsummary .= "                                                </form><br /></p>";
         $loginsummary .= "                                                <script type='text/javascript'>\n";
         $loginsummary .= "                                                  document.getElementById('user').focus();\n";
         $loginsummary .= "                                                </script>\n";

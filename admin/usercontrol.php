@@ -43,7 +43,7 @@ if (!isset($_SESSION['loginID']))
         $_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
     }
 
-    if($action == "forgotpass")
+    if($action == "forgotpass" && $display_user_password_in_email === true)
     {
         $loginsummary = "<br /><strong>".$clang->gT("Forgot password")."</strong><br />\n";
 
@@ -438,8 +438,15 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             $body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
             if ($useWebserverAuth === false)
             { // authent is not delegated to web server
-                // send password otherwise do not
-                $body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+                // send password (if authorized by config)
+                if ($display_user_password_in_email === true)
+                {
+                    $body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+                }
+                else
+                {
+                    $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your password to your LimeSurvey administrator") . "<br />\n";
+                }
             }
 
             $body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
@@ -651,7 +658,15 @@ elseif ($action == "moduser")
                 $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
             } elseif($uresult && !empty($sPassword))
             {
-                $addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": {$sPassword}<br /><br />\n";
+                if ($display_user_password_in_html === true)
+                {
+                    $displayedPwd = $sPassword;
+                }
+                else
+                {
+                    $displayedPwd = preg_replace('/./','*',$sPassword);
+                }
+                $addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": {$displayedPwd}<br /><br />\n";
                 $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
             }
             else
