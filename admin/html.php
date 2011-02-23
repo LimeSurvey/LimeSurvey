@@ -1884,17 +1884,17 @@ elseif ($action == "surveyrights")
     $addsummary .= "<div class='messagebox ui-corner-all'>\n";
 
     if(isset($postuserid)){
-        $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} ";
+        $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = ".db_quoteall($surveyid);
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
         {
-            $query.=" AND owner_id != ".$postuserid." AND owner_id = ".$_SESSION['loginID'];
+            $query.=" AND owner_id != ".db_quoteall($postuserid)." AND owner_id = ".db_quoteall($_SESSION['loginID']);
         }
     }
     else{
-        $sQuery = "SELECT owner_id FROM ".db_table_name('surveys')." WHERE sid = ".db_quote_id($surveyid);
+        $sQuery = "SELECT owner_id FROM ".db_table_name('surveys')." WHERE sid = ".db_quoteall($surveyid);
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
         {
-            $query.=" AND owner_id = ".db_quote_id($_SESSION['loginID']);
+            $query.=" AND owner_id = ".db_quoteall($_SESSION['loginID']);
         }
         $iOwnerID=$connect->GetOne($sQuery);
     }
