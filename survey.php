@@ -714,14 +714,15 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
             {
                 $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid != 0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
             }
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
+
             while ($fansrows = $qresult->FetchRow())
             {
                 if($fansrows['other']=="Y") $other="Y";
-                if(strpos($array_filter_types, $fansrows['type']) === false) {} else
+                if(strpos($array_filter_types, $OrigQuestion['type']) === false) {} else
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
@@ -797,14 +798,14 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
             {
                 $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
             } 
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
             {
                 if($fansrows['other']== "Y") $other="Y";
-                if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
+                if(strpos($array_filter_exclude_types, $OrigQuestion['type']) === false) {} else
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
