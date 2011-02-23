@@ -100,7 +100,7 @@ else {
 	<!--
 	function closeme()
 	{
-		window.onbeforeunload = new Function('return true;');
+		window.onbeforeunload = new Function('var a = 1;');
 		self.close();
 	}
 
@@ -158,8 +158,18 @@ else {
 
 
 	$output .=	"
+                editedtext = fix_FCKeditor_text(editedtext);
 		window.opener.document.getElementsByName('".$fieldname."')[0].value = editedtext;
 	}
+
+        function fix_FCKeditor_text(text)
+        {
+            var thestring = new String(text);
+            thestring.replace('<br type=\"_moz\" />','');
+            var myre = new RegExp('^([\s]+|<br />|&nbsp;)$');
+            thestring = thestring.replace(myre, '');
+            return thestring;
+        }
 
 	function close_editor()
 	{
