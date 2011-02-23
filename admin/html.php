@@ -1891,7 +1891,11 @@ elseif ($action == "surveyrights")
         }
     }
     else{
-        $sQuery = "SELECT owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
+        $sQuery = "SELECT owner_id FROM ".db_table_name('surveys')." WHERE sid = ".db_quote_id($surveyid);
+        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+        {
+            $query.=" AND owner_id = ".db_quote_id($_SESSION['loginID']);
+        }
         $iOwnerID=$connect->GetOne($sQuery);
     }
     
