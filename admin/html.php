@@ -1887,7 +1887,7 @@ elseif ($action == "surveyrights")
         $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid}";
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
         {
-            $query.=" AND owner_id != {$postuserid} AND owner_id = $_SESSION['loginID'];
+            $query.=" AND owner_id != {$postuserid} AND owner_id = ".$_SESSION['loginID'];
         }
     }
     else{
