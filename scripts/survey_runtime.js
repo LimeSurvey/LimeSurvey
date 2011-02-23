@@ -535,7 +535,7 @@ function multi_set(ids)
 				_bits.push(new Array());
 				//clear the vert var set when total found in tr
 				var vert =false;
-				if(_tr[_i].getAttribute(ie ? 'className' : 'class') && _tr[_i].getAttribute(ie ? 'className' : 'class').match(_match_total,'ig'))
+				if(_tr[_i].className && _tr[_i].className.match(_match_total,'ig'))
 				{
 					//will need to set it up vertical
 					vert = true;
@@ -564,13 +564,13 @@ function multi_set(ids)
 								_tdin.onkeydown = _in_key;
 								_tdin.onkeyup = calc;
 								//check for total and grand total
-								if(_td[_a].getAttribute(ie ? 'className' : 'class') && _td[_a].getAttribute(ie ? 'className' : 'class').match(_match_total,'ig'))
+								if(_td[_a].className && _td[_a].className.match(_match_total,'ig'))
 								{
 									//clear the key events with false returns
 									_tdin.onkeydown = dummy;
 									_tdin.onkeyup = dummy;
 									//need to check for grand
-									if(_td[_a].getAttribute(ie ? 'className' : 'class').match(_match_grand,'ig'))
+									if(_td[_a].className.match(_match_grand,'ig'))
 									{
 										//set up a grand total
 										if(vert && _bits[_counter].length > 1)
