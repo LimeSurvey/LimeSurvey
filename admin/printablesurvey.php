@@ -129,6 +129,15 @@ if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$not
 
 $headelements = getPrintableHeader();
 
+//if $showsgqacode is enabled at config.php show table name for reference
+if(isset($showsgqacode) && $showsgqacode == true)
+{
+	$surveyname =  $surveyname."<br />[".$clang->gT('Database')." ".$clang->gT('table').": $surveytable]";
+}
+else
+{
+	$surveyname = "";
+}
 $survey_output = array(
 			 'SITENAME' => $sitename
 ,'SURVEYNAME' => $surveyname
