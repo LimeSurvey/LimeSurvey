@@ -651,18 +651,18 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
                     if ($maxansw && $minansw)
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value']);
+                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw);
                     } elseif ($maxansw)
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw['value']);
+                        . sprintf($clang->gT("Check at most %d answers"), $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw);
                     } else
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw['value']),$minansw['value']);
+                        . sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw),$minansw)."</span>";
+                        $question_text['help'] = sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw),$minansw);
                     }
                 }
             }
@@ -694,18 +694,18 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
                     if ($maxansw && $minansw)
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value']);
+                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw);
                     } elseif ($maxansw)
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw['value']);
+                        . sprintf($clang->gT("Check at most %d answers"), $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw);
                     } else
                     {
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
-                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw['value']);
+                        . sprintf($clang->gT("Check at least %d answers"), $minansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw);
                     }
                 }
             }
