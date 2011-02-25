@@ -10,9 +10,9 @@ $(document).ready(function(){
                           changeYear: true, 
                           changeMonth: true,
                           yearRange: yearrange,
-                          defaultDate:new Date(range[0]),
-                          minDate:new Date(range[0]),
-                          maxDate: new Date(range[1],12,31),
+                          defaultDate: +0,
+                          minDate:new Date(range[0],0,1),
+                          maxDate: new Date(range[1],11,31),
                           duration: 'fast'
                         }, $.datepicker.regional[language]);
     });
