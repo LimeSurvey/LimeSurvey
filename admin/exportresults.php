@@ -88,7 +88,7 @@ if (!$exportstyle)
     ."<ul><li><label>".$clang->gT("Range:")."</label> ".$clang->gT("From")." <input type='text' name='export_from' size='8' value='1' />";
     $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='$max_datasets' /></li>"
 
-    ."<li><br /><label for='filterinc'>".$clang->gT("Completion state")."</label> <select id='filterinc' name='filterinc'>\n"
+    ."<li><label for='filterinc'>".$clang->gT("Completion state")."</label> <select id='filterinc' name='filterinc'>\n"
     ."<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
     ."<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
     ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
@@ -482,6 +482,7 @@ for ($i=0; $i<$fieldcount; $i++)
         $fielddata=$fieldmap[$fieldinfo];
 
         $fqid=$fielddata['qid'];
+        $fsqid=$fielddata['sqid'];
         $ftype=$fielddata['type'];
         $fsid=$fielddata['sid'];
         $fgid=$fielddata['gid'];
@@ -499,10 +500,6 @@ for ($i=0; $i<$fieldcount; $i++)
             if ($type == "csv") {$firstline .= "\"$qname";}
             else {$firstline .= "$qname";}
             if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
-            if ($ftype == ":" || $ftype == ";")
-            {
-                 
-            }
             if ($type == "csv") {$firstline .= "\"";}
             $firstline .= "$separator";
         }
@@ -600,7 +597,7 @@ for ($i=0; $i<$fieldcount; $i++)
                 case ";":
                     list($faid, $fcode) = explode("_", $faid);
                     if ($answers == "short") {
-                        $fquest .= " [$fcode] [$faid]";
+                        $fquest .= " [$faid] [$fcode]";
                     } else {
                         
                         $fquery = "SELECT sq.question"
@@ -617,10 +614,9 @@ for ($i=0; $i<$fieldcount; $i++)
                             $aquery = "SELECT sq.question
                                 FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
                                 WHERE q.sid=$surveyid 
-                                AND sq.parent_qid=q.qid
                                 AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                                 AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                                AND q.parent_qid={$faid} and q.title=".db_quoteall($fcode)."
+                                AND q.parent_qid={$fqid} and sq.title=".db_quoteall($fcode)."
                                 AND sq.scale_id=1";
               
                             $sSubquestionX = $connect->GetOne($aquery);
@@ -827,12 +823,13 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         else if($type == "pdf")
         {
             $pdf->titleintopdf($clang->gT("New Record"));
+            $pdfstring="";        
             foreach ($drow as $rowfield)
             {
                 $rowfield=str_replace("?","-",$rowfield);
                 $pdfstring .=$rowfield." | ";
             }
-            $pdf->intopdf($pdfstring);
+                $pdf->intopdf($pdfstring);
         }
         else
         {
@@ -1244,7 +1241,7 @@ if ($type=='xls')
 }
 else if($type=='pdf')
 {
-    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","DD");
+    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
 }
 else
 {
