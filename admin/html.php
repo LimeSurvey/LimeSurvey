@@ -1280,7 +1280,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         if ($qct == 0 && $qtypes[$qrrow['type']]['answerscales'] >0)
         {
             $questionsummary .= "<tr ><td></td><td align='left'>"
-            . "<span class='alert'>"
+            . "<span class='statusentryhighlight'>"
             . $clang->gT("Warning").": <a href='{$scriptname}?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editansweroptions'>". $clang->gT("You need to add answer options to this question")." "
             . "<img src='$imageurl/answers_20.png' title='"
             . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'/></span></td></tr>\n";
@@ -1290,7 +1290,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
         {
            $questionsummary .= "<tr ><td></td><td align='left'>"
-            . "<span class='alert'>"
+            . "<span class='statusentryhighlight'>"
             . $clang->gT("Warning").": <a href='{$scriptname}?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editsubquestions'>". $clang->gT("You need to add subquestions to this question")." "
             . "<img src='$imageurl/subquestions_20.png' title='"
             . $clang->gT("Edit subquestions for this question")."' name='EditThisQuestionAnswers' /></span></td></tr>\n";
