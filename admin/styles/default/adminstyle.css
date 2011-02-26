@@ -91,6 +91,10 @@ table.statisticstable span {
 span.basic {
     color: #1d2d45;
 }
+.alert {font-size:smaller}
+.alert /* .alert a */{
+    color:#F00;
+    }
 
 .statisticstable td {
     vertical-align: top;
