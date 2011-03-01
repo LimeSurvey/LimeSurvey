@@ -437,9 +437,8 @@ function show_hide_group(group_id)
 		}
 }
 
-function submit_and_disable()
+function disable_navigator()
 {
-	$('#limesurvey').submit();
 	$('#navigator input').attr('disabled', 'disabled');
 }
 
