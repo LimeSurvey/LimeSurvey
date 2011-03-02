@@ -1311,7 +1311,9 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 					case 2: //Just move on, no warning
 						if(document.getElementById('movenextbtn') !== null) {
 						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
-						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
+						}
+						if(document.getElementById('moveprevbtn') !== null) {
+							if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
 						subcookiejar.crumble('limesurvey_timers', timersessionname);
@@ -1325,6 +1327,8 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						document.getElementById(expireddisplay).style.display='';
 						if(document.getElementById('movenextbtn') !== null) {
 						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						}
+						if(document.getElementById('moveprevbtn') !== null) {
 						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
@@ -1334,6 +1338,8 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						document.getElementById(expireddisplay).style.display='';
 						if(document.getElementById('movenextbtn') !== null) {
 						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						}
+						if(document.getElementById('moveprevbtn') !== null) {
 						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
