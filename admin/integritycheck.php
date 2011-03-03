@@ -442,21 +442,20 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 foreach($fulloldsids[$oldsid] as $tablename)
                 {
                     list($oldtxt, $surveytxt, $sid, $datetime)=explode("_", substr($tablename,strlen($dbprefix)));
-                    $five=substr($tablename,-14);
-                    $year=substr($five, 0,4);
-                    $month=substr($five, 4,2);
-                    $day=substr($five, 6, 2);
-                    $hour=substr($five, 8, 2);
-                    $minute=substr($five, 10, 2);
+                    $year=substr($datetime, 0,4);
+                    $month=substr($datetime, 4,2);
+                    $day=substr($datetime, 6, 2);
+                    $hour=substr($datetime, 8, 2);
+                    $minute=substr($datetime, 10, 2);
                     $date=date("D, d M Y  h:i a", mktime($hour, $minute, 0, $month, $day, $year));
                     $jq="SELECT * FROM ".$tablename;
                     $jqresult=$connect->execute($jq) or safe_die($query." failed");
                     $jqcount=$jqresult->RecordCount();
                     if($jqcount == 0) {
-                        $oldsoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $four, $date);
+                        $oldsoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $sid, $date);
                         //				     $oldsoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
                     } else {
-                        $oldsmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $four, $date, $jqcount);
+                        $oldsmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $sid, $date, $jqcount);
                         //				     $oldsmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
                     }
                 }
@@ -509,11 +508,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 foreach($fulloldtsids[$oldtsid] as $tablename)
                 {
                     list($oldtxt, $tokenstxt, $sid, $datetime)=explode("_", substr($tablename,strlen($dbprefix)));
-                    $year=substr($five, 0,4);
-                    $month=substr($five, 4,2);
-                    $day=substr($five, 6, 2);
-                    $hour=substr($five, 8, 2);
-                    $minute=substr($five, 10, 2);
+                    $year=substr($datetime, 0,4);
+                    $month=substr($datetime, 4,2);
+                    $day=substr($datetime, 6, 2);
+                    $hour=substr($datetime, 8, 2);
+                    $minute=substr($datetime, 10, 2);
                     $date=date("D, d M Y  h:i a", mktime($hour, $minute, 0, $month, $day, $year));
                     $jq="SELECT * FROM ".$tablename;
 
@@ -521,9 +520,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                     $jqcount=$jqresult->RecordCount();
                     if($jqcount == 0) {
                         //				     $oldtoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
-                        $oldtoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $four, $date);
+                        $oldtoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $sid, $date);
                     } else {
-                        $oldtmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $four, $date, $jqcount);
+                        $oldtmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $sid, $date, $jqcount);
                         //				     $oldtmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
                     }
                 }
