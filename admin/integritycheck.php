@@ -17,7 +17,7 @@
 include_once("login_check.php");
 if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 {
-    // THIS FILE CHECKS THE CONSISTENCY OF THE DATABASE, IT LOOKS FOR
+    // THIS FILE CHECKS THE CONSISTENCY OF THE DATABASE, IT "LOOKS FOR
     // STRAY QUESTIONS, ANSWERS, CONDITIONS OR GROUPS AND DELETES THEM
     $ok=returnglobal('ok');
 
@@ -419,7 +419,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $sids=array();
         foreach($tables as $table)
         {
-            list($one, $two, $three, $sid, $date)=explode("_", $table);
+            list($oldtxt, $surveytxt, $sid, $date)=explode("_", substr($table,strlen($dbprefix)));
             $oldsids[]=$sid;
             $fulloldsids[$sid][]=$table;
         }
@@ -441,7 +441,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             } else {
                 foreach($fulloldsids[$oldsid] as $tablename)
                 {
-                    list($one, $two, $three, $four, $five)=explode("_", $tablename);
+                    list($oldtxt, $surveytxt, $sid, $datetime)=explode("_", substr($tablename,strlen($dbprefix)));
                     $five=substr($tablename,-14);
                     $year=substr($five, 0,4);
                     $month=substr($five, 4,2);
@@ -486,7 +486,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 
         foreach($tables as $table)
         {
-            list($one, $two, $sid, $date)=explode("_", substr($table,strlen($dbprefix)));
+            list($oldtxt, $surveytxt, $sid, $date)=explode("_", substr($table,strlen($dbprefix)));
             $oldtsids[]=$sid;
             $fulloldtsids[$sid][]=$table;
         }
@@ -508,7 +508,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             } else {
                 foreach($fulloldtsids[$oldtsid] as $tablename)
                 {
-                    list($one, $two, $three, $four, $five)=explode("_", $tablename);
+                    list($oldtxt, $tokenstxt, $sid, $datetime)=explode("_", substr($tablename,strlen($dbprefix)));
                     $year=substr($five, 0,4);
                     $month=substr($five, 4,2);
                     $day=substr($five, 6, 2);
