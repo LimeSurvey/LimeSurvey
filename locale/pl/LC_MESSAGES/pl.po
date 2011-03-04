@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-29 19:32+0100\n"
-"PO-Revision-Date: 2010-12-29 22:44+0100\n"
+"PO-Revision-Date: 2011-03-03 23:32+0100\n"
 "Last-Translator: Elzbieta Lesinska <elesinska[at]wp.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -12,9 +12,8 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: POLAND\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Basepath: C:\\limesurvey-S\n"
+"X-Poedit-Basepath: C:\\limesurvey\n"
 "X-Poedit-KeywordsList: gT\n"
-"X-Poedit-SearchPath-0: c:\\LimeSurvey-S\n"
 
 # C:\limesurvey/common.php:270
 # C:\limesurvey/common.php:272
@@ -171,7 +170,6 @@ msgstr "Tabele"
 
 # C:\limesurvey/admin/printablesurvey.php:231
 #: c:\LimeSurvey-S/common_functions.php:93
-#, fuzzy
 msgid "Mask questions"
 msgstr "Pytania maski"
 
@@ -3635,7 +3633,6 @@ msgstr "Ukończone"
 
 # C:\limesurvey/qanda.php:490
 #: c:\LimeSurvey-S/survey.php:912
-#, fuzzy
 msgid "One or more files are either not in the proper format or exceed the maximum file size limitation. You cannot proceed until these answers are valid."
 msgstr "Jeden lub więcej plików nie ma odpowiedniego formatu lub przekroczyły ograniczenie rozmiaru. Nie można kontynuować, dopóki te odpowiedzi nie będą prawidłowe."
 
@@ -6525,7 +6522,6 @@ msgid "Show question index / allow jumping"
 msgstr "Pokaż indeks pytania/dopuść przeskoki"
 
 #: c:\LimeSurvey-S/admin/editsurveysettings.php:349
-#, fuzzy
 msgid "Keyboard-less operation"
 msgstr "Operacja bez klawiatury"
 
@@ -12706,21 +12702,18 @@ msgstr "Eksportuj tokeny"
 
 # C:\limesurvey/admin/tokens.php:404
 #: c:\LimeSurvey-S/admin/tokens.php:783
-#, fuzzy
 msgid "Bounce settings have been saved."
-msgstr "Ustawienia wiadomości dla tokenów zostały zapisane."
+msgstr "Zapisano ustawienia zwrotów."
 
 # C:\limesurvey/admin/html.php:215
 #: c:\LimeSurvey-S/admin/tokens.php:794
-#, fuzzy
 msgid "Survey bounce email:"
-msgstr "Domyślny email zwrotów:"
+msgstr "Email zwrotów ankiety:"
 
 # C:\limesurvey/admin/tokens.php:404
 #: c:\LimeSurvey-S/admin/tokens.php:796
-#, fuzzy
 msgid "Bounce settings to be used"
-msgstr "Ustawienia wiadomości dla tokenów zostały zapisane."
+msgstr "Ustawienia zwrotów do wykorzystania"
 
 # C:\limesurvey/common.php:270
 # C:\limesurvey/common.php:272
@@ -12797,12 +12790,10 @@ msgstr "Czy na pewno chcesz skasować WSZYSTKIE wpisy tokenów?"
 
 # C:\limesurvey/admin/conditions.php:70
 #: c:\LimeSurvey-S/admin/tokens.php:920
-#, fuzzy
 msgid "You have selected not to use any bounce settings"
-msgstr "Nie wybrano pytania"
+msgstr "Wybrano niekorzystanie z ustawień zwrotów"
 
 #: c:\LimeSurvey-S/admin/tokens.php:924
-#, fuzzy
 msgid "Bounce processing"
 msgstr "Przetwarzanie zwrotów"
 
