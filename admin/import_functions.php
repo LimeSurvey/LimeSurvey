@@ -1409,30 +1409,39 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['qid']=$aQIDReplacements[$insertdata['qid']]; // remap the qid
             }
             else continue; // a problem with this answer record -> don't consider
-            if (isset($aQIDReplacements[$insertdata['cqid']]))
+            if ($insertdata['cqid'] != 0)
             {
-                $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
+                if (isset($aQIDReplacements[$insertdata['cqid']]))
+                {
+                    $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
+                }
+                else continue; // a problem with this answer record -> don't consider
+
+                list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
+
+                // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
+                if (!isset($aGIDReplacements[$oldcgid]))
+                    continue;
             }
-            else continue; // a problem with this answer record -> don't consider
-
-            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
-
-            // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
-            if (!isset($aGIDReplacements[$oldcgid]))
-                continue;
-
+            
             unset($insertdata["cid"]);
 
             // recreate the cfieldname with the new IDs
-            if (preg_match("/^\+/",$oldcsid))
+            if ($insertdata['cqid'] != 0)
             {
-                $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                if (preg_match("/^\+/",$oldcsid))
+                {
+                    $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                }
+                else
+                {
+                    $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                }
             }
             else
-            {
-                $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+            { // The cfieldname is a not a previous question cfield but a {XXXX} replacement field
+                $newcfieldname = $insertdata["cfieldname"];
             }
-
             $insertdata["cfieldname"] = $newcfieldname;
             if (trim($insertdata["method"])=='')
             {
