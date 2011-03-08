@@ -1338,6 +1338,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
+            $insertdata['answer']=translink('survey', $oldsid, $newsid, $insertdata['answer']);
             $query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['answers']++;
