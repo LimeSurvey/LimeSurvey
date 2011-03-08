@@ -1648,7 +1648,8 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
         }
 
         $conditionsoutput_main_content .= "\t<div class='condition-tbl-full'>\n"
-        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" $disableCopyCondition/>\n"
+//        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" $disableCopyCondition/>\n"
+        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"prepareCopyconditions(); return true;\" $disableCopyCondition/>\n"
         ."<input type='hidden' name='subaction' value='copyconditions' />\n"
         ."<input type='hidden' name='sid' value='$surveyid' />\n"
         ."<input type='hidden' name='gid' value='$gid' />\n"
