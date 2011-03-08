@@ -4109,13 +4109,13 @@ function questionAttributes($returnByName=false)
  	'sortorder' =>	100,
  	'inputtype'	=> 'singleselect',
  	'options' =>	array(
- 	    'X' =>	$clang->gT('None'),
+ 	    'X' =>	$clang->gT('Off'),
  	    'R' =>	$clang->gT('Rows'),
  	    'C' =>	$clang->gT('Columns'),
  	    'B' =>	$clang->gT('Both rows and columns')
  	    ),
- 	    'default' =>	0,
- 	    'help' =>	$clang->gT('Show totals either rows, columns or both rows and columns'),
+ 	    'default' =>	'X',
+ 	    'help' =>	$clang->gT('Show totals for either rows, columns or both rows and columns'),
         'caption' =>	$clang->gT('Show totals for')
     );
 
