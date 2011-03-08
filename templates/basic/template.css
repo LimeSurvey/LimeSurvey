@@ -382,20 +382,20 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 ,.array-flexible-duel-scale 
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
-.choice-5-pt-radio ul,.list-radio-flexible ul,.list-radio ul,.list-with-comment ul,.multiple-opt ul,.multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul,.yes-no ul,.gender ul
+.choice-5-pt-radio .answer ul,.list-radio-flexible .answer ul,.list-radio .answer ul,.list-with-comment .answer ul,.multiple-opt .answer ul,.multiple-opt-comments .answer ul,.multiple-short-txt .answer ul,.numeric-multi .answer ul,.yes-no .answer ul,.gender .answer ul
   {
   margin-left: 0%;
   padding-left: 0%;
 }
 
-.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.multiple-opt li,.multiple-opt-comments li,.multiple-short-txt li,.numeric-multi li,.yes-no li,.gender li
+.choice-5-pt-radio .answer li,.list-radio-flexible .answer li,.list-radio .answer li,.list-with-comment .answer li,.multiple-opt .answer li,.multiple-opt-comments .answer li,.multiple-short-txt .answer li,.numeric-multi .answer li,.yes-no .answer li,.gender .answer li
   {
   list-style-type: none;
   text-align: left;
   margin: 0% 0% 0.5em 0.5em;
 }
 
-.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.yes-no li,.gender li
+.choice-5-pt-radio .answer li,.list-radio-flexible .answer li,.list-radio .answer li,.list-with-comment .answer li,.yes-no .answer li,.gender .answer li
   {
   margin-left: 2em;
   text-indent: -1.8em;
@@ -406,13 +406,13 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   /* STYLES NOT YET DEFINED - - - - -
 .boilerplate {}
 */
-.choice-5-pt-radio ul,.yes-no ul,.gender ul {
+.choice-5-pt-radio .answer ul,.yes-no .answer ul,.gender .answer ul {
   text-align: left;
   margin-left: 0%;
   padding-left: 0%;
 }
 
-.choice-5-pt-radio ul li,.yes-no ul li,.gender ul li {
+.choice-5-pt-radio .answer ul li,.yes-no .answer ul li,.gender .answer ul li {
   display: inline;
   padding: 0% 2em 0% 0%;
   margin-left: 0%;
@@ -677,6 +677,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 #limesurvey .array-flexible-duel-scale table.question .dual_scale_separator,
 #limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
 	background-color: #FFFFFF;
+
 }
 
 #limesurvey table.question  thead tr.header_row {

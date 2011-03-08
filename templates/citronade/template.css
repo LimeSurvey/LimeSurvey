@@ -370,16 +370,16 @@ table.question tbody td{text-align:center;}
 table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 
 /* remove the list dot */
- .choice-5-pt-radio ul
-,.list-radio-flexible ul
-,.list-radio ul
-,.list-with-comment ul
-,.multiple-opt ul
-,.multiple-opt-comments ul
-,.multiple-short-txt ul
-,.numeric-multi ul
-,.yes-no ul
-,.gender ul {
+ .choice-5-pt-radio .answers ul
+,.list-radio-flexible .answers ul
+,.list-radio .answers ul
+,.list-with-comment .answers ul
+,.multiple-opt .answers ul
+,.multiple-opt-comments .answers ul
+,.multiple-short-txt .answers ul
+,.numeric-multi .answers ul
+,.yes-no .answers ul
+,.gender .answers ul {
 	list-style: none;
 }
  .choice-5-pt-radio .answers li
@@ -397,18 +397,18 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
     margin: 1em 0;
 }
 /* some inline list */
- .choice-5-pt-radio ul li
-,.yes-no ul li
-,.gender ul li
+ .choice-5-pt-radio .answers ul li
+,.yes-no .answers ul li
+,.gender .answers ul li
 {
 	display: inline;
 	padding: 0% 1em 0% 0%;
 	text-align:left;
 }
- .choice-5-pt-radio li
-,.list-radio-flexible li
-,.list-radio li
-,.list-with-comment li
+ .choice-5-pt-radio .answers li
+,.list-radio-flexible .answers li
+,.list-radio .answers li
+,.list-with-comment .answers li
 {
 	margin-left: 3em;
 	text-indent: -1.6em;
@@ -478,15 +478,15 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .boilerplate {}
 
- .choice-5-pt-radio ul
-,.yes-no ul
-,.gender ul
+ .choice-5-pt-radio .answers ul
+,.yes-no .answers ul
+,.gender .answers ul
 {
 	text-align: center;
 }
- .choice-5-pt-radio ul li
-,.yes-no ul li
-,.gender ul li
+ .choice-5-pt-radio .answers ul li
+,.yes-no .answers ul li
+,.gender .answers ul li
 {
 	display: inline;
 	padding: 0% 2em 0% 0%;

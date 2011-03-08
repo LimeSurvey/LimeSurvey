@@ -20,7 +20,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td align="left">
+						<td align="left" class="survey-question-answer">
 							{ANSWER}
 						</td>
 					</tr>

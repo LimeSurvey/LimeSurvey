@@ -496,26 +496,26 @@ table.clearall-result td {
 ,.array-flexible-duel-scale 
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
-.choice-5-pt-radio ul,.list-radio-flexible ul,.list-radio ul,.list-with-comment ul
+.choice-5-pt-radio .question-answer ul,.list-radio-flexible .question-answer ul,.list-radio .question-answer ul,.list-with-comment .question-answer ul
   {
   margin-left: 0.75em;
   padding-left: 0%;
 }
 
-.multiple-opt ul,.multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul,.yes-no ul,.gender ul
+.multiple-opt .question-answer ul,.multiple-opt-comments .question-answer ul,.multiple-short-txt .question-answer ul,.numeric-multi .question-answer ul,.yes-no .question-answer ul,.gender .question-answer ul
   {
   margin-left: 0%;
   padding-left: 0%;
 }
 
-.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.multiple-opt li,.multiple-opt-comments li,.multiple-short-txt li,.numeric-multi li,.yes-no li,.gender li
+.choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.list-radio .question-answer li,.list-with-comment .question-answer li,.multiple-opt .question-answer li,.multiple-opt-comments .question-answer li,.multiple-short-txt .question-answer li,.numeric-multi .question-answer li,.yes-no .question-answer li,.gender .question-answer li
   {
   list-style-type: none;
   text-align: left;
   margin: 0% 0% 0.5em 0.5em;
 }
 
-.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.yes-no li,.gender li
+.choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.list-radio .question-answer li,.list-with-comment .question-answer li,.yes-no .question-answer li,.gender .question-answer li
   {
   margin-left: 2em;
   text-indent: -2.2em;
@@ -526,13 +526,13 @@ table.clearall-result td {
   /* STYLES NOT YET DEFINED - - - - -
 .boilerplate {}
 */
-.choice-5-pt-radio ul,.yes-no ul,.gender ul {
+.choice-5-pt-radio .question-answer ul,.yes-no .question-answer ul,.gender .question-answer ul {
   text-align: left;
   margin-left: 0% auto;
   padding-left: 0.5em;
 }
 
-.choice-5-pt-radio ul li,.yes-no ul li,.gender ul li {
+.choice-5-pt-radio .question-answer ul li,.yes-no .question-answer ul li,.gender .question-answer ul li {
   display: inline;
   margin-left: 0%;
   padding: 0% 2em 0% 0%;

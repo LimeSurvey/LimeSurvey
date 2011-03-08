@@ -19,7 +19,7 @@ address,caption,cite,code,dfn,em,strong,th,var {
   font-weight: normal;
 }
 
-ol,ul {
+.answers ol, .answers ul {
   list-style: none;
 }
 
@@ -99,6 +99,11 @@ div.questiontext {
   font-family: verdana;
   font-size: 12px;
   margin-bottom: 10px;
+}
+
+div.questiontext ul,
+div.questiontext ol {
+  padding-left: 25px;
 }
 
 #groupheader {
@@ -262,6 +267,7 @@ input.saveall,input.clearall {
   border: 1px solid #000;
   table-layout: fixed !important;
 }
+
 
 .innergraph td {
   height: 12px;
@@ -515,20 +521,20 @@ td.clearall-result .warning-text {
 ,.array-flexible-duel-scale 
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
-.choice-5-pt-radio ul,.list-radio-flexible ul,.list-radio ul,.list-with-comment ul,.multiple-opt ul,.multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul,.yes-no ul,.gender ul
+.choice-5-pt-radio .answers ul,.list-radio-flexible .answers ul,.list-radio .answers ul,.list-with-comment .answers ul,.multiple-opt .answers ul,.multiple-opt-comments .answers ul,.multiple-short-txt .answers ul,.numeric-multi .answers ul,.yes-no .answers ul,.gender .answers ul
   {
   margin-left: 0%;
   padding-left: 0%;
 }
 
-.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.multiple-opt li,.multiple-opt-comments li,.multiple-short-txt li,.numeric-multi li,.yes-no li,.gender li
+.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.multiple-opt .answers li,.multiple-opt-comments .answers li,.multiple-short-txt .answers li,.numeric-multi .answers li,.yes-no .answers li,.gender .answers li
   {
   list-style-type: none;
   text-align: left;
   margin: 0 0 0.3em 0.5em;
 }
 
-.choice-5-pt-radio li,.list-radio-flexible li,.list-radio li,.list-with-comment li,.yes-no li,.gender li
+.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.yes-no .answers li,.gender .answers li
   {
   margin-left: 2em;
   text-indent: -1.7em;
@@ -539,14 +545,14 @@ td.clearall-result .warning-text {
   /* STYLES NOT YET DEFINED - - - - -
 .boilerplate {}
 */
-.choice-5-pt-radio ul,.yes-no ul,.gender ul {
+.choice-5-pt-radio .answers ul,.yes-no .answers ul,.gender .answers ul {
   text-align: left;
   margin-left: 0%;
   padding-left: 0%;
   font-size: 90%;
 }
 
-.choice-5-pt-radio ul li,.yes-no ul li,.gender ul li {
+.choice-5-pt-radio .answers ul li,.yes-no .answers ul li,.gender .answers ul li {
   display: inline;
   padding: 0% 2em 0% 0%;
   margin-left: 0%;
@@ -1021,12 +1027,12 @@ div.answers table {
   font-size: 12px;
 }
 
-.choice-5-pt-radio li {
+.choice-5-pt-radio .answers li {
   display: inline;
   margin-left: 0.5em;
 }
 
-.choice-5-pt-radio ul {
+.choice-5-pt-radio .answers ul {
   margin-bottom: 10px;
 }
 
