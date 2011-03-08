@@ -14,7 +14,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td class="question-answer">
 							{ANSWER}
 						</td>
 					</tr>
