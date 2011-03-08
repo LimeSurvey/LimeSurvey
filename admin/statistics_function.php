@@ -209,6 +209,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     if($outputType=='pdf')
     {
         require_once('classes/tcpdf/config/lang/eng.php');
+        global $l;
+        $l['w_page'] = $statlang->gT("Page",'unescaped');
         require_once('classes/tcpdf/mypdf.php');
 
         // create new PDF document
@@ -226,14 +228,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->SetDisplayMode('fullpage', 'two');
         // set default header data
         // the path looks awkward - did not find a better solution to set the image path?
-        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
+        $pdf->SetHeaderData('../../../../images/statistics.png', 10, $statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
 
         // set header and footer fonts
         $pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
         // set default header data
-        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".html_entity_decode($surveyInfo['surveyls_title'],ENT_QUOTES,'UTF-8')."'");
+        $pdf->SetHeaderData("../../../../images/statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".html_entity_decode($surveyInfo['surveyls_title'],ENT_QUOTES,'UTF-8')."'");
         
         
         // set default monospaced font
@@ -844,15 +846,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     4)      Average size of file per respondent
                     5)      Average no. of files
                     5)      Summary/count of file types (ie: 37 jpg, 65 gif, 12 png)
-                    6)      Total size of all files (useful if youï¿½re about to download them all)
-                    7)      You could also add things like ï¿½smallest file sizeï¿½, ï¿½largest file sizeï¿½, ï¿½median file sizeï¿½
+                    6)      Total size of all files (useful if you’re about to download them all)
+                    7)      You could also add things like “smallest file size”, “largest file size”, “median file size”
                     8)      no. of files corresponding to each extension
                     9)      max file size
                     10)     min file size
                  */
 
                 // 1) Total number of files uploaded
-                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didnï¿½t upload any)
+                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn’t upload any)
                 $fieldname=substr($rt, 1, strlen($rt));
                 $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".db_table_name("survey_$surveyid");
                 $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
