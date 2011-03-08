@@ -6700,21 +6700,22 @@ function getNextCode($sourcecode)
  */
 function translink($type, $oldid, $newid, $text)
 {
-    if (isset($_POST['translinksfields']))
+    global $relativeurl;
+    if (!isset($_POST['translinksfields']))
     {
         return $text;
     }
 
     if ($type == 'survey')
     {
-        $pattern = "upload/surveys/$oldid/";
-        $replace = "upload/surveys/$newid/";
+        $pattern = "([^'\"]*)/upload/surveys/$oldid/";
+        $replace = "$relativeurl/upload/surveys/$newid/";
         return preg_replace('#'.$pattern.'#', $replace, $text);
     }
     elseif ($type == 'label')
     {
-        $pattern = "upload/labels/$oldid/";
-        $replace = "upload/labels/$newid/";
+        $pattern = "([^'\"]*)/upload/labels/$oldid/";
+        $replace = "$relativeurl/upload/labels/$newid/";
         return preg_replace('#'.$pattern.'#', $replace, $text);
     }
     else
