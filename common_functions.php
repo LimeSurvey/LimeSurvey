@@ -6793,11 +6793,12 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     } // end while qentry
 
     # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT gid, language, description from {$dbprefix}groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' ";
+    $sql = "SELECT gid, language, group_name, description from {$dbprefix}groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";
     $res = db_execute_assoc($sql) or safe_die("Can't read groups table in transInsertAns ".$connect->ErrorMsg());     // Checked
 
     while ($qentry = $res->FetchRow())
     {
+        $gpname = $qentry['group_name'];
         $description = $qentry['description'];
         $gid = $qentry['gid'];
         $language = $qentry['language'];
@@ -6806,13 +6807,15 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
         {
             $pattern = "{INSERTANS:".$sOldFieldname."}";
             $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $gpname = preg_replace('/'.$pattern.'/', $replacement, $gpname);
             $description=preg_replace('/'.$pattern.'/', $replacement, $description);
         }
 
-        if (strcmp($description,$qentry['description']) !=0 )
+        if (strcmp($description,$qentry['description']) !=0  ||
+            strcmp($gpname,$qentry['group_name']) !=0)
         {
-            // Update Field
-            $sqlupdate = "UPDATE {$dbprefix}groups SET description='".db_quote($description)."' WHERE gid=$gid AND language='$language'";
+            // Update Fields
+            $sqlupdate = "UPDATE {$dbprefix}groups SET description='".db_quote($description)."', group_name='".db_quote($gpname)."' WHERE gid=$gid AND language='$language'";
             $updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in groups<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
         } // Enf if modified
     } // end while qentry
