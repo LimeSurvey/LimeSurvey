@@ -844,7 +844,8 @@ if (isset($move) || isset($_POST['saveprompt']))
     require_once("save.php");
     
     // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
-    if ($thissurvey['active'] == "Y" && $thissurvey['allowsave'] == "Y")
+    if ($thissurvey['active'] == "Y" && 
+            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
     {
         loadanswers();
     }
