@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.91RC4!
+Welcome to LimeSurvey v1.91RC5!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,43 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.91RC4 (build 9797) to 1.91RC5 (build 9872)
+#Updated feature: removed the confirmation dialog when copying conditions (lemeur)
+#Updated feature: if $showsgqacode is enabled at config.php show table name at printable survey for reference (maziminke)
+#Updated feature: Use css class statusentryhighlight for alert in subquestion an answer (shnoulle)
+#Updated translation: Chinese Traditional (Taiwan) (zh-Hant-TW), thanks to Ricky (gandalfar)
+#Updated translation: Dutch, thanks to J. Geertsma (gandalfar)
+#Updated translation: Italian-formal, thanks to Nicolino Esposit and Livio Finos (gandalfar)
+#Updated translation: LimeSurvey, thanks to yooyooh (gandalfar)
+#Updated translation: Norwegian Bokmål, thanks to Pål Monstad (gandalfar)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue 04961: 'Show totals' doesn't seem to work in IE (tpartner)
+-Fixed issue 04964: IE8 unable to use the date picker (tpartner)
+-Fixed issue 04985: Form submit firing twice (tpartner)
+-Fixed issue #04909: Array filter exclusion and array filter don't work (jcleeland)
+-Fixed issue #4966 - when "Prev" button is turned off for the survey, javascript for timer breaks. (jcleeland)
+-Fixed issue #04971: user passwords for the LS GUI are displayed in clear text both in the GUI (when changing a password) and in emails (when adding a user or asking for a forgot-password reminder). Now it is possible to disable this with 2 new parameters: display_user_password_in_html (false by default) and display_user_password_in_email (true by default). (lemeur)
+-Fixed issue #4744: token-based retrieve only works when save button is active (lemeur)
+-Fixed issue #4954: Attributes list not correctly retrieved in survey Welcome texts editor panel (lemeur)
+-Fixed issue #4963 : SuperAdmin cannot set group permissions on surveys owned by others (thanks to limech) (shnoulle)
+-Fixed issue #4967 : Submit button is disabled for dataentry with token (shnoulle)
+-Fixed issue #4973: Initial garbage data on opening HTML editor. (lemeur)
+-Fixed issue #4975 : Question Code for Array (Texts) is exported incorrectly. (shnoulle)
+-Fixed issue #4979: Problem when transferring survey with embedded pictures from system A to system B. (lemeur)
+-Fixed issue #4986: PDF document call after finishing a survey doesn't work because of special characters in survey title (c_schmitz)
+-Fixed issue #4987: Missing footer translation in PDF-report (c_schmitz)
+-Fixed issue #4990: Template selection field permission (c_schmitz)
+-Fixed issue #4993: usesleft is not used during token importation (Fix kindly provided by yohann) (lemeur)
+-Fixed issue #4995 : check data integrity old_table old_token doesn't work for db with $dbprefix = '' (shnoulle)
+-Fixed issue #4996: Conditions based on Token attributes are exported in xml but aren't imported. (Bug kindly analysed by yohann) (lemeur)
+-Fixed issue #5001: INSERTANS tags in question group name not converted during import (lemeur)
+-Fixed issue #5007: Incorrect option shown in advanced settings for Arrays(texts) (c_schmitz)
+-Fixed issue - min_answers and max_answers attributes explanations were not displaying numbers above 9 in the tips due to unaltered strings using array values. (jcleeland)
+-Fixed issue : better icon for Array and Array by column in alert part (shnoulle)
+-Fixed issue: linkes in URL containing uploaded images were not translated at import time. (lemeur)
+-Fixed issue: the 'Convert resource links and INSERTANS fields?' test was reversed (lemeur)
+-Fixed part of #4953: Usability improvements when copying conditions. Adding translations to the new copy-conditions to questions select box. Fixed CSS issues (lemeur)
 
 Changes from 1.91RC3 (build 9715) to 1.91RC4 (build 9797)
 +New feature #4927: added SurveyGroupQuestion identifier {SGQ} as a variable for use in questions - thanks to timbee for the patch (mennodekker)
