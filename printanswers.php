@@ -241,6 +241,7 @@ if(isset($_POST['printableexport']))
     header("Pragma: public");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
+    $sExportFileName=sanitize_filename($surveyname);
     if (preg_match("/MSIE/i", $_SERVER["HTTP_USER_AGENT"]))
     {
         /*
@@ -255,17 +256,17 @@ if(isset($_POST['printableexport']))
         header("Content-Transfer-Encoding: binary");
          
          
-        header("Content-Disposition: Attachment; filename=\"". $clang->gT($surveyname)."-".$surveyid.".pdf\"");
+        header("Content-Disposition: Attachment; filename=\"". $sExportFileName ."-".$surveyid.".pdf\"");
          
 			$pdf->Output($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
-			header("Content-Length: ". filesize($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf"));
-			readfile($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf");
-			unlink($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf");
+		header("Content-Length: ". filesize($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf"));
+		readfile($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
+		unlink($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
 
     }
     else
     {
-			$pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf","D");
+			$pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
     }
 }
 

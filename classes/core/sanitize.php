@@ -90,42 +90,27 @@ function nice_addslashes($string)
 
 
 /**
- *     1. Remove leading and trailing dots
- *     2. Remove dodgy characters from filename, including spaces and dots except last.
- *     3. Force extension if specified..
+ * Function: sanitize_filename
+ * Returns a sanitized string, typically for URLs.
  *
- * @param mixed $filename
- * @param mixed $forceextension
- * @return string
+ * Parameters:
+ *     $string - The string to sanitize.
+ *     $force_lowercase - Force the string to lowercase?
+ *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-function sanitize_filename($filename, $forceextension="")
-{
-    $defaultfilename = "none";
-    $dodgychars = "[^0-9a-zA-z()_-]"; // allow only alphanumeric, underscore, parentheses and hyphen
 
-    $filename = preg_replace("/^[.]*/","",$filename); // lose any leading dots
-    $filename = preg_replace("/[.]*$/","",$filename); // lose any trailing dots
-    $filename = $filename?$filename:$defaultfilename; // if filename is blank, provide default
-
-    $lastdotpos=strrpos($filename, "."); // save last dot position
-    $filename = preg_replace("/$dodgychars/","_",$filename); // replace dodgy characters
-    $afterdot = "";
-    if ($lastdotpos !== false) { // Split into name and extension, if any.
-        $beforedot = substr($filename, 0, $lastdotpos);
-        if ($lastdotpos < (strlen($filename) - 1))
-        $afterdot = substr($filename, $lastdotpos + 1);
-    }
-    else // no extension
-    $beforedot = $filename;
-
-    if ($forceextension)
-    $filename = $beforedot . "." . $forceextension;
-    elseif ($afterdot)
-    $filename = $beforedot . "." . $afterdot;
-    else
-    $filename = $beforedot;
-
-    return $filename;
+function sanitize_filename($string, $force_lowercase = true, $alphanumeric = false) {
+    $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
+                   "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
+                   "—", "–", ",", "<", ".", ">", "/", "?");
+    $clean = trim(str_replace($strip, "_", strip_tags($string)));
+    $clean = preg_replace('/\s+/', "-", $clean);
+    $clean = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
+    return ($force_lowercase) ?
+        (function_exists('mb_strtolower')) ?
+            mb_strtolower($clean, 'UTF-8') :
+            strtolower($clean) :
+        $clean;
 }
 
 
