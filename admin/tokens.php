@@ -306,7 +306,7 @@ if($subaction=='bounceprocessing')
 			$lastbounce = $thissurvey['bouncetime'];
 			while($datelcu > $lastbounce)
 			{
-				$header = explode("\r\n", imap_body($mbox,$count,FT_PEEK)); // Don't put read
+				@$header = explode("\r\n", imap_body($mbox,$count,FT_PEEK)); // Don't put read
 				foreach ($header as $item)
 				{
 					if (preg_match('/^X-surveyid/',$item))
@@ -330,11 +330,11 @@ if($subaction=='bounceprocessing')
 					}
 				}
 				$count--;
-				$lasthinfo=imap_headerinfo($mbox,$count);
-				$datelc=$lasthinfo->date;
+				@$lasthinfo=imap_headerinfo($mbox,$count);
+				@$datelc=$lasthinfo->date;
 				$datelcu = strtotime($datelc);
 				$checktotal++;
-			    imap_close($mbox);
+			    @imap_close($mbox);
             }
 			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
 			$executetimestamp = $connect->Execute($entertimestamp);
@@ -805,13 +805,9 @@ $tokenoutput .= "<div id='bouncesettings'>\n"
             if ($settings['bounceprocessing']=='G') {$tokenoutput .= " selected='selected'";}
             $tokenoutput .= ">".$clang->gT("Use global settings")."</option>\n"
             ."\t\t</select></li>\n"
-            
             . "\t<li><label for='bounceaccounttype'>".$clang->gT("Server type:")."</label>\n"
 	        . "\t\t<select id='bounceaccounttype' name='bounceaccounttype'>\n"
-    	    . "\t\t\t<option value='Off'";
-            if ($settings['bounceaccounttype']=='Off') {$tokenoutput .= " selected='selected'";}
-            $tokenoutput .= ">".$clang->gT("Off")."</option>\n"
-            . "\t\t\t<option value='IMAP'";
+    	    . "\t\t\t<option value='IMAP'";
             if ($settings['bounceaccounttype']=='IMAP') {$tokenoutput .= " selected='selected'";}
             $tokenoutput .= ">".$clang->gT("IMAP")."</option>\n"
             . "\t\t\t<option value='POP'";
