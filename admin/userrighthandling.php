@@ -298,7 +298,7 @@ if ($action == "setuserrights")
                     $usersummary .= "<th align='center'>".$clang->gT("Delete User")."</th>\n";
                 }
                 if($parent['manage_template']) {
-                    $usersummary .= "<th align='center'>".$clang->gT("Manage Template")."</th>\n";
+                    $usersummary .= "<th align='center'>".$clang->gT("Use all/manage templates")."</th>\n";
                 }
                 if($parent['manage_label']) {
                     $usersummary .= "<th align='center'>".$clang->gT("Manage Labels")."</th>\n";
