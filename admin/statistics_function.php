@@ -209,6 +209,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     if($outputType=='pdf')
     {
         require_once('classes/tcpdf/config/lang/eng.php');
+        global $l;
+        $l['w_page'] = $statlang->gT("Page",'unescaped');
         require_once('classes/tcpdf/mypdf.php');
 
         // create new PDF document
@@ -233,7 +235,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
         // set default header data
-        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".html_entity_decode($surveyInfo['surveyls_title'],ENT_QUOTES,'UTF-8')."'");
+        $pdf->SetHeaderData("../../../../images/statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".html_entity_decode($surveyInfo['surveyls_title'],ENT_QUOTES,'UTF-8')."'");
         
         
         // set default monospaced font
