@@ -2992,10 +2992,10 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{URL}") !== false) {
         if ($thissurvey['surveyls_url']!=""){
             if (trim($thissurvey['surveyls_urldescription'])!=''){
-                $linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";
+                $linkreplace="<a target='_top' href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";
             }
             else {
-                $linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
+                $linkreplace="<a target='_top' href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
             }
         }
         else $linkreplace='';
@@ -3021,7 +3021,7 @@ function templatereplace($line, $replacements=array())
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
-        $clearall .= "', '_top')}\" />";
+        $clearall .= "', '_self')}\" />";
 
         $line=str_replace("{CLEARALL}", $clearall, $line);
 
