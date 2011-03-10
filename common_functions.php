@@ -2991,10 +2991,10 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{URL}") !== false) {
         if ($thissurvey['surveyls_url']!=""){
             if (trim($thissurvey['surveyls_urldescription'])!=''){
-                $linkreplace="<a target='_top' href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";
+                $linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";
             }
             else {
-                $linkreplace="<a target='_top' href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
+                $linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
             }
         }
         else $linkreplace='';
@@ -3020,7 +3020,7 @@ function templatereplace($line, $replacements=array())
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
-        $clearall .= "', '_self')}\" />";
+        $clearall .= "', '_top')}\" />";
 
         $line=str_replace("{CLEARALL}", $clearall, $line);
 
@@ -8227,6 +8227,18 @@ function vIncludeKeypad()
         $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.keypad-'.$clang->langcode.'.js';
     }
     $css_header_includes[] = '/scripts/jquery/css/jquery.keypad.alt.css';
+}
+
+/**
+* Strips the DB prefix from a string - does not verify just strips the according number of characters
+* 
+* @param mixed $sTableName
+* @return string
+*/
+function sStripDBPrefix($sTableName)
+{
+    global $dbprefix;
+    return substr($sTableName,strlen($dbprefix));
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
