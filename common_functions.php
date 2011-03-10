@@ -8230,4 +8230,16 @@ function vIncludeKeypad()
     $css_header_includes[] = '/scripts/jquery/css/jquery.keypad.alt.css';
 }
 
+/**
+* Strips the DB prefix from a string - does not verify just strips the according number of characters
+* 
+* @param mixed $sTableName
+* @return string
+*/
+function sStripDBPrefix($sTableName)
+{
+    global $dbprefix;
+    return substr($sTableName,strlen($dbprefix));
+}
+
 // Closing PHP tag intentionally omitted - yes, it is okay
