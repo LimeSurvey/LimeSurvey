@@ -1667,10 +1667,17 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
         }
     }
 }
+
+
+/**
+* This function returns GET/POST/REQUEST vars, for some vars like SID and others they are also sanitized
+* 
+* @param mixed $stringname
+*/
 function returnglobal($stringname)
 {
     global $useWebserverAuth;
-    if (isset($useWebserverAuth) && $useWebserverAuth === true)
+    if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
     {
         if (isset($_GET[$stringname])) $urlParam = $_GET[$stringname];
         if (isset($_POST[$stringname])) $urlParam = $_POST[$stringname];
