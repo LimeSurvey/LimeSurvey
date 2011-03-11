@@ -88,7 +88,7 @@ function browsemenubar($title='')
     }
     $browsemenubar .= "<img src='$imageurl/seperator.gif' alt='' />\n";
 
-    if (bHasSurveyPermission($surveyid,'exportresponses','read'))         
+    if (bHasSurveyPermission($surveyid,'responses','export'))         
     {
         // Export to application
         $browsemenubar .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to application")."\" >"
