@@ -68,11 +68,6 @@ $(function() {
                             $(this).dialog('destroy');
                             $('iframe#uploader').remove();
                         }
-                        else {
-                            //TODO: don't exit. just give a prompt
-                            $(this).dialog('destroy');
-                            $('iframe#uploader').remove();
-                        }
                     }
                 }
             }).width(984 - horizontalPadding).height(440 - verticalPadding);
@@ -90,7 +85,6 @@ $(function() {
                 draggable: false,
                 closeOnEscape: false,
                 beforeclose: function() {
-                    alert('calling saveandexit');
                     var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
                     //var pass = window.frames.uploader.saveAndExit();
                     return pass;
@@ -104,11 +98,7 @@ $(function() {
                         var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
                         if (pass) {
                             $(this).dialog('destroy');
-                            alert('destroyed dialog');
-                        }
-                        else {
-                            $(this).dialog('destroy');
-                            alert('destroyed dialog');
+                            $('iframe#uploader').remove();
                         }
                     }
                 }
