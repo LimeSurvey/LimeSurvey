@@ -609,11 +609,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         {
             //add a buttons to browse results
             $statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
-            ."\t\t<p><input type='submit' value='".$statlang->gT("Browse")."'  />\n"
+            ."\t\t<p>"
+            ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
             ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
             ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
             ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
-            ."\t\t</form>";
+            ."\t\t</p>"
+            ."\t\t</form>\n";
         }
     }	//end if (results > 0)
 
@@ -2059,6 +2061,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 $fname= "$al[1]";
                             }
+							
+							$statisticsoutput .= "</th>\n"
+							."\t\t<th width='25%' align='center' >"
+							."<strong>".$statlang->gT("Count")."</strong></th>\n"
+							."\t\t<th width='25%' align='center' >"
+							."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+							."\t</tr></thead>\n";
                         }
                          
                          
@@ -2444,6 +2453,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 if(isset($showaggregateddata) && $showaggregateddata == 1 && ($qtype == "5" || $qtype == "A"))
                                 {
                                     $statisticsoutput .= "\t\t</td>";
+                                }
+								elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
+                        		{
+                                    $statisticsoutput .= "</td>\n\t</tr>\n";
                                 }
                                 break;
                             default:
