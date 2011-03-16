@@ -291,7 +291,7 @@ foreach ($survlangs as $survlang)
 }
 
 $statisticsoutput .="<li><label for='statlang'>".$clang->gT("Statistics report language")."</label>"
-. " <select name=\"statlang\" id=\"statlang\">".$language_options."</select>\n";
+. " <select name=\"statlang\" id=\"statlang\">".$language_options."</select></li>\n";
 
 $statisticsoutput.="\n</ul></fieldset>\n";
 
@@ -345,12 +345,13 @@ $statisticsoutput.="</li>\n";
 $statisticsoutput .= "<li>"
 ."<label>"
 .$clang->gT("Select output format").":</label>"
-."<input type='radio' name='outputtype' value='html' checked='checked' /><label for='outputtype'>HTML</label> <input type='radio' name='outputtype' value='pdf' /><label for='outputtype'>PDF</label> <input type='radio' onclick='nographs();' name='outputtype' value='xls' /><label for='outputtype'>Excel</label>";
-
+."<input type='radio' name='outputtype' value='html' checked='checked' /><label for='outputtype'>HTML</label> <input type='radio' name='outputtype' value='pdf' /><label for='outputtype'>PDF</label> <input type='radio' onclick='nographs();' name='outputtype' value='xls' /><label for='outputtype'>Excel</label>"
+."</li>";
 
 $statisticsoutput .= "</ul></fieldset></div><p>"
 ."<input type='submit' value='".$clang->gT("View stats")."' />\n"
-."<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n";
+."<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
+."</p>";
 
 //second row below options -> filter settings headline
 $statisticsoutput.="<div class='header header_statistics'>"
@@ -611,7 +612,8 @@ foreach ($filters as $flt)
                 if (isset($_POST[$myfield2]))
                 {$statisticsoutput .= $_POST[$myfield2];}
                  
-                $statisticsoutput .= "' />";
+                $statisticsoutput .= "' />"
+                ."\t\t\t\t</td>\n";
                 $counter2++;
             }
             $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -627,8 +629,8 @@ foreach ($filters as $flt)
         case "U": // Huge free text
 
             $myfield2="T$myfield";
-            $statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
-            $statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
+            $statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>\n";
+            $statisticsoutput .= "\t\t\t\t\t<input type='checkbox'  name='summary[]' value='$myfield2'";
             if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
             {$statisticsoutput .= " checked='checked'";}
 
@@ -640,7 +642,8 @@ foreach ($filters as $flt)
 
             if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 
-            $statisticsoutput .= "</textarea>";
+            $statisticsoutput .= "</textarea>\n"
+            ."\t\t\t\t</td>\n";
             break;
 
 
@@ -1592,6 +1595,7 @@ $statisticsoutput .= "\t\t<p id='vertical_slide2'>\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 ."\t\t<input type='hidden' name='display' value='stats' />\n"
+."\t\t</p>\n"
 ."\t</form><br /><a name='start'></a>\n";
 
 // ----------------------------------- END FILTER FORM ---------------------------------------
