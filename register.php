@@ -142,11 +142,13 @@ if (getEmailFormat($surveyid) == 'html')
 {
     $useHtmlEmail = true;
     $fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken'>".htmlspecialchars("$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken")."</a>";
+    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout.php?lang=".$baselang."&sid=$surveyid&token=$newtoken'>".htmlspecialchars("$publicurl/optout.php?lang=".$baselang."&sid=$surveyid&token=$newtoken")."</a>";
 }
 else
 {
     $useHtmlEmail = false;
     $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken";
+    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout.phplang=".$baselang."&sid=$surveyid&token=$newtoken";
 }
 
 $message=ReplaceFields($message, $fieldsarray);
