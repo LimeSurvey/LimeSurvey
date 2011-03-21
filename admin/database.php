@@ -467,7 +467,6 @@ if(isset($surveyid))
         }
 
         // These are the questions types that have no validation - so zap it accordingly
-
         if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" ||
         $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
         $_POST['type']== "X" || $_POST['type']== "")
@@ -475,6 +474,11 @@ if(isset($surveyid))
             $_POST['preg']='';
         }
 
+        // These are the questions types that have no mandatory property - so zap it accordingly
+        if ($_POST['type']== "X" || $_POST['type']== "|")
+        {
+            $_POST['mandatory']='N';
+        }
 
 
         if ($oldtype != $_POST['type'])
