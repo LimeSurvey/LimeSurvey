@@ -334,12 +334,12 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 						$utquery .= "SET usesleft=usesleft-1\n";
 					}
                 }
-                $utquery .= "WHERE token=".db_quoteall($_POST['token']);
+                $utquery .= "WHERE token=".db_quoteall($_POST['token'],true);
                 $utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());
                 
                 // save submitdate into survey table
                 $srid = $connect->Insert_ID();
-                $sdquery = "UPDATE {$dbprefix}survey_$surveyid SET submitdate='{$submitdate}' WHERE id={$srid}\n";
+                $sdquery = "UPDATE {$dbprefix}survey_$surveyid SET submitdate=".db_quoteall($submitdate,true)." WHERE id={$srid}\n";
                 $sdresult = $connect->Execute($sdquery) or safe_die ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n".$connect->ErrorMsg());
             }
             if (isset($_POST['save']) && $_POST['save'] == "on")
@@ -589,6 +589,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         if(!empty($idrow['submitdate'])) { $dataentryoutput .= " selected='selected'"; }
                         $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n";
                         $dataentryoutput .= "                </select>\n";
+                        break;
                     case "X": //Boilerplate question
                         $dataentryoutput .= "";
                         break;
@@ -1394,6 +1395,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         foreach ($fieldmap as $irow)
         {
             $fieldname=$irow['fieldname'];
+            if ($fieldname=='id') continue;
             if (isset($_POST[$fieldname]))
             {
                 $thisvalue=$_POST[$fieldname];
@@ -1426,7 +1428,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             {
                 $updateqr .= db_quote_id($fieldname)." = NULL, \n";
             }
-            elseif (($irow['type'] == 'submitdate'))
+            elseif ($irow['type'] == 'submitdate')
             {
                 if (isset($_POST['completed']) && ($_POST['completed']== "N"))
                 {
