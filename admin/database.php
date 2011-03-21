@@ -475,6 +475,11 @@ if(isset($surveyid))
             $_POST['preg']='';
         }
 
+        // These are the questions types that have no mandatory property - so zap it accordingly
+        if ($_POST['type']== "X" || $_POST['type']== "|")
+        {
+            $_POST['mandatory']='N';
+        }
 
 
         if ($oldtype != $_POST['type'])
