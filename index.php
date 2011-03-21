@@ -2213,6 +2213,7 @@ function SendSubmitNotifications()
 
 function submitfailed($errormsg='')
 {
+    global $debug;
     global $thissurvey, $clang;
     global $thistpl, $subquery, $surveyid, $connect;
 
