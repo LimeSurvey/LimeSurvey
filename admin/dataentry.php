@@ -1395,6 +1395,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         foreach ($fieldmap as $irow)
         {
             $fieldname=$irow['fieldname'];
+            if ($fieldname=='id') continue;
             if (isset($_POST[$fieldname]))
             {
                 $thisvalue=$_POST[$fieldname];
