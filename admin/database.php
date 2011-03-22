@@ -1375,7 +1375,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'printanswers'=>$_POST['printanswers'],
         //                            'usetokens'=>$_POST['usetokens'],
                             'datecreated'=>date("Y-m-d"),
-                            'public'=>$_POST['public'],
+                            'listpublic'=>$_POST['public'],
                             'htmlemail'=>$_POST['htmlemail'],
                             'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'],
                             'alloweditaftercompletion'=>$_POST['alloweditaftercompletion'],
