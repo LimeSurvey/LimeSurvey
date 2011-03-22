@@ -2944,7 +2944,8 @@ function templatereplace($line, $replacements=array())
     }
     else
     {
-        if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", '' , $line);
+        if (strpos($line, "{QUESTION_CODE}") !== false) $line=preg_replace("/{QUESTION_CODE}:?/", '', $line);
+
     };
 
     if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
