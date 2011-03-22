@@ -2788,7 +2788,9 @@ function templatereplace($line, $replacements=array())
     global $languagechanger;
     global $printoutput, $captchapath, $loadname;
 
-    // lets sanitize the survey template
+	if($question['sgq']) $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type
+	
+	// lets sanitize the survey template
     if(isset($thissurvey['templatedir']))
     {
         $templatename=$thissurvey['templatedir'];
@@ -2908,7 +2910,6 @@ function templatereplace($line, $replacements=array())
             if (strpos($line, "{QUESTION_VALID_MESSAGE}") !== false) $line=str_replace("{QUESTION_VALID_MESSAGE}", $question['valid_message'], $line);
             if (strpos($line, "{QUESTION_FILE_VALID_MESSAGE}") !== false) $line=str_replace("{QUESTION_FILE_VALID_MESSAGE}", $question['file_valid_message'], $line);
         }
-        if (strpos($line, "{SGQ}") !== false) $line=str_replace("{SGQ}", $question['sgq'], $line);
     }
     else
     {
@@ -3133,6 +3134,12 @@ function templatereplace($line, $replacements=array())
     }
 
     $line=insertansReplace($line);
+
+	if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $questiondetails['sid'], $line);
+	if (strpos($line, "{GID}") !== false) $line=str_replace("{GID}", $questiondetails['gid'], $line);
+	if (strpos($line, "{QID}") !== false) $line=str_replace("{QID}", $questiondetails['qid'], $line);
+	if (strpos($line, "{AID}") !== false) $line=str_replace("{AID}", $questiondetails['aid'], $line);
+    if (strpos($line, "{SGQ}") !== false) $line=str_replace("{SGQ}", $question['sgq'], $line);
 
     if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
     if (strpos($line, "{SUBMITREVIEW}") !== false) {
