@@ -1621,9 +1621,11 @@ if (isset($summary) && $summary)
             break;
         case 'pdf':
             generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
+            exit;
             break;
         case 'xls':
             generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+            exit;
             break;
         default:
 
