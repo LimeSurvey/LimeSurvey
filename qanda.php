@@ -582,7 +582,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     ,'input_error_class' => ''// provides a class.
     ,'essentials' => ''
     );
-
+	
     switch ($ia[4])
     {
         case 'X': //BOILERPLATE QUESTION
@@ -6330,7 +6330,7 @@ function do_array_multitext($ia)
             // Get array_filter stuff
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
-//          $answer .= $htmltbody2;
+            $answer .= $htmltbody2;
 
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
             $trbc = alternation($trbc , 'row');
