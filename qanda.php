@@ -1449,12 +1449,12 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
         $htmltbody2 .= ($class !== null) ? " class='$class'": "";
         $htmltbody2 .= ">\n";
         if($ia[4]=="1") {
-        //This is an array dual scale question and we have to massage the tbidpslay rowname
+        //This is an array dual scale question and we have to massage the tbdisplay rowname
             $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";
             $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
         } else {
             $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />\n";
-    }
+        }
     }
 
     //End of array_filter attribute
@@ -3151,7 +3151,7 @@ function do_multiplechoice($ia)
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
         if(count($excludeallothers) > 0)
         {
             $excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
@@ -6482,7 +6482,7 @@ function do_array_multitext($ia)
             // Get array_filter stuff
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
-//          $answer .= $htmltbody2;
+            $answer .= $htmltbody2;
 
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
             $trbc = alternation($trbc , 'row');
