@@ -2711,21 +2711,21 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     //do something
     $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
-    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'question'=>'');
+    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>$clang->gT('Total time'), 'title'=>'interviewTime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
             $fieldname="{$field['sid']}X{$field['gid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>'', 'title'=>'', 'question'=>'');
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>'', 'aid'=>'', 'title'=>'groupTime'.$field['gid'], 'question'=>$clang->gT('Group time').": ".$field['group_name']);
             }
 
             // field for time spent on answering a question            
             $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], "title"=>$field['title'], "question"=>$field['question']); 
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], 'aid'=>'', "title"=>$field['title'].'Time', "question"=>$clang->gT('Question time').": ".$field['title']);
             }
         }
     }
@@ -7121,26 +7121,27 @@ function get_quotaCompletedCount($surveyid, $quotaid)
     count($quota['members']) > 0)
     {
         $fields_list = array(); // Keep a list of fields for easy reference
+        // construct an array of value for each $quota['members']['fieldnames']
         unset($querycond);
-
+        $fields_query = array();
         foreach($quota['members'] as $member)
         {
-            $fields_query = array();
-            $select_query = " (";
             foreach($member['fieldnames'] as $fieldname)
             {
+                if (!in_array($fieldname,$fields_list)){
                 $fields_list[] = $fieldname;
-                $fields_query[] = db_quote_id($fieldname)." = '{$member['value']}'";
-                // Incase of multiple fields for an answer - only needs to match once.
-                $select_query.= implode(' OR ',$fields_query).' )';
+                    $fields_query[$fieldname] = array();
+                }
+                $fields_query[$fieldname][]= db_quote_id($fieldname)." = '{$member['value']}'";
+            }
+        }
+        
+        foreach($fields_list as $fieldname)
+        {
+            $select_query = " ( ".implode(' OR ',$fields_query[$fieldname]).' )';
                 $querycond[] = $select_query;
-                unset($fields_query);
             }
 
-        }
-        //FOR MYSQL?
-        $querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
-        //FOR POSTGRES?
         $querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate IS NOT NULL";
         $result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg()); //Checked
         $quota_check = $result->FetchRow();
