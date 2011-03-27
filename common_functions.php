@@ -7113,26 +7113,27 @@ function get_quotaCompletedCount($surveyid, $quotaid)
     count($quota['members']) > 0)
     {
         $fields_list = array(); // Keep a list of fields for easy reference
+        // construct an array of value for each $quota['members']['fieldnames']
         unset($querycond);
-
+        $fields_query = array();
         foreach($quota['members'] as $member)
         {
-            $fields_query = array();
-            $select_query = " (";
             foreach($member['fieldnames'] as $fieldname)
             {
-                $fields_list[] = $fieldname;
-                $fields_query[] = db_quote_id($fieldname)." = '{$member['value']}'";
-                // Incase of multiple fields for an answer - only needs to match once.
-                $select_query.= implode(' OR ',$fields_query).' )';
-                $querycond[] = $select_query;
-                unset($fields_query);
+                if (!in_array($fieldname,$fields_list)){
+                    $fields_list[] = $fieldname;
+                    $fields_query[$fieldname] = array();
+                }
+                $fields_query[$fieldname][]= db_quote_id($fieldname)." = '{$member['value']}'";
             }
-
         }
-        //FOR MYSQL?
-        $querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
-        //FOR POSTGRES?
+        
+        foreach($fields_list as $fieldname)
+        {
+            $select_query = " ( ".implode(' OR ',$fields_query[$fieldname]).' )';
+            $querycond[] = $select_query;
+        }
+
         $querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate IS NOT NULL";
         $result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg()); //Checked
         $quota_check = $result->FetchRow();
