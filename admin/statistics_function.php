@@ -203,6 +203,23 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         }
     }
 
+    /* Some variable depend on output type, actually : only line feed */
+    switch($outputType)
+        {
+            case 'xls':
+                $linefeed = "\n";
+                break;
+            case 'pdf':
+                $linefeed = "\n";
+                break;
+            case 'html':
+                $linefeed = "<br />\n";
+                break;
+            default:
+
+            break;
+        }
+
     /**
      * pdf Config
      */
@@ -848,15 +865,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     4)      Average size of file per respondent
                     5)      Average no. of files
                     5)      Summary/count of file types (ie: 37 jpg, 65 gif, 12 png)
-                    6)      Total size of all files (useful if you’re about to download them all)
-                    7)      You could also add things like “smallest file size”, “largest file size”, “median file size”
+                    6)      Total size of all files (useful if you re about to download them all)
+                    7)      You could also add things like  smallest file size, largest file size, median file size
                     8)      no. of files corresponding to each extension
                     9)      max file size
                     10)     min file size
                  */
 
                 // 1) Total number of files uploaded
-                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn’t upload any)
+                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
                 $fieldname=substr($rt, 1, strlen($rt));
                 $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".db_table_name("survey_$surveyid");
                 $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
@@ -1544,7 +1561,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
 
                         //list IDs and answer codes in brackets
-                        $qquestion .= "<br />\n[".$atext."]";
+                        $qquestion .=  $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1564,7 +1581,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $atext=FlattenText($qrow[1]);
                         }
 
-                        $qquestion .= "<br />\n[".$atext."]";
+                        $qquestion .=  $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1585,7 +1602,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $atext=FlattenText($qrow[1]);
                         }
                         //output
-                        $qquestion .= "<br />\n[".$atext."]";
+                        $qquestion .=  $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1603,7 +1620,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $alist[]=array("D", $statlang->gT("Decrease"));
                             $atext=FlattenText($qrow[1]);
                         }
-                        $qquestion .= "<br />\n[".$atext."]";
+                        $qquestion .= $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1612,7 +1629,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         list($qacode, $licode)=explode("_", $qanswer);
 
                         $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order";
-                        //echo $qquery."<br />";
                         $qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 
                         while ($qrow=$qresult->FetchRow())
@@ -1627,7 +1643,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $atext=FlattenText($qrow[1]);
                         }
 
-                        $qquestion .= "<br />\n[".$atext."] [".$ltext."]";
+                        $qquestion .=  $linefeed."[".$atext."] [".$ltext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1668,7 +1684,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $alist[]=array($i, $i);
                         }
 
-                        $qquestion .= "<br />\n[".$fielddata['subquestion1']."] [".$fielddata['subquestion2']."]";
+                        $qquestion .= $linefeed."[".$fielddata['subquestion1']."] [".$fielddata['subquestion2']."]";
                         list($myans, $mylabel)=explode("_", $qanswer);
                         $qtitle .= "[$myans][$mylabel]";
                         break;
@@ -1696,7 +1712,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
 
                         //output
-                        $qquestion .= "<br />\n[".$atext."]";
+                        $qquestion .= $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
