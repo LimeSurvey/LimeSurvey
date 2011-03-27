@@ -45,6 +45,10 @@ if (!$exportstyle)
 
     //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
     $excesscols=createFieldMap($surveyid);
+    if ($thissurvey['savetimings'] === "Y") {
+        //Append survey timings to the fieldmap array
+        $excesscols = $excesscols + createTimingsFieldMap($surveyid);
+    }
     $excesscols=array_keys($excesscols);
 
 
@@ -325,7 +329,11 @@ $elang=new limesurvey_lang($explang);
 
 //STEP 1: First line is column headings
 
-$fieldmap=createFieldMap($surveyid);
+$fieldmap=createFieldMap($surveyid,'full');
+if ($thissurvey['savetimings'] === "Y") {
+    //Append survey timings to the fieldmap array
+    $fieldmap = $fieldmap + createTimingsFieldMap($surveyid,'full');
+}
 
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$surveyid";
@@ -338,7 +346,11 @@ if (isset($_POST['colselect']))
         if ($tokenTableExists && $cs == 'token')
         {
             // We shouldnt include the token field when we are joining with the token field    
-        } 
+        }
+        elseif ($cs === 'id')
+        {
+            $selectfields.= db_quote_id($surveytable) . '.' . db_quote_id($cs) . ", ";
+        }
         elseif ($cs != 'completed')
         {
             $selectfields.= db_quote_id($cs).", ";
@@ -356,21 +368,20 @@ else
 }
 
 $dquery = "SELECT $selectfields";
-if (isset($_POST['first_name']) && $_POST['first_name']=="on")
-{
-    $dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
-}
-if (isset($_POST['last_name']) && $_POST['last_name']=="on")
-{
-    $dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
-}
-if (isset($_POST['email_address']) && $_POST['email_address']=="on")
-{
-    $dquery .= ", {$dbprefix}tokens_$surveyid.email";
-}
-
 if ($tokenTableExists && $thissurvey['anonymized']=='N')
 {
+    if (isset($_POST['first_name']) && $_POST['first_name']=="on")
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
+    }
+    if (isset($_POST['last_name']) && $_POST['last_name']=="on")
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
+    }
+    if (isset($_POST['email_address']) && $_POST['email_address']=="on")
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.email";
+    }
     if (isset($_POST['token']) && $_POST['token']=="on")
     {
         $dquery .= ", {$dbprefix}tokens_$surveyid.token";
@@ -386,6 +397,11 @@ if ($tokenTableExists && $thissurvey['anonymized']=='N')
 }
 $dquery .= " FROM $surveytable";
 
+if ($thissurvey['savetimings']==="Y") {
+    $dquery .= " LEFT OUTER JOIN {$surveytable}_timings"
+    . " ON $surveytable.id = {$surveytable}_timings.id";
+}
+
 if ($tokenTableExists && $thissurvey['anonymized']=='N')
 {
     $dquery .= " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
@@ -398,8 +414,6 @@ if (incompleteAnsFilterstate() == "filter")
 {
     $dquery .= "  WHERE $surveytable.submitdate is null ";
 }
-
-$dquery .=" ORDER BY id ";
 
 $dresult = db_select_limit_assoc($dquery, 1) or safe_die($clang->gT("Error")." getting results<br />$dquery<br />".$connect->ErrorMsg());
 $fieldcount = $dresult->FieldCount();
@@ -480,20 +494,19 @@ for ($i=0; $i<$fieldcount; $i++)
     {
         //Data field heading!
         $fielddata=$fieldmap[$fieldinfo];
-
         $fqid=$fielddata['qid'];
-        $fsqid=$fielddata['sqid'];
         $ftype=$fielddata['type'];
         $fsid=$fielddata['sid'];
         $fgid=$fielddata['gid'];
         $faid=$fielddata['aid'];
+        $question=$fielddata['question'];
+        if (isset($fielddata['scale'])) $question = "[{$fielddata['scale']}] ". $question;
+        if (isset($fielddata['subquestion'])) $question = "[{$fielddata['subquestion']}] ". $question;
+        if (isset($fielddata['subquestion2'])) $question = "[{$fielddata['subquestion2']}] ". $question;
+        if (isset($fielddata['subquestion1'])) $question = "[{$fielddata['subquestion1']}] ". $question;
         if ($exportstyle == "abrev")
-        {
-            $qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$explang'";
-            $qr = db_execute_assoc($qq);
-            while ($qrow=$qr->FetchRow())
-            {$qname=$qrow['question'];}
-            $qname=strip_tags_full($qname);
+        {            
+            $qname=strip_tags_full($question);
             $qname=mb_substr($qname, 0, 15)."..";
             $firstline = str_replace("\n", "", $firstline);
             $firstline = str_replace("\r", "", $firstline);
@@ -505,137 +518,13 @@ for ($i=0; $i<$fieldcount; $i++)
         }
         else    //headcode or full answer
         {
-            $qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid AND language='$explang' ORDER BY gid, title"; //get the question
-            $qr = db_execute_assoc($qq) or safe_die ("ERROR:<br />".$qq."<br />".$connect->ErrorMsg());
-            while ($qrow=$qr->FetchRow())
+            if ($exportstyle == "headcodes")
             {
-                if ($exportstyle == "headcodes"){$fquest=$qrow['title'];}
-                else {$fquest=$qrow['question'];}
+                $fquest=$fielddata['title'];
             }
-            switch ($ftype)
+            else
             {
-                case "R": //RANKING TYPE
-                    $fquest .= " [".$elang->gT("Ranking")." $faid]";
-                    break;
-                case "L":
-                case "!":
-                    if ($faid == "other") {
-                        $fquest .= " [".$elang->gT("Other")."]";
-                    }
-                    break;
-                case "O": //DROPDOWN LIST WITH COMMENT
-                    if ($faid == "comment")
-                    {
-                        $fquest .= " - Comment";
-                    }
-                    break;
-                case "M": //Multiple option
-                    if ($faid == "other")
-                    {
-                        $fquest .= " [".$elang->gT("Other")."]";
-                    }
-                    else
-                    {
-                        if ($answers == "short") {
-                            $fquest .= " [$faid]"; //Show only the code
-                        }
-                        else
-                        {
-                            $sQuery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=$fqid AND title = '$faid' AND language = '$explang' and scale_id=0";
-                            $sSubquestion = $connect->getOne($sQuery);
-                            $fquest .= " [".strip_tags_full($sSubquestion)."]";
-                            }
-                        }
-                    break;
-                case "P": //Multiple option with comment
-                    if (mb_substr($faid, -7, 7) == "comment")
-                    {
-                        $faid=mb_substr($faid, 0, -7);
-                        $comment=true;
-                    }
-                    if ($faid == "other")
-                    {
-                        $fquest .= " [".$elang->gT("Other")."]";
-                    }
-                    else
-                    {
-                        if ($answers == "short") {
-                            $fquest .= " [$faid]"; //Show only the code
-                        }
-                        else
-                        {
-                            $sQuery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=$fqid AND title = '$faid' AND language = '$explang' and scale_id=0";
-                            $sSubquestion = $connect->getOne($sQuery);
-                            $fquest .= " [".strip_tags_full($sSubquestion)."]";
-                            }
-                        }
-                    if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
-                    break;
-                case "A":
-                case "B":
-                case "C":
-                case "E":
-                case "F":
-                case "H":
-                case "K":
-                case "Q":
-                case "^":
-                    if ($answers == "short") {
-                        $fquest .= " [$faid]";
-                    }
-                    else
-                    {
-                        $lq = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=$fqid AND title= '$faid' AND language = '$explang'";
-                        $lr = db_execute_assoc($lq);
-                        while ($lrow=$lr->FetchRow())
-                        {
-                            $fquest .= " [".strip_tags_full($lrow['question'])."]";
-                        }
-                    }
-                    break;
-                case ":":
-                case ";":
-                    list($faid, $fcode) = explode("_", $faid);
-                    if ($answers == "short") {
-                        $fquest .= " [$faid] [$fcode]";
-                    } else {
-                        
-                        $fquery = "SELECT sq.question"
-                            ." FROM ".db_table_name('questions')." sq"
-                            ." WHERE sq.sid=$surveyid "
-                            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-                            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                               AND sq.parent_qid={$fqid} and sq.title=".db_quoteall($faid)."
-                               AND sq.scale_id=0";
-            
-                            $sSubquestionY = $connect->GetOne($fquery);
-            
-                            // Get the X-Axis   
-                            $aquery = "SELECT sq.question
-                                FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
-                                WHERE q.sid=$surveyid 
-                                AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                                AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-                                AND q.parent_qid={$fqid} and sq.title=".db_quoteall($fcode)."
-                                AND sq.scale_id=1";
-              
-                            $sSubquestionX = $connect->GetOne($aquery);
-
-                            $fquest .= " [".strip_tags_full($sSubquestionY)."] [".strip_tags_full($sSubquestionX)."]";
-                            }
-                    break;
-                case "1": // multi scale Headline
-                    $iAnswerScale = substr($fieldinfo,-1)+1;
-                    $lq = "select sq.question from {$dbprefix}questions as sq where sq.title='$faid' and parent_qid=$fqid AND sq.language='$surveybaselang' and sq.scale_id=0";
-                    $lr = db_execute_assoc($lq);
-                    $j=0;
-                    while ($lrow=$lr->FetchRow())
-                    {
-                        $fquest .= " [".FlattenText($lrow['question'],true)."][Scale {$iAnswerScale}]";
-                        $j++;
-                    }
-                    break;
-
+                $fquest=$question;
             }
             $fquest=FlattenText($fquest,true);
             if ($type == "csv")
@@ -691,73 +580,31 @@ $from_record = sanitize_int($_POST['export_from']) - 1;
 $limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['export_from']) + 1;
 $attributefieldAndNames=array();
 
-//Now dump the data
-if ($tokenTableExists && $thissurvey['anonymized']=='N')
+//Now dump the data but first add some filters to the select statement
+$where = array();
+if (incompleteAnsFilterstate() == "filter")
 {
-    $dquery = "SELECT $selectfields";
-    if (isset($_POST['first_name']) && $_POST['first_name']=="on")
-    {
-        $dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
-    }
-    if (isset($_POST['last_name']) && $_POST['last_name']=="on")
-    {
-        $dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
-    }
-    if (isset($_POST['email_address']) && $_POST['email_address']=="on")
-    {
-        $dquery .= ", {$dbprefix}tokens_$surveyid.email";
-    }
-    if (isset($_POST['token']) && $_POST['token']=="on")
-    {
-        $dquery .= ", {$dbprefix}tokens_$surveyid.token";
-    }
-    foreach ($attributeFields as $attributefield)
-    {
-        if (isset($_POST[$attributefield]) && $_POST[$attributefield]=="on")
-        {
-            $dquery .= ", {$dbprefix}tokens_$surveyid.$attributefield";
-        }
-    }
-    $dquery	.= " FROM $surveytable "
-    . "LEFT OUTER JOIN {$dbprefix}tokens_$surveyid "
-    . "ON $surveytable.token={$dbprefix}tokens_$surveyid.token ";
-    if (incompleteAnsFilterstate() == "filter")
-    {
-        $dquery .= "  WHERE $surveytable.submitdate is not null ";
-    } elseif (incompleteAnsFilterstate() == "inc")
-    {
-        $dquery .= "  WHERE $surveytable.submitdate is null ";
-    }
-}
-else // this applies for exporting everything
+    $where[] = "$surveytable.submitdate is not null";
+} elseif (incompleteAnsFilterstate() == "inc")
 {
-    $dquery = "SELECT $selectfields FROM $surveytable ";
-
-    if (incompleteAnsFilterstate() == "filter")
-    {
-        $dquery .= "  WHERE $surveytable.submitdate is not null ";
-    } elseif (incompleteAnsFilterstate() == "inc")
-    {
-        $dquery .= "  WHERE $surveytable.submitdate is null ";
-    }
+    $where[] = "$surveytable.submitdate is null";
 }
 
 if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
 {
     if ($_POST['sql'] != "NULL")
     {
-        if (incompleteAnsFilterstate() == "filter" || incompleteAnsFilterstate() == "inc") {$dquery .= " AND ".stripcslashes($_POST['sql'])." ";}
-        else {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
+        $where[] = stripcslashes($_POST['sql']);
     }
 }
 if (isset($_POST['answerid']) && $_POST['answerid'] != "NULL") //this applies if export has been called from single answer view
 {
-    if (incompleteAnsFilterstate() == "filter" || incompleteAnsFilterstate() == "inc") {$dquery .= " AND $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
-    else {$dquery .= "WHERE $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
+    $where[] = "$surveytable.id=".stripcslashes($_POST['answerid']);
 }
+ if (count($where)>0) $dquery .= ' WHERE ' . join(' AND ', $where);
 
+$dquery .= " ORDER BY $surveytable.id";
 
-$dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 {
     //$dresult = db_execute_assoc($dquery);
