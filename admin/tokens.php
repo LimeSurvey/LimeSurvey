@@ -509,7 +509,7 @@ if (!$tokenexists) //If no tokens table exists
         ."<br /><strong>".$clang->gT("Tokens have not been initialised for this survey.")."</strong><br /><br />\n";
         if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
         {
-            $tokenoutput .= "".$clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either smanually or by URL.")
+            $tokenoutput .= $clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.")
             ."<br /><br />\n";
 
             $thissurvey=getSurveyInfo($surveyid);
