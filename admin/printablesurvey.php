@@ -401,6 +401,7 @@ while ($degrow = $degresult->FetchRow())
             $group['ODD_EVEN'] = ' g-row-even';
         }
 
+        //Loop through questions
         foreach ($deqrows as $deqrow)
         {
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -419,6 +420,7 @@ while ($degrow = $degresult->FetchRow())
             $scenarioquery="SELECT DISTINCT ".db_table_name("conditions").".scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$deqrow['qid']} ORDER BY scenario";
             $scenarioresult=db_execute_assoc($scenarioquery);
 
+            //Loop through distinct scenarios, thus grouping them together.
             while ($scenariorow=$scenarioresult->FetchRow())
             {
                 if($s == 0 && $scenarioresult->RecordCount() > 1)
@@ -431,13 +433,14 @@ while ($degrow = $degresult->FetchRow())
                 }
 
                 $x=0;
-                $distinctquery="SELECT cqid, method
+                $distinctquery="SELECT cqid, method, cfieldname, value
                             FROM ".db_table_name("conditions")."
                             WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']} 
                                 AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} 
                             group by cqid, method
                             ORDER BY cqid";
                 $distinctresult=db_execute_assoc($distinctquery);
+                //Loop through each condition for a particular scenario.
                 while ($distinctrow=$distinctresult->FetchRow())
                 {
                     $subquery='select title, question from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
@@ -452,37 +455,77 @@ while ($degrow = $degresult->FetchRow())
                         $distinctrow['method']='==';
                     }
 
-                    if($distinctrow['method']=='==')
-                    {
-                        $explanation .= $clang->gT("Answer was")." ";
+                    if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
+                        if($distinctrow['method']=='==')
+                        {
+                            $explanation .= $clang->gT("Answer was")." ";
+                        }
+                        elseif($distinctrow['method']=='!=')
+                        {
+                            $explanation .= $clang->gT("Answer was NOT")." ";
+                        }
+                        elseif($distinctrow['method']=='<')
+                        {
+                            $explanation .= $clang->gT("Answer was less than")." ";
+                        }
+                        elseif($distinctrow['method']=='<=')
+                        {
+                            $explanation .= $clang->gT("Answer was less than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>=')
+                        {
+                            $explanation .= $clang->gT("Answer was greater than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>')
+                        {
+                            $explanation .= $clang->gT("Answer was greater than")." ";
+                        }
+                        elseif($distinctrow['method']=='RX')
+                        {
+                            $explanation .= $clang->gT("Answer matched (regexp)")." ";
+                        }
+                        else
+                        {
+                            $explanation .= $clang->gT("Answer was")." ";
+                        }
                     }
-                    elseif($distinctrow['method']=='!=')
-                    {
-                        $explanation .= $clang->gT("Answer was NOT")." ";
-                    }
-                    elseif($distinctrow['method']=='<')
-                    {
-                        $explanation .= $clang->gT("Answer was less than")." ";
-                    }
-                    elseif($distinctrow['method']=='<=')
-                    {
-                        $explanation .= $clang->gT("Answer was less than or equal to")." ";
-                    }
-                    elseif($distinctrow['method']=='>=')
-                    {
-                        $explanation .= $clang->gT("Answer was greater than or equal to")." ";
-                    }
-                    elseif($distinctrow['method']=='>')
-                    {
-                        $explanation .= $clang->gT("Answer was greater than")." ";
-                    }
-                    elseif($distinctrow['method']=='RX')
-                    {
-                        $explanation .= $clang->gT("Answer matched (regexp)")." ";
-                    }
-                    else
-                    {
-                        $explanation .= $clang->gT("Answer was")." ";
+                    if(!$distinctrow['cqid']){ // cqid == 0  ==> token attribute match
+                        $tokenData = GetTokenFieldsAndNames($surveyid);
+                        preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
+                        $explanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
+                        if($distinctrow['method']=='==')
+                        {
+                            $explanation .= $clang->gT("is")." ";
+                        }
+                        elseif($distinctrow['method']=='!=')
+                        {
+                            $explanation .= $clang->gT("is NOT")." ";
+                        }
+                        elseif($distinctrow['method']=='<')
+                        {
+                            $explanation .= $clang->gT("is less than")." ";
+                        }
+                        elseif($distinctrow['method']=='<=')
+                        {
+                            $explanation .= $clang->gT("is less than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>=')
+                        {
+                            $explanation .= $clang->gT("is greater than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>')
+                        {
+                            $explanation .= $clang->gT("is greater than")." ";
+                        }
+                        elseif($distinctrow['method']=='RX')
+                        {
+                            $explanation .= $clang->gT("is matched (regexp)")." ";
+                        }
+                        else
+                        {
+                            $explanation .= $clang->gT("is")." ";
+                        }
+                        $answer_section = $distinctrow['value'];
                     }
 
                     $conquery="SELECT cid, cqid, q.title,\n"
@@ -690,7 +733,12 @@ while ($degrow = $degresult->FetchRow())
                     unset($conditions);
                     // Following line commented out because answer_section  was lost, but is required for some question types
                     //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
-                    $explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+                    if($distinctrow['cqid']){
+                        $explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+                    }
+                    else{
+                        $explanation .= " ".$distinctrow['value'] ;
+                    }
                     //$distinctrow
                     $x++;
                 }
