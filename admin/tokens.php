@@ -1404,20 +1404,30 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
         {
             //GET SURVEY DETAILS
             $thissurvey=getSurveyInfo($surveyid,$language);
+            $bplang = new limesurvey_lang($language);
+
+            if ($ishtml===true)
+            {
+               $aDefaultTexts=aTemplateDefaultTexts($bplang);     
+            }
+            else
+            {
+                $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');     
+            }
             if (!$thissurvey['email_invite'])
             {
                 if ($ishtml===true)
                 {
-                    $thissurvey['email_invite']=html_escape(str_replace("\n", "<br />", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",'unescaped')));
+                    $thissurvey['email_invite']=html_escape($aDefaultTexts['invitation']);
                 }
                 else
                 {
-                    $thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"));
+                    $thissurvey['email_invite']=$aDefaultTexts['invitation'];
                 }
             }
             if (!$thissurvey['email_invite_subj'])
             {
-                $thissurvey['email_invite_subj']=$clang->gT("Invitation to participate in a survey");
+                $thissurvey['email_invite_subj']=$aDefaultTexts['invitation_subject'];
             }
             $fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
             $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
