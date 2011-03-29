@@ -1622,7 +1622,7 @@ if($action == "exportstructure")
 // This is the action to export the structure of a group
 if($action == "exportstructureGroup")
 {
-    if($export4lsrc === true && bHasSurveyPermission($surveyid,'export'))
+    if($export4lsrc === true && bHasSurveyPermission($surveyid,'survey','export'))
     {
         $exportstructure = "<form id='exportstructureGroup' name='exportstructureGroup' action='$scriptname' method='post'>\n"
         ."<div class='header ui-widget-header'>".$clang->gT("Export group structure")."\n</div>\n"
@@ -1669,7 +1669,7 @@ if($action == "exportstructureGroup")
 // This is the action to export the structure of a question
 if($action == "exportstructureQuestion")
 {
-    if($export4lsrc === true && bHasSurveyPermission($surveyid,'export'))
+    if($export4lsrc === true && bHasSurveyPermission($surveyid,'survey','export'))
     {
         $exportstructure = "<form id='exportstructureQuestion' name='exportstructureQuestion' action='$scriptname' method='post'>\n"
         ."<div class='header ui-widget-header'>".$clang->gT("Export question structure")."\n</div>\n"
