@@ -1722,9 +1722,9 @@ if($action == "surveysecurity")
         $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
         $js_admin_includes[]='scripts/surveysecurity.js';
 
-        $query2 = "SELECT p.*, u.users_name, u.full_name FROM ".db_table_name('survey_permissions')." AS p INNER JOIN ".db_table_name('users')."  AS u ON p.uid = u.uid 
+        $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM ".db_table_name('survey_permissions')." AS p INNER JOIN ".db_table_name('users')."  AS u ON p.uid = u.uid 
                    WHERE p.sid = {$surveyid} AND u.uid != ".$_SESSION['loginID'] ." 
-                   group by uid, users_name, full_name 
+                    GROUP BY p.sid, p.uid, u.users_name, u.full_name
                    ORDER BY u.users_name";
         $result2 = db_execute_assoc($query2); //Checked
 
