@@ -239,7 +239,7 @@ else
             // and then our escaping).
             $fieldvalues=array_map('db_quote',$fieldvalues);
 
-            $fielddata=array_combine($fieldnames,$fieldvalues);
+            $fielddata=($fieldnames===array() && $fieldvalues===array() ? array() : array_combine($fieldnames, $fieldvalues));
 
             foreach ($datefields as $datefield)
             {
