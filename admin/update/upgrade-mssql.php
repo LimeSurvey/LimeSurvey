@@ -436,9 +436,9 @@ function db_upgrade($oldversion) {
                             [update_p] TINYINT NOT NULL default '0', 
                             [delete_p] TINYINT NOT NULL default '0', 
                             [import_p] TINYINT NOT NULL default '0', 
-                            [export_p] inTINYINT NOT NULL default '0', 
+                            [export_p] TINYINT NOT NULL default '0', 
                             PRIMARY KEY ([sid], [uid],[permission])
-                        );");
+                        );"); echo $modifyoutput; flush();ob_flush();
 		upgrade_surveypermissions_table145();
         modify_database("", "DROP TABLE [prefix_surveys_rights]"); echo $modifyoutput; flush();ob_flush();
         
@@ -464,15 +464,15 @@ function db_upgrade($oldversion) {
         modify_database("", "create index [parent_qid] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();ob_flush();
         
         modify_database("","EXEC sp_rename 'prefix_surveys.private','anonymized'"); echo $modifyoutput; flush();ob_flush();
-        modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [anonymized] char(1) NOT NULL default 'N';"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [anonymized] char(1) NOT NULL;"); echo $modifyoutput; flush();ob_flush();
+        mssql_drop_constraint('anonymized','surveys');
+        modify_database("","ALTER TABLE [prefix_surveys] ADD CONSTRAINT DF_surveys_anonymized DEFAULT 'N' FOR [anonymized];"); echo $modifyoutput; flush();ob_flush();
 
         modify_database("", "CREATE TABLE [prefix_failed_login_attempts] (
-                              [id] int(11) NOT NULL AUTO_INCREMENT,
+                              [id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
                               [ip] varchar(37) NOT NULL,
                               [last_attempt] varchar(20) NOT NULL,
-                              [number_attempts] int(11) NOT NULL,
-                      PRIMARY KEY ([id])
-                    );"); echo $modifyoutput; flush();ob_flush();
+                              [number_attempts] int NOT NULL );"); echo $modifyoutput; flush();ob_flush();
 
         modify_database("", "ALTER TABLE  [prefix_surveys_languagesettings] ADD  [surveyls_numberformat] INT default 0 NOT NULL"); echo $modifyoutput; flush();ob_flush();
 
