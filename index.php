@@ -942,12 +942,16 @@ function loadanswers()
                 $_SESSION['step']=$value;
                 $thisstep=$value-1;
             }
+            /* 
+               Commented this part out because otherwise startlanguage would overwrite any other language during a running survey.
+               We will need a new field named 'endlanguage' to save the current language (for example for returning participants)
+               /the language the survey was completed in.
             elseif ($column =='startlanguage')
             {
                 $clang = SetSurveyLanguage( $surveyid, $value);
                 UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
                 UpdateFieldArray();        // to refresh question titles and question text
-            }
+            }*/ 
             elseif ($column == "scid")
             {
                 $_SESSION['scid']=$value;
