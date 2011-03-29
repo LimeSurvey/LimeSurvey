@@ -1620,6 +1620,10 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
             }
             if ($ctcount > $emcount)
             {
+                $i = 0;
+                while($i < $maxemails)
+                { array_shift($tokenids); $i++; }
+                $tids = '|'.implode('|',$tokenids);
                 $lefttosend = $ctcount-$maxemails;
                 $tokenoutput .= "</ul>\n"
                 ."<div class='warningheader'>".$clang->gT("Warning")."</div><br />\n"
@@ -1632,7 +1636,8 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                 ."<input type='hidden' name='subaction' value=\"email\" />\n"
                 ."<input type='hidden' name='action' value=\"tokens\" />\n"
                 ."<input type='hidden' name='bypassbademails' value=\"".$_POST['bypassbademails']."\" />\n"
-                ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+                ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
+                ."<input type='hidden' name='tids' value=\"{$tids}\" />\n";
                 foreach ($surveylangs as $language)
                 {
                     $message = html_escape($_POST['message_'.$language]);
