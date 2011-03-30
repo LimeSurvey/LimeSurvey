@@ -6905,6 +6905,8 @@ function do_array_dual($ia)
     }
 
     $inputnames=array();
+    $labelans1=array();
+    $labelans=array();
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $other = $connect->GetOne($qquery);    //Checked
     $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";

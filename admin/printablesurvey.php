@@ -766,7 +766,7 @@ while ($degrow = $degresult->FetchRow())
         	if(isset($showsgqacode) && $showsgqacode == true)
 			{
 				$deqrow['question'] = $deqrow['question']."<br />".$clang->gT("ID:")." $fieldname <br />".
-									  $clang->gT("Question Code:")." ".$deqrow['title'];				
+									  $clang->gT("Question code:")." ".$deqrow['title'];				
 			}
 	
             $question = array(

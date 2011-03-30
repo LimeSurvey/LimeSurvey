@@ -272,7 +272,7 @@ if ($action == "templaterename" && isset($newname) && isset($copydir))
     $olddirname=$usertemplaterootdir."/".$copydir;
     if(isStandardTemplate($newname))
     {
-        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("This name is reserved for standard template.","js")."\");\n//-->\n</script>";
+        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("This name is reserved for a standard template.","js")."\");\n//-->\n</script>";
     }
     elseif (rename($olddirname, $newdirname)==false)
     {

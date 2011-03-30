@@ -441,7 +441,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
                 }
                 else
                 {
-                    $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your password to your LimeSurvey administrator") . "<br />\n";
+                    $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your LimeSurvey administrator for your password.") . "<br />\n";
                 }
             }
 
