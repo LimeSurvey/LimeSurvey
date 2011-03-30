@@ -1123,8 +1123,11 @@ class queXMLPDF extends TCPDF {
 					}
 					else if (isset($r->free))
 					{
-						if (strtolower(trim(current($r->free->format))) == 'longtext')
+						$format = strtolower(trim(current($r->free->format)));
+						if ($format == 'longtext')
 							$rtmp['type'] = 'longtext';
+						else if ($format == 'number' || $format == 'numeric' || $format == 'integer')
+							$rtmp['type'] = 'number';
 						else
 							$rtmp['type'] = 'text';
 						$rtmp['width'] = current($r->free->length);
@@ -1273,6 +1276,8 @@ class queXMLPDF extends TCPDF {
 				$subquestions = $r['subquestions'];
 				$type = $response['type'];
 
+				$bgtype = 3; //box group type temp set to 3 (text)
+
 				switch ($type)
 				{
 					case 'fixed':
@@ -1285,12 +1290,13 @@ class queXMLPDF extends TCPDF {
 						
 						break;
 					case 'number':
+						$bgtype = 4;
 					case 'currency':
 					case 'text':
 						if (isset($response['rotate']))
-							$this->drawMatrixTextHorizontal($subquestions,$response['width'],$text);
+							$this->drawMatrixTextHorizontal($subquestions,$response['width'],$text,$bgtype);
 						else
-							$this->drawMatrixTextVertical($subquestions,$response['width'],$text);
+							$this->drawMatrixTextVertical($subquestions,$response['width'],$text,$bgtype);
 						break;
 					case 'vas':
 						$this->drawMatrixVas($subquestions,$text);
@@ -1308,6 +1314,8 @@ class queXMLPDF extends TCPDF {
 				else
 					$rtext = $text;
 
+				$bgtype = 3; //box group type temp set to 3 (text)
+
 				switch ($type)
 				{
 					case 'fixed':
@@ -1321,9 +1329,10 @@ class queXMLPDF extends TCPDF {
 						$this->drawLongText($response['width']);
 						break;
 					case 'number':
+						$bgtype = 4;
 					case 'currency':
 					case 'text':
-						$this->addBoxGroup(3,$varname,$rtext,$response['width']);	
+						$this->addBoxGroup($bgtype,$varname,$rtext,$response['width']);	
 						$this->drawText($response['text'],$response['width']);
 						//Insert a gap here
 						$this->Rect($this->getMainPageX(),$this->GetY(),$this->getMainPageWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
@@ -1360,11 +1369,12 @@ class queXMLPDF extends TCPDF {
 	 * @param array $subquestions The subquestions containing text and varname
 	 * @param int $width The width of the text element
 	 * @param string|bool $parenttext The question text of the parent or false if not specified
+	 * @param int $bgtype The box group type (default is 3 - text)
 	 * 
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-02
 	 */
-	protected function drawMatrixTextVertical($subquestions,$width,$parenttext = false)
+	protected function drawMatrixTextVertical($subquestions,$width,$parenttext = false,$bgtype = 3)
 	{
 		$c = count($subquestions);
 		for($i = 0; $i < $c; $i++)
@@ -1372,9 +1382,9 @@ class queXMLPDF extends TCPDF {
 			$s = $subquestions[$i];
 
 			if ($parenttext == false)
-				$this->addBoxGroup(3,$s['varname'],$s['text'],$width);
+				$this->addBoxGroup($bgtype,$s['varname'],$s['text'],$width);
 			else				
-				$this->addBoxGroup(3,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text'],$width);
+				$this->addBoxGroup($bgtype,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text'],$width);
 
 
 
@@ -1639,11 +1649,12 @@ class queXMLPDF extends TCPDF {
 	 * @param array $subquestions The subquestions
 	 * @param int $width The width
 	 * @param string|bool $parenttext The question text of the parent or false if not specified
+	 * @param int $bgtype The type of the box group (defaults to 3 - text)
 	 *
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-08
 	 */
-	protected function drawMatrixTextHorizontal($subquestions,$width,$parenttext = false)
+	protected function drawMatrixTextHorizontal($subquestions,$width,$parenttext = false,$bgtype = 3)
 	{
 		$total = count($subquestions);
 		$currentY = $this->GetY();
@@ -1676,9 +1687,9 @@ class queXMLPDF extends TCPDF {
 		{
 			//Add box group to current layout
 			if ($parenttext == false)
-				$this->addBoxGroup(3,$s['varname'],$s['text']);
+				$this->addBoxGroup($bgtype,$s['varname'],$s['text']);
 			else				
-				$this->addBoxGroup(3,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
+				$this->addBoxGroup($bgtype,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
 
 
 
