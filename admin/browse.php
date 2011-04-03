@@ -25,7 +25,17 @@ if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 //Check if results table exists
-if (tableExists('survey_'.$surveyid)==false) die("Your results table is missing!");
+if (tableExists('survey_'.$surveyid)==false)
+{
+    $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
+            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+            .$clang->gT("Error")."\t</div>\n"
+            . $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
+            . $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
+            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+            ."</div>";
+    return;
+}
 
 $surveyinfo=getSurveyInfo($surveyid);
 require_once(dirname(__FILE__).'/sessioncontrol.php');
@@ -55,27 +65,14 @@ else
 $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
 $browseoutput = "";
 
-if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
+if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
     $browseoutput .= "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
             . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
             .$clang->gT("Error")."\t</div>\n"
-            . $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
-            . $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
+            . $clang->gT("You have not selected a survey to browse.")."<br />\n"
             ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
             ."</div>";
-    return;
-}
-if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
-{
-    $browseoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
-            . $clang->gT("Browse Responses")."</strong></td></tr>\n"
-            ."\t<tr><td align='center'>\n"
-            ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-            . $clang->gT("You have not selected a survey to browse.")."<br /><br />\n"
-            ."<input type='submit' value='"
-            . $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-            ."</td></tr></table>\n";
     return;
 }
 
