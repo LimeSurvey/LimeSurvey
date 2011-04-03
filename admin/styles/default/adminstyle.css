@@ -925,7 +925,20 @@ div.successheader{
     margin: 5px 0;
     padding:2px;  
 }
-
+div.errorheader{
+    font-weight:bold;
+    color:#800000;
+    background-color: #FFC0C0;   
+    margin: 5px 0;
+    padding:2px;  
+}
+div.warningheader{
+    font-weight:bold;
+    color:#808000;
+    background-color: #FFC0C0;   
+    margin: 5px 0;
+    padding:2px;  
+}
 div.partialheader{
     font-weight:bold;
     color: #CC3300;
