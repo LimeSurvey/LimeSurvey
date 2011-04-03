@@ -39,6 +39,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     $aGIDReplacements=array();
     $substitutions=array();
     $aQuotaReplacements=array();
+    $importresults['error']=false;
     $importresults['importwarnings']=array();
     $importresults['question_attributes']=0;
 
@@ -57,25 +58,14 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     }
     else    // unknown file - show error message
     {
-        if ($importingfrom == "http")
-        {
-            $importsurvey .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-            $importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
-            $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-            $importsurvey .= "</div>\n";
-            unlink($sFullFilepath);
-            return;
-        }
-        else
-        {
-            echo $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
-            return;
-        }
+        $importresults['error'] = $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
+        return $importresults;
     }
 
     if  ((int)$importversion<112)
     {
-        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
+        $importresults['error'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
+        return $importresults;
     }
 
     // okay.. now lets drop the first 9 lines and get to the data
@@ -1096,7 +1086,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $xml = simplexml_load_string($sXMLdata);
     }
 
-    if ($xml->LimeSurveyDocType!='Survey') safe_die('This is not a valid LimeSurvey survey structure XML file.');
+    if ($xml->LimeSurveyDocType!='Survey')
+    {
+        $results['error'] = $clang->gT("This is not a valid LimeSurvey survey structure XML file.");
+        return $results;
+    }
     $dbversion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $aQuotaReplacements=array();
