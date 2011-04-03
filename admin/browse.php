@@ -27,7 +27,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 //Check if results table exists
 if (tableExists('survey_'.$surveyid)==false)
 {
-    $browseoutput .= "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
+    $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
             . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
             .$clang->gT("Error")."\t</div>\n"
             . $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
