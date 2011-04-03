@@ -22,7 +22,7 @@
 */
 function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 {
-    global $dbprefix, $connect, $timeadjust, $clang, $importsurvey, $importingfrom;
+    global $dbprefix, $connect, $timeadjust, $clang;
 
     $handle = fopen($sFullFilepath, "r");
     while (!feof($handle))
