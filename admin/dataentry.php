@@ -130,15 +130,15 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
         if (tableExists('tokens_'.$thissurvey['sid']) && (!isset($_POST['token']) || !$_POST['token']))
         {// First Check if the survey uses tokens and if a token has been provided
-            $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."</strong>\n";
+            $errormsg="<div class='warningheader'>".$clang->gT("Error")."</div> <p>".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."</p>\n";
         }
         elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken == 'UnknownToken')
         {
-            $errormsg="<div class='warningheader'>".$clang->gT("Error")."</div> ".$clang->gT("The token you have provided is not valid or has already been used.")."<p>\n";
+            $errormsg="<div class='warningheader'>".$clang->gT("Error")."</div> <p>".$clang->gT("The token you have provided is not valid or has already been used.")."</p>\n";
         }
         elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken != '')
         {
-            $errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("There is already a recorded answer for this token")."</strong>\n";
+            $errormsg="<div class='warningheader'>".$clang->gT("Error")."</div> <p>".$clang->gT("There is already a recorded answer for this token")."</p>\n";
             if ($lastanswfortoken != 'PrivacyProtected')
             {
                 $errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n"
