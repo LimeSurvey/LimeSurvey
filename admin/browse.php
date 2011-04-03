@@ -24,18 +24,62 @@ if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
-//Check if results table exists
-if (tableExists('survey_'.$surveyid)==false)
+// Some test in response table
+if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
     $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
             . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
             .$clang->gT("Error")."\t</div>\n"
-            . $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
-            . $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
+            . $clang->gT("You have not selected a survey to browse.")."<br />\n"
             ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
             ."</div>";
     return;
 }
+//CHECK IF SURVEY IS ACTIVATED AND EXISTS
+$actquery = "SELECT * FROM ".db_table_name('surveys')." as a inner join ".db_table_name('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=$surveyid";
+
+$actresult = db_execute_assoc($actquery);
+$actcount = $actresult->RecordCount();
+if ($actcount > 0)
+{
+    while ($actrow = $actresult->FetchRow())
+    {
+        $surveytable = db_table_name("survey_".$actrow['sid']);
+        $surveytimingstable = db_table_name("survey_".$actrow['sid']."_timings");
+        $tokentable = $dbprefix."tokens_".$actrow['sid'];
+        /*
+         * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
+         * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
+         *
+         * Used for deleting a record, fix quote bugs..
+         */
+        $surveytableNq = db_table_name_nq("survey_".$surveyid);
+
+        $surveyname = "{$actrow['surveyls_title']}";
+        if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
+        {    
+            $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
+                . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+                .$clang->gT("Error")."\t</div>\n"
+                . $clang->gT("This survey has not been activated. There are no results to browse.")."<br />\n"
+                ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
+                ."</div>";
+            return;
+        }
+    }
+}
+else //SURVEY MATCHING $surveyid DOESN'T EXIST
+{
+    $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
+        . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+        .$clang->gT("Error")."\t</div>\n"
+        . $clang->gT("There is no matching survey.")."<br />\n"
+        ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+        ."</div>";
+    return;
+}
+
+//OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
 $surveyinfo=getSurveyInfo($surveyid);
 require_once(dirname(__FILE__).'/sessioncontrol.php');
@@ -65,70 +109,10 @@ else
 $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
 $browseoutput = "";
 
-if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
-{
-    $browseoutput .= "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
-            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
-            .$clang->gT("Error")."\t</div>\n"
-            . $clang->gT("You have not selected a survey to browse.")."<br />\n"
-            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-            ."</div>";
-    return;
-}
-
 $js_admin_includes[]='scripts/browse.js';
 
 
-//CHECK IF SURVEY IS ACTIVATED AND EXISTS
-$actquery = "SELECT * FROM ".db_table_name('surveys')." as a inner join ".db_table_name('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=$surveyid";
 
-$actresult = db_execute_assoc($actquery);
-$actcount = $actresult->RecordCount();
-if ($actcount > 0)
-{
-    while ($actrow = $actresult->FetchRow())
-    {
-        $surveytable = db_table_name("survey_".$actrow['sid']);
-        $surveytimingstable = db_table_name("survey_".$actrow['sid']."_timings");
-        $tokentable = $dbprefix."tokens_".$actrow['sid'];
-        /*
-         * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
-         * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
-         *
-         * Used for deleting a record, fix quote bugs..
-         */
-        $surveytableNq = db_table_name_nq("survey_".$surveyid);
-
-        $surveyname = "{$actrow['surveyls_title']}";
-        if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
-        {
-            $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-                    . $clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
-                    ."\t<tr><td align='center'>\n"
-                    ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-                    . $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
-                    ."<input type='submit' value='"
-                    . $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
-                    ."</td></tr></table>\n"
-                    ."</body>\n</html>";
-            return;
-        }
-    }
-}
-else //SURVEY MATCHING $surveyid DOESN'T EXIST
-{
-    $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-            . $clang->gT("Browse Responses")."</strong></td></tr>\n"
-            ."\t<tr><td align='center'>\n"
-            ."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-            . $clang->gT("There is no matching survey.")." ($surveyid)<br /><br />\n"
-            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-            ."</td></tr></table>\n"
-            ."</body>\n</html>";
-    return;
-}
-
-//OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 
 
