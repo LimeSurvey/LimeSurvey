@@ -284,14 +284,15 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE prefix_conditions ALTER COLUMN method TYPE CHAR(5)"); echo $modifyoutput; flush();ob_flush();
         
         modify_database("","ALTER TABLE prefix_surveys RENAME COLUMN private TO anonymized;"); echo $modifyoutput; flush();ob_flush();
-        modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized TYPE char(1) Default 'N' NOT NULL ;"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized TYPE char(1);"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized SET DEFAULT 'N';"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized SET NOT NULL ;"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "CREATE TABLE prefix_failed_login_attempts (
                                   id serial PRIMARY KEY NOT NULL,
                                   ip character varying(37) NOT NULL,
                                   last_attempt character varying(20) NOT NULL,
                                   number_attempts integer NOT NULL
                                 );"); echo $modifyoutput; flush();ob_flush();
-        modify_database("", "ALTER TABLE ONLY prefix_failed_login_attempts ADD CONSTRAINT prefix_failed_login_attempts_pkey PRIMARY KEY (\"id\");"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE  prefix_surveys_languagesettings ADD surveyls_numberformat integer default 0 NOT NULL"); echo $modifyoutput; flush();ob_flush();
         upgrade_token_tables145();      
         modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
