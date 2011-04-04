@@ -306,7 +306,7 @@ if($subaction=='bounceprocessing')
 			$lastbounce = $thissurvey['bouncetime'];
 			while($datelcu > $lastbounce)
 			{
-				$header = explode("\r\n", imap_body($mbox,$count,FT_PEEK)); // Don't put read
+				$header = explode("\r\n",@imap_body($mbox,$count,FT_PEEK)); // Don't put read
 				foreach ($header as $item)
 				{
 					if (preg_match('/^X-surveyid/',$item))
@@ -330,12 +330,12 @@ if($subaction=='bounceprocessing')
 					}
 				}
 				$count--;
-				$lasthinfo=imap_headerinfo($mbox,$count);
+				$lasthinfo=@imap_headerinfo($mbox,$count);
 				$datelc=$lasthinfo->date;
 				$datelcu = strtotime($datelc);
 				$checktotal++;
-			    imap_close($mbox);
-            }
+			}
+            @imap_close($mbox);
 			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
 			$executetimestamp = $connect->Execute($entertimestamp);
 			if($bouncetotal>0)
