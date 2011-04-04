@@ -299,12 +299,14 @@ if($subaction=='bounceprocessing')
 		if($mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
 		{   
             imap_errors();          
-			$count=imap_num_msg($mbox);
-			$lasthinfo=imap_headerinfo($mbox,$count);
+            $count=imap_num_msg($mbox);
+            if($count>0)
+           {
+             $lasthinfo=imap_headerinfo($mbox,$count);
 			$datelcu = strtotime($lasthinfo->date);
 			$datelastbounce= $datelcu;
 			$lastbounce = $thissurvey['bouncetime'];
-			while($datelcu > $lastbounce)
+            while($datelcu > $lastbounce)
 			{
 				$header = explode("\r\n",@imap_body($mbox,$count,FT_PEEK)); // Don't put read
 				foreach ($header as $item)
@@ -329,23 +331,31 @@ if($subaction=='bounceprocessing')
 						}
 					}
 				}
+                
 				$count--;
 				$lasthinfo=@imap_headerinfo($mbox,$count);
-				$datelc=$lasthinfo->date;
+                $datelc=$lasthinfo->date;
 				$datelcu = strtotime($datelc);
-				$checktotal++;
-			}
+  				$checktotal++;
+                
+		       }
+               if($bouncetotal>0)
+                {
+                    echo sprintf($clang->gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal,$bouncetotal);
+                }       
+               else 
+                {
+                  echo sprintf($clang->gT("%s messages were scanned, none were marked as bounce by the system."),$checktotal);
+                }
+            }
+           else
+            {
+                echo sprintf($clang->gT("Your inbox is empty"));
+            }           
             @imap_close($mbox);
 			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
 			$executetimestamp = $connect->Execute($entertimestamp);
-			if($bouncetotal>0)
-			{
-				echo sprintf($clang->gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal,$bouncetotal);
-			}
-			else 
-			{
-				echo sprintf($clang->gT("%s messages were scanned, none were marked as bounce by the system."),$checktotal);
-			}
+			
 		}
 		else
 		{
