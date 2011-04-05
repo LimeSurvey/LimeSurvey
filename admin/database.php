@@ -732,6 +732,7 @@ if(isset($surveyid))
                         $oldqid=$qr1['qid'];
                         unset($qr1['qid']);
                     }
+                    $qr1['gid']=$postgid;
                     $sInsertSQL = $connect->GetInsertSQL($tablename,$qr1);
                     $ir1 = $connect->Execute($sInsertSQL);   // Checked
                     if (isset($qr1['qid']))
