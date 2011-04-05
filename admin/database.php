@@ -733,6 +733,7 @@ if(isset($surveyid))
                         $oldqid=$qr1['qid'];
                         unset($qr1['qid']);
                     }
+                    $qr1['gid']=$postgid;
                     $sInsertSQL = $connect->GetInsertSQL($tablename,$qr1);
                     $ir1 = $connect->Execute($sInsertSQL);   // Checked
                     if (isset($qr1['qid']))
@@ -1491,13 +1492,13 @@ function Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaul
    else
    {
        $exists=$connect->GetOne("SELECT qid FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");
-       if (is_null($exists))
+       if ($exists===false)
        {
            $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");        
        }
        else
        {
-           $connect->execute('Update '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($defaultvalue,$ispost)."  WHERE sqid=$sqid AND qid=$qid AND specialtype='' AND scale_id={$scale_id} AND language='{$language}'");        
+           $connect->execute('UPDATE '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($defaultvalue,$ispost)."  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");        
        }
    }
 }
