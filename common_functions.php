@@ -5032,14 +5032,18 @@ function getArrayFiltersForGroup($surveyid,$gid)
     $surveyid=sanitize_int($surveyid);
     $gid=sanitize_int($gid);
     // Get All Questions in Current Group
-    $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
-    if($gid != "") {$qquery .= " AND gid='$gid'";}
-    $qquery .= " AND language='".$_SESSION['s_lang']."' ORDER BY qid";
-    $qresult = db_execute_assoc($qquery);  //Checked
+    $fieldmap = createFieldMap($surveyid,'full');
+    if($gid != "") {
+        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
+    } else {
+        $qrows = $fieldmap;
+    }
     $grows = array(); //Create an empty array in case query not return any rows
     // Store each result as an array with in the $grows array
-    while ($qrow = $qresult->FetchRow()) {
-        $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+    foreach ($qrows as $qrow) {
+        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
+            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+        }
     }
     $attrmach = array(); // Stores Matches of filters that have their values as questions with in current group
     $grows2 = $grows;
@@ -5080,14 +5084,18 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
-    $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
-    if($gid != "") {$qquery .= " AND gid='$gid'";}
-    $qquery .= " AND language='".$_SESSION['s_lang']."' ORDER BY qid";
-    $qresult = db_execute_assoc($qquery);  //Checked
+    $fieldmap = createFieldMap($surveyid,'full');
+    if($gid != "") {
+        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
+    } else {
+        $qrows = $fieldmap;
+    }
     $grows = array(); //Create an empty array in case query not return any rows
     // Store each result as an array with in the $grows array
-    while ($qrow = $qresult->FetchRow()) {
-        $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+    foreach ($qrows as $qrow) {
+        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
+            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+        }
     }
     $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
@@ -5167,17 +5175,20 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
     // TODO: Check list_filter values to make sure questions are previous?
     global $dbprefix;
     $surveyid=sanitize_int($surveyid);
-    $surveyid=sanitize_int($surveyid);
     $gid=sanitize_int($gid);
     // Get All Questions in Current Group
-    $qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
-    if($gid != "") {$qquery .= " AND gid='$gid'";}
-    $qquery .= " AND language='".$_SESSION['s_lang']."' ORDER BY qid";
-    $qresult = db_execute_assoc($qquery);  //Checked
+    $fieldmap = createFieldMap($surveyid,'full');
+    if($gid != "") {
+        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
+    } else {
+        $qrows = $fieldmap;
+    }
     $grows = array(); //Create an empty array in case query not return any rows
     // Store each result as an array with in the $grows array
-    while ($qrow = $qresult->FetchRow()) {
-        $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+    foreach ($qrows as $qrow) {
+        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
+            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+        }
     }
     $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
     $grows2 = $grows;
@@ -5227,17 +5238,19 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
  */
 function getArrayFiltersForQuestion($qid)
 {
+    static $cache = array();
+
     // TODO: Check list_filter values to make sure questions are previous?
     global $surveyid, $dbprefix;
     $qid=sanitize_int($qid);
-    $query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter' AND qid='".$qid."'";
-    $result = db_execute_assoc($query);  //Checked
-    if ($result->RecordCount() == 1 && isset($_SESSION['fieldarray'])) // We Found a array_filter attribute - on question preview there is no $_SESSION['fieldarray']
-    {
-        $val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+    if (isset($cache[$qid])) return $cache[$qid];
+
+    $attributes = getQuestionAttributes($qid);
+    if (isset($attributes['array_filter']) && isset($_SESSION['fieldarray'])) {
+        $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
         foreach ($_SESSION['fieldarray'] as $fields)
         {
-            if ($fields[2] == $val['value'])
+            if ($fields[2] == $val)
             {
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
@@ -5258,12 +5271,15 @@ function getArrayFiltersForQuestion($qid)
                 {
                     if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
                 }
-                return $selected;
+                $cache[$qid] = $selected;
+                return $cache[$qid];
             }
         }
-        return false;
+        $cache[$qid] = false;
+        return $cache[$qid];
     }
-    return false;
+    $cache[$qid] = false;
+    return $cache[$qid];
 }
 /**
  * getGroupsByQuestion($surveyid)
@@ -5293,18 +5309,27 @@ function getGroupsByQuestion($surveyid) {
  */
 function getArrayFilterExcludesForQuestion($qid)
 {
+    static $cascadesCache = array();
+    static $cache = array();
+
     // TODO: Check list_filter values to make sure questions are previous?
     global $surveyid, $dbprefix;
     $qid=sanitize_int($qid);
-    $query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qid."'";
-    $result = db_execute_assoc($query);  //Checked
+
+    if (isset($cache[$qid])) return $cache[$qid];
+
+    $attributes = getQuestionAttributes($qid);
     $excludevals=array();
-    if ($result->RecordCount() == 1) // We Found a array_filter_exclude attribute
+    if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
     {
         $selected=array();
-        $excludevals[] = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+        $excludevals[] = $attributes['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
         /* Find any cascades and place them in the $excludevals array*/
-        $array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, "", "title");
+        if (!isset($cascadesCache[$surveyid])) {
+            $cascadesCache[$surveyid] = getArrayFilterExcludesCascadesForGroup($surveyid, "", "title");
+        }
+        $array_filterXqs_cascades = $cascadesCache[$surveyid];
+
         if(isset($array_filterXqs_cascades[$qid]))
         {
             foreach($array_filterXqs_cascades[$qid] as $afc)
@@ -5318,7 +5343,7 @@ function getArrayFilterExcludesForQuestion($qid)
         {
             foreach ($_SESSION['fieldarray'] as $fields) //iterate through every question in the survey
             {
-                if ($fields[2] == $val['value'])
+                if ($fields[2] == $val)
                 {
                     // we found the target question, now we need to know what the answers were!
                     $fields[0]=sanitize_int($fields[0]);
@@ -5344,12 +5369,15 @@ function getArrayFilterExcludesForQuestion($qid)
         }
         if(count($selected) > 0)
         {
-            return $selected;
+            $cache[$qid] = $selected;
+            return $cache[$qid];
         } else {
-            return false;
+            $cache[$qid] = false;
+            return $cache[$qid];
         }
     }
-    return false;
+    $cache[$qid] = false;
+    return $cache[$qid];
 }
 /**
  * getArrayFiltersForGroup($qid) finds out if a question is in the current group or not for array filter
@@ -5361,21 +5389,17 @@ function getArrayFiltersOutGroup($qid)
     // TODO: Check list_filter values to make sure questions are previous?
     global $surveyid, $dbprefix, $gid;
     $qid=sanitize_int($qid);
-    $query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter' AND qid='".$qid."'";
-    $result = db_execute_assoc($query); //Checked
-    if ($result->RecordCount() == 1) // We Found a array_filter attribute
+    $attributes = getQuestionAttributes($qid);
+    if (isset($attributes['array_filter'])) // We Found a array_filter attribute
     {
-        $val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+        $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
 
         // we found the target question, now we need to know what the answers where, we know its a multi!
-        $query = "SELECT gid FROM ".db_table_name('questions')." where title='{$val['value']}' AND language='".$_SESSION['s_lang']."' AND sid = $surveyid";
-        $qresult = db_execute_assoc($query); //Checked
-        if ($qresult->RecordCount() == 1)
-        {
-            $val2 = $qresult->FetchRow();
-            if ($val2['gid'] != $gid) return true;
-            if ($val2['gid'] == $gid) return false;
-        }
+        $surveyid=returnglobal('sid');
+        $fieldmap = createFieldMap($surveyid, 'full');
+        $val2 = arraySearchByKey($val, $fieldmap, 'title', 1);
+        if ($val2['gid'] != $gid) return true;
+        if ($val2['gid'] == $gid) return false;
         return false;
     }
     return false;
@@ -5391,24 +5415,19 @@ function getArrayFiltersExcludesOutGroup($qid)
     // TODO: Check list_filter values to make sure questions are previous?
     global $surveyid, $dbprefix, $gid;
     $qid=sanitize_int($qid);
-    $query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qid."'";
-    $result = db_execute_assoc($query); //Checked
-    if ($result->RecordCount() == 1) // We Found a array_filter attribute
+    $attributes = getQuestionAttributes($qid);
+    if (isset($attributes['array_filter_exclude'])) // We Found a array_filter attribute
     {
-        $val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+        $val = $attributes['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
 
         // we found the target question, now we need to know what the answers where, we know its a multi!
-        $query = "SELECT gid FROM ".db_table_name('questions')." where title='{$val['value']}' AND language='".$_SESSION['s_lang']."' AND sid = $surveyid";
-        $qresult = db_execute_assoc($query); //Checked
-        if ($qresult->RecordCount() == 1)
-        {
-            $val2 = $qresult->FetchRow();
-            if ($val2['gid'] != $gid) return true;
-            if ($val2['gid'] == $gid) return false;
-        }
-        return false;
-    }
-    return false;
+        $surveyid=returnglobal('sid');
+        $fieldmap = createFieldMap($surveyid, 'full');
+        $val2 = arraySearchByKey($val, $fieldmap, 'title', 1);
+        if ($val2['gid'] != $gid) return true;
+        if ($val2['gid'] == $gid) return false;
+   }
+   return false;
 }
 
 /**
