@@ -1366,6 +1366,60 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
     return $output;
 }
 
+function return_array_filter_selected($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null)
+// function which returns TRUE if the given $ansrow contains a row which is selected, ie, not filtered out in previous answer
+{
+	$filter_select = TRUE;
+	if
+    (
+    (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+    $thissurvey['format'] == 'S'						// and the survey is being presented in question-by-question mode
+    ) || 												// OR
+    (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+    $thissurvey['format'] == 'G' && 					// and the survey is being presented in group-by-group mode
+    getArrayFiltersOutGroup($ia[0]) == true			// and the source question for the array filter is in a different group than this question
+    )
+    )
+    {
+        $selected = getArrayFiltersForQuestion($ia[0]);
+        if (isset($ansrow['code'])) $ansrow['title'] = $ansrow['code'];
+        if (!empty($selected) && !in_array($ansrow['title'],$selected))
+        {
+			$filter_select = FALSE;
+		}
+		else
+		{
+			$filter_select = TRUE;
+		}
+	}
+	
+	if
+    (isset($qidattributes['array_filter_exclude']) &&
+	(
+    (trim($qidattributes['array_filter_exclude'])!='' &&
+    $thissurvey['format'] == 'S'
+    ) ||
+    (trim($qidattributes['array_filter_exclude'])!='' &&
+    $thissurvey['format'] == 'G' &&
+    getArrayFiltersExcludesOutGroup($ia[0]) == true
+    )
+	)
+    )
+    {
+        $selected = getArrayFilterExcludesForQuestion($ia[0]);
+        if (isset($ansrow['code'])) $ansrow['title'] = $ansrow['code'];  
+        if (!empty($selected) && !in_array($ansrow['title'],$selected))
+        {
+			$filter_select = TRUE;
+		}
+		else
+		{
+			$filter_select = FALSE;
+		}
+	}
+	return $filter_select; 
+}
+
 function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     /* We're just going to work out whether to do the include or exclude version of the function at this point */
     if(isset($qidattributes['array_filter_exclude']) && trim($qidattributes['array_filter_exclude']) != '') {
@@ -1460,7 +1514,7 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
             $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
         } else {
             $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />\n";
-    }
+        }
     }
 
     //End of array_filter attribute
@@ -5835,7 +5889,6 @@ function do_array($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $trbc = alternation($trbc , 'row');
             $answertext=dTexts::run($ansrow['question']);
             $answertextsave=$answertext;
             if (strpos($answertext,'|'))
@@ -5853,7 +5906,13 @@ function do_array($ia)
             }
             // Get array_filter stuff
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
-            $answer .= $htmltbody2;
+            $row_selected = return_array_filter_selected($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+			if($row_selected)
+			{
+				$trbc = alternation($trbc , 'row');
+				$fn++;
+			}
+			$answer .= $htmltbody2;
              
             $answer .= "<tr class=\"$trbc\">\n"
             . "\t<th class=\"answertext\">\n$answertext"
@@ -5910,7 +5969,6 @@ function do_array($ia)
             $answer .= "</tr>\n";
             $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
-            $fn++;
         }
 
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
