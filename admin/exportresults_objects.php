@@ -526,7 +526,14 @@ class Survey
                 {
                     $answers = $this->getAnswers($questionId, 1);
                 }
-                $fullAnswer = $answers[$answerCode]['answer'];    
+                if (array_key_exists($answerCode, $answers))
+                {
+                    $fullAnswer = $answers[$answerCode]['answer'];
+                }
+                else
+                {
+                    $fullAnswer = null;
+                }
                 break;
                 
             case 'L':   //DROPDOWN LIST  
@@ -675,7 +682,7 @@ class Survey
                     else
                     {
                         //TODO Verify that I converted this branch correctly.
-                        $fullAnswer .= $translator->translate('Tokens problem - token table missing');    
+                        $fullAnswer .= $translator->translate('Tokens problem - token table missing', $languageCode);
                     }
                 }  
                 else
@@ -1411,6 +1418,17 @@ class DocWriter extends Writer
     {
         //header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
         //header("Content-type: application/vnd.ms-word");
+        $this->output .= '<style>
+        table {
+            border-collapse:collapse;
+        }
+        td, th {
+            border:solid black 1.0pt;
+        }
+        th {
+            background: #c0c0c0;
+        }
+        </style>';
     } 
     
     /**
@@ -1434,16 +1452,17 @@ class DocWriter extends Writer
             }
             else
             {
-                $this->output .= PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL;    
-            } 
-            $this->output .= $this->translate('New Record', $this->languageCode).PHP_EOL;          
+                $this->output .= "<br clear='all' style='page-break-before:always'>";
+            }
+            $this->output .= "<table><tr><th colspan='2'>".$this->translate('New Record', $this->languageCode)."</td></tr>".PHP_EOL;
             
             $counter = 0;
             foreach ($headers as $header)
             {
-                $this->output .= $header.PHP_EOL."\t".$values[$counter].PHP_EOL;
+                $this->output .= "<tr><td>".$header."</td><td>".$values[$counter]."</td></tr>".PHP_EOL;
                 $counter++;    
-            }  
+            }
+            $this->output .= "</table>".PHP_EOL;
         } 
         else
         {
