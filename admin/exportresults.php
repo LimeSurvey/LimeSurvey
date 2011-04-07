@@ -553,7 +553,17 @@ $firstline .= "\n";
 if ($type == "doc" || $type == "pdf")
 {
     $flarray=explode($separator, $firstline);
-
+    $exportoutput .= '<style>
+        table {
+            border-collapse:collapse;
+        }
+        td, th {
+            border:solid black 1.0pt;
+        }
+        th {
+            background: #c0c0c0;
+        }
+        </style>';
 }
 else
 if ($type == "xls")
@@ -708,7 +718,8 @@ elseif ($answers == "long")        //chose complete answers
 
         if ($type == "doc")
         {
-            $exportoutput .= "\n\n\n".$elang->gT('NEW RECORD')."\n";
+            if ($rowcounter !== 1) $exportoutput .= "<br clear='all' style='page-break-before:always'>";
+            $exportoutput .= "<table><tr><th colspan='2'>".$elang->gT('NEW RECORD')."</td></tr>";
         }
         for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
         {
@@ -790,7 +801,7 @@ elseif ($answers == "long")        //chose complete answers
                 $ftype = "-";  //   This is set if it not a normal answer field, but something like tokenID, First name etc
             }
             if ($type == "csv") {$exportoutput .= "\"";}
-            if ($type == "doc") {$exportoutput .= "\n$ftitle\n\t";}
+            if ($type == "doc") {$exportoutput .= "<td>$ftitle</td><td>";}
             if ($type == "pdf"){ $pdf->intopdf($ftitle);}
             switch ($ftype)
             {
@@ -1054,11 +1065,19 @@ elseif ($answers == "long")        //chose complete answers
                     {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
                 }
             }
+            if ($type == "doc")
+            {
+                $exportoutput .= "</td></tr>";
+            }
             if ($type == "csv") {$exportoutput .= "\"";}
             $exportoutput .= "$separator";
             $ftype = "";
         }
         $exportoutput=mb_substr($exportoutput,0,-(strlen($separator)));
+        if ($type == "doc")
+        {
+            $exportoutput .= "</table>";
+        }
         if ($type=='xls')
         {
             $rowarray=explode($separator, $exportoutput);
