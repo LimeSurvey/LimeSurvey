@@ -198,6 +198,8 @@ function updaterowproperties()
              $(this).addClass('highlight');
          }
          $(this).addClass('row_'+rownumber);
+         $(this).find('.oldcode').attr('id','oldcode_'+rownumber+'_'+scale_id);
+         $(this).find('.oldcode').attr('name','oldcode_'+rownumber+'_'+scale_id);
          $(this).find('.code').attr('id','code_'+rownumber+'_'+scale_id);
          $(this).find('.code').attr('name','code_'+rownumber+'_'+scale_id);
          $(this).find('.answer').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id);
