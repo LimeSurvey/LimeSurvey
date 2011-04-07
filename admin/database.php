@@ -853,6 +853,7 @@ if(isset($surveyid))
             $maxcount=(int)$_POST['answercount_'.$scale_id];
             for ($sortorderid=1;$sortorderid<$maxcount;$sortorderid++)
             {
+                $oldcode=sanitize_paranoid_string($_POST['oldcode_'.$sortorderid.'_'.$scale_id]);
                 $code=sanitize_paranoid_string($_POST['code_'.$sortorderid.'_'.$scale_id]);
                 $assessmentvalue=(int) $_POST['assessment_'.$sortorderid.'_'.$scale_id];
                 foreach ($alllanguages as $language)
@@ -884,6 +885,12 @@ if(isset($surveyid))
                         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                     }
                 } // foreach ($alllanguages as $language)
+
+                if($code !== $oldcode) {
+                    $query='UPDATE '.db_table_name('conditions').' SET value='.db_quoteall($code).' WHERE cqid='.db_quote($qid).' AND value='.db_quoteall($oldcode);
+                    $connect->execute($query);
+                }
+
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }  //  for ($scale_id=0;
 
@@ -928,6 +935,7 @@ if(isset($surveyid))
         //Determine ids by evaluating the hidden field
         $rows=array();
         $codes=array();
+        $oldcodes=array();
         foreach ($_POST as $postkey=>$postvalue)
         {
             $postkey=explode('_',$postkey);
@@ -938,6 +946,10 @@ if(isset($surveyid))
             if ($postkey[0]=='code')
             {
                 $codes[$postkey[2]][]=$postvalue;
+            }
+            if ($postkey[0]=='oldcode')
+            {
+                $oldcodes[$postkey[2]][]=$postvalue;
             }
         }
         $count=0;
@@ -973,6 +985,14 @@ if(isset($surveyid))
                     {
                         $query='Update '.db_table_name('questions').' set question_order='.($position+1).', title='.db_quoteall($codes[$scale_id][$position]).', question='.db_quoteall($subquestionvalue).', scale_id='.$scale_id.' where qid='.db_quoteall($subquestionkey).' AND language='.db_quoteall($language);
                         $connect->execute($query);
+
+                        if($codes[$scale_id][$position] !== $oldcodes[$scale_id][$position]) {
+                            $query='UPDATE '.db_table_name('conditions').' SET cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.db_quote($codes[$scale_id][$position]).'" WHERE cqid='.$qid.' AND cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.db_quote($oldcodes[$scale_id][$position]).'"';
+                            $connect->execute($query);
+                            $query='UPDATE '.db_table_name('conditions').' SET value="'.db_quote($codes[$scale_id][$position]).'" WHERE cqid='.$qid.' AND cfieldname="'.$surveyid.'X'.$gid.'X'.$qid.'" AND value="'.$oldcodes[$scale_id][$position].'"';
+                            $connect->execute($query);
+                        }
+
                     }
                     else
                     {
