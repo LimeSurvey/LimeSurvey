@@ -3789,14 +3789,14 @@ function do_file_upload($ia)
         $scriptloc = 'uploader.php';
     }
 
-    $uploadbutton = "<h2><a class='upload' href='$scriptloc?sid=$surveyid&fieldname=".$ia[1]."&qid=".$ia[0]."&preview="
+    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='$scriptloc?sid=$surveyid&fieldname=".$ia[1]."&qid=".$ia[0]."&preview="
     .$questgrppreview."&show_title=".$qidattributes['show_title']."&show_comment="
     .$qidattributes['show_comment']."&pos=".($pos?1:0)."'>Upload files</a></h2><br /><br />";
-    $editbutton = "<img src=\"images/edit.png\" onclick=\"$(\'.upload\').click()\" style=\"cursor:pointer\">";
 
-
-    $answer  = "<script type='text/javascript' src='scripts/parseuri.js'></script>";
-    $answer .= "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
+    if ($pos)
+        $answer = "<script type='text/javascript' src='../scripts/modaldialog.js'></script>";
+    else
+        $answer = "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
 
     // Modal dialog
     $answer .= $uploadbutton;

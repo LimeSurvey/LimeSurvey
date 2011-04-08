@@ -62,6 +62,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
 $meta = '<script type="text/javascript">
     var surveyid = "'.$surveyid.'";
+    var fieldname = "'.$_GET['fieldname'].'";
     var questgrppreview  = '.$_GET['preview'].';
 </script>';
 

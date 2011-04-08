@@ -64,6 +64,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     $valid_extensions = strtolower($_POST['valid_extensions']);
     $maxfilesize = $_POST['max_filesize'];
     $preview = $_POST['preview'];
+    $fieldname = $_POST['fieldname'];
 
     $valid_extensions_array = explode(",", $valid_extensions);
 
@@ -100,22 +101,23 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
         else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
         {
-            if (!isset($_SESSION['filecount']))
-                $_SESSION['filecount'] = 0;
+            if (!isset($_SESSION[$fieldname]['filecount']))
+                $_SESSION[$fieldname]['filecount'] = 0;
 
-            $_SESSION['filecount'] += 1;
-            $_SESSION['files'][$_SESSION['filecount']]['name'] = rawurlencode(basename($filename));
-            $_SESSION['files'][$_SESSION['filecount']]['size'] = $size;
-            $_SESSION['files'][$_SESSION['filecount']]['ext']  = $ext;
-            $_SESSION['files'][$_SESSION['filecount']]['filename']   = $randfilename;
+            $filecount = $_SESSION[$fieldname]['filecount'] += 1;
+            $_SESSION[$fieldname]['files'][$filecount]['name'] = rawurlencode(basename($filename));
+            $_SESSION[$fieldname]['files'][$filecount]['size'] = $size;
+            $_SESSION[$fieldname]['files'][$filecount]['ext']  = $ext;
+            $_SESSION[$fieldname]['files'][$filecount]['filename']   = $randfilename;
 
             $return = array(
-                        "success" => true,
-                        "size"    => $size,
-                        "name"    => rawurlencode(basename($filename)),
-                        "ext"     => $ext,
+                        "success"       => true,
+                        "file_index"    => $filecount,
+                        "size"          => $size,
+                        "name"          => rawurlencode(basename($filename)),
+                        "ext"           => $ext,
                         "filename"      => $randfilename,
-                        "msg"     => "The file has been successfuly uploaded."
+                        "msg"           => "The file has been successfuly uploaded."
                     );
             echo json_encode($return);
 
@@ -137,18 +139,19 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
         if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
         {
-            if (!isset($_SESSION['filecount']))
-                $_SESSION['filecount'] = 0;
+            if (!isset($_SESSION[$fieldname]['filecount']))
+                $_SESSION[$fieldname]['filecount'] = 0;
 
-            $_SESSION['filecount'] += 1;
-            $_SESSION['files'][$_SESSION['filecount']]['name'] = rawurlencode(basename($filename));
-            $_SESSION['files'][$_SESSION['filecount']]['size'] = $size;
-            $_SESSION['files'][$_SESSION['filecount']]['ext']  = $ext;
-            $_SESSION['files'][$_SESSION['filecount']]['filename']   = $randfilename;
+            $filecount = $_SESSION[$fieldname]['filecount'] += 1;
+
+            $_SESSION[$fieldname]['files'][$filecount]['name'] = rawurlencode(basename($filename));
+            $_SESSION[$fieldname]['files'][$filecount]['size'] = $size;
+            $_SESSION[$fieldname]['files'][$filecount]['ext']  = $ext;
+            $_SESSION[$fieldname]['files'][$filecount]['filename']   = $randfilename;
 
             $return = array(
                 "success" => true,
-                "file_index" => $_SESSION['filecount'],
+                "file_index" => $filecount,
                 "size"    => $size,
                 "name"    => rawurlencode(basename($filename)),
                 "ext"     => $ext,

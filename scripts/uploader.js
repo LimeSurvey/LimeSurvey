@@ -1,51 +1,49 @@
 $(document).ready(function(){
-
-    var ia = $('#ia').val();
+    var fieldname = $('#ia').val();
 
     /* Load the previously uploaded files */
-    var filecount = window.parent.window.$('#'+ia+'_filecount').val();
-    $('#'+ia+'_filecount').val(filecount);
+    var filecount = window.parent.window.$('#'+fieldname+'_filecount').val();
+    $('#'+fieldname+'_filecount').val(filecount);
 
     var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
 
     if (filecount > 0)
     {
-        var jsontext = window.parent.window.$('#'+ia).val();
+        var jsontext = window.parent.window.$('#'+fieldname).val();
         var json = eval('(' + jsontext + ')');
 
         var i;
-        $('#'+ia+'_licount').val(filecount);
+        $('#'+fieldname+'_licount').val(filecount);
 
-        for (i = 0; i <  filecount; i++)
+        for (i = 1; i <=  filecount; i++)
         {
-            var previewblock =  "<li id='"+ia+"_li_"+i+"' class='previewblock'><div>"+
+            var previewblock =  "<li id='"+fieldname+"_li_"+i+"' class='previewblock'><div>"+
                     "<table align='center'><tr>"+
                        "<td  align='center' width='50%' padding='20px' >";
 
-            if (isValueInArray(image_extensions, json[i].ext))
-                previewblock += "<img src='uploader.php?filegetcontents="+json[i].filename+"' height='60px' />"+decodeURIComponent(json[i].name);
+            if (isValueInArray(image_extensions, json[i-1].ext))
+                previewblock += "<img src='uploader.php?filegetcontents="+json[i-1].filename+"' height='60px' />"+decodeURIComponent(json[i].name);
             else
-                previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i].name);
+                previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i-1].name);
 
             previewblock += "</td>";
+            if ($('#'+fieldname+'_show_title').val() == 1 && $('#'+fieldname+'_show_comment').val() == 1)
+                previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /><br /><br /><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
+            else if ($('#'+fieldname+'_show_title').val() == 1)
+                previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /></td>";
+            else if ($('#'+fieldname+'_show_comment').val() == 1)
+                previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
 
-            if ($('#'+ia+'_show_title').val() == 1 && $('#'+ia+'_show_comment').val() == 1)
-                previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='"+json[i].title+"' id='"+ia+"_title_"+i+"' /><br /><br /><input type='text' value='"+json[i].comment+"' id='"+ia+"_comment_"+i+"' /></td>";
-            else if ($('#'+ia+'_show_title').val() == 1)
-                previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='"+json[i].title+"' id='"+ia+"_title_"+i+"' /></td>";
-            else if ($('#'+ia+'_show_comment').val() == 1)
-                previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='"+json[i].comment+"' id='"+ia+"_comment_"+i+"' /></td>";
-
-            previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='images/delete.png' onclick='deletefile("+i+")' /></td></tr></table>"+
-                    "<input type='hidden' id='"+ia+"_size_"    +i+"' value="+json[i].size+" />"+
-                    "<input type='hidden' id='"+ia+"_name_"    +i+"' value="+json[i].name+" />"+
-                    "<input type='hidden' id='"+ia+"_file_index_"+i+"' value="+(i+1)+" />"+
-                    "<input type='hidden' id='"+ia+"_filename_"+i+"' value="+json[i].filename+" />"+
-                    "<input type='hidden' id='"+ia+"_ext_"     +i+"' value="+json[i].ext+"  />"+
+            previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='images/delete.png' onclick='deletefile(\""+fieldname+"\", "+i+")' /></td></tr></table>"+
+                    "<input type='hidden' id='"+fieldname+"_size_"    +i+"' value="+json[i-1].size+" />"+
+                    "<input type='hidden' id='"+fieldname+"_name_"    +i+"' value="+json[i-1].name+" />"+
+                    "<input type='hidden' id='"+fieldname+"_file_index_"+i+"' value="+i+" />"+
+                    "<input type='hidden' id='"+fieldname+"_filename_"+i+"' value="+json[i-1].filename+" />"+
+                    "<input type='hidden' id='"+fieldname+"_ext_"     +i+"' value="+json[i-1].ext+"  />"+
                     "</div></li>";
 
             // add file to the list
-            $('#'+ia+'_listfiles').append(previewblock);
+            $('#'+fieldname+'_listfiles').append(previewblock);
         }
     }
 
@@ -53,19 +51,20 @@ $(document).ready(function(){
     var button = $('#button1'), interval;
 
     new AjaxUpload(button, {
-        action: 'upload.php?sid='+surveyid+'&preview='+questgrppreview,
+        action: 'upload.php?sid='+surveyid+'&preview='+questgrppreview+'&fieldname='+fieldname,
         name: 'uploadfile',
         data: {
-            valid_extensions : $('#'+ia+'_allowed_filetypes').val(),
-            max_filesize : $('#'+ia+'_maxfilesize').val(),
+            valid_extensions : $('#'+fieldname+'_allowed_filetypes').val(),
+            max_filesize : $('#'+fieldname+'_maxfilesize').val(),
             preview : $('#preview').val(),
-            surveyid : surveyid
+            surveyid : surveyid,
+            fieldname : fieldname
         },
         onSubmit : function(file, ext){
 
-            var maxfiles = $('#'+ia+'_maxfiles').val();
-            var filecount = $('#'+ia+'_filecount').val();
-            var allowed_filetypes = $('#'+ia+'_allowed_filetypes').val().split(",");
+            var maxfiles = $('#'+fieldname+'_maxfiles').val();
+            var filecount = $('#'+fieldname+'_filecount').val();
+            var allowed_filetypes = $('#'+fieldname+'_allowed_filetypes').val().split(",");
 
             /* If maximum number of allowed filetypes have already been uploaded,
              * do not upload the file and display an error message ! */
@@ -90,7 +89,7 @@ $(document).ready(function(){
             }
             if (allowSubmit == false)
             {
-                $('#notice').html('<p class="error">Sorry, Only "'+ $('#'+ia+'_allowed_filetypes').val()+'" files can be uploaded for this question !</p>');
+                $('#notice').html('<p class="error">Sorry, Only "'+ $('#'+fieldname+'_allowed_filetypes').val()+'" files can be uploaded for this question !</p>');
                 return false;
             }
 
@@ -122,13 +121,15 @@ $(document).ready(function(){
             var metadata = eval('(' + response + ')');
             
             $('#notice').html('<p class="success">'+metadata.msg+'</p>');
-            var count = parseInt($('#'+ia+'_licount').val());
+            var count = parseInt($('#'+fieldname+'_licount').val());
+            count++;
+            $('#'+fieldname+'_licount').val(count);
 
             var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
             
             if (metadata.success)
             {
-                var previewblock =  "<li id='"+ia+"_li_"+count+"' class='previewblock'><div>"+
+                var previewblock =  "<li id='"+fieldname+"_li_"+count+"' class='previewblock'><div>"+
                                         "<table align='center'><tr>"+
                                             "<td  align='center' width='50%'>";
 
@@ -139,31 +140,29 @@ $(document).ready(function(){
                     previewblock += "<img src='images/placeholder.png' height='60px' />";
 
                 previewblock += "<br />"+decodeURIComponent(metadata.name)+"</td>";
-                if ($("#"+ia+"_show_title").val() == 1 && $("#"+ia+"_show_comment").val() == 1)
-                    previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='' id='"+ia+"_title_"+count+"' /><br /><br /><input type='text' value='' id='"+ia+"_comment_"+count+"' /></td>";
-                else if ($("#"+ia+"_show_title").val() == 1)
-                    previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='' id='"+ia+"_title_"+count+"' /></td>";
-                else if ($("#"+ia+"_show_comment").val() == 1)
-                    previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='' id='"+ia+"_comment_"+count+"' /></td>";
+                if ($("#"+fieldname+"_show_title").val() == 1 && $("#"+fieldname+"_show_comment").val() == 1)
+                    previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_title_"+count+"' /><br /><br /><input type='text' value='' id='"+fieldname+"_comment_"+count+"' /></td>";
+                else if ($("#"+fieldname+"_show_title").val() == 1)
+                    previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_title_"+count+"' /></td>";
+                else if ($("#"+fieldname+"_show_comment").val() == 1)
+                    previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_comment_"+count+"' /></td>";
 
-                previewblock += "<td  align='center' width='20%'><img style='cursor:pointer' src='images/delete.png' onclick='deletefile("+count+")'/></td>"+
+                previewblock += "<td  align='center' width='20%'><img style='cursor:pointer' src='images/delete.png' onclick='deletefile(\""+fieldname+"\", "+count+")'/></td>"+
                                         "</tr></table>"+
-                                        "<input type='hidden' id='"+ia+"_size_"+count+"' value="+metadata.size+" />"+
-                                        "<input type='hidden' id='"+ia+"_file_index_"+count+"' value="+metadata.file_index+" />"+
-                                        "<input type='hidden' id='"+ia+"_name_"+count+"' value="+metadata.name+" />"+
-                                        "<input type='hidden' id='"+ia+"_filename_"+count+"' value="+metadata.filename+" />"+
-                                        "<input type='hidden' id='"+ia+"_ext_" +count+"' value="+metadata.ext+"  />"+
+                                        "<input type='hidden' id='"+fieldname+"_size_"+count+"' value="+metadata.size+" />"+
+                                        "<input type='hidden' id='"+fieldname+"_file_index_"+count+"' value="+metadata.file_index+" />"+
+                                        "<input type='hidden' id='"+fieldname+"_name_"+count+"' value="+metadata.name+" />"+
+                                        "<input type='hidden' id='"+fieldname+"_filename_"+count+"' value="+metadata.filename+" />"+
+                                        "<input type='hidden' id='"+fieldname+"_ext_" +count+"' value="+metadata.ext+"  />"+
                                     "</div></li>";
 
                 // add file to the list
-                $('#'+ia+'_listfiles').prepend(previewblock);
-                count++;
-                $('#'+ia+'_licount').val(count);
-                var filecount = $('#'+ia+'_filecount').val();
-                var minfiles = $('#'+ia+'_minfiles').val();
+                $('#'+fieldname+'_listfiles').prepend(previewblock);
+                var filecount = $('#'+fieldname+'_filecount').val();
+                var minfiles = $('#'+fieldname+'_minfiles').val();
                 filecount++;
-                var maxfiles = $('#'+ia+'_maxfiles').val();
-                $('#'+ia+'_filecount').val(filecount);
+                var maxfiles = $('#'+fieldname+'_maxfiles').val();
+                $('#'+fieldname+'_filecount').val(filecount);
                 
                 if (filecount < minfiles)
                     $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
@@ -195,10 +194,10 @@ function isValueInArray(arr, val) {
 function passJSON(fieldname, show_title, show_comment, pos) {
     var json = "[";
     var filecount = 0;
-    var licount = parseInt($('#'+fieldname+'_licount').val());
+    var licount   =  $('#'+fieldname+'_licount').val();
     var i = 0;
 
-    while (i < licount)
+    while (i <= licount)
     {
         if (filecount > 0)
             json += ",";
@@ -249,8 +248,9 @@ function saveAndExit(fieldname, show_title, show_comment, pos) {
     }
 }
 
-// TODO: introduce the fieldname variable in html
 function deletefile(fieldname, count) {
+
+    var file_index;
     var xmlhttp;
     if (window.XMLHttpRequest)
         xmlhttp=new XMLHttpRequest();
@@ -268,25 +268,33 @@ function deletefile(fieldname, count) {
             setTimeout(function() {
                 $(".success").remove();
             }, 5000);
+
+            $("#"+fieldname+"_li_"+count).hide();
+            filecount--;
+            $('#'+fieldname+'_filecount').val(filecount);
+
+            // rearrange the file indexes
+            // i.e move the files below i to one step up
+
+            file_index = $("#"+fieldname+"_file_index_"+count).val();
+            for (j = count; j <= licount; j++)
+            {
+                if ($('#'+fieldname+'_li_'+j).is(":visible"))
+                {
+                    $('#'+fieldname+'_file_index_'+j).val(file_index);
+                    file_index++;
+                }
+            }
+            var minfiles = $('#'+fieldname+'_minfiles').val();
+            var maxfiles = $('#'+fieldname+'_maxfiles').val();
+
+            if (filecount < minfiles)
+                $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
+            else
+                $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may Save and exit');
         }
     }
-    var file_index = $("#"+fieldname+"_file_index_"+count).val();
+    file_index = $("#"+fieldname+"_file_index_"+count).val();
     xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&file_index='+file_index, true);
     xmlhttp.send();
-
-    $("#"+fieldname+"_li_"+count).hide();
-    filecount--;
-    $('#'+fieldname+'_filecount').val(filecount);
-    
-    // rearrange the file indexes
-    // i.e move the files below i to one step up
-
-    for (j = count; j <= licount; j++)
-    {
-        if ($('#'+fieldname+'_li_'+j).visible())
-        {
-            $('#'+fieldname+'_file_index_'+j).val(file_index++);
-        }
-    }
-
 }
