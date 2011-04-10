@@ -255,6 +255,8 @@ $allfields = array();
          */
 
 $currentgroup='';
+// use to check if there are any question with public statistics
+if(isset($filters)){
 foreach ($filters as $flt)
 {
     //SGQ identifier
@@ -364,7 +366,7 @@ foreach ($filters as $flt)
     }	//end switch -> check question types and create filter forms
 }
 //end foreach -> loop through all questions with "public_statistics" enabled
-
+}// end if -> for removing the error message in case there are no filters
 $summary = $allfields;
 
 //---------- CREATE STATISTICS ----------
