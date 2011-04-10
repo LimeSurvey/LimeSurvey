@@ -132,7 +132,7 @@
     $sGoogleApiError     = $clang->gT("There was an error using the Google API.");
     $sDetailedError      = $clang->gT("Detailed Error");
 
-    $translateoutput .= "<div id=\"translationloading\" style=\"width: 100%; font-weight: bold; color: #000; text-align: center;\"><br />".$clang->gT("Loading Translations")."...<br /><br /></div>";
+    $translateoutput .= "<div id=\"translationloading\" style=\"width: 100%; font-weight: bold; color: #000; text-align: center;\"><br />".$clang->gT("Loading translations")."...<br /><br /></div>";
 
     $translateoutput .= "<form name='translateform' method='post' "
       ."action='$scriptname' id='translateform' >\n"
@@ -239,6 +239,7 @@ END;
                     $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow);
             if ($associated && strlen(trim((string)$textfrom2)) > 0)
             {
+              $evenRow = !($evenRow);
               $translateoutput .= displayTranslateFields($surveyid, $gid, $qid, $type2,
                       $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $rowfrom2, $evenRow);
             }
