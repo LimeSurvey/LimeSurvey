@@ -239,6 +239,7 @@ END;
                     $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow);
             if ($associated && strlen(trim((string)$textfrom2)) > 0)
             {
+              $evenRow = !($evenRow);
               $translateoutput .= displayTranslateFields($surveyid, $gid, $qid, $type2,
                       $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $rowfrom2, $evenRow);
             }
