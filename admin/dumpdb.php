@@ -24,17 +24,8 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
     Header("Content-Disposition: attachment; filename=$file_name");
     Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     echo $export;
-    exit;
 }
-else
-{
-    $dumpdboutput= "<br />\n"
-    ."<table class='alertbox' >\n"
-    ."\t<tr ><td height='4'><font size='1'><strong>".$clang->gT("Export database")."</strong></font></td></tr>\n"
-    ."\t<tr ><td height='4'>".$clang->gT("The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump.")."</td></tr>"
-    ."</table><br />";
-    return;
-}
+exit;
 
 /**
  * Creates a full dump of the current LimeSurvey database

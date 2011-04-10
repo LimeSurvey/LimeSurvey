@@ -2017,7 +2017,7 @@ function replacenewline ($texttoreplace)
  */
 function showadminmenu()
 {
-    global $homedir, $scriptname, $surveyid, $setfont, $imageurl, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck;
+    global $homedir, $scriptname, $surveyid, $setfont, $imageurl, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
 
     $adminmenu  = "<div class='menubar'>\n";
     if  ($_SESSION['pw_notify'] && $debug<2)  {
@@ -2075,10 +2075,17 @@ function showadminmenu()
     // db backup & label editor
     if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {
-        $adminmenu  .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=dumpdb', '_top')\" title=\"".$clang->gTview("Backup Entire Database")."\">\n"
-        ."<img src='{$imageurl}/backup.png' name='ExportDB' alt='". $clang->gT("Backup Entire Database")."' />"
-        ."</a>\n"
-        ."<img src='{$imageurl}/seperator.gif' alt=''  border='0' hspace='0' />\n";
+        if ($databasetype=='mysql' || $databasetype=='mysqli')
+        {
+            $adminmenu  .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=dumpdb', '_top')\" title=\"".$clang->gTview("Backup Entire Database")."\">\n"
+            ."<img src='{$imageurl}/backup.png' name='ExportDB' alt='". $clang->gT("Backup Entire Database")."' />"
+            ."</a>\n";
+        }
+        else
+        {
+            $adminmenu  .= "<img src='{$imageurl}/backup_disabled.png' name='ExportDB' alt='". $clang->gT("The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump.")."' />";
+        }
+        $adminmenu.="<img src='{$imageurl}/seperator.gif' alt=''  border='0' hspace='0' />\n";
     }
 
     if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
