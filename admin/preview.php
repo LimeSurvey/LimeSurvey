@@ -87,6 +87,18 @@ $question['code']=$answers[0][5];
 $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
 $question['sgq']=$ia[1];
+
+//Temporary fix for error condition arising from linked question via replacement fields
+//@todo: find a consistent way to check and handle this - I guess this is already handled but the wrong values are entered into the DB
+
+$search_for = '{INSERTANS';
+if(strpos($question['text'],$search_for)!==false){
+    $pattern_text = '/{([A-Z])*:([0-9])*X([0-9])*X([0-9])*}/';
+    $replacement_text = $clang->gT('[Dependency on another question (ID $4)]');
+    $text = preg_replace($pattern_text,$replacement_text,$question['text']);    
+    $question['text']=$text;
+}
+
 if ($qrows['mandatory'] == 'Y')
 {
     $question['man_class'] = ' mandatory';
