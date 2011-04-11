@@ -143,6 +143,11 @@ else
     $captchapath=$rooturl.'/';  
 }
 
+//check if databasename is set in config file
+if (!$databasename)
+{
+    die("Database Information not provided. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage.");
+}
 
 //BEFORE SESSIONCONTOL BECAUSE OF THE CONNECTION
 //CACHE DATA
@@ -223,8 +228,13 @@ if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mss
 }
 
 
+//check if database exist and access is not via install script
+if (!$database_exists && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
+    die ("<br/>The LimeSurvey database does not exist. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary database.");
+}
+ 
 // Check if the DB is up to date
-If ($dbexistsbutempty && $sourcefrom=='admin') {
+if ($dbexistsbutempty && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
     die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
 }
 
