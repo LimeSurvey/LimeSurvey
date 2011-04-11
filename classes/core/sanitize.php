@@ -103,9 +103,13 @@ function sanitize_filename($string, $force_lowercase = true, $alphanumeric = fal
     $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
                    "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
                    "—", "–", ",", "<", ".", ">", "/", "?");
+    $lastdot=strrpos($string, ".");
     $clean = trim(str_replace($strip, "_", strip_tags($string)));
     $clean = preg_replace('/\s+/', "-", $clean);
     $clean = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
+    if ($lastdotpos !== false) {
+        $clean= substr_replace ( $clean , '.' , $lastdot , 1 );
+    }
     return ($force_lowercase) ?
         (function_exists('mb_strtolower')) ?
             mb_strtolower($clean, 'UTF-8') :
