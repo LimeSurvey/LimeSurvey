@@ -48,7 +48,7 @@ $(function() {
                     background: 'black'
                 },
                 buttons: {
-                    'Save and exit': function() {
+                    'Return to Survey': function() {
                         var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
                         if (pass) {
                             $(this).dialog('destroy');
@@ -79,7 +79,7 @@ $(function() {
                     background: 'black'
                 },
                 buttons: {
-                    'Save and exit': function() {
+                    'Return to Survey': function() {
                         var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
                         if (pass) {
                             $(this).dialog('destroy');

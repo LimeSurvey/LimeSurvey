@@ -167,12 +167,12 @@ $(document).ready(function(){
                 if (filecount < minfiles)
                     $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
                 else if (filecount < maxfiles)
-                    $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may Save and exit');
+                    $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may return back to survey');
                 else
-                    $('#uploadstatus').html('The maximum number of files have been uploaded. You may save and exit');
+                    $('#uploadstatus').html('The maximum number of files have been uploaded. You may return back to survey');
 
                 if (filecount >= maxfiles)
-                    $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may Save and Exit !</p>');
+                    $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may return back to survey !</p>');
             }
         }
     });
@@ -291,7 +291,7 @@ function deletefile(fieldname, count) {
             if (filecount < minfiles)
                 $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
             else
-                $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may Save and exit');
+                $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may return back to survey');
         }
     }
     file_index = $("#"+fieldname+"_file_index_"+count).val();
