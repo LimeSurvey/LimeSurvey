@@ -107,7 +107,7 @@ function sanitize_filename($string, $force_lowercase = true, $alphanumeric = fal
     $clean = trim(str_replace($strip, "_", strip_tags($string)));
     $clean = preg_replace('/\s+/', "-", $clean);
     $clean = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
-    if ($lastdotpos !== false) {
+    if ($lastdot !== false) {
         $clean= substr_replace ( $clean , '.' , $lastdot , 1 );
     }
     return ($force_lowercase) ?
