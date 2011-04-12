@@ -169,18 +169,7 @@ function db_upgrade($oldversion) {
 						  );");echo $modifyoutput; flush();ob_flush();
         //123
         modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [value] VARCHAR(255)"); echo $modifyoutput; flush();ob_flush();
-        // There is no other way to remove the previous default value
-        /*modify_database("","DECLARE @STR VARCHAR(100)
-         SET @STR = (
-         SELECT NAME
-         FROM SYSOBJECTS SO
-         JOIN SYSCONSTRAINTS SC ON SO.ID = SC.CONSTID
-         WHERE OBJECT_NAME(SO.PARENT_OBJ) = 'lime_labels'
-         AND SO.XTYPE = 'D' AND SC.COLID =
-         (SELECT COLID FROM SYSCOLUMNS WHERE ID = OBJECT_ID('lime_labels') AND NAME = 'title'))
-         SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR
-         exec (@STR);"); echo $modifyoutput; flush();ob_flush();     */
-
+        mssql_drop_constraint('title','labels');
         modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] varchar(4000)"); echo $modifyoutput; flush();ob_flush();
         //124
         modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] text"); echo $modifyoutput; flush();ob_flush();
@@ -567,7 +556,7 @@ function upgrade_token_tables145()
     global $modifyoutput, $dbprefix, $connect;
     $surveyidquery = db_select_tables_like($dbprefix."tokens%");
     $surveyidresult = db_execute_num($surveyidquery);
-    $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    $tokentables=$connect->MetaTables('TABLES',false, $dbprefix."tokens%");
     foreach ($tokentables as $sv) {
             modify_database("","ALTER TABLE ".$sv[0]." ADD [usesleft] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
             modify_database("","UPDATE ".$sv[0]." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
@@ -594,6 +583,8 @@ function mssql_drop_primary_index($tablename)
 function mssql_drop_constraint($fieldname, $tablename)
 {
     global $dbprefix, $connect, $modifyoutput;
+    $connect->SetFetchMode(ADODB_FETCH_ASSOC);
+
     // find out the name of the default constraint
     // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
     $dfquery ="SELECT c_obj.name AS constraint_name

@@ -116,7 +116,7 @@ order by constraint_name, referenced_table_name, keyno";
 
     function MetaTables($ttype=false,$showSchema=false,$mask=false)
     {
-        if ($mask) {$this->debug=1;
+        if ($mask) {
         $save = $this->metaTablesSQL;
         $mask = $this->qstr($mask);
         $this->metaTablesSQL .= " AND name like $mask";
