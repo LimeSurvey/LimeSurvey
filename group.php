@@ -735,6 +735,9 @@ END;
         }
         elseif (preg_match("/[0-9]+X([0-9]+)X.*/",$cd[2],$sourceQuestionGid))
         {
+            $localEvaluationPossible = false;
+            unset($localEvaluation);
+
             // If the Gid of the question used for the condition is on the same group,
             // the set the runconce flag to False, because we'll need to evaluate this condition
             //each time another question in this page is modified
@@ -746,10 +749,13 @@ END;
             else
             {
                 $conditionSourceOnPreviousPage = true; // this param is specific to this basic condition
+                if ($previewgrp)
+                {
+                    $localEvaluationPossible = true;
+                    $localEvaluation = true;
+                }
             }
 
-            $localEvaluationPossible = false;
-            unset($localEvaluation);
             $idname=retrieveJSidname($cd,$gid);
             $JSsourceElt = "document.getElementById('$idname')";
             $JSsourceVal = "document.getElementById('$idname').value";
