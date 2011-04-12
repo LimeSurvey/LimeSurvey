@@ -1402,12 +1402,13 @@ if (!$previewgrp){
     if (isset($token) && !empty($token)) {
         echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     }
-    echo "</form>\n";
-
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-
-    echo "\n";
 }
+echo "</form>\n";
+
+echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+
+echo "\n";
+
 doFooter();
 
 // Closing PHP tag intentionally left out - yes, it is okay
