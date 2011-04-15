@@ -1,3 +1,4 @@
+
 function jquery_goodchars(e, goods)
 {
    var key, keychar;
@@ -23,6 +24,18 @@ function jquery_goodchars(e, goods)
 
 
 $(document).ready(function(){
+ $('#copyconditions').submit(function() {
+        if (!$('input[@id=cbox{$rows[cid]}]:checked').length) 
+        {
+         alert("Please select alteast one condition to copy from"); 
+         return false;  
+        } 
+        if (!$('#copytomultiselect option:selected').length) 
+        { 
+            alert("Please select alteast one question to copy condition to","js");
+            return false;  
+        }
+});
     $('#languagetabs').tabs();
     $('#radiototal,#radiogroup').change(
         function()
@@ -51,6 +64,7 @@ $(document).ready(function(){
         }
     )
   }
+ 
 );
 
 
