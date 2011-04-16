@@ -109,8 +109,8 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     //THESE QUESTION TYPES ARE:
     //	# "L" -> LIST
     //  # "O" -> LIST WITH COMMENT
-    //  # "M" -> MULTIPLE OPTIONS
-    //	# "P" -> MULTIPLE OPTIONS WITH COMMENTS
+    //  # "M" -> Multiple choice
+    //	# "P" -> Multiple choice with comments
     //	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
@@ -325,8 +325,8 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 break;
             case "L":  //LIST (RADIO)
             case "!":  //LIST (DROPDOWN)
-            case "M":  //Multiple options
-            case "P":  //Multiple options with comment
+            case "M":  //Multiple choice
+            case "P":  //Multiple choice with comment
             case "O":  //DROPDOWN LIST WITH COMMENT
                 if ($arow['aid'] != 'other' && $arow['aid'] != 'comment' && $arow['aid'] != 'othercomment')
                 {
@@ -392,7 +392,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 $arrSim[] = array($type);
             }
     $timingsfieldmap = createTimingsFieldMap($surveyid);
-    $createsurveytimings .= join(" F DEFAULT '0',\n",array_keys($timingsfieldmap)) . " F DEFAULT '0'";
+    $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
 
         }
 
@@ -415,12 +415,10 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
     
-    
     if (isset($savetimings) && $savetimings=="TRUE")
     {
         $tabnametimings = $tabname .'_timings';
-        $dicttimings = NewDataDictionary($connect);
-        $sqlarraytimings = $dicttimings->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
+        $sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
     }
     
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
@@ -462,7 +460,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
             }
             if (isset($savetimings) && $savetimings=="TRUE")
             {
-                $dicttimings->ExecuteSQLArray($sqlarraytimings,1);    // create a timings table for this survey
+                $dict->ExecuteSQLArray($sqlarraytimings,1);    // create a timings table for this survey
             }
         }
 
@@ -482,7 +480,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
         }
         else
         {
