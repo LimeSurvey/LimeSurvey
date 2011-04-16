@@ -219,10 +219,10 @@ if  ($subaction=='dlstructure')
 
       echo 'attributes(data)$variable.labels[' . $i . '] <- "'
               . addslashes(
-                  htmlspecialchars_decode(utf8_decode(
+                  htmlspecialchars_decode(
                     mb_substr(
                       strip_tags_full(
-                        $field['VariableLabel']),0,$length_varlabel))))  // <AdV> added htmlspecialchars_decode
+                        $field['VariableLabel']),0,$length_varlabel)))  // <AdV> added htmlspecialchars_decode
               . '"' . "\n";
 
       // Create the value Labels!
