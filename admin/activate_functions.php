@@ -381,7 +381,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
         }
     }
     $timingsfieldmap = createTimingsFieldMap($surveyid);
-    $createsurveytimings .= join(" F DEFAULT '0',\n",array_keys($timingsfieldmap)) . " F DEFAULT '0'";
+    $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
 
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     $createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
@@ -396,8 +396,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     if (isset($savetimings) && $savetimings=="TRUE")
     {
         $tabnametimings = $tabname .'_timings';
-        $dicttimings = NewDataDictionary($connect);
-        $sqlarraytimings = $dicttimings->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
+        $sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
     }
     
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
@@ -439,7 +438,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
             }
             if (isset($savetimings) && $savetimings=="TRUE")
             {
-                $dicttimings->ExecuteSQLArray($sqlarraytimings,1);    // create a timings table for this survey
+                $dict->ExecuteSQLArray($sqlarraytimings,1);    // create a timings table for this survey
             }
         }
 
