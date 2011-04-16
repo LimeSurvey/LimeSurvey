@@ -747,7 +747,15 @@ function multi_set(ids)
 			{
 				if(i == (l - 1))
 				{
-					_bits[i][vid].value = qt;
+					//check if sum is a number
+                    if(isNaN(qt))
+                    {
+                        _bits[i][vid].value = "Not a number";
+                    }
+                    else
+                    {
+                        _bits[i][vid].value = qt;
+                    }
 				}
 				else if(_bits[i][vid].value)
 				{
@@ -783,7 +791,14 @@ function multi_set(ids)
 			{
 				if(i == (l - 1))
 				{
-					_bits[hid][i].value = qt;
+					if (isNaN(qt))
+                    {
+                        _bits[hid][i].value = "Not a number"
+                    }
+                    else
+                    {
+                        _bits[hid][i].value = qt;
+                    }
 				}
 				else if(_bits[hid][i].value)
 				{
@@ -855,6 +870,7 @@ function multi_set(ids)
 				case 105:
 				case 110:
 				case 109:
+                case 189:
 					return(e.keyCode);
 				default:
 				//alert(e.keyCode);
