@@ -575,11 +575,15 @@ function multi_set(ids)
 										if(vert && _bits[_counter].length > 1)
 										{
 											_grand=1;
+                                            //run calc across last row
+                                            calc_horo(_bits.length - 1);
 										}
 										else
 										{
 											_grand=2;
 											_bits[_counter][_bits[0].length - 1]=_bits[_counter][0];
+                                            //run calc on last col
+                                            calc_vert(_bits[0].length - 1);
 										}
 									}
 									else
