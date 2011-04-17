@@ -224,26 +224,22 @@ if (!$exportstyle)
     if ($thissurvey['anonymized'] == "N" && tableExists("tokens_$surveyid"))
         {
             $exportoutput .= "<fieldset><legend>".$clang->gT("Token control")."</legend>\n"
-            .$clang->gT("Choose Token Fields").":"
-            ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+            .$clang->gT("Choose token fields").":"
+            ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
             .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
-            ."\")' /><ul><li>\n"
-            ."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name' />"
-            ."<label for='first_name'>".$clang->gT("First name")."</label></li>\n"
-            ."<li><input type='checkbox' class='checkboxbtn' name='last_name' id='last_name' />"
-            ."<label for='last_name'>".$clang->gT("Last name")."</label></li>\n"
-            ."<li><input type='checkbox' class='checkboxbtn' name='email_address' id='email_address' />"
-            ."<label for='email_address'>".$clang->gT("Email")."</label></li>\n"
-            ."<li><input type='checkbox' class='checkboxbtn' name='token' id='token' />"
-            ."<label for='token'>".$clang->gT("Token")."</label></li>\n";
+            ."\")' /><br />"
+            ."<select name='attribute_select[]' multiple size='20'>\n"
+            ."<option value='first_name' id='first_name' />".$clang->gT("First name")."</option>\n"
+            ."<option value='last_name' id='last_name' />".$clang->gT("Last name")."</option>\n"
+            ."<option value='email_address' id='email_address' />".$clang->gT("Email address")."</option>\n"
+            ."<option value='token' id='token' />".$clang->gT("Token")."</option>\n";
 
             $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
             foreach ($attrfieldnames as $attr_name=>$attr_desc)
             {
-                $exportoutput .= "<li><input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
-                ."<label for='$attr_name'>".$attr_desc."</label></li>\n";
+                $exportoutput .= "<option value='$attr_name' id='$attr_name' />".$attr_desc."</option>\n";
             }
-            $exportoutput .= "</ul></fieldset>\n";
+            $exportoutput .= "</select></fieldset>\n";
         }
     $exportoutput .= "</div>\n"
     ."\t<div style='clear:both;'><p><input type='submit' value='".$clang->gT("Export data")."' /></div></form></div>\n";
@@ -370,26 +366,26 @@ else
 $dquery = "SELECT $selectfields";
 if ($tokenTableExists && $thissurvey['anonymized']=='N')
 {
-    if (isset($_POST['first_name']) && $_POST['first_name']=="on")
+    if (in_array('first_name',$_POST['attribute_select']))
     {
         $dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
     }
-    if (isset($_POST['last_name']) && $_POST['last_name']=="on")
+    if (in_array('last_name',$_POST['attribute_select']))
     {
         $dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
     }
-    if (isset($_POST['email_address']) && $_POST['email_address']=="on")
+    if (in_array('email_address',$_POST['attribute_select']))
     {
         $dquery .= ", {$dbprefix}tokens_$surveyid.email";
     }
-    if (isset($_POST['token']) && $_POST['token']=="on")
+    if (in_array('token',$_POST['attribute_select']))
     {
         $dquery .= ", {$dbprefix}tokens_$surveyid.token";
     }
 
     foreach ($attributeFields as $attr_name)
     {
-        if (isset($_POST[$attr_name]) && $_POST[$attr_name]=="on")
+        if (in_array($attr_name,$_POST['attribute_select']))
         {
             $dquery .= ", {$dbprefix}tokens_$surveyid.$attr_name";
         }
