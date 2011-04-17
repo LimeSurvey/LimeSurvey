@@ -120,7 +120,10 @@ $slashlesshome=str_replace(array("\\", "/"), "", $homedir);
 // Uncomment the following line for debug purposes
 // echo $slashlesspath." - ".$slashlesshome;
 
-if (strcasecmp($slashlesshome, $slashlesspath) == 0) {
+// Detect command line usage
+if (!empty($argc) && basename($argv[0]) == "cmdline_importsurvey.php") {
+    $sourcefrom="admin";
+} else if (strcasecmp($slashlesshome, $slashlesspath) == 0) {
     if (strcasecmp($slashlesshome."install", $slashlesspath) != 0)
     {
         $sourcefrom="admin";
@@ -255,7 +258,7 @@ $showqnumcode = getGlobalSetting('showqnumcode');
 
 if ($sourcefrom == "admin")
 {
-    require_once('admin_functions.php');
+    require_once($homedir.'/admin_functions.php');
 } 
 
 // Check if the DB is up to date
