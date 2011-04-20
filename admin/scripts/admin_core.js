@@ -4,13 +4,17 @@ $(document).ready(function(){
     setupAllTabs();
     if(typeof(userdateformat) !== 'undefined') 
     {
-        $(".popupdate").datepicker({dateFormat: userdateformat,  
+        $(".popupdate").each(function(i,e) { 
+            format=$('#dateformat'+e.name).val();
+            if(!format) format = userdateformat;
+            $(e).datepicker({ dateFormat: format,  
                               showOn: 'button',
                               changeYear: true, 
                               changeMonth: true, 
                               duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
-        $(".popupdatetime").datepicker({dateFormat: userdateformat+' 00:00',  
+        });
+        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',  
                               showOn: 'button',
                               changeYear: true, 
                               changeMonth: true, 

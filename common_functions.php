@@ -127,7 +127,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'hasdefaultvalues'=>0,
                'assessable'=>1,
                'answerscales'=>0),
-    "D"=>array('description'=>$clang->gT("Date"),
+    "D"=>array('description'=>$clang->gT("Date/Time"),
                'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
                'hasdefaultvalues'=>0,
@@ -1798,7 +1798,7 @@ function getsidgidqidaidtype($fieldcode)
  * @param mixed $dateformatid
  * @return string
  */
-function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y')
+function getextendedanswer($fieldcode, $value, $format='')
 {
 
     global $dbprefix, $surveyid, $connect, $clang, $action;
@@ -1825,8 +1825,9 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
         {
             case 'D': if (trim($value)!='')
             {
-                $datetimeobj = new Date_Time_Converter($value , "Y-m-d H:i:s");
-                $value=$datetimeobj->convert($dateformatphp);
+                $qidattributes = getQuestionAttributes($fields['qid']);
+                $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $surveyid);
+                $value = DateTime::createFromFormat("Y-m-d H:i:s", $value)->format($dateformatdetails['phpdate']);
             }
             break;
             case "L":
@@ -3349,7 +3350,7 @@ function insertansReplace($line)
     {
         $answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
         $answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-        $answreplace3=strip_tags(retrieve_Answer($answreplace2, $_SESSION['dateformats']['phpdate']));
+        $answreplace3=strip_tags(retrieve_Answer($answreplace2));
         $line=str_replace($answreplace, $answreplace3, $line);
     }
     return $line;
@@ -4503,6 +4504,34 @@ function questionAttributes($returnByName=false)
     "inputtype"=>"textarea",
 	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
 	"caption"=>$clang->gT("2nd time limit warning CSS style"));
+
+    $qattributes["date_format"]=array(
+	"types"=>"D",
+    'category'=>$clang->gT('Input'),
+    'sortorder'=>100,
+    "inputtype"=>"text",
+	"help"=>$clang->gT("Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"),
+	"caption"=>$clang->gT("Date/Time format"));
+
+    $qattributes["dropdown_dates_minute_step"]=array(
+	"types"=>"D",
+    'category'=>$clang->gT('Input'),
+    'sortorder'=>100,
+    "inputtype"=>"integer",
+	"help"=>$clang->gT("Minute step interval when using select boxes"),
+	"caption"=>$clang->gT("Minute step interval"));
+
+    $qattributes["dropdown_dates_month_style"]=array(
+	"types"=>"D",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>100,
+    "inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('Short names'),
+    1=>$clang->gT('Full names'),
+    2=>$clang->gT('Numbers')),
+    'default'=>0,
+	"help"=>$clang->gT("Change the display style of the month when using select boxes"),
+	"caption"=>$clang->gT("Month display style"));
 
     $qattributes["show_title"]=array(
 	"types"=>"|",
@@ -6513,7 +6542,7 @@ function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,
  * @param mixed $phpdateformat  The date format in which any dates are shown
  * @return mixed returns the answerText from session variable corresponding to a question code
  */
-function retrieve_Answer($code, $phpdateformat=null)
+function retrieve_Answer($code)
 {
     //This function checks to see if there is an answer saved in the survey session
     //data that matches the $code. If it does, it returns that data.
@@ -6571,7 +6600,7 @@ function retrieve_Answer($code, $phpdateformat=null)
         }
         else
         {
-            $return=getextendedanswer($code, $_SESSION[$code], 'INSERTANS',$phpdateformat);
+            $return=getextendedanswer($code, $_SESSION[$code], 'INSERTANS');
         }
     }
     else

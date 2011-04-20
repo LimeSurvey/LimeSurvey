@@ -1788,7 +1788,7 @@ function checkUploadedFileValidity($move, $backok=null)
 
 function aCheckInput($move,$backok=null)
 {
-    global $connect, $thisstep;
+    global $connect, $thisstep, $thissurvey;
     if (!isset($backok) || $backok != "Y")
     {
         global $dbprefix;
@@ -1849,6 +1849,18 @@ function aCheckInput($move,$backok=null)
                         if (trim($qidattributes['min_num_value_n'])!='' &&
                             $_POST[$field] < $qidattributes['min_num_value_n'])
                         {                        
+                            $notvalidated[]=$field;
+                            continue;
+                        }
+                    }
+                    elseif ($fieldinfo['type'] == 'D')
+                    {
+                        // $_SESSION[$fieldinfo['fieldname']] now contains the crappy value parsed by
+                        // Date_Time_Converter in save.php. We can leave it there. We just do validation here.
+                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                        $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'], $_POST[$field]);
+                        if(!$datetimeobj)
+                        {
                             $notvalidated[]=$field;
                             continue;
                         }

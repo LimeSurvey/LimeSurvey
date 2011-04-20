@@ -174,13 +174,12 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             //Iterate through possible responses
             if (isset($_SESSION[$value]) && isset($fieldexists) && $_SESSION[$value]!='')
             {
-
                 if ($fieldexists['type']=='D' && isset($_POST[$value]))  // convert the date to the right DB Format
                 {
-                    $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
-                    $_SESSION[$value]=$datetimeobj->convert("Y-m-d");
-                    $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+                    $qidattributes = getQuestionAttributes($fieldexists['qid']);
+                    $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
+                    $_SESSION[$value] = $connect->BindTimeStamp($datetimeobj->convert('Y-m-d H:i:s'));
                 }
             }
         }
@@ -534,10 +533,10 @@ function createinsertquery()
                     elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
                     {
                         // convert the date to the right DB Format but only if it was posted
-                        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
-                        $_SESSION[$value]=$datetimeobj->convert("Y-m-d");
-                        $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+                        $qidattributes = getQuestionAttributes($fieldexists['qid']);
+                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
+                        $_SESSION[$value] = $connect->BindTimeStamp($datetimeobj->convert('Y-m-d H:i:s'));
                     }
                     $values[]=$connect->qstr($_SESSION[$value],get_magic_quotes_gpc());
                 }
@@ -692,9 +691,10 @@ function createinsertquery()
                             }
                             elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
                             {
-                                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                                $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
-                                $qfield=db_quoteall($connect->BindDate($datetimeobj->convert("Y-m-d")));
+                                $qidattributes = getQuestionAttributes($fieldinfo['qid']);
+                                $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                                $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdetails['phpdate']);
+                                $qfield = db_quoteall($connect->BindTimeStamp($datetimeobj->convert('Y-m-d H:i:s')));
                             }
                             else
                             {

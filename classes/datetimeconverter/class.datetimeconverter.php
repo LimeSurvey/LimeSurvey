@@ -94,10 +94,10 @@ class Date_Time_Converter
     private function _default_date_time_units() {
         $this->seconds 		= '00';
         $this->minutes		= '00';
-        $this->hours		= '12';
+        $this->hours		= '00';
         $this->days			= '01';
         $this->months		= '01';
-        $this->years		= date("Y");
+        $this->years		= '1970';
         $this->ampm			= 'am';
     }
 

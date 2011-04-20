@@ -120,8 +120,6 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 
 if ($subaction == "id")
 {
-    $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-
     //SHOW HEADER
     if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
     //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
@@ -295,7 +293,7 @@ if ($subaction == "id")
                         $browseoutput .= "";
                 }
                 else
-                    $browseoutput .= htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']))), ENT_QUOTES);
+                    $browseoutput .= htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], ''))), ENT_QUOTES);
             }
             $browseoutput .= "</td>\n\t</tr>\n";
             $highlight=!$highlight;
@@ -875,7 +873,6 @@ elseif ($subaction == "all")
             ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
 
     $browseoutput .= $tableheader;
-    $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
     while ($dtrow = $dtresult->FetchRow())
     {
@@ -924,15 +921,6 @@ elseif ($subaction == "all")
 
         for ($i; $i<$fncount; $i++)
         {
-            $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
-
-            if ( isset($fnames[$i][4]) && $fnames[$i][4] == 'D' && $fnames[$i][0] != '')
-            {
-                if ($dtrow[$fnames[$i][0]] == NULL)
-                    $browsedatafield = "N";
-                else
-                    $browsedatafield = "Y";
-            }
             if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
             {
                 $index = $fnames[$i]['index'];
@@ -951,7 +939,20 @@ elseif ($subaction == "all")
                     $browseoutput .= "<td align='center'>&nbsp;</td>\n";
             }
             else
+            {
+                if ( isset($fnames[$i][4]) && $fnames[$i][4] == 'D' && $fnames[$i][0] != '')
+                {
+                    if ($dtrow[$fnames[$i][0]] == NULL)
+                        $browsedatafield = "N";
+                    else
+                        $browsedatafield = "Y";
+                }
+                else
+                {
+                    $browsedatafield = htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $dtrow[$fnames[$i][0]], ''))), ENT_QUOTES);
+                }
                 $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
+            }
         }
         $browseoutput .= "\t</tr>\n";
     }
@@ -1116,7 +1117,6 @@ else
             ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
 
     $browseoutput .= $tableheader;
-    $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
     while ($dtrow = $dtresult->FetchRow())
     {

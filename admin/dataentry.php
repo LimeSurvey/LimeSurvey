@@ -61,8 +61,6 @@ $dataentryoutput ='';
 
 include_once("login_check.php");
 
-$dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-
 if (!isset($sDataEntryLanguage))
 {
     $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
@@ -278,6 +276,8 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     }
                     elseif ($irow['type'] == 'D')
                     {
+                        $qidattributes = getQuestionAttributes($irow['qid'], $irow['type']);
+                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                         $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                         $columns[] .= db_quote_id($fieldname);
                         $values[] .= db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
@@ -566,6 +566,10 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $dataentryoutput .= "</td>\n"
                 ."<td valign='top' align='left'>\n";
                 //$dataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
+                if(isset($fname['qid']) && isset($fname['type']))
+                {
+                    $qidattributes = getQuestionAttributes($fname['qid'], $fname['type']);
+                }
                 switch ($fname['type'])
                 {
                     case "completed":
@@ -612,12 +616,26 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         break;
                     case "D": //DATE
                         $thisdate='';
+                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $surveyid);
                         if ($idrow[$fname['fieldname']]!='')
                         {
-                        $datetimeobj = new Date_Time_Converter($idrow[$fname['fieldname']] , "Y-m-d H:i:s");
-                        $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);
+                            $thisdate = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']])->format($dateformatdetails['phpdate']);
                         }
-                        $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' />\n";
+                        else
+                        {
+                            $thisdate = '';
+                        }
+                        if(bCanShowDatePicker($dateformatdetails))
+                        {
+                            $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
+                            $goodchars = "0123456789".$goodchars[0];
+                            $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
+                            $dataentryoutput .= "\t<input type='hidden' name='dateformat{$fname['fieldname']}' id='dateformat{$fname['fieldname']}' value='{$dateformatdetails['jsdate']}'  />\n";
+                        }
+                        else
+                        {
+                            $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$thisdate}' />\n";
+                        }
                         break;
                     case "G": //GENDER drop-down list
                         $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
@@ -1391,6 +1409,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             }
         }
         
+        $thissurvey=getSurveyInfo($surveyid);
         $updateqr = "UPDATE $surveytable SET \n";
 
         foreach ($fieldmap as $irow)
@@ -1417,6 +1436,8 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 }
                 else
                 {
+                    $qidattributes = getQuestionAttributes($irow['qid'], $irow['type']);
+                    $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                     $datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
                     $updateqr .= db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
                 }
@@ -1453,7 +1474,6 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         $updateqr .= " WHERE id=$id";
 
         $updateres = $connect->Execute($updateqr) or safe_die("Update failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
-        $thissurvey=getSurveyInfo($surveyid);
         while (ob_get_level() > 0) {
             ob_end_flush();
         }
@@ -1802,9 +1822,19 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         $dataentryoutput .= "\t</select>\n";
                         break;
                     case "D": //DATE
-                        $datetimeobj = new Date_Time_Converter('', "Y-m-d H:i:s");
-                        $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);
-                        $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='$fieldname'/>\n";
+                        $qidattributes = getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                        if(bCanShowDatePicker($dateformatdetails))
+                        {
+                            $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
+                            $goodchars = "0123456789".$goodchars[0];
+                            $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='$fieldname' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
+                            $dataentryoutput .= "\t<input type='hidden' name='dateformat{$fieldname}' id='dateformat{$fieldname}' value='{$dateformatdetails['jsdate']}'  />\n";
+                        }
+                        else
+                        {
+                            $dataentryoutput .= "\t<input type='text' name='$fieldname'/>\n";
+                        }
                         break;
                     case "G": //GENDER drop-down list
                         $dataentryoutput .= "\t<select name='$fieldname'>\n"

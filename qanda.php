@@ -1767,20 +1767,35 @@ function do_date($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
-    $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
 
     if (trim($qidattributes['dropdown_dates'])!=0) {
         if (!empty($_SESSION[$ia[1]]))
         {
-            list($currentyear, $currentmonth, $currentdate) = explode('-', $_SESSION[$ia[1]]);
+            $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION[$ia[1]])->getTimeStamp());
+            $currentyear = $datetimeobj['year'];
+            $currentmonth = $datetimeobj['mon'];
+            $currentdate = $datetimeobj['mday'];
+            $currenthour = $datetimeobj['hours'];
+            $currentminute = $datetimeobj['minutes'];
         } else {
             $currentdate='';
             $currentmonth='';
             $currentyear='';
+            $currenthour='';
+            $currentminute='';
         }
 
-        $dateorder = preg_split('/[-\.\/ ]/', $dateformatdetails['phpdate']);
+        if (trim($qidattributes['dropdown_dates_minute_step'])!=0)
+        {
+            $iMinuteStep = trim($qidattributes['dropdown_dates_minute_step']);
+        }
+        else
+        {
+            $iMinuteStep = 1;
+        }
+
+        $dateorder = preg_split('/[-\.\/: ]/', $dateformatdetails['phpdate']);
         $answer='<p class="question">';
         foreach($dateorder as $datepart)
         {
@@ -1799,7 +1814,8 @@ function do_date($ia)
                     {
                         $i_date_selected = '';
                     }
-                    $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
+                    $format = ($datepart == 'j'? "%d": "%02d");
+                    $answer .= '    <option value="'.sprintf($format, $i).'"'.$i_date_selected.'>'.sprintf($format, $i)."</option>\n";
                 }
                 $answer .='</select>';
                 break;
@@ -1807,19 +1823,49 @@ function do_date($ia)
                 case 'n':
                 case 'm':   $answer .= ' <select id="month'.$ia[1].'" class="month">
                                             <option value="">'.$clang->gT('Month')."</option>\n";
-                $montharray=array(
-                $clang->gT('Jan'),
-                $clang->gT('Feb'),
-                $clang->gT('Mar'),
-                $clang->gT('Apr'),
-                $clang->gT('May'),
-                $clang->gT('Jun'),
-                $clang->gT('Jul'),
-                $clang->gT('Aug'),
-                $clang->gT('Sep'),
-                $clang->gT('Oct'),
-                $clang->gT('Nov'),
-                $clang->gT('Dec'));
+                $format = ($datepart == 'n'? "%d": "%02d");
+                switch(trim($qidattributes['dropdown_dates_month_style']))
+                {
+                    case 1: // full month names
+                    $montharray=array(
+                    $clang->gT('January'),
+                    $clang->gT('February'),
+                    $clang->gT('March'),
+                    $clang->gT('April'),
+                    $clang->gT('May'),
+                    $clang->gT('June'),
+                    $clang->gT('July'),
+                    $clang->gT('August'),
+                    $clang->gT('September'),
+                    $clang->gT('October'),
+                    $clang->gT('November'),
+                    $clang->gT('December'));
+                    break;
+
+                    case 2: // numbers
+                    $montharray=array();
+                    for ($i=1; $i<=12; $i++)
+                    {
+                        $montharray[] = sprintf($format, $i);
+                    }
+                    break;
+
+                    default: // short names
+                    $montharray=array(
+                    $clang->gT('Jan'),
+                    $clang->gT('Feb'),
+                    $clang->gT('Mar'),
+                    $clang->gT('Apr'),
+                    $clang->gT('May'),
+                    $clang->gT('Jun'),
+                    $clang->gT('Jul'),
+                    $clang->gT('Aug'),
+                    $clang->gT('Sep'),
+                    $clang->gT('Oct'),
+                    $clang->gT('Nov'),
+                    $clang->gT('Dec'));
+                    break;
+                }
                 for ($i=1; $i<=12; $i++) {
                     if ($i == $currentmonth)
                     {
@@ -1830,11 +1876,12 @@ function do_date($ia)
                         $i_date_selected = '';
                     }
 
-                    $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
+                    $answer .= '    <option value="'.sprintf($format, $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
                 }
                 $answer .= '    </select>';
                 break;
                 // Show year select box
+                case 'y':
                 case 'Y':   $answer .= ' <select id="year'.$ia[1].'" class="year">
                                             <option value="">'.$clang->gT('Year').'</option>';
 
@@ -1851,7 +1898,7 @@ function do_date($ia)
                 }
                 else
                 {
-                    $yearmin = 1900;
+                    $yearmin = 1970;
                 }
 
                 if (trim($qidattributes['dropdown_dates_year_max'])!='')
@@ -1865,7 +1912,7 @@ function do_date($ia)
 
                 if ($yearmin > $yearmax)
                 {
-                    $yearmin = 1900;
+                    $yearmin = 1970;
                     $yearmax = 2020;
                 }
 
@@ -1883,6 +1930,11 @@ function do_date($ia)
                     $reverse = false;
                 }
 
+                if ($datepart == 'y' && $yearmin < 2000)
+                {
+                    $yearmin = 2000;
+                }
+
                 for ($i=$yearmax; ($reverse? $i<=$yearmin: $i>=$yearmin); $i+=$step) {
                     if ($i == $currentyear)
                     {
@@ -1892,10 +1944,45 @@ function do_date($ia)
                     {
                         $i_date_selected = '';
                     }
-                    $answer .= '  <option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+                    $y = ($datepart == 'y'? substr($i, -2): $i);
+                    $answer .= '  <option value="'.$y.'"'.$i_date_selected.'>'.$y.'</option>';
                 }
                 $answer .= '</select>';
 
+                break;
+                // Show hour select box
+                case 'H':
+                case 'G':   $answer .= ' <select id="hour'.$ia[1].'" class="hour">
+                                                <option value="">'.$clang->gT('Hour')."</option>\n";
+                for ($i=0; $i<=23; $i++) {
+                    if ($i == $currenthour && is_int($currenthour))
+                    {
+                        $i_date_selected = SELECTED;
+                    }
+                    else
+                    {
+                        $i_date_selected = '';
+                    }
+                    $format = ($datepart == 'G'? "%d": "%02d");
+                    $answer .= '    <option value="'.sprintf($format, $i).'"'.$i_date_selected.'>'.sprintf($format, $i)."</option>\n";
+                }
+                $answer .='</select>';
+                break;
+                // Show minute select box
+                case 'i':   $answer .= ' <select id="minute'.$ia[1].'" class="minute">
+                                                <option value="">'.$clang->gT('Minute')."</option>\n";
+                for ($i=0; $i<=59; $i+=$iMinuteStep) {
+                    if ($i == $currentminute && is_int($currentminute))
+                    {
+                        $i_date_selected = SELECTED;
+                    }
+                    else
+                    {
+                        $i_date_selected = '';
+                    }
+                    $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
+                }
+                $answer .='</select>';
                 break;
             }
         }
@@ -1904,23 +1991,20 @@ function do_date($ia)
 			</p>';
         $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
-                    <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
-
-
+                    <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['dateformat'].'"/>';
     }
     else
     {
         if ($clang->langcode !== 'en')
         {
-        $js_header_includes[] = '/scripts/jquery/locale/ui.datepicker-'.$clang->langcode.'.js';
+            $js_header_includes[] = '/scripts/jquery/locale/ui.datepicker-'.$clang->langcode.'.js';
         }
         $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
 
         // Format the date  for output
         if (trim($_SESSION[$ia[1]])!='')
         {
-            $datetimeobj = new Date_Time_Converter($_SESSION[$ia[1]] , "Y-m-d");
-            $dateoutput=$datetimeobj->convert($dateformatdetails['phpdate']);
+            $dateoutput = DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION[$ia[1]])->format($dateformatdetails['phpdate']);
         }
         else
         {
@@ -1943,19 +2027,29 @@ function do_date($ia)
             $maxyear='2020';
         }
 
-        $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
+        $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
         $goodchars = "0123456789".$goodchars[0];
 
-        $answer ="<p class=\"question\">
-                        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-                        <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
-                        <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
-                        <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
-                        
-			         </p>
-			         <p class=\"tip\">                      
-				         ".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."
-			         </p>";
+        // check if we can show the date picker
+        if(bCanShowDatePicker($dateformatdetails))
+        {
+            $answer ="<p class=\"question\">
+                          <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"16\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"16\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+                          <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
+                          <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
+                          <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
+                      </p>";
+        }
+        else
+        {
+            $answer ="<p class=\"question\">
+                          <input type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"16\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"16\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+                      </p>";
+        }
+
+        $answer .= "<p class=\"tip\">
+                      ".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."
+                    </p>";
     }
     $inputnames[]=$ia[1];
 

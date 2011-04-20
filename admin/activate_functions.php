@@ -348,7 +348,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 $createsurvey .= " X";
                 break;
             case "D":  //DATE
-                $createsurvey .= " D";
+                $createsurvey .= " T";
                 break;
             case "5":  //5 Point Choice
             case "G":  //Gender
