@@ -16,7 +16,6 @@
 
 require_once(dirname(__FILE__).'/classes/core/startup.php');
 
-
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
@@ -1002,7 +1001,7 @@ function makegraph($currentstep, $total)
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
     $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
-
+	
     $size = intval(($currentstep-1)/$total*100);
 
     $graph = '<script type="text/javascript">
@@ -2922,30 +2921,25 @@ function surveymover()
            //first step and we do not want to go back to the welcome screen since we don't show that...
            //so skip the prev button
         } else {
-        $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit(); disable_navigator();\" value=' &lt;&lt; "
-        . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
+        $surveymover .= "<button  class='nav-button nav-button-icon-left  ui-corner-all' class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit(); disable_navigator();\" name='move2' id='moveprevbtn' $disabled ><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>\n";
     }
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
     {
-        $surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; disable_navigator();\" value=' "
-        . $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' $disabled />\n";
+        $surveymover .=  "\t<button class='nav-button nav-button-icon-right ui-corner-all'  class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; disable_navigator();\" name='move2' id='movenextbtn' $disabled ><span class='ui-icon ui-icon-seek-next'></span>".$clang->gT("Next")."</button>\n";
     }
     // here, in some lace, is where I must modify to turn the next button conditionable
     if (!isset($_SESSION['step']) || !$_SESSION['step'])
     {
-        $surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; disable_navigator();\" value=' "
-        . $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' $disabled />\n";
+        $surveymover .=  "\t<button class='nav-button nav-button-icon-right ui-corner-all'  class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; disable_navigator();\" name='move2' id='movenextbtn' $disabled ><span class='ui-icon ui-icon-seek-next'></span>".$clang->gT("Next")."</button>\n";
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
     {
-        $surveymover .=  "\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; disable_navigator();\" value=' "
-        . $clang->gT("Next")." &gt;&gt; ' name='move2' id=\"movenextbtn\" $disabled />\n";
+        $surveymover .=  "\t<button class='nav-button nav-button-icon-right ui-corner-all' class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext'; disable_navigator();\" name='move2' id=\"movenextbtn\" $disabled ><span class='ui-icon ui-icon-seek-next'></span>".$clang->gT("Next")."</button>\n";
     }
     if (($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
     {
-        $surveymover .= "\t<input class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=\""
-        . $clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled />\n";
+        $surveymover .= "\t<button class='nav-button ui-corner-all'	 class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" name=\"move2\" id=\"movesubmitbtn\" $disabled >".$clang->gT("Submit")."</button>\n";
     }
 
     //	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
@@ -3344,7 +3338,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; ". $clang->gT("Previous")." ' name='move2' />
+                echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
 					<input type='hidden' name='token' value='".$clienttoken."' id='token' />

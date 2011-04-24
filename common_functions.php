@@ -3025,13 +3025,13 @@ function templatereplace($line, $replacements=array())
     }
     if (strpos($line, "{CLEARALL}") !== false)  {
 
-        $clearall = "<input type='button' name='clearallbtn' value='".$clang->gT("Exit and Clear Survey")."' class='clearall' "
+        $clearall = "<button class='nav-button ui-corner-all'  type='button' name='clearallbtn'  class='clearall' "
         ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
         if (returnglobal('token'))
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
-        $clearall .= "', '_self')}\" />";
+        $clearall .= "', '_self')}\" >".$clang->gT("Exit and Clear Survey")."</button>";
 
         $line=str_replace("{CLEARALL}", $clearall, $line);
 
@@ -3056,19 +3056,19 @@ function templatereplace($line, $replacements=array())
             {
                 if($thissurvey['tokenanswerspersistence'] != 'Y')
                 {
-                    $saveall = "\t\t\t<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>"
-                    ."\n\t\t\t<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
+                    $saveall = "\t\t\t<button class='nav-button ui-corner-all' type='submit' name='loadall'  class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") .">".$clang->gT("Load Unfinished Survey")."</button>"
+                    ."\n\t\t\t<button class='nav-button ui-corner-all' name='saveallbtn' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") .">".$clang->gT("Resume Later")."</button>";  // Show Save So Far button
                 }
                 else
                 {
-                    $saveall= "\t\t\t<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
+                    $saveall= "\t\t\t<button class='nav-button ui-corner-all' name='saveallbtn'  class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") .">".$clang->gT("Resume Later")."</button>";  // Show Save So Far button
         	};
             }
             elseif (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
             {
                 if($thissurvey['tokenanswerspersistence'] != 'Y')
                 {
-                    $saveall = "\t\t\t<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";
+                    $saveall = "\t\t\t<button class='nav-button ui-corner-all' type='submit' name='loadall'  class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") .">".$clang->gT("Load Unfinished Survey")."</button>";
                 }
 		else
 		{
@@ -3081,7 +3081,7 @@ function templatereplace($line, $replacements=array())
             }
             else
             {
-                $saveall= "<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
+                $saveall= "<button class='nav-button ui-corner-all' type='button' name='saveallbtn' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") .">".$clang->gT("Resume Later")."</button>";  // Show Save So Far button
             }
         }
         else
@@ -3220,7 +3220,7 @@ function templatereplace($line, $replacements=array())
             $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$surveyid' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
         $saveform .= "<tr><td align='right'></td><td></td></tr>\n"
-        . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='".$clang->gT("Save Now")."' /></td></tr>\n"
+        . "<tr><td></td><td><button class='nav-button ui-corner-all'  type='submit'  id='savebutton' name='savesubmit'>".$clang->gT("Save Now")."</button></td></tr>\n"
         . "</table>";
         $line=str_replace("{SAVEFORM}", $saveform, $line);
     }
@@ -3242,7 +3242,7 @@ function templatereplace($line, $replacements=array())
 
 
         $loadform .="<tr><td align='right'></td><td></td></tr>\n"
-        . "<tr><td></td><td><input type='submit' id='loadbutton' value='".$clang->gT("Load Now")."' /></td></tr></table>\n";
+        . "<tr><td></td><td><button class='nav-button ui-corner-all'  type='submit' id='loadbutton'>".$clang->gT("Load Now")."</button></td></tr></table>\n";
         $line=str_replace("{LOADFORM}", $loadform, $line);
     }
     //REGISTER SURVEY DETAILS
@@ -3313,7 +3313,7 @@ function templatereplace($line, $replacements=array())
          }
          $registerform .= " /></td></tr>\n";
          }        */
-        $registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='".$clang->gT("Continue")."' />"
+        $registerform .= "<tr><td></td><td><button class='nav-button ui-corner-all' id='registercontinue' class='submit' type='submit' >".$clang->gT("Continue")."</button>"
         ."</td></tr>\n"
         ."</table>\n"
         ."</form>\n";
