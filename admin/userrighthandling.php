@@ -261,8 +261,15 @@ if ($action == "setuserrights")
     ) )
     //	if($_SESSION['loginID'] != $postuserid)
     {
-        $usersummary = "<table width='100%' border='0'>\n<tr><td colspan='8' class='header ui-widget-header' align='center'>\n"
-        . "".$clang->gT("Set User Rights").": ".htmlspecialchars(sanitize_user($_POST['user']))."</td></tr>\n";
+
+        $usersummary ="<form method='post' action='$scriptname'>";
+
+        $usersummary .="<table width='100%' border='0'>\n"
+        ."<tr>\n"
+        ."<td colspan='7' class='header ui-widget-header' align='center'>"
+        ."".$clang->gT("Set User Rights").": ".htmlspecialchars(sanitize_user($_POST['user'])).""
+        ."</td>\n"
+        ."</tr>\n";
 
         // HERE WE LIST FOR USER RIGHTS YOU CAN SET TO a USER
         // YOU CAN ONLY SET AT MOST THE RIGHTS YOU have yourself
@@ -279,6 +286,8 @@ if ($action == "setuserrights")
                 $adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
                 $adminresult = db_select_limit_assoc($adminquery, 1);
                 $row=$adminresult->FetchRow();
+
+                $usersummary .="<tr>\n";
                  
                 // Only Initial SuperAdmin can give SuperAdmin rights
                 if($row['uid'] == $_SESSION['loginID'])
@@ -304,9 +313,8 @@ if ($action == "setuserrights")
                     $usersummary .= "<th align='center'>".$clang->gT("Manage Labels")."</th>\n";
                 }
 
-                $usersummary .="<th></th>\n</tr>\n"
-                ."<tr><form method='post' action='$scriptname'></tr>";
-                //content
+                $usersummary .="</tr>\n"
+                ."<tr>\n";
 
                 // Only Initial SuperAdmmin can give SuperAdmin right
                 if($row['uid'] == $_SESSION['loginID']) {
@@ -360,12 +368,17 @@ if ($action == "setuserrights")
                     $usersummary .=" /></td>\n";
                 }
 
-                $usersummary .= "\n<tr><td colspan='8' align='center'>"
+                $usersummary .="</tr>\n";
+
+                $usersummary .= "\n<tr>\n"
+                ."<td colspan='7' align='center'>"
                 ."<input type='submit' value='".$clang->gT("Save Now")."' />"
                 ."<input type='hidden' name='action' value='userrights' />"
-                ."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
-                ."</form>"
-                . "</table>\n";
+                ."<input type='hidden' name='uid' value='{$postuserid}' />"
+                ."</td>\n"
+                ."</tr>\n"
+                ."</table>\n"
+                ."</form>\n";
                 continue;
             }	// if
         }	// foreach
