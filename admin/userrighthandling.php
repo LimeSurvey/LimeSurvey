@@ -124,9 +124,13 @@ if ($action == "setusertemplates")
 {
     refreshtemplates();
     $usersummary = "\n<form action='$scriptname' method='post'>\n\t
-    <div class='header ui-widget-header'>".$clang->gT('Edit template permissions')."</div><p>
-    <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
-    . $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t</tr>\n";
+    <div class='header ui-widget-header'>".$clang->gT('Edit template permissions')."</div>\n
+    <table id=\"user-template-rights\" width='50%' border='0' cellpadding='3' style='margin:5px auto 0 auto;'>\n
+	<thead>\n
+	\t<tr>\n
+	\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
+    . $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n
+	\t</tr>\n";
 
     $userlist = getuserlist();
     foreach ($userlist as $usr)
@@ -147,7 +151,19 @@ if ($action == "setusertemplates")
             .$clang->gT('Allowed')
             ."<br /><input type='checkbox' alt='".$clang->gT("Check or uncheck all items")."' class='tipme' id='checkall' />"
             ."</th>\n\t</tr>\n"
-            ."\t</thead>\n\n<tbody>\n";
+            ."\t</thead>\n";
+			
+            $usersummary .= "<tfoot>\n"
+            ."<tr>\n"
+            ."<td colspan=\"3\">\n"
+            ."\t<input type=\"submit\" value=\"".$clang->gT('Save settings')."\" />\n"
+            ."\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
+            ."\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n"
+            ."</td>\n"
+            ."</tr>\n"
+            ."</tfoot>\n";
+			
+			$usersummary .= "<tbody>\n";
 
             $tquery = "SELECT * FROM ".$dbprefix."templates";
             $tresult = db_execute_assoc($tquery) or safe_die($connect->ErrorMsg()); //Checked
@@ -174,10 +190,7 @@ if ($action == "setusertemplates")
                 }
                 $usersummary .=" /></td>\n\t</tr>\n";
             }
-            $usersummary .= "\n</tbody>\n\n<tfoot>\n\t<tr><td colspan=\"3\">\n"
-            ."\t<input type=\"submit\" value=\"".$clang->gT('Save settings')."\" />\n"
-            ."\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
-            ."\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n</td>\n\t</tr>\n</tfoot>\n"
+            $usersummary .= "\n</tbody>\n"
             ."\t</table>\n"
             ."</form>\n";
 
@@ -222,16 +235,20 @@ if ($action == "modifyuser")
         while ($mrw = $mur->FetchRow())
         {
             $mrw = array_map('htmlspecialchars', $mrw);
-            $usersummary .= "<td align='center'><strong>{$mrw['users_name']}</strong>\n"
-            . "<td align='center'>\n<input type='text' size=30 name='email' value=\"{$mrw['email']}\" /></td>\n"
-            . "<td align='center'>\n<input type='text' size=30 name='full_name' value=\"{$mrw['full_name']}\" />\n"
+            $usersummary .= "<td align='center'><strong>{$mrw['users_name']}</strong></td>\n"
+            . "<td align='center'>\n<input type='text' size='30' name='email' value=\"{$mrw['email']}\" /></td>\n"
+            . "<td align='center'>\n<input type='text' size='30' name='full_name' value=\"{$mrw['full_name']}\" />\n"
             . "<input type='hidden' name='user' value=\"{$mrw['users_name']}\" />\n"
             . "<input type='hidden' name='uid' value=\"{$mrw['uid']}\" /></td>\n";
             $usersummary .= "<td align='center'>\n<input type='password' name='pass' value=\"%%unchanged%%\" /></td>\n";
         }
-        $usersummary .= "</tr></tbody></table><p>\n"
+        $usersummary .= "</tr>\n"
+        . "</tbody>\n"
+        . "</table>\n"
+        . "<p>\n"
         . "<input type='submit' value='".$clang->gT("Save")."' />\n"
         . "<input type='hidden' name='action' value='moduser' />\n"
+        . "</p>\n"
         . "</form>\n";
     }
     else
