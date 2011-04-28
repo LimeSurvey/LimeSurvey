@@ -2992,7 +2992,13 @@ function templatereplace($line, $replacements=array())
 
     if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
 
-    if (strpos($line, "{EXPIRY}") !== false) $line=str_replace("{EXPIRY}", $thissurvey['expiry'], $line);
+    if (strpos($line, "{EXPIRY}") !== false)
+    {
+       	$dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
+    	$datetimeobj = new Date_Time_Converter($thissurvey['expiry'] , "Y-m-d");
+    	$dateoutput=$datetimeobj->convert($dateformatdetails['phpdate']);
+       	$line=str_replace("{EXPIRY}", $dateoutput, $line);
+    }
     if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
     if (strpos($line, "{SUBMITBUTTON}") !== false) {
         $submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("Submit")." ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
