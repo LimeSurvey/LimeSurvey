@@ -2989,7 +2989,13 @@ function templatereplace($line, $replacements=array())
 
     if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
 
-    if (strpos($line, "{EXPIRY}") !== false) $line=str_replace("{EXPIRY}", $thissurvey['expiry'], $line);
+    if (strpos($line, "{EXPIRY}") !== false)
+    {
+       	$dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
+    	$datetimeobj = new Date_Time_Converter($thissurvey['expiry'] , "Y-m-d");
+    	$dateoutput=$datetimeobj->convert($dateformatdetails['phpdate']);
+       	$line=str_replace("{EXPIRY}", $dateoutput, $line);
+    }
     if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
     if (strpos($line, "{SUBMITBUTTON}") !== false) {
         $submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("Submit")." ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
@@ -3589,7 +3595,7 @@ function getQuestionAttributes($qid, $type='')
         return $cache[$qid];
     }
     if ($type=='')  // If type is not given find it out
-    {      
+    {
         $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type";
         $result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
         $row=$result->FetchRow();
@@ -5322,7 +5328,7 @@ function getArrayFilterExcludesForQuestion($qid)
             $cascadesCache[$surveyid] = getArrayFilterExcludesCascadesForGroup($surveyid, "", "title");
         }
         $array_filterXqs_cascades = $cascadesCache[$surveyid];
-        
+
         if(isset($array_filterXqs_cascades[$qid]))
         {
             foreach($array_filterXqs_cascades[$qid] as $afc)
