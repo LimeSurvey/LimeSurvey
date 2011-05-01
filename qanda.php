@@ -3814,6 +3814,18 @@ function do_file_upload($ia)
     //$answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
 
     $answer .= '<script type="text/javascript">
+                    $(document).ready(function(){
+                        var fieldname = "'.$ia[1].'";
+                        var filecount = $("#"+fieldname+"_filecount").val();
+                        var json = $("#"+fieldname).val();
+                        var show_title = "'.$qidattributes["show_title"].'";
+                        var show_comment = "'.$qidattributes["show_comment"].'";
+                        var pos = "'.($pos ? 1 : 0).'";
+                        displayUploadedFiles(json, filecount, fieldname, show_title, show_comment, pos);
+                    });
+                </script>';
+    
+    $answer .= '<script type="text/javascript">
                     $(".basic_'.$ia[1].'").change(function() {
                         var i;
                         var jsonstring = "[";

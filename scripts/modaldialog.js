@@ -120,11 +120,17 @@ function isValueInArray(arr, val) {
 function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment, pos) {
     var jsonobj;
     var i;
+    var display = '';
 
+    if (jsonstring == '[]') {
+        $('#'+fieldname+'_uploadedfiles').html(display);
+        return;
+    }
+    
     if (jsonstring !== '')
     {
         jsonobj = eval('(' + jsonstring + ')');
-        var display = '<table width="100%"><tr><th align="center" width="20%">&nbsp;</th>';
+        display = '<table width="100%"><tr><th align="center" width="20%">&nbsp;</th>';
         if (show_title != 0)
             display += '<th align="center"><b>Title</b></th>';
         if (show_comment != 0)
