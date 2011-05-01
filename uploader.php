@@ -96,10 +96,10 @@ $body = '
 
         <!-- The upload button -->
         <div align="center" class="upload-div">
-            <button id="button1" class="upload-button" type="button" >Select file</button>
+            <button id="button1" class="upload-button" type="button" >'.$clang->gT("Select file").'</button>
         </div>
         
-        <p class="uploadmsg">You can upload '.$qidattributes['allowed_filetypes'].' under '.$qidattributes['max_filesize'].' KB each</p>
+        <p class="uploadmsg">'.$clang->gT("You can upload ").$qidattributes['allowed_filetypes'].$clang->gT(" under ").$qidattributes['max_filesize'].$clang->gT(" KB each").'</p>
         <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->
