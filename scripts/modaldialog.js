@@ -66,9 +66,9 @@ $(function() {
                 width: 984,
                 height: 440,
                 modal: true,
-                resizable: false,
+                resizable: true,
                 autoResize: true,
-                draggable: false,
+                draggable: true,
                 closeOnEscape: false,
                 beforeclose: function() {
                     var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
