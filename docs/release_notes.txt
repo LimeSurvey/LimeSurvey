@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.91RC6!
+Welcome to LimeSurvey v1.91!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,34 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.91RC6 (build 9986) to 1.91 (build 10030)
+#Updated translation: Bulgarian (c_schmitz)
+#Updated translation: Macedonian, thanks to Bojan Jankuloski (gandalfar)
+#Updated translation: Norwegian Bokmal by Pal Monstad (c_schmitz)
+#Updated translation: Norwegian Bokmå, thanks to Pål Monstad (gandalfar)
+#Updated translation: simplified chinese, thanks to yooyooh (gandalfar)
+-Fixed issue #04953 : Usability improvements when copying conditions (anishseth)
+-Fixed issue #04956: Problems with the file upload user interface (texens)
+-Fixed issue #05022: "Save and exit" on file upload is misleading as it take "save and resume", "next" or "submit" to be recorded with the response (texens)
+-Fixed issue #05089: file upload is not localised during survey taking (texens)
+-Fixed issue #05085: Missing closing tags in group preview. Thanks to dabrahams for supplying patch. (jcleeland)
+-Fixed issue: #05086 Prevents un-viewable questions in group preview. Patch kindly provided by dabrahams. When previewing a group, this sets the default behaviour of conditional questions to display (as if the condition was met) - a likely expected or desirable behaviour when testing surveys. Only applies to questions whose condition is based on a question in a previous group. Other conditions work as normal. (jcleeland)
+-Fixed issue #05017: In Array (Texts) set to Numbers Only, Negative entered in parenthesis mess up totals and a minus sign use is prevented. (ssachdeva)
+-Fixed issue #05129: In userrighthandling.php form and table are badly imbricated (tpartner)
+-Fixed issue #5035: Main page reports generic database error if initial tables do not exist - patch by magiclko (c_schmitz)
+-Fixed issue #5065: Show totals: grand total is not calculated on reload/revisit of Survey Page (ssachdeva)
+-Fixed issue #5066: Incorrect filename in template file upload - patch by murarivivek (c_schmitz)
+-Fixed issue #5066: Template editor malfunction: Cannot change editing file; and Incorrect filename in template file upload - patch by murarivivek (c_schmitz)
+-Fixed issue #5092: Error during preview of questions that are using  replacement field from a previous question (c_schmitz)
+-Fixed issue #5095: Survey timings table not being created when using MSSQL (c_schmitz)
+-Fixed issue #5113: Wrong text encoding for exported Surveydata_syntax.R (dionet)
+-Fixed issue #5114: cmdline_importsurvey bug (dionet)
+-Fixed issue #5130: {EXPIRY} tag not using the language-related date format (c_schmitz)
+-Fixed issue: Errors on MSSQL update (c_schmitz)
+-Fixed issue: Invalid HTML in table display (tpartner)
+-Fixed issue: Usability problem when selecting token columns for result export (c_schmitz)
+-Fixed issue: problem with modal dialog. Thanks to magicklo (texens)
 
 Changes from 1.91RC5 (build 9872) to 1.91RC6 (build 9986)
 #Updated feature #05031: GSOC: Updating answercodes now updates conditions using these codes. Great patch by dionet. (lemeur)
