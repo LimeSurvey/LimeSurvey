@@ -125,7 +125,7 @@ if (!isset($_SESSION['loginID']))
                     $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
 
                 }
-                
+
             }
             if(!$bCannotLogin){
                 $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
@@ -203,8 +203,12 @@ if (!isset($_SESSION['loginID']))
                         if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
                         strpos($_POST['refererargs'], "action=logout") === FALSE)
                         {
+                        	require_once("../classes/inputfilter/class.inputfilter_clean.php");
+                        	$myFilter = new InputFilter('','',1,1,1);
+                        	// Prevent XSS attacks
+                        	$sRefererArg=$myFilter->process($_POST['refererargs']);
                             $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
-                            . " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
+                            . " content=\"1;URL={$scriptname}?".$sRefererArg."\" />";
                             $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
                         }
                         $loginsummary .= "<br /><br />\n";
@@ -223,7 +227,7 @@ if (!isset($_SESSION['loginID']))
                                 $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
                             $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                         }
-                    
+
                     }
                 }
 
@@ -513,7 +517,7 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
 
                 $current_user = $_SESSION['loginID'];
                 if($result->RecordCount() == 2) {
-                    
+
                     $action = "finaldeluser";
                     while($rows = $result->FetchRow()){
                             $intUid = $rows['uid'];
@@ -589,9 +593,9 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     $addsummary .= "</select><input type='hidden' name='uid' value='$postuserid'>";
                     $addsummary .= "<input type='hidden' name='user' value='$postuser'>";
                     $addsummary .= "<input type='hidden' name='action' value='finaldeluser'><br /><br />";
-                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>"; 
+                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>";
                 }
-                
+
             }
             else
             {
@@ -740,7 +744,7 @@ elseif ($action == "userrights")
                 $adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
                 $adminresult = db_select_limit_assoc($adminquery, 1);
                 $row=$adminresult->FetchRow();
-                 
+
                 if($row['uid'] == $_SESSION['loginID'])	// it's the original superadmin !!!
                 {
                     $rights['superadmin']=1;
@@ -833,7 +837,7 @@ function getInitialAdmin_uid()
 
 function fGetLoginAttemptUpdateQry($la,$sIp)
 {
-    $timestamp = date("Y-m-d H:m:s");    
+    $timestamp = date("Y-m-d H:m:s");
     if ($la)
         $query = "UPDATE ".db_table_name('failed_login_attempts')
                  ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
@@ -850,7 +854,7 @@ function getUserNameFromUid($uid){
 
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-    
+
     if($result->RecordCount() > 0) {
         while($rows = $result->FetchRow()){
             return $rows['users_name'];
