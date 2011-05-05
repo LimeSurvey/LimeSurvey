@@ -32,11 +32,11 @@ $(function() {
                 draggable: true,
                 closeOnEscape: false,
                 beforeclose: function() {
-                        var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
-                        if (pass) {
-                            $(this).dialog('destroy');
-                            $('iframe#uploader').remove();
-                        }
+                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
+                            if (pass) {
+                                $(this).dialog('destroy');
+                                $('iframe#uploader').remove();
+                            }
                         else {
                             $(this).dialog('destroy');
                             $('iframe#uploader').remove();
@@ -49,7 +49,8 @@ $(function() {
                 },
                 buttons: {
                     'Return to Survey': function() {
-                        var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
+                        // Fix for the IE bug 04965
+                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
                         if (pass) {
                             $(this).dialog('destroy');
                             $('iframe#uploader').remove();
@@ -71,7 +72,7 @@ $(function() {
                 draggable: true,
                 closeOnEscape: false,
                 beforeclose: function() {
-                    var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
+                    var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
                     return pass;
                 },
                 overlay: {
@@ -80,7 +81,7 @@ $(function() {
                 },
                 buttons: {
                     'Return to Survey': function() {
-                        var pass = document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname, show_title, show_comment, pos);
+                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
                         if (pass) {
                             $(this).dialog('destroy');
                             $('iframe#uploader').remove();
