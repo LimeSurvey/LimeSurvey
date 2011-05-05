@@ -1512,7 +1512,7 @@ function Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaul
    else
    {
        $exists=$connect->GetOne("SELECT qid FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");
-       if ($exists===false)
+       if ($exists===false || $exists===null)
        {
            $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");        
        }
