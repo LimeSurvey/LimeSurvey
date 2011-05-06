@@ -1,0 +1,292 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Date and Time Converter - Currently Supported & Coming
+Soon Date/Time Formats</title>
+<style type="text/css">
+<!--
+.style17 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14;
+}
+
+.style20 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #006600;
+}
+
+.style22 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  color: #990000;
+  font-weight: bold;
+}
+
+.style24 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  color: #006699;
+}
+-->
+</style>
+</head>
+
+<body>
+
+<span class="style17">This is a list of PHP date() style
+date/time formats that the "Date and Time Converter" class currently
+supports and also formats that I plan on implementing in the near
+future. This table was copied from the PHP manual and modified. <a
+	href="http://www.php.net/date" target="_blank">php.net/date</a></span>
+<br>
+<p align="center" class="style20">Currently Supported Date/Time
+Formats</p>
+
+<TABLE width="100%" border="1"
+	summary="The following characters are recognized in the         format parameter string">
+	<COLGROUP>
+		<COL>
+		<COL>
+		<COL>
+	</COLGROUP>
+	<THEAD>
+		<TR>
+			<TH width="128" class="style17"><I>format</I> character</TH>
+			<TH class="style17">Description</TH>
+			<TH width="300" class="style17">Example returned values</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+
+		<TR>
+			<TD align="middle" class="style24">Day</TD>
+			<TD class="style17">---</TD>
+			<TD class="style17">---</TD>
+		</TR>
+		<TR>
+			<TD class="style17">d</TD>
+			<TD class="style17">Day of the month, 2 digits with leading
+			zeros</TD>
+			<TD class="style17">01 to 31</TD>
+		</TR>
+		<TR>
+			<TD class="style17">j</TD>
+			<TD class="style17">Day of the month without leading zeros</TD>
+			<TD class="style17">1 to 31</TD>
+		</TR>
+
+		<TR>
+			<TD class="style17">S</TD>
+			<TD class="style17">English ordinal suffix for the day of the
+			month, 2 characters</TD>
+			<TD class="style17">st, nd, rd or th. Works well with j</TD>
+		</TR>
+
+		<TR>
+			<TD class="style17">D</TD>
+			<TD class="style17">A textual representation of a day, three
+			letters</TD>
+			<TD class="style17">Mon through Sun</TD>
+		</TR>
+		<TR>
+			<TD align="middle" class="style24">Month</TD>
+			<TD class="style17">---</TD>
+			<TD class="style17">---</TD>
+		</TR>
+
+		<TR>
+			<TD class="style17">m</TD>
+			<TD class="style17">Numeric representation of a month, with
+			leading zeros</TD>
+			<TD class="style17">01 through 12</TD>
+		</TR>
+		<TR>
+			<TD class="style17">M</TD>
+			<TD class="style17">A short textual representation of a month,
+			three letters</TD>
+			<TD class="style17">Jan through Dec</TD>
+		</TR>
+		<TR>
+			<TD class="style17">n</TD>
+			<TD class="style17">Numeric representation of a month, without
+			leading zeros</TD>
+			<TD class="style17">1 through 12</TD>
+		</TR>
+
+		<TR>
+			<TD align="middle" class="style24"><EM>Year</EM></TD>
+			<TD class="style17">---</TD>
+			<TD class="style17">---</TD>
+		</TR>
+
+		<TR>
+			<TD class="style17">o</TD>
+			<TD class="style17">ISO-8601 year number. This has the same
+			value as Y, except that if the ISO week number (W) belongs to the
+			previous or next year, that year is used instead. (added in PHP
+			5.1.0)</TD>
+			<TD class="style17">Examples: 1999 or 2003</TD>
+		</TR>
+		<TR>
+			<TD class="style17">Y</TD>
+			<TD class="style17">A full numeric representation of a year, 4
+			digits</TD>
+			<TD class="style17">Examples: 1999 or 2003</TD>
+		</TR>
+		<TR>
+			<TD class="style17">y</TD>
+			<TD class="style17">A two digit representation of a year</TD>
+			<TD class="style17">Examples: 99 or 03</TD>
+		</TR>
+		<TR>
+			<TD align="middle" class="style24"><EM>Time</EM></TD>
+			<TD class="style17">---</TD>
+			<TD class="style17">---</TD>
+		</TR>
+		<TR>
+			<TD class="style17">a</TD>
+			<TD class="style17">Lowercase Ante meridiem and Post meridiem</TD>
+			<TD class="style17">am or pm</TD>
+		</TR>
+		<TR>
+			<TD class="style17">A</TD>
+			<TD class="style17">Uppercase Ante meridiem and Post meridiem</TD>
+			<TD class="style17">AM or PM</TD>
+		</TR>
+
+		<TR>
+			<TD class="style17">g</TD>
+			<TD class="style17">12-hour format of an hour without leading
+			zeros</TD>
+			<TD class="style17">1 through 12</TD>
+		</TR>
+		<TR>
+			<TD class="style17">G</TD>
+			<TD class="style17">24-hour format of an hour without leading
+			zeros</TD>
+			<TD class="style17">0 through 23</TD>
+		</TR>
+		<TR>
+			<TD class="style17">h</TD>
+			<TD class="style17">12-hour format of an hour with leading zeros</TD>
+			<TD class="style17">01 through 12</TD>
+		</TR>
+		<TR>
+			<TD class="style17">H</TD>
+			<TD class="style17">24-hour format of an hour with leading zeros</TD>
+			<TD class="style17">00 through 23</TD>
+		</TR>
+		<TR>
+			<TD class="style17">i</TD>
+			<TD class="style17">Minutes with leading zeros</TD>
+			<TD class="style17">00 to 59</TD>
+		</TR>
+		<TR>
+			<TD class="style17">s</TD>
+			<TD class="style17">Seconds, with leading zeros</TD>
+			<TD class="style17">00 through 59</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<center><br>
+<br>
+<br>
+<br>
+<span class="style22">Date/Time Formats Coming Soon! </span><br>
+</center>
+<TABLE width="100%" border="1"
+	summary="The following characters are recognized in the         format parameter string">
+	<COLGROUP>
+		<COL>
+		<COL>
+		<COL>
+	</COLGROUP>
+	<TBODY>
+		<TR>
+			<TH width="133" class="style17"><I>format</I> character</TH>
+			<TH class="style17">Description</TH>
+			<TH width="386" class="style17">Example returned values</TH>
+		</TR>
+		<TR>
+			<TD class="style17">u</TD>
+			<TD class="style17">Milliseconds (added in PHP 5.2.2)</TD>
+			<TD class="style17">Example: 54321</TD>
+		</TR>
+		<TR>
+			<TD class="style17">O</TD>
+			<TD class="style17">Difference to Greenwich time (GMT) in hours</TD>
+			<TD class="style17">Example: +0200</TD>
+		</TR>
+		<TR>
+			<TD class="style17">P</TD>
+			<TD class="style17">Difference to Greenwich time (GMT) with
+			colon between hours and minutes (added in PHP 5.1.3)</TD>
+			<TD class="style17">Example: +02:00</TD>
+		</TR>
+		<TR>
+			<TD class="style17">c</TD>
+			<TD class="style17">ISO 8601 date (added in PHP 5)</TD>
+			<TD class="style17">2004-02-12T15:19:21+00:00</TD>
+		</TR>
+		<TR>
+			<TD class="style17">r</TD>
+			<TD class="style17">&raquo; RFC 2822 formatted date</TD>
+			<TD class="style17">Example: Thu, 21 Dec 2000 16:01:07 +0200</TD>
+		</TR>
+		<TR>
+			<TD class="style17">U</TD>
+			<TD class="style17">Seconds since the Unix Epoch (January 1 1970
+			00:00:00 GMT)</TD>
+			<TD class="style17">See also time()</TD>
+		</TR>
+		<TR>
+			<TD class="style17">l (lowercase 'L')</TD>
+			<TD class="style17">A full textual representation of the day of
+			the week</TD>
+			<TD class="style17">Sunday through Saturday</TD>
+		</TR>
+		<TR>
+			<TD class="style17">N</TD>
+			<TD class="style17">ISO-8601 numeric representation of the day
+			of the week (added in PHP 5.1.0)</TD>
+			<TD class="style17">1 (for Monday) through 7 (for Sunday)</TD>
+		</TR>
+		<TR>
+			<TD class="style17">w</TD>
+			<TD class="style17">Numeric representation of the day of the
+			week</TD>
+			<TD class="style17">0 (for Sunday) through 6 (for Saturday)</TD>
+		</TR>
+		<TR>
+			<TD class="style17">z</TD>
+			<TD class="style17">The day of the year (starting from 0)</TD>
+			<TD class="style17">0 through 365</TD>
+		</TR>
+		<TR>
+			<TD class="style17">W</TD>
+			<TD class="style17">ISO-8601 week number of year, weeks starting
+			on Monday (added in PHP 4.1.0)</TD>
+			<TD class="style17">Example: 42 (the 42nd week in the year)</TD>
+		</TR>
+		<TR>
+			<TD class="style17">F</TD>
+			<TD class="style17">A full textual representation of a month,
+			such as January or March</TD>
+			<TD class="style17">January through December</TD>
+		</TR>
+		<TR>
+			<TD class="style17">t</TD>
+			<TD class="style17">Number of days in the given month</TD>
+			<TD class="style17">28 through 31</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<br>
+<br>
+</body>
+
+</html>
