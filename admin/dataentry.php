@@ -572,7 +572,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         if ($private == "Y")
                         {
                             // In case of anonymized responses survey with no datestamp
-                            // then the the answer submutdate gets a conventional timestamp
+                            // then the the answer submitdate gets a conventional timestamp
                             // 1st Jan 1980
                             $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                         }
