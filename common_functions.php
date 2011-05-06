@@ -3248,10 +3248,20 @@ function templatereplace($line, $replacements=array())
     if (strpos($line, "{REGISTERMESSAGE2}") !== false) $line=str_replace("{REGISTERMESSAGE2}", $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
     if (strpos($line, "{REGISTERFORM}") !== false)
     {
-        $registerform="<form method='post' action='{$publicurl}/register.php'>\n"
-        ."<table class='register' summary='Registrationform'>\n"
+        $registerform="<form method='post' action='{$publicurl}/register.php'>\n";
+        if (!isset($_REQUEST['lang']))
+        {
+            $reglang = GetBaseLanguageFromSurveyID($surveyid);
+        }
+        else
+        {
+            $reglang = returnglobal('lang');
+        }
+        $registerform .= "<input type='hidden' name='lang' value='".$reglang."' />\n";
+        $registerform .= "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+
+        $registerform.="<table class='register' summary='Registrationform'>\n"
         ."<tr><td align='right'>"
-        ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
         .$clang->gT("First name").":</td>"
         ."<td align='left'><input class='text' type='text' name='register_firstname'";
         if (isset($_POST['register_firstname']))
@@ -3273,14 +3283,6 @@ function templatereplace($line, $replacements=array())
             $registerform .= " value='".htmlentities(returnglobal('register_email'),ENT_QUOTES,'UTF-8')."'";
         }
         $registerform .= " /></td></tr>\n";
-        if (!isset($_REQUEST['lang']))
-        {
-            $reglang = GetBaseLanguageFromSurveyID($surveyid);
-        }
-        else
-        {
-            $reglang = returnglobal('lang');
-        }
 
 
         if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']))
@@ -3289,7 +3291,6 @@ function templatereplace($line, $replacements=array())
         }
 
 
-        $registerform .= "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."' /></td><td></td></tr>\n";
         /*      if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
          {
          $registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
