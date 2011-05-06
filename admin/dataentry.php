@@ -54,7 +54,7 @@ $sDataEntryLanguage = $_SESSION['adminlang'];
 $action = returnglobal('action');
 $surveyid = returnglobal('sid');
 $id = returnglobal('id');
-$sDataEntryLanguage = returnglobal('lang');    
+$sDataEntryLanguage = returnglobal('lang');
 $saver['scid']=returnglobal('save_scid');
 $surveytable = db_table_name("survey_".$surveyid);
 $dataentryoutput ='';
@@ -220,7 +220,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             if ($thissurvey['datestamp'] == "Y") {$_POST['startdate']=$_POST['datestamp'];}
             if (isset($_POST['closerecord']))
             {
-                if ($thissurvey['datestamp'] == "Y") 
+                if ($thissurvey['datestamp'] == "Y")
                 {
                     $_POST['submitdate']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 }
@@ -288,10 +288,10 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     }
                 }
             }
-            
+
             $SQL = "INSERT INTO $surveytable
 					(".implode(',',$columns).")
-					VALUES 
+					VALUES
 					(".implode(',',$values).")";
 
             $iinsert = $connect->Execute($SQL) or safe_die ("Could not insert your data:<br />$SQL<br />\n" .$connect->ErrorMsg());
@@ -303,13 +303,13 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     { $submitdate = $_POST['closedate']; }
                 else
                     { $submitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
-                
+
 				// check how many uses the token has left
 				$usesquery = "SELECT usesleft FROM {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($_POST['token'],true);
 				$usesresult = db_execute_assoc($usesquery);
 				$usesrow = $usesresult->FetchRow();
 				if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
-				
+
                 // query for updating tokens
                 $utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
                 if (bIsTokenCompletedDatestamped($thissurvey))
@@ -336,7 +336,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 }
                 $utquery .= "WHERE token=".db_quoteall($_POST['token'],true);
                 $utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());
-                
+
                 // save submitdate into survey table
                 $srid = $connect->Insert_ID();
                 $sdquery = "UPDATE {$dbprefix}survey_$surveyid SET submitdate=".db_quoteall($submitdate,true)." WHERE id={$srid}\n";
@@ -367,12 +367,12 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     if ($tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
                     {
                         $tokendata = array (
-                    "firstname"=> $saver['identifier'],	
-                    "lastname"=> $saver['identifier'], 	
+                    "firstname"=> $saver['identifier'],
+                    "lastname"=> $saver['identifier'],
     				        "email"=>$saver['email'],
                     "token"=>sRandomChars(15),
                     "language"=>$saver['language'],
-                    "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
+                    "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
                     "completed"=>"N");
                         $connect->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                         $dataentryoutput .= "<font class='successtitle'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
@@ -435,7 +435,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
         //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
         $fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." g, ".db_table_name("surveys")." WHERE
-		".db_table_name("questions").".gid=g.gid AND 
+		".db_table_name("questions").".gid=g.gid AND
 		".db_table_name("questions").".language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
 		".db_table_name("questions").".sid=".db_table_name("surveys").".sid AND ".db_table_name("questions").".sid='$surveyid'
         order by group_order, question_order";
@@ -532,7 +532,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         ."<table id='responsedetail' width='99%' align='center' cellpadding='0' cellspacing='0'>\n";
         $highlight=false;
         unset($fnames['lastpage']);
-        
+
         // unset timings
         foreach ($fnames as $fname)
         {
@@ -542,7 +542,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $nfncount--;
             }
         }
-        
+
         foreach ($results as $idrow)
         {
             //$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
@@ -556,7 +556,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $dataentryoutput .= "\t<tr";
                 if ($highlight) $dataentryoutput .=" class='odd'";
                    else $dataentryoutput .=" class='even'";
-                 
+
                 $highlight=!$highlight;
                 $dataentryoutput .=">\n"
                 ."<td valign='top' align='right' width='25%'>"
@@ -675,11 +675,11 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                                     list ($categorytext, $answertext) = explode($optCategorySeparator,$llrow['answer']);
                                     if ($categorytext == '')
                                     {
-                                        $defaultopts[] = array ( 'code' => $llrow['code'], 'answer' => $answertext, 'default_value' => $llrow['default_value']);
+                                        $defaultopts[] = array ( 'code' => $llrow['code'], 'answer' => $answertext);
                                     }
                                     else
                                     {
-                                        $optgroups[$categorytext][] = array ( 'code' => $llrow['code'], 'answer' => $answertext, 'default_value' => $llrow['default_value']);
+                                        $optgroups[$categorytext][] = array ( 'code' => $llrow['code'], 'answer' => $answertext);
                                     }
                                 }
 
@@ -1001,7 +1001,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         {//file metadata
                             $metadata = json_decode($idrow[$fname['fieldname']], true);
                             $qAttributes = getQuestionAttributes($fname['qid']);
-                            
+
                             for ($i = 0; $i < $idrow[$fname['fieldname']]['max_files'], isset($metadata[$i]); $i++)
                             {
                                 if ($qAttributes['show_title'])
@@ -1389,7 +1389,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 unset($fieldmap[$fname['fieldname']]);
             }
         }
-        
+
         $updateqr = "UPDATE $surveytable SET \n";
 
         foreach ($fieldmap as $irow)
@@ -1552,7 +1552,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             . "\t//--></script>\n";
         }
 
-    
+
         if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
         {
             $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -2275,7 +2275,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         else
                             $dataentryoutput .= "jsonstr += '{\"title\":\"\",';";
 
-                        
+
                         if ($qidattributes['show_comment'])
                             $dataentryoutput .= "jsonstr += '\"comment\":\"'+$('#".$fieldname."_comment_'+i).val()+'\",';";
                         else
@@ -2290,7 +2290,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                                 // strip trailing comma
                                 if (jsonstr.charAt(jsonstr.length - 1) == ',')
                                 jsonstr = jsonstr.substring(0, jsonstr.length - 1);
-                                
+
                                 jsonstr += ']';
                                 $('#" . $fieldname . "').val(jsonstr);
                                 $('#" . $fieldname . "_filecount').val(filecount);
@@ -2446,7 +2446,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                                 $maxvalue=$qidattributes['multiflexible_max'];
                             }
                         }
-                         
+
                         if (trim($qidattributes['multiflexible_step'])!='') {
                             $stepvalue=$qidattributes['multiflexible_step'];
                         } else {
@@ -2458,7 +2458,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             $maxvalue=1;
                             $stepvalue=1;
                         }
-                         
+
                         $dataentryoutput .= "<table>\n";
                         $dataentryoutput .= "  <tr><td></td>\n";
                         $labelcodes=array();
@@ -2469,9 +2469,9 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             $dataentryoutput .= "    <th>{$data['question']}</th>\n";
                             $labelcodes[]=$data['title'];
                         }
-                         
+
                         $dataentryoutput .= "  </tr>\n";
-                         
+
                         $meaquery = "SELECT question, title FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $i=0;
@@ -2523,9 +2523,9 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             $dataentryoutput .= "    <th>{$data['question']}</th>\n";
                             $labelcodes[]=$data['title'];
                         }
-                         
+
                         $dataentryoutput .= "  </tr>\n";
-                         
+
                         $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
                         $i=0;
