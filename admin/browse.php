@@ -149,7 +149,7 @@ if ($subaction == "id")
         if ($field['type']=='page_time')
             continue;
         if ($field['type']=='answer_time')
-            continue;            
+            continue;
 
         $question=$field['question'];
         if ($field['type'] != "|")
@@ -239,7 +239,7 @@ if ($subaction == "id")
         $browseoutput .= "<a href='#' title='".$clang->gTview("Download files for this entry")."' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadfile='.$id.'&amp;sid='.$surveyid)."\" >"
                 ."<img align='left' hspace='0' border='0' src='$imageurl/download.png' alt='".$clang->gT("Download files for this entry")."' /></a>\n";
     }
-    
+
     //Export this response
     $browseoutput .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
             "title='".$clang->gTview("Export this Response")."' >" .
@@ -313,11 +313,11 @@ elseif ($subaction == "all")
      */
 
     $browseoutput .= "\n<script type='text/javascript'>
-                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
+                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."';
                           var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
                           var noFilesSelectedForDeletion = '".$clang->gT('Please select at least one file for deletion','js')."';
                           var noFilesSelectedForDnld = '".$clang->gT('Please select at least one file for download','js')."';
-                        </script>\n";    
+                        </script>\n";
     if (!isset($_POST['sql']))
     {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
     else
@@ -374,7 +374,7 @@ elseif ($subaction == "all")
         $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }
     // Marked responses -> deal with the whole batch of marked responses
-    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'responses','delete'))        
+    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'responses','delete'))
     {
         // Delete the marked responses - checked
         if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
@@ -383,7 +383,7 @@ elseif ($subaction == "all")
             {
                 $iResponseID = (int)$iResponseID; // sanitize the value
             $query="delete FROM {$surveytable} where id={$iResponseID}";
-            $connect->execute($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked  
+            $connect->execute($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
             }
         }
         // Download all files for all marked responses  - checked
@@ -514,7 +514,7 @@ elseif ($subaction == "all")
 
         // Now, zip all the files in the filelist
         $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
-        
+
         $zip = new ZipArchive();
         $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
         if (file_exists($tmpdir ."/". $zipfilename))
@@ -527,7 +527,7 @@ elseif ($subaction == "all")
 
         foreach ($filelist as $file)
             $zip->addFile($tmpdir . "/" . $file['filename'], $file['name']);
-        
+
         $zip->close();
         if (file_exists($tmpdir."/".$zipfilename)) {
             header('Content-Description: File Transfer');
@@ -581,7 +581,7 @@ elseif ($subaction == "all")
             }
         }
     }
-    
+
 
     //add token to top of list if survey is not private
     if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
@@ -605,8 +605,8 @@ elseif ($subaction == "all")
         {
             if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
                 continue;
-            
-            // no headers for time data 
+
+            // no headers for time data
             if ($fielddetails['type']=='interview_time')
 			    continue;
             if ($fielddetails['type']=='page_time')
@@ -626,12 +626,12 @@ elseif ($subaction == "all")
             if ($fielddetails['aid']!=='filecount')
             {
                 $qidattributes=getQuestionAttributes($fielddetails['qid']);
-                
+
                 for ($i = 0; $i < $fielddetails['max_files']; $i++)
                 {
                     if ($qidattributes['show_title'] == 1)
                         $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
-                        
+
                     if ($qidattributes['show_comment'] == 1)
                         $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
 
@@ -676,9 +676,9 @@ elseif ($subaction == "all")
     }
     if (bHasFileUploadQuestion($surveyid))
         $tableheader .="<img id='imgDownloadMarkedFiles' src='{$imageurl}/down_all.png' alt='".$clang->gT('Download marked files')."' />";
-    
+
     $tableheader .="</td></tr></tfoot>\n\n";
-    
+
     $start=returnglobal('start');
     $limit=returnglobal('limit');
     if (!isset($limit) || $limit== '') {$limit = 50;}
@@ -691,21 +691,21 @@ elseif ($subaction == "all")
     } else {
         $sql_from = $surveytable;
     }
-    
+
     $selectedgroup = returnglobal('selectgroup'); // group token id
-    
+
     $sql_where = "";
     if (incompleteAnsFilterstate() == "inc")
     {
         $sql_where .= "submitdate IS NULL";
-        
+
     }
     elseif (incompleteAnsFilterstate() == "filter")
     {
         $sql_where .= "submitdate IS NOT NULL";
-        
+
     }
-    
+
     //LETS COUNT THE DATA
     //$dtquery = "SELECT count(*) FROM $sql_from $sql_where";
     $dtquery = "SELECT count(*) FROM $sql_from";
@@ -882,7 +882,7 @@ elseif ($subaction == "all")
                 ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
                 ."<td align='center'>
         <a href='{$scriptname}?action=browse&amp;sid={$surveyid}&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imageurl/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>";
-        
+
         if (bHasSurveyPermission($surveyid,'responses','update'))
         {
             $browseoutput .= " <a href='{$scriptname}?action=dataentry&amp;sid={$surveyid}&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imageurl/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>";
@@ -958,16 +958,16 @@ elseif ($subaction == "all")
 elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
 	$browseoutput .= $surveyoptions;
 	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Time statistics').'</div>';
-	
+
 	// table of time statistics - only display completed surveys
     $browseoutput .= "\n<script type='text/javascript'>
-                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
-                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."'; 
+                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."';
+                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
                         </script>\n";
 
     if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
     {
-        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value     
+        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value
         $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
         $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
     }
@@ -978,10 +978,10 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
         {
             $iResponseID=(int)$iResponseID; // sanitize the value
             $query="delete FROM $surveytable where id={$iResponseID}";
-            $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked  
+            $connect->execute($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked
         }
     }
-    
+
     $fields=createTimingsFieldMap($surveyid,'full');
 
     foreach ($fields as $fielddetails)
@@ -1027,18 +1027,18 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     $limit=returnglobal('limit');
     if (!isset($limit) || $limit== '') {$limit = 50;}
     if (!isset($start) || $start =='') {$start = 0;}
-    
+
     //LETS COUNT THE DATA
-    $dtquery = "SELECT count(*) FROM $surveytimingstable NATURAL JOIN $surveytable WHERE submitdate IS NOT NULL ";
-    
+    $dtquery = "SELECT count(*) FROM {$surveytimingstable} INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ";
+
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
     if ($limit > $dtcount) {$limit=$dtcount;}
 
     //NOW LETS SHOW THE DATA
-    $dtquery = "SELECT * FROM $surveytimingstable NATURAL JOIN $surveytable WHERE submitdate IS NOT NULL ORDER BY $surveytable.id";
-    
+    $dtquery = "SELECT * FROM $surveytimingstable INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ORDER BY $surveytable.id";
+
     if ($order == "desc") {$dtquery .= " DESC";}
 
     if (isset($limit))
@@ -1125,11 +1125,11 @@ else
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imageurl/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imageurl/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imageurl/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
-		
+
         for ($i = 0; $i<$fncount; $i++)
         {
             $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
-            
+
             // seconds -> minutes & seconds
 			if (strtolower(substr($fnames[$i][0],-4)) == "time")
 			{
@@ -1149,10 +1149,10 @@ else
     <input type='hidden' name='subaction' value='time' />
     <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
     </form>\n<br />\n";
-	
+
 	// Interview time
 	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Interview time').'</div>';
-	
+
 	//interview Time statistics
 	$count=false;
 	//$survstats=substr($surveytableNq);
@@ -1167,19 +1167,19 @@ else
 		$count=$row['count'];
 		$browseoutput .= '<tr><Th>'.$clang->gT('Average interview time: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
 	}
-	
+
 	if($count && $result=db_execute_assoc($queryAll)){
-		
+
 		$middleval = floor(($count-1)/2);
 		$i=0;
 		if($count%2){
 			while($row=$result->FetchRow()){
-				
+
 				if($i==$middleval){
 					$median=$row['interviewTime'];
 					break;
 				}
-				$i++;		
+				$i++;
 			}
 		}else{
 			while($row=$result->FetchRow()){
@@ -1188,7 +1188,7 @@ else
 					$median=($row['interviewTime']+$nextrow['interviewTime'])/2;
 					break;
 				}
-				$i++;		
+				$i++;
 			}
 		}
 		$min = (int)($median/60);

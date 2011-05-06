@@ -104,7 +104,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 {
      global $dbprefix, $connect, $clang;
 
-    
+
      //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
     //	# "L" -> LIST
@@ -265,7 +265,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
 {
     global $dbprefix, $connect, $clang, $databasetype,$databasetabletype;
-    
+
      $createsurvey='';
      $activateoutput='';
      $createsurveytimings='';
@@ -300,7 +300,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                 break;
             case 'id':
                 $createsurvey .= " I NOTNULL AUTO PRIMARY";
-                $createsurveytimings .= " `{$arow['fieldname']}` I NOTNULL AUTO PRIMARY,\n";
+                $createsurveytimings .= " `{$arow['fieldname']}` I NOTNULL PRIMARY,\n";
                 break;
             case "startdate":
             case "datestamp":
@@ -392,13 +392,13 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                          'mysqli'=> 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
-    
+
     if (isset($savetimings) && $savetimings=="TRUE")
     {
         $tabnametimings = $tabname .'_timings';
-        $sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
+        $sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);
     }
-    
+
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
     if ($execresult==0 || $execresult==1)
     {
@@ -421,18 +421,18 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                 if ($row['autonumber_start'] > 0)
                 {
                     if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative') {
-                        mssql_drop_primary_index('survey_'.$postsid);                        
+                        mssql_drop_primary_index('survey_'.$postsid);
                         mssql_drop_constraint('id','survey_'.$postsid);
-                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} drop column id "; 
-                        $connect->Execute($autonumberquery);  
-                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)"; 
-                        $connect->Execute($autonumberquery);  
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} drop column id ";
+                        $connect->Execute($autonumberquery);
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)";
+                        $connect->Execute($autonumberquery);
                     }
                     else
                     {
                         $autonumberquery = "ALTER TABLE {$dbprefix}survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
-                        $result = @$connect->Execute($autonumberquery);  
-                         
+                        $result = @$connect->Execute($autonumberquery);
+
                     }
                 }
             }
