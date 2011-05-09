@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Chinese-simplified language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-14 23:00+0200\n"
-"PO-Revision-Date: 2011-04-15 10:37+0800\n"
-"Last-Translator: yooyooh <yooyooh@gmail.com>\n"
+"POT-Creation-Date: 2011-05-09 07:00+0200\n"
+"PO-Revision-Date: 2011-05-09 11:17+0100\n"
+"Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team: simplified chinese <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +55,7 @@ msgstr "数据库`%s`已成功填充。"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_structure_lsrc.php:50
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:45
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:70
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:412
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:411
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:307
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:319
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:331
@@ -145,14 +145,14 @@ msgstr "主管理界面"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:842
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:865
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:889
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:418
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:414
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:54
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:294
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:314
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:119
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:131
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:811
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:815
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpgroup.php:39
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:57
@@ -204,7 +204,7 @@ msgstr "主管理界面"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3131
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:27
 #: /var/lib/limesurvey-svn/subversion1x/save.php:733
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6572
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6579
 #: /var/lib/limesurvey-svn/subversion1x/index.php:544
 msgid "Error"
 msgstr "错误"
@@ -478,7 +478,7 @@ msgstr "请检查上面的问题-更新已完成。"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:615
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:544
-#: /var/lib/limesurvey-svn/subversion1x/common.php:274
+#: /var/lib/limesurvey-svn/subversion1x/common.php:277
 msgid "Back to main menu"
 msgstr "返回至主菜单"
 
@@ -552,9 +552,9 @@ msgstr "调查识别号"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:248
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:583
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3309
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3310
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3313
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3321
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3322
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3325
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:141
 msgid "Survey"
 msgstr "调查"
@@ -629,18 +629,18 @@ msgstr "反馈率"
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:286
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:330
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:360
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:903
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:904
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:950
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:951
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:972
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:973
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:899
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:900
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:946
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:947
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:968
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:969
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:78
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:88
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:452
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:468
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:656
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:907
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:644
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:895
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:376
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:388
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:399
@@ -681,38 +681,38 @@ msgstr "反馈率"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1854
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1860
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1876
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3676
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3757
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3832
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3845
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3856
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3867
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3878
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3916
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3946
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3957
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4064
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4075
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4095
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4107
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4137
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4150
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4161
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4172
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4191
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4210
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4221
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4232
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4275
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4301
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4336
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4381
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4391
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4505
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4516
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5041
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5511
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5550
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3683
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3764
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3839
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3852
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3863
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3874
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3885
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3923
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3953
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3964
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4071
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4082
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4102
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4114
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4144
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4157
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4168
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4179
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4198
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4217
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4228
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4239
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4282
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4308
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4343
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4388
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4398
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4512
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4523
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5053
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5523
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5562
 msgid "Yes"
 msgstr "是"
 
@@ -743,20 +743,20 @@ msgstr "是"
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:248
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:331
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:362
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:907
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:908
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:903
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:904
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:950
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:951
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:954
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:955
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:958
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:959
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:976
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:977
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:972
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:973
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:81
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:91
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:455
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:471
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:658
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:908
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:646
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:896
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:379
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:391
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:402
@@ -794,39 +794,39 @@ msgstr "是"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:72
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1861
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1877
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3675
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3756
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3831
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3846
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3857
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3868
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3879
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3917
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3945
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3956
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4063
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4074
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4094
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4106
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4136
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4149
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4160
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4171
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4190
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4209
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4220
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4231
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4274
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4286
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4300
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4335
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4380
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4390
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4504
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4515
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5050
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5513
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5568
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3682
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3763
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3838
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3853
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3864
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3875
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3886
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3924
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3952
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3963
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4070
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4081
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4101
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4113
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4143
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4156
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4167
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4178
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4197
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4216
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4227
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4238
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4281
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4293
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4307
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4342
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4387
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4397
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4511
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4522
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5062
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5525
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5580
 msgid "No"
 msgstr "否"
 
@@ -910,12 +910,12 @@ msgstr "没有可用的调查-请创建调查。"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:859
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:252
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:334
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:920
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:921
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:917
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:916
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:917
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:905
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:241
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1868
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5105
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5117
 msgid "Male"
 msgstr "男"
 
@@ -930,12 +930,12 @@ msgstr "男"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:859
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:253
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:335
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:924
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:925
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:916
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:920
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:921
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:904
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:240
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1869
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5097
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5109
 msgid "Female"
 msgstr "女"
 
@@ -1028,7 +1028,7 @@ msgstr "保存配额"
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:247
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:254
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:53
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1244
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1232
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1341
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:281
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:47
@@ -1052,9 +1052,9 @@ msgstr "限制"
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:140
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:141
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:595
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:470
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:471
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:760
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:466
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:467
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:756
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:733
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:453
 msgid "Completed"
@@ -1063,8 +1063,8 @@ msgstr "已完成"
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:522
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1734
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:166
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:406
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:883
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:436
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:913
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:326
 msgid "Action"
 msgstr "操作"
@@ -1093,16 +1093,16 @@ msgstr "删除"
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:158
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:89
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:103
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1070
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1886
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1058
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1874
 msgid "Questions"
 msgstr "问题"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:608
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2802
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2806
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2819
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2825
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2814
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2818
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2837
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:82
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:130
@@ -1151,36 +1151,36 @@ msgstr "对不起，在这个调查中没有可用的问题类型"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1454
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1485
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1944
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:392
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:672
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:682
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:714
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:720
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:727
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:794
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:805
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:834
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:839
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:995
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:999
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1047
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:422
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:702
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:712
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:744
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:750
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:757
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:824
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:835
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:864
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:869
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1025
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1029
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1077
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:61
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:84
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:90
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:145
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:224
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:233
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:324
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:340
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:478
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:568
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:604
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:685
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:723
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:763
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:773
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:807
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:813
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:228
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:237
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:328
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:344
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:482
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:572
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:608
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:689
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:727
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:767
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:777
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:811
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:817
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:488
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:501
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1656
@@ -1211,7 +1211,7 @@ msgstr "对不起，在这个调查中没有可用的问题类型"
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:139
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:143
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:65
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3307
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3314
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2336
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2411
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2576
@@ -1382,7 +1382,7 @@ msgstr "查看统计"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:353
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1595
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1965
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1953
 msgid "Clear"
 msgstr "清除"
 
@@ -1446,13 +1446,13 @@ msgstr "和/或 日期是"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1331
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:232
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:361
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:980
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:981
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:657
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:976
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:977
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:645
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:250
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1878
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5512
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5558
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5524
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5570
 msgid "Uncertain"
 msgstr "不确定"
 
@@ -1466,13 +1466,13 @@ msgstr "不确定"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1370
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:236
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:353
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:988
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:989
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:661
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:984
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:985
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:649
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:253
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1884
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5673
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5716
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5685
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5728
 msgid "Increase"
 msgstr "增加"
 
@@ -1486,13 +1486,13 @@ msgstr "增加"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1370
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:237
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:354
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:992
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:993
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:662
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:988
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:989
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:650
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:254
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1886
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5674
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5727
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5686
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5739
 msgid "Same"
 msgstr "相同"
 
@@ -1506,13 +1506,13 @@ msgstr "相同"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1370
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:238
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:355
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:996
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:997
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:663
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:992
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:993
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:651
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:255
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1885
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5675
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5739
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5687
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5751
 msgid "Decrease"
 msgstr "减少"
 
@@ -1528,9 +1528,9 @@ msgstr "标签"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1065
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:443
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:997
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1748
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:2122
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1736
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:2110
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:2113
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:191
 msgid "Question"
 msgstr "问题"
@@ -1627,7 +1627,7 @@ msgstr "起始语言："
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2662
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1348
 #: /var/lib/limesurvey-svn/subversion1x/question.php:659
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2995
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3001
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2937
 msgid "Submit"
 msgstr "提交 "
@@ -1652,22 +1652,22 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr "感谢您及时保存调查。您可以用下面的详细资料来返回并继续本调查。请保留本电邮以备后用 - 我们无法为您找回密码。"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:390
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:832
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:862
 #: /var/lib/limesurvey-svn/subversion1x/save.php:385
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3197
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3203
 msgid "Name"
 msgstr "名字"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:391
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:215
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:440
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:228
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:444
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:653
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:665
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:448
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:657
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:669
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:223
 #: /var/lib/limesurvey-svn/subversion1x/save.php:386
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3200
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3226
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3206
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3232
 msgid "Password"
 msgstr "密码"
 
@@ -1724,7 +1724,7 @@ msgstr "新增一项记录"
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:64
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate_functions.php:76
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:126
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1007
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:995
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:585
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:120
 msgid "Return to survey administration"
@@ -1764,7 +1764,7 @@ msgstr "浏览反馈(ID %s)"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2399
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2419
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2579
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6072
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6084
 msgid "Please choose"
 msgstr "请选择"
 
@@ -1778,26 +1778,26 @@ msgstr "请选择"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2246
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:703
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1836
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1921
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2046
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1926
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2055
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:339
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:850
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:851
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:980
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:846
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:847
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:968
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1846
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1900
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2416
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2659
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4102
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4116
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4132
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4187
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4206
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4343
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4524
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4533
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4542
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4551
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4109
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4123
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4139
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4194
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4213
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4350
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4531
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4540
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4549
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4558
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2428
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3237
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3586
@@ -1826,13 +1826,13 @@ msgstr "您的排序"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1796
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:748
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:807
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1843
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2042
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2508
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2522
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2583
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2646
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2713
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1848
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2051
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2520
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2534
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2595
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2658
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2725
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:224
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:228
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:239
@@ -1842,48 +1842,48 @@ msgstr "您的排序"
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:260
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:338
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:370
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:683
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:814
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:815
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:837
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:867
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:912
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:921
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:932
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:941
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:966
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:986
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1485
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:671
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:802
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:803
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:825
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:855
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:900
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:909
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:920
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:929
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:954
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:974
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1473
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1862
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1870
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6558
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6563
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6565
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6570
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1667
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2161
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2462
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2592
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2655
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5061
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5129
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5225
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5289
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5384
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5432
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5516
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5588
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5678
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5757
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5864
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5886
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5959
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6092
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6828
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6829
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7120
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7195
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7300
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7502
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7556
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5073
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5141
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5237
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5301
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5396
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5444
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5528
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5600
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5690
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5769
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5876
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5898
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5971
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6104
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6840
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6841
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7132
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7207
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7312
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7514
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7568
 msgid "No answer"
 msgstr "拒答"
 
@@ -1892,7 +1892,7 @@ msgstr "拒答"
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate.php:269
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:103
 #: /var/lib/limesurvey-svn/subversion1x/admin/editemailtemplates.php:160
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:233
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:249
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:201
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:653
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:227
@@ -1934,10 +1934,10 @@ msgid "Record Deleted"
 msgstr "记录已删除"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1531
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:238
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:445
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:446
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:778
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:235
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:441
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:442
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:774
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1050
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1053
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1054
@@ -1954,9 +1954,9 @@ msgstr "日期戳"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1576
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:79
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:475
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:476
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:757
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:471
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:472
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:753
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2302
 msgid "IP address"
 msgstr "IP 地址"
@@ -1964,8 +1964,8 @@ msgstr "IP 地址"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1616
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1706
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1738
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1220
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1360
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1208
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1348
 msgid "OR"
 msgstr "或"
 
@@ -2008,14 +2008,14 @@ msgstr "标签%s"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1271
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1296
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1371
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5598
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5647
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5683
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5719
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5605
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5654
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5690
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5726
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1991
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7482
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7536
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7494
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7548
 msgid "Please choose..."
 msgstr "请选择..."
 
@@ -2193,31 +2193,31 @@ msgid "Results"
 msgstr "结果"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:629
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2051
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2072
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2063
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2084
 msgid "Browse"
 msgstr "浏览"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:747
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:806
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2065
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2104
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2077
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2118
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2146
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2116
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2130
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2155
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2160
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2244
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2247
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2255
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2260
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1836
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2158
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2167
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2172
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2256
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2259
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2267
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2272
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1824
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1909
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4625
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4915
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4995
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4637
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4927
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5007
 msgid "Answer"
 msgstr "答案"
 
@@ -2252,9 +2252,9 @@ msgstr "每个参与者的平均文件大小"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1064
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1086
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1095
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1865
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1883
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1899
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1870
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1888
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1904
 #, php-format
 msgid "Field summary for %s"
 msgstr "%s字段摘要"
@@ -2282,22 +2282,22 @@ msgid "Result"
 msgstr "结果"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1179
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2107
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2124
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2802
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2806
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2819
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2825
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2119
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2136
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2814
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2818
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2837
 msgid "Sum"
 msgstr "总和"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1180
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2981
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2988
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2995
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3002
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2993
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3000
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3007
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3014
 msgid "Standard deviation"
 msgstr "标准差"
 
@@ -2312,20 +2312,20 @@ msgid "Minimum"
 msgstr "最小值"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1228
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2065
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2082
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2105
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2077
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2094
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2120
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2147
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2117
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2132
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2155
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2162
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2244
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2248
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2255
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2262
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2159
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2167
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2174
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2256
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2260
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2267
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2274
 msgid "Count"
 msgstr "计数"
 
@@ -2382,44 +2382,49 @@ msgstr "minitab 方法"
 msgid "Not enough values for calculation"
 msgstr "没有足够的数据进行计算"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2065
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2084
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2106
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1841
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2055
+msgid "Comments"
+msgstr "评论"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2077
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2096
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2122
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2148
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2118
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2134
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2155
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2164
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2244
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2249
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2255
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2264
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2160
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2167
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2176
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2256
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2261
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2267
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2276
 msgid "Percentage"
 msgstr "百分比"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2365
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2397
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2377
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2409
 msgid "Not completed or Not displayed"
 msgstr "未完成或未显示"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2369
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2401
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2381
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2413
 msgid "Not displayed"
 msgstr "未显示"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2803
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2811
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2820
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2815
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2823
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2832
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2843
 msgid "Number of cases"
 msgstr "实例数"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2980
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2984
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2994
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3000
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2992
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2996
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3006
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3012
 msgid "Arithmetic mean"
 msgstr "算术平均数"
 
@@ -2602,7 +2607,7 @@ msgstr "HTML编辑器模式"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:71
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:227
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4346
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4353
 msgid "Default"
 msgstr "默认"
 
@@ -2626,7 +2631,7 @@ msgid "Date format"
 msgstr "日期格式"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:95
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:178
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:159
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:523
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:850
 msgid "Save settings"
@@ -2636,7 +2641,7 @@ msgstr "保存设定"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:612
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:823
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1065
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:775
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:771
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:170
 msgid "ID"
 msgstr "识别号"
@@ -2815,8 +2820,8 @@ msgstr "题组"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1272
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1297
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1372
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5648
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5684
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5655
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5691
 msgid "None"
 msgstr "无"
 
@@ -2971,8 +2976,8 @@ msgstr "标志"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1008
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:49
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:51
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:595
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:615
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:625
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:645
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:60
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:62
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:143
@@ -3292,13 +3297,13 @@ msgstr "基于本题的其它问题："
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1358
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1860
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:579
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:945
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:609
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:975
 msgid "Add User"
 msgstr "添加用户"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1374
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1033
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1063
 msgid "User added."
 msgstr "用户已添加。"
 
@@ -3309,19 +3314,19 @@ msgstr "设置调查权限"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1384
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1391
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1452
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1038
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1044
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1068
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1074
 msgid "Failed to add user."
 msgstr "添加用户失败。"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1385
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1039
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1069
 msgid "Username already exists."
 msgstr "用户名已存在。"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1392
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1453
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1045
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1075
 msgid "No Username selected."
 msgstr "未选择用户名。"
 
@@ -3348,34 +3353,34 @@ msgstr "正在删除用户"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1478
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1735
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:212
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:409
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:884
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:981
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:225
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:439
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:914
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1011
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:70
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:82
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:434
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:457
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:562
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:653
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:665
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:438
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:461
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:566
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:657
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:669
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:159
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:221
 msgid "Username"
 msgstr "用户名称"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1479
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:666
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:982
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:563
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:654
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:666
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:696
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1012
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:567
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:658
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:670
 msgid "Success!"
 msgstr "成功！"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1483
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:986
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:603
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1016
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:607
 msgid "Could not delete user. User was not supplied."
 msgstr "不能删除用户。未提供用户名。"
 
@@ -3403,7 +3408,7 @@ msgstr "查看/读取"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1525
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1798
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:440
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:470
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:992
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2092
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:195
@@ -3423,8 +3428,8 @@ msgid "Export"
 msgstr "导出"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1562
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:364
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3214
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:392
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3220
 msgid "Save Now"
 msgstr "现在保存"
 
@@ -3474,8 +3479,8 @@ msgid "User Group"
 msgstr "用户组"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1737
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:214
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:411
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:227
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:441
 msgid "Full name"
 msgstr "全名"
 
@@ -3485,9 +3490,9 @@ msgstr "编辑权限"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1798
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:85
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:440
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:533
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:921
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:470
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:563
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:951
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:229
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:97
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1243
@@ -3510,7 +3515,7 @@ msgid "Groups"
 msgstr "问题分组"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1867
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:590
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:620
 msgid "Add User Group"
 msgstr "添加用户组"
 
@@ -3630,8 +3635,8 @@ msgstr "登出"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2127
 #: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:666
 #: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:677
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1075
-#: /var/lib/limesurvey-svn/subversion1x/common.php:282
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1063
+#: /var/lib/limesurvey-svn/subversion1x/common.php:285
 msgid "LimeSurvey online manual"
 msgstr "LimeSurvey在线手册"
 
@@ -4205,8 +4210,8 @@ msgid "[Dependency on another question (ID $4)]"
 msgstr "[其它问题依存度 (ID $4)]"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:60
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:631
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:739
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:661
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:769
 msgid "Mail to all Members"
 msgstr "给所有的会员发邮件"
 
@@ -4230,238 +4235,237 @@ msgstr "新增用户组"
 msgid "Edit template permissions"
 msgstr "编辑模版权限"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:129
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:132
 msgid "Set templates that this user may access"
 msgstr "设置用户可访问的模版"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:145
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:149
 msgid "Template name"
 msgstr "模板名称"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:147
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:151
 msgid "Allowed"
 msgstr "允许"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:148
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:152
 msgid "Check or uncheck all items"
 msgstr "勾选或取消勾选所有项"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:209
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:614
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:222
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:618
 msgid "Editing user"
 msgstr "编辑用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:213
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:410
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:885
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:226
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:440
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:915
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:138
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:592
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:236
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:772
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:768
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:82
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:457
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:461
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2272
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2404
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:160
 msgid "Email"
 msgstr "电子邮件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:265
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:287
 msgid "Set User Rights"
 msgstr "设定会员权限"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:286
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:312
 msgid "SuperAdministrator"
 msgstr "超级管理员"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:289
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:315
 msgid "Create Survey"
 msgstr "创建调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:292
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:318
 msgid "Configurator"
 msgstr "配置"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:295
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:321
 msgid "Create User"
 msgstr "创建用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:298
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:966
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:592
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:324
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:996
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:596
 msgid "Delete User"
 msgstr "删除用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:301
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:327
 msgid "Use all/manage templates"
 msgstr "使用全部/管理模板"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:304
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:330
 msgid "Manage Labels"
 msgstr "管理标签"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:390
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:420
 msgid "Setting as Administrator Child"
 msgstr "设置为子管理员"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:391
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:421
 msgid "Set Parent successful."
 msgstr "成功设为家长。 "
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:402
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:432
 msgid "User control"
 msgstr "用户控制"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:414
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:444
 msgid "No of surveys"
 msgstr "调查编号"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:416
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:446
 msgid "Created by"
 msgstr "创建者"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:433
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:463
 msgid "Edit user"
 msgstr "编辑用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:492
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:522
 msgid "Edit this user"
 msgstr "编辑该用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:504
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:534
 msgid "Set global permissions for this user"
 msgstr "为该用户设定全局权限"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:513
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:543
 msgid "Take Ownership"
 msgstr "获取所有权"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:522
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:552
 msgid "Set template permissions for this user"
 msgstr "为该用户设置模版权限"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:533
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:563
 msgid "Delete this user"
 msgstr "删除该用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:575
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:605
 msgid "Add user:"
 msgstr "添加用户："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:593
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:613
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:623
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:643
 msgid "Name:"
 msgstr "名字："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:594
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:624
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:59
 msgid "Required"
 msgstr "必须的"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:597
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:627
 msgid "Add Group"
 msgstr "新增题组"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:610
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:640
 #, php-format
 msgid "Editing user group (Owner: %s)"
 msgstr "编辑用户组（所有者：%s）"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:617
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:647
 msgid "Update User Group"
 msgstr "更新用户组"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:633
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:663
 msgid "Send me a copy:"
 msgstr "给我发送副本："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:635
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:665
 msgid "Subject:"
 msgstr "主题："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:637
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:667
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:289
 msgid "Message:"
 msgstr "信息："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:639
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:669
 msgid "Send"
 msgstr "发送"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:640
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:670
 msgid "Reset"
 msgstr "重置"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:648
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:678
 msgid "Deleting User Group"
 msgstr "正在删除用户组"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:665
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:706
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:695
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:736
 msgid "Group Name"
 msgstr "用户组名"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:670
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:700
 msgid "Could not delete user group."
 msgstr "不能删除用户组。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:681
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:711
 msgid "Could not delete user group. No group selected."
 msgstr "不能删除用户组。未选择用户组。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:690
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:720
 msgid "Adding User Group"
 msgstr "正在添加用户组"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:710
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:833
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:873
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:740
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:863
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:903
 msgid "Description: "
 msgstr "描述："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:713
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:743
 msgid "User group successfully added!"
 msgstr "用户组添加成功！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:718
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:725
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:748
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:755
 msgid "Failed to add Group!"
 msgstr "用户组添加失败！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:719
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:749
 msgid "Group already exists!"
 msgstr "用户组已经存在！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:726
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:756
 msgid "Group name was not supplied!"
 msgstr "未提供用户组名！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:792
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:822
 msgid "Message(s) sent successfully!"
 msgstr "信息发送成功！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:793
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:823
 msgid "To:"
 msgstr "到："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:799
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:829
 #, php-format
 msgid "Email to %s failed. Error Message:"
 msgstr "发给%s的邮件失败。错误信息："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:831
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:861
 msgid "Edit User Group Successfully!"
 msgstr "编辑用户组成功！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:838
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:868
 msgid "Failed to update!"
 msgstr "更新失败！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:921
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:951
 msgid "Delete this user from group"
 msgstr "删除组内该用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1016
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1046
 msgid "Adding User to group"
 msgstr "把用户添加到组"
 
@@ -4910,7 +4914,7 @@ msgstr "配额成员"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:88
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:182
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:450
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1353
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1341
 msgid "and"
 msgstr "和"
 
@@ -4953,60 +4957,60 @@ msgstr "导入失败。您指定的文件无效。"
 msgid "Question Attributes"
 msgstr "问题属性"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:407
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:447
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:406
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:446
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:39
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:67
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:76
 msgid "Activate Survey"
 msgstr "启用调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:408
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:407
 msgid "Survey could not be actived."
 msgstr "调查无法启用。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:410
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:409
 msgid "Database error:"
 msgstr "数据库错误："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:448
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:447
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "调查已启用。已成功创建结果表。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:454
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:453
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory."
 msgstr "保存上传文件的目录无法创建。请检测 limesurvey/upload/surveys 目录的文件权限。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:461
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:460
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "本调查允许公众注册。必须创建一个操作代码表。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:462
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:461
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:536
 msgid "Initialise tokens"
 msgstr "初始化操作代码"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:466
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:465
 msgid "This survey is now active, and responses can be recorded."
 msgstr "本调查已启用，并且可以记录反馈项。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:467
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:466
 msgid "Open-access mode"
 msgstr "开放式访问模式"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:467
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:466
 msgid "No invitation code is needed to complete the survey."
 msgstr "不需要邀请码即可完成这个调查。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:467
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:466
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "您可以通过下面的按钮初始化一张操作代码表来转换到封闭式访问模式。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:468
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:467
 msgid "Switch to closed-access mode"
 msgstr "切换至封闭式访问模式"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:469
+#: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:468
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:538
 msgid "No, thanks."
 msgstr "不，谢谢。"
@@ -5252,7 +5256,7 @@ msgstr "这是些帮助文本。"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:434
 #: /var/lib/limesurvey-svn/subversion1x/group.php:248
 #: /var/lib/limesurvey-svn/subversion1x/question.php:264
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3137
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:129
 msgid "Thank you!"
 msgstr "谢谢您！"
@@ -5707,7 +5711,7 @@ msgstr "错误：使用了重复的标签编码。"
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:321
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:119
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:147
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3714
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3721
 msgid "Assessment value"
 msgstr "评价值"
 
@@ -6060,19 +6064,19 @@ msgid "Please write your answer(s) here:"
 msgstr "请在此填写您的回答:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1105
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4414
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4426
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "所有输入项总计须等于 %d"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1109
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4410
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4422
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "所有输入项不能超过 %d"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1113
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4418
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4430
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "所有输入项总计至少%s"
@@ -6166,39 +6170,39 @@ msgstr "找不到匹配的调查。"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:135
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:589
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:781
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:777
 msgid "Token ID"
 msgstr "操作代码ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:136
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:590
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:232
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:435
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:436
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:766
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:431
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:432
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:762
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1010
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1013
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1014
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2264
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2400
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3249
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7620
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3265
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7627
 msgid "First name"
 msgstr "名"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:137
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:591
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:234
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:430
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:431
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:769
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:233
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:426
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:427
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:765
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1020
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1023
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1024
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2268
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2402
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3256
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7621
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3272
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7628
 msgid "Last name"
 msgstr "姓"
 
@@ -6416,13 +6420,14 @@ msgid "Date Saved"
 msgstr "保存日期"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:81
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:440
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:441
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:234
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:436
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:437
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1030
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1033
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1034
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3263
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7622
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3279
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7629
 msgid "Email address"
 msgstr "邮件地址"
 
@@ -6578,62 +6583,62 @@ msgid "Token control"
 msgstr "操作代码控制"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:227
-msgid "Choose Token Fields"
+msgid "Choose token fields"
 msgstr "选择操作代码字段"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:229
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr "您可关联操作代码数据和反馈来导出您的调查。您可选择任何您想导出的附加字段。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:249
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:245
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:135
 msgid "Export data"
 msgstr "导出数据"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:305
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:301
 msgid "General information in language: "
 msgstr "语言的一般问题："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:460
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:461
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:751
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:456
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:457
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:747
 msgid "Date Last Action"
 msgstr "上次操作时间"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:465
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:466
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:754
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:461
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:462
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:750
 msgid "Date Started"
 msgstr "开始时间"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:480
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:481
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:763
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:476
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:477
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:759
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2313
 msgid "Referrer URL"
 msgstr "来源网址"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:485
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:486
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:481
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:482
 msgid "Last page seen"
 msgstr "末页可见"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:490
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:491
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:486
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:487
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2243
 msgid "Start language"
 msgstr "起始语言"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:682
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:678
 msgid "New Record"
 msgstr "新增记录"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:716
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:722
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:712
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:718
 msgid "NEW RECORD"
 msgstr "新增记录"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:784
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:780
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1060
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1063
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1064
@@ -6643,15 +6648,15 @@ msgstr "新增记录"
 msgid "Language"
 msgstr "语言"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:911
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:912
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:928
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:929
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:907
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:908
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:924
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:925
 msgid "N/A"
 msgstr "N/A"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1052
-#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1053
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1048
+#: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1049
 msgid "Tokens problem - token table missing"
 msgstr "操作代码问题-操作代码表丢失"
 
@@ -6789,7 +6794,7 @@ msgid "At end"
 msgstr "最后"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:501
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1050
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1038
 msgid "After"
 msgstr "之后"
 
@@ -6861,7 +6866,7 @@ msgstr "大于"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:69
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:85
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1937
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1925
 msgid "Regular expression"
 msgstr "正规表达式"
 
@@ -6920,209 +6925,197 @@ msgstr "条件成功复制"
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "由于重复未能复制条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:424
-msgid "Did not copy questions"
-msgstr "不复制问题"
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:427
-msgid "No condition selected to copy from"
-msgstr "未指定复制目标的条件"
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:431
-msgid "No question selected to copy condition to"
-msgstr "未指定复制条件的问题"
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:874
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:862
 msgid "Group of checkboxes"
 msgstr "复选框组"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:890
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:878
 msgid "Single checkbox"
 msgstr "单选"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1002
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:990
 msgid "Conditions designer"
 msgstr "条件设计器"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1011
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:999
 msgid "Show conditions for this question"
 msgstr "显示该题条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1014
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1002
 msgid "Add and edit conditions"
 msgstr "添加并编辑条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1016
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1607
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1652
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1004
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1595
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1640
 msgid "Copy conditions"
 msgstr "复制条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1020
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1008
 msgid "Before"
 msgstr "之前"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1037
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1025
 msgid "Current"
 msgstr "当前"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1161
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1149
 msgid "Only show question {QID} IF"
 msgstr "显示问题 {QID}仅当"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1182
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1170
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
 msgstr "您确认想删除选定问题的所有条件吗？"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1184
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1172
 msgid "Delete all conditions"
 msgstr "删除所有条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1190
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1178
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr "您确认要从1开始对场景重新编码吗？"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1192
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1180
 msgid "Renumber scenario automatically"
 msgstr "对场景自动重新编号"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1236
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1224
 msgid "New scenario number"
 msgstr "新建场景号"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1243
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1231
 msgid "Update scenario"
 msgstr "更新场景"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1254
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1242
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "您确定要删除本场景所有条件吗？"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1256
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1244
 msgid "Delete this scenario"
 msgstr "删除场景"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1262
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1250
 msgid "Edit scenario"
 msgstr "编辑场景"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1385
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1458
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1373
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1446
 msgid "From token table"
 msgstr "从操作代码表"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1389
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1462
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1377
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1450
 msgid "Inexistant token table"
 msgstr "不存在的操作代码表"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1447
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1435
 msgid "Not found"
 msgstr "未发现"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1504
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1492
 msgid "Are you sure you want to delete this condition?"
 msgstr "您确定要删除这个条件吗？"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1506
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1494
 msgid "Delete this condition"
 msgstr "删除本条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1509
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1497
 msgid "Edit this condition"
 msgstr "编辑条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1586
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1574
 msgid "This question is always shown."
 msgstr "本题一直显示。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1624
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1612
 msgid "No questions selected"
 msgstr "未选择问题"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1624
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1612
 msgid "Check all"
 msgstr "勾选全部"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1624
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1612
 msgid "Uncheck all"
 msgstr "取消勾选全部"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1624
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1612
 msgid "selected"
 msgstr "已选择"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1627
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1615
 msgid "Copy the selected conditions to"
 msgstr "复制选定条件至"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1676
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1664
 msgid "This survey's questions don't use conditions"
 msgstr "本调查有问题没有条件限制"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1713
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1701
 msgid "Edit condition"
 msgstr "编辑条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1717
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1955
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1705
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1943
 msgid "Add condition"
 msgstr "添加条件"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1728
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1716
 msgid "Add scenario"
 msgstr "添加场景"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1729
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1717
 msgid "Default scenario"
 msgstr "默认场景"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1740
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1728
 msgid "Scenario"
 msgstr "场景"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1752
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1740
 msgid "Previous questions"
 msgstr "先前问题"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1753
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1887
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1741
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1875
 msgid "Token fields"
 msgstr "操作代码字段"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1810
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1798
 msgid "Comparison operator"
 msgstr "比较操作符"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1884
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1872
 msgid "Predefined"
 msgstr "预定义"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1885
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1873
 msgid "Constant"
 msgstr "常量"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1888
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1876
 msgid "RegExp"
 msgstr "正则表达式"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1895
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1883
 msgid "Predefined answer options for this question"
 msgstr "该问题的预定义答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1901
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1889
 msgid "Constant value"
 msgstr "常量值"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1919
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1907
 msgid "Answers from previous questions"
 msgstr "来自先前问题的答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1931
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1919
 msgid "Attributes values from the participant's token"
 msgstr "参与者操作代码的属性值"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1949
+#: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1937
 msgid "Update condition"
 msgstr "更新条件"
 
@@ -7152,20 +7145,20 @@ msgid "An email with your login data was sent to you."
 msgstr "一封带有你登陆数据的邮件已发送给你。"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:88
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:463
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:467
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "发送到 {NAME} ({EMAIL}) 的邮件失败。"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:142
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:221
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:337
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:225
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:341
 msgid "Incorrect username and/or password!"
 msgstr "用户名和/或者密码有误！"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:144
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:223
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:232
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:339
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:227
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:236
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:343
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:322
 #, php-format
 msgid "You have exceeded you maximum login attempts. Please wait %d minutes before trying again"
@@ -7176,134 +7169,134 @@ msgid "Logged in"
 msgstr "登录身份"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:200
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:365
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:369
 #, php-format
 msgid "Welcome %s!"
 msgstr "欢迎 %s！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:208
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:373
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:212
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:377
 msgid "Reloading screen. Please wait."
 msgstr "界面重载，请稍候。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:239
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:243
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
 msgstr "系统是基于服务器认证的，您好像并没有得到许可！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:240
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:244
 msgid "Please contact your system administrator"
 msgstr "请与系统管理员联系"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:323
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:327
 msgid "Auto-import of user failed!"
 msgstr "自动导入用户失败！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:366
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:370
 msgid "You logged in successfully."
 msgstr "成功登陆。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:383
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:387
 msgid "Logout successful."
 msgstr "成功登出。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:388
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:392
 msgid "Add user"
 msgstr "添加用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:398
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:402
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:475
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:406
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:479
 msgid "Failed to add user"
 msgstr "添加用户失败"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:398
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:402
 msgid "The email address is not valid."
 msgstr "邮件地址无效。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:403
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:407
 msgid "A username was not supplied or the username is invalid."
 msgstr "未输入用户名或用户名无效。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:431
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:435
 #, php-format
 msgid "Hello %s,"
 msgstr "您好 %s，"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:432
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:436
 #, php-format
 msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr "这个是自动邮件，用来通知您网站 '%s'已创建用户。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:433
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:437
 msgid "You can use now the following credentials to log into the site:"
 msgstr "您可使用以下凭证来登录网站："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:444
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:448
 msgid "Please ask your LimeSurvey administrator for your password."
 msgstr "密码问题请联系LimeSurvey管理员。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:448
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:452
 msgid "Click here to log in."
 msgstr "点击此处登录。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:449
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:453
 #, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
 msgstr "如果对于邮件有问题，请立即联系%s网站管理员。谢谢！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:451
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:455
 #, php-format
 msgid "User registration at '%s'"
 msgstr "用户注册位于 '%s'"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:458
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:462
 msgid "An email with a generated password was sent to the user."
 msgstr "一封包含生成的密码的邮件已经发给这个用户。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:468
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:697
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:472
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:701
 msgid "Set user permissions"
 msgstr "设置用户权限"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:475
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:479
 msgid "The user name already exists."
 msgstr "用户名已存在。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:483
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:487
 msgid "Deleting user"
 msgstr "正在删除用户"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:494
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:498
 msgid "Initial Superadmin cannot be deleted!"
 msgstr "不能删除超级管理员！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:566
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:570
 #, php-format
 msgid "All of the user's surveys were transferred to %s."
 msgstr "所有的用户调查已经翻译为 %s。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:573
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:577
 msgid "Transfer the user's surveys to: "
 msgstr "转换用户调查为："
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:636
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:671
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:640
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:675
 msgid "Could not modify user data."
 msgstr "无法修改用户数据。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:637
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:641
 msgid "Email address is not valid."
 msgstr "邮件地址不是有效的。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:653
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:657
 msgid "Unchanged"
 msgstr "未变化"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:672
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:676
 msgid "Email address already exists."
 msgstr "邮件地址已经存在。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:678
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:682
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:39
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:59
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:83
@@ -7314,24 +7307,24 @@ msgstr "邮件地址已经存在。"
 msgid "Back"
 msgstr "退回"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:722
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:762
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:726
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:766
 msgid "User permissions were updated successfully."
 msgstr "成功更新用户权限。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:772
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:776
 msgid "You are not allowed to change your own permissions!"
 msgstr "您不能修改自己的权限！"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:780
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:784
 msgid "Set template permissions"
 msgstr "设置模版权限"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:806
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:810
 msgid "Template permissions were updated successfully."
 msgstr "成功更新模版权限。"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:812
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:816
 msgid "Error while updating usertemplates."
 msgstr "在上传自定义模版时发生错误。"
 
@@ -7611,8 +7604,8 @@ msgstr "开"
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:358
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:431
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:823
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3888
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4120
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3895
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4127
 msgid "Off"
 msgstr "关"
 
@@ -10771,1071 +10764,1071 @@ msgstr "本调查有一个问题"
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "本调查包括{NUMBEROFQUESTIONS}个问题。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3021
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3027
 msgid "A Note On Privacy"
 msgstr "隐私注解"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3021
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3027
 msgid "This survey is anonymous."
 msgstr "本调查采取匿名方式。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3021
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3027
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "保存您问卷反馈的记录不会包含任何关于您的识别信息，除非问卷中有特定问题涉及。如果您参与的调查需要使用识别操作码访问，您可以完全放心，该识别操作码不会和您的答案保存在一起。它通过单独的数据库来管理，只是用来识别你是否完成了这个调查。匹配调查的问卷答案和识别操作码是不可能的事情。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3025
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3031
 msgid "Exit and Clear Survey"
 msgstr "退出并清除调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3026
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3032
 msgid "Are you sure you want to clear all your responses?"
 msgstr "您确定要清除所有反馈吗？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3056
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3068
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3062
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3074
 #: /var/lib/limesurvey-svn/subversion1x/index.php:637
 #: /var/lib/limesurvey-svn/subversion1x/index.php:641
 msgid "Load Unfinished Survey"
 msgstr "加载未完成调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3057
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3061
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3081
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3063
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3067
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3087
 msgid "Resume Later"
 msgstr "稍后继续"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3137
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
 msgid "You have completed answering the questions in this survey."
 msgstr "您已经完成了本次调查的全部问题。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3137
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "现在点击“提交”完成这一过程，并保存您的回答。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3149
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "如果您想检查或修改反馈，您可以通过点击 [<< prev]按钮浏览并实现。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3150
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3156
 msgid "Answers Cleared"
 msgstr "答案已清除"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3157
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3165
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3163
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
 msgid "Restart this Survey"
 msgstr "重新开始本次调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3168
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3174
 msgid "Close this window"
 msgstr "关闭窗口"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3170
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3176
 msgid "Save Your Unfinished Survey"
 msgstr "保存您未完成的调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "Enter a name and password for this survey and click save below."
 msgstr "为本次调查输入一个用户名和密码并点击下面的保存。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "您的调查将使用该名字和密码保存，以后您可利用它们继续登录并完成调查。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "如果您提供了邮件地址，您就会收到一封包含详细资料的邮件。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "点击保存按钮后您可关闭浏览器或继续填写调查。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3176
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3182
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr "为了保持匿名，请使用笔名作为您的用户名，同时无需电子邮件地址。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3192
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3198
 msgid "Return To Survey"
 msgstr "返回调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3203
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3209
 msgid "Repeat Password"
 msgstr "重复密码"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3206
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3212
 msgid "Your Email"
 msgstr "您的邮件"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3211
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3231
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3282
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3217
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3237
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3290
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2407
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2573
 msgid "Security Question"
 msgstr "安全问题"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3219
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3225
 msgid "Load A Previously Saved Survey"
 msgstr "加载以前保存的调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3220
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3226
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "您可以在此界面加载以前保存的调查。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3220
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3226
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "输入您用来保存调查的用户名和密码。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3223
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3229
 msgid "Saved name"
 msgstr "保存的名称"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3236
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3242
 msgid "Load Now"
 msgstr "现在加载"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3241
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3247
 msgid "You must be registered to complete this survey"
 msgstr "您必须注册才能完成此调查"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3242
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3248
 msgid "You may register for this survey if you wish to take part."
 msgstr "如果您想参与调查，请先注册。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3242
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3248
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "在下面填写您的详细资料，然后一封包含参与该调查的链接的邮件会立刻发送。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3319
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3326
 msgid "Your Assessment"
 msgstr "您的评价"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3672
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3683
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3718
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3734
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3745
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3753
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3764
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3772
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3780
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3788
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3796
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3804
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3942
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3953
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4036
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4044
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4052
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4060
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4071
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4146
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4179
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4198
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4217
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4282
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4316
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4324
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4332
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3679
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3690
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3725
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3741
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3752
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3760
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3771
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3779
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3787
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3795
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3803
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3811
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3949
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3960
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4043
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4051
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4059
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4067
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4078
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4153
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4186
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4205
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4224
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4289
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4323
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4331
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4339
 msgid "Display"
 msgstr "显示"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3678
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3685
 msgid "Sort the answer options alphabetically"
 msgstr "按字母排列答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3679
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3686
 msgid "Sort answers alphabetically"
 msgstr "按字母排列答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3688
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3695
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "设置答案列的宽度百分比 (1-100)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3689
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3696
 msgid "Answer width"
 msgstr "答案宽度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3693
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3701
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3709
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3726
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3820
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3828
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3964
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3988
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4004
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4028
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4082
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4157
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4168
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4560
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3700
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3708
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3716
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3733
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3827
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3835
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3971
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3995
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4011
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4035
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4089
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4164
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4175
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4567
 msgid "Logic"
 msgstr "逻辑"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3696
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3703
 msgid "Enter the code of a Multiple choice question to only show the matching answer options in this question."
 msgstr "输入该阵列的多选题的编码来显示匹配的答案项。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3697
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3704
 msgid "Array filter"
 msgstr "阵列筛选"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3704
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3711
 msgid "Enter the code of a Multiple choice question to exclude the matching answer options in this question."
 msgstr "输入该阵列的多选题的编码来排除匹配的答案项。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3705
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3712
 msgid "Array filter exclusion"
 msgstr "阵列筛选排除"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3713
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3720
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr "如果某个子问题已标记，则对于每个标记的子问题来说该值添作评估。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3721
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3722
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3728
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3729
 msgid "Category separator"
 msgstr "类别分隔符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3729
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3736
 msgid "Filter the available answers by this value"
 msgstr "按值筛选现有答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3730
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3737
 msgid "Code filter"
 msgstr "代码筛选"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3740
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3747
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "答案项将分布于这里设定的栏目"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3741
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3748
 msgid "Display columns"
 msgstr "显示列"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3748
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3755
 msgid "How many rows to display"
 msgstr "显示的行数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3749
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3756
 msgid "Display rows"
 msgstr "显示行"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3759
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3766
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "使用可访问下拉框替代弹出日历"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3760
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3767
 msgid "Display dropdown boxes"
 msgstr "显示下拉框"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3767
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3774
 msgid "Minimum year value in calendar"
 msgstr "日历最小年份值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3768
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3775
 msgid "Minimum year"
 msgstr "最小年份"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3775
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3782
 msgid "Maximum year value for calendar"
 msgstr "日历最大年份值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3776
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3783
 msgid "Maximum year"
 msgstr "最大年份"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3783
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3790
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "下拉列表的前缀|后缀"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3784
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3791
 msgid "Dropdown prefix/suffix"
 msgstr "下拉前缀/后缀"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3791
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3798
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "下拉列表的答案后分隔符|下拉列表内分隔符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3792
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3799
 msgid "Dropdown separator"
 msgstr "下拉分隔符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3799
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3806
 msgid "Enter a header text for the first scale"
 msgstr "为首个尺度输入表头文本"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3800
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3807
 msgid "Header for first scale"
 msgstr "首个尺度的标题"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3807
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3814
 msgid "Enter a header text for the second scale"
 msgstr "为第二个尺度输入表头文本"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3808
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3815
 msgid "Header for second scale"
 msgstr "第二个尺度的标题"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3812
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3972
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3980
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3996
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4012
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4020
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4090
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3819
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3979
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3987
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4003
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4019
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4027
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4097
 msgid "Input"
 msgstr "输入"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3815
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3822
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "多重数值输入和必须等于该值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3816
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3823
 msgid "Equals sum value"
 msgstr "等于合计值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3823
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3830
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr "如果选择了特定答案则排除所有其它选项-仅输入答案代码，用分号分隔。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3824
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3831
 msgid "Exclusive option"
 msgstr "排除选项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3834
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3841
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr "如果参与者标记了所有选项，把所有都取消勾选并勾选\"独家选项\"设置内的选项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3835
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3842
 msgid "Auto-check exclusive option if all others are checked"
 msgstr "如果所有其它都检测了则自动检测独家选项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3842
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3853
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3864
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3875
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3885
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3895
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3904
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3913
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3923
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3931
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3849
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3860
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3871
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3882
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3892
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3902
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3911
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3920
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3930
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3938
 msgid "Location"
 msgstr "位置"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3847
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3854
 msgid "Store the city?"
 msgstr "保存城市？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3848
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3855
 msgid "Save city"
 msgstr "保存城市"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3858
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3865
 msgid "Store the state?"
 msgstr "保存省份？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3859
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3866
 msgid "Save state"
 msgstr "保存省份"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3869
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3876
 msgid "Store the postal code?"
 msgstr "保存邮编？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3870
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3877
 msgid "Save postal code"
 msgstr "保存邮编"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3880
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3887
 msgid "Store the country?"
 msgstr "保存国家？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3881
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3888
 msgid "Save country"
 msgstr "保存国别"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3889
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3896
 msgid "Google Maps"
 msgstr "谷歌地图"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3890
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3897
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr "激活本项可在输入字段上方显示地图，供用户选择位置"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3891
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3898
 msgid "Use mapping service"
 msgstr "使用地图服务"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3899
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3906
 msgid "Width of the map in pixel"
 msgstr "地图宽度像素值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3900
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3907
 msgid "Map width"
 msgstr "地图宽度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3908
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3915
 msgid "Height of the map in pixel"
 msgstr "地图高度像素值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3909
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3916
 msgid "Map height"
 msgstr "地图高度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3918
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3925
 msgid "Get the default location using the user's IP address?"
 msgstr "使用用户的IP地址获取默认位置？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3919
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3926
 msgid "IP as default location"
 msgstr "IP作为默认位置"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3926
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3933
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr "首次加载页面时的地图默认坐标。格式：纬度[空格]经度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3927
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3934
 msgid "Default position"
 msgstr "默认位置"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3935
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3942
 msgid "Map zoom level"
 msgstr "地图缩放级别"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3936
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3943
 msgid "Zoom level"
 msgstr "缩放级别"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3948
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3955
 msgid "Hide the tip that is normally shown with a question"
 msgstr "隐藏问题提示"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3949
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3956
 msgid "Hide tip"
 msgstr "隐藏提示"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3959
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3966
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "始终隐藏该题。这在使用答案预填来包含数据时很有用。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3960
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3967
 msgid "Always hide this question"
 msgstr "始终隐藏本题"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3967
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3974
 msgid "Limit the number of possible answers"
 msgstr "限制答案项数目"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3968
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3975
 msgid "Maximum answers"
 msgstr "最多答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3975
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3982
 msgid "Maximum sum value of multiple numeric input"
 msgstr "多重数值输入的最大合计值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3976
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3983
 msgid "Maximum sum value"
 msgstr "最大合计值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3983
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3990
 msgid "Maximum value of the numeric input"
 msgstr "数值输入的最大值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3984
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4040
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3991
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4047
 msgid "Maximum value"
 msgstr "最大值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3991
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3998
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr "把先前问题总计作为本题最大值的SGQA标识符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3992
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3999
 msgid "Max value from SGQA"
 msgstr "SGQA最大值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3999
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4006
 msgid "Maximum characters allowed"
 msgstr "允许的最大字符数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4000
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4007
 msgid "Maximum characters"
 msgstr "最大字符数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4007
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4014
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "确保最少答案项数目(0=无限制)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4008
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4015
 msgid "Minimum answers"
 msgstr "最少答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4015
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4022
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "多重数值输入的总和必须大于该值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4016
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4023
 msgid "Minimum sum value"
 msgstr "最小合计值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4023
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4030
 msgid "Minimum value of the numeric input"
 msgstr "数值输入的最小值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4024
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4048
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4031
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4055
 msgid "Minimum value"
 msgstr "最小值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4031
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4038
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr "把先前问题总计作为本题最小值的SGQA标识符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4032
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4039
 msgid "Minimum value from SGQA"
 msgstr "SGQA最小值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4039
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4046
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的最大值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4047
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4054
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的最小值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4055
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4056
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4062
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4063
 msgid "Step value"
 msgstr "步进值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4066
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4073
 msgid "Use checkbox layout"
 msgstr "使用复选框布局"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4067
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4074
 msgid "Checkbox layout"
 msgstr "复选框布局"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4077
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4084
 msgid "Present answer options in reverse order"
 msgstr "倒序提供答案选项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4078
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4085
 msgid "Reverse answer order"
 msgstr "倒置答案顺序"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4085
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4092
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "把先前问题总计用作总计的本题SGQA标识符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4086
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4093
 msgid "Value equals SGQA"
 msgstr "值等于SGQA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4097
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4104
 msgid "Restrict input to integer values"
 msgstr "限制输入为整数值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4098
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4105
 msgid "Integer only"
 msgstr "仅整数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4110
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4117
 msgid "Allow only numerical input"
 msgstr "仅限数值输入"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4111
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4118
 msgid "Numbers only"
 msgstr "仅限数字"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4128
 msgid "Rows"
 msgstr "行数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4122
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4129
 msgid "Columns"
 msgstr "列"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4123
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4130
 msgid "Both rows and columns"
 msgstr "行和列"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4126
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4133
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr "显示行、列或行列的合计"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4127
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4134
 msgid "Show totals for"
 msgstr "显示合计："
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4140
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4147
 msgid "Show grand total for either columns or rows"
 msgstr "显示行列总计"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4141
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4148
 msgid "Show grand total"
 msgstr "显示总计"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4152
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4159
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "把文本输入框替代下拉列表用作提供"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4153
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4160
 msgid "Text inputs"
 msgstr "文本输入"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4163
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4170
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "当\"其它：\"选项激活时设置 \"其它：\" 评论字段为必填"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4164
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4171
 msgid "'Other:' comment mandatory"
 msgstr "'其他：'必填的评论"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4174
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4181
 msgid "Allow only numerical input for 'Other' text"
 msgstr "`其它`文本仅限数值输入"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4175
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4182
 msgid "Numbers only for 'Other'"
 msgstr "`其它`仅限数字"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4182
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4189
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "用自定义文本替换'其它：'标签的答案项"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4183
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4190
 msgid "Label for 'Other:' option"
 msgstr "`其它：'选项的标签"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4193
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4200
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "通过设置为“是”在可打印视图内的该问题前插入分页符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4194
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4201
 msgid "Insert page break in printable view"
 msgstr "在可打印视图内插入分页符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4201
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4208
 msgid "Add a prefix to the answer field"
 msgstr "为答案项字段添加前缀"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4202
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4209
 msgid "Answer prefix"
 msgstr "答案项前缀"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4212
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4219
 msgid "Show statistics of this question in the public statistics page"
 msgstr "在公众统计页面显示该题的统计"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4213
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4220
 msgid "Show in public statistics"
 msgstr "在公开统计内显示"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4223
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4230
 msgid "Present answers in random order"
 msgstr "随机提供答案"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4224
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4231
 msgid "Random answer order"
 msgstr "随机答案顺序"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4228
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4239
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4247
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4255
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4263
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4271
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4297
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4308
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4235
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4246
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4254
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4262
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4270
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4278
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4304
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4315
 msgid "Slider"
 msgstr "滑块"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4234
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4235
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4291
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4292
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4241
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4242
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4298
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4299
 msgid "Use slider layout"
 msgstr "使用滑块布局"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4242
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4243
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4249
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4250
 msgid "Slider minimum value"
 msgstr "滑块最小值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4250
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4251
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4257
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4258
 msgid "Slider maximum value"
 msgstr "滑块最大值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4258
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4259
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4265
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4266
 msgid "Slider accuracy"
 msgstr "滑块精度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4266
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4267
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4273
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4274
 msgid "Slider initial value"
 msgstr "滑块初始值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4277
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4284
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "滑块中间显示操纵柄（这不会设置初始值）"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4278
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4285
 msgid "Slider starts at the middle position"
 msgstr "滑块起始位于中间位置"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4287
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4294
 msgid "Yes - stars"
 msgstr "是 - 星级"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4288
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4295
 msgid "Yes - slider with emoticon"
 msgstr "是 - 带表情的滑块"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4303
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4310
 msgid "Display min and max value under the slider"
 msgstr "在滑块下显示最小和最大值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4304
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4311
 msgid "Display slider min and max value"
 msgstr "显示滑块最小值和最大值"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4311
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4318
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "答案r|滑块左边文本|滑块右边文本分隔符"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4312
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4319
 msgid "Slider left/right text separator"
 msgstr "滑块左/右文本分隔"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4319
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4326
 msgid "Add a suffix to the answer field"
 msgstr "为答案项字段添加后缀"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4320
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4327
 msgid "Answer suffix"
 msgstr "答案项后缀"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4327
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4334
 msgid "Width of text input box"
 msgstr "文本输入框宽度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4328
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4335
 msgid "Input box width"
 msgstr "输入框宽度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4338
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4345
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "用下拉框替代单选按钮列表"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4339
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4346
 msgid "Use dropdown boxes"
 msgstr "使用下拉框"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4347
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4354
 msgid "Nominal"
 msgstr "定类"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4348
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4355
 msgid "Ordinal"
 msgstr "定序"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4349
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4356
 msgid "Scale"
 msgstr "尺度"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4351
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4358
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "为该题设定SPSS导出尺度类型 "
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4352
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4359
 msgid "SPSS export scale type"
 msgstr "SPSS 导出尺度类型"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4357
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4365
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4376
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4387
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4397
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4405
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4413
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4421
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4429
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4437
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4445
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4453
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4461
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4469
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4477
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4485
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4493
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4364
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4372
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4383
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4394
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4404
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4412
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4420
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4428
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4436
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4444
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4452
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4460
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4468
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4476
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4484
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4492
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4500
 msgid "Timer"
 msgstr "计时器"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4360
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4367
 msgid "Limit time to answer question (in seconds)"
 msgstr "限时答题（秒）"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4361
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4368
 msgid "Time limit"
 msgstr "时间限制"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4368
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4375
 msgid "Warn and move on"
 msgstr "警告并继续"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4369
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4376
 msgid "Move on without warning"
 msgstr "不带警告继续"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4370
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4377
 msgid "Disable only"
 msgstr "仅禁用"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4371
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4378
 msgid "Action to perform when time limit is up"
 msgstr "到达时限时执行的操作"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4372
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4379
 msgid "Time limit action"
 msgstr "时间限制操作"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4382
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4389
 msgid "Disable the next button until time limit expires"
 msgstr "超时后禁用下一页按钮"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4383
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4390
 msgid "Time limit disable next"
 msgstr "时间限制禁用下一页"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4392
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4399
 msgid "Disable the prev button until the time limit expires"
 msgstr "超时后禁用上一页按钮"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4393
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4400
 msgid "Time limit disable prev"
 msgstr "时间限制禁用上一页"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4400
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4407
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr "倒计时期间在计时器内显示的文本消息"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4401
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4408
 msgid "Time limit countdown message"
 msgstr "时限倒计时消息"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4408
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4415
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr "时限倒计时计时器CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4409
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4416
 msgid "Time limit timer CSS style"
 msgstr "时限计时器CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4416
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4423
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "在执行'超时操作'前显示的'超时消息'的秒数(置空则默认为 1 秒)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4417
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4424
 msgid "Time limit expiry message display time"
 msgstr "超时消息显示延时"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4424
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4431
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "超时后显示的消息 (本设置置空则显示默认的消息)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4425
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4432
 msgid "Time limit expiry message"
 msgstr "超时消息"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4432
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4439
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "时限消息的CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4433
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4440
 msgid "Time limit message CSS style"
 msgstr "时限消息的CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4440
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4447
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "在倒计时期间显示'时限警告' (置空则不显示警告)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4441
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4448
 msgid "1st time limit warning message timer"
 msgstr "首次限时警告消息计时器"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4448
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4455
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "'时限警告' 继续停留的秒数(本设置置空不会关闭显示)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4449
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4456
 msgid "1st time limit warning message display time"
 msgstr "首次时限警告消息显示时长"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4456
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4463
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "作为'时限警告'显示的消息 (本设置置空则显示默认的警告)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4457
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4464
 msgid "1st time limit warning message"
 msgstr "首次时限警告消息"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4464
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4471
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "时限警告消息的CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4465
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4472
 msgid "1st time limit warning CSS style"
 msgstr "首次时限警告CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4472
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4479
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "在倒计时期间显示二次'时限警告' (置空则不显示警告)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4473
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4480
 msgid "2nd time limit warning message timer"
 msgstr "二次限时警告消息计时器"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4480
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4487
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "二次'时限警告' 继续停留的秒数(本设置置空不会关闭显示)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4481
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4488
 msgid "2nd time limit warning message display time"
 msgstr "第二次时限警告消息显示时长"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4488
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4495
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "作为'时限警告'显示的二次消息 (本设置置空则显示默认的警告)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4489
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4496
 msgid "2nd time limit warning message"
 msgstr "二次时限警告消息"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4496
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4503
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "二次时限警告消息的CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4497
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4504
 msgid "2nd time limit warning CSS style"
 msgstr "首次时限警告CSS样式"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4501
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4512
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4508
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4519
 msgid "File metadata"
 msgstr "文件元数据"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4507
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4514
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "参与者是否需要给予上传文件一个标题？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4508
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4515
 msgid "Show title"
 msgstr "显示标题"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4518
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4525
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "参与者是否需要给予上传文件一个评论？"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4519
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4526
 msgid "Show comment"
 msgstr "显示评论"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4528
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4535
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "参与者上传的单个文件大小不能超过该容量"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4529
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4536
 msgid "Maximum file size allowed (in KB)"
 msgstr "允许的最大文件大小（KB）"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4537
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4544
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr "参与者为本题上传的最大文件数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4538
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4545
 msgid "Max number of files"
 msgstr "最大文件数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4546
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4553
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr "参与者为本题上传的最小文件数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4547
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4554
 msgid "Min number of files"
 msgstr "最小文件数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4555
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4562
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr "允许上传的文件类型，以逗号分隔。例如，pdf,doc,odt。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4556
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4563
 msgid "Allowed file types"
 msgstr "允许的文件类型"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4563
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4570
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr "把问题放入指定的随机题组，指定题组内的所有问题将随机显示"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4564
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4571
 msgid "Randomization group name"
 msgstr "随机题组名称"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4736
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4743
 msgid "Version"
 msgstr "版本"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4745
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4752
 msgid "Online Manual"
 msgstr "在线手册"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4748
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4755
 msgid "Support this project - Donate to "
 msgstr "支持本项目 - 捐赠"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4751
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4758
 msgid "Visit our website!"
 msgstr "请访问我们的网站！"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4860
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4867
 msgid "Email was not sent because demo-mode is activated."
 msgstr "演示模式 - 邮件未能发送。"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4980
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4987
 msgid "SMTP debug output:"
 msgstr "SMTP 调试输出："
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5498
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5505
 #, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL 命令失败：%s 原因： %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7623
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7630
 msgid "Token code"
 msgstr "操作代码编码"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7624
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7631
 msgid "Language code"
 msgstr "语言编码"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7625
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7632
 msgid "Invitation sent date"
 msgstr "邀请发送日期"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7626
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7633
 msgid "Last Reminder sent date"
 msgstr "提醒邮件最后发送日期"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7627
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7634
 msgid "Total numbers of sent reminders"
 msgstr "发送提醒邮件总数"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7647
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7654
 #, php-format
 msgid "Attribute %s"
 msgstr "属性%s"
@@ -12073,60 +12066,60 @@ msgstr "请至少选择'%d'个答案（限问题\"%s\"）"
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "您标记了问题 \"%s\"的\"其它\" 字段。请再填写相应的\"其它评论\"字段。"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3949
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4263
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5523
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7352
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3961
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4275
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5535
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7364
 msgid "Error: This question has no answers."
 msgstr "错误：该问题没有答案项。"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4406
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4418
 msgid "Only numbers may be entered in these fields"
 msgstr "这些字段只能输入数字"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4426
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4438
 msgid "Remaining: "
 msgstr "剩余："
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4428
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4440
 msgid "Total: "
 msgstr "总计："
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4474
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4480
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4516
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4527
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4486
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4492
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4528
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4539
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "答案无效。所有输入项总计不能超过"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4493
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4501
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4505
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4513
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "答案无效。所有输入项总计至少是%s。"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4629
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4641
 msgid "Only numbers may be entered in this field"
 msgstr "本字段只能输入数字"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4815
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4816
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4827
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4828
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "把大头针拖放到期望的位置。您也可在地图上右击移动大头针。"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6116
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6452
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6789
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6941
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7582
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6128
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6464
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6801
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6953
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7594
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "错误：本语言未含此问题的标签集或问题答案项不存在。"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6707
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6719
 msgid "..."
 msgstr "..."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6935
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6947
 msgid "Error: There are no answers defined for this question."
 msgstr "错误：没有为这个问题定义答案。"
 
@@ -12314,6 +12307,22 @@ msgstr "操作代码："
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "此调查为空，无法进行测试或完成。"
 
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:99
+msgid "Select file"
+msgstr "选择文件"
+
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:102
+msgid "You can upload "
+msgstr "您可上传"
+
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:102
+msgid " under "
+msgstr "不超过"
+
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:102
+msgid " KB each"
+msgstr "每个文件 KB"
+
 #: /var/lib/limesurvey-svn/subversion1x/register.php:79
 msgid "The email you used is not valid. Please try again."
 msgstr "您使用的邮件地址无效，请重试。"
@@ -12334,6 +12343,42 @@ msgstr "一封包含访问这个调查详细信息的邮件已经发送到您提
 msgid "Survey Administrator"
 msgstr "调查管理员"
 
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:86
+msgid "Sorry, This file extension ("
+msgstr "抱歉，该文件扩展（"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:86
+msgid ") is not allowed !"
+msgstr "）未经允许！"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:100
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:138
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:185
+msgid "Sorry, This file is too large. Only files upto "
+msgstr "抱歉，文件过大。允许文件极限为"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:100
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:138
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:185
+msgid " KB are allowed"
+msgstr " KB"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:123
+msgid "The file has been successfuly uploaded."
+msgstr "文件已成功上传。"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:162
+msgid "The file has been successfuly uploaded"
+msgstr "文件已成功上传。"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:175
+msgid "Sorry, there was an error uplodaing your file"
+msgstr "抱歉，上传文件时出错"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:194
+msgid "Unknown error"
+msgstr "未知错误"
+
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:385
 msgid "Please wait ..."
 msgstr "请等待..."
@@ -12353,6 +12398,15 @@ msgstr "调查中总记录数"
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:425
 msgid "Generating summaries ..."
 msgstr "正在生成摘要..."
+
+#~ msgid "Did not copy questions"
+#~ msgstr "不复制问题"
+
+#~ msgid "No condition selected to copy from"
+#~ msgstr "未指定复制目标的条件"
+
+#~ msgid "No question selected to copy condition to"
+#~ msgstr "未指定复制条件的问题"
 
 #~ msgid "Import answers from a deactivated survey table"
 #~ msgstr "从一个停用的调查表中导入答案"
@@ -13136,9 +13190,6 @@ msgstr "正在生成摘要..."
 #~ msgid "Second Label Set:"
 #~ msgstr "第二标签集："
 
-#~ msgid "Select CSV File"
-#~ msgstr "选择CSV文件"
-
 #~ msgid "No LID has been provided. Cannot dump label set."
 #~ msgstr "未提供LID，无法转储标签集。"
 
@@ -13332,9 +13383,6 @@ msgstr "正在生成摘要..."
 
 #~ msgid "Update Token"
 #~ msgstr "更新操作代码"
-
-#~ msgid "Date is not valid!"
-#~ msgstr "无效日期！"
 
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
@@ -13572,9 +13620,6 @@ msgstr "正在生成摘要..."
 
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "文件转换错误。您必须选一个csv文件"
-
-#~ msgid "You need to upload the file"
-#~ msgstr "您需要上传一个csv格式的文件"
 
 #~ msgid "You must upload a CSV file"
 #~ msgstr "您必须上传一个csv格式文件"
