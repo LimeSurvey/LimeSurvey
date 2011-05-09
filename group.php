@@ -39,9 +39,9 @@ else
         if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
             $_SESSION['step'] = 1;
-        } 
+        }
     }
-    
+
     if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     if (!isset($gl)) {$gl=array('null');}
@@ -1132,7 +1132,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 
                         foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
                         {
-                            $cascadefqa ="java".$surveyid."X".$gid."X".$cascader.$fansrows['code'];
+                            $cascadefqa ="java".$surveyid."X".$gid."X".$cascader.$fansrows['title'];
                             $appendj .= "\t\t||\n";
                             $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
                         }
