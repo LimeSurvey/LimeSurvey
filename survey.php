@@ -162,7 +162,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             submittokens();
         }
 
-        //Send notification to survey administrator 
+        //Send notification to survey administrator
         SendSubmitNotifications();
 
         $_SESSION['finished']=true;
@@ -382,7 +382,7 @@ print <<<END
 
 	function checkconditions(value, name, type)
 	{
-    
+
 END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
@@ -706,13 +706,13 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
         $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
         if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+            $tqresult = db_execute_assoc($tqquery); //Checked
             $OrigQuestion = $tqresult->FetchRow();
-            
+
             if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
             {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
             } else {
                 $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid != 0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
             }
@@ -790,16 +790,16 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
         $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
         if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+            $tqresult = db_execute_assoc($tqquery); //Checked
             $OrigQuestion = $tqresult->FetchRow();
-            
+
             if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
             {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
             } else {
                 $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-            } 
+            }
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
@@ -827,7 +827,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                         $groups=getGroupsByQuestion($surveyid);
                         foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
                         {
-                            $cascadefqa ="java".$surveyid."X".$groups[$cascader]."X".$cascader.$fansrows['code'];
+                            $cascadefqa ="java".$surveyid."X".$groups[$cascader]."X".$cascader.$fansrows['title'];
                             $appendj .= "\t\t||\n";
                             $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
                         }
