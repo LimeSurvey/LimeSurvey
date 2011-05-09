@@ -95,6 +95,11 @@ $(document).ready(function()
                 });
             }
         }
+        // disable double-posts in all forms
+	    $('form').submit(function()
+        {
+            $('input[type=button], input[type=submit]', this).attr('disabled', 'disabled');
+        });
 });
 
 gmaps = new Object;
@@ -435,11 +440,6 @@ function show_hide_group(group_id)
 		{
 			$("#group-" + group_id).hide();
 		}
-}
-
-function disable_navigator()
-{
-	$('#navigator input').attr('disabled', 'disabled');
 }
 
 function navigator_countdown_btn()
