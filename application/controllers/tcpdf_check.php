@@ -9,7 +9,7 @@ class Tcpdf_check extends CI_Controller {
 
     function index()
     {
-        $this->load->library('pdf');
+        $this->load->library('admin/pdf');
         $this->load->config('lsconfig');
         require ($this->config->item('homedir').'application/config/tcpdf_config_ci.php');
         $this->_config = $tcpdf;
