@@ -997,6 +997,10 @@ td.statsImageholder {
   font-family: arial, verdana, sans-serif;
 }
 
+span.qnumcode {
+	font-style:italic;
+}	
+
 /* Question Index */
 .outerframe.withindex {
   margin-left: 1em;

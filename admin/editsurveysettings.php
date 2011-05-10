@@ -56,7 +56,7 @@
             $esrow['startdate']                = '';
             $esrow['savetimings']              = 'N';
             $esrow['expires']                  = '';
-            $esrow['showqnumcode']             = 'N';
+            $esrow['showqnumcode']             = 'X';
             $esrow['showwelcome']              = 'Y';
             $esrow['emailresponseto']          = '';
             $esrow['assessments']              = 'N';
@@ -521,7 +521,7 @@
 			$sel_showqnc[$set_showqnc] = ' selected="selected"';
 		    }
                 if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
-		    	$sel_showqnc['C'] = ' selected="selected"';
+		    	$sel_showqnc['X'] = ' selected="selected"';
 		    };
 		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n\t\t"
 		    . "<select id=\"showqnumcode\" name=\"showqnumcode\">\n\t\t\t"

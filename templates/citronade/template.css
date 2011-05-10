@@ -121,6 +121,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .question-wrapper .question-text{font-weight:bold;}
 .question-wrapper .question-text strong,.question-wrapper .question-text b{font-weight:bolder;}/* see for strong and b to add some color */
 .asterisk {color:#FF8900;}
+span.qnumcode {font-style:italic;}
 
 /* input decoration */
 #tokenform input[type=text],.form input[type=text],.answers input[type=text],.answers textarea

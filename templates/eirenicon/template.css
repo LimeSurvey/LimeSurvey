@@ -57,6 +57,10 @@ td.survey-question-help {
   font-family: verdana;
 }
 
+span.qnumcode {
+	font-style:italic;
+}	
+
 #progress-graph {
   line-height: 1.5em;
   width: 17em;
