@@ -44,7 +44,8 @@
                 $tab_title[$i]  .= '('.$clang->gT("Base language").')';
 
             $esrow = array_map('htmlspecialchars', $esrow);
-            $tab_content[$i] = "<li><label for=''>".$clang->gT("Survey title").":</label>\n"
+            $tab_content[$i] = "<ul>\n"
+            . "<li><label for=''>".$clang->gT("Survey title").":</label>\n"
             . "<input type='text' size='80' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></li>\n"
             . "<li><label for=''>".$clang->gT("Description:")."</label>\n"
             . "<textarea cols='80' rows='15' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea>\n"

@@ -541,7 +541,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
           $surveysummary .= ""
             . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$GidNext'>"
             . "<img src='{$imageurl}/next_20.png' title='' alt='".$clang->gT("Next question group")."' "
-            ."name='questiongroupnext' ".$clang->gT("Next question group")."/> </a>";
+            ."name='questiongroupnext' /> </a>";
         }
         else
         {
