@@ -77,6 +77,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91 (build 10030) to 1.91+ (build 10060)
+#Updated translation: Chinese Simplified - provided by Yooyooh (c_schmitz)
+-Fixed issue #04965: Error upload file type. (IE javascript issue) Thank you fcabralpacheco for the patch (texens)
+-Fixed issue #04223 - GSOC - Layout issue at warning at sending token email invitations (jcleeland)
+-Fixed issue #05122 - Cascade Feature not working. Thx to patch submitted by jmitchell (jcleeland)
+-Fixed issue #05122 - Cascade feature not working. Patch provided by jmitchell (jcleeland)
+-Fixed issue #05124: Can't proceed to next page because of disable_navigator(); function. (wavexx)
+-Fixed issue #05134: I cannot display question number and/or code (tpartner)
+-Fixed issue #5121: Can't set default answers / answer set not saved? (dionet)
+-Fixed issue #5128: Survey timings table is empty and SQL error on browsing timings when using MSSQL server (c_schmitz)
+-Fixed issue #5143: Browse button missing in statistics for List (Radio) with Comments question types (c_schmitz)
+-Fixed issue #5144: Register Form (Public) contains table-row for a hidden input field only - patch kindly provided by mot (c_schmitz)
+-Fixed issue #5145: Cross-Site Scripting (XSS) issue (c_schmitz)
+-Fixed issue: Invalid HTML in "Edit text elements" display (tpartner)
+
 Changes from 1.91RC6 (build 9986) to 1.91 (build 10030)
 #Updated translation: Bulgarian (c_schmitz)
 #Updated translation: Macedonian, thanks to Bojan Jankuloski (gandalfar)
