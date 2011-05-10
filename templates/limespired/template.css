@@ -391,6 +391,10 @@ input.submit:hover {
   padding: 0 5px 0 10px;
 }
 
+span.qnumcode {
+	font-style:italic;
+}
+
 .questionhelp {
   visibility: visible;
   display: block;

@@ -202,6 +202,10 @@ a:link,a:visited {
 span.questionhelp {
 }
 
+span.qnumcode {
+	font-style:italic;
+}
+
 td.questiontext {
   font-family: verdana;
   font-size: 12px;
