@@ -2911,7 +2911,7 @@ function surveymover()
            //first step and we do not want to go back to the welcome screen since we don't show that...
            //so skip the prev button
         } else {
-            $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();" value=' &lt;&lt; "
+            $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value=' &lt;&lt; "
             . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
         }
     }
