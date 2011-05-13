@@ -1130,7 +1130,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 
                         foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
                         {
-                            $cascadefqa ="java".$surveyid."X".$gid."X".$cascader.$fansrows['code'];
+                            $cascadefqa ="java".$surveyid."X".$gid."X".$cascader.$fansrows['title'];
                             $appendj .= "\t\t||\n";
                             $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
                         }

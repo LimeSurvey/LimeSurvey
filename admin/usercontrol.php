@@ -205,8 +205,12 @@ if (!isset($_SESSION['loginID']))
                         if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
                         strpos($_POST['refererargs'], "action=logout") === FALSE)
                         {
+                        	require_once("../classes/inputfilter/class.inputfilter_clean.php");
+                        	$myFilter = new InputFilter('','',1,1,1);
+                        	// Prevent XSS attacks
+                        	$sRefererArg=$myFilter->process($_POST['refererargs']);
                             $_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
-                            . " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
+                            . " content=\"1;URL={$scriptname}?".$sRefererArg."\" />";
                             $loginsummary .= "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
                         }
                         $loginsummary .= "<br /><br />\n";

@@ -419,20 +419,8 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
             $CopyConditionsMessage = "<div class='warningheader'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</div>";
         }
     }
-    else
-    {
-        $message = $clang->gT("Did not copy questions","js").": ";
-        if (!isset($copyconditionsfrom))
-        {
-            $message .= $clang->gT("No condition selected to copy from","js").". ";
+    
         }
-        if (!isset($copyconditionsto))
-        {
-            $message .= $clang->gT("No question selected to copy condition to","js").".";
-        }
-        $conditionsoutput_action_error .= "<script type=\"text/javascript\">\n<!--\nalert('$message');\n//-->\n</script>\n";
-    }
-}
 //END PROCESS ACTIONS
 
 

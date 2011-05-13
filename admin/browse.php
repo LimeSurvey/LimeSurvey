@@ -1037,7 +1037,7 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     if (!isset($start) || $start =='') {$start = 0;}
     
     //LETS COUNT THE DATA
-    $dtquery = "SELECT count(*) FROM $surveytimingstable NATURAL JOIN $surveytable WHERE submitdate IS NOT NULL ";
+    $dtquery = "SELECT count(*) FROM {$surveytimingstable} INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ";
     
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
@@ -1045,7 +1045,7 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     if ($limit > $dtcount) {$limit=$dtcount;}
 
     //NOW LETS SHOW THE DATA
-    $dtquery = "SELECT * FROM $surveytimingstable NATURAL JOIN $surveytable WHERE submitdate IS NOT NULL ORDER BY $surveytable.id";
+    $dtquery = "SELECT * FROM $surveytimingstable INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ORDER BY $surveytable.id";
     
     if ($order == "desc") {$dtquery .= " DESC";}
 

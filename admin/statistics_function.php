@@ -1831,11 +1831,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
 
                         //handling for "other" field for list radio or list drowpdown
-                        if (($qtype == "L" || $qtype == "!") && $qother == "Y")
+                        if ((($qtype == "L" || $qtype == "!") && $qother == "Y") || $qtype == "L")
                         {
                             //add "other"
                             $alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$fielddata['fieldname'].'other');
                         }
+                    	if ( $qtype == "O")
+                     	{
+                    		//add "comment"
+                    		$alist[]=array($statlang->gT("Comments"),$statlang->gT("Comments"),$fielddata['fieldname'].'comment');
+                    	}
 
                 }	//end switch question type
                  
@@ -1955,12 +1960,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //"no answer" handling
                             elseif($al[0]=="NoAnswer")
                             {
-                                //								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($al[2])." IS NULL OR ";
                                 $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ( ";
                                 $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." = '')" : " (".db_quote_id($al[2])." LIKE ''))";
                             }
                         }
+                        elseif ($qtype == "O")
+                        {
+                            $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ( ";
+                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." <> '')" : " (".db_quote_id($al[2])." NOT LIKE ''))";
                         // all other question types
+                        }
                         else
                         {
                             $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." =";
@@ -2044,10 +2053,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                          
                         //"other" handling
                         //"Answers" means that we show an option to list answer to "other" text field
-                        elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || $qtype === "P")
+                        elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($qtype === "O" && $al[0] === $statlang->gT("Comments")) || $qtype === "P")
                         {
                             if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
                             else  $ColumnName_RM = $al[2];
+                            if ($qtype=='O') {
+                                $TotalCompleted -=$row[0];
+                            }
                             $fname="$al[1]";
                             if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                         }

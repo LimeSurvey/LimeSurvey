@@ -168,12 +168,12 @@ $(document).ready(function(){
                 if (filecount < minfiles)
                     $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
                 else if (filecount < maxfiles)
-                    $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may Save and exit');
+                    $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may return back to survey');
                 else
-                    $('#uploadstatus').html('The maximum number of files have been uploaded. You may save and exit');
+                    $('#uploadstatus').html('The maximum number of files have been uploaded. You may return back to survey');
 
                 if (filecount >= maxfiles)
-                    $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may Save and Exit !</p>');
+                    $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may return back to survey !</p>');
             }
         }
     });
@@ -281,11 +281,25 @@ function deletefile(count) {
     // rearrange the file indexes
     // i.e move the files below i to one step up
 
-    for (j = count; j <= licount; j++)
-    {
-        if ($('#li_'+j).visible())
-        {
-            $('#file_index_'+j).val(file_index++);
+            // rearrange the file indexes
+            // i.e move the files below i to one step up
+
+            file_index = $("#"+fieldname+"_file_index_"+count).val();
+            for (j = count; j <= licount; j++)
+            {
+                if ($('#'+fieldname+'_li_'+j).is(":visible"))
+                {
+                    $('#'+fieldname+'_file_index_'+j).val(file_index);
+                    file_index++;
+                }
+            }
+            var minfiles = $('#'+fieldname+'_minfiles').val();
+            var maxfiles = $('#'+fieldname+'_maxfiles').val();
+
+            if (filecount < minfiles)
+                $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
+            else
+                $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may return back to survey');
         }
     }
 

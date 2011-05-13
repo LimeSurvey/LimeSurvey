@@ -26,7 +26,7 @@
 
 $databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, mysqli, odbc_mssql, mssql_n, odbtp or postgres
                                        // mysql: Recommended driver for mysql
-                                       // mysqli: Slightly faster driver for mysql - not on all server systems available 
+                                       // mysqli: Slightly faster driver for mysql - not on all server systems available
                                        // odbc_mssql: MSSQL driver using ODBC with MS SQL Server
                                        // mssqlnative: Native SQL Server driver for SQL Server 2005+
                                        // mssql_n: Experimental driver for MS SQL Server which handles UTF-8 charsets
@@ -34,7 +34,7 @@ $databasetype       =   'mysql';       // ADOdb database driver - valid values a
                                        // postgres: Standard postgres driver
 
 $databaselocation   =   'localhost';   // Network location of your Database - for odbc_mssql or mssqlnative use the mssql servername, not localhost or IP
-$databasename       =   'limesurvey';  // The name of the database that we will create
+$databasename       =   'limesurvey_dev';  // The name of the database that we will create
 $databaseuser       =   'root';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   '';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing

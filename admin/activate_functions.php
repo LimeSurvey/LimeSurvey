@@ -304,7 +304,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 break;
             case 'id':
                 $createsurvey .= " I NOTNULL AUTO PRIMARY";
-                $createsurveytimings .= " `{$arow['fieldname']}` I NOTNULL AUTO PRIMARY,\n";
+                $createsurveytimings .= " `{$arow['fieldname']}` I NOTNULL PRIMARY,\n";
                 break;
             case "startdate":
             case "datestamp":

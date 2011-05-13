@@ -277,6 +277,30 @@ $options->responseCompletionState = incompleteAnsFilterstate();
 if (empty($options->responseCompletionState)) 
 {
     $options->responseCompletionState = 'show';
+    if (in_array('first_name',$_POST['attribute_select']))
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
+    }
+    if (in_array('last_name',$_POST['attribute_select']))
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
+    }
+    if (in_array('email_address',$_POST['attribute_select']))
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.email";
+    }
+    if (in_array('token',$_POST['attribute_select']))
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.token";
+    }
+
+    foreach ($attributeFields as $attr_name)
+    {
+        if (in_array($attr_name,$_POST['attribute_select']))
+        {
+            $dquery .= ", {$dbprefix}tokens_$surveyid.$attr_name";
+        }
+    }
 }
 if ($options->responseCompletionState == 'inc')
 {

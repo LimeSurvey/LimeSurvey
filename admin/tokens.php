@@ -1523,8 +1523,6 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
         $emresult = db_select_limit_assoc($emquery,$maxemails) or safe_die ("Couldn't do query.<br />\n$emquery<br />\n".$connect->ErrorMsg());
         $emcount = $emresult->RecordCount();
 
-        $tokenoutput .= "<ul>\n";
-         
         $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($surveylangs,$baselanguage);
@@ -1540,6 +1538,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
         $attributes=GetTokenFieldsAndNames($surveyid);
         if ($emcount > 0)
         {
+        	$tokenoutput .= "<ul>\n";
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
