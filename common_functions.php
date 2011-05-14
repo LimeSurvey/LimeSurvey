@@ -2384,13 +2384,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                 $fieldmap[$fieldname]['hasconditions']=$conditions;
                 $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                if ($arow['same_default'])
+                if ($qtypes[$arow['type']]['hasdefaultvalues'])
                 {
-                    $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                }
-                else
-                {
-                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                    if ($arow['same_default'])
+                    {
+                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
+                    }
+                    else
+                    {
+                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                    }
                 }
             }
             switch($arow['type'])
