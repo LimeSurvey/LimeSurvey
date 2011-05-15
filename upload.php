@@ -73,7 +73,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
     for ($i = 0; $i < count($valid_extensions_array); $i++)
         $valid_extensions_array[$i] = trim($valid_extensions_array[$i]);
-    
+
     $pathinfo = pathinfo($_FILES['uploadfile']['name']);
     $ext = $pathinfo['extension'];
 
@@ -83,7 +83,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     {
         $return = array(
                         "success" => false,
-                        "msg" => $clang->gT("Sorry, This file extension (").$ext.$clang->gT(") is not allowed !")
+                        "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
                     );
 
         echo json_encode($return);
@@ -97,7 +97,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
         {
             $return = array(
                 "success" => false,
-                "msg" => $clang->gT("Sorry, This file is too large. Only files upto ").$maxfilesize.$clang->gT(" KB are allowed")
+                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
             );
             echo json_encode($return);
         }
@@ -128,14 +128,14 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
             // unlink($randfileloc);
         }
     }
-    else 
+    else
     {    // if everything went fine and the file was uploaded successfuly,
          // send the file related info back to the client
         if ($size > $maxfilesize)
         {
             $return = array(
                 "success" => false,
-                "msg" => $clang->gT("Sorry, This file is too large. Only files upto ").$maxfilesize.$clang->gT(" KB are allowed")
+                 "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
             );
             echo json_encode($return);
         }
@@ -159,9 +159,9 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
                 "name"    => rawurlencode(basename($filename)),
                 "ext"     => $ext,
                 "filename"      => $randfilename,
-                "msg"     => $clang->gT("The file has been successfuly uploaded")
+                "msg"     => $clang->gT("The file has been successfuly uploaded.")
             );
-   
+
             echo json_encode($return);
         }
         // if there was some error, report error message
@@ -172,7 +172,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
             {
                 $return = array(
                                 "success" => false,
-                                "msg" => $clang->gT("Sorry, there was an error uplodaing your file")
+                                "msg" => $clang->gT("Sorry, there was an error uploading your file")
                             );
 
                 echo json_encode($return);
@@ -182,7 +182,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
             {
                 $return = array(
                                 "success" => false,
-                                "msg" => $clang->gT("Sorry, This file is too large. Only files upto ").$maxfilesize.$clang->gT(" KB are allowed")
+                                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
                             );
 
                 echo json_encode($return);

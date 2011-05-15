@@ -98,8 +98,8 @@ $body = '
         <div align="center" class="upload-div">
             <button id="button1" class="upload-button" type="button" >'.$clang->gT("Select file").'</button>
         </div>
-        
-        <p class="uploadmsg">'.$clang->gT("You can upload ").$qidattributes['allowed_filetypes'].$clang->gT(" under ").$qidattributes['max_filesize'].$clang->gT(" KB each").'</p>
+
+        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
         <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->

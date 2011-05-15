@@ -350,7 +350,7 @@ if($subaction=='bounceprocessing')
             }
            else
             {
-                echo sprintf($clang->gT("Your inbox is empty"));
+                echo sprintf($clang->gT("Your inbox is empty."));
             }
             @imap_close($mbox);
 			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
