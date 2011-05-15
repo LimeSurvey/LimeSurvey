@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Norwegian Bokmål language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-19 07:00+0200\n"
-"PO-Revision-Date: 2011-04-24 10:57+0100\n"
+"POT-Creation-Date: 2011-05-08 12:00+0200\n"
+"PO-Revision-Date: 2011-05-15 23:07+0100\n"
 "Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team: Norwegian Bokmål - Pål Monstad <pal.monstad@hkskole.no>\n"
 "MIME-Version: 1.0\n"
@@ -150,7 +150,7 @@ msgstr "Administrasjonsskjerm"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:314
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:119
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:131
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:811
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:815
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpgroup.php:39
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:57
@@ -202,7 +202,7 @@ msgstr "Administrasjonsskjerm"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3131
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:27
 #: /var/lib/limesurvey-svn/subversion1x/save.php:733
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6572
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6579
 #: /var/lib/limesurvey-svn/subversion1x/index.php:544
 msgid "Error"
 msgstr "Feil"
@@ -550,9 +550,9 @@ msgstr "SID"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:248
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:583
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3309
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3310
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3313
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3321
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3322
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3325
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:141
 msgid "Survey"
 msgstr "Undersøkelse"
@@ -679,38 +679,38 @@ msgstr "Svarprosent"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1854
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1860
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1876
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3676
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3757
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3832
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3845
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3856
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3867
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3878
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3916
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3946
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3957
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4064
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4075
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4095
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4107
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4137
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4150
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4161
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4172
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4191
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4210
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4221
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4232
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4275
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4301
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4336
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4381
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4391
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4505
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4516
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5041
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5511
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5550
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3683
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3764
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3839
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3852
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3863
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3874
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3885
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3923
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3953
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3964
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4071
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4082
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4102
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4114
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4144
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4157
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4168
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4179
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4198
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4217
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4228
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4239
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4282
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4308
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4343
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4388
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4398
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4512
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4523
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5053
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5523
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5562
 msgid "Yes"
 msgstr "Ja"
 
@@ -792,39 +792,39 @@ msgstr "Ja"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:72
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1861
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1877
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3675
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3756
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3831
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3846
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3857
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3868
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3879
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3917
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3945
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3956
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4063
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4074
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4094
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4106
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4136
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4149
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4160
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4171
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4190
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4209
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4220
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4231
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4274
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4286
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4300
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4335
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4380
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4390
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4504
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4515
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5050
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5513
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5568
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3682
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3763
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3838
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3853
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3864
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3875
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3886
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3924
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3952
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3963
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4070
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4081
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4101
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4113
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4143
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4156
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4167
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4178
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4197
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4216
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4227
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4238
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4281
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4293
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4307
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4342
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4387
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4397
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4511
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4522
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5062
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5525
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5580
 msgid "No"
 msgstr "Nei"
 
@@ -913,7 +913,7 @@ msgstr "Ingen undersøkelser tilgjengelige - vennligst lag en."
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:905
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:241
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1868
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5105
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5117
 msgid "Male"
 msgstr "Mann"
 
@@ -933,7 +933,7 @@ msgstr "Mann"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:904
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:240
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1869
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5097
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5109
 msgid "Female"
 msgstr "Kvinne"
 
@@ -1061,8 +1061,8 @@ msgstr "Fullført"
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:522
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1734
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:166
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:406
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:883
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:436
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:913
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:326
 msgid "Action"
 msgstr "Hendelse"
@@ -1097,10 +1097,10 @@ msgid "Questions"
 msgstr "Spørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:608
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2802
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2806
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2819
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2825
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2814
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2818
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2837
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:82
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:130
@@ -1149,36 +1149,36 @@ msgstr "Beklager, men det er ikke noen støttede spørsmålstyper i denne unders
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1454
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1485
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1944
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:392
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:672
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:682
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:714
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:720
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:727
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:794
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:805
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:834
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:839
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:995
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:999
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1047
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:422
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:702
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:712
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:744
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:750
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:757
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:824
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:835
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:864
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:869
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1025
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1029
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1077
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:61
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:84
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:90
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:145
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:224
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:233
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:324
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:340
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:478
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:568
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:604
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:685
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:723
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:763
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:773
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:807
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:813
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:228
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:237
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:328
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:344
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:482
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:572
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:608
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:689
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:727
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:767
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:777
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:811
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:817
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:488
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:501
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1656
@@ -1209,7 +1209,7 @@ msgstr "Beklager, men det er ikke noen støttede spørsmålstyper i denne unders
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:139
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:143
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:65
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3307
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3314
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2336
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2411
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2576
@@ -1449,8 +1449,8 @@ msgstr "OG/ELLER dato er"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:645
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:250
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1878
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5512
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5558
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5524
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5570
 msgid "Uncertain"
 msgstr "Usikker"
 
@@ -1469,8 +1469,8 @@ msgstr "Usikker"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:649
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:253
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1884
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5673
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5716
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5685
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5728
 msgid "Increase"
 msgstr "Mer"
 
@@ -1489,8 +1489,8 @@ msgstr "Mer"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:650
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:254
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1886
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5674
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5727
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5686
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5739
 msgid "Same"
 msgstr "Ingen endring"
 
@@ -1509,8 +1509,8 @@ msgstr "Ingen endring"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:651
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:255
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1885
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5675
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5739
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5687
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5751
 msgid "Decrease"
 msgstr "Mindre"
 
@@ -1625,7 +1625,7 @@ msgstr "Standardspråk"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2662
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1348
 #: /var/lib/limesurvey-svn/subversion1x/question.php:659
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2995
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3001
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2937
 msgid "Submit"
 msgstr "Lever besvarelse"
@@ -1650,22 +1650,22 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr "Undersøkelsen din har blitt lagret. Du kan benytte deg av følgende opplysninger for å komme tilbake der du var i undersøkelsen. Det anbefales at du tar vare på denne e-posten til du er ferdig med undersøkelsen - vi kan ikke finne passordet ditt om du mister det."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:390
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:832
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:862
 #: /var/lib/limesurvey-svn/subversion1x/save.php:385
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3197
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3203
 msgid "Name"
 msgstr "Navn"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:391
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:215
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:440
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:228
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:444
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:653
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:665
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:448
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:657
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:669
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:223
 #: /var/lib/limesurvey-svn/subversion1x/save.php:386
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3200
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3226
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3206
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3232
 msgid "Password"
 msgstr "Passord"
 
@@ -1762,7 +1762,7 @@ msgstr "Viser besvarelse (ID %s)"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2399
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2419
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2579
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6072
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6084
 msgid "Please choose"
 msgstr "Vennligst velg"
 
@@ -1776,8 +1776,8 @@ msgstr "Vennligst velg"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2246
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:703
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1836
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1921
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2046
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1926
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2055
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:339
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:846
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:847
@@ -1786,16 +1786,16 @@ msgstr "Vennligst velg"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1900
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2416
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2659
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4102
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4116
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4132
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4187
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4206
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4343
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4524
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4533
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4542
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4551
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4109
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4123
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4139
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4194
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4213
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4350
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4531
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4540
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4549
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4558
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2428
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3237
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3586
@@ -1824,13 +1824,13 @@ msgstr "Din rangering"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1796
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:748
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:807
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1843
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2042
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2508
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2522
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2583
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2646
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2713
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1848
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2051
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2520
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2534
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2595
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2658
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2725
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:224
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:228
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:239
@@ -1854,34 +1854,34 @@ msgstr "Din rangering"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1473
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1862
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1870
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6558
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6563
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6565
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:6570
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1667
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2161
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2462
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2592
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2655
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5061
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5129
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5225
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5289
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5384
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5432
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5516
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5588
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5678
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5757
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5864
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5886
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5959
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6092
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6828
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6829
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7120
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7195
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7300
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7502
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7556
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5073
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5141
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5237
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5301
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5396
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5444
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5528
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5600
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5690
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5769
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5876
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5898
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5971
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6104
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6840
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6841
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7132
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7207
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7312
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7514
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7568
 msgid "No answer"
 msgstr "Ubesvart"
 
@@ -1890,7 +1890,7 @@ msgstr "Ubesvart"
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate.php:269
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:103
 #: /var/lib/limesurvey-svn/subversion1x/admin/editemailtemplates.php:160
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:233
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:249
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:201
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:653
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:227
@@ -2006,14 +2006,14 @@ msgstr "Etikett %s"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1271
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1296
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1371
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5598
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5647
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5683
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5719
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5605
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5654
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5690
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5726
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1991
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7482
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7536
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7494
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7548
 msgid "Please choose..."
 msgstr "Vennligst velg..."
 
@@ -2191,31 +2191,31 @@ msgid "Results"
 msgstr "Besvarelser"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:629
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2051
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2072
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2063
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2084
 msgid "Browse"
 msgstr "Se gjennom"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:747
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:806
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2065
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2104
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2077
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2118
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2146
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2116
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2130
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2155
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2160
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2244
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2247
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2255
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2260
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2158
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2167
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2172
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2256
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2259
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2267
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2272
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1824
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1909
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4625
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4915
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4995
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4637
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4927
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5007
 msgid "Answer"
 msgstr "Svar"
 
@@ -2250,9 +2250,9 @@ msgstr "Gjennomsnittlig størrelse pr. besvarelse"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1064
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1086
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1095
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1865
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1883
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1899
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1870
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1888
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1904
 #, php-format
 msgid "Field summary for %s"
 msgstr "Felt-sammendrag for %s"
@@ -2280,22 +2280,22 @@ msgid "Result"
 msgstr "Resultat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1179
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2107
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2124
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2802
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2806
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2819
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2825
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2119
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2136
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2814
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2818
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2837
 msgid "Sum"
 msgstr "Sum"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1180
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2981
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2988
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2995
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3002
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2993
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3000
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3007
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3014
 msgid "Standard deviation"
 msgstr "Standardavvik"
 
@@ -2310,20 +2310,20 @@ msgid "Minimum"
 msgstr "Minimum"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1228
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2065
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2082
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2105
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2077
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2094
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2120
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2147
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2117
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2132
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2155
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2162
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2244
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2248
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2255
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2262
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2159
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2167
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2174
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2256
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2260
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2267
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2274
 msgid "Count"
 msgstr "Antall"
 
@@ -2380,44 +2380,49 @@ msgstr "minitab-metode"
 msgid "Not enough values for calculation"
 msgstr "Ikke nok verdier til å foreta kalkulasjon"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2065
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2084
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2101
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2106
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:1841
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2055
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2077
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2096
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2113
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2122
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2143
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2148
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2118
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2125
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2134
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2155
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2164
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2244
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2249
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2255
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2264
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2160
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2167
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2176
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2256
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2261
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2267
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2276
 msgid "Percentage"
 msgstr "Prosent"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2365
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2397
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2377
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2409
 msgid "Not completed or Not displayed"
 msgstr "Ikke fullført eller ikke vist"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2369
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2401
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2381
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2413
 msgid "Not displayed"
 msgstr "Ikke vist"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2803
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2811
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2820
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2815
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2823
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2832
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2843
 msgid "Number of cases"
 msgstr "Antall tilfeller"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2980
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2984
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2994
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3000
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2992
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:2996
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3006
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:3012
 msgid "Arithmetic mean"
 msgstr "Gjennomsnitt"
 
@@ -2600,7 +2605,7 @@ msgstr "HTML-redigeringsmodus"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:71
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:227
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4346
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4353
 msgid "Default"
 msgstr "Standard"
 
@@ -2624,7 +2629,7 @@ msgid "Date format"
 msgstr "Datoformat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:95
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:178
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:159
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:523
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:850
 msgid "Save settings"
@@ -2813,8 +2818,8 @@ msgstr "Spørsmålsgrupper"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1272
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1297
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:1372
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5648
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5684
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5655
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5691
 msgid "None"
 msgstr "Ingen"
 
@@ -2969,8 +2974,8 @@ msgstr "Flagg"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1008
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:49
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:51
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:595
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:615
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:625
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:645
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:60
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:62
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:143
@@ -3290,13 +3295,13 @@ msgstr "Andre spørsmål har betingelser til dette spørsmålet:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1358
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1860
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:579
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:945
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:609
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:975
 msgid "Add User"
 msgstr "Legg til bruker"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1374
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1033
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1063
 msgid "User added."
 msgstr "Bruker er lagt til."
 
@@ -3307,19 +3312,19 @@ msgstr "Angi rettigheter for undersøkelse"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1384
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1391
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1452
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1038
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1044
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1068
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1074
 msgid "Failed to add user."
 msgstr "Klarte ikke å legge til bruker."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1385
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1039
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1069
 msgid "Username already exists."
 msgstr "Brukernavnet finnes allerede."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1392
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1453
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1045
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1075
 msgid "No Username selected."
 msgstr "Brukernavn er ikke valgt."
 
@@ -3346,34 +3351,34 @@ msgstr "Sletter bruker"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1478
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1735
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:212
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:409
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:884
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:981
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:225
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:439
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:914
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1011
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:70
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:82
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:434
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:457
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:562
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:653
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:665
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:438
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:461
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:566
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:657
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:669
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:159
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:221
 msgid "Username"
 msgstr "Brukernavn"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1479
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:666
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:982
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:563
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:654
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:666
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:696
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1012
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:567
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:658
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:670
 msgid "Success!"
 msgstr "Vellykket!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1483
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:986
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:603
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1016
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:607
 msgid "Could not delete user. User was not supplied."
 msgstr "Kunne ikke slette bruker siden brukernavn ikke var oppgitt."
 
@@ -3401,7 +3406,7 @@ msgstr "Vis/les"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1525
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1798
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:440
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:470
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:992
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2092
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:195
@@ -3421,8 +3426,8 @@ msgid "Export"
 msgstr "Eksporter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1562
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:364
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3214
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:392
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3220
 msgid "Save Now"
 msgstr "Lagre nå"
 
@@ -3472,8 +3477,8 @@ msgid "User Group"
 msgstr "Brukergruppe"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1737
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:214
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:411
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:227
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:441
 msgid "Full name"
 msgstr "Fullt navn"
 
@@ -3483,9 +3488,9 @@ msgstr "rediger rettigheter"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1798
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:85
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:440
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:533
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:921
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:470
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:563
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:951
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:229
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:97
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1243
@@ -3508,7 +3513,7 @@ msgid "Groups"
 msgstr "Grupper"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1867
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:590
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:620
 msgid "Add User Group"
 msgstr "Legg til brukergruppe"
 
@@ -4201,8 +4206,8 @@ msgid "[Dependency on another question (ID $4)]"
 msgstr "[Avhengighet til et annet spørsmål (ID $4)]"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:60
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:631
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:739
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:661
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:769
 msgid "Mail to all Members"
 msgstr "Send e-post til alle medlemmer"
 
@@ -4226,237 +4231,237 @@ msgstr "Legg til ny brukergruppe"
 msgid "Edit template permissions"
 msgstr "Angi mal-rettigheter"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:129
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:132
 msgid "Set templates that this user may access"
 msgstr "Angi malene denne brukeren skal ha tilgang til"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:145
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:149
 msgid "Template name"
 msgstr "Navn på malen"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:147
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:151
 msgid "Allowed"
 msgstr "Tillat"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:148
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:152
 msgid "Check or uncheck all items"
 msgstr "Velg alle/ingen"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:209
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:614
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:222
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:618
 msgid "Editing user"
 msgstr "Redigerer bruker"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:213
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:410
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:885
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:226
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:440
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:915
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:138
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:592
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:768
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:82
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:457
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:461
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2272
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2404
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:160
 msgid "Email"
 msgstr "E-postadresse"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:265
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:287
 msgid "Set User Rights"
 msgstr "Angi brukerrettigheter"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:286
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:312
 msgid "SuperAdministrator"
 msgstr "Superadministrator"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:289
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:315
 msgid "Create Survey"
 msgstr "Lag undersøkelse"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:292
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:318
 msgid "Configurator"
 msgstr "Konfigurator"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:295
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:321
 msgid "Create User"
 msgstr "Lag ny bruker"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:298
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:966
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:592
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:324
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:996
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:596
 msgid "Delete User"
 msgstr "Slett bruker"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:301
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:327
 msgid "Use all/manage templates"
 msgstr "Bruk alle/behandle maler"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:304
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:330
 msgid "Manage Labels"
 msgstr "Behandle etiketter"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:390
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:420
 msgid "Setting as Administrator Child"
 msgstr "Satt som administratorbarn"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:391
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:421
 msgid "Set Parent successful."
 msgstr "Vellykket valg av foreldre."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:402
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:432
 msgid "User control"
 msgstr "Brukerkontroll"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:414
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:444
 msgid "No of surveys"
 msgstr "Antall undersøkelser"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:416
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:446
 msgid "Created by"
 msgstr "Laget av"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:433
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:463
 msgid "Edit user"
 msgstr "Rediger bruker"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:492
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:522
 msgid "Edit this user"
 msgstr "Rediger denne brukeren"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:504
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:534
 msgid "Set global permissions for this user"
 msgstr "Sett globale tilganger for denne brukeren"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:513
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:543
 msgid "Take Ownership"
 msgstr "Ta eierskap"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:522
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:552
 msgid "Set template permissions for this user"
 msgstr "Angi hvilke maler denne brukeren skal ha tilgang til"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:533
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:563
 msgid "Delete this user"
 msgstr "Slett denne brukeren"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:575
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:605
 msgid "Add user:"
 msgstr "Legg til bruker:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:593
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:613
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:623
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:643
 msgid "Name:"
 msgstr "Navn:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:594
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:624
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:59
 msgid "Required"
 msgstr "Nødvendig"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:597
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:627
 msgid "Add Group"
 msgstr "Legg til gruppe"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:610
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:640
 #, php-format
 msgid "Editing user group (Owner: %s)"
 msgstr "Redigerer brukergruppe (eier: %s)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:617
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:647
 msgid "Update User Group"
 msgstr "Oppdater brukergruppe"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:633
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:663
 msgid "Send me a copy:"
 msgstr "Send meg en kopi:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:635
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:665
 msgid "Subject:"
 msgstr "Emne:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:637
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:667
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:289
 msgid "Message:"
 msgstr "Melding:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:639
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:669
 msgid "Send"
 msgstr "Send"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:640
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:670
 msgid "Reset"
 msgstr "Nullstill"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:648
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:678
 msgid "Deleting User Group"
 msgstr "Sletter brukergruppe"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:665
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:706
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:695
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:736
 msgid "Group Name"
 msgstr "Gruppenavn"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:670
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:700
 msgid "Could not delete user group."
 msgstr "Kunne ikke slette brukergruppe."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:681
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:711
 msgid "Could not delete user group. No group selected."
 msgstr "Kunne ikke slette gruppe. Ingen gruppe er valgt."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:690
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:720
 msgid "Adding User Group"
 msgstr "Legg til brukergruppe"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:710
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:833
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:873
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:740
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:863
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:903
 msgid "Description: "
 msgstr "Beskrivelse:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:713
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:743
 msgid "User group successfully added!"
 msgstr "Brukergruppe ble lagt til!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:718
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:725
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:748
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:755
 msgid "Failed to add Group!"
 msgstr "Kunne ikke lage gruppe!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:719
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:749
 msgid "Group already exists!"
 msgstr "Gruppen finnes allerede!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:726
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:756
 msgid "Group name was not supplied!"
 msgstr "Du oppgav ikke gruppenavn!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:792
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:822
 msgid "Message(s) sent successfully!"
 msgstr "Melding(er) sendt!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:793
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:823
 msgid "To:"
 msgstr "Til:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:799
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:829
 #, php-format
 msgid "Email to %s failed. Error Message:"
 msgstr "Feil ved sending av e-post til %s. Feilmeldingen var:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:831
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:861
 msgid "Edit User Group Successfully!"
 msgstr "Vellykket redigering av gruppe!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:838
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:868
 msgid "Failed to update!"
 msgstr "Kunne ikke oppdatere!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:921
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:951
 msgid "Delete this user from group"
 msgstr "Slett denne brukeren fra gruppen"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1016
+#: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:1046
 msgid "Adding User to group"
 msgstr "Legg til bruker i gruppe"
 
@@ -5247,7 +5252,7 @@ msgstr "Dette er en hjelpetekst."
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:434
 #: /var/lib/limesurvey-svn/subversion1x/group.php:248
 #: /var/lib/limesurvey-svn/subversion1x/question.php:264
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3137
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:129
 msgid "Thank you!"
 msgstr "Takk!"
@@ -5702,7 +5707,7 @@ msgstr "Feil: Du prøver å bruke duplikate etikettkoder."
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:321
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:119
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:147
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3714
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3721
 msgid "Assessment value"
 msgstr "Vurderingsverdi"
 
@@ -6055,19 +6060,19 @@ msgid "Please write your answer(s) here:"
 msgstr "Vennligst skriv her:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1105
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4414
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4426
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Totalverdien av alle felter må være lik %d"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1109
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4410
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4422
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Totalverdien av alle felt kan ikke overskride %d"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1113
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4418
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4430
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Totalsummen av alle felter må være minst %s"
@@ -6176,8 +6181,8 @@ msgstr "Adgangskode-ID"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1014
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2264
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2400
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3249
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7620
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3265
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7627
 msgid "First name"
 msgstr "Fornavn"
 
@@ -6192,8 +6197,8 @@ msgstr "Fornavn"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1024
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2268
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2402
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3256
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7621
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3272
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7628
 msgid "Last name"
 msgstr "Etternavn"
 
@@ -6417,8 +6422,8 @@ msgstr "Data lagret"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1030
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1033
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1034
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3263
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7622
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3279
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7629
 msgid "Email address"
 msgstr "E-postadresse"
 
@@ -7136,20 +7141,20 @@ msgid "An email with your login data was sent to you."
 msgstr "En e-post med dine innlogginsdata ble sendt til deg."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:88
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:463
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:467
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Feil ved utsendelse av e-post til {NAME} ({EMAIL})"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:142
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:221
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:337
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:225
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:341
 msgid "Incorrect username and/or password!"
 msgstr "Ugyldig brukernavn og/eller passord!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:144
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:223
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:232
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:339
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:227
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:236
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:343
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:322
 #, php-format
 msgid "You have exceeded you maximum login attempts. Please wait %d minutes before trying again"
@@ -7160,134 +7165,134 @@ msgid "Logged in"
 msgstr "Logget inn"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:200
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:365
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:369
 #, php-format
 msgid "Welcome %s!"
 msgstr "Velkommen %s!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:208
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:373
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:212
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:377
 msgid "Reloading screen. Please wait."
 msgstr "Laster skjermbildet på nytt. Vennligst vent."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:239
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:243
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
 msgstr "LimeSurvey er satt til å bruker webtjenerens autentisering, men det ser ikke ut til at du er autentisert"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:240
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:244
 msgid "Please contact your system administrator"
 msgstr "Vennligst kontakt systemadministrator"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:323
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:327
 msgid "Auto-import of user failed!"
 msgstr "Feil ved automatisk import av bruker!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:366
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:370
 msgid "You logged in successfully."
 msgstr "Vellykket innlogging"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:383
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:387
 msgid "Logout successful."
 msgstr "Vellykket utlogging."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:388
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:392
 msgid "Add user"
 msgstr "Legg til bruker"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:398
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:402
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:475
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:406
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:479
 msgid "Failed to add user"
 msgstr "Klarte ikke å legge til bruker"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:398
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:402
 msgid "The email address is not valid."
 msgstr "E-postadressen er ikke gyldig."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:403
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:407
 msgid "A username was not supplied or the username is invalid."
 msgstr "Brukernavn ble ikke oppgitt eller er ugyldig."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:431
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:435
 #, php-format
 msgid "Hello %s,"
 msgstr "Hei %s,"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:432
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:436
 #, php-format
 msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr "Dette er en automatisk utsendt e-post for å meddele at det har blitt opprettet en bruker til deg på nettstedet '%s'."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:433
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:437
 msgid "You can use now the following credentials to log into the site:"
 msgstr "Bruk følgende brukernavn og passord for å logge inn:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:444
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:448
 msgid "Please ask your LimeSurvey administrator for your password."
 msgstr "Vennligst spør administrator for å få ditt passord."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:448
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:452
 msgid "Click here to log in."
 msgstr "Klikk her for å logge inn."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:449
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:453
 #, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
 msgstr "Om du lurer på noe i forbindelse med denne e-posten, vær vennlig å ta kontakt med administratoren på %s."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:451
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:455
 #, php-format
 msgid "User registration at '%s'"
 msgstr "Brukerregistrering på '%s'"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:458
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:462
 msgid "An email with a generated password was sent to the user."
 msgstr "En e-post med passord er nå sendt til brukeren."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:468
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:697
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:472
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:701
 msgid "Set user permissions"
 msgstr "Angi brukerrettigheter"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:475
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:479
 msgid "The user name already exists."
 msgstr "Brukernavnet finnes allerede."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:483
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:487
 msgid "Deleting user"
 msgstr "Sletter bruker"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:494
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:498
 msgid "Initial Superadmin cannot be deleted!"
 msgstr "Administrator kan ikke slettes!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:566
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:570
 #, php-format
 msgid "All of the user's surveys were transferred to %s."
 msgstr "Alle brukerens undersøkelser ble overført til %s."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:573
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:577
 msgid "Transfer the user's surveys to: "
 msgstr "Overfør brukerens undersøkelser til:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:636
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:671
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:640
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:675
 msgid "Could not modify user data."
 msgstr "Kunne ikke endre brukerdata."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:637
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:641
 msgid "Email address is not valid."
 msgstr "E-postadresse er ikke gyldig."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:653
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:657
 msgid "Unchanged"
 msgstr "Uendret"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:672
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:676
 msgid "Email address already exists."
 msgstr "E-postadresse eksisterer allerede."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:678
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:682
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:39
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:59
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:83
@@ -7298,24 +7303,24 @@ msgstr "E-postadresse eksisterer allerede."
 msgid "Back"
 msgstr "Tilbake"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:722
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:762
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:726
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:766
 msgid "User permissions were updated successfully."
 msgstr "Brukerrettigheter ble oppdatert."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:772
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:776
 msgid "You are not allowed to change your own permissions!"
 msgstr "Du har ikke lov å endre dine egne rettigheter!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:780
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:784
 msgid "Set template permissions"
 msgstr "Angi malrettigheter"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:806
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:810
 msgid "Template permissions were updated successfully."
 msgstr "Malrettigheter ble oppdatert."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:812
+#: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:816
 msgid "Error while updating usertemplates."
 msgstr "En feil oppstod under oppdatering av brukermalene."
 
@@ -7595,8 +7600,8 @@ msgstr "På"
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:358
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:431
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:823
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3888
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4120
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3895
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4127
 msgid "Off"
 msgstr "Av"
 
@@ -10755,1071 +10760,1071 @@ msgstr "Det er ett spørsmål i denne undersøkelsen"
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Det er {NUMBEROFQUESTIONS} spørsmål i denne undersøkelsen."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3021
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3027
 msgid "A Note On Privacy"
 msgstr "Informasjon om personvern"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3021
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3027
 msgid "This survey is anonymous."
 msgstr "Denne undersøkelsen besvares anonymt."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3021
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3027
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Informasjonen du har lagt igjen i undersøkelsen inneholder ikke noe som gjør det mulig å identifisere deg, med mindre et spørsmål spør spesielt om dette. Hvis du har brukt en adgangskode til å gjennomføre undersøkelsen, vil vi poengtere at adgangskode og besvarelse oppbevares i ulike databasetabeller og blir kun brukt til å kontrollere om du har svart på undersøkelsen eller ikke. Det er ikke mulig å koble svar opp mot hvem som eier en adgangskode."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3025
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3031
 msgid "Exit and Clear Survey"
 msgstr "Avbryt og slett undersøkelsen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3026
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3032
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Er du sikker på at du vil slette alle svar?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3056
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3068
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3062
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3074
 #: /var/lib/limesurvey-svn/subversion1x/index.php:637
 #: /var/lib/limesurvey-svn/subversion1x/index.php:641
 msgid "Load Unfinished Survey"
 msgstr "Hent uferdig undersøkelse"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3057
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3061
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3081
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3063
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3067
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3087
 msgid "Resume Later"
 msgstr "Fullfør senere"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3137
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
 msgid "You have completed answering the questions in this survey."
 msgstr "Du har svart på alle spørsmålene i denne undersøkelsen."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3137
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Klikk på Send besvarelse for å fullføre og sende besvarelsen."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3143
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3149
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Hvis du vil kontrollere svarene dine, og/eller endre dem, kan du gjøre det ved å klikke på [<< forrige] og lese/foreta endringer."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3150
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3156
 msgid "Answers Cleared"
 msgstr "Alle svar er slettet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3157
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3165
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3163
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
 msgid "Restart this Survey"
 msgstr "Start denne undersøkelsen på nytt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3168
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3174
 msgid "Close this window"
 msgstr "Lukk dette vinduet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3170
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3176
 msgid "Save Your Unfinished Survey"
 msgstr "Lagre uferdig undersøkelse"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Oppgi et navn og passord for denne undersøkelsen og klikk på Lagre under."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Din besvarelse vil bli lagret og kan fullføres senere ved å logge inn med samme navn og passord."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Hvis du oppgir en e-postadresse vil en e-post med nødvendige opplysninger bli sendt til deg."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3171
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3177
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "Etter å ha klikket på lagreknappen kan du enten lukke nettleservinduet eller fortsette å besvare undersøkelsen."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3176
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3182
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr "For å opptre anonymt, angi et pseudonym som brukernavn. Da trenger du heller ikke oppgi e-postadresse."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3192
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3198
 msgid "Return To Survey"
 msgstr "Tilbake til undersøkelsen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3203
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3209
 msgid "Repeat Password"
 msgstr "Gjenta passord"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3206
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3212
 msgid "Your Email"
 msgstr "E-postadresse"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3211
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3231
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3282
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3217
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3237
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3290
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2407
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2573
 msgid "Security Question"
 msgstr "Kontrollspørsmål"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3219
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3225
 msgid "Load A Previously Saved Survey"
 msgstr "Last inn en tidligere lagret undersøkelse"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3220
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3226
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Her kan du hente inn en tidligere lagret undersøkelse."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3220
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3226
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Skriv inn brukernavnet og passordet du brukte da du lagret undersøkelsen."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3223
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3229
 msgid "Saved name"
 msgstr "Lagret navn"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3236
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3242
 msgid "Load Now"
 msgstr "Hent inn"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3241
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3247
 msgid "You must be registered to complete this survey"
 msgstr "Du må være registrert for å delta i denne undersøkelsen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3242
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3248
 msgid "You may register for this survey if you wish to take part."
 msgstr "Du kan registrere deg for å delta i undersøkelsen."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3242
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3248
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Skriv inn personopplysningene under, og en e-post med mer informasjon sendes deg umiddelbart."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3319
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3326
 msgid "Your Assessment"
 msgstr "Din vurdering"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3672
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3683
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3718
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3734
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3745
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3753
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3764
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3772
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3780
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3788
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3796
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3804
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3942
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3953
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4036
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4044
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4052
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4060
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4071
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4146
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4179
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4198
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4217
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4282
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4316
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4324
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4332
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3679
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3690
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3725
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3741
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3752
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3760
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3771
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3779
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3787
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3795
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3803
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3811
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3949
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3960
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4043
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4051
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4059
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4067
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4078
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4153
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4186
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4205
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4224
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4289
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4323
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4331
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4339
 msgid "Display"
 msgstr "Vis"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3678
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3685
 msgid "Sort the answer options alphabetically"
 msgstr "Sorter svaralternativene i alfabetisk rekkefølge"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3679
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3686
 msgid "Sort answers alphabetically"
 msgstr "Sorter svarene i alfabetisk rekkefølge"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3688
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3695
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "Sett bredden på svar-kolonnen i prosent (1-100)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3689
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3696
 msgid "Answer width"
 msgstr "Svarbredde"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3693
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3701
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3709
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3726
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3820
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3828
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3964
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3988
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4004
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4028
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4082
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4157
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4168
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4560
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3700
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3708
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3716
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3733
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3827
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3835
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3971
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3995
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4011
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4035
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4089
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4164
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4175
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4567
 msgid "Logic"
 msgstr "Logikk"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3696
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3703
 msgid "Enter the code of a Multiple choice question to only show the matching answer options in this question."
 msgstr "Skriv inn koden til et flervalgsspørsmål for kun å vise de korresponderende svaralternativene i dette spørsmålet."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3697
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3704
 msgid "Array filter"
 msgstr "Liste-filter"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3704
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3711
 msgid "Enter the code of a Multiple choice question to exclude the matching answer options in this question."
 msgstr "Skriv inn koden til et flervalgsspørsmål for å ekskludere de korresponderende svaralternativene i dette spørsmålet."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3705
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3712
 msgid "Array filter exclusion"
 msgstr "Liste-filter, ekskludering"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3713
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3720
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr "Hvis et av underspørsmålene er markert vil alle markere underspørsmål få tilordnet denne vurderingsverdien."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3721
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3722
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3728
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3729
 msgid "Category separator"
 msgstr "Kategoriskille"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3729
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3736
 msgid "Filter the available answers by this value"
 msgstr "Filtrer tilgjengelige svar med denne verdien"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3730
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3737
 msgid "Code filter"
 msgstr "Kodefilter"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3740
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3747
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "Svaralternativene vil bli spredd utover det antall kolonner som angis her"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3741
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3748
 msgid "Display columns"
 msgstr "Visningskolonner"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3748
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3755
 msgid "How many rows to display"
 msgstr "Antall rader som skal vises"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3749
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3756
 msgid "Display rows"
 msgstr "Vis rader"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3759
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3766
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "Bruk nedtrekkslister fremfor en kalenderpopup"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3760
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3767
 msgid "Display dropdown boxes"
 msgstr "Vis nedtrekkslister"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3767
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3774
 msgid "Minimum year value in calendar"
 msgstr "Laveste årstall i kalenderen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3768
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3775
 msgid "Minimum year"
 msgstr "Minimum år"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3775
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3782
 msgid "Maximum year value for calendar"
 msgstr "Høyeste årstall i kalenderen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3776
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3783
 msgid "Maximum year"
 msgstr "Maksimum år"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3783
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3790
 msgid "Prefix|Suffix for dropdown lists"
-msgstr "Prefiks|suffiksi nedtrekkslister"
+msgstr "Prefiks|suffiks i nedtrekkslister"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3784
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3791
 msgid "Dropdown prefix/suffix"
 msgstr "Nedtrekksliste prefiks/suffiks"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3791
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3798
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Post-svar-separator|Inter-liste-separator for nedtrekkslister"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3792
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3799
 msgid "Dropdown separator"
 msgstr "Nedtrekkslisteskille"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3799
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3806
 msgid "Enter a header text for the first scale"
 msgstr "Angi overskrift for første skala"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3800
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3807
 msgid "Header for first scale"
 msgstr "Overskrift for første skala"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3807
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3814
 msgid "Enter a header text for the second scale"
 msgstr "Angi overskrift til andre skala"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3808
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3815
 msgid "Header for second scale"
 msgstr "Overskrift for andre skala"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3812
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3972
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3980
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3996
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4012
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4020
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4090
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3819
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3979
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3987
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4003
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4019
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4027
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4097
 msgid "Input"
 msgstr "Inn-verdi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3815
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3822
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Summen av numeriske inndata må være lik denne verdien"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3816
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3823
 msgid "Equals sum value"
 msgstr "Summen må være lik"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3823
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3830
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr "Ekskluderer alle andre valg hvis et bestemt svar er valgt - bare skriv svarkoden(e) separert med et semikolon."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3824
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3831
 msgid "Exclusive option"
 msgstr "Eksklusivt alternativ"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3834
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3841
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr "Hvis deltageren velger alle valgene, slå av alle valg og velg heller valget som er gjort under innstillingene \"Eksklusivt alternativ\""
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3835
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3842
 msgid "Auto-check exclusive option if all others are checked"
 msgstr "Automatisk velg eksklusivt alternativ hvis alle andre er valgt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3842
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3853
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3864
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3875
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3885
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3895
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3904
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3913
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3923
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3931
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3849
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3860
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3871
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3882
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3892
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3902
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3911
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3920
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3930
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3938
 msgid "Location"
 msgstr "Sted"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3847
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3854
 msgid "Store the city?"
 msgstr "Lagre stedet?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3848
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3855
 msgid "Save city"
 msgstr "Lagre sted"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3858
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3865
 msgid "Store the state?"
 msgstr "Lagre fylket?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3859
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3866
 msgid "Save state"
 msgstr "Lagre fylke"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3869
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3876
 msgid "Store the postal code?"
 msgstr "Lagre postnummer?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3870
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3877
 msgid "Save postal code"
 msgstr "Lagre postnummer"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3880
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3887
 msgid "Store the country?"
 msgstr "Lagre landet?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3881
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3888
 msgid "Save country"
 msgstr "Lagre land"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3889
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3896
 msgid "Google Maps"
 msgstr "Google Maps"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3890
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3897
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr "Aktiver denne for å vise et kart over feltene der deltakeren kan velge sted"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3891
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3898
 msgid "Use mapping service"
 msgstr "Bruk karttjeneste"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3899
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3906
 msgid "Width of the map in pixel"
 msgstr "Bredden på kartet i piksler"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3900
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3907
 msgid "Map width"
 msgstr "Kartbredde"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3908
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3915
 msgid "Height of the map in pixel"
 msgstr "Høyden på kartet i piksler"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3909
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3916
 msgid "Map height"
 msgstr "Karthøyde"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3918
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3925
 msgid "Get the default location using the user's IP address?"
 msgstr "Finn stedet ved hjelp av IP-adressen?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3919
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3926
 msgid "IP as default location"
 msgstr "IP som standard for sted"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3926
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3933
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr "Standard koordinater på kartet når det lastes første gang. Format: breddegrad [mellomrom] lengdegrad"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3927
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3934
 msgid "Default position"
 msgstr "Standard plassering"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3935
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3942
 msgid "Map zoom level"
 msgstr "Kartforstørrelse"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3936
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3943
 msgid "Zoom level"
 msgstr "Forstørrelse"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3948
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3955
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Skjul tipsene som vanligvis vises sammen med et spørsmål"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3949
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3956
 msgid "Hide tip"
 msgstr "Skjul tips"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3959
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3966
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "Skjul dette spørsmålet. Dette er nyttig om du ønsker å inkludere data til forhåndsutfylling."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3960
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3967
 msgid "Always hide this question"
 msgstr "Skjul alltid dette spørsmålet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3967
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3974
 msgid "Limit the number of possible answers"
 msgstr "Begrens antall mulige svar"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3968
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3975
 msgid "Maximum answers"
 msgstr "Maks antall svar"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3975
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3982
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maksimal verdi for summen av alle numeriske inndata"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3976
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3983
 msgid "Maximum sum value"
 msgstr "Maksimal sum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3983
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3990
 msgid "Maximum value of the numeric input"
 msgstr "Maksimal verdi for numeriske inndata"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3984
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4040
-msgid "Maximum value"
-msgstr "Maksverdi"
-
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3991
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4047
+msgid "Maximum value"
+msgstr "Maksimumsverdi"
+
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3998
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr "Skriv inn SGQA-identifikatoren for å bruke totalsummen til et foregående spørsmål som maks-verdi for dette spørsmålet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3992
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3999
 msgid "Max value from SGQA"
 msgstr "Maks-verdi fra SGQA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3999
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4006
 msgid "Maximum characters allowed"
 msgstr "Maksimalt antall tegn som kan fylles inn"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4000
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4007
 msgid "Maximum characters"
 msgstr "Maksimalt antall tegn"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4007
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4014
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Sørg for at det er minst et visst antall svar (0=Ingen nedre grense)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4008
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4015
 msgid "Minimum answers"
 msgstr "Minimum antall svar"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4015
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4022
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "Summen av flere numeriske inndata må være større enn denne verdien"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4016
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4023
 msgid "Minimum sum value"
 msgstr "Laveste mulige sum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4023
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4030
 msgid "Minimum value of the numeric input"
 msgstr "Maksimal verdi for numeriske inndata"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4024
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4048
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4031
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4055
 msgid "Minimum value"
 msgstr "Minimumsverdi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4031
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4038
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr "Skriv inn SGQA-identifikatoren for å bruke totalsummen i et foregående spørsmål som minimumsverdi til dette spørsmålet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4032
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4039
 msgid "Minimum value from SGQA"
 msgstr "Minimumsverdi fra SGQA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4039
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4046
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maksimumsverdi for flervalgsliste med fleksible etiketter"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4047
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4054
 msgid "Minimum value for array(multi-flexible) question type"
-msgstr "Maksimumsverdi for flervalgsliste med fleksible etiketter"
+msgstr "Minimumsverdi for flervalgsliste med fleksible etiketter"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4055
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4056
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4062
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4063
 msgid "Step value"
 msgstr "Steg-verdi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4066
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4073
 msgid "Use checkbox layout"
 msgstr "Bruk avkryssingsvisning"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4067
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4074
 msgid "Checkbox layout"
 msgstr "Avkryssingsvisning"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4077
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4084
 msgid "Present answer options in reverse order"
 msgstr "Gjeldende svaralternativer i motsatt rekkefølge"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4078
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4085
 msgid "Reverse answer order"
 msgstr "Motsatt rekkefølge på svar"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4085
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4092
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "SGQA-identifikator for å bruke totalsummen til et foregående spørsmål som totalsum for dette spørsmålet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4086
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4093
 msgid "Value equals SGQA"
 msgstr "Verdi lik SGQA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4097
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4104
 msgid "Restrict input to integer values"
 msgstr "Begrens inndata til kun heltall"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4098
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4105
 msgid "Integer only"
 msgstr "Kun heltall"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4110
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4117
 msgid "Allow only numerical input"
 msgstr "Bare godta numerisk inndata"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4111
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4118
 msgid "Numbers only"
 msgstr "Kun tall"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4128
 msgid "Rows"
 msgstr "Rader"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4122
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4129
 msgid "Columns"
 msgstr "Kolonner"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4123
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4130
 msgid "Both rows and columns"
 msgstr "Både rader og kolonner"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4126
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4133
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr "Vis totalter for enten rader, kolonner eller begge deler"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4127
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4134
 msgid "Show totals for"
 msgstr "Vis totaler for"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4140
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4147
 msgid "Show grand total for either columns or rows"
 msgstr "Vis totaler for enten kolonner eller rader"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4141
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4148
 msgid "Show grand total"
 msgstr "Vis total"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4152
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4159
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "Presenter som tekstbokser i stedet for nedtrekksliste"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4153
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4160
 msgid "Text inputs"
 msgstr "Tekstbokser"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4163
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4170
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "Gjør 'Annet:'-feltet obligatorisk når det er aktivert for et spørsmål"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4164
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4171
 msgid "'Other:' comment mandatory"
 msgstr "Obligatorisk 'Annet:'-felt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4174
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4181
 msgid "Allow only numerical input for 'Other' text"
 msgstr "Kun godta numerisk inndata for 'Annet'-feltet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4175
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4182
 msgid "Numbers only for 'Other'"
 msgstr "Kun tall for 'Annet'"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4182
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4189
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "Bytter ut 'Annet:'-svaret med egen tekst"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4183
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4190
 msgid "Label for 'Other:' option"
 msgstr "Alternativ tekst for 'Annet:'-valg"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4193
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4200
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "Sett inn sideskift før dette spørsmålet i utskriftsvennlig fremvisning."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4194
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4201
 msgid "Insert page break in printable view"
 msgstr "Sett inn sideskift i utskriftsvennlig fremvisning"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4201
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4208
 msgid "Add a prefix to the answer field"
 msgstr "Legg et prefiks til dette svarfeltet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4202
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4209
 msgid "Answer prefix"
 msgstr "Svar-prefiks"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4212
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4219
 msgid "Show statistics of this question in the public statistics page"
 msgstr "Vis statistikk for dette spørsmålet på den offentlige statistikksiden"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4213
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4220
 msgid "Show in public statistics"
 msgstr "Vis i offentlig statistikk"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4223
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4230
 msgid "Present answers in random order"
 msgstr "Presenter svarene i tilfeldig rekkefølge"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4224
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4231
 msgid "Random answer order"
 msgstr "Tilfeldig rekkefølge på svarene"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4228
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4239
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4247
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4255
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4263
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4271
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4297
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4308
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4235
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4246
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4254
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4262
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4270
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4278
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4304
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4315
 msgid "Slider"
 msgstr "Skyvekontroll"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4234
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4235
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4291
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4292
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4241
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4242
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4298
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4299
 msgid "Use slider layout"
 msgstr "Bruk skyvekontrollvisning"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4242
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4243
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4249
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4250
 msgid "Slider minimum value"
 msgstr "Minimumsverdi i skyvekontrollen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4250
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4251
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4257
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4258
 msgid "Slider maximum value"
 msgstr "Maksimumsverdi i skyvekontrollen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4258
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4259
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4265
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4266
 msgid "Slider accuracy"
 msgstr "Nøyaktigheten til skyvekontrollen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4266
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4267
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4273
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4274
 msgid "Slider initial value"
 msgstr "Initiell verdi satt i skyvekontrollen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4277
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4284
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "Denne teksten vil vises midt i skyvekontrollen (dette bestemmer ikke den initielle verdien)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4278
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4285
 msgid "Slider starts at the middle position"
 msgstr "Skyvekontrollen starter i midten"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4287
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4294
 msgid "Yes - stars"
 msgstr "Ja - stjerner"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4288
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4295
 msgid "Yes - slider with emoticon"
 msgstr "Ja - skyvekontroll med emoticon"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4303
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4310
 msgid "Display min and max value under the slider"
 msgstr "Vis min og maks under skyvekontrollen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4304
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4311
 msgid "Display slider min and max value"
 msgstr "Vis min og maks for skyvekontrollen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4311
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4318
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "Svar|venstre-skyvekontroll-tekst|høyre-skyvekontroll-tekst skilletegn"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4312
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4319
 msgid "Slider left/right text separator"
 msgstr "Venstre/høyre tekst-skilletegn for skyvekontrollen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4319
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4326
 msgid "Add a suffix to the answer field"
 msgstr "Legg et suffiks til svarfeltet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4320
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4327
 msgid "Answer suffix"
 msgstr "Svar-suffiks"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4327
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4334
 msgid "Width of text input box"
 msgstr "Bredden til inndatafelt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4328
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4335
 msgid "Input box width"
 msgstr "Bredden til inndatafelt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4338
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4345
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "Bruk nedtrekkslister fremfor en liste med radioknapper"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4339
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4346
 msgid "Use dropdown boxes"
 msgstr "Bruk nedtrekksbokser"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4347
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4354
 msgid "Nominal"
 msgstr "Nominell"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4348
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4355
 msgid "Ordinal"
 msgstr "Ordinal"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4349
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4356
 msgid "Scale"
 msgstr "Skala"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4351
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4358
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "Bestem en spesifikk SPSS eksport-skalatype for dette spørsmålet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4352
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4359
 msgid "SPSS export scale type"
 msgstr "SPSS eksport-skalatype"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4357
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4365
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4376
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4387
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4397
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4405
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4413
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4421
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4429
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4437
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4445
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4453
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4461
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4469
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4477
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4485
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4493
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4364
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4372
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4383
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4394
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4404
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4412
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4420
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4428
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4436
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4444
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4452
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4460
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4468
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4476
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4484
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4492
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4500
 msgid "Timer"
 msgstr "Tid"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4360
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4367
 msgid "Limit time to answer question (in seconds)"
 msgstr "Begrens tiden man har til å svare på spørsmålet (i sekunder)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4361
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4368
 msgid "Time limit"
 msgstr "Tidsbegrensning"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4368
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4375
 msgid "Warn and move on"
 msgstr "Gi en advarsel og gå videre"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4369
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4376
 msgid "Move on without warning"
 msgstr "Gå videre uten noen advarsel"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4370
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4377
 msgid "Disable only"
 msgstr "Bare deaktiver"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4371
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4378
 msgid "Action to perform when time limit is up"
 msgstr "Hva som skal skje når tiden har løpt ut"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4372
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4379
 msgid "Time limit action"
 msgstr "Handling ved utløpt tid"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4382
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4389
 msgid "Disable the next button until time limit expires"
 msgstr "Deaktiver 'neste'-knappen fram til tiden har løpt ut"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4383
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4390
 msgid "Time limit disable next"
 msgstr "Forsinkelse på 'neste'-knappen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4392
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4399
 msgid "Disable the prev button until the time limit expires"
 msgstr "Deaktiver 'forrige'-knappen fram til tiden har løpt ut"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4393
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4400
 msgid "Time limit disable prev"
 msgstr "Tidsbegrensning deaktiverer 'forrige-knappen'"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4400
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4407
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr "Meldingen som vises under nedtellingen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4401
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4408
 msgid "Time limit countdown message"
 msgstr "Melding om nedtelling mot tidsutløp"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4408
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4415
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr "CSS-stil for meldingen som vises under nedtellingen for tidsutløp"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4409
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4416
 msgid "Time limit timer CSS style"
 msgstr "CSS-stil for utløps-nedtelleren"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4416
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4423
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "Vis melding om tidsutløp i oppgitt antall sekunder før handling ved tidsutløp utføres (standard 1 sekund hvis ikke oppgitt)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4417
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4424
 msgid "Time limit expiry message display time"
 msgstr "Utløpsmeldingsforsinkelse"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4424
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4431
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Melding som vises når tiden har løpt ut (en standardmelding vil vises hvis denne innstillingen er tom)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4425
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4432
 msgid "Time limit expiry message"
 msgstr "Utløpsmelding"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4432
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4439
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "CSS-stil for utløpsmeldingen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4433
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4440
 msgid "Time limit message CSS style"
 msgstr "CSS-stil for utløpsmeldingen"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4440
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4447
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Vis en advarsel om tidsutløp når det gjenstår angitt antall sekunder i nedtellingen (advarsel vises ikke hvis det ikke angis noe her)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4441
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4448
 msgid "1st time limit warning message timer"
 msgstr "Første advarseltekst om utløpsvarsel"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4448
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4455
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Varsel om tidsutløp vil være synlig i angitt antall sekunder (vil ikke forsvinne hvis ikke noe angies her)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4449
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4456
 msgid "1st time limit warning message display time"
 msgstr "Førstegangs advarselstekst ved utløpsvarsel"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4456
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4463
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Melding som vises ved tidsutløp (en standardmelding vises hvis det ikke blir angitt noe her)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4457
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4464
 msgid "1st time limit warning message"
 msgstr "Første gangs advarseltekst"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4464
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4471
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "CSS-stil brukt når advarsel om tidsutløp vises"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4465
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4472
 msgid "1st time limit warning CSS style"
 msgstr "CSS-stil for første varsel om tidsutløp"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4472
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4479
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Vis advarsel nummer 2 ved tidsutløp når angitt antall sekunder gjenstår (advarsel vises ikke hvis det ikke angis noe)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4473
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4480
 msgid "2nd time limit warning message timer"
 msgstr "Andregangs advarseltekst ved tidsutløp"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4480
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4487
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Andre gangs advarseltekst ved tidsutløp vil være synlig i oppgitt antall sekunder (vil ikke forsvinne hvis ikke noe angitt her)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4481
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4488
 msgid "2nd time limit warning message display time"
 msgstr "Andregangs advarselstekst ved utløpsvarsel"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4488
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4495
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Andre gangs advarseltekst som vises ved tidsutløp (en standartdmelding vises hvis det ikke angis noe her)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4489
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4496
 msgid "2nd time limit warning message"
 msgstr "Andre gangs advarseltekst ved tidsutløp"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4496
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4503
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "CSS-stil brukt på andre gangs advarseltekst ved tidsutløp"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4497
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4504
 msgid "2nd time limit warning CSS style"
 msgstr "CSS-stil for andre gangs varsel om tidsutløp"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4501
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4512
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4508
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4519
 msgid "File metadata"
 msgstr "Fil-metadata"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4507
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4514
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "Må deltaker angi tittel for den opplastede filen?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4508
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4515
 msgid "Show title"
 msgstr "Vis tittel"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4518
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4525
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "Må deltakeren gi en kommentar til den opplastede filen?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4519
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4526
 msgid "Show comment"
 msgstr "Vis kommentar"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4528
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4535
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "Deltakeren kan ikke laste opp en enkel fil større enn"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4529
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4536
 msgid "Maximum file size allowed (in KB)"
-msgstr "Maksimal filstørrelse som er tillatt (i KB)"
+msgstr "Maksimal tillatt filstørrelse (i KB)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4537
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4544
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr "maksimalt antall filer deltakeren kan laste opp for dette spørsmålet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4538
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4545
 msgid "Max number of files"
 msgstr "Maksimum antall filer"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4546
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4553
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr "Maksimum antall filer som deltakeren kan laste opp til dette spørsmålet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4547
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4554
 msgid "Min number of files"
 msgstr "Minimum antall filer"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4555
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4562
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr "Gyldige filtyper i kommaseparert format, f.eks. pdf,doc,odt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4556
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4563
 msgid "Allowed file types"
 msgstr "Gyldige filtyper"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4563
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4570
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr "Plasser spørsmålene i en tilfeldig-gruppe. Alle spørsmålene som er med i angitt gruppe vil vises i tilfeldig rekkefølge"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4564
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4571
 msgid "Randomization group name"
 msgstr "Navn på tilfeldig-gruppe"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4736
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4743
 msgid "Version"
 msgstr "Versjon"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4745
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4752
 msgid "Online Manual"
 msgstr "Online hjelpefunksjon"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4748
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4755
 msgid "Support this project - Donate to "
 msgstr "Støtt dette prosjektet - doner til "
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4751
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4758
 msgid "Visit our website!"
 msgstr "Besøk vår nettside!"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4860
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4867
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Ingen e-post ble sendt fordi tjenesten er i demo-modus."
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4980
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4987
 msgid "SMTP debug output:"
 msgstr "SMTP debug-utskrift:"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5498
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5505
 #, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL-kommando feilet: %s Årsak: %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7623
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7630
 msgid "Token code"
 msgstr "Adgangskode"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7624
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7631
 msgid "Language code"
 msgstr "Språkkode"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7625
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7632
 msgid "Invitation sent date"
 msgstr "Invitasjon sendt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7626
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7633
 msgid "Last Reminder sent date"
 msgstr "Siste påminnelse sendt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7627
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7634
 msgid "Total numbers of sent reminders"
 msgstr "Antall påminnelser sendt"
 
-#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7647
+#: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7654
 #, php-format
 msgid "Attribute %s"
 msgstr "Attributt %s"
@@ -12057,60 +12062,60 @@ msgstr "Vennligst velg minst %d svar for spørsmålet \"%s\""
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Du har valgt \"annet\" som svar på spørsmålet \"%s\". Vennligst fyll inn det tilhørende \"kommentar til annet\"-feltet."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3949
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4263
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5523
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7352
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3961
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4275
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5535
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7364
 msgid "Error: This question has no answers."
 msgstr "Feil : Dette spørsmålet har ikke noe svar."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4406
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4418
 msgid "Only numbers may be entered in these fields"
 msgstr "Disse feltene kan kun inneholde tallverdier"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4426
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4438
 msgid "Remaining: "
 msgstr "Gjenstår: "
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4428
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4440
 msgid "Total: "
 msgstr "Total: "
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4474
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4480
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4516
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4527
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4486
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4492
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4528
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4539
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Svaret er feil. Totalt antall oppføringer skal ikke være mer enn"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4493
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4501
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4505
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4513
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Svaret er feil. Summen av alle oppføringene må minst være %s."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4629
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4641
 msgid "Only numbers may be entered in this field"
 msgstr "Dette feltet kan kun inneholde tallverdier"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4815
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4816
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4827
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4828
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Dra og slipp tegnestiften til valg sted. Du kan også høyreklikke på kartet for å flytte tegnestiften."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6116
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6452
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6789
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6941
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7582
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6128
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6464
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6801
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6953
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:7594
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Feil: Det finnes ingen svaralternativ for dette spørsmålet og/eller på dette språket."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6707
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6719
 msgid "..."
 msgstr "..."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6935
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6947
 msgid "Error: There are no answers defined for this question."
 msgstr "Feil: Det er ingen svar definert for dette spørsmålet."
 
@@ -12298,6 +12303,22 @@ msgstr "Adgangskode:"
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Denne undersøkelsen har enda ingen spørsmål og kan derfor ikke besvares."
 
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:99
+msgid "Select file"
+msgstr "Velg fil"
+
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:102
+msgid "You can upload "
+msgstr "Du kan laste opp "
+
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:102
+msgid " under "
+msgstr " mindre enn"
+
+#: /var/lib/limesurvey-svn/subversion1x/uploader.php:102
+msgid " KB each"
+msgstr " KB i hver fil"
+
 #: /var/lib/limesurvey-svn/subversion1x/register.php:79
 msgid "The email you used is not valid. Please try again."
 msgstr "Den oppgitte e-postadressen er ugyldig. Vennligst prøv igjen."
@@ -12317,6 +12338,42 @@ msgstr "En e-post er blitt sendt til den e-postadressen du oppgav. Der finner du
 #: /var/lib/limesurvey-svn/subversion1x/register.php:168
 msgid "Survey Administrator"
 msgstr "Administrator for undersøkelsen er"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:86
+msgid "Sorry, This file extension ("
+msgstr "Beklager, denne filtypen ("
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:86
+msgid ") is not allowed !"
+msgstr ") er ikke tillatt!"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:100
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:138
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:185
+msgid "Sorry, This file is too large. Only files upto "
+msgstr "Beklager, denne filen er for stor. Kun filer opp til "
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:100
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:138
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:185
+msgid " KB are allowed"
+msgstr " KB er tillatt"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:123
+msgid "The file has been successfuly uploaded."
+msgstr "Filen er lastet opp."
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:162
+msgid "The file has been successfuly uploaded"
+msgstr "Filen har blitt lastet opp"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:175
+msgid "Sorry, there was an error uplodaing your file"
+msgstr "Beklager, men det oppsto en feil ved opplasting av filen"
+
+#: /var/lib/limesurvey-svn/subversion1x/upload.php:194
+msgid "Unknown error"
+msgstr "Ukjent feil"
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:385
 msgid "Please wait ..."
@@ -13156,9 +13213,6 @@ msgstr "Genererer sammendrag..."
 #~ msgid "Copy Attributes?"
 #~ msgstr "Kopiere attributter?"
 
-#~ msgid "Select CSV File"
-#~ msgstr "Velg CSV-fil"
-
 #~ msgid "Don't consider NON completed responses"
 #~ msgstr "Ikke ta med uferdige besvarelser"
 
@@ -13241,9 +13295,6 @@ msgstr "Genererer sammendrag..."
 
 #~ msgid "Export SPSS data file"
 #~ msgstr "Eksporter til en SPSS-datafil"
-
-#~ msgid "Date is not valid!"
-#~ msgstr "Dato er ikke gyldig."
 
 #~ msgid "Show System Summary"
 #~ msgstr "Vis systemoppsummering"
@@ -13522,9 +13573,6 @@ msgstr "Genererer sammendrag..."
 
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Feil ved overføring av fil. Du må velge en CSV-fil"
-
-#~ msgid "You need to upload the file"
-#~ msgstr "Du må laste opp filen"
 
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Du må laste opp en CSV-fil"
