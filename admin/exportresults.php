@@ -113,7 +113,7 @@ if (!$exportstyle)
     .$clang->gT("Convert spaces in question text to underscores")."</label></li>\n"
     ."</ul>\n"
     ."</fieldset>\n"
-    
+
     ."<fieldset>\n"
     ."<legend>".$clang->gT("Answers")."</legend>\n"
     ."<ul>\n"
@@ -264,7 +264,7 @@ if ($tokenTableExists)
     $attributeFields=array_keys($attributeFieldAndNames);
 }
 
-switch ( $_POST["type"] ) {    
+switch ( $_POST["type"] ) {
     case "doc":
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".doc");
         header("Content-type: application/vnd.ms-word");
@@ -281,6 +281,7 @@ switch ( $_POST["type"] ) {
         $row = $result->FetchRow();
 
         $sheet = $workbook->getActiveSheet();
+        $row['surveyls_title']=str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$row['surveyls_title']); // Remove invalid characters
         $sheet->setTitle(substr($row['surveyls_title'],0,31));
         $separator="~|";
         break;
@@ -341,7 +342,7 @@ if (isset($_POST['colselect']))
         if (!isset($fieldmap[$cs]) && !isset($aTokenFieldNames[$cs]) && $cs != 'completed') continue; // skip invalid field names to prevent SQL injection
         if ($tokenTableExists && $cs == 'token')
         {
-            // We shouldnt include the token field when we are joining with the token field    
+            // We shouldnt include the token field when we are joining with the token field
         }
         elseif ($cs === 'id')
         {
@@ -501,7 +502,7 @@ for ($i=0; $i<$fieldcount; $i++)
         if (isset($fielddata['subquestion2'])) $question = "[{$fielddata['subquestion2']}] ". $question;
         if (isset($fielddata['subquestion1'])) $question = "[{$fielddata['subquestion1']}] ". $question;
         if ($exportstyle == "abrev")
-        {            
+        {
             $qname=strip_tags_full($question);
             $qname=mb_substr($qname, 0, 15)."..";
             $firstline = str_replace("\n", "", $firstline);
@@ -676,7 +677,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         else if($type == "pdf")
         {
             $pdf->titleintopdf($clang->gT("New Record"));
-            $pdfstring="";        
+            $pdfstring="";
             foreach ($drow as $rowfield)
             {
                 $rowfield=str_replace("?","-",$rowfield);
@@ -1097,7 +1098,7 @@ if ($type=='xls')
 {
     $objWriter = new PHPExcel_Writer_Excel5($workbook);
     $sFileName=$tempdir.DIRECTORY_SEPARATOR.'xls_'.sRandomChars(40);
-    $objWriter->save($sFileName);    
+    $objWriter->save($sFileName);
     readfile($sFileName);
     unlink($sFileName);
 }
