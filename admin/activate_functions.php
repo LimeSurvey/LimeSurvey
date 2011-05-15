@@ -324,7 +324,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
             case "M":  //Multiple choice
             case "P":  //Multiple choice with comment
             case "O":  //DROPDOWN LIST WITH COMMENT
-                if ($arow['aid'] != 'other' && $arow['aid'] != 'comment' && $arow['aid'] != 'othercomment')
+                if ($arow['aid'] != 'other' && strpos($arow['aid'],'comment')===false && strpos($arow['aid'],'othercomment')===false)
                 {
                     $createsurvey .= " C(5)";
                 }
