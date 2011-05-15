@@ -239,7 +239,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('LimeSurvey');
-        $pdf->SetTitle('Statistic Survey '.$surveyid);
+        $pdf->SetTitle('Statistic survey '.$surveyid);
         $pdf->SetSubject($surveyInfo['surveyls_title']);
         $pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
         $pdf->SetDisplayMode('fullpage', 'two');
