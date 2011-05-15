@@ -227,8 +227,8 @@
             {
                 $vasummary .=  "<input type='hidden' id='answercount_{$scale_id}' name='answercount_{$scale_id}' value='$anscount' />\n";
             }
-            $vasummary .= "<button id='btnlsbrowser_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
-            $vasummary .= "<button id='btnquickadd_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
+            $vasummary .= "<button id='btnlsbrowser_{$anslang}_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
+            $vasummary .= "<button id='btnquickadd_{$anslang}_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
 
         }
 

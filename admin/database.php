@@ -31,7 +31,7 @@ if (get_magic_quotes_gpc())
 /**
  * Gets the maximum question_order field value for a group
  *
- * @param mixed $gid  The id of the group     
+ * @param mixed $gid  The id of the group
  * @return mixed
  */
 function get_max_question_order($gid)
@@ -190,7 +190,7 @@ if(isset($surveyid))
             $gid = "";
             $groupselect = getgrouplist($gid);
             fixSortOrderGroups($surveyid);
-            $_SESSION['flashmessage'] = $clang->gT("The question group was deleted.");               
+            $_SESSION['flashmessage'] = $clang->gT("The question group was deleted.");
         }
         else
         {
@@ -295,8 +295,8 @@ if(isset($surveyid))
             }
 
             fixsortorderQuestions($postgid, $surveyid);
-            $_SESSION['flashmessage'] = $clang->gT("Question was successfully added.");               
-            
+            $_SESSION['flashmessage'] = $clang->gT("Question was successfully added.");
+
             //include("surveytable_functions.php");
             //surveyFixColumns($surveyid);
         }
@@ -331,13 +331,13 @@ if(isset($surveyid))
             $question_number++;
             $group_number=$grow['gid'];
         }
-        $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");                    
+        $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
     }
 
-    
-    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
+
+    elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
-        
+
         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($questlangs,$baselang);
@@ -358,7 +358,7 @@ if(isset($surveyid))
         {
             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         }
-        
+
         $questiontype=$connect->GetOne("SELECT type FROM ".db_table_name('questions')." WHERE qid=$postqid");
         $qtproperties=getqtypelist('','array');
         if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subquestions']==0)
@@ -368,13 +368,13 @@ if(isset($surveyid))
                 foreach ($questlangs as $language)
                 {
                    if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
-                   {                                                                       
+                   {
                        Updatedefaultvalues($postqid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
                    }
                    if (isset($_POST['other_'.$scale_id.'_'.$language]))
                    {
                        Updatedefaultvalues($postqid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
-                   } 
+                   }
                 }
             }
         }
@@ -392,22 +392,22 @@ if(isset($surveyid))
                    foreach ($sqrows as $aSubquestionrow)
                    {
                        if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
-                       {                                                                       
+                       {
                            Updatedefaultvalues($postqid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
                        }
 /*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
                        {
                            Updatedefaultvalues($postqid,$qid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
                        } */
-                       
-                   } 
+
+                   }
                 }
             }
         }
-        $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");                    
+        $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
     }
 
-    
+
     elseif ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
@@ -570,11 +570,11 @@ if(isset($surveyid))
                             }
 
                         }
-                    } 
+                    }
                     // Update the group ID on subquestions, too
                     if ($oldgid!=$postgid)
                     {
-                        $sQuery="UPDATE ".db_table_name('questions')." set gid={$postgid} where gid={$oldgid} and parent_qid>0"; 
+                        $sQuery="UPDATE ".db_table_name('questions')." set gid={$postgid} where gid={$oldgid} and parent_qid>0";
                         $oResult = $connect->Execute($sQuery) or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
                     }
                     // if the group has changed then fix the sortorder of old and new group
@@ -593,7 +593,7 @@ if(isset($surveyid))
                     // Remove old subquestion scales
                     $query = "DELETE FROM ".db_table_name('questions')." WHERE parent_qid={$postqid} and scale_id>={$iSubquestionScales}";
                         $result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg()); // Checked
-                    $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");                    
+                    $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");
 
 
                 }
@@ -636,7 +636,7 @@ if(isset($surveyid))
         }
     }
 
-    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))     
+    elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
     {
 
         if (!$_POST['title'])
@@ -725,7 +725,7 @@ if(isset($surveyid))
                     if (isset($aSQIDMappings[$qr1['qid']]))
                     {
                         $qr1['qid']=$aSQIDMappings[$qr1['qid']];
-                        db_switchIDInsert('questions',true); 
+                        db_switchIDInsert('questions',true);
                     }
                     else
                     {
@@ -737,7 +737,7 @@ if(isset($surveyid))
                     $ir1 = $connect->Execute($sInsertSQL);   // Checked
                     if (isset($qr1['qid']))
                     {
-                        db_switchIDInsert('questions',false); 
+                        db_switchIDInsert('questions',false);
                     }
                     else
                     {
@@ -784,11 +784,11 @@ if(isset($surveyid))
             fixsortorderQuestions($postgid, $surveyid);
             $gid=$postgid; //Sets the gid so that admin.php displays whatever group was chosen for this copied question
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
-            $_SESSION['flashmessage'] = $clang->gT("Question was successfully copied.");                    
+            $_SESSION['flashmessage'] = $clang->gT("Question was successfully copied.");
 
         }
     }
-    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))     
+    elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
     {
         if (!isset($qid)) {$qid=returnglobal('qid');}
         //check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -804,7 +804,7 @@ if(isset($surveyid))
         else
         {
             $gid = $connect->GetOne("SELECT gid FROM ".db_table_name('questions')." WHERE qid={$qid}"); // Checked
-            
+
             //see if there are any conditions/attributes/answers/defaultvalues for this question, and delete them now as well
             $connect->Execute("DELETE FROM {$dbprefix}conditions WHERE qid={$qid}");    // Checked
             $connect->Execute("DELETE FROM {$dbprefix}question_attributes WHERE qid={$qid}"); // Checked
@@ -818,10 +818,10 @@ if(isset($surveyid))
             $postqid="";
             $_GET['qid']="";
         }
-        $_SESSION['flashmessage'] = $clang->gT("Question was successfully deleted.");                    
+        $_SESSION['flashmessage'] = $clang->gT("Question was successfully deleted.");
     }
 
-    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
+    elseif ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -839,7 +839,7 @@ if(isset($surveyid))
         $count=0;
         $invalidCode = 0;
         $duplicateCode = 0;
-         
+
         require_once("../classes/inputfilter/class.inputfilter_clean.php");
         $myFilter = new InputFilter('','',1,1,1);
 
@@ -852,8 +852,14 @@ if(isset($surveyid))
             $maxcount=(int)$_POST['answercount_'.$scale_id];
             for ($sortorderid=1;$sortorderid<$maxcount;$sortorderid++)
             {
-                $oldcode=sanitize_paranoid_string($_POST['oldcode_'.$sortorderid.'_'.$scale_id]);
                 $code=sanitize_paranoid_string($_POST['code_'.$sortorderid.'_'.$scale_id]);
+                if (isset($_POST['oldcode_'.$sortorderid.'_'.$scale_id])) {
+                    $oldcode=sanitize_paranoid_string($_POST['oldcode_'.$sortorderid.'_'.$scale_id]);
+                    if($code !== $oldcode) {
+                        $query='UPDATE '.db_table_name('conditions').' SET value='.db_quoteall($code).' WHERE cqid='.db_quote($qid).' AND value='.db_quoteall($oldcode);
+                        $connect->execute($query);
+                    }
+                }
                 $assessmentvalue=(int) $_POST['assessment_'.$sortorderid.'_'.$scale_id];
                 foreach ($alllanguages as $language)
                 {
@@ -885,10 +891,6 @@ if(isset($surveyid))
                     }
                 } // foreach ($alllanguages as $language)
 
-                if($code !== $oldcode) {
-                    $query='UPDATE '.db_table_name('conditions').' SET value='.db_quoteall($code).' WHERE cqid='.db_quote($qid).' AND value='.db_quoteall($oldcode);
-                    $connect->execute($query);
-                }
 
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }  //  for ($scale_id=0;
@@ -897,13 +899,13 @@ if(isset($surveyid))
         if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
         $sortorderid--;
-        $_SESSION['flashmessage'] = $clang->gT("Answer options were successfully saved.");                    
-        
+        $_SESSION['flashmessage'] = $clang->gT("Answer options were successfully saved.");
+
         $action='editansweroptions';
 
     }
 
-    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
+    elseif ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
 
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1016,8 +1018,8 @@ if(isset($surveyid))
         }
         //include("surveytable_functions.php");
         //surveyFixColumns($surveyid);
-        $_SESSION['flashmessage'] = $clang->gT("Subquestions were successfully saved.");                    
-        
+        $_SESSION['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
+
         $action='editsubquestions';
     }
 
@@ -1132,7 +1134,7 @@ if(isset($surveyid))
                 {
 
                     $bplang = new limesurvey_lang($langname);
-                    $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');                         
+                    $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');
                     if (getEmailFormat($surveyid) == "html")
                     {
                         $ishtml=true;
@@ -1177,8 +1179,8 @@ if(isset($surveyid))
         if ($usresult)
         {
             $surveyselect = getsurveylist();
-            $_SESSION['flashmessage'] = $clang->gT("Survey settings were successfully saved.");                    
-            
+            $_SESSION['flashmessage'] = $clang->gT("Survey settings were successfully saved.");
+
         }
         else
         {
@@ -1208,8 +1210,8 @@ if(isset($surveyid))
             }
         }
         $_SESSION['flashmessage'] = $clang->gT("Email templates successfully saved.");
-    }     
-       
+    }
+
     elseif ($action == "delsurvey" && bHasSurveyPermission($surveyid,'survey','delete')) //can only happen if there are no groups, no questions, no answers etc.
     {
         $query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -1295,7 +1297,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
     $supportedLanguages = getLanguageData();
     $numberformatid = $supportedLanguages[$_POST['language']]['radixpoint'];
-    
+
     if ($_POST['url'] == 'http://') {$_POST['url']="";}
     if (!$_POST['surveyls_title'])
     {
@@ -1419,7 +1421,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['welcome']=fix_FCKeditor_text($_POST['welcome']);
 
         $bplang = new limesurvey_lang($_POST['language']);
-        $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');     
+        $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');
         $is_html_email = false;
         if (isset($_POST['htmlemail'])  && $_POST['htmlemail'] == "Y")
         {
@@ -1455,13 +1457,13 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked
         unset($bplang);
 
-        $_SESSION['flashmessage'] = $clang->gT("Survey was successfully added.");                    
-        
+        $_SESSION['flashmessage'] = $clang->gT("Survey was successfully added.");
+
         // Update survey permissions
         GiveAllSurveyPermissions($_SESSION['loginID'],$surveyid);
 
         $surveyselect = getsurveylist();
-        
+
         // Create initial Survey table
         //include("surveytable_functions.php");
         //$creationResult = surveyCreateTable($surveyid);
@@ -1481,7 +1483,7 @@ elseif ($action == "savepersonalsettings")
     $_SESSION['adminlang']=$_POST['lang'];
     $_SESSION['htmleditormode']=$_POST['htmleditormode'];
     $_SESSION['dateformat']= $_POST['dateformat'];
-    $_SESSION['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");                    
+    $_SESSION['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");
 }
 else
 {
@@ -1489,9 +1491,9 @@ else
 }
 
 /**
-* This is a convenience function to update/delete answer default values. If the given 
+* This is a convenience function to update/delete answer default values. If the given
 * $defaultvalue is empty then the entry is removed from table defaultvalues
-* 
+*
 * @param mixed $qid   Question ID
 * @param mixed $scale_id  Scale ID
 * @param mixed $specialtype  Special type (i.e. for  'Other')
@@ -1504,18 +1506,18 @@ function Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaul
    global $connect;
    if ($defaultvalue=='')  // Remove the default value if it is empty
    {
-      $connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");                           
+      $connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");
    }
    else
    {
        $exists=$connect->GetOne("SELECT qid FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");
        if ($exists===false || $exists===null)
        {
-           $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");        
+           $connect->execute('INSERT INTO '.db_table_name('defaultvalues')." (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");
        }
        else
        {
-           $connect->execute('UPDATE '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($defaultvalue,$ispost)."  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");        
+           $connect->execute('UPDATE '.db_table_name('defaultvalues')." set defaultvalue=".db_quoteall($defaultvalue,$ispost)."  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");
        }
    }
 }
