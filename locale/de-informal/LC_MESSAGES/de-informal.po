@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-05-15 12:59+0100\n"
-"PO-Revision-Date: 2011-05-15 13:03+0100\n"
+"PO-Revision-Date: 2011-05-15 22:56+0100\n"
 "Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -9108,7 +9108,7 @@ msgstr "Import von Zugangsschlüsseln aus LDAP"
 
 #: c:\web\xampp\htdocs\limesurvey/admin/tokens.php:626
 msgid "Export tokens to CSV file"
-msgstr "Export von Zugansschlüsseln als CSV-Datei"
+msgstr "Export von Zugangsschlüsseln als CSV-Datei"
 
 #: c:\web\xampp\htdocs\limesurvey/admin/tokens.php:635
 msgid "Send email invitation"
