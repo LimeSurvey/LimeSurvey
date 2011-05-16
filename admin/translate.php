@@ -202,9 +202,10 @@ END;
           $resultto2 = db_execute_assoc($queryto2);
         }
 
-        $translateoutput .= displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
+        $translateoutput .="<div class='translate'>\n";
         $translateoutput .="<input type='button' class='auto-trans' value='".$clang->gT("Auto Translate")."' id='auto-trans-tab-$type' />";
-        $translateoutput .="<img src='../images/ajax-loader.gif' style='display: none' class='ajax-loader'>";
+        $translateoutput .="<img src='../images/ajax-loader.gif' style='display: none' class='ajax-loader' alt='".$clang->gT("Loading...")."' />\n";
+        $translateoutput .= displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
@@ -251,6 +252,7 @@ END;
           ++$i;
         } // end while
         $translateoutput .= displayTranslateFieldsFooter();
+        $translateoutput .= "</div>";
         if ($all_fields_empty)
         {
           $translateoutput .= "<p>".$clang->gT("Nothing to translate on this page")."</p><br />";
