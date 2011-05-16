@@ -2,8 +2,13 @@
 
 class Question_attributes_model extends CI_Model {
 	
-	function getAllRecords()
+	function getAllRecords($condition=FALSE)
 	{
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
 		$data = $this->db->get('question_attributes');
 		
 		return $data;

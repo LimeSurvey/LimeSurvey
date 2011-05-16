@@ -2,9 +2,14 @@
 
 class Surveys_dynamic_model extends CI_Model {
 	
-	function getAllRecords($sid)
+	function getAllRecords($sid,$condition=FALSE)
 	{
-		$data = $this->db->get('surveys'.$sid);
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
+		$data = $this->db->get('survey_'.$sid);
 		
 		return $data;
 	}
@@ -20,7 +25,7 @@ class Surveys_dynamic_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get('surveys'.$sid);
+		$data = $this->db->get('survey_'.$sid);
 		
 		return $data;
 	}

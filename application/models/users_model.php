@@ -2,9 +2,14 @@
 
 class Users_model extends CI_Model {
 	
-	function getAllRecords()
+	function getAllRecords($condition=FALSE)
 	{
-		$data = $this->db->get($this->db->dbprefix('users'));
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
+		$data = $this->db->get('users');
 		
 		return $data;
 	}
@@ -20,7 +25,7 @@ class Users_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get($this->db->dbprefix('users'));
+		$data = $this->db->get('users');
 		return $data;
 	}
 
@@ -28,7 +33,7 @@ class Users_model extends CI_Model {
 	{
 		$this->db->select('uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode');
 		$this->db->where('users_name',$user);
-		$data = $this->db->get($this->db->dbprefix('users'),1);
+		$data = $this->db->get('users',1);
 		
 		return $data;
 	}
@@ -39,7 +44,7 @@ class Users_model extends CI_Model {
 				'one_time_pw' => ''
 				);
 		$this->db->where('users_name',$user);
-		$this->db->update($this->db->dbprefix('users'),$data);
+		$this->db->update('users',$data);
 	}
 
 }

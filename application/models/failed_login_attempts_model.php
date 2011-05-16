@@ -4,11 +4,12 @@ class Failed_login_attempts_model extends CI_Model {
 	
 	function getAllRecords($condition=FALSE)
 	{
-		IF ($CONSITION != FALSE)
+		if ($condition != FALSE)
 		{
-			$this->db->where($condition);
+			$this->db->where($condition);	
 		}
-		$data = $this->db->get($this->db->dbprefix('failed_login_attempts'));
+		
+		$data = $this->db->get('failed_login_attempts');
 		
 		return $data;
 	}
@@ -24,7 +25,7 @@ class Failed_login_attempts_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get($this->db->dbprefix('failed_login_attempts'));
+		$data = $this->db->get('failed_login_attempts');
 		
 		return $data;
 	}

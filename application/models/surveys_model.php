@@ -2,9 +2,14 @@
 
 class Surveys_model extends CI_Model {
 	
-	function getAllRecords()
+	function getAllRecords($condition=FALSE)
 	{
-		$data = $this->db->get($this->db->dbprefix('surveys'));
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
+		$data = $this->db->get('surveys');
 		
 		return $data;
 	}
@@ -20,7 +25,7 @@ class Surveys_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get($this->db->dbprefix('surveys'));
+		$data = $this->db->get('surveys');
 		
 		return $data;
 	}

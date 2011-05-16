@@ -2,8 +2,13 @@
 
 class Templates_rights_model extends CI_Model {
 	
-	function getAllRecords()
+	function getAllRecords($condition=FALSE)
 	{
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
 		$data = $this->db->get('templates_rights');
 		
 		return $data;
