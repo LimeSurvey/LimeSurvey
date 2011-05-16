@@ -733,27 +733,25 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
  */
 function displayTranslateFieldsHeader($baselangdesc, $tolangdesc)
 {
-  $translateoutput = "<div class=\"translate\" >"
-   .'<table class="translate">'
+  $translateoutput = '<table class="translate">'
       . '<colgroup valign="top" width="45%" />'
       . '<colgroup valign="top" width="55%" />'
       . "<tr>\n"
-        . "<td><b>$baselangdesc</b></td>\n"
-        . "<td><b>$tolangdesc</b></td>\n"
+          . "<td><b>$baselangdesc</b></td>\n"
+          . "<td><b>$tolangdesc</b></td>\n"
       . "</tr>\n";
   return($translateoutput);
 }
 
 
 /**
- * displayTranslateFieldsHeader() Formats and displays footer of translation fields table
+ * displayTranslateFieldsFooter() Formats and displays footer of translation fields table
  * @return string $translateoutput
  */
 function displayTranslateFieldsFooter()
 {
   $translateoutput = ""
-    . "</table>\n"
-  . "</div>\n";
+    . "</table>\n";
   return($translateoutput);
 }
 
@@ -798,7 +796,7 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
   // Display text in original language
   // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
   $translateoutput .= ""
-    . "<td class='_from_' id='${type}_from_${i}' lan=''>$textfrom</td>\n"
+    . "<td class='_from_' id='${type}_from_${i}'>$textfrom</td>\n"
     . "<td>\n";
       $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
       $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
