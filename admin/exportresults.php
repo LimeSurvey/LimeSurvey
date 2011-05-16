@@ -404,13 +404,7 @@ if ($tokenTableExists && $thissurvey['anonymized']=='N')
     $dquery .= " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
     . " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
-if (incompleteAnsFilterstate() == "filter")
-{
-    $dquery .= "  WHERE $surveytable.submitdate is not null ";
-} elseif (incompleteAnsFilterstate() == "inc")
-{
-    $dquery .= "  WHERE $surveytable.submitdate is null ";
-}
+
 
 $dresult = db_select_limit_assoc($dquery, 1) or safe_die($clang->gT("Error")." getting results<br />$dquery<br />".$connect->ErrorMsg());
 $fieldcount = $dresult->FieldCount();
