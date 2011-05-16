@@ -9,7 +9,7 @@ class Answers_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get($this->db->dbprefix('answers'));
+		$data = $this->db->get('answers');
 		
 		return $data;
 	}
@@ -25,7 +25,7 @@ class Answers_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get($this->db->dbprefix('answers'));
+		$data = $this->db->get('answers');
 		
 		return $data;
 	}

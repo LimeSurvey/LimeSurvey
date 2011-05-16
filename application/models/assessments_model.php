@@ -9,7 +9,7 @@ class Assessments_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get($this->db->dbprefix('assessments'));
+		$data = $this->db->get('assessments');
 		
 		return $data;
 	}
@@ -25,7 +25,7 @@ class Assessments_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$data = $this->db->get($this->db->dbprefix('assessments'));
+		$data = $this->db->get('assessments');
 		
 		return $data;
 	}
