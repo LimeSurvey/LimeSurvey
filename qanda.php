@@ -1626,7 +1626,7 @@ function do_boilerplate($ia)
 // ---------------------------------------------------------------
 function do_5pointchoice($ia)
 {
-    global $clang;
+    global $clang, $imageurl;
 	global $js_header_includes, $css_header_includes;	
 
     if ($ia[8] == 'Y')
@@ -1700,12 +1700,12 @@ function do_5pointchoice($ia)
     	$answer.="
     		<div style=\"float:left;\">
     		<div style=\"text-align:center; margin-bottom:6px; width:370px;\"><div style=\"width:2%; float:left;\">1</div><div style=\"width:46%;float:left;\">2</div><div style=\"width:4%;float:left;\">3</div><div style=\"width:46%;float:left;\">4</div><div style=\"width:2%;float:left;\">5</div></div><br/>
-    	 	<div id=\"{$id}sliderBg\" style=\"background-image:url('./images/sliderBg.png'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\">
+    	 	<div id=\"{$id}sliderBg\" style=\"background-image:url('{$imageurl}/sliderBg.png'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\">
     	 	<center>
     		<div id=\"{$id}slider\" style=\"width:365px;\"></div>
     		</center>
     		</div></div>
-    	 	<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\"./images/emoticons/{$value}.png\"/><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"./images/emoticons/{$value}.png\" /></div>
+    	 	<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\".{$imageurl}/emoticons/{$value}.png\"/><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"{$imageurl}/emoticons/{$value}.png\" /></div>
 			<script type=\"text/javascript\">
 				$('#$id').hide();
 				var value=$value;
@@ -1721,7 +1721,7 @@ function do_5pointchoice($ia)
 				max: 5,
 				step: 1,
 				slide: function(event,ui){
-						$('#{$id}img2').attr('src','./images/emoticons/'+ui.value+'.png');
+						$('#{$id}img2').attr('src','{$imageurl}/emoticons/'+ui.value+'.png');
 						$('#{$id}img2').fadeIn(time);
 						$('#$id input').each(function(){ $(this).removeAttr('checked');});
     					$('#answer$ia[1]'+ui.value).attr('checked','checked');
@@ -1732,11 +1732,11 @@ function do_5pointchoice($ia)
     					});
     				}
 				});
-				$('#{$id}slider a').css('background-image', 'url(\'./images/slider.png\')');
+				$('#{$id}slider a').css('background-image', 'url(\'{$imageurl}/slider.png\')');
 				$('#{$id}slider a').css('width', '11px');
 				$('#{$id}slider a').css('height', '28px');
 				$('#{$id}slider a').css('border', 'none');
-				//$('#{$id}slider').css('background-image', 'url(\'./images/sliderBg.png\')');
+				//$('#{$id}slider').css('background-image', 'url(\'{$imageurl}/sliderBg.png\')');
 				$('#{$id}slider').css('visibility','hidden');
 				$('#{$id}slider a').css('visibility', 'visible');
 			</script>

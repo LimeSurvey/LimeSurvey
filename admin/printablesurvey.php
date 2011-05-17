@@ -121,7 +121,7 @@ if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$not
     $pdf_form = '
     <form action="'.$scriptname.'?action=showprintablesurvey&amp;sid='.$surveyid.'&amp;lang='.$surveyprintlang.'" method="post">
 	    <input type="submit" value="'.$clang->gT('PDF Export').'"/>
-	    <input type="hidden" name="checksessionbypost" value="'.$_SESSION['checksessionpost'].'"/>
+	    <input type="hidden" name="checksessionbypost" value="'.htmlspecialchars($_SESSION['checksessionpost']).'"/>
 	    <input type="hidden" name="printableexport" value="true"/>
     </form>
     ';
@@ -307,7 +307,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 
     if(!empty($title))
     {
-        $div_title = ' title="'.$title.'"';
+        $div_title = ' title="'.htmlspecialchars($title).'"';
     }
     else
     {
@@ -330,7 +330,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
             // define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
             define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
         }
-        $output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
+        $output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.htmlspecialchars($title).'" class="input-'.$type.'" />';
         break;
 
         case 'rank':
