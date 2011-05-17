@@ -76,7 +76,23 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
-
+                              
+Changes from 1.91+ (build 10062) to 1.91+ (build 10089)                              
+#Updated translation: Norwegian Nynorsk - kindly provided by Guttorm Flatabø (c_schmitz)
+#Updated translation : French (b00z00)
+#Updated translation: Czech - kindly provided by Vladimir Braun (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Hungarian - kindly provided by Balázs Zoltán (c_schmitz)
+#Updated translation: Norwegian Bokmal - kindly provided by Pål Monstad (c_schmitz)
+-Fixed issue #4851: Translate button doesn't work in IE (tpartner)
+-Fixed issue #5150: Preview question; default answer not shown (c_schmitz)
+-Fixed issue #5157: Limit on 5 character in multiple answers with comments (c_schmitz)
+-Fixed issue #5159: code printing when using showprintablesurvey with radio button - patch kindly provided by mot (c_schmitz)
+-Fixed issue #5165: Export to excel exports no results but query when choosing only to export incomplete or only complete responses (c_schmitz)
+-Fixed issue #5169: Excel exports fail if special characters are present in survey title (c_schmitz)
+                              
+                              
 Changes from 1.91 (build 10060) to 1.91+ (build 10061)
 -Fixed issue #5158: Missing backslash in index.php gives throws a "unexpected T_STRING error" (shnoulle)
 
