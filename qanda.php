@@ -2378,22 +2378,51 @@ function do_list_radio($ia)
     //question attribute random order set?
     if ($qidattributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansresult = $connect->GetAll($ansquery);  //Checked
+    }
+    elseif ($qidattributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansresult = $connect->GetAll($ansquery);  //Checked
+        $_SESSION['answer_order'][$ia[0]]=$ansresult;    
+    }
+    elseif (isset($_SESSION['answer_order'][$ia[0]]))
+    {
+            $ansresult = $_SESSION['answer_order'][$ia[0]];  //Checked
     }
 
     //question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
     {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
+        $ansresult = $connect->GetAll($ansquery);  //Checked
     }
 
     //no question attributes -> order by sortorder
     else
     {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansresult = $connect->GetAll($ansquery);  //Checked
     }
 
-    $ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
-    $anscount = $ansresult->RecordCount();
+    $anscount = count($ansresult);
+
+    if (trim($qidattributes['parent_order']!=''))
+    {
+        $iParentQID=(int) $qidattributes['parent_order'];
+        $aResult=array();
+        foreach ($_SESSION['answer_order'][$iParentQID] as $aOrigRow)
+        {
+            $sCode=$aOrigRow['title'];
+            foreach ($ansresult as $aRow)
+            {
+                if ($sCode==$aRow['code'])
+                {
+                 $aResult[]=$aRow;
+                }
+            }
+        }
+        $ansresult=$aResult;
+    }        
 
 
     if (trim($qidattributes['display_columns'])!='') {
@@ -2425,7 +2454,7 @@ function do_list_radio($ia)
     $colcounter = 1;
     $trbc='';
 
-    while ($ansrow = $ansresult->FetchRow())
+    foreach ($ansresult as $ansrow)
     {
         $myfname = $ia[1].$ansrow['code'];
         $check_ans = '';
@@ -3139,13 +3168,23 @@ function do_multiplechoice($ia)
 
     if ($qidattributes['random_order']==1) {
         $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansresult = $connect->GetAll($ansquery);  //Checked
+    }
+    elseif ($qidattributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
+        $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansresult = $connect->GetAll($ansquery);  //Checked
+        $_SESSION['answer_order'][$ia[0]]=$ansresult;    
+    }
+    elseif (isset($_SESSION['answer_order'][$ia[0]]))
+    {
+            $ansresult = $_SESSION['answer_order'][$ia[0]];  //Checked
     }
     else
     {
         $ansquery = "SELECT * FROM ".db_table_name('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansresult = $connect->GetAll($ansquery);  //Checked
     }
 
-    $ansresult = $connect->GetAll($ansquery);  //Checked
     $anscount = count($ansresult);
 
     if (trim($qidattributes['exclude_all_others'])!='' && $qidattributes['random_order']==1)
@@ -6086,15 +6125,47 @@ function do_array($ia)
         $ansresult = db_execute_assoc($ansquery);  //Checked
         if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+        
+        
         if ($qidattributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansresult = $connect->GetAll($ansquery);  //Checked
+        }
+        elseif ($qidattributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansresult = $connect->GetAll($ansquery);  //Checked
+            $_SESSION['answer_order'][$ia[0]]=$ansresult;    
+        }
+        elseif (isset($_SESSION['answer_order'][$ia[0]]))
+        {
+                $ansresult = $_SESSION['answer_order'][$ia[0]];  //Checked
         }
         else
         {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansresult = $connect->GetAll($ansquery);  //Checked
         }
-        $ansresult = db_execute_assoc($ansquery); //Checked
-        $anscount = $ansresult->RecordCount();
+        
+        if (trim($qidattributes['parent_order']!=''))
+        {
+            $iParentQID=(int) $qidattributes['parent_order'];
+            $aResult=array();
+            foreach ($_SESSION['answer_order'][$iParentQID] as $aOrigRow)
+            {
+                $sCode=$aOrigRow['title'];
+                foreach ($ansresult as $aRow)
+                {
+                    if ($sCode==$aRow['title'])
+                    {
+                     $aResult[]=$aRow;
+                    }
+                }
+            }
+            $ansresult=$aResult;
+        }        
+        
+        
+        $anscount = count($ansresult);
         $fn=1;
 
         $numrows = count($labelans);
@@ -6127,7 +6198,7 @@ function do_array($ia)
         $trbc = '';
         $inputnames=array();
 
-        while ($ansrow = $ansresult->FetchRow())
+        foreach ($ansresult as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -6848,8 +6919,25 @@ function do_array_multiflexi($ia)
         {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery);
-        $anscount = $ansresult->RecordCount();
+        $ansresult = $connect->GetAll($ansquery);  //Checked
+        if (trim($qidattributes['parent_order']!=''))
+        {
+            $iParentQID=(int) $qidattributes['parent_order'];
+            $aResult=array();
+            foreach ($_SESSION['answer_order'][$iParentQID] as $aOrigRow)
+            {
+                $sCode=$aOrigRow['title'];
+                foreach ($ansresult as $aRow)
+                {
+                    if ($sCode==$aRow['title'])
+                    {
+                     $aResult[]=$aRow;
+                    }
+                }
+            }
+            $ansresult=$aResult;
+        }
+        $anscount = count($ansresult);
         $fn=1;
 
         $mycols = "\t<colgroup class=\"col-responses\">\n"
@@ -6879,7 +6967,7 @@ function do_array_multiflexi($ia)
         $trbc = '';
         $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n";
 
-        while ($ansrow = $ansresult->FetchRow())
+        foreach ($ansresult as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -7221,6 +7309,8 @@ function do_array_dual($ia)
     }
 
     $inputnames=array();
+    $labelans1=array();
+    $labelans=array();
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $other = $connect->GetOne($qquery);    //Checked
     $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
