@@ -127,7 +127,7 @@ FCKConfig.ToolbarSets["Default"] = [
 //	['Undo','Redo','-','Cut','Copy','Paste','-','Bold','Italic','Underline','-','OrderedList','UnorderedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','Link','Unlink','Image','Table','-','LimeReplacementFields','LimeFitWin']
 //] ;
 FCKConfig.ToolbarSets["Basic"] = [
-	['LimeFitWin','-','Bold','Italic','Underline','-','OrderedList','UnorderedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','Link','Unlink','Image','Table','-','LimeReplacementFields']
+	['LimeFitWin','-','Bold','Italic','Underline','-','OrderedList','UnorderedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','Link','Unlink','Image','Table','-','LimeReplacementFields','Source']
 ] ;
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [
