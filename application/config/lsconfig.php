@@ -510,7 +510,7 @@ $config['tempurl']                 = base_url()."tmp";
 $config['imageurl']                = base_url()."images";        // Location of button bar files for admin script
 $config['uploadurl']               = base_url()."upload";
 $config['standardtemplaterooturl'] = base_url()."templates";     // Location of the standard templates
-$config['usertemplaterooturl']     = "$uploadurl/templates";   // Location of the user templates
+$config['usertemplaterooturl']     = $config['uploadurl']."/templates";   // Location of the user templates
 
 
 $config['homedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."admin";       // The directory path of the admin scripts
