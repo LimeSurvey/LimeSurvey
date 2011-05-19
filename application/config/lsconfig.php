@@ -501,5 +501,24 @@ $config['googleMapsAPIKey'] = '';
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
+//Initialize URL Helper to get base_url();
+get_instance()->load->helper('url');
+
+$config['homeurl']                 = base_url()."admin";         // The website location (url) of the admin scripts
+$config['publicurl']               = base_url();               // The public website location (url) of the public survey script
+$config['tempurl']                 = base_url()."tmp";
+$config['imageurl']                = base_url()."images";        // Location of button bar files for admin script
+$config['uploadurl']               = base_url()."upload";
+$config['standardtemplaterooturl'] = base_url()."templates";     // Location of the standard templates
+$config['usertemplaterooturl']     = "$uploadurl/templates";   // Location of the user templates
+
+
+$config['homedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."admin";       // The directory path of the admin scripts
+$config['publicdir']               = $config['rootdir'];                                   // The directory path of the public scripts
+$config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
+$config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
+$config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
+$config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
+$config['usertemplaterootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates    
 
 //settings deleted
