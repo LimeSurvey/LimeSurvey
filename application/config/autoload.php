@@ -80,7 +80,7 @@ $autoload['helper'] = array('url','form','string');
 |
 */
 
-$autoload['config'] = array('lsconfig');
+$autoload['config'] = array('version', 'lsconfig');
 
 
 /*
