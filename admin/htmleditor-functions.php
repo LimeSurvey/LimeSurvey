@@ -20,13 +20,21 @@
 function PrepareEditorScript()
 {
     global $clang,$imageurl,$homeurl;
-    global $sCKEditorURL, $js_admin_includes;
-    
+    global $sCKEditorURL, $js_admin_includes, $defaulthtmleditormode;
+    $sHTMLEditorMode=$_SESSION['htmleditormode'];
+    if ($sHTMLEditorMode=='default') {
+        $sHTMLEditorMode=$defaulthtmleditormode;
+    }
+
     $js_admin_includes[]=$sCKEditorURL.'/ckeditor.js';
     $js_admin_includes[]=$sCKEditorURL.'/adapters/jquery.js';
     $js_admin_includes[]='scripts/editor.js';
 
-    return '';
+    $sReturnScrip="<script type=\"text/javascript\">\n"
+        ."sHTMLEditorMode='".$sHTMLEditorMode."';"
+        ."</script>";
+
+    return $sReturnScrip;
 }
 
 
@@ -144,7 +152,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
          $fieldtype == 'email-rem' )
     {
         $htmlformatoption = "$oFCKeditorVarName.Config[\"FullPage\"]=true;\n"
-        . "$oFCKeditorVarName.Height = \"500\"\n";        
+        . "$oFCKeditorVarName.Height = \"500\"\n";
     }
 
 
@@ -171,7 +179,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 
     $htmlcode .= ""
     . "$oFCKeditorVarName.ToolbarSet = '".$toolbarname."';\n";
-    
+
     if ( $fieldtype == 'email-inv' ||
      $fieldtype == 'email-reg' ||
      $fieldtype == 'email-conf'||
