@@ -81,7 +81,7 @@
     }
 
     // Print Key Control JavaScript
-    $vasummary = PrepareEditorScript("editanswer");
+    $vasummary = PrepareEditorScript();
 
     $query = "SELECT sortorder FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked

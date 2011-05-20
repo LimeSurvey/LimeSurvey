@@ -567,7 +567,7 @@ $usertemplaterootdir     = "$uploaddir".DIRECTORY_SEPARATOR."templates"; // The 
 
 // Note: For OS/2 the $tempdir may need to be defined as an actual directory
 // example: "x:/limesurvey/tmp". We don't know why.
-$sFCKEditorURL   =   "$homeurl/scripts/fckeditor.266";
+$sCKEditorURL   =   "$homeurl/scripts/ckeditor.36";
 $fckeditexpandtoolbar   =   true; // defines if the FCKeditor toolbar should be opened by default
 $pdfexportdir   = "$homedir/classes/tcpdf";  //Directory with the tcpdf.php extensiontcpdf.php
 $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts

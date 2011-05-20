@@ -289,7 +289,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $rwlabelset=$rslabelset->FetchRow();
         $lslanguages=explode(" ", trim($rwlabelset['languages']));
 
-        $labelsoutput.= PrepareEditorScript("editlabel");
+        $labelsoutput.= PrepareEditorScript();
 
         $maxquery = "SELECT max(sortorder) as maxsortorder FROM ".db_table_name('labels')." WHERE lid=$lid and language='{$lslanguages[0]}'";
         $maxresult = db_execute_assoc($maxquery) or safe_die($connect->ErrorMsg());
@@ -484,7 +484,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
         . "\t<ul style='list-style-type:none; text-align:center'>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
-        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$sFCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
+        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$sCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
         . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\"  /></li>\n"
         . "\t\t<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"

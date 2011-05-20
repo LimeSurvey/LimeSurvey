@@ -87,7 +87,7 @@ else {
 		<title>'.$clang->gT("Editing").' '.$fieldtext.'</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="robots" content="noindex, nofollow" />
-		<script type="text/javascript" src="'.$sFCKEditorURL.'/fckeditor.js"></script>
+		<script type="text/javascript" src="'.$sCKEditorURL.'/fckeditor.js"></script>
 	</head>';
 
 
@@ -113,11 +113,11 @@ else {
 	var saveChanges = false;
 
 	var oFCKeditor = new FCKeditor( 'MyTextarea' );
-	oFCKeditor.BasePath	= '".$sFCKEditorURL."/';
+	oFCKeditor.BasePath	= '".$sCKEditorURL."/';
 	oFCKeditor.Height	= '350';
 	oFCKeditor.Width	= '98%';
 	oFCKeditor.Value      = window.opener.document.getElementsByName(\"".$fieldname."\")[0].value;
-	oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$sFCKEditorURL."/limesurvey-config.js\";
+	oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$sCKEditorURL."/limesurvey-config.js\";
 	oFCKeditor.Config[\"ToolbarStartExpanded\"] = true;
 	oFCKeditor.Config[\"ToolbarCanCollapse\"] = false;
 	oFCKeditor.ToolbarSet = '".$toolbarname."';
