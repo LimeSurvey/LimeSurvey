@@ -38,5 +38,19 @@ class Surveys_languagesettings_model extends CI_Model {
         $this->db->where('surveyls_language = \''.$languagecode.'\'');
         return $this->db->get();
     }
+    
+    function getAllSurveys($hasPermission = FALSE)
+    {
+        $this->db->select('a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url');
+        $this->db->from('surveys AS a');
+        $this->db->join('surveys_languagesettings','surveyls_survey_id=a.sid AND surveyls_language=a.language');
+        
+        if ($hasPermission)
+        {
+            $this->db->where('a.sid IN (SELECT sid FROM '.$this->db->dbprefix("survey_permissions").' WHERE uid='.$this->session->userdata("loginID").' AND permission=\'survey\' and read_p=1) ');
+        }
+        $this->db->order_by('active DESC, surveyls_title');
+        return $this->db->get();
+    }
 
 }

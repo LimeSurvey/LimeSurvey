@@ -29,5 +29,13 @@ class Labels_model extends CI_Model {
 		
 		return $data;
 	}
+    
+    function getLabelCodeInfo($lid)
+    {
+        $this->db->select('code, title, sortorder, language, assessment_value');
+        $this->db->where('lid',$lid);
+        $this->db->order_by('language, sortorder, code');
+        return $this->db->get('labels');
+    }
 
 }

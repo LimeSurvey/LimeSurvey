@@ -29,5 +29,11 @@ class Saved_control_model extends CI_Model {
 		
 		return $data;
 	}
+    
+    function getCountOfAll($sid)
+    {
+        $data = $this->db->query("SELECT COUNT(*) FROM ".$this->db->prefix('saved_control')." WHERE sid=$sid");
+        return $data;
+    }
 
 }
