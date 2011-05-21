@@ -183,8 +183,7 @@ class browser extends uploader {
     protected function act_newDir() {
         if ($this->config['readonly'] ||
             !isset($this->post['dir']) ||
-            !isset($this->post['newDir'])
-        )
+            !isset($this->post['newDir']) || true)
             $this->errorMsg("Unknown error.");
 
         $dir = $this->postDir();

@@ -3,6 +3,6 @@
 $(document).ready(function(){
 
     $('textarea.fulledit').ckeditor(function() { /* callback code */ }, {	toolbar : sHTMLEditorMode,
-                                                                            width: 650,
+                                                                            width: 660,
                                                                             customConfig : 'limesurvey-config.js' });
 });

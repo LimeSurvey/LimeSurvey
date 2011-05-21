@@ -19,7 +19,7 @@
 
 function PrepareEditorScript($surveyid=null)
 {
-    global $clang, $imageurl, $homeurl, $uploaddir, $uploadurl;
+    global $clang, $imageurl, $homeurl, $uploaddir, $relativeurl, $rooturl;
     global $sCKEditorURL, $js_admin_includes, $defaulthtmleditormode;
     $sHTMLEditorMode=$_SESSION['htmleditormode'];
     if ($sHTMLEditorMode=='default') {
@@ -32,15 +32,15 @@ function PrepareEditorScript($surveyid=null)
     if (isset($surveyid)) {
         $_SESSION['KCFINDER'] = array();
         $_SESSION['KCFINDER']['disabled'] = false;
-        $_SESSION['KCFINDER']['uploadURL'] = $uploadurl.'/'.$surveyid;
-        $_SESSION['KCFINDER']['uploadDir'] = $uploaddir.'/'.$surveyid;
+        $_SESSION['KCFINDER']['uploadURL'] = "$relativeurl/upload/surveys/$surveyid/" ;
+        $_SESSION['KCFINDER']['uploadDir'] = $uploaddir.'/surveys/'.$surveyid;
     }
 
 
 
     $sReturnScrip="<script type=\"text/javascript\">\n"
-        ."sHTMLEditorMode='".$sHTMLEditorMode."';"
-        ."</script>";
+        ."sHTMLEditorMode='".$sHTMLEditorMode."';\n"
+        ."</script>\n";
 
     return $sReturnScrip;
 }

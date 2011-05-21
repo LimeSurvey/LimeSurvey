@@ -227,11 +227,6 @@ browser.menuDir = function(dir, e) {
     if (this.support.zip) html+=
         '<div class="delimiter"></div>' +
         '<a href="kcact:download">' + this.label("Download") + '</a>';
-    if (!this.readonly) html +=
-        '<div class="delimiter"></div>' +
-        '<a href="kcact:mkdir"' + (!data.writable ? ' class="denied"' : '') + '>' + this.label("New Subfolder...") + '</a>' +
-        '<a href="kcact:mvdir"' + (!data.removable ? ' class="denied"' : '') + '>' + this.label("Rename...") + '</a>' +
-        '<a href="kcact:rmdir"' + (!data.removable ? ' class="denied"' : '') + '>' + this.label("Delete") + '</a>';
     html += '</div>';
 
     $('#dialog').html(html);
