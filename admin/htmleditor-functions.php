@@ -17,9 +17,9 @@
 //Security Checked: POST/GET/SESSION/DB/returnglobal
 
 
-function PrepareEditorScript()
+function PrepareEditorScript($surveyid=null)
 {
-    global $clang,$imageurl,$homeurl;
+    global $clang, $imageurl, $homeurl, $uploaddir, $uploadurl;
     global $sCKEditorURL, $js_admin_includes, $defaulthtmleditormode;
     $sHTMLEditorMode=$_SESSION['htmleditormode'];
     if ($sHTMLEditorMode=='default') {
@@ -29,6 +29,14 @@ function PrepareEditorScript()
     $js_admin_includes[]=$sCKEditorURL.'/ckeditor.js';
     $js_admin_includes[]=$sCKEditorURL.'/adapters/jquery.js';
     $js_admin_includes[]='scripts/editor.js';
+    if (isset($surveyid)) {
+        $_SESSION['KCFINDER'] = array();
+        $_SESSION['KCFINDER']['disabled'] = false;
+        $_SESSION['KCFINDER']['uploadURL'] = $uploadurl.'/'.$surveyid;
+        $_SESSION['KCFINDER']['uploadDir'] = $uploaddir.'/'.$surveyid;
+    }
+
+
 
     $sReturnScrip="<script type=\"text/javascript\">\n"
         ."sHTMLEditorMode='".$sHTMLEditorMode."';"

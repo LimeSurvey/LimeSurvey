@@ -23,7 +23,7 @@
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($grplangs,$baselang);
 
-        $editsurvey = PrepareEditorScript();
+        $editsurvey = PrepareEditorScript($surveyid);
 
 
         $editsurvey .="<div class='header ui-widget-header'>".$clang->gT("Edit survey text elements")."</div>\n";

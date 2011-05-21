@@ -1,10 +1,16 @@
 CKEDITOR.editorConfig = function( config )
 {
-	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
-	// config.uiColor = '#AADC6E';
+
+    config.filebrowserBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=files';
+    config.filebrowserImageBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=images';
+    config.filebrowserFlashBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=flash';
+    config.filebrowserUploadUrl = CKEDITOR.basePath+'/kcfinder/upload.php?type=files';
+    config.filebrowserImageUploadUrl = CKEDITOR.basePath+'/kcfinder/upload.php?type=images';
+    config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'/kcfinder/upload.php?type=flash';
+
 	config.skin = 'office2003';
 	config.toolbarCanCollapse = false;
+	config.resize_enabled = false;
 
     config.toolbar_popup =
     [
